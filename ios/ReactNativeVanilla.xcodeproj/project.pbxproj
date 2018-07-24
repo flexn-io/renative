@@ -12,6 +12,7 @@
 		2070915B21078B0D00FFF1DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2070915921078B0D00FFF1DB /* Main.storyboard */; };
 		2070915D21078B0E00FFF1DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2070915C21078B0E00FFF1DB /* Assets.xcassets */; };
 		2070916021078B0E00FFF1DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2070915E21078B0E00FFF1DB /* LaunchScreen.storyboard */; };
+		E05D13837FEC7ACFAD3C029A /* Pods_ReactNativeVanilla.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A47617386638B6D79C095 /* Pods_ReactNativeVanilla.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,9 @@
 		2070915C21078B0E00FFF1DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2070915F21078B0E00FFF1DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2070916121078B0E00FFF1DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B13B4164A84EE6E9BF63551 /* Pods-ReactNativeVanilla.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanilla.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla.release.xcconfig"; sourceTree = "<group>"; };
+		AB8A47617386638B6D79C095 /* Pods_ReactNativeVanilla.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativeVanilla.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F3EC14809CDC1E11D710FBAC /* Pods-ReactNativeVanilla.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanilla.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E05D13837FEC7ACFAD3C029A /* Pods_ReactNativeVanilla.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E3312C66CE20857488874BF /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F3EC14809CDC1E11D710FBAC /* Pods-ReactNativeVanilla.debug.xcconfig */,
+				9B13B4164A84EE6E9BF63551 /* Pods-ReactNativeVanilla.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		2070914921078B0D00FFF1DB = {
 			isa = PBXGroup;
 			children = (
 				2070915421078B0D00FFF1DB /* ReactNativeVanilla */,
 				2070915321078B0D00FFF1DB /* Products */,
+				0E3312C66CE20857488874BF /* Pods */,
+				B566E91986956011A4C625F0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +80,14 @@
 			path = ReactNativeVanilla;
 			sourceTree = "<group>";
 		};
+		B566E91986956011A4C625F0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AB8A47617386638B6D79C095 /* Pods_ReactNativeVanilla.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2070916421078B0E00FFF1DB /* Build configuration list for PBXNativeTarget "ReactNativeVanilla" */;
 			buildPhases = (
+				DCD72F9D17945D99199178F9 /* [CP] Check Pods Manifest.lock */,
 				2070914E21078B0D00FFF1DB /* Sources */,
 				2070914F21078B0D00FFF1DB /* Frameworks */,
 				2070915021078B0D00FFF1DB /* Resources */,
+				078FA032F331DECA70CAAFA9 /* [CP] Embed Pods Frameworks */,
+				A675FF24942ADB045A1C9B5E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -129,6 +156,68 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		078FA032F331DECA70CAAFA9 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
+				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
+				"${BUILT_PRODUCTS_DIR}/React/React.framework",
+				"${BUILT_PRODUCTS_DIR}/glog/glog.framework",
+				"${BUILT_PRODUCTS_DIR}/yoga/yoga.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DoubleConversion.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/folly.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/glog.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A675FF24942ADB045A1C9B5E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DCD72F9D17945D99199178F9 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ReactNativeVanilla-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		2070914E21078B0D00FFF1DB /* Sources */ = {
@@ -278,15 +367,13 @@
 		};
 		2070916521078B0E00FFF1DB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F3EC14809CDC1E11D710FBAC /* Pods-ReactNativeVanilla.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 95478U274C;
 				INFOPLIST_FILE = ReactNativeVanilla/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanilla;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -296,15 +383,13 @@
 		};
 		2070916621078B0E00FFF1DB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9B13B4164A84EE6E9BF63551 /* Pods-ReactNativeVanilla.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 95478U274C;
 				INFOPLIST_FILE = ReactNativeVanilla/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanilla;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

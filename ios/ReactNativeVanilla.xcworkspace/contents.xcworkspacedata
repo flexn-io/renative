@@ -4,4 +4,10 @@
    <FileRef
       location = "group:/Users/paveljacko/DEV/PAVJACKO/Code/react-native-vanilla/ios/ReactNativeVanilla.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:ReactNativeVanilla.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>
