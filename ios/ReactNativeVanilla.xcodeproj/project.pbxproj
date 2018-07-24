@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		2070915621078B0D00FFF1DB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2070915521078B0D00FFF1DB /* AppDelegate.swift */; };
-		2070915821078B0D00FFF1DB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2070915721078B0D00FFF1DB /* ViewController.swift */; };
-		2070915B21078B0D00FFF1DB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2070915921078B0D00FFF1DB /* Main.storyboard */; };
 		2070915D21078B0E00FFF1DB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2070915C21078B0E00FFF1DB /* Assets.xcassets */; };
 		2070916021078B0E00FFF1DB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2070915E21078B0E00FFF1DB /* LaunchScreen.storyboard */; };
 		E05D13837FEC7ACFAD3C029A /* Pods_ReactNativeVanilla.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB8A47617386638B6D79C095 /* Pods_ReactNativeVanilla.framework */; };
@@ -18,8 +16,6 @@
 /* Begin PBXFileReference section */
 		2070915221078B0D00FFF1DB /* ReactNativeVanilla.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactNativeVanilla.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2070915521078B0D00FFF1DB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		2070915721078B0D00FFF1DB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		2070915A21078B0D00FFF1DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2070915C21078B0E00FFF1DB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2070915F21078B0E00FFF1DB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2070916121078B0E00FFF1DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -71,8 +67,6 @@
 			isa = PBXGroup;
 			children = (
 				2070915521078B0D00FFF1DB /* AppDelegate.swift */,
-				2070915721078B0D00FFF1DB /* ViewController.swift */,
-				2070915921078B0D00FFF1DB /* Main.storyboard */,
 				2070915C21078B0E00FFF1DB /* Assets.xcassets */,
 				2070915E21078B0E00FFF1DB /* LaunchScreen.storyboard */,
 				2070916121078B0E00FFF1DB /* Info.plist */,
@@ -151,7 +145,6 @@
 			files = (
 				2070916021078B0E00FFF1DB /* LaunchScreen.storyboard in Resources */,
 				2070915D21078B0E00FFF1DB /* Assets.xcassets in Resources */,
-				2070915B21078B0D00FFF1DB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,7 +217,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2070915821078B0D00FFF1DB /* ViewController.swift in Sources */,
 				2070915621078B0D00FFF1DB /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -232,14 +224,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		2070915921078B0D00FFF1DB /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				2070915A21078B0D00FFF1DB /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		2070915E21078B0E00FFF1DB /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -373,7 +357,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 95478U274C;
 				INFOPLIST_FILE = ReactNativeVanilla/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanilla;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -389,7 +376,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 95478U274C;
 				INFOPLIST_FILE = ReactNativeVanilla/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanilla;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
