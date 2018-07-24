@@ -1,0 +1,27 @@
+{
+  "name": "react-native-vanilla",
+  "version": "0.1.0",
+  "codename": "Valhalla",
+  "private": false,
+  "description": "Most fundamental setup of react native project with latest Swift and Kotlin support",
+  "author": "Pavel Jacko <i@pavjacko.com>",
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "ios": "react-native run-ios --project-path clientiOS",
+    "android": "cd android && ./gradlew appStart"
+  },
+  "dependencies": {
+    "jsc-android": "^216113.0.0",
+    "prop-types": "15.6.0",
+    "create-react-context": "0.1.6",
+    "react": "16.4.1",
+    "react-dnd": "2.5.4",
+    "react-dom": "16.4.1",
+    "react-native": "0.54.4"
+  },
+  "devDependencies": {
+    "babel-loader": "7.0.0",
+    "babel-plugin-transform-react-remove-prop-types": "0.4.10",
+    "babel-preset-react-native-stage-0": "1.0.1"
+  }
+}
