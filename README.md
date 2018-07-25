@@ -17,6 +17,7 @@ Most fundamental setup of react native project with Swift and Kotlin support
 
 ## Requirements
 - [Node](https://nodejs.org) `6.x` or newer
+- [NPM](https://npmjs.com/) `4.0.0` or newer
 - [Cocoapods](https://cocoapods.org) `1.4.x` or newer
 - [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 - [Xcode](https://developer.apple.com/xcode/) for iOS development
