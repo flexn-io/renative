@@ -1,7 +1,20 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "codename": "Valhalla",
+  "keywords": [
+    "react",
+    "react-native",
+    "template",
+    "starter",
+    "boilerplate",
+    "kit",
+    "native",
+    "swift",
+    "cocoapods",
+    "kotlin"
+  ],
+  "license": "ISC",
   "private": false,
   "description": "Most fundamental setup of react native project with latest Swift and Kotlin support",
   "author": "Pavel Jacko <i@pavjacko.com>",
