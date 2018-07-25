@@ -11,12 +11,13 @@ Most fundamental setup of react native project with Swift and Kotlin support
 #### Android
 - Latest Android project
 - Kotlin Support
-- Support for Gradle 4.4 
+- Support for Gradle 4.4
 - Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
 
 
 ## Requirements
 - [Node](https://nodejs.org) `6.x` or newer
+- [Cocoapods](https://cocoapods.org) `1.4.x` or newer
 - [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 - [Xcode](https://developer.apple.com/xcode/) for iOS development
 - [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -49,5 +50,5 @@ npm start
 npm run ios
 
 //make sure you have 1 android device connected or 1 emulator running
-npm run android 
+npm run android
 ```
