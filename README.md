@@ -48,5 +48,6 @@ npm start
 
 npm run ios
 
-npm run android
+//make sure you have 1 android device connected or 1 emulator running
+npm run android 
 ```
