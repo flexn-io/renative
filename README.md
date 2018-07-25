@@ -42,3 +42,11 @@ $ cd react-native-vanilla
 
 $ npm run setup
 ```
+#### 2. Run
+```
+npm start
+
+npm run ios
+
+npm run android
+```
