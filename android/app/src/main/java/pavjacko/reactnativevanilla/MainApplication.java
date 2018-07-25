@@ -1,4 +1,4 @@
-package com.awesomeproject2;
+package pavjacko.reactnativevanilla;
 
 import android.app.Application;
 

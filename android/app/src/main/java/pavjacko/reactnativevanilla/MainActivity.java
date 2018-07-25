@@ -1,4 +1,4 @@
-package com.awesomeproject2;
+package pavjacko.reactnativevanilla;
 
 import com.facebook.react.ReactActivity;
 
