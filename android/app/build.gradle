@@ -41,6 +41,10 @@ android {
     }
 }
 
+task appStart(type: Exec, dependsOn: 'installDebug') {
+    commandLine 'adb', 'shell', 'am', 'start', '-n', 'pavjacko.reactnativevanilla/pavjacko.reactnativevanilla.MainActivity'
+}
+
 configurations.all {
     resolutionStrategy {
         force 'org.webkit:android-jsc:r216113'
