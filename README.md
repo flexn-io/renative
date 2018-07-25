@@ -23,7 +23,7 @@ Most fundamental setup of react native project with Swift and Kotlin support
 - [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
 
 ## Stack / Libraries
-- [React Native](https://facebook.github.io/react/) `16.4.1` react library
+- [React](https://facebook.github.io/react/) `16.4.1` react library
 - [React Native](https://facebook.github.io/react-native/) `0.56.0` for building native apps using react
 - [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
