@@ -1,33 +1,32 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext.kotlin_version = '1.2.31'
     repositories {
+        google()
         jcenter()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'io.fabric.tools:gradle:1.22.2'
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 
 allprojects {
     repositories {
-        mavenLocal()
+        google()
         jcenter()
+        mavenCentral()
         maven {
-            // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
+        maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://jitpack.io" }
+        maven { url "$rootDir/../node_modules/jsc-android/android" }
     }
 }
 
@@ -37,4 +36,20 @@ ext {
     compileSdkVersion = 26
     targetSdkVersion = 26
     supportLibVersion = "26.1.0"
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+//Adding this to the root build.gradle solved my problem, thanks @Yalamber
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty("android")) {
+            android {
+                compileSdkVersion 27
+                buildToolsVersion '27.0.3'
+            }
+        }
+    }
 }
