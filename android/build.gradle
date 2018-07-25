@@ -24,25 +24,23 @@ allprojects {
         maven {
             url "$rootDir/../node_modules/react-native/android"
         }
-        maven { url 'https://maven.fabric.io/public' }
         maven { url "https://jitpack.io" }
         maven { url "$rootDir/../node_modules/jsc-android/android" }
     }
 }
 
 ext {
-    buildToolsVersion = "26.0.3"
-    minSdkVersion = 16
-    compileSdkVersion = 26
-    targetSdkVersion = 26
-    supportLibVersion = "26.1.0"
+    minSdkVersion = 21
+    targetSdkVersion = 27
+    supportLibVersion = "27.1.1"
+    versionCode = 1
+    versionName = "0.1.0"
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-//Adding this to the root build.gradle solved my problem, thanks @Yalamber
 subprojects {
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
