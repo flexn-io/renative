@@ -21,7 +21,7 @@ Most fundamental setup of react native project with Swift and Kotlin support
 - Support for Gradle 4.4
 - Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
 
-#### iOS
+#### tvOS
 - Latest swift based Xcode project
 - Cocoapods Workspace ready
 - Swift 4.1 Support
