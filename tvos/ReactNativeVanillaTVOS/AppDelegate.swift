@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  ReactNativeVanilla
+//  ReactNativeVanillaTVOS
 //
-//  Created by Pavel Jacko on 24/07/2018.
+//  Created by Pavel Jacko on 03/08/2018.
 //  Copyright © 2018 pavjacko. All rights reserved.
 //
 
@@ -13,6 +13,7 @@ import React
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         self.window = UIWindow(frame: UIScreen.main.bounds)
