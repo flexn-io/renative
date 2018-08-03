@@ -3,7 +3,7 @@ Most fundamental setup of react native project with Swift and Kotlin support
 
 | iOS        | Android | tvOS |
 | ------------- |:-------------:| :-------------:|
-| !['ios'](docs/rnv_ios.gif)      | !['android'](docs/rnv_android.gif)  | !['tvos'](docs/rnv_tvos.gif)  |
+| !['ios'](https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios.gif?raw=true)      | !['android'](https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android.gif?raw=true)  | !['tvos'](https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true)  |
 
 
 
