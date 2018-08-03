@@ -2,7 +2,7 @@
 Most fundamental setup of react native project with Swift and Kotlin support
 
 | iOS        | Android | tvOS |
-| ------------- |:-------------:| :-------------:| 
+| ------------- |:-------------:| :-------------:|
 | !['ios'](docs/rnv_ios.gif)      | !['android'](docs/rnv_android.gif)  | !['tvos'](docs/rnv_tvos.gif)  |
 
 
@@ -60,8 +60,12 @@ $ npm run setup
 ```
 npm start
 
+//iOS
 npm run ios
 
-//make sure you have 1 android device connected or 1 emulator running
+//Android (make sure you have 1 android device connected or 1 emulator running)
 npm run android
+
+//tvOS
+npm run ios
 ```
