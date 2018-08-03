@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "2070915121078B0D00FFF1DB"
-               BuildableName = "ReactNativeVanilla.app"
-               BlueprintName = "ReactNativeVanilla"
+               BlueprintIdentifier = "20200EB821143502009FB5CA"
+               BuildableName = "ReactNativeVanillaTVOS.app"
+               BlueprintName = "ReactNativeVanillaTVOS"
                ReferencedContainer = "container:ReactNativeVanilla.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,9 +32,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2070915121078B0D00FFF1DB"
-            BuildableName = "ReactNativeVanilla.app"
-            BlueprintName = "ReactNativeVanilla"
+            BlueprintIdentifier = "20200EB821143502009FB5CA"
+            BuildableName = "ReactNativeVanillaTVOS.app"
+            BlueprintName = "ReactNativeVanillaTVOS"
             ReferencedContainer = "container:ReactNativeVanilla.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -55,9 +55,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2070915121078B0D00FFF1DB"
-            BuildableName = "ReactNativeVanilla.app"
-            BlueprintName = "ReactNativeVanilla"
+            BlueprintIdentifier = "20200EB821143502009FB5CA"
+            BuildableName = "ReactNativeVanillaTVOS.app"
+            BlueprintName = "ReactNativeVanillaTVOS"
             ReferencedContainer = "container:ReactNativeVanilla.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -74,9 +74,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "2070915121078B0D00FFF1DB"
-            BuildableName = "ReactNativeVanilla.app"
-            BlueprintName = "ReactNativeVanilla"
+            BlueprintIdentifier = "20200EB821143502009FB5CA"
+            BuildableName = "ReactNativeVanillaTVOS.app"
+            BlueprintName = "ReactNativeVanillaTVOS"
             ReferencedContainer = "container:ReactNativeVanilla.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
