@@ -1,6 +1,13 @@
 # react-native-vanilla
 Most fundamental setup of react native project with Swift and Kotlin support
 
+| iOS        | Android | tvOS |
+| ------------- |:-------------:| :-------------:| 
+| !['ios'](docs/rnv_ios.gif)      | !['android'](docs/rnv_android.gif)  | !['tvos'](docs/rnv_tvos.gif)  |
+
+
+
+
 ## Notable Features:
 
 #### iOS
@@ -13,6 +20,11 @@ Most fundamental setup of react native project with Swift and Kotlin support
 - Kotlin Support
 - Support for Gradle 4.4
 - Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
+
+#### iOS
+- Latest swift based Xcode project
+- Cocoapods Workspace ready
+- Swift 4.1 Support
 
 
 ## Requirements
