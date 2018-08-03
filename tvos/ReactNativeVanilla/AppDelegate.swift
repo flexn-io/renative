@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  ReactNativeVanillaTVOS
+//  ReactNativeVanilla
 //
 //  Created by Pavel Jacko on 03/08/2018.
 //  Copyright © 2018 pavjacko. All rights reserved.
