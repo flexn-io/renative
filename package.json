@@ -28,6 +28,7 @@
     "setup": "rm -rf node_modules && rm -rf ios/build && npm install && npm run ios:update && npm run fix:ios",
     "android": "cd android && ./gradlew appStart",
     "ios:update": "cd ios && pod update",
+    "tvos:update": "cd tvos && pod update",
     "test": "jest"
   },
   "dependencies": {

@@ -7,20 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D368FBAFBAD896C06FE6A31 /* Pods_ReactNativeVanillaTVOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DEC93D278A25BEC6C802FC /* Pods_ReactNativeVanillaTVOS.framework */; };
 		20200EBC21143502009FB5CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20200EBB21143502009FB5CA /* AppDelegate.swift */; };
 		20200EC321143504009FB5CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20200EC221143504009FB5CA /* Assets.xcassets */; };
-		C4992D2A6D5122F260146A0D /* Pods_ReactNativeVanilla.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1CE6A3E510481BC45B929D5D /* Pods_ReactNativeVanilla.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		00D8883DE252DCCD8E35A8B3 /* Pods-ReactNativeVanilla.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanilla.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla.release.xcconfig"; sourceTree = "<group>"; };
-		1CE6A3E510481BC45B929D5D /* Pods_ReactNativeVanilla.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativeVanilla.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		20200EB921143502009FB5CA /* ReactNativeVanilla.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactNativeVanilla.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		00D8883DE252DCCD8E35A8B3 /* Pods-ReactNativeVanilla.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanilla.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanilla.release.xcconfig"; sourceTree = "<group>"; };
+		20200EB921143502009FB5CA /* ReactNativeVanillaTVOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ReactNativeVanillaTVOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		20200EBB21143502009FB5CA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		20200EC221143504009FB5CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		20200EC421143504009FB5CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AB8A47617386638B6D79C095 /* Pods_ReactNativeVanilla.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativeVanilla.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF8BDA7EF1C63EE79868B6A4 /* Pods-ReactNativeVanilla.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanilla.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla.debug.xcconfig"; sourceTree = "<group>"; };
+		29C497B92FB79B5C5499FD9E /* Pods-ReactNativeVanillaTVOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanillaTVOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanillaTVOS.release.xcconfig"; sourceTree = "<group>"; };
+		39DEC93D278A25BEC6C802FC /* Pods_ReactNativeVanillaTVOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ReactNativeVanillaTVOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E9BD3C6C20A6CDE458EE95FB /* Pods-ReactNativeVanillaTVOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanillaTVOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanillaTVOS.debug.xcconfig"; sourceTree = "<group>"; };
+		FF8BDA7EF1C63EE79868B6A4 /* Pods-ReactNativeVanilla.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ReactNativeVanilla.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanilla.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,7 +29,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C4992D2A6D5122F260146A0D /* Pods_ReactNativeVanilla.framework in Frameworks */,
+				0D368FBAFBAD896C06FE6A31 /* Pods_ReactNativeVanillaTVOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,24 +41,26 @@
 			children = (
 				FF8BDA7EF1C63EE79868B6A4 /* Pods-ReactNativeVanilla.debug.xcconfig */,
 				00D8883DE252DCCD8E35A8B3 /* Pods-ReactNativeVanilla.release.xcconfig */,
+				E9BD3C6C20A6CDE458EE95FB /* Pods-ReactNativeVanillaTVOS.debug.xcconfig */,
+				29C497B92FB79B5C5499FD9E /* Pods-ReactNativeVanillaTVOS.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		20200EBA21143502009FB5CA /* ReactNativeVanilla */ = {
+		20200EBA21143502009FB5CA /* ReactNativeVanillaTVOS */ = {
 			isa = PBXGroup;
 			children = (
 				20200EBB21143502009FB5CA /* AppDelegate.swift */,
 				20200EC221143504009FB5CA /* Assets.xcassets */,
 				20200EC421143504009FB5CA /* Info.plist */,
 			);
-			path = ReactNativeVanilla;
+			path = ReactNativeVanillaTVOS;
 			sourceTree = "<group>";
 		};
 		2070914921078B0D00FFF1DB = {
 			isa = PBXGroup;
 			children = (
-				20200EBA21143502009FB5CA /* ReactNativeVanilla */,
+				20200EBA21143502009FB5CA /* ReactNativeVanillaTVOS */,
 				2070915321078B0D00FFF1DB /* Products */,
 				0E3312C66CE20857488874BF /* Pods */,
 				B566E91986956011A4C625F0 /* Frameworks */,
@@ -67,7 +70,7 @@
 		2070915321078B0D00FFF1DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				20200EB921143502009FB5CA /* ReactNativeVanilla.app */,
+				20200EB921143502009FB5CA /* ReactNativeVanillaTVOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,8 +78,7 @@
 		B566E91986956011A4C625F0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				AB8A47617386638B6D79C095 /* Pods_ReactNativeVanilla.framework */,
-				1CE6A3E510481BC45B929D5D /* Pods_ReactNativeVanilla.framework */,
+				39DEC93D278A25BEC6C802FC /* Pods_ReactNativeVanillaTVOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -84,9 +86,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		20200EB821143502009FB5CA /* ReactNativeVanilla */ = {
+		20200EB821143502009FB5CA /* ReactNativeVanillaTVOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 20200EC721143504009FB5CA /* Build configuration list for PBXNativeTarget "ReactNativeVanilla" */;
+			buildConfigurationList = 20200EC721143504009FB5CA /* Build configuration list for PBXNativeTarget "ReactNativeVanillaTVOS" */;
 			buildPhases = (
 				BDBEC1166F7B4AC060313371 /* [CP] Check Pods Manifest.lock */,
 				20200EB521143502009FB5CA /* Sources */,
@@ -99,9 +101,9 @@
 			);
 			dependencies = (
 			);
-			name = ReactNativeVanilla;
+			name = ReactNativeVanillaTVOS;
 			productName = ReactNativeVanilla;
-			productReference = 20200EB921143502009FB5CA /* ReactNativeVanilla.app */;
+			productReference = 20200EB921143502009FB5CA /* ReactNativeVanillaTVOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -119,7 +121,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2070914D21078B0D00FFF1DB /* Build configuration list for PBXProject "ReactNativeVanilla" */;
+			buildConfigurationList = 2070914D21078B0D00FFF1DB /* Build configuration list for PBXProject "ReactNativeVanillaTVOS" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -132,7 +134,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				20200EB821143502009FB5CA /* ReactNativeVanilla */,
+				20200EB821143502009FB5CA /* ReactNativeVanillaTVOS */,
 			);
 		};
 /* End PBXProject section */
@@ -155,7 +157,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanillaTVOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/DoubleConversion/DoubleConversion.framework",
 				"${BUILT_PRODUCTS_DIR}/Folly/folly.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
@@ -172,7 +174,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanillaTVOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		56B8C10290D8DC5A064980E9 /* [CP] Copy Pods Resources */ = {
@@ -187,7 +189,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanillaTVOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BDBEC1166F7B4AC060313371 /* [CP] Check Pods Manifest.lock */ = {
@@ -201,7 +203,7 @@
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-ReactNativeVanilla-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ReactNativeVanillaTVOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -224,18 +226,18 @@
 /* Begin XCBuildConfiguration section */
 		20200EC521143504009FB5CA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FF8BDA7EF1C63EE79868B6A4 /* Pods-ReactNativeVanilla.debug.xcconfig */;
+			baseConfigurationReference = E9BD3C6C20A6CDE458EE95FB /* Pods-ReactNativeVanillaTVOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = ReactNativeVanilla/Info.plist;
+				INFOPLIST_FILE = ReactNativeVanillaTVOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanilla;
+				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanillaTVOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 4.0;
@@ -246,18 +248,18 @@
 		};
 		20200EC621143504009FB5CA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00D8883DE252DCCD8E35A8B3 /* Pods-ReactNativeVanilla.release.xcconfig */;
+			baseConfigurationReference = 29C497B92FB79B5C5499FD9E /* Pods-ReactNativeVanillaTVOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "Launch Image";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = ReactNativeVanilla/Info.plist;
+				INFOPLIST_FILE = ReactNativeVanillaTVOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanilla;
+				PRODUCT_BUNDLE_IDENTIFIER = pavjacko.ReactNativeVanillaTVOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 4.0;
@@ -383,7 +385,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		20200EC721143504009FB5CA /* Build configuration list for PBXNativeTarget "ReactNativeVanilla" */ = {
+		20200EC721143504009FB5CA /* Build configuration list for PBXNativeTarget "ReactNativeVanillaTVOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				20200EC521143504009FB5CA /* Debug */,
@@ -392,7 +394,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2070914D21078B0D00FFF1DB /* Build configuration list for PBXProject "ReactNativeVanilla" */ = {
+		2070914D21078B0D00FFF1DB /* Build configuration list for PBXProject "ReactNativeVanillaTVOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2070916221078B0E00FFF1DB /* Debug */,

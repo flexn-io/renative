@@ -1,7 +1,7 @@
 
 use_frameworks!
 
-target 'ReactNativeVanilla' do
+target 'ReactNativeVanillaTVOS' do
   platform :tvos, '10.0'
   pod 'React', :path => "../node_modules/react-native/" , :subspecs => [
   'Core',
