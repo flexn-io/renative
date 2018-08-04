@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="pavjacko.reactnativevanilla">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
     <uses-feature
         android:name="android.hardware.touchscreen"
         android:required="false" />
@@ -11,6 +14,7 @@
         android:required="true" />
 
     <application
+        android:name=".MainApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
