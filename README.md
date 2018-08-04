@@ -38,7 +38,7 @@ Ideal starting point for advanced projects.
 #### Android
 - Latest Android project
 - Kotlin Support
-- Support for Gradle 4.4
+- Support for Gradle 4.9
 - Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
 
 ###### Project Configuration
@@ -62,6 +62,22 @@ Ideal starting point for advanced projects.
 | ------------- |:-------------:|
 | Swift      | `4.1`  |
 | Deployment Target      | `11.4`  |
+
+#### Android TV
+- Latest Android project
+- Kotlin Support
+- Support for Gradle 4.9
+- Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
+
+###### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Gradle      | `4.9-RC1`  |
+| Android Gradle | `3.3.0-ALPHA3`  |
+| Kotlin | `1.2.50`  |
+| Target SDK      | `27`  |
+| JSC      | `org.webkit:android-jsc:r216113`  |
 
 
 ## Requirements
