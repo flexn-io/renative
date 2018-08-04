@@ -9,7 +9,7 @@ apply from: "../../node_modules/react-native/react.gradle"
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "example.voimarnapp"
+        applicationId "pavjacko.reactnativevanilla"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 708

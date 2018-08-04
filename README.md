@@ -1,6 +1,8 @@
 # react-native-vanilla
 Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes `iOS`, `tvOS`, `Android` and `AndroidTV` platforms
 
+Ideal starting point for advanced projects.
+
 <table>
   <tr>
     <th>iOS</th><th>Android</th><th>tvOS</th><th>androidTV</th>
