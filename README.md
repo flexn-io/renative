@@ -83,7 +83,7 @@ Ideal starting point for advanced projects.
 ## Requirements
 - [Node](https://nodejs.org) `6.x` or newer
 - [NPM](https://npmjs.com/) `4.0.0` or newer
-- [Cocoapods](https://cocoapods.org) `1.4.x` or newer
+- [Cocoapods](https://cocoapods.org) `1.5.3` or newer
 - [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 - [Xcode](https://developer.apple.com/xcode/) for iOS development
 - [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -121,7 +121,7 @@ npm run ios
 npm run android
 
 //tvOS
-npm run ios
+npm run tvos
 
 //AndroidTV (make sure you have 1 android device connected or 1 emulator running)
 npm run androidtv

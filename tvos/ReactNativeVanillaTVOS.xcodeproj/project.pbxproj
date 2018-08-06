@@ -95,7 +95,6 @@
 				20200EB621143502009FB5CA /* Frameworks */,
 				20200EB721143502009FB5CA /* Resources */,
 				0BAA8A629E1F8936E2DB351E /* [CP] Embed Pods Frameworks */,
-				56B8C10290D8DC5A064980E9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -175,21 +174,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanillaTVOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		56B8C10290D8DC5A064980E9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanillaTVOS/Pods-ReactNativeVanillaTVOS-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BDBEC1166F7B4AC060313371 /* [CP] Check Pods Manifest.lock */ = {
