@@ -57,10 +57,6 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation ("com.facebook.react:react-native:+") {
-        exclude group: 'com.android.support'
-        exclude group: 'javax.inject'
-        exclude group: 'com.squareup.okhttp3', module: 'okhttp'
-        exclude group: 'com.squareup.okio'
     }
     implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
         transitive = true
