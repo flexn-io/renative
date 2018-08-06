@@ -94,7 +94,6 @@
 				2070914F21078B0D00FFF1DB /* Frameworks */,
 				2070915021078B0D00FFF1DB /* Resources */,
 				078FA032F331DECA70CAAFA9 /* [CP] Embed Pods Frameworks */,
-				A675FF24942ADB045A1C9B5E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -175,21 +174,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A675FF24942ADB045A1C9B5E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ReactNativeVanilla/Pods-ReactNativeVanilla-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		DCD72F9D17945D99199178F9 /* [CP] Check Pods Manifest.lock */ = {
