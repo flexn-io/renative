@@ -5,7 +5,7 @@ Ideal starting point for advanced projects.
 
 <table>
   <tr>
-    <th>iOS</th><th>Android</th><th>tvOS</th><th>androidTV</th><th>Web</th>
+    <th>iOS</th><th>Android</th><th>tvOS</th><th>Android TV</th><th>Web</th>
   </tr>
   <tr>
     <th>
@@ -83,7 +83,7 @@ Ideal starting point for advanced projects.
 | JSC      | `org.webkit:android-jsc:r216113`  |
 
 #### Web
-- Webpack
+- Supports Chrome, Safari, Firefox, IE10+
 
 ###### Project Configuration
 
@@ -136,7 +136,7 @@ npm run android
 //tvOS
 npm run tvos
 
-//AndroidTV (make sure you have 1 android device connected or 1 emulator running)
+//Android TV (make sure you have 1 android device connected or 1 emulator running)
 npm run androidtv
 
 //Web

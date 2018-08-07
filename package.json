@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -16,6 +16,7 @@
     "apple tv",
     "tvos",
     "android tv",
+    "web",
     "multiplatform"
   ],
   "license": "ISC",
