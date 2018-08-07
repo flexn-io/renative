@@ -1,11 +1,11 @@
 # react-native-vanilla
-Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes `iOS`, `tvOS`, `Android` and `AndroidTV` platforms
+Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
 
 Ideal starting point for advanced projects.
 
 <table>
   <tr>
-    <th>iOS</th><th>Android</th><th>tvOS</th><th>androidTV</th>
+    <th>iOS</th><th>Android</th><th>tvOS</th><th>androidTV</th><th>Web</th>
   </tr>
   <tr>
     <th>
@@ -71,6 +71,7 @@ Ideal starting point for advanced projects.
 - Support for Gradle 4.9
 - Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
 
+
 ###### Project Configuration
 
 | Feature        | Version |
@@ -80,6 +81,16 @@ Ideal starting point for advanced projects.
 | Kotlin | `1.2.50`  |
 | Target SDK      | `27`  |
 | JSC      | `org.webkit:android-jsc:r216113`  |
+
+#### Web
+- Webpack
+
+###### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Webpack      | `3.11.0`  |
+| react-native-web      | `0.4.0`  |
 
 
 ## Requirements
@@ -127,4 +138,7 @@ npm run tvos
 
 //AndroidTV (make sure you have 1 android device connected or 1 emulator running)
 npm run androidtv
+
+//Web
+npm run web
 ```
