@@ -22,6 +22,7 @@
   "private": false,
   "description": "Most fundamental setup of react native project with latest Swift and Kotlin support",
   "author": "Pavel Jacko <i@pavjacko.com>",
+  "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "ios": "react-native run-ios --project-path ios --simulator \"iPhone 6\"",
@@ -32,19 +33,31 @@
     "androidtv": "cd androidtv && ./gradlew appStart",
     "ios:update": "cd ios && pod update",
     "tvos:update": "cd tvos && pod update",
-    "test": "jest"
+    "test": "jest",
+    "web": "webpack-dev-server -d --config ./web/webpack.config.js  --inline --hot --colors --content-base web/public/ --history-api-fallback",
+    "build": "NODE_ENV=production webpack -p --config ./web/webpack.config.js"
   },
   "dependencies": {
-    "jsc-android": "^216113.0.0",
+    "jsc-android": "216113.0.0",
     "react": "16.4.1",
-    "react-dom": "16.4.1",
-    "react-native": "0.56.0"
+    "react-dom": "16.0.0",
+    "react-native": "0.56.0",
+    "react-native-web": "0.4.0",
+    "webpack": "3.11.0",
+    "webpack-dev-server": "2.9.4"
   },
   "devDependencies": {
     "babel-jest": "23.4.0",
-    "babel-preset-react-native": "5.0.0",
     "jest": "23.4.1",
-    "react-test-renderer": "16.4.1"
+    "react-test-renderer": "16.4.1",
+    "babel-loader": "7.1.2",
+    "babel-plugin-react-native-web": "0.4.0",
+    "babel-plugin-transform-decorators-legacy": "1.3.4",
+    "babel-plugin-transform-imports": "1.4.1",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "file-loader": "1.1.7",
+    "css-loader": "0.28.7",
+    "style-loader": "0.19.0"
   },
   "jest": {
     "preset": "react-native"
