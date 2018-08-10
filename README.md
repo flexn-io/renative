@@ -2,7 +2,7 @@
 Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
 
 * Ideal starting point for advanced projects.
-* Includes bleeding edge dependencies configured to work witch each other
+* Includes bleeding edge dependencies configured to work with each other
 
 <table>
   <tr>
@@ -24,6 +24,14 @@ Most fundamental setup of react native vanilla project based environment with Sw
 </table>
 
 ## Features:
+
+###### Development platform
+
+| OS        | Support |
+| ------------- |:-------------:|
+| Mac      | `YES`  |
+| Windows      | `untested`  |
+| Linux      | `untested`  |
 
 
 #### iOS
