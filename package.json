@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -30,11 +30,11 @@
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "ios": "react-native run-ios --project-path ios --simulator \"iPhone 6\"",
     "tvos": "react-native run-ios --project-path tvos --simulator \"Apple TV\" --scheme ReactNativeVanillaTVOS",
     "fix:ios": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h",
-    "fix:npm": "sed -i '' 's/babel-preset-react-native\": \"4.0.0/babel-preset-react-native\": \"5.0.0/' ./package.json && npm install && sed -i '' 's/babel-preset-react-native\": \"5.0.0/babel-preset-react-native\": \"4.0.0/' ./package.json",
-    "setup": "rm -rf node_modules && rm -rf ios/build && rm -rf tvos/build && npm run fix:npm && npm install && npm run ios:update && npm run tvos:update && npm run fix:ios",
+    "setup": "rm -rf node_modules && rm -rf ios/build && rm -rf tvos/build && npm install && npm run ios:update && npm run tvos:update && npm run fix:ios",
     "android": "cd android && ./gradlew appStart",
     "androidtv": "cd androidtv && ./gradlew appStart",
     "ios:update": "cd ios && pod update",
@@ -67,7 +67,8 @@
     "babel-plugin-transform-imports": "1.4.1",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-preset-env": "1.7.0",
-    "babel-preset-react-native": "4.0.0",
+    "babel-preset-react-native": "5.0.0",
+    "babel-preset-react-native-stage-0": "1.0.1",
     "css-loader": "0.28.7",
     "eslint": "4.19.1",
     "eslint-config-airbnb": "17.0.0",

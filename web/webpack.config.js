@@ -35,7 +35,7 @@ const babelLoaderConfiguration = {
         ['transform-runtime', { helpers: false, polyfill: false, regenerator: true }]
       ],
       // The 'react-native' preset is recommended to match React Native's packager
-      presets: ['react-native']
+      presets: ['react-native-stage-0']
     }
   }
 }
