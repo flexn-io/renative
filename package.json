@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -23,6 +23,10 @@
   "private": false,
   "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms",
   "author": "Pavel Jacko <i@pavjacko.com>",
+  "collaborators": [
+    "Sander Looijenga <sander_l@live.com>",
+    "Daniel Marino Ruiz <changete@gmail.com>"
+  ],
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
