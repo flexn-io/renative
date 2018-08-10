@@ -1,7 +1,8 @@
 # react-native-vanilla
-Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
+Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
 
-Ideal starting point for advanced projects.
+* Ideal starting point for advanced projects.
+* Includes bleeding edge dependencies configured to work witch each other
 
 <table>
   <tr>
@@ -90,12 +91,13 @@ Ideal starting point for advanced projects.
 | Feature        | Version |
 | ------------- |:-------------:|
 | Webpack      | `3.11.0`  |
-| react-native-web      | `0.4.0`  |
+| react-native-web      | `0.8.9`  |
+| Babel Core     | `7.0.0-beta.47`  |
 
 
 ## Requirements
-- [Node](https://nodejs.org) `6.x` or newer
-- [NPM](https://npmjs.com/) `4.0.0` or newer
+- [Node](https://nodejs.org) `8.x` or newer
+- [NPM](https://npmjs.com/) `6.2.0` or newer
 - [Cocoapods](https://cocoapods.org) `1.5.3` or newer
 - [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 - [Xcode](https://developer.apple.com/xcode/) for iOS development
@@ -111,8 +113,21 @@ Ideal starting point for advanced projects.
 
 ## Get Started
 
+#### 1. Prerequisite
 
-#### 1. Installation
+The recommended way to run specific version of Node and NPM is to use NVM:
+
+```
+nvm install node 10.8.0
+nvm alias default node
+```
+
+Recommended Node configuration:
+* Node v10.8.0
+* npm v6.2.0
+
+
+#### 2. Installation
 
 On the command prompt run the following commands
 
@@ -123,22 +138,41 @@ $ cd react-native-vanilla
 
 $ npm run setup
 ```
-#### 2. Run
+#### 3. Run
+
+###### iOS
+
 ```
 npm start
-
-//iOS
 npm run ios
+```
 
-//Android (make sure you have 1 android device connected or 1 emulator running)
+###### Android
+NOTE: make sure you have 1 android device connected or 1 emulator running
+
+```
+npm start
 npm run android
+```
 
-//tvOS
+###### tvOS
+
+```
+npm start
 npm run tvos
+```
 
-//Android TV (make sure you have 1 android device connected or 1 emulator running)
+###### Android TV
+NOTE: make sure you have 1 android device connected or 1 emulator running
+
+```
+npm start
 npm run androidtv
+```
 
-//Web
+###### Web
+
+```
 npm run web
 ```
+open browser URL: http://localhost:8080
