@@ -6,7 +6,7 @@ Most fundamental setup of react native vanilla project based environment with Sw
 
 <table>
   <tr>
-    <th>iOS</th><th>Android</th><th>tvOS</th><th>Android TV</th><th>Web</th>
+    <th>iOS</th><th>Android</th><th>tvOS</th><th>Android TV</th><th>Web</th><th>Tizen</th>
   </tr>
   <tr>
     <th>
@@ -20,7 +20,7 @@ Most fundamental setup of react native vanilla project based environment with Sw
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rnv_tizen.gif" />
     </th>
   </tr>
 </table>
