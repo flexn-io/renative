@@ -41,7 +41,8 @@
     "tvos:update": "cd tvos && pod update",
     "test": "jest",
     "web": "webpack-dev-server -d --config ./web/webpack.config.js  --inline --hot --colors --content-base web/public/ --history-api-fallback",
-    "build": "NODE_ENV=production webpack -p --config ./web/webpack.config.js"
+    "web:build": "NODE_ENV=production webpack -p --config ./web/webpack.config.js",
+    "tizen:build": "NODE_ENV=production webpack -p --config ./tizen/webpack.config.js"
   },
   "dependencies": {
     "jsc-android": "216113.0.0",
