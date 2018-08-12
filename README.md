@@ -27,7 +27,7 @@
 [![npm version](https://img.shields.io/npm/v/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
 > Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
