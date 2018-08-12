@@ -8,15 +8,11 @@
 </Reference>
 <Reference URI="config.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>SlBvQJ2ZxOQ9z10hrkbCQJq1cX1d3YxTN2hz1BJ6bv8=</DigestValue>
+<DigestValue>HnOicJAixjlYsBeA1yemtDbT5uOyQdWUg5vk0ZaEx0Q=</DigestValue>
 </Reference>
 <Reference URI="icon.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>1d0oEZHqPn+QzNzGIHwj9ODby6x9ggFs9uOsav6jPNs=</DigestValue>
-</Reference>
-<Reference URI="images1%2Ftizen_32.png">
-<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>eDr9ZPFlGlapLDnI1BiALwqovNdBvx3Aspc/lWOH3WI=</DigestValue>
 </Reference>
 <Reference URI="public%2Fapp.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -36,7 +32,7 @@
 </Reference>
 <Reference URI="webpack.config.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>pnssWyzXvdTpcdaOJnz8MpYDuJAf3oCIDC9dd4rc0HA=</DigestValue>
+<DigestValue>W4qoigRENBNNN901E+iZ9xB3JyGSBuxb2Mi6u2G0IJA=</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -47,9 +43,9 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-JWZjt31mh8tn7ahEGSkmoVdz7zvnGnMUtHSW6uUZqpVocHepqNxsOdO/GsHV99ClXgCp2s1FOtaH
-guMrs1WLIgg8FG2IOl9Bt3M8Fip4AJ2f+xPl/5x9L9OQJ+iKGDbpaPP8V/qXfwwNUK+dM+E0eF5L
-GS7xdKTyrK5LOO1vEA4=
+ape1340SHQdPCfYZW8zeoPebpEpbB7TMtRqjxqKvp7Sb1OGCBiOethdF6qYzIi6V23bGR7/ghegv
+YNUwZLf+4HvSsxrGRVeGCjiDXnLkgooUgiSTohXSQjAaV/ArNd2nXclQyn2mwrIKEXu4fKjc5kQv
+wtbPnbBHDMa6R2wNTkU=
 </SignatureValue>
 <KeyInfo>
 <X509Data>

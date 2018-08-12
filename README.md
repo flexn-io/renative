@@ -1,8 +1,10 @@
 # react-native-vanilla
-Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
+Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
 
-* Ideal starting point for advanced projects.
+* Ideal starting point for advanced multi-platform projects.
+* Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
 * Includes bleeding edge dependencies configured to work with each other
+
 <p align="center">
   <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rnplus.png" />
 <p>
@@ -29,7 +31,7 @@ Most fundamental setup of react native vanilla project based environment with Sw
 
 ## Features:
 
-###### Development platform
+#### Development platform
 
 | OS        | Support |
 | ------------- |:-------------:|
@@ -37,95 +39,19 @@ Most fundamental setup of react native vanilla project based environment with Sw
 | Windows      | `untested`  |
 | Linux      | `untested`  |
 
-
-#### iOS
-- Latest swift based Xcode project
-- Cocoapods Workspace ready
-- Swift 4.1 Support
-
-###### Project Configuration
-
-| Feature        | Version |
-| ------------- |:-------------:|
-| Swift      | `4.1`  |
-| Deployment Target      | `11.4`  |
-
-#### Android
-- Latest Android project
-- Kotlin Support
-- Support for Gradle 4.9
-- Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
-
-###### Project Configuration
-
-| Feature        | Version |
-| ------------- |:-------------:|
-| Gradle      | `4.9-RC1`  |
-| Android Gradle | `3.3.0-ALPHA3`  |
-| Kotlin | `1.2.50`  |
-| Target SDK      | `27`  |
-| JSC      | `org.webkit:android-jsc:r216113`  |
-
-#### tvOS
-- Latest swift based Xcode project
-- Cocoapods Workspace ready
-- Swift 4.1 Support
-
-###### Project Configuration
-
-| Feature        | Version |
-| ------------- |:-------------:|
-| Swift      | `4.1`  |
-| Deployment Target      | `11.4`  |
-
-#### Android TV
-- Latest Android project
-- Kotlin Support
-- Support for Gradle 4.9
-- Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
-
-
-###### Project Configuration
-
-| Feature        | Version |
-| ------------- |:-------------:|
-| Gradle      | `4.9-RC1`  |
-| Android Gradle | `3.3.0-ALPHA3`  |
-| Kotlin | `1.2.50`  |
-| Target SDK      | `27`  |
-| JSC      | `org.webkit:android-jsc:r216113`  |
-
-#### Web
-- Supports Chrome, Safari, Firefox, IE10+
-
-###### Project Configuration
-
-| Feature        | Version |
-| ------------- |:-------------:|
-| Webpack      | `3.11.0`  |
-| react-native-web      | `0.8.9`  |
-| Babel Core     | `7.0.0-beta.47`  |
-
-
-## Requirements
+#### Requirements
 - [Node](https://nodejs.org) `8.x` or newer
 - [NPM](https://npmjs.com/) `6.2.0` or newer
-- [Cocoapods](https://cocoapods.org) `1.5.3` or newer
 - [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
-- [Xcode](https://developer.apple.com/xcode/) for iOS development
-- [Android Studio](https://developer.android.com/studio/index.html) for Android development
-- [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
-- [CocoaPods](https://cocoapods.org/) `1.4.0` for iOS libraries
 
-## Stack / Libraries
+#### Stack / Libraries
 - [React](https://facebook.github.io/react/) `16.4.1` react library
 - [React Native](https://facebook.github.io/react-native/) `0.56.0` for building native apps using react
 - [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
+#### Get Started
 
-## Get Started
-
-#### 1. Prerequisite
+##### 1. Prerequisite
 
 The recommended way to run specific version of Node and NPM is to use NVM:
 
@@ -139,7 +65,7 @@ Recommended Node configuration:
 * npm v6.2.0
 
 
-#### 2. Installation
+##### 2. Installation
 
 On the command prompt run the following commands
 
@@ -150,16 +76,53 @@ $ cd react-native-vanilla
 
 $ npm run setup
 ```
-#### 3. Run
 
-###### iOS
+
+# iOS
+- Latest swift based Xcode project
+- Cocoapods Workspace ready
+- Swift 4.1 Support
+
+#### Requirements
+- [CocoaPods](https://cocoapods.org) `1.5.3` or newer
+- [Xcode](https://developer.apple.com/xcode/) for iOS development
+- [CocoaPods](https://cocoapods.org/) `1.4.0` for iOS libraries
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Swift      | `4.1`  |
+| Deployment Target      | `11.4`  |
+
+#### Run
 
 ```
 npm start
 npm run ios
 ```
 
-###### Android
+# Android
+- Latest Android project
+- Kotlin Support
+- Support for Gradle 4.9
+- Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
+
+#### Requirements
+- [Android Studio](https://developer.android.com/studio/index.html) for Android development
+- [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Gradle      | `4.9-RC1`  |
+| Android Gradle | `3.3.0-ALPHA3`  |
+| Kotlin | `1.2.50`  |
+| Target SDK      | `27`  |
+| JSC      | `org.webkit:android-jsc:r216113`  |
+
+#### Run
 NOTE: make sure you have 1 android device connected or 1 emulator running
 
 ```
@@ -167,14 +130,52 @@ npm start
 npm run android
 ```
 
-###### tvOS
+# tvOS
+- Latest swift based Xcode project
+- Cocoapods Workspace ready
+- Swift 4.1 Support
+
+#### Requirements
+- [CocoaPods](https://cocoapods.org) `1.5.3` or newer
+- [Xcode](https://developer.apple.com/xcode/) for iOS development
+- [CocoaPods](https://cocoapods.org/) `1.4.0` for iOS libraries
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Swift      | `4.1`  |
+| Deployment Target      | `11.4`  |
+
+#### Run
 
 ```
 npm start
 npm run tvos
 ```
 
-###### Android TV
+# Android TV
+- Latest Android project
+- Kotlin Support
+- Support for Gradle 4.9
+- Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
+
+#### Requirements
+- [Android Studio](https://developer.android.com/studio/index.html) for Android development
+- [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
+
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Gradle      | `4.9-RC1`  |
+| Android Gradle | `3.3.0-ALPHA3`  |
+| Kotlin | `1.2.50`  |
+| Target SDK      | `27`  |
+| JSC      | `org.webkit:android-jsc:r216113`  |
+
+#### Run
 NOTE: make sure you have 1 android device connected or 1 emulator running
 
 ```
@@ -182,9 +183,45 @@ npm start
 npm run androidtv
 ```
 
-###### Web
+# Web
+- Supports Chrome, Safari, Firefox, IE10+
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Webpack      | `3.11.0`  |
+| react-native-web      | `0.8.9`  |
+| Babel Core     | `7.0.0-beta.47`  |
+
+#### Run
 
 ```
 npm run web
 ```
 open browser URL: http://localhost:8080
+
+# Tizen
+- Latest Tizen project
+- Support for Tizen 4.0
+
+#### Requirements
+- [Tizen Studio](https://developer.tizen.org/development/tizen-studio/)
+- [Tizen SDK](https://developer.android.com/sdk/) `4.0`
+
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Tizen Studio     | `2.5`  |
+| Tizen SDK | `4.0`  |
+
+#### Run
+
+```
+npm run tizen:build
+```
+
+* open project via Tizen Studio at <PROJEC_ROOT>/tizen
+* launch app
