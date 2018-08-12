@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -17,7 +17,9 @@
     "tvos",
     "android tv",
     "web",
-    "multiplatform"
+    "multiplatform",
+    "tizen",
+    "smart tv"
   ],
   "license": "ISC",
   "private": false,
