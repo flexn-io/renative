@@ -1,10 +1,10 @@
 # react-native-vanilla
-Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
+Most fundamental setup of react native vanilla project based environment with Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
 
 * Ideal starting point for advanced projects.
 * Includes bleeding edge dependencies configured to work with each other
 <p align="center">
-  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rnplus.png" />
+  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rn.png" />
 <p>
 <table>
   <tr>
@@ -106,6 +106,17 @@ Most fundamental setup of react native vanilla project based environment with Sw
 | react-native-web      | `0.8.9`  |
 | Babel Core     | `7.0.0-beta.47`  |
 
+#### Tizen
+- Supports Tizen Web Project
+
+###### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| Tizen SDK      | `4.0`  |
+| react-native-web      | `0.8.9`  |
+| Babel Core     | `7.0.0-beta.47`  |
+
 
 ## Requirements
 - [Node](https://nodejs.org) `8.x` or newer
@@ -188,3 +199,11 @@ npm run androidtv
 npm run web
 ```
 open browser URL: http://localhost:8080
+
+###### Tizen
+
+```
+npm run tizen:build
+```
+* open Tizen IDE project at <PROJECT_ROOT>/tizen
+* launch app
