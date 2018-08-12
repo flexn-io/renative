@@ -1,9 +1,4 @@
 # react-native-vanilla
-Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
-
-* Ideal starting point for advanced multi-platform projects.
-* Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
-* Includes bleeding edge dependencies configured to work with each other
 
 <p align="center">
   <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rn.png" />
@@ -28,6 +23,12 @@ Most fundamental multi-platform project template based on react native. Includes
     </th>
   </tr>
 </table>
+
+Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
+
+* Ideal starting point for advanced multi-platform projects.
+* Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
+* Includes bleeding edge dependencies configured to work with each other
 
 ## Features:
 
