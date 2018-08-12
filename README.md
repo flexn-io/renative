@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn.png" />
+  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn.png?raw=true" />
 <p>
   <h1 align="center">react-native-vanilla</h1>
 <table>
@@ -19,7 +19,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen1.gif" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen1.gif?raw=true" />
     </th>
   </tr>
 </table>
