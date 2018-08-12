@@ -26,9 +26,11 @@
 
 [![npm version](https://img.shields.io/npm/v/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
+[![MIT License][license-badge]][LICENSE]
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
-Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
+> Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
 
 * Ideal starting point for advanced multi-platform projects.
 * Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
@@ -54,9 +56,9 @@ Most fundamental multi-platform project template based on react native. Includes
 - [React Native](https://facebook.github.io/react-native/) `0.56.0` for building native apps using react
 - [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
-#### Get Started
+## Get Started
 
-##### 1. Prerequisite
+#### 1. Prerequisite
 
 The recommended way to run specific version of Node and NPM is to use NVM:
 
@@ -70,7 +72,7 @@ Recommended Node configuration:
 * npm v6.2.0
 
 
-##### 2. Installation
+#### 2. Installation
 
 On the command prompt run the following commands
 
@@ -83,7 +85,7 @@ $ npm run setup
 ```
 
 
-# iOS
+## iOS
 - Latest swift based Xcode project
 - Cocoapods Workspace ready
 - Swift 4.1 Support
@@ -107,7 +109,7 @@ npm start
 npm run ios
 ```
 
-# Android
+## Android
 - Latest Android project
 - Kotlin Support
 - Support for Gradle 4.9
@@ -135,7 +137,7 @@ npm start
 npm run android
 ```
 
-# tvOS
+## tvOS
 - Latest swift based Xcode project
 - Cocoapods Workspace ready
 - Swift 4.1 Support
@@ -159,7 +161,7 @@ npm start
 npm run tvos
 ```
 
-# Android TV
+## Android TV
 - Latest Android project
 - Kotlin Support
 - Support for Gradle 4.9
@@ -188,7 +190,7 @@ npm start
 npm run androidtv
 ```
 
-# Web
+## Web
 - Supports Chrome, Safari, Firefox, IE10+
 
 #### Requirements
@@ -209,7 +211,7 @@ npm run web
 ```
 open browser URL: http://localhost:8080
 
-# Tizen
+## Tizen
 - Latest Tizen project
 - Support for Tizen 4.0
 
@@ -232,3 +234,13 @@ open browser URL: http://localhost:8080
 ```
 npm run tizen:build
 ```
+
+## Contributors
+
+
+| [<img src="https://avatars.githubusercontent.com/u/4638697?v=4" width="100px;"/><br /><sub><b>Pavel Jacko</b></sub>](https://github.com/pavjacko)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=pavjacko "Contributions") | [<img src="https://avatars.githubusercontent.com/u/1237997?v=4" width="100px;"/><br /><sub><b>Daniel Marino Ruiz</b></sub>](https://github.com/CHaNGeTe)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=CHaNGeTe "Contributions") | [<img src="https://avatars.githubusercontent.com/u/5989212?v=4" width="100px;"/><br /><sub><b>Sander Looijenga</b></sub>](https://github.com/sanderlooijenga)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=sanderlooijenga "Contributions") | 
+| :---: | :---: | :---: |
+
+## LICENSE
+
+MIT
