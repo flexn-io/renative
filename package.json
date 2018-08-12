@@ -41,19 +41,20 @@
     "tvos:update": "cd tvos && pod update",
     "test": "jest",
     "web": "webpack-dev-server -d --config ./web/webpack.config.js  --inline --hot --colors --content-base web/public/ --history-api-fallback",
-    "build": "NODE_ENV=production webpack -p --config ./web/webpack.config.js"
+    "web:build": "NODE_ENV=production webpack -p --config ./web/webpack.config.js",
+    "tizen:build": "NODE_ENV=production webpack -p --config ./tizen/webpack.config.js"
   },
   "dependencies": {
     "jsc-android": "216113.0.0",
-    "npm": "6.2.0",
     "react": "16.4.1",
     "react-dom": "16.4.1",
     "react-native": "0.56.0",
-    "react-native-web": "0.8.9",
-    "webpack": "4.16.5",
-    "webpack-dev-server": "3.1.5"
+    "react-native-web": "0.8.9"
   },
   "devDependencies": {
+    "webpack": "4.16.5",
+    "npm": "6.2.0",
+    "webpack-dev-server": "3.1.5",
     "@babel/core": "7.0.0-beta.47",
     "@babel/plugin-proposal-decorators": "7.0.0-beta.47",
     "@babel/plugin-transform-runtime": "7.0.0-beta.47",
