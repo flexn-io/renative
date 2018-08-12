@@ -1,12 +1,12 @@
 # react-native-vanilla
-Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms
+Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
 
 * Ideal starting point for advanced multi-platform projects.
 * Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
 * Includes bleeding edge dependencies configured to work with each other
 
 <p align="center">
-  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rnplus.png" />
+  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rn.png" />
 <p>
 <table>
   <tr>
@@ -186,6 +186,9 @@ npm run androidtv
 # Web
 - Supports Chrome, Safari, Firefox, IE10+
 
+#### Requirements
+- no extra requirements required
+
 #### Project Configuration
 
 | Feature        | Version |
@@ -216,12 +219,11 @@ open browser URL: http://localhost:8080
 | ------------- |:-------------:|
 | Tizen Studio     | `2.5`  |
 | Tizen SDK | `4.0`  |
+| react-native-web      | `0.8.9`  |
+| Babel Core     | `7.0.0-beta.47`  |
 
 #### Run
 
 ```
 npm run tizen:build
 ```
-
-* open project via Tizen Studio at <PROJEC_ROOT>/tizen
-* launch app
