@@ -1,8 +1,8 @@
-# react-native-vanilla
 
 <p align="center">
-  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rn.png" />
+  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rn.png" /> 
 <p>
+  <h1 align="center">react-native-vanilla</h1>
 <table>
   <tr>
     <th>iOS</th><th>Android</th><th>tvOS</th><th>Android TV</th><th>Web</th><th>Tizen</th>
