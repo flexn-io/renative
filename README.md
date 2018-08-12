@@ -4,7 +4,7 @@ Most fundamental setup of react native vanilla project based environment with Sw
 * Ideal starting point for advanced projects.
 * Includes bleeding edge dependencies configured to work with each other
 <p align="center">
-  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rn.png" />
+  <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feature/tizen/docs/rnplus.png" />
 <p>
 <table>
   <tr>
