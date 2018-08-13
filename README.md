@@ -35,9 +35,11 @@
 * Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
 * Includes bleeding edge dependencies configured to work with each other
 
+---
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
 
 - [Features:](#features)
     - [Development platform](#development-platform)
