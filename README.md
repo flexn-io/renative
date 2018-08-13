@@ -216,8 +216,8 @@ open browser URL: http://localhost:8080
 - Support for Tizen 4.0
 
 #### Requirements
-- [Tizen Studio](https://developer.tizen.org/development/tizen-studio/)
-- [Tizen SDK](https://developer.android.com/sdk/) `4.0`
+- [Tizen Studio](https://developer.tizen.org/development/tizen-studio/) 2.4
+- [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `4.0`
 
 
 #### Project Configuration
@@ -234,6 +234,9 @@ open browser URL: http://localhost:8080
 ```
 npm run tizen:build
 ```
+
+* Open project in Tizen Studio <PROJECT_ROOT>/tizen
+* Run app
 
 ## Contributors
 

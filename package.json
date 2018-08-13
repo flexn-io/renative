@@ -21,7 +21,7 @@
     "tizen",
     "smart tv"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "private": false,
   "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms",
   "author": "Pavel Jacko <i@pavjacko.com>",
