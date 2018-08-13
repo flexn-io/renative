@@ -1,4 +1,3 @@
-
 <p align="center">
   <img width="100" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn.png?raw=true" />
 <p>
@@ -35,6 +34,46 @@
 * Ideal starting point for advanced multi-platform projects.
 * Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
 * Includes bleeding edge dependencies configured to work with each other
+
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Features:](#features)
+    - [Development platform](#development-platform)
+    - [Requirements](#requirements)
+    - [Stack / Libraries](#stack--libraries)
+- [Get Started](#get-started)
+    - [1. Prerequisite](#1-prerequisite)
+    - [2. Installation](#2-installation)
+- [iOS](#ios)
+    - [Requirements](#requirements-1)
+    - [Project Configuration](#project-configuration)
+    - [Run](#run)
+- [Android](#android)
+    - [Requirements](#requirements-2)
+    - [Project Configuration](#project-configuration-1)
+    - [Run](#run-1)
+- [tvOS](#tvos)
+    - [Requirements](#requirements-3)
+    - [Project Configuration](#project-configuration-2)
+    - [Run](#run-2)
+- [Android TV](#android-tv)
+    - [Requirements](#requirements-4)
+    - [Project Configuration](#project-configuration-3)
+    - [Run](#run-3)
+- [Web](#web)
+    - [Requirements](#requirements-5)
+    - [Project Configuration](#project-configuration-4)
+    - [Run](#run-4)
+- [Tizen](#tizen)
+    - [Requirements](#requirements-6)
+    - [Project Configuration](#project-configuration-5)
+    - [Run](#run-5)
+- [Contributors](#contributors)
+- [LICENSE](#license)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## Features:
 
