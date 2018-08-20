@@ -45,8 +45,6 @@
     "test": "jest",
     "web": "webpack-dev-server -d --config ./platforms/web/webpack.config.js  --inline --hot --colors --content-base platforms/web/public/ --history-api-fallback",
     "web:build": "NODE_ENV=production webpack -p --config ./platforms/web/webpack.config.js",
-    "web2": "webpack-dev-server -d --config ./web/webpack.config.js  --inline --hot --colors --content-base web/public/ --history-api-fallback",
-    "web2:build": "NODE_ENV=production webpack -p --config ./web/webpack.config.js",
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
     "preversion": "npm run test",
     "version": "./utils/update-versions.sh"
@@ -67,7 +65,7 @@
     "@babel/plugin-transform-runtime": "7.0.0-beta.47",
     "@babel/runtime": "7.0.0-beta.47",
     "babel-cli": "6.26.0",
-    "babel-core": "7.0.0-bridge.0",
+    "babel-core": "6.26.3",
     "babel-eslint": "8.2.6",
     "babel-jest": "23.4.0",
     "babel-loader": "7.1.5",
@@ -93,7 +91,7 @@
     "webpack-cli": "3.1.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native-stage-0"
   },
   "homepage": "https://github.com/pavjacko/react-native-vanilla#readme"
 }
