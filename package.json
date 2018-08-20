@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.4.0",
+  "version": "0.4.2",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -36,8 +36,7 @@
     "ios": "react-native run-ios --project-path platforms/ios --simulator \"iPhone 6\"",
     "tvos": "react-native run-ios --project-path platforms/tvos --simulator \"Apple TV\" --scheme ReactNativeVanillaTVOS",
     "fix:ios": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h",
-    "fix:react": "sed -i '' 's/export default class {/export default class _ {/' ./node_modules/react-native-root-siblings/index.js",
-    "setup": "rm -rf node_modules && rm -rf platforms/ios/build && rm -rf platforms/tvos/build && npm install && npm run ios:update && npm run tvos:update && npm run fix:ios && npm run fix:react",
+    "setup": "rm -rf node_modules && rm -rf platforms/ios/build && rm -rf platforms/tvos/build && npm install && npm run ios:update && npm run tvos:update && npm run fix:ios",
     "android": "cd platforms/android && ./gradlew appStart",
     "androidtv": "cd platforms/androidtv && ./gradlew appStart",
     "ios:update": "cd platforms/ios && pod update",
