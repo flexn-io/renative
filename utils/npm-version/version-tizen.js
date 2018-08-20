@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const workspacePath = '../platforms/tizen'
+const workspacePath = './platforms/tizen'
 const configFilePath = workspacePath + path.sep + 'config.xml'
 
 function getConfigXML () {
@@ -12,7 +12,7 @@ function getConfigXML () {
     return data
   }
 
-  console.log('Project appears to have no Tizen config.')
+  console.log('Project appears to have no Tizen config.', configFilePath)
 
   return null
 }

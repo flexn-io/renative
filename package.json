@@ -74,7 +74,7 @@
     "babel-plugin-transform-imports": "1.4.1",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-preset-env": "1.7.0",
-    "babel-preset-react-native": "5.0.0",
+    "babel-preset-react-native": "5.0.2",
     "babel-preset-react-native-stage-0": "1.0.1",
     "css-loader": "0.28.7",
     "eslint": "4.19.1",
@@ -91,7 +91,11 @@
     "webpack-cli": "3.1.0"
   },
   "jest": {
-    "preset": "react-native-stage-0"
+    "preset": "react-native"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pavjacko/react-native-vanilla.git"
   },
   "homepage": "https://github.com/pavjacko/react-native-vanilla#readme"
 }

@@ -3,7 +3,7 @@ import {
     getWidgetTag,
     getPackageVersion,
     updatePackageVersion
-} from '../../utils/npm-version/version-tizen'
+} from '../../../utils/npm-version/version-tizen'
 
 test('gets config xml', () => {
   expect(getConfigXML()).not.toBeNull()
