@@ -1,5 +1,5 @@
 #!/usr/bin/env bash -e
 
-./npm-version/version-ios.sh
-./npm-version/version-tvos.sh
-./npm-version/version-js
+./utils/npm-version/version-ios.sh
+./utils/npm-version/version-tvos.sh
+./utils/npm-version/version-js
