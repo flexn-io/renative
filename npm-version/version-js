@@ -1,0 +1,5 @@
+#!/usr/local/bin/node
+
+const tizen = require('./version-tizen');
+
+tizen.updatePackageVersion();
