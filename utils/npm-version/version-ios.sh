@@ -2,7 +2,7 @@
 
 # @see https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
 
-PROJECT_DIR="tvos/ReactNativeVanillaTVOS"
+PROJECT_DIR="../platforms/ios/ReactNativeVanilla"
 INFOPLIST_FILE="Info.plist"
 INFOPLIST_DIR="${PROJECT_DIR}/${INFOPLIST_FILE}"
 

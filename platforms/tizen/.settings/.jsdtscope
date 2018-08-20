@@ -7,7 +7,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.wst.jsdt.launching.JRE_CONTAINER"/>
-	<classpathentry excluding="**/bower_components/*|**/node_modules/*|**/*.min.js" kind="src" path="">
+	<classpathentry excluding="**/bower_components/*|**/../node_modules/*|**/*.min.js" kind="src" path="">
 		<attributes>
 			<attribute name="provider" value="org.eclipse.wst.jsdt.web.core.internal.project.ModuleSourcePathProvider"/>
 		</attributes>

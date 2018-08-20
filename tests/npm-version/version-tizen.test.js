@@ -3,21 +3,21 @@ import {
     getWidgetTag,
     getPackageVersion,
     updatePackageVersion
-} from '../../npm-version/version-tizen';
+} from '../../utils/npm-version/version-tizen'
 
 test('gets config xml', () => {
-    expect(getConfigXML()).not.toBeNull();
-});
+  expect(getConfigXML()).not.toBeNull()
+})
 
 test('gets widget tag', () => {
-    expect(getWidgetTag()).not.toBeNull();
-});
+  expect(getWidgetTag()).not.toBeNull()
+})
 
 test('gets package version', () => {
-    expect(getPackageVersion()).not.toBeNull();
-});
+  expect(getPackageVersion()).not.toBeNull()
+})
 
 test('updates package version', () => {
-    expect(updatePackageVersion()).not.toBeFalsy();
-    expect(getPackageVersion()).toBe(process.env.npm_package_version);
-});
+  expect(updatePackageVersion()).not.toBeFalsy()
+  expect(getPackageVersion()).toBe(process.env.npm_package_version)
+})

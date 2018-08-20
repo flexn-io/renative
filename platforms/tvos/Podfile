@@ -3,7 +3,7 @@ use_frameworks!
 
 target 'ReactNativeVanillaTVOS' do
   platform :tvos, '10.0'
-  pod 'React', :path => "../node_modules/react-native/" , :subspecs => [
+  pod 'React', :path => "../../node_modules/react-native/" , :subspecs => [
   'Core',
   'tvOS',
   'CxxBridge',
@@ -12,15 +12,15 @@ target 'ReactNativeVanillaTVOS' do
   'RCTText',
   'RCTWebSocket'
   ]
-  pod "yoga", :path => "../node_modules/react-native/ReactCommon/yoga"
-  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod "yoga", :path => "../../node_modules/react-native/ReactCommon/yoga"
+  pod 'Folly', :podspec => '../../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'DoubleConversion', :podspec => '../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../../node_modules/react-native/third-party-podspecs/glog.podspec'
 
 end
 
 def fix_cplusplus_header_compiler_error
-    filepath = '../node_modules/react-native/React/Base/Surface/SurfaceHostingView/RCTSurfaceSizeMeasureMode.h'
+    filepath = '../../node_modules/react-native/React/Base/Surface/SurfaceHostingView/RCTSurfaceSizeMeasureMode.h'
 
     contents = []
 

@@ -3,7 +3,7 @@
 const path = require('path')
 const webpack = require('webpack')
 
-const appDirectory = path.resolve(__dirname, '../')
+const appDirectory = path.resolve(__dirname, '../../')
 
 // Many OSS React Native packages are not compiled to ES5 before being
 // published. If you depend on uncompiled packages they may cause webpack build
@@ -81,7 +81,7 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     publicPath: '/assets/',
-    path: path.resolve(appDirectory, './web/public/assets')
+    path: path.resolve(appDirectory, './platforms/web/public/assets')
   },
 
   module: {

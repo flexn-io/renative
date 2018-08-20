@@ -19,10 +19,10 @@ allprojects {
         jcenter()
         mavenCentral()
         maven {
-            url "$rootDir/../node_modules/react-native/android"
+            url "$rootDir/../../node_modules/react-native/android"
         }
         maven { url "https://jitpack.io" }
-        maven { url "$rootDir/../node_modules/jsc-android/android" }
+        maven { url "$rootDir/../../node_modules/jsc-android/android" }
     }
 }
 
@@ -32,7 +32,7 @@ task clean(type: Delete) {
 
 // @see https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
 static def getNpmVersion() {
-    def inputFile = new File("../package.json")
+    def inputFile = new File("../../package.json")
     def packageJson = new JsonSlurper().parseText(inputFile.text)
     return packageJson["version"]
 }
