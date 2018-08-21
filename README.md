@@ -323,11 +323,11 @@ npm run tizen:build
 
 #### Run
 
-* launch LG emulator
+* launch webOS emulator
 
 ```
-npm run tizen:build
-npm run tizen:install
+npm run webos:build
+npm run webos:install
 ```
 
 ## Contributors
