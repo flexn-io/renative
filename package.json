@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -50,6 +50,7 @@
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
     "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/ares-webos-sdk/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
     "webos:install": "./node_modules/ares-webos-sdk/bin/ares-install.sh -d emulator ./platforms/webos/build/pavjacko.reactnativevanilla_0.0.1_all.ipk",
+    "preversion": "npm run test",
     "version": "./utils/update-versions.sh",
     "doc": "doctoc ."
   },
@@ -97,7 +98,10 @@
     "icon-toolkit": "0.0.9"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transform": {
+      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    }
   },
   "repository": {
     "type": "git",
