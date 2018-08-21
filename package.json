@@ -45,6 +45,7 @@
     "web": "webpack-dev-server -d --config ./platforms/web/webpack.config.js  --inline --hot --colors --content-base platforms/web/public/ --history-api-fallback",
     "web:build": "NODE_ENV=production webpack -p --config ./platforms/web/webpack.config.js",
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
+    "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js",
     "preversion": "npm run test",
     "version": "./utils/update-versions.sh"
   },
