@@ -93,7 +93,8 @@
     "react-test-renderer": "16.4.1",
     "style-loader": "0.19.0",
     "webpack-cli": "3.1.0",
-    "ares-webos-sdk": "3.0.5"
+    "ares-webos-sdk": "3.0.5",
+    "icon-toolkit": "0.0.9"
   },
   "jest": {
     "preset": "react-native"
