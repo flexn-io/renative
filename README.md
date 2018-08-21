@@ -200,7 +200,7 @@ npm run android
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=90 height=50 />
 
 ## tvOS
 
@@ -261,7 +261,7 @@ npm run androidtv
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=200 height=50 />
 
 ## Web
 
