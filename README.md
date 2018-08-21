@@ -140,7 +140,7 @@ $ npm run setup
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_ios.gif?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_ios.png?raw=true" width=50 height=50 />
 
 ## iOS
 
@@ -168,7 +168,7 @@ npm run ios
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.gif?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />
 
 ## Android
 
@@ -200,7 +200,7 @@ npm run android
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.gif?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=50 height=50 />
 
 ## tvOS
 
@@ -228,7 +228,7 @@ npm run tvos
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidtv.gif?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidtv.png?raw=true" width=50 height=50 />
 
 ## Android TV
 
@@ -261,7 +261,7 @@ npm run androidtv
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.gif?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=50 height=50 />
 
 ## Web
 
@@ -286,7 +286,7 @@ npm run web
 open browser URL: http://localhost:8080
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizen.gif?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
 
 ## Tizen
 
@@ -317,7 +317,7 @@ npm run tizen:build
 * Run app
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_webos.gif?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_webos.png?raw=true" width=50 height=50 />
 
 ## LG webOS
 
