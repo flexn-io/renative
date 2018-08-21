@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="800" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_exp.png?raw=true" />
+  <img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_exp.png?raw=true" />
 <p>
   <h1 align="center">react-native-vanilla</h1>
 <table>
