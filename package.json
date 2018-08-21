@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -19,11 +19,13 @@
     "web",
     "multiplatform",
     "tizen",
-    "smart tv"
+    "smart tv",
+    "lg",
+    "webos"
   ],
   "license": "MIT",
   "private": false,
-  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web` and 'LG webOS' platforms",
+  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen` and `LG webOS` platforms",
   "author": "Pavel Jacko <i@pavjacko.com>",
   "contributors": [
     "Sander Looijenga <sander_l@live.com>",

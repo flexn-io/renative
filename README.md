@@ -31,7 +31,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
-> Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen` and `LG webOS` platforms
+> Most fundamental multi-platform project template based on [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen` and `LG webOS` platforms
 
 * Ideal starting point for advanced multi-platform projects.
 * Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
@@ -103,6 +103,7 @@
 - [React Native](https://facebook.github.io/react-native/) `0.56.0` for building native apps using react
 - [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
+---
 ## Get Started
 
 #### 1. Prerequisite
@@ -131,9 +132,9 @@ $ cd react-native-vanilla
 $ npm run setup
 ```
 
-
-## iOS
 ---
+## iOS
+
 - Latest swift based Xcode project
 - Cocoapods Workspace ready
 - Swift 4.1 Support
@@ -157,8 +158,9 @@ npm start
 npm run ios
 ```
 
-## Android
 ---
+## Android
+
 - Latest Android project
 - Kotlin Support
 - Support for Gradle 4.9
@@ -186,8 +188,9 @@ npm start
 npm run android
 ```
 
-## tvOS
 ---
+## tvOS
+
 - Latest swift based Xcode project
 - Cocoapods Workspace ready
 - Swift 4.1 Support
@@ -211,8 +214,9 @@ npm start
 npm run tvos
 ```
 
-## Android TV
 ---
+## Android TV
+
 - Latest Android project
 - Kotlin Support
 - Support for Gradle 4.9
@@ -241,8 +245,9 @@ npm start
 npm run androidtv
 ```
 
-## Web
 ---
+## Web
+
 - Supports Chrome, Safari, Firefox, IE10+
 
 #### Requirements
@@ -263,8 +268,9 @@ npm run web
 ```
 open browser URL: http://localhost:8080
 
-## Tizen
 ---
+## Tizen
+
 - Latest Tizen project
 - Support for Tizen 4.0
 
@@ -291,8 +297,9 @@ npm run tizen:build
 * Open project in Tizen Studio <PROJECT_ROOT>/tizen
 * Run app
 
-## LG WebOS
 ---
+## LG WebOS
+
 - Latest LG webOS Project
 
 #### Requirements
