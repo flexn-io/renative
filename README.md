@@ -4,7 +4,7 @@
   <h1 align="center">react-native-vanilla</h1>
 <table>
   <tr>
-    <th>iOS</th><th>Android</th><th>tvOS</th><th>Android TV</th><th>Web</th><th>Tizen</th><th>LG WebOS</th>
+    <th>iOS</th><th>Android</th><th>tvOS</th><th>Android TV</th>
   </tr>
   <tr>
     <th>
@@ -15,7 +15,13 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
-    </th><th>
+    </th>
+  </tr>
+  <tr>
+    <th colspan=2>Web</th><th>Tizen</th><th>LG webOS</th>
+  </tr>
+  <tr>
+    <th colspan=2>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen1.gif?raw=true" />
@@ -74,7 +80,7 @@
     - [Requirements](#requirements-6)
     - [Project Configuration](#project-configuration-5)
     - [Run](#run-5)
-- [LG WebOS](#lg-webos)
+- [LG webOS](#lg-webos)
     - [Requirements](#requirements-7)
     - [Project Configuration](#project-configuration-6)
     - [Run](#run-6)
@@ -83,6 +89,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
+---
 ## Features:
 
 #### Development platform
@@ -298,7 +305,7 @@ npm run tizen:build
 * Run app
 
 ---
-## LG WebOS
+## LG webOS
 
 - Latest LG webOS Project
 
