@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -23,7 +23,7 @@
   ],
   "license": "MIT",
   "private": false,
-  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV` and `Web` platforms",
+  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web` and 'LG webOS' platforms",
   "author": "Pavel Jacko <i@pavjacko.com>",
   "contributors": [
     "Sander Looijenga <sander_l@live.com>",
@@ -48,7 +48,8 @@
     "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/ares-webos-sdk/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
     "webos:install": "./node_modules/ares-webos-sdk/bin/ares-install.sh -d emulator ./platforms/webos/build/pavjacko.reactnativevanilla_0.0.1_all.ipk",
     "preversion": "npm run test",
-    "version": "./utils/update-versions.sh"
+    "version": "./utils/update-versions.sh",
+    "doc": "doctoc ."
   },
   "dependencies": {
     "jsc-android": "216113.0.0",

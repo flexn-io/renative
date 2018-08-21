@@ -31,7 +31,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
-> Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web` and `Tizen` platforms
+> Most fundamental multi-platform project template based on react native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen` and `LG webOS` platforms
 
 * Ideal starting point for advanced multi-platform projects.
 * Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
@@ -74,6 +74,10 @@
     - [Requirements](#requirements-6)
     - [Project Configuration](#project-configuration-5)
     - [Run](#run-5)
+- [LG WebOS](#lg-webos)
+    - [Requirements](#requirements-7)
+    - [Project Configuration](#project-configuration-6)
+    - [Run](#run-6)
 - [Contributors](#contributors)
 - [LICENSE](#license)
 
@@ -129,6 +133,7 @@ $ npm run setup
 
 
 ## iOS
+---
 - Latest swift based Xcode project
 - Cocoapods Workspace ready
 - Swift 4.1 Support
@@ -153,6 +158,7 @@ npm run ios
 ```
 
 ## Android
+---
 - Latest Android project
 - Kotlin Support
 - Support for Gradle 4.9
@@ -181,6 +187,7 @@ npm run android
 ```
 
 ## tvOS
+---
 - Latest swift based Xcode project
 - Cocoapods Workspace ready
 - Swift 4.1 Support
@@ -205,6 +212,7 @@ npm run tvos
 ```
 
 ## Android TV
+---
 - Latest Android project
 - Kotlin Support
 - Support for Gradle 4.9
@@ -234,6 +242,7 @@ npm run androidtv
 ```
 
 ## Web
+---
 - Supports Chrome, Safari, Firefox, IE10+
 
 #### Requirements
@@ -255,6 +264,7 @@ npm run web
 open browser URL: http://localhost:8080
 
 ## Tizen
+---
 - Latest Tizen project
 - Support for Tizen 4.0
 
@@ -282,6 +292,7 @@ npm run tizen:build
 * Run app
 
 ## LG WebOS
+---
 - Latest LG webOS Project
 
 #### Requirements
