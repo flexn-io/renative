@@ -1,5 +1,7 @@
 #!/usr/local/bin/node
 
 const tizen = require('./version-tizen');
+const webos = require('./version-webos');
 
 tizen.updatePackageVersion();
+webos.updatePackageVersion();
