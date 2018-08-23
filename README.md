@@ -4,7 +4,7 @@
   <h1 align="center">react-native-vanilla</h1>
 <table>
   <tr>
-    <th>iOS</th><th>tvOS</th><th>Android TV</th><th>macOS</th>
+    <th><a href="#ios">iOS</a></th><th>tvOS</th><th>Android TV</th><th>macOS</th>
   </tr>
   <tr>
     <th>
