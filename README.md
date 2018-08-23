@@ -144,9 +144,20 @@ $ npm run setup
 
 ## iOS
 
-- Latest swift based Xcode project
-- Cocoapods Workspace ready
-- Swift 4.1 Support
+<table>
+  <tr>
+    <td width="500">
+      <ul>
+        <li>Latest swift based Xcode project</li>
+        <li>Cocoapods Workspace ready</li>
+        <li>Swift 4.1 Support</li>
+      </ul>
+    </td>
+    <td width="400" align=center>
+      <img height=300 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios.gif?raw=true" />
+    </td>
+  </tr>
+</table>
 
 #### Requirements
 - [CocoaPods](https://cocoapods.org) `1.5.3` or newer

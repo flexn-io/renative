@@ -50,6 +50,8 @@
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
     "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/ares-webos-sdk/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
     "webos:install": "./node_modules/ares-webos-sdk/bin/ares-install.sh -d emulator ./platforms/webos/build/pavjacko.reactnativevanilla_0.0.1_all.ipk",
+    "macos:build": "NODE_ENV=production webpack -p --config ./platforms/macos/webpack.config.js",
+    "macos": "npm run macos:build && electron ./platforms/macos/",
     "preversion": "npm run test",
     "version": "./utils/update-versions.sh",
     "doc": "doctoc ."
@@ -95,13 +97,18 @@
     "style-loader": "0.19.0",
     "webpack-cli": "3.1.0",
     "ares-webos-sdk": "3.0.5",
-    "icon-toolkit": "0.0.9"
+    "icon-toolkit": "0.0.9",
+    "electron": "2.0.0"
   },
   "jest": {
     "preset": "react-native",
     "transform": {
       "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
     }
+  },
+  "devEngines": {
+    "node": ">=8.x",
+    "npm": ">=5.x"
   },
   "repository": {
     "type": "git",
