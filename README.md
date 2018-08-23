@@ -51,41 +51,41 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Features:](#features)
-    - [Development platform](#development-platform)
-    - [Requirements](#requirements)
-    - [Stack / Libraries](#stack--libraries)
 - [Get Started](#get-started)
     - [1. Prerequisite](#1-prerequisite)
     - [2. Installation](#2-installation)
 - [iOS](#ios)
-    - [Requirements](#requirements-1)
+    - [Requirements](#requirements)
     - [Project Configuration](#project-configuration)
     - [Run](#run)
 - [Android](#android)
-    - [Requirements](#requirements-2)
+    - [Requirements](#requirements-1)
     - [Project Configuration](#project-configuration-1)
     - [Run](#run-1)
 - [tvOS](#tvos)
-    - [Requirements](#requirements-3)
+    - [Requirements](#requirements-2)
     - [Project Configuration](#project-configuration-2)
     - [Run](#run-2)
 - [Android TV](#android-tv)
-    - [Requirements](#requirements-4)
+    - [Requirements](#requirements-3)
     - [Project Configuration](#project-configuration-3)
     - [Run](#run-3)
 - [Web](#web)
-    - [Requirements](#requirements-5)
+    - [Requirements](#requirements-4)
     - [Project Configuration](#project-configuration-4)
     - [Run](#run-4)
 - [Tizen](#tizen)
-    - [Requirements](#requirements-6)
+    - [Requirements](#requirements-5)
     - [Project Configuration](#project-configuration-5)
     - [Run](#run-5)
 - [LG webOS](#lg-webos)
-    - [Requirements](#requirements-7)
+    - [Requirements](#requirements-6)
     - [Project Configuration](#project-configuration-6)
     - [Run](#run-6)
+- [macOS](#macos)
+    - [Requirements](#requirements-7)
+    - [Project Configuration](#project-configuration-7)
+    - [Run](#run-7)
 - [Contributors](#contributors)
 - [LICENSE](#license)
 
@@ -146,20 +146,9 @@ $ npm run setup
 
 ## iOS
 
-<table>
-  <tr>
-    <td width="500">
-      <ul>
-        <li>Latest swift based Xcode project</li>
-        <li>Cocoapods Workspace ready</li>
-        <li>Swift 4.1 Support</li>
-      </ul>
-    </td>
-    <td width="400" align=center>
-      <img height=300 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios.gif?raw=true" />
-    </td>
-  </tr>
-</table>
+- Latest swift based Xcode project
+- Cocoapods Workspace ready
+- Swift 4.1 Support
 
 #### Requirements
 - [CocoaPods](https://cocoapods.org) `1.5.3` or newer
@@ -355,6 +344,33 @@ npm run tizen:build
 ```
 npm run webos:build
 npm run webos:install
+```
+---
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/macos1/docs/ic_macos.png?raw=true" width=50 height=50 />
+
+## macOS
+
+- support for OSX/macOS
+- Based on Electron
+
+#### Requirements
+- n/a
+
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| electron | `2.0.0`  |
+| react-native-web      | `0.8.9`  |
+| electron-builder     | `20.28.2`  |
+
+#### Run
+
+* launch webOS emulator
+
+```
+npm run macos
 ```
 ---
 ## Contributors
