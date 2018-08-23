@@ -2,9 +2,14 @@
   <img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_exp.png?raw=true" />
 <p>
   <h1 align="center">react-native-vanilla</h1>
+  <br />
+  
+> Build cross-platform apps with [react native](https://facebook.github.io/react-native/)
+
+   <br />
 <table>
   <tr>
-    <th>iOS</th><th>tvOS</th><th>Android TV</th><th>macOS</th>
+    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#androidtv">Android TV</a></th><th><a href="#macos">macOS</a></th>
   </tr>
   <tr>
     <th>
@@ -18,7 +23,7 @@
     </th>
   </tr>
   <tr>
-    <th>Android</th><th>Web</th><th>Tizen</th><th>LG webOS</th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#webos">LG webOS</a></th>
   </tr>
   <tr>
     <th>
@@ -32,6 +37,8 @@
     </th>
   </tr>
 </table>
+
+<br />
 
 [![npm version](https://img.shields.io/npm/v/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
@@ -366,8 +373,6 @@ npm run webos:install
 | electron-builder     | `20.28.2`  |
 
 #### Run
-
-* launch webOS emulator
 
 ```
 npm run macos
