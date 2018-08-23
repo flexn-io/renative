@@ -8,13 +8,13 @@
   </tr>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/macos1/docs/rnv_ios.gif?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/macos1/docs/rnv_macos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
     </th>
   </tr>
   <tr>
@@ -346,7 +346,7 @@ npm run webos:build
 npm run webos:install
 ```
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/macos1/docs/ic_macos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_macos.png?raw=true" width=50 height=50 />
 
 ## macOS
 

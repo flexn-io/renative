@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -20,6 +20,9 @@
     "multiplatform",
     "cross-platform",
     "tizen",
+    "macos",
+    "osx",
+    "electron",
     "smart tv",
     "lg",
     "webos"
@@ -27,7 +30,14 @@
   "license": "MIT",
   "private": false,
   "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen` and `LG webOS` platforms",
-  "author": "Pavel Jacko <i@pavjacko.com>",
+  "author": {
+    "name": "Pavel Jacko",
+    "email": "pavel.jacko@gmail.com",
+    "url": "https://github.com/pavjacko"
+  },
+  "bugs": {
+    "url": "https://github.com/pavjacko/react-native-vanilla/issues"
+  },
   "contributors": [
     "Sander Looijenga <sander_l@live.com>",
     "Daniel Marino Ruiz <changete@gmail.com>"
