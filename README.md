@@ -370,8 +370,6 @@ npm run webos:install
 
 #### Run
 
-* launch webOS emulator
-
 ```
 npm run macos
 ```
