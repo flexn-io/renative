@@ -3,16 +3,13 @@
   "productName": "ReactNativeVanilla",
   "version": "0.5.0",
   "description": "ReactNativeVanilla boilerplate based on React",
-  "main": "./main.prod.js",
+  "main": "./main.js",
   "author": {
     "name": "Pavel Jacko",
     "email": "Pavel Jacko <pavel.jacko@gmail.com>",
     "url": "https://github.com/pavjacko"
   },
-  "scripts": {
-    "electron-rebuild": "node -r babel-register ../internals/scripts/ElectronRebuild.js",
-    "postinstall": "yarn electron-rebuild"
-  },
+  "scripts": {},
   "license": "MIT",
   "dependencies": {}
 }

@@ -50,11 +50,24 @@
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
     "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/ares-webos-sdk/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
     "webos:install": "./node_modules/ares-webos-sdk/bin/ares-install.sh -d emulator ./platforms/webos/build/pavjacko.reactnativevanilla_0.0.1_all.ipk",
+    "start-main-dev": "electron -r babel-register ./platforms/macos/main.js",
     "macos:build": "NODE_ENV=production webpack -p --config ./platforms/macos/webpack.config.js",
     "macos": "npm run macos:build && electron ./platforms/macos/",
+    "macos:dist": "electron-builder",
     "preversion": "npm run test",
     "version": "./utils/update-versions.sh",
     "doc": "doctoc ."
+  },
+  "build": {
+    "appId": "pavjacko.reactnativevanilla",
+    "directories": {
+      "app": "platforms/macos",
+      "buildResources": "platforms/macos/resources",
+      "output": "platforms/macos/build/release"
+    },
+    "mac": {
+      "category": "your.app.category.type"
+    }
   },
   "dependencies": {
     "jsc-android": "216113.0.0",
@@ -98,7 +111,8 @@
     "webpack-cli": "3.1.0",
     "ares-webos-sdk": "3.0.5",
     "icon-toolkit": "0.0.9",
-    "electron": "2.0.0"
+    "electron": "2.0.0",
+    "electron-builder": "20.28.2"
   },
   "jest": {
     "preset": "react-native",
