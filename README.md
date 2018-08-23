@@ -4,24 +4,26 @@
   <h1 align="center">react-native-vanilla</h1>
 <table>
   <tr>
-    <th>iOS</th><th>Android</th><th>tvOS</th><th>Android TV</th>
+    <th>iOS</th><th>tvOS</th><th>Android TV</th><th>macOS</th>
   </tr>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios.gif?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android.gif?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/macos1/docs/rnv_ios.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/macos1/docs/rnv_macos.gif?raw=true" />
     </th>
   </tr>
   <tr>
-    <th colspan=2>Web</th><th>Tizen</th><th>LG webOS</th>
+    <th>Android</th><th>Web</th><th>Tizen</th><th>LG webOS</th>
   </tr>
   <tr>
-    <th colspan=2>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android.gif?raw=true" />
+    </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen1.gif?raw=true" />
