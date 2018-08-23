@@ -3,6 +3,10 @@
 <p>
   <h1 align="center">react-native-vanilla</h1>
   <br />
+  
+> Build cross-platform apps with [react native](https://facebook.github.io/react-native/)
+
+   <br />
 <table>
   <tr>
     <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#androidtv">Android TV</a></th><th><a href="#macos">macOS</a></th>
