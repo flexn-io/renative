@@ -1,10 +1,12 @@
 <p align="center">
-  <img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_exp.png?raw=true" />
+  
 <p>
-  <h1 align="center">react-native-vanilla</h1>
-  <br />
+<p align='center'>
+  <h1 align='center'>React Native Vanilla</h1>
+  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_exp.png?raw=true" /></p>
+  <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
+</p>
 
-> Build cross-platform apps with [react native](https://facebook.github.io/react-native/)
 
    <br />
 <table>
@@ -384,6 +386,23 @@ npm run macos
 | [<img src="https://avatars.githubusercontent.com/u/4638697?v=4" width="100px;"/><br /><sub><b>Pavel Jacko</b></sub>](https://github.com/pavjacko)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=pavjacko "Contributions") | [<img src="https://avatars.githubusercontent.com/u/1237997?v=4" width="100px;"/><br /><sub><b>Daniel Marino Ruiz</b></sub>](https://github.com/CHaNGeTe)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=CHaNGeTe "Contributions") | [<img src="https://avatars.githubusercontent.com/u/5989212?v=4" width="100px;"/><br /><sub><b>Sander Looijenga</b></sub>](https://github.com/sanderlooijenga)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=sanderlooijenga "Contributions") | [<img src="https://avatars1.githubusercontent.com/u/6653451?v=4" width="100px;"/><br /><sub><b>David Rielo</b></sub>](https://github.com/davidrielo)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=davidrielo "Contributions") |
 | :---: | :---: | :---: | :---: |
 
+---
+## Discussions
+
+
+
+---
+## Community
+
+Special thanks to open-source initiatives this project utilises, notably:
+
+- https://www.npmjs.com/package/react-native
+- https://www.npmjs.com/package/react-native-web
+- https://www.npmjs.com/package/webpack
+- https://www.npmjs.com/package/babel-cli
+- https://www.npmjs.com/package/electron
+
+---
 ## LICENSE
 
 MIT
