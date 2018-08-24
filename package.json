@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -29,7 +29,7 @@
   ],
   "license": "MIT",
   "private": false,
-  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen` and `LG webOS` platforms",
+  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen`, `LG webOS` and `macOS/OSX` platforms",
   "author": {
     "name": "Pavel Jacko",
     "email": "pavel.jacko@gmail.com",
