@@ -49,10 +49,7 @@ const cssLoaderConfiguration = {
 const imageLoaderConfiguration = {
   test: /\.(gif|jpe?g|png|svg)$/,
   use: {
-    loader: 'file-loader',
-    options: {
-      name: '[name].[ext]'
-    }
+    loader: 'react-native-web-image-loader'
   }
 }
 

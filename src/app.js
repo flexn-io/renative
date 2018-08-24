@@ -39,7 +39,7 @@ class App extends React.Component {
   }
   render () {
     return <View style={[styles.app, {backgroundColor: this.state.bgColor}]}>
-      <Image style={styles.image} source={require('../docs/logo.png')} />
+      <Image style={styles.image} source={require('../assets/images/logo.png')} />
       <Text style={styles.text}>Hello from React Native Vanilla!</Text>
       <Text style={styles.text}>v{packageJson.version}</Text>
       <TouchableOpacity style={styles.button} onPress={() => {

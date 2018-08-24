@@ -49,7 +49,7 @@
     "ios": "react-native run-ios --project-path platforms/ios --simulator \"iPhone 6\"",
     "tvos": "react-native run-ios --project-path platforms/tvos --simulator \"Apple TV\" --scheme ReactNativeVanillaTVOS",
     "fix:ios": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h",
-    "setup": "rm -rf node_modules && rm -rf platforms/ios/build && rm -rf platforms/tvos/build && npm install && npm run ios:update && npm run tvos:update && npm run fix:ios && chmod -R 755 ./node_modules/ares-webos-sdk/bin",
+    "setup": "rm -rf node_modules && rm -rf platforms/ios/build && rm -rf platforms/tvos/build && npm install && npm run ios:update && npm run tvos:update && npm run fix:ios && chmod -R 755 ./node_modules/cli-webos/bin",
     "android": "cd platforms/android && ./gradlew appStart",
     "androidtv": "cd platforms/androidtv && ./gradlew appStart",
     "ios:update": "cd platforms/ios && pod update",
@@ -58,8 +58,8 @@
     "web": "webpack-dev-server -d --config ./platforms/web/webpack.config.js  --inline --hot --colors --content-base platforms/web/public/ --history-api-fallback",
     "web:build": "NODE_ENV=production webpack -p --config ./platforms/web/webpack.config.js",
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
-    "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/ares-webos-sdk/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
-    "webos:install": "./node_modules/ares-webos-sdk/bin/ares-install.sh -d emulator ./platforms/webos/build/pavjacko.reactnativevanilla_0.0.1_all.ipk",
+    "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/cli-webos/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
+    "webos:install": "./node_modules/cli-webos/bin/ares-install.sh -d emulator ./platforms/webos/build/pavjacko.reactnativevanilla_0.0.1_all.ipk",
     "start-main-dev": "electron -r babel-register ./platforms/macos/main.js",
     "macos:build": "NODE_ENV=production webpack -p --config ./platforms/macos/webpack.config.js",
     "macos": "npm run macos:build && electron ./platforms/macos/",
@@ -119,10 +119,11 @@
     "react-test-renderer": "16.4.1",
     "style-loader": "0.19.0",
     "webpack-cli": "3.1.0",
-    "ares-webos-sdk": "3.0.5",
+    "cli-webos": "0.0.1",
     "icon-toolkit": "0.0.9",
     "electron": "2.0.0",
-    "electron-builder": "20.28.2"
+    "electron-builder": "20.28.2",
+    "react-native-web-image-loader": "0.0.5"
   },
   "jest": {
     "preset": "react-native",
