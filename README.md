@@ -1,6 +1,3 @@
-<p align="center">
-  
-<p>
 <p align='center'>
   <h1 align='center'>React Native Vanilla</h1>
   <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_exp.png?raw=true" /></p>
@@ -9,6 +6,7 @@
 
 
    <br />
+    <br />
 <table>
   <tr>
     <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#androidtv">Android TV</a></th><th><a href="#macos">macOS</a></th>
