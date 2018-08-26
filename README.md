@@ -7,6 +7,7 @@
 
    <br />
     <br />
+      <br />
 <table>
   <tr>
     <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#androidtv">Android TV</a></th><th><a href="#macos">macOS</a></th>
@@ -94,6 +95,8 @@
     - [Project Configuration](#project-configuration-7)
     - [Run](#run-7)
 - [Contributors](#contributors)
+- [Discussions](#discussions)
+- [Community](#community)
 - [LICENSE](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -387,7 +390,7 @@ npm run macos
 ---
 ## Discussions
 
-
+> coming soon
 
 ---
 ## Community
@@ -403,4 +406,4 @@ Special thanks to open-source initiatives this project utilises, notably:
 ---
 ## LICENSE
 
-MIT
+[MIT](LICENSE)
