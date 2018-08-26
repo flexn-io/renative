@@ -10,7 +10,7 @@
       <br />
 <table>
   <tr>
-    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#androidtv">Android TV</a></th><th><a href="#macos">macOS</a></th>
+    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th>
   </tr>
   <tr>
     <th>
@@ -24,7 +24,7 @@
     </th>
   </tr>
   <tr>
-    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#webos">LG webOS</a></th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th>
   </tr>
   <tr>
     <th>
@@ -32,7 +32,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen1.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
     </th>
@@ -134,9 +134,12 @@ nvm install node 10.8.0
 nvm alias default node
 ```
 
-Recommended Node configuration:
-* Node v10.8.0
-* npm v6.2.0
+Tested / Recommended Node configurations:
+
+| Node Version  | Node Alias | NPM Version |
+| ------------- |:-------------:|:-------------:|
+| `8.11.4`  | `LTS`    | `5.6.0`  |
+| `10.8.0`  |     | `6.2.0`  |
 
 
 #### 2. Installation
