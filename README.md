@@ -130,8 +130,8 @@
 The recommended way to run specific version of Node and NPM is to use NVM:
 
 ```
-nvm install node 10.8.0
-nvm alias default node
+nvm install node 8.11.4
+nvm alias default node 8.11.4
 ```
 
 Tested / Recommended Node configurations:
@@ -153,6 +153,29 @@ $ cd react-native-vanilla
 
 $ npm run setup
 ```
+
+---
+## Architecture
+
+Folder Structure
+
+    .
+    ├── assets                   # Cross platfrom assets
+    ├── docs                     # Documentation files
+    ├── platforms                # Platform specific projects / code
+    │   ├── android              # Android platform project
+    │   ├── androidtv            # Android TV convigured platform project
+    │   ├── ios                  # iOS Xcode platform project
+    │   ├── macos                # macOS Electron platform project
+    │   ├── tizen                # Tizen platform project
+    │   ├── tvos                 # tvOS Xcode platform project
+    │   ├── web                  # Webpack based project
+    │   ├── webos                # Web OS platform project
+    ├── src                      # Source files
+    ├── tests                    # Automated tests
+    ├── utils                    # Tools and utilities
+    ├── LICENSE
+    └── README.md
 
 ---
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_ios.png?raw=true" width=50 height=50 />
@@ -330,6 +353,22 @@ npm run tizen:build
 
 * Open project in Tizen Studio <PROJECT_ROOT>/tizen
 * Run app
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen1.png?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen2.png?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rtizen3.png?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen4.png?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen5.png?raw=true" />
+    </th>
+  </tr>
+</table>
 
 ---
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_webos.png?raw=true" width=50 height=50 />
