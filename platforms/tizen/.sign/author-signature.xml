@@ -2,25 +2,33 @@
 <SignedInfo>
 <CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"></CanonicalizationMethod>
 <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></SignatureMethod>
+<Reference URI=".gitignore">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>YEs0WZ0vi4AduqV58Y9uZP7xAdIRcyYR3GhzRqMhO8E=</DigestValue>
+</Reference>
 <Reference URI="BasicProject.wgt">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>oowXrM3h1TyBpXPAWnej3pSZvr3Tbyy0rJ+qNaFa4eM=</DigestValue>
 </Reference>
 <Reference URI="config.xml">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>HnOicJAixjlYsBeA1yemtDbT5uOyQdWUg5vk0ZaEx0Q=</DigestValue>
+<DigestValue>vN41vk1Cqj4i8wWTaC9A/2Cam5YxcYABnhKfF9HcTOc=</DigestValue>
 </Reference>
 <Reference URI="icon.png">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>1d0oEZHqPn+QzNzGIHwj9ODby6x9ggFs9uOsav6jPNs=</DigestValue>
+<DigestValue>wQasnog+g3hy6/WdEX4i2mKt670gnRmyFqWhD5898s4=</DigestValue>
 </Reference>
 <Reference URI="public%2Fapp.css">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
 <DigestValue>cG1HmpGQN2B4Q3Xr07lD+e3hq3k7j12kxWlAmzaMsn4=</DigestValue>
 </Reference>
+<Reference URI="public%2Fassets%2F0dea628782d20da8241b9b5b9cc76408.png">
+<DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
+<DigestValue>TsD/Ye6W9s6hs05qA5FCbxT15P7TtwYq8wAZNMUNbaA=</DigestValue>
+</Reference>
 <Reference URI="public%2Fassets%2Fbundle.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>3OIpmV3gAfGthjYfHD4RpCy1q58juspVSZGBP7ghOn4=</DigestValue>
+<DigestValue>FKWi39W3j5/zjfBHl8luFD7Pe6tEE1po2SZj7Fj8+Ns=</DigestValue>
 </Reference>
 <Reference URI="public%2Findex.html">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
@@ -32,7 +40,7 @@
 </Reference>
 <Reference URI="webpack.config.js">
 <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></DigestMethod>
-<DigestValue>W4qoigRENBNNN901E+iZ9xB3JyGSBuxb2Mi6u2G0IJA=</DigestValue>
+<DigestValue>Q8jQzUm5Xu31krib2ZUCK4qv7JovbA3xhqi7Od/V6Bw=</DigestValue>
 </Reference>
 <Reference URI="#prop">
 <Transforms>
@@ -43,9 +51,9 @@
 </Reference>
 </SignedInfo>
 <SignatureValue>
-ape1340SHQdPCfYZW8zeoPebpEpbB7TMtRqjxqKvp7Sb1OGCBiOethdF6qYzIi6V23bGR7/ghegv
-YNUwZLf+4HvSsxrGRVeGCjiDXnLkgooUgiSTohXSQjAaV/ArNd2nXclQyn2mwrIKEXu4fKjc5kQv
-wtbPnbBHDMa6R2wNTkU=
+MT/5m7xxhXF2FHXs1xhn/ntxqZdLeny+mtZEEJoJq5NO/zYDgkMmqDlk8CVeJ75AtLQMT/tZQ8WR
+sSMthWEqoxYma4jEoLO/e4E9/T9ew69fP1jvV4K26HuwVOnKTfELcRYvu4UrSQG9zajDyGEShD/t
+SdQKZWORLttySULBcVk=
 </SignatureValue>
 <KeyInfo>
 <X509Data>
