@@ -62,6 +62,7 @@
 - [Get Started](#get-started)
     - [1. Prerequisite](#1-prerequisite)
     - [2. Installation](#2-installation)
+- [Architecture](#architecture)
 - [iOS](#ios)
     - [Requirements](#requirements)
     - [Project Configuration](#project-configuration)
@@ -361,7 +362,7 @@ npm run tizen:build
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen2.png?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rtizen3.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen3.png?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen4.png?raw=true" />
     </th><th>
