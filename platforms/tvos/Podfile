@@ -8,6 +8,7 @@ target 'ReactNativeVanillaTVOS' do
   'tvOS',
   'CxxBridge',
   'RCTImage',
+  'RCTAnimation',
   'RCTNetwork',
   'RCTText',
   'RCTWebSocket'
