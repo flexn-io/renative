@@ -46,10 +46,12 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
-    "ios": "react-native run-ios --project-path platforms/ios --simulator \"iPhone 6\"",
-    "tvos": "react-native run-ios --project-path platforms/tvos --simulator \"Apple TV\" --scheme ReactNativeVanillaTVOS",
-    "fix:ios": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h",
-    "setup": "rm -rf node_modules && rm -rf platforms/ios/build && rm -rf platforms/tvos/build && npm install && npm run ios:update && npm run tvos:update && npm run fix:ios && chmod -R 755 ./node_modules/cli-webos/bin",
+    "ios": "node ./utils/setup/only_mac.js run_ios",
+    "tvos": "node ./utils/setup/only_mac.js run_tvos",
+    "ios:fix": "node ./utils/setup/only_mac.js fix_ios",
+    "ios:update": "node ./utils/setup/only_mac.js update_ios",
+    "tvos:update": "node ./utils/setup/only_mac.js update_tvos",
+    "setup": "node ./utils/setup",
     "android": "cd platforms/android && ./gradlew appStart",
     "androidtv": "cd platforms/androidtv && ./gradlew appStart",
     "ios:update": "cd platforms/ios && pod update",
@@ -64,6 +66,9 @@
     "macos:build": "NODE_ENV=production webpack -p --config ./platforms/macos/webpack.config.js",
     "macos": "npm run macos:build && electron ./platforms/macos/",
     "macos:dist": "electron-builder",
+    "windows:build": "webpack -p --config ./platforms/windows/webpack.config.js",
+    "windows": "npm run windows:build && electron ./platforms/windows/",
+    "windows:dist": "electron-builder",
     "preversion": "npm run test",
     "version": "./utils/update-versions.sh",
     "doc": "doctoc ."
@@ -71,9 +76,9 @@
   "build": {
     "appId": "pavjacko.reactnativevanilla",
     "directories": {
-      "app": "platforms/macos",
-      "buildResources": "platforms/macos/resources",
-      "output": "platforms/macos/build/release"
+      "app": "platforms/windows",
+      "buildResources": "platforms/windows/resources",
+      "output": "platforms/macos/windows/release"
     },
     "mac": {
       "category": "your.app.category.type"
