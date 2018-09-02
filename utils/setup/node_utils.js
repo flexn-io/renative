@@ -55,6 +55,19 @@ const removeDirAsyncWithRimraf = (...args) => new Promise((resolve, reject) => {
     });
 });
 
+const copyDirContents = (source, destination) => new Promise((resolve, reject) => {
+    const ncp = require('ncp');
+    ncp.limit = 16;
+
+    ncp(source, destination, function (err) {
+     if (err) {
+        reject(err);
+      } else {
+        resolve()
+      }
+    });
+});
+
 const { spawn } = require('child_process');
 
 const SEPARATOR = process.platform === 'win32' ? ';' : ':';
@@ -112,4 +125,5 @@ module.exports = {
     removeDirAsyncWithNode,
     removeDirAsyncWithRimraf,
     executeAsync,
+    copyDirContents
 };

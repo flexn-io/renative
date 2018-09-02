@@ -103,25 +103,6 @@ const updatetvOS = () => {
         });
 };
 
-// const cleanPods = () => {
-//     console.log('Cleaning pods');
-//     return executeAsync('pod', ['repo', 'remove', 'master'])
-//         .catch(() => {
-//             console.log('No Cocoapods master repo found');
-//             // Don't throw, just keep the then flow
-//             return 'ok';
-//         });
-// };
-
-// const podSetup = () => {
-//     console.log('Pod setup');
-//     // TODO: Add version?
-//     // this will make active the correct version for people with more than one installation
-//     // if a specific version of cocoa∫pods is needed
-//     // `pod _${semver.coerce(engines.cocoapods)}_ setup` command is required
-//     return executeAsync('pod', ['setup']);
-// };
-
 module.exports = {
     onlyMac,
     fixiOS,
