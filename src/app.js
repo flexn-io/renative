@@ -15,7 +15,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   image: {
-    marginBottom: 50
+    marginBottom: 50,
+    width: 83,
+    height: 97
   },
   button: {
     marginTop: 50,

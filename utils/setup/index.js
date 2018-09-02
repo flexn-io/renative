@@ -10,7 +10,7 @@ console.log('1.1 - Cleaning node_modules (may take a while if it is not a fresh 
 const checkExternalDependencies = () => {
     const semver = require('semver');
     // const Confirm = require('prompt-confirm');
-    const { engines } = require('../package.json');
+    const { engines } = require('../../package.json');
     return executeAsync('node', ['--version'], {})
         .catch(() => {
             // Should never happen, this is a node script ;)
