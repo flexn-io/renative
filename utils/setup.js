@@ -172,7 +172,7 @@ cleanNodeModules()
     .then(cleanBuilds)
     .then(checkExternalDependencies)
     .then(() => {
-        const { onlyMac } = require('./only_mac');
+        const { onlyMac } = require('./setup_mac');
         return onlyMac()
             .then(podUpdate, () => {
                 console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
