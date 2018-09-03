@@ -1,15 +1,13 @@
 /* eslint-disable no-console */
 // Because we are deleting node_modules
 /* eslint-disable global-require */
+const { sed } = require('shelljs');
+const path = require('path');
 const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync } = require('./node_utils');
 
-console.log('REACT-NATIVE-VANILLA');
-console.log('1 - Cleaning & fresh install of node_modules');
-console.log('1.1 - Cleaning node_modules (may take a while if it is not a fresh install)');
-
+/* eslint-disable-next-line arrow-body-style */
 const checkExternalDependencies = () => {
     const semver = require('semver');
-    // const Confirm = require('prompt-confirm');
     const { engines } = require('../package.json');
     return executeAsync('node', ['--version'], {})
         .catch(() => {
@@ -24,20 +22,9 @@ const checkExternalDependencies = () => {
                 return 'ok';
             }
             console.warn('Your node version does NOT match the requirements:', result, 'VS', engines.node);
-            // TODO: installation of nvm and node for dummies?
-            // const nodePrompt =
-            // new Confirm('Do you want to install a suitable node version via nvm?');
-            // nodePrompt.ask((answer) => {
-            //     console.log('answer', answer);
-            //     if (answer) {
-            //         executeAsync('nvm', ['ls'], {})
-            //           .catch /* install nvm */
-            //           .then /* nvm use requiredVersion */
-            //     }
-            // });
+
             throw new Error('Your node version does NOT match the requirements');
         })
-        // For readability
         /* eslint-disable-next-line arrow-body-style */
         .then(() => {
             return executeAsync(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['--version'], {})
@@ -81,9 +68,7 @@ const checkExternalDependencies = () => {
                 return executeAsync('pod', ['--version'], {})
                     .catch(() => {
                         console.error('No installation of CocoaPods found');
-                        // TODO: Install CocoaPods for dummies?
-                        // sudo gem install cocoapods -v ${engines.cocoapods}
-                        // or semver.coerce(engines.cocoapods)
+
                         throw new Error('No installation of CocoaPods found');
                     })
                     .then((result) => {
@@ -92,21 +77,17 @@ const checkExternalDependencies = () => {
                             return 'ok';
                         }
                         console.warn('Your cocoapods version does NOT match the requirements:', result, 'VS', engines.cocoapods);
-                        // TODO: Install CocoaPods for dummies?
-                        // sudo gem install cocoapods -v ${engines.cocoapods}
-                        // or semver.coerce(engines.cocoapods)
-                        // This will keep installed both versions of cocoapods
-                        // podUpdate must specify the version
-                        // `pod _${semver.coerce(engines.cocoapods)}_ setup` command is required
+
                         throw new Error('Your cocoapods version does NOT match the requirements');
                     });
             }
             return Promise.resolve();
         });
 };
-// For readability
+
 /* eslint-disable-next-line arrow-body-style */
 const cleanNodeModules = () => {
+    console.log('1 - Cleaning & fresh install of node_modules');
     return new Promise((resolve, reject) => {
         removeDirAsyncWithNode('./node_modules', (error) => {
             if (error) {
@@ -123,6 +104,7 @@ const cleanNodeModules = () => {
     });
 };
 
+/* eslint-disable-next-line arrow-body-style */
 const installNPMDependecies = () => {
     console.log('1.2 - Running npm install');
     return new Promise((resolve) => {
@@ -137,6 +119,7 @@ const installNPMDependecies = () => {
     });
 };
 
+/* eslint-disable-next-line arrow-body-style */
 const cleanBuilds = () => {
     console.log('2 - Cleaning build folders');
     return Promise.all([
@@ -150,10 +133,8 @@ const cleanBuilds = () => {
 
 /* eslint-disable-next-line arrow-body-style */
 const podUpdate = () => {
-    return Promise.all([
-        executeAsync('npm', ['run', 'ios:update']),
-        executeAsync('npm', ['run', 'tvos:update']),
-    ])
+    return updateiOS()
+        .then(updatetvOS)
         .catch((error) => {
             const thrownError = `Error updating Apple pods ${error}`;
             console.error(thrownError);
@@ -162,30 +143,178 @@ const podUpdate = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const fixiOS = () => {
-    return executeAsync('npm', ['run', 'ios:fix']);
+const onlyMac = () => {
+    return new Promise((resolve, reject) => {
+        if (/darwin/i.test(process.platform)) {
+            resolve();
+        } else {
+            reject();
+        }
+    }).catch(() => {
+        throw new Error('Feature/command only supported on macOSX. iOS/tvOS commands are only for macOSX.');
+    });
 };
 
+/* eslint-disable-next-line arrow-body-style */
+const fixiOS = () => {
+    return onlyMac()
+        .then(() => {
+            console.log('Fixing iOS');
+            try {
+                sed(
+                    '-i',
+                    '#import <RCTAnimation/RCTValueAnimatedNode.h>',
+                    '#import "RCTValueAnimatedNode.h"',
+                    path.resolve(__dirname, '..', 'node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h'),
+                );
+                return Promise.resolve();
+            } catch (error) {
+                console.error('sed failed: ', error);
+                return Promise.reject();
+            }
+        });
+};
 
-cleanNodeModules()
-    .then(installNPMDependecies)
-    .then(cleanBuilds)
-    .then(checkExternalDependencies)
-    .then(() => {
-        const { onlyMac } = require('./setup_mac');
-        return onlyMac()
-            .then(podUpdate, () => {
-                console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
-                throw new Error('Not macosx');
-            })
-            .then(fixiOS, (error) => {
-                if (error && error.message === 'Not macosx') {
-                    return 'ok';
-                }
-                throw error;
+/* eslint-disable-next-line arrow-body-style */
+const runiOS = () => {
+    return onlyMac()
+        .then(() => {
+            console.log('Running iOS');
+            return executeAsync('react-native run-ios', [
+                '--project-path',
+                'ios',
+                '--simulator',
+                '"iPhone 6"',
+            ]);
+        });
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const runtvOS = () => {
+    return onlyMac()
+        .then(() => {
+            console.log('Running tvOS');
+            return executeAsync('react-native run-ios', [
+                '--project-path',
+                'tvos',
+                '--simulator',
+                '"Apple TV"',
+                '--scheme',
+                'NextGenTVOS',
+            ]);
+        });
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const updatePods = (folder) => {
+    return onlyMac()
+        .then(() => {
+            console.log('Updating Pods for', folder);
+            return executeAsync('pod', [
+                'update',
+            ], {
+                cwd: folder,
+                evn: process.env,
+                stdio: 'inherit',
             });
-    })
-    .catch((error) => {
-        console.error('Setup failed', error);
-        process.exit(1);
-    });
+        })
+        .catch((error) => {
+            console.error('Error updating pods', error);
+            throw new Error(`Error updating pods ${error}`);
+        });
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const updateiOS = () => {
+    return onlyMac()
+        .then(() => {
+            console.log('Updating iOS');
+            return updatePods('platforms/ios');
+        });
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const updatetvOS = () => {
+    return onlyMac()
+        .then(() => {
+            console.log('Updating tvOS');
+            return updatePods('platforms/tvos');
+        });
+};
+
+/* eslint-disable-next-line no-unused-vars */
+const [context, file, ...args] = process.argv;
+if (file === __filename) {
+    switch (args[0]) {
+    case 'run_ios':
+        runiOS()
+            .catch((error) => {
+                console.error('ios failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'run_tvos':
+        runtvOS()
+            .catch((error) => {
+                console.error('ios failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'fix_ios':
+        fixiOS()
+            .catch((error) => {
+                console.error('ios:fix failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'update_ios':
+        updateiOS()
+            .catch((error) => {
+                console.error('ios:update failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'update_tvos':
+        updatetvOS()
+            .catch((error) => {
+                console.error('tvos:update failed:', error.message);
+                process.exit();
+            });
+        break;
+    default:
+        console.log('REACT-NATIVE-VANILLA');
+        cleanNodeModules()
+            .then(installNPMDependecies)
+            .then(cleanBuilds)
+            .then(checkExternalDependencies)
+            .then(() => onlyMac()
+                .then(podUpdate, () => {
+                    console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
+                    throw new Error('Not macosx');
+                })
+                .then(fixiOS, (error) => {
+                    if (error && error.message === 'Not macosx') {
+                        return 'ok';
+                    }
+                    throw error;
+                }))
+            .then(() => {
+                console.log('SETUP COMPLETED');
+                process.exit();
+            })
+            .catch((error) => {
+                console.error('Setup failed', error);
+                process.exit(1);
+            });
+        break;
+    }
+}
+
+module.exports = {
+    onlyMac,
+    fixiOS,
+    runiOS,
+    runtvOS,
+    updateiOS,
+    updatetvOS,
+};

@@ -10,7 +10,7 @@
       <br />
 <table>
   <tr>
-    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th>
+    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th><th><a href="#windows">Windows</a></th>
   </tr>
   <tr>
     <th>
@@ -21,10 +21,12 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/win/docs/rnv_windows.gif?raw=true" />
     </th>
   </tr>
   <tr>
-    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#"></a></th>
   </tr>
   <tr>
     <th>
@@ -35,6 +37,8 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
+    </th><th>
+
     </th>
   </tr>
 </table>
@@ -47,7 +51,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
-> Most fundamental multi-platform project template based on [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen`, `LG webOS` and `macOS/OSX` platforms
+> Most fundamental multi-platform project template based on [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and `Windows` platforms
 
 * Ideal starting point for advanced multi-platform projects.
 * Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
@@ -110,7 +114,7 @@
 | OS        | Support |
 | ------------- |:-------------:|
 | Mac      | `YES`  |
-| Windows      | `untested`  |
+| Windows      | `YES`  |
 | Linux      | `untested`  |
 
 #### Requirements
@@ -423,6 +427,39 @@ npm run webos:install
 ```
 npm run macos
 ```
+
+---
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/win/docs/ic_windows.png?raw=true" width=50 height=50 />
+
+## Windows
+
+- support for Windows 10+
+- Based on Electron
+
+#### Requirements
+- Windows dev environment
+
+
+#### Project Configuration
+
+| Feature        | Version |
+| ------------- |:-------------:|
+| electron | `2.0.0`  |
+| react-native-web      | `0.8.9`  |
+| electron-builder     | `20.28.2`  |
+
+#### Run
+
+```
+npm run windows
+```
+
+#### Distribute
+
+```
+npm run windows:dist
+```
+
 ---
 ## Contributors
 

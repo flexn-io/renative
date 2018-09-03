@@ -31,7 +31,7 @@
   ],
   "license": "MIT",
   "private": false,
-  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen`, `LG webOS` and `macOS/OSX` platforms",
+  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and Windows platforms",
   "author": {
     "name": "Pavel Jacko",
     "email": "pavel.jacko@gmail.com",
@@ -48,9 +48,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
-    "ios": "node ./utils/setup_mac.js run_ios",
-    "tvos": "node ./utils/setup_mac.js run_tvos",
-    "ios:fix": "node ./utils/setup_mac.js fix_ios",
+    "ios": "node ./utils/setup.js run_ios",
+    "tvos": "node ./utils/setup.js run_tvos",
     "ios:update": "cd platforms/ios && pod update",
     "tvos:update": "cd platforms/tvos && pod update",
     "setup": "node ./utils/setup.js",
