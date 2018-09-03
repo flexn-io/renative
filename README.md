@@ -38,7 +38,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
     </th><th>
-
+        ...
     </th>
   </tr>
 </table>
