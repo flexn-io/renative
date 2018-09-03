@@ -31,7 +31,7 @@
   ],
   "license": "MIT",
   "private": false,
-  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and Windows platforms",
+  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
   "author": {
     "name": "Pavel Jacko",
     "email": "pavel.jacko@gmail.com",
