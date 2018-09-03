@@ -2,8 +2,8 @@ import {
     getConfigFile,
     getParsedConfigFile,
     getPackageVersion,
-    updatePackageVersion
-} from '../../../utils/npm-version/version-webos';
+    updatePackageVersion,
+} from '../../utils/version-webos';
 
 test('gets config file', () => {
     expect(getConfigFile()).not.toBeNull();

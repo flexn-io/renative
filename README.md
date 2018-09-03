@@ -22,7 +22,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/win/docs/rnv_windows.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th>
   </tr>
   <tr>
@@ -434,7 +434,7 @@ npm run macos
 ```
 
 ---
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feature/win/docs/ic_windows.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_windows.png?raw=true" width=50 height=50 />
 
 ## Windows
 
