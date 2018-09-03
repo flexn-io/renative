@@ -25,7 +25,9 @@
     "electron",
     "smart tv",
     "lg",
-    "webos"
+    "webos",
+    "windows",
+    "desktop"
   ],
   "license": "MIT",
   "private": false,

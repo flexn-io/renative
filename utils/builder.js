@@ -1,24 +1,35 @@
 
-const { copyDirContents, executeAsync } = require('../setup/node_utils');
+const { copyDirContents, executeAsync } = require('./node_utils');
 
 /* eslint-disable-next-line arrow-body-style */
 const distWindows = () => {
-  console.log('Dist Windows');
-  try {
-      return copyDirContents('./platforms/windows', './platforms/electron').then(() => {
-        console.log('Dist Windows ...');
-        // return executeAsync('electron-builder', []).then(() => {
-        //   console.log('Dist Windows Done');
-        // })
-      })
-  } catch (error) {
-      console.error('dist failed: ', error);
-      return Promise.reject();
-  }
+    console.log('Dist Windows');
+    try {
+        return copyDirContents('./platforms/windows', './platforms/electron').then(() => {
+            console.log('Dist Windows ...');
+        });
+    } catch (error) {
+        console.error('dist failed: ', error);
+        return Promise.reject();
+    }
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const distMacOS = () => {
+    console.log('Dist MacOS');
+    try {
+        return copyDirContents('./platforms/macos', './platforms/electron').then(() => {
+            console.log('Dist MacOS ...');
+        });
+    } catch (error) {
+        console.error('dist failed: ', error);
+        return Promise.reject();
+    }
 };
 
 module.exports = {
-    distWindows
+    distWindows,
+    distMacOS,
 };
 
 /* eslint-disable-next-line no-unused-vars */
@@ -33,7 +44,11 @@ if (file === __filename) {
             });
         break;
     case 'dist_macos':
-
+        distMacOS()
+            .catch((error) => {
+                console.error('dist macos failed:', error.message);
+                process.exit();
+            });
         break;
     case 'dist_tizen':
 
