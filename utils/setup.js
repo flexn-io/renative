@@ -3,14 +3,14 @@
 /* eslint-disable global-require */
 const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync } = require('./node_utils');
 
-console.log(`INITIALIZING`);
+console.log('REACT-NATIVE-VANILLA');
 console.log('1 - Cleaning & fresh install of node_modules');
 console.log('1.1 - Cleaning node_modules (may take a while if it is not a fresh install)');
 
 const checkExternalDependencies = () => {
     const semver = require('semver');
     // const Confirm = require('prompt-confirm');
-    const { engines } = require('../../package.json');
+    const { engines } = require('../package.json');
     return executeAsync('node', ['--version'], {})
         .catch(() => {
             // Should never happen, this is a node script ;)
