@@ -48,7 +48,7 @@ task appStart(type: Exec, dependsOn: 'installDebug') {
 
 configurations.all {
     resolutionStrategy {
-        force 'org.webkit:android-jsc:r216113'
+        force 'org.webkit:android-jsc:r224109'
     }
 }
 
