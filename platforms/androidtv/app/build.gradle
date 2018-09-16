@@ -48,13 +48,13 @@ task appStart(type: Exec, dependsOn: 'installDebug') {
 
 configurations.all {
     resolutionStrategy {
-        force 'org.webkit:android-jsc:r216113'
+        force 'org.webkit:android-jsc:r224109'
     }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.android.support:leanback-v17:27.1.1'
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.github.bumptech.glide:glide:3.8.0'
