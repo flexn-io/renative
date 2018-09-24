@@ -182,7 +182,7 @@ const runiOS = () => {
             console.log('Running iOS');
             return executeAsync('react-native run-ios', [
                 '--project-path',
-                'ios',
+                'platforms/ios',
                 '--simulator',
                 '"iPhone 6"',
             ]);
@@ -196,7 +196,7 @@ const runtvOS = () => {
             console.log('Running tvOS');
             return executeAsync('react-native run-ios', [
                 '--project-path',
-                'tvos',
+                'platforms/tvos',
                 '--simulator',
                 '"Apple TV"',
                 '--scheme',
