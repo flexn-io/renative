@@ -180,11 +180,12 @@ const runiOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Running iOS');
-            return executeAsync('react-native run-ios', [
+            return executeAsync('react-native', [
+                'run-ios',
                 '--project-path',
                 'platforms/ios',
                 '--simulator',
-                '"iPhone 6"',
+                'iPhone 6',
             ]);
         });
 };
@@ -194,11 +195,12 @@ const runtvOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Running tvOS');
-            return executeAsync('react-native run-ios', [
+            return executeAsync('react-native', [
+                'run-ios',
                 '--project-path',
                 'platforms/tvos',
                 '--simulator',
-                '"Apple TV"',
+                'Apple TV',
                 '--scheme',
                 'NextGenTVOS',
             ]);
