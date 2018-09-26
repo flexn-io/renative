@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -41,8 +41,9 @@
     "url": "https://github.com/pavjacko/react-native-vanilla/issues"
   },
   "contributors": [
-    "Sander Looijenga <sander_l@live.com>",
-    "Daniel Marino Ruiz <changete@gmail.com>"
+    "Sander Looijenga <https://github.com/sanderlooijenga>",
+    "Daniel Marino Ruiz <https://github.com/CHaNGeTe>",
+    "David Rielo <https://github.com/davidrielo>"
   ],
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {

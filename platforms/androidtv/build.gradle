@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper
 
 buildscript {
-    ext.kotlin_version = '1.2.50'
+    ext.kotlin_version = '1.2.51'
     repositories {
         google()
         jcenter()
@@ -22,7 +22,7 @@ allprojects {
             url "$rootDir/../../node_modules/react-native/android"
         }
         maven { url "https://jitpack.io" }
-        maven { url "$rootDir/../node_modules/jsc-android/dist" }
+        maven { url "$rootDir/../../node_modules/jsc-android/dist" }
     }
 }
 
@@ -53,8 +53,8 @@ subprojects {
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
             android {
-                compileSdkVersion 27
-                buildToolsVersion '27.0.3'
+                compileSdkVersion 28
+                buildToolsVersion '28.0.2'
             }
         }
     }

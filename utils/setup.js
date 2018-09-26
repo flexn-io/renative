@@ -5,7 +5,6 @@ const { sed } = require('shelljs');
 const path = require('path');
 const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync } = require('./node_utils');
 
-/* eslint-disable-next-line arrow-body-style */
 const checkExternalDependencies = () => {
     const semver = require('semver');
     const { engines } = require('../package.json');
@@ -83,6 +82,11 @@ const checkExternalDependencies = () => {
             }
             return Promise.resolve();
         });
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const checkSDKs = () => {
+    return Promise.resolve();
 };
 
 /* eslint-disable-next-line arrow-body-style */
@@ -289,6 +293,7 @@ if (file === __filename) {
             .then(installNPMDependecies)
             .then(cleanBuilds)
             .then(checkExternalDependencies)
+            // .then(checkSDKs)
             .then(() => onlyMac()
                 .then(podUpdate, () => {
                     console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
