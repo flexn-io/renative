@@ -299,12 +299,12 @@ if (file === __filename) {
                     console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
                     throw new Error('Not macosx');
                 })
-                .then(fixiOS, (error) => {
-                    if (error && error.message === 'Not macosx') {
-                        return 'ok';
-                    }
-                    throw error;
-                }))
+                // .then(fixiOS, (error) => {
+                //     if (error && error.message === 'Not macosx') {
+                //         return 'ok';
+                //     }
+                //     throw error;
+                // }))
             .then(() => {
                 console.log('SETUP COMPLETED');
                 process.exit();

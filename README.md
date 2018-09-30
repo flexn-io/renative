@@ -129,15 +129,15 @@
 
 #### Stack / Libraries
 
--   [React](https://facebook.github.io/react/) `16.4.1` react library
--   [React Native](https://facebook.github.io/react-native/) `0.56.0` for building native apps using react
+-   [React](https://facebook.github.io/react/) `16.5.1` react library
+-   [React Native](https://facebook.github.io/react-native/) `0.57.1` for building native apps using react
 -   [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
 ---
 
 ## Get Started
 
-#### 1. Prerequisite
+#### 1. Prerequisites
 
 The recommended way to run specific version of Node and NPM is to use NVM:
 
@@ -148,10 +148,9 @@ nvm alias default node 8.11.4
 
 Tested / Recommended Node configurations:
 
-| Node Version | Node Alias | NPM Version |
-| ------------ | :--------: | :---------: |
-| `8.11.4`     |   `LTS`    |   `5.6.0`   |
-| `10.8.0`     |            |   `6.2.0`   |
+| Node Version | NPM Version |
+| ------------ | :---------: |
+| `8.11.4`     |   `5.6.0`   |
 
 #### 2. Installation
 
@@ -203,7 +202,6 @@ Folder Structure
 
 -   [CocoaPods](https://cocoapods.org) `1.5.3` or newer
 -   [Xcode](https://developer.apple.com/xcode/) for iOS development
--   [CocoaPods](https://cocoapods.org/) `1.4.0` for iOS libraries
 
 #### Project Configuration
 
@@ -268,7 +266,6 @@ npm run android
 
 -   [CocoaPods](https://cocoapods.org) `1.5.3` or newer
 -   [Xcode](https://developer.apple.com/xcode/) for iOS development
--   [CocoaPods](https://cocoapods.org/) `1.4.0` for iOS libraries
 
 #### Project Configuration
 
@@ -336,8 +333,8 @@ npm run androidtv
 | Feature          |     Version     |
 | ---------------- | :-------------: |
 | Webpack          |    `3.11.0`     |
-| react-native-web |     `0.8.9`     |
-| Babel Core       | `7.0.0-beta.47` |
+| react-native-web |     `0.9.1`     |
+| Babel Core       | `7.1.2` |
 
 #### Run
 
@@ -367,8 +364,8 @@ open browser URL: http://localhost:8080
 | ---------------- | :-------------: |
 | Tizen Studio     |      `2.5`      |
 | Tizen SDK        |      `4.0`      |
-| react-native-web |     `0.8.9`     |
-| Babel Core       | `7.0.0-beta.47` |
+| react-native-web |     `0.9.1`     |
+| Babel Core       |     `7.1.2`     |
 
 #### Run
 
@@ -411,9 +408,9 @@ npm run tizen:build
 
 | Feature          |     Version     |
 | ---------------- | :-------------: |
-| ares-webos-sdk   |     `1.7.x`     |
-| react-native-web |     `0.8.9`     |
-| Babel Core       | `7.0.0-beta.47` |
+| cli-webos   |     `0.0.2`     |
+| react-native-web |     `0.9.1`     |
+| Babel Core       | `7.1.2` |
 
 #### Run
 
@@ -442,7 +439,7 @@ npm run webos:install
 | Feature          |  Version  |
 | ---------------- | :-------: |
 | electron         |  `2.0.0`  |
-| react-native-web |  `0.8.9`  |
+| react-native-web |  `0.9.1`  |
 | electron-builder | `20.28.2` |
 
 #### Run
@@ -469,7 +466,7 @@ npm run macos
 | Feature          |  Version  |
 | ---------------- | :-------: |
 | electron         |  `2.0.0`  |
-| react-native-web |  `0.8.9`  |
+| react-native-web |  `0.9.1`  |
 | electron-builder | `20.28.2` |
 
 #### Run
