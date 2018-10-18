@@ -298,7 +298,7 @@ if (file === __filename) {
                 .then(podUpdate, () => {
                     console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
                     throw new Error('Not macosx');
-                })
+                }))
                 // .then(fixiOS, (error) => {
                 //     if (error && error.message === 'Not macosx') {
                 //         return 'ok';
