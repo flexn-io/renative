@@ -62,7 +62,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 -   [Get Started](#get-started)
-    -   [1. Prerequisite](#1-prerequisite)
+    -   [1. Prerequisites](#1-prerequisites)
     -   [2. Installation](#2-installation)
 -   [Architecture](#architecture)
 -   [iOS](#ios)
