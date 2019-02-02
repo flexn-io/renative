@@ -1,0 +1,10 @@
+{
+    "vendor": "Pavel Jacko",
+    "largeIcon": "largeIcon.png",
+    "icon": "icon.png",
+    "main": "index.html",
+    "id": "pavjacko.reactnativevanilla",
+    "title": "ReactNativeVanilla",
+    "type": "web",
+    "version": "0.8.0"
+}

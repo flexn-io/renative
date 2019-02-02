@@ -1,0 +1,15 @@
+{
+  "name": "ReactNativeVanilla-Windows",
+  "productName": "ReactNativeVanilla",
+  "version": "0.5.0",
+  "description": "ReactNativeVanilla boilerplate based on React",
+  "main": "./main.js",
+  "author": {
+    "name": "Pavel Jacko",
+    "email": "Pavel Jacko <pavel.jacko@gmail.com>",
+    "url": "https://github.com/pavjacko"
+  },
+  "scripts": {},
+  "license": "MIT",
+  "dependencies": {}
+}
