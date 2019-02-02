@@ -46,3 +46,5 @@ buck-out/
 !.vscode/extensions.json
 
 platforms/electron/
+
+package-lock.json
