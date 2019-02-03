@@ -1,4 +1,6 @@
 import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
 
 const SUPPORTED_PLATFORMS = ['all', 'ios', 'android', 'web', 'tizen'];
 const RNV = 'RNV';
@@ -6,6 +8,8 @@ const LINE = '-----------------------------';
 
 let _currentJob;
 let _currentProcess;
+
+const base = path.resolve('.');
 
 const isPlatformSupported = (platform) => {
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
@@ -40,8 +44,14 @@ const logError = (e, process) => {
 const getConfig = config => new Promise((resolve, reject) => {
     logTask('getConfig');
 
+    const c = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
+    const appConfigFolder = path.join(base, c.appConfigsFolder, config);
+    const pth = path.join(appConfigFolder, 'config.json');
+    const appConfigFile = JSON.parse(fs.readFileSync(pth).toString());
+
     resolve({
-        foo: 'bar',
+        appConfigFile,
+        appConfigFolder,
     });
 });
 
