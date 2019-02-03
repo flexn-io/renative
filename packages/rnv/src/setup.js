@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
-import { IOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete, logError } from './common';
+import fs from 'fs';
+import { IOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from './common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from './fileutils';
 
 const createPlatforms = c => new Promise((resolve, reject) => {
@@ -20,6 +21,7 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
         .then(() => _runCopyPlatforms(c))
         .then(() => _runCopyRuntimeAssets(c))
         .then(() => _runCopyiOSAssets(c))
+        .then(() => _runConfigureAndroid(c))
         .then(() => _runCopyAndroidAssets(c))
         .then(() => resolve());
 });
@@ -92,6 +94,18 @@ const _runCopyAndroidAssets = c => new Promise((resolve, reject) => {
     const destPath = path.join(c.platformBuildsFolder, `${c.appId}_${ANDROID}/app/src/main/res`);
     const sourcePath = path.join(c.appConfigFolder, 'assets/android/res');
     copyFolderContentsRecursiveSync(sourcePath, destPath);
+    resolve();
+});
+
+const _runConfigureAndroid = c => new Promise((resolve, reject) => {
+    logTask('_runCopyAndroidAssets');
+    if (!_isPlatformActive(c, ANDROID, resolve)) return;
+
+    const appFolder = getAppFolder(c, ANDROID);
+
+    copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
+    fs.chmodSync(path.join(appFolder, 'gradlew'), '755');
+
     resolve();
 });
 

@@ -15,6 +15,8 @@ let _currentProcess;
 let _isInfoEnabled = false;
 
 const base = path.resolve('.');
+const homedir = require('os').homedir();
+
 
 const isPlatformSupported = (platform, resolve) => {
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
@@ -34,6 +36,7 @@ const initializeBuilder = (cmd, appId, process, program) => new Promise((resolve
     const platformAssetsFolder = path.join(base, 'platformAssets');
     const platformBuildsFolder = path.join(base, 'platformBuilds');
     const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
+    const globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder);
 
     let appConfigFolder;
     let c;
@@ -52,6 +55,7 @@ const initializeBuilder = (cmd, appId, process, program) => new Promise((resolve
     }
     c.program = program;
     c.process = process;
+    c.globalConfigFolder = globalConfigFolder;
     c.platform = program.platform;
 
     console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
@@ -116,7 +120,7 @@ const checkConfig = appId => new Promise((resolve, reject) => {
     }
 });
 
-const getAppFolder = c => path.join(c.platformBuildsFolder, `${c.appId}_${c.platform}`);
+const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
 
 const logErrorPlatform = (platform, resolve) => {
     console.log(`ERROR: Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);

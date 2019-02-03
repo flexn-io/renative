@@ -1,5 +1,7 @@
 package reactnativevanilla.helloworld
 
+import reactnativevanilla.helloworld.BuildConfig
+
 import android.app.Application
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactNativeHost
