@@ -1,7 +1,7 @@
 {
   "id": "helloWorld",
   "common": {
-    "id": "reactnativevanilla.helloWorld",
+    "id": "reactnativevanilla.helloworld",
     "title": "RNV Hello World"
   },
   "platforms":{
@@ -10,7 +10,7 @@
       "runScheme": "Debug"
     },
     "android": {
-
+      "entryFile": "index.android"
     },
     "web": {
 

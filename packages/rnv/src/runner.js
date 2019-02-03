@@ -1,5 +1,6 @@
 
 import path from 'path';
+import shell from 'shelljs';
 import {
     IOS, TVOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
@@ -15,6 +16,12 @@ const runApp = c => new Promise((resolve, reject) => {
     switch (platform) {
     case IOS:
         _runiOS(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+        break;
+    case ANDROID:
+        _runAndroid(c)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -40,6 +47,42 @@ const updateApp = c => new Promise((resolve, reject) => {
 
     logErrorPlatform(c.platform, resolve);
 });
+
+const _runAndroid = c => new Promise((resolve, reject) => {
+    logTask('_runAndroid');
+
+    const appFolder = getAppFolder(c, 'android');
+    if (c.appConfigFile.platforms.android.runScheme === 'Release') {
+        _packageAndroid(c).then(() => {
+            shell.cd(`${appFolder}`);
+            shell.exec('./gradlew appStart');
+            resolve();
+        });
+    } else {
+        shell.cd(`${appFolder}`);
+        shell.exec('./gradlew appStart');
+        resolve();
+    }
+});
+
+const _packageAndroid = (c) => {
+    logTask('_packageAndroid');
+
+    const appFolder = getAppFolder(c, 'android');
+    return executeAsync('react-native', [
+        'bundle',
+        '--platform',
+        'android',
+        '--dev',
+        'false',
+        '--assets-dest',
+        `${appFolder}/app/src/main/res`,
+        '--entry-file',
+        `${c.appConfigFile.platforms.android.entryFile}.js`,
+        '--bundle-output',
+        `${appFolder}/app/src/main/assets/index.android.bundle`,
+    ]);
+};
 
 const iosPlatforms = [IOS, TVOS];
 const _runiOSUpdate = (c) => {

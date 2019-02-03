@@ -1,3 +1,3 @@
-rootProject.name = 'ReactNativeVanilla'
+rootProject.name = 'RNVApp'
 
 include ':app'
