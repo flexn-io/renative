@@ -3,16 +3,19 @@ import path from 'path';
 import { isPlatformSupported, getConfig, logTask, logComplete, logError } from './common';
 import { cleanFolder, copyFolderContentsRecursiveSync } from './fileutils';
 
-const create = (configName, program, process) => {
+const createPlatforms = (configName, program, process) => {
     getConfig(configName).then((v) => {
         _runCreateApp(v)
-            .then(() => logComplete())
+            .then(() => {
+                console.log('sjadhksajdhaskdjshksjdhsadkhj');
+                logComplete();
+            })
             .catch(e => logError(e));
     });
 };
 
 const _runCreateApp = c => new Promise((resolve, reject) => {
-    logTask('runCreateApp');
+    logTask('_runCreateApp');
     // console.log('CONFIGIS:', c);
     _runCleanPlaformFolders(c)
         .then(() => _runCopyPlatforms(c))
@@ -39,6 +42,7 @@ const _runCleanPlaformFolders = c => new Promise((resolve, reject) => {
 });
 
 const _runCopyPlatforms = c => new Promise((resolve, reject) => {
+    logTask('_runCopyPlatforms');
     const copyPlatformTasks = [];
     for (const k in c.appConfigFile.platforms) {
         if (isPlatformSupported(k)) {
@@ -54,9 +58,11 @@ const _runCopyPlatforms = c => new Promise((resolve, reject) => {
 });
 
 const _runCopyAssets = c => new Promise((resolve, reject) => {
+    logTask('_runCopyAssets');
     const aPath = c.platformAssetsFolder;
     const cPath = c.appConfigFolder;
-    return copyFolderContentsRecursiveSync(cPath, aPath);
+    copyFolderContentsRecursiveSync(cPath, aPath);
+    resolve();
 });
 
-export { create };
+export { createPlatforms };

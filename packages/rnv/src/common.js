@@ -21,11 +21,21 @@ const isPlatformSupported = (platform) => {
     return true;
 };
 
-const setCurrentJob = (cmd, process, program) => {
+const initializeBuilder = (cmd, process, program) => new Promise((resolve, reject) => {
     _currentJob = cmd;
     _currentProcess = process;
     _isInfoEnabled = program.info === true;
-};
+
+    checkConfig().then((v) => {
+        if (v) {
+            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(v.id)} 🔥\n${LINE}\n`));
+        } else {
+            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up!: ${v.id} 🔥\n${LINE}\n`));
+        }
+
+        resolve();
+    });
+});
 
 const logTask = (task) => {
     console.log(chalk.yellow(`\n${RNV} ${_currentJob} - ${task} - Starting!`));
@@ -33,10 +43,6 @@ const logTask = (task) => {
 
 const logDebug = (...args) => {
     if (_isInfoEnabled) console.log.apply(null, args);
-};
-
-const logStart = () => {
-    console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up!!! 🔥\n${LINE}\n`));
 };
 
 const logComplete = () => {
@@ -69,7 +75,17 @@ const getConfig = config => new Promise((resolve, reject) => {
     });
 });
 
+const checkConfig = () => new Promise((resolve, reject) => {
+    const cf = path.join(base, 'platformAssets/config.json');
+    try {
+        const c = JSON.parse(fs.readFileSync(cf).toString());
+        resolve(c);
+    } catch (e) {
+        resolve();
+    }
+});
+
 export {
-    SUPPORTED_PLATFORMS, isPlatformSupported, setCurrentJob,
-    logTask, logComplete, logError, getConfig, logStart, logDebug,
+    SUPPORTED_PLATFORMS, isPlatformSupported,
+    logTask, logComplete, logError, getConfig, initializeBuilder, logDebug,
 };

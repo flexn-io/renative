@@ -1,34 +1,33 @@
 import chalk from 'chalk';
 import path from 'path';
 import shell from 'shelljs';
-import { setCurrentJob, logStart } from './common';
+import { initializeBuilder } from './common';
 import { addPlatform, removePlatform } from './platform';
 import { runApp } from './runner';
-import { create } from './setup';
+import { createPlatforms } from './setup';
 
 const ADD_PLATFORM = 'addPlatform';
 const REMOVE_PLATFORM = 'removePlatform';
 const RUN = 'run';
-const CREATE = 'create';
+const CREATE_PLATFORMS = 'createPlatforms';
 
 const run = (cmd, cmdOption, program, process) => {
-    setCurrentJob(cmd, process, program);
-    logStart();
-
-    switch (cmd) {
-    case ADD_PLATFORM:
-        addPlatform(cmdOption, program, process);
-        break;
-    case REMOVE_PLATFORM:
-        removePlatform(cmdOption, program, process);
-        break;
-    case RUN:
-        runApp(cmdOption, program, process);
-        break;
-    case CREATE:
-        create(cmdOption, program, process);
-        break;
-    }
+    initializeBuilder(cmd, process, program).then(() => {
+        switch (cmd) {
+        case ADD_PLATFORM:
+            addPlatform(cmdOption, program, process);
+            break;
+        case REMOVE_PLATFORM:
+            removePlatform(cmdOption, program, process);
+            break;
+        case RUN:
+            runApp(cmdOption, program, process);
+            break;
+        case CREATE_PLATFORMS:
+            createPlatforms(cmdOption, program, process);
+            break;
+        }
+    });
 };
 
 

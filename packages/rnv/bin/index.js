@@ -10,7 +10,7 @@ const cli = require('../dist/index.js');
 
 program
     .version('0.1.0')
-    .option('-I, --info', 'Add peppers')
+    .option('-I, --info', 'Show full debug info')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

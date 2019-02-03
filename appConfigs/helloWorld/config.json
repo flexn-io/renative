@@ -1,4 +1,5 @@
 {
+  "id": "helloWorld",
   "common": {
     "id": "reactnativevanilla.helloWorld",
     "title": "RNV Hello World"
