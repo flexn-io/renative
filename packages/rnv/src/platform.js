@@ -1,12 +1,12 @@
 import chalk from 'chalk';
-import { isPlatformSupported, getConfig, logComplete, logError } from './common';
+import { isPlatformSupported, getConfig, logComplete, logError, logTask } from './common';
 
 
 const addPlatform = (platform, program, process) => {
     if (!isPlatformSupported(platform)) return;
-    console.log('ADD_PLATFORM: ', platform);
+
     getConfig().then((v) => {
-        runAddPlatform()
+        _runAddPlatform()
             .then(() => logComplete())
             .catch(e => logError(e));
     });
@@ -17,7 +17,8 @@ const removePlatform = (platform, program, process) => {
     console.log('REMOVE_PLATFORM: ', platform);
 };
 
-const runAddPlatform = c => new Promise((resolve, reject) => {
+const _runAddPlatform = c => new Promise((resolve, reject) => {
+    logTask('runAddPlatform');
     resolve();
 });
 
