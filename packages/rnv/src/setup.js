@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import { isPlatformSupported, getConfig, logTask, logComplete, logError } from './common';
-import { cleanFolder } from './filesystem';
+import { cleanFolder } from './fileutils';
 
 const create = (configName, program, process) => {
     getConfig(configName).then((v) => {

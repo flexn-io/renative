@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { cleanFolder } from './filesystem';
+import { cleanFolder } from './fileutils';
 
 const SUPPORTED_PLATFORMS = ['all', 'ios', 'android', 'web', 'tizen'];
 const RNV = 'RNV';
