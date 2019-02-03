@@ -12,24 +12,26 @@ const RUN = 'run';
 const UPDATE = 'update';
 const CREATE_PLATFORMS = 'createPlatforms';
 
-const run = (cmd, cmdOption, program, process) => {
-    initializeBuilder(cmd, process, program).then((v) => {
-        const appId = v ? v.id : cmdOption;
+const run = (cmd, appId, program, process) => {
+    initializeBuilder(cmd, appId, process, program).then((v) => {
+        // const cmdConfig = {
+        //
+        // }
         switch (cmd) {
         case ADD_PLATFORM:
-            addPlatform(appId, program, process).then(() => logComplete()).catch(e => logError(e));
+            addPlatform(v).then(() => logComplete()).catch(e => logError(e));
             break;
         case REMOVE_PLATFORM:
-            removePlatform(appId, program, process).then(() => logComplete()).catch(e => logError(e));
+            removePlatform(v).then(() => logComplete()).catch(e => logError(e));
             break;
         case RUN:
-            runApp(appId, program, process).then(() => logComplete()).catch(e => logError(e));
+            runApp(v).then(() => logComplete()).catch(e => logError(e));
             break;
         case CREATE_PLATFORMS:
-            createPlatforms(appId, program, process).then(() => logComplete()).catch(e => logError(e));
+            createPlatforms(v).then(() => logComplete()).catch(e => logError(e));
             break;
         case UPDATE:
-            updateApp(appId, program, process).then(() => logComplete()).catch(e => logError(e));
+            updateApp(v).then(() => logComplete()).catch(e => logError(e));
             break;
         }
     });

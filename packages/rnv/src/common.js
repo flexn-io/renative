@@ -25,20 +25,38 @@ const isPlatformSupported = (platform, resolve) => {
     return true;
 };
 
-const initializeBuilder = (cmd, process, program) => new Promise((resolve, reject) => {
+const initializeBuilder = (cmd, appId, process, program) => new Promise((resolve, reject) => {
     _currentJob = cmd;
     _currentProcess = process;
     _isInfoEnabled = program.info === true;
 
-    checkConfig().then((v) => {
-        if (v) {
-            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(v.id)} 🔥\n${LINE}\n`));
-        } else {
-            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
-        }
+    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
+    const platformAssetsFolder = path.join(base, 'platformAssets');
+    const platformBuildsFolder = path.join(base, 'platformBuilds');
+    const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
 
-        resolve(v);
-    });
+    let appConfigFolder;
+    let c;
+    if (appId) {
+        // App ID specified
+        c = _getConfig(appId);
+    } else {
+        // Use latest app from platfromAssets
+        const cf = path.join(base, 'platformAssets/config.json');
+        try {
+            const assetConfig = JSON.parse(fs.readFileSync(cf).toString());
+            c = _getConfig(assetConfig.id);
+        } catch (e) {
+            console.log('ERROR: no app ID specified');
+        }
+    }
+    c.program = program;
+    c.process = process;
+    c.platform = program.platform;
+
+    console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
+
+    resolve(c);
 });
 
 const logTask = (task) => {
@@ -58,8 +76,8 @@ const logError = (e, process) => {
     _currentProcess.exit();
 };
 
-const getConfig = config => new Promise((resolve, reject) => {
-    logTask('getConfig');
+const _getConfig = (config) => {
+    // logTask('getConfig');
 
     const c = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
     const appConfigFolder = path.join(base, c.appConfigsFolder, config);
@@ -69,7 +87,8 @@ const getConfig = config => new Promise((resolve, reject) => {
     const appConfigPath = path.join(appConfigFolder, 'config.json');
     const appConfigFile = JSON.parse(fs.readFileSync(appConfigPath).toString());
 
-    resolve({
+    return {
+        rootConfig: c,
         appId: config,
         appConfigFile,
         appConfigPath,
@@ -77,22 +96,34 @@ const getConfig = config => new Promise((resolve, reject) => {
         platformAssetsFolder,
         platformBuildsFolder,
         platformTemplatesFolder,
-    });
-});
+    };
+};
 
-const checkConfig = () => new Promise((resolve, reject) => {
-    const cf = path.join(base, 'platformAssets/config.json');
+const checkConfig = appId => new Promise((resolve, reject) => {
+    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
+    let cf;
+    if (appId) {
+        cf = path.join(base, 'config.json');
+    }
+    cf = path.join(base, 'platformAssets/config.json');
     try {
         const c = JSON.parse(fs.readFileSync(cf).toString());
-        resolve(c);
+        resolve({
+            rootConfig,
+        });
     } catch (e) {
         resolve();
     }
 });
 
-const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
+const getAppFolder = c => path.join(c.platformBuildsFolder, `${c.appId}_${c.platform}`);
+
+const logErrorPlatform = (platform, resolve) => {
+    console.log(`ERROR: Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
+    resolve();
+};
 
 export {
     SUPPORTED_PLATFORMS, IOS, TVOS, ANDROID, isPlatformSupported, getAppFolder,
-    logTask, logComplete, logError, getConfig, initializeBuilder, logDebug,
+    logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
 };

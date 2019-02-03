@@ -1,55 +1,49 @@
 
 import path from 'path';
-import { IOS, TVOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder, logDebug } from './common';
+import {
+    IOS, TVOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete,
+    logError, getAppFolder, logDebug, logErrorPlatform,
+} from './common';
 import { executeAsync } from './exec';
 
 
-const runApp = (appId, program, process) => new Promise((resolve, reject) => {
-    const platform = program.platform;
+const runApp = c => new Promise((resolve, reject) => {
+    const platform = c.platform;
     if (!isPlatformSupported(platform, resolve)) return;
 
-    switch (platform) {
+    switch (c.platform) {
     case IOS:
-        getConfig(appId).then((v) => {
-            _runiOS(v, platform, program)
-                .then(() => resolve())
-                .catch(e => reject(e));
-        });
+        _runiOS(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
         return;
         break;
     }
 
-    _logErrorPlatform(platform, resolve);
+    logErrorPlatform(platform, resolve);
 });
 
-const updateApp = (appId, program, process) => new Promise((resolve, reject) => {
-    const platform = program.platform;
+const updateApp = c => new Promise((resolve, reject) => {
+    const platform = c.platform;
     if (!isPlatformSupported(platform, resolve)) return;
-
 
     switch (platform) {
     case IOS:
-        getConfig(appId).then((v) => {
-            _runiOSUpdate(v)
-                .then(() => resolve())
-                .catch(e => reject(e));
-        });
+        _runiOSUpdate(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+
         return;
         break;
     }
 
-    _logErrorPlatform(platform, resolve);
+    logErrorPlatform(c.platform, resolve);
 });
-
-const _logErrorPlatform = (platform, resolve) => {
-    console.log(`${platform} doesn't support this command`);
-    resolve();
-};
 
 const iosPlatforms = [IOS, TVOS];
-const _runiOSUpdate = (c, platform) => {
+const _runiOSUpdate = (c) => {
     logTask('_runiOSUpdate');
-    if (iosPlatforms.includes(platform)) {
+    if (iosPlatforms.includes(c.platform)) {
         return _runPod('update', getAppFolder(c, 'ios'));
     }
 
@@ -70,11 +64,10 @@ const _runPod = (cmd, cwd) => executeAsync('pod', [
     stdio: 'inherit',
 });
 
-const _runiOS = (c, platform, program) => {
+const _runiOS = (c) => {
     logTask('_runiOS');
-    console.log('KJKLJLKJ', program);
-    const device = program.simulator || 'iPhone 6';
-    const appPath = getAppFolder(c, platform);
+    const device = c.program.simulator || 'iPhone 6';
+    const appPath = getAppFolder(c);
     const p = [
         'run-ios',
         '--project-path',
