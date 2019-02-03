@@ -2,7 +2,7 @@
 import path from 'path';
 import shell from 'shelljs';
 import {
-    IOS, TVOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete,
+    IOS, TVOS, ANDROID, WEB, isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
 } from './common';
 import { executeAsync } from './exec';
@@ -19,13 +19,16 @@ const runApp = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-        break;
     case ANDROID:
         _runAndroid(c)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-        break;
+    case WEB:
+        _runWeb(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
     logErrorPlatform(platform, resolve);
@@ -63,6 +66,18 @@ const _runAndroid = c => new Promise((resolve, reject) => {
         shell.exec('./gradlew appStart');
         resolve();
     }
+});
+
+const _runWeb = c => new Promise((resolve, reject) => {
+    logTask('_runWeb');
+
+    const appFolder = getAppFolder(c, WEB);
+    const wpConfig = path.join(appFolder, 'webpack.config.js');
+    const wpPublic = path.join(appFolder, 'public');
+    const port = 8080;
+
+    shell.exec(`webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`);
+    resolve();
 });
 
 const _packageAndroid = (c) => {

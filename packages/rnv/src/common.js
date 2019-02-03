@@ -6,7 +6,8 @@ import { cleanFolder } from './fileutils';
 const IOS = 'ios';
 const TVOS = 'tvos';
 const ANDROID = 'android';
-const SUPPORTED_PLATFORMS = ['all', IOS, ANDROID, 'web', 'tizen', TVOS];
+const WEB = 'web';
+const SUPPORTED_PLATFORMS = ['all', IOS, ANDROID, WEB, 'tizen', TVOS];
 const RNV = 'RNV';
 const LINE = '----------------------------------------------------------';
 
@@ -128,6 +129,6 @@ const logErrorPlatform = (platform, resolve) => {
 };
 
 export {
-    SUPPORTED_PLATFORMS, IOS, TVOS, ANDROID, isPlatformSupported, getAppFolder,
+    SUPPORTED_PLATFORMS, IOS, TVOS, ANDROID, WEB, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
 };
