@@ -3,16 +3,15 @@ import path from 'path';
 import { isPlatformSupported, getConfig, logTask, logComplete, logError } from './common';
 import { cleanFolder, copyFolderContentsRecursiveSync } from './fileutils';
 
-const createPlatforms = (configName, program, process) => {
+const createPlatforms = (configName, program, process) => new Promise((resolve, reject) => {
     getConfig(configName).then((v) => {
         _runCreateApp(v)
             .then(() => {
-                console.log('sjadhksajdhaskdjshksjdhsadkhj');
-                logComplete();
+                resolve();
             })
-            .catch(e => logError(e));
+            .catch(e => reject(e));
     });
-};
+});
 
 const _runCreateApp = c => new Promise((resolve, reject) => {
     logTask('_runCreateApp');

@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import shell from 'shelljs';
-import { initializeBuilder } from './common';
+import { initializeBuilder, logComplete, logError } from './common';
 import { addPlatform, removePlatform } from './platform';
 import { runApp } from './runner';
 import { createPlatforms } from './setup';
@@ -15,16 +15,16 @@ const run = (cmd, cmdOption, program, process) => {
     initializeBuilder(cmd, process, program).then(() => {
         switch (cmd) {
         case ADD_PLATFORM:
-            addPlatform(cmdOption, program, process);
+            addPlatform(cmdOption, program, process).then(() => logComplete()).catch(e => logError(e));
             break;
         case REMOVE_PLATFORM:
-            removePlatform(cmdOption, program, process);
+            removePlatform(cmdOption, program, process).then(() => logComplete()).catch(e => logError(e));
             break;
         case RUN:
-            runApp(cmdOption, program, process);
+            runApp(cmdOption, program, process).then(() => logComplete()).catch(e => logError(e));
             break;
         case CREATE_PLATFORMS:
-            createPlatforms(cmdOption, program, process);
+            createPlatforms(cmdOption, program, process).then(() => logComplete()).catch(e => logError(e));
             break;
         }
     });
