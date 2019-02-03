@@ -8,10 +8,11 @@ import { executeAsync } from './exec';
 
 
 const runApp = c => new Promise((resolve, reject) => {
-    const platform = c.platform;
+    logTask('runApp');
+    const { platform } = c;
     if (!isPlatformSupported(platform, resolve)) return;
 
-    switch (c.platform) {
+    switch (platform) {
     case IOS:
         _runiOS(c)
             .then(() => resolve())

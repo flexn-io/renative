@@ -1,26 +1,26 @@
 import chalk from 'chalk';
 import path from 'path';
-import { isPlatformSupported, getConfig, logTask, logComplete, logError } from './common';
+import { IOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete, logError } from './common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from './fileutils';
 
-const createPlatforms = (configName, program, process) => new Promise((resolve, reject) => {
-    getConfig(configName).then((v) => {
-        _runCreateApp(v)
-            .then(() => {
-                resolve();
-            })
-            .catch(e => reject(e));
-    });
+const createPlatforms = c => new Promise((resolve, reject) => {
+    logTask('createPlatforms');
+    _runCreatePlatforms(c)
+        .then(() => {
+            resolve();
+        })
+        .catch(e => reject(e));
 });
 
-const _runCreateApp = c => new Promise((resolve, reject) => {
-    logTask('_runCreateApp');
-    // console.log('CONFIGIS:', c);
+const _runCreatePlatforms = c => new Promise((resolve, reject) => {
+    logTask('_runCreatePlatforms');
+
     _runCleanPlaformFolders(c)
         .then(() => _runCleanPlaformAssets(c))
         .then(() => _runCopyPlatforms(c))
         .then(() => _runCopyRuntimeAssets(c))
         .then(() => _runCopyiOSAssets(c))
+        .then(() => _runCopyAndroidAssets(c))
         .then(() => resolve());
 });
 
@@ -77,10 +77,31 @@ const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
 
 const _runCopyiOSAssets = c => new Promise((resolve, reject) => {
     logTask('_runCopyiOSAssets');
+    if (!_isPlatformActive(c, IOS, resolve)) return;
+
     const iosPath = path.join(c.platformBuildsFolder, `${c.appId}_ios/RNVApp`);
     const sPath = path.join(c.appConfigFolder, 'assets/ios');
     copyFolderContentsRecursiveSync(sPath, iosPath);
     resolve();
 });
+
+const _runCopyAndroidAssets = c => new Promise((resolve, reject) => {
+    logTask('_runCopyAndroidAssets');
+    if (!_isPlatformActive(c, ANDROID, resolve)) return;
+
+    const destPath = path.join(c.platformBuildsFolder, `${c.appId}_${ANDROID}/app/src/main/res`);
+    const sourcePath = path.join(c.appConfigFolder, 'assets/android/res');
+    copyFolderContentsRecursiveSync(sourcePath, destPath);
+    resolve();
+});
+
+const _isPlatformActive = (c, platform, resolve) => {
+    if (!c.appConfigFile.platforms[platform]) {
+        console.log(`Platform ${platform} not configured for ${c.appId}. skipping.`);
+        resolve();
+        return false;
+    }
+    return true;
+};
 
 export { createPlatforms };
