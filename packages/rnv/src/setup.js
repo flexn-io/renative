@@ -16,6 +16,7 @@ const _runCreateApp = c => new Promise((resolve, reject) => {
     // console.log('CONFIGIS:', c);
     _runCleanPlaformFolders(c)
         .then(() => _runCopyPlatforms(c))
+        .then(() => _runCopyAssets(c))
         .then(() => resolve());
 });
 
@@ -50,6 +51,12 @@ const _runCopyPlatforms = c => new Promise((resolve, reject) => {
     Promise.all(copyPlatformTasks).then((values) => {
         resolve();
     });
+});
+
+const _runCopyAssets = c => new Promise((resolve, reject) => {
+    const aPath = c.platformAssetsFolder;
+    const cPath = c.appConfigFolder;
+    return copyFolderContentsRecursiveSync(cPath, aPath);
 });
 
 export { create };

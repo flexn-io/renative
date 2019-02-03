@@ -47,5 +47,6 @@ buck-out/
 
 platforms/electron/
 platformBuilds/
+platformAssets/
 
 package-lock.json
