@@ -9,6 +9,10 @@
       "scheme": "RNVApp",
       "runScheme": "Debug"
     },
+    "tvos": {
+      "scheme": "RNVAppTVOS",
+      "runScheme": "Debug"
+    },
     "android": {
       "entryFile": "index.android"
     },
