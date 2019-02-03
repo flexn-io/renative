@@ -43,7 +43,7 @@ class App extends React.Component {
     render() {
         return (
             <View style={[styles.app, { backgroundColor: this.state.bgColor }]}>
-                <Image style={styles.image} source={require('../assets/images/logo.png')} />
+                <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
                 <Text style={styles.text}>
 Hello from React Native Vanilla!
                 </Text>

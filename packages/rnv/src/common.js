@@ -86,7 +86,9 @@ const checkConfig = () => new Promise((resolve, reject) => {
     }
 });
 
+const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
+
 export {
-    SUPPORTED_PLATFORMS, isPlatformSupported,
+    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, getConfig, initializeBuilder, logDebug,
 };
