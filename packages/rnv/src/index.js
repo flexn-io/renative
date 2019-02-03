@@ -12,8 +12,8 @@ const RUN = 'run';
 const CREATE = 'create';
 
 const run = (cmd, cmdOption, program, process) => {
+    setCurrentJob(cmd, process, program);
     logStart();
-    setCurrentJob(cmd, process);
 
     switch (cmd) {
     case ADD_PLATFORM:

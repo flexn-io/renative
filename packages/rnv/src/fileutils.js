@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
+import { logDebug } from './common';
 
 const copyFileSync = (source, target) => {
     let targetFile = target;
@@ -42,6 +43,7 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true) => {
 };
 
 const copyFolderContentsRecursiveSync = (source, target) => {
+    logDebug('copyFolderContentsRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
     let files = [];
     const targetFolder = path.join(target);
@@ -92,9 +94,9 @@ const mkdirp = (dir) => {
 };
 
 const cleanFolder = d => new Promise((resolve, reject) => {
+    logDebug('cleanFolder', d);
     removeDir(d, () => {
         mkdirp(d);
-        console.log('Clean folder', d);
         resolve();
     });
 });

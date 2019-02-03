@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import { isPlatformSupported, getConfig, logTask, logComplete, logError } from './common';
-import { cleanFolder } from './fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync } from './fileutils';
 
 const create = (configName, program, process) => {
     getConfig(configName).then((v) => {
@@ -13,22 +13,41 @@ const create = (configName, program, process) => {
 
 const _runCreateApp = c => new Promise((resolve, reject) => {
     logTask('runCreateApp');
-    console.log('CONFIGIS:', c);
+    // console.log('CONFIGIS:', c);
+    _runCleanPlaformFolders(c)
+        .then(() => _runCopyPlatforms(c))
+        .then(() => resolve());
+});
 
+const _runCleanPlaformFolders = c => new Promise((resolve, reject) => {
+    logTask('_runCleanPlaformFolders');
 
-    // c.platformBuildsFolder
     const cleanTasks = [];
+
     for (const k in c.appConfigFile.platforms) {
         if (isPlatformSupported(k)) {
             const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
-            console.log('BAMNBOOO', pPath);
+            const ptPath = path.join(c.platformTemplatesFolder, `${k}`);
             cleanTasks.push(cleanFolder(pPath));
         }
     }
 
-
     Promise.all(cleanTasks).then((values) => {
-        console.log('GJHAGJAHGAJHGJ', values);
+        resolve();
+    });
+});
+
+const _runCopyPlatforms = c => new Promise((resolve, reject) => {
+    const copyPlatformTasks = [];
+    for (const k in c.appConfigFile.platforms) {
+        if (isPlatformSupported(k)) {
+            const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
+            const ptPath = path.join(c.platformTemplatesFolder, `${k}`);
+            copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
+        }
+    }
+
+    Promise.all(copyPlatformTasks).then((values) => {
         resolve();
     });
 });

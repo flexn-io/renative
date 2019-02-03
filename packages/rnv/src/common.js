@@ -5,10 +5,11 @@ import { cleanFolder } from './fileutils';
 
 const SUPPORTED_PLATFORMS = ['all', 'ios', 'android', 'web', 'tizen'];
 const RNV = 'RNV';
-const LINE = '-----------------------------';
+const LINE = '----------------------------------------------------------';
 
 let _currentJob;
 let _currentProcess;
+let _isInfoEnabled = false;
 
 const base = path.resolve('.');
 
@@ -20,21 +21,26 @@ const isPlatformSupported = (platform) => {
     return true;
 };
 
-const setCurrentJob = (cmd, process) => {
+const setCurrentJob = (cmd, process, program) => {
     _currentJob = cmd;
     _currentProcess = process;
+    _isInfoEnabled = program.info === true;
 };
 
 const logTask = (task) => {
     console.log(chalk.yellow(`\n${RNV} ${_currentJob} - ${task} - Starting!`));
 };
 
+const logDebug = (...args) => {
+    if (_isInfoEnabled) console.log.apply(null, args);
+};
+
 const logStart = () => {
-    console.log(chalk.white.bold(`\n${LINE}\n RNV is Firing Up!!! 🔥\n${LINE}\n`));
+    console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up!!! 🔥\n${LINE}\n`));
 };
 
 const logComplete = () => {
-    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob} - Done! 🍺 \n${LINE}\n`));
+    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob} - Done! 🚀 \n${LINE}\n`));
 };
 
 const logError = (e, process) => {
@@ -49,6 +55,7 @@ const getConfig = config => new Promise((resolve, reject) => {
     const appConfigFolder = path.join(base, c.appConfigsFolder, config);
     const platformAssetsFolder = path.join(base, 'platformAssets');
     const platformBuildsFolder = path.join(base, 'platformBuilds');
+    const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
     const pth = path.join(appConfigFolder, 'config.json');
     const appConfigFile = JSON.parse(fs.readFileSync(pth).toString());
 
@@ -58,10 +65,11 @@ const getConfig = config => new Promise((resolve, reject) => {
         appConfigFolder,
         platformAssetsFolder,
         platformBuildsFolder,
+        platformTemplatesFolder,
     });
 });
 
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, setCurrentJob,
-    logTask, logComplete, logError, getConfig, logStart,
+    logTask, logComplete, logError, getConfig, logStart, logDebug,
 };
