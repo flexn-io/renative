@@ -13,7 +13,6 @@ const CREATE_PLATFORMS = 'createPlatforms';
 
 const run = (cmd, cmdOption, program, process) => {
     initializeBuilder(cmd, process, program).then((v) => {
-        console.log('WATAFAAAAK', v);
         const appId = v ? v.id : cmdOption;
         switch (cmd) {
         case ADD_PLATFORM:

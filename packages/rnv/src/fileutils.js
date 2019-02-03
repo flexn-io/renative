@@ -5,6 +5,7 @@ import Svg2Js from 'svg2js';
 import { logDebug } from './common';
 
 const copyFileSync = (source, target) => {
+    logDebug('copyFileSync', source, target);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
     if (source.indexOf('.DS_Store') !== -1) return;
@@ -18,6 +19,7 @@ const copyFileSync = (source, target) => {
 };
 
 const copyFolderRecursiveSync = (source, target, convertSvg = true) => {
+    logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
 
     let files = [];

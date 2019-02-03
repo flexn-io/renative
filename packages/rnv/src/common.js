@@ -30,7 +30,7 @@ const initializeBuilder = (cmd, process, program) => new Promise((resolve, rejec
         if (v) {
             console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(v.id)} 🔥\n${LINE}\n`));
         } else {
-            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up!: ${v.id} 🔥\n${LINE}\n`));
+            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
         }
 
         resolve(v);
@@ -62,12 +62,13 @@ const getConfig = config => new Promise((resolve, reject) => {
     const platformAssetsFolder = path.join(base, 'platformAssets');
     const platformBuildsFolder = path.join(base, 'platformBuilds');
     const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
-    const pth = path.join(appConfigFolder, 'config.json');
-    const appConfigFile = JSON.parse(fs.readFileSync(pth).toString());
+    const appConfigPath = path.join(appConfigFolder, 'config.json');
+    const appConfigFile = JSON.parse(fs.readFileSync(appConfigPath).toString());
 
     resolve({
         appId: config,
         appConfigFile,
+        appConfigPath,
         appConfigFolder,
         platformAssetsFolder,
         platformBuildsFolder,
