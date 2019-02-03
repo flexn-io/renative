@@ -19,6 +19,11 @@ const runApp = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case TVOS:
+        _runtvOS(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     case ANDROID:
         _runAndroid(c)
             .then(() => resolve())
@@ -43,9 +48,12 @@ const updateApp = c => new Promise((resolve, reject) => {
         _runiOSUpdate(c)
             .then(() => resolve())
             .catch(e => reject(e));
-
         return;
-        break;
+    case TVOS:
+        _runtvOSUpdate(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
     logErrorPlatform(c.platform, resolve);
@@ -54,7 +62,7 @@ const updateApp = c => new Promise((resolve, reject) => {
 const _runAndroid = c => new Promise((resolve, reject) => {
     logTask('_runAndroid');
 
-    const appFolder = getAppFolder(c, 'android');
+    const appFolder = getAppFolder(c, ANDROID);
     if (c.appConfigFile.platforms.android.runScheme === 'Release') {
         _packageAndroid(c).then(() => {
             shell.cd(`${appFolder}`);
@@ -83,7 +91,7 @@ const _runWeb = c => new Promise((resolve, reject) => {
 const _packageAndroid = (c) => {
     logTask('_packageAndroid');
 
-    const appFolder = getAppFolder(c, 'android');
+    const appFolder = getAppFolder(c, ANDROID);
     return executeAsync('react-native', [
         'bundle',
         '--platform',
@@ -103,7 +111,16 @@ const iosPlatforms = [IOS, TVOS];
 const _runiOSUpdate = (c) => {
     logTask('_runiOSUpdate');
     if (iosPlatforms.includes(c.platform)) {
-        return _runPod('update', getAppFolder(c, 'ios'));
+        return _runPod('update', getAppFolder(c, IOS));
+    }
+
+    return Promise().resolve();
+};
+
+const _runtvOSUpdate = (c) => {
+    logTask('_runtvOSUpdate');
+    if (iosPlatforms.includes(c.platform)) {
+        return _runPod('update', getAppFolder(c, TVOS));
     }
 
     return Promise().resolve();
@@ -112,7 +129,7 @@ const _runiOSUpdate = (c) => {
 const _runiOSInstall = (c) => {
     logTask('_runiOSInstall');
 
-    return _runPod('install', getAppFolder(c, 'ios'));
+    return _runPod('install', getAppFolder(c, IOS));
 };
 
 const _runPod = (cmd, cwd) => executeAsync('pod', [
@@ -126,7 +143,7 @@ const _runPod = (cmd, cwd) => executeAsync('pod', [
 const _runiOS = (c) => {
     logTask('_runiOS');
     const device = c.program.simulator || 'iPhone 6';
-    const appPath = getAppFolder(c);
+    const appPath = getAppFolder(c, IOS);
     const p = [
         'run-ios',
         '--project-path',
@@ -137,6 +154,29 @@ const _runiOS = (c) => {
         c.appConfigFile.platforms.ios.scheme,
         '--configuration',
         c.appConfigFile.platforms.ios.runScheme,
+    ];
+    logDebug('running', p);
+    if (c.appConfigFile.platforms.ios.runScheme === 'Release') {
+        iosPackage(buildConfig).then(v => executeAsync('react-native', p));
+    } else {
+        return executeAsync('react-native', p);
+    }
+};
+
+const _runtvOS = (c) => {
+    logTask('_runtvOS');
+    const device = c.program.simulator || 'Apple TV 4K';
+    const appPath = getAppFolder(c, TVOS);
+    const p = [
+        'run-ios',
+        '--project-path',
+        appPath,
+        '--simulator',
+        device,
+        '--scheme',
+        c.appConfigFile.platforms.tvos.scheme,
+        '--configuration',
+        c.appConfigFile.platforms.tvos.runScheme,
     ];
     logDebug('running', p);
     if (c.appConfigFile.platforms.ios.runScheme === 'Release') {

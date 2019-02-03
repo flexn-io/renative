@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { IOS, ANDROID, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from './common';
+import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from './common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from './fileutils';
 
 const createPlatforms = c => new Promise((resolve, reject) => {
@@ -21,6 +21,7 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
         .then(() => _runCopyPlatforms(c))
         .then(() => _runCopyRuntimeAssets(c))
         .then(() => _runCopyiOSAssets(c))
+        .then(() => _runCopytvOSAssets(c))
         .then(() => _runConfigureAndroid(c))
         .then(() => _runCopyAndroidAssets(c))
         .then(() => resolve());
@@ -81,9 +82,19 @@ const _runCopyiOSAssets = c => new Promise((resolve, reject) => {
     logTask('_runCopyiOSAssets');
     if (!_isPlatformActive(c, IOS, resolve)) return;
 
-    const iosPath = path.join(c.platformBuildsFolder, `${c.appId}_ios/RNVApp`);
+    const iosPath = path.join(getAppFolder(c, IOS), 'RNVApp');
     const sPath = path.join(c.appConfigFolder, 'assets/ios');
     copyFolderContentsRecursiveSync(sPath, iosPath);
+    resolve();
+});
+
+const _runCopytvOSAssets = c => new Promise((resolve, reject) => {
+    logTask('_runCopytvOSAssets');
+    if (!_isPlatformActive(c, TVOS, resolve)) return;
+
+    const destPath = path.join(getAppFolder(c, TVOS), 'RNVAppTVOS');
+    const sourcePath = path.join(c.appConfigFolder, 'assets/tvos');
+    copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
 });
 
