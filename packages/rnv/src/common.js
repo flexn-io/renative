@@ -3,7 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import { cleanFolder } from './fileutils';
 
-const SUPPORTED_PLATFORMS = ['all', 'ios', 'android', 'web', 'tizen'];
+const IOS = 'ios';
+const TVOS = 'tvos';
+const ANDROID = 'android';
+const SUPPORTED_PLATFORMS = ['all', IOS, ANDROID, 'web', 'tizen', TVOS];
 const RNV = 'RNV';
 const LINE = '----------------------------------------------------------';
 
@@ -13,9 +16,10 @@ let _isInfoEnabled = false;
 
 const base = path.resolve('.');
 
-const isPlatformSupported = (platform) => {
+const isPlatformSupported = (platform, resolve) => {
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
         console.warn(chalk.yellow(`Warning: Platform ${platform} is not supported`));
+        resolve();
         return false;
     }
     return true;
@@ -89,6 +93,6 @@ const checkConfig = () => new Promise((resolve, reject) => {
 const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
 
 export {
-    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
+    SUPPORTED_PLATFORMS, IOS, TVOS, ANDROID, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, getConfig, initializeBuilder, logDebug,
 };

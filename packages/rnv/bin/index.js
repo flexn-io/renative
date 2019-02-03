@@ -12,6 +12,7 @@ program
     .version('0.1.0')
     .option('-i, --info', 'Show full debug info')
     .option('-p, --platform <value>', 'Select specific platform')
+    .option('-s, --simulator <value>', 'Select specific simulator')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;
