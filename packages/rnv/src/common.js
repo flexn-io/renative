@@ -33,7 +33,7 @@ const initializeBuilder = (cmd, process, program) => new Promise((resolve, rejec
             console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up!: ${v.id} 🔥\n${LINE}\n`));
         }
 
-        resolve();
+        resolve(v);
     });
 });
 

@@ -10,7 +10,8 @@ const cli = require('../dist/index.js');
 
 program
     .version('0.1.0')
-    .option('-I, --info', 'Show full debug info')
+    .option('-i, --info', 'Show full debug info')
+    .option('-p, --platform <value>', 'Select specific platform')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

@@ -6,7 +6,8 @@
   },
   "platforms":{
     "ios": {
-
+      "scheme": "RNVApp",
+      "runScheme": "Debug"
     },
     "android": {
 
