@@ -4,7 +4,12 @@ import { isPlatformSupported } from './common';
 
 const addPlatform = (platform, program, process) => {
     if (!isPlatformSupported(platform)) return;
-    console.log('ADD_PLATFORM: ', cmdOption);
+    console.log('ADD_PLATFORM: ', platform);
 };
 
-export { addPlatform };
+const removePlatform = (platform, program, process) => {
+    if (!isPlatformSupported(platform)) return;
+    console.log('REMOVE_PLATFORM: ', platform);
+};
+
+export { addPlatform, removePlatform };

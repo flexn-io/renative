@@ -2,9 +2,9 @@
 import { isPlatformSupported } from './common';
 
 
-const run = (platform, program, process) => {
+const runApp = (platform, program, process) => {
     if (!isPlatformSupported(platform)) return;
-    console.log('ADD_PLATFORM: ', cmdOption);
+    console.log('RUN: ', platform);
 };
 
-export { addPlatform };
+export { runApp };
