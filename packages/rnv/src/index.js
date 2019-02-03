@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import shell from 'shelljs';
+import { setCurrentJob, logStart } from './common';
 import { addPlatform, removePlatform } from './platform';
 import { runApp } from './runner';
 import { create } from './setup';
@@ -11,8 +12,8 @@ const RUN = 'run';
 const CREATE = 'create';
 
 const run = (cmd, cmdOption, program, process) => {
-    console.log(chalk.white.bold('\n------------------------\n RNV is Firing Up!!! 🔥\n------------------------\n'));
-    // console.log(cmd, cmdOption, program.info);
+    logStart();
+    setCurrentJob(cmd, process);
 
     switch (cmd) {
     case ADD_PLATFORM:
