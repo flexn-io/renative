@@ -1,3 +1,17 @@
 {
-  "boo":"yay"
+  "common": {
+    "id": "reactnativevanilla.helloWorld",
+    "title": "RNV Hello World"
+  },
+  "platforms":{
+    "ios": {
+
+    },
+    "android": {
+
+    },
+    "web": {
+
+    }
+  }
 }

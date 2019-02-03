@@ -91,4 +91,12 @@ const mkdirp = (dir) => {
     }
 };
 
-export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirp, copyFolderContentsRecursiveSync };
+const cleanFolder = d => new Promise((resolve, reject) => {
+    removeDir(d, () => {
+        mkdirp(d);
+        console.log('Clean folder', d);
+        resolve();
+    });
+});
+
+export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirp, copyFolderContentsRecursiveSync, cleanFolder };

@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import { cleanFolder } from './filesystem';
 
 const SUPPORTED_PLATFORMS = ['all', 'ios', 'android', 'web', 'tizen'];
 const RNV = 'RNV';
@@ -46,12 +47,17 @@ const getConfig = config => new Promise((resolve, reject) => {
 
     const c = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
     const appConfigFolder = path.join(base, c.appConfigsFolder, config);
+    const platformAssetsFolder = path.join(base, 'platformAssets');
+    const platformBuildsFolder = path.join(base, 'platformBuilds');
     const pth = path.join(appConfigFolder, 'config.json');
     const appConfigFile = JSON.parse(fs.readFileSync(pth).toString());
 
     resolve({
+        appId: config,
         appConfigFile,
         appConfigFolder,
+        platformAssetsFolder,
+        platformBuildsFolder,
     });
 });
 
