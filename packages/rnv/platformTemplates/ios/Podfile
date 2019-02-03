@@ -1,7 +1,7 @@
 platform :ios, '10.0'
 use_frameworks!
 
-target 'ReactNativeVanilla' do
+target 'RNVApp' do
   pod 'React', :path => '../../node_modules/react-native', :subspecs => [
   'Core',
   'RCTImage',
