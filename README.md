@@ -171,20 +171,24 @@ $ npm run setup
 Folder Structure
 
     .
-    ├── assets                   # Cross platfrom assets
-    ├── docs                     # Documentation files
-    ├── platforms                # Platform specific projects / code
-    │   ├── android              # Android platform project
-    │   ├── androidtv            # Android TV convigured platform project
-    │   ├── ios                  # iOS Xcode platform project
-    │   ├── macos                # macOS Electron platform project
-    │   ├── tizen                # Tizen platform project
-    │   ├── tvos                 # tvOS Xcode platform project
-    │   ├── web                  # Webpack based project
-    │   ├── webos                # Web OS platform project
-    ├── src                      # Source files
-    ├── tests                    # Automated tests
-    ├── utils                    # Tools and utilities
+    ├── appConfigs                  # Applications configuration files/assets
+    │   └── helloWorld              # Example application
+    │       ├── assets              # Cross platform assets
+    │       └── config.json         # Application config
+    ├── docs                        # Documentation files
+    ├── packages                    # Local dependencies
+    │   └── rvn                     # React Native Vanilla Build System
+    │       └── platformTemplates   # Platform specific Project Templates
+    │           ├── android         # Android platform project
+    │           ├── androidtv       # Android TV convigured platform project
+    │           ├── ios             # iOS Xcode platform project
+    │           ├── macos           # macOS Electron platform project
+    │           ├── tizen           # Tizen platform project
+    │           ├── tvos            # tvOS Xcode platform project
+    │           ├── web             # Webpack based project
+    │           └── webos           # Web OS platform project
+    ├── src                         # Source files
+    ├── tests                       # Automated tests
     ├── LICENSE
     └── README.md
 
@@ -215,6 +219,14 @@ Folder Structure
 ```
 npm start
 npm run ios
+```
+
+#### Advanced
+
+```
+npx rnv run -help
+npx rnv run -p ios -s "iPhone 6 Plus"
+npx rnv run -p ios -s "iPhone 6 Plus" --info
 ```
 
 ---
@@ -252,6 +264,14 @@ npm start
 npm run android
 ```
 
+#### Advanced
+
+```
+npx rnv run -help
+npx rnv run -p android -s "Nexus 9"
+npx rnv run -p android -s "Nexus 9" --info
+```
+
 ---
 
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=90 height=50 />
@@ -279,6 +299,14 @@ npm run android
 ```
 npm start
 npm run tvos
+```
+
+#### Advanced
+
+```
+npx rnv run -help
+npx rnv run -p tvos -s "Apple TV 4K"
+npx rnv run -p tvos -s "Apple TV 4K" --info
 ```
 
 ---
@@ -316,6 +344,14 @@ npm start
 npm run androidtv
 ```
 
+#### Advanced
+
+```
+npx rnv run -help
+npx rnv run -p androidtv -s "Android TV 4K"
+npx rnv run -p androidtb -s "Android TV 4K" --info
+```
+
 ---
 
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=200 height=50 />
@@ -344,6 +380,14 @@ npm run web
 
 open browser URL: http://localhost:8080
 
+#### Advanced
+
+```
+npx rnv run -help
+npx rnv run -p web
+npx rnv run -p web --info
+```
+
 ---
 
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
@@ -370,7 +414,8 @@ open browser URL: http://localhost:8080
 #### Run
 
 ```
-npm run tizen:build
+npm start
+npm run tizen
 ```
 
 -   Open project in Tizen Studio <PROJECT_ROOT>/tizen
@@ -479,6 +524,76 @@ npm run windows
 
 ```
 npm run windows:dist
+```
+
+---
+
+## RNV CLI
+
+```
+rnv --help
+rnv --version
+rnv run               //Run app on simulator/device/browser
+rnv deploy            //Deploy app
+rnv package           //Package JS bundles
+rnv build             //Build standalone package/app
+rnv update            //Force Update Dependencies
+rnv test              //Run Tests
+rnv doc               //Generate Docs
+rnv install           //Soft Update Dependencies
+rnv createPlatforms   //Create projects in platformBuilds for specific app
+rnv updatePlatforms   //Update platformBuilds without destroying existing builds
+rnv configure         //Switch and configure against selected app configuration
+rnv switch            //Switch to different app configuration
+rnv target --list    //List connected devices/simulators
+rnv platform --list   //List available platforms
+rnv avd               //AVD commands
+rnv plugin            //Plugin manager
+rnv plugin --list
+
+rnv target --create --name "XXXXX"
+rnv avd -c create
+
+
+
+//common.js
+rnv --help
+
+//runner.js
+rnv run               //Run app on simulator/device/browser
+rnv deploy            //Deploy app
+rnv package           //Package JS bundles
+rnv build             //Build standalone package/app
+rnv update            //Force Update Dependencies
+rnv test              //Run Tests
+
+//target.js
+rnv target create
+rnv target remove
+rnv target start
+rnv target quit
+rnv target list
+
+//app.js
+rnv app configure
+rnv app switch
+rnv app create
+rnv app remove
+rnv app list
+rnv app info
+
+//platforms.js
+rnv platform createAll
+rnv platform updateAll
+rnv platform list
+rnv platform add
+rnv platform remove
+
+//plugin.js
+rnv plugin add
+rnv plugin remove
+rnv plugin list
+
 ```
 
 ---

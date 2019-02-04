@@ -11,8 +11,12 @@ const cli = require('../dist/index.js');
 program
     .version('0.1.0')
     .option('-i, --info', 'Show full debug info')
-    .option('-p, --platform <value>', 'Select specific platform')
-    .option('-s, --simulator <value>', 'Select specific simulator')
+    .option('-p, --platform <value>', 'Select specific platform') // <ios|android|web|...>
+    .option('-t, --target <value>', 'Select specific simulator') // <.....>
+    .option('-d, --device', 'Select connected device')
+    .option('-s, --scheme', 'Select build scheme') // <Debug | Release>
+    .option('-e, --env', 'Select environment') // <alpha|beta|prod>
+    .option('-l, --list', 'Return list of items related to command') // <alpha|beta|prod>
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

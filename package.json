@@ -52,11 +52,13 @@
     "lerna": "npx lerna bootstrap --hoist",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
-    "ios": "node ./utils/setup.js run_ios",
-    "tvos": "node ./utils/setup.js run_tvos",
-    "android": "cd platforms/android && ./gradlew appStart",
-    "androidtv": "cd platforms/androidtv && ./gradlew appStart",
-    "web": "webpack-dev-server -d --config ./platforms/web/webpack.config.js  --inline --hot --colors --content-base platforms/web/public/ --history-api-fallback",
+    "ios": "rnv run -p ios",
+    "tvos": "rnv run -p tvos",
+    "android": "rnv run -p android",
+    "androidtv": "rnv run -p androidtv",
+    "web": "rnv run -p web",
+
+
     "web:build": "NODE_ENV=production webpack -p --config ./platforms/web/webpack.config.js",
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
     "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/cli-webos/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
