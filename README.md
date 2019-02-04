@@ -582,7 +582,7 @@ rnv app remove
 rnv app list
 rnv app info
 
-//platforms.js
+//platform.js
 rnv platform createAll
 rnv platform updateAll
 rnv platform list

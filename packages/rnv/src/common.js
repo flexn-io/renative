@@ -3,11 +3,48 @@ import fs from 'fs';
 import path from 'path';
 import { cleanFolder } from './fileutils';
 
-const IOS = 'ios';
-const TVOS = 'tvos';
+
 const ANDROID = 'android';
+const ANDROID_AUTO = 'androidauto';
+const ANDROID_TV = 'androidtv';
+const ANDROID_WEAR = 'androidwear';
+const ALEXA = 'alexa';
+const APPLE_AUTO = 'appleauto';
+const BLACKBERRY = 'blackberry';
+const CHROMECAST = 'chromecast';
+const CHROME_OS = 'chromeos';
+const FIREFOX_OS = 'firefoxos';
+const FIRE_OS = 'fireos';
+const FIRE_TV = 'firetv';
+const HBBTV = 'hbbtv';
+const IOS = 'ios';
+const KAIOS = 'kaios';
+const MACOS = 'macos';
+const NETCAST = 'netcast';
+const OCCULUS = 'occulus';
+const ORSAY = 'orsay';
+const PS4 = 'ps4';
+const ROKU = 'roku';
+const TIVO = 'tivo';
+const TIZEN = 'tizen';
+const TIZEN_WATCH = 'tizenwatch';
+const TVOS = 'tvos';
+const UBUNTU = 'ubuntu';
+const UNITY = 'unity';
+const VEWD = 'vewd';
+const VIZIO = 'vizio';
+const WATCHOS = 'watchos';
 const WEB = 'web';
-const SUPPORTED_PLATFORMS = ['all', IOS, ANDROID, WEB, 'tizen', TVOS];
+const WEBOS = 'webos';
+const WII = 'wii';
+const WINDOWS = 'windows';
+const WP10 = 'wp10';
+const WP8 = 'wp8';
+const XBOX = 'xbox';
+const XBOX360 = 'xbox360';
+
+
+const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, WEB, TIZEN, TVOS, WEBOS, MACOS];
 const RNV = 'RNV';
 const LINE = '----------------------------------------------------------';
 

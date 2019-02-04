@@ -4,8 +4,8 @@ import shell from 'shelljs';
 import {
     IOS, TVOS, ANDROID, WEB, isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
-} from './common';
-import { executeAsync } from './exec';
+} from '../common';
+import { executeAsync } from '../exec';
 
 
 const runApp = c => new Promise((resolve, reject) => {

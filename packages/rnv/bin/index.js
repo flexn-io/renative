@@ -31,4 +31,4 @@ if (typeof cmdValue === 'undefined') {
 }
 // console.log('command:', cmdValue, cmdOption, program);
 
-cli.default.run(cmdValue, cmdOption, program, process.argv);
+cli.default.run(cmdValue, cmdOption, program, process);
