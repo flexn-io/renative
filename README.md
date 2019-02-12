@@ -129,8 +129,8 @@
 
 #### Stack / Libraries
 
--   [React](https://facebook.github.io/react/) `16.5.1` react library
--   [React Native](https://facebook.github.io/react-native/) `0.57.1` for building native apps using react
+-   [React](https://facebook.github.io/react/) `16.7.0-alpha.2` react library
+-   [React Native](https://facebook.github.io/react-native/) `0.57.7` for building native apps using react
 -   [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
 ---

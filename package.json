@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -83,9 +83,9 @@
   },
   "dependencies": {
     "jsc-android": "224109.1.0",
-    "react": "16.5.1",
-    "react-dom": "16.5.1",
-    "react-native": "0.57.1",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2",
+    "react-native": "0.57.7",
     "react-native-web": "0.9.1"
   },
   "devDependencies": {

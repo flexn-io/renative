@@ -3,7 +3,7 @@
 /* eslint-disable global-require */
 const { sed } = require('shelljs');
 const path = require('path');
-const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync } = require('./node_utils');
+const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync, copyFileSync } = require('./node_utils');
 
 const checkExternalDependencies = () => {
     const semver = require('semver');
@@ -171,6 +171,19 @@ const fixiOS = () => {
                     '#import "RCTValueAnimatedNode.h"',
                     path.resolve(__dirname, '..', 'node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h'),
                 );
+
+                sed(
+                    '-i',
+                    '#import <WebKit/WebKit.h>',
+                    '',
+                    path.resolve(__dirname, '..', 'node_modules/react-native/React/Base/RCTConvert.h'),
+                );
+
+                // Replace Podspec
+                const podSource = path.resolve(__dirname, 'fix/React.podspec');
+                const podDest = path.resolve(__dirname, '..', 'node_modules/react-native/React.podspec');
+                copyFileSync(podSource, podDest);
+
                 return Promise.resolve();
             } catch (error) {
                 console.error('sed failed: ', error);
@@ -206,7 +219,7 @@ const runtvOS = () => {
                 '--simulator',
                 'Apple TV',
                 '--scheme',
-                'NextGenTVOS',
+                'ReactNativeVanillaTVOS',
             ]);
         });
 };
@@ -294,17 +307,17 @@ if (file === __filename) {
             .then(cleanBuilds)
             .then(checkExternalDependencies)
             // .then(checkSDKs)
+            .then(fixiOS, (error) => {
+                if (error && error.message === 'Not macosx') {
+                    return 'ok';
+                }
+                throw error;
+            })
             .then(() => onlyMac()
                 .then(podUpdate, () => {
                     console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
                     throw new Error('Not macosx');
                 }))
-                // .then(fixiOS, (error) => {
-                //     if (error && error.message === 'Not macosx') {
-                //         return 'ok';
-                //     }
-                //     throw error;
-                // }))
             .then(() => {
                 console.log('SETUP COMPLETED');
                 process.exit();
