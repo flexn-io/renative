@@ -590,9 +590,9 @@ rnv platform add
 rnv platform remove
 
 //plugin.js
-rnv plugin add
-rnv plugin remove
-rnv plugin list
+rnv plugin:add
+rnv plugin:remove
+rnv plugin:list
 
 ```
 

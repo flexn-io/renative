@@ -5,6 +5,10 @@ import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplet
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 
 
+// ##########################################
+// PUBLIC API
+// ##########################################
+
 const createPlatforms = c => new Promise((resolve, reject) => {
     logTask('createPlatforms');
     _runCreatePlatforms(c)
@@ -13,6 +17,27 @@ const createPlatforms = c => new Promise((resolve, reject) => {
         })
         .catch(e => reject(e));
 });
+
+
+const addPlatform = (platform, program, process) => new Promise((resolve, reject) => {
+    if (!isPlatformSupported(platform)) return;
+
+    getConfig().then((v) => {
+        _runAddPlatform()
+            .then(() => resolve())
+            .catch(e => reject(e));
+    });
+});
+
+const removePlatform = (platform, program, process) => new Promise((resolve, reject) => {
+    if (!isPlatformSupported(platform)) return;
+    console.log('REMOVE_PLATFORM: ', platform);
+    resolve();
+});
+
+// ##########################################
+// PRIVATE
+// ##########################################
 
 const _runCreatePlatforms = c => new Promise((resolve, reject) => {
     logTask('_runCreatePlatforms');
@@ -62,23 +87,6 @@ const _runCleanPlaformFolders = c => new Promise((resolve, reject) => {
     Promise.all(cleanTasks).then((values) => {
         resolve();
     });
-});
-
-
-const addPlatform = (platform, program, process) => new Promise((resolve, reject) => {
-    if (!isPlatformSupported(platform)) return;
-
-    getConfig().then((v) => {
-        _runAddPlatform()
-            .then(() => resolve())
-            .catch(e => reject(e));
-    });
-});
-
-const removePlatform = (platform, program, process) => new Promise((resolve, reject) => {
-    if (!isPlatformSupported(platform)) return;
-    console.log('REMOVE_PLATFORM: ', platform);
-    resolve();
 });
 
 const _runAddPlatform = c => new Promise((resolve, reject) => {

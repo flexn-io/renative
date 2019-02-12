@@ -7,6 +7,9 @@ import {
 } from '../common';
 import { executeAsync } from '../exec';
 
+// ##########################################
+// PUBLIC API
+// ##########################################
 
 const runApp = c => new Promise((resolve, reject) => {
     logTask('runApp');
@@ -58,6 +61,10 @@ const updateApp = c => new Promise((resolve, reject) => {
 
     logErrorPlatform(c.platform, resolve);
 });
+
+// ##########################################
+// PRIVATE
+// ##########################################
 
 const _runAndroid = c => new Promise((resolve, reject) => {
     logTask('_runAndroid');

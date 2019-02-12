@@ -4,6 +4,9 @@ import fs from 'fs';
 import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 
+// ##########################################
+// PUBLIC API
+// ##########################################
 
 const configure = c => new Promise((resolve, reject) => {
     logTask('configure');
@@ -25,6 +28,9 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => resolve());
 });
 
+// ##########################################
+//  PRIVATE
+// ##########################################
 
 const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('_runCopyRuntimeAssets');
