@@ -355,7 +355,6 @@ open browser URL: http://localhost:8080
 
 #### Requirements
 
--   [Tizen Studio](https://developer.tizen.org/development/tizen-studio/) 2.4
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `4.0`
 
 #### Project Configuration
@@ -367,30 +366,46 @@ open browser URL: http://localhost:8080
 | react-native-web |     `0.9.1`     |
 | Babel Core       |     `7.1.2`     |
 
-#### Run
+Make sure you have tizen-cli configure in your env variables:
 
 ```
-npm run tizen:build
+export PATH="<USER_PATH>/tizen-studio/tools/ide/bin:$PATH"
+export PATH="<USER_PATH>/tizen-studio/tools/emulator/bin:$PATH"
 ```
 
--   Open project in Tizen Studio <PROJECT_ROOT>/tizen
--   Run app
+#### Emulator
+
+Make sure you have at least 1 TV VM setup
+
+```
+emulator-manager
+```
 
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen1.png?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen2.png?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen3.png?raw=true" />
-    </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen4.png?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen5.png?raw=true" />
     </th>
   </tr>
 </table>
+
+
+```
+em-cli list-vm
+
+em-cli launch --name T-samsung-4.0-x86
+```
+
+#### Run
+
+```
+npm run tizen
+```
+
+or specific simulator:
+```
+npm run tizen T-samsung-4.0-x86
+```
 
 ---
 

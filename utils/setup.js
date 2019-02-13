@@ -2,6 +2,7 @@
 // Because we are deleting node_modules
 /* eslint-disable global-require */
 const { sed } = require('shelljs');
+const shell = require('shelljs');
 const path = require('path');
 const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync, copyFileSync } = require('./node_utils');
 
@@ -299,6 +300,18 @@ if (file === __filename) {
                 console.error('tvos:update failed:', error.message);
                 process.exit();
             });
+        break;
+    case 'run_tizen':
+        const tDir = path.resolve(__dirname, '..', 'platforms/tizen');
+        const tOut = path.resolve(__dirname, '..', 'platforms/tizen/output');
+        const tBuild = path.resolve(__dirname, '..', 'platforms/tizen/build');
+        const tId = 'NvVRhWHJST.ReactNativeVanilla';
+        const tSim = args[1] || 'T-samsung-4.0-x86';
+        const gwt = 'ReactNativeVanilla.wgt';
+
+        shell.exec(`npm run tizen:build && tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
+            shell.exec(`tizen run -p ${tId} -t ${tSim}`);
+        });
         break;
     default:
         console.log('REACT-NATIVE-VANILLA');
