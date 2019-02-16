@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://pavjacko/ReactNativeVanilla" version="0.8.2" viewmodes="maximized">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://pavjacko/ReactNativeVanilla" version="0.8.3" viewmodes="maximized">
     <tizen:application id="NvVRhWHJST.ReactNativeVanilla" package="NvVRhWHJST" required_version="2.3"/>
     <content src="public/index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
