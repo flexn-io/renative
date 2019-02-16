@@ -366,7 +366,7 @@ open browser URL: http://localhost:8080
 | react-native-web |     `0.9.1`     |
 | Babel Core       |     `7.1.2`     |
 
-Make sure you have tizen-cli configure in your env variables:
+Make sure you have tizen-cli configured in your env variables:
 
 ```
 export PATH="<USER_PATH>/tizen-studio/tools/ide/bin:$PATH"
@@ -427,7 +427,7 @@ npm run tizen T-samsung-4.0-x86
 | react-native-web |     `0.9.1`     |
 | Babel Core       | `7.1.2` |
 
-Make sure you have tizen-cli configure in your env variables:
+Make sure you have ares-cli configured in your env variables:
 
 ```
 export PATH="<USER_PATH>/Library/webOS_TV_SDK/CLI/bin:$PATH"
@@ -438,8 +438,7 @@ Test above path by running
 ares -V
 ```
 
-
-#### Run
+#### Emulator
 
 -   launch webOS emulator
 usually located in something like:
@@ -447,7 +446,15 @@ usually located in something like:
 <USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
 ```
 
-Run app:
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/webos1.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+#### Run
 
 ```
 npm run webos
