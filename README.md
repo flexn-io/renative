@@ -25,7 +25,7 @@
     </th>
   </tr>
   <tr>
-    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#"></a></th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#android-wear">Android Wear</a></th>
   </tr>
   <tr>
     <th>
@@ -37,7 +37,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="100" height="100" />
     </th>
   </tr>
 </table>
@@ -61,51 +61,58 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
--   [Get Started](#get-started)
-    -   [1. Prerequisites](#1-prerequisites)
-    -   [2. Installation](#2-installation)
--   [Architecture](#architecture)
--   [iOS](#ios)
-    -   [Requirements](#requirements)
-    -   [Project Configuration](#project-configuration)
-    -   [Run](#run)
--   [Android](#android)
-    -   [Requirements](#requirements-1)
-    -   [Project Configuration](#project-configuration-1)
-    -   [Run](#run-1)
--   [tvOS](#tvos)
-    -   [Requirements](#requirements-2)
-    -   [Project Configuration](#project-configuration-2)
-    -   [Run](#run-2)
--   [Android TV](#android-tv)
-    -   [Requirements](#requirements-3)
-    -   [Project Configuration](#project-configuration-3)
-    -   [Run](#run-3)
--   [Web](#web)
-    -   [Requirements](#requirements-4)
-    -   [Project Configuration](#project-configuration-4)
-    -   [Run](#run-4)
--   [Tizen](#tizen)
-    -   [Requirements](#requirements-5)
-    -   [Project Configuration](#project-configuration-5)
-    -   [Run](#run-5)
--   [LG webOS](#lg-webos)
-    -   [Requirements](#requirements-6)
-    -   [Project Configuration](#project-configuration-6)
-    -   [Run](#run-6)
--   [macOS](#macos)
-    -   [Requirements](#requirements-7)
-    -   [Project Configuration](#project-configuration-7)
-    -   [Run](#run-7)
--   [Windows](#windows)
-    -   [Requirements](#requirements-8)
-    -   [Project Configuration](#project-configuration-8)
-    -   [Run](#run-8)
-    -   [Distribute](#distribute)
--   [Contributors](#contributors)
--   [Discussions](#discussions)
--   [Community](#community)
--   [LICENSE](#license)
+
+- [Get Started](#get-started)
+    - [1. Prerequisites](#1-prerequisites)
+    - [2. Installation](#2-installation)
+- [Architecture](#architecture)
+- [iOS](#ios)
+    - [Requirements](#requirements)
+    - [Project Configuration](#project-configuration)
+    - [Run](#run)
+- [Android](#android)
+    - [Requirements](#requirements-1)
+    - [Project Configuration](#project-configuration-1)
+    - [Run](#run-1)
+- [tvOS](#tvos)
+    - [Requirements](#requirements-2)
+    - [Project Configuration](#project-configuration-2)
+    - [Run](#run-2)
+- [Android TV](#android-tv)
+    - [Requirements](#requirements-3)
+    - [Project Configuration](#project-configuration-3)
+    - [Run](#run-3)
+- [Web](#web)
+    - [Requirements](#requirements-4)
+    - [Project Configuration](#project-configuration-4)
+    - [Run](#run-4)
+- [Tizen](#tizen)
+    - [Requirements](#requirements-5)
+    - [Project Configuration](#project-configuration-5)
+    - [Emulator](#emulator)
+    - [Run](#run-5)
+- [LG webOS](#lg-webos)
+    - [Requirements](#requirements-6)
+    - [Project Configuration](#project-configuration-6)
+    - [Emulator](#emulator-1)
+    - [Run](#run-6)
+- [macOS](#macos)
+    - [Requirements](#requirements-7)
+    - [Project Configuration](#project-configuration-7)
+    - [Run](#run-7)
+- [Windows](#windows)
+    - [Requirements](#requirements-8)
+    - [Project Configuration](#project-configuration-8)
+    - [Run](#run-8)
+    - [Distribute](#distribute)
+- [Android Wear](#android-wear)
+    - [Requirements](#requirements-9)
+    - [Project Configuration](#project-configuration-9)
+    - [Run](#run-9)
+- [Contributors](#contributors)
+- [Discussions](#discussions)
+- [Community](#community)
+- [LICENSE](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
