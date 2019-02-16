@@ -23,7 +23,7 @@ android {
 }
 
 task appStart(type: Exec, dependsOn: 'installDebug') {
-    commandLine 'adb', 'shell', 'am', 'start', '-n', 'reactnativevanilla.helloworld/rnv.MainActivity'
+    commandLine 'adb', 'shell', 'am', 'start', '-n', 'reactnativevanilla.helloworld/reactnativevanilla.helloworld.MainActivity'
 }
 
 dependencies {

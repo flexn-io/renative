@@ -53,7 +53,7 @@
     "ios": "node ./utils/setup.js run_ios",
     "tvos": "node ./utils/setup.js run_tvos",
     "tizen": "node ./utils/setup.js run_tizen",
-    "android": "cd platforms/android && ./gradlew appStart",
+    "android": "node ./utils/setup.js run_androidwear",
     "androidwear": "cd platforms/androidwear && ./gradlew appStart",
     "androidtv": "cd platforms/androidtv && ./gradlew appStart",
     "webos": "node ./utils/setup.js run_webos",

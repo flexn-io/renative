@@ -1,4 +1,4 @@
-package rnv
+package reactnativevanilla.helloworld
 
 import android.content.Intent
 import com.facebook.react.ReactActivity

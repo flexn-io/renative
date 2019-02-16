@@ -281,6 +281,29 @@ const _runWebOS = () => {
     });
 };
 
+const _runAndroidWear = () => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/androidwear');
+    const resDir = path.join(tDir, 'app/src/main/res');
+    executeAsync('react-native', [
+        'bundle',
+        '--platform',
+        'android',
+        '--dev',
+        'false',
+        '--assets-dest',
+        `${resDir}`,
+        '--entry-file',
+        'index.androidwear.js',
+        '--bundle-output',
+        `${tDir}/app/src/main/assets/index.android.bundle`,
+    ]).then((v) => {
+        shell.cd(`${tDir}`);
+        shell.exec('./gradlew appStart');
+        resolve();
+    });
+};
+
+
 /* eslint-disable-next-line no-unused-vars */
 const [context, file, ...args] = process.argv;
 if (file === __filename) {
@@ -291,6 +314,9 @@ if (file === __filename) {
                 console.error('ios failed:', error.message);
                 process.exit();
             });
+        break;
+    case 'run_androidwatch':
+        _runAndroidWear();
         break;
     case 'run_tvos':
         runtvOS()
