@@ -37,7 +37,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
     </th><th>
-        ...
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -519,6 +519,41 @@ npm run windows
 ```
 npm run windows:dist
 ```
+
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />
+
+## Android Wear
+
+-   Latest Android project
+-   Kotlin Support
+-   Support for Gradle 4.9
+-   Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
+
+#### Requirements
+
+-   [Android Studio](https://developer.android.com/studio/index.html) for Android development
+-   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
+
+#### Project Configuration
+
+| Feature        |             Version              |
+| -------------- | :------------------------------: |
+| Gradle         |            `4.9-RC1`             |
+| Android Gradle |          `3.3.0-ALPHA3`          |
+| Kotlin         |             `1.2.50`             |
+| Target SDK     |               `27`               |
+| JSC            | `org.webkit:android-jsc:r224109` |
+
+#### Run
+
+NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+```
+npm run androidwear
+```
+
 
 ---
 
