@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import packageJson from '../package.json';
 
 const styles = StyleSheet.create({
@@ -10,21 +10,24 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 20,
+        marginHorizontal: 20,
         color: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center',
     },
     image: {
-        marginBottom: 50,
+        marginBottom: 30,
         width: 83,
         height: 97,
     },
     button: {
-        marginTop: 50,
+        marginTop: 30,
+        marginHorizontal: 20,
         borderWidth: 2,
+        borderRadius: 25,
         borderColor: '#62DBFB',
         height: 50,
-        width: 200,
+        minWidth: 150,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -42,7 +45,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <View style={[styles.app, { backgroundColor: this.state.bgColor }]}>
+            <ScrollView style={[styles.app, { backgroundColor: this.state.bgColor }]}>
                 <Image style={styles.image} source={require('../assets/images/logo.png')} />
                 <Text style={styles.text}>
 Hello from React Native Vanilla!
@@ -54,7 +57,7 @@ v
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        this.setState({ bgColor: '#888888' });
+                        this.setState({ bgColor: this.state.bgColor === '#888888' ? '#222222' : '#888888' });
                     }}
                 >
                     <Text style={styles.buttonText}>
@@ -64,14 +67,14 @@ Try Me!
                 <TouchableOpacity
                     style={styles.button}
                     onPress={() => {
-                        this.setState({ bgColor: '#222222' });
+                        this.setState({ bgColor: this.state.bgColor === '#888888' ? '#222222' : '#888888' });
                     }}
                 >
                     <Text style={styles.buttonText}>
 Now Try Me!
                     </Text>
                 </TouchableOpacity>
-            </View>
+            </ScrollView>
         );
     }
 }

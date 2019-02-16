@@ -299,7 +299,6 @@ const _runAndroidWear = () => {
     ]).then((v) => {
         shell.cd(`${tDir}`);
         shell.exec('./gradlew appStart');
-        resolve();
     });
 };
 
@@ -315,7 +314,7 @@ if (file === __filename) {
                 process.exit();
             });
         break;
-    case 'run_androidwatch':
+    case 'run_androidwear':
         _runAndroidWear();
         break;
     case 'run_tvos':
@@ -361,7 +360,7 @@ if (file === __filename) {
     case 'run_webos':
         _runWebOS();
         break;
-    default:
+    case 'setup':
         console.log('REACT-NATIVE-VANILLA');
         cleanNodeModules()
             .then(installNPMDependecies)
