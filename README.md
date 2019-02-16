@@ -427,13 +427,30 @@ npm run tizen T-samsung-4.0-x86
 | react-native-web |     `0.9.1`     |
 | Babel Core       | `7.1.2` |
 
+Make sure you have tizen-cli configure in your env variables:
+
+```
+export PATH="<USER_PATH>/Library/webOS_TV_SDK/CLI/bin:$PATH"
+```
+
+Test above path by running
+```
+ares -V
+```
+
+
 #### Run
 
 -   launch webOS emulator
+usually located in something like:
+```
+<USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
+```
+
+Run app:
 
 ```
-npm run webos:build
-npm run webos:install
+npm run webos
 ```
 
 ---

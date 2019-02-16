@@ -6,6 +6,9 @@ const shell = require('shelljs');
 const path = require('path');
 const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync, copyFileSync } = require('./node_utils');
 
+const fs = require('fs');
+
+
 const checkExternalDependencies = () => {
     const semver = require('semver');
     const { engines } = require('../package.json');
@@ -262,6 +265,22 @@ const updatetvOS = () => {
         });
 };
 
+const _runWebOS = () => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/webos');
+    const tOut = path.resolve(__dirname, '..', 'platforms/webos/output');
+    const tSim = args[1] || 'emulator';
+
+    const workspacePathWebOS = './platforms/webos';
+    const configFilePath = `${workspacePathWebOS + path.sep}appinfo.json`;
+    const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+    const tId = cnfg.id;
+    const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
+
+    shell.exec(`npm run webos:build && ares-package -o ${tOut} ${tDir} && ares-install --device ${tSim} ${appPath}`, () => {
+        shell.exec(`ares-launch --device ${tSim} ${tId}`);
+    });
+};
+
 /* eslint-disable-next-line no-unused-vars */
 const [context, file, ...args] = process.argv;
 if (file === __filename) {
@@ -312,6 +331,9 @@ if (file === __filename) {
         shell.exec(`npm run tizen:build && tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
             shell.exec(`tizen run -p ${tId} -t ${tSim}`);
         });
+        break;
+    case 'run_webos':
+        _runWebOS();
         break;
     default:
         console.log('REACT-NATIVE-VANILLA');
