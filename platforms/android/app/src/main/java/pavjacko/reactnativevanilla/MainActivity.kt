@@ -1,4 +1,4 @@
-package pavjacko.reactnativevanilla
+package rnv
 
 import android.content.Intent
 import com.facebook.react.ReactActivity

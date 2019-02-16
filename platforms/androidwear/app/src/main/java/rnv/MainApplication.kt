@@ -1,7 +1,5 @@
 package rnv
 
-import reactnativevanilla.helloworld.BuildConfig
-
 import android.app.Application
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactNativeHost
@@ -12,7 +10,7 @@ import java.util.Arrays
 
 
 /**
- * Created by paveljacko on 24/07/2018.
+ * Created by paveljacko on 16/02/2019.
  */
 
 class MainApplication : Application(), ReactApplication {
@@ -26,7 +24,7 @@ class MainApplication : Application(), ReactApplication {
             )
         }
 
-        override fun getJSMainModuleName(): String = "index.android"
+        override fun getJSMainModuleName(): String = "index.androidwear"
     }
 
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost

@@ -54,6 +54,7 @@
     "tvos": "node ./utils/setup.js run_tvos",
     "tizen": "node ./utils/setup.js run_tizen",
     "android": "cd platforms/android && ./gradlew appStart",
+    "androidwear": "cd platforms/androidwear && ./gradlew appStart",
     "androidtv": "cd platforms/androidtv && ./gradlew appStart",
     "webos": "node ./utils/setup.js run_webos",
     "web": "webpack-dev-server -d --config ./platforms/web/webpack.config.js  --inline --hot --colors --content-base platforms/web/public/ --history-api-fallback",
