@@ -2,22 +2,43 @@
   "id": "helloWorld",
   "common": {
     "id": "reactnativevanilla.helloworld",
-    "title": "RNV Hello World"
+    "title": "RNV Hello World",
   },
   "platforms":{
     "ios": {
+      "entryFile": "index.ios",
       "scheme": "RNVApp",
-      "runScheme": "Debug"
+      "runScheme": "Debug",
+      "platformTemplate": "./packages/rnv/platformTemplates/ios"
     },
     "tvos": {
+      "entryFile": "index.tvos",
       "scheme": "RNVAppTVOS",
       "runScheme": "Debug"
     },
     "android": {
       "entryFile": "index.android"
     },
+    "androidtv": {
+      "entryFile": "index.androidtv"
+    },
+    "androidwatch": {
+      "entryFile": "index.androidwatch"
+    },
+    "macos": {
+      "entryFile": "index.macos"
+    },
+    "tizen": {
+      "entryFile": "index.tizen"
+    },
     "web": {
-
-    }
+      "entryFile": "index.web"
+    },
+    "webos": {
+      "entryFile": "index.webos"
+    },
+    "windows": {
+      "entryFile": "index.windows"
+    },
   }
 }

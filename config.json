@@ -1,4 +1,5 @@
 {
-  "globalConfigFolder": ".rnv",
-  "appConfigsFolder": "appConfigs"
+  "globalConfigFolder": "~/.rnv",
+  "appConfigsFolder": "./appConfigs",
+  "platformTemplates": "./packages/rnv/platformTemplates/ios"
 }

@@ -1,5 +1,5 @@
 <p align='center'>
-  <h1 align='center'>React Native Vanilla</h1>
+  <h1 align='center'>🚀 React Native Vanilla</h1>
   <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_exp.png?raw=true" /></p>
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
 </p>
@@ -25,7 +25,7 @@
     </th>
   </tr>
   <tr>
-    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#android-wear">Android Wear</a></th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen-tv">Tizen TV</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#android-wear">Android Wear</a></th>
   </tr>
   <tr>
     <th>
@@ -426,7 +426,7 @@ npx rnv run -p web --info
 
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
 
-## Tizen
+## Tizen TV
 
 -   Latest Tizen project
 -   Support for Tizen 4.0
