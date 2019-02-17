@@ -118,8 +118,10 @@
     - [First time installation](#first-time-installation-2)
     - [Run](#run-9)
 - [RNV CLI](#rnv-cli)
-- [Contributors](#contributors)
 - [Discussions](#discussions)
+- [Contributors](#contributors)
+- [Backers](#backers)
+- [Sponsors](#sponsors)
 - [Community](#community)
 - [LICENSE](#license)
 
@@ -720,13 +722,14 @@ rnv target create --name "XXXXX"
 
 https://spectrum.chat/reactnativevanilla
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_contributor.png?raw=true" width=50 height=50 />
-
 ---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_contributor.png?raw=true" width=50 height=50 />
 
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
+
 <a href="graphs/contributors"><img src="https://opencollective.com/react-native-vanilla/contributors.svg?width=890" /></a>
 
 
