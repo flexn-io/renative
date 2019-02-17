@@ -714,27 +714,21 @@ rnv target create --name "XXXXX"
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_contributor.png?raw=true" width=50 height=50 />
-
-## Contributors
-
-This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
-<a href="graphs/contributors"><img src="https://opencollective.com/react-native-vanilla/contributors.svg?width=890" /></a>
-
-
----
-
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_chat.png?raw=true" width=50 height=50 />
 
 ## Discussions
 
 https://spectrum.chat/reactnativevanilla
 
----
-
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_community.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_contributor.png?raw=true" width=50 height=50 />
 
 ---
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
+<a href="graphs/contributors"><img src="https://opencollective.com/react-native-vanilla/contributors.svg?width=890" /></a>
+
 
 ## Backers
 
@@ -745,6 +739,10 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 ## Sponsors
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/react-native-vanilla#sponsor)]
+
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_community.png?raw=true" width=50 height=50 />
 
 ## Community
 
