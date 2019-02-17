@@ -151,6 +151,8 @@
 
 ---
 
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_rocket.png?raw=true" width=50 height=50 />
+
 ## Get Started
 
 #### 1. Prerequisites
