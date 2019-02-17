@@ -5,6 +5,9 @@ import packageJson from '../package.json';
 const styles = StyleSheet.create({
     app: {
         flex: 1,
+    },
+    appContainer: {
+        paddingTop: 100,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -45,7 +48,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <ScrollView style={[styles.app, { backgroundColor: this.state.bgColor }]}>
+            <ScrollView style={[styles.app, { backgroundColor: this.state.bgColor }]} contentContainerStyle={styles.appContainer}>
                 <Image style={styles.image} source={require('../assets/images/logo.png')} />
                 <Text style={styles.text}>
 Hello from React Native Vanilla!

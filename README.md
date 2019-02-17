@@ -250,6 +250,17 @@ npm run ios
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
 
+#### First time installation
+
+create file named `local.properties` in `<PROJECT_ROOT>/platforms/android`
+
+with paths to your Android SDK. Usually:
+
+```
+ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/<USER>/Library/Android/sdk
+```
+
 #### Run
 
 NOTE: make sure you have 1 android device connected or 1 emulator running
@@ -313,6 +324,17 @@ npm run tvos
 | Kotlin         |             `1.2.50`             |
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
+
+#### First time installation
+
+create file named `local.properties` in `<PROJECT_ROOT>/platforms/androidtv`
+
+with paths to your Android SDK. Usually:
+
+```
+ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/<USER>/Library/Android/sdk
+```
 
 #### Run
 
@@ -552,6 +574,17 @@ npm run windows:dist
 | Kotlin         |             `1.2.50`             |
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
+
+#### First time installation
+
+create file named `local.properties` in `<PROJECT_ROOT>/platforms/androidwear`
+
+with paths to your Android SDK. Usually:
+
+```
+ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/<USER>/Library/Android/sdk
+```
 
 #### Run
 

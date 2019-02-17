@@ -140,9 +140,9 @@ const cleanBuilds = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const podUpdate = () => {
-    return updateiOS()
-        .then(updatetvOS)
+const _podUpdate = () => {
+    return _updateiOS()
+        .then(_updatetvOS)
         .catch((error) => {
             const thrownError = `Error updating Apple pods ${error}`;
             console.error(thrownError);
@@ -164,7 +164,7 @@ const onlyMac = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const fixiOS = () => {
+const _fixiOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Fixing iOS');
@@ -197,7 +197,7 @@ const fixiOS = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const runiOS = () => {
+const _runiOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Running iOS');
@@ -212,7 +212,7 @@ const runiOS = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const runtvOS = () => {
+const _runtvOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Running tvOS');
@@ -229,7 +229,7 @@ const runtvOS = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const updatePods = (folder) => {
+const _updatePods = (folder) => {
     return onlyMac()
         .then(() => {
             console.log('Updating Pods for', folder);
@@ -248,23 +248,24 @@ const updatePods = (folder) => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const updateiOS = () => {
+const _updateiOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Updating iOS');
-            return updatePods('platforms/ios');
+            return _updatePods('platforms/ios');
         });
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const updatetvOS = () => {
+const _updatetvOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Updating tvOS');
-            return updatePods('platforms/tvos');
+            return _updatePods('platforms/tvos');
         });
 };
 
+/* eslint-disable-next-line arrow-body-style */
 const _runWebOS = () => {
     const tDir = path.resolve(__dirname, '..', 'platforms/webos');
     const tOut = path.resolve(__dirname, '..', 'platforms/webos/output');
@@ -281,6 +282,7 @@ const _runWebOS = () => {
     });
 };
 
+/* eslint-disable-next-line arrow-body-style */
 const _runAndroidWear = () => {
     const tDir = path.resolve(__dirname, '..', 'platforms/androidwear');
     const resDir = path.join(tDir, 'app/src/main/res');
@@ -302,44 +304,94 @@ const _runAndroidWear = () => {
     });
 };
 
+/* eslint-disable-next-line arrow-body-style */
+const _runAndroidTV = () => new Promise((resolve) => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/androidtv');
+    shell.cd(`${tDir}`);
+    shell.exec('./gradlew appStart');
+    resolve();
+});
+
+/* eslint-disable-next-line arrow-body-style */
+const _runAndroid = () => new Promise((resolve) => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/android');
+    shell.cd(`${tDir}`);
+    shell.exec('./gradlew appStart');
+    resolve();
+});
+
+/* eslint-disable-next-line arrow-body-style */
+const _runWeb = () => new Promise((resolve) => {
+    shell.exec('webpack-dev-server -d --config ./platforms/web/webpack.config.js  --inline --hot --colors --content-base platforms/web/public/ --history-api-fallback');
+    resolve();
+});
+
+
+/* eslint-disable-next-line arrow-body-style */
+const _runSimAndroid = () => new Promise((resolve) => {
+    process.on('message', ({ p, name }) => {
+        const child = child_process.spawn(
+            `${p}/tools/emulator`,
+            ['-avd', `${name}`], { detached: true },
+        );
+        child.unref();
+    });
+});
 
 /* eslint-disable-next-line no-unused-vars */
 const [context, file, ...args] = process.argv;
 if (file === __filename) {
     switch (args[0]) {
     case 'run_ios':
-        runiOS()
+        _runiOS()
             .catch((error) => {
                 console.error('ios failed:', error.message);
                 process.exit();
             });
         break;
+    case 'run_android':
+        _runAndroid()
+            .catch((error) => {
+                console.error('android failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'run_web':
+        _runWeb()
+            .catch((error) => {
+                console.error('web failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'run_androidtv':
+        _runAndroidTV();
+        break;
     case 'run_androidwear':
         _runAndroidWear();
         break;
     case 'run_tvos':
-        runtvOS()
+        _runtvOS()
             .catch((error) => {
                 console.error('ios failed:', error.message);
                 process.exit();
             });
         break;
     case 'fix_ios':
-        fixiOS()
+        _fixiOS()
             .catch((error) => {
                 console.error('ios:fix failed:', error.message);
                 process.exit();
             });
         break;
     case 'update_ios':
-        updateiOS()
+        _updateiOS()
             .catch((error) => {
                 console.error('ios:update failed:', error.message);
                 process.exit();
             });
         break;
     case 'update_tvos':
-        updatetvOS()
+        _updatetvOS()
             .catch((error) => {
                 console.error('tvos:update failed:', error.message);
                 process.exit();
@@ -367,14 +419,14 @@ if (file === __filename) {
             .then(cleanBuilds)
             .then(checkExternalDependencies)
             // .then(checkSDKs)
-            .then(fixiOS, (error) => {
+            .then(_fixiOS, (error) => {
                 if (error && error.message === 'Not macosx') {
                     return 'ok';
                 }
                 throw error;
             })
             .then(() => onlyMac()
-                .then(podUpdate, () => {
+                .then(_podUpdate, () => {
                     console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
                     throw new Error('Not macosx');
                 }))
@@ -389,12 +441,3 @@ if (file === __filename) {
         break;
     }
 }
-
-module.exports = {
-    onlyMac,
-    fixiOS,
-    runiOS,
-    runtvOS,
-    updateiOS,
-    updatetvOS,
-};
