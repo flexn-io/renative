@@ -759,6 +759,10 @@ Special thanks to open-source initiatives this project utilises, notably:
 
 ---
 
+## Stats
+
+[![NPM](https://nodei.co/npm/react-native-vanilla.png)](https://nodei.co/npm/react-native-vanilla/)
+
 ## LICENSE
 
 [MIT](LICENSE)
