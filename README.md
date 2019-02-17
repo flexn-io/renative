@@ -25,7 +25,7 @@
     </th>
   </tr>
   <tr>
-    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#"></a></th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen">Tizen</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#android-wear">Android Wear</a></th>
   </tr>
   <tr>
     <th>
@@ -37,7 +37,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
     </th><th>
-        ...
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="100" height="100" />
     </th>
   </tr>
 </table>
@@ -61,51 +61,61 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
--   [Get Started](#get-started)
-    -   [1. Prerequisite](#1-prerequisite)
-    -   [2. Installation](#2-installation)
--   [Architecture](#architecture)
--   [iOS](#ios)
-    -   [Requirements](#requirements)
-    -   [Project Configuration](#project-configuration)
-    -   [Run](#run)
--   [Android](#android)
-    -   [Requirements](#requirements-1)
-    -   [Project Configuration](#project-configuration-1)
-    -   [Run](#run-1)
--   [tvOS](#tvos)
-    -   [Requirements](#requirements-2)
-    -   [Project Configuration](#project-configuration-2)
-    -   [Run](#run-2)
--   [Android TV](#android-tv)
-    -   [Requirements](#requirements-3)
-    -   [Project Configuration](#project-configuration-3)
-    -   [Run](#run-3)
--   [Web](#web)
-    -   [Requirements](#requirements-4)
-    -   [Project Configuration](#project-configuration-4)
-    -   [Run](#run-4)
--   [Tizen](#tizen)
-    -   [Requirements](#requirements-5)
-    -   [Project Configuration](#project-configuration-5)
-    -   [Run](#run-5)
--   [LG webOS](#lg-webos)
-    -   [Requirements](#requirements-6)
-    -   [Project Configuration](#project-configuration-6)
-    -   [Run](#run-6)
--   [macOS](#macos)
-    -   [Requirements](#requirements-7)
-    -   [Project Configuration](#project-configuration-7)
-    -   [Run](#run-7)
--   [Windows](#windows)
-    -   [Requirements](#requirements-8)
-    -   [Project Configuration](#project-configuration-8)
-    -   [Run](#run-8)
-    -   [Distribute](#distribute)
--   [Contributors](#contributors)
--   [Discussions](#discussions)
--   [Community](#community)
--   [LICENSE](#license)
+
+- [Get Started](#get-started)
+    - [1. Prerequisites](#1-prerequisites)
+    - [2. Installation](#2-installation)
+- [Architecture](#architecture)
+- [iOS](#ios)
+    - [Requirements](#requirements)
+    - [Project Configuration](#project-configuration)
+    - [Run](#run)
+- [Android](#android)
+    - [Requirements](#requirements-1)
+    - [Project Configuration](#project-configuration-1)
+    - [First time installation](#first-time-installation)
+    - [Run](#run-1)
+- [tvOS](#tvos)
+    - [Requirements](#requirements-2)
+    - [Project Configuration](#project-configuration-2)
+    - [Run](#run-2)
+- [Android TV](#android-tv)
+    - [Requirements](#requirements-3)
+    - [Project Configuration](#project-configuration-3)
+    - [First time installation](#first-time-installation-1)
+    - [Run](#run-3)
+- [Web](#web)
+    - [Requirements](#requirements-4)
+    - [Project Configuration](#project-configuration-4)
+    - [Run](#run-4)
+- [Tizen](#tizen)
+    - [Requirements](#requirements-5)
+    - [Project Configuration](#project-configuration-5)
+    - [Emulator](#emulator)
+    - [Run](#run-5)
+- [LG webOS](#lg-webos)
+    - [Requirements](#requirements-6)
+    - [Project Configuration](#project-configuration-6)
+    - [Emulator](#emulator-1)
+    - [Run](#run-6)
+- [macOS](#macos)
+    - [Requirements](#requirements-7)
+    - [Project Configuration](#project-configuration-7)
+    - [Run](#run-7)
+- [Windows](#windows)
+    - [Requirements](#requirements-8)
+    - [Project Configuration](#project-configuration-8)
+    - [Run](#run-8)
+    - [Distribute](#distribute)
+- [Android Wear](#android-wear)
+    - [Requirements](#requirements-9)
+    - [Project Configuration](#project-configuration-9)
+    - [First time installation](#first-time-installation-2)
+    - [Run](#run-9)
+- [Contributors](#contributors)
+- [Discussions](#discussions)
+- [Community](#community)
+- [LICENSE](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -123,14 +133,14 @@
 
 #### Requirements
 
--   [Node](https://nodejs.org) `8.x` or newer
--   [NPM](https://npmjs.com/) `6.2.0` or newer
+-   [Node](https://nodejs.org) `10.13.0` or newer
+-   [NPM](https://npmjs.com/) `6.4.1` or newer
 -   [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 
 #### Stack / Libraries
 
--   [React](https://facebook.github.io/react/) `16.5.1` react library
--   [React Native](https://facebook.github.io/react-native/) `0.57.1` for building native apps using react
+-   [React](https://facebook.github.io/react/) `16.7.0-alpha.2` react library
+-   [React Native](https://facebook.github.io/react-native/) `0.57.7` for building native apps using react
 -   [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
 ---
@@ -142,15 +152,15 @@
 The recommended way to run specific version of Node and NPM is to use NVM:
 
 ```
-nvm install node 8.11.4
-nvm alias default node 8.11.4
+nvm install node 10.13.0
+nvm alias default node 10.13.0
 ```
 
 Tested / Recommended Node configurations:
 
 | Node Version | NPM Version |
 | ------------ | :---------: |
-| `8.11.4`     |   `5.6.0`   |
+| `10.13.0`     |   `6.4.1`   |
 
 #### 2. Installation
 
@@ -181,12 +191,14 @@ Folder Structure
     │       └── platformTemplates   # Platform specific Project Templates
     │           ├── android         # Android platform project
     │           ├── androidtv       # Android TV convigured platform project
+    │           ├── androidwear     # Android Wear configured platform project
     │           ├── ios             # iOS Xcode platform project
     │           ├── macos           # macOS Electron platform project
     │           ├── tizen           # Tizen platform project
     │           ├── tvos            # tvOS Xcode platform project
     │           ├── web             # Webpack based project
-    │           └── webos           # Web OS platform project
+    │           ├── webos           # Web OS platform project
+    │           └── windows         # Windows desktop platform project
     ├── src                         # Source files
     ├── tests                       # Automated tests
     ├── LICENSE
@@ -249,11 +261,22 @@ npx rnv run -p ios -s "iPhone 6 Plus" --info
 
 | Feature        |             Version              |
 | -------------- | :------------------------------: |
-| Gradle         |            `4.9-RC1`             |
-| Android Gradle |          `3.3.0-ALPHA3`          |
-| Kotlin         |             `1.2.50`             |
+| Gradle         |            `4.10.1`              |
+| Android Gradle |          `3.3.1`                 |
+| Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
+
+#### First time installation
+
+create file named `local.properties` in `<PROJECT_ROOT>/platforms/android`
+
+with paths to your Android SDK. Usually:
+
+```
+ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/<USER>/Library/Android/sdk
+```
 
 #### Run
 
@@ -329,11 +352,22 @@ npx rnv run -p tvos -s "Apple TV 4K" --info
 
 | Feature        |             Version              |
 | -------------- | :------------------------------: |
-| Gradle         |            `4.9-RC1`             |
-| Android Gradle |          `3.3.0-ALPHA3`          |
-| Kotlin         |             `1.2.50`             |
+| Gradle         |            `4.10.1`              |
+| Android Gradle |          `3.3.1`                 |
+| Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
+
+#### First time installation
+
+create file named `local.properties` in `<PROJECT_ROOT>/platforms/androidtv`
+
+with paths to your Android SDK. Usually:
+
+```
+ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/<USER>/Library/Android/sdk
+```
 
 #### Run
 
@@ -399,7 +433,6 @@ npx rnv run -p web --info
 
 #### Requirements
 
--   [Tizen Studio](https://developer.tizen.org/development/tizen-studio/) 2.4
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `4.0`
 
 #### Project Configuration
@@ -411,31 +444,46 @@ npx rnv run -p web --info
 | react-native-web |     `0.9.1`     |
 | Babel Core       |     `7.1.2`     |
 
-#### Run
+Make sure you have tizen-cli configured in your env variables:
 
 ```
-npm start
-npm run tizen
+export PATH="<USER_PATH>/tizen-studio/tools/ide/bin:$PATH"
+export PATH="<USER_PATH>/tizen-studio/tools/emulator/bin:$PATH"
 ```
 
--   Open project in Tizen Studio <PROJECT_ROOT>/tizen
--   Run app
+#### Emulator
+
+Make sure you have at least 1 TV VM setup
+
+```
+emulator-manager
+```
 
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen1.png?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen2.png?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen3.png?raw=true" />
-    </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen4.png?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen5.png?raw=true" />
     </th>
   </tr>
 </table>
+
+
+```
+em-cli list-vm
+
+em-cli launch --name T-samsung-4.0-x86
+```
+
+#### Run
+
+```
+npm run tizen
+```
+
+or specific simulator:
+```
+npm run tizen T-samsung-4.0-x86
+```
 
 ---
 
@@ -457,13 +505,37 @@ npm run tizen
 | react-native-web |     `0.9.1`     |
 | Babel Core       | `7.1.2` |
 
-#### Run
-
--   launch webOS emulator
+Make sure you have ares-cli configured in your env variables:
 
 ```
-npm run webos:build
-npm run webos:install
+export PATH="<USER_PATH>/Library/webOS_TV_SDK/CLI/bin:$PATH"
+```
+
+Test above path by running
+```
+ares -V
+```
+
+#### Emulator
+
+-   launch webOS emulator
+usually located in something like:
+```
+<USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
+```
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/webos1.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+#### Run
+
+```
+npm run webos
 ```
 
 ---
@@ -527,6 +599,51 @@ npm run windows:dist
 ```
 
 ---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=50 height=50 />
+
+## Android Wear
+
+-   Latest Android project
+-   Kotlin Support
+-   Support for Gradle 4.9
+-   Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
+
+#### Requirements
+
+-   [Android Studio](https://developer.android.com/studio/index.html) for Android development
+-   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
+
+#### Project Configuration
+
+| Feature        |             Version              |
+| -------------- | :------------------------------: |
+| Gradle         |            `4.10.1`              |
+| Android Gradle |          `3.3.1`                 |
+| Kotlin         |             `1.3.20`             |
+| Target SDK     |               `27`               |
+| JSC            | `org.webkit:android-jsc:r224109` |
+
+#### First time installation
+
+create file named `local.properties` in `<PROJECT_ROOT>/platforms/androidwear`
+
+with paths to your Android SDK. Usually:
+
+```
+ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/<USER>/Library/Android/sdk
+```
+
+#### Run
+
+NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+```
+npm run androidwear
+```
+
+=======
 
 ## RNV CLI
 
@@ -595,6 +712,7 @@ rnv plugin:remove
 rnv plugin:list
 
 ```
+
 
 ---
 

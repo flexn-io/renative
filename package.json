@@ -16,6 +16,7 @@
     "apple tv",
     "tvos",
     "android tv",
+    "android wear",
     "web",
     "multiplatform",
     "cross-platform",
@@ -25,16 +26,17 @@
     "electron",
     "smart tv",
     "lg",
+    "watch",
     "webos",
     "windows",
     "desktop"
   ],
   "license": "MIT",
   "private": false,
-  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `AndroidTV`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
+  "description": "🚀🚀🚀 Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
   "author": {
     "name": "Pavel Jacko",
-    "email": "pavel.jacko@gmail.com",
+    "email": "i@pavjacko.com",
     "url": "https://github.com/pavjacko"
   },
   "bugs": {
@@ -47,7 +49,7 @@
   ],
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
-    "setup": "node ./utils/setup.js",
+    "setup": "node ./utils/rnv.js setup",
     "watch": "npx lerna run --parallel watch",
     "lerna": "npx lerna bootstrap --hoist",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -57,17 +59,16 @@
     "android": "rnv run -p android",
     "androidtv": "rnv run -p androidtv",
     "web": "rnv run -p web",
-
-
+    "androidwear": "node ./utils/rnv.js run_androidwear",
+    "webos": "node ./utils/rnv.js run_webos",
+    "macos": "npm run macos:build && electron ./platforms/macos/",
+    "windows": "npm run windows:build && electron ./platforms/windows/",
     "web:build": "NODE_ENV=production webpack -p --config ./platforms/web/webpack.config.js",
     "tizen:build": "NODE_ENV=production webpack -p --config ./platforms/tizen/webpack.config.js",
-    "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js && ./node_modules/cli-webos/bin/ares-package.sh -o ./platforms/webos/build ./platforms/webos",
-    "webos:install": "./node_modules/cli-webos/bin/ares-install.sh -d emulator ./platforms/webos/build/pavjacko.reactnativevanilla_0.0.1_all.ipk",
+    "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js",
     "macos:build": "NODE_ENV=production webpack -p --config ./platforms/macos/webpack.config.js",
-    "macos": "npm run macos:build && electron ./platforms/macos/",
     "macos:dist": "node ./utils/builder.js dist_windows && electron-builder",
     "windows:build": "webpack -p --config ./platforms/windows/webpack.config.js",
-    "windows": "npm run windows:build && electron ./platforms/windows/",
     "windows:dist": "node ./utils/builder.js dist_windows && electron-builder",
     "test": "jest",
     "preversion": "npm run test",
@@ -87,9 +88,9 @@
   },
   "dependencies": {
     "jsc-android": "224109.1.0",
-    "react": "16.5.1",
-    "react-dom": "16.5.1",
-    "react-native": "0.57.2",
+    "react": "16.7.0-alpha.2",
+    "react-dom": "16.7.0-alpha.2",
+    "react-native": "0.57.7",
     "react-native-web": "0.9.1"
   },
   "devDependencies": {
@@ -124,6 +125,9 @@
     "eslint-plugin-jsx-a11y": "6.1.1",
     "eslint-plugin-react": "7.10.0",
     "file-loader": "1.1.11",
+    "html-webpack-plugin": "3.2.0",
+    "html-webpack-harddisk-plugin": "0.2.0",
+    "extract-text-webpack-plugin": "3.0.2",
     "icon-toolkit": "0.0.9",
     "jest": "23.4.1",
     "lerna": "3.4.0",

@@ -59,12 +59,12 @@ const copyDirContents = (source, destination) => new Promise((resolve, reject) =
     const ncp = require('ncp');
     ncp.limit = 16;
 
-    ncp(source, destination, function (err) {
-     if (err) {
-        reject(err);
-      } else {
-        resolve()
-      }
+    ncp(source, destination, (err) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve();
+        }
     });
 });
 
@@ -81,7 +81,7 @@ function executeAsync(
         cwd: process.cwd(),
         stdio: 'inherit',
         env,
-    }
+    },
 ) {
     return new Promise((resolve, reject) => {
         const command = spawn(cmd, args, opts);
@@ -121,9 +121,27 @@ function executeAsync(
     });
 }
 
+const copyFileSync = (source, target) => {
+    let targetFile = target;
+    // console.log('Copy assets from: %s to %s', source, target)
+
+    // if target is a directory a new file with the same name will be created
+
+    if (source.indexOf('.DS_Store') !== -1) return;
+
+    if (fs.existsSync(target)) {
+        if (fs.lstatSync(target).isDirectory()) {
+            targetFile = path.join(target, path.basename(source));
+        }
+    }
+
+    fs.writeFileSync(targetFile, fs.readFileSync(source));
+};
+
 module.exports = {
     removeDirAsyncWithNode,
     removeDirAsyncWithRimraf,
     executeAsync,
-    copyDirContents
+    copyDirContents,
+    copyFileSync,
 };

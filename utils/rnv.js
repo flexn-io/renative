@@ -2,8 +2,12 @@
 // Because we are deleting node_modules
 /* eslint-disable global-require */
 const { sed } = require('shelljs');
+const shell = require('shelljs');
 const path = require('path');
-const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync } = require('./node_utils');
+const { removeDirAsyncWithNode, removeDirAsyncWithRimraf, executeAsync, copyFileSync } = require('./node_utils');
+
+const fs = require('fs');
+
 
 const checkExternalDependencies = () => {
     const semver = require('semver');
@@ -136,9 +140,9 @@ const cleanBuilds = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const podUpdate = () => {
-    return updateiOS()
-        .then(updatetvOS)
+const _podUpdate = () => {
+    return _updateiOS()
+        .then(_updatetvOS)
         .catch((error) => {
             const thrownError = `Error updating Apple pods ${error}`;
             console.error(thrownError);
@@ -160,7 +164,7 @@ const onlyMac = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const fixiOS = () => {
+const _fixiOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Fixing iOS');
@@ -171,6 +175,19 @@ const fixiOS = () => {
                     '#import "RCTValueAnimatedNode.h"',
                     path.resolve(__dirname, '..', 'node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h'),
                 );
+
+                sed(
+                    '-i',
+                    '#import <WebKit/WebKit.h>',
+                    '',
+                    path.resolve(__dirname, '..', 'node_modules/react-native/React/Base/RCTConvert.h'),
+                );
+
+                // Replace Podspec
+                const podSource = path.resolve(__dirname, 'fix/React.podspec');
+                const podDest = path.resolve(__dirname, '..', 'node_modules/react-native/React.podspec');
+                copyFileSync(podSource, podDest);
+
                 return Promise.resolve();
             } catch (error) {
                 console.error('sed failed: ', error);
@@ -180,7 +197,7 @@ const fixiOS = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const runiOS = () => {
+const _runiOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Running iOS');
@@ -195,7 +212,7 @@ const runiOS = () => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const runtvOS = () => {
+const _runtvOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Running tvOS');
@@ -206,13 +223,13 @@ const runtvOS = () => {
                 '--simulator',
                 'Apple TV',
                 '--scheme',
-                'NextGenTVOS',
+                'ReactNativeVanillaTVOS',
             ]);
         });
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const updatePods = (folder) => {
+const _updatePods = (folder) => {
     return onlyMac()
         .then(() => {
             console.log('Updating Pods for', folder);
@@ -231,80 +248,188 @@ const updatePods = (folder) => {
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const updateiOS = () => {
+const _updateiOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Updating iOS');
-            return updatePods('platforms/ios');
+            return _updatePods('platforms/ios');
         });
 };
 
 /* eslint-disable-next-line arrow-body-style */
-const updatetvOS = () => {
+const _updatetvOS = () => {
     return onlyMac()
         .then(() => {
             console.log('Updating tvOS');
-            return updatePods('platforms/tvos');
+            return _updatePods('platforms/tvos');
         });
 };
+
+/* eslint-disable-next-line arrow-body-style */
+const _runWebOS = () => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/webos');
+    const tOut = path.resolve(__dirname, '..', 'platforms/webos/output');
+    const tSim = args[1] || 'emulator';
+
+    const workspacePathWebOS = './platforms/webos';
+    const configFilePath = `${workspacePathWebOS + path.sep}appinfo.json`;
+    const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+    const tId = cnfg.id;
+    const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
+
+    shell.exec(`npm run webos:build && ares-package -o ${tOut} ${tDir} && ares-install --device ${tSim} ${appPath}`, () => {
+        shell.exec(`ares-launch --device ${tSim} ${tId}`);
+    });
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const _runAndroidWear = () => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/androidwear');
+    const resDir = path.join(tDir, 'app/src/main/res');
+    executeAsync('react-native', [
+        'bundle',
+        '--platform',
+        'android',
+        '--dev',
+        'false',
+        '--assets-dest',
+        `${resDir}`,
+        '--entry-file',
+        'index.androidwear.js',
+        '--bundle-output',
+        `${tDir}/app/src/main/assets/index.android.bundle`,
+    ]).then((v) => {
+        shell.cd(`${tDir}`);
+        shell.exec('./gradlew appStart');
+    });
+};
+
+/* eslint-disable-next-line arrow-body-style */
+const _runAndroidTV = () => new Promise((resolve) => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/androidtv');
+    shell.cd(`${tDir}`);
+    shell.exec('./gradlew appStart');
+    resolve();
+});
+
+/* eslint-disable-next-line arrow-body-style */
+const _runAndroid = () => new Promise((resolve) => {
+    const tDir = path.resolve(__dirname, '..', 'platforms/android');
+    shell.cd(`${tDir}`);
+    shell.exec('./gradlew appStart');
+    resolve();
+});
+
+/* eslint-disable-next-line arrow-body-style */
+const _runWeb = () => new Promise((resolve) => {
+    shell.exec('webpack-dev-server -d --config ./platforms/web/webpack.config.js  --inline --hot --colors --content-base platforms/web/public/ --history-api-fallback');
+    resolve();
+});
+
+
+/* eslint-disable-next-line arrow-body-style */
+const _runSimAndroid = () => new Promise((resolve) => {
+    process.on('message', ({ p, name }) => {
+        const child = child_process.spawn(
+            `${p}/tools/emulator`,
+            ['-avd', `${name}`], { detached: true },
+        );
+        child.unref();
+    });
+});
 
 /* eslint-disable-next-line no-unused-vars */
 const [context, file, ...args] = process.argv;
 if (file === __filename) {
     switch (args[0]) {
     case 'run_ios':
-        runiOS()
+        _runiOS()
             .catch((error) => {
                 console.error('ios failed:', error.message);
                 process.exit();
             });
         break;
+    case 'run_android':
+        _runAndroid()
+            .catch((error) => {
+                console.error('android failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'run_web':
+        _runWeb()
+            .catch((error) => {
+                console.error('web failed:', error.message);
+                process.exit();
+            });
+        break;
+    case 'run_androidtv':
+        _runAndroidTV();
+        break;
+    case 'run_androidwear':
+        _runAndroidWear();
+        break;
     case 'run_tvos':
-        runtvOS()
+        _runtvOS()
             .catch((error) => {
                 console.error('ios failed:', error.message);
                 process.exit();
             });
         break;
     case 'fix_ios':
-        fixiOS()
+        _fixiOS()
             .catch((error) => {
                 console.error('ios:fix failed:', error.message);
                 process.exit();
             });
         break;
     case 'update_ios':
-        updateiOS()
+        _updateiOS()
             .catch((error) => {
                 console.error('ios:update failed:', error.message);
                 process.exit();
             });
         break;
     case 'update_tvos':
-        updatetvOS()
+        _updatetvOS()
             .catch((error) => {
                 console.error('tvos:update failed:', error.message);
                 process.exit();
             });
         break;
-    default:
+    case 'run_tizen':
+        const tDir = path.resolve(__dirname, '..', 'platforms/tizen');
+        const tOut = path.resolve(__dirname, '..', 'platforms/tizen/output');
+        const tBuild = path.resolve(__dirname, '..', 'platforms/tizen/build');
+        const tId = 'NvVRhWHJST.ReactNativeVanilla';
+        const tSim = args[1] || 'T-samsung-4.0-x86';
+        const gwt = 'ReactNativeVanilla.wgt';
+
+        shell.exec(`npm run tizen:build && tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
+            shell.exec(`tizen run -p ${tId} -t ${tSim}`);
+        });
+        break;
+    case 'run_webos':
+        _runWebOS();
+        break;
+    case 'setup':
         console.log('REACT-NATIVE-VANILLA');
         cleanNodeModules()
             .then(installNPMDependecies)
             .then(cleanBuilds)
             .then(checkExternalDependencies)
             // .then(checkSDKs)
+            .then(_fixiOS, (error) => {
+                if (error && error.message === 'Not macosx') {
+                    return 'ok';
+                }
+                throw error;
+            })
             .then(() => onlyMac()
-                .then(podUpdate, () => {
+                .then(_podUpdate, () => {
                     console.log('You are not on a macOSX environment, so skipping ios/tvos setup');
                     throw new Error('Not macosx');
                 }))
-                // .then(fixiOS, (error) => {
-                //     if (error && error.message === 'Not macosx') {
-                //         return 'ok';
-                //     }
-                //     throw error;
-                // }))
             .then(() => {
                 console.log('SETUP COMPLETED');
                 process.exit();
@@ -316,12 +441,3 @@ if (file === __filename) {
         break;
     }
 }
-
-module.exports = {
-    onlyMac,
-    fixiOS,
-    runiOS,
-    runtvOS,
-    updateiOS,
-    updatetvOS,
-};

@@ -1,2 +1,5 @@
 *.ipk
 assets/
+
+build/
+output/
