@@ -184,6 +184,8 @@ $ npm run setup
 
 ---
 
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_arch.png?raw=true" width=50 height=50 />
+
 ## Architecture
 
 Folder Structure
@@ -195,18 +197,20 @@ Folder Structure
     │       └── config.json         # Application config
     ├── docs                        # Documentation files
     ├── packages                    # Local dependencies
-    │   └── rvn                     # React Native Vanilla Build System
+    │   └── rvn                     # React Native Vanilla Build System `CLI`
     │       └── platformTemplates   # Platform specific Project Templates
-    │           ├── android         # Android platform project
-    │           ├── androidtv       # Android TV convigured platform project
-    │           ├── androidwear     # Android Wear configured platform project
-    │           ├── ios             # iOS Xcode platform project
-    │           ├── macos           # macOS Electron platform project
-    │           ├── tizen           # Tizen platform project
-    │           ├── tvos            # tvOS Xcode platform project
-    │           ├── web             # Webpack based project
-    │           ├── webos           # Web OS platform project
-    │           └── windows         # Windows desktop platform project
+    │           ├── android         # `Android` platform project
+    │           ├── androidtv       # `Android TV` configured platform project
+    │           ├── androidwear     # `Android Wear` configured platform project
+    │           ├── ios             # `iOS` Xcode platform project
+    │           ├── macos           # `macOS` Electron platform project
+    │           ├── tizen           # `Tizen` platform project
+    │           ├── tvos            # `tvOS` Xcode platform project
+    │           ├── web             # `Web` platform project
+    │           ├── webos           # `WebOS` platform project
+    │           └── windows         # `Windows` desktop platform project
+    ├── platformAssets              # Generated cross-platform assets
+    ├── platformBuilds              # Generated platform app projects
     ├── src                         # Source files
     ├── tests                       # Automated tests
     ├── LICENSE
