@@ -554,7 +554,7 @@ npm run windows:dist
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=50 height=50 />
 
 ## Android Wear
 
