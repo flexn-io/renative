@@ -5,6 +5,7 @@
   "description": "React Native Vanilla Builder",
   "author": "Pavel Jacko <i@pavjacko.com>",
   "scripts": {
+    "prepare": "babel src -d dist",
     "build": "babel src -d dist",
     "watch": "nodemon --watch src --exec npm run build"
   },

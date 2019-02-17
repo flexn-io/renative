@@ -45,13 +45,16 @@
   "contributors": [
     "Sander Looijenga <https://github.com/sanderlooijenga>",
     "Daniel Marino Ruiz <https://github.com/CHaNGeTe>",
-    "David Rielo <https://github.com/davidrielo>"
+    "David Rielo <https://github.com/davidrielo>",
+    "Aurimas Mickys <https://github.com/aurimas535>"
   ],
   "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
-    "setup": "node ./utils/rnv.js setup",
+    "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
+    "setup": "npm run clean && npm install && npm run lerna && npx rnv setup",
+    "setup:soft": "npm install && npm run lerna && npx rnv setup",
     "watch": "npx lerna run --parallel watch",
-    "lerna": "npx lerna bootstrap --hoist",
+    "lerna": "npx lerna bootstrap",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "ios": "rnv run -p ios",

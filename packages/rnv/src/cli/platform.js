@@ -9,6 +9,12 @@ import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, 
 // PUBLIC API
 // ##########################################
 
+const run = c => new Promise((resolve, reject) => {
+    logTask('run');
+
+    resolve();
+});
+
 const createPlatforms = c => new Promise((resolve, reject) => {
     logTask('createPlatforms');
     _runCreatePlatforms(c)
@@ -94,4 +100,4 @@ const _runAddPlatform = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { createPlatforms, addPlatform, removePlatform };
+export default run;

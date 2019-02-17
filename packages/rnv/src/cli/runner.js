@@ -11,6 +11,12 @@ import { executeAsync } from '../exec';
 // PUBLIC API
 // ##########################################
 
+const run = c => new Promise((resolve, reject) => {
+    logTask('run');
+
+    resolve();
+});
+
 const runApp = c => new Promise((resolve, reject) => {
     logTask('runApp');
     const { platform } = c;
@@ -193,4 +199,4 @@ const _runtvOS = (c) => {
     }
 };
 
-export { runApp, updateApp };
+export default run;

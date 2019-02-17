@@ -8,6 +8,12 @@ import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, 
 // PUBLIC API
 // ##########################################
 
+const run = c => new Promise((resolve, reject) => {
+    logTask('run');
+
+    resolve();
+});
+
 const configure = c => new Promise((resolve, reject) => {
     logTask('configure');
     _runConfigure(c)
@@ -94,4 +100,4 @@ const _isPlatformActive = (c, platform, resolve) => {
     return true;
 };
 
-export { configure };
+export default run;

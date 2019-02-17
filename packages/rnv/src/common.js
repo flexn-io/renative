@@ -51,6 +51,7 @@ const LINE = '----------------------------------------------------------';
 let _currentJob;
 let _currentProcess;
 let _isInfoEnabled = false;
+let _appConfigId;
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -65,10 +66,21 @@ const isPlatformSupported = (platform, resolve) => {
     return true;
 };
 
-const initializeBuilder = (cmd, appId, process, program) => new Promise((resolve, reject) => {
+const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     _currentJob = cmd;
     _currentProcess = process;
     _isInfoEnabled = program.info === true;
+    _appConfigId = program.appConfigID;
+    let c;
+
+    if (_currentJob === 'setup') {
+        console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+
+        resolve({
+            program, process, command: cmd, subCommand: subCmd,
+        });
+        return;
+    }
 
     const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
     const platformAssetsFolder = path.join(base, 'platformAssets');
@@ -77,10 +89,10 @@ const initializeBuilder = (cmd, appId, process, program) => new Promise((resolve
     const globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder);
 
     let appConfigFolder;
-    let c;
-    if (appId) {
+
+    if (_appConfigId) {
         // App ID specified
-        c = _getConfig(appId);
+        c = _getConfig(_appConfigId);
     } else {
         // Use latest app from platfromAssets
         const cf = path.join(base, 'platformAssets/config.json');
