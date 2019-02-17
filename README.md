@@ -661,72 +661,56 @@ npm run androidwear
 
 ## RNV CLI
 
+Commands:
+
 ```
-rnv --help
-rnv --version
-rnv run               //Run app on simulator/device/browser
-rnv deploy            //Deploy app
-rnv package           //Package JS bundles
-rnv build             //Build standalone package/app
-rnv update            //Force Update Dependencies
-rnv test              //Run Tests
-rnv doc               //Generate Docs
-rnv install           //Soft Update Dependencies
-rnv createPlatforms   //Create projects in platformBuilds for specific app
-rnv updatePlatforms   //Update platformBuilds without destroying existing builds
-rnv configure         //Switch and configure against selected app configuration
-rnv switch            //Switch to different app configuration
-rnv target --list    //List connected devices/simulators
-rnv platform --list   //List available platforms
-rnv avd               //AVD commands
-rnv plugin            //Plugin manager
-rnv plugin --list
-
-rnv target --create --name "XXXXX"
-rnv avd -c create
-
-
-
 //common.js
-rnv --help
+rnv --help              //Print help
+rnv --version           //Print RNV Version
 
 //runner.js
-rnv run               //Run app on simulator/device/browser
-rnv deploy            //Deploy app
-rnv package           //Package JS bundles
-rnv build             //Build standalone package/app
-rnv update            //Force Update Dependencies
-rnv test              //Run Tests
+rnv run                 //Run app on simulator/device/browser
+rnv package             //Package JS bundles
+rnv build               //Build standalone package/app
+rnv deploy              //Deploy app
+rnv update              //Force Update Dependencies
+rnv test                //Run Tests
+rnv doc                 //Generate documentation
 
 //target.js
-rnv target create
-rnv target remove
-rnv target start
-rnv target quit
-rnv target list
+rnv target create       //Create new target (i.e. simulator/ emulator)
+rnv target remove       //Remove target (i.e. simulator/ emulator)
+rnv target start        //Start target (i.e. simulator/ emulator)
+rnv target quit         //Terminate target (i.e. simulator/ emulator)
+rnv target list         //List of available targets (i.e. simulator/ emulator)
 
 //app.js
-rnv app configure
-rnv app switch
-rnv app create
-rnv app remove
-rnv app list
-rnv app info
+rnv app configure       //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
+rnv app switch          //Switch app to new appConfig (only copy runtime)
+rnv app create          //Create new appConfig
+rnv app remove          //Remove selected appConfig
+rnv app list            //List available appConfigs
+rnv app info            //Get info about current app configuration
 
 //platform.js
-rnv platform createAll
-rnv platform updateAll
-rnv platform list
-rnv platform add
-rnv platform remove
+rnv platform createAll  //Recreate all platformBuilds projects for selected appConfig
+rnv platform updateAll  //Update all platformBuilds projects for selected appConfig
+rnv platform list       //List available platform templates
+rnv platform add        //Add new platform to current appConfig
+rnv platform remove     //Remove selected platform from current appConfig
 
 //plugin.js
-rnv plugin:add
-rnv plugin:remove
-rnv plugin:list
+rnv plugin:add          //Add new plugin to current appConfig
+rnv plugin:remove       //Remove existing plugin from current appConfig
+rnv plugin:list         //List all installed plugins for current appConfig
 
 ```
 
+Examples:
+
+```
+rnv target create --name "XXXXX"
+```
 
 ---
 
