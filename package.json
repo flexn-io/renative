@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.8.4",
+  "version": "0.8.5",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -33,7 +33,7 @@
   ],
   "license": "MIT",
   "private": false,
-  "description": "Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
+  "description": "🚀🚀🚀 Most fundamental setup of multiplatform react native project with latest Swift and Kotlin support. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
   "author": {
     "name": "Pavel Jacko",
     "email": "i@pavjacko.com",
