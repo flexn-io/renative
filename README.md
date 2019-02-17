@@ -133,8 +133,8 @@
 
 #### Requirements
 
--   [Node](https://nodejs.org) `8.x` or newer
--   [NPM](https://npmjs.com/) `6.2.0` or newer
+-   [Node](https://nodejs.org) `10.13.0` or newer
+-   [NPM](https://npmjs.com/) `6.4.1` or newer
 -   [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 
 #### Stack / Libraries
@@ -152,15 +152,15 @@
 The recommended way to run specific version of Node and NPM is to use NVM:
 
 ```
-nvm install node 8.11.4
-nvm alias default node 8.11.4
+nvm install node 10.13.0
+nvm alias default node 10.13.0
 ```
 
 Tested / Recommended Node configurations:
 
 | Node Version | NPM Version |
 | ------------ | :---------: |
-| `8.11.4`     |   `5.6.0`   |
+| `10.13.0`     |   `6.4.1`   |
 
 #### 2. Installation
 
@@ -181,17 +181,19 @@ $ npm run setup
 Folder Structure
 
     .
-    ├── assets                   # Cross platfrom assets
+    ├── assets                   # Cross platform assets
     ├── docs                     # Documentation files
     ├── platforms                # Platform specific projects / code
     │   ├── android              # Android platform project
-    │   ├── androidtv            # Android TV convigured platform project
+    │   ├── androidtv            # Android TV configured platform project
+    │   ├── androidwear          # Android Wear configured platform project
     │   ├── ios                  # iOS Xcode platform project
     │   ├── macos                # macOS Electron platform project
     │   ├── tizen                # Tizen platform project
     │   ├── tvos                 # tvOS Xcode platform project
     │   ├── web                  # Webpack based project
     │   ├── webos                # Web OS platform project
+    │   └── windows              # Windows desktop platform project
     ├── src                      # Source files
     ├── tests                    # Automated tests
     ├── utils                    # Tools and utilities
@@ -247,9 +249,9 @@ npm run ios
 
 | Feature        |             Version              |
 | -------------- | :------------------------------: |
-| Gradle         |            `4.9-RC1`             |
-| Android Gradle |          `3.3.0-ALPHA3`          |
-| Kotlin         |             `1.2.50`             |
+| Gradle         |            `4.10.1`              |
+| Android Gradle |          `3.3.1`                 |
+| Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
 
@@ -322,9 +324,9 @@ npm run tvos
 
 | Feature        |             Version              |
 | -------------- | :------------------------------: |
-| Gradle         |            `4.9-RC1`             |
-| Android Gradle |          `3.3.0-ALPHA3`          |
-| Kotlin         |             `1.2.50`             |
+| Gradle         |            `4.10.1`              |
+| Android Gradle |          `3.3.1`                 |
+| Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
 
@@ -572,9 +574,9 @@ npm run windows:dist
 
 | Feature        |             Version              |
 | -------------- | :------------------------------: |
-| Gradle         |            `4.9-RC1`             |
-| Android Gradle |          `3.3.0-ALPHA3`          |
-| Kotlin         |             `1.2.50`             |
+| Gradle         |            `4.10.1`              |
+| Android Gradle |          `3.3.1`                 |
+| Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
 | JSC            | `org.webkit:android-jsc:r224109` |
 
