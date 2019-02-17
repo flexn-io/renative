@@ -70,25 +70,30 @@
     - [Requirements](#requirements)
     - [Project Configuration](#project-configuration)
     - [Run](#run)
+    - [Advanced](#advanced)
 - [Android](#android)
     - [Requirements](#requirements-1)
     - [Project Configuration](#project-configuration-1)
     - [First time installation](#first-time-installation)
     - [Run](#run-1)
+    - [Advanced](#advanced-1)
 - [tvOS](#tvos)
     - [Requirements](#requirements-2)
     - [Project Configuration](#project-configuration-2)
     - [Run](#run-2)
+    - [Advanced](#advanced-2)
 - [Android TV](#android-tv)
     - [Requirements](#requirements-3)
     - [Project Configuration](#project-configuration-3)
     - [First time installation](#first-time-installation-1)
     - [Run](#run-3)
+    - [Advanced](#advanced-3)
 - [Web](#web)
     - [Requirements](#requirements-4)
     - [Project Configuration](#project-configuration-4)
     - [Run](#run-4)
-- [Tizen](#tizen)
+    - [Advanced](#advanced-4)
+- [Tizen TV](#tizen-tv)
     - [Requirements](#requirements-5)
     - [Project Configuration](#project-configuration-5)
     - [Emulator](#emulator)
@@ -112,6 +117,7 @@
     - [Project Configuration](#project-configuration-9)
     - [First time installation](#first-time-installation-2)
     - [Run](#run-9)
+- [RNV CLI](#rnv-cli)
 - [Contributors](#contributors)
 - [Discussions](#discussions)
 - [Community](#community)
@@ -728,7 +734,7 @@ rnv plugin:list
 
 ## Discussions
 
-> coming soon
+https://spectrum.chat/reactnativevanilla
 
 ---
 
