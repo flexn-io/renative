@@ -133,7 +133,7 @@
 ## Supported Modes:
 
 | Global CLI      |  Dependency   |  Git Clone |
-| ------- | :--------: |
+| :--------: | :--------: | :--------: |
 | `npm install react-native-vanilla -g`     |   `npm install react-native-vanilla`    | `git clone git@github.com:pavjacko/react-native-vanilla.git`
 
 
