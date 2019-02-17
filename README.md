@@ -724,6 +724,8 @@ rnv plugin:list
 
 ---
 
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_contributor.png?raw=true" width=50 height=50 />
+
 ## Contributors
 
 | [<img src="https://avatars.githubusercontent.com/u/4638697?v=4" width="100px;"/><br /><sub><b>Pavel Jacko</b></sub>](https://github.com/pavjacko)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=pavjacko "Contributions") | [<img src="https://avatars.githubusercontent.com/u/1237997?v=4" width="100px;"/><br /><sub><b>Daniel Marino Ruiz</b></sub>](https://github.com/CHaNGeTe)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=CHaNGeTe "Contributions") | [<img src="https://avatars.githubusercontent.com/u/5989212?v=4" width="100px;"/><br /><sub><b>Sander Looijenga</b></sub>](https://github.com/sanderlooijenga)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=sanderlooijenga "Contributions") | [<img src="https://avatars1.githubusercontent.com/u/6653451?v=4" width="100px;"/><br /><sub><b>David Rielo</b></sub>](https://github.com/davidrielo)<br />[📖](https://github.com/pavjacko/react-native-vanilla/commits?author=davidrielo "Contributions") |
@@ -732,11 +734,15 @@ rnv plugin:list
 
 ---
 
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_chat.png?raw=true" width=50 height=50 />
+
 ## Discussions
 
 https://spectrum.chat/reactnativevanilla
 
 ---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_community.png?raw=true" width=50 height=50 />
 
 ## Community
 
