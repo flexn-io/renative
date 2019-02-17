@@ -65,7 +65,7 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         publicPath: '/assets/',
-        path: path.resolve(appDirectory, './platforms/tizen/public/assets'),
+        path: path.resolve(appDirectory, './platformBuilds/tizen/public/assets'),
     },
 
     module: {
@@ -86,6 +86,6 @@ module.exports = {
 
     resolve: {
         symlinks: false,
-        extensions: ['.web.js', '.js'],
+        extensions: ['.tizen.js', '.js'],
     },
 };

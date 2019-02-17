@@ -44,7 +44,7 @@ const XBOX = 'xbox';
 const XBOX360 = 'xbox360';
 
 
-const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, WEB, TIZEN, TVOS, WEBOS, MACOS];
+const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_TV, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
 const RNV = 'RNV';
 const LINE = '----------------------------------------------------------';
 
