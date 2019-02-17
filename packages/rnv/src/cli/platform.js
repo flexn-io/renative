@@ -15,8 +15,8 @@ const run = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const createPlatforms = c => new Promise((resolve, reject) => {
-    logTask('createPlatforms');
+const _createPlatforms = c => new Promise((resolve, reject) => {
+    logTask('_createPlatforms');
     _runCreatePlatforms(c)
         .then(() => {
             resolve();
@@ -25,7 +25,7 @@ const createPlatforms = c => new Promise((resolve, reject) => {
 });
 
 
-const addPlatform = (platform, program, process) => new Promise((resolve, reject) => {
+const _addPlatform = (platform, program, process) => new Promise((resolve, reject) => {
     if (!isPlatformSupported(platform)) return;
 
     getConfig().then((v) => {
@@ -35,7 +35,7 @@ const addPlatform = (platform, program, process) => new Promise((resolve, reject
     });
 });
 
-const removePlatform = (platform, program, process) => new Promise((resolve, reject) => {
+const _removePlatform = (platform, program, process) => new Promise((resolve, reject) => {
     if (!isPlatformSupported(platform)) return;
     console.log('REMOVE_PLATFORM: ', platform);
     resolve();

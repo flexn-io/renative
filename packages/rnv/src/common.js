@@ -46,7 +46,7 @@ const XBOX360 = 'xbox360';
 
 const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_TV, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
 const RNV = 'RNV';
-const LINE = '----------------------------------------------------------';
+const LINE = chalk.white.bold('----------------------------------------------------------');
 
 let _currentJob;
 let _currentProcess;
@@ -86,7 +86,13 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     const platformAssetsFolder = path.join(base, 'platformAssets');
     const platformBuildsFolder = path.join(base, 'platformBuilds');
     const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
-    const globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder);
+    let globalConfigFolder;
+    if (rootConfig.globalConfigFolder.startsWith('~')) {
+        globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder.substr(1));
+    } else {
+        globalConfigFolder = path.join(base, rootConfig.globalConfigFolder);
+    }
+
 
     let appConfigFolder;
 
@@ -100,13 +106,17 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             const assetConfig = JSON.parse(fs.readFileSync(cf).toString());
             c = _getConfig(assetConfig.id);
         } catch (e) {
-            console.log('ERROR: no app ID specified');
+            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+            reject('ERROR: no app ID specified');
+            return;
         }
     }
     c.program = program;
     c.process = process;
     c.globalConfigFolder = globalConfigFolder;
     c.platform = program.platform;
+    c.command = cmd;
+    c.subCommand = subCmd;
 
     console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
 
@@ -126,7 +136,7 @@ const logComplete = () => {
 };
 
 const logError = (e, process) => {
-    console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e} \n${LINE}\n`));
+    console.log(`${chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`)}\n${LINE}\n`);
     _currentProcess.exit();
 };
 

@@ -4,24 +4,47 @@ import fs from 'fs';
 import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 
+const CONFIGURE = 'configure';
+const SWITCH = 'switch';
+const CREATE = 'create';
+const REMOVE = 'remove';
+const LIST = 'list';
+const INFO = 'info';
+
 // ##########################################
 // PUBLIC API
 // ##########################################
 
-const run = c => new Promise((resolve, reject) => {
+const run = (c) => {
     logTask('run');
 
-    resolve();
-});
+    switch (c.subCommand) {
+    case CONFIGURE:
+        return _runConfigure(c);
+        break;
+    case SWITCH:
+        return Promise.resolve();
+        break;
+    case CREATE:
+        return Promise.resolve();
+        break;
+    case REMOVE:
+        return Promise.resolve();
+        break;
+    case LIST:
+        return Promise.resolve();
+        break;
+    case INFO:
+        return Promise.resolve();
+        break;
+    default:
+        return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
+    }
+};
 
-const configure = c => new Promise((resolve, reject) => {
-    logTask('configure');
-    _runConfigure(c)
-        .then(() => {
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+// ##########################################
+//  PRIVATE
+// ##########################################
 
 const _runConfigure = c => new Promise((resolve, reject) => {
     logTask('_runConfigure');
@@ -33,10 +56,6 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _runCopyAndroidAssets(c))
         .then(() => resolve());
 });
-
-// ##########################################
-//  PRIVATE
-// ##########################################
 
 const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('_runCopyRuntimeAssets');

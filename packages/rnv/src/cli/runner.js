@@ -7,18 +7,53 @@ import {
 } from '../common';
 import { executeAsync } from '../exec';
 
+const RUN = 'run';
+const PACKAGE = 'package';
+const BUILD = 'build';
+const DEPLOY = 'deploy';
+const UPDATE = 'update';
+const TEST = 'test';
+const DOC = 'doc';
+
+
 // ##########################################
 // PUBLIC API
 // ##########################################
 
-const run = c => new Promise((resolve, reject) => {
+const run = (c) => {
     logTask('run');
 
-    resolve();
-});
+    switch (c.command) {
+    case RUN:
+        return _runApp(c);
+        break;
+    case PACKAGE:
+        return Promise.resolve();
+        break;
+    case BUILD:
+        return Promise.resolve();
+        break;
+    case DEPLOY:
+        return Promise.resolve();
+        break;
+    case UPDATE:
+        return Promise.resolve();
+        break;
+    case TEST:
+        return Promise.resolve();
+        break;
+    case DOC:
+        return Promise.resolve();
+        break;
+    }
+};
 
-const runApp = c => new Promise((resolve, reject) => {
-    logTask('runApp');
+// ##########################################
+// PRIVATE
+// ##########################################
+
+const _runApp = c => new Promise((resolve, reject) => {
+    logTask('_runApp');
     const { platform } = c;
     if (!isPlatformSupported(platform, resolve)) return;
 
@@ -48,7 +83,7 @@ const runApp = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const updateApp = c => new Promise((resolve, reject) => {
+const _updateApp = c => new Promise((resolve, reject) => {
     const platform = c.platform;
     if (!isPlatformSupported(platform, resolve)) return;
 
@@ -67,10 +102,6 @@ const updateApp = c => new Promise((resolve, reject) => {
 
     logErrorPlatform(c.platform, resolve);
 });
-
-// ##########################################
-// PRIVATE
-// ##########################################
 
 const _runAndroid = c => new Promise((resolve, reject) => {
     logTask('_runAndroid');

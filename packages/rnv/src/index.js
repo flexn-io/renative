@@ -49,7 +49,7 @@ const commands = {
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program).then((v) => {
         commands[cmd](v).then(() => logComplete()).catch(e => logError(e));
-    });
+    }).catch(e => logError(e));
 };
 
 
