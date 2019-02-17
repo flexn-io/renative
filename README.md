@@ -643,7 +643,9 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 npm run androidwear
 ```
 
-=======
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_cli.png?raw=true" width=50 height=50 />
 
 ## RNV CLI
 
