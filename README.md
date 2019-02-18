@@ -138,15 +138,15 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_cli_grey.png?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_cli_grey.png?raw=true" />
     <br/>
       npm install react-native-vanilla -g
     </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_npm_grey.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_npm_grey.png?raw=true" />
     <br/>
     npm install react-native-vanilla
     </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_git_grey.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_git_grey.png?raw=true" />
     <br/>
     git clone react-native-vanilla.git
     </td>
