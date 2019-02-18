@@ -138,21 +138,25 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_cli_grey.png?raw=true" width="100" height="100" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_cli_grey.png?raw=true" />
     <br/>
       npm install react-native-vanilla -g
-      <br/>
-      COMIN SOON
     </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_npm_grey.png?raw=true" width="100" height="100" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_npm_grey.png?raw=true" />
     <br/>
-    npm install react-native-vanilla 
-    <br/>
-    COMIN SOON
+    npm install react-native-vanilla
     </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_git_grey.png?raw=true" width="100" height="100" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_git_grey.png?raw=true" />
     <br/>
     git clone react-native-vanilla.git
+    </td>
+  </tr>
+  <tr>
+    <td>
+      COMIN SOON
+    </td><td>
+    COMIN SOON
+    </td><td>
     </td>
   </tr>
 </table>
