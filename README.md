@@ -132,9 +132,30 @@
 
 ## Supported Modes:
 
-| Global CLI      |  Dependency   |  Git Clone |
-| :--------: | :--------: | :--------: |
-| `npm install react-native-vanilla -g`     |   `npm install react-native-vanilla`    | `git clone git@github.com:pavjacko/react-native-vanilla.git`
+<table>
+  <tr>
+    <th><a href="#">Global CLI</a></th><th><a href="#">NPM Dependency</a></th><th><a href="#">Clone</a></th>
+  </tr>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_cli_grey.gif?raw=true" width="100" height="100" />
+      </ br>
+      `npm install react-native-vanilla -g`
+      </ br>
+      COMIN SOON
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_npm_grey.gif?raw=true" width="100" height="100" />
+    </ br>
+    `npm install react-native-vanilla`
+    </ br>
+    COMIN SOON
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_git_grey.gif?raw=true" width="100" height="100" />
+    </ br>
+    `git clone git@github.com:pavjacko/react-native-vanilla.git`
+    </th>
+  </tr>
+</table>
 
 
 ## Features:
