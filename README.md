@@ -152,12 +152,12 @@
     </td>
   </tr>
   <tr>
-    <td>
+    <th>
       COMIN SOON
-    </td><td>
+    </th><th>
     COMIN SOON
-    </td><td>
-    </td>
+    </th><th>
+    </th>
   </tr>
 </table>
 
