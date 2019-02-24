@@ -25,8 +25,8 @@ import { executeAsync } from '../exec';
 //     return runPod('install', getAppFolder(c, IOS));
 // };
 
-const runPod = (cmd, cwd) => executeAsync('pod', [
-    'update',
+const runPod = (command, cwd) => executeAsync('pod', [
+    command,
 ], {
     cwd,
     evn: process.env,

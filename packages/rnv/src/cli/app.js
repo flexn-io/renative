@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
 import { runPod } from '../platformTools/apple';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';
@@ -52,11 +52,15 @@ const _runConfigure = c => new Promise((resolve, reject) => {
 
     _runCopyRuntimeAssets(c)
         .then(() => _runPlugins(c))
+        // IOS
         .then(() => runPod('install', getAppFolder(c, IOS)))
         .then(() => _runCopyiOSAssets(c))
         .then(() => _runCopytvOSAssets(c))
+        .then(() => _runConfigureIOS(c))
+        // ANDROID
         .then(() => _runConfigureAndroid(c))
         .then(() => _runCopyAndroidAssets(c))
+        // Resolve
         .then(() => resolve());
 });
 
@@ -101,13 +105,28 @@ const _runCopyAndroidAssets = c => new Promise((resolve, reject) => {
 });
 
 const _runConfigureAndroid = c => new Promise((resolve, reject) => {
-    logTask('_runCopyAndroidAssets');
+    logTask('_runConfigureAndroid');
     if (!_isPlatformActive(c, ANDROID, resolve)) return;
 
     const appFolder = getAppFolder(c, ANDROID);
 
     copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
+    mkdirSync(path.join(appFolder, 'app/src/main/assets'));
+    fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
     fs.chmodSync(path.join(appFolder, 'gradlew'), '755');
+
+    resolve();
+});
+
+const _runConfigureIOS = c => new Promise((resolve, reject) => {
+    logTask('_runConfigureIOS');
+    if (!_isPlatformActive(c, IOS, resolve)) return;
+
+    const appFolder = getAppFolder(c, IOS);
+
+    fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
+    mkdirSync(path.join(appFolder, 'assets'));
+    mkdirSync(path.join(appFolder, 'RNVApp/images'));
 
     resolve();
 });
@@ -123,7 +142,7 @@ const _isPlatformActive = (c, platform, resolve) => {
 };
 
 const _runPlugins = c => new Promise((resolve, reject) => {
-    logTask('runFix');
+    logTask('_runPlugins');
 
     const pluginsPath = path.resolve(c.rnvFolder, 'plugins');
 

@@ -76,7 +76,7 @@ const removeDir = (path, callback) => {
     rimraf(path, callback);
 };
 
-const mkdirp = (dir) => {
+const mkdirSync = (dir) => {
     // we explicitly don't use `path.sep` to have it platform independent;
     const sep = '/';
     const segments = dir.split(sep);
@@ -98,9 +98,9 @@ const mkdirp = (dir) => {
 const cleanFolder = d => new Promise((resolve, reject) => {
     logDebug('cleanFolder', d);
     removeDir(d, () => {
-        mkdirp(d);
+        mkdirSync(d);
         resolve();
     });
 });
 
-export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirp, copyFolderContentsRecursiveSync, cleanFolder };
+export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync, copyFolderContentsRecursiveSync, cleanFolder };
