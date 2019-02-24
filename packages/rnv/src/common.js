@@ -203,7 +203,8 @@ const isPlatformActive = (c, platform, resolve) => {
 };
 
 export {
-    SUPPORTED_PLATFORMS, IOS, TVOS, ANDROID, WEB, isPlatformSupported, getAppFolder,
+    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
     isPlatformActive,
+    IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS,
 };

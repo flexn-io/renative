@@ -1,4 +1,5 @@
 import path from 'path';
+import shell from 'shelljs';
 
 const { spawn } = require('child_process');
 
@@ -53,4 +54,10 @@ const executeAsync = (
     process.on('SIGINT', killChildProcess);
 });
 
-export { executeAsync };
+function execShellAsync(command) {
+    return new Promise((resolve) => {
+        shell.exec(command, resolve);
+    });
+}
+
+export { executeAsync, execShellAsync };

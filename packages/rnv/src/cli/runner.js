@@ -2,10 +2,11 @@
 import path from 'path';
 import shell from 'shelljs';
 import {
-    IOS, TVOS, ANDROID, WEB, isPlatformSupported, getConfig, logTask, logComplete,
+    IOS, TVOS, ANDROID, WEB, TIZEN, isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
 } from '../common';
 import { executeAsync } from '../exec';
+import { buildWeb } from '../platformTools/web';
 
 const RUN = 'run';
 const PACKAGE = 'package';
@@ -45,6 +46,8 @@ const run = (c) => {
     case DOC:
         return Promise.resolve();
         break;
+    default:
+        return Promise.reject(`Command ${c.command} not supported`);
     }
 };
 
@@ -78,29 +81,32 @@ const _runApp = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case TIZEN:
+        _runTizen(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
     logErrorPlatform(platform, resolve);
 });
 
-const _updateApp = c => new Promise((resolve, reject) => {
-    const platform = c.platform;
-    if (!isPlatformSupported(platform, resolve)) return;
+const _runTizen = c => new Promise((resolve, reject) => {
+    logTask('_runTizen');
 
-    switch (platform) {
-    case IOS:
-        _runiOSUpdate(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    case TVOS:
-        _runtvOSUpdate(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    }
+    const tDir = getAppFolder(c, TIZEN);
+    const tOut = path.join(tDir, 'output');
+    const tBuild = path.join(tDir, 'build');
+    const tId = 'NvVRhWHJST.RNVanilla';
+    const tSim = 'T-samsung-4.0-x86';
+    const gwt = 'RNVanilla.wgt';
 
-    logErrorPlatform(c.platform, resolve);
+    buildWeb(c, TIZEN)
+        .then(() => {
+            shell.exec(`tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
+                shell.exec(`tizen run -p ${tId} -t ${tSim}`);
+            });
+        });
 });
 
 const _runAndroid = c => new Promise((resolve, reject) => {

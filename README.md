@@ -745,6 +745,19 @@ Examples:
 
 ```
 rnv target create --name "XXXXX"
+
+
+npx rnv setup
+
+npx rnv platform configure -c helloWorld
+
+npx rnv app configure -c helloWorld
+
+npx rnv run -p ios
+
+npx rnv run -p tvos
+
+npx rnv run -p tizen
 ```
 
 ---
