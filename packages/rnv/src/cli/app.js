@@ -51,6 +51,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     logTask('_runConfigure');
 
     _runCopyRuntimeAssets(c)
+        .then(() => _runPlugins(c))
         .then(() => runPod('install', getAppFolder(c, IOS)))
         .then(() => _runCopyiOSAssets(c))
         .then(() => _runCopytvOSAssets(c))
@@ -120,5 +121,21 @@ const _isPlatformActive = (c, platform, resolve) => {
     }
     return true;
 };
+
+const _runPlugins = c => new Promise((resolve, reject) => {
+    logTask('runFix');
+
+    const pluginsPath = path.resolve(c.rnvFolder, 'plugins');
+
+    fs.readdirSync(pluginsPath).forEach((dir) => {
+        const pp = path.resolve(pluginsPath, dir, 'overrides');
+        fs.readdirSync(pp).forEach((file) => {
+            copyFileSync(path.resolve(pp, file), path.resolve(c.projectRootFolder, 'node_modules', dir));
+        });
+    });
+
+
+    resolve();
+});
 
 export default run;

@@ -88,6 +88,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     const platformAssetsFolder = path.join(base, 'platformAssets');
     const platformBuildsFolder = path.join(base, 'platformBuilds');
     const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
+    const projectRootFolder = base;
+    const rnvFolder = path.join(__dirname, '..');
     let globalConfigFolder;
     if (rootConfig.globalConfigFolder.startsWith('~')) {
         globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder.substr(1));
@@ -118,6 +120,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigFolder = globalConfigFolder;
     c.platform = program.platform;
     c.command = cmd;
+    c.projectRootFolder = projectRootFolder;
+    c.rnvFolder = rnvFolder;
     c.subCommand = subCmd;
 
     console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
