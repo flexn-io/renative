@@ -22,8 +22,8 @@
     "androidtv": {
       "entryFile": "index.androidtv"
     },
-    "androidwatch": {
-      "entryFile": "index.androidwatch"
+    "androidwear": {
+      "entryFile": "index.androidwear"
     },
     "macos": {
       "entryFile": "index.macos"

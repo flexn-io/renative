@@ -44,7 +44,7 @@ const XBOX = 'xbox';
 const XBOX360 = 'xbox360';
 
 
-const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_TV, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
+const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
 const RNV = 'RNV';
 const LINE = chalk.white.bold('----------------------------------------------------------');
 
@@ -59,7 +59,7 @@ const homedir = require('os').homedir();
 
 const isPlatformSupported = (platform, resolve) => {
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        console.warn(chalk.yellow(`Warning: Platform ${platform} is not supported`));
+        console.log(chalk.red(`Warning: Platform ${platform} is not supported`));
         if (resolve) resolve();
         return false;
     }
