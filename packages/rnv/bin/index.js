@@ -11,6 +11,7 @@ const cli = require('../dist/index.js');
 program
     .version('0.1.0')
     .option('-i, --info', 'Show full debug info')
+    .option('-u, --update', 'Force update dependencies (iOS only)')
     .option('-p, --platform <value>', 'Select specific platform') // <ios|android|web|...>
     .option('-c, --appConfigID <value>', 'Select specific appConfigID') // <ios|android|web|...>
     .option('-t, --target <value>', 'Select specific simulator') // <.....>

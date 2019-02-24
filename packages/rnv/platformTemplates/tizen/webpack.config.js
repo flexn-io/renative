@@ -3,18 +3,19 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const appDirectory = path.resolve(__dirname, '../../');
+const projectDirectory = path.resolve(__dirname, '../../');
+const appDirectory = path.resolve(__dirname);
 
 const babelLoaderConfiguration = {
     test: /\.js$/,
     include: [
-        path.resolve(appDirectory, 'src'),
-        path.resolve(appDirectory, 'node_modules/react-navigation'),
-        path.resolve(appDirectory, 'node_modules/react-native-tab-view'),
-        path.resolve(appDirectory, 'node_modules/react-native-paper'),
-        path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
-        path.resolve(appDirectory, 'node_modules/react-native-safe-area-view'),
-        path.resolve(appDirectory, 'node_modules/react-native-platform-touchable'),
+        path.resolve(projectDirectory, 'src'),
+        path.resolve(projectDirectory, 'node_modules/react-navigation'),
+        path.resolve(projectDirectory, 'node_modules/react-native-tab-view'),
+        path.resolve(projectDirectory, 'node_modules/react-native-paper'),
+        path.resolve(projectDirectory, 'node_modules/react-native-vector-icons'),
+        path.resolve(projectDirectory, 'node_modules/react-native-safe-area-view'),
+        path.resolve(projectDirectory, 'node_modules/react-native-platform-touchable'),
     ],
     use: {
         loader: 'babel-loader',
@@ -53,19 +54,19 @@ const ttfLoaderConfiguration = {
         },
     ],
     include: [
-        path.resolve(appDirectory, './src/assets/fonts'),
-        path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
+        path.resolve(projectDirectory, './src/assets/fonts'),
+        path.resolve(projectDirectory, 'node_modules/react-native-vector-icons'),
     ],
 };
 
 module.exports = {
-    entry: path.resolve(appDirectory, './index.tizen.js'),
+    entry: path.resolve(projectDirectory, './index.tizen.js'),
     devtool: 'eval',
 
     output: {
         filename: 'bundle.js',
         publicPath: '/assets/',
-        path: path.resolve(appDirectory, './platformBuilds/tizen/public/assets'),
+        path: path.resolve(appDirectory, 'public/assets'),
     },
 
     module: {

@@ -1,11 +1,12 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete,
+    IOS, ANDROID, TVOS, TIZEN, isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive,
 } from '../common';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { copyAndroidAssets, configureGradleProject } from '../platformTools/android';
+import { copyTizenAssets, configureTizenProject } from '../platformTools/tizen';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const CONFIGURE = 'configure';
@@ -58,6 +59,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _runSetupIOSProject(c))
         .then(() => _runSetupAndroidProject(c))
         .then(() => _runSetupTVOSProject(c))
+        .then(() => _runSetupTizenProject(c))
         .then(() => resolve());
 });
 
@@ -66,7 +68,7 @@ const _runSetupIOSProject = c => new Promise((resolve, reject) => {
     logTask('_runSetupIOSProject');
     if (!isPlatformActive(c, IOS, resolve)) return;
 
-    runPod('install', getAppFolder(c, IOS))
+    runPod(c.program.update ? 'update' : 'install', getAppFolder(c, IOS))
         .then(() => copyAppleAssets(c, IOS, 'RNVApp'))
         .then(() => configureXcodeProject(c, IOS, 'RNVApp'))
         .then(() => resolve())
@@ -77,7 +79,7 @@ const _runSetupTVOSProject = c => new Promise((resolve, reject) => {
     logTask('_runSetupTVOSProject');
     if (!isPlatformActive(c, TVOS, resolve)) return;
 
-    runPod('install', getAppFolder(c, TVOS))
+    runPod(c.program.update ? 'update' : 'install', getAppFolder(c, TVOS))
         .then(() => copyAppleAssets(c, TVOS, 'RNVAppTVOS'))
         .then(() => configureXcodeProject(c, TVOS, 'RNVAppTVOS'))
         .then(() => resolve())
@@ -93,6 +95,17 @@ const _runSetupAndroidProject = c => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch(e => reject(e));
 });
+
+const _runSetupTizenProject = c => new Promise((resolve, reject) => {
+    logTask('_runSetupTizenProject');
+    if (!isPlatformActive(c, TIZEN, resolve)) return;
+
+    copyTizenAssets(c, TIZEN)
+        .then(() => configureTizenProject(c, TIZEN))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
 
 const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('_runCopyRuntimeAssets');

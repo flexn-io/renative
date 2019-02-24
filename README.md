@@ -753,6 +753,8 @@ npx rnv platform configure -c helloWorld
 
 npx rnv app configure -c helloWorld
 
+npx rnv app configure -c helloWorld -u
+
 npx rnv run -p ios
 
 npx rnv run -p tvos
