@@ -3,9 +3,11 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, '../../');
 const appBuildDirectory = path.resolve(__dirname, 'RNVApp');
+const appBuildPublic = path.resolve(__dirname, 'public');
 const platform = 'webos';
 const platformFamily = 'smarttv';
 const formFactor = 'tv';
@@ -73,7 +75,7 @@ module.exports = {
     output: {
         filename: '[name].js',
         publicPath: 'assets/',
-        path: path.resolve(appBuildDirectory, './public/assets'),
+        path: path.resolve(appBuildPublic, 'assets'),
     },
 
     module: {
@@ -96,11 +98,19 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             alwaysWriteToDisk: true,
-            filename: path.resolve(appBuildDirectory, './public/index.html'),
+            filename: path.resolve(appBuildPublic, 'index.html'),
             template: path.resolve(appDirectory, './packages/rnv/platformTemplates/_shared/template.js'),
             minify: false,
         }),
         new HtmlWebpackHarddiskPlugin(),
+        new CopyWebpackPlugin([
+            { from: path.resolve(appBuildDirectory, 'app.css'), to: appBuildPublic },
+            { from: path.resolve(appBuildDirectory, 'icon.png'), to: appBuildPublic },
+            { from: path.resolve(appBuildDirectory, 'largeIcon.png'), to: appBuildPublic },
+            { from: path.resolve(appBuildDirectory, 'manifest.json'), to: appBuildPublic },
+            { from: path.resolve(appBuildDirectory, 'appinfo.json'), to: appBuildPublic },
+            { from: path.resolve(appBuildDirectory, 'webOSTVjs-1.0.0/webOSTV.js'), to: path.resolve(appBuildPublic, 'assets') },
+        ]),
     ],
     resolve: {
         symlinks: false,

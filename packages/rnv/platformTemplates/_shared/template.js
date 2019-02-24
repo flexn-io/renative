@@ -7,8 +7,8 @@ const DEFAULT_CONFIG = {
     contentType: '',
     metaTags: {
         viewport: 'content="width=1280"',
-        'theme-color': 'content="#000000"'
-    }
+        'theme-color': 'content="#000000"',
+    },
 };
 
 const indent = level => '    '.repeat(level);
@@ -20,7 +20,7 @@ const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${ta
 const htmlTemp = (options) => {
     const config = Object.assign(DEFAULT_CONFIG, options);
     const {
-        docType, title, metaTags, htmlTag, contentType, isDebug, isTestVersion
+        docType, title, metaTags, htmlTag, contentType, isDebug, isTestVersion,
     } = config;
 
     const linkTags = [
@@ -40,7 +40,6 @@ const htmlTemp = (options) => {
         }
         </script>`;
     const errDiv = '<div id="err" style="color: red; position: absolute; top: 0; left: 0; z-index: 0;"> </div>';
-    const suitestConfigID = '<script src="http://the.suite.st/app/4c9d81f3-f0b7-4343-8350-9ad859c42604.js"></script>';
     const customScripts = (config.customScripts || []).map(src => `<script type="text/javascript" src="${src}"></script>`).join('');
     const rootDiv = ' <div id="root" class="root"></div>';
     return removeBlankLines(`
@@ -59,7 +58,6 @@ ${htmlTag}
         ${isDebug ? errDiv : ''}
         ${rootDiv}
         ${customScripts}
-        ${isTestVersion ? suitestConfigID : ''}
     </body>
 </html>`);
 };
