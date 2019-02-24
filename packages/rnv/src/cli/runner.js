@@ -100,10 +100,11 @@ const _runTizen = c => new Promise((resolve, reject) => {
     const tId = 'NvVRhWHJST.RNVanilla';
     const tSim = c.program.target || 'T-samsung-4.0-x86';
     const gwt = 'RNVanilla.wgt';
+    const certProfile = 'RNVanilla';
 
     buildWeb(c, TIZEN)
         .then(() => {
-            shell.exec(`tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
+            shell.exec(`tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
                 shell.exec(`tizen run -p ${tId} -t ${tSim}`);
             });
         });
