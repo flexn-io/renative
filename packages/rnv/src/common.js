@@ -45,6 +45,7 @@ const XBOX360 = 'xbox360';
 
 
 const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
+const RNV_START = '🚀 RNV';
 const RNV = 'RNV';
 const LINE = chalk.white.bold('----------------------------------------------------------');
 
@@ -75,7 +76,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     let c;
 
     if (_currentJob === 'setup') {
-        console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+        console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
 
         resolve({
             program, process, command: cmd, subCommand: subCmd,
@@ -107,7 +108,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             const assetConfig = JSON.parse(fs.readFileSync(cf).toString());
             c = _getConfig(assetConfig.id);
         } catch (e) {
-            console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+            console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
             reject('ERROR: no app ID specified');
             return;
         }
@@ -119,7 +120,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.command = cmd;
     c.subCommand = subCmd;
 
-    console.log(chalk.white(`\n${LINE}\n ${RNV} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
+    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
 
     resolve(c);
 });

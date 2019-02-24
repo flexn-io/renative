@@ -151,39 +151,6 @@ const _packageAndroid = (c) => {
     ]);
 };
 
-const iosPlatforms = [IOS, TVOS];
-const _runiOSUpdate = (c) => {
-    logTask('_runiOSUpdate');
-    if (iosPlatforms.includes(c.platform)) {
-        return _runPod('update', getAppFolder(c, IOS));
-    }
-
-    return Promise().resolve();
-};
-
-const _runtvOSUpdate = (c) => {
-    logTask('_runtvOSUpdate');
-    if (iosPlatforms.includes(c.platform)) {
-        return _runPod('update', getAppFolder(c, TVOS));
-    }
-
-    return Promise().resolve();
-};
-
-const _runiOSInstall = (c) => {
-    logTask('_runiOSInstall');
-
-    return _runPod('install', getAppFolder(c, IOS));
-};
-
-const _runPod = (cmd, cwd) => executeAsync('pod', [
-    'update',
-], {
-    cwd,
-    evn: process.env,
-    stdio: 'inherit',
-});
-
 const _runiOS = (c) => {
     logTask('_runiOS');
     const device = c.program.simulator || 'iPhone 6';

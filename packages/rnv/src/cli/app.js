@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
+import { runPod } from '../platformTools/apple';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 
 const CONFIGURE = 'configure';
@@ -50,6 +51,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     logTask('_runConfigure');
 
     _runCopyRuntimeAssets(c)
+        .then(() => runPod('install', getAppFolder(c, IOS)))
         .then(() => _runCopyiOSAssets(c))
         .then(() => _runCopytvOSAssets(c))
         .then(() => _runConfigureAndroid(c))
