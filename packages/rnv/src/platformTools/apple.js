@@ -33,4 +33,27 @@ const runPod = (command, cwd) => executeAsync('pod', [
     stdio: 'inherit',
 });
 
-export { runPod };
+const copyAppleAssets = (c, platform, appFolder) => new Promise((resolve, reject) => {
+    logTask('copyAppleAssets');
+    if (!_isPlatformActive(c, platform, resolve)) return;
+
+    const iosPath = path.join(getAppFolder(c, platform), appFolder);
+    const sPath = path.join(c.appConfigFolder, `assets/${platform}`);
+    copyFolderContentsRecursiveSync(sPath, iosPath);
+    resolve();
+});
+
+const configureXcodeProject = (c, platform, appFolder) => new Promise((resolve, reject) => {
+    logTask('configureXcodeProject');
+    if (!_isPlatformActive(c, platform, resolve)) return;
+
+    const appFolder = getAppFolder(c, platform);
+
+    fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
+    mkdirSync(path.join(appFolder, 'assets'));
+    mkdirSync(path.join(appFolder, `${appFolder}/images`));
+
+    resolve();
+});
+
+export { runPod, copyAppleAssets, configureXcodeProject };
