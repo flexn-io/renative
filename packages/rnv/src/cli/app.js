@@ -73,6 +73,17 @@ const _runSetupIOSProject = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
+const _runSetupTVOSProject = c => new Promise((resolve, reject) => {
+    logTask('_runSetupTVOSProject');
+    if (!isPlatformActive(c, TVOS, resolve)) return;
+
+    runPod('install', getAppFolder(c, TVOS))
+        .then(() => copyAppleAssets(c, TVOS, 'RNVAppTVOS'))
+        .then(() => configureXcodeProject(c, TVOS, 'RNVAppTVOS'))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
 const _runSetupAndroidProject = c => new Promise((resolve, reject) => {
     logTask('_runSetupAndroidProject');
     if (!isPlatformActive(c, ANDROID, resolve)) return;
@@ -82,18 +93,6 @@ const _runSetupAndroidProject = c => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch(e => reject(e));
 });
-
-const _runSetupTVOSProject = c => new Promise((resolve, reject) => {
-    logTask('_runSetupTVOSProject');
-    if (!isPlatformActive(c, TVOS, resolve)) return;
-
-    runPod('install', getAppFolder(c, TVOS))
-        .then(() => copyAppleAssets(c, IOS, 'RNVAppTVOS'))
-        .then(() => configureXcodeProject(c, IOS, 'RNVApp'))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
 
 const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('_runCopyRuntimeAssets');
@@ -117,8 +116,6 @@ const _runPlugins = c => new Promise((resolve, reject) => {
             copyFileSync(path.resolve(pp, file), path.resolve(c.projectRootFolder, 'node_modules', dir));
         });
     });
-
-
     resolve();
 });
 
