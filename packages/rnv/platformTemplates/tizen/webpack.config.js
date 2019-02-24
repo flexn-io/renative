@@ -7,9 +7,9 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const appDirectory = path.resolve(__dirname, '../../');
 const appBuildDirectory = path.resolve(__dirname);
 const platform = 'tizen';
-const config = {
-    platformGroup: 'smarttv',
-};
+const platformFamily = 'smarttv';
+const formFactor = 'tv';
+const config = {};
 
 const babelLoaderConfiguration = {
     test: /\.js$/,
@@ -91,7 +91,7 @@ module.exports = {
         // builds to eliminate development checks and reduce build size. You may
         // wish to include additional optimizations.
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(/* process.env.NODE_ENV || */ config.platformGroup === 'smarttv' ? 'production' : 'development'),
+            'process.env.NODE_ENV': JSON.stringify(/* process.env.NODE_ENV || */ platformFamily === 'smarttv' ? 'production' : 'development'),
             __DEV__: process.env.NODE_ENV === 'production' || true,
         }),
         new HtmlWebpackPlugin({
@@ -106,7 +106,8 @@ module.exports = {
         symlinks: false,
         extensions: [
             `.${platform}.js`,
-            ...(config.platformGroup ? [`.${config.platformGroup}.js`] : ''), // add if exists
+            `.${platformFamily}.js`,
+            `.${formFactor}.js`,
             '.js',
         ],
         alias: {

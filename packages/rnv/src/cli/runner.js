@@ -1,8 +1,9 @@
 
 import path from 'path';
+import fs from 'fs';
 import shell from 'shelljs';
 import {
-    IOS, TVOS, ANDROID, WEB, TIZEN, isPlatformSupported, getConfig, logTask, logComplete,
+    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
 } from '../common';
 import { executeAsync } from '../exec';
@@ -86,6 +87,11 @@ const _runApp = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case WEBOS:
+        _runWebOS(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
     logErrorPlatform(platform, resolve);
@@ -106,6 +112,26 @@ const _runTizen = c => new Promise((resolve, reject) => {
         .then(() => {
             shell.exec(`tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
                 shell.exec(`tizen run -p ${tId} -t ${tSim}`);
+            });
+        });
+});
+
+const _runWebOS = c => new Promise((resolve, reject) => {
+    logTask('_runWebOS');
+
+    const tDir = getAppFolder(c, WEBOS);
+    const tOut = path.join(tDir, 'output');
+    const tSim = c.program.target || 'emulator';
+    const configFilePath = path.join(tDir, 'appinfo.json');
+
+    const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+    const tId = cnfg.id;
+    const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
+
+    buildWeb(c, WEBOS)
+        .then(() => {
+            shell.exec(`ares-package -o ${tOut} ${tDir} && ares-install --device ${tSim} ${appPath}`, () => {
+                shell.exec(`ares-launch --device ${tSim} ${tId}`);
             });
         });
 });

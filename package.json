@@ -115,7 +115,6 @@
     "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-preset-env": "1.7.0",
-    "cli-webos": "0.0.2",
     "copy-webpack-plugin": "4.6.0",
     "css-hot-loader": "1.4.2",
     "css-loader": "0.28.7",
