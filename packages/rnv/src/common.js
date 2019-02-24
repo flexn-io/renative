@@ -60,9 +60,10 @@ const homedir = require('os').homedir();
 const isPlatformSupported = (platform, resolve) => {
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
         console.warn(chalk.yellow(`Warning: Platform ${platform} is not supported`));
-        resolve();
+        if (resolve) resolve();
         return false;
     }
+    if (resolve) resolve();
     return true;
 };
 

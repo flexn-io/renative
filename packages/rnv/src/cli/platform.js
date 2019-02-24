@@ -4,42 +4,39 @@ import fs from 'fs';
 import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 
+const CONFIGURE = 'configure';
+const UPDATE = 'update';
+const LIST = 'list';
+const ADD = 'add';
+const REMOVE = 'remove';
 
 // ##########################################
 // PUBLIC API
 // ##########################################
 
-const run = c => new Promise((resolve, reject) => {
+const run = (c) => {
     logTask('run');
 
-    resolve();
-});
-
-const _createPlatforms = c => new Promise((resolve, reject) => {
-    logTask('_createPlatforms');
-    _runCreatePlatforms(c)
-        .then(() => {
-            resolve();
-        })
-        .catch(e => reject(e));
-});
-
-
-const _addPlatform = (platform, program, process) => new Promise((resolve, reject) => {
-    if (!isPlatformSupported(platform)) return;
-
-    getConfig().then((v) => {
-        _runAddPlatform()
-            .then(() => resolve())
-            .catch(e => reject(e));
-    });
-});
-
-const _removePlatform = (platform, program, process) => new Promise((resolve, reject) => {
-    if (!isPlatformSupported(platform)) return;
-    console.log('REMOVE_PLATFORM: ', platform);
-    resolve();
-});
+    switch (c.subCommand) {
+    case CONFIGURE:
+        return _runCreatePlatforms(c);
+        break;
+    case UPDATE:
+        return Promise.resolve();
+        break;
+    case LIST:
+        return Promise.resolve();
+        break;
+    case ADD:
+        return Promise.resolve();
+        break;
+    case REMOVE:
+        return Promise.resolve();
+        break;
+    default:
+        return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
+    }
+};
 
 // ##########################################
 // PRIVATE
@@ -52,6 +49,22 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
         .then(() => _runCleanPlaformAssets(c))
         .then(() => _runCopyPlatforms(c))
         .then(() => resolve());
+});
+
+const _addPlatform = (platform, program, process) => new Promise((resolve, reject) => {
+    if (!isPlatformSupported(platform, resolve)) return;
+
+    getConfig().then((v) => {
+        _runAddPlatform()
+            .then(() => resolve())
+            .catch(e => reject(e));
+    });
+});
+
+const _removePlatform = (platform, program, process) => new Promise((resolve, reject) => {
+    if (!isPlatformSupported(platform, resolve)) return;
+    console.log('REMOVE_PLATFORM: ', platform);
+    resolve();
 });
 
 const _runCleanPlaformAssets = c => new Promise((resolve, reject) => {

@@ -53,6 +53,7 @@
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
     "setup": "npm run clean && npm install && npm run lerna && npx rnv setup",
     "setup:soft": "npm install && npm run lerna && npx rnv setup",
+    "watchtower": "npm run setup:soft && npm run watch",
     "watch": "npx lerna run --parallel watch",
     "lerna": "npx lerna bootstrap",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -91,9 +92,9 @@
   },
   "dependencies": {
     "jsc-android": "224109.1.0",
-    "react": "16.7.0-alpha.2",
-    "react-dom": "16.7.0-alpha.2",
-    "react-native": "0.57.7",
+    "react": "16.8.3",
+    "react-dom": "16.8.3",
+    "react-native": "0.58.5",
     "react-native-web": "0.9.1"
   },
   "devDependencies": {

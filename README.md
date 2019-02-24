@@ -728,8 +728,8 @@ rnv app list            //List available appConfigs
 rnv app info            //Get info about current app configuration
 
 //platform.js
-rnv platform createAll  //Recreate all platformBuilds projects for selected appConfig
-rnv platform updateAll  //Update all platformBuilds projects for selected appConfig
+rnv platform create  //Recreate all platformBuilds projects for selected appConfig
+rnv platform update  //Update all platformBuilds projects for selected appConfig
 rnv platform list       //List available platform templates
 rnv platform add        //Add new platform to current appConfig
 rnv platform remove     //Remove selected platform from current appConfig
