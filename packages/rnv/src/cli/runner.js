@@ -58,7 +58,7 @@ const run = (c) => {
 const _runApp = c => new Promise((resolve, reject) => {
     logTask('_runApp');
     const { platform } = c;
-    if (!isPlatformSupported(platform, resolve)) return;
+    if (!isPlatformSupported(platform)) return;
 
     switch (platform) {
     case IOS:
@@ -98,7 +98,7 @@ const _runTizen = c => new Promise((resolve, reject) => {
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
     const tId = 'NvVRhWHJST.RNVanilla';
-    const tSim = 'T-samsung-4.0-x86';
+    const tSim = c.program.target || 'T-samsung-4.0-x86';
     const gwt = 'RNVanilla.wgt';
 
     buildWeb(c, TIZEN)
