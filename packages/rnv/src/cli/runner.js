@@ -119,8 +119,8 @@ const _runTizen = c => new Promise((resolve, reject) => {
 const _runWebOS = c => new Promise((resolve, reject) => {
     logTask('_runWebOS');
 
-    const tDir = getAppFolder(c, WEBOS);
-    const tOut = path.join(tDir, 'output');
+    const tDir = path.join(getAppFolder(c, WEBOS), 'RNVApp');
+    const tOut = path.join(tDir, '..', 'output');
     const tSim = c.program.target || 'emulator';
     const configFilePath = path.join(tDir, 'appinfo.json');
 

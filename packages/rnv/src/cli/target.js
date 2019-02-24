@@ -1,9 +1,11 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { IOS, ANDROID, TVOS, TIZEN, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
+import { IOS, ANDROID, TVOS, TIZEN, WEBOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
+import { launchWebOSimulator } from '../platformTools/webos';
+
 
 const CREATE = 'create';
 const REMOVE = 'remove';
@@ -54,10 +56,14 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     switch (platform) {
     case TIZEN:
         launchTizenSimulator(c, target)
-            .then(() => {
-                resolve();
-            })
+            .then(() => resolve())
             .catch(e => logError(e));
+        break;
+    case WEBOS:
+        launchWebOSimulator(c, target)
+            .then(() => resolve())
+            .catch(e => logError(e));
+        break;
     }
 });
 

@@ -1,12 +1,13 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, TIZEN, isPlatformSupported, getConfig, logTask, logComplete,
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive,
 } from '../common';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { copyAndroidAssets, configureGradleProject } from '../platformTools/android';
 import { copyTizenAssets, configureTizenProject } from '../platformTools/tizen';
+import { copyWebOSAssets, configureWebOSProject } from '../platformTools/webos';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const CONFIGURE = 'configure';
@@ -60,6 +61,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _runSetupAndroidProject(c))
         .then(() => _runSetupTVOSProject(c))
         .then(() => _runSetupTizenProject(c))
+        .then(() => _runSetupWebOSProject(c))
         .then(() => resolve());
 });
 
@@ -102,6 +104,16 @@ const _runSetupTizenProject = c => new Promise((resolve, reject) => {
 
     copyTizenAssets(c, TIZEN)
         .then(() => configureTizenProject(c, TIZEN))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _runSetupWebOSProject = c => new Promise((resolve, reject) => {
+    logTask('_runSetupTizenProject');
+    if (!isPlatformActive(c, WEBOS, resolve)) return;
+
+    copyWebOSAssets(c, WEBOS)
+        .then(() => configureWebOSProject(c, WEBOS))
         .then(() => resolve())
         .catch(e => reject(e));
 });

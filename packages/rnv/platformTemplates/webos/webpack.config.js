@@ -5,7 +5,7 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, '../../');
-const appBuildDirectory = path.resolve(__dirname);
+const appBuildDirectory = path.resolve(__dirname, 'RNVApp');
 const platform = 'webos';
 const platformFamily = 'smarttv';
 const formFactor = 'tv';
