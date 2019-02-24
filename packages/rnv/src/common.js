@@ -193,7 +193,17 @@ const logErrorPlatform = (platform, resolve) => {
     resolve();
 };
 
+const isPlatformActive = (c, platform, resolve) => {
+    if (!c.appConfigFile.platforms[platform]) {
+        console.log(`Platform ${platform} not configured for ${c.appId}. skipping.`);
+        resolve();
+        return false;
+    }
+    return true;
+};
+
 export {
     SUPPORTED_PLATFORMS, IOS, TVOS, ANDROID, WEB, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
+    isPlatformActive,
 };

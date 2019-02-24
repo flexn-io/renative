@@ -1,41 +1,26 @@
+import path from 'path';
+import fs from 'fs';
 import { executeAsync } from '../exec';
+import {
+    isPlatformSupported, getConfig, logTask, logComplete, logError,
+    getAppFolder, isPlatformActive,
+} from '../common';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
-// const iosPlatforms = [IOS, TVOS];
-// const runiOSUpdate = (c) => {
-//     logTask('_runiOSUpdate');
-//     if (iosPlatforms.includes(c.platform)) {
-//         return _runPod('update', getAppFolder(c, IOS));
-//     }
-//
-//     return Promise().resolve();
-// };
-//
-// const runtvOSUpdate = (c) => {
-//     logTask('_runtvOSUpdate');
-//     if (iosPlatforms.includes(c.platform)) {
-//         return _runPod('update', getAppFolder(c, TVOS));
-//     }
-//
-//     return Promise().resolve();
-// };
-//
-// const runiOSInstall = (c) => {
-//     logTask('_runiOSInstall');
-//
-//     return runPod('install', getAppFolder(c, IOS));
-// };
-
-const runPod = (command, cwd) => executeAsync('pod', [
-    command,
-], {
-    cwd,
-    evn: process.env,
-    stdio: 'inherit',
-});
+const runPod = (command, cwd) => {
+    logTask('runPod');
+    return executeAsync('pod', [
+        command,
+    ], {
+        cwd,
+        evn: process.env,
+        stdio: 'inherit',
+    });
+};
 
 const copyAppleAssets = (c, platform, appFolder) => new Promise((resolve, reject) => {
     logTask('copyAppleAssets');
-    if (!_isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform, resolve)) return;
 
     const iosPath = path.join(getAppFolder(c, platform), appFolder);
     const sPath = path.join(c.appConfigFolder, `assets/${platform}`);
@@ -45,7 +30,7 @@ const copyAppleAssets = (c, platform, appFolder) => new Promise((resolve, reject
 
 const configureXcodeProject = (c, platform, appFolder) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
-    if (!_isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform, resolve)) return;
 
     const appFolder = getAppFolder(c, platform);
 

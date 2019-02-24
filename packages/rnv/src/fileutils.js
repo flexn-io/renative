@@ -26,7 +26,7 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true) => {
     // check if folder needs to be created or integrated
     const targetFolder = path.join(target, path.basename(source));
     if (!fs.existsSync(targetFolder)) {
-        mkdirp(targetFolder);
+        mkdirSync(targetFolder);
     }
     // copy
     if (fs.lstatSync(source).isDirectory()) {
@@ -50,7 +50,7 @@ const copyFolderContentsRecursiveSync = (source, target) => {
     let files = [];
     const targetFolder = path.join(target);
     if (!fs.existsSync(targetFolder)) {
-        mkdirp(targetFolder);
+        mkdirSync(targetFolder);
     }
     if (fs.lstatSync(source).isDirectory()) {
         files = fs.readdirSync(source);

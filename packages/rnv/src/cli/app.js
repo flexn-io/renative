@@ -1,8 +1,11 @@
-import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
+import {
+    IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete,
+    logError, getAppFolder, isPlatformActive,
+} from '../common';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
+import { copyAndroidAssets, configureGradleProject } from '../platformTools/android';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const CONFIGURE = 'configure';
@@ -61,7 +64,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
 
 const _runSetupIOSProject = c => new Promise((resolve, reject) => {
     logTask('_runSetupIOSProject');
-    if (!_isPlatformActive(c, IOS, resolve)) return;
+    if (!isPlatformActive(c, IOS, resolve)) return;
 
     runPod('install', getAppFolder(c, IOS))
         .then(() => copyAppleAssets(c, IOS, 'RNVApp'))
@@ -71,18 +74,18 @@ const _runSetupIOSProject = c => new Promise((resolve, reject) => {
 });
 
 const _runSetupAndroidProject = c => new Promise((resolve, reject) => {
-    logTask('_runAndroidProject');
-    if (!_isPlatformActive(c, ANDROID, resolve)) return;
+    logTask('_runSetupAndroidProject');
+    if (!isPlatformActive(c, ANDROID, resolve)) return;
 
-    _runConfigureAndroid(c)
-        .then(() => _runCopyAndroidAssets(c))
+    copyAndroidAssets(c)
+        .then(() => configureGradleProject(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
 const _runSetupTVOSProject = c => new Promise((resolve, reject) => {
     logTask('_runSetupTVOSProject');
-    if (!_isPlatformActive(c, TVOS, resolve)) return;
+    if (!isPlatformActive(c, TVOS, resolve)) return;
 
     runPod('install', getAppFolder(c, TVOS))
         .then(() => copyAppleAssets(c, IOS, 'RNVAppTVOS'))
@@ -102,72 +105,6 @@ const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-// const _runCopyiOSAssets = c => new Promise((resolve, reject) => {
-//     logTask('_runCopyiOSAssets');
-//     if (!_isPlatformActive(c, IOS, resolve)) return;
-//
-//     const iosPath = path.join(getAppFolder(c, IOS), 'RNVApp');
-//     const sPath = path.join(c.appConfigFolder, 'assets/ios');
-//     copyFolderContentsRecursiveSync(sPath, iosPath);
-//     resolve();
-// });
-
-// const _runCopytvOSAssets = c => new Promise((resolve, reject) => {
-//     logTask('_runCopytvOSAssets');
-//     if (!_isPlatformActive(c, TVOS, resolve)) return;
-//
-//     const destPath = path.join(getAppFolder(c, TVOS), 'RNVAppTVOS');
-//     const sourcePath = path.join(c.appConfigFolder, 'assets/tvos');
-//     copyFolderContentsRecursiveSync(sourcePath, destPath);
-//     resolve();
-// });
-
-// const _runCopyAndroidAssets = c => new Promise((resolve, reject) => {
-//     logTask('_runCopyAndroidAssets');
-//     if (!_isPlatformActive(c, ANDROID, resolve)) return;
-//
-//     const destPath = path.join(c.platformBuildsFolder, `${c.appId}_${ANDROID}/app/src/main/res`);
-//     const sourcePath = path.join(c.appConfigFolder, 'assets/android/res');
-//     copyFolderContentsRecursiveSync(sourcePath, destPath);
-//     resolve();
-// });
-
-const _runConfigureAndroid = c => new Promise((resolve, reject) => {
-    logTask('_runConfigureAndroid');
-    if (!_isPlatformActive(c, ANDROID, resolve)) return;
-
-    const appFolder = getAppFolder(c, ANDROID);
-
-    copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
-    mkdirSync(path.join(appFolder, 'app/src/main/assets'));
-    fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
-    fs.chmodSync(path.join(appFolder, 'gradlew'), '755');
-
-    resolve();
-});
-
-// const _runConfigureIOS = c => new Promise((resolve, reject) => {
-//     logTask('_runConfigureIOS');
-//     if (!_isPlatformActive(c, IOS, resolve)) return;
-//
-//     const appFolder = getAppFolder(c, IOS);
-//
-//     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
-//     mkdirSync(path.join(appFolder, 'assets'));
-//     mkdirSync(path.join(appFolder, 'RNVApp/images'));
-//
-//     resolve();
-// });
-
-
-const _isPlatformActive = (c, platform, resolve) => {
-    if (!c.appConfigFile.platforms[platform]) {
-        console.log(`Platform ${platform} not configured for ${c.appId}. skipping.`);
-        resolve();
-        return false;
-    }
-    return true;
-};
 
 const _runPlugins = c => new Promise((resolve, reject) => {
     logTask('_runPlugins');
