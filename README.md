@@ -744,9 +744,6 @@ rnv plugin:list         //List all installed plugins for current appConfig
 Examples:
 
 ```
-rnv target create --name "XXXXX"
-
-
 npx rnv setup
 
 npx rnv platform configure -c helloWorld
@@ -755,7 +752,7 @@ npx rnv app configure -c helloWorld
 
 npx rnv app configure -c helloWorld -u
 
-npx rnv run -p ios
+npx rnv run -p ios -t "iPhone 6"
 npx rnv run -p tvos
 npx rnv run -p tizen
 npx rnv run -p web
@@ -765,6 +762,7 @@ npx rnv run -p android
 npx rnv run -p androidtv
 npx rnv run -p androidwear
 npx rnv run -p macos
+npx rnv run -p windows
 
 npx rnv target launch -p android -t Nexus_5X_API_26
 npx rnv target launch -p androidtv -t Android_TV_720p_API_22

@@ -205,7 +205,7 @@ const _packageAndroid = (c, platform) => {
 
 const _runiOS = (c) => {
     logTask('_runiOS');
-    const device = c.program.simulator || 'iPhone 6';
+    const device = c.program.target || 'iPhone 6';
     const appPath = getAppFolder(c, IOS);
     const p = [
         'run-ios',
