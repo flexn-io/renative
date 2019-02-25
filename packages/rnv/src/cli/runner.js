@@ -73,10 +73,10 @@ const _runApp = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-    case ANDROID_TV:
+    case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        _runAndroid(c, platform)
+        _runAndroid(c, platform, platform === ANDROID_WEAR)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -139,12 +139,12 @@ const _runWebOS = c => new Promise((resolve, reject) => {
         });
 });
 
-const _runAndroid = (c, platform) => new Promise((resolve, reject) => {
+const _runAndroid = (c, platform, forcePackage) => new Promise((resolve, reject) => {
     logTask(`_runAndroid:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    if (c.appConfigFile.platforms.android.runScheme === 'Release') {
-        _packageAndroid(c).then(() => {
+    if (c.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
+        _packageAndroid(c, platform).then(() => {
             shell.cd(`${appFolder}`);
             shell.exec('./gradlew appStart');
             resolve();
@@ -168,10 +168,10 @@ const _runWeb = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _packageAndroid = (c) => {
+const _packageAndroid = (c, platform) => {
     logTask('_packageAndroid');
 
-    const appFolder = getAppFolder(c, ANDROID);
+    const appFolder = getAppFolder(c, platform);
     return executeAsync('react-native', [
         'bundle',
         '--platform',
@@ -181,7 +181,7 @@ const _packageAndroid = (c) => {
         '--assets-dest',
         `${appFolder}/app/src/main/res`,
         '--entry-file',
-        `${c.appConfigFile.platforms.android.entryFile}.js`,
+        `${c.appConfigFile.platforms[platform].entryFile}.js`,
         '--bundle-output',
         `${appFolder}/app/src/main/assets/index.android.bundle`,
     ]);
