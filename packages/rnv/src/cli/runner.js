@@ -3,7 +3,8 @@ import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import {
-    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, isPlatformSupported, getConfig, logTask, logComplete,
+    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV,
+    isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
 } from '../common';
 import { executeAsync } from '../exec';
@@ -77,6 +78,11 @@ const _runApp = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case ANDROID_TV:
+        _runAndroidTV(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     case WEB:
         _runWeb(c)
             .then(() => resolve())
@@ -140,6 +146,23 @@ const _runAndroid = c => new Promise((resolve, reject) => {
     logTask('_runAndroid');
 
     const appFolder = getAppFolder(c, ANDROID);
+    if (c.appConfigFile.platforms.android.runScheme === 'Release') {
+        _packageAndroid(c).then(() => {
+            shell.cd(`${appFolder}`);
+            shell.exec('./gradlew appStart');
+            resolve();
+        });
+    } else {
+        shell.cd(`${appFolder}`);
+        shell.exec('./gradlew appStart');
+        resolve();
+    }
+});
+
+const _runAndroidTV = c => new Promise((resolve, reject) => {
+    logTask('_runAndroidTV');
+
+    const appFolder = getAppFolder(c, ANDROID_TV);
     if (c.appConfigFile.platforms.android.runScheme === 'Release') {
         _packageAndroid(c).then(() => {
             shell.cd(`${appFolder}`);

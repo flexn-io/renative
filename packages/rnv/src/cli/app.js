@@ -1,7 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, TIZEN, WEBOS, isPlatformSupported, getConfig, logTask, logComplete,
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV,
+    isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive,
 } from '../common';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
@@ -59,6 +60,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _runPlugins(c))
         .then(() => _runSetupIOSProject(c))
         .then(() => _runSetupAndroidProject(c))
+        .then(() => _runSetupAndroidTVProject(c))
         .then(() => _runSetupTVOSProject(c))
         .then(() => _runSetupTizenProject(c))
         .then(() => _runSetupWebOSProject(c))
@@ -94,6 +96,16 @@ const _runSetupAndroidProject = c => new Promise((resolve, reject) => {
 
     copyAndroidAssets(c, ANDROID)
         .then(() => configureGradleProject(c, ANDROID))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _runSetupAndroidTVProject = c => new Promise((resolve, reject) => {
+    logTask('_runSetupAndroidTVProject');
+    if (!isPlatformActive(c, ANDROID_TV, resolve)) return;
+
+    copyAndroidAssets(c, ANDROID_TV)
+        .then(() => configureGradleProject(c, ANDROID_TV))
         .then(() => resolve())
         .catch(e => reject(e));
 });

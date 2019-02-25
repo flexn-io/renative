@@ -14,9 +14,16 @@ function launchAndroidSimulator(c, name) {
     const em = path.join(c.homeFolder, 'Library/Android/sdk/tools/emulator');
 
     if (name) {
-        return execShellAsync(`${em} -avd ${name}`);
+        return execShellAsync(`${em} -avd "${name}"`);
     }
     return Promise.reject('No simulator -t target name specified!');
+}
+
+function listAndroidTargets(c) {
+    logTask('listAndroidDevices');
+
+    const em = path.join(c.homeFolder, 'Library/Android/sdk/tools/adb');
+    return execShellAsync(`${em} devices -l`);
 }
 
 

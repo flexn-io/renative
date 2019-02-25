@@ -1,7 +1,10 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
+import {
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV,
+    isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder,
+} from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
 import { launchWebOSimulator } from '../platformTools/webos';
@@ -59,17 +62,28 @@ const _runLaunch = c => new Promise((resolve, reject) => {
         launchAndroidSimulator(c, target)
             .then(() => resolve())
             .catch(e => logError(e));
+        return;
         break;
     case TIZEN:
         launchTizenSimulator(c, target)
             .then(() => resolve())
             .catch(e => logError(e));
+        return;
         break;
     case WEBOS:
         launchWebOSimulator(c, target)
             .then(() => resolve())
             .catch(e => logError(e));
+        return;
         break;
+    case ANDROID_TV:
+        launchAndroidSimulator(c, target)
+            .then(() => resolve())
+            .catch(e => logError(e));
+        return;
+        break;
+    default:
+        reject(`target launch does not support ${platform} yet!`);
     }
 });
 
