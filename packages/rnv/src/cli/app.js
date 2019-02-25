@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV,
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB,
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive,
 } from '../common';
@@ -58,76 +58,64 @@ const _runConfigure = c => new Promise((resolve, reject) => {
 
     _runCopyRuntimeAssets(c)
         .then(() => _runPlugins(c))
-        .then(() => _runSetupIOSProject(c))
-        .then(() => _runSetupAndroidProject(c))
-        .then(() => _runSetupAndroidTVProject(c))
-        .then(() => _runSetupTVOSProject(c))
-        .then(() => _runSetupTizenProject(c))
-        .then(() => _runSetupWebOSProject(c))
+        .then(() => _runSetupAppleProject(c, IOS, 'RNVApp'))
+        .then(() => _runSetupAppleProject(c, TVOS, 'RNVAppTVOS'))
+        .then(() => _runSetupAndroidProject(c, ANDROID))
+        .then(() => _runSetupAndroidProject(c, ANDROID_TV))
+        .then(() => _runSetupAndroidProject(c, ANDROID_WEAR))
+        .then(() => _runSetupTizenProject(c, TIZEN))
+        .then(() => _runSetupWebOSProject(c, WEBOS))
+        .then(() => _runSetupWebProject(c, WEB))
         .then(() => resolve());
 });
 
 
-const _runSetupIOSProject = c => new Promise((resolve, reject) => {
-    logTask('_runSetupIOSProject');
-    if (!isPlatformActive(c, IOS, resolve)) return;
+const _runSetupAppleProject = (c, platform, appFolder) => new Promise((resolve, reject) => {
+    logTask(`_runSetupAppleProject:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
 
-    runPod(c.program.update ? 'update' : 'install', getAppFolder(c, IOS))
-        .then(() => copyAppleAssets(c, IOS, 'RNVApp'))
-        .then(() => configureXcodeProject(c, IOS, 'RNVApp'))
+    runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform))
+        .then(() => copyAppleAssets(c, platform, appFolder))
+        .then(() => configureXcodeProject(c, platform, appFolder))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _runSetupTVOSProject = c => new Promise((resolve, reject) => {
-    logTask('_runSetupTVOSProject');
-    if (!isPlatformActive(c, TVOS, resolve)) return;
+const _runSetupAndroidProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runSetupAndroidProject:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
 
-    runPod(c.program.update ? 'update' : 'install', getAppFolder(c, TVOS))
-        .then(() => copyAppleAssets(c, TVOS, 'RNVAppTVOS'))
-        .then(() => configureXcodeProject(c, TVOS, 'RNVAppTVOS'))
+    copyAndroidAssets(c, platform)
+        .then(() => configureGradleProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _runSetupAndroidProject = c => new Promise((resolve, reject) => {
-    logTask('_runSetupAndroidProject');
-    if (!isPlatformActive(c, ANDROID, resolve)) return;
+const _runSetupTizenProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runSetupTizenProject:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
 
-    copyAndroidAssets(c, ANDROID)
-        .then(() => configureGradleProject(c, ANDROID))
+    copyTizenAssets(c, platform)
+        .then(() => configureTizenProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _runSetupAndroidTVProject = c => new Promise((resolve, reject) => {
-    logTask('_runSetupAndroidTVProject');
-    if (!isPlatformActive(c, ANDROID_TV, resolve)) return;
+const _runSetupWebOSProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runSetupWebOSProject:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
 
-    copyAndroidAssets(c, ANDROID_TV)
-        .then(() => configureGradleProject(c, ANDROID_TV))
+    copyWebOSAssets(c, platform)
+        .then(() => configureWebOSProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _runSetupTizenProject = c => new Promise((resolve, reject) => {
-    logTask('_runSetupTizenProject');
-    if (!isPlatformActive(c, TIZEN, resolve)) return;
+const _runSetupWebProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runSetupWebProject:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
 
-    copyTizenAssets(c, TIZEN)
-        .then(() => configureTizenProject(c, TIZEN))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
-const _runSetupWebOSProject = c => new Promise((resolve, reject) => {
-    logTask('_runSetupTizenProject');
-    if (!isPlatformActive(c, WEBOS, resolve)) return;
-
-    copyWebOSAssets(c, WEBOS)
-        .then(() => configureWebOSProject(c, WEBOS))
-        .then(() => resolve())
-        .catch(e => reject(e));
+    resolve();
 });
 
 

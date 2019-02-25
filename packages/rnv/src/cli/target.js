@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV,
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR,
     isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
@@ -59,6 +59,8 @@ const _runLaunch = c => new Promise((resolve, reject) => {
 
     switch (platform) {
     case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
         launchAndroidSimulator(c, target)
             .then(() => resolve())
             .catch(e => logError(e));
@@ -72,12 +74,6 @@ const _runLaunch = c => new Promise((resolve, reject) => {
         break;
     case WEBOS:
         launchWebOSimulator(c, target)
-            .then(() => resolve())
-            .catch(e => logError(e));
-        return;
-        break;
-    case ANDROID_TV:
-        launchAndroidSimulator(c, target)
             .then(() => resolve())
             .catch(e => logError(e));
         return;
