@@ -43,7 +43,7 @@ android {
 }
 
 task appStart(type: Exec, dependsOn: 'installDebug') {
-    commandLine 'adb', 'shell', 'am', 'start', '-n', 'pavjacko.reactnativevanilla/pavjacko.reactnativevanilla.MainActivity'
+    commandLine 'adb', 'shell', 'am', 'start', '-n', 'reactnativevanilla.helloworld/.MainActivity'
 }
 
 dependencies {
