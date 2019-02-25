@@ -309,7 +309,6 @@ npx rnv run -p ios -t "iPhone 6 Plus" --info
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
--   Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
 
 #### Requirements
 
@@ -408,7 +407,6 @@ npx rnv run -p tvos -t "Apple TV 4K" --info
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
--   Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
 
 #### Requirements
 
@@ -543,7 +541,7 @@ emulator-manager
 ```
 em-cli list-vm
 
-em-cli launch --name T-samsung-5.0-x86
+npx rnv target launch -p tizen -t T-samsung-5.0-x86
 ```
 
 #### Run
@@ -551,6 +549,8 @@ em-cli launch --name T-samsung-5.0-x86
 ```
 npm run tizen
 ```
+
+#### Advanced
 
 or specific simulator:
 ```
@@ -653,6 +653,15 @@ npx rnv run -p webos -t emulator --info
 npm run macos
 ```
 
+### Advanced
+
+Run via RNV CLI
+
+```
+npx rnv run -p macos
+npx rnv run -p macos --info
+```
+
 ---
 
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_windows.png?raw=true" width=50 height=50 />
@@ -680,10 +689,13 @@ npm run macos
 npm run windows
 ```
 
-#### Distribute
+### Advanced
+
+Run via RNV CLI
 
 ```
-npm run windows:dist
+npx rnv run -p windows
+npx rnv run -p windows --info
 ```
 
 ---
@@ -695,7 +707,6 @@ npm run windows:dist
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
--   Support for Android JSC (improved support for JavascriptCore like ES6 syntax)
 
 #### Requirements
 
@@ -710,18 +721,8 @@ npm run windows:dist
 | Android Gradle |          `3.3.1`                 |
 | Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
-| JSC            | `org.webkit:android-jsc:r224109` |
 
-#### First time installation
 
-create file named `local.properties` in `<PROJECT_ROOT>/platforms/androidwear`
-
-with paths to your Android SDK. Usually:
-
-```
-ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
-sdk.dir=/Users/<USER>/Library/Android/sdk
-```
 
 #### Run
 
@@ -729,6 +730,20 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 
 ```
 npm run androidwear
+```
+
+#### Advanced
+
+Launch specific emulator:
+```
+npx rnv target launch -p androidwear -t Android_Wear_Round_API_28
+```
+
+Run via RNV CLI
+
+```
+npx rnv run -p androidwear
+npx rnv run -p androidwear --info
 ```
 
 ---
