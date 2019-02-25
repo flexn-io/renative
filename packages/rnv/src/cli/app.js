@@ -92,8 +92,8 @@ const _runSetupAndroidProject = c => new Promise((resolve, reject) => {
     logTask('_runSetupAndroidProject');
     if (!isPlatformActive(c, ANDROID, resolve)) return;
 
-    copyAndroidAssets(c)
-        .then(() => configureGradleProject(c))
+    copyAndroidAssets(c, ANDROID)
+        .then(() => configureGradleProject(c, ANDROID))
         .then(() => resolve())
         .catch(e => reject(e));
 });

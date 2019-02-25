@@ -5,6 +5,7 @@ import { IOS, ANDROID, TVOS, TIZEN, WEBOS, isPlatformSupported, getConfig, logTa
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
 import { launchWebOSimulator } from '../platformTools/webos';
+import { launchAndroidSimulator } from '../platformTools/android';
 
 
 const CREATE = 'create';
@@ -54,6 +55,11 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     if (!isPlatformSupported(platform)) return;
 
     switch (platform) {
+    case ANDROID:
+        launchAndroidSimulator(c, target)
+            .then(() => resolve())
+            .catch(e => logError(e));
+        break;
     case TIZEN:
         launchTizenSimulator(c, target)
             .then(() => resolve())

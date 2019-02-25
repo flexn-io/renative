@@ -122,6 +122,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.command = cmd;
     c.projectRootFolder = projectRootFolder;
     c.rnvFolder = rnvFolder;
+    c.homeFolder = homedir;
     c.subCommand = subCmd;
 
     console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));

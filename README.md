@@ -767,8 +767,11 @@ npx rnv run -p tizen -t T-samsung-5.0-x86
 
 npx rnv run -p webos -t emulator
 
+npx rnv target launch -p android -t Nexus_5X_API_26
 npx rnv target launch -p tizen -t T-samsung-5.0-x86
 npx rnv target launch -p webos -t emulator
+
+
 ```
 
 ---

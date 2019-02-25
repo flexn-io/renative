@@ -1,11 +1,24 @@
 import path from 'path';
 import fs from 'fs';
-import { executeAsync } from '../exec';
+import { executeAsync, execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+
+
+function launchAndroidSimulator(c, name) {
+    logTask('launchAndroidSimulator');
+
+    const em = path.join(c.homeFolder, 'Library/Android/sdk/tools/emulator');
+
+    if (name) {
+        return execShellAsync(`${em} -avd ${name}`);
+    }
+    return Promise.reject('No simulator -t target name specified!');
+}
+
 
 const copyAndroidAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyAndroidAssets');
@@ -31,4 +44,4 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
     resolve();
 });
 
-export { copyAndroidAssets, configureGradleProject };
+export { copyAndroidAssets, configureGradleProject, launchAndroidSimulator };
