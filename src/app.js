@@ -5,9 +5,9 @@ import packageJson from '../package.json';
 const styles = StyleSheet.create({
     app: {
         flex: 1,
+        backgroundColor: 'red',
     },
     appContainer: {
-        paddingTop: 100,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         borderColor: '#62DBFB',
         height: 50,
         minWidth: 150,
+        maxWidth: 200,
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -48,7 +49,7 @@ class App extends React.Component {
 
     render() {
         return (
-            <ScrollView style={[styles.app, { backgroundColor: this.state.bgColor }]} contentContainerStyle={styles.appContainer}>
+            <View style={[styles.app, styles.appContainer, { backgroundColor: this.state.bgColor }]}>
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
                 <Text style={styles.text}>
 Hello from React Native Vanilla!
@@ -77,7 +78,7 @@ Try Me!
 Now Try Me!
                     </Text>
                 </TouchableOpacity>
-            </ScrollView>
+            </View>
         );
     }
 }
