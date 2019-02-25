@@ -756,16 +756,14 @@ npx rnv app configure -c helloWorld
 npx rnv app configure -c helloWorld -u
 
 npx rnv run -p ios
-
 npx rnv run -p tvos
-
 npx rnv run -p tizen
-
 npx rnv run -p web
-
 npx rnv run -p tizen -t T-samsung-5.0-x86
-
 npx rnv run -p webos -t emulator
+npx rnv run -p android
+npx rnv run -p androidtv
+npx rnv run -p androidwear
 
 npx rnv target launch -p android -t Nexus_5X_API_26
 npx rnv target launch -p androidtv -t Android_TV_720p_API_22

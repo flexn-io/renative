@@ -32,7 +32,7 @@ const copyAndroidAssets = (c, platform) => new Promise((resolve, reject) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const destPath = path.join(getAppFolder(c, platform), 'app/src/main/res');
-    const sourcePath = path.join(c.appConfigFolder, 'assets/android/res');
+    const sourcePath = path.join(c.appConfigFolder, `assets/${platform}/res`);
     copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
 });
