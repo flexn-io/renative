@@ -1,6 +1,6 @@
 {
-  "name": "RN Vanilla macOS",
-  "productName": "RN Vanilla macOS",
+  "name": "",
+  "productName": "",
   "version": "0.3.1",
   "description": "RNV boilerplate based on React",
   "main": "./main.js",

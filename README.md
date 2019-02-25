@@ -764,6 +764,7 @@ npx rnv run -p webos -t emulator
 npx rnv run -p android
 npx rnv run -p androidtv
 npx rnv run -p androidwear
+npx rnv run -p macos
 
 npx rnv target launch -p android -t Nexus_5X_API_26
 npx rnv target launch -p androidtv -t Android_TV_720p_API_22

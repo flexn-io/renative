@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import {
-    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR,
+    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS,
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
 } from '../common';
@@ -77,6 +77,12 @@ const _runApp = c => new Promise((resolve, reject) => {
     case ANDROID_TV:
     case ANDROID_WEAR:
         _runAndroid(c, platform, platform === ANDROID_WEAR)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case MACOS:
+    case WINDOWS:
+        _runElectron(c, platform)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -154,6 +160,16 @@ const _runAndroid = (c, platform, forcePackage) => new Promise((resolve, reject)
         shell.exec('./gradlew appStart');
         resolve();
     }
+});
+
+const _runElectron = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runElectron:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    buildWeb(c, platform)
+        .then(() => {
+            shell.exec(`electron ${appFolder}`);
+        });
 });
 
 const _runWeb = c => new Promise((resolve, reject) => {

@@ -1,41 +1,32 @@
-// web/webpack.config.js
-
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, '../../');
+const appBuildDirectory = path.resolve(__dirname);
+const appBuildPublic = path.resolve(__dirname, 'public');
+const platform = 'windows';
+const platformFamily = 'desktop';
+const formFactor = 'desktop';
+const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' } };
 
-// Many OSS React Native packages are not compiled to ES5 before being
-// published. If you depend on uncompiled packages they may cause webpack build
-// errors. To fix this webpack can be configured to compile to the necessary
-// 'node_module'.
 const babelLoaderConfiguration = {
     test: /\.js$/,
     // Add every directory that needs to be compiled by Babel during the build.
     include: [
         path.resolve(appDirectory, 'src'),
-        path.resolve(appDirectory, 'node_modules/react-navigation'),
-        path.resolve(appDirectory, 'node_modules/react-native-tab-view'),
-        path.resolve(appDirectory, 'node_modules/react-native-paper'),
-        path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
-        path.resolve(appDirectory, 'node_modules/react-native-safe-area-view'),
-        path.resolve(appDirectory, 'node_modules/react-native-platform-touchable'),
+        path.resolve(appDirectory, 'packages'),
     ],
     use: {
         loader: 'babel-loader',
         options: {
-            // cacheDirectory: false,
             babelrc: false,
-            // Babel configuration (or use .babelrc)
-            // This aliases 'react-native' to 'react-native-web' and includes only
-            // the modules needed by the app.
-            plugins: [
-                'react-native-web',
-                'transform-decorators-legacy',
-                ['transform-runtime', { helpers: false, polyfill: false, regenerator: true }],
+            presets: [
+                ['module:metro-react-native-babel-preset'],
             ],
-            // The 'react-native' preset is recommended to match React Native's packager
-            presets: ['react-native-stage-0'],
         },
     },
 };
@@ -43,46 +34,48 @@ const babelLoaderConfiguration = {
 // This is needed for loading css
 const cssLoaderConfiguration = {
     test: /\.css$/,
-    use: ['style-loader', 'css-loader'],
+    use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: 'css-loader',
+    })),
 };
 
 const imageLoaderConfiguration = {
     test: /\.(gif|jpe?g|png|svg)$/,
     use: {
-        loader: 'file-loader',
-        options: {
-            useRelativePath: false,
-            publicPath: './assets',
-        },
+        loader: 'react-native-web-image-loader',
     },
 };
 
 const ttfLoaderConfiguration = {
-    test: /\.ttf$/,
-    use: [
-        {
-            loader: 'file-loader',
-            options: {
-                name: './fonts/[hash].[ext]',
-            },
-        },
-    ],
-    include: [
-        path.resolve(appDirectory, './src/assets/fonts'),
-        path.resolve(appDirectory, 'node_modules/react-native-vector-icons'),
-    ],
+    test: /\.(ttf)(\?[\s\S]+)?$/,
+    use: 'file-loader',
 };
 
+const sourcemapLoaderConfiguration = {
+    test: /\.js$/,
+    use: ['source-map-loader'],
+    enforce: 'pre',
+};
+
+
+// todo refactor after demo
 module.exports = {
     // your web-specific entry file
-    entry: path.resolve(appDirectory, './index.windows.js'),
-    devtool: 'eval',
+    entry: {
+        fetch: 'whatwg-fetch',
+        polyfill: 'babel-polyfill',
+        bundle: path.resolve(appDirectory, `./index.${platform}.js`),
+    },
 
-    // configures where the build ends up
+    devServer: config.devServer || {
+        host: '0.0.0.0',
+    },
+
     output: {
-        filename: 'bundle.js',
-        publicPath: '/assets/',
-        path: path.resolve(appDirectory, './platforms/windows/assets'),
+        filename: '[name].js',
+        publicPath: 'assets/',
+        path: path.resolve(appBuildDirectory, './public/assets'),
     },
 
     module: {
@@ -91,24 +84,46 @@ module.exports = {
             cssLoaderConfiguration,
             imageLoaderConfiguration,
             ttfLoaderConfiguration,
+            sourcemapLoaderConfiguration,
         ],
     },
 
     plugins: [
-    // process.env.NODE_ENV === 'production' must be true for production
-    // builds to eliminate development checks and reduce build size. You may
-    // wish to include additional optimizations.
+        // process.env.NODE_ENV === 'production' must be true for production
+        // builds to eliminate development checks and reduce build size. You may
+        // wish to include additional optimizations.
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+            'process.env.NODE_ENV': JSON.stringify(/* process.env.NODE_ENV || */ platformFamily === 'smarttv' ? 'production' : 'development'),
             __DEV__: process.env.NODE_ENV === 'production' || true,
         }),
+        new HtmlWebpackPlugin({
+            alwaysWriteToDisk: true,
+            filename: path.resolve(appBuildDirectory, './public/index.html'),
+            template: path.resolve(appDirectory, './packages/rnv/platformTemplates/_shared/template.js'),
+            minify: false,
+            templateParameters: {
+                ...config,
+            },
+        }),
+        new HtmlWebpackHarddiskPlugin(),
+        new CopyWebpackPlugin([
+            { from: path.resolve(appBuildDirectory, 'app.css'), to: appBuildPublic },
+        ]),
     ],
-
     resolve: {
-    // If you're working on a multi-platform React Native app, web-specific
-    // module implementations should be written in files using the extension
-    // '.windows.js'.
         symlinks: false,
-        extensions: ['.windows.js', '.js'],
+        extensions: [
+            `.${platform}.js`,
+            `.${platformFamily}.js`,
+            `.${formFactor}.js`,
+            '.js',
+        ],
+        alias: {
+
+            react: path.resolve(appDirectory, 'node_modules/react'),
+            'react-native': 'react-native-web',
+            'react-native-linear-gradient': 'react-native-web-linear-gradient',
+            'react-native-vector-icons': 'react-native-web-vector-icons',
+        },
     },
 };

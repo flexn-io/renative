@@ -39,8 +39,13 @@
     "email": "i@pavjacko.com",
     "url": "https://github.com/pavjacko"
   },
+  "homepage": "https://github.com/pavjacko/react-native-vanilla#readme",
   "bugs": {
     "url": "https://github.com/pavjacko/react-native-vanilla/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/pavjacko/react-native-vanilla.git"
   },
   "contributors": [
     "Sander Looijenga <https://github.com/sanderlooijenga>",
@@ -48,12 +53,10 @@
     "David Rielo <https://github.com/davidrielo>",
     "Aurimas Mickys <https://github.com/aurimas535>"
   ],
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry-web.js",
   "scripts": {
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
     "setup": "npm run clean && npm install && npm run lerna && npx rnv setup",
-    "setup:soft": "npm install && npm run lerna && npx rnv setup",
-    "watchtower": "npm run setup:soft && npm run watch",
+    "watchtower": "npm install && npm run lerna && npm run watch",
     "watch": "npx lerna run --parallel watch",
     "lerna": "npx lerna bootstrap",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -65,28 +68,12 @@
     "androidwear": "rnv run -p androidwear",
     "web": "rnv run -p web",
     "webos": "rnv run -p webos",
-    "macos": "npm run macos:build && electron ./platformBuilds/helloWorld_macos/",
-    "windows": "npm run windows:build && electron ./platforms/windows/",
-    "webos:build": "NODE_ENV=production webpack -p --config ./platforms/webos/webpack.config.js",
-    "macos:build": "NODE_ENV=production webpack -p --config ./platformBuilds/helloWorld_macos/webpack.config.js",
-    "macos:dist": "node ./utils/builder.js dist_windows && electron-builder",
-    "windows:build": "webpack -p --config ./platforms/windows/webpack.config.js",
-    "windows:dist": "node ./utils/builder.js dist_windows && electron-builder",
+    "macos": "npx rnv run -p macos",
+    "windows": "npx rnv run -p windows",
     "test": "jest",
     "preversion": "npm run test",
     "version": "./packages/rnv/utils/update-versions.sh",
     "doc": "doctoc ."
-  },
-  "build": {
-    "appId": "pavjacko.reactnativevanilla",
-    "directories": {
-      "app": "platforms/electron",
-      "buildResources": "platforms/electron/resources",
-      "output": "platforms/electron/build/release"
-    },
-    "mac": {
-      "category": "your.app.category.type"
-    }
   },
   "dependencies": {
     "react": "16.8.3",
@@ -169,10 +156,5 @@
     "npm": ">=4.0.0",
     "xcode": ">=8.0.0",
     "cocoapods": ">=1.5.3"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/pavjacko/react-native-vanilla.git"
-  },
-  "homepage": "https://github.com/pavjacko/react-native-vanilla#readme"
+  }
 }

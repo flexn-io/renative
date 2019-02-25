@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB,
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS,
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive,
 } from '../common';
@@ -9,6 +9,7 @@ import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools
 import { copyAndroidAssets, configureGradleProject } from '../platformTools/android';
 import { copyTizenAssets, configureTizenProject } from '../platformTools/tizen';
 import { copyWebOSAssets, configureWebOSProject } from '../platformTools/webos';
+import { configureElectronProject } from '../platformTools/electron';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const CONFIGURE = 'configure';
@@ -66,6 +67,8 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _runSetupTizenProject(c, TIZEN))
         .then(() => _runSetupWebOSProject(c, WEBOS))
         .then(() => _runSetupWebProject(c, WEB))
+        .then(() => _runSetupElectronProject(c, MACOS))
+        .then(() => _runSetupElectronProject(c, WINDOWS))
         .then(() => resolve());
 });
 
@@ -118,6 +121,16 @@ const _runSetupWebProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
+const _runSetupElectronProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runSetupElectronProject:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    configureElectronProject(c, platform)
+        .then(() => resolve())
+        .catch(e => reject(e));
+
+    resolve();
+});
 
 const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('_runCopyRuntimeAssets');
