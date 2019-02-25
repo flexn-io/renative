@@ -91,7 +91,6 @@
     }
   },
   "dependencies": {
-    "jsc-android": "224109.1.0",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "0.58.5",

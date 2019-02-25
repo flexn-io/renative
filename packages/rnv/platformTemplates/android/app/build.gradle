@@ -46,12 +46,6 @@ task appStart(type: Exec, dependsOn: 'installDebug') {
     commandLine 'adb', 'shell', 'am', 'start', '-n', 'reactnativevanilla.helloworld/.MainActivity'
 }
 
-configurations.all {
-    resolutionStrategy {
-        force 'org.webkit:android-jsc:r224109'
-    }
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
