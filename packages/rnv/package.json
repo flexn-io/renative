@@ -26,7 +26,8 @@
     "icon-toolkit": "0.0.9",
     "svg2js": "0.0.3",
     "ncp": "2.0.0",
-    "simple-git": "1.92.0"
+    "simple-git": "1.92.0",
+    "nodemon": "1.18.10"
   },
   "devDependencies": {
     "@babel/core": "7.0.0-beta.47",
