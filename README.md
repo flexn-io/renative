@@ -326,6 +326,19 @@ npx rnv run -p ios -t "iPhone 6 Plus" --info
 | Target SDK     |               `27`               |
 
 
+#### Emulators
+
+You can create variety of emulators via Android Studio IDE
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/android1.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
 #### Run
 
 NOTE: make sure you have 1 android device connected or 1 emulator running
