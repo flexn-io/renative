@@ -180,8 +180,8 @@
 
 #### Stack / Libraries
 
--   [React](https://facebook.github.io/react/) `16.7.0-alpha.2` react library
--   [React Native](https://facebook.github.io/react-native/) `0.57.7` for building native apps using react
+-   [React](https://facebook.github.io/react/) `16.8.3` react library
+-   [React Native](https://facebook.github.io/react-native/) `0.58.5` for building native apps using react
 -   [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
 ---
@@ -216,6 +216,18 @@ $ cd react-native-vanilla
 
 $ npm run setup
 ```
+
+For Android:
+
+create file named `local.properties` in `<USER_HOME>/.rnv`
+
+with paths to your Android SDK. Usually:
+
+```
+ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
+sdk.dir=/Users/<USER>/Library/Android/sdk
+```
+
 
 ---
 
@@ -284,8 +296,8 @@ npm run ios
 
 ```
 npx rnv run -help
-npx rnv run -p ios -s "iPhone 6 Plus"
-npx rnv run -p ios -s "iPhone 6 Plus" --info
+npx rnv run -p ios -t "iPhone 6 Plus"
+npx rnv run -p ios -t "iPhone 6 Plus" --info
 ```
 
 ---
@@ -312,18 +324,7 @@ npx rnv run -p ios -s "iPhone 6 Plus" --info
 | Android Gradle |          `3.3.1`                 |
 | Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
-| JSC            | `org.webkit:android-jsc:r224109` |
 
-#### First time installation
-
-create file named `local.properties` in `<PROJECT_ROOT>/platforms/android`
-
-with paths to your Android SDK. Usually:
-
-```
-ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
-sdk.dir=/Users/<USER>/Library/Android/sdk
-```
 
 #### Run
 
@@ -336,10 +337,16 @@ npm run android
 
 #### Advanced
 
+Launch specific emulator:
 ```
-npx rnv run -help
-npx rnv run -p android -s "Nexus 9"
-npx rnv run -p android -s "Nexus 9" --info
+npx rnv target launch -p android -t Nexus_5X_API_26
+```
+
+Run via RNV CLI
+
+```
+npx rnv run -p android -t "Nexus_5X_API_26"
+npx rnv run -p android -t "Nexus_5X_API_26" --info
 ```
 
 ---
@@ -375,8 +382,8 @@ npm run tvos
 
 ```
 npx rnv run -help
-npx rnv run -p tvos -s "Apple TV 4K"
-npx rnv run -p tvos -s "Apple TV 4K" --info
+npx rnv run -p tvos -t "Apple TV 4K"
+npx rnv run -p tvos -t "Apple TV 4K" --info
 ```
 
 ---
@@ -403,7 +410,6 @@ npx rnv run -p tvos -s "Apple TV 4K" --info
 | Android Gradle |          `3.3.1`                 |
 | Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
-| JSC            | `org.webkit:android-jsc:r224109` |
 
 #### First time installation
 
@@ -427,10 +433,16 @@ npm run androidtv
 
 #### Advanced
 
+Launch specific emulator:
 ```
-npx rnv run -help
-npx rnv run -p androidtv -s "Android TV 4K"
-npx rnv run -p androidtb -s "Android TV 4K" --info
+npx rnv target launch -p androidtv -t Android_TV_720p_API_22
+```
+
+Run via RNV CLI
+
+```
+npx rnv run -p androidtv -t "Android_TV_720p_API_22"
+npx rnv run -p androidtv -t "Android_TV_720p_API_22" --info
 ```
 
 ---
@@ -459,7 +471,7 @@ npx rnv run -p androidtb -s "Android TV 4K" --info
 npm run web
 ```
 
-open browser URL: http://localhost:8080
+open browser URL: http://0.0.0.0:8080/
 
 #### Advanced
 
@@ -476,19 +488,19 @@ npx rnv run -p web --info
 ## Tizen TV
 
 -   Latest Tizen project
--   Support for Tizen 4.0
+-   Support for Tizen 5.0
 
 #### Requirements
 
--   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `4.0`
+-   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
 
 #### Project Configuration
 
 | Feature          |     Version     |
 | ---------------- | :-------------: |
 | Tizen Studio     |      `2.5`      |
-| Tizen SDK        |      `4.0`      |
-| react-native-web |     `0.9.1`     |
+| Tizen SDK        |      `5.0`      |
+| react-native-web |     `0.9.9`     |
 | Babel Core       |     `7.1.2`     |
 
 Make sure you have tizen-cli configured in your env variables:
@@ -518,7 +530,7 @@ emulator-manager
 ```
 em-cli list-vm
 
-em-cli launch --name T-samsung-4.0-x86
+em-cli launch --name T-samsung-5.0-x86
 ```
 
 #### Run
@@ -529,7 +541,7 @@ npm run tizen
 
 or specific simulator:
 ```
-npm run tizen T-samsung-4.0-x86
+npx rnv run -p tizen -t T-samsung-5.0-x86
 ```
 
 ---
@@ -548,8 +560,7 @@ npm run tizen T-samsung-4.0-x86
 
 | Feature          |     Version     |
 | ---------------- | :-------------: |
-| cli-webos   |     `0.0.2`     |
-| react-native-web |     `0.9.1`     |
+| react-native-web |     `0.9.9`     |
 | Babel Core       | `7.1.2` |
 
 Make sure you have ares-cli configured in your env variables:
@@ -565,7 +576,14 @@ ares -V
 
 #### Emulator
 
--   launch webOS emulator
+-   launch webOS emulator via CLI
+
+```sh
+npx rnv target launch -p webos -t emulator
+```
+
+-   launch webOS emulator Manually
+
 usually located in something like:
 ```
 <USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
@@ -583,6 +601,16 @@ usually located in something like:
 
 ```
 npm run webos
+```
+
+#### Advanced
+
+
+Run via RNV CLI
+
+```
+npx rnv run -p webos -t emulator
+npx rnv run -p webos -t emulator --info
 ```
 
 ---
@@ -603,7 +631,7 @@ npm run webos
 | Feature          |  Version  |
 | ---------------- | :-------: |
 | electron         |  `2.0.0`  |
-| react-native-web |  `0.9.1`  |
+| react-native-web |  `0.9.9`  |
 | electron-builder | `20.28.2` |
 
 #### Run
