@@ -59,7 +59,7 @@
     "init": "npm install && npm run lerna && npx rnv init",
     "watch": "npx lerna run --parallel watch",
     "lerna": "npx lerna bootstrap",
-    "start": "node node_modules/react-native/local-cli/cli.js start --config ../../../../rn-cli.config.js",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "ios": "rnv run -p ios",
     "tvos": "rnv run -p tvos",

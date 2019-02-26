@@ -3,19 +3,22 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, '../../');
 const appBuildDirectory = path.resolve(__dirname);
+const appBuildPublic = path.resolve(__dirname, 'public');
 const platform = 'tizen';
 const platformFamily = 'smarttv';
 const formFactor = 'tv';
-const config = {};
+const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' } };
 
 const babelLoaderConfiguration = {
     test: /\.js$/,
     // Add every directory that needs to be compiled by Babel during the build.
     include: [
         path.resolve(appDirectory, 'src'),
+        path.resolve(appDirectory, 'entry'),
         path.resolve(appDirectory, 'packages'),
     ],
     use: {
@@ -63,7 +66,7 @@ module.exports = {
     entry: {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(appDirectory, `./src/index.${platform}.js`),
+        bundle: path.resolve(appDirectory, `entry/index.${platform}.js`),
     },
 
     devServer: config.devServer || {
@@ -96,11 +99,17 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             alwaysWriteToDisk: true,
-            filename: path.resolve(appBuildDirectory, './public/index.html'),
+            filename: path.resolve(appBuildPublic, './index.html'),
             template: path.resolve(appDirectory, './packages/rnv/platformTemplates/_shared/template.js'),
             minify: false,
+            templateParameters: {
+                ...config,
+            },
         }),
         new HtmlWebpackHarddiskPlugin(),
+        new CopyWebpackPlugin([
+            { from: path.resolve(appBuildDirectory, 'app.css'), to: appBuildPublic },
+        ]),
     ],
     resolve: {
         symlinks: false,

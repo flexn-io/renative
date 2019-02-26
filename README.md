@@ -331,6 +331,7 @@ Folder Structure
     │       ├── assets              # Cross platform assets
     │       └── config.json         # Application config
     ├── docs                        # Documentation files
+    ├── entry                       # Entry point index files
     ├── packages                    # Local dependencies
     │   └── rvn                     # React Native Vanilla Build System `CLI`
     │       └── platformTemplates   # Platform specific Project Templates
