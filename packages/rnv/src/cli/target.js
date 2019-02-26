@@ -8,7 +8,7 @@ import {
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
 import { launchWebOSimulator } from '../platformTools/webos';
-import { launchAndroidSimulator } from '../platformTools/android';
+import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
 
 
 const CREATE = 'create';
@@ -39,7 +39,7 @@ const run = (c) => {
         return Promise.resolve();
         break;
     case LIST:
-        return Promise.resolve();
+        return _runList(c);
         break;
     default:
         return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
@@ -74,6 +74,26 @@ const _runLaunch = c => new Promise((resolve, reject) => {
         break;
     case WEBOS:
         launchWebOSimulator(c, target)
+            .then(() => resolve())
+            .catch(e => logError(e));
+        return;
+        break;
+    default:
+        reject(`target launch does not support ${platform} yet!`);
+    }
+});
+
+const _runList = c => new Promise((resolve, reject) => {
+    logTask('_runLaunch');
+    const { platform, program } = c;
+    const { target } = program;
+    if (!isPlatformSupported(platform)) return;
+
+    switch (platform) {
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        listAndroidTargets(c, target)
             .then(() => resolve())
             .catch(e => logError(e));
         return;

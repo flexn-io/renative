@@ -5,6 +5,8 @@ import { execShellAsync, executeAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
@@ -13,7 +15,7 @@ const launchWebOSimulator = (c, name) => new Promise((resolve, reject) => {
 
     const homedir = require('os').homedir();
 
-    const ePath = path.join(homedir, 'Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app');
+    const ePath = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app');
 
     // shell.exec(ePath);
 

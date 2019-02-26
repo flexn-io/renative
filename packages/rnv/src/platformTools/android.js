@@ -1,9 +1,11 @@
 import path from 'path';
 import fs from 'fs';
-import { executeAsync, execShellAsync } from '../exec';
+import { executeAsync, execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
@@ -11,19 +13,16 @@ import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, 
 function launchAndroidSimulator(c, name) {
     logTask('launchAndroidSimulator');
 
-    const em = path.join(c.homeFolder, 'Library/Android/sdk/tools/emulator');
-
     if (name) {
-        return execShellAsync(`${em} -avd "${name}"`);
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${name}"`);
     }
     return Promise.reject('No simulator -t target name specified!');
 }
 
 function listAndroidTargets(c) {
-    logTask('listAndroidDevices');
+    logTask('listAndroidTargets');
 
-    const em = path.join(c.homeFolder, 'Library/Android/sdk/tools/adb');
-    return execShellAsync(`${em} devices -l`);
+    return execCLI(c, CLI_ANDROID_ADB, 'devices -l');
 }
 
 
@@ -51,4 +50,4 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
     resolve();
 });
 
-export { copyAndroidAssets, configureGradleProject, launchAndroidSimulator };
+export { copyAndroidAssets, configureGradleProject, launchAndroidSimulator, listAndroidTargets };

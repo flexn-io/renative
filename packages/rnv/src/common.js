@@ -139,7 +139,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
     c.cli = {};
     c.cli[CLI_ANDROID_EMULATOR] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/emulator'),
-    c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/adb'),
+    c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'platform-tools/adb'),
     c.cli[CLI_TIZEN_EMULATOR] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli'),
     c.cli[CLI_TIZEN] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen'),
     c.cli[CLI_WEBOS_ARES] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares'),
