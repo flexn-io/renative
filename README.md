@@ -74,7 +74,7 @@
 - [Android](#android)
     - [Requirements](#requirements-1)
     - [Project Configuration](#project-configuration-1)
-    - [First time installation](#first-time-installation)
+    - [Emulators](#emulators)
     - [Run](#run-1)
     - [Advanced](#advanced-1)
 - [tvOS](#tvos)
@@ -85,7 +85,7 @@
 - [Android TV](#android-tv)
     - [Requirements](#requirements-3)
     - [Project Configuration](#project-configuration-3)
-    - [First time installation](#first-time-installation-1)
+    - [First time installation](#first-time-installation)
     - [Run](#run-3)
     - [Advanced](#advanced-3)
 - [Web](#web)
@@ -98,25 +98,28 @@
     - [Project Configuration](#project-configuration-5)
     - [Emulator](#emulator)
     - [Run](#run-5)
+    - [Advanced](#advanced-5)
 - [LG webOS](#lg-webos)
     - [Requirements](#requirements-6)
     - [Project Configuration](#project-configuration-6)
     - [Emulator](#emulator-1)
     - [Run](#run-6)
+    - [Advanced](#advanced-6)
 - [macOS](#macos)
     - [Requirements](#requirements-7)
     - [Project Configuration](#project-configuration-7)
     - [Run](#run-7)
+  - [Advanced](#advanced-7)
 - [Windows](#windows)
     - [Requirements](#requirements-8)
     - [Project Configuration](#project-configuration-8)
     - [Run](#run-8)
-    - [Distribute](#distribute)
+  - [Advanced](#advanced-8)
 - [Android Wear](#android-wear)
     - [Requirements](#requirements-9)
     - [Project Configuration](#project-configuration-9)
-    - [First time installation](#first-time-installation-2)
     - [Run](#run-9)
+    - [Advanced](#advanced-9)
 - [RNV CLI](#rnv-cli)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
@@ -193,11 +196,41 @@
 
 #### 1. Prerequisites
 
+**RVM**
+
+```bash
+$ brew install gnupg
+$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+$ \curl -sSL https://get.rvm.io | bash
+$ source ~/.rvm/scripts/rvm
+```
+
+or update rvm to latest
+
+```bash
+$ rvm get stable
+```
+
+**NVM**
+
+```bash
+wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+source ~/.bashrc
+```
+
+If you already have nvm, update to latest:
+
+```bash
+$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+```
+
+**NodeJS**
+
 The recommended way to run specific version of Node and NPM is to use NVM:
 
-```
-nvm install node 10.13.0
-nvm alias default node 10.13.0
+```bash
+$ nvm install node 10.13.0
+$ nvm alias default node 10.13.0
 ```
 
 Tested / Recommended Node configurations:
@@ -206,11 +239,23 @@ Tested / Recommended Node configurations:
 | ------------ | :---------: |
 | `10.13.0`     |   `6.4.1`   |
 
+**NPX**
+
+```bash
+$ npm install -g npx
+```
+
+**CocoaPods**
+
+```bash
+$ sudo gem install cocoapods
+```
+
 #### 2. Installation
 
 On the command prompt run the following commands
 
-```sh
+```bash
 $ git clone git@github.com:pavjacko/react-native-vanilla.git
 
 $ cd react-native-vanilla
@@ -602,7 +647,7 @@ ares -V
 
 -   launch webOS emulator via CLI
 
-```sh
+```bash
 npx rnv target launch -p webos -t emulator
 ```
 
