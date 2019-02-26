@@ -1,17 +1,20 @@
 import path from 'path';
 import fs from 'fs';
-import { execShellAsync } from '../exec';
+import { execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+
 
 function launchTizenSimulator(c, name) {
     logTask('launchTizenSimulator');
 
     if (name) {
-        return execShellAsync(`em-cli launch --name ${name}`);
+        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`);
     }
     return Promise.reject('No simulator -t target name specified!');
 }

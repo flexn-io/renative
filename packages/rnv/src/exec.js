@@ -7,6 +7,18 @@ const SEPARATOR = process.platform === 'win32' ? ';' : ':';
 const env = Object.assign({}, process.env);
 env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
 
+const execCLI = (c, cli, command) => new Promise((resolve, reject) => {
+    console.log('execCLI', command);
+    shell.exec(`${c.cli[cli]} ${command}`, (error, stdout, stderr) => {
+        if (error) {
+            reject(error);
+            return;
+        }
+
+        resolve(stdout.trim());
+    });
+});
+
 const executeAsync = (
     cmd,
     args,
@@ -60,4 +72,4 @@ function execShellAsync(command) {
     });
 }
 
-export { executeAsync, execShellAsync };
+export { executeAsync, execShellAsync, execCLI };

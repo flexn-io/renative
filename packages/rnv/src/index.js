@@ -10,6 +10,7 @@ import Target from './cli/target';
 
 const commands = {
     setup: Setup,
+    init: Setup,
     app: App,
     platform: Platform,
     run: Runner,

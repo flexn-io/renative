@@ -1,13 +1,14 @@
-
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import {
     IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
 } from '../common';
-import { executeAsync } from '../exec';
+import { executeAsync, execCLI } from '../exec';
 import { buildWeb } from '../platformTools/web';
 
 const RUN = 'run';
@@ -64,42 +65,29 @@ const _runApp = c => new Promise((resolve, reject) => {
 
     switch (platform) {
     case IOS:
-        _runiOS(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        _runiOS(c).then(() => resolve()).catch(e => reject(e));
         return;
     case TVOS:
-        _runtvOS(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        _runtvOS(c).then(() => resolve()).catch(e => reject(e));
         return;
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
         _runAndroid(c, platform, platform === ANDROID_WEAR)
-            .then(() => resolve())
-            .catch(e => reject(e));
+            .then(() => resolve()).catch(e => reject(e));
         return;
     case MACOS:
     case WINDOWS:
-        _runElectron(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        _runElectron(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case WEB:
-        _runWeb(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        _runWeb(c).then(() => resolve()).catch(e => reject(e));
         return;
     case TIZEN:
-        _runTizen(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        _runTizen(c).then(() => resolve()).catch(e => reject(e));
         return;
     case WEBOS:
-        _runWebOS(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        _runWebOS(c).then(() => resolve()).catch(e => reject(e));
         return;
     }
 
@@ -118,11 +106,13 @@ const _runTizen = c => new Promise((resolve, reject) => {
     const certProfile = 'RNVanilla';
 
     buildWeb(c, TIZEN)
-        .then(() => {
-            shell.exec(`tizen build-web -- ${tDir} -out ${tBuild} && tizen package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut} && tizen uninstall -p ${tId} -t ${tSim} && tizen install -- ${tOut} -n ${gwt} -t ${tSim}`, () => {
-                shell.exec(`tizen run -p ${tId} -t ${tSim}`);
-            });
-        });
+        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
+        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`))
+        .then(() => execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${tSim}`))
+        .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${tSim}`))
+        .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${tSim}`))
+        .then(() => resolve())
+        .catch(e => reject(e));
 });
 
 const _runWebOS = c => new Promise((resolve, reject) => {

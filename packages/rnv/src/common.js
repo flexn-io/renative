@@ -43,6 +43,14 @@ const WP8 = 'wp8';
 const XBOX = 'xbox';
 const XBOX360 = 'xbox360';
 
+const CLI_ANDROID_EMULATOR = 'androidEmulator';
+const CLI_ANDROID_ADB = 'androidAdb';
+const CLI_TIZEN_EMULATOR = 'tizenEmulator';
+const CLI_TIZEN = 'tizen';
+const CLI_WEBOS_ARES = 'webosAres';
+const CLI_WEBOS_ARES_PACKAGE = 'webosAresPackage';
+const CLI_WEBBOS_ARES_INSTALL = 'webosAresInstall';
+const CLI_WEBBOS_ARES_LAUNCH = 'webosAresLaunch';
 
 const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
 const RNV_START = '🚀 RNV';
@@ -123,7 +131,21 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectRootFolder = projectRootFolder;
     c.rnvFolder = rnvFolder;
     c.homeFolder = homedir;
+    c.rnvHomeFolder = path.join(homedir, '.rnv');
+    c.rnvHomeConfigPath = path.join(c.rnvHomeFolder, 'config.json');
     c.subCommand = subCmd;
+
+    c.rnvHomeConfig = JSON.parse(fs.readFileSync(c.rnvHomeConfigPath).toString());
+
+    c.cli = {};
+    c.cli[CLI_ANDROID_EMULATOR] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/emulator'),
+    c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/adb'),
+    c.cli[CLI_TIZEN_EMULATOR] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli'),
+    c.cli[CLI_TIZEN] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen'),
+    c.cli[CLI_WEBOS_ARES] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares'),
+    c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package'),
+    c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install'),
+    c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch'),
 
     console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
 
@@ -208,4 +230,5 @@ export {
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
     isPlatformActive,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 };
