@@ -1,7 +1,10 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './app'
-import registerServiceWorker from './src/registerServiceWorker'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './app';
+import Api from './api';
+import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(React.createElement(App), document.getElementById('root'))
-registerServiceWorker()
+Api.platform = 'web';
+
+ReactDOM.render(React.createElement(App), document.getElementById('root'));
+registerServiceWorker();

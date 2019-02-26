@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import Api from './api';
 import packageJson from '../package.json';
 
 const styles = StyleSheet.create({
@@ -11,10 +12,18 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    text: {
+    textH2: {
         fontSize: 20,
         marginHorizontal: 20,
         color: '#FFFFFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    textH3: {
+        fontSize: 15,
+        marginHorizontal: 20,
+        marginTop: 5,
+        color: '#62DBFB',
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -51,12 +60,15 @@ class App extends React.Component {
         return (
             <View style={[styles.app, styles.appContainer, { backgroundColor: this.state.bgColor }]}>
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
-                <Text style={styles.text}>
+                <Text style={styles.textH2}>
 Hello from React Native Vanilla!
                 </Text>
-                <Text style={styles.text}>
+                <Text style={styles.textH2}>
 v
                     {packageJson.version}
+                </Text>
+                <Text style={styles.textH3}>
+                    {`platform: ${Api.platform}`}
                 </Text>
                 <TouchableOpacity
                     style={styles.button}

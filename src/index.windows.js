@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './app';
-import registerServiceWorker from './src/registerServiceWorker';
+import Api from './api';
+import registerServiceWorker from './registerServiceWorker';
+
+Api.platform = 'windows';
 
 ReactDOM.render(React.createElement(App), document.getElementById('root'));
 registerServiceWorker();

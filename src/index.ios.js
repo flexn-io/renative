@@ -1,4 +1,9 @@
-import App from './app'
-import { AppRegistry } from 'react-native'
+import { AppRegistry, Platform } from 'react-native';
+import App from './app';
+import Api from './api';
 
-AppRegistry.registerComponent('App', () => App)
+const { isTV } = Platform;
+
+Api.platform = isTV ? 'tvos' : 'ios';
+
+AppRegistry.registerComponent('App', () => App);
