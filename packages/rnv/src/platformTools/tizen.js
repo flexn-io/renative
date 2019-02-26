@@ -37,4 +37,11 @@ const configureTizenProject = (c, platform) => new Promise((resolve, reject) => 
     resolve();
 });
 
-export { launchTizenSimulator, copyTizenAssets, configureTizenProject };
+const createDevelopTizenCertificate = (c) => {
+    logTask('createDevelopTizenCertificate');
+
+    return execCLI(c, CLI_TIZEN, 'certificate -- ~/.rnv -a rnv -f tizen_author -p 1234')
+        .then(() => execCLI(c, CLI_TIZEN, 'security-profiles add -n RNVanillaCert -a ~/.rnv/tizen_author.p12 -p 1234'));
+};
+
+export { launchTizenSimulator, copyTizenAssets, configureTizenProject, createDevelopTizenCertificate };

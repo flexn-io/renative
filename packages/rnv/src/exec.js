@@ -17,6 +17,8 @@ const execCLI = (c, cli, command) => new Promise((resolve, reject) => {
 
         resolve(stdout.trim());
     });
+
+    // return executeAsync(`${c.cli[cli]} ${command}`, []);
 });
 
 const executeAsync = (

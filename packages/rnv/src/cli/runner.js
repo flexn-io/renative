@@ -100,10 +100,10 @@ const _runTizen = c => new Promise((resolve, reject) => {
     const tDir = getAppFolder(c, TIZEN);
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
-    const tId = 'NvVRhWHJST.RNVanilla';
+    const tId = 'NcVRhWHJST.RNVanilla';
     const tSim = c.program.target || 'T-samsung-4.0-x86';
     const gwt = 'RNVanilla.wgt';
-    const certProfile = 'RNVanilla';
+    const certProfile = 'RNVanillaCert';
 
     buildWeb(c, TIZEN)
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
