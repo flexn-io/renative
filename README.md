@@ -134,10 +134,14 @@
 
 <table>
   <tr>
-    <th><a href="#">Global CLI</a></th><th><a href="#">NPM Dependency</a></th><th><a href="#">Clone</a></th>
+    <th><a href="#">Clone</a></th><th><a href="#">Global CLI</a></th><th><a href="#">NPM Dependency</a></th>
   </tr>
   <tr>
     <td>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_git_grey.png?raw=true" />
+    <br/>
+      git clone react-native-vanilla.git
+      </td><td>
       <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_cli_grey.png?raw=true" />
     <br/>
       npm install react-native-vanilla -g
@@ -145,18 +149,15 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_npm_grey.png?raw=true" />
     <br/>
     npm install react-native-vanilla
-    </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_git_grey.png?raw=true" />
-    <br/>
-    git clone react-native-vanilla.git
     </td>
   </tr>
   <tr>
+  <th>
+  </th>
     <th>
       COMIN SOON
     </th><th>
     COMIN SOON
-    </th><th>
     </th>
   </tr>
 </table>
