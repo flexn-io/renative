@@ -253,25 +253,30 @@ $ sudo gem install cocoapods
 
 #### 2. Installation
 
-On the command prompt run the following commands
+On the command prompt run the following commands (only first time)
 
 ```bash
 $ git clone git@github.com:pavjacko/react-native-vanilla.git
 
 $ cd react-native-vanilla
 
-$ npm run setup
+$ npm run init
 ```
 
-For Android:
+This will create config folder at this location: `~./rnv/config.json`
 
-create file named `local.properties` in `<USER_HOME>/.rnv`
+Open the file and edit SDK paths of platforms you plan to use:
 
-with paths to your Android SDK. Usually:
-
-```
-ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
-sdk.dir=/Users/<USER>/Library/Android/sdk
+```json
+{
+  "sdks": {
+    "ANDROID_SDK": "/Users/<USER>/Library/Android/sdk",
+    "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
+    "IOS_SDK": "No need. Just install Xcode",
+    "TIZEN_SDK": "/Users/<USER>/tizen-studio",
+    "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK"
+  }
+}
 ```
 
 
@@ -478,16 +483,6 @@ npx rnv run -p tvos -t "Apple TV 4K" --info
 | Kotlin         |             `1.3.20`             |
 | Target SDK     |               `27`               |
 
-#### First time installation
-
-create file named `local.properties` in `<PROJECT_ROOT>/platforms/androidtv`
-
-with paths to your Android SDK. Usually:
-
-```
-ndk.dir=/Users/<USER>/Library/Android/sdk/ndk-bundle
-sdk.dir=/Users/<USER>/Library/Android/sdk
-```
 
 #### Run
 
@@ -570,19 +565,13 @@ npx rnv run -p web --info
 | react-native-web |     `0.9.9`     |
 | Babel Core       |     `7.1.2`     |
 
-Make sure you have tizen-cli configured in your env variables:
-
-```
-export PATH="<USER_PATH>/tizen-studio/tools/ide/bin:$PATH"
-export PATH="<USER_PATH>/tizen-studio/tools/emulator/bin:$PATH"
-```
 
 #### Emulator
 
 Make sure you have at least 1 TV VM setup
 
 ```
-emulator-manager
+npx rnv target list
 ```
 
 <table>
@@ -595,8 +584,6 @@ emulator-manager
 
 
 ```
-em-cli list-vm
-
 npx rnv target launch -p tizen -t T-samsung-5.0-x86
 ```
 
@@ -609,6 +596,7 @@ npm run tizen
 #### Advanced
 
 or specific simulator:
+
 ```
 npx rnv run -p tizen -t T-samsung-5.0-x86
 ```
@@ -632,16 +620,6 @@ npx rnv run -p tizen -t T-samsung-5.0-x86
 | react-native-web |     `0.9.9`     |
 | Babel Core       | `7.1.2` |
 
-Make sure you have ares-cli configured in your env variables:
-
-```
-export PATH="<USER_PATH>/Library/webOS_TV_SDK/CLI/bin:$PATH"
-```
-
-Test above path by running
-```
-ares -V
-```
 
 #### Emulator
 
