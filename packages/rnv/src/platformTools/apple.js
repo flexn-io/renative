@@ -18,17 +18,17 @@ const runPod = (command, cwd) => {
     });
 };
 
-const copyAppleAssets = (c, platform, appFolder) => new Promise((resolve, reject) => {
+const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve, reject) => {
     logTask('copyAppleAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const iosPath = path.join(getAppFolder(c, platform), appFolder);
+    const iosPath = path.join(getAppFolder(c, platform), appFolderName);
     const sPath = path.join(c.appConfigFolder, `assets/${platform}`);
     copyFolderContentsRecursiveSync(sPath, iosPath);
     resolve();
 });
 
-const configureXcodeProject = (c, platform, appFolder) => new Promise((resolve, reject) => {
+const configureXcodeProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
     if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -36,7 +36,7 @@ const configureXcodeProject = (c, platform, appFolder) => new Promise((resolve, 
 
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
-    mkdirSync(path.join(appFolder, `${appFolder}/images`));
+    mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
     resolve();
 });

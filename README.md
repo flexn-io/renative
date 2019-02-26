@@ -279,6 +279,33 @@ Open the file and edit SDK paths of platforms you plan to use:
 }
 ```
 
+#### 3. Configure your first app
+
+Generate platform projects (for helloWorld app config platforms):
+
+```bash
+npx rnv platform configure -c helloWorld
+```
+
+Configure your first multi-platfrom app (for helloWorld app config):
+
+```bash
+npx rnv app configure -c helloWorld
+```
+
+#### 4. Run bundler and first app from Terminal (2 Tabs recommended)
+
+At this point you need to keep bundler running. Ideally create 2 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+
+```bash
+$ npm start
+```
+
+Run your first ios app
+
+```bash
+$ npm run ios
+```
 
 ---
 

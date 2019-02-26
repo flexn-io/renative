@@ -55,8 +55,8 @@
   ],
   "scripts": {
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
-    "setup": "npm run clean && npm install && npm run lerna && npx rnv setup",
     "watchtower": "npm install && npm run lerna && npm run watch",
+    "init": "npm install && npm run lerna && npx rnv init",
     "watch": "npx lerna run --parallel watch",
     "lerna": "npx lerna bootstrap",
     "start": "node node_modules/react-native/local-cli/cli.js start",
@@ -67,7 +67,7 @@
     "androidtv": "rnv run -p androidtv",
     "androidwear": "rnv run -p androidwear",
     "web": "rnv run -p web",
-    "webos": "rnv run -p webos",
+    "webos": "rnv run -p webos -t emulator",
     "macos": "npx rnv run -p macos",
     "windows": "npx rnv run -p windows",
     "test": "jest",
