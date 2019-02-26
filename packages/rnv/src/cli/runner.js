@@ -101,7 +101,7 @@ const _runTizen = c => new Promise((resolve, reject) => {
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
     const tId = 'NcVRhWHJST.RNVanilla';
-    const tSim = c.program.target || 'T-samsung-4.0-x86';
+    const tSim = c.program.target || 'T-samsung-5.0-x86';
     const gwt = 'RNVanilla.wgt';
     const certProfile = 'RNVanillaCert';
 
