@@ -235,6 +235,16 @@ sdk.dir=/Users/<USER>/Library/Android/sdk
 
 ## Architecture
 
+Build Process
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/rnv1.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
 Folder Structure
 
     .
