@@ -31,6 +31,9 @@
     "tizen": {
       "entryFile": "index.tizen"
     },
+    "tizenwatch": {
+      "entryFile": "index.tizenwatch"
+    },
     "web": {
       "entryFile": "index.web"
     },
