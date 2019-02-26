@@ -65,6 +65,8 @@
 - [Get Started](#get-started)
     - [1. Prerequisites](#1-prerequisites)
     - [2. Installation](#2-installation)
+    - [3. Configure your first app](#3-configure-your-first-app)
+    - [4. Run bundler and first app from Terminal (2 Tabs recommended)](#4-run-bundler-and-first-app-from-terminal-2-tabs-recommended)
 - [Architecture](#architecture)
 - [iOS](#ios)
     - [Requirements](#requirements)
@@ -85,7 +87,6 @@
 - [Android TV](#android-tv)
     - [Requirements](#requirements-3)
     - [Project Configuration](#project-configuration-3)
-    - [First time installation](#first-time-installation)
     - [Run](#run-3)
     - [Advanced](#advanced-3)
 - [Web](#web)
@@ -173,8 +174,8 @@
 | OS      |  Support   |
 | ------- | :--------: |
 | Mac     |   `YES`    |
-| Windows |   `YES`    |
-| Linux   | `untested` |
+| Windows |   `untested` PRs Welcome!    |
+| Linux   | `untested` PRs Welcome! |
 
 #### Requirements
 
@@ -333,7 +334,7 @@ Folder Structure
     ├── docs                        # Documentation files
     ├── entry                       # Entry point index files
     ├── packages                    # Local dependencies
-    │   └── rvn                     # React Native Vanilla Build System `CLI`
+    │   └── rnv                     # React Native Vanilla Build System `CLI`
     │       └── platformTemplates   # Platform specific Project Templates
     │           ├── android         # `Android` platform project
     │           ├── androidtv       # `Android TV` configured platform project
