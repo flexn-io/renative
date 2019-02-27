@@ -3,6 +3,8 @@ import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'rea
 import Api from './api';
 import packageJson from '../package.json';
 
+const isTVOS = Api.platform === 'tvos';
+
 const styles = StyleSheet.create({
     app: {
         flex: 1,
@@ -50,6 +52,49 @@ const styles = StyleSheet.create({
     },
 });
 
+const parallax = {
+    enabled: true,
+    shiftDistanceY: 2,
+    shiftDistanceX: 2,
+    tiltAngle: 0.05,
+    pressMagnification: 1,
+    magnification: 1.1,
+};
+
+class Button extends React.Component {
+    constructor() {
+        super();
+        this.state = { currentStyle: this.blurState };
+    }
+
+  blurState = {
+      borderColor: '#62DBFB',
+  }
+
+  focusState = {
+      borderColor: '#CC0000',
+  }
+
+  render() {
+      return (
+
+          <TouchableOpacity
+              tvParallaxProperties={parallax}
+              style={[styles.button, this.state.currentStyle]}
+              onPress={() => {
+                  this.props.onPress();
+              }}
+              onFocus={() => { if (!isTVOS) this.setState({ currentStyle: this.focusState }); }}
+              onBlur={() => { if (!isTVOS) this.setState({ currentStyle: this.blurState }); }}
+          >
+              <Text style={styles.buttonText}>
+                  {this.props.title}
+              </Text>
+          </TouchableOpacity>
+      );
+  }
+}
+
 class App extends React.Component {
     constructor() {
         super();
@@ -70,26 +115,18 @@ v
                 <Text style={styles.textH3}>
                     {`platform: ${Api.platform}`}
                 </Text>
-                <TouchableOpacity
-                    style={styles.button}
+                <Button
+                    title="Try Me!"
                     onPress={() => {
                         this.setState({ bgColor: this.state.bgColor === '#888888' ? '#222222' : '#888888' });
                     }}
-                >
-                    <Text style={styles.buttonText}>
-Try Me!
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.button}
+                />
+                <Button
+                    title="Now Try Me!"
                     onPress={() => {
                         this.setState({ bgColor: this.state.bgColor === '#888888' ? '#222222' : '#888888' });
                     }}
-                >
-                    <Text style={styles.buttonText}>
-Now Try Me!
-                    </Text>
-                </TouchableOpacity>
+                />
             </View>
         );
     }

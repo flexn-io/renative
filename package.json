@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.9.1",
+  "version": "0.9.2",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -63,6 +63,7 @@
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "ios": "rnv run -p ios",
     "tvos": "rnv run -p tvos",
+    "tizen": "rnv run -p tizen -t T-samsung-5.0-x86",
     "android": "rnv run -p android",
     "androidtv": "rnv run -p androidtv",
     "androidwear": "rnv run -p androidwear",

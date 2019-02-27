@@ -529,8 +529,8 @@ npx rnv target launch -p android -t Nexus_5X_API_26
 Run via RNV CLI
 
 ```
-npx rnv run -p android -t "Nexus_5X_API_26"
-npx rnv run -p android -t "Nexus_5X_API_26" --info
+npx rnv run -p android
+npx rnv run -p android --info
 ```
 
 ---
@@ -626,8 +626,8 @@ npx rnv target launch -p androidtv -t Android_TV_720p_API_22
 Run via RNV CLI
 
 ```
-npx rnv run -p androidtv -t "Android_TV_720p_API_22"
-npx rnv run -p androidtv -t "Android_TV_720p_API_22" --info
+npx rnv run -p androidtv
+npx rnv run -p androidtv --info
 ```
 
 ---
