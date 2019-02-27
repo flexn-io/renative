@@ -35,6 +35,7 @@ const VEWD = 'vewd';
 const VIZIO = 'vizio';
 const WATCHOS = 'watchos';
 const WEB = 'web';
+const WEBNEXT = 'webnext';
 const WEBOS = 'webos';
 const WII = 'wii';
 const WINDOWS = 'windows';
@@ -53,6 +54,9 @@ const CLI_WEBBOS_ARES_INSTALL = 'webosAresInstall';
 const CLI_WEBBOS_ARES_LAUNCH = 'webosAresLaunch';
 
 const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
+const SUPPORTED_PLATFORMS_MAC = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
+const SUPPORTED_PLATFORMS_WIN = [ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, WINDOWS];
+const SUPPORTED_PLATFORMS_LINUX = [];
 const RNV_START = '🚀 RNV';
 const RNV = 'RNV';
 const LINE = chalk.white.bold('----------------------------------------------------------');
@@ -90,6 +94,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     const rnvFolder = path.join(__dirname, '..');
     let globalConfigFolder;
 
+
     const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
     if (rootConfig.globalConfigFolder.startsWith('~')) {
         globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder.substr(1));
@@ -108,17 +113,19 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.rnvHomeConfigPath = path.join(c.globalConfigFolder, 'config.json');
     c.subCommand = subCmd;
 
-    c.rnvHomeConfig = JSON.parse(fs.readFileSync(c.rnvHomeConfigPath).toString());
+    if (fs.existsSync(c.rnvHomeConfigPath)) {
+        c.rnvHomeConfig = JSON.parse(fs.readFileSync(c.rnvHomeConfigPath).toString());
 
+        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/emulator');
+        c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
+        c.cli[CLI_TIZEN_EMULATOR] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
+        c.cli[CLI_TIZEN] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+        c.cli[CLI_WEBOS_ARES] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
+        c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
+        c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
+        c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+    }
 
-    c.cli[CLI_ANDROID_EMULATOR] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/emulator');
-    c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
-    c.cli[CLI_TIZEN_EMULATOR] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
-    c.cli[CLI_TIZEN] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
-    c.cli[CLI_WEBOS_ARES] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
-    c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
-    c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
-    c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
 
     if (_currentJob === 'setup' || _currentJob === 'init') {
         console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));

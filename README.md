@@ -387,6 +387,14 @@ Folder Structure
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
 
+#### Supported Platforms
+
+| OS      |  Support   |
+| ------- | :--------: |
+| Mac     |   `YES`    |
+| Windows |   `NO`    |
+| Linux   | `NO` |
+
 #### Requirements
 
 -   [CocoaPods](https://cocoapods.org) `1.5.3` or newer
