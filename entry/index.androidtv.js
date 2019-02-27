@@ -4,6 +4,6 @@ import Api from '../src/api';
 
 const { isTV } = Platform;
 
-Api.platform = 'android';
+Api.platform = 'androidtv';
 
 AppRegistry.registerComponent('App', () => App);

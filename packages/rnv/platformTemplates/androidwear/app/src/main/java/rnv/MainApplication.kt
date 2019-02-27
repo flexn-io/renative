@@ -25,7 +25,7 @@ class MainApplication : Application(), ReactApplication {
             )
         }
 
-        override fun getJSMainModuleName(): String = "index.android"
+        override fun getJSMainModuleName(): String = "index.androidwear"
     }
 
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost
