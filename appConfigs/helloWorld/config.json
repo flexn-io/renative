@@ -29,6 +29,8 @@
       "entryFile": "index.macos"
     },
     "tizen": {
+      "package": "NcVRhWHJST",
+      "id": "NcVRhWHJST.RNVanilla",
       "entryFile": "index.tizen"
     },
     "web": {

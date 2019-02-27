@@ -34,6 +34,14 @@ const configureTizenProject = (c, platform) => new Promise((resolve, reject) => 
     logTask('configureTizenProject');
 
 
+    const c1 = fs.readFileSync(path.join(c.platformTemplatesFolder, platform, 'config.xml')).toString();
+
+    const c2 = c1.replace(/{{PACKAGE}}/g, c.appConfigFile.platforms[platform].package)
+        .replace(/{{ID}}/g, c.appConfigFile.platforms[platform].id);
+
+
+    fs.writeFileSync(path.join(getAppFolder(c, platform), 'config.xml'), c2);
+
     resolve();
 });
 

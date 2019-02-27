@@ -100,7 +100,7 @@ const _runTizen = c => new Promise((resolve, reject) => {
     const tDir = getAppFolder(c, TIZEN);
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
-    const tId = 'NcVRhWHJST.RNVanilla';
+    const tId = c.appConfigFile.platforms[TIZEN].id;
     const tSim = c.program.target || 'T-samsung-5.0-x86';
     const gwt = 'RNVanilla.wgt';
     const certProfile = 'RNVanillaCert';
