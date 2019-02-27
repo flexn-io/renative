@@ -66,57 +66,67 @@
     - [1. Prerequisites](#1-prerequisites)
     - [2. Installation](#2-installation)
     - [3. Configure your first app](#3-configure-your-first-app)
-    - [4. Run bundler and first app from Terminal (2 Tabs recommended)](#4-run-bundler-and-first-app-from-terminal-2-tabs-recommended)
+    - [4. Run bundler and first app from Terminal (3 Tabs recommended)](#4-run-bundler-and-first-app-from-terminal-3-tabs-recommended)
 - [Architecture](#architecture)
 - [iOS](#ios)
+    - [Supported OS](#supported-os)
     - [Requirements](#requirements)
     - [Project Configuration](#project-configuration)
     - [Run](#run)
     - [Advanced](#advanced)
 - [Android](#android)
+    - [Supported OS](#supported-os-1)
     - [Requirements](#requirements-1)
     - [Project Configuration](#project-configuration-1)
     - [Emulators](#emulators)
     - [Run](#run-1)
     - [Advanced](#advanced-1)
 - [tvOS](#tvos)
+    - [Supported OS](#supported-os-2)
     - [Requirements](#requirements-2)
     - [Project Configuration](#project-configuration-2)
     - [Run](#run-2)
     - [Advanced](#advanced-2)
 - [Android TV](#android-tv)
+    - [Supported OS](#supported-os-3)
     - [Requirements](#requirements-3)
     - [Project Configuration](#project-configuration-3)
     - [Run](#run-3)
     - [Advanced](#advanced-3)
 - [Web](#web)
+    - [Supported OS](#supported-os-4)
     - [Requirements](#requirements-4)
     - [Project Configuration](#project-configuration-4)
     - [Run](#run-4)
     - [Advanced](#advanced-4)
 - [Tizen TV](#tizen-tv)
+    - [Supported OS](#supported-os-5)
     - [Requirements](#requirements-5)
     - [Project Configuration](#project-configuration-5)
     - [Emulator](#emulator)
     - [Run](#run-5)
     - [Advanced](#advanced-5)
 - [LG webOS](#lg-webos)
+    - [Supported OS](#supported-os-6)
     - [Requirements](#requirements-6)
     - [Project Configuration](#project-configuration-6)
     - [Emulator](#emulator-1)
     - [Run](#run-6)
     - [Advanced](#advanced-6)
 - [macOS](#macos)
+    - [Supported OS](#supported-os-7)
     - [Requirements](#requirements-7)
     - [Project Configuration](#project-configuration-7)
     - [Run](#run-7)
   - [Advanced](#advanced-7)
 - [Windows](#windows)
+    - [Supported OS](#supported-os-8)
     - [Requirements](#requirements-8)
     - [Project Configuration](#project-configuration-8)
     - [Run](#run-8)
   - [Advanced](#advanced-8)
 - [Android Wear](#android-wear)
+    - [Supported OS](#supported-os-9)
     - [Requirements](#requirements-9)
     - [Project Configuration](#project-configuration-9)
     - [Run](#run-9)
@@ -251,6 +261,42 @@ $ npm install -g npx
 ```bash
 $ sudo gem install cocoapods
 ```
+
+**Xcode (if you want to develop for iOS/tvOS)**
+
+-   [Download Xcode from here](https://developer.apple.com/xcode/)
+
+
+**Android Studio (if you want to develop for Android)**
+
+-   [Download Android Studio from here](https://developer.android.com/studio)
+
+after installation complete your Android SDK should be located here:
+
+```
+/Users/<USER>/Library/Android/sdk
+```
+
+**Tizen SDK (if you want to develop for Tizen)**
+
+-   [Download Tizen Studio from here](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk)
+
+after installation complete your Tizen SDK should be located here:
+
+```
+/Users/<USER>/tizen-studio/
+```
+
+**WebOS SDK (if you want to develop for WebOS)**
+
+-   [Download WebOS SDK from here](http://webostv.developer.lge.com/sdk/installation/)
+
+after installation complete your WebOS SDK should be located here:
+
+```
+/Users/<USER>/Library/webOS_TV_SDK/
+```
+
 
 #### 2. Installation
 
@@ -387,13 +433,11 @@ Folder Structure
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
 
-#### Supported Platforms
+#### Supported OS
 
-| OS      |  Support   |
-| ------- | :--------: |
-| Mac     |   `YES`    |
-| Windows |   `NO`    |
-| Linux   | `NO` |
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -431,6 +475,12 @@ npx rnv run -p ios -t "iPhone 6 Plus" --info
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -493,6 +543,12 @@ npx rnv run -p android -t "Nexus_5X_API_26" --info
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
 
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
 #### Requirements
 
 -   [CocoaPods](https://cocoapods.org) `1.5.3` or newer
@@ -529,6 +585,12 @@ npx rnv run -p tvos -t "Apple TV 4K" --info
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -576,6 +638,12 @@ npx rnv run -p androidtv -t "Android_TV_720p_API_22" --info
 
 -   Supports Chrome, Safari, Firefox, IE10+
 
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
 #### Requirements
 
 -   no extra requirements required
@@ -612,6 +680,12 @@ npx rnv run -p web --info
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -669,6 +743,12 @@ npx rnv run -p tizen -t T-samsung-5.0-x86
 ## LG webOS
 
 -   Latest LG webOS Project
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -730,6 +810,12 @@ npx rnv run -p webos -t emulator --info
 -   support for OSX/macOS
 -   Based on Electron
 
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
 #### Requirements
 
 -   n/a
@@ -765,6 +851,12 @@ npx rnv run -p macos --info
 
 -   support for Windows 10+
 -   Based on Electron
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -802,6 +894,12 @@ npx rnv run -p windows --info
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
