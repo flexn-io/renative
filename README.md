@@ -1,6 +1,6 @@
 <p align='center'>
   <h1 align='center'>🚀 React Native Vanilla</h1>
-  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/rn_logo_exp.png?raw=true" /></p>
+  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
 </p>
 
@@ -142,15 +142,15 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_git_grey.png?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_git_grey.png?raw=true" />
     <br/>
       git clone react-native-vanilla.git
       </td><td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_cli_grey.png?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_cli_grey.png?raw=true" />
     <br/>
       npm install react-native-vanilla -g
     </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_npm_grey.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_npm_grey.png?raw=true" />
     <br/>
     npm install react-native-vanilla
     </td>
@@ -191,7 +191,7 @@
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_rocket.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_rocket.png?raw=true" width=50 height=50 />
 
 ## Get Started
 
@@ -291,16 +291,30 @@ npx rnv platform configure -c helloWorld
 Configure your first multi-platfrom app (for helloWorld app config):
 
 ```bash
-npx rnv app configure -c helloWorld
+npx rnv app configure -c helloWorld -u
 ```
 
-#### 4. Run bundler and first app from Terminal (2 Tabs recommended)
+#### 4. Run bundler and first app from Terminal (3 Tabs recommended)
 
-At this point you need to keep bundler running. Ideally create 2 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+At this point you need to keep bundler running. Ideally create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/terminal.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+TAB 1:
+
+Start the bundler
 
 ```bash
 $ npm start
 ```
+
+TAB 2:
 
 Run your first ios app
 
@@ -308,9 +322,19 @@ Run your first ios app
 $ npm run ios
 ```
 
+TAB 3:
+
+Run your first web app
+
+```bash
+$ npm run web
+```
+
+open: http://0.0.0.0:8080/
+
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
 
 ## Architecture
 
@@ -319,7 +343,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/rnv1.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -422,7 +446,7 @@ You can create variety of emulators via Android Studio IDE
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/android1.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/android1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -811,7 +835,7 @@ npx rnv run -p androidwear --info
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_cli.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
 
 ## RNV CLI
 
@@ -894,7 +918,7 @@ npx rnv target launch -p webos -t emulator
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_chat.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_chat.png?raw=true" width=50 height=50 />
 
 ## Discussions
 
@@ -902,7 +926,7 @@ https://spectrum.chat/reactnativevanilla
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_contributor.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_contributor.png?raw=true" width=50 height=50 />
 
 ## Contributors
 
@@ -923,7 +947,7 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_community.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_community.png?raw=true" width=50 height=50 />
 
 ## Community
 

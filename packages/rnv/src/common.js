@@ -81,48 +81,22 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     _currentProcess = process;
     _isInfoEnabled = program.info === true;
     _appConfigId = program.appConfigID;
-    let c;
+    let c = { cli: {} };
 
-    if (_currentJob === 'setup') {
-        console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
-
-        resolve({
-            program, process, command: cmd, subCommand: subCmd,
-        });
-        return;
-    }
-
-    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
     const platformAssetsFolder = path.join(base, 'platformAssets');
     const platformBuildsFolder = path.join(base, 'platformBuilds');
     const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
     const projectRootFolder = base;
     const rnvFolder = path.join(__dirname, '..');
     let globalConfigFolder;
+
+    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
     if (rootConfig.globalConfigFolder.startsWith('~')) {
         globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder.substr(1));
     } else {
         globalConfigFolder = path.join(base, rootConfig.globalConfigFolder);
     }
 
-
-    let appConfigFolder;
-
-    if (_appConfigId) {
-        // App ID specified
-        c = _getConfig(_appConfigId);
-    } else {
-        // Use latest app from platfromAssets
-        const cf = path.join(base, 'platformAssets/config.json');
-        try {
-            const assetConfig = JSON.parse(fs.readFileSync(cf).toString());
-            c = _getConfig(assetConfig.id);
-        } catch (e) {
-            console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
-            reject('ERROR: no app ID specified');
-            return;
-        }
-    }
     c.program = program;
     c.process = process;
     c.globalConfigFolder = globalConfigFolder;
@@ -131,21 +105,46 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectRootFolder = projectRootFolder;
     c.rnvFolder = rnvFolder;
     c.homeFolder = homedir;
-    c.rnvHomeFolder = path.join(homedir, '.rnv');
-    c.rnvHomeConfigPath = path.join(c.rnvHomeFolder, 'config.json');
+    c.rnvHomeConfigPath = path.join(c.globalConfigFolder, 'config.json');
     c.subCommand = subCmd;
 
     c.rnvHomeConfig = JSON.parse(fs.readFileSync(c.rnvHomeConfigPath).toString());
 
-    c.cli = {};
-    c.cli[CLI_ANDROID_EMULATOR] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/emulator'),
-    c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'platform-tools/adb'),
-    c.cli[CLI_TIZEN_EMULATOR] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli'),
-    c.cli[CLI_TIZEN] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen'),
-    c.cli[CLI_WEBOS_ARES] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares'),
-    c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package'),
-    c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install'),
-    c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch'),
+
+    c.cli[CLI_ANDROID_EMULATOR] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/emulator');
+    c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
+    c.cli[CLI_TIZEN_EMULATOR] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
+    c.cli[CLI_TIZEN] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+    c.cli[CLI_WEBOS_ARES] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
+    c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
+    c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
+    c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+
+    if (_currentJob === 'setup' || _currentJob === 'init') {
+        console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+
+        resolve(c);
+        return;
+    }
+
+    let appConfigFolder;
+
+    if (_appConfigId) {
+        // App ID specified
+        c = Object.assign(c, _getConfig(_appConfigId));
+    } else {
+        // Use latest app from platfromAssets
+        const cf = path.join(base, 'platformAssets/config.json');
+        try {
+            const assetConfig = JSON.parse(fs.readFileSync(cf).toString());
+            c = Object.assign(c, _getConfig(assetConfig.id));
+        } catch (e) {
+            console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+            reject('ERROR: no app ID specified');
+            return;
+        }
+    }
+
 
     console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
 

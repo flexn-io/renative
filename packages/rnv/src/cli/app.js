@@ -136,7 +136,7 @@ const _runSetupElectronProject = (c, platform) => new Promise((resolve, reject) 
 const _runSetupGlobalSettings = c => new Promise((resolve, reject) => {
     logTask('_runSetupGlobalSettings');
 
-    const localProperties = path.join(c.rnvHomeFolder, 'local.properties');
+    const localProperties = path.join(c.globalConfigFolder, 'local.properties');
     if (fs.existsSync(localProperties)) {
         console.log('local.properties file exists!');
     } else {
@@ -148,7 +148,7 @@ ndk.dir=${c.rnvHomeConfig.sdks.ANDROID_NDK}
 sdk.dir=${c.rnvHomeConfig.sdks.ANDROID_SDK}`);
 
     if (isPlatformActive(c, TIZEN)) {
-        const tizenAuthorCert = path.join(c.rnvHomeFolder, 'tizen_author.p12');
+        const tizenAuthorCert = path.join(c.globalConfigFolder, 'tizen_author.p12');
         if (fs.existsSync(tizenAuthorCert)) {
             console.log('tizen_author.p12 file exists!');
             resolve();
