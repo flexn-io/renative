@@ -63,8 +63,6 @@ const _runApp = c => new Promise((resolve, reject) => {
     const { platform } = c;
     if (!isPlatformSupported(platform, null, reject)) return;
 
-    if (!checkSdk(c, platform, reject)) return;
-
     switch (platform) {
     case IOS:
         _runiOS(c, platform).then(() => resolve()).catch(e => reject(e));
@@ -75,6 +73,7 @@ const _runApp = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
+        if (!checkSdk(c, platform, reject)) return;
         _runAndroid(c, platform, platform === ANDROID_WEAR)
             .then(() => resolve()).catch(e => reject(e));
         return;
@@ -86,9 +85,11 @@ const _runApp = c => new Promise((resolve, reject) => {
         _runWeb(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case TIZEN:
+        if (!checkSdk(c, platform, reject)) return;
         _runTizen(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case WEBOS:
+        if (!checkSdk(c, platform, reject)) return;
         _runWebOS(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     }

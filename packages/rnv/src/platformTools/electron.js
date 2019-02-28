@@ -17,8 +17,6 @@ const configureElectronProject = (c, platform) => new Promise((resolve, reject) 
     const packagePath = path.join(appFolder, 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(packagePath));
 
-    console.log('BLALALAAL', packageJson);
-
     packageJson.name = `${c.appConfigFile.common.title} - ${platform}`;
     packageJson.productName = `${c.appConfigFile.common.title} - ${platform}`;
 

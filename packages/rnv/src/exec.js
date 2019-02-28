@@ -13,7 +13,7 @@ const execCLI = (c, cli, command) => new Promise((resolve, reject) => {
 
     const p = c.cli[cli];
     if (!fs.existsSync(p)) {
-        reject(`Command ${p} requires SDK to be installed. check your ~/.rnv/config.json file if you SDK path is correct`);
+        reject(`Location of your cli ${p} does not exists. check your ~/.rnv/config.json file if you SDK path is correct`);
         return;
     }
 

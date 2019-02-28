@@ -3,7 +3,7 @@ import fs from 'fs';
 import {
     IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS,
     isPlatformSupported, getConfig, logTask, logComplete,
-    logError, getAppFolder, isPlatformActive,
+    logError, getAppFolder, isPlatformActive, logWarning,
 } from '../common';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { copyAndroidAssets, configureGradleProject } from '../platformTools/android';
@@ -11,6 +11,7 @@ import { copyTizenAssets, configureTizenProject, createDevelopTizenCertificate }
 import { copyWebOSAssets, configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import platformRunner from './platform';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';
@@ -58,6 +59,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     logTask('_runConfigure');
 
     _runSetupGlobalSettings(c)
+        .then(() => _checkAndCreatePlatforms(c))
         .then(() => _runCopyRuntimeAssets(c))
         .then(() => _runPlugins(c))
         .then(() => _runSetupAppleProject(c, IOS, 'RNVApp'))
@@ -158,6 +160,25 @@ sdk.dir=${c.globalConfig.sdks.ANDROID_SDK}`);
             createDevelopTizenCertificate(c).then(() => resolve()).catch(e => reject(e));
         }
     }
+});
+
+const _checkAndCreatePlatforms = c => new Promise((resolve, reject) => {
+    logTask('_checkAndCreatePlatforms');
+
+    if (!fs.existsSync(c.platformBuildsFolder)) {
+        logWarning('Platforms not created yet. creating them for you...');
+
+        const newCommand = Object.assign({}, c);
+        newCommand.subCommand = 'configure';
+        newCommand.program = { appConfig: 'helloWorld' };
+
+        platformRunner(newCommand)
+            .then(() => resolve())
+            .catch(e => reject(e));
+
+        return;
+    }
+    resolve();
 });
 
 const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {

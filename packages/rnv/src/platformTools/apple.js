@@ -7,16 +7,27 @@ import {
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
-const runPod = (command, cwd) => {
-    logTask('runPod');
+const runPod = (command, cwd) => new Promise((resolve, reject) => {
+    logTask(`runPod:${command}`);
+
+    if (!fs.existsSync(cwd)) {
+        logError(`Location ${cwd} does not exists!`);
+        resolve();
+        return;
+    }
+
     return executeAsync('pod', [
         command,
     ], {
         cwd,
         evn: process.env,
         stdio: 'inherit',
-    });
-};
+    }).then(() => resolve())
+        .catch((e) => {
+            logError(e);
+            resolve();
+        });
+});
 
 const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve, reject) => {
     logTask('copyAppleAssets');

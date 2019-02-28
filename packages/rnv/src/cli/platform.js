@@ -48,7 +48,8 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
     _runCleanPlaformFolders(c)
         .then(() => _runCleanPlaformAssets(c))
         .then(() => _runCopyPlatforms(c))
-        .then(() => resolve());
+        .then(() => resolve())
+        .catch(e => reject(e));
 });
 
 const _addPlatform = (platform, program, process) => new Promise((resolve, reject) => {
