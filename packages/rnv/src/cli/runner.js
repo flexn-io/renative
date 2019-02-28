@@ -10,6 +10,8 @@ import {
 } from '../common';
 import { executeAsync, execCLI } from '../exec';
 import { buildWeb } from '../platformTools/web';
+import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
+
 
 const RUN = 'run';
 const PACKAGE = 'package';
@@ -74,8 +76,12 @@ const _runApp = c => new Promise((resolve, reject) => {
     case ANDROID_TV:
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, reject)) return;
-        _runAndroid(c, platform, platform === ANDROID_WEAR)
-            .then(() => resolve()).catch(e => reject(e));
+
+        configureAndroidProperties(c)
+            .then(() => configureGradleProject(c, platform))
+            .then(() => _runAndroid(c, platform, platform === ANDROID_WEAR))
+            .then(() => resolve())
+            .catch(e => reject(e));
         return;
     case MACOS:
     case WINDOWS:
@@ -143,15 +149,11 @@ const _runAndroid = (c, platform, forcePackage) => new Promise((resolve, reject)
 
     const appFolder = getAppFolder(c, platform);
     if (c.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
-        _packageAndroid(c, platform).then(() => {
-            shell.cd(`${appFolder}`);
-            shell.exec('./gradlew appStart');
-            resolve();
+        packageAndroid(c, platform).then(() => {
+            runAndroid(c, platform).then(() => resolve()).catch(e => reject(e));
         });
     } else {
-        shell.cd(`${appFolder}`);
-        shell.exec('./gradlew appStart');
-        resolve();
+        runAndroid(c, platform).then(() => resolve()).catch(e => reject(e));
     }
 });
 
@@ -176,25 +178,6 @@ const _runWeb = c => new Promise((resolve, reject) => {
     shell.exec(`webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`);
     resolve();
 });
-
-const _packageAndroid = (c, platform) => {
-    logTask('_packageAndroid');
-
-    const appFolder = getAppFolder(c, platform);
-    return executeAsync('react-native', [
-        'bundle',
-        '--platform',
-        'android',
-        '--dev',
-        'false',
-        '--assets-dest',
-        `${appFolder}/app/src/main/res`,
-        '--entry-file',
-        `${c.appConfigFile.platforms[platform].entryFile}.js`,
-        '--bundle-output',
-        `${appFolder}/app/src/main/assets/index.android.bundle`,
-    ]);
-};
 
 const _runiOS = (c) => {
     logTask('_runiOS');

@@ -197,6 +197,7 @@ const checkSdk = (c, platform, reject) => {
         reject(`${platform} requires SDK to be installed. check your ~/.rnv/config.json file if you SDK path is correct`);
         return false;
     }
+    return true;
 };
 
 
@@ -213,8 +214,9 @@ const logDebug = (...args) => {
     if (_isInfoEnabled) console.log.apply(null, args);
 };
 
-const logComplete = () => {
+const logComplete = (isEnd = false) => {
     console.log(chalk.white.bold(`\n ${RNV} ${_currentJob} - Done! 🚀`));
+    if (isEnd) logEnd();
 };
 
 const logError = (e, isEnd = false) => {
