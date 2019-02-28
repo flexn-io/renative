@@ -6,7 +6,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     isPlatformSupported, getConfig, logTask, logComplete,
-    logError, getAppFolder, logDebug, logErrorPlatform,
+    logError, getAppFolder, logDebug, logErrorPlatform, isSdkInstalled,
 } from '../common';
 import { executeAsync, execCLI } from '../exec';
 import { buildWeb } from '../platformTools/web';
@@ -61,14 +61,15 @@ const run = (c) => {
 const _runApp = c => new Promise((resolve, reject) => {
     logTask('_runApp');
     const { platform } = c;
-    if (!isPlatformSupported(platform)) return;
+    if (!isPlatformSupported(platform, null, reject)) return;
+    if (!_checkSdkIsInstalled(c, platform, reject)) return;
 
     switch (platform) {
     case IOS:
-        _runiOS(c).then(() => resolve()).catch(e => reject(e));
+        _runiOS(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case TVOS:
-        _runtvOS(c).then(() => resolve()).catch(e => reject(e));
+        _runtvOS(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case ANDROID:
     case ANDROID_TV:
@@ -81,13 +82,13 @@ const _runApp = c => new Promise((resolve, reject) => {
         _runElectron(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case WEB:
-        _runWeb(c).then(() => resolve()).catch(e => reject(e));
+        _runWeb(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case TIZEN:
-        _runTizen(c).then(() => resolve()).catch(e => reject(e));
+        _runTizen(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case WEBOS:
-        _runWebOS(c).then(() => resolve()).catch(e => reject(e));
+        _runWebOS(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     }
 
@@ -237,6 +238,14 @@ const _runtvOS = (c) => {
     } else {
         return executeAsync('react-native', p);
     }
+};
+
+const _checkSdkIsInstalled = (c, platform, reject) => {
+    if (!isSdkInstalled(c, platform)) {
+        reject(`${platform} requires SDK to be installed. check your ~/.rnv/config.json file if you SDK path is correct`);
+        return false;
+    }
+    return true;
 };
 
 export default run;

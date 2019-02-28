@@ -53,6 +53,11 @@ const CLI_WEBOS_ARES_PACKAGE = 'webosAresPackage';
 const CLI_WEBBOS_ARES_INSTALL = 'webosAresInstall';
 const CLI_WEBBOS_ARES_LAUNCH = 'webosAresLaunch';
 
+const ANDROID_SDK = 'ANDROID_SDK';
+const ANDROID_NDK = 'ANDROID_NDK';
+const TIZEN_SDK = 'TIZEN_SDK';
+const WEBOS_SDK = 'WEBOS_SDK';
+
 const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
 const SUPPORTED_PLATFORMS_MAC = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS];
 const SUPPORTED_PLATFORMS_WIN = [ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, WINDOWS];
@@ -69,11 +74,18 @@ let _appConfigId;
 const base = path.resolve('.');
 const homedir = require('os').homedir();
 
+const SDK_PLATFORMS = {};
+SDK_PLATFORMS[ANDROID] = ANDROID_SDK;
+SDK_PLATFORMS[ANDROID_TV] = ANDROID_SDK;
+SDK_PLATFORMS[ANDROID_WEAR] = ANDROID_SDK;
+SDK_PLATFORMS[TIZEN] = TIZEN_SDK;
+SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 
-const isPlatformSupported = (platform, resolve) => {
+
+const isPlatformSupported = (platform, resolve, reject) => {
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
         console.log(chalk.red(`Warning: Platform ${platform} is not supported`));
-        if (resolve) resolve();
+        if (reject) reject();
         return false;
     }
     if (resolve) resolve();
@@ -110,20 +122,20 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectRootFolder = projectRootFolder;
     c.rnvFolder = rnvFolder;
     c.homeFolder = homedir;
-    c.rnvHomeConfigPath = path.join(c.globalConfigFolder, 'config.json');
+    c.globalConfigPath = path.join(c.globalConfigFolder, 'config.json');
     c.subCommand = subCmd;
 
-    if (fs.existsSync(c.rnvHomeConfigPath)) {
-        c.rnvHomeConfig = JSON.parse(fs.readFileSync(c.rnvHomeConfigPath).toString());
+    if (fs.existsSync(c.globalConfigPath)) {
+        c.globalConfig = JSON.parse(fs.readFileSync(c.globalConfigPath).toString());
 
-        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'tools/emulator');
-        c.cli[CLI_ANDROID_ADB] = path.join(c.rnvHomeConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
-        c.cli[CLI_TIZEN_EMULATOR] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
-        c.cli[CLI_TIZEN] = path.join(c.rnvHomeConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
-        c.cli[CLI_WEBOS_ARES] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
-        c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
-        c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
-        c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
+        c.cli[CLI_ANDROID_ADB] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
+        c.cli[CLI_TIZEN_EMULATOR] = path.join(c.globalConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
+        c.cli[CLI_TIZEN] = path.join(c.globalConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+        c.cli[CLI_WEBOS_ARES] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
+        c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
+        c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
+        c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
     }
 
 
@@ -157,6 +169,17 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
     resolve(c);
 });
+
+function isSdkInstalled(platform) {
+    logTask(`isSdkInstalled: ${platform}`);
+
+    if (c.globalConfig) {
+        const sdkPlatform = SDK_PLATFORMS[platform];
+        if (sdkPlatform) return fs.existsSync(c.globalConfig.sdks[sdkPlatform]);
+    }
+
+    return false;
+}
 
 const logTask = (task) => {
     console.log(chalk.yellow(`\n${RNV} ${_currentJob} - ${task} - Starting!`));

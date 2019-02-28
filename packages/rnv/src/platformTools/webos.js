@@ -15,7 +15,7 @@ const launchWebOSimulator = (c, name) => new Promise((resolve, reject) => {
 
     const homedir = require('os').homedir();
 
-    const ePath = path.join(c.rnvHomeConfig.sdks.WEBOS_SDK, 'Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app');
+    const ePath = path.join(c.globalConfig.sdks.WEBOS_SDK, 'Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app');
 
     // shell.exec(ePath);
 
