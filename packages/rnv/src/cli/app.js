@@ -154,7 +154,7 @@ sdk.dir=${c.globalConfig.sdks.ANDROID_SDK}`);
             resolve();
         } else {
             console.log('tizen_author.p12 file missing! Creating one for you...');
-            createDevelopTizenCertificate(c).then(() => resolve()).catch(reject());
+            createDevelopTizenCertificate(c).then(() => resolve()).catch(e => reject(e));
         }
     }
 });
