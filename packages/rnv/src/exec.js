@@ -1,5 +1,6 @@
 import path from 'path';
 import shell from 'shelljs';
+import fs from 'fs';
 
 const { spawn } = require('child_process');
 
@@ -9,7 +10,14 @@ env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
 
 const execCLI = (c, cli, command) => new Promise((resolve, reject) => {
     console.log('execCLI', command);
-    shell.exec(`${c.cli[cli]} ${command}`, (error, stdout, stderr) => {
+
+    const p = c.cli[cli];
+    if (!fs.existsSync(p)) {
+        reject(`Command ${p} requires SDK to be installed. check your ~/.rnv/config.json file if you SDK path is correct`);
+        return;
+    }
+
+    shell.exec(`${p} ${command}`, (error, stdout, stderr) => {
         if (error) {
             reject(error);
             return;

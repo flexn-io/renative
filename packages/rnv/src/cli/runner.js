@@ -5,7 +5,7 @@ import {
     IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
-    isPlatformSupported, getConfig, logTask, logComplete,
+    isPlatformSupported, getConfig, logTask, logComplete, checkSdk,
     logError, getAppFolder, logDebug, logErrorPlatform, isSdkInstalled,
 } from '../common';
 import { executeAsync, execCLI } from '../exec';
@@ -62,7 +62,8 @@ const _runApp = c => new Promise((resolve, reject) => {
     logTask('_runApp');
     const { platform } = c;
     if (!isPlatformSupported(platform, null, reject)) return;
-    if (!_checkSdkIsInstalled(c, platform, reject)) return;
+
+    if (!checkSdk(c, platform, reject)) return;
 
     switch (platform) {
     case IOS:
@@ -238,14 +239,6 @@ const _runtvOS = (c) => {
     } else {
         return executeAsync('react-native', p);
     }
-};
-
-const _checkSdkIsInstalled = (c, platform, reject) => {
-    if (!isSdkInstalled(c, platform)) {
-        reject(`${platform} requires SDK to be installed. check your ~/.rnv/config.json file if you SDK path is correct`);
-        return false;
-    }
-    return true;
 };
 
 export default run;

@@ -159,7 +159,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             c = Object.assign(c, _getConfig(assetConfig.id));
         } catch (e) {
             console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
-            reject('ERROR: no app ID specified');
+            reject(`Seems like you're missing ./platformAssets/config.json file. make sure you run configure command i.e: ${
+                chalk.white('$ npx rnv app configure -c helloWorld -u')} and try again!`);
             return;
         }
     }
@@ -170,7 +171,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     resolve(c);
 });
 
-function isSdkInstalled(c, platform) {
+const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
     if (c.globalConfig) {
@@ -179,7 +180,15 @@ function isSdkInstalled(c, platform) {
     }
 
     return false;
-}
+};
+
+const checkSdk = (c, platform, reject) => {
+    if (!isSdkInstalled(c, platform)) {
+        reject(`${platform} requires SDK to be installed. check your ~/.rnv/config.json file if you SDK path is correct`);
+        return false;
+    }
+};
+
 
 const logTask = (task) => {
     console.log(chalk.yellow(`\n${RNV} ${_currentJob} - ${task} - Starting!`));
@@ -190,12 +199,16 @@ const logDebug = (...args) => {
 };
 
 const logComplete = () => {
-    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob} - Done! 🚀 \n${LINE}\n`));
+    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob} - Done! 🚀`));
 };
 
-const logError = (e, process) => {
-    console.log(`${chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`)}\n${LINE}\n`);
-    _currentProcess.exit();
+const logError = (e, isEnd = false) => {
+    console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`));
+    if (isEnd) logEnd();
+};
+
+const logEnd = () => {
+    console.log(chalk.bold(`\n${LINE}\n`));
 };
 
 const _getConfig = (config) => {
@@ -257,7 +270,7 @@ const isPlatformActive = (c, platform, resolve) => {
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
-    isPlatformActive, isSdkInstalled,
+    isPlatformActive, isSdkInstalled, checkSdk, logEnd,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 };

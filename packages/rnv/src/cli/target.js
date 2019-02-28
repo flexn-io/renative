@@ -63,19 +63,19 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     case ANDROID_WEAR:
         launchAndroidSimulator(c, target)
             .then(() => resolve())
-            .catch(e => logError(e));
+            .catch(e => reject(e));
         return;
         break;
     case TIZEN:
         launchTizenSimulator(c, target)
             .then(() => resolve())
-            .catch(e => logError(e));
+            .catch(e => reject(e));
         return;
         break;
     case WEBOS:
         launchWebOSimulator(c, target)
             .then(() => resolve())
-            .catch(e => logError(e));
+            .catch(e => reject(e));
         return;
         break;
     default:
@@ -95,7 +95,7 @@ const _runList = c => new Promise((resolve, reject) => {
     case ANDROID_WEAR:
         listAndroidTargets(c, target)
             .then(() => resolve())
-            .catch(e => logError(e));
+            .catch(e => reject(e));
         return;
         break;
     default:

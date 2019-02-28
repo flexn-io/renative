@@ -70,7 +70,8 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _runSetupWebProject(c, WEB))
         .then(() => _runSetupElectronProject(c, MACOS))
         .then(() => _runSetupElectronProject(c, WINDOWS))
-        .then(() => resolve());
+        .then(() => resolve())
+        .catch(e => reject(e));
 });
 
 
