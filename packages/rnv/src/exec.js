@@ -8,8 +8,8 @@ const SEPARATOR = process.platform === 'win32' ? ';' : ':';
 const env = Object.assign({}, process.env);
 env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
 
-const execCLI = (c, cli, command) => new Promise((resolve, reject) => {
-    console.log('execCLI', command);
+const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, reject) => {
+    log(`execCLI:${cli}:${command}`);
 
     const p = c.cli[cli];
     if (!fs.existsSync(p)) {
@@ -19,7 +19,7 @@ const execCLI = (c, cli, command) => new Promise((resolve, reject) => {
 
     shell.exec(`${p} ${command}`, (error, stdout, stderr) => {
         if (error) {
-            reject(error);
+            reject(`Command failed: "${cli} ${command}". ${error}`);
             return;
         }
 

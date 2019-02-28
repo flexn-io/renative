@@ -8,6 +8,7 @@ import {
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { buildWeb } from './web';
 
 
 function launchTizenSimulator(c, name) {
@@ -68,4 +69,28 @@ const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
         });
 });
 
-export { launchTizenSimulator, copyTizenAssets, configureTizenProject, createDevelopTizenCertificate, addDevelopTizenCertificate };
+const runTizen = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`runTizen:${platform}`);
+
+    const tDir = getAppFolder(c, platform);
+    const tOut = path.join(tDir, 'output');
+    const tBuild = path.join(tDir, 'build');
+    const tId = c.appConfigFile.platforms[platform].id;
+    const tSim = c.program.target || 'T-samsung-5.0-x86';
+    const gwt = 'RNVanilla.wgt';
+    const certProfile = 'RNVanillaCert';
+
+    buildWeb(c, platform)
+        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${tSim}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${tSim}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${tSim}`, logTask))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+export {
+    launchTizenSimulator, copyTizenAssets, configureTizenProject,
+    createDevelopTizenCertificate, addDevelopTizenCertificate, runTizen,
+};

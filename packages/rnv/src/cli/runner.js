@@ -10,6 +10,7 @@ import {
 } from '../common';
 import { executeAsync, execCLI } from '../exec';
 import { buildWeb } from '../platformTools/web';
+import { runTizen } from '../platformTools/tizen';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
 
 
@@ -92,7 +93,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         return;
     case TIZEN:
         if (!checkSdk(c, platform, reject)) return;
-        _runTizen(c, platform).then(() => resolve()).catch(e => reject(e));
+        runTizen(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     case WEBOS:
         if (!checkSdk(c, platform, reject)) return;
@@ -101,27 +102,6 @@ const _runApp = c => new Promise((resolve, reject) => {
     }
 
     logErrorPlatform(platform, resolve);
-});
-
-const _runTizen = c => new Promise((resolve, reject) => {
-    logTask('_runTizen');
-
-    const tDir = getAppFolder(c, TIZEN);
-    const tOut = path.join(tDir, 'output');
-    const tBuild = path.join(tDir, 'build');
-    const tId = c.appConfigFile.platforms[TIZEN].id;
-    const tSim = c.program.target || 'T-samsung-5.0-x86';
-    const gwt = 'RNVanilla.wgt';
-    const certProfile = 'RNVanillaCert';
-
-    buildWeb(c, TIZEN)
-        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
-        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`))
-        .then(() => execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${tSim}`))
-        .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${tSim}`))
-        .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${tSim}`))
-        .then(() => resolve())
-        .catch(e => reject(e));
 });
 
 const _runWebOS = c => new Promise((resolve, reject) => {
