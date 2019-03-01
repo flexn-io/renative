@@ -9,6 +9,7 @@ import {
     logError, getAppFolder, logDebug, logErrorPlatform, isSdkInstalled,
 } from '../common';
 import { executeAsync, execCLI } from '../exec';
+import { runXcodeProject } from '../platformTools/apple';
 import { buildWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
@@ -69,10 +70,10 @@ const _runApp = c => new Promise((resolve, reject) => {
 
     switch (platform) {
     case IOS:
-        _runiOS(c, platform).then(() => resolve()).catch(e => reject(e));
+        runXcodeProject(c, platform, 'iPhone 6').then(() => resolve()).catch(e => reject(e));
         return;
     case TVOS:
-        _runtvOS(c, platform).then(() => resolve()).catch(e => reject(e));
+        runXcodeProject(c, platform, 'Apple TV 4K').then(() => resolve()).catch(e => reject(e));
         return;
     case ANDROID:
     case ANDROID_TV:
@@ -140,50 +141,5 @@ const _runWeb = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _runiOS = (c) => {
-    logTask('_runiOS');
-    const device = c.program.target || 'iPhone 6';
-    const appPath = getAppFolder(c, IOS);
-    const p = [
-        'run-ios',
-        '--project-path',
-        appPath,
-        '--simulator',
-        device,
-        '--scheme',
-        c.appConfigFile.platforms.ios.scheme,
-        '--configuration',
-        c.appConfigFile.platforms.ios.runScheme,
-    ];
-    logDebug('running', p);
-    if (c.appConfigFile.platforms.ios.runScheme === 'Release') {
-        iosPackage(buildConfig).then(v => executeAsync('react-native', p));
-    } else {
-        return executeAsync('react-native', p);
-    }
-};
-
-const _runtvOS = (c) => {
-    logTask('_runtvOS');
-    const device = c.program.simulator || 'Apple TV 4K';
-    const appPath = getAppFolder(c, TVOS);
-    const p = [
-        'run-ios',
-        '--project-path',
-        appPath,
-        '--simulator',
-        device,
-        '--scheme',
-        c.appConfigFile.platforms.tvos.scheme,
-        '--configuration',
-        c.appConfigFile.platforms.tvos.runScheme,
-    ];
-    logDebug('running', p);
-    if (c.appConfigFile.platforms.ios.runScheme === 'Release') {
-        iosPackage(buildConfig).then(v => executeAsync('react-native', p));
-    } else {
-        return executeAsync('react-native', p);
-    }
-};
 
 export default run;
