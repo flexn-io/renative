@@ -62,10 +62,10 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Get Started](#get-started)
+- [Get Started](#-get-started)
     - [1. Prerequisites](#1-prerequisites)
-- [Quick Start](#quick-start)
-- [Advanced Configuration](#advanced-configuration)
+- [Quick Start](#-quick-start)
+- [Advanced Configuration](#-advanced-configuration)
     - [Global Configurations](#global-configurations)
     - [App Configurations](#app-configurations)
     - [Clean Project](#clean-project)
