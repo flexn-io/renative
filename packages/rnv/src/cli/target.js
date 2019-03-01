@@ -25,6 +25,10 @@ const LIST = 'list';
 const run = (c) => {
     logTask('run');
 
+    if (!isPlatformSupported(c.program.platform)) {
+        return Promise.reject(chalk.red(`You didn't specify platform. make sure you add "${chalk.white.bold('-p <PLATFORM>')}" option to your command!`));
+    }
+
     switch (c.subCommand) {
     case CREATE:
         return Promise.resolve();
@@ -42,7 +46,7 @@ const run = (c) => {
         return _runList(c);
         break;
     default:
-        return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
+        return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
     }
 };
 
@@ -55,7 +59,6 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     logTask('_runLaunch');
     const { platform, program } = c;
     const { target } = program;
-    if (!isPlatformSupported(platform, null, reject)) return;
 
     switch (platform) {
     case ANDROID:
@@ -79,7 +82,7 @@ const _runLaunch = c => new Promise((resolve, reject) => {
         return;
         break;
     default:
-        reject(`target launch does not support ${platform} yet!`);
+        reject(`"target launch" command does not support ${chalk.white.bold(platform)} platform yet. You will have to launch the emulator manually. Working on it!`);
     }
 });
 
@@ -99,7 +102,7 @@ const _runList = c => new Promise((resolve, reject) => {
         return;
         break;
     default:
-        reject(`target launch does not support ${platform} yet!`);
+        reject(`"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`);
     }
 });
 
