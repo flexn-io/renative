@@ -203,9 +203,7 @@
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_rocket.png?raw=true" width=50 height=50 />
-
-## Get Started
+## 🚀 Get Started
 
 #### 1. Prerequisites
 
@@ -299,7 +297,9 @@ after installation complete your WebOS SDK should be located here:
 /Users/<USER>/Library/webOS_TV_SDK/
 ```
 
-## Quick Start
+---
+
+## 🚀🚀 Quick Start
 
 ```bash
 $ git clone git@github.com:pavjacko/react-native-vanilla.git
@@ -347,10 +347,12 @@ $ npm run web
 open: http://0.0.0.0:8080/
 
 
-🚀 Congratulations! You're now multi-platform developer! 🚀
+🎉 `Congratulations! You're now multi-platform developer!` 🎉
 
 
-## Advanced Configuration
+---
+
+## 🚀🚀🚀 Advanced Configuration
 
 #### Global Configurations
 
