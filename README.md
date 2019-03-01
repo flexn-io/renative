@@ -354,7 +354,7 @@ open: http://0.0.0.0:8080/
 
 #### Global Configurations
 
-`npm install` will create config folder at this location: `~./rnv/config.json`
+`npm install` will create config folder at this location: `~/.rnv/config.json`
 
 Open the file and edit SDK paths of platforms you plan to use:
 
