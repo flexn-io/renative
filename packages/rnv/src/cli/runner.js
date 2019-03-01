@@ -11,6 +11,7 @@ import {
 import { executeAsync, execCLI } from '../exec';
 import { buildWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
+import { runWebOS } from '../platformTools/webos';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
 
 
@@ -97,31 +98,11 @@ const _runApp = c => new Promise((resolve, reject) => {
         return;
     case WEBOS:
         if (!checkSdk(c, platform, reject)) return;
-        _runWebOS(c, platform).then(() => resolve()).catch(e => reject(e));
+        runWebOS(c, platform).then(() => resolve()).catch(e => reject(e));
         return;
     }
 
     logErrorPlatform(platform, resolve);
-});
-
-const _runWebOS = c => new Promise((resolve, reject) => {
-    logTask('_runWebOS');
-
-    const tDir = path.join(getAppFolder(c, WEBOS), 'public');
-    const tOut = path.join(getAppFolder(c, WEBOS), 'output');
-    const tSim = c.program.target || 'emulator';
-    const configFilePath = path.join(getAppFolder(c, WEBOS), 'RNVApp/appinfo.json');
-
-    const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
-    const tId = cnfg.id;
-    const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
-
-    buildWeb(c, WEBOS)
-        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir}`))
-        .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`))
-        .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`))
-        .then(() => resolve())
-        .catch(e => reject(e));
 });
 
 const _runAndroid = (c, platform, forcePackage) => new Promise((resolve, reject) => {

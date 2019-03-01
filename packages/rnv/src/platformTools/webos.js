@@ -1,14 +1,15 @@
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
-import { execShellAsync, executeAsync } from '../exec';
+import { execShellAsync, executeAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive,
+    getAppFolder, isPlatformActive, logWarning,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { buildWeb } from './web';
 
 const launchWebOSimulator = (c, name) => new Promise((resolve, reject) => {
     logTask('launchWebOSimulator');
@@ -20,6 +21,11 @@ const launchWebOSimulator = (c, name) => new Promise((resolve, reject) => {
     // shell.exec(ePath);
 
     // executeAsync(ePath, []);
+
+    if (!fs.existsSync(ePath)) {
+        reject(`Can't find emulator at path: ${ePath}`);
+        return;
+    }
 
 
     const childProcess = require('child_process');
@@ -55,4 +61,38 @@ const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => 
     resolve();
 });
 
-export { launchWebOSimulator, copyWebOSAssets, configureWebOSProject };
+const runWebOS = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`runWebOS:${platform}`);
+
+    const tDir = path.join(getAppFolder(c, platform), 'public');
+    const tOut = path.join(getAppFolder(c, platform), 'output');
+    const tSim = c.program.target || 'emulator';
+    const configFilePath = path.join(getAppFolder(c, platform), 'RNVApp/appinfo.json');
+
+    const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
+    const tId = cnfg.id;
+    const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
+
+    buildWeb(c, platform)
+        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir}`, logTask))
+        .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
+        .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
+        .then(() => resolve())
+        .catch((e) => {
+            if (e && e.includes(CLI_WEBBOS_ARES_INSTALL)) {
+                logWarning('Looks like there is no emulator! Let\'s try launch one!');
+                const newCommand = Object.assign({}, c);
+                c.subCommand = 'launch';
+                c.program = { target: 'emulator' };
+                launchWebOSimulator(newCommand)
+                    .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
+                    .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+            } else {
+                reject(e);
+            }
+        });
+});
+
+export { launchWebOSimulator, copyWebOSAssets, configureWebOSProject, runWebOS };
