@@ -64,9 +64,11 @@
 
 - [Get Started](#get-started)
     - [1. Prerequisites](#1-prerequisites)
-    - [2. Installation](#2-installation)
-    - [3. Configure your first app](#3-configure-your-first-app)
-    - [4. Run bundler and first app from Terminal (3 Tabs recommended)](#4-run-bundler-and-first-app-from-terminal-3-tabs-recommended)
+- [Quick Start](#quick-start)
+- [Advanced Configuration](#advanced-configuration)
+    - [Global Configurations](#global-configurations)
+    - [App Configurations](#app-configurations)
+    - [Clean Project](#clean-project)
 - [Architecture](#architecture)
 - [iOS](#ios)
     - [Supported OS](#supported-os)
@@ -297,50 +299,16 @@ after installation complete your WebOS SDK should be located here:
 /Users/<USER>/Library/webOS_TV_SDK/
 ```
 
-
-#### 2. Installation
-
-On the command prompt run the following commands (only first time)
+## Quick Start
 
 ```bash
 $ git clone git@github.com:pavjacko/react-native-vanilla.git
 
 $ cd react-native-vanilla
 
-$ npm run init
+$ npm i
+
 ```
-
-This will create config folder at this location: `~./rnv/config.json`
-
-Open the file and edit SDK paths of platforms you plan to use:
-
-```json
-{
-  "sdks": {
-    "ANDROID_SDK": "/Users/<USER>/Library/Android/sdk",
-    "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
-    "IOS_SDK": "No need. Just install Xcode",
-    "TIZEN_SDK": "/Users/<USER>/tizen-studio",
-    "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK"
-  }
-}
-```
-
-#### 3. Configure your first app
-
-Generate platform projects (for helloWorld app config platforms):
-
-```bash
-npx rnv platform configure -c helloWorld
-```
-
-Configure your first multi-platfrom app (for helloWorld app config):
-
-```bash
-npx rnv app configure -c helloWorld -u
-```
-
-#### 4. Run bundler and first app from Terminal (3 Tabs recommended)
 
 At this point you need to keep bundler running. Ideally create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
 
@@ -362,7 +330,7 @@ $ npm start
 
 TAB 2:
 
-Run your first ios app
+Run your first `ios` app
 
 ```bash
 $ npm run ios
@@ -370,13 +338,59 @@ $ npm run ios
 
 TAB 3:
 
-Run your first web app
+Run your first `web` app
 
 ```bash
 $ npm run web
 ```
 
 open: http://0.0.0.0:8080/
+
+
+🚀 Congratulations! You're now multi-platform developer! 🚀
+
+
+## Advanced Configuration
+
+#### Global Configurations
+
+`npm install` will create config folder at this location: `~./rnv/config.json`
+
+Open the file and edit SDK paths of platforms you plan to use:
+
+```json
+{
+  "sdks": {
+    "ANDROID_SDK": "/Users/<USER>/Library/Android/sdk",
+    "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
+    "IOS_SDK": "No need. Just install Xcode",
+    "TIZEN_SDK": "/Users/<USER>/tizen-studio",
+    "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK"
+  }
+}
+```
+
+#### App Configurations
+
+Re-Generate platform projects (for helloWorld app config platforms):
+
+```bash
+npx rnv platform configure -c helloWorld
+```
+
+Configure your multi-platfrom app based on `./appConfigs/helloWorld` configuration:
+
+```bash
+npx rnv app configure -c helloWorld -u
+```
+
+#### Clean Project
+
+Sometimes you might want to clean your project and start fresh. It's simple!:
+
+```bash
+npm run clean && npm i
+```
 
 ---
 
