@@ -84,8 +84,12 @@ SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 
 
 const isPlatformSupported = (platform, resolve, reject) => {
+    if (!platform) {
+        if (reject) reject(chalk.red(`You didn't specify platform. make sure you add "${chalk.white.bold('-p <PLATFORM>')}" option to your command!`));
+        return false;
+    }
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        if (reject) reject(chalk.red(`Warning: Platform ${platform} is not supported`));
+        if (reject) reject(chalk.red(`Platform ${platform} is not supported`));
         return false;
     }
     if (resolve) resolve();

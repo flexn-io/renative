@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
+import chalk from 'chalk';
 import { execShellAsync, executeAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
@@ -35,9 +36,8 @@ const launchWebOSimulator = (c, name) => new Promise((resolve, reject) => {
             reject(err);
             return;
         }
-        // console.log(stdout);
-        process.exit(0);// exit process once it is opened
-        resolve(stdout);
+        resolve();
+        // process.exit(0);// exit process once it is opened
     });
 
     // return Promise.reject('Not supported yet');
@@ -80,15 +80,17 @@ const runWebOS = (c, platform) => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch((e) => {
             if (e && e.includes(CLI_WEBBOS_ARES_INSTALL)) {
-                logWarning('Looks like there is no emulator! Let\'s try launch one!');
-                const newCommand = Object.assign({}, c);
-                c.subCommand = 'launch';
-                c.program = { target: 'emulator' };
-                launchWebOSimulator(newCommand)
-                    .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
-                    .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
-                    .then(() => resolve())
-                    .catch(e => reject(e));
+                logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
+                    chalk.white.bold('npx rnv target launch -p webos -t emulator')}"`);
+                // const newCommand = Object.assign({}, c);
+                // c.subCommand = 'launch';
+                // c.program = { target: 'emulator' };
+                // launchWebOSimulator(newCommand)
+                //     .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
+                //     .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
+                //     .then(() => resolve())
+                //     .catch(e => reject(e));
+                reject(e);
             } else {
                 reject(e);
             }

@@ -55,7 +55,7 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     logTask('_runLaunch');
     const { platform, program } = c;
     const { target } = program;
-    if (!isPlatformSupported(platform)) return;
+    if (!isPlatformSupported(platform, null, reject)) return;
 
     switch (platform) {
     case ANDROID:
