@@ -55,8 +55,7 @@
   ],
   "scripts": {
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
-    "watchtower": "npm install && npm run lerna && npm run watch",
-    "init": "npm install && npm run lerna && npx rnv init",
+    "postinstall": "npm run lerna && npx rnv init",
     "watch": "npx lerna run --parallel watch",
     "lerna": "npx lerna bootstrap",
     "start": "node node_modules/react-native/local-cli/cli.js start",
