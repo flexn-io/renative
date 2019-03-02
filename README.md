@@ -193,6 +193,8 @@
 
 -   [Node](https://nodejs.org) `10.13.0` or newer
 -   [NPM](https://npmjs.com/) `6.4.1` or newer
+-   [RVM](https://rvm.io/) `1.29.7` or newer
+-   [NPX](https://npmjs.com/) `10.2.0` or newer
 -   [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 
 #### Stack / Libraries
@@ -203,7 +205,60 @@
 
 ---
 
-## 🚀 Get Started
+## 🚀 Quick Start
+
+```bash
+$ git clone git@github.com:pavjacko/react-native-vanilla.git
+
+$ cd react-native-vanilla
+
+$ npm i
+
+```
+
+At this point you need to keep bundler running. Ideally create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/terminal.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+TAB 1:
+
+Start the bundler
+
+```bash
+$ npm start
+```
+
+TAB 2:
+
+Run your first `ios` app
+
+```bash
+$ npm run ios
+```
+
+TAB 3:
+
+Run your first `web` app
+
+```bash
+$ npm run web
+```
+
+open: http://0.0.0.0:8080/
+
+
+🎉 `Congratulations! You're now multi-platform developer!` 🎉
+
+
+---
+
+## 🚀🚀 Get Started
 
 #### 1. Prerequisites
 
@@ -256,7 +311,7 @@ Tested / Recommended Node configurations:
 $ npm install -g npx
 ```
 
-**CocoaPods**
+**CocoaPods (if you want to develop for iOS/tvOS)**
 
 ```bash
 $ sudo gem install cocoapods
@@ -299,58 +354,6 @@ after installation complete your WebOS SDK should be located here:
 
 ---
 
-## 🚀🚀 Quick Start
-
-```bash
-$ git clone git@github.com:pavjacko/react-native-vanilla.git
-
-$ cd react-native-vanilla
-
-$ npm i
-
-```
-
-At this point you need to keep bundler running. Ideally create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/terminal.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-TAB 1:
-
-Start the bundler
-
-```bash
-$ npm start
-```
-
-TAB 2:
-
-Run your first `ios` app
-
-```bash
-$ npm run ios
-```
-
-TAB 3:
-
-Run your first `web` app
-
-```bash
-$ npm run web
-```
-
-open: http://0.0.0.0:8080/
-
-
-🎉 `Congratulations! You're now multi-platform developer!` 🎉
-
-
----
 
 ## 🚀🚀🚀 Advanced Configuration
 
