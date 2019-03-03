@@ -37,7 +37,7 @@
     </th>
   </tr>
   <tr>
-    <th><a href="#tizen-watch">Tizen Watch</a></th><th><a href="#windows">Windows</a></th><th><a href="#android-wear">Android Wear</a></th>
+    <th><a href="#tizen-watch">Tizen Watch</a></th><th><a href="#windows">Windows</a></th><th><a href="#android-wear">Android Wear</a></th><th></th>
   </tr>
   <tr>
     <th>
@@ -118,31 +118,38 @@
     - [Emulator](#emulator)
     - [Run](#run-5)
     - [Advanced](#advanced-5)
-- [LG webOS](#lg-webos)
+- [Tizen Watch](#tizen-watch)
     - [Supported OS](#supported-os-6)
     - [Requirements](#requirements-6)
     - [Project Configuration](#project-configuration-6)
     - [Emulator](#emulator-1)
     - [Run](#run-6)
     - [Advanced](#advanced-6)
-- [macOS](#macos)
+- [LG webOS](#lg-webos)
     - [Supported OS](#supported-os-7)
     - [Requirements](#requirements-7)
     - [Project Configuration](#project-configuration-7)
+    - [Emulator](#emulator-2)
     - [Run](#run-7)
-  - [Advanced](#advanced-7)
-- [Windows](#windows)
+    - [Advanced](#advanced-7)
+- [macOS](#macos)
     - [Supported OS](#supported-os-8)
     - [Requirements](#requirements-8)
     - [Project Configuration](#project-configuration-8)
     - [Run](#run-8)
   - [Advanced](#advanced-8)
-- [Android Wear](#android-wear)
+- [Windows](#windows)
     - [Supported OS](#supported-os-9)
     - [Requirements](#requirements-9)
     - [Project Configuration](#project-configuration-9)
     - [Run](#run-9)
-    - [Advanced](#advanced-9)
+  - [Advanced](#advanced-9)
+- [Android Wear](#android-wear)
+    - [Supported OS](#supported-os-10)
+    - [Requirements](#requirements-10)
+    - [Project Configuration](#project-configuration-10)
+    - [Run](#run-10)
+    - [Advanced](#advanced-10)
 - [RNV CLI](#rnv-cli)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
@@ -734,9 +741,6 @@ npx rnv run -p web --info
 
 Make sure you have at least 1 TV VM setup
 
-```
-npx rnv target list
-```
 
 <table>
   <tr>
@@ -763,6 +767,67 @@ or specific simulator:
 
 ```
 npx rnv run -p tizen -t T-samsung-5.0-x86
+```
+
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/tizenwatch/docs/ic_tizenwatch.png?raw=true" width=50 height=50 />
+
+## Tizen Watch
+
+-   Latest Tizen project
+-   Support for Tizen 5.0
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
+#### Requirements
+
+-   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
+
+#### Project Configuration
+
+| Feature          |     Version     |
+| ---------------- | :-------------: |
+| Tizen Studio     |      `2.5`      |
+| Tizen SDK        |      `5.0`      |
+| react-native-web |     `0.9.9`     |
+| Babel Core       |     `7.1.2`     |
+
+
+#### Emulator
+
+Make sure you have at least 1 TV VM setup
+
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen4.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
+```
+npx rnv target launch -p tizenwatch -t W-5.0-circle-x86
+```
+
+#### Run
+
+```
+npm run tizenwatch
+```
+
+#### Advanced
+
+or specific simulator:
+
+```
+npx rnv run -p tizen -t W-5.0-circle-x86
 ```
 
 ---
