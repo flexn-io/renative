@@ -38,8 +38,10 @@ const configureTizenProject = (c, platform) => new Promise((resolve, reject) => 
 
     const c1 = fs.readFileSync(path.join(c.platformTemplatesFolder, platform, 'config.xml')).toString();
 
-    const c2 = c1.replace(/{{PACKAGE}}/g, c.appConfigFile.platforms[platform].package)
-        .replace(/{{ID}}/g, c.appConfigFile.platforms[platform].id);
+    const c2 = c1
+        .replace(/{{PACKAGE}}/g, c.appConfigFile.platforms[platform].package)
+        .replace(/{{ID}}/g, c.appConfigFile.platforms[platform].id)
+        .replace(/{{APP_NAME}}/g, c.appConfigFile.platforms[platform].appName);
 
 
     fs.writeFileSync(path.join(getAppFolder(c, platform), 'config.xml'), c2);
@@ -85,19 +87,26 @@ const runTizen = (c, platform) => new Promise((resolve, reject) => {
 
 
     const TIZEN_UNINSTALL_APP = `uninstall -p ${tId} -t ${tSim}`;
+    const TIZEN_INSTALL_APP = `install -- ${tOut} -n ${gwt} -t ${tSim}`;
+    const TIZEN_RUN_APP = `run -p ${tId} -t ${tSim}`;
 
     buildWeb(c, platform)
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, TIZEN_UNINSTALL_APP, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${tSim}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${tSim}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, TIZEN_INSTALL_APP, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
         .then(() => resolve())
         .catch((e) => {
             if (e && e.includes(TIZEN_UNINSTALL_APP)) {
-                logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
-                    chalk.white.bold('npx rnv target launch -p tizen -t <EMULATOR_NAME>')}"`);
-                reject(e);
+                execCLI(c, CLI_TIZEN, TIZEN_INSTALL_APP, logTask)
+                    .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
+                    .then(() => resolve())
+                    .catch((e) => {
+                        logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
+                            chalk.white.bold('npx rnv target launch -p tizen -t <EMULATOR_NAME>')}"`);
+                        reject(e);
+                    });
             } else {
                 reject(e);
             }

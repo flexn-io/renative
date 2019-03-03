@@ -9,7 +9,7 @@
       <br />
 <table>
   <tr>
-    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th><th><a href="#windows">Windows</a></th>
+    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th>
   </tr>
   <tr>
     <th>
@@ -20,12 +20,10 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th>
   </tr>
   <tr>
-    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen-tv">Tizen TV</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#android-wear">Android Wear</a></th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen-tv">Tizen TV</a></th><th><a href="#lg-webos">LG webOS</a></th>
   </tr>
   <tr>
     <th>
@@ -36,8 +34,20 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
+    </th>
+  </tr>
+  <tr>
+    <th><a href="#tizen-watch">Tizen Watch</a></th><th><a href="#windows">Windows</a></th><th><a href="#android-wear">Android Wear</a></th>
+  </tr>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/tizenwatch/docs/rnv_tizenwatch.gif?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="100" height="100" />
+    </th><th>
+    ...
     </th>
   </tr>
 </table>

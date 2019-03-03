@@ -114,4 +114,18 @@ const _runAddPlatform = c => new Promise((resolve, reject) => {
     resolve();
 });
 
+const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
+    logTask('createPlatformBuild');
+
+    if (!isPlatformSupported(platform, null, reject)) return;
+
+    const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
+    const ptPath = path.join(c.platformTemplatesFolder, `${platform}`);
+    copyFolderContentsRecursiveSync(ptPath, pPath);
+
+    resolve();
+});
+
+export { createPlatformBuild };
+
 export default run;

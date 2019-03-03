@@ -29,16 +29,16 @@
       "entryFile": "index.macos"
     },
     "tizen": {
-      "appName": "RNVanilla",
+      "appName": "RNVanillaTV",
       "package": "NcVRhWHJST",
-      "id": "NcVRhWHJST.RNVanilla",
+      "id": "NcVRhWHJST.RNVanillaTV",
       "entryFile": "index.tizen",
       "certificateProfile": "RNVanillaCert"
     },
     "tizenwatch": {
-      "appName": "RNVanilla",
-      "package": "NcVRhWHJST",
-      "id": "NcVRhWHJST.RNVanilla",
+      "appName": "RNVanillaWatch",
+      "package": "cHIP2fIRQZ",
+      "id": "cHIP2fIRQZ.RNVanillaWatch",
       "entryFile": "index.tizenwatch",
       "certificateProfile": "RNVanillaCert"
     },

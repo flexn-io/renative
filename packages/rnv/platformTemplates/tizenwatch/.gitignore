@@ -1,0 +1,4 @@
+/public/assets
+.buildResult
+output/
+build/

@@ -1,7 +1,7 @@
 const DEFAULT_CONFIG = {
     isDebug: false,
     isTestVersion: false,
-    title: 'NextGen',
+    title: 'RNVApp',
     docType: '<!DOCTYPE html>',
     htmlTag: '<html lang="en">',
     contentType: '',

@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS,
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS, TIZEN_WATCH,
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive, logWarning,
 } from '../common';
@@ -69,6 +69,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _runSetupAndroidProject(c, ANDROID_TV))
         .then(() => _runSetupAndroidProject(c, ANDROID_WEAR))
         .then(() => _runSetupTizenProject(c, TIZEN))
+        .then(() => _runSetupTizenProject(c, TIZEN_WATCH))
         .then(() => _runSetupWebOSProject(c, WEBOS))
         .then(() => _runSetupWebProject(c, WEB))
         .then(() => _runSetupElectronProject(c, MACOS))
