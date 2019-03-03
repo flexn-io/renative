@@ -1,9 +1,10 @@
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import { execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, checkSdk,
+    getAppFolder, isPlatformActive, checkSdk, logWarning,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
@@ -80,14 +81,24 @@ const runTizen = (c, platform) => new Promise((resolve, reject) => {
     const gwt = 'RNVanilla.wgt';
     const certProfile = 'RNVanillaCert';
 
+    const TIZEN_UNINSTALL_APP = `uninstall -p ${tId} -t ${tSim}`;
+
     buildWeb(c, platform)
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${tSim}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, TIZEN_UNINSTALL_APP, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${tSim}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${tSim}`, logTask))
         .then(() => resolve())
-        .catch(e => reject(e));
+        .catch((e) => {
+            if (e && e.includes(TIZEN_UNINSTALL_APP)) {
+                logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
+                    chalk.white.bold('npx rnv target launch -p tizen -t <EMULATOR_NAME>')}"`);
+                reject(e);
+            } else {
+                reject(e);
+            }
+        });
 });
 
 export {
