@@ -1,9 +1,9 @@
 import { AppRegistry, Platform } from 'react-native';
 import App from '../src/app';
 import Api from '../src/api';
-import { ANDROID, FORM_FACTOR_TV } from '../packages/rnv/src/constants';
+import { TVOS, FORM_FACTOR_TV } from '../packages/rnv/src/constants';
 
-Api.platform = ANDROID;
+Api.platform = TVOS;
 Api.formFactor = FORM_FACTOR_TV;
 
 AppRegistry.registerComponent('App', () => App);

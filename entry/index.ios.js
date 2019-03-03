@@ -1,9 +1,9 @@
 import { AppRegistry, Platform } from 'react-native';
 import App from '../src/app';
 import Api from '../src/api';
+import { IOS, FORM_FACTOR_MOBILE } from '../packages/rnv/src/constants';
 
-const { isTV } = Platform;
-
-Api.platform = isTV ? 'tvos' : 'ios';
+Api.platform = IOS;
+Api.formFactor = FORM_FACTOR_MOBILE;
 
 AppRegistry.registerComponent('App', () => App);
