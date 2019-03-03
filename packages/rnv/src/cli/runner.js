@@ -14,6 +14,7 @@ import { buildWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
+import { copyRuntimeAssets } from './app';
 
 
 const RUN = 'run';
@@ -70,17 +71,22 @@ const _runApp = c => new Promise((resolve, reject) => {
 
     switch (platform) {
     case IOS:
-        runXcodeProject(c, platform, 'iPhone 6').then(() => resolve()).catch(e => reject(e));
+        copyRuntimeAssets(c)
+            .then(() => runXcodeProject(c, platform, 'iPhone 6'))
+            .then(() => resolve()).catch(e => reject(e));
         return;
     case TVOS:
-        runXcodeProject(c, platform, 'Apple TV 4K').then(() => resolve()).catch(e => reject(e));
+        copyRuntimeAssets(c)
+            .then(() => runXcodeProject(c, platform, 'Apple TV 4K'))
+            .then(() => resolve()).catch(e => reject(e));
         return;
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, reject)) return;
 
-        configureAndroidProperties(c)
+        copyRuntimeAssets(c)
+            .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => _runAndroid(c, platform, platform === ANDROID_WEAR))
             .then(() => resolve())
@@ -88,18 +94,28 @@ const _runApp = c => new Promise((resolve, reject) => {
         return;
     case MACOS:
     case WINDOWS:
-        _runElectron(c, platform).then(() => resolve()).catch(e => reject(e));
+        copyRuntimeAssets(c)
+            .then(() => _runElectron(c, platform))
+            .then(() => resolve()).catch(e => reject(e));
         return;
     case WEB:
-        _runWeb(c, platform).then(() => resolve()).catch(e => reject(e));
+        copyRuntimeAssets(c)
+            .then(() => _runWeb(c, platform))
+            .then(() => resolve()).catch(e => reject(e));
         return;
     case TIZEN:
         if (!checkSdk(c, platform, reject)) return;
-        runTizen(c, platform).then(() => resolve()).catch(e => reject(e));
+
+        copyRuntimeAssets(c)
+            .then(() => runTizen(c, platform))
+            .then(() => resolve()).catch(e => reject(e));
         return;
     case WEBOS:
         if (!checkSdk(c, platform, reject)) return;
-        runWebOS(c, platform).then(() => resolve()).catch(e => reject(e));
+
+        copyRuntimeAssets(c)
+            .then(() => runWebOS(c, platform))
+            .then(() => resolve()).catch(e => reject(e));
         return;
     }
 

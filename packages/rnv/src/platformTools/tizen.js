@@ -73,13 +73,16 @@ const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
 const runTizen = (c, platform) => new Promise((resolve, reject) => {
     logTask(`runTizen:${platform}`);
 
+    const platformConfig = c.appConfigFile.platforms[platform];
     const tDir = getAppFolder(c, platform);
+
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
-    const tId = c.appConfigFile.platforms[platform].id;
+    const tId = platformConfig.id;
     const tSim = c.program.target || 'T-samsung-5.0-x86';
-    const gwt = 'RNVanilla.wgt';
-    const certProfile = 'RNVanillaCert';
+    const gwt = `${platformConfig.appName}.wgt`;
+    const certProfile = platformConfig.certificateProfile;
+
 
     const TIZEN_UNINSTALL_APP = `uninstall -p ${tId} -t ${tSim}`;
 

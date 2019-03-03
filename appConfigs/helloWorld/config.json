@@ -29,12 +29,18 @@
       "entryFile": "index.macos"
     },
     "tizen": {
+      "appName": "RNVanilla",
       "package": "NcVRhWHJST",
       "id": "NcVRhWHJST.RNVanilla",
-      "entryFile": "index.tizen"
+      "entryFile": "index.tizen",
+      "certificateProfile": "RNVanillaCert"
     },
     "tizenwatch": {
-      "entryFile": "index.tizenwatch"
+      "appName": "RNVanilla",
+      "package": "NcVRhWHJST",
+      "id": "NcVRhWHJST.RNVanilla",
+      "entryFile": "index.tizenwatch",
+      "certificateProfile": "RNVanillaCert"
     },
     "web": {
       "entryFile": "index.web"

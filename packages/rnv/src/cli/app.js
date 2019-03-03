@@ -60,7 +60,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
 
     _runSetupGlobalSettings(c)
         .then(() => _checkAndCreatePlatforms(c))
-        .then(() => _runCopyRuntimeAssets(c))
+        .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c))
         .then(() => _runSetupAppleProject(c, IOS, 'RNVApp'))
         .then(() => _runSetupAppleProject(c, TVOS, 'RNVAppTVOS'))
@@ -171,8 +171,8 @@ const _checkAndCreatePlatforms = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _runCopyRuntimeAssets = c => new Promise((resolve, reject) => {
-    logTask('_runCopyRuntimeAssets');
+const copyRuntimeAssets = c => new Promise((resolve, reject) => {
+    logTask('copyRuntimeAssets');
     const aPath = path.join(c.platformAssetsFolder, 'runtime');
     const cPath = path.join(c.appConfigFolder, 'assets/runtime');
     copyFolderContentsRecursiveSync(cPath, aPath);
@@ -195,5 +195,7 @@ const _runPlugins = c => new Promise((resolve, reject) => {
     });
     resolve();
 });
+
+export { copyRuntimeAssets };
 
 export default run;
