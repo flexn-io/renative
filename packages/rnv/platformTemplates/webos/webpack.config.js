@@ -18,6 +18,7 @@ const babelLoaderConfiguration = {
     // Add every directory that needs to be compiled by Babel during the build.
     include: [
         path.resolve(appDirectory, 'src'),
+        path.resolve(appDirectory, 'entry'),
         path.resolve(appDirectory, 'packages'),
     ],
     use: {
@@ -65,7 +66,7 @@ module.exports = {
     entry: {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(appDirectory, `./index.${platform}.js`),
+        bundle: path.resolve(appDirectory, `./entry/index.${platform}.js`),
     },
 
     devServer: config.devServer || {

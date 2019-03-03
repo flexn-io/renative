@@ -31,18 +31,18 @@ const run = c => new Promise((resolve, reject) => {
 const _runInit = c => new Promise((resolve, reject) => {
     logTask('_runInit');
 
-    if (fs.existsSync(c.rnvHomeFolder)) {
+    if (fs.existsSync(c.globalConfigFolder)) {
         console.log('.rnv folder exists!');
     } else {
         console.log('.rnv folder missing! Creating one for you...');
-        mkdirSync(c.rnvHomeFolder);
+        mkdirSync(c.globalConfigFolder);
     }
 
-    if (fs.existsSync(c.rnvHomeConfigPath)) {
+    if (fs.existsSync(c.globalConfigPath)) {
         console.log('.rnv/config.json folder exists!');
     } else {
         console.log('.rnv/config.json file missing! Creating one for you...');
-        copyFileSync(path.join(c.rnvFolder, 'supportFiles/config.json'), c.rnvHomeConfigPath);
+        copyFileSync(path.join(c.rnvFolder, 'supportFiles/config.json'), c.globalConfigPath);
         console.log('Don\'t forget to Edit: .rnv/config.json with correct paths to your SDKs before continuing!');
     }
 

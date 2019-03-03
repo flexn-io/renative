@@ -1,5 +1,6 @@
 import path from 'path';
 import shell from 'shelljs';
+import fs from 'fs';
 
 const { spawn } = require('child_process');
 
@@ -7,11 +8,18 @@ const SEPARATOR = process.platform === 'win32' ? ';' : ':';
 const env = Object.assign({}, process.env);
 env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
 
-const execCLI = (c, cli, command) => new Promise((resolve, reject) => {
-    console.log('execCLI', command);
-    shell.exec(`${c.cli[cli]} ${command}`, (error, stdout, stderr) => {
+const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, reject) => {
+    log(`execCLI:${cli}:${command}`);
+
+    const p = c.cli[cli];
+    if (!fs.existsSync(p)) {
+        reject(`Location of your cli ${p} does not exists. check your ~/.rnv/config.json file if you SDK path is correct`);
+        return;
+    }
+
+    shell.exec(`${p} ${command}`, (error, stdout, stderr) => {
         if (error) {
-            reject(error);
+            reject(`Command failed: "${cli} ${command}". ${error}`);
             return;
         }
 

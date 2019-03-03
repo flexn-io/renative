@@ -19,6 +19,7 @@ program
     .option('-s, --scheme', 'Select build scheme') // <Debug | Release>
     .option('-e, --env', 'Select environment') // <alpha|beta|prod>
     .option('-l, --list', 'Return list of items related to command') // <alpha|beta|prod>
+    .option('-r, --list', 'Also perform reset')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

@@ -3,11 +3,12 @@ import fs from 'fs';
 import { execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive,
+    getAppFolder, isPlatformActive, checkSdk,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { buildWeb } from './web';
 
 
 function launchTizenSimulator(c, name) {
@@ -34,14 +35,62 @@ const configureTizenProject = (c, platform) => new Promise((resolve, reject) => 
     logTask('configureTizenProject');
 
 
+    const c1 = fs.readFileSync(path.join(c.platformTemplatesFolder, platform, 'config.xml')).toString();
+
+    const c2 = c1.replace(/{{PACKAGE}}/g, c.appConfigFile.platforms[platform].package)
+        .replace(/{{ID}}/g, c.appConfigFile.platforms[platform].id);
+
+
+    fs.writeFileSync(path.join(getAppFolder(c, platform), 'config.xml'), c2);
+
     resolve();
 });
 
-const createDevelopTizenCertificate = (c) => {
+const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
 
-    return execCLI(c, CLI_TIZEN, 'certificate -- ~/.rnv -a rnv -f tizen_author -p 1234')
-        .then(() => execCLI(c, CLI_TIZEN, 'security-profiles add -n RNVanillaCert -a ~/.rnv/tizen_author.p12 -p 1234'));
-};
+    execCLI(c, CLI_TIZEN, 'certificate -- ~/.rnv -a rnv -f tizen_author -p 1234')
+        .then(() => addDevelopTizenCertificate(c))
+        .then(() => resolve())
+        .catch((e) => {
+            logError(e);
+            resolve();
+        });
+});
 
-export { launchTizenSimulator, copyTizenAssets, configureTizenProject, createDevelopTizenCertificate };
+const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
+    logTask('addDevelopTizenCertificate');
+
+    execCLI(c, CLI_TIZEN, 'security-profiles add -n RNVanillaCert -a ~/.rnv/tizen_author.p12 -p 1234')
+        .then(() => resolve())
+        .catch((e) => {
+            logError(e);
+            resolve();
+        });
+});
+
+const runTizen = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`runTizen:${platform}`);
+
+    const tDir = getAppFolder(c, platform);
+    const tOut = path.join(tDir, 'output');
+    const tBuild = path.join(tDir, 'build');
+    const tId = c.appConfigFile.platforms[platform].id;
+    const tSim = c.program.target || 'T-samsung-5.0-x86';
+    const gwt = 'RNVanilla.wgt';
+    const certProfile = 'RNVanillaCert';
+
+    buildWeb(c, platform)
+        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${tSim}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${tSim}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${tSim}`, logTask))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+export {
+    launchTizenSimulator, copyTizenAssets, configureTizenProject,
+    createDevelopTizenCertificate, addDevelopTizenCertificate, runTizen,
+};

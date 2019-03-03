@@ -63,7 +63,7 @@ module.exports = {
     entry: {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(appDirectory, `./index.${platform}.js`),
+        bundle: path.resolve(appDirectory, `./entry/index.${platform}.js`),
     },
 
     devServer: config.devServer || {

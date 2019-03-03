@@ -1,6 +1,6 @@
 <p align='center'>
   <h1 align='center'>🚀 React Native Vanilla</h1>
-  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/rn_logo_exp.png?raw=true" /></p>
+  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
 </p>
 
@@ -62,60 +62,73 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 
-- [Get Started](#get-started)
+- [🚀 Quick Start](#-quick-start)
+- [🚀🚀 Get Started](#-get-started)
     - [1. Prerequisites](#1-prerequisites)
-    - [2. Installation](#2-installation)
+- [🚀🚀🚀 Advanced Configuration](#-advanced-configuration)
+    - [Global Configurations](#global-configurations)
+    - [App Configurations](#app-configurations)
+    - [Clean Project](#clean-project)
 - [Architecture](#architecture)
 - [iOS](#ios)
+    - [Supported OS](#supported-os)
     - [Requirements](#requirements)
     - [Project Configuration](#project-configuration)
     - [Run](#run)
     - [Advanced](#advanced)
 - [Android](#android)
+    - [Supported OS](#supported-os-1)
     - [Requirements](#requirements-1)
     - [Project Configuration](#project-configuration-1)
     - [Emulators](#emulators)
     - [Run](#run-1)
     - [Advanced](#advanced-1)
 - [tvOS](#tvos)
+    - [Supported OS](#supported-os-2)
     - [Requirements](#requirements-2)
     - [Project Configuration](#project-configuration-2)
     - [Run](#run-2)
     - [Advanced](#advanced-2)
 - [Android TV](#android-tv)
+    - [Supported OS](#supported-os-3)
     - [Requirements](#requirements-3)
     - [Project Configuration](#project-configuration-3)
-    - [First time installation](#first-time-installation)
     - [Run](#run-3)
     - [Advanced](#advanced-3)
 - [Web](#web)
+    - [Supported OS](#supported-os-4)
     - [Requirements](#requirements-4)
     - [Project Configuration](#project-configuration-4)
     - [Run](#run-4)
     - [Advanced](#advanced-4)
 - [Tizen TV](#tizen-tv)
+    - [Supported OS](#supported-os-5)
     - [Requirements](#requirements-5)
     - [Project Configuration](#project-configuration-5)
     - [Emulator](#emulator)
     - [Run](#run-5)
     - [Advanced](#advanced-5)
 - [LG webOS](#lg-webos)
+    - [Supported OS](#supported-os-6)
     - [Requirements](#requirements-6)
     - [Project Configuration](#project-configuration-6)
     - [Emulator](#emulator-1)
     - [Run](#run-6)
     - [Advanced](#advanced-6)
 - [macOS](#macos)
+    - [Supported OS](#supported-os-7)
     - [Requirements](#requirements-7)
     - [Project Configuration](#project-configuration-7)
     - [Run](#run-7)
   - [Advanced](#advanced-7)
 - [Windows](#windows)
+    - [Supported OS](#supported-os-8)
     - [Requirements](#requirements-8)
     - [Project Configuration](#project-configuration-8)
     - [Run](#run-8)
   - [Advanced](#advanced-8)
 - [Android Wear](#android-wear)
+    - [Supported OS](#supported-os-9)
     - [Requirements](#requirements-9)
     - [Project Configuration](#project-configuration-9)
     - [Run](#run-9)
@@ -141,15 +154,15 @@
   </tr>
   <tr>
     <td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_git_grey.png?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_git_grey.png?raw=true" />
     <br/>
       git clone react-native-vanilla.git
       </td><td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_cli_grey.png?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_cli_grey.png?raw=true" />
     <br/>
       npm install react-native-vanilla -g
     </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/mode_npm_grey.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_npm_grey.png?raw=true" />
     <br/>
     npm install react-native-vanilla
     </td>
@@ -173,13 +186,15 @@
 | OS      |  Support   |
 | ------- | :--------: |
 | Mac     |   `YES`    |
-| Windows |   `YES`    |
-| Linux   | `untested` |
+| Windows |   `untested` PRs Welcome!    |
+| Linux   | `untested` PRs Welcome! |
 
 #### Requirements
 
 -   [Node](https://nodejs.org) `10.13.0` or newer
 -   [NPM](https://npmjs.com/) `6.4.1` or newer
+-   [RVM](https://rvm.io/) `1.29.7` or newer
+-   [NPX](https://npmjs.com/) `10.2.0` or newer
 -   [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
 
 #### Stack / Libraries
@@ -190,9 +205,60 @@
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_rocket.png?raw=true" width=50 height=50 />
+## 🚀 Quick Start
 
-## Get Started
+```bash
+$ git clone git@github.com:pavjacko/react-native-vanilla.git
+
+$ cd react-native-vanilla
+
+$ npm i
+
+```
+
+At this point you need to keep bundler running. Ideally create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/terminal.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+TAB 1:
+
+Start the bundler
+
+```bash
+$ npm start
+```
+
+TAB 2:
+
+Run your first `ios` app
+
+```bash
+$ npm run ios
+```
+
+TAB 3:
+
+Run your first `web` app
+
+```bash
+$ npm run web
+```
+
+open: http://0.0.0.0:8080/
+
+
+🎉 `Congratulations! You're now multi-platform developer!` 🎉
+
+
+---
+
+## 🚀🚀 Get Started
 
 #### 1. Prerequisites
 
@@ -245,25 +311,55 @@ Tested / Recommended Node configurations:
 $ npm install -g npx
 ```
 
-**CocoaPods**
+**CocoaPods (if you want to develop for iOS/tvOS)**
 
 ```bash
 $ sudo gem install cocoapods
 ```
 
-#### 2. Installation
+**Xcode (if you want to develop for iOS/tvOS)**
 
-On the command prompt run the following commands (only first time)
+-   [Download Xcode from here](https://developer.apple.com/xcode/)
 
-```bash
-$ git clone git@github.com:pavjacko/react-native-vanilla.git
 
-$ cd react-native-vanilla
+**Android Studio (if you want to develop for Android)**
 
-$ npm run init
+-   [Download Android Studio from here](https://developer.android.com/studio)
+
+after installation complete your Android SDK should be located here:
+
+```
+/Users/<USER>/Library/Android/sdk
 ```
 
-This will create config folder at this location: `~./rnv/config.json`
+**Tizen SDK (if you want to develop for Tizen)**
+
+-   [Download Tizen Studio from here](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk)
+
+after installation complete your Tizen SDK should be located here:
+
+```
+/Users/<USER>/tizen-studio/
+```
+
+**WebOS SDK (if you want to develop for WebOS)**
+
+-   [Download WebOS SDK from here](http://webostv.developer.lge.com/sdk/installation/)
+
+after installation complete your WebOS SDK should be located here:
+
+```
+/Users/<USER>/Library/webOS_TV_SDK/
+```
+
+---
+
+
+## 🚀🚀🚀 Advanced Configuration
+
+#### Global Configurations
+
+`npm install` will create config folder at this location: `~/.rnv/config.json`
 
 Open the file and edit SDK paths of platforms you plan to use:
 
@@ -279,37 +375,31 @@ Open the file and edit SDK paths of platforms you plan to use:
 }
 ```
 
-#### 3. Configure your first app
+#### App Configurations
 
-Generate platform projects (for helloWorld app config platforms):
+Re-Generate platform projects (for helloWorld app config platforms):
 
 ```bash
 npx rnv platform configure -c helloWorld
 ```
 
-Configure your first multi-platfrom app (for helloWorld app config):
+Configure your multi-platfrom app based on `./appConfigs/helloWorld` configuration:
 
 ```bash
-npx rnv app configure -c helloWorld
+npx rnv app configure -c helloWorld -u
 ```
 
-#### 4. Run bundler and first app from Terminal (2 Tabs recommended)
+#### Clean Project
 
-At this point you need to keep bundler running. Ideally create 2 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
-
-```bash
-$ npm start
-```
-
-Run your first ios app
+Sometimes you might want to clean your project and start fresh. It's simple!:
 
 ```bash
-$ npm run ios
+npm run clean && npm i
 ```
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
 
 ## Architecture
 
@@ -318,7 +408,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/rnv1.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -331,8 +421,9 @@ Folder Structure
     │       ├── assets              # Cross platform assets
     │       └── config.json         # Application config
     ├── docs                        # Documentation files
+    ├── entry                       # Entry point index files
     ├── packages                    # Local dependencies
-    │   └── rvn                     # React Native Vanilla Build System `CLI`
+    │   └── rnv                     # React Native Vanilla Build System `CLI`
     │       └── platformTemplates   # Platform specific Project Templates
     │           ├── android         # `Android` platform project
     │           ├── androidtv       # `Android TV` configured platform project
@@ -360,6 +451,12 @@ Folder Structure
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -398,6 +495,12 @@ npx rnv run -p ios -t "iPhone 6 Plus" --info
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
 #### Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -420,7 +523,7 @@ You can create variety of emulators via Android Studio IDE
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/android1.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/android1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -445,8 +548,8 @@ npx rnv target launch -p android -t Nexus_5X_API_26
 Run via RNV CLI
 
 ```
-npx rnv run -p android -t "Nexus_5X_API_26"
-npx rnv run -p android -t "Nexus_5X_API_26" --info
+npx rnv run -p android
+npx rnv run -p android --info
 ```
 
 ---
@@ -458,6 +561,12 @@ npx rnv run -p android -t "Nexus_5X_API_26" --info
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -496,6 +605,12 @@ npx rnv run -p tvos -t "Apple TV 4K" --info
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
 #### Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -530,8 +645,8 @@ npx rnv target launch -p androidtv -t Android_TV_720p_API_22
 Run via RNV CLI
 
 ```
-npx rnv run -p androidtv -t "Android_TV_720p_API_22"
-npx rnv run -p androidtv -t "Android_TV_720p_API_22" --info
+npx rnv run -p androidtv
+npx rnv run -p androidtv --info
 ```
 
 ---
@@ -541,6 +656,12 @@ npx rnv run -p androidtv -t "Android_TV_720p_API_22" --info
 ## Web
 
 -   Supports Chrome, Safari, Firefox, IE10+
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -578,6 +699,12 @@ npx rnv run -p web --info
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -635,6 +762,12 @@ npx rnv run -p tizen -t T-samsung-5.0-x86
 ## LG webOS
 
 -   Latest LG webOS Project
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -696,6 +829,12 @@ npx rnv run -p webos -t emulator --info
 -   support for OSX/macOS
 -   Based on Electron
 
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
 #### Requirements
 
 -   n/a
@@ -731,6 +870,12 @@ npx rnv run -p macos --info
 
 -   support for Windows 10+
 -   Based on Electron
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -768,6 +913,12 @@ npx rnv run -p windows --info
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -809,7 +960,7 @@ npx rnv run -p androidwear --info
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_cli.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
 
 ## RNV CLI
 
@@ -892,7 +1043,7 @@ npx rnv target launch -p webos -t emulator
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_chat.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_chat.png?raw=true" width=50 height=50 />
 
 ## Discussions
 
@@ -900,7 +1051,7 @@ https://spectrum.chat/reactnativevanilla
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_contributor.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_contributor.png?raw=true" width=50 height=50 />
 
 ## Contributors
 
@@ -921,7 +1072,7 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/rnv/docs/ic_community.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_community.png?raw=true" width=50 height=50 />
 
 ## Community
 

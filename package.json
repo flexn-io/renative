@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.9.0",
+  "version": "0.9.5",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -55,14 +55,14 @@
   ],
   "scripts": {
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
-    "watchtower": "npm install && npm run lerna && npm run watch",
-    "init": "npm install && npm run lerna && npx rnv init",
+    "postinstall": "npm run lerna && npx rnv init",
     "watch": "npx lerna run --parallel watch",
     "lerna": "npx lerna bootstrap",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "ios": "rnv run -p ios",
     "tvos": "rnv run -p tvos",
+    "tizen": "rnv run -p tizen -t T-samsung-5.0-x86",
     "android": "rnv run -p android",
     "androidtv": "rnv run -p androidtv",
     "androidwear": "rnv run -p androidwear",
