@@ -41,7 +41,7 @@
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/tizenwatch/docs/rnv_tizenwatch.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizenwatch.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
@@ -772,7 +772,7 @@ npx rnv run -p tizen -t T-samsung-5.0-x86
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/tizenwatch/docs/ic_tizenwatch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizenwatch.png?raw=true" width=50 height=50 />
 
 ## Tizen Watch
 
@@ -807,7 +807,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/tizenwatch/docs/tizenwatch1.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizenwatch1.png?raw=true" />
     </th>
   </tr>
 </table>
