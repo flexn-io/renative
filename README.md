@@ -45,7 +45,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="100" height="100" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
     ...
     </th>
@@ -447,7 +447,8 @@ Folder Structure
     │           ├── androidwear     # `Android Wear` configured platform project
     │           ├── ios             # `iOS` Xcode platform project
     │           ├── macos           # `macOS` Electron platform project
-    │           ├── tizen           # `Tizen` platform project
+    │           ├── tizen           # `Tizen TV` platform project
+    │           ├── tizenwatch      # `Tizen Watch` platform project
     │           ├── tvos            # `tvOS` Xcode platform project
     │           ├── web             # `Web` platform project
     │           ├── webos           # `WebOS` platform project
@@ -806,7 +807,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen4.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizenwatch1.png?raw=true" />
     </th>
   </tr>
 </table>
