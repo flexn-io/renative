@@ -73,9 +73,9 @@
 
 
 - [🚀 Quick Start](#-quick-start)
-- [🚀🚀 Get Started](#-get-started)
+- [Get Started](#-get-started)
     - [1. Prerequisites](#1-prerequisites)
-- [🚀🚀🚀 Advanced Configuration](#-advanced-configuration)
+- [Advanced Configuration](#-advanced-configuration)
     - [Global Configurations](#global-configurations)
     - [App Configurations](#app-configurations)
     - [Clean Project](#clean-project)
@@ -807,7 +807,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizenwatch1.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/tizenwatch/docs/tizenwatch1.png?raw=true" />
     </th>
   </tr>
 </table>
