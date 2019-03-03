@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.9.5",
+  "version": "0.10.0",
   "codename": "Valhalla",
   "keywords": [
     "react",
@@ -29,11 +29,12 @@
     "watch",
     "webos",
     "windows",
-    "desktop"
+    "desktop",
+    "tizen watch"
   ],
   "license": "MIT",
   "private": false,
-  "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
+  "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
   "author": {
     "name": "Pavel Jacko",
     "email": "i@pavjacko.com",
