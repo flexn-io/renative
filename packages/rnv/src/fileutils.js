@@ -3,6 +3,7 @@ import path from 'path';
 import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
 import { logDebug } from './common';
+import shelljs from 'shelljs';
 
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);
@@ -78,21 +79,7 @@ const removeDir = (path, callback) => {
 
 const mkdirSync = (dir) => {
     // we explicitly don't use `path.sep` to have it platform independent;
-    const sep = '/';
-    const segments = dir.split(sep);
-    let current = '';
-    let i = 0;
-
-    while (i < segments.length) {
-        current = current + sep + segments[i];
-        try {
-            fs.statSync(current);
-        } catch (e) {
-            fs.mkdirSync(current);
-        }
-
-        i++;
-    }
+    shelljs.mkdir('-p', dir);
 };
 
 const cleanFolder = d => new Promise((resolve, reject) => {
