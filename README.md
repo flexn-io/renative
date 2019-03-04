@@ -37,7 +37,7 @@
     </th>
   </tr>
   <tr>
-    <th><a href="#tizen-watch">Tizen Watch</a></th><th><a href="#windows">Windows</a></th><th><a href="#android-wear">Android Wear</a></th><th></th>
+    <th><a href="#tizen-watch">Tizen Watch</a></th><th><a href="#windows">Windows</a></th><th><a href="#android-wear">Android Wear</a></th><th><a href="#kaios">KaiOS</a></th>
   </tr>
   <tr>
     <th>
@@ -46,7 +46,7 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
-    </th><a href="#kaios">KaiOS</a><th>
+    </th><th>
     ...
     </th>
   </tr>
@@ -74,82 +74,19 @@
 
 - [🚀 Quick Start](#-quick-start)
 - [Get Started](#-get-started)
-    - [1. Prerequisites](#1-prerequisites)
 - [Advanced Configuration](#-advanced-configuration)
-    - [Global Configurations](#global-configurations)
-    - [App Configurations](#app-configurations)
-    - [Clean Project](#clean-project)
 - [Architecture](#architecture)
 - [iOS](#ios)
-    - [Supported OS](#supported-os)
-    - [Requirements](#requirements)
-    - [Project Configuration](#project-configuration)
-    - [Run](#run)
-    - [Advanced](#advanced)
 - [Android](#android)
-    - [Supported OS](#supported-os-1)
-    - [Requirements](#requirements-1)
-    - [Project Configuration](#project-configuration-1)
-    - [Emulators](#emulators)
-    - [Run](#run-1)
-    - [Advanced](#advanced-1)
 - [tvOS](#tvos)
-    - [Supported OS](#supported-os-2)
-    - [Requirements](#requirements-2)
-    - [Project Configuration](#project-configuration-2)
-    - [Run](#run-2)
-    - [Advanced](#advanced-2)
 - [Android TV](#android-tv)
-    - [Supported OS](#supported-os-3)
-    - [Requirements](#requirements-3)
-    - [Project Configuration](#project-configuration-3)
-    - [Run](#run-3)
-    - [Advanced](#advanced-3)
 - [Web](#web)
-    - [Supported OS](#supported-os-4)
-    - [Requirements](#requirements-4)
-    - [Project Configuration](#project-configuration-4)
-    - [Run](#run-4)
-    - [Advanced](#advanced-4)
 - [Tizen TV](#tizen-tv)
-    - [Supported OS](#supported-os-5)
-    - [Requirements](#requirements-5)
-    - [Project Configuration](#project-configuration-5)
-    - [Emulator](#emulator)
-    - [Run](#run-5)
-    - [Advanced](#advanced-5)
 - [Tizen Watch](#tizen-watch)
-    - [Supported OS](#supported-os-6)
-    - [Requirements](#requirements-6)
-    - [Project Configuration](#project-configuration-6)
-    - [Emulator](#emulator-1)
-    - [Run](#run-6)
-    - [Advanced](#advanced-6)
 - [LG webOS](#lg-webos)
-    - [Supported OS](#supported-os-7)
-    - [Requirements](#requirements-7)
-    - [Project Configuration](#project-configuration-7)
-    - [Emulator](#emulator-2)
-    - [Run](#run-7)
-    - [Advanced](#advanced-7)
 - [macOS](#macos)
-    - [Supported OS](#supported-os-8)
-    - [Requirements](#requirements-8)
-    - [Project Configuration](#project-configuration-8)
-    - [Run](#run-8)
-  - [Advanced](#advanced-8)
 - [Windows](#windows)
-    - [Supported OS](#supported-os-9)
-    - [Requirements](#requirements-9)
-    - [Project Configuration](#project-configuration-9)
-    - [Run](#run-9)
-  - [Advanced](#advanced-9)
 - [Android Wear](#android-wear)
-    - [Supported OS](#supported-os-10)
-    - [Requirements](#requirements-10)
-    - [Project Configuration](#project-configuration-10)
-    - [Run](#run-10)
-    - [Advanced](#advanced-10)
 - [RNV CLI](#rnv-cli)
 - [Discussions](#discussions)
 - [Contributors](#contributors)

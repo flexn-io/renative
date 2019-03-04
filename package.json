@@ -76,7 +76,7 @@
     "test": "jest",
     "preversion": "npm run test",
     "version": "./packages/rnv/utils/update-versions.sh",
-    "doc": "doctoc ."
+    "doc": "doctoc . --maxlevel 1"
   },
   "dependencies": {
     "react": "16.8.3",
