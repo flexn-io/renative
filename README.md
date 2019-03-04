@@ -312,8 +312,8 @@ $ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh 
 The recommended way to run specific version of Node and NPM is to use NVM:
 
 ```bash
-$ nvm install node 10.13.0
-$ nvm alias default node 10.13.0
+$ nvm install 10.13.0
+$ nvm alias default 10.13.0
 ```
 
 Tested / Recommended Node configurations:
