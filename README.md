@@ -46,7 +46,7 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
-    </th><th>
+    </th><a href="#kaios">KaiOS</a><th>
     ...
     </th>
   </tr>
@@ -1033,6 +1033,67 @@ Run via RNV CLI
 npx rnv run -p androidwear
 npx rnv run -p androidwear --info
 ```
+
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/kaios/docs/ic_kaios.png?raw=true" width=140 height=50 />
+
+## KaiOS
+
+-   
+
+#### Supported OS
+
+| Mac      |  Windows   |  Linux        |
+| :--------: | :--------: | :--------: |
+|   `YES`    |   `NO`    | `NO` |
+
+#### Requirements
+
+-   [KaiOSrt](https://developer.kaiostech.com/simulator) for emulator
+
+After installation you can launch it via Applications:
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/kaios/docs/kaios1.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
+#### Project Configuration
+
+| Feature        |             Version              |
+| -------------- | :------------------------------: |
+|          |                     |
+
+
+
+
+#### Run
+
+NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+```
+npm run kaios
+```
+
+#### Advanced
+
+Launch specific emulator:
+```
+npx rnv target launch -p kaios -t emulator
+```
+
+Run via RNV CLI
+
+```
+npx rnv run -p kaios
+npx rnv run -p kaios --info
+```
+
 
 ---
 
