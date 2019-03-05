@@ -2,27 +2,31 @@ import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import {
-    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS,
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, logDebug, logErrorPlatform,
 } from '../common';
+import {
+    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS,
+    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME,
+} from '../constants';
 import { executeAsync } from '../exec';
 import { buildWeb } from '../platformTools/web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const INIT = 'init';
-const SETUP = 'setup';
+const BOOTSTRAP = 'bootstrap';
 
 const run = c => new Promise((resolve, reject) => {
     logTask('setup');
 
     switch (c.command) {
-    case INIT:
-        return _runInit(c).then(() => resolve()).catch(e => reject(e));
+    case BOOTSTRAP:
+        _runBootstrap().then(() => resolve()).catch(e => reject(e));
         break;
-    // case SETUP:
-    //     return _runSetup(c);
-    //     break;
+    case INIT:
+        _runInit(c).then(() => resolve()).catch(e => reject(e));
+        break;
+
     default:
         return Promise.reject(`Command ${c.command} not supported`);
     }
@@ -39,12 +43,24 @@ const _runInit = c => new Promise((resolve, reject) => {
     }
 
     if (fs.existsSync(c.globalConfigPath)) {
-        console.log('.rnv/config.json folder exists!');
+        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} folder exists!`);
     } else {
-        console.log('.rnv/config.json file missing! Creating one for you...');
-        copyFileSync(path.join(c.rnvFolder, 'supportFiles/config.json'), c.globalConfigPath);
-        console.log('Don\'t forget to Edit: .rnv/config.json with correct paths to your SDKs before continuing!');
+        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
+        copyFileSync(path.join(c.rnvFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME), c.globalConfigPath);
+        console.log(`Don\'t forget to Edit: .rnv/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`);
     }
+
+    resolve();
+});
+
+const _runBootstrap = c => new Promise((resolve, reject) => {
+    logTask('_runBootstrap');
+
+    const rnvFolder = path.join(__dirname, '../..');
+    const base = path.resolve('.');
+
+    copyFileSync(path.join(rnvFolder, 'supportFiles/projectConfigs', RNV_PROJECT_CONFIG_NAME),
+        path.join(base, RNV_PROJECT_CONFIG_NAME));
 
     resolve();
 });

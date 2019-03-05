@@ -4,11 +4,13 @@ import path from 'path';
 import { cleanFolder } from './fileutils';
 import { createPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets } from './cli/app';
+import setupCLI from './cli/setup';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
+    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME,
 } from './constants';
 
 const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS];
@@ -50,8 +52,24 @@ const isPlatformSupported = (platform, resolve, reject) => {
     return true;
 };
 
+
+const checkAndConfigureRootProject = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+    const configPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
+
+    if (fs.existsSync(configPath)) {
+        resolve();
+    } else {
+        const newCommand = Object.assign({}, c);
+        newCommand.command = 'bootstrap';
+        setupCLI.run(newCommand).then(() => resolve()).catch(e => reject());
+    }
+});
+
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     _currentJob = cmd;
+
+    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+
     _currentProcess = process;
     _isInfoEnabled = program.info === true;
     _appConfigId = program.appConfigID;
@@ -63,25 +81,27 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     const projectRootFolder = base;
     const rnvFolder = path.join(__dirname, '..');
     let globalConfigFolder;
+    const configPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
 
+    c.program = program;
+    c.process = process;
+    c.platform = program.platform;
+    c.command = cmd;
+    c.projectRootFolder = projectRootFolder;
+    c.rnvFolder = rnvFolder;
+    c.homeFolder = homedir;
+    c.subCommand = subCmd;
 
-    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
+    const rootConfig = JSON.parse(fs.readFileSync(configPath).toString());
+
     if (rootConfig.globalConfigFolder.startsWith('~')) {
         globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder.substr(1));
     } else {
         globalConfigFolder = path.join(base, rootConfig.globalConfigFolder);
     }
 
-    c.program = program;
-    c.process = process;
     c.globalConfigFolder = globalConfigFolder;
-    c.platform = program.platform;
-    c.command = cmd;
-    c.projectRootFolder = projectRootFolder;
-    c.rnvFolder = rnvFolder;
-    c.homeFolder = homedir;
-    c.globalConfigPath = path.join(c.globalConfigFolder, 'config.json');
-    c.subCommand = subCmd;
+    c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
 
     if (fs.existsSync(c.globalConfigPath)) {
         c.globalConfig = JSON.parse(fs.readFileSync(c.globalConfigPath).toString());
@@ -98,8 +118,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
 
     if (_currentJob === 'setup' || _currentJob === 'init') {
-        console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
-
         resolve(c);
         return;
     }
@@ -110,21 +128,14 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         // App ID specified
         c = Object.assign(c, _getConfig(_appConfigId));
 
-        console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
+        // console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
 
         resolve(c);
     } else {
         // Use latest app from platfromAssets
-        const cf = path.join(base, 'platformAssets/config.json');
-        try {
-            const assetConfig = JSON.parse(fs.readFileSync(cf).toString());
-            c = Object.assign(c, _getConfig(assetConfig.id));
-
-            console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
-
-            resolve(c);
-        } catch (e) {
-            console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
+        const appConfFilePath = path.join(base, 'platformAssets/config.json');
+        if (!fs.existsSync(appConfFilePath)) {
+            // console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
             logWarning('Seems like you\'re missing ./platformAssets/config.json file. But don\'t worry. RNV got you covered. Let\'s configure it for you!');
 
             c = Object.assign(c, _getConfig('helloWorld'));
@@ -133,8 +144,16 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             newCommand.subCommand = 'configure';
             newCommand.program = { appConfig: 'helloWorld', update: true };
             appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
-            // reject(`Seems like you're missing ./platformAssets/config.json file. make sure you run configure command i.e: ${
-            //     chalk.white('$ npx rnv app configure -c helloWorld -u')} and try again!`);
+        } else {
+            try {
+                const assetConfig = JSON.parse(fs.readFileSync(appConfFilePath).toString());
+                c = Object.assign(c, _getConfig(assetConfig.id));
+
+                // console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
+                resolve(c);
+            } catch (e) {
+                reject(e);
+            }
         }
     }
 });
@@ -188,14 +207,14 @@ const logEnd = () => {
 };
 
 const _getConfig = (appConfigId) => {
-    // logTask('getConfig');
+    logTask(`_getConfig:${appConfigId}`);
 
-    const c = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
+    const c = JSON.parse(fs.readFileSync(path.join(base, RNV_PROJECT_CONFIG_NAME)).toString());
     const appConfigFolder = path.join(base, c.appConfigsFolder, appConfigId);
     const platformAssetsFolder = path.join(base, 'platformAssets');
     const platformBuildsFolder = path.join(base, 'platformBuilds');
     const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
-    const appConfigPath = path.join(appConfigFolder, 'config.json');
+    const appConfigPath = path.join(appConfigFolder, RNV_APP_CONFIG_NAME);
     const appConfigFile = JSON.parse(fs.readFileSync(appConfigPath).toString());
 
     return {
@@ -211,12 +230,12 @@ const _getConfig = (appConfigId) => {
 };
 
 const checkConfig = appId => new Promise((resolve, reject) => {
-    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, 'config.json')).toString());
+    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, RNV_PROJECT_CONFIG_NAME)).toString());
     let cf;
     if (appId) {
-        cf = path.join(base, 'config.json');
+        cf = path.join(base, RNV_PROJECT_CONFIG_NAME);
     }
-    cf = path.join(base, 'platformAssets/config.json');
+    cf = path.join(base, 'platformAssets', RNV_APP_CONFIG_NAME);
     try {
         const c = JSON.parse(fs.readFileSync(cf).toString());
         resolve({
@@ -263,7 +282,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
 });
 
 export {
-    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
+    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, checkAndConfigureRootProject,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,

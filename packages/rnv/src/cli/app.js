@@ -4,7 +4,10 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive, logWarning, configureIfRequired,
 } from '../common';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS, TIZEN_WATCH, KAIOS } from '../constants';
+import {
+    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS,
+    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME,
+} from '../constants';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
 import { configureTizenProject, createDevelopTizenCertificate } from '../platformTools/tizen';
@@ -160,7 +163,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     const cPath = path.join(c.appConfigFolder, 'assets/runtime');
     copyFolderContentsRecursiveSync(cPath, aPath);
 
-    copyFileSync(c.appConfigPath, path.join(c.platformAssetsFolder, 'config.json'));
+    copyFileSync(c.appConfigPath, path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME));
     resolve();
 });
 
