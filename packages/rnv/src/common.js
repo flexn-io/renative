@@ -54,23 +54,26 @@ const isPlatformSupported = (platform, resolve, reject) => {
 
 
 const checkAndConfigureRootProject = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+    _currentJob = cmd;
+
+    _currentProcess = process;
+    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentJob} ${subCmd || ''}`)} is firing up! 🔥\n${LINE}\n`));
+
+    logTask(`checkAndConfigureRootProject:${cmd} ${subCmd}`);
+
     const configPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
 
     if (fs.existsSync(configPath)) {
         resolve();
     } else {
-        const newCommand = Object.assign({}, c);
+        logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
+        const newCommand = {};
         newCommand.command = 'bootstrap';
-        setupCLI.run(newCommand).then(() => resolve()).catch(e => reject());
+        setupCLI(newCommand).then(() => resolve()).catch(e => reject());
     }
 });
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
-    _currentJob = cmd;
-
-    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
-
-    _currentProcess = process;
     _isInfoEnabled = program.info === true;
     _appConfigId = program.appConfigID;
     let c = { cli: {} };
