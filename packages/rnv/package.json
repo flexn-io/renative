@@ -1,8 +1,8 @@
 {
-  "name": "rnv",
+  "name": "react-native-vanilla-cli",
   "version": "0.1.0",
-  "private": true,
-  "description": "React Native Vanilla Builder",
+  "private": false,
+  "description": "React Native Vanilla CLI",
   "author": "Pavel Jacko <i@pavjacko.com>",
   "scripts": {
     "prepare": "babel src -d dist",
