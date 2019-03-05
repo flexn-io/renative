@@ -1,14 +1,13 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import {
-    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR,
-    isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder,
-} from '../common';
+import { isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
+import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
 import { launchWebOSimulator } from '../platformTools/webos';
 import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
+import { launchKaiOSSimulator } from '../platformTools/kaios';
 
 
 const CREATE = 'create';
@@ -22,33 +21,31 @@ const LIST = 'list';
 // PUBLIC API
 // ##########################################
 
-const run = (c) => {
+const run = c => new Promise((resolve, reject) => {
     logTask('run');
 
-    if (!isPlatformSupported(c.program.platform)) {
-        return Promise.reject(chalk.red(`You didn't specify platform. make sure you add "${chalk.white.bold('-p <PLATFORM>')}" option to your command!`));
-    }
+    if (!isPlatformSupported(c.program.platform, null, reject)) return;
 
     switch (c.subCommand) {
-    case CREATE:
-        return Promise.resolve();
-        break;
-    case REMOVE:
-        return Promise.resolve();
-        break;
+    // case CREATE:
+    //     return Promise.resolve();
+    //     break;
+    // case REMOVE:
+    //     return Promise.resolve();
+    //     break;
     case LAUNCH:
-        return _runLaunch(c);
-        break;
-    case QUIT:
-        return Promise.resolve();
-        break;
+        _runLaunch(c).then(() => resolve()).catch(e => reject(e));
+        return;
+    // case QUIT:
+    //     return Promise.resolve();
+    //     break;
     case LIST:
-        return _runList(c);
-        break;
+        _runList(c).then(() => resolve()).catch(e => reject(e));
+        return;
     default:
         return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
     }
-};
+});
 
 
 // ##########################################
@@ -77,6 +74,12 @@ const _runLaunch = c => new Promise((resolve, reject) => {
         break;
     case WEBOS:
         launchWebOSimulator(c, target)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+        break;
+    case KAIOS:
+        launchKaiOSSimulator(c, target)
             .then(() => resolve())
             .catch(e => reject(e));
         return;

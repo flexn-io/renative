@@ -15,32 +15,21 @@ import { buildWeb } from './web';
 const launchWebOSimulator = (c, name) => new Promise((resolve, reject) => {
     logTask('launchWebOSimulator');
 
-    const homedir = require('os').homedir();
-
     const ePath = path.join(c.globalConfig.sdks.WEBOS_SDK, 'Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app');
-
-    // shell.exec(ePath);
-
-    // executeAsync(ePath, []);
 
     if (!fs.existsSync(ePath)) {
         reject(`Can't find emulator at path: ${ePath}`);
         return;
     }
 
-
     const childProcess = require('child_process');
     childProcess.exec(`open ${ePath}`, (err, stdout, stderr) => {
         if (err) {
-            // console.error(err);
             reject(err);
             return;
         }
         resolve();
-        // process.exit(0);// exit process once it is opened
     });
-
-    // return Promise.reject('Not supported yet');
 });
 
 const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {

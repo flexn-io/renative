@@ -324,7 +324,8 @@ Open the file and edit SDK paths of platforms you plan to use:
     "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
     "IOS_SDK": "No need. Just install Xcode",
     "TIZEN_SDK": "/Users/<USER>/tizen-studio",
-    "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK"
+    "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK",
+    "KAIOS_SDK": "/Applications/Kaiosrt.app"
   }
 }
 ```
