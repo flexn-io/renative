@@ -99,7 +99,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             alwaysWriteToDisk: true,
             filename: path.resolve(appBuildDirectory, './public/index.html'),
-            template: path.resolve(appDirectory, './packages/rnv/platformTemplates/_shared/template.js'),
+            template: path.resolve(appDirectory, './packages/rnv/supportFiles/template.js'),
             minify: false,
             templateParameters: {
                 ...config,

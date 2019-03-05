@@ -8,9 +8,9 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const appDirectory = path.resolve(__dirname, '../../');
 const appBuildDirectory = path.resolve(__dirname);
 const appBuildPublic = path.resolve(__dirname, 'public');
-const platform = 'windows';
-const platformFamily = 'desktop';
-const formFactor = 'desktop';
+const platform = 'kaios';
+const platformFamily = 'jsapp';
+const formFactor = 'mobile';
 const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' } };
 
 const babelLoaderConfiguration = {
@@ -18,6 +18,7 @@ const babelLoaderConfiguration = {
     // Add every directory that needs to be compiled by Babel during the build.
     include: [
         path.resolve(appDirectory, 'src'),
+        path.resolve(appDirectory, 'entry'),
         path.resolve(appDirectory, 'packages'),
     ],
     use: {
@@ -65,7 +66,7 @@ module.exports = {
     entry: {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(appDirectory, `./entry/index.${platform}.js`),
+        bundle: path.resolve(appDirectory, `entry/index.${platform}.js`),
     },
 
     devServer: config.devServer || {
@@ -98,7 +99,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             alwaysWriteToDisk: true,
-            filename: path.resolve(appBuildDirectory, './public/index.html'),
+            filename: path.resolve(appBuildPublic, './index.html'),
             template: path.resolve(appDirectory, './packages/rnv/supportFiles/template.js'),
             minify: false,
             templateParameters: {
