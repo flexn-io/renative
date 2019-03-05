@@ -87,6 +87,7 @@
 - [macOS](#macos)
 - [Windows](#windows)
 - [Android Wear](#android-wear)
+- [KaiOS](#kaios)
 - [RNV CLI](#rnv-cli)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
