@@ -30,11 +30,12 @@
     "webos",
     "windows",
     "desktop",
-    "tizen watch"
+    "tizen watch",
+    "kaios"
   ],
   "license": "MIT",
   "private": false,
-  "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX` and `Windows` platforms",
+  "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows` and `KaiOS` platforms",
   "author": {
     "name": "Pavel Jacko",
     "email": "i@pavjacko.com",

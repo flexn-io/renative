@@ -47,7 +47,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/kaios/docs/rnv_kaios.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -60,7 +60,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
-> The most fundamental multi-platform project template based on [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX` and `Windows` platforms
+> The most fundamental multi-platform project template based on [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows` and `KaiOS` platforms
 
 -   Ideal starting point for advanced multi-platform projects.
 -   Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
@@ -975,7 +975,7 @@ npx rnv run -p androidwear --info
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/kaios/docs/ic_kaios.png?raw=true" width=140 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_kaios.png?raw=true" width=140 height=50 />
 
 ## KaiOS
 
@@ -996,7 +996,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/kaios/docs/kaios1.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/kaios1.png?raw=true" />
     </th>
   </tr>
 </table>
