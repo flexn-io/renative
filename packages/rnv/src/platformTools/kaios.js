@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, checkSdk, logWarning,
+    getAppFolder, isPlatformActive, checkSdk, logWarning, configureIfRequired,
 } from '../common';
 import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_KAIOS_EMULATOR,
@@ -40,4 +40,19 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
     });
 });
 
-export { launchKaiOSSimulator };
+const configureKaiOSProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask('configureKaiOSProject');
+
+    configureIfRequired(c, platform)
+        .then(() => configureProject(c, platform))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const configureProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`configureProject:${platform}`);
+
+    resolve();
+});
+
+export { launchKaiOSSimulator, configureKaiOSProject };

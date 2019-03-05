@@ -1,15 +1,17 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS, TIZEN_WATCH,
     isPlatformSupported, getConfig, logTask, logComplete,
-    logError, getAppFolder, isPlatformActive, logWarning,
+    logError, getAppFolder, isPlatformActive, logWarning, configureIfRequired,
 } from '../common';
+import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS, TIZEN_WATCH, KAIOS } from '../constants';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
-import { copyAndroidAssets, configureGradleProject, configureAndroidProperties } from '../platformTools/android';
-import { copyTizenAssets, configureTizenProject, createDevelopTizenCertificate } from '../platformTools/tizen';
-import { copyWebOSAssets, configureWebOSProject } from '../platformTools/webos';
+import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
+import { configureTizenProject, createDevelopTizenCertificate } from '../platformTools/tizen';
+import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
+import { configureKaiOSProject } from '../platformTools/kaios';
+import { configureWebProject } from '../platformTools/web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import platformRunner from './platform';
 
@@ -62,40 +64,19 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _checkAndCreatePlatforms(c))
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c))
-        .then(() => _runSetupAppleProject(c, IOS, 'RNVApp'))
-        .then(() => _runSetupAppleProject(c, TVOS, 'RNVAppTVOS'))
         .then(() => configureAndroidProperties(c))
-        .then(() => _runSetupAndroidProject(c, ANDROID))
-        .then(() => _runSetupAndroidProject(c, ANDROID_TV))
-        .then(() => _runSetupAndroidProject(c, ANDROID_WEAR))
-        .then(() => _runSetupTizenProject(c, TIZEN))
-        .then(() => _runSetupTizenProject(c, TIZEN_WATCH))
-        .then(() => _runSetupWebOSProject(c, WEBOS))
-        .then(() => _runSetupWebProject(c, WEB))
-        .then(() => _runSetupElectronProject(c, MACOS))
-        .then(() => _runSetupElectronProject(c, WINDOWS))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
-
-const _runSetupAppleProject = (c, platform, appFolder) => new Promise((resolve, reject) => {
-    logTask(`_runSetupAppleProject:${platform}`);
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform))
-        .then(() => copyAppleAssets(c, platform, appFolder))
-        .then(() => configureXcodeProject(c, platform, appFolder))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
-const _runSetupAndroidProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runSetupAndroidProject:${platform}`);
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    copyAndroidAssets(c, platform)
-        .then(() => configureGradleProject(c, platform))
+        .then(() => configureGradleProject(c, ANDROID))
+        .then(() => configureGradleProject(c, ANDROID_TV))
+        .then(() => configureGradleProject(c, ANDROID_WEAR))
+        .then(() => configureTizenProject(c, TIZEN))
+        .then(() => configureTizenProject(c, TIZEN_WATCH))
+        .then(() => configureWebOSProject(c, WEBOS))
+        .then(() => configureWebProject(c, WEB))
+        .then(() => configureElectronProject(c, MACOS))
+        .then(() => configureElectronProject(c, WINDOWS))
+        .then(() => configureKaiOSProject(c, KAIOS))
+        .then(() => configureXcodeProject(c, IOS, 'RNVApp'))
+        .then(() => configureXcodeProject(c, TVOS, 'RNVAppTVOS'))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -137,6 +118,7 @@ const _runSetupElectronProject = (c, platform) => new Promise((resolve, reject) 
 
     resolve();
 });
+
 
 const _runSetupGlobalSettings = c => new Promise((resolve, reject) => {
     logTask('_runSetupGlobalSettings');

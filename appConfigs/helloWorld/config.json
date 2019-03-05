@@ -50,6 +50,9 @@
     },
     "windows": {
       "entryFile": "index.windows"
+    },
+    "kaios": {
+      "entryFile": "index.kaios"
     }
   }
 }

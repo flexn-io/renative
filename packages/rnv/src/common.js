@@ -2,7 +2,8 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { cleanFolder } from './fileutils';
-import appRunner from './cli/app';
+import { createPlatformBuild } from './cli/platform';
+import appRunner, { copyRuntimeAssets } from './cli/app';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
@@ -242,10 +243,29 @@ const isPlatformActive = (c, platform, resolve) => {
     return true;
 };
 
+const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_configureIfRequired:${platform}`);
+
+    if (!fs.existsSync(getAppFolder(c, platform))) {
+        logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
+
+        const newCommand = Object.assign({}, c);
+        newCommand.subCommand = 'configure';
+        newCommand.program = { appConfig: c.id, update: false };
+
+        createPlatformBuild(c, platform)
+            .then(() => appRunner(newCommand))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+    } else {
+        copyRuntimeAssets(c).then(() => resolve()).catch(e => reject(e));
+    }
+});
+
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
-    isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning,
+    isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,

@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { execShellAsync, executeAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, logWarning,
+    getAppFolder, isPlatformActive, logWarning, configureIfRequired,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
@@ -43,13 +43,6 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask('configureWebOSProject');
-
-
-    resolve();
-});
-
 const runWebOS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`runWebOS:${platform}`);
 
@@ -84,6 +77,25 @@ const runWebOS = (c, platform) => new Promise((resolve, reject) => {
                 reject(e);
             }
         });
+});
+
+
+const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask('configureWebOSProject');
+
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    configureIfRequired(c, platform)
+        .then(() => copyWebOSAssets(c, platform))
+        .then(() => configureProject(c, platform))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const configureProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+    logTask(`configureProject:${platform}`);
+
+    resolve();
 });
 
 export { launchWebOSimulator, copyWebOSAssets, configureWebOSProject, runWebOS };
