@@ -73,6 +73,7 @@ const runKaiOS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`runKaiOS:${platform}`);
 
     buildWeb(c, platform)
+        .then(() => launchKaiOSSimulator(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
 });
