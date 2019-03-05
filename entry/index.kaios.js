@@ -6,7 +6,7 @@ import registerServiceWorker from '../src/registerServiceWorker';
 import { KAIOS, FORM_FACTOR_MOBILE } from '../packages/rnv/src/constants';
 
 Api.platform = KAIOS;
-Api.formFactor = FORM_FACTOR_TV;
+Api.formFactor = FORM_FACTOR_MOBILE;
 Api.platformGroup = 'jsapp';
 
 ReactDOM.render(React.createElement(App), document.getElementById('root'));

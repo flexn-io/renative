@@ -2,17 +2,20 @@ import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import {
-    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS, TIZEN_WATCH,
-    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     isPlatformSupported, getConfig, logTask, logComplete, checkSdk,
     logError, getAppFolder, logDebug, logErrorPlatform, isSdkInstalled, logWarning, configureIfRequired,
 } from '../common';
+import {
+    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
+} from '../constants';
 import { executeAsync, execCLI } from '../exec';
 import { runXcodeProject } from '../platformTools/apple';
 import { buildWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
+import { runKaiOS } from '../platformTools/kaios';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';
 
@@ -37,24 +40,24 @@ const run = (c) => {
     case RUN:
         return _runApp(c);
         break;
-    case PACKAGE:
-        return Promise.resolve();
-        break;
-    case BUILD:
-        return Promise.resolve();
-        break;
-    case DEPLOY:
-        return Promise.resolve();
-        break;
-    case UPDATE:
-        return Promise.resolve();
-        break;
-    case TEST:
-        return Promise.resolve();
-        break;
-    case DOC:
-        return Promise.resolve();
-        break;
+    // case PACKAGE:
+    //     return Promise.resolve();
+    //     break;
+    // case BUILD:
+    //     return Promise.resolve();
+    //     break;
+    // case DEPLOY:
+    //     return Promise.resolve();
+    //     break;
+    // case UPDATE:
+    //     return Promise.resolve();
+    //     break;
+    // case TEST:
+    //     return Promise.resolve();
+    //     break;
+    // case DOC:
+    //     return Promise.resolve();
+    //     break;
     default:
         return Promise.reject(`Command ${c.command} not supported`);
     }
@@ -72,7 +75,6 @@ const _runApp = c => new Promise((resolve, reject) => {
 
     switch (platform) {
     case IOS:
-
         configureIfRequired(c, platform)
             .then(() => runXcodeProject(c, platform, 'iPhone 6'))
             .then(() => resolve())
@@ -123,6 +125,14 @@ const _runApp = c => new Promise((resolve, reject) => {
 
         configureIfRequired(c, platform)
             .then(() => runWebOS(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case KAIOS:
+        if (!checkSdk(c, platform, reject)) return;
+
+        configureIfRequired(c, platform)
+            .then(() => runKaiOS(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
         return;

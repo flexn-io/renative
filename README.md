@@ -47,7 +47,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
-    ...
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/kaios/docs/rnv_kaios.gif?raw=true" />
     </th>
   </tr>
 </table>

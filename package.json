@@ -1,7 +1,7 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.10.0",
-  "codename": "Ocean's Eleven",
+  "version": "0.11.0",
+  "codename": "Ocean's Twelve",
   "keywords": [
     "react",
     "react-native",
@@ -73,6 +73,7 @@
     "webos": "rnv run -p webos -t emulator",
     "macos": "npx rnv run -p macos",
     "windows": "npx rnv run -p windows",
+    "kaios": "npx rnv run -p kaios",
     "test": "jest",
     "preversion": "npm run test",
     "version": "./packages/rnv/utils/update-versions.sh",

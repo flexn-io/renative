@@ -21,18 +21,18 @@ const run = (c) => {
     case CONFIGURE:
         return _runCreatePlatforms(c);
         break;
-    case UPDATE:
-        return Promise.resolve();
-        break;
-    case LIST:
-        return Promise.resolve();
-        break;
-    case ADD:
-        return Promise.resolve();
-        break;
-    case REMOVE:
-        return Promise.resolve();
-        break;
+    // case UPDATE:
+    //     return Promise.resolve();
+    //     break;
+    // case LIST:
+    //     return Promise.resolve();
+    //     break;
+    // case ADD:
+    //     return Promise.resolve();
+    //     break;
+    // case REMOVE:
+    //     return Promise.resolve();
+    //     break;
     default:
         return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
     }

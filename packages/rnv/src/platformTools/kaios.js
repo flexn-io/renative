@@ -40,10 +40,24 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
     });
 });
 
+const copyKaiOSAssets = (c, platform) => new Promise((resolve, reject) => {
+    logTask('copyKaiOSAssets');
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    const sourcePath = path.join(c.appConfigFolder, 'assets', platform);
+    const destPath = path.join(getAppFolder(c, platform));
+
+    copyFolderContentsRecursiveSync(sourcePath, destPath);
+    resolve();
+});
+
 const configureKaiOSProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('configureKaiOSProject');
 
+    if (!isPlatformActive(c, platform, resolve)) return;
+
     configureIfRequired(c, platform)
+        .then(() => copyKaiOSAssets(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -55,4 +69,12 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { launchKaiOSSimulator, configureKaiOSProject };
+const runKaiOS = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`runKaiOS:${platform}`);
+
+    buildWeb(c, platform)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+export { launchKaiOSSimulator, configureKaiOSProject, runKaiOS };
