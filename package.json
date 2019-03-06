@@ -56,12 +56,12 @@
     "Aurimas Mickys <https://github.com/aurimas535>"
   ],
   "bin": {
-    "rnv": "./packages/rnv/bin/index.js"
+    "rnv": "./rnv-cli/bin/index.js"
   },
   "scripts": {
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
-    "init": "cd ./packages/rnv && npm install && npm run build && cd ../../ && npx rnv init",
-    "watch": "cd ./packages/rnv && npm run watch",
+    "init": "npm install rnv && npx rnv init",
+    "watch": "cd ./rnv-cli && npm run watch",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "configure": "npx rnv app configure",
@@ -79,17 +79,18 @@
     "kaios": "npx rnv run -p kaios",
     "test": "jest",
     "preversion": "npm run test",
-    "version": "./packages/rnv/utils/update-versions.sh",
+    "version": "./rnv/utils/update-versions.sh",
     "doc": "doctoc . --maxlevel 1"
   },
   "dependencies": {
+    "babel-polyfill": "6.26.0",
+    "metro-resolver": "0.48.3",
     "react": "16.8.3",
     "react-dom": "16.8.3",
     "react-native": "0.58.5",
     "react-native-web": "0.9.9",
-    "source-map-loader": "0.2.4",
-    "babel-polyfill": "6.26.0",
-    "metro-resolver": "0.48.3"
+    "rnv-cli": "file:rnv-cli",
+    "source-map-loader": "0.2.4"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0",
@@ -148,7 +149,9 @@
     "webpack": "4.20.2",
     "webpack-cli": "3.1.2",
     "webpack-dev-server": "3.2.1",
-    "write-json-webpack-plugin": "1.1.0"
+    "write-json-webpack-plugin": "1.1.0",
+    "rnv": "file:./rnv-cli",
+    "lerna": "3.13.1"
   },
   "jest": {
     "preset": "react-native",

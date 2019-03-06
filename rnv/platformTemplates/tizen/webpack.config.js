@@ -8,10 +8,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const appDirectory = path.resolve(__dirname, '../../');
 const appBuildDirectory = path.resolve(__dirname);
 const appBuildPublic = path.resolve(__dirname, 'public');
-const platform = 'tizenwatch';
-const platformFamily = 'tizen';
-const formFactor = 'watch';
-const config = { metaTags: { viewport: 'content="width=200"' } };
+const platform = 'tizen';
+const platformFamily = 'smarttv';
+const formFactor = 'tv';
+const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' } };
 
 const babelLoaderConfiguration = {
     test: /\.js$/,
@@ -100,7 +100,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             alwaysWriteToDisk: true,
             filename: path.resolve(appBuildPublic, './index.html'),
-            template: path.resolve(appDirectory, './packages/rnv/supportFiles/template.js'),
+            template: path.resolve(appDirectory, './rnv/supportFiles/template.js'),
             minify: false,
             templateParameters: {
                 ...config,

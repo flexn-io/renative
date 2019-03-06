@@ -9,7 +9,7 @@
       "entryFile": "index.ios",
       "scheme": "RNVApp",
       "runScheme": "Debug",
-      "platformTemplate": "./packages/rnv/platformTemplates/ios"
+      "platformTemplate": "./rnv/platformTemplates/ios"
     },
     "tvos": {
       "entryFile": "index.tvos",
