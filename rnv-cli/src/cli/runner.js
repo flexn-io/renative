@@ -172,7 +172,9 @@ const _runWeb = c => new Promise((resolve, reject) => {
     const wpPublic = path.join(appFolder, 'public');
     const port = 8080;
 
-    shell.exec(`webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`);
+    const wds = path.resolve(c.projectRootFolder, 'node_modules', 'webpack-dev-server/bin/webpack-dev-server.js');
+
+    shell.exec(`${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`);
     resolve();
 });
 

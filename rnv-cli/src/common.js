@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { cleanFolder } from './fileutils';
+import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync } from './fileutils';
 import { createPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets } from './cli/app';
 import setupCLI from './cli/setup';
@@ -73,39 +73,60 @@ const checkAndConfigureRootProject = (cmd, subCmd, process, program) => new Prom
     }
 });
 
+const _getPath = (c, p) => {
+    if (p.startsWith('./')) {
+        return path.join(c.projectRootFolder, p);
+    }
+    return p.replace(/RNV_ROOT/g, c.rnvRootFolder).replace(/~/g, c.homeFolder);
+};
+
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     _isInfoEnabled = program.info === true;
     _appConfigId = program.appConfigID;
     let c = { cli: {} };
 
-    const platformAssetsFolder = path.join(base, 'platformAssets');
-    const platformBuildsFolder = path.join(base, 'platformBuilds');
-    const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
-    const projectRootFolder = base;
-    const rnvFolder = path.join(__dirname, '..');
-    let globalConfigFolder;
-    const configPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
-
     c.program = program;
     c.process = process;
     c.platform = program.platform;
     c.command = cmd;
-    c.projectRootFolder = projectRootFolder;
-    c.rnvFolder = rnvFolder;
+    c.projectRootFolder = base;
+    c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
+    c.rnvRootFolder = path.join(__dirname, '../..');
+    c.rnvFolder = path.join(__dirname, '..');
     c.homeFolder = homedir;
     c.subCommand = subCmd;
+    c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
 
-    const rootConfig = JSON.parse(fs.readFileSync(configPath).toString());
+    // Parse Project Config
+    c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
+    c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder);
+    c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
+    c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder);
+    c.entryFolder = _getPath(c, c.projectConfig.entryFolder);
+    c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder);
+    c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder);
+    c.platformBuildsFolder = _getPath(c, c.projectConfig.platformBuildsFolder);
+    c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
 
-    if (rootConfig.globalConfigFolder.startsWith('~')) {
-        globalConfigFolder = path.join(homedir, rootConfig.globalConfigFolder.substr(1));
-    } else {
-        globalConfigFolder = path.join(base, rootConfig.globalConfigFolder);
+    // Check appConfigs
+    if (!fs.existsSync(c.appConfigsFolder)) {
+        logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create one for you.`);
+        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs'), c.appConfigsFolder);
     }
 
-    c.globalConfigFolder = globalConfigFolder;
-    c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
+    // Check entry
+    if (!fs.existsSync(c.entryFolder)) {
+        logWarning(`Looks like your entry folder ${chalk.bold.white(c.entryFolder)} is missing! Let's create one for you.`);
+        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'entry'), c.entryFolder);
+    }
 
+    // Check src
+    if (!fs.existsSync(c.projectSourceFolder)) {
+        logWarning(`Looks like your src folder ${chalk.bold.white(c.projectSourceFolder)} is missing! Let's create one for you.`);
+        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'src'), c.projectSourceFolder);
+    }
+
+    // Check global config
     if (fs.existsSync(c.globalConfigPath)) {
         c.globalConfig = JSON.parse(fs.readFileSync(c.globalConfigPath).toString());
 
@@ -119,29 +140,21 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
     }
 
-
     if (_currentJob === 'setup' || _currentJob === 'init') {
         resolve(c);
         return;
     }
 
-    let appConfigFolder;
-
     if (_appConfigId) {
         // App ID specified
-        c = Object.assign(c, _getConfig(_appConfigId));
-
-        // console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
-
+        c = _getConfig(c, _appConfigId);
         resolve(c);
     } else {
         // Use latest app from platfromAssets
-        const appConfFilePath = path.join(base, 'platformAssets/config.json');
-        if (!fs.existsSync(appConfFilePath)) {
-            // console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up! 🔥\n${LINE}\n`));
-            logWarning('Seems like you\'re missing ./platformAssets/config.json file. But don\'t worry. RNV got you covered. Let\'s configure it for you!');
+        if (!fs.existsSync(c.runtimeConfigPath)) {
+            logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. RNV got you covered. Let\'s configure it for you!`);
 
-            c = Object.assign(c, _getConfig('helloWorld'));
+            c = _getConfig(c, 'helloWorld');
 
             const newCommand = Object.assign({}, c);
             newCommand.subCommand = 'configure';
@@ -149,10 +162,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
         } else {
             try {
-                const assetConfig = JSON.parse(fs.readFileSync(appConfFilePath).toString());
-                c = Object.assign(c, _getConfig(assetConfig.id));
-
-                // console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(_currentJob)} is firing up ${chalk.white.bold(c.appId)} 🔥\n${LINE}\n`));
+                const assetConfig = JSON.parse(fs.readFileSync(c.runtimeConfigPath).toString());
+                c = _getConfig(c, assetConfig.id);
                 resolve(c);
             } catch (e) {
                 reject(e);
@@ -209,45 +220,16 @@ const logEnd = () => {
     _currentProcess.exit();
 };
 
-const _getConfig = (appConfigId) => {
+const _getConfig = (c, appConfigId) => {
     logTask(`_getConfig:${appConfigId}`);
 
-    const c = JSON.parse(fs.readFileSync(path.join(base, RNV_PROJECT_CONFIG_NAME)).toString());
-    const appConfigFolder = path.join(base, c.appConfigsFolder, appConfigId);
-    const platformAssetsFolder = path.join(base, 'platformAssets');
-    const platformBuildsFolder = path.join(base, 'platformBuilds');
-    const platformTemplatesFolder = path.join(__dirname, '../platformTemplates');
-    const appConfigPath = path.join(appConfigFolder, RNV_APP_CONFIG_NAME);
-    const appConfigFile = JSON.parse(fs.readFileSync(appConfigPath).toString());
+    c.appConfigFolder = path.join(c.appConfigsFolder, appConfigId);
+    c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
+    c.appConfigFile = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
+    c.appId = appConfigId;
 
-    return {
-        rootConfig: c,
-        appId: appConfigId,
-        appConfigFile,
-        appConfigPath,
-        appConfigFolder,
-        platformAssetsFolder,
-        platformBuildsFolder,
-        platformTemplatesFolder,
-    };
+    return c;
 };
-
-const checkConfig = appId => new Promise((resolve, reject) => {
-    const rootConfig = JSON.parse(fs.readFileSync(path.join(base, RNV_PROJECT_CONFIG_NAME)).toString());
-    let cf;
-    if (appId) {
-        cf = path.join(base, RNV_PROJECT_CONFIG_NAME);
-    }
-    cf = path.join(base, 'platformAssets', RNV_APP_CONFIG_NAME);
-    try {
-        const c = JSON.parse(fs.readFileSync(cf).toString());
-        resolve({
-            rootConfig,
-        });
-    } catch (e) {
-        resolve();
-    }
-});
 
 const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
 
