@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.11.0",
+  "version": "0.12.0-alpha1",
   "codename": "Ocean's Twelve",
   "keywords": [
     "react",
@@ -55,11 +55,13 @@
     "David Rielo <https://github.com/davidrielo>",
     "Aurimas Mickys <https://github.com/aurimas535>"
   ],
+  "bin": {
+    "rnv": "./packages/rnv/bin/index.js"
+  },
   "scripts": {
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
-    "postinstall": "npm run lerna && npx rnv init",
-    "watch": "npx lerna run --parallel watch",
-    "lerna": "npx lerna bootstrap",
+    "init": "cd ./packages/rnv && npm install && npm run build && cd ../../ && npx rnv init",
+    "watch": "cd ./packages/rnv && npm run watch",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
     "configure": "npx rnv app configure",
@@ -127,7 +129,6 @@
     "husky": "1.2.0",
     "icon-toolkit": "0.0.9",
     "jest": "23.4.1",
-    "lerna": "3.4.0",
     "lint-staged": "8.1.0",
     "metro-react-native-babel-preset": "0.51.1",
     "natives": "1.1.6",
@@ -139,7 +140,6 @@
     "react-native-web-vector-icons": "4.4.3",
     "react-test-renderer": "16.7.0-alpha.2",
     "rimraf": "2.6.2",
-    "rnv": "file:./packages/rnv",
     "schedule": "0.4.0",
     "semver": "5.5.0",
     "shelljs": "0.8.2",
