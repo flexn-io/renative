@@ -87,7 +87,7 @@ const runTizen = (c, platform) => new Promise((resolve, reject) => {
                     .then(() => resolve())
                     .catch((e) => {
                         logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
-                            chalk.white.bold('npx rnv target launch -p tizen -t <EMULATOR_NAME>')}"`);
+                            chalk.white.bold('rnv target launch -p tizen -t <EMULATOR_NAME>')}"`);
                         reject(e);
                     });
             } else {

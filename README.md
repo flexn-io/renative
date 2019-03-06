@@ -331,13 +331,13 @@ Open the file and edit SDK paths of platforms you plan to use:
 Re-Generate platform projects (for helloWorld app config platforms):
 
 ```bash
-npx rnv platform configure -c helloWorld
+rnv platform configure -c helloWorld
 ```
 
 Configure your multi-platfrom app based on `./appConfigs/helloWorld` configuration:
 
 ```bash
-npx rnv app configure -c helloWorld -u
+rnv app configure -c helloWorld -u
 ```
 
 #### Clean Project
@@ -432,9 +432,9 @@ npm run ios
 #### Advanced
 
 ```
-npx rnv run -help
-npx rnv run -p ios -t "iPhone 6 Plus"
-npx rnv run -p ios -t "iPhone 6 Plus" --info
+rnv run -help
+rnv run -p ios -t "iPhone 6 Plus"
+rnv run -p ios -t "iPhone 6 Plus" --info
 ```
 
 ---
@@ -494,14 +494,14 @@ npm run android
 
 Launch specific emulator:
 ```
-npx rnv target launch -p android -t Nexus_5X_API_26
+rnv target launch -p android -t Nexus_5X_API_26
 ```
 
 Run via RNV CLI
 
 ```
-npx rnv run -p android
-npx rnv run -p android --info
+rnv run -p android
+rnv run -p android --info
 ```
 
 ---
@@ -542,9 +542,9 @@ npm run tvos
 #### Advanced
 
 ```
-npx rnv run -help
-npx rnv run -p tvos -t "Apple TV 4K"
-npx rnv run -p tvos -t "Apple TV 4K" --info
+rnv run -help
+rnv run -p tvos -t "Apple TV 4K"
+rnv run -p tvos -t "Apple TV 4K" --info
 ```
 
 ---
@@ -591,14 +591,14 @@ npm run androidtv
 
 Launch specific emulator:
 ```
-npx rnv target launch -p androidtv -t Android_TV_720p_API_22
+rnv target launch -p androidtv -t Android_TV_720p_API_22
 ```
 
 Run via RNV CLI
 
 ```
-npx rnv run -p androidtv
-npx rnv run -p androidtv --info
+rnv run -p androidtv
+rnv run -p androidtv --info
 ```
 
 ---
@@ -638,9 +638,9 @@ open browser URL: http://0.0.0.0:8080/
 #### Advanced
 
 ```
-npx rnv run -help
-npx rnv run -p web
-npx rnv run -p web --info
+rnv run -help
+rnv run -p web
+rnv run -p web --info
 ```
 
 ---
@@ -687,7 +687,7 @@ Make sure you have at least 1 TV VM setup
 
 
 ```
-npx rnv target launch -p tizen -t T-samsung-5.0-x86
+rnv target launch -p tizen -t T-samsung-5.0-x86
 ```
 
 #### Run
@@ -701,7 +701,7 @@ npm run tizen
 or specific simulator:
 
 ```
-npx rnv run -p tizen -t T-samsung-5.0-x86
+rnv run -p tizen -t T-samsung-5.0-x86
 ```
 
 ---
@@ -748,7 +748,7 @@ Make sure you have at least 1 TV VM setup
 
 
 ```
-npx rnv target launch -p tizenwatch -t W-5.0-circle-x86
+rnv target launch -p tizenwatch -t W-5.0-circle-x86
 ```
 
 #### Run
@@ -762,7 +762,7 @@ npm run tizenwatch
 or specific simulator:
 
 ```
-npx rnv run -p tizen -t W-5.0-circle-x86
+rnv run -p tizen -t W-5.0-circle-x86
 ```
 
 ---
@@ -796,7 +796,7 @@ npx rnv run -p tizen -t W-5.0-circle-x86
 -   launch webOS emulator via CLI
 
 ```bash
-npx rnv target launch -p webos -t emulator
+rnv target launch -p webos -t emulator
 ```
 
 -   launch webOS emulator Manually
@@ -826,8 +826,8 @@ npm run webos
 Run via RNV CLI
 
 ```
-npx rnv run -p webos -t emulator
-npx rnv run -p webos -t emulator --info
+rnv run -p webos -t emulator
+rnv run -p webos -t emulator --info
 ```
 
 ---
@@ -868,8 +868,8 @@ npm run macos
 Run via RNV CLI
 
 ```
-npx rnv run -p macos
-npx rnv run -p macos --info
+rnv run -p macos
+rnv run -p macos --info
 ```
 
 ---
@@ -910,8 +910,8 @@ npm run windows
 Run via RNV CLI
 
 ```
-npx rnv run -p windows
-npx rnv run -p windows --info
+rnv run -p windows
+rnv run -p windows --info
 ```
 
 ---
@@ -958,14 +958,14 @@ npm run androidwear
 
 Launch specific emulator:
 ```
-npx rnv target launch -p androidwear -t Android_Wear_Round_API_28
+rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ```
 
 Run via RNV CLI
 
 ```
-npx rnv run -p androidwear
-npx rnv run -p androidwear --info
+rnv run -p androidwear
+rnv run -p androidwear --info
 ```
 
 ---
@@ -1018,14 +1018,14 @@ npm run kaios
 
 Launch specific emulator:
 ```
-npx rnv target launch -p kaios -t emulator
+rnv target launch -p kaios -t emulator
 ```
 
 Run via RNV CLI
 
 ```
-npx rnv run -p kaios
-npx rnv run -p kaios --info
+rnv run -p kaios
+rnv run -p kaios --info
 ```
 
 
@@ -1083,31 +1083,31 @@ rnv plugin:list         //List all installed plugins for current appConfig
 Examples:
 
 ```
-npx rnv setup
+rnv setup
 
-npx rnv platform configure -c helloWorld
+rnv platform configure -c helloWorld
 
-npx rnv app configure -c helloWorld
+rnv app configure -c helloWorld
 
-npx rnv app configure -c helloWorld -u
+rnv app configure -c helloWorld -u
 
-npx rnv run -p ios -t "iPhone 6"
-npx rnv run -p tvos
-npx rnv run -p tizen
-npx rnv run -p web
-npx rnv run -p tizen -t T-samsung-5.0-x86
-npx rnv run -p webos -t emulator
-npx rnv run -p android
-npx rnv run -p androidtv
-npx rnv run -p androidwear
-npx rnv run -p macos
-npx rnv run -p windows
+rnv run -p ios -t "iPhone 6"
+rnv run -p tvos
+rnv run -p tizen
+rnv run -p web
+rnv run -p tizen -t T-samsung-5.0-x86
+rnv run -p webos -t emulator
+rnv run -p android
+rnv run -p androidtv
+rnv run -p androidwear
+rnv run -p macos
+rnv run -p windows
 
-npx rnv target launch -p android -t Nexus_5X_API_26
-npx rnv target launch -p androidtv -t Android_TV_720p_API_22
-npx rnv target launch -p androidwear -t Android_Wear_Round_API_28
-npx rnv target launch -p tizen -t T-samsung-5.0-x86
-npx rnv target launch -p webos -t emulator
+rnv target launch -p android -t Nexus_5X_API_26
+rnv target launch -p androidtv -t Android_TV_720p_API_22
+rnv target launch -p androidwear -t Android_Wear_Round_API_28
+rnv target launch -p tizen -t T-samsung-5.0-x86
+rnv target launch -p webos -t emulator
 
 
 ```

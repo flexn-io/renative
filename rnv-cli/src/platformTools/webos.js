@@ -63,7 +63,7 @@ const runWebOS = (c, platform) => new Promise((resolve, reject) => {
         .catch((e) => {
             if (e && e.includes(CLI_WEBBOS_ARES_INSTALL)) {
                 logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
-                    chalk.white.bold('npx rnv target launch -p webos -t emulator')}"`);
+                    chalk.white.bold('rnv target launch -p webos -t emulator')}"`);
                 // const newCommand = Object.assign({}, c);
                 // c.subCommand = 'launch';
                 // c.program = { target: 'emulator' };
