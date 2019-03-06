@@ -6,6 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const appDirectory = path.resolve(__dirname, '../../');
+const platformBuildsDir = path.resolve(__dirname, '../');
 const appBuildDirectory = path.resolve(__dirname);
 const appBuildPublic = path.resolve(__dirname, 'public');
 const platform = 'kaios';
@@ -19,7 +20,7 @@ const babelLoaderConfiguration = {
     include: [
         path.resolve(appDirectory, 'src'),
         path.resolve(appDirectory, 'entry'),
-        path.resolve(appDirectory, 'packages'),
+
     ],
     use: {
         loader: 'babel-loader',
@@ -100,7 +101,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             alwaysWriteToDisk: true,
             filename: path.resolve(appBuildPublic, './index.html'),
-            template: path.resolve(appDirectory, './rnv/supportFiles/template.js'),
+            template: path.resolve(platformBuildsDir, './_shared/template.js'),
             minify: false,
             templateParameters: {
                 ...config,

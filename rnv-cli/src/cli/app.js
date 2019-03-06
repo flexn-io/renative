@@ -179,6 +179,10 @@ const _runPlugins = c => new Promise((resolve, reject) => {
             copyFileSync(path.resolve(pp, file), path.resolve(c.projectRootFolder, 'node_modules', dir));
         });
     });
+
+    mkdirSync(path.resolve(c.platformBuildsFolder, '_shared'));
+
+    copyFileSync(path.resolve(c.rnvFolder, 'supportFiles/template.js'), path.resolve(c.platformBuildsFolder, '_shared/template.js'));
     resolve();
 });
 
