@@ -77,7 +77,7 @@ const _getPath = (c, p) => {
     if (p.startsWith('./')) {
         return path.join(c.projectRootFolder, p);
     }
-    return p.replace(/RNV_ROOT/g, c.rnvRootFolder).replace(/~/g, c.homeFolder);
+    return p.replace(/RNV_HOME/g, c.rnvHomeFolder).replace(/~/g, c.homeFolder);
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
@@ -92,7 +92,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectRootFolder = base;
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
     c.rnvRootFolder = path.join(__dirname, '../..');
-    c.rnvFolder = path.join(__dirname, '..');
+    c.rnvHomeFolder = path.join(__dirname, '..');
     c.homeFolder = homedir;
     c.subCommand = subCmd;
     c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);

@@ -46,7 +46,7 @@ const _runInit = c => new Promise((resolve, reject) => {
         console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} folder exists!`);
     } else {
         console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
-        copyFileSync(path.join(c.rnvFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME), c.globalConfigPath);
+        copyFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME), c.globalConfigPath);
         console.log(`Don\'t forget to Edit: .rnv/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`);
     }
 
@@ -56,10 +56,10 @@ const _runInit = c => new Promise((resolve, reject) => {
 const _runBootstrap = c => new Promise((resolve, reject) => {
     logTask('_runBootstrap');
 
-    const rnvFolder = path.join(__dirname, '../..');
+    const rnvRootFolder = path.join(__dirname, '../../..');
     const base = path.resolve('.');
 
-    copyFileSync(path.join(rnvFolder, 'supportFiles/projectConfigs', RNV_PROJECT_CONFIG_NAME),
+    copyFileSync(path.join(rnvRootFolder, RNV_PROJECT_CONFIG_NAME),
         path.join(base, RNV_PROJECT_CONFIG_NAME));
 
     resolve();

@@ -81,8 +81,8 @@ const _runCopyPlatforms = c => new Promise((resolve, reject) => {
     const copyPlatformTasks = [];
     for (const k in c.appConfigFile.platforms) {
         if (isPlatformSupported(k)) {
-            const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
             const ptPath = path.join(c.platformTemplatesFolder, `${k}`);
+            const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
             copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
         }
     }

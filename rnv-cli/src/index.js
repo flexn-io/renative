@@ -12,6 +12,7 @@ const commands = {
     setup: Setup,
     init: Setup,
     // bootstrap: Setup,
+    start: Runner,
     app: App,
     platform: Platform,
     run: Runner,

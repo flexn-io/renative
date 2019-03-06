@@ -171,7 +171,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 const _runPlugins = c => new Promise((resolve, reject) => {
     logTask('_runPlugins');
 
-    const pluginsPath = path.resolve(c.rnvFolder, 'plugins');
+    const pluginsPath = path.resolve(c.rnvHomeFolder, 'plugins');
 
     fs.readdirSync(pluginsPath).forEach((dir) => {
         const pp = path.resolve(pluginsPath, dir, 'overrides');
@@ -182,7 +182,7 @@ const _runPlugins = c => new Promise((resolve, reject) => {
 
     mkdirSync(path.resolve(c.platformBuildsFolder, '_shared'));
 
-    copyFileSync(path.resolve(c.rnvFolder, 'supportFiles/template.js'), path.resolve(c.platformBuildsFolder, '_shared/template.js'));
+    copyFileSync(path.resolve(c.rnvHomeFolder, 'supportFiles/template.js'), path.resolve(c.platformBuildsFolder, '_shared/template.js'));
     resolve();
 });
 

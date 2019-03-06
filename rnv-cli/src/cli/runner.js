@@ -21,6 +21,7 @@ import appRunner, { copyRuntimeAssets } from './app';
 
 
 const RUN = 'run';
+const START = 'start';
 const PACKAGE = 'package';
 const BUILD = 'build';
 const DEPLOY = 'deploy';
@@ -39,6 +40,9 @@ const run = (c) => {
     switch (c.command) {
     case RUN:
         return _runApp(c);
+        break;
+    case START:
+        return _start(c);
         break;
     // case PACKAGE:
     //     return Promise.resolve();
@@ -66,6 +70,10 @@ const run = (c) => {
 // ##########################################
 // PRIVATE
 // ##########################################
+
+const _start = c => new Promise((resolve, reject) => {
+    shell.exec('node ./node_modules/react-native/local-cli/cli.js start');
+});
 
 const _runApp = c => new Promise((resolve, reject) => {
     logTask('_runApp');
