@@ -232,7 +232,7 @@ or update rvm to latest
 $ rvm get stable
 ```
 
-**NVM**
+**NVM (Recommended way to manage your NodeJS)**
 
 ```bash
 wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
@@ -260,11 +260,6 @@ Tested / Recommended Node configurations:
 | ------------ | :---------: |
 | `10.13.0`     |   `6.4.1`   |
 
-**NPX**
-
-```bash
-$ npm install -g npx
-```
 
 **CocoaPods (if you want to develop for iOS/tvOS)**
 
