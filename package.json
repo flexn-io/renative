@@ -60,7 +60,7 @@
   },
   "scripts": {
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
-    "init": "npm install rnv && npx rnv init",
+    "init": "npm install rnv && rnv init",
     "watch": "cd ./rnv-cli && npm run watch",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start:reset": "node node_modules/react-native/local-cli/cli.js start --reset-cache",
@@ -150,8 +150,7 @@
     "webpack-cli": "3.1.2",
     "webpack-dev-server": "3.2.1",
     "write-json-webpack-plugin": "1.1.0",
-    "rnv": "file:./rnv-cli",
-    "lerna": "3.13.1"
+    "rnv": "file:./rnv-cli"
   },
   "jest": {
     "preset": "react-native",
