@@ -49,5 +49,3 @@ platformBuilds/
 platformAssets/
 
 package-lock.json
-
-rnv-cli/dist

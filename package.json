@@ -1,6 +1,6 @@
 {
   "name": "react-native-vanilla",
-  "version": "0.12.0-alpha4",
+  "version": "0.12.0-alpha6",
   "codename": "Ocean's Twelve",
   "keywords": [
     "react",
@@ -59,9 +59,9 @@
     "rnv": "./rnv-cli/bin/index.js"
   },
   "scripts": {
+    "prepublishOnly": "npm run build",  
     "clean": "git clean -dfx && rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*",
-    "postinstall": "npm run build",
-    "init": "rnv init",
+    "init": "npm run build && rnv init",
     "watch": "nodemon --watch rnv-cli/src --exec npm run build",
     "build": "babel rnv-cli/src -d rnv-cli/dist",
     "start": "node node_modules/react-native/local-cli/cli.js start",
