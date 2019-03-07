@@ -12,10 +12,11 @@ import {
 } from '../constants';
 import { executeAsync, execCLI } from '../exec';
 import { runXcodeProject } from '../platformTools/apple';
-import { buildWeb } from '../platformTools/web';
+import { buildWeb, runWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { runKaiOS } from '../platformTools/kaios';
+import { runElectron } from '../platformTools/electron';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';
 
@@ -109,13 +110,13 @@ const _runApp = c => new Promise((resolve, reject) => {
     case MACOS:
     case WINDOWS:
         configureIfRequired(c, platform)
-            .then(() => _runElectron(c, platform))
+            .then(() => runElectron(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case WEB:
         configureIfRequired(c, platform)
-            .then(() => _runWeb(c, platform))
+            .then(() => runWeb(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -161,30 +162,5 @@ const _runAndroid = (c, platform, forcePackage) => new Promise((resolve, reject)
         runAndroid(c, platform).then(() => resolve()).catch(e => reject(e));
     }
 });
-
-const _runElectron = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runElectron:${platform}`);
-
-    const appFolder = getAppFolder(c, platform);
-    buildWeb(c, platform)
-        .then(() => {
-            shell.exec(`electron ${appFolder}`);
-        });
-});
-
-const _runWeb = c => new Promise((resolve, reject) => {
-    logTask('_runWeb');
-
-    const appFolder = getAppFolder(c, WEB);
-    const wpConfig = path.join(appFolder, 'webpack.config.js');
-    const wpPublic = path.join(appFolder, 'public');
-    const port = 8080;
-
-    const wds = path.resolve(c.projectRootFolder, 'node_modules', 'webpack-dev-server/bin/webpack-dev-server.js');
-
-    shell.exec(`${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`);
-    resolve();
-});
-
 
 export default run;

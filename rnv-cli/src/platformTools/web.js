@@ -1,3 +1,4 @@
+import path from 'path';
 import { execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
@@ -7,12 +8,15 @@ import {
 } from '../common';
 
 function buildWeb(c, platform) {
-    logTask('buildWeb');
-    return execShellAsync(`NODE_ENV=production webpack -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
+    logTask(`buildWeb:${platform}`);
+
+    const wbp = path.resolve(c.nodeModulesFolder, 'webpack/bin/webpack.js');
+
+    return execShellAsync(`NODE_ENV=production ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 }
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask('configureWebOSProject');
+    logTask(`configureWebOSProject:${platfrom}`);
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -28,5 +32,19 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     resolve();
 });
 
+const runWeb = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`runWeb:${platform}`);
 
-export { buildWeb, configureWebProject };
+    const appFolder = getAppFolder(c, platform);
+    const wpConfig = path.join(appFolder, 'webpack.config.js');
+    const wpPublic = path.join(appFolder, 'public');
+    const port = 8080;
+
+    const wds = path.resolve(c.nodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
+
+    shell.exec(`${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`);
+    resolve();
+});
+
+
+export { buildWeb, runWeb, configureWebProject };
