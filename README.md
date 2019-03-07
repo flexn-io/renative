@@ -101,39 +101,6 @@
 
 ---
 
-## Supported Modes:
-
-<table>
-  <tr>
-    <th><a href="#">Clone</a></th><th><a href="#">Global CLI</a></th><th><a href="#">NPM Dependency</a></th>
-  </tr>
-  <tr>
-    <td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_git_grey.png?raw=true" />
-    <br/>
-      git clone react-native-vanilla.git
-      </td><td>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_cli_grey.png?raw=true" />
-    <br/>
-      npm install react-native-vanilla -g
-    </td><td>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/mode_npm_grey.png?raw=true" />
-    <br/>
-    npm install react-native-vanilla
-    </td>
-  </tr>
-  <tr>
-  <th>
-  </th>
-    <th>
-      COMIN SOON
-    </th><th>
-    COMIN SOON
-    </th>
-  </tr>
-</table>
-
-
 ## Features:
 
 #### Development platform
@@ -163,15 +130,17 @@
 ## 🚀 Quick Start
 
 ```bash
-$ git clone git@github.com:pavjacko/react-native-vanilla.git
-
-$ cd react-native-vanilla
-
-$ npm i
-
+$ npm install react-native-vanilla@latest -g
 ```
 
-At this point you need to keep bundler running. Ideally create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+Crerate new app:
+
+```bash
+$ rnv app create
+```
+
+
+Create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
 
 <table>
   <tr>
@@ -186,7 +155,7 @@ TAB 1:
 Start the bundler
 
 ```bash
-$ npm start
+$ rnv start
 ```
 
 TAB 2:
@@ -194,7 +163,7 @@ TAB 2:
 Run your first `ios` app
 
 ```bash
-$ npm run ios
+$ rnv run -p ios
 ```
 
 TAB 3:
@@ -202,7 +171,7 @@ TAB 3:
 Run your first `web` app
 
 ```bash
-$ npm run web
+$ rnv run -p web
 ```
 
 open: http://0.0.0.0:8080/
@@ -217,90 +186,37 @@ open: http://0.0.0.0:8080/
 
 #### 1. Prerequisites
 
-**RVM**
-
-```bash
-$ brew install gnupg
-$ gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-$ \curl -sSL https://get.rvm.io | bash
-$ source ~/.rvm/scripts/rvm
-```
-
-or update rvm to latest
-
-```bash
-$ rvm get stable
-```
-
-**NVM (Recommended way to manage your NodeJS)**
-
-```bash
-wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-source ~/.bashrc
-```
-
-If you already have nvm, update to latest:
-
-```bash
-$ curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
-```
-
 **NodeJS**
 
-The recommended way to run specific version of Node and NPM is to use NVM:
-
-```bash
-$ nvm install node 10.13.0
-$ nvm alias default node 10.13.0
-```
-
-Tested / Recommended Node configurations:
+[Download NodeJS from here](https://nodejs.org/en/download/)
 
 | Node Version | NPM Version |
 | ------------ | :---------: |
 | `10.13.0`     |   `6.4.1`   |
 
 
-**CocoaPods (if you want to develop for iOS/tvOS)**
-
-```bash
-$ sudo gem install cocoapods
-```
-
 **Xcode (if you want to develop for iOS/tvOS)**
 
 -   [Download Xcode from here](https://developer.apple.com/xcode/)
 
+**CocoaPods (if you want to develop for iOS/tvOS)**
+
+-   [Download Cocoapods from here](https://cocoapods.org/)
 
 **Android Studio (if you want to develop for Android)**
 
 -   [Download Android Studio from here](https://developer.android.com/studio)
 
-after installation complete your Android SDK should be located here:
-
-```
-/Users/<USER>/Library/Android/sdk
-```
 
 **Tizen SDK (if you want to develop for Tizen)**
 
 -   [Download Tizen Studio from here](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk)
 
-after installation complete your Tizen SDK should be located here:
-
-```
-/Users/<USER>/tizen-studio/
-```
 
 **WebOS SDK (if you want to develop for WebOS)**
 
 -   [Download WebOS SDK from here](http://webostv.developer.lge.com/sdk/installation/)
 
-after installation complete your WebOS SDK should be located here:
-
-```
-/Users/<USER>/Library/webOS_TV_SDK/
-```
 
 ---
 
@@ -309,7 +225,7 @@ after installation complete your WebOS SDK should be located here:
 
 #### Global Configurations
 
-`npm install` will create config folder at this location: `~/.rnv/config.json`
+`rnv` will create config folder at this location: `~/.rnv/config.json`
 
 Open the file and edit SDK paths of platforms you plan to use:
 
@@ -340,13 +256,6 @@ Configure your multi-platfrom app based on `./appConfigs/helloWorld` configurati
 rnv app configure -c helloWorld -u
 ```
 
-#### Clean Project
-
-Sometimes you might want to clean your project and start fresh. It's simple!:
-
-```bash
-npm run clean && npm i
-```
 
 ---
 
