@@ -159,69 +159,29 @@ open: http://0.0.0.0:8080/
 
 ---
 
-## 🚀🚀 Features:
+## Features:
 
-#### Development platform
+#### Development platforms
 
-| OS      |  Support   |
-| ------- | :--------: |
-| Mac     |   `YES`    |
-| Windows |   `untested` PRs Welcome!    |
-| Linux   | `untested` PRs Welcome! |
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-untested-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-untested-lightgrey.svg)
 
 #### Requirements
 
 -   [Node](https://nodejs.org) `10.13.0` or newer
 -   [NPM](https://npmjs.com/) `6.4.1` or newer
--   [RVM](https://rvm.io/) `1.29.7` or newer
--   [NPX](https://npmjs.com/) `10.2.0` or newer
--   [React Native](http://facebook.github.io/react-native/docs/getting-started.html) for development
-
-#### Stack / Libraries
-
--   [React](https://facebook.github.io/react/) `16.8.3` react library
--   [React Native](https://facebook.github.io/react-native/) `0.58.5` for building native apps using react
--   [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
-
+-   [Android Studio](https://developer.android.com/studio) (if you want to develop for Android)
+-   [Xcode](https://developer.apple.com/xcode/) (if you want to develop for iOS/tvOS)
+-   [Tizen Studio](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) (if you want to develop for Tizen)
+-   [WebOS SDK](http://webostv.developer.lge.com/sdk/installation/) (if you want to develop for WebOS)
 
 #### Prerequisites
-
-**NodeJS**
-
-[Download NodeJS from here](https://nodejs.org/en/download/)
-
-| Node Version | NPM Version |
-| ------------ | :---------: |
-| `10.13.0`     |   `6.4.1`   |
-
-
-**Xcode (if you want to develop for iOS/tvOS)**
-
--   [Download Xcode from here](https://developer.apple.com/xcode/)
-
-**CocoaPods (if you want to develop for iOS/tvOS)**
-
--   [Download Cocoapods from here](https://cocoapods.org/)
-
-**Android Studio (if you want to develop for Android)**
-
--   [Download Android Studio from here](https://developer.android.com/studio)
-
-
-**Tizen SDK (if you want to develop for Tizen)**
-
--   [Download Tizen Studio from here](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk)
-
-
-**WebOS SDK (if you want to develop for WebOS)**
-
--   [Download WebOS SDK from here](http://webostv.developer.lge.com/sdk/installation/)
-
 
 ---
 
 
-## 🚀🚀🚀 Advanced Configuration
+## Advanced Configuration
 
 #### Global Configurations
 
@@ -291,15 +251,13 @@ Folder Structure (Generated Project)
 
 ## iOS
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -334,15 +292,14 @@ rnv run -p ios -t "iPhone 6 Plus"
 
 ## Android
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
 
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -394,15 +351,13 @@ rnv target launch -p android -t Nexus_5X_API_26
 
 ## tvOS
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -437,15 +392,13 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ## Android TV
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -484,13 +437,11 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ## Web
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+
 -   Supports Chrome, Safari, Firefox, IE10+
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -524,14 +475,12 @@ rnv run -p web --info
 
 ## Tizen TV
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+
 -   Latest Tizen project
 -   Support for Tizen 5.0
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -585,14 +534,12 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ## Tizen Watch
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+
 -   Latest Tizen project
 -   Support for Tizen 5.0
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -646,13 +593,11 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ## LG webOS
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+
 -   Latest LG webOS Project
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -701,14 +646,12 @@ rnv run -p webos
 
 ## macOS
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+
 -   support for OSX/macOS
 -   Based on Electron
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -735,14 +678,12 @@ rnv run -p macos
 
 ## Windows
 
+![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+
 -   support for Windows 10+
 -   Based on Electron
-
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -768,15 +709,14 @@ rnv run -p windows
 
 ## Android Wear
 
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
 
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
@@ -818,13 +758,10 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ## KaiOS
 
--   
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
-#### Supported OS
-
-| Mac      |  Windows   |  Linux        |
-| :--------: | :--------: | :--------: |
-|   `YES`    |   `NO`    | `NO` |
 
 #### Requirements
 
