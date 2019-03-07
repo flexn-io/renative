@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import shell from 'shelljs';
-import { initializeBuilder, logComplete, logError, checkAndConfigureRootProject } from './common';
+import { initializeBuilder, logComplete, logError } from './common';
 import Runner from './cli/runner';
 import App from './cli/app';
 import Platform from './cli/platform';
@@ -20,8 +20,7 @@ const commands = {
 };
 
 const run = (cmd, subCmd, program, process) => {
-    checkAndConfigureRootProject(cmd, subCmd, process, program)
-        .then(v => initializeBuilder(cmd, subCmd, process, program))
+    initializeBuilder(cmd, subCmd, process, program)
         .then((v) => {
             if (commands[cmd]) {
                 commands[cmd](v).then(() => logComplete(true)).catch(e => logError(e, true));

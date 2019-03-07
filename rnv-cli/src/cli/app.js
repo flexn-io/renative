@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import {
     isPlatformSupported, getConfig, logTask, logComplete,
     logError, getAppFolder, isPlatformActive, logWarning, configureIfRequired,
@@ -103,7 +104,25 @@ const _runCreate = c => new Promise((resolve, reject) => {
             data.appTitle = v;
             readline.close();
 
-            //  data.projectDir = path.resolve()
+            const base = path.resolve('.');
+
+            data.projectDir = path.join(base, data.appID);
+
+
+            const pkgJsonString = fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles/package-template.json')).toString();
+
+            const pkgName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
+
+            const pkgJsonStringClean = pkgJsonString
+                .replace(/{{PACKAGE_NAME}}/g, pkgName)
+                .replace(/{{RNV_VERSION}}/g, '0.12.0-alpha8')
+                .replace(/{{PACKAGE_VERSION}}/g, '0.1.0');
+
+            mkdirSync(data.projectDir);
+
+            fs.writeFileSync(path.join(data.projectDir, 'package.json'), pkgJsonStringClean);
+
+            logTask(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.appID}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
 
             resolve();
         });

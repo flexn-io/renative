@@ -12,6 +12,7 @@ import {
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
     RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME,
 } from './constants';
+import { executeAsync } from './exec';
 
 const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS];
 const SUPPORTED_PLATFORMS_MAC = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH];
@@ -24,7 +25,6 @@ const LINE = chalk.white.bold('-------------------------------------------------
 let _currentJob;
 let _currentProcess;
 let _isInfoEnabled = false;
-let _appConfigId;
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -53,17 +53,10 @@ const isPlatformSupported = (platform, resolve, reject) => {
 };
 
 
-const checkAndConfigureRootProject = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
-    _currentJob = cmd;
+const checkAndConfigureRootProject = c => new Promise((resolve, reject) => {
+    logTask(`checkAndConfigureRootProject:${c.command} ${c.subCommand}`);
 
-    _currentProcess = process;
-    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentJob} ${subCmd || ''}`)} is firing up! 🔥\n${LINE}\n`));
-
-    logTask(`checkAndConfigureRootProject:${cmd} ${subCmd}`);
-
-    const configPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
-
-    if (fs.existsSync(configPath)) {
+    if (fs.existsSync(c.projectConfigPath)) {
         resolve();
     } else {
         logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
@@ -81,14 +74,19 @@ const _getPath = (c, p) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${cmd} ${subCmd || ''}`)} is firing up! 🔥\n${LINE}\n`));
+    _currentJob = cmd;
+    _currentProcess = process;
     _isInfoEnabled = program.info === true;
-    _appConfigId = program.appConfigID;
-    let c = { cli: {} };
+    const c = { cli: {} };
 
     c.program = program;
     c.process = process;
     c.command = cmd;
     c.subCommand = subCmd;
+    c.appID = program.appConfigID;
+    c.rnvRootFolder = path.join(__dirname, '../..');
+    c.rnvHomeFolder = path.join(__dirname, '..');
 
     if (c.command === 'app' && c.subCommand === 'create') {
         resolve(c);
@@ -98,11 +96,16 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.platform = program.platform;
     c.projectRootFolder = base;
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
-    c.rnvRootFolder = path.join(__dirname, '../..');
-    c.rnvHomeFolder = path.join(__dirname, '..');
     c.homeFolder = homedir;
     c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
 
+    checkAndConfigureRootProject(c)
+        .then(() => configureConfigs(c))
+        .then(() => resolve(c))
+        .catch(e => reject());
+});
+
+const configureConfigs = c => new Promise((resolve, reject) => {
     // Parse Project Config
     c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder);
@@ -113,7 +116,22 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder);
     c.platformBuildsFolder = _getPath(c, c.projectConfig.platformBuildsFolder);
     c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
+    c.nodeModulesFolder = path.join(c.projectRootFolder, 'node_modules');
 
+    // Check node_modules
+    if (!fs.existsSync(c.nodeModulesFolder)) {
+        // reject(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Run ${chalk.bold.white('npm install')} first!`);
+
+        logWarning(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.bold.white('npm install')} first!`);
+        executeAsync('npm', ['install']).then(() => {
+            _initializeBuilder(c, resolve, reject);
+        });
+    } else {
+        _initializeBuilder(c, resolve, reject);
+    }
+});
+
+const _initializeBuilder = (c, resolve, reject) => {
     // Check appConfigs
     if (!fs.existsSync(c.appConfigsFolder)) {
         logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create one for you.`);
@@ -151,9 +169,9 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
-    if (_appConfigId) {
+    if (c.appID) {
         // App ID specified
-        c = _getConfig(c, _appConfigId);
+        c = _getConfig(c, c.appID);
         resolve(c);
     } else {
         // Use latest app from platfromAssets
@@ -176,7 +194,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             }
         }
     }
-});
+};
 
 const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
