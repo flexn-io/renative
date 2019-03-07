@@ -87,14 +87,20 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
     c.program = program;
     c.process = process;
-    c.platform = program.platform;
     c.command = cmd;
+    c.subCommand = subCmd;
+
+    if (c.command === 'app' && c.subCommand === 'create') {
+        resolve(c);
+        return;
+    }
+
+    c.platform = program.platform;
     c.projectRootFolder = base;
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
     c.rnvRootFolder = path.join(__dirname, '../..');
     c.rnvHomeFolder = path.join(__dirname, '..');
     c.homeFolder = homedir;
-    c.subCommand = subCmd;
     c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
 
     // Parse Project Config

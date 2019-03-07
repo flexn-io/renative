@@ -1,5 +1,0 @@
-{
-  "globalConfigFolder": "~/.rnv",
-  "appConfigsFolder": "./appConfigs",
-  "platformTemplates": "RNV_ROOT/platformTemplates"
-}

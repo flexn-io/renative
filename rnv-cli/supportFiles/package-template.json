@@ -1,0 +1,8 @@
+{
+  "name": "{{APP_TITLE}}",
+  "version": "0.1.0",
+  "dependencies": {},
+  "devDependencies": {
+    "react-native-vanilla": "{{RNV_VERSION}}"
+  }
+}

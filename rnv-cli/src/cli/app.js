@@ -36,21 +36,22 @@ const run = (c) => {
     case CONFIGURE:
         return _runConfigure(c);
         break;
-    case SWITCH:
-        return Promise.resolve();
-        break;
     case CREATE:
-        return Promise.resolve();
+        return _runCreate(c);
         break;
-    case REMOVE:
-        return Promise.resolve();
-        break;
-    case LIST:
-        return Promise.resolve();
-        break;
-    case INFO:
-        return Promise.resolve();
-        break;
+    // case SWITCH:
+    //     return Promise.resolve();
+    //     break;
+    //
+    // case REMOVE:
+    //     return Promise.resolve();
+    //     break;
+    // case LIST:
+    //     return Promise.resolve();
+    //     break;
+    // case INFO:
+    //     return Promise.resolve();
+    //     break;
     default:
         return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
     }
@@ -84,42 +85,29 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _runSetupTizenProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runSetupTizenProject:${platform}`);
-    if (!isPlatformActive(c, platform, resolve)) return;
+const _runCreate = c => new Promise((resolve, reject) => {
+    logTask('_runCreate');
 
-    copyTizenAssets(c, platform)
-        .then(() => configureTizenProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
 
-const _runSetupWebOSProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runSetupWebOSProject:${platform}`);
-    if (!isPlatformActive(c, platform, resolve)) return;
+    const data = {};
 
-    copyWebOSAssets(c, platform)
-        .then(() => configureWebOSProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    readline.question('What\'s your project ID? (no spaces, folder based on ID will be created in this directory): ', (v) => {
+        // console.log(`Hi ${v}!`);
+        data.appID = v;
+        readline.question('What\'s your project Title?: ', (v) => {
+            // console.log(`Hi ${v}!`);
+            data.appTitle = v;
+            readline.close();
 
-const _runSetupWebProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runSetupWebProject:${platform}`);
-    if (!isPlatformActive(c, platform, resolve)) return;
+            //  data.projectDir = path.resolve()
 
-    resolve();
-});
-
-const _runSetupElectronProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runSetupElectronProject:${platform}`);
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    configureElectronProject(c, platform)
-        .then(() => resolve())
-        .catch(e => reject(e));
-
-    resolve();
+            resolve();
+        });
+    });
 });
 
 
