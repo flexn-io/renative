@@ -73,7 +73,7 @@
 
 
 - [🚀 Quick Start](#-quick-start)
-- [Get Started](#-get-started)
+- [Features](#-features)
 - [Advanced Configuration](#-advanced-configuration)
 - [Architecture](#architecture)
 - [iOS](#ios)
@@ -101,7 +101,65 @@
 
 ---
 
-## Features:
+## 🚀 Quick Start
+
+##### 1) Install RNV
+
+```bash
+$ npm install react-native-vanilla@latest -g
+```
+
+##### 2) Create new app:
+
+```bash
+$ rnv app create
+```
+
+Follow steps in the terminal
+
+##### 3) Create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/terminal.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+**TAB 1:**
+
+Start the bundler
+
+```bash
+$ rnv start
+```
+
+**TAB 2:**
+
+Run your first `ios` app
+
+```bash
+$ rnv run -p ios
+```
+
+**TAB 3:**
+
+Run your first `web` app
+
+```bash
+$ rnv run -p web
+```
+
+open: http://0.0.0.0:8080/
+
+
+🎉 `Congratulations! You're now multi-platform developer!` 🎉
+
+
+---
+
+## 🚀🚀 Features:
 
 #### Development platform
 
@@ -125,66 +183,8 @@
 -   [React Native](https://facebook.github.io/react-native/) `0.58.5` for building native apps using react
 -   [Babel](http://babeljs.io/) `7.x.x` for ES6+ support
 
----
 
-## 🚀 Quick Start
-
-```bash
-$ npm install react-native-vanilla@latest -g
-```
-
-Crerate new app:
-
-```bash
-$ rnv app create
-```
-
-
-Create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/terminal.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-TAB 1:
-
-Start the bundler
-
-```bash
-$ rnv start
-```
-
-TAB 2:
-
-Run your first `ios` app
-
-```bash
-$ rnv run -p ios
-```
-
-TAB 3:
-
-Run your first `web` app
-
-```bash
-$ rnv run -p web
-```
-
-open: http://0.0.0.0:8080/
-
-
-🎉 `Congratulations! You're now multi-platform developer!` 🎉
-
-
----
-
-## 🚀🚀 Get Started
-
-#### 1. Prerequisites
+#### Prerequisites
 
 **NodeJS**
 
@@ -273,35 +273,17 @@ Build Process
   </tr>
 </table>
 
-Folder Structure
+Folder Structure (Generated Project)
 
     .
     ├── appConfigs                  # Applications configuration files/assets
     │   └── helloWorld              # Example application
     │       ├── assets              # Cross platform assets
     │       └── config.json         # Application config
-    ├── docs                        # Documentation files
     ├── entry                       # Entry point index files
-    ├── packages                    # Local dependencies
-    │   └── rnv                     # React Native Vanilla Build System `CLI`
-    │       └── platformTemplates   # Platform specific Project Templates
-    │           ├── android         # `Android` platform project
-    │           ├── androidtv       # `Android TV` configured platform project
-    │           ├── androidwear     # `Android Wear` configured platform project
-    │           ├── ios             # `iOS` Xcode platform project
-    │           ├── macos           # `macOS` Electron platform project
-    │           ├── tizen           # `Tizen TV` platform project
-    │           ├── tizenwatch      # `Tizen Watch` platform project
-    │           ├── tvos            # `tvOS` Xcode platform project
-    │           ├── web             # `Web` platform project
-    │           ├── webos           # `WebOS` platform project
-    │           └── windows         # `Windows` desktop platform project
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
-    ├── src                         # Source files
-    ├── tests                       # Automated tests
-    ├── LICENSE
-    └── README.md
+    └── src                         # Source files
 
 ---
 
@@ -334,16 +316,16 @@ Folder Structure
 #### Run
 
 ```
-npm start
-npm run ios
+rnv start
+rnv run -p ios
 ```
 
 #### Advanced
 
+Launch with specific iOS simulator
+
 ```
-rnv run -help
 rnv run -p ios -t "iPhone 6 Plus"
-rnv run -p ios -t "iPhone 6 Plus" --info
 ```
 
 ---
@@ -395,8 +377,8 @@ You can create variety of emulators via Android Studio IDE
 NOTE: make sure you have 1 android device connected or 1 emulator running
 
 ```
-npm start
-npm run android
+rnv start
+rnv run -p android
 ```
 
 #### Advanced
@@ -404,13 +386,6 @@ npm run android
 Launch specific emulator:
 ```
 rnv target launch -p android -t Nexus_5X_API_26
-```
-
-Run via RNV CLI
-
-```
-rnv run -p android
-rnv run -p android --info
 ```
 
 ---
@@ -444,16 +419,16 @@ rnv run -p android --info
 #### Run
 
 ```
-npm start
-npm run tvos
+rnv start
+rnv run -p tvos
 ```
 
 #### Advanced
 
+Launch with specific tvOS simulator
+
 ```
-rnv run -help
 rnv run -p tvos -t "Apple TV 4K"
-rnv run -p tvos -t "Apple TV 4K" --info
 ```
 
 ---
@@ -492,8 +467,8 @@ rnv run -p tvos -t "Apple TV 4K" --info
 NOTE: make sure you have 1 android device connected or 1 emulator running
 
 ```
-npm start
-npm run androidtv
+rnv start
+rnv run -p androidtv
 ```
 
 #### Advanced
@@ -501,13 +476,6 @@ npm run androidtv
 Launch specific emulator:
 ```
 rnv target launch -p androidtv -t Android_TV_720p_API_22
-```
-
-Run via RNV CLI
-
-```
-rnv run -p androidtv
-rnv run -p androidtv --info
 ```
 
 ---
@@ -539,7 +507,7 @@ rnv run -p androidtv --info
 #### Run
 
 ```
-npm run web
+rnv run -p web
 ```
 
 open browser URL: http://0.0.0.0:8080/
@@ -547,8 +515,6 @@ open browser URL: http://0.0.0.0:8080/
 #### Advanced
 
 ```
-rnv run -help
-rnv run -p web
 rnv run -p web --info
 ```
 
@@ -602,12 +568,12 @@ rnv target launch -p tizen -t T-samsung-5.0-x86
 #### Run
 
 ```
-npm run tizen
+rnv run -p tizen
 ```
 
 #### Advanced
 
-or specific simulator:
+Launch with specific Tizen simulator:
 
 ```
 rnv run -p tizen -t T-samsung-5.0-x86
@@ -663,15 +629,15 @@ rnv target launch -p tizenwatch -t W-5.0-circle-x86
 #### Run
 
 ```
-npm run tizenwatch
+rnv run -p tizenwatch
 ```
 
 #### Advanced
 
-or specific simulator:
+Launch with specific Tizen Watch simulator:
 
 ```
-rnv run -p tizen -t W-5.0-circle-x86
+rnv run -p tizenwatch -t W-5.0-circle-x86
 ```
 
 ---
@@ -726,17 +692,7 @@ usually located in something like:
 #### Run
 
 ```
-npm run webos
-```
-
-#### Advanced
-
-
-Run via RNV CLI
-
-```
-rnv run -p webos -t emulator
-rnv run -p webos -t emulator --info
+rnv run -p webos
 ```
 
 ---
@@ -769,17 +725,9 @@ rnv run -p webos -t emulator --info
 #### Run
 
 ```
-npm run macos
-```
-
-### Advanced
-
-Run via RNV CLI
-
-```
 rnv run -p macos
-rnv run -p macos --info
 ```
+
 
 ---
 
@@ -811,16 +759,7 @@ rnv run -p macos --info
 #### Run
 
 ```
-npm run windows
-```
-
-### Advanced
-
-Run via RNV CLI
-
-```
 rnv run -p windows
-rnv run -p windows --info
 ```
 
 ---
@@ -860,22 +799,18 @@ rnv run -p windows --info
 NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
 
 ```
-npm run androidwear
+rnv run -p androidwear
 ```
 
 #### Advanced
 
 Launch specific emulator:
+
 ```
 rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ```
 
-Run via RNV CLI
 
-```
-rnv run -p androidwear
-rnv run -p androidwear --info
-```
 
 ---
 
@@ -920,22 +855,9 @@ After installation you can launch it via Applications:
 NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
 
 ```
-npm run kaios
-```
-
-#### Advanced
-
-Launch specific emulator:
-```
-rnv target launch -p kaios -t emulator
-```
-
-Run via RNV CLI
-
-```
 rnv run -p kaios
-rnv run -p kaios --info
 ```
+
 
 
 ---
