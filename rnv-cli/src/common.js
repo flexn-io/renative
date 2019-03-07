@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync } from './fileutils';
+import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync } from './fileutils';
 import { createPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets } from './cli/app';
 import setupCLI from './cli/setup';
@@ -10,7 +10,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
-    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME,
+    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME,
 } from './constants';
 import { executeAsync } from './exec';
 
@@ -62,7 +62,7 @@ const checkAndConfigureRootProject = c => new Promise((resolve, reject) => {
         logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
         const newCommand = {};
         newCommand.command = 'bootstrap';
-        setupCLI(newCommand).then(() => resolve()).catch(e => reject());
+        setupCLI(newCommand).then(() => resolve()).catch(e => reject(e));
     }
 });
 
@@ -98,11 +98,12 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
     c.homeFolder = homedir;
     c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
+    c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
 
     checkAndConfigureRootProject(c)
         .then(() => configureConfigs(c))
         .then(() => resolve(c))
-        .catch(e => reject());
+        .catch(e => reject(e));
 });
 
 const configureConfigs = c => new Promise((resolve, reject) => {
@@ -136,6 +137,12 @@ const _initializeBuilder = (c, resolve, reject) => {
     if (!fs.existsSync(c.appConfigsFolder)) {
         logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs'), c.appConfigsFolder);
+    }
+
+    // Check rn-cli-config
+    if (!fs.existsSync(c.rnCliConfigPath)) {
+        logWarning(`Looks like your rn-cli config file ${chalk.bold.white(c.rnCliConfigPath)} is missing! Let's create one for you.`);
+        copyFileSync(path.join(c.rnvRootFolder, RN_CLI_CONFIG_NAME), c.rnCliConfigPath);
     }
 
     // Check entry
