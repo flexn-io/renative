@@ -72,7 +72,7 @@ module.exports = {
 
     output: {
         filename: '[name].js',
-        publicPath: 'assets/',
+        publicPath: '/assets/',
         path: path.resolve(appBuildDirectory, './public/assets'),
     },
 
