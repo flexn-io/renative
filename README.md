@@ -2,7 +2,13 @@
   <h1 align='center'>🚀 React Native Vanilla</h1>
   <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
+  <p align='center'>
+  <img src="https://img.shields.io/badge/Platforms_Supported-12-blue.svg" />
+  <img src="https://img.shields.io/badge/React_Native-0.58.5-blue.svg" />
+  <img src="https://img.shields.io/badge/React-16.8.3-blue.svg" />
+  </p>
 </p>
+
 
    <br />
     <br />
