@@ -159,13 +159,15 @@ open: http://0.0.0.0:8080/
 
 ---
 
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/cli/docs/ic_features.png?raw=true" width=50 height=50 />
+
 ## Features:
 
 #### Development platforms
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-untested-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-untested-lightgrey.svg)
+![](https://img.shields.io/badge/Ubuntu-untested-lightgrey.svg)
 
 #### Requirements
 
@@ -176,10 +178,10 @@ open: http://0.0.0.0:8080/
 -   [Tizen Studio](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) (if you want to develop for Tizen)
 -   [WebOS SDK](http://webostv.developer.lge.com/sdk/installation/) (if you want to develop for WebOS)
 
-#### Prerequisites
 
 ---
 
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/cli/docs/ic_configuration.png?raw=true" width=50 height=50 />
 
 ## Advanced Configuration
 
@@ -253,7 +255,7 @@ Folder Structure (Generated Project)
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
@@ -294,7 +296,7 @@ rnv run -p ios -t "iPhone 6 Plus"
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 -   Latest Android project
 -   Kotlin Support
@@ -353,7 +355,7 @@ rnv target launch -p android -t Nexus_5X_API_26
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
@@ -394,7 +396,7 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 -   Latest Android project
 -   Kotlin Support
@@ -439,7 +441,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 -   Supports Chrome, Safari, Firefox, IE10+
 
@@ -477,7 +479,7 @@ rnv run -p web --info
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
@@ -536,7 +538,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
@@ -595,7 +597,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 -   Latest LG webOS Project
 
@@ -648,7 +650,7 @@ rnv run -p webos
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
 -   support for OSX/macOS
 -   Based on Electron
@@ -680,7 +682,7 @@ rnv run -p macos
 
 ![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
 -   support for Windows 10+
 -   Based on Electron
@@ -711,7 +713,7 @@ rnv run -p windows
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 -   Latest Android project
 -   Kotlin Support
@@ -760,7 +762,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
 
 #### Requirements

@@ -1,4 +1,5 @@
 import path from 'path';
+import shell from 'shelljs';
 import { execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
