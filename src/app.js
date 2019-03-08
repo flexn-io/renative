@@ -102,11 +102,13 @@ class App extends React.Component {
     }
 
     render() {
+        const title = `Hello from ${packageJson.title}!`;
         return (
             <View style={[styles.app, styles.appContainer, { backgroundColor: this.state.bgColor }]}>
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
                 <Text style={styles.textH2}>
-Hello from React Native Vanilla!
+
+                    {title}
                 </Text>
                 <Text style={styles.textH2}>
 v
