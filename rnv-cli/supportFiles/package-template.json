@@ -1,5 +1,6 @@
 {
   "name": "{{PACKAGE_NAME}}",
+  "title": "{{PACKAGE_TITLE}}",
   "version": "{{PACKAGE_VERSION}}",
   "dependencies": {},
   "devDependencies": {

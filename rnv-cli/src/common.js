@@ -10,7 +10,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
-    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME,
+    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME, SAMPLE_APP_ID,
 } from './constants';
 import { executeAsync } from './exec';
 
@@ -146,7 +146,7 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     // Check appConfigs
     if (!fs.existsSync(c.appConfigsFolder)) {
-        logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create one for you.`);
+        logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create sample helloWorld config for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs'), c.appConfigsFolder);
     }
 
@@ -180,7 +180,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
     // Check globalConfig
     if (fs.existsSync(c.globalConfigPath)) {
-        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} folder exists!`);
+        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} file exists!`);
     } else {
         console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
         copyFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME), c.globalConfigPath);
@@ -210,23 +210,23 @@ const configureApp = c => new Promise((resolve, reject) => {
 
     if (c.appID) {
         // App ID specified
-        c = _getConfig(c, c.appID);
+        _getConfig(c, c.appID);
         resolve(c);
     } else {
         // Use latest app from platformAssets
         if (!fs.existsSync(c.runtimeConfigPath)) {
             logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. RNV got you covered. Let\'s configure it for you!`);
 
-            c = _getConfig(c, 'helloWorld');
+            _getConfig(c, SAMPLE_APP_ID);
 
             const newCommand = Object.assign({}, c);
             newCommand.subCommand = 'configure';
-            newCommand.program = { appConfig: 'helloWorld', update: true };
+            newCommand.program = { appConfig: SAMPLE_APP_ID, update: true };
             appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
         } else {
             try {
                 const assetConfig = JSON.parse(fs.readFileSync(c.runtimeConfigPath).toString());
-                c = _getConfig(c, assetConfig.id);
+                _getConfig(c, assetConfig.id);
                 resolve(c);
             } catch (e) {
                 reject(e);
@@ -290,8 +290,6 @@ const _getConfig = (c, appConfigId) => {
     c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
     c.appConfigFile = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
     c.appId = appConfigId;
-
-    return c;
 };
 
 const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);

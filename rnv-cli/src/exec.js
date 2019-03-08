@@ -1,6 +1,7 @@
 import path from 'path';
 import shell from 'shelljs';
 import fs from 'fs';
+import chalk from 'chalk';
 
 const { spawn } = require('child_process');
 
@@ -13,7 +14,7 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
 
     const p = c.cli[cli];
     if (!fs.existsSync(p)) {
-        reject(`Location of your cli ${p} does not exists. check your ~/.rnv/config.json file if you SDK path is correct`);
+        reject(`Location of your cli ${chalk.bold.white(p)} does not exists. check your ${chalk.bold.white('~/.rnv/config.json')} file if you SDK path is correct`);
         return;
     }
 

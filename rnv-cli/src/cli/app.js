@@ -7,7 +7,7 @@ import {
 } from '../common';
 import {
     IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS,
-    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME,
+    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME, SAMPLE_APP_ID,
 } from '../constants';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
@@ -116,7 +116,8 @@ const _runCreate = c => new Promise((resolve, reject) => {
             const pkgJsonStringClean = pkgJsonString
                 .replace(/{{PACKAGE_NAME}}/g, pkgName)
                 .replace(/{{RNV_VERSION}}/g, '0.12.0-alpha8')
-                .replace(/{{PACKAGE_VERSION}}/g, '0.1.0');
+                .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
+                .replace(/{{PACKAGE_TITLE}}/g, data.appTitle);
 
             mkdirSync(data.projectDir);
 
@@ -138,7 +139,7 @@ const _checkAndCreatePlatforms = c => new Promise((resolve, reject) => {
 
         const newCommand = Object.assign({}, c);
         newCommand.subCommand = 'configure';
-        newCommand.program = { appConfig: 'helloWorld' };
+        newCommand.program = { appConfig: SAMPLE_APP_ID };
 
         platformRunner(newCommand)
             .then(() => resolve())
