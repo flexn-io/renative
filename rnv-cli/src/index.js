@@ -5,13 +5,9 @@ import { initializeBuilder, logComplete, logError } from './common';
 import Runner from './cli/runner';
 import App from './cli/app';
 import Platform from './cli/platform';
-import Setup from './cli/setup';
 import Target from './cli/target';
 
 const commands = {
-    setup: Setup,
-    init: Setup,
-    // bootstrap: Setup,
     start: Runner,
     app: App,
     platform: Platform,

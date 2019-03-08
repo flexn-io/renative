@@ -1,10 +1,10 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync } from './fileutils';
+import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from './fileutils';
 import { createPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets } from './cli/app';
-import setupCLI from './cli/setup';
+import { configureTizenGlobal } from './platformTools/tizen';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
@@ -52,20 +52,6 @@ const isPlatformSupported = (platform, resolve, reject) => {
     return true;
 };
 
-
-const checkAndConfigureRootProject = c => new Promise((resolve, reject) => {
-    logTask(`checkAndConfigureRootProject:${c.command} ${c.subCommand}`);
-
-    if (fs.existsSync(c.projectConfigPath)) {
-        resolve();
-    } else {
-        logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
-        const newCommand = {};
-        newCommand.command = 'bootstrap';
-        setupCLI(newCommand).then(() => resolve()).catch(e => reject(e));
-    }
-});
-
 const _getPath = (c, p) => {
     if (p.startsWith('./')) {
         return path.join(c.projectRootFolder, p);
@@ -74,6 +60,8 @@ const _getPath = (c, p) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+    logTask('initializeBuilder');
+
     console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${cmd} ${subCmd || ''}`)} is firing up! 🔥\n${LINE}\n`));
     _currentJob = cmd;
     _currentProcess = process;
@@ -100,13 +88,31 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
 
-    checkAndConfigureRootProject(c)
-        .then(() => configureConfigs(c))
+    configureProject(c)
+        .then(() => configureNodeModules(c))
+        .then(() => configureRnvGlobal(c))
+        .then(() => configureTizenGlobal(c))
+        // .then(() => configureAndroidGlobal(c))
+        .then(() => configureApp(c))
         .then(() => resolve(c))
         .catch(e => reject(e));
 });
 
-const configureConfigs = c => new Promise((resolve, reject) => {
+const configureProject = c => new Promise((resolve, reject) => {
+    logTask('configureProject');
+    // Check Project Config
+    if (fs.existsSync(c.projectConfigPath)) {
+        resolve();
+    } else {
+        logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
+
+        const rnvRootFolder = path.join(__dirname, '../../..');
+        const base = path.resolve('.');
+
+        copyFileSync(path.join(rnvRootFolder, RNV_PROJECT_CONFIG_NAME),
+            path.join(base, RNV_PROJECT_CONFIG_NAME));
+    }
+
     // Parse Project Config
     c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder);
@@ -119,25 +125,6 @@ const configureConfigs = c => new Promise((resolve, reject) => {
     c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
     c.nodeModulesFolder = path.join(c.projectRootFolder, 'node_modules');
 
-    // Check node_modules
-    if (!fs.existsSync(c.nodeModulesFolder)) {
-        // reject(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Run ${chalk.bold.white('npm install')} first!`);
-
-        logWarning(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.bold.white('npm install')} first!`);
-        executeAsync('npm', ['install']).then(() => {
-            _initializeBuilder(c, resolve, reject);
-        });
-    } else {
-        _initializeBuilder(c, resolve, reject);
-    }
-});
-
-const _initializeBuilder = (c, resolve, reject) => {
-    // Check appConfigs
-    if (!fs.existsSync(c.appConfigsFolder)) {
-        logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create one for you.`);
-        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs'), c.appConfigsFolder);
-    }
 
     // Check rn-cli-config
     if (!fs.existsSync(c.rnCliConfigPath)) {
@@ -157,7 +144,50 @@ const _initializeBuilder = (c, resolve, reject) => {
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'src'), c.projectSourceFolder);
     }
 
-    // Check global config
+    // Check appConfigs
+    if (!fs.existsSync(c.appConfigsFolder)) {
+        logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create one for you.`);
+        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs'), c.appConfigsFolder);
+    }
+
+    resolve();
+});
+
+const configureNodeModules = c => new Promise((resolve, reject) => {
+    logTask('configureNodeModules');
+    // Check node_modules
+    if (!fs.existsSync(c.nodeModulesFolder)) {
+        // reject(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Run ${chalk.bold.white('npm install')} first!`);
+
+        logWarning(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.bold.white('npm install')} first!`);
+        executeAsync('npm', ['install']).then(() => {
+            resolve();
+        });
+    } else {
+        resolve();
+    }
+});
+
+const configureRnvGlobal = c => new Promise((resolve, reject) => {
+    logTask('configureRnvGlobal');
+    // Check globalConfigFolder
+    if (fs.existsSync(c.globalConfigFolder)) {
+        console.log('.rnv folder exists!');
+    } else {
+        console.log('.rnv folder missing! Creating one for you...');
+        mkdirSync(c.globalConfigFolder);
+    }
+
+    // Check globalConfig
+    if (fs.existsSync(c.globalConfigPath)) {
+        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} folder exists!`);
+    } else {
+        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
+        copyFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME), c.globalConfigPath);
+        console.log(`Don\'t forget to Edit: .rnv/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`);
+    }
+
+    // Check global SDKs
     if (fs.existsSync(c.globalConfigPath)) {
         c.globalConfig = JSON.parse(fs.readFileSync(c.globalConfigPath).toString());
 
@@ -171,17 +201,19 @@ const _initializeBuilder = (c, resolve, reject) => {
         c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
     }
 
-    if (_currentJob === 'setup' || _currentJob === 'init') {
-        resolve(c);
-        return;
-    }
+    resolve();
+});
+
+
+const configureApp = c => new Promise((resolve, reject) => {
+    logTask('configureApp');
 
     if (c.appID) {
         // App ID specified
         c = _getConfig(c, c.appID);
         resolve(c);
     } else {
-        // Use latest app from platfromAssets
+        // Use latest app from platformAssets
         if (!fs.existsSync(c.runtimeConfigPath)) {
             logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. RNV got you covered. Let\'s configure it for you!`);
 
@@ -201,7 +233,7 @@ const _initializeBuilder = (c, resolve, reject) => {
             }
         }
     }
-};
+});
 
 const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
@@ -298,7 +330,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
 });
 
 export {
-    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, checkAndConfigureRootProject,
+    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,

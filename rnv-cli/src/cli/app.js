@@ -65,8 +65,8 @@ const run = (c) => {
 const _runConfigure = c => new Promise((resolve, reject) => {
     logTask('_runConfigure');
 
-    _runSetupGlobalSettings(c)
-        .then(() => _checkAndCreatePlatforms(c))
+
+    _checkAndCreatePlatforms(c)
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c))
         .then(() => configureAndroidProperties(c))
@@ -129,21 +129,6 @@ const _runCreate = c => new Promise((resolve, reject) => {
     });
 });
 
-
-const _runSetupGlobalSettings = c => new Promise((resolve, reject) => {
-    logTask('_runSetupGlobalSettings');
-
-    if (isPlatformActive(c, TIZEN)) {
-        const tizenAuthorCert = path.join(c.globalConfigFolder, 'tizen_author.p12');
-        if (fs.existsSync(tizenAuthorCert)) {
-            console.log('tizen_author.p12 file exists!');
-            resolve();
-        } else {
-            console.log('tizen_author.p12 file missing! Creating one for you...');
-            createDevelopTizenCertificate(c).then(() => resolve()).catch(e => reject(e));
-        }
-    }
-});
 
 const _checkAndCreatePlatforms = c => new Promise((resolve, reject) => {
     logTask('_checkAndCreatePlatforms');

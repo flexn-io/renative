@@ -218,7 +218,7 @@ Re-Generate platform projects (for helloWorld app config platforms):
 rnv platform configure -c helloWorld
 ```
 
-Configure your multi-platfrom app based on `./appConfigs/helloWorld` configuration:
+Configure your multi-platform app based on `./appConfigs/helloWorld` configuration:
 
 ```bash
 rnv app configure -c helloWorld -u

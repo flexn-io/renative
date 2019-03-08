@@ -8,9 +8,24 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../common';
+import { TIZEN, TIZEN_WATCH } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import { buildWeb } from './web';
 
+const configureTizenGlobal = c => new Promise((resolve, reject) => {
+    logTask('configureTizenGlobal');
+    // Check Tizen Cert
+    // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
+    const tizenAuthorCert = path.join(c.globalConfigFolder, 'tizen_author.p12');
+    if (fs.existsSync(tizenAuthorCert)) {
+        console.log('tizen_author.p12 file exists!');
+        resolve();
+    } else {
+        console.log('tizen_author.p12 file missing! Creating one for you...');
+        createDevelopTizenCertificate(c).then(() => resolve()).catch(e => reject(e));
+    }
+    // }
+});
 
 function launchTizenSimulator(c, name) {
     logTask('launchTizenSimulator');
@@ -127,4 +142,5 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
 export {
     launchTizenSimulator, copyTizenAssets, configureTizenProject,
     createDevelopTizenCertificate, addDevelopTizenCertificate, runTizen,
+    configureTizenGlobal,
 };

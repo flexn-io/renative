@@ -92,7 +92,7 @@ const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => 
         .catch(e => reject(e));
 });
 
-const configureProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
 
     resolve();

@@ -17,7 +17,7 @@ function buildWeb(c, platform) {
 }
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`configureWebOSProject:${platfrom}`);
+    logTask(`configureWebOSProject:${platform}`);
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
