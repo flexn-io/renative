@@ -18,6 +18,8 @@ module.exports = {
         "jest"
     ],
     "rules": {
+        "no-console": "off",
+        "no-underscore-dangle": "off",
         "arrow-body-style": ["warn", "as-needed"],
         "camelcase": "off",
         "class-methods-use-this": "off",
