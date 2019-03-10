@@ -81,17 +81,18 @@ const _runApp = c => new Promise((resolve, reject) => {
     const { platform } = c;
     if (!isPlatformSupported(platform, null, reject)) return;
 
+    const target = c.program.target || c.globalConfig.defaultTargets[platform];
 
     switch (platform) {
     case IOS:
         configureIfRequired(c, platform)
-            .then(() => runXcodeProject(c, platform, 'iPhone 6'))
+            .then(() => runXcodeProject(c, platform, target))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case TVOS:
         configureIfRequired(c, platform)
-            .then(() => runXcodeProject(c, platform, 'Apple TV 4K'))
+            .then(() => runXcodeProject(c, platform, target))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -103,7 +104,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         configureIfRequired(c, platform)
             .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
-            .then(() => _runAndroid(c, platform, platform === ANDROID_WEAR))
+            .then(() => _runAndroid(c, platform, target, platform === ANDROID_WEAR))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -125,7 +126,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         if (!checkSdk(c, platform, reject)) return;
 
         configureIfRequired(c, platform)
-            .then(() => runTizen(c, platform))
+            .then(() => runTizen(c, platform, target))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -133,7 +134,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         if (!checkSdk(c, platform, reject)) return;
 
         configureIfRequired(c, platform)
-            .then(() => runWebOS(c, platform))
+            .then(() => runWebOS(c, platform, target))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -150,16 +151,16 @@ const _runApp = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _runAndroid = (c, platform, forcePackage) => new Promise((resolve, reject) => {
+const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve, reject) => {
     logTask(`_runAndroid:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
     if (c.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
         packageAndroid(c, platform).then(() => {
-            runAndroid(c, platform).then(() => resolve()).catch(e => reject(e));
+            runAndroid(c, platform, target).then(() => resolve()).catch(e => reject(e));
         });
     } else {
-        runAndroid(c, platform).then(() => resolve()).catch(e => reject(e));
+        runAndroid(c, platform, target).then(() => resolve()).catch(e => reject(e));
     }
 });
 

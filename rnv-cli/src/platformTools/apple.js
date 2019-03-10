@@ -42,16 +42,15 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve, re
     resolve();
 });
 
-const runXcodeProject = (c, platform, deviceName) => new Promise((resolve, reject) => {
-    logTask('runXcodeProject');
-    const device = c.program.target || deviceName;
+const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) => {
+    logTask(`runXcodeProject:${platform}:${target}`);
     const appPath = getAppFolder(c, platform);
     const p = [
         'run-ios',
         '--project-path',
         appPath,
         '--simulator',
-        device,
+        target,
         '--scheme',
         c.appConfigFile.platforms[platform].scheme,
         '--configuration',

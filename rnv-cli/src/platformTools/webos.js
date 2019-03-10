@@ -45,8 +45,8 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const runWebOS = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`runWebOS:${platform}`);
+const runWebOS = (c, platform, target) => new Promise((resolve, reject) => {
+    logTask(`runWebOS:${platform}:${target}`);
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');

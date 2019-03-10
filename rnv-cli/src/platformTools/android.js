@@ -58,8 +58,8 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     ]).then(() => resolve()).catch(e => reject(e));
 });
 
-const runAndroid = (c, platform) => new Promise((resolve, reject) => {
-    logTask('runAndroid');
+const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
+    logTask(`runAndroid:${platform}:${target}`);
 
     const appFolder = getAppFolder(c, platform);
 

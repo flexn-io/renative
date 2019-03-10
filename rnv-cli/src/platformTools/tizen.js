@@ -71,8 +71,8 @@ const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
         });
 });
 
-const runTizen = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`runTizen:${platform}`);
+const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
+    logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.appConfigFile.platforms[platform];
     const tDir = getAppFolder(c, platform);
