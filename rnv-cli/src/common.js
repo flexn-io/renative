@@ -86,6 +86,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
     c.homeFolder = homedir;
     c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
+    c.projectPackagePath = path.join(base, 'package.json');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
 
     configureProject(c)
@@ -115,6 +116,7 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     // Parse Project Config
     c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
+    c.projectPackage = JSON.parse(fs.readFileSync(c.projectPackagePath).toString());
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder);
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder);

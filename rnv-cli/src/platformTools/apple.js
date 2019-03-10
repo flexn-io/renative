@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import { executeAsync } from '../exec';
+import { executeAsync, execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
@@ -70,9 +70,9 @@ const configureXcodeProject = (c, platform, appFolderName) => new Promise((resol
     if (!isPlatformActive(c, platform, resolve)) return;
 
     configureIfRequired(c, platform)
-        .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => configureProject(c, platform, appFolderName))
+        .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => resolve())
         .catch((e) => {
             if (!c.program.update) {
@@ -97,7 +97,15 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     mkdirSync(path.join(appFolder, 'assets'));
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
-    resolve();
+    const plistBuddy = '/usr/libexec/PlistBuddy';
+    const version = c.appConfigFile.platforms[platform].version || c.projectPackage.version;
+    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+
+    console.log('AKJHAKJAHKJ', `${plistBuddy} -c "Set :CFBundleShortVersionString ${version}" "${plistPath}"`);
+
+    execShellAsync(`${plistBuddy} -c "Set :CFBundleShortVersionString ${version}" "${plistPath}"`)
+        .then(() => resolve())
+        .catch(e => reject());
 });
 
 export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject };
