@@ -210,6 +210,23 @@ Open the file and edit SDK paths of platforms you plan to use:
 }
 ```
 
+You can also edit your preferred emulator targets (allows you to run `rnv target launch -p <PLATFORM>` without `-p <TARGET>`)
+
+```json
+{
+  "defaultTargets": {
+    "android": "Nexus_5X_API_26",
+    "androidtv": "Android_TV_720p_API_22",
+    "androidwear": "Android_Wear_Round_API_28",
+    "ios": "iPhone 6",
+    "tvos": "Apple TV 4K",
+    "tizen": "T-samsung-5.0-x86",
+    "tizenwatch": "W-5.0-circle-x86",
+    "webos": "emulator"
+  }
+}
+```
+
 #### App Configurations
 
 Re-Generate platform projects (for helloWorld app config platforms):
