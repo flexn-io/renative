@@ -4,6 +4,7 @@ import { executeAsync, execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
+    getAppVersion, getAppTitle,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
@@ -98,14 +99,17 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
     const plistBuddy = '/usr/libexec/PlistBuddy';
-    const version = c.appConfigFile.platforms[platform].version || c.projectPackage.version;
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
-    console.log('AKJHAKJAHKJ', `${plistBuddy} -c "Set :CFBundleShortVersionString ${version}" "${plistPath}"`);
-
-    execShellAsync(`${plistBuddy} -c "Set :CFBundleShortVersionString ${version}" "${plistPath}"`)
-        .then(() => resolve())
-        .catch(e => reject());
+    if (!fs.existsSync(plistBuddy)) {
+        logError(`PlistBuddy not found at location ${plistBuddy}. Make sure you have it installed!`);
+        resolve();
+    } else {
+        execShellAsync(`${plistBuddy} -c "Set :CFBundleShortVersionString ${getAppVersion(c, platform)}" "${plistPath}"`)
+            .then(() => execShellAsync(`${plistBuddy} -c "Set :CFBundleDisplayName ${getAppTitle(c, platform)}" "${plistPath}"`))
+            .then(() => resolve())
+            .catch(e => reject());
+    }
 });
 
 export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject };

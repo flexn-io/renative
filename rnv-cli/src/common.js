@@ -296,6 +296,31 @@ const _getConfig = (c, appConfigId) => {
 
 const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
 
+const getAppTemplateFolder = (c, platform) => path.join(c.platformTemplatesFolder, `${platform}`);
+
+const getAppId = (c, platform) => c.appConfigFile.platforms[platform].id || c.appConfigFile.common.id;
+
+const getAppTitle = (c, platform) => c.appConfigFile.platforms[platform].title || c.appConfigFile.common.title;
+
+const getAppVersion = (c, platform) => c.appConfigFile.platforms[platform].version || c.appConfigFile.common.verion || c.projectPackage.version;
+
+const getEntryFile = (c, platform) => c.appConfigFile.platforms[platform].entryFile;
+
+const getAppVersionCode = (c, platform) => {
+    if (c.appConfigFile.platforms[platform].versionCode) {
+        return c.appConfigFile.platforms[platform].versionCode;
+    } if (c.appConfigFile.common.verionCode) {
+        return c.appConfigFile.common.verionCode;
+    }
+    const version = getAppVersion(c, platform);
+
+    let vc = '';
+    version.split('.').forEach((v) => {
+        vc += v.length > 1 ? v : `0${v}`;
+    });
+    return Number(vc).toString();
+};
+
 const logErrorPlatform = (platform, resolve) => {
     console.log(`ERROR: Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
     resolve();
@@ -329,10 +354,22 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     }
 });
 
+const writeCleanFile = (source, destination, overrides) => {
+    const pFile = fs.readFileSync(source).toString();
+    let pFileClean = pFile;
+    overrides.forEach((v) => {
+        const regEx = new RegExp(v.pattern, 'g');
+        pFileClean = pFileClean.replace(regEx, v.override);
+    });
+    fs.writeFileSync(destination, pFileClean);
+};
+
+
 export {
-    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
+    SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, getAppTemplateFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
+    getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, getEntryFile,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,

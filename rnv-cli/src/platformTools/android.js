@@ -7,6 +7,8 @@ import {
     getAppFolder, isPlatformActive, configureIfRequired,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
+    getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
+    getEntryFile,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
@@ -104,6 +106,43 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
     fs.chmodSync(path.join(appFolder, 'gradlew'), '755');
+
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'app/build.gradle'),
+        path.join(appFolder, 'app/build.gradle'),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
+            { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
+        ]);
+
+    const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), activityPath),
+        path.join(appFolder, activityPath),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        ]);
+
+    const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), applicationPath),
+        path.join(appFolder, applicationPath),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+        ]);
+
+    const stringsPath = 'app/src/main/res/values/strings.xml';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), stringsPath),
+        path.join(appFolder, stringsPath),
+        [
+            { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
+        ]);
+
+    const manifestFile = 'app/src/main/AndroidManifest.xml';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), manifestFile),
+        path.join(appFolder, manifestFile),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        ]);
 
     resolve();
 });

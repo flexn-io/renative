@@ -1,6 +1,6 @@
-package reactnativevanilla.helloworld
+package {{APPLICATION_ID}}
 
-import reactnativevanilla.helloworld.BuildConfig
+import {{APPLICATION_ID}}.BuildConfig
 
 import android.app.Application
 import com.facebook.react.ReactApplication
@@ -26,7 +26,7 @@ class MainApplication : Application(), ReactApplication {
             )
         }
 
-        override fun getJSMainModuleName(): String = "index.android"
+        override fun getJSMainModuleName(): String = "{{ENTRY_FILE}}"
     }
 
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost
