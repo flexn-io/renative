@@ -298,13 +298,21 @@ const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.app
 
 const getAppTemplateFolder = (c, platform) => path.join(c.platformTemplatesFolder, `${platform}`);
 
+const getAppConfigId = (c, platform) => c.appConfigFile.id;
+
 const getAppId = (c, platform) => c.appConfigFile.platforms[platform].id || c.appConfigFile.common.id;
 
 const getAppTitle = (c, platform) => c.appConfigFile.platforms[platform].title || c.appConfigFile.common.title;
 
 const getAppVersion = (c, platform) => c.appConfigFile.platforms[platform].version || c.appConfigFile.common.verion || c.projectPackage.version;
 
+const getAppAuthor = (c, platform) => c.appConfigFile.platforms[platform].author || c.appConfigFile.common.author || c.projectPackage.author;
+
+const getAppLicense = (c, platform) => c.appConfigFile.platforms[platform].license || c.appConfigFile.common.license || c.projectPackage.license;
+
 const getEntryFile = (c, platform) => c.appConfigFile.platforms[platform].entryFile;
+
+const getAppDescription = (c, platform) => c.appConfigFile.platforms[platform].description || c.appConfigFile.common.description || c.projectPackage.description;
 
 const getAppVersionCode = (c, platform) => {
     if (c.appConfigFile.platforms[platform].versionCode) {
@@ -369,7 +377,8 @@ export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, getAppTemplateFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
-    getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, getEntryFile,
+    getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile,
+    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,

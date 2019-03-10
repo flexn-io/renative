@@ -2,7 +2,13 @@
   "id": "helloWorld",
   "common": {
     "id": "reactnativevanilla.helloworld",
-    "title": "RNV Hello World"
+    "title": "RNV Hello World",
+    "author": {
+      "name": "Pavel Jacko",
+      "email": "Pavel Jacko <i@pavjacko.com>",
+      "url": "https://github.com/pavjacko"
+    },
+    "license": "MIT"
   },
   "platforms":{
     "ios": {

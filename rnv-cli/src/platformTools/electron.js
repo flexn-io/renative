@@ -4,7 +4,9 @@ import shell from 'shelljs';
 import { executeAsync, execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, configureIfRequired,
+    getAppFolder, isPlatformActive, configureIfRequired, getAppConfigId,
+    getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
+    getEntryFile, getAppDescription, getAppAuthor, getAppLicense,
 } from '../common';
 import { buildWeb } from './web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -28,8 +30,12 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const packagePath = path.join(appFolder, 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(packagePath));
 
-    packageJson.name = `${c.appConfigFile.common.title} - ${platform}`;
-    packageJson.productName = `${c.appConfigFile.common.title} - ${platform}`;
+    packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
+    packageJson.productName = `${getAppTitle(c, platform)} - ${platform}`;
+    packageJson.version = `${getAppVersion(c, platform)}`;
+    packageJson.description = `${getAppDescription(c, platform)}`;
+    packageJson.author = `${getAppAuthor(c, platform)}`;
+    packageJson.license = `${getAppLicense(c, platform)}`;
 
     fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
 
