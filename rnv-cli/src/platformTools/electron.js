@@ -28,7 +28,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
 
     const packagePath = path.join(appFolder, 'package.json');
-    const packageJson = JSON.parse(fs.readFileSync(packagePath));
+    const pkgJson = path.join(getAppTemplateFolder(c, platform), 'package.json');
+    const packageJson = JSON.parse(fs.readFileSync(pkgJson));
 
     packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
     packageJson.productName = `${getAppTitle(c, platform)} - ${platform}`;
