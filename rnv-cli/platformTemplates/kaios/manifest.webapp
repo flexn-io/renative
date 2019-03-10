@@ -1,6 +1,6 @@
 {
-  "name": "RN Vanilla",
-  "description": "RN Vanilla",
+  "name": "{{APP_TITLE}}",
+  "description": "{{APP_DESCRIPTION}}",
   "launch_path": "/public/index.html",
   "icons": {
     "16": "/public/icons/icon16x16.png",
@@ -9,7 +9,7 @@
     "128": "/public/icons/icon128x128.png"
   },
   "developer": {
-    "name": "Pavel Jacko",
-    "url": "http://example.com"
+    "name": "{{AUTHOR_NAME}}",
+    "url": "{{AUTHOR_URL}}"
   }
 }

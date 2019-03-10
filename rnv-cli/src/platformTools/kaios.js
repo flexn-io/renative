@@ -4,7 +4,9 @@ import chalk from 'chalk';
 import { execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, checkSdk, logWarning, configureIfRequired,
+    getAppFolder, isPlatformActive, configureIfRequired, getAppConfigId,
+    getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
+    getEntryFile, getAppDescription, getAppAuthor, getAppLicense,
 } from '../common';
 import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_KAIOS_EMULATOR,
@@ -65,6 +67,20 @@ const configureKaiOSProject = (c, platform) => new Promise((resolve, reject) => 
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
+
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    const appFolder = getAppFolder(c, platform);
+
+    const manifestFilePath = path.join(getAppTemplateFolder(c, platform), 'manifest.webapp');
+    const manifestFilePath2 = path.join(appFolder, 'manifest.webapp');
+    const manifestFile = JSON.parse(fs.readFileSync(manifestFilePath));
+
+    manifestFile.name = `${getAppConfigId(c, platform)}-${platform}`;
+    manifestFile.description = `${getAppDescription(c, platform)}`;
+    manifestFile.developer = getAppAuthor(c, platform);
+
+    fs.writeFileSync(manifestFilePath2, JSON.stringify(manifestFile, null, 2));
 
     resolve();
 });

@@ -35,7 +35,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     packageJson.productName = `${getAppTitle(c, platform)} - ${platform}`;
     packageJson.version = `${getAppVersion(c, platform)}`;
     packageJson.description = `${getAppDescription(c, platform)}`;
-    packageJson.author = `${getAppAuthor(c, platform)}`;
+    packageJson.author = getAppAuthor(c, platform);
     packageJson.license = `${getAppLicense(c, platform)}`;
 
     fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));

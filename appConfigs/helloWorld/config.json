@@ -3,6 +3,7 @@
   "common": {
     "id": "reactnativevanilla.helloworld",
     "title": "RNV Hello World",
+    "description": "Cross-platform application project based on React Native Vanilla",
     "author": {
       "name": "Pavel Jacko",
       "email": "Pavel Jacko <i@pavjacko.com>",
@@ -15,7 +16,40 @@
       "entryFile": "index.ios",
       "scheme": "RNVApp",
       "runScheme": "Debug",
-      "platformTemplate": "./rnv/platformTemplates/ios"
+      "platformTemplate": "./rnv/platformTemplates/ios",
+      "permissions": [
+        {
+          "key": "NSAppleMusicUsageDescription",
+          "desc": "Get favorite music"
+        }, {
+          "key": "NSBluetoothPeripheralUsageDescription",
+          "desc": "Allow you to use your bluetooth to play music"
+        }, {
+          "key": "NSCalendarsUsageDescription",
+          "desc": "Calendar for add events"
+        }, {
+          "key": "NSCameraUsageDescription",
+          "desc": "Need camera to scan QR Codes"
+        }, {
+          "key": "NSLocationWhenInUseUsageDescription",
+          "desc": "Geolocation tags for photos"
+        }, {
+          "key": "NSMicrophoneUsageDescription",
+          "desc": "Need microphone for videos"
+        }, {
+          "key": "NSMotionUsageDescription",
+          "desc": "To know when device is moving"
+        }, {
+          "key": "NSPhotoLibraryAddUsageDescription",
+          "desc": "Need library to save images"
+        }, {
+          "key": "NSPhotoLibraryUsageDescription",
+          "desc": "Allows to upload images from photo library"
+        }, {
+          "key": "NSSpeechRecognitionUsageDescription",
+          "desc": "Speech Recognition to run in app commands"
+        }
+      ]
     },
     "tvos": {
       "entryFile": "index.tvos",
@@ -23,13 +57,26 @@
       "runScheme": "Debug"
     },
     "android": {
-      "entryFile": "index.android"
+      "entryFile": "index.android",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ]
     },
     "androidtv": {
-      "entryFile": "index.androidtv"
+      "entryFile": "index.androidtv",
+      "permissions": [
+        "android.permission.INTERNET",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ]
     },
     "androidwear": {
-      "entryFile": "index.androidwear"
+      "entryFile": "index.androidwear",
+      "permissions": [
+        "android.permission.WAKE_LOCK",
+        "android.permission.INTERNET",
+        "android.permission.SYSTEM_ALERT_WINDOW"
+      ]
     },
     "macos": {
       "entryFile": "index.macos"
