@@ -55,8 +55,7 @@ async function _runConfigure(config) {
     return Promise.all(
         getSupportedPlatformBuilders().map(async (Platform) => {
             if (Platform) {
-                const platform = new Platform();
-                await platform.runSetupProject(config);
+                await Platform.runSetupProject(config);
             }
             return Promise.resolve();
         }),

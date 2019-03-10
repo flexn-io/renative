@@ -6,7 +6,7 @@ import { mkdirSync, writeFileAsync } from '../../fileutils';
 import { executeAsync } from '../../exec';
 
 export default class ApplePlatform extends BasePlatform {
-    async runSetupProject(config) {
+    static async runSetupProject(config) {
         await super.runSetupProject(config);
         const buildFolder = await this.getBuildFolder(config);
         await this.runPod(config.program.update ? 'update' : 'install', buildFolder);
@@ -15,7 +15,7 @@ export default class ApplePlatform extends BasePlatform {
         return Promise.resolve();
     }
 
-    async configureXcodeProject(config) {
+    static async configureXcodeProject(config) {
         const { platform } = this.constructor;
         logTask(`configureXcodeProject:${platform}`);
         const appFolderName = this.getAppFolder();
@@ -26,7 +26,7 @@ export default class ApplePlatform extends BasePlatform {
         mkdirSync(path.join(buildFolder, `${appFolderName}/images`));
     }
 
-    async runPod(command, cwd) {
+    static async runPod(command, cwd) {
         logTask(`runPod:${command}`);
 
         const existsFolder = await fs.exists(cwd);

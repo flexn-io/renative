@@ -4,14 +4,14 @@ import { logTask, logWarning } from '../../common';
 import { copyFolderContentsRecursiveSync } from '../../fileutils';
 
 export class BasePlatform {
-    async runSetupProject(config) {
-        const { platform } = this.constructor;
+    static async runSetupProject(config) {
+        const { platform } = this;
         logTask(`runSetupProject:${platform}`);
         return this.isPlatformActive(config);
     }
 
-    async isPlatformActive(config) {
-        const { platform } = this.constructor;
+    static async isPlatformActive(config) {
+        const { platform } = this;
         return new Promise((resolve, reject) => {
             if (!config.appConfigFile.platforms[platform]) {
                 const msg = `Platform ${platform} not configured for ${config.appId}. skipping.`;
@@ -23,7 +23,7 @@ export class BasePlatform {
         });
     }
 
-    async copyAssets(config) {
+    static async copyAssets(config) {
         const { platform, defaultAppFolder } = this.constructor;
         logTask(`copyAssets:${platform}`);
         const appFolderName = this.getAppFolder();
@@ -33,12 +33,12 @@ export class BasePlatform {
         await copyFolderContentsRecursiveSync(sPath, targetPath); // TODO: change to async
     }
 
-    getBuildFolder(config) {
+    static getBuildFolder(config) {
         const { platform } = this.constructor;
         return path.join(config.platformBuildsFolder, `${config.appId}_${platform}`);
     }
 
-    getAppFolder(config) {
+    static getAppFolder(config) {
         const { platform, defaultAppFolder } = this.constructor;
         let appFolderName;
         try {
