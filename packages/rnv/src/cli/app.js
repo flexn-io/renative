@@ -3,7 +3,7 @@ import fs from 'fs';
 import {
     IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS, WINDOWS, TIZEN_WATCH,
     isPlatformSupported, getConfig, logTask, logComplete,
-    logError, getAppFolder, isPlatformActive, logWarning,
+    logError, getAppFolder, isPlatformActive, logWarning, SUPPORTED_PLATFORMS,
 } from '../common';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { copyAndroidAssets, configureGradleProject, configureAndroidProperties } from '../platformTools/android';
@@ -12,6 +12,7 @@ import { copyWebOSAssets, configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import platformRunner from './platform';
+import { getSupportedPlatformBuilders } from '../common';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';
@@ -30,24 +31,18 @@ const run = (c) => {
     switch (c.subCommand) {
     case CONFIGURE:
         return _runConfigure(c);
-        break;
     case SWITCH:
         return Promise.resolve();
-        break;
     case CREATE:
         return Promise.resolve();
-        break;
     case REMOVE:
         return Promise.resolve();
-        break;
     case LIST:
         return Promise.resolve();
-        break;
     case INFO:
         return Promise.resolve();
-        break;
     default:
-        return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
+        return Promise.reject(new Error(`Sub-Command ${c.subCommand} not supported`));
     }
 };
 
@@ -55,28 +50,37 @@ const run = (c) => {
 //  PRIVATE
 // ##########################################
 
-const _runConfigure = c => new Promise((resolve, reject) => {
+async function _runConfigure(config) {
     logTask('_runConfigure');
-
-    _runSetupGlobalSettings(c)
-        .then(() => _checkAndCreatePlatforms(c))
-        .then(() => copyRuntimeAssets(c))
-        .then(() => _runPlugins(c))
-        .then(() => _runSetupAppleProject(c, IOS, 'RNVApp'))
-        .then(() => _runSetupAppleProject(c, TVOS, 'RNVAppTVOS'))
-        .then(() => configureAndroidProperties(c))
-        .then(() => _runSetupAndroidProject(c, ANDROID))
-        .then(() => _runSetupAndroidProject(c, ANDROID_TV))
-        .then(() => _runSetupAndroidProject(c, ANDROID_WEAR))
-        .then(() => _runSetupTizenProject(c, TIZEN))
-        .then(() => _runSetupTizenProject(c, TIZEN_WATCH))
-        .then(() => _runSetupWebOSProject(c, WEBOS))
-        .then(() => _runSetupWebProject(c, WEB))
-        .then(() => _runSetupElectronProject(c, MACOS))
-        .then(() => _runSetupElectronProject(c, WINDOWS))
+    return Promise.all(
+        getSupportedPlatformBuilders().map(async (Platform) => {
+            if (Platform) {
+                const platform = new Platform();
+                await platform.runSetupProject(config);
+            }
+            return Promise.resolve();
+        }),
+    );
+    
+    _runSetupGlobalSettings(config)
+        .then(() => _checkAndCreatePlatforms(config))
+        .then(() => copyRuntimeAssets(config))
+        .then(() => _runPlugins(config))
+        .then(() => _runSetupAppleProject(config, IOS, 'RNVApp'))
+        .then(() => _runSetupAppleProject(config, TVOS, 'RNVAppTVOS'))
+        .then(() => configureAndroidProperties(config))
+        .then(() => _runSetupAndroidProject(config, ANDROID))
+        .then(() => _runSetupAndroidProject(config, ANDROID_TV))
+        .then(() => _runSetupAndroidProject(config, ANDROID_WEAR))
+        .then(() => _runSetupTizenProject(config, TIZEN))
+        .then(() => _runSetupTizenProject(config, TIZEN_WATCH))
+        .then(() => _runSetupWebOSProject(config, WEBOS))
+        .then(() => _runSetupWebProject(config, WEB))
+        .then(() => _runSetupElectronProject(config, MACOS))
+        .then(() => _runSetupElectronProject(config, WINDOWS))
         .then(() => resolve())
         .catch(e => reject(e));
-});
+};
 
 
 const _runSetupAppleProject = (c, platform, appFolder) => new Promise((resolve, reject) => {
