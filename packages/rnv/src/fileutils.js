@@ -90,4 +90,18 @@ const cleanFolder = d => new Promise((resolve, reject) => {
     });
 });
 
-export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync, copyFolderContentsRecursiveSync, cleanFolder };
+const writeFileAsync = (target, data) => new Promise((resolve, reject) => {
+    fs.writeFile(target, data, (error) => {
+        if (error) {
+            reject(error);
+        } else {
+            resolve();
+        }
+    });
+});
+
+export {
+    copyFileSync, copyFolderRecursiveSync, removeDir,
+    saveAsJs, mkdirSync, copyFolderContentsRecursiveSync,
+    cleanFolder, writeFileAsync,
+};

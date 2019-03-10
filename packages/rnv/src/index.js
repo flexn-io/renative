@@ -1,6 +1,3 @@
-import chalk from 'chalk';
-import path from 'path';
-import shell from 'shelljs';
 import { initializeBuilder, logComplete, logError } from './common';
 import Runner from './cli/runner';
 import App from './cli/app';

@@ -9,11 +9,19 @@ import {
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK,
 } from './constants';
+import PLATFORM_BUILDERS from './cli/platform/index';
 
-const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH];
-const SUPPORTED_PLATFORMS_MAC = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH];
-const SUPPORTED_PLATFORMS_WIN = [ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, WINDOWS, TIZEN_WATCH];
+const SUPPORTED_PLATFORMS = [
+    IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
+];
+const SUPPORTED_PLATFORMS_MAC = [
+    IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
+];
+const SUPPORTED_PLATFORMS_WIN = [
+    ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, WEBOS, WINDOWS, TIZEN_WATCH,
+];
 const SUPPORTED_PLATFORMS_LINUX = [];
+
 const RNV_START = '🚀 RNV';
 const RNV = 'RNV';
 const LINE = chalk.white.bold('----------------------------------------------------------');
@@ -241,11 +249,38 @@ const isPlatformActive = (c, platform, resolve) => {
     return true;
 };
 
+const getSupportedPlatforms = () => {
+    let platforms;
+    switch (process.platform) {
+    case 'win32':
+    case 'win64':
+        platforms = SUPPORTED_PLATFORMS_WIN;
+        break;
+    case 'darwin':
+        platforms = SUPPORTED_PLATFORMS_MAC;
+        break;
+    case 'linux':
+        platforms = SUPPORTED_PLATFORMS_LINUX;
+        break;
+    default:
+        platforms = [];
+    }
+    logTask(`getSupportedPlatforms for ${process.platform}: ${platforms}`);
+    return platforms;
+};
+
+function getSupportedPlatformBuilders() {
+    const supportedPlatforms = getSupportedPlatforms();
+    return supportedPlatforms.map(platform => PLATFORM_BUILDERS[platform]);
+}
+
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
-    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
+    getSupportedPlatforms, getSupportedPlatformBuilders,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
 };
