@@ -8,6 +8,8 @@ import {
     getAppFolder, isPlatformActive, logWarning, configureIfRequired,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
+    getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
+    getEntryFile,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import { buildWeb } from './web';
@@ -94,6 +96,17 @@ const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => 
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+
+    const configFile = 'RNVApp/appinfo.json';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile),
+        path.join(appFolder, configFile),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
+            { pattern: '{{APP_VERSION}}', override: getAppVersion(c, platform) },
+        ]);
 
     resolve();
 });

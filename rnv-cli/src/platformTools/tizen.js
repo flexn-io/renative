@@ -7,6 +7,7 @@ import {
     getAppFolder, isPlatformActive, checkSdk, logWarning, configureIfRequired,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
+    writeCleanFile, getAppTemplateFolder,
 } from '../common';
 import { TIZEN, TIZEN_WATCH } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -126,15 +127,18 @@ const configureTizenProject = (c, platform) => new Promise((resolve, reject) => 
 const configureProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
 
-    const c1 = fs.readFileSync(path.join(c.platformTemplatesFolder, platform, 'config.xml')).toString();
+    const appFolder = getAppFolder(c, platform);
 
-    const c2 = c1
-        .replace(/{{PACKAGE}}/g, c.appConfigFile.platforms[platform].package)
-        .replace(/{{ID}}/g, c.appConfigFile.platforms[platform].id)
-        .replace(/{{APP_NAME}}/g, c.appConfigFile.platforms[platform].appName);
+    const configFile = 'config.xml';
+    const p = c.appConfigFile.platforms[platform];
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile),
+        path.join(appFolder, configFile),
+        [
+            { pattern: '{{PACKAGE}}', override: p.package },
+            { pattern: '{{ID}}', override: p.id },
+            { pattern: '{{APP_NAME}}', override: p.appName },
+        ]);
 
-
-    fs.writeFileSync(path.join(getAppFolder(c, platform), 'config.xml'), c2);
 
     resolve();
 });

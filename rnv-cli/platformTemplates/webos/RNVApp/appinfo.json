@@ -3,8 +3,8 @@
     "largeIcon": "largeIcon.png",
     "icon": "icon.png",
     "main": "index.html",
-    "id": "pavjacko.reactnativevanilla",
-    "title": "RN Vanilla",
+    "id": "{{APPLICATION_ID}}",
+    "title": "{{APP_TITLE}}",
     "type": "web",
-    "version": "0.8.5"
+    "version": "{{APP_VERSION}}"
 }
