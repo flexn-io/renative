@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var uiView: RCTRootView!
     #if DEBUG
-    var bundleUrl = URL(string: "http://localhost:8081/index.ios.bundle?platform=ios")
+    var bundleUrl = URL(string: "http://localhost:8081/{{ENTRY_FILE}}.bundle?platform=ios")
     #else
-    let bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index.ios", fallbackResource: nil)
+    let bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "{{ENTRY_FILE}}", fallbackResource: nil)
     #endif
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
@@ -38,9 +38,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         if (myDict != nil) {
             let serverIp = myDict!["serverIP"] as! String
             if(serverIp != "bundle") {
-                bundleUrl = URL(string: "http://" + serverIp + ":8081/index.ios.bundle?platform=ios")
+                bundleUrl = URL(string: "http://" + serverIp + ":8081/{{ENTRY_FILE}}.bundle?platform=ios")
             } else {
-                bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index.ios", fallbackResource: nil)
+                bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "{{ENTRY_FILE}}", fallbackResource: nil)
             }
         }
         #endif

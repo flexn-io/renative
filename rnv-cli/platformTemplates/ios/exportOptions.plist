@@ -5,6 +5,6 @@
       <key>method</key>
       <string>app-store</string>
       <key>teamID</key>
-      <string></string>
+      <string>{{TEAM_ID}}</string>
   </dict>
 </plist>

@@ -4,7 +4,7 @@ import { executeAsync, execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
-    getAppVersion, getAppTitle,
+    getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
@@ -110,6 +110,13 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             .then(() => resolve())
             .catch(e => reject());
     }
+
+    const appDelegate = 'AppDelegate.swift';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
+        path.join(appFolder, appFolderName, appDelegate),
+        [
+            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+        ]);
 });
 
 export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject };
