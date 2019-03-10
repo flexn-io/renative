@@ -5,7 +5,7 @@ import chalk from 'chalk';
 import { execShellAsync, executeAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, logWarning, configureIfRequired,
+    getAppFolder, isPlatformActive, logWarning, logInfo, configureIfRequired,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
@@ -64,17 +64,16 @@ const runWebOS = (c, platform, target) => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch((e) => {
             if (e && e.includes(CLI_WEBBOS_ARES_INSTALL)) {
-                logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
-                    chalk.white.bold('rnv target launch -p webos -t emulator')}"`);
-                // const newCommand = Object.assign({}, c);
-                // c.subCommand = 'launch';
-                // c.program = { target: 'emulator' };
-                // launchWebOSimulator(newCommand)
-                //     .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
-                //     .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
-                //     .then(() => resolve())
-                //     .catch(e => reject(e));
-                reject(e);
+                logWarning(`Looks like there is no emulator or device connected! Let's try to launch it. "${
+                    chalk.white.bold(`rnv target launch -p webos -t ${target}`)}"`);
+
+                launchWebOSimulator(c, target)
+                    .then(() => {
+                        logInfo(`Once simulator is ready run: "${
+                            chalk.white.bold(`rnv run -p ${platform} -t ${target}`)}" again`);
+                        resolve();
+                    })
+                    .catch(e => reject(e));
             } else {
                 reject(e);
             }

@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
+import child_process from 'child_process';
 import { executeAsync, execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
@@ -22,12 +23,37 @@ function launchAndroidSimulator(c, name) {
     return Promise.reject('No simulator -t target name specified!');
 }
 
-function listAndroidTargets(c) {
+const EMU_KEYS = ['emulator-', 'product:', 'model:', 'device:'];
+const listAndroidTargets = c => new Promise((resolve, reject) => {
     logTask('listAndroidTargets');
 
-    return execCLI(c, CLI_ANDROID_ADB, 'devices -l');
-}
-
+    const ch = child_process.spawn('adb', ['devices', '-l'], { stdio: 'pipe', detached: true });
+    ch.stdout.on('data', (data) => {
+        const d = data.toString().match(/[^\r?\n]+/g);
+        d.shift();
+        const output = [];
+        d.forEach((v) => {
+            const obj = {
+                status: 'active',
+            };
+            const vArr = v.split(' ');
+            vArr.forEach((i) => {
+                EMU_KEYS.forEach((ek) => {
+                    if (i.startsWith(ek)) {
+                        const key = ek.replace(/-/g, '').replace(/:/g, '');
+                        obj[key] = i.split(ek)[1];
+                    }
+                });
+            });
+            output.push(obj);
+        });
+        resolve(output);
+    });
+    ch.stderr.on('data', (data) => {
+        log(`stderr: ${data}`);
+        reject(data);
+    });
+});
 
 const copyAndroidAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyAndroidAssets');
@@ -61,10 +87,13 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runAndroid:${platform}:${target}`);
 
+
     const appFolder = getAppFolder(c, platform);
 
     shell.cd(`${appFolder}`);
-    shell.exec('./gradlew appStart', resolve, reject);
+    shell.exec('./gradlew appStart', resolve, (e) => {
+        logError(e);
+    });
 });
 
 const configureAndroidProperties = c => new Promise((resolve, reject) => {

@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { execShellAsync, execCLI } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, checkSdk, logWarning, configureIfRequired,
+    getAppFolder, isPlatformActive, checkSdk, logWarning, logInfo, configureIfRequired,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     writeCleanFile, getAppTemplateFolder,
@@ -29,7 +29,7 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
 });
 
 function launchTizenSimulator(c, name) {
-    logTask('launchTizenSimulator');
+    logTask(`launchTizenSimulator:${name}`);
 
     if (name) {
         return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`);
@@ -102,9 +102,16 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
                     .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
                     .then(() => resolve())
                     .catch((e) => {
-                        logWarning(`Looks like there is no emulator or device connected! Try launch one first! "${
-                            chalk.white.bold('rnv target launch -p tizen -t <EMULATOR_NAME>')}"`);
-                        reject(e);
+                        logWarning(`Looks like there is no emulator or device connected! Let's try to launch it. "${
+                            chalk.white.bold(`rnv target launch -p ${platform} -t ${target}`)}"`);
+
+                        launchTizenSimulator(c, target)
+                            .then(() => {
+                                logInfo(`Once simulator is ready run: "${
+                                    chalk.white.bold(`rnv run -p ${platform} -t ${target}`)}" again`);
+                                resolve();
+                            })
+                            .catch(e => reject(e));
                     });
             } else {
                 reject(e);

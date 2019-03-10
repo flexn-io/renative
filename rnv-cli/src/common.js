@@ -279,6 +279,9 @@ const logWarning = (msg) => {
     console.log(chalk.yellow(`\n${RNV} ${_currentJob} - WARNING: ${msg}`));
 };
 
+const logInfo = (msg) => {
+    console.log(chalk.cyan(`\n${RNV} ${_currentJob} - NOTE: ${msg}`));
+};
 
 const logDebug = (...args) => {
     if (_isInfoEnabled) console.log.apply(null, args);
@@ -389,7 +392,7 @@ const writeCleanFile = (source, destination, overrides) => {
 
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, getAppTemplateFolder,
-    logTask, logComplete, logError, initializeBuilder, logDebug, logErrorPlatform,
+    logTask, logComplete, logError, initializeBuilder, logDebug, logInfo, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile,
     getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,

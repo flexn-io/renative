@@ -29,6 +29,7 @@ const DEPLOY = 'deploy';
 const UPDATE = 'update';
 const TEST = 'test';
 const DOC = 'doc';
+const UNINSTALL = 'uninstall';
 
 
 // ##########################################
