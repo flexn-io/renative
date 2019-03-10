@@ -9,16 +9,12 @@ apply from: "../../../node_modules/react-native/react.gradle"
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "reactnativevanilla.helloworld"
+        applicationId "{{APPLICATION_ID}}"
         minSdkVersion 21
         targetSdkVersion 27
-        // @see https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
-        versionCode versionMajor * 10000 + versionMinor * 100 + versionPatch
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionCode {{VERSION_CODE}}
+        versionName "{{VERSION_NAME}}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-//        ndk {
-//            abiFilters "armeabi-v7a", "x86"
-//        }
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
@@ -43,7 +39,7 @@ android {
 }
 
 task appStart(type: Exec, dependsOn: 'installDebug') {
-    commandLine 'adb', 'shell', 'am', 'start', '-n', 'reactnativevanilla.helloworld/.MainActivity'
+    commandLine 'adb', 'shell', 'am', 'start', '-n', '{{APPLICATION_ID}}/.MainActivity'
 }
 
 dependencies {

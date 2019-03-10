@@ -1,4 +1,6 @@
-package reactnativevanilla.helloworld
+package {{APPLICATION_ID}}
+
+import {{APPLICATION_ID}}.BuildConfig
 
 import android.app.Application
 import com.facebook.react.ReactApplication
@@ -24,7 +26,7 @@ class MainApplication : Application(), ReactApplication {
             )
         }
 
-        override fun getJSMainModuleName(): String = "index.androidtv"
+        override fun getJSMainModuleName(): String = "{{ENTRY_FILE}}"
     }
 
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost

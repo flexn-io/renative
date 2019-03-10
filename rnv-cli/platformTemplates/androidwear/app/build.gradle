@@ -8,11 +8,11 @@ apply from: "../../../node_modules/react-native/react.gradle"
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "reactnativevanilla.helloworld"
+        applicationId "{{APPLICATION_ID}}"
         minSdkVersion 23
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode {{VERSION_CODE}}
+        versionName "{{VERSION_NAME}}"
     }
     buildTypes {
         release {
@@ -23,7 +23,7 @@ android {
 }
 
 task appStart(type: Exec, dependsOn: 'installDebug') {
-    commandLine 'adb', 'shell', 'am', 'start', '-n', 'reactnativevanilla.helloworld/reactnativevanilla.helloworld.MainActivity'
+    commandLine 'adb', 'shell', 'am', 'start', '-n', '{{APPLICATION_ID}}/.MainActivity'
 }
 
 dependencies {
