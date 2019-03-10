@@ -44,29 +44,9 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Get favorite music</string>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Allow you to use your bluetooth to play music</string>
-	<key>NSCalendarsUsageDescription</key>
-	<string>Calendar for add events</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Need camera to scan QR Codes</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Geolocation tags for photos</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Need microphone for videos</string>
-	<key>NSMotionUsageDescription</key>
-	<string>To know when device is moving</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Need library to save images</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Allows to upload images from photo library</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Speech Recognition to run in app commands</string>
 	<key>UIAppFonts</key>
 	<array>
-		
+
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>

@@ -137,12 +137,22 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
         ]);
 
+    let prms = '';
+    const permissions = c.appConfigFile.platforms[platform].permissions;
+    if (permissions) {
+        permissions.forEach((v) => {
+            prms += `\n<uses-permission android:name="${v}" />`;
+        });
+    }
+
     const manifestFile = 'app/src/main/AndroidManifest.xml';
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), manifestFile),
         path.join(appFolder, manifestFile),
         [
             { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{PERMISIONS}}', override: prms },
         ]);
+
 
     resolve();
 });

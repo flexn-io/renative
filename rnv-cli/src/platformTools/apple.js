@@ -77,7 +77,7 @@ const configureXcodeProject = (c, platform, appFolderName) => new Promise((resol
         .then(() => resolve())
         .catch((e) => {
             if (!c.program.update) {
-                logWarning('Looks like pod install is not enough! Let\'s try pod update!');
+                logWarning(`Looks like pod install is not enough! Let\'s try pod update! Error: ${e}`);
                 runPod('update', getAppFolder(c, platform))
                     .then(() => copyAppleAssets(c, platform, appFolderName))
                     .then(() => configureProject(c, platform, appFolderName))
@@ -98,6 +98,14 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     mkdirSync(path.join(appFolder, 'assets'));
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
+
+    const appDelegate = 'AppDelegate.swift';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
+        path.join(appFolder, appFolderName, appDelegate),
+        [
+            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+        ]);
+
     const plistBuddy = '/usr/libexec/PlistBuddy';
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
@@ -107,16 +115,35 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     } else {
         execShellAsync(`${plistBuddy} -c "Set :CFBundleShortVersionString ${getAppVersion(c, platform)}" "${plistPath}"`)
             .then(() => execShellAsync(`${plistBuddy} -c "Set :CFBundleDisplayName ${getAppTitle(c, platform)}" "${plistPath}"`))
+            .then(() => configureProjectPermissions(c, platform, appFolderName))
             .then(() => resolve())
-            .catch(e => reject());
+            .catch(e => reject(e));
     }
-
-    const appDelegate = 'AppDelegate.swift';
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
-        path.join(appFolder, appFolderName, appDelegate),
-        [
-            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-        ]);
 });
+
+const configureProjectPermissions = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+    logTask(`configureProjectPermissions:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+
+    const plistBuddy = '/usr/libexec/PlistBuddy';
+    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+
+    const permissions = c.appConfigFile.platforms[platform].permissions;
+    if (permissions) {
+        const tasks = [];
+        let pcmd = '';
+        permissions.forEach((v) => {
+            pcmd += ` -c "Set :${v.key} ${v.desc}"`;
+        });
+
+        execShellAsync(`${plistBuddy}${pcmd} "${plistPath}"`)
+            .then(() => resolve())
+            .catch(e => reject(e));
+    } else {
+        resolve();
+    }
+});
+
 
 export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject };
