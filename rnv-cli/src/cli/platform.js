@@ -1,7 +1,10 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
+import {
+    IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete,
+    logError, getAppFolder, logInfo,
+} from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 
 const CONFIGURE = 'configure';
@@ -9,6 +12,7 @@ const UPDATE = 'update';
 const LIST = 'list';
 const ADD = 'add';
 const REMOVE = 'remove';
+const EJECT = 'eject';
 
 // ##########################################
 // PUBLIC API
@@ -20,6 +24,9 @@ const run = (c) => {
     switch (c.subCommand) {
     case CONFIGURE:
         return _runCreatePlatforms(c);
+        break;
+    case EJECT:
+        return _runEjectPlatforms(c);
         break;
     // case UPDATE:
     //     return Promise.resolve();
@@ -50,6 +57,34 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
         .then(() => _runCopyPlatforms(c))
         .then(() => resolve())
         .catch(e => reject(e));
+});
+
+const _runEjectPlatforms = c => new Promise((resolve, reject) => {
+    logTask('_runEjectPlatforms');
+
+    const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    readline.question('This will move platformTemplates folder from RNV managed directly to your project. Type (y) to confirm: ', (v) => {
+        // console.log(`Hi ${v}!`);
+        if (v.toLowerCase() === 'y') {
+            const ptfn = 'platformTemplates';
+
+            copyFolderContentsRecursiveSync(c.rnvPlatformTemplatesFolder, path.join(c.projectRootFolder, ptfn));
+
+            c.projectConfig.platformTemplatesFolder = `./${ptfn}`;
+
+            fs.writeFileSync(c.projectConfigPath, JSON.stringify(c.projectConfig, null, 2));
+
+            logInfo(`Your platform templates are located in ${chalk.bold.white(c.projectConfig.platformTemplatesFolder)} now. You can edit them directly!`);
+
+            resolve();
+        } else {
+            resolve();
+        }
+    });
 });
 
 const _addPlatform = (platform, program, process) => new Promise((resolve, reject) => {

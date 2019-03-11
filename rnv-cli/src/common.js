@@ -75,6 +75,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.appID = program.appConfigID;
     c.rnvRootFolder = path.join(__dirname, '../..');
     c.rnvHomeFolder = path.join(__dirname, '..');
+    c.rnvPlatformTemplatesFolder = path.join(c.rnvHomeFolder, 'platformTemplates');
 
     if (c.command === 'app' && c.subCommand === 'create') {
         resolve(c);
@@ -280,7 +281,7 @@ const logWarning = (msg) => {
 };
 
 const logInfo = (msg) => {
-    console.log(chalk.cyan(`\n${RNV} ${_currentJob} - NOTE: ${msg}`));
+    console.log(chalk.magenta(`\n${RNV} ${_currentJob} - NOTE: ${msg}`));
 };
 
 const logDebug = (...args) => {

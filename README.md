@@ -66,7 +66,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
-> The most fundamental multi-platform project template based on [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows` and `KaiOS` platforms
+> The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows` and `KaiOS` platforms
 
 -   Ideal starting point for advanced multi-platform projects.
 -   Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
@@ -183,6 +183,7 @@ open: http://0.0.0.0:8080/
 -   [Xcode](https://developer.apple.com/xcode/) (if you want to develop for iOS/tvOS)
 -   [Tizen Studio](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) (if you want to develop for Tizen)
 -   [WebOS SDK](http://webostv.developer.lge.com/sdk/installation/) (if you want to develop for WebOS)
+-   [KaiOS SDK](https://developer.kaiostech.com) (if you want to develop for KaiOS)
 
 
 ---
@@ -240,6 +241,25 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 ```bash
 rnv app configure -c helloWorld -u
 ```
+
+#### Ejecting Platforms
+
+By default, RNV controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
+If however you need to customise them you can eject them directly into your project.
+
+```bash
+rnv platform eject
+```
+
+your projects will be build using `./platformTemplates` from this point
+
+If you want to revert back to using RNV templates simply run
+
+```bash
+rnv platform insert
+```
+
+your projects will be build using `./node_modules/react-native-vanilla/rnv-cli/platformTemplates` from this point
 
 
 ---
