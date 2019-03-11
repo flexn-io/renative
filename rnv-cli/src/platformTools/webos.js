@@ -86,8 +86,9 @@ const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => 
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    configureIfRequired(c, platform)
-        .then(() => copyWebOSAssets(c, platform))
+    // configureIfRequired(c, platform)
+    //     .then(() => copyWebOSAssets(c, platform))
+    copyWebOSAssets(c, platform)
         .then(() => configureProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));

@@ -114,12 +114,13 @@ sdk.dir=${c.globalConfig.sdks.ANDROID_SDK}`);
 });
 
 const configureGradleProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask('configureGradleProject');
+    logTask(`configureGradleProject:${platform}`);
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    configureIfRequired(c, platform)
-        .then(() => configureAndroidProperties(c, platform))
+    // configureIfRequired(c, platform)
+    //     .then(() => configureAndroidProperties(c, platform))
+    configureAndroidProperties(c, platform)
         .then(() => copyAndroidAssets(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())

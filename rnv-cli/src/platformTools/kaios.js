@@ -58,8 +58,9 @@ const configureKaiOSProject = (c, platform) => new Promise((resolve, reject) => 
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    configureIfRequired(c, platform)
-        .then(() => copyKaiOSAssets(c, platform))
+    // configureIfRequired(c, platform)
+    //     .then(() => copyKaiOSAssets(c, platform))
+    copyKaiOSAssets(c, platform)
         .then(() => configureProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));

@@ -369,7 +369,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
 
         const newCommand = Object.assign({}, c);
         newCommand.subCommand = 'configure';
-        newCommand.program = { appConfig: c.id, update: false };
+        newCommand.program = { appConfig: c.id, update: false, platform };
 
         createPlatformBuild(c, platform)
             .then(() => appRunner(newCommand))

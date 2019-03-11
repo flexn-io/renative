@@ -21,8 +21,9 @@ const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    configureIfRequired(c, platform)
-        .then(() => configureProject(c, platform))
+    // configureIfRequired(c, platform)
+    //     .then(() => configureProject(c, platform))
+    configureProject(c, platform)
         .then(() => resolve())
         .catch(e => reject(e));
 });

@@ -14,8 +14,9 @@ import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('configureElectronProject');
 
-    configureIfRequired(c, platform)
-        .then(() => configureProject(c, platform))
+    // configureIfRequired(c, platform)
+    //     .then(() => configureProject(c, platform))
+    configureProject(c, platform)
         .then(() => resolve())
         .catch(e => reject(e));
 });

@@ -150,7 +150,7 @@ const _runAddPlatform = c => new Promise((resolve, reject) => {
 });
 
 const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
-    logTask('createPlatformBuild');
+    logTask(`createPlatformBuild:${platform}`);
 
     if (!isPlatformSupported(platform, null, reject)) return;
 

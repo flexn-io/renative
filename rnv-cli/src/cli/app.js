@@ -63,25 +63,26 @@ const run = (c) => {
 // ##########################################
 
 const _runConfigure = c => new Promise((resolve, reject) => {
-    logTask('_runConfigure');
+    const p = c.program.platform;
+    logTask(`_runConfigure:${p || 'all'}`);
 
 
     _checkAndCreatePlatforms(c)
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c))
-        .then(() => configureAndroidProperties(c))
-        .then(() => configureGradleProject(c, ANDROID))
-        .then(() => configureGradleProject(c, ANDROID_TV))
-        .then(() => configureGradleProject(c, ANDROID_WEAR))
-        .then(() => configureTizenProject(c, TIZEN))
-        .then(() => configureTizenProject(c, TIZEN_WATCH))
-        .then(() => configureWebOSProject(c, WEBOS))
-        .then(() => configureWebProject(c, WEB))
-        .then(() => configureElectronProject(c, MACOS))
-        .then(() => configureElectronProject(c, WINDOWS))
-        .then(() => configureKaiOSProject(c, KAIOS))
-        .then(() => configureXcodeProject(c, IOS, 'RNVApp'))
-        .then(() => configureXcodeProject(c, TVOS, 'RNVAppTVOS'))
+        .then(() => (p === ANDROID || p === ANDROID_TV || p === ANDROID_WEAR || p === 'all' ? configureAndroidProperties(c) : Promise.resolve()))
+        .then(() => (p === ANDROID || p === 'all' ? configureGradleProject(c, ANDROID) : Promise.resolve()))
+        .then(() => (p === ANDROID_TV || p === 'all' ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
+        .then(() => (p === ANDROID_WEAR || p === 'all' ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
+        .then(() => (p === TIZEN || p === 'all' ? configureTizenProject(c, TIZEN) : Promise.resolve()))
+        .then(() => (p === TIZEN_WATCH || p === 'all' ? configureTizenProject(c, TIZEN_WATCH) : Promise.resolve()))
+        .then(() => (p === WEBOS || p === 'all' ? configureWebOSProject(c, WEBOS) : Promise.resolve()))
+        .then(() => (p === WEB || p === 'all' ? configureWebProject(c, WEB) : Promise.resolve()))
+        .then(() => (p === MACOS || p === 'all' ? configureElectronProject(c, MACOS) : Promise.resolve()))
+        .then(() => (p === WINDOWS || p === 'all' ? configureElectronProject(c, WINDOWS) : Promise.resolve()))
+        .then(() => (p === KAIOS || p === 'all' ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
+        .then(() => (p === IOS || p === 'all' ? configureXcodeProject(c, IOS, 'RNVApp') : Promise.resolve()))
+        .then(() => (p === TVOS || p === 'all' ? configureXcodeProject(c, TVOS, 'RNVAppTVOS') : Promise.resolve()))
         .then(() => resolve())
         .catch(e => reject(e));
 });

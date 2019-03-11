@@ -69,8 +69,9 @@ const configureXcodeProject = (c, platform, appFolderName) => new Promise((resol
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    configureIfRequired(c, platform)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
+    // configureIfRequired(c, platform)
+    //     .then(() => copyAppleAssets(c, platform, appFolderName))
+    copyAppleAssets(c, platform, appFolderName)
         .then(() => configureProject(c, platform, appFolderName))
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => resolve())
