@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import {
     IOS, ANDROID, TVOS, isPlatformSupported, getConfig, logTask, logComplete,
-    logError, getAppFolder, logInfo,
+    logError, getAppFolder, logInfo, getQuestion, logSuccess,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 
@@ -13,6 +13,7 @@ const LIST = 'list';
 const ADD = 'add';
 const REMOVE = 'remove';
 const EJECT = 'eject';
+const CONNECT = 'connect';
 
 // ##########################################
 // PUBLIC API
@@ -27,6 +28,9 @@ const run = (c) => {
         break;
     case EJECT:
         return _runEjectPlatforms(c);
+        break;
+    case CONNECT:
+        return _runConnectPlatforms(c);
         break;
     // case UPDATE:
     //     return Promise.resolve();
@@ -67,7 +71,7 @@ const _runEjectPlatforms = c => new Promise((resolve, reject) => {
         output: process.stdout,
     });
 
-    readline.question('This will move platformTemplates folder from RNV managed directly to your project. Type (y) to confirm: ', (v) => {
+    readline.question(getQuestion('This will copy platformTemplates folder from RNV managed directly to your project. Type (y) to confirm'), (v) => {
         // console.log(`Hi ${v}!`);
         if (v.toLowerCase() === 'y') {
             const ptfn = 'platformTemplates';
@@ -78,7 +82,33 @@ const _runEjectPlatforms = c => new Promise((resolve, reject) => {
 
             fs.writeFileSync(c.projectConfigPath, JSON.stringify(c.projectConfig, null, 2));
 
-            logInfo(`Your platform templates are located in ${chalk.bold.white(c.projectConfig.platformTemplatesFolder)} now. You can edit them directly!`);
+            logSuccess(`Your platform templates are located in ${chalk.bold.white(c.projectConfig.platformTemplatesFolder)} now. You can edit them directly!`);
+
+            resolve();
+        } else {
+            resolve();
+        }
+    });
+});
+
+const _runConnectPlatforms = c => new Promise((resolve, reject) => {
+    logTask('_runConnectPlatforms');
+
+    const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+
+    readline.question(getQuestion('This will point platformTemplates folder from your local project to RNV managed one. Type (y) to confirm'), (v) => {
+        // console.log(`Hi ${v}!`);
+        if (v.toLowerCase() === 'y') {
+            const ptfn = 'platformTemplates';
+
+            c.projectConfig.platformTemplatesFolder = `RNV_HOME/${ptfn}`;
+
+            fs.writeFileSync(c.projectConfigPath, JSON.stringify(c.projectConfig, null, 2));
+
+            logSuccess(`You're now using RNV platformTemplates located in ${chalk.bold.white(c.rnvPlatformTemplatesFolder)} now!`);
 
             resolve();
         } else {

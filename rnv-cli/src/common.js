@@ -293,6 +293,12 @@ const logComplete = (isEnd = false) => {
     if (isEnd) logEnd();
 };
 
+const logSuccess = (msg) => {
+    console.log(`\n ✅ ${chalk.magenta(msg)}`);
+};
+
+const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
+
 const logError = (e, isEnd = false) => {
     console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`));
     if (isEnd) logEnd();
@@ -396,7 +402,7 @@ export {
     logTask, logComplete, logError, initializeBuilder, logDebug, logInfo, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile,
-    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,
+    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense, getQuestion, logSuccess,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,

@@ -256,7 +256,7 @@ your projects will be build using `./platformTemplates` from this point
 If you want to revert back to using RNV templates simply run
 
 ```bash
-rnv platform insert
+rnv platform connect
 ```
 
 your projects will be build using `./node_modules/react-native-vanilla/rnv-cli/platformTemplates` from this point
