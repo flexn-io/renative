@@ -6,6 +6,7 @@ import {
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
     getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
 } from '../common';
+import { IOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
@@ -44,7 +45,18 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve, re
 
 const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runXcodeProject:${platform}:${target}`);
+
     const appPath = getAppFolder(c, platform);
+
+    if (!fs.existsSync(path.join(appPath, 'Pods'))) {
+        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
+        configureXcodeProject(c, platform)
+            .then(() => runXcodeProject(c, platform, target))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
     const p = [
         'run-ios',
         '--project-path',
@@ -64,10 +76,12 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
     }
 });
 
-const configureXcodeProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
 
     if (!isPlatformActive(c, platform, resolve)) return;
+
+    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
 
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))

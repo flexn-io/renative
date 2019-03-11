@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import {
-    isPlatformSupported, getConfig, logTask, logComplete,
+    isPlatformSupported, getConfig, logTask, logComplete, getQuestion, logSuccess,
     logError, getAppFolder, isPlatformActive, logWarning, configureIfRequired,
 } from '../common';
 import {
@@ -81,8 +81,8 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => (p === MACOS || p === 'all' ? configureElectronProject(c, MACOS) : Promise.resolve()))
         .then(() => (p === WINDOWS || p === 'all' ? configureElectronProject(c, WINDOWS) : Promise.resolve()))
         .then(() => (p === KAIOS || p === 'all' ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
-        .then(() => (p === IOS || p === 'all' ? configureXcodeProject(c, IOS, 'RNVApp') : Promise.resolve()))
-        .then(() => (p === TVOS || p === 'all' ? configureXcodeProject(c, TVOS, 'RNVAppTVOS') : Promise.resolve()))
+        .then(() => (p === IOS || p === 'all' ? configureXcodeProject(c, IOS) : Promise.resolve()))
+        .then(() => (p === TVOS || p === 'all' ? configureXcodeProject(c, TVOS) : Promise.resolve()))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -97,10 +97,10 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
     const data = {};
 
-    readline.question('What\'s your project ID? (no spaces, folder based on ID will be created in this directory): ', (v) => {
+    readline.question(getQuestion('What\'s your project ID? (no spaces, folder based on ID will be created in this directory)'), (v) => {
         // console.log(`Hi ${v}!`);
         data.appID = v;
-        readline.question('What\'s your project Title?: ', (v) => {
+        readline.question(getQuestion('What\'s your project Title?'), (v) => {
             // console.log(`Hi ${v}!`);
             data.appTitle = v;
             readline.close();
@@ -124,7 +124,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
             fs.writeFileSync(path.join(data.projectDir, 'package.json'), pkgJsonStringClean);
 
-            logTask(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.appID}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
+            logSuccess(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.appID}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
 
             resolve();
         });

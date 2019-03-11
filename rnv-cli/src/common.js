@@ -108,7 +108,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     } else {
         logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
 
-        const rnvRootFolder = path.join(__dirname, '../../..');
+        const rnvRootFolder = path.join(__dirname, '../..');
         const base = path.resolve('.');
 
         copyFileSync(path.join(rnvRootFolder, RNV_PROJECT_CONFIG_NAME),
