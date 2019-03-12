@@ -165,7 +165,7 @@ open: http://0.0.0.0:8080/
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/cli/docs/ic_features.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_features.png?raw=true" width=50 height=50 />
 
 ## Features:
 
@@ -188,7 +188,7 @@ open: http://0.0.0.0:8080/
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/cli/docs/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
 
 ## Advanced Configuration
 
