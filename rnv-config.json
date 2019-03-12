@@ -1,0 +1,8 @@
+{
+  "globalConfigFolder": "~/.rnv",
+  "appConfigsFolder": "./appConfigs",
+  "platformTemplatesFolder": "RNV_HOME/platformTemplates",
+  "entryFolder": "./entry",
+  "platformAssetsFolder": "./platformAssets",
+  "platformBuildsFolder": "./platformBuilds"
+}

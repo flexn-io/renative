@@ -45,8 +45,9 @@ buck-out/
 !.vscode/launch.json
 !.vscode/extensions.json
 
-platforms/electron/
 platformBuilds/
 platformAssets/
 
 package-lock.json
+
+rnv-cli/dist

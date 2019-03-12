@@ -1,0 +1,10 @@
+{
+    "vendor": "Pavel Jacko",
+    "largeIcon": "largeIcon.png",
+    "icon": "icon.png",
+    "main": "index.html",
+    "id": "{{APPLICATION_ID}}",
+    "title": "{{APP_TITLE}}",
+    "type": "web",
+    "version": "{{APP_VERSION}}"
+}
