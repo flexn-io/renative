@@ -57,13 +57,14 @@ const runWebOS = (c, platform, target) => new Promise((resolve, reject) => {
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
-    buildWeb(c, platform)
+    configureWebOSProject(c, platform)
+        .then(() => buildWeb(c, platform))
         .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir}`, logTask))
         .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
         .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
         .then(() => resolve())
         .catch((e) => {
-            if (e && e.includes(CLI_WEBBOS_ARES_INSTALL)) {
+            if (e && e.toString().includes(CLI_WEBBOS_ARES_INSTALL)) {
                 logWarning(`Looks like there is no emulator or device connected! Let's try to launch it. "${
                     chalk.white.bold(`rnv target launch -p webos -t ${target}`)}"`);
 

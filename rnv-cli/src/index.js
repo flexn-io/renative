@@ -1,11 +1,14 @@
 import chalk from 'chalk';
 import path from 'path';
 import shell from 'shelljs';
-import { initializeBuilder, logComplete, logError } from './common';
+import Common, { initializeBuilder, logComplete, logError } from './common';
 import Runner from './cli/runner';
 import App from './cli/app';
 import Platform from './cli/platform';
 import Target from './cli/target';
+import Constants from './constants';
+import Exec from './exec';
+import FileUtils from './fileutils';
 
 const commands = {
     start: Runner,
@@ -25,6 +28,9 @@ const run = (cmd, subCmd, program, process) => {
             }
         }).catch(e => logError(e, true));
 };
+
+
+export { Constants, Runner, App, Platform, Target, Common, Exec, FileUtils };
 
 
 export default { run };

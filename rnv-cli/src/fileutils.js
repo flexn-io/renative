@@ -104,3 +104,7 @@ const cleanFolder = d => new Promise((resolve, reject) => {
 });
 
 export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync, copyFolderContentsRecursiveSync, cleanFolder };
+
+export default {
+    copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync, copyFolderContentsRecursiveSync, cleanFolder,
+};

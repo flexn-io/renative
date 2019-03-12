@@ -80,7 +80,7 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
     const tId = platformConfig.id;
-    const tSim = c.program.target || 'T-samsung-5.0-x86';
+    const tSim = target;
     const gwt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile;
 
@@ -89,7 +89,8 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
     const TIZEN_INSTALL_APP = `install -- ${tOut} -n ${gwt} -t ${tSim}`;
     const TIZEN_RUN_APP = `run -p ${tId} -t ${tSim}`;
 
-    buildWeb(c, platform)
+    configureTizenProject(c, platform)
+        .then(() => buildWeb(c, platform))
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, TIZEN_UNINSTALL_APP, logTask))
@@ -102,6 +103,7 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
                     .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
                     .then(() => resolve())
                     .catch((e) => {
+                        logError(e);
                         logWarning(`Looks like there is no emulator or device connected! Let's try to launch it. "${
                             chalk.white.bold(`rnv target launch -p ${platform} -t ${target}`)}"`);
 

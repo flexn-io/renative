@@ -387,12 +387,22 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const writeCleanFile = (source, destination, overrides) => {
+    if (!fs.existsSync(source)) {
+        logError(`Cannot write file. source path doesn't exists: ${source}`);
+        return;
+    }
+    if (!fs.existsSync(destination)) {
+        logError(`Cannot write file. destination path doesn't exists: ${destination}`);
+        return;
+    }
     const pFile = fs.readFileSync(source).toString();
     let pFileClean = pFile;
     overrides.forEach((v) => {
         const regEx = new RegExp(v.pattern, 'g');
         pFileClean = pFileClean.replace(regEx, v.override);
     });
+
+
     fs.writeFileSync(destination, pFileClean);
 };
 
@@ -406,4 +416,59 @@ export {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
+};
+
+export default {
+    SUPPORTED_PLATFORMS,
+    isPlatformSupported,
+    getAppFolder,
+    getAppTemplateFolder,
+    logTask,
+    logComplete,
+    logError,
+    initializeBuilder,
+    logDebug,
+    logInfo,
+    logErrorPlatform,
+    isPlatformActive,
+    isSdkInstalled,
+    checkSdk,
+    logEnd,
+    logWarning,
+    configureIfRequired,
+    getAppId,
+    getAppTitle,
+    getAppVersion,
+    getAppVersionCode,
+    writeCleanFile,
+    getEntryFile,
+    getAppConfigId,
+    getAppDescription,
+    getAppAuthor,
+    getAppLicense,
+    getQuestion,
+    logSuccess,
+    IOS,
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    WEB,
+    TIZEN,
+    TVOS,
+    WEBOS,
+    MACOS,
+    WINDOWS,
+    TIZEN_WATCH,
+    CLI_ANDROID_EMULATOR,
+    CLI_ANDROID_ADB,
+    CLI_TIZEN_EMULATOR,
+    CLI_TIZEN,
+    CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE,
+    CLI_WEBBOS_ARES_INSTALL,
+    CLI_WEBBOS_ARES_LAUNCH,
+    FORM_FACTOR_MOBILE,
+    FORM_FACTOR_DESKTOP,
+    FORM_FACTOR_WATCH,
+    FORM_FACTOR_TV,
 };

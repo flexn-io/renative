@@ -84,3 +84,7 @@ function execShellAsync(command) {
 }
 
 export { executeAsync, execShellAsync, execCLI };
+
+export default {
+    executeAsync, execShellAsync, execCLI,
+};
