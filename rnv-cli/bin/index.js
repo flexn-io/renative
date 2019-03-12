@@ -9,7 +9,7 @@ const cli = require('../dist/index.js');
 
 
 program
-    .version('0.1.0')
+    .version('0.12.1')
     .option('-i, --info', 'Show full debug info')
     .option('-u, --update', 'Force update dependencies (iOS only)')
     .option('-p, --platform <value>', 'Select specific platform') // <ios|android|web|...>
