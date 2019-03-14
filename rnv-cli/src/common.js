@@ -86,9 +86,18 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectRootFolder = base;
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
     c.homeFolder = homedir;
+    c.globalConfigFolder = path.join(homedir, '.rnv');
+    c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
     c.projectPackagePath = path.join(base, 'package.json');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
+
+    if (_currentJob === 'target') {
+        configureRnvGlobal(c)
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
 
     configureProject(c)
         .then(() => configureNodeModules(c))
