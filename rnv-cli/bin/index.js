@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 const program = require('commander');
+const fs = require('fs')
+const path = require('path')
 
 global.fetch = require('node-fetch');
 
 global.Headers = global.fetch.Headers;
 
 const cli = require('../dist/index.js');
+const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json')));
 
 
 program
-    .version('0.12.1')
+    .version(package.version)
     .option('-i, --info', 'Show full debug info')
     .option('-u, --update', 'Force update dependencies (iOS only)')
     .option('-p, --platform <value>', 'Select specific platform') // <ios|android|web|...>

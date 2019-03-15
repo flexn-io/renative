@@ -116,7 +116,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
             const pkgJsonStringClean = pkgJsonString
                 .replace(/{{PACKAGE_NAME}}/g, pkgName)
-                .replace(/{{RNV_VERSION}}/g, '0.12.0-alpha8')
+                .replace(/{{RNV_VERSION}}/g, c.rnvPackage.version)
                 .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
                 .replace(/{{PACKAGE_TITLE}}/g, data.appTitle);
 

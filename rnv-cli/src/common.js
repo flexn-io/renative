@@ -76,6 +76,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.rnvRootFolder = path.join(__dirname, '../..');
     c.rnvHomeFolder = path.join(__dirname, '..');
     c.rnvPlatformTemplatesFolder = path.join(c.rnvHomeFolder, 'platformTemplates');
+    c.rnvPackagePath = path.join(c.rnvRootFolder, 'package.json');
+    c.rnvPackage = JSON.parse(fs.readFileSync(c.rnvPackagePath).toString());
 
     if (c.command === 'app' && c.subCommand === 'create') {
         resolve(c);
@@ -92,11 +94,16 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectPackagePath = path.join(base, 'package.json');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
 
+
     if (_currentJob === 'target') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
             .catch(e => reject(e));
         return;
+    }
+
+    if (!fs.existsSync(c.projectConfigPath)) {
+        reject(`Looks like this directory is not RNV project!. You can create new project with ${chalk.bold.white('rnv app create')}`);
     }
 
     configureProject(c)
