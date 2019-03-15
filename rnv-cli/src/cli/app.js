@@ -7,7 +7,7 @@ import {
 } from '../common';
 import {
     IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS,
-    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME, SAMPLE_APP_ID,
+    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME, SAMPLE_APP_ID, RNV_PROJECT_CONFIG_NAME,
 } from '../constants';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
@@ -63,8 +63,8 @@ const run = (c) => {
 // ##########################################
 
 const _runConfigure = c => new Promise((resolve, reject) => {
-    const p = c.program.platform;
-    logTask(`_runConfigure:${p || 'all'}`);
+    const p = c.program.platform || 'all';
+    logTask(`_runConfigure:${p}`);
 
 
     _checkAndCreatePlatforms(c)
@@ -107,22 +107,17 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
             const base = path.resolve('.');
 
-            data.projectDir = path.join(base, data.appID);
+            c.projectRootFolder = path.join(base, data.appID);
+            c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
 
-
-            const pkgJsonString = fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles/package-template.json')).toString();
 
             const pkgName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
-            const pkgJsonStringClean = pkgJsonString
-                .replace(/{{PACKAGE_NAME}}/g, pkgName)
-                .replace(/{{RNV_VERSION}}/g, c.rnvPackage.version)
-                .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
-                .replace(/{{PACKAGE_TITLE}}/g, data.appTitle);
+            mkdirSync(c.projectRootFolder);
 
-            mkdirSync(data.projectDir);
+            checkAndCreateProjectPackage(c, pkgName, data.appTitle);
 
-            fs.writeFileSync(path.join(data.projectDir, 'package.json'), pkgJsonStringClean);
+            checkAndCreateProjectConfig(c);
 
             logSuccess(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.appID}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
 
@@ -130,6 +125,31 @@ const _runCreate = c => new Promise((resolve, reject) => {
         });
     });
 });
+
+const checkAndCreateProjectPackage = (c, pkgName, appTitle) => {
+    const pkgJsonString = fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles/package-template.json')).toString();
+
+
+    const pkgJsonStringClean = pkgJsonString
+        .replace(/{{PACKAGE_NAME}}/g, pkgName)
+        .replace(/{{RNV_VERSION}}/g, c.rnvPackage.version)
+        .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
+        .replace(/{{PACKAGE_TITLE}}/g, appTitle);
+
+    fs.writeFileSync(c.projectPackagePath, pkgJsonStringClean);
+};
+
+const checkAndCreateProjectConfig = (c) => {
+    // Check Project Config
+    if (fs.existsSync(c.projectConfigPath)) {
+
+    } else {
+        logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
+
+        copyFileSync(path.join(c.rnvRootFolder, RNV_PROJECT_CONFIG_NAME),
+            path.join(c.projectRootFolder, RNV_PROJECT_CONFIG_NAME));
+    }
+};
 
 
 const _checkAndCreatePlatforms = c => new Promise((resolve, reject) => {
@@ -180,6 +200,6 @@ const _runPlugins = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { copyRuntimeAssets };
+export { copyRuntimeAssets, checkAndCreateProjectPackage };
 
 export default run;

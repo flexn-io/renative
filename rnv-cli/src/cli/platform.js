@@ -6,6 +6,7 @@ import {
     logError, getAppFolder, logInfo, getQuestion, logSuccess,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
+import AppCLI from './app';
 
 const CONFIGURE = 'configure';
 const UPDATE = 'update';
@@ -85,6 +86,11 @@ const _runEjectPlatforms = c => new Promise((resolve, reject) => {
             logSuccess(`Your platform templates are located in ${chalk.bold.white(c.projectConfig.platformTemplatesFolder)} now. You can edit them directly!`);
 
             resolve();
+
+            // const newCommand = Object.assign({}, c);
+            // newCommand.command = 'app';
+            // newCommand.subCommand = 'configure';
+            // AppCLI(newCommand).then(() => resolve()).catch(e => reject(e));
         } else {
             resolve();
         }
@@ -144,6 +150,7 @@ const _runCleanPlaformAssets = c => new Promise((resolve, reject) => {
 const _runCopyPlatforms = c => new Promise((resolve, reject) => {
     logTask('_runCopyPlatforms');
     const copyPlatformTasks = [];
+    console.log('WTFFFFFF', c.platformTemplatesFolder);
     for (const k in c.appConfigFile.platforms) {
         if (isPlatformSupported(k)) {
             const ptPath = path.join(c.platformTemplatesFolder, `${k}`);

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from './fileutils';
 import { createPlatformBuild } from './cli/platform';
-import appRunner, { copyRuntimeAssets } from './cli/app';
+import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
@@ -60,11 +60,13 @@ const _getPath = (c, p) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
-    logTask('initializeBuilder');
-
-    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${cmd} ${subCmd || ''}`)} is firing up! 🔥\n${LINE}\n`));
     _currentJob = cmd;
     _currentProcess = process;
+    console.log(chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${cmd} ${subCmd || ''}`)} is firing up! 🔥\n${LINE}\n`));
+
+    logTask('initializeBuilder');
+
+
     _isInfoEnabled = program.info === true;
     const c = { cli: {} };
 
@@ -90,8 +92,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.homeFolder = homedir;
     c.globalConfigFolder = path.join(homedir, '.rnv');
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
-    c.projectConfigPath = path.join(base, RNV_PROJECT_CONFIG_NAME);
-    c.projectPackagePath = path.join(base, 'package.json');
+    c.projectConfigPath = path.join(c.projectRootFolder, RNV_PROJECT_CONFIG_NAME);
+    c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
 
 
@@ -103,7 +105,24 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     }
 
     if (!fs.existsSync(c.projectConfigPath)) {
-        reject(`Looks like this directory is not RNV project!. You can create new project with ${chalk.bold.white('rnv app create')}`);
+        reject(`Looks like this directory is not RNV project. Project config ${chalk.bold.white(c.projectConfigPath)} is missing!. You can create new project with ${chalk.bold.white('rnv app create')}`);
+    }
+    c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
+    c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder);
+    c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
+    c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder);
+    c.entryFolder = _getPath(c, c.projectConfig.entryFolder);
+    c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder);
+    c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder);
+    c.platformBuildsFolder = _getPath(c, c.projectConfig.platformBuildsFolder);
+    c.nodeModulesFolder = path.join(c.projectRootFolder, 'node_modules');
+    c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
+
+    if (_currentJob === 'platform') {
+        configureRnvGlobal(c)
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
     }
 
     configureProject(c)
@@ -118,32 +137,11 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
 const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject');
-    // Check Project Config
-    if (fs.existsSync(c.projectConfigPath)) {
-        resolve();
-    } else {
-        logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
 
-        const rnvRootFolder = path.join(__dirname, '../..');
-        const base = path.resolve('.');
-
-        copyFileSync(path.join(rnvRootFolder, RNV_PROJECT_CONFIG_NAME),
-            path.join(base, RNV_PROJECT_CONFIG_NAME));
-    }
 
     // Parse Project Config
-    c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
+    checkAndCreateProjectPackage(c, 'rn-vanilla', 'RN Vanilla');
     c.projectPackage = JSON.parse(fs.readFileSync(c.projectPackagePath).toString());
-    c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder);
-    c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
-    c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder);
-    c.entryFolder = _getPath(c, c.projectConfig.entryFolder);
-    c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder);
-    c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder);
-    c.platformBuildsFolder = _getPath(c, c.projectConfig.platformBuildsFolder);
-    c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
-    c.nodeModulesFolder = path.join(c.projectRootFolder, 'node_modules');
-
 
     // Check rn-cli-config
     if (!fs.existsSync(c.rnCliConfigPath)) {
@@ -386,20 +384,20 @@ const isPlatformActive = (c, platform, resolve) => {
 const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_configureIfRequired:${platform}`);
 
-    if (!fs.existsSync(getAppFolder(c, platform))) {
-        logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
+    // if (!fs.existsSync(getAppFolder(c, platform))) {
+    //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
 
-        const newCommand = Object.assign({}, c);
-        newCommand.subCommand = 'configure';
-        newCommand.program = { appConfig: c.id, update: false, platform };
+    const newCommand = Object.assign({}, c);
+    newCommand.subCommand = 'configure';
+    newCommand.program = { appConfig: c.id, update: false, platform };
 
-        createPlatformBuild(c, platform)
-            .then(() => appRunner(newCommand))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        copyRuntimeAssets(c).then(() => resolve()).catch(e => reject(e));
-    }
+    createPlatformBuild(c, platform)
+        .then(() => appRunner(newCommand))
+        .then(() => resolve(c))
+        .catch(e => reject(e));
+    // } else {
+    //     copyRuntimeAssets(c).then(() => resolve()).catch(e => reject(e));
+    // }
 });
 
 const writeCleanFile = (source, destination, overrides) => {
