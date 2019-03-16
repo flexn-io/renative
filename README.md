@@ -13,6 +13,28 @@
    <br />
     <br />
       <br />
+      
+---
+      
+<p align="center">
+  <a href="#-quick-start">Quick Start</a> &bull;
+  <a href="#features">Features</a> &bull;
+  <a href="#advanced-configuration">Advanced Configuration</a> &bull;
+  <a href="#architecture">Architecture</a> &bull;
+  <a href="#rnv-cli">RNV CLI</a> &bull;
+  <a href="#developing-rnv-locally">Developing RNV Locally</a> &bull;
+  <a href="#discussions">Discussions</a> &bull;
+  <a href="#contributors">Contributors</a> &bull;
+  <a href="#backers">Backers</a> &bull;
+  <a href="#sponsors">Sponsors</a> &bull;
+  <a href="#community">Community</a> &bull;
+  <a href="#stats">Stats</a> &bull;
+  <a href="#license">License</a>
+</p>
+
+
+<br />
+
 <table>
   <tr>
     <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th>
@@ -74,21 +96,7 @@
 
 ---
 
-<p align="center">
-  <a href="#-quick-start">Quick Start</a> &bull;
-  <a href="#-features">Features</a> &bull;
-  <a href="#">Advanced Configuration</a> &bull;
-  <a href="#">Architecture</a> &bull;
-  <a href="#rnv-cli">RNV CLI</a> &bull;
-  <a href="#developing-rnv-locally">Developing RNV Locally</a> &bull;
-  <a href="#discussions">Discussions</a> &bull;
-  <a href="#contributors">Contributors</a> &bull;
-  <a href="#backers">Backers</a> &bull;
-  <a href="#sponsors">Sponsors</a> &bull;
-  <a href="#community">Community</a> &bull;
-  <a href="#stats">Stats</a> &bull;
-  <a href="#license">License</a> &bull;
-</p>
+
 
 <!-- - [RNV CLI](#rnv-cli)
 - [Developing RNV Locally](#developing-rnv-locally)
@@ -139,7 +147,7 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
----
+
 
 ## 🚀 Quick Start
 
