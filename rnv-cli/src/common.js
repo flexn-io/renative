@@ -236,6 +236,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
         // Check config sanity
         if (c.globalConfig.defaultTargets === undefined) {
+            logWarning(`Looks like you\'re missing defaultTargets in your config ${chalk.bold.white(c.globalConfigPath)}. Let's add them!`);
             const defaultConfig = JSON.parse(fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME)).toString());
             const newConfig = { ...c.globalConfig, defaultTargets: defaultConfig.defaultTargets };
             fs.writeFileSync(c.globalConfigPath, JSON.stringify(newConfig, null, 2));
