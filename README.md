@@ -13,9 +13,9 @@
    <br />
     <br />
       <br />
-      
+
 ---
-      
+
 <p align="center">
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
@@ -323,10 +323,10 @@ Build Process
 Folder Structure (Generated Project)
 
     .
-    ├── appConfigs                  # Applications configuration files/assets
-    │   └── helloWorld              # Example application
+    ├── appConfigs                  # Application flavour configuration files/assets
+    │   └── helloWorld              # Example application flavour
     │       ├── assets              # Cross platform assets
-    │       └── config.json         # Application config
+    │       └── config.json         # Application flavour config
     ├── entry                       # Entry point index files
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
@@ -863,15 +863,6 @@ After installation you can launch it via Applications:
     </th>
   </tr>
 </table>
-
-
-#### Project Configuration
-
-| Feature        |             Version              |
-| -------------- | :------------------------------: |
-|          |                     |
-
-
 
 
 #### Run
