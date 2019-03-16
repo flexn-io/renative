@@ -896,7 +896,7 @@ rnv platform connect                //Use RNV predefined templates
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/win/docs/ic_construction.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_construction.png?raw=true" width=50 height=50 />
 
 ## Developing RNV Locally
 
