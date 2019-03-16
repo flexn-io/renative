@@ -218,10 +218,10 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         console.log(`Don\'t forget to Edit: .rnv/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`);
     }
 
-    // Check global SDKs
     if (fs.existsSync(c.globalConfigPath)) {
         c.globalConfig = JSON.parse(fs.readFileSync(c.globalConfigPath).toString());
-
+        
+        // Check global SDKs
         c.cli[CLI_ANDROID_EMULATOR] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
         c.cli[CLI_ANDROID_ADB] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
         c.cli[CLI_TIZEN_EMULATOR] = path.join(c.globalConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
@@ -230,6 +230,13 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
         c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
         c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+
+        // Check config sanity
+        if (c.globalConfig.defaultTargets === undefined) {
+            const defaultConfig = JSON.parse(fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME)).toString());
+            const newConfig = {...c.globalConfig, defaultTargets: defaultConfig.defaultTargets};
+            fs.writeFileSync(c.globalConfigPath, JSON.stringify(newConfig, null, 2));
+        }
     }
 
     resolve();
