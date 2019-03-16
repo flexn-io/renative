@@ -78,7 +78,7 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
 
 const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
-
+    if (process.platform !== 'darwin') return;
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
