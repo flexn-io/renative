@@ -193,7 +193,7 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
         logWarning(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.bold.white('npm install')} first!`);
         executeAsync('npm', ['install']).then(() => {
             resolve();
-        });
+        }).catch(error => logError(error));
     } else {
         resolve();
     }
