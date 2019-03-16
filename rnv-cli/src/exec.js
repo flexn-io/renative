@@ -39,6 +39,7 @@ const executeAsync = (
         env,
     },
 ) => new Promise((resolve, reject) => {
+    if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
     const command = spawn(cmd, args, opts);
 
     let stdout = '';
