@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from './fileutils';
 import { createPlatformBuild } from './cli/platform';
-import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage } from './cli/app';
+import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
@@ -143,6 +143,9 @@ const configureProject = c => new Promise((resolve, reject) => {
     checkAndCreateProjectPackage(c, 'rn-vanilla', 'RN Vanilla');
     c.projectPackage = JSON.parse(fs.readFileSync(c.projectPackagePath).toString());
 
+    // Check gitignore
+    checkAndCreateGitignore(c);
+
     // Check rn-cli-config
     if (!fs.existsSync(c.rnCliConfigPath)) {
         logWarning(`Looks like your rn-cli config file ${chalk.bold.white(c.rnCliConfigPath)} is missing! Let's create one for you.`);
@@ -220,7 +223,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
     if (fs.existsSync(c.globalConfigPath)) {
         c.globalConfig = JSON.parse(fs.readFileSync(c.globalConfigPath).toString());
-        
+
         // Check global SDKs
         c.cli[CLI_ANDROID_EMULATOR] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
         c.cli[CLI_ANDROID_ADB] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
@@ -234,7 +237,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         // Check config sanity
         if (c.globalConfig.defaultTargets === undefined) {
             const defaultConfig = JSON.parse(fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME)).toString());
-            const newConfig = {...c.globalConfig, defaultTargets: defaultConfig.defaultTargets};
+            const newConfig = { ...c.globalConfig, defaultTargets: defaultConfig.defaultTargets };
             fs.writeFileSync(c.globalConfigPath, JSON.stringify(newConfig, null, 2));
         }
     }

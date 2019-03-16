@@ -117,6 +117,8 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
             checkAndCreateProjectPackage(c, pkgName, data.appTitle);
 
+            checkAndCreateGitignore(c);
+
             checkAndCreateProjectConfig(c);
 
             logSuccess(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.appID}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
@@ -127,16 +129,31 @@ const _runCreate = c => new Promise((resolve, reject) => {
 });
 
 const checkAndCreateProjectPackage = (c, pkgName, appTitle) => {
-    const pkgJsonString = fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles/package-template.json')).toString();
+    logTask(`checkAndCreateProjectPackage:${pkgName}`);
+    if (!fs.existsSync(c.projectPackagePath)) {
+        logWarning('Looks like your package.json is missing. Let\'s create one for you!');
+
+        const pkgJsonString = fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles/package-template.json')).toString();
 
 
-    const pkgJsonStringClean = pkgJsonString
-        .replace(/{{PACKAGE_NAME}}/g, pkgName)
-        .replace(/{{RNV_VERSION}}/g, c.rnvPackage.version)
-        .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
-        .replace(/{{PACKAGE_TITLE}}/g, appTitle);
+        const pkgJsonStringClean = pkgJsonString
+            .replace(/{{PACKAGE_NAME}}/g, pkgName)
+            .replace(/{{RNV_VERSION}}/g, c.rnvPackage.version)
+            .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
+            .replace(/{{PACKAGE_TITLE}}/g, appTitle);
 
-    fs.writeFileSync(c.projectPackagePath, pkgJsonStringClean);
+        fs.writeFileSync(c.projectPackagePath, pkgJsonStringClean);
+    }
+};
+
+const checkAndCreateGitignore = (c) => {
+    logTask('checkAndCreateGitignore');
+    const ignrPath = path.join(c.projectRootFolder, '.gitignore');
+    if (!fs.existsSync(ignrPath)) {
+        logWarning('Looks like your .gitignore is missing. Let\'s create one for you!');
+
+        copyFileSync(path.join(c.rnvHomeFolder, 'supportFiles/gitignore-template'), ignrPath);
+    }
 };
 
 const checkAndCreateProjectConfig = (c) => {
@@ -196,10 +213,10 @@ const _runPlugins = c => new Promise((resolve, reject) => {
 
     mkdirSync(path.resolve(c.platformBuildsFolder, '_shared'));
 
-    copyFileSync(path.resolve(c.rnvHomeFolder, 'supportFiles/template.js'), path.resolve(c.platformBuildsFolder, '_shared/template.js'));
+    copyFileSync(path.resolve(c.platformTemplatesFolder, '_shared/template.js'), path.resolve(c.platformBuildsFolder, '_shared/template.js'));
     resolve();
 });
 
-export { copyRuntimeAssets, checkAndCreateProjectPackage };
+export { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore };
 
 export default run;
