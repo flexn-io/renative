@@ -74,10 +74,43 @@
 
 ---
 
+<p align="center">
+  <a href="#-quick-start">Quick Start</a> &bull;
+  <a href="#-features">Features</a> &bull;
+  <a href="#">Advanced Configuration</a> &bull;
+  <a href="#">Architecture</a> &bull;
+  <a href="#rnv-cli">RNV CLI</a> &bull;
+  <a href="#developing-rnv-locally">Developing RNV Locally</a> &bull;
+  <a href="#discussions">Discussions</a> &bull;
+  <a href="#contributors">Contributors</a> &bull;
+  <a href="#backers">Backers</a> &bull;
+  <a href="#sponsors">Sponsors</a> &bull;
+  <a href="#community">Community</a> &bull;
+  <a href="#stats">Stats</a> &bull;
+  <a href="#license">License</a> &bull;
+</p>
+
+<!-- - [RNV CLI](#rnv-cli)
+- [Developing RNV Locally](#developing-rnv-locally)
+- [Discussions](#discussions)
+- [Contributors](#contributors)
+- [Backers](#backers)
+- [Sponsors](#sponsors)
+- [Community](#community)
+- [Stats](#stats)
+- [LICENSE](#license) -->
+
+<!-- <p align="center">
+  <a href="#ios">iOS</a> &bull;
+  <a href="/selectorAndroid/">Android</a> &bull;
+  <a href="/selectorWeb/">tvOS</a> &bull;
+  <a href="/clientiOS/">Android TV</a> &bull;
+</p> -->
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
+<!--
 - [🚀 Quick Start](#-quick-start)
 - [Features](#-features)
 - [Advanced Configuration](#-advanced-configuration)
@@ -95,13 +128,14 @@
 - [Android Wear](#android-wear)
 - [KaiOS](#kaios)
 - [RNV CLI](#rnv-cli)
+- [Developing RNV Locally](#developing-rnv-locally)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
 - [Backers](#backers)
 - [Sponsors](#sponsors)
 - [Community](#community)
 - [Stats](#stats)
-- [LICENSE](#license)
+- [LICENSE](#license) -->
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -861,6 +895,25 @@ rnv platform eject                  //Eject platformTemplates into project
 rnv platform connect                //Use RNV predefined templates
 ```
 
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_chat.png?raw=true" width=50 height=50 />
+
+## Developing RNV Locally
+
+If you need full control over whole RNV build you can clone and develop it locally
+
+```
+1) clone git@github.com:pavjacko/react-native-vanilla.git
+2) cd react-native-vanilla
+3) npm i
+4) npm run watch
+5) npm link
+```
+
+At this point your global `$ rnv` command is linked directly into project above.
+
+It's also best way to contribute back to RNV! :)
 
 ---
 
