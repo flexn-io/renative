@@ -45,9 +45,9 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/feat/nav/rnv_android-tv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/nav/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/feat/nav/rnv_macos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/nav/docs/rnv_macos.gif?raw=true" />
     </th>
   </tr>
   <tr>
@@ -61,7 +61,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/feat/nav/rnv_webos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/nav/docs/rnv_webos.gif?raw=true" />
     </th>
   </tr>
   <tr>
