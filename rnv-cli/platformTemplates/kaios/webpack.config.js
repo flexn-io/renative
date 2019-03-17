@@ -12,6 +12,7 @@ const appBuildPublic = path.resolve(__dirname, 'public');
 const platform = 'kaios';
 const platformFamily = 'jsapp';
 const formFactor = 'mobile';
+const platformFallback = 'web';
 const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' } };
 
 const babelLoaderConfiguration = {
@@ -118,6 +119,7 @@ module.exports = {
             `.${platform}.js`,
             `.${platformFamily}.js`,
             `.${formFactor}.js`,
+            `.${platformFallback}.js`,
             '.js',
         ],
         alias: {

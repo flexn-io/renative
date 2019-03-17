@@ -12,6 +12,7 @@ const appBuildPublic = path.resolve(__dirname, 'public');
 const platform = 'webos';
 const platformFamily = 'smarttv';
 const formFactor = 'tv';
+const platformFallback = 'web';
 const config = {};
 
 const babelLoaderConfiguration = {
@@ -120,6 +121,7 @@ module.exports = {
             `.${platform}.js`,
             `.${platformFamily}.js`,
             `.${formFactor}.js`,
+            `.${platformFallback}.js`,
             '.js',
         ],
         alias: {
