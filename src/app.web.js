@@ -1,17 +1,14 @@
 import React from 'react';
 import { View } from 'react-native';
-import { createDrawerNavigator } from 'react-navigation';
+import { createSwitchNavigator } from '@react-navigation/core';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
 import Menu from './menu';
 
-const Navigator = createDrawerNavigator(
+const Navigator = createSwitchNavigator(
     {
         ScreenHome,
         ScreenMyPage,
-    },
-    {
-        contentComponent: Menu,
     },
 );
 
@@ -25,6 +22,7 @@ class App extends React.Component {
   render() {
       return (
           <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '#222222' }}>
+              <Menu navigation={this.props.navigation} style={{ flex: undefined, width: 200 }} />
               <Navigator navigation={this.props.navigation} />
           </View>
       );

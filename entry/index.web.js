@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createBrowserApp, Link } from '@react-navigation/web';
+import { createBrowserApp } from '@react-navigation/web';
 import App from '../src/app';
 import Api from '../src/api';
 import registerServiceWorker from '../src/registerServiceWorker';

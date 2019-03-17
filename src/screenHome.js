@@ -9,8 +9,6 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        borderLeftWidth: 2,
-        borderLeftColor: '#FFFFFF',
     },
     textH2: {
         fontSize: 20,

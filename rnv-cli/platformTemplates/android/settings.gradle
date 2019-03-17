@@ -1,3 +1,3 @@
-rootProject.name = 'RNVApp'
+include ':app', ':react-native-gesture-handler'
 
-include ':app'
+project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../../node_modules/react-native-gesture-handler/android')

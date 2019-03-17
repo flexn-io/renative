@@ -7,8 +7,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#222222',
         justifyContent: 'center',
         alignItems: 'center',
-        borderLeftWidth: 2,
-        borderLeftColor: '#FFFFFF',
     },
     textH2: {
         fontSize: 20,
