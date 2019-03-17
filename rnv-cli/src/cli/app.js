@@ -70,22 +70,30 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     _checkAndCreatePlatforms(c)
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c))
-        .then(() => (p === ANDROID || p === ANDROID_TV || p === ANDROID_WEAR || p === 'all' ? configureAndroidProperties(c) : Promise.resolve()))
-        .then(() => (p === ANDROID || p === 'all' ? configureGradleProject(c, ANDROID) : Promise.resolve()))
-        .then(() => (p === ANDROID_TV || p === 'all' ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
-        .then(() => (p === ANDROID_WEAR || p === 'all' ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
-        .then(() => (p === TIZEN || p === 'all' ? configureTizenProject(c, TIZEN) : Promise.resolve()))
-        .then(() => (p === TIZEN_WATCH || p === 'all' ? configureTizenProject(c, TIZEN_WATCH) : Promise.resolve()))
-        .then(() => (p === WEBOS || p === 'all' ? configureWebOSProject(c, WEBOS) : Promise.resolve()))
-        .then(() => (p === WEB || p === 'all' ? configureWebProject(c, WEB) : Promise.resolve()))
-        .then(() => (p === MACOS || p === 'all' ? configureElectronProject(c, MACOS) : Promise.resolve()))
-        .then(() => (p === WINDOWS || p === 'all' ? configureElectronProject(c, WINDOWS) : Promise.resolve()))
-        .then(() => (p === KAIOS || p === 'all' ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
-        .then(() => (p === IOS || p === 'all' ? configureXcodeProject(c, IOS) : Promise.resolve()))
-        .then(() => (p === TVOS || p === 'all' ? configureXcodeProject(c, TVOS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [ANDROID, ANDROID_TV, ANDROID_WEAR]) ? configureAndroidProperties(c) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [TIZEN]) ? configureTizenProject(c, TIZEN) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [TIZEN_WATCH]) ? configureTizenProject(c, TIZEN_WATCH) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [WEBOS]) ? configureWebOSProject(c, WEBOS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [WEB]) ? configureWebProject(c, WEB) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [MACOS]) ? configureElectronProject(c, MACOS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [WINDOWS]) ? configureElectronProject(c, WINDOWS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [KAIOS]) ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
         .then(() => resolve())
         .catch(e => reject(e));
 });
+
+const _isOK = (c, p, list) => {
+    let result = false;
+    list.forEach((v) => {
+        if (isPlatformActive(c, v) && (p === v || p === 'all')) result = true;
+    });
+    return result;
+};
 
 const _runCreate = c => new Promise((resolve, reject) => {
     logTask('_runCreate');

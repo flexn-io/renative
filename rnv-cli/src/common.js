@@ -125,9 +125,9 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
-    configureProject(c)
+    configureRnvGlobal(c)
+        .then(() => configureProject(c))
         .then(() => configureNodeModules(c))
-        .then(() => configureRnvGlobal(c))
         .then(() => configureTizenGlobal(c))
         // .then(() => configureAndroidGlobal(c))
         .then(() => configureApp(c))
@@ -223,6 +223,15 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
     if (fs.existsSync(c.globalConfigPath)) {
         c.globalConfig = JSON.parse(fs.readFileSync(c.globalConfigPath).toString());
+
+        if (c.globalConfig.appConfigsPath) {
+            if (!fs.existsSync(c.globalConfig.appConfigsPath)) {
+                logWarning(`Looks like your custom global appConfig is pointing to ${chalk.bold.white(c.globalConfig.appConfigsPath)} which doesn't exist! Make sure you create one in that location`);
+            } else {
+                logInfo(`Found custom appConfing location pointing to ${chalk.bold.white(c.globalConfig.appConfigsPath)}. RNV will now swith to that location!`);
+                c.appConfigsFolder = c.globalConfig.appConfigsPath;
+            }
+        }
 
         // Check global SDKs
         c.cli[CLI_ANDROID_EMULATOR] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
@@ -384,9 +393,14 @@ const logErrorPlatform = (platform, resolve) => {
 };
 
 const isPlatformActive = (c, platform, resolve) => {
+    if (!c.appConfigFile || !c.appConfigFile.platforms) {
+        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.bold.white(c.appConfigPath)} location.`);
+        if (resolve) resolve();
+        return false;
+    }
     if (!c.appConfigFile.platforms[platform]) {
         console.log(`Platform ${platform} not configured for ${c.appId}. skipping.`);
-        resolve();
+        if (resolve) resolve();
         return false;
     }
     return true;
