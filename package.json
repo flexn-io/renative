@@ -113,7 +113,7 @@
     "react-native-gesture-handler": "1.1.0",
     "react-navigation-tabs": "1.0.2",
     "@babel/preset-env": "7.3.4",
-    "svg2js": "0.0.3",
+    "svg2js": "0.0.4-alpha1",
     "nodemon": "1.18.10",
     "babel-preset-env": "1.7.0",
     "copy-webpack-plugin": "4.6.0",

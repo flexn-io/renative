@@ -37,7 +37,9 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true) => {
             if (fs.lstatSync(curSource).isDirectory()) {
                 copyFolderRecursiveSync(curSource, targetFolder);
             } else if (path.extname(curSource) === '.svg' && convertSvg === true) {
-                saveAsJs(curSource, path.join(targetFolder, `${path.basename(curSource)}.js`));
+                const jsDest = path.join(targetFolder, `${path.basename(curSource)}.js`);
+                logDebug(`file ${curSource} is svg and convertSvg is set to true. converitng to ${jsDest}`);
+                saveAsJs(curSource, jsDest);
             } else {
                 copyFileSync(curSource, targetFolder);
             }
@@ -67,10 +69,10 @@ const copyFolderContentsRecursiveSync = (source, target) => {
 };
 
 const saveAsJs = (source, dest) => {
-    Svg2Js.create({
+    Svg2Js.createSync({
         source,
         destination: dest,
-    }).then(() => { console.log('The file was saved!'); });
+    });
 };
 
 const removeDir = (path, callback) => {
