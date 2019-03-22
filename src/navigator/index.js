@@ -1,17 +1,12 @@
-import React from 'react';
-import { View } from 'react-native';
-import { createDrawerNavigator, createAppContainer } from 'react-navigation';
+import { Platform } from 'react-native';
+import { TVOS } from '../constants';
 
-const createApp = navigator => createAppContainer(navigator);
+const nav = Platform.isTV ? require('./index.tv.js').default : require('./index.mobile.js').default;
 
-const createNavigator = (screens, menu) => createDrawerNavigator(screens, {
-    contentComponent: menu,
-});
+const createApp = navigator => nav.createApp(navigator);
 
-const createNavigatorView = (Navigator, navigation) => (
-    <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '#222222' }}>
-        <Navigator navigation={navigation} />
-    </View>
-);
+const createNavigator = (screens, menu) => nav.createNavigator(screens, menu);
+
+const createNavigatorView = (Navigator, navigation) => nav.createNavigatorView(Navigator, navigation);
 
 export { createNavigator, createNavigatorView, createApp };
