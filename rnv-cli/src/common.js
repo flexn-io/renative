@@ -52,7 +52,11 @@ const isPlatformSupported = (platform, resolve, reject) => {
     return true;
 };
 
-const _getPath = (c, p) => {
+const _getPath = (c, p, key = 'undefined', original) => {
+    if (!p) {
+        logWarning(`Path ${chalk.bold.white(key)} is not defined`);
+        return original;
+    }
     if (p.startsWith('./')) {
         return path.join(c.projectRootFolder, p);
     }
@@ -79,6 +83,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.rnvHomeFolder = path.join(__dirname, '..');
     c.rnvPlatformTemplatesFolder = path.join(c.rnvHomeFolder, 'platformTemplates');
     c.rnvPackagePath = path.join(c.rnvRootFolder, 'package.json');
+    c.rnvPluginsFolder = path.join(c.rnvHomeFolder, 'plugins');
     c.rnvPackage = JSON.parse(fs.readFileSync(c.rnvPackagePath).toString());
 
     if (c.command === 'app' && c.subCommand === 'create') {
@@ -94,6 +99,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.projectConfigPath = path.join(c.projectRootFolder, RNV_PROJECT_CONFIG_NAME);
     c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
+    c.projectPluginsFolder = path.join(c.projectRootFolder, 'plugins');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
 
 
@@ -108,13 +114,14 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         reject(`Looks like this directory is not RNV project. Project config ${chalk.bold.white(c.projectConfigPath)} is missing!. You can create new project with ${chalk.bold.white('rnv app create')}`);
     }
     c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
-    c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder);
+    c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder, 'globalConfigFolder', c.globalConfigFolder);
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
-    c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder);
-    c.entryFolder = _getPath(c, c.projectConfig.entryFolder);
-    c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder);
-    c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder);
-    c.platformBuildsFolder = _getPath(c, c.projectConfig.platformBuildsFolder);
+    c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder, 'appConfigsFolder', c.appConfigsFolder);
+    c.entryFolder = _getPath(c, c.projectConfig.entryFolder, 'entryFolder', c.entryFolder);
+    c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder, 'platformTemplatesFolder', c.platformTemplatesFolder);
+    c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder, 'platformAssetsFolder', c.platformAssetsFolder);
+    c.platformBuildsFolder = _getPath(c, c.projectConfig.platformBuildsFolder, 'platformBuildsFolder', c.platformBuildsFolder);
+    c.projectPluginsFolder = _getPath(c, c.projectConfig.projectPlugins, 'projectPlugins', c.projectPluginsFolder);
     c.nodeModulesFolder = path.join(c.projectRootFolder, 'node_modules');
     c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
 

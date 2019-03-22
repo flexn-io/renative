@@ -4,5 +4,6 @@
   "platformTemplatesFolder": "RNV_HOME/platformTemplates",
   "entryFolder": "./entry",
   "platformAssetsFolder": "./platformAssets",
-  "platformBuildsFolder": "./platformBuilds"
+  "platformBuildsFolder": "./platformBuilds",
+  "projectPlugins": "./plugins"
 }

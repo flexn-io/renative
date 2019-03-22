@@ -69,7 +69,8 @@ const _runConfigure = c => new Promise((resolve, reject) => {
 
     _checkAndCreatePlatforms(c)
         .then(() => copyRuntimeAssets(c))
-        .then(() => _runPlugins(c))
+        .then(() => _runPlugins(c, c.rnvPluginsFolder))
+        .then(() => _runPlugins(c, c.projectPluginsFolder))
         .then(() => (_isOK(c, p, [ANDROID, ANDROID_TV, ANDROID_WEAR]) ? configureAndroidProperties(c) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
@@ -207,16 +208,24 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 });
 
 
-const _runPlugins = c => new Promise((resolve, reject) => {
+const _runPlugins = (c, pluginsPath) => new Promise((resolve, reject) => {
     logTask('_runPlugins');
 
-    const pluginsPath = path.resolve(c.rnvHomeFolder, 'plugins');
+    if (!fs.existsSync(pluginsPath)) {
+        logWarning(`Your project plugin folder ${pluginsPath} does not exists. skipping plugin configuration`);
+        resolve();
+        return;
+    }
 
     fs.readdirSync(pluginsPath).forEach((dir) => {
         const pp = path.resolve(pluginsPath, dir, 'overrides');
-        fs.readdirSync(pp).forEach((file) => {
-            copyFileSync(path.resolve(pp, file), path.resolve(c.projectRootFolder, 'node_modules', dir));
-        });
+        if (fs.existsSync(pp)) {
+            fs.readdirSync(pp).forEach((file) => {
+                copyFileSync(path.resolve(pp, file), path.resolve(c.projectRootFolder, 'node_modules', dir));
+            });
+        } else {
+            logWarning(`Your plugin configuration has no override path ${pp}. skipping`);
+        }
     });
 
     mkdirSync(path.resolve(c.platformBuildsFolder, '_shared'));
