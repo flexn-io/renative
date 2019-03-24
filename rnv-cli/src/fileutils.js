@@ -19,7 +19,7 @@ const copyFileSync = (source, target) => {
     fs.writeFileSync(targetFile, fs.readFileSync(source));
 };
 
-const copyFolderRecursiveSync = (source, target, convertSvg = true) => {
+const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
     logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
 
@@ -47,8 +47,8 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true) => {
     }
 };
 
-const copyFolderContentsRecursiveSync = (source, target) => {
-    logDebug('copyFolderContentsRecursiveSync', source, target);
+const copyFolderContentsRecursiveSync = (source, target, skipPaths) => {
+    logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
     if (!fs.existsSync(source)) return;
     let files = [];
     const targetFolder = path.join(target);
@@ -59,10 +59,12 @@ const copyFolderContentsRecursiveSync = (source, target) => {
         files = fs.readdirSync(source);
         files.forEach((file) => {
             const curSource = path.join(source, file);
-            if (fs.lstatSync(curSource).isDirectory()) {
-                copyFolderRecursiveSync(curSource, targetFolder);
-            } else {
-                copyFileSync(curSource, targetFolder);
+            if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
+                if (fs.lstatSync(curSource).isDirectory()) {
+                    copyFolderRecursiveSync(curSource, targetFolder, true, skipPaths);
+                } else {
+                    copyFileSync(curSource, targetFolder);
+                }
             }
         });
     }

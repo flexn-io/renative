@@ -74,7 +74,11 @@ const run = (c) => {
 // ##########################################
 
 const _start = c => new Promise((resolve, reject) => {
-    shell.exec('node ./node_modules/react-native/local-cli/cli.js start');
+    if (c.program.reset) {
+        shell.exec('node ./node_modules/react-native/local-cli/cli.js start --reset-cache');
+    } else {
+        shell.exec('node ./node_modules/react-native/local-cli/cli.js start');
+    }
 });
 
 const _runApp = c => new Promise((resolve, reject) => {

@@ -150,7 +150,6 @@ const _runCleanPlaformAssets = c => new Promise((resolve, reject) => {
 const _runCopyPlatforms = c => new Promise((resolve, reject) => {
     logTask('_runCopyPlatforms');
     const copyPlatformTasks = [];
-    console.log('WTFFFFFF', c.platformTemplatesFolder);
     for (const k in c.appConfigFile.platforms) {
         if (isPlatformSupported(k)) {
             const ptPath = path.join(c.platformTemplatesFolder, `${k}`);

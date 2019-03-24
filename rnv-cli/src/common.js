@@ -94,6 +94,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.platform = program.platform;
     c.projectRootFolder = base;
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
+    c.projectNpmLinkPolyfillPath = path.join(c.projectRootFolder, 'npm_link_polyfill.json');
     c.homeFolder = homedir;
     c.globalConfigFolder = path.join(homedir, '.rnv');
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);

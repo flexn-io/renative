@@ -6,6 +6,7 @@ import Runner from './cli/runner';
 import App from './cli/app';
 import Platform from './cli/platform';
 import Target from './cli/target';
+import Linker from './cli/linker';
 import Constants from './constants';
 import Exec from './exec';
 import FileUtils from './fileutils';
@@ -13,6 +14,7 @@ import FileUtils from './fileutils';
 const commands = {
     start: Runner,
     app: App,
+    link: Linker,
     platform: Platform,
     run: Runner,
     target: Target,
