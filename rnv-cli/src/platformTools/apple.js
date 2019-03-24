@@ -123,6 +123,8 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     const plistBuddy = '/usr/libexec/PlistBuddy';
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
+    copyFileSync(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'));
+
     if (!fs.existsSync(plistBuddy)) {
         logError(`PlistBuddy not found at location ${plistBuddy}. Make sure you have it installed!`);
         resolve();
