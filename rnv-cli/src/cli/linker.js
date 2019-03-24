@@ -54,7 +54,7 @@ const _link = c => new Promise((resolve, reject) => {
             const nm = path.join(source, 'node_modules');
             const dest = path.join(c.nodeModulesFolder, key);
             if (fs.existsSync(source)) {
-                copyFolderContentsRecursiveSync(source, dest, [nm]);
+                copyFolderContentsRecursiveSync(source, dest, false, [nm]);
             } else {
                 logWarning(`Source: ${source} doesn't exists!`);
             }

@@ -47,7 +47,7 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) =
     }
 };
 
-const copyFolderContentsRecursiveSync = (source, target, skipPaths) => {
+const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
     if (!fs.existsSync(source)) return;
     let files = [];
@@ -61,7 +61,7 @@ const copyFolderContentsRecursiveSync = (source, target, skipPaths) => {
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
-                    copyFolderRecursiveSync(curSource, targetFolder, true, skipPaths);
+                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipPaths);
                 } else {
                     copyFileSync(curSource, targetFolder);
                 }

@@ -218,11 +218,14 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve, reject) => {
     }
 
     fs.readdirSync(pluginsPath).forEach((dir) => {
-        const pp = path.resolve(pluginsPath, dir, 'overrides');
-        if (fs.existsSync(pp)) {
-            fs.readdirSync(pp).forEach((file) => {
-                copyFileSync(path.resolve(pp, file), path.resolve(c.projectRootFolder, 'node_modules', dir));
-            });
+        const source = path.resolve(pluginsPath, dir, 'overrides');
+        const dest = path.resolve(c.projectRootFolder, 'node_modules', dir);
+
+        if (fs.existsSync(source)) {
+            copyFolderContentsRecursiveSync(source, dest, false);
+            // fs.readdirSync(pp).forEach((dir) => {
+            //     copyFileSync(path.resolve(pp, file), path.resolve(c.projectRootFolder, 'node_modules', dir));
+            // });
         } else {
             logWarning(`Your plugin configuration has no override path ${pp}. skipping`);
         }
