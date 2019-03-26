@@ -254,10 +254,21 @@ const configureProject = c => new Promise((resolve, reject) => {
     if (fs.existsSync(c.permissionsConfigPath)) {
         c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
     } else {
-        const newPath = path.join(c.rnvRootFolder, 'appConfigs/permissions.json');
+        const newPath = path.join(c.rnvRootFolder, 'projectConfig/permissions.json');
         logWarning(`Looks like your permission config is missing from ${chalk.white(c.permissionsConfigPath)}. RNV Default ${chalk.white(newPath)} will be used instead`);
         c.permissionsConfigPath = newPath;
         c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
+    }
+
+    // Check fonts
+    logTask('configureProject:check fonts');
+    if (fs.existsSync(c.fontsConfigPath)) {
+        c.fontsConfig = JSON.parse(fs.readFileSync(c.fontsConfigPath).toString());
+    } else {
+        const newFontPath = path.join(c.rnvRootFolder, 'projectConfig/permissions.json');
+        logWarning(`Looks like your font config is missing from ${chalk.white(c.fontsConfigPath)}. RNV Default ${chalk.white(newFontPath)} will be used instead`);
+        c.fontsConfigPath = newFontPath;
+        c.fontsConfig = JSON.parse(fs.readFileSync(c.fontsConfigPath).toString());
     }
 
     resolve();

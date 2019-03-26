@@ -141,6 +141,29 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             }
         }
     }
+    // FONTS
+    if (c.appConfigFile && c.fontsConfig) {
+        const includedFonts = c.appConfigFile.common.includedFonts;
+        if (includedFonts) {
+            const fonts = c.fontsConfig.fonts;
+            for (const key in fonts) {
+                if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                    const font = fonts[key];
+                    if (font) {
+                        const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                        if (fs.existsSync(fontSource)) {
+                            const fontFolder = path.join(appFolder, 'fonts');
+                            mkdirSync(fontFolder);
+                            const fontDest = path.join(fontFolder, font);
+                            copyFileSync(fontSource, fontDest);
+                        } else {
+                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'),
         path.join(appFolder, 'Podfile'),
