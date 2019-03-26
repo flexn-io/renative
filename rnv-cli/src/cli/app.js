@@ -67,7 +67,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     logTask(`_runConfigure:${p}`);
 
 
-    _checkAndCreatePlatforms(c)
+    _checkAndCreatePlatforms(c, p)
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c, c.rnvPluginsFolder))
         .then(() => _runPlugins(c, c.projectPluginsFolder))
@@ -179,7 +179,7 @@ const checkAndCreateProjectConfig = (c) => {
 };
 
 
-const _checkAndCreatePlatforms = c => new Promise((resolve, reject) => {
+const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) => {
     logTask('_checkAndCreatePlatforms');
 
     if (!fs.existsSync(c.platformBuildsFolder)) {
@@ -194,6 +194,21 @@ const _checkAndCreatePlatforms = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
 
         return;
+    } if (platform) {
+        const appFolder = getAppFolder(c, platform);
+        if (!fs.existsSync(appFolder)) {
+            logWarning(`Platform ${platform} not created yet. creating them for you...`);
+
+            const newCommand = Object.assign({}, c);
+            newCommand.subCommand = 'configure';
+            newCommand.program = { appConfig: SAMPLE_APP_ID, platform };
+
+            platformRunner(newCommand)
+                .then(() => resolve())
+                .catch(e => reject(e));
+
+            return;
+        }
     }
     resolve();
 });

@@ -29,26 +29,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// @see https://medium.com/@andr3wjack/versioning-react-native-apps-407469707661
-static def getNpmVersion() {
-    def inputFile = new File("../../package.json")
-    def packageJson = new JsonSlurper().parseText(inputFile.text)
-    return packageJson["version"]
-}
-
-static def getNpmVersionArray() { // major [0], minor [1], patch [2]
-    def (major, minor, patch) = getNpmVersion().tokenize('.')
-    return [Integer.parseInt(major), Integer.parseInt(minor), Integer.parseInt(patch)] as int[]
-}
-
 subprojects {
-    ext {
-        def npmVersion = getNpmVersionArray()
-        versionMajor = npmVersion[0]
-        versionMinor = npmVersion[1]
-        versionPatch = npmVersion[2]
-    }
-
     afterEvaluate { project ->
         if (project.hasProperty("android")) {
             android {

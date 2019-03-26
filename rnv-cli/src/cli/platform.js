@@ -55,11 +55,12 @@ const run = (c) => {
 // ##########################################
 
 const _runCreatePlatforms = c => new Promise((resolve, reject) => {
-    logTask('_runCreatePlatforms');
+    const p = c.program.platform || 'all';
+    logTask(`_runCreatePlatforms:${p}`);
 
-    _runCleanPlaformFolders(c)
+    _runCleanPlaformFolders(c, p)
         .then(() => _runCleanPlaformAssets(c))
-        .then(() => _runCopyPlatforms(c))
+        .then(() => _runCopyPlatforms(c, p))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -147,15 +148,21 @@ const _runCleanPlaformAssets = c => new Promise((resolve, reject) => {
     });
 });
 
-const _runCopyPlatforms = c => new Promise((resolve, reject) => {
+const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     logTask('_runCopyPlatforms');
     const copyPlatformTasks = [];
-    for (const k in c.appConfigFile.platforms) {
-        if (isPlatformSupported(k)) {
-            const ptPath = path.join(c.platformTemplatesFolder, `${k}`);
-            const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
-            copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
+    if (platform === 'all') {
+        for (const k in c.appConfigFile.platforms) {
+            if (isPlatformSupported(k)) {
+                const ptPath = path.join(c.platformTemplatesFolder, `${k}`);
+                const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
+                copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
+            }
         }
+    } else if (isPlatformSupported(platform)) {
+        const ptPath = path.join(c.platformTemplatesFolder, `${platform}`);
+        const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
+        copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
     }
 
     Promise.all(copyPlatformTasks).then((values) => {
@@ -163,16 +170,21 @@ const _runCopyPlatforms = c => new Promise((resolve, reject) => {
     });
 });
 
-const _runCleanPlaformFolders = c => new Promise((resolve, reject) => {
+const _runCleanPlaformFolders = (c, platform) => new Promise((resolve, reject) => {
     logTask('_runCleanPlaformFolders');
 
     const cleanTasks = [];
 
-    for (const k in c.appConfigFile.platforms) {
-        if (isPlatformSupported(k)) {
-            const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
-            cleanTasks.push(cleanFolder(pPath));
+    if (platform === 'all') {
+        for (const k in c.appConfigFile.platforms) {
+            if (isPlatformSupported(k)) {
+                const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
+                cleanTasks.push(cleanFolder(pPath));
+            }
         }
+    } else if (isPlatformSupported(platform)) {
+        const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
+        cleanTasks.push(cleanFolder(pPath));
     }
 
     Promise.all(cleanTasks).then((values) => {

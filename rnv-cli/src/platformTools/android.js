@@ -131,58 +131,12 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
+    const appTemplateFolder = getAppTemplateFolder(c, platform);
 
     copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
     fs.chmodSync(path.join(appFolder, 'gradlew'), '755');
-
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'app/build.gradle'),
-        path.join(appFolder, 'app/build.gradle'),
-        [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
-            { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
-        ]);
-
-    const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), activityPath),
-        path.join(appFolder, activityPath),
-        [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        ]);
-
-    const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), applicationPath),
-        path.join(appFolder, applicationPath),
-        [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-        ]);
-
-    const stringsPath = 'app/src/main/res/values/strings.xml';
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), stringsPath),
-        path.join(appFolder, stringsPath),
-        [
-            { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
-        ]);
-
-    let prms = '';
-    const permissions = c.appConfigFile.platforms[platform].permissions;
-    if (permissions) {
-        permissions.forEach((v) => {
-            prms += `\n<uses-permission android:name="${v}" />`;
-        });
-    }
-
-    const manifestFile = 'app/src/main/AndroidManifest.xml';
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), manifestFile),
-        path.join(appFolder, manifestFile),
-        [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{PERMISIONS}}', override: prms },
-        ]);
-
 
     // {{PLUGIN_INCLUDES}}
     // include ':app', ':react-native-gesture-handler'
@@ -199,6 +153,90 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     // {{PLUGIN_IMPLEMENTATIONS}}
     // implementation project(':react-native-gesture-handler')
+
+    let pluginIncludes = 'include \':app\'';
+    let pluginPaths = '';
+    let pluginImports = '';
+    let pluginPackages = 'MainReactPackage(),\n';
+    let pluginImplementations = '';
+    // PLUGINS
+    if (c.appConfigFile && c.pluginConfig) {
+        const includedPlugins = c.appConfigFile.common.includedPlugins;
+        const excludedPlugins = c.appConfigFile.common.excludedPlugins;
+        if (includedPlugins) {
+            const plugins = c.pluginConfig.plugins;
+            for (const key in plugins) {
+                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
+                    const plugin = plugins[key][platform];
+                    if (plugin) {
+                        const className = plugin.package.split('.').pop();
+                        pluginIncludes += `, ':${key}'`;
+                        pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${plugin.modulePath}')\n`;
+                        pluginImports += `import ${plugin.package}\n`;
+                        pluginPackages += `${className}()\n`;
+                        pluginImplementations += `implementation project(':${key}')\n`;
+                    }
+                }
+            }
+        }
+    }
+    pluginPackages = pluginPackages.substring(0, pluginPackages.length - 1);
+
+    writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'),
+        path.join(appFolder, 'settings.gradle'),
+        [
+            { pattern: '{{PLUGIN_INCLUDES}}', override: pluginIncludes },
+            { pattern: '{{PLUGIN_PATHS}}', override: pluginPaths },
+        ]);
+
+    writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'),
+        path.join(appFolder, 'app/build.gradle'),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
+            { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
+            { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginImplementations },
+        ]);
+
+    const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
+    writeCleanFile(path.join(appTemplateFolder, activityPath),
+        path.join(appFolder, activityPath),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        ]);
+
+    const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
+    writeCleanFile(path.join(appTemplateFolder, applicationPath),
+        path.join(appFolder, applicationPath),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+            { pattern: '{{PLUGIN_IMPORTS}}', override: pluginImports },
+            { pattern: '{{PLUGIN_PACKAGES}}', override: pluginPackages },
+        ]);
+
+    const stringsPath = 'app/src/main/res/values/strings.xml';
+    writeCleanFile(path.join(appTemplateFolder, stringsPath),
+        path.join(appFolder, stringsPath),
+        [
+            { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
+        ]);
+
+    let prms = '';
+    const permissions = c.appConfigFile.platforms[platform].permissions;
+    if (permissions) {
+        permissions.forEach((v) => {
+            prms += `\n<uses-permission android:name="${v}" />`;
+        });
+    }
+
+    const manifestFile = 'app/src/main/AndroidManifest.xml';
+    writeCleanFile(path.join(appTemplateFolder, manifestFile),
+        path.join(appFolder, manifestFile),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{PERMISIONS}}', override: prms },
+        ]);
 
 
     resolve();

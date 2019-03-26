@@ -416,7 +416,7 @@ const getAppVersionCode = (c, platform) => {
     const version = getAppVersion(c, platform);
 
     let vc = '';
-    version.split('.').forEach((v) => {
+    version.split('-')[0].split('.').forEach((v) => {
         vc += v.length > 1 ? v : `0${v}`;
     });
     return Number(vc).toString();
