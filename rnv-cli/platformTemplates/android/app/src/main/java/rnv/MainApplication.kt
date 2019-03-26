@@ -23,7 +23,7 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getPackages(): List<ReactPackage> {
             return Arrays.asList<ReactPackage>(
-                    {{PLUGIN_PACKAGES}}
+{{PLUGIN_PACKAGES}}
             )
         }
 

@@ -38,5 +38,5 @@ dependencies {
     compileOnly 'com.google.android.wearable:wearable:2.4.0'
     implementation ("com.facebook.react:react-native:+") {
     }
-    implementation project(':react-native-gesture-handler')
+{{PLUGIN_IMPLEMENTATIONS}}
 }

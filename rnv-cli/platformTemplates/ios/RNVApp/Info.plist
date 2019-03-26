@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>RN Vanilla</string>
+	<string>{{PLUGIN_APPTITLE}}</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.1.0</string>
+	<string>{{PLUGIN_VERSION_STRING}}</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -46,8 +46,9 @@
 	</dict>
 	<key>UIAppFonts</key>
 	<array>
-
+{{PLUGIN_FONTS}}
 	</array>
+{{PLUGIN_PERMISSIONS}}
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>remote-notification</string>

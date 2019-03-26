@@ -107,6 +107,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     logTask(`configureProject:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
+    const appTemplateFolder = getAppTemplateFolder(c, platform);
 
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
@@ -147,42 +148,64 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         ]);
 
-
-    if (!fs.existsSync(plistBuddy)) {
-        logError(`PlistBuddy not found at location ${plistBuddy}. Make sure you have it installed!`);
-        resolve();
-    } else {
-        execShellAsync(`${plistBuddy} -c "Set :CFBundleShortVersionString ${getAppVersion(c, platform)}" "${plistPath}"`)
-            .then(() => execShellAsync(`${plistBuddy} -c "Set :CFBundleDisplayName ${getAppTitle(c, platform)}" "${plistPath}"`))
-            .then(() => configureProjectPermissions(c, platform, appFolderName))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    }
-});
-
-const configureProjectPermissions = (c, platform, appFolderName) => new Promise((resolve, reject) => {
-    logTask(`configureProjectPermissions:${platform}`);
-
-    const appFolder = getAppFolder(c, platform);
-
-    const plistBuddy = '/usr/libexec/PlistBuddy';
-    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+    const pluginFonts = ''; // <string>FontAwesome5_Regular.ttf</string>
+    let pluginPermissions = '';
 
     const permissions = c.appConfigFile.platforms[platform].permissions;
-    if (permissions) {
-        const tasks = [];
-        let pcmd = '';
-        permissions.forEach((v) => {
-            pcmd += ` -c "Set :${v.key} ${v.desc}"`;
-        });
 
-        execShellAsync(`${plistBuddy}${pcmd} "${plistPath}"`)
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        resolve();
+    if (permissions) {
+        permissions.forEach((v) => {
+            if (c.permissionsConfig) {
+                const plat = c.permissionsConfig.permissions[platform] ? platform : 'ios';
+                const pc = c.permissionsConfig.permissions[plat];
+                if (pc[v]) {
+                    pluginPermissions += `  <key>${pc[v].key}</key>\n  <string>${pc[v].desc}</string>\n`;
+                }
+            }
+        });
     }
+    pluginPermissions = pluginPermissions.substring(0, pluginPermissions.length - 1);
+
+    writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/Info.plist`),
+        plistPath,
+        [
+            { pattern: '{{PLUGIN_FONTS}}', override: pluginFonts },
+            { pattern: '{{PLUGIN_PERMISSIONS}}', override: pluginPermissions },
+            { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
+            { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
+        ]);
+
+    resolve();
 });
+
+// const configureProjectPermissions = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+//     logTask(`configureProjectPermissions:${platform}`);
+//
+//     const appFolder = getAppFolder(c, platform);
+//
+//     const plistBuddy = '/usr/libexec/PlistBuddy';
+//     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+//
+//     const permissions = c.appConfigFile.platforms[platform].permissions;
+//     let pcmd = '';
+//     if (permissions) {
+//         permissions.forEach((v) => {
+//             if (c.permissionsConfig) {
+//                 const plat = c.permissionsConfig.permissions[platform] ? platform : 'ios';
+//                 const pc = c.permissionsConfig.permissions[plat];
+//                 if (pc[v]) {
+//                     pcmd += ` -c "Set :${pc[v].key} ${pc[v].desc}"`;
+//                 }
+//             }
+//         });
+//         console.log(`${plistBuddy}${pcmd} "${plistPath}"`);
+//         execShellAsync(`${plistBuddy}${pcmd} "${plistPath}"`)
+//             .then(() => resolve())
+//             .catch(e => reject(e));
+//     } else {
+//         resolve();
+//     }
+// });
 
 
 export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject };

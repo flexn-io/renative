@@ -284,6 +284,30 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 rnv app configure -c helloWorld -u
 ```
 
+#### Custom Plugin Support
+
+You can configure multiple React Native plugins without need to update project blueprints in `./appConfigs/plugins.json`
+
+Example:
+
+```json
+{
+  "plugins": {
+    "react-native-gesture-handler" : {
+      "version": "0.1.0",
+      "ios": {
+        "podName": "RNGestureHandler",
+        "podPath": "../../node_modules/react-native-gesture-handler"
+      },
+      "android": {
+        "modulePath": "../../node_modules/react-native-gesture-handler/android",
+        "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+      }
+    }
+  }
+}
+```
+
 #### Ejecting Platforms
 
 By default, RNV controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.

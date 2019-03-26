@@ -119,7 +119,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder, 'appConfigsFolder', c.appConfigsFolder);
     c.pluginConfigPath = path.join(c.appConfigsFolder, 'plugins.json');
-    c.premissionsConfigPath = path.join(c.appConfigsFolder, 'premissions.json');
+    c.permissionsConfigPath = path.join(c.appConfigsFolder, 'permissions.json');
     c.entryFolder = _getPath(c, c.projectConfig.entryFolder, 'entryFolder', c.entryFolder);
     c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder, 'platformTemplatesFolder', c.platformTemplatesFolder);
     c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder, 'platformAssetsFolder', c.platformAssetsFolder);
@@ -208,15 +208,15 @@ const configureProject = c => new Promise((resolve, reject) => {
         fs.writeFileSync(c.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
     }
 
-    // Check premissions
-    logTask('configureProject:check premissions');
-    if (fs.existsSync(c.premissionsConfigPath)) {
-        c.premissionsConfig = JSON.parse(fs.readFileSync(c.premissionsConfigPath).toString());
+    // Check permissions
+    logTask('configureProject:check permissions');
+    if (fs.existsSync(c.permissionsConfigPath)) {
+        c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
     } else {
-        const newPath = path.join(c.rnvRootFolder, 'appConfigs/premissions.json');
-        logWarning(`Looks like your premission config is missing from ${chalk.bold.white(c.premissionsConfigPath)}. RNV Default ${chalk.bold.white(newPath)} will be used instead`);
-        c.premissionsConfigPath = newPath;
-        c.premissionsConfig = JSON.parse(fs.readFileSync(c.premissionsConfigPath).toString());
+        const newPath = path.join(c.rnvRootFolder, 'appConfigs/permissions.json');
+        logWarning(`Looks like your permission config is missing from ${chalk.bold.white(c.permissionsConfigPath)}. RNV Default ${chalk.bold.white(newPath)} will be used instead`);
+        c.permissionsConfigPath = newPath;
+        c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
     }
 
     resolve();

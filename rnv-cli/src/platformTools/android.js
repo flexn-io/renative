@@ -138,22 +138,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
     fs.chmodSync(path.join(appFolder, 'gradlew'), '755');
 
-    // {{PLUGIN_INCLUDES}}
-    // include ':app', ':react-native-gesture-handler'
-
-    // {{PLUGIN_PATHS}}
-    // project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../../node_modules/react-native-gesture-handler/android')
-
-    // {{PLUGIN_IMPORTS}}
-    // import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
-
-    // {{PLUGIN_PACKAGES}}
-    // MainReactPackage(),
-    // RNGestureHandlerPackage()
-
-    // {{PLUGIN_IMPLEMENTATIONS}}
-    // implementation project(':react-native-gesture-handler')
-
     let pluginIncludes = 'include \':app\'';
     let pluginPaths = '';
     let pluginImports = '';
@@ -173,14 +157,14 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                         pluginIncludes += `, ':${key}'`;
                         pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${plugin.modulePath}')\n`;
                         pluginImports += `import ${plugin.package}\n`;
-                        pluginPackages += `${className}()\n`;
+                        pluginPackages += `${className}(),\n`;
                         pluginImplementations += `implementation project(':${key}')\n`;
                     }
                 }
             }
         }
     }
-    pluginPackages = pluginPackages.substring(0, pluginPackages.length - 1);
+    pluginPackages = pluginPackages.substring(0, pluginPackages.length - 2);
 
     writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'),
         path.join(appFolder, 'settings.gradle'),
@@ -226,7 +210,13 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const permissions = c.appConfigFile.platforms[platform].permissions;
     if (permissions) {
         permissions.forEach((v) => {
-            prms += `\n<uses-permission android:name="${v}" />`;
+            if (c.permissionsConfig) {
+                const plat = c.permissionsConfig.permissions[platform] ? platform : 'ios';
+                const pc = c.permissionsConfig.permissions[plat];
+                if (pc[v]) {
+                    prms += `\n<uses-permission android:name="${pc[v].key}" />`;
+                }
+            }
         });
     }
 
