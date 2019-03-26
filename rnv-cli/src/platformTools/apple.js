@@ -9,6 +9,8 @@ import {
 import { IOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
+const xcode = require('xcode');
+
 const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
     logTask(`runPod:${command}`);
 
@@ -121,7 +123,6 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
         ]);
 
-    const plistBuddy = '/usr/libexec/PlistBuddy';
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     let pluginInject = '';
@@ -141,41 +142,10 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             }
         }
     }
-    // FONTS
-    if (c.appConfigFile && c.fontsConfig) {
-        const includedFonts = c.appConfigFile.common.includedFonts;
-        if (includedFonts) {
-            const fonts = c.fontsConfig.fonts;
-            for (const key in fonts) {
-                if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                    const font = fonts[key];
-                    if (font) {
-                        const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
-                        if (fs.existsSync(fontSource)) {
-                            const fontFolder = path.join(appFolder, 'fonts');
-                            mkdirSync(fontFolder);
-                            const fontDest = path.join(fontFolder, font);
-                            copyFileSync(fontSource, fontDest);
-                        } else {
-                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                        }
-                    }
-                }
-            }
-        }
-    }
 
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'),
-        path.join(appFolder, 'Podfile'),
-        [
-            { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-        ]);
-
-    const pluginFonts = ''; // <string>FontAwesome5_Regular.ttf</string>
+    // PERMISSIONS
     let pluginPermissions = '';
-
     const permissions = c.appConfigFile.platforms[platform].permissions;
-
     if (permissions) {
         permissions.forEach((v) => {
             if (c.permissionsConfig) {
@@ -189,46 +159,54 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     }
     pluginPermissions = pluginPermissions.substring(0, pluginPermissions.length - 1);
 
-    writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/Info.plist`),
-        plistPath,
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'),
+        path.join(appFolder, 'Podfile'),
         [
-            { pattern: '{{PLUGIN_FONTS}}', override: pluginFonts },
-            { pattern: '{{PLUGIN_PERMISSIONS}}', override: pluginPermissions },
-            { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
-            { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
+            { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         ]);
 
-    resolve();
+    const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
+    const myProj = xcode.project(projectPath);
+    myProj.parse((err) => {
+        let pluginFonts = '';
+        if (c.appConfigFile && c.fontsConfig) {
+            const includedFonts = c.appConfigFile.common.includedFonts;
+            if (includedFonts) {
+                const fonts = c.fontsConfig.fonts;
+                for (const key in fonts) {
+                    if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                        const font = fonts[key];
+                        if (font) {
+                            const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                            if (fs.existsSync(fontSource)) {
+                                const fontFolder = path.join(appFolder, 'fonts');
+                                mkdirSync(fontFolder);
+                                const fontDest = path.join(fontFolder, font);
+                                copyFileSync(fontSource, fontDest);
+                                myProj.addResourceFile(fontSource);
+                                pluginFonts += `  <string>${font}</string>\n`;
+                            } else {
+                                logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        fs.writeFileSync(projectPath, myProj.writeSync());
+
+        writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/Info.plist`),
+            plistPath,
+            [
+                { pattern: '{{PLUGIN_FONTS}}', override: pluginFonts },
+                { pattern: '{{PLUGIN_PERMISSIONS}}', override: pluginPermissions },
+                { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
+                { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
+            ]);
+
+        resolve();
+    });
 });
-
-// const configureProjectPermissions = (c, platform, appFolderName) => new Promise((resolve, reject) => {
-//     logTask(`configureProjectPermissions:${platform}`);
-//
-//     const appFolder = getAppFolder(c, platform);
-//
-//     const plistBuddy = '/usr/libexec/PlistBuddy';
-//     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
-//
-//     const permissions = c.appConfigFile.platforms[platform].permissions;
-//     let pcmd = '';
-//     if (permissions) {
-//         permissions.forEach((v) => {
-//             if (c.permissionsConfig) {
-//                 const plat = c.permissionsConfig.permissions[platform] ? platform : 'ios';
-//                 const pc = c.permissionsConfig.permissions[plat];
-//                 if (pc[v]) {
-//                     pcmd += ` -c "Set :${pc[v].key} ${pc[v].desc}"`;
-//                 }
-//             }
-//         });
-//         console.log(`${plistBuddy}${pcmd} "${plistPath}"`);
-//         execShellAsync(`${plistBuddy}${pcmd} "${plistPath}"`)
-//             .then(() => resolve())
-//             .catch(e => reject(e));
-//     } else {
-//         resolve();
-//     }
-// });
-
 
 export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject };

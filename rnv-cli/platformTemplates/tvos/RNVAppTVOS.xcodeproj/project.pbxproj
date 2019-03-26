@@ -69,6 +69,13 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		200767E3224AE59500686509 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		20200EBA21143502009FB5CA /* RNVAppTVOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +90,7 @@
 		2070914921078B0D00FFF1DB = {
 			isa = PBXGroup;
 			children = (
+				200767E3224AE59500686509 /* Resources */,
 				20A246F4218ACDA800F58B90 /* assets */,
 				20200EBA21143502009FB5CA /* RNVAppTVOS */,
 				2070915321078B0D00FFF1DB /* Products */,

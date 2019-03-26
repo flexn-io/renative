@@ -9,6 +9,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textH2: {
+        fontFamily: 'TimeBurner',
         fontSize: 20,
         marginHorizontal: 20,
         color: '#FFFFFF',

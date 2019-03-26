@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
         borderRightColor: '#AAAAAA',
     },
     text: {
+        fontFamily: 'TimeBurner',
         color: '#FFFFFF',
         fontSize: 20,
         textAlign: 'center',

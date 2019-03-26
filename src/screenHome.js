@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     textH2: {
+        fontFamily: 'TimeBurner',
         fontSize: 20,
         marginHorizontal: 20,
         color: '#FFFFFF',
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textH3: {
+        fontFamily: 'TimeBurner',
         fontSize: 15,
         marginHorizontal: 20,
         marginTop: 5,

@@ -1,5 +1,6 @@
 {
   "fonts": {
-    "font-awesome": "FontAwesome.ttf"
+    "FontAwesome": "FontAwesome.ttf",
+    "TimeBurner": "TimeBurner.ttf"
   }
 }

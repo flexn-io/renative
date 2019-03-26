@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     buttonText: {
+        fontFamily: 'TimeBurner',
         color: '#62DBFB',
         fontSize: 20,
     },

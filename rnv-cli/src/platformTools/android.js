@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
 import { executeAsync, execShellAsync, execCLI } from '../exec';
@@ -9,7 +10,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
-    getEntryFile,
+    getEntryFile, logWarning,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 

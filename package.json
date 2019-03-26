@@ -157,7 +157,8 @@
     "webpack": "4.20.2",
     "webpack-cli": "3.1.2",
     "webpack-dev-server": "3.2.1",
-    "write-json-webpack-plugin": "1.1.0"
+    "write-json-webpack-plugin": "1.1.0",
+    "xcode": "2.0.0"
   },
   "devDependencies": {},
   "jest": {

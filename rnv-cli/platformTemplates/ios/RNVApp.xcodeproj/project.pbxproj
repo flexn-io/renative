@@ -75,6 +75,7 @@
 		200132E71F6BF9CF00450340 = {
 			isa = PBXGroup;
 			children = (
+				2030C437224AE567002469E4 /* Resources */,
 				207888241FCD3A000015651F /* assets */,
 				200132F21F6BF9CF00450340 /* RNVApp */,
 				200132F11F6BF9CF00450340 /* Products */,
@@ -104,6 +105,13 @@
 				20C6F92A200539A200D4B5D8 /* Debug-Info.plist */,
 			);
 			path = RNVApp;
+			sourceTree = "<group>";
+		};
+		2030C437224AE567002469E4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		217F01A475BAA0089C91D383 /* Frameworks */ = {
