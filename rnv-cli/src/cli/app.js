@@ -166,6 +166,7 @@ const checkAndCreateGitignore = (c) => {
 };
 
 const checkAndCreateProjectConfig = (c) => {
+    logTask('checkAndCreateProjectConfig');
     // Check Project Config
     if (fs.existsSync(c.projectConfigPath)) {
 

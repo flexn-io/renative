@@ -15,7 +15,7 @@
     ],
     "excludedPlugins": [
       "come_undesirable-plugin_name"
-    ],
+    ]
   },
   "platforms":{
     "ios": {

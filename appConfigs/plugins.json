@@ -10,8 +10,6 @@
         "modulePath": "../../node_modules/react-native-gesture-handler/android",
         "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
       }
-    },
-    "overrides": {
-
     }
+  }
 }

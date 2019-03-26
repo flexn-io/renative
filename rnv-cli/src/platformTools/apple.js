@@ -123,7 +123,35 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     const plistBuddy = '/usr/libexec/PlistBuddy';
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
-    copyFileSync(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'))``;
+    // copyFileSync(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'))``;
+    let pluginInject = '';
+    // PLUGINS
+    if (c.appConfigFile && c.pluginConfig) {
+        // {{PLUGIN_PATHS}}
+        // pod 'RNGestureHandler', :path => '../../node_modules/react-native-gesture-handler'
+        const includedPlugins = c.appConfigFile.common.includedPlugins;
+        const excludedPlugins = c.appConfigFile.common.excludedPlugins;
+        if (includedPlugins) {
+            if (includedPlugins.includes('*')) {
+                const plugins = c.pluginConfig.plugins;
+                for (const key in plugins) {
+                    const plugin = plugins[key][platform];
+                    if (plugin) {
+                        pluginInject += `  pod '${plugin.podName}', :path => '${plugin.podPath}'\n`;
+                    }
+                }
+            } else {
+            // TODO
+            }
+        }
+    }
+
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'),
+        path.join(appFolder, 'Podfile'),
+        [
+            { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
+        ]);
+
 
     if (!fs.existsSync(plistBuddy)) {
         logError(`PlistBuddy not found at location ${plistBuddy}. Make sure you have it installed!`);
@@ -135,9 +163,6 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             .then(() => resolve())
             .catch(e => reject(e));
     }
-
-    // {{PLUGIN_PATHS}}
-    // pod 'RNGestureHandler', :path => '../../node_modules/react-native-gesture-handler'
 });
 
 const configureProjectPermissions = (c, platform, appFolderName) => new Promise((resolve, reject) => {

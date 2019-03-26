@@ -118,8 +118,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder, 'globalConfigFolder', c.globalConfigFolder);
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder, 'appConfigsFolder', c.appConfigsFolder);
-    c.pluginConfigPath = _getPath(c, c.appConfigsFolder, 'plugins.json');
-    c.premissionsConfigPath = _getPath(c, c.appConfigsFolder, 'premissions.json');
+    c.pluginConfigPath = path.join(c.appConfigsFolder, 'plugins.json');
+    c.premissionsConfigPath = path.join(c.appConfigsFolder, 'premissions.json');
     c.entryFolder = _getPath(c, c.projectConfig.entryFolder, 'entryFolder', c.entryFolder);
     c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder, 'platformTemplatesFolder', c.platformTemplatesFolder);
     c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder, 'platformAssetsFolder', c.platformAssetsFolder);
@@ -157,24 +157,28 @@ const configureProject = c => new Promise((resolve, reject) => {
     checkAndCreateGitignore(c);
 
     // Check rn-cli-config
+    logTask('configureProject:check rn-cli');
     if (!fs.existsSync(c.rnCliConfigPath)) {
         logWarning(`Looks like your rn-cli config file ${chalk.bold.white(c.rnCliConfigPath)} is missing! Let's create one for you.`);
         copyFileSync(path.join(c.rnvRootFolder, RN_CLI_CONFIG_NAME), c.rnCliConfigPath);
     }
 
     // Check entry
+    logTask('configureProject:check entry');
     if (!fs.existsSync(c.entryFolder)) {
         logWarning(`Looks like your entry folder ${chalk.bold.white(c.entryFolder)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'entry'), c.entryFolder);
     }
 
     // Check src
+    logTask('configureProject:check src');
     if (!fs.existsSync(c.projectSourceFolder)) {
         logWarning(`Looks like your src folder ${chalk.bold.white(c.projectSourceFolder)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'src'), c.projectSourceFolder);
     }
 
     // Check appConfigs
+    logTask('configureProject:check appConfigs');
     if (!fs.existsSync(c.appConfigsFolder)) {
         logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create sample helloWorld config for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs'), c.appConfigsFolder);
@@ -195,6 +199,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     }
 
     // Check plugins
+    logTask('configureProject:check plugins');
     if (fs.existsSync(c.pluginConfigPath)) {
         c.pluginConfig = JSON.parse(fs.readFileSync(c.pluginConfigPath).toString());
     } else {
@@ -204,6 +209,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     }
 
     // Check premissions
+    logTask('configureProject:check premissions');
     if (fs.existsSync(c.premissionsConfigPath)) {
         c.premissionsConfig = JSON.parse(fs.readFileSync(c.premissionsConfigPath).toString());
     } else {
@@ -455,13 +461,14 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const writeCleanFile = (source, destination, overrides) => {
+    // logTask(`writeCleanFile`)
     if (!fs.existsSync(source)) {
         logError(`Cannot write file. source path doesn't exists: ${source}`);
         return;
     }
     if (!fs.existsSync(destination)) {
-        logError(`Cannot write file. destination path doesn't exists: ${destination}`);
-        return;
+        logWarning(`destination path doesn't exists: ${destination}. will create new one`);
+        // return;
     }
     const pFile = fs.readFileSync(source).toString();
     let pFileClean = pFile;
