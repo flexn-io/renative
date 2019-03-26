@@ -1,0 +1,57 @@
+{
+  "permissions": {
+  "ios": {
+    "APPLE_MUSIC": {
+      "key": "NSAppleMusicUsageDescription",
+      "desc": "Get favorite music"
+    },
+    "BLUETOOTH": {
+      "key": "NSBluetoothPeripheralUsageDescription",
+      "desc": "Allow you to use your bluetooth to play music"
+    },
+    "CALENDAR": {
+      "key": "NSCalendarsUsageDescription",
+      "desc": "Calendar for add events"
+    },
+    "CAMERA": {
+      "key": "NSCameraUsageDescription",
+      "desc": "Need camera to scan QR Codes"
+    },
+    "LOCATION": {
+      "key": "NSLocationWhenInUseUsageDescription",
+      "desc": "Geolocation tags for photos"
+    },
+    "MISC": {
+      "key": "NSMicrophoneUsageDescription",
+      "desc": "Need microphone for videos"
+    },
+    "MOTION": {
+      "key": "NSMotionUsageDescription",
+      "desc": "To know when device is moving"
+    },
+    "PHOTO_ADD": {
+      "key": "NSPhotoLibraryAddUsageDescription",
+      "desc": "Need library to save images"
+    },
+    "PHOTO_USAGE": {
+      "key": "NSPhotoLibraryUsageDescription",
+      "desc": "Allows to upload images from photo library"
+    },
+    "SPEECH": {
+      "key": "NSSpeechRecognitionUsageDescription",
+      "desc": "Speech Recognition to run in app commands"
+    }
+  },
+  "android": {
+    "WAKE_LOCK": {
+      "key": "android.permission.WAKE_LOCK"
+    },
+    "INTERNET": {
+      "key": "android.permission.INTERNET"
+    },
+    "SYSTEM_ALERT_WINDOW": {
+      "key": "android.permission.SYSTEM_ALERT_WINDOW"
+    }
+  }
+}
+}

@@ -184,6 +184,23 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         ]);
 
 
+    // {{PLUGIN_INCLUDES}}
+    // include ':app', ':react-native-gesture-handler'
+
+    // {{PLUGIN_PATHS}}
+    // project(':react-native-gesture-handler').projectDir = new File(rootProject.projectDir, '../../node_modules/react-native-gesture-handler/android')
+
+    // {{PLUGIN_IMPORTS}}
+    // import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
+
+    // {{PLUGIN_PACKAGES}}
+    // MainReactPackage(),
+    // RNGestureHandlerPackage()
+
+    // {{PLUGIN_IMPLEMENTATIONS}}
+    // implementation project(':react-native-gesture-handler')
+
+
     resolve();
 });
 

@@ -118,6 +118,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder, 'globalConfigFolder', c.globalConfigFolder);
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder, 'appConfigsFolder', c.appConfigsFolder);
+    c.pluginConfigPath = _getPath(c, c.appConfigsFolder, 'plugins.json');
+    c.premissionsConfigPath = _getPath(c, c.appConfigsFolder, 'premissions.json');
     c.entryFolder = _getPath(c, c.projectConfig.entryFolder, 'entryFolder', c.entryFolder);
     c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder, 'platformTemplatesFolder', c.platformTemplatesFolder);
     c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder, 'platformAssetsFolder', c.platformAssetsFolder);
@@ -190,6 +192,25 @@ const configureProject = c => new Promise((resolve, reject) => {
         } catch (e) {
             logError(e);
         }
+    }
+
+    // Check plugins
+    if (fs.existsSync(c.pluginConfigPath)) {
+        c.pluginConfig = JSON.parse(fs.readFileSync(c.pluginConfigPath).toString());
+    } else {
+        logWarning(`Looks like your plugin config is missing from ${chalk.bold.white(c.pluginConfigPath)}. let's create one for you!`);
+        c.pluginConfig = { plugins: {} };
+        fs.writeFileSync(c.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
+    }
+
+    // Check premissions
+    if (fs.existsSync(c.premissionsConfigPath)) {
+        c.premissionsConfig = JSON.parse(fs.readFileSync(c.premissionsConfigPath).toString());
+    } else {
+        const newPath = path.join(c.rnvRootFolder, 'appConfigs/premissions.json');
+        logWarning(`Looks like your premission config is missing from ${chalk.bold.white(c.premissionsConfigPath)}. RNV Default ${chalk.bold.white(newPath)} will be used instead`);
+        c.premissionsConfigPath = newPath;
+        c.premissionsConfig = JSON.parse(fs.readFileSync(c.premissionsConfigPath).toString());
     }
 
     resolve();

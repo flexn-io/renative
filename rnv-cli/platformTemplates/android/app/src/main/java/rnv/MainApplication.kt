@@ -10,8 +10,7 @@ import com.facebook.react.shell.MainReactPackage
 import com.facebook.soloader.SoLoader
 import java.util.Arrays
 
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage
-
+{{PLUGIN_IMPORTS}}
 
 /**
  * Created by paveljacko on 24/07/2018.
@@ -24,8 +23,7 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getPackages(): List<ReactPackage> {
             return Arrays.asList<ReactPackage>(
-                    MainReactPackage(),
-                    RNGestureHandlerPackage()
+                    {{PLUGIN_PACKAGES}}
             )
         }
 

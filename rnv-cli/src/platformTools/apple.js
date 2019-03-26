@@ -123,7 +123,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     const plistBuddy = '/usr/libexec/PlistBuddy';
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
-    copyFileSync(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'));
+    copyFileSync(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'))``;
 
     if (!fs.existsSync(plistBuddy)) {
         logError(`PlistBuddy not found at location ${plistBuddy}. Make sure you have it installed!`);
@@ -135,6 +135,9 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             .then(() => resolve())
             .catch(e => reject(e));
     }
+
+    // {{PLUGIN_PATHS}}
+    // pod 'RNGestureHandler', :path => '../../node_modules/react-native-gesture-handler'
 });
 
 const configureProjectPermissions = (c, platform, appFolderName) => new Promise((resolve, reject) => {

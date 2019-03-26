@@ -9,46 +9,24 @@
       "email": "Pavel Jacko <i@pavjacko.com>",
       "url": "https://github.com/pavjacko"
     },
-    "license": "MIT"
+    "license": "MIT",
+    "includedPlugins": [
+      "*"
+    ],
+    "excludedPlugins": [
+      "come_undesirable-plugin_name"
+    ],
   },
   "platforms":{
     "ios": {
       "entryFile": "index.ios",
       "scheme": "RNVApp",
       "runScheme": "Debug",
-      "platformTemplate": "./rnv/platformTemplates/ios",
       "permissions": [
-        {
-          "key": "NSAppleMusicUsageDescription",
-          "desc": "Get favorite music"
-        }, {
-          "key": "NSBluetoothPeripheralUsageDescription",
-          "desc": "Allow you to use your bluetooth to play music"
-        }, {
-          "key": "NSCalendarsUsageDescription",
-          "desc": "Calendar for add events"
-        }, {
-          "key": "NSCameraUsageDescription",
-          "desc": "Need camera to scan QR Codes"
-        }, {
-          "key": "NSLocationWhenInUseUsageDescription",
-          "desc": "Geolocation tags for photos"
-        }, {
-          "key": "NSMicrophoneUsageDescription",
-          "desc": "Need microphone for videos"
-        }, {
-          "key": "NSMotionUsageDescription",
-          "desc": "To know when device is moving"
-        }, {
-          "key": "NSPhotoLibraryAddUsageDescription",
-          "desc": "Need library to save images"
-        }, {
-          "key": "NSPhotoLibraryUsageDescription",
-          "desc": "Allows to upload images from photo library"
-        }, {
-          "key": "NSSpeechRecognitionUsageDescription",
-          "desc": "Speech Recognition to run in app commands"
-        }
+        "APPLE_MUSIC",
+        "BLUETOOTH",
+        "CALENDAR",
+        "CAMERA"
       ]
     },
     "tvos": {
@@ -59,23 +37,23 @@
     "android": {
       "entryFile": "index.android",
       "permissions": [
-        "android.permission.INTERNET",
-        "android.permission.SYSTEM_ALERT_WINDOW"
+        "INTERNET",
+        "SYSTEM_ALERT_WINDOW"
       ]
     },
     "androidtv": {
       "entryFile": "index.androidtv",
       "permissions": [
-        "android.permission.INTERNET",
-        "android.permission.SYSTEM_ALERT_WINDOW"
+        "INTERNET",
+        "SYSTEM_ALERT_WINDOW"
       ]
     },
     "androidwear": {
       "entryFile": "index.androidwear",
       "permissions": [
-        "android.permission.WAKE_LOCK",
-        "android.permission.INTERNET",
-        "android.permission.SYSTEM_ALERT_WINDOW"
+        "WAKE_LOCK",
+        "INTERNET",
+        "SYSTEM_ALERT_WINDOW"
       ]
     },
     "macos": {
@@ -107,8 +85,5 @@
     "kaios": {
       "entryFile": "index.kaios"
     }
-  },
-  "plugins": {
-
   }
 }
