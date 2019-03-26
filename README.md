@@ -286,7 +286,8 @@ rnv app configure -c helloWorld -u
 
 #### Custom Plugin Support
 
-You can configure multiple React Native plugins without need to update project blueprints in `./appConfigs/plugins.json`
+You can configure multiple React Native plugins without need to update project blueprints.
+default location of plugin configs is `./projectConfig/plugins.json`
 
 Example:
 

@@ -132,8 +132,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.fontsConfigPath = path.join(c.projectConfigFolder, 'fonts.json');
     c.fontsConfigFolder = path.join(c.projectConfigFolder, 'fonts');
 
-    console.log('KSJSLKSJLSKJSLK', c.projectConfigFolder);
-
     if (_currentJob === 'platform') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
@@ -158,6 +156,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     // Parse Project Config
     checkAndCreateProjectPackage(c, 'rn-vanilla', 'RN Vanilla');
     c.projectPackage = JSON.parse(fs.readFileSync(c.projectPackagePath).toString());
+    c.defaultAppConfigId = c.projectPackage.defaultAppConfigId || SAMPLE_APP_ID;
 
     // Check gitignore
     checkAndCreateGitignore(c);
@@ -185,18 +184,19 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     // Check appConfigs
     logTask('configureProject:check appConfigs');
+    c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
     if (!fs.existsSync(c.appConfigsFolder)) {
         logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create sample helloWorld config for you.`);
-        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs'), c.appConfigsFolder);
-
+        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', SAMPLE_APP_ID), c.appConfigFolder);
         // Update App Title to match package.json
         try {
-            c.appConfigFolder = path.join(c.appConfigsFolder, SAMPLE_APP_ID);
             c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
 
             const appConfig = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
 
             appConfig.common.title = c.projectPackage.title;
+            appConfig.common.id = c.projectPackage.defaultAppId;
+            appConfig.id = c.defaultAppConfigId;
 
             fs.writeFileSync(c.appConfigPath, JSON.stringify(appConfig, null, 2));
         } catch (e) {
@@ -348,11 +348,11 @@ const configureApp = c => new Promise((resolve, reject) => {
         if (!fs.existsSync(c.runtimeConfigPath)) {
             logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. RNV got you covered. Let\'s configure it for you!`);
 
-            _getConfig(c, SAMPLE_APP_ID);
+            _getConfig(c, c.defaultAppConfigId);
 
             const newCommand = Object.assign({}, c);
             newCommand.subCommand = 'configure';
-            newCommand.program = { appConfig: SAMPLE_APP_ID, update: true };
+            newCommand.program = { appConfig: c.defaultAppConfigId, update: true, platform: c.program.platform };
             appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
         } else {
             try {

@@ -7,7 +7,7 @@ import {
 } from '../common';
 import {
     IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS,
-    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME, SAMPLE_APP_ID, RNV_PROJECT_CONFIG_NAME,
+    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME, RNV_PROJECT_CONFIG_NAME,
 } from '../constants';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
@@ -67,7 +67,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     logTask(`_runConfigure:${p}`);
 
 
-    _checkAndCreatePlatforms(c, p)
+    _checkAndCreatePlatforms(c, c.program.platform)
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c, c.rnvPluginsFolder))
         .then(() => _runPlugins(c, c.projectPluginsFolder))
@@ -106,38 +106,43 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
     const data = {};
 
-    readline.question(getQuestion('What\'s your project ID? (no spaces, folder based on ID will be created in this directory)'), (v) => {
+    readline.question(getQuestion('What\'s your project Name? (no spaces, folder based on ID will be created in this directory)'), (v) => {
         // console.log(`Hi ${v}!`);
-        data.appID = v;
+        data.projectName = v;
         readline.question(getQuestion('What\'s your project Title?'), (v) => {
-            // console.log(`Hi ${v}!`);
             data.appTitle = v;
-            readline.close();
+            readline.question(getQuestion('What\'s your App ID?'), (v) => {
+                data.appID = v.replace(/\s+/g, '-').toLowerCase();
 
-            const base = path.resolve('.');
+                data.defaultAppConfigId = `${data.projectName}Example`;
 
-            c.projectRootFolder = path.join(base, data.appID);
-            c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
+                readline.close();
+
+                const base = path.resolve('.');
+
+                c.projectRootFolder = path.join(base, data.projectName);
+                c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
 
 
-            const pkgName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
+                data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
-            mkdirSync(c.projectRootFolder);
+                mkdirSync(c.projectRootFolder);
 
-            checkAndCreateProjectPackage(c, pkgName, data.appTitle);
+                checkAndCreateProjectPackage(c, data.packageName, data.appTitle, data.appID, data.defaultAppConfigId);
 
-            checkAndCreateGitignore(c);
+                checkAndCreateGitignore(c);
 
-            checkAndCreateProjectConfig(c);
+                checkAndCreateProjectConfig(c);
 
-            logSuccess(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.appID}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
+                logSuccess(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.projectName}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
 
-            resolve();
+                resolve();
+            });
         });
     });
 });
 
-const checkAndCreateProjectPackage = (c, pkgName, appTitle) => {
+const checkAndCreateProjectPackage = (c, pkgName, appTitle, appID, defaultAppConfigId) => {
     logTask(`checkAndCreateProjectPackage:${pkgName}`);
     if (!fs.existsSync(c.projectPackagePath)) {
         logWarning('Looks like your package.json is missing. Let\'s create one for you!');
@@ -147,6 +152,8 @@ const checkAndCreateProjectPackage = (c, pkgName, appTitle) => {
 
         const pkgJsonStringClean = pkgJsonString
             .replace(/{{PACKAGE_NAME}}/g, pkgName)
+            .replace(/{{DEFAULT_APP_CONFIG}}/g, defaultAppConfigId)
+            .replace(/{{APP_ID}}/g, appID)
             .replace(/{{RNV_VERSION}}/g, c.rnvPackage.version)
             .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
             .replace(/{{PACKAGE_TITLE}}/g, appTitle);
@@ -180,14 +187,14 @@ const checkAndCreateProjectConfig = (c) => {
 
 
 const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) => {
-    logTask('_checkAndCreatePlatforms');
+    logTask(`_checkAndCreatePlatforms:${platform}`);
 
     if (!fs.existsSync(c.platformBuildsFolder)) {
         logWarning('Platforms not created yet. creating them for you...');
 
         const newCommand = Object.assign({}, c);
         newCommand.subCommand = 'configure';
-        newCommand.program = { appConfig: SAMPLE_APP_ID };
+        newCommand.program = { appConfig: c.defaultAppConfigId, platform };
 
         platformRunner(newCommand)
             .then(() => resolve())
@@ -201,7 +208,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 
             const newCommand = Object.assign({}, c);
             newCommand.subCommand = 'configure';
-            newCommand.program = { appConfig: SAMPLE_APP_ID, platform };
+            newCommand.program = { appConfig: c.defaultAppConfigId, platform };
 
             platformRunner(newCommand)
                 .then(() => resolve())

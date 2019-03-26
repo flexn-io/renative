@@ -6,5 +6,5 @@
   "platformAssetsFolder": "./platformAssets",
   "platformBuildsFolder": "./platformBuilds",
   "projectPlugins": "./plugins",
-  "projectConfigFolder": "./projectConfigFolder"
+  "projectConfigFolder": "./projectConfig"
 }
