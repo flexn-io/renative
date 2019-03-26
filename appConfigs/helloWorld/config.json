@@ -13,8 +13,8 @@
     "includedPlugins": [
       "*"
     ],
-    "excludedPlugins": [
-      "come_undesirable-plugin_name"
+    "includedFonts": [
+      "*"
     ]
   },
   "platforms":{

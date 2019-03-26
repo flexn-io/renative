@@ -354,6 +354,11 @@ Folder Structure (Generated Project)
     ├── entry                       # Entry point index files
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
+    ├── projectConfigs              # Project configuration files/assets
+    │   ├── fonts                   # Folder for all custom fonts
+    │   ├── fonts.json              # Fonts configuration
+    │   ├── permissions.json        # Permissions configuration
+    │   └── plugins.json            # React Native Plugins configuration
     └── src                         # Source files
 
 ---

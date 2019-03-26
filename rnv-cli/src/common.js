@@ -102,6 +102,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
     c.projectPluginsFolder = path.join(c.projectRootFolder, 'plugins');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
+    c.projectConfigFolder = path.join(c.projectRootFolder, 'projectConfig');
 
 
     if (_currentJob === 'target') {
@@ -118,8 +119,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder, 'globalConfigFolder', c.globalConfigFolder);
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder, 'appConfigsFolder', c.appConfigsFolder);
-    c.pluginConfigPath = path.join(c.appConfigsFolder, 'plugins.json');
-    c.permissionsConfigPath = path.join(c.appConfigsFolder, 'permissions.json');
     c.entryFolder = _getPath(c, c.projectConfig.entryFolder, 'entryFolder', c.entryFolder);
     c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder, 'platformTemplatesFolder', c.platformTemplatesFolder);
     c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder, 'platformAssetsFolder', c.platformAssetsFolder);
@@ -127,6 +126,13 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectPluginsFolder = _getPath(c, c.projectConfig.projectPlugins, 'projectPlugins', c.projectPluginsFolder);
     c.nodeModulesFolder = path.join(c.projectRootFolder, 'node_modules');
     c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
+    c.projectConfigFolder = _getPath(c, c.projectConfig.projectConfigFolder, 'projectConfigFolder', c.projectConfigFolder);
+    c.pluginConfigPath = path.join(c.projectConfigFolder, 'plugins.json');
+    c.permissionsConfigPath = path.join(c.projectConfigFolder, 'permissions.json');
+    c.fontsConfigPath = path.join(c.projectConfigFolder, 'fonts.json');
+    c.fontsConfigFolder = path.join(c.projectConfigFolder, 'fonts');
+
+    console.log('KSJSLKSJLSKJSLK', c.projectConfigFolder);
 
     if (_currentJob === 'platform') {
         configureRnvGlobal(c)
@@ -196,6 +202,13 @@ const configureProject = c => new Promise((resolve, reject) => {
         } catch (e) {
             logError(e);
         }
+    }
+
+    // Check projectConfigs
+    logTask('configureProject:check projectConfigs');
+    if (!fs.existsSync(c.projectConfigFolder)) {
+        logWarning(`Looks like your projectConfig folder ${chalk.bold.white(c.projectConfigFolder)} is missing! Let's create one for you.`);
+        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'projectConfig'), c.projectConfigFolder);
     }
 
     // Check plugins
