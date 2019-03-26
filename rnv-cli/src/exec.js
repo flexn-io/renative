@@ -14,13 +14,13 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
 
     const p = c.cli[cli];
     if (!fs.existsSync(p)) {
-        reject(`Location of your cli ${chalk.bold.white(p)} does not exists. check your ${chalk.bold.white('~/.rnv/config.json')} file if you SDK path is correct`);
+        reject(`Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white('~/.rnv/config.json')} file if you SDK path is correct`);
         return;
     }
 
     shell.exec(`${p} ${command}`, (error, stdout, stderr) => {
         if (error) {
-            reject(`Command ${cli} failed: "${chalk.bold.white(`${p} ${command}`)}". ${error}`);
+            reject(`Command ${cli} failed: "${chalk.white(`${p} ${command}`)}". ${error}`);
             return;
         }
 

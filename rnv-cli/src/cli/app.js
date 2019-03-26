@@ -134,7 +134,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
                 checkAndCreateProjectConfig(c);
 
-                logSuccess(`Your project is ready! navigate to project ${chalk.bold.white(`cd ${data.projectName}`)} and run ${chalk.bold.white('rnv run -p web')} to see magic happen!`);
+                logSuccess(`Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white('rnv run -p web')} to see magic happen!`);
 
                 resolve();
             });

@@ -84,7 +84,7 @@ const _runEjectPlatforms = c => new Promise((resolve, reject) => {
 
             fs.writeFileSync(c.projectConfigPath, JSON.stringify(c.projectConfig, null, 2));
 
-            logSuccess(`Your platform templates are located in ${chalk.bold.white(c.projectConfig.platformTemplatesFolder)} now. You can edit them directly!`);
+            logSuccess(`Your platform templates are located in ${chalk.white(c.projectConfig.platformTemplatesFolder)} now. You can edit them directly!`);
 
             resolve();
 
@@ -115,7 +115,7 @@ const _runConnectPlatforms = c => new Promise((resolve, reject) => {
 
             fs.writeFileSync(c.projectConfigPath, JSON.stringify(c.projectConfig, null, 2));
 
-            logSuccess(`You're now using RNV platformTemplates located in ${chalk.bold.white(c.rnvPlatformTemplatesFolder)} now!`);
+            logSuccess(`You're now using RNV platformTemplates located in ${chalk.white(c.rnvPlatformTemplatesFolder)} now!`);
 
             resolve();
         } else {

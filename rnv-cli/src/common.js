@@ -54,7 +54,7 @@ const isPlatformSupported = (platform, resolve, reject) => {
 
 const _getPath = (c, p, key = 'undefined', original) => {
     if (!p) {
-        logWarning(`Path ${chalk.bold.white(key)} is not defined`);
+        logWarning(`Path ${chalk.white(key)} is not defined`);
         return original;
     }
     if (p.startsWith('./')) {
@@ -113,7 +113,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     }
 
     if (!fs.existsSync(c.projectConfigPath)) {
-        reject(`Looks like this directory is not RNV project. Project config ${chalk.bold.white(c.projectConfigPath)} is missing!. You can create new project with ${chalk.bold.white('rnv app create')}`);
+        reject(`Looks like this directory is not RNV project. Project config ${chalk.white(c.projectConfigPath)} is missing!. You can create new project with ${chalk.white('rnv app create')}`);
     }
     c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder, 'globalConfigFolder', c.globalConfigFolder);
@@ -164,21 +164,21 @@ const configureProject = c => new Promise((resolve, reject) => {
     // Check rn-cli-config
     logTask('configureProject:check rn-cli');
     if (!fs.existsSync(c.rnCliConfigPath)) {
-        logWarning(`Looks like your rn-cli config file ${chalk.bold.white(c.rnCliConfigPath)} is missing! Let's create one for you.`);
+        logWarning(`Looks like your rn-cli config file ${chalk.white(c.rnCliConfigPath)} is missing! Let's create one for you.`);
         copyFileSync(path.join(c.rnvRootFolder, RN_CLI_CONFIG_NAME), c.rnCliConfigPath);
     }
 
     // Check entry
     logTask('configureProject:check entry');
     if (!fs.existsSync(c.entryFolder)) {
-        logWarning(`Looks like your entry folder ${chalk.bold.white(c.entryFolder)} is missing! Let's create one for you.`);
+        logWarning(`Looks like your entry folder ${chalk.white(c.entryFolder)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'entry'), c.entryFolder);
     }
 
     // Check src
     logTask('configureProject:check src');
     if (!fs.existsSync(c.projectSourceFolder)) {
-        logWarning(`Looks like your src folder ${chalk.bold.white(c.projectSourceFolder)} is missing! Let's create one for you.`);
+        logWarning(`Looks like your src folder ${chalk.white(c.projectSourceFolder)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'src'), c.projectSourceFolder);
     }
 
@@ -186,7 +186,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject:check appConfigs');
     c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
     if (!fs.existsSync(c.appConfigsFolder)) {
-        logWarning(`Looks like your appConfig folder ${chalk.bold.white(c.appConfigsFolder)} is missing! Let's create sample helloWorld config for you.`);
+        logWarning(`Looks like your appConfig folder ${chalk.white(c.appConfigsFolder)} is missing! Let's create sample helloWorld config for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', SAMPLE_APP_ID), c.appConfigFolder);
         // Update App Title to match package.json
         try {
@@ -207,7 +207,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     // Check projectConfigs
     logTask('configureProject:check projectConfigs');
     if (!fs.existsSync(c.projectConfigFolder)) {
-        logWarning(`Looks like your projectConfig folder ${chalk.bold.white(c.projectConfigFolder)} is missing! Let's create one for you.`);
+        logWarning(`Looks like your projectConfig folder ${chalk.white(c.projectConfigFolder)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'projectConfig'), c.projectConfigFolder);
     }
 
@@ -216,7 +216,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     if (fs.existsSync(c.pluginConfigPath)) {
         c.pluginConfig = JSON.parse(fs.readFileSync(c.pluginConfigPath).toString());
     } else {
-        logWarning(`Looks like your plugin config is missing from ${chalk.bold.white(c.pluginConfigPath)}. let's create one for you!`);
+        logWarning(`Looks like your plugin config is missing from ${chalk.white(c.pluginConfigPath)}. let's create one for you!`);
         c.pluginConfig = { plugins: {} };
         fs.writeFileSync(c.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
     }
@@ -255,7 +255,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
     } else {
         const newPath = path.join(c.rnvRootFolder, 'appConfigs/permissions.json');
-        logWarning(`Looks like your permission config is missing from ${chalk.bold.white(c.permissionsConfigPath)}. RNV Default ${chalk.bold.white(newPath)} will be used instead`);
+        logWarning(`Looks like your permission config is missing from ${chalk.white(c.permissionsConfigPath)}. RNV Default ${chalk.white(newPath)} will be used instead`);
         c.permissionsConfigPath = newPath;
         c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
     }
@@ -267,12 +267,12 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules
     if (!fs.existsSync(c.nodeModulesFolder) || c._requiresNpmInstall) {
-        // reject(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Run ${chalk.bold.white('npm install')} first!`);
+        // reject(`Looks like your node_modules folder ${chalk.white(c.nodeModulesFolder)} is missing! Run ${chalk.white('npm install')} first!`);
 
         if (!fs.existsSync(c.nodeModulesFolder)) {
-            logWarning(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.bold.white('npm install')} first!`);
+            logWarning(`Looks like your node_modules folder ${chalk.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.white('npm install')} first!`);
         } else {
-            logWarning(`Looks like your node_modules out of date! Let's run ${chalk.bold.white('npm install')} first!`);
+            logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
         executeAsync('npm', ['install']).then(() => {
             resolve();
@@ -306,9 +306,9 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
         if (c.globalConfig.appConfigsPath) {
             if (!fs.existsSync(c.globalConfig.appConfigsPath)) {
-                logWarning(`Looks like your custom global appConfig is pointing to ${chalk.bold.white(c.globalConfig.appConfigsPath)} which doesn't exist! Make sure you create one in that location`);
+                logWarning(`Looks like your custom global appConfig is pointing to ${chalk.white(c.globalConfig.appConfigsPath)} which doesn't exist! Make sure you create one in that location`);
             } else {
-                logInfo(`Found custom appConfing location pointing to ${chalk.bold.white(c.globalConfig.appConfigsPath)}. RNV will now swith to that location!`);
+                logInfo(`Found custom appConfing location pointing to ${chalk.white(c.globalConfig.appConfigsPath)}. RNV will now swith to that location!`);
                 c.appConfigsFolder = c.globalConfig.appConfigsPath;
             }
         }
@@ -325,7 +325,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
         // Check config sanity
         if (c.globalConfig.defaultTargets === undefined) {
-            logWarning(`Looks like you\'re missing defaultTargets in your config ${chalk.bold.white(c.globalConfigPath)}. Let's add them!`);
+            logWarning(`Looks like you\'re missing defaultTargets in your config ${chalk.white(c.globalConfigPath)}. Let's add them!`);
             const defaultConfig = JSON.parse(fs.readFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME)).toString());
             const newConfig = { ...c.globalConfig, defaultTargets: defaultConfig.defaultTargets };
             fs.writeFileSync(c.globalConfigPath, JSON.stringify(newConfig, null, 2));
@@ -474,7 +474,7 @@ const logErrorPlatform = (platform, resolve) => {
 
 const isPlatformActive = (c, platform, resolve) => {
     if (!c.appConfigFile || !c.appConfigFile.platforms) {
-        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.bold.white(c.appConfigPath)} location.`);
+        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.appConfigPath)} location.`);
         if (resolve) resolve();
         return false;
     }
