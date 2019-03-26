@@ -208,6 +208,34 @@ const configureProject = c => new Promise((resolve, reject) => {
         fs.writeFileSync(c.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
     }
 
+    if (!c.projectPackage.dependencies) {
+        c.projectPackage.dependencies = {};
+    }
+
+    let hasPackageChanged = false;
+    for (const k in c.pluginConfig.plugins) {
+        const dependencies = c.projectPackage.dependencies;
+        const plugin = c.pluginConfig.plugins[k];
+        if (dependencies[k]) {
+            if (dependencies[k] !== plugin.version) {
+                logWarning(`Version mismatch of dependency ${chalk.white(k)} between package.json: v(${chalk.red(dependencies[k])}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`);
+                hasPackageChanged = true;
+                dependencies[k] = plugin.version;
+            }
+        } else {
+            // Dependency does not exists
+            logWarning(`Missing dependency ${chalk.white(k)} v(${chalk.red(plugin.version)}) in package.json. package.json will be overriden`);
+
+            hasPackageChanged = true;
+            dependencies[k] = plugin.version;
+        }
+    }
+    if (hasPackageChanged) {
+        fs.writeFileSync(c.projectPackagePath, JSON.stringify(c.projectPackage, null, 2));
+        c._requiresNpmInstall = true;
+    }
+
+
     // Check permissions
     logTask('configureProject:check permissions');
     if (fs.existsSync(c.permissionsConfigPath)) {
@@ -225,10 +253,14 @@ const configureProject = c => new Promise((resolve, reject) => {
 const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules
-    if (!fs.existsSync(c.nodeModulesFolder)) {
+    if (!fs.existsSync(c.nodeModulesFolder) || c._requiresNpmInstall) {
         // reject(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Run ${chalk.bold.white('npm install')} first!`);
 
-        logWarning(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.bold.white('npm install')} first!`);
+        if (!fs.existsSync(c.nodeModulesFolder)) {
+            logWarning(`Looks like your node_modules folder ${chalk.bold.white(c.nodeModulesFolder)} is missing! Let's run ${chalk.bold.white('npm install')} first!`);
+        } else {
+            logWarning(`Looks like your node_modules out of date! Let's run ${chalk.bold.white('npm install')} first!`);
+        }
         executeAsync('npm', ['install']).then(() => {
             resolve();
         }).catch(error => logError(error));
