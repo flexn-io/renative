@@ -266,7 +266,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
         if (c.appConfigFile.platforms[platform].teamID) {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', c.appConfigFile.platforms[platform].teamID);
         } else {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '');
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
 
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
