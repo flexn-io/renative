@@ -170,7 +170,13 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse((err) => {
         const appId = getAppId(c, platform);
-        console.log('JSHJKHKSJHSKSHK', appId);
+
+        if (c.appConfigFile.platforms[platform].teamID) {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', c.appConfigFile.platforms[platform].teamID);
+        } else {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '');
+        }
+
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
         let pluginFonts = '';
@@ -209,6 +215,14 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
                 { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
                 { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
             ]);
+
+        // if (c.appConfigFile.platforms[platform].teamID) {
+        //     writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
+        //         path.join(appFolder, 'exportOptions.plist'),
+        //         [
+        //             { pattern: '{{TEAM_ID}}', override: c.appConfigFile.platforms[platform].teamID },
+        //         ]);
+        // }
 
         resolve();
     });

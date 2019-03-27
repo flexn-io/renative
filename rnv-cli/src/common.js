@@ -186,7 +186,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject:check appConfigs');
     c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
     if (!fs.existsSync(c.appConfigsFolder)) {
-        logWarning(`Looks like your appConfig folder ${chalk.white(c.appConfigsFolder)} is missing! Let's create sample helloWorld config for you.`);
+        logWarning(`Looks like your appConfig folder ${chalk.white(c.appConfigsFolder)} is missing! Let's create sample config for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', SAMPLE_APP_ID), c.appConfigFolder);
         // Update App Title to match package.json
         try {

@@ -111,8 +111,11 @@ const _runCreate = c => new Promise((resolve, reject) => {
         data.projectName = v;
         readline.question(getQuestion('What\'s your project Title?'), (v) => {
             data.appTitle = v;
-            readline.question(getQuestion('What\'s your App ID?'), (v) => {
-                data.appID = v.replace(/\s+/g, '-').toLowerCase();
+            data.appID = `com.mycompany.${data.projectName}`;
+            readline.question(getQuestion(`What\'s your App ID? (${data.appID}) will be used by default`), (v) => {
+                if (v !== null && v !== '') {
+                    data.appID = v.replace(/\s+/g, '-').toLowerCase();
+                }
 
                 data.defaultAppConfigId = `${data.projectName}Example`;
 

@@ -2,6 +2,7 @@ import path from 'path';
 import shell from 'shelljs';
 import fs from 'fs';
 import chalk from 'chalk';
+import { logDebug } from './common';
 
 const { spawn } = require('child_process');
 
@@ -58,7 +59,8 @@ const executeAsync = (
             reject(new Error(`process exited with code ${code}`));
         } else {
             ended = true;
-            console.log('FSLSLS', command);
+
+            logDebug('Execute Comman:', command);
             resolve(stdout);
         }
     });

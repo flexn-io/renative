@@ -4,5 +4,12 @@
   "common": {
     "id": "reactnativevanilla.helloworldSuper",
     "title": "RNV Super"
+  },
+  "platforms":{
+    "ios": {
+      "scheme": "RNVAppRelease",
+      "runScheme": "Release",
+      "teamID": "PRNK99PXGZ"
+    }
   }
 }
