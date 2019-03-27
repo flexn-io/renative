@@ -13,6 +13,7 @@ import FileUtils from './fileutils';
 
 const commands = {
     start: Runner,
+    export: Runner,
     app: App,
     link: Linker,
     platform: Platform,

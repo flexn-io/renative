@@ -79,6 +79,98 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
     }
 });
 
+const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`archiveXcodeProject:${platform}`);
+
+    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+    const sdk = platform === IOS ? 'iphoneos' : 'tvos';
+
+    const appPath = getAppFolder(c, platform);
+    const appFolder = getAppFolder(c, platform);
+    const exportPath = path.join(appPath, 'release');
+
+    if (!fs.existsSync(path.join(appPath, 'Pods'))) {
+        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
+        configureXcodeProject(c, platform)
+            .then(() => archiveXcodeProject(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    const p = [
+        '-workspace',
+        `${appPath}/${appFolderName}.xcworkspace`,
+        '-scheme',
+        c.appConfigFile.platforms[platform].scheme,
+        '-sdk',
+        sdk,
+        '-configuration',
+        'Release',
+        'archive',
+        '-archivePath',
+        `${exportPath}/${c.appConfigFile.platforms[platform].scheme}.xcarchive`,
+    ];
+
+    logDebug('running', p);
+
+    if (c.appConfigFile.platforms[platform].runScheme === 'Release') {
+        packageBundleForXcode(c, platform)
+            .then(() => executeAsync('xcodebuild', p))
+            .then(() => resolve()).catch(e => reject(e));
+    } else {
+        executeAsync('xcodebuild', p).then(() => resolve()).catch(e => reject(e));
+    }
+});
+
+const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`exportXcodeProject:${platform}`);
+
+    const appPath = getAppFolder(c, platform);
+    const exportPath = path.join(appPath, 'release');
+
+    if (!fs.existsSync(path.join(appPath, 'Pods'))) {
+        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
+        configureXcodeProject(c, platform)
+            .then(() => exportXcodeProject(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    const p = [
+        '-exportArchive',
+        '-archivePath',
+        `${exportPath}/${c.appConfigFile.platforms[platform].scheme}.xcarchive`,
+        '-exportOptionsPlist',
+        `${appPath}/exportOptions.plist`,
+        '-exportPath',
+        `${exportPath}`,
+    ];
+    logDebug('running', p);
+
+    executeAsync('xcodebuild', p).then(() => resolve()).catch(e => reject(e));
+});
+
+const packageBundleForXcode = (c, platform) => {
+    logTask(`packageBundleForXcode:${platform}`);
+    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+    const appPath = path.join(getAppFolder(c, platform), appFolderName);
+
+    return executeAsync('react-native', [
+        'bundle',
+        '--platform',
+        'ios',
+        '--dev',
+        'false',
+        '--assets-dest',
+        `${appPath}`,
+        '--entry-file',
+        `${c.appConfigFile.platforms[platform].entryFile}.js`,
+        '--bundle-output',
+        `${getAppFolder(c, platform)}/main.jsbundle`]);
+};
+
 const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
     if (process.platform !== 'darwin') return;
@@ -228,4 +320,4 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     });
 });
 
-export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject };
+export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject, exportXcodeProject, archiveXcodeProject };
