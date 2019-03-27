@@ -5,6 +5,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
     getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
+    getAppId,
 } from '../common';
 import { IOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -166,8 +167,12 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
         ]);
 
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
-    const myProj = xcode.project(projectPath);
-    myProj.parse((err) => {
+    const xcodeProj = xcode.project(projectPath);
+    xcodeProj.parse((err) => {
+        const appId = getAppId(c, platform);
+        console.log('JSHJKHKSJHSKSHK', appId);
+        xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
+
         let pluginFonts = '';
         if (c.appConfigFile && c.fontsConfig) {
             const includedFonts = c.appConfigFile.common.includedFonts;
@@ -183,7 +188,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
                                 mkdirSync(fontFolder);
                                 const fontDest = path.join(fontFolder, font);
                                 copyFileSync(fontSource, fontDest);
-                                myProj.addResourceFile(fontSource);
+                                xcodeProj.addResourceFile(fontSource);
                                 pluginFonts += `  <string>${font}</string>\n`;
                             } else {
                                 logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
@@ -194,7 +199,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
             }
         }
 
-        fs.writeFileSync(projectPath, myProj.writeSync());
+        fs.writeFileSync(projectPath, xcodeProj.writeSync());
 
         writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/Info.plist`),
             plistPath,

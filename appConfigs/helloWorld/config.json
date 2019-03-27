@@ -2,7 +2,7 @@
   "id": "helloWorld",
   "common": {
     "id": "reactnativevanilla.helloworld",
-    "title": "RNV Hello World",
+    "title": "RNV Hello",
     "description": "Cross-platform application project based on React Native Vanilla",
     "author": {
       "name": "Pavel Jacko",

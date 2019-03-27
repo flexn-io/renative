@@ -441,6 +441,19 @@ const _getConfig = (c, appConfigId) => {
     c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
     c.appConfigFile = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
     c.appId = appConfigId;
+
+    // EXTEND CONFIG
+    const merge = require('deepmerge');
+    if (c.appConfigFile.extend) {
+        const parentAppConfigFolder = path.join(c.appConfigsFolder, c.appConfigFile.extend);
+        if (fs.existsSync(parentAppConfigFolder)) {
+            const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
+            const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
+            const mergedAppConfigFile = merge(parentAppConfigFile, c.appConfigFile);
+            c.appConfigFile = mergedAppConfigFile;
+            c.appConfigFolder = parentAppConfigFolder;
+        }
+    }
 };
 
 const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);

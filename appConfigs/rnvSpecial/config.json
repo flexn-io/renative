@@ -1,0 +1,8 @@
+{
+  "id": "rnvSpecial",
+  "extend": "helloWorld",
+  "common": {
+    "id": "reactnativevanilla.helloworldSuper",
+    "title": "RNV Super"
+  }
+}

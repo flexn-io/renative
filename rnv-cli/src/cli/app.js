@@ -226,7 +226,8 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     const cPath = path.join(c.appConfigFolder, 'assets/runtime');
     copyFolderContentsRecursiveSync(cPath, aPath);
 
-    copyFileSync(c.appConfigPath, path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME));
+    // copyFileSync(c.appConfigPath, path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME));
+    fs.writeFileSync(path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME), JSON.stringify(c.appConfigFile, null, 2));
     resolve();
 });
 

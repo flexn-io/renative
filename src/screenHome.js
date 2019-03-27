@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import Api from './api';
+import config from '../platformAssets/config.json';
 import packageJson from '../package.json';
 import Button from './button';
 
@@ -47,7 +48,7 @@ class ScreenHome extends React.Component {
     }
 
     render() {
-        const title = `Hello from ${packageJson.title}!`;
+        const title = `Hello from ${config.common.title}!`;
         return (
             <View style={[styles.appContainer, { backgroundColor: this.state.bgColor }]}>
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
