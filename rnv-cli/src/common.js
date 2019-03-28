@@ -21,6 +21,7 @@ const SUPPORTED_PLATFORMS_LINUX = [];
 const RNV_START = '🚀 RNV';
 const RNV = 'RNV';
 const LINE = chalk.white.bold('----------------------------------------------------------');
+const LINE2 = chalk.gray('----------------------------------------------------------');
 
 let _currentJob;
 let _currentProcess;
@@ -129,7 +130,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectConfigFolder = _getPath(c, c.projectConfig.projectConfigFolder, 'projectConfigFolder', c.projectConfigFolder);
     c.pluginConfigPath = path.join(c.projectConfigFolder, 'plugins.json');
     c.permissionsConfigPath = path.join(c.projectConfigFolder, 'permissions.json');
-    c.fontsConfigPath = path.join(c.projectConfigFolder, 'fonts.json');
     c.fontsConfigFolder = path.join(c.projectConfigFolder, 'fonts');
 
     if (_currentJob === 'platform') {
@@ -145,8 +145,15 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         .then(() => configureTizenGlobal(c))
         // .then(() => configureAndroidGlobal(c))
         .then(() => configureApp(c))
+        .then(() => logAppInfo(c))
         .then(() => resolve(c))
         .catch(e => reject(e));
+});
+
+const logAppInfo = c => new Promise((resolve, reject) => {
+    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.white.bold(c.appConfigFile.id)}\n${LINE2}`));
+
+    resolve();
 });
 
 const configureProject = c => new Promise((resolve, reject) => {
@@ -258,17 +265,6 @@ const configureProject = c => new Promise((resolve, reject) => {
         logWarning(`Looks like your permission config is missing from ${chalk.white(c.permissionsConfigPath)}. RNV Default ${chalk.white(newPath)} will be used instead`);
         c.permissionsConfigPath = newPath;
         c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
-    }
-
-    // Check fonts
-    logTask('configureProject:check fonts');
-    if (fs.existsSync(c.fontsConfigPath)) {
-        c.fontsConfig = JSON.parse(fs.readFileSync(c.fontsConfigPath).toString());
-    } else {
-        const newFontPath = path.join(c.rnvRootFolder, 'projectConfig/permissions.json');
-        logWarning(`Looks like your font config is missing from ${chalk.white(c.fontsConfigPath)}. RNV Default ${chalk.white(newFontPath)} will be used instead`);
-        c.fontsConfigPath = newFontPath;
-        c.fontsConfig = JSON.parse(fs.readFileSync(c.fontsConfigPath).toString());
     }
 
     resolve();
