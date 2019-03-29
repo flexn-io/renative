@@ -35,5 +35,8 @@ class MainApplication : Application(), ReactApplication {
     override fun onCreate() {
         super.onCreate()
         SoLoader.init(this, /* native exopackage */ false)
+        if (BuildConfig.DEBUG) {
+          WebView.setWebContentsDebuggingEnabled(true)
+        }
     }
 }

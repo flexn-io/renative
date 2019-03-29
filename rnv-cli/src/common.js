@@ -235,14 +235,22 @@ const configureProject = c => new Promise((resolve, reject) => {
     let hasPackageChanged = false;
     for (const k in c.pluginConfig.plugins) {
         const dependencies = c.projectPackage.dependencies;
+        const devDependecies = c.projectPackage.devDependecies;
         const plugin = c.pluginConfig.plugins[k];
-        if (dependencies[k]) {
-            if (dependencies[k] !== plugin.version) {
+
+        if (dependencies && dependencies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
                 logWarning(`Version mismatch of dependency ${chalk.white(k)} between package.json: v(${chalk.red(dependencies[k])}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`);
                 hasPackageChanged = true;
                 dependencies[k] = plugin.version;
             }
-        } else {
+        } else if (devDependecies && devDependecies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependecies[k] !== plugin.version) {
+                logWarning(`Version mismatch of devDependency ${chalk.white(k)} between package.json: v(${chalk.red(devDependecies[k])}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`);
+                hasPackageChanged = true;
+                devDependecies[k] = plugin.version;
+            }
+        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
             // Dependency does not exists
             logWarning(`Missing dependency ${chalk.white(k)} v(${chalk.red(plugin.version)}) in package.json. package.json will be overriden`);
 

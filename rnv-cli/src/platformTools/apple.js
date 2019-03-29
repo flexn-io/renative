@@ -229,7 +229,17 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
                     if (plugin) {
-                        pluginInject += `  pod '${plugin.podName}', :path => '${plugin.podPath}'\n`;
+                        if (plugins[key]['no-active'] !== true) {
+                            const isNpm = plugins[key]['no-npm'] !== true;
+                            if (isNpm) {
+                                const podPath = plugin.podPath || `../../node_modules/${key}`;
+                                pluginInject += `  pod '${plugin.podName}', :path => '${podPath}'\n`;
+                            } else if (plugin.git) {
+                                pluginInject += `  pod '${plugin.podName}', :git => '${plugin.git}'\n`;
+                            } else if (plugin.version) {
+                                pluginInject += `  pod '${plugin.podName}', '${plugin.version}'\n`;
+                            }
+                        }
                     }
                 }
             }
@@ -271,50 +281,25 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
 
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
-
-        // FONTS
-        // if (c.appConfigFile) {
-        //     if (fs.existsSync(c.fontsConfigFolder)) {
-        //         fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
-        //             const key = font.split('.')[0];
-        //             const includedFonts = c.appConfigFile.common.includedFonts;
-        //             if (includedFonts) {
-        //                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
-        //                     if (font) {
-        //                         const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
-        //                         if (fs.existsSync(fontSource)) {
-        //                             const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-        //                             mkdirSync(fontFolder);
-        //                             const fontDest = path.join(fontFolder, font);
-        //                             copyFileSync(fontSource, fontDest);
-        //                         } else {
-        //                             logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }
-
-
         let pluginFonts = '';
         if (c.appConfigFile) {
             if (fs.existsSync(c.fontsConfigFolder)) {
                 fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
-                    const key = font.split('.')[0];
-                    const includedFonts = c.appConfigFile.common.includedFonts;
-                    if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                        const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
-                        if (fs.existsSync(fontSource)) {
-                            const fontFolder = path.join(appFolder, 'fonts');
-                            mkdirSync(fontFolder);
-                            const fontDest = path.join(fontFolder, font);
-                            copyFileSync(fontSource, fontDest);
-                            xcodeProj.addResourceFile(fontSource);
-                            pluginFonts += `  <string>${font}</string>\n`;
-                        } else {
-                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                    if (font.includes('.ttf') || font.includes('.otf')) {
+                        const key = font.split('.')[0];
+                        const includedFonts = c.appConfigFile.common.includedFonts;
+                        if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
+                            const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                            if (fs.existsSync(fontSource)) {
+                                const fontFolder = path.join(appFolder, 'fonts');
+                                mkdirSync(fontFolder);
+                                const fontDest = path.join(fontFolder, font);
+                                copyFileSync(fontSource, fontDest);
+                                xcodeProj.addResourceFile(fontSource);
+                                pluginFonts += `  <string>${font}</string>\n`;
+                            } else {
+                                logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                            }
                         }
                     }
                 });

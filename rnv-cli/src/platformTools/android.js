@@ -154,12 +154,15 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
                     if (plugin) {
-                        const className = plugin.package.split('.').pop();
-                        pluginIncludes += `, ':${key}'`;
-                        pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${plugin.modulePath}')\n`;
-                        pluginImports += `import ${plugin.package}\n`;
-                        pluginPackages += `${className}(),\n`;
-                        pluginImplementations += `implementation project(':${key}')\n`;
+                        if (plugin['no-active'] !== true && plugin.android) {
+                            const className = plugin.package.split('.').pop();
+                            pluginIncludes += `, ':${key}'`;
+                            const modulePath = plugin.modulePath || `../../node_modules/${key}/android`;
+                            pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+                            pluginImports += `import ${plugin.package}\n`;
+                            pluginPackages += `${className}(),\n`;
+                            pluginImplementations += `implementation project(':${key}')\n`;
+                        }
                     }
                 }
             }
@@ -171,19 +174,21 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (c.appConfigFile) {
         if (fs.existsSync(c.fontsConfigFolder)) {
             fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
-                const key = font.split('.')[0];
-                const includedFonts = c.appConfigFile.common.includedFonts;
-                if (includedFonts) {
-                    if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                        if (font) {
-                            const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
-                            if (fs.existsSync(fontSource)) {
-                                const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-                                mkdirSync(fontFolder);
-                                const fontDest = path.join(fontFolder, font);
-                                copyFileSync(fontSource, fontDest);
-                            } else {
-                                logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                if (font.includes('.ttf') || font.includes('.otf')) {
+                    const key = font.split('.')[0];
+                    const includedFonts = c.appConfigFile.common.includedFonts;
+                    if (includedFonts) {
+                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                            if (font) {
+                                const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                                if (fs.existsSync(fontSource)) {
+                                    const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                                    mkdirSync(fontFolder);
+                                    const fontDest = path.join(fontFolder, font);
+                                    copyFileSync(fontSource, fontDest);
+                                } else {
+                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                                }
                             }
                         }
                     }
