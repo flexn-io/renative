@@ -154,14 +154,48 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
                     if (plugin) {
-                        if (plugin['no-active'] !== true && plugin.android) {
-                            const className = plugin.package.split('.').pop();
-                            pluginIncludes += `, ':${key}'`;
-                            const modulePath = plugin.modulePath || `../../node_modules/${key}/android`;
-                            pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-                            pluginImports += `import ${plugin.package}\n`;
-                            pluginPackages += `${className}(),\n`;
-                            pluginImplementations += `implementation project(':${key}')\n`;
+                        if (plugin['no-active'] !== true) {
+                            if (plugin.packages) {
+                                plugin.packages.forEach((ppkg) => {
+                                    const className = ppkg.split('.').pop();
+
+                                    const modulePath = plugin.modulePath || `../../node_modules/${key}/android`;
+                                    if (plugin.projectName) {
+                                        pluginIncludes += `, ':${plugin.projectName}'`;
+                                        pluginPaths += `project(':${plugin.projectName}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+                                        pluginImplementations += `implementation project(':${plugin.projectName}')\n`;
+                                    } else {
+                                        pluginIncludes += `, ':${key}'`;
+                                        pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+                                        pluginImplementations += `implementation project(':${key}')\n`;
+                                    }
+                                    pluginImports += `import ${ppkg}\n`;
+                                    pluginPackages += `${className}(),\n`;
+                                });
+                            } else {
+                                const ppkg = plugin.package;
+                                const className = ppkg.split('.').pop();
+
+                                const modulePath = plugin.path || `../../node_modules/${key}/android`;
+
+
+                                if (plugin.projectName) {
+                                    pluginIncludes += `, ':${plugin.projectName}'`;
+                                    pluginPaths += `project(':${plugin.projectName}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+                                    pluginImplementations += `implementation project(':${plugin.projectName}')\n`;
+                                } else {
+                                    pluginIncludes += `, ':${key}'`;
+                                    pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+                                    pluginImplementations += `implementation project(':${key}')\n`;
+                                }
+                                pluginImports += `import ${ppkg}\n`;
+                                pluginPackages += `${className}(),\n`;
+
+
+                                if (key === '@mapbox/react-native-mapbox-gl') {
+                                    console.log('SJHSKSHK', plugin.projectName, pluginPaths);
+                                }
+                            }
                         }
                     }
                 }
@@ -260,6 +294,20 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             { pattern: '{{PERMISIONS}}', override: prms },
         ]);
 
+
+    // RELEASE CONFIGS
+    let releaseConfig = '';
+    const globalAppConfigPath = path.join(c.globalConfigFolder, c.appConfigFile.id);
+    if (fs.existsSync(globalAppConfigPath)) {
+        const releaseConfigValue = fs.readFileSync(path.join(globalAppConfigPath, 'gradle.properties')).toString();
+        releaseConfig = `ext {
+  RELEASE_STORE_FILE="${path.join(globalAppConfigPath, 'release.keystore')}"
+  ${releaseConfigValue}
+  }`;
+    } else {
+        logWarning(`You're missing global keystore path for this app: ${chalk.white(globalAppConfigPath)}. You won't be able to make releases without it!`);
+    }
+    fs.writeFileSync(path.join(appFolder, 'app/release-configs.gradle'), releaseConfig);
 
     resolve();
 });

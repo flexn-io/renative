@@ -51,3 +51,5 @@ buck-out/
 
 platformBuilds/
 platformAssets/
+
+release-configs.gradle
