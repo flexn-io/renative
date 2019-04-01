@@ -1,6 +1,8 @@
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import { executeAsync, execShellAsync } from '../exec';
+import { createPlatformBuild } from '../cli/platform';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
@@ -164,7 +166,7 @@ const packageBundleForXcode = (c, platform) => {
         '--dev',
         'false',
         '--assets-dest',
-        `${appPath}`,
+        `platformBuilds/${c.appId}_${platform}/assets`,
         '--entry-file',
         `${c.appConfigFile.platforms[platform].entryFile}.js`,
         '--bundle-output',
@@ -203,6 +205,16 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
 
     const appFolder = getAppFolder(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
+
+    const check = path.join(appFolder, `${appFolderName}.xcodeproj`);
+    if (!fs.existsSync(check)) {
+        logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
+        createPlatformBuild(c, platform)
+            .then(() => configureXcodeProject(c, platform))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
 
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));

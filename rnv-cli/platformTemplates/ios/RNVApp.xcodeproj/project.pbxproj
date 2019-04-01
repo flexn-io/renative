@@ -11,12 +11,13 @@
 		200132F41F6BF9CF00450340 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200132F31F6BF9CF00450340 /* AppDelegate.swift */; };
 		200132FC1F6BF9CF00450340 /* RNVApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 200132FA1F6BF9CF00450340 /* RNVApp.xcdatamodeld */; };
 		200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 200132FD1F6BF9CF00450340 /* Assets.xcassets */; };
-		207888251FCD3A000015651F /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 207888241FCD3A000015651F /* assets */; };
+		20A3B6EF2252512D0084A50B /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 207888241FCD3A000015651F /* assets */; };
 		20C4C37A1FE53E0A00D9721E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C3791FE53E0A00D9721E /* GLKit.framework */; };
 		20C4C37C1FE53E1A00D9721E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C37B1FE53E1A00D9721E /* ImageIO.framework */; };
 		20C4C37E1FE53E4A00D9721E /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C37D1FE53E4A00D9721E /* libc++.tbd */; };
 		20C6F92B200539A300D4B5D8 /* Debug-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 20C6F92A200539A200D4B5D8 /* Debug-Info.plist */; };
 		20CB0E7D21C695460010854F /* images in Resources */ = {isa = PBXBuildFile; fileRef = 20CB0E7B21C695460010854F /* images */; };
+		20DEE9D7225238DF00AA9637 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 20DEE9D6225238DF00AA9637 /* main.jsbundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +49,7 @@
 		20C6F92A200539A200D4B5D8 /* Debug-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Debug-Info.plist"; sourceTree = "<group>"; };
 		20CB0E7B21C695460010854F /* images */ = {isa = PBXFileReference; lastKnownFileType = folder; path = images; sourceTree = "<group>"; };
 		20CEF6F71F9E47330094A59C /* Bridge-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridge-Header.h"; sourceTree = "<group>"; };
+		20DEE9D6225238DF00AA9637 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = SOURCE_ROOT; };
 		3471B97B677CE64891C44686 /* Pods-RNVAppUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppUITests/Pods-RNVAppUITests.release.xcconfig"; sourceTree = "<group>"; };
 		4EC4EAA4E066BD0502B9DF3F /* Pods-RNVAppTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RNVAppTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RNVAppTests/Pods-RNVAppTests.debug.xcconfig"; sourceTree = "<group>"; };
 		5A3295F713AD7DF91D6C2EF3 /* Pods_RNVAppTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RNVAppTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,6 +97,7 @@
 		200132F21F6BF9CF00450340 /* RNVApp */ = {
 			isa = PBXGroup;
 			children = (
+				20DEE9D6225238DF00AA9637 /* main.jsbundle */,
 				20CB0E7B21C695460010854F /* images */,
 				2034B5411FB5CB98001A5872 /* RNVApp.entitlements */,
 				200132F31F6BF9CF00450340 /* AppDelegate.swift */,
@@ -213,8 +216,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				207888251FCD3A000015651F /* assets in Resources */,
+				20A3B6EF2252512D0084A50B /* assets in Resources */,
 				200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */,
+				20DEE9D7225238DF00AA9637 /* main.jsbundle in Resources */,
 				20CB0E7D21C695460010854F /* images in Resources */,
 				20C6F92B200539A300D4B5D8 /* Debug-Info.plist in Resources */,
 			);

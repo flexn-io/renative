@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
 import { executeAsync, execShellAsync, execCLI } from '../exec';
+import { createPlatformBuild } from '../cli/platform';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive, configureIfRequired,
@@ -134,10 +135,21 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
 
+    const gradlew = path.join(appFolder, 'gradlew');
+
+    if (!fs.existsSync(gradlew)) {
+        logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
+        createPlatformBuild(c, platform)
+            .then(() => configureGradleProject(c, platform))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
+
     copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
-    fs.chmodSync(path.join(appFolder, 'gradlew'), '755');
+    fs.chmodSync(gradlew, '755');
 
     let pluginIncludes = 'include \':app\'';
     let pluginPaths = '';
