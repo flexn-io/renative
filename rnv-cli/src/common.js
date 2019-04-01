@@ -121,7 +121,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder, 'globalConfigFolder', c.globalConfigFolder);
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder, 'appConfigsFolder', c.appConfigsFolder);
-    c.entryFolder = _getPath(c, c.projectConfig.entryFolder, 'entryFolder', c.entryFolder);
+    // c.entryFolder = _getPath(c, c.projectConfig.entryFolder, 'entryFolder', c.entryFolder);
     c.platformTemplatesFolder = _getPath(c, c.projectConfig.platformTemplatesFolder, 'platformTemplatesFolder', c.platformTemplatesFolder);
     c.platformAssetsFolder = _getPath(c, c.projectConfig.platformAssetsFolder, 'platformAssetsFolder', c.platformAssetsFolder);
     c.platformBuildsFolder = _getPath(c, c.projectConfig.platformBuildsFolder, 'platformBuildsFolder', c.platformBuildsFolder);
@@ -184,11 +184,12 @@ const configureProject = c => new Promise((resolve, reject) => {
     }
 
     // Check entry
-    logTask('configureProject:check entry');
-    if (!fs.existsSync(c.entryFolder)) {
-        logWarning(`Looks like your entry folder ${chalk.white(c.entryFolder)} is missing! Let's create one for you.`);
-        copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'entry'), c.entryFolder);
-    }
+    // TODO: RN bundle command fails if entry files are not at root
+    // logTask('configureProject:check entry');
+    // if (!fs.existsSync(c.entryFolder)) {
+    //     logWarning(`Looks like your entry folder ${chalk.white(c.entryFolder)} is missing! Let's create one for you.`);
+    //     copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'entry'), c.entryFolder);
+    // }
 
     // Check src
     logTask('configureProject:check src');
@@ -358,6 +359,25 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
     resolve();
 });
 
+const configureEntryPoints = (c) => { // Check entry
+    // TODO: RN bundle command fails if entry files are not at root
+    // logTask('configureProject:check entry');
+    // if (!fs.existsSync(c.entryFolder)) {
+    //     logWarning(`Looks like your entry folder ${chalk.white(c.entryFolder)} is missing! Let's create one for you.`);
+    //     copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'entry'), c.entryFolder);
+    // }
+    const p = c.appConfigFile.platforms;
+    for (const k in p) {
+        platform = p[k];
+        const source = path.join(c.rnvRootFolder, `${platform.entryFile}.js`);
+        const dest = path.join(c.projectRootFolder, `${platform.entryFile}.js`);
+        if (!fs.existsSync(dest)) {
+            logWarning(`You missing entry file ${chalk.white(platform.entryFile)} in your project. let's create one for you!`);
+            copyFileSync(source, dest);
+        }
+    }
+};
+
 
 const configureApp = c => new Promise((resolve, reject) => {
     logTask('configureApp');
@@ -365,6 +385,7 @@ const configureApp = c => new Promise((resolve, reject) => {
     if (c.appID) {
         // App ID specified
         _getConfig(c, c.appID);
+        configureEntryPoints(c);
         resolve(c);
     } else {
         // Use latest app from platformAssets
@@ -381,6 +402,7 @@ const configureApp = c => new Promise((resolve, reject) => {
             try {
                 const assetConfig = JSON.parse(fs.readFileSync(c.runtimeConfigPath).toString());
                 _getConfig(c, assetConfig.id);
+                configureEntryPoints(c);
                 resolve(c);
             } catch (e) {
                 reject(e);

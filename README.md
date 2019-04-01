@@ -352,7 +352,6 @@ Folder Structure (Generated Project)
     │   └── helloWorld              # Example application flavour
     │       ├── assets              # Cross platform assets
     │       └── config.json         # Application flavour config
-    ├── entry                       # Entry point index files
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
     ├── projectConfigs              # Project configuration files/assets

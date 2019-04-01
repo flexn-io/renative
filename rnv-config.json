@@ -2,7 +2,7 @@
   "globalConfigFolder": "~/.rnv",
   "appConfigsFolder": "./appConfigs",
   "platformTemplatesFolder": "RNV_HOME/platformTemplates",
-  "entryFolder": "./entry",
+  "entryFolder": "./",
   "platformAssetsFolder": "./platformAssets",
   "platformBuildsFolder": "./platformBuilds",
   "projectPlugins": "./plugins",
