@@ -11,7 +11,7 @@ import {
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../constants';
 import { executeAsync, execCLI } from '../exec';
-import { runXcodeProject, exportXcodeProject, archiveXcodeProject } from '../platformTools/apple';
+import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode } from '../platformTools/apple';
 import { buildWeb, runWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
@@ -50,9 +50,9 @@ const run = (c) => {
     case EXPORT:
         return _export(c);
         break;
-    // case PACKAGE:
-    //     return Promise.resolve();
-    //     break;
+    case PACKAGE:
+        return _packageApp(c);
+        break;
     // case BUILD:
     //     return Promise.resolve();
     //     break;
@@ -154,6 +154,39 @@ const _runApp = c => new Promise((resolve, reject) => {
 
     logErrorPlatform(platform, resolve);
 });
+
+const _packageApp = c => new Promise((resolve, reject) => {
+    logTask('_packageApp');
+    const { platform } = c;
+    if (!isPlatformSupported(platform, null, reject)) return;
+
+    const target = c.program.target || c.globalConfig.defaultTargets[platform];
+
+    switch (platform) {
+    case IOS:
+    case TVOS:
+        configureIfRequired(c, platform)
+            .then(() => packageBundleForXcode(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        if (!checkSdk(c, platform, reject)) return;
+
+        configureIfRequired(c, platform)
+            .then(() => configureAndroidProperties(c))
+            .then(() => configureGradleProject(c, platform))
+            .then(() => packageAndroid(c, platform, target, platform === ANDROID_WEAR))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    logErrorPlatform(platform, resolve);
+});
+
 
 const _export = c => new Promise((resolve, reject) => {
     logTask('_export');

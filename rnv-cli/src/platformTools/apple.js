@@ -329,4 +329,4 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     });
 });
 
-export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject, exportXcodeProject, archiveXcodeProject };
+export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode };

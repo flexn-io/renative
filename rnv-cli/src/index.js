@@ -18,6 +18,7 @@ const commands = {
     link: Linker,
     platform: Platform,
     run: Runner,
+    package: Runner,
     target: Target,
 };
 
