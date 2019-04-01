@@ -298,11 +298,11 @@ Example:
       "version": "0.1.0",
       "ios": {
         "podName": "RNGestureHandler",
-        "podPath": "../../node_modules/react-native-gesture-handler"
+        "path": "../../node_modules/react-native-gesture-handler"
       },
       "android": {
-        "modulePath": "../../node_modules/react-native-gesture-handler/android",
-        "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+        "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
+        "path": "../../node_modules/react-native-gesture-handler/android"
       }
     }
   }
