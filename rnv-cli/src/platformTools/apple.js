@@ -166,7 +166,7 @@ const packageBundleForXcode = (c, platform) => {
         '--dev',
         'false',
         '--assets-dest',
-        `platformBuilds/${c.appId}_${platform}/assets`,
+        `platformBuilds/${c.appId}_${platform}`,
         '--entry-file',
         `${c.appConfigFile.platforms[platform].entryFile}.js`,
         '--bundle-output',

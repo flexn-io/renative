@@ -10,7 +10,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
-    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME, SAMPLE_APP_ID,
+    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME, SAMPLE_APP_ID, RN_BABEL_CONFIG_NAME,
 } from './constants';
 import { executeAsync } from './exec';
 
@@ -103,6 +103,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
     c.projectPluginsFolder = path.join(c.projectRootFolder, 'plugins');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
+    c.babelConfigPath = path.join(c.projectRootFolder, RN_BABEL_CONFIG_NAME);
     c.projectConfigFolder = path.join(c.projectRootFolder, 'projectConfig');
 
 
@@ -173,6 +174,13 @@ const configureProject = c => new Promise((resolve, reject) => {
     if (!fs.existsSync(c.rnCliConfigPath)) {
         logWarning(`Looks like your rn-cli config file ${chalk.white(c.rnCliConfigPath)} is missing! Let's create one for you.`);
         copyFileSync(path.join(c.rnvRootFolder, RN_CLI_CONFIG_NAME), c.rnCliConfigPath);
+    }
+
+    // Check babel-config
+    logTask('configureProject:check babel config');
+    if (!fs.existsSync(c.babelConfigPath)) {
+        logWarning(`Looks like your babel config file ${chalk.white(c.babelConfigPath)} is missing! Let's create one for you.`);
+        copyFileSync(path.join(c.rnvRootFolder, RN_BABEL_CONFIG_NAME), c.babelConfigPath);
     }
 
     // Check entry

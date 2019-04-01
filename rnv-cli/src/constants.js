@@ -70,6 +70,7 @@ const RNV_PROJECT_CONFIG_NAME = 'rnv-config.json';
 const RNV_GLOBAL_CONFIG_NAME = 'config.json';
 const RNV_APP_CONFIG_NAME = 'config.json';
 const RN_CLI_CONFIG_NAME = 'rn-cli.config.js';
+const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 const SAMPLE_APP_ID = 'helloWorld';
 
 export {
@@ -83,6 +84,7 @@ export {
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
     RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME, SAMPLE_APP_ID,
+    RN_BABEL_CONFIG_NAME,
 };
 
 export default {
@@ -147,5 +149,6 @@ export default {
     RNV_GLOBAL_CONFIG_NAME,
     RNV_APP_CONFIG_NAME,
     RN_CLI_CONFIG_NAME,
+    RN_BABEL_CONFIG_NAME,
     SAMPLE_APP_ID,
 };
