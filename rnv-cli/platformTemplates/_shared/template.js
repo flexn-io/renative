@@ -24,9 +24,9 @@ const htmlTemp = (options) => {
     } = config;
 
     const linkTags = [
-        '<link rel="manifest" href="/manifest.json" />',
-        '<link rel="shortcut icon" href="/favicon.ico" />',
-        '<link rel="stylesheet" href="/app.css" />',
+        '<link rel="manifest" href="manifest.json" />',
+        '<link rel="shortcut icon" href="favicon.ico" />',
+        '<link rel="stylesheet" href="app.css" />',
     ];
 
     const titleTag = `<title>${title}</title>`;
