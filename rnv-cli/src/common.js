@@ -393,6 +393,7 @@ const configureApp = c => new Promise((resolve, reject) => {
             logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. RNV got you covered. Let\'s configure it for you!`);
 
             _getConfig(c, c.defaultAppConfigId);
+            configureEntryPoints(c);
 
             const newCommand = Object.assign({}, c);
             newCommand.subCommand = 'configure';
