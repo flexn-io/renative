@@ -298,14 +298,26 @@ Example:
       "version": "0.1.0",
       "ios": {
         "podName": "RNGestureHandler",
-        "path": "../../node_modules/react-native-gesture-handler"
+        "path": "node_modules/react-native-gesture-handler"
       },
       "android": {
         "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
-        "path": "../../node_modules/react-native-gesture-handler/android"
+        "path": "node_modules/react-native-gesture-handler/android"
       }
     }
   }
+}
+```
+
+#### Custom appConfig Location per Project
+
+For decoupled project you might need to point to custom appConfig location per project. because that location might be different for each developer you can create `rnv-config.local.json` in your project root (git ignored by default) which points to your local appConfig folder.
+
+Contents of the file should follow this format:
+
+```json
+{
+  "appConfigsPath": "/Users/<USER>/my-local-app-config-folder"
 }
 ```
 

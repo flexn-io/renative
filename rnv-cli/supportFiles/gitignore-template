@@ -53,3 +53,4 @@ platformBuilds/
 platformAssets/
 
 release-configs.gradle
+rnv-config.local.json

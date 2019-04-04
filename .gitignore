@@ -53,3 +53,4 @@ package-lock.json
 rnv-cli/dist
 
 release-configs.gradle
+rnv-config.local.json

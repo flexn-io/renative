@@ -10,7 +10,8 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
-    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME, SAMPLE_APP_ID, RN_BABEL_CONFIG_NAME,
+    RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME,
+    SAMPLE_APP_ID, RN_BABEL_CONFIG_NAME, RNV_PROJECT_CONFIG_LOCAL_NAME,
 } from './constants';
 import { executeAsync } from './exec';
 
@@ -100,6 +101,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.globalConfigFolder = path.join(homedir, '.rnv');
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.projectConfigPath = path.join(c.projectRootFolder, RNV_PROJECT_CONFIG_NAME);
+    c.projectConfigLocalPath = path.join(c.projectRootFolder, RNV_PROJECT_CONFIG_LOCAL_NAME);
     c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
     c.projectPluginsFolder = path.join(c.projectRootFolder, 'plugins');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
@@ -217,6 +219,21 @@ const configureProject = c => new Promise((resolve, reject) => {
             fs.writeFileSync(c.appConfigPath, JSON.stringify(appConfig, null, 2));
         } catch (e) {
             logError(e);
+        }
+    }
+
+    // Check rnv-config.local
+    logTask('configureProject:check rnv-config.local');
+    if (fs.existsSync(c.projectConfigLocalPath)) {
+        logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will it as preference for appConfig path!`);
+        c.projectConfigLocal = JSON.parse(fs.readFileSync(c.projectConfigLocalPath).toString());
+        if (c.projectConfigLocal.appConfigsPath) {
+            if (!fs.existsSync(c.projectConfigLocal.appConfigsPath)) {
+                logWarning(`Looks like your custom local appConfig is pointing to ${chalk.white(c.projectConfigLocal.appConfigsPath)} which doesn't exist! Make sure you create one in that location`);
+            } else {
+                logInfo(`Found custom appConfing location pointing to ${chalk.white(c.projectConfigLocal.appConfigsPath)}. RNV will now swith to that location!`);
+                c.appConfigsFolder = c.projectConfigLocal.appConfigsPath;
+            }
         }
     }
 
