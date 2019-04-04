@@ -11,7 +11,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
-    getEntryFile, logWarning,
+    getEntryFile, logWarning, logDebug,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
@@ -142,7 +142,7 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
 });
 
 const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
-    const className = pkg.split('.').pop();
+    const className = pkg ? pkg.split('.').pop() : null;
     let packageParams = '';
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
@@ -152,15 +152,38 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
     if (plugin.projectName) {
         pluginConfig.pluginIncludes += `, ':${plugin.projectName}'`;
         pluginConfig.pluginPaths += `project(':${plugin.projectName}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-        pluginConfig.pluginImplementations += `  implementation project(':${plugin.projectName}')\n`;
+        if (!plugin.skipImplementation) {
+            if (plugin.implementation) {
+                pluginConfig.pluginImplementations += `${plugin.implementation}`;
+            } else {
+                pluginConfig.pluginImplementations += `    implementation project(':${plugin.projectName}')\n`;
+            }
+        }
     } else {
         pluginConfig.pluginIncludes += `, ':${key}'`;
         pluginConfig.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-        pluginConfig.pluginImplementations += `  implementation project(':${key}')\n`;
+        if (!plugin.skipImplementation) {
+            if (plugin.implementation) {
+                pluginConfig.pluginImplementations += `${plugin.implementation}`;
+            } else {
+                pluginConfig.pluginImplementations += `    implementation project(':${key}')\n`;
+            }
+        }
     }
-    pluginConfig.pluginImports += `import ${pkg}\n`;
-    pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
+    if (pkg) pluginConfig.pluginImports += `import ${pkg}\n`;
+    if (className) pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
 
+    if (plugin.implementations) {
+        plugin.implementations.forEach((v) => {
+            pluginConfig.pluginImplementations += `    implementation '${v}'\n`;
+        });
+    }
+
+    if (plugin.afterEvaluate) {
+        plugin.afterEvaluate.forEach((v) => {
+            pluginConfig.pluginAfterEvaluate += ` ${v}\n`;
+        });
+    }
     _fixAndroidLegacy(c, pathFixed);
 };
 
@@ -168,15 +191,15 @@ const _fixAndroidLegacy = (c, modulePath) => {
     const buildGradle = path.join(c.projectRootFolder, modulePath, 'build.gradle');
 
     if (fs.existsSync(buildGradle)) {
-        console.log('FIX:', buildGradle);
+        logDebug('FIX:', buildGradle);
         writeCleanFile(buildGradle, buildGradle,
             [
-                { pattern: ' compile \'', override: ' implementation \'' },
-                { pattern: ' compile "', override: ' implementation "' },
-                { pattern: ' testCompile "', override: ' testImplementation "' },
-                { pattern: ' provided \'', override: ' compileOnly \'' },
-                { pattern: ' provided "', override: ' compileOnly "' },
-                { pattern: ' compile fileTree', override: ' implementation fileTree' },
+                { pattern: ' compile \'', override: '  implementation \'' },
+                { pattern: ' compile "', override: '  implementation "' },
+                { pattern: ' testCompile "', override: '  testImplementation "' },
+                { pattern: ' provided \'', override: '  compileOnly \'' },
+                { pattern: ' provided "', override: '  compileOnly "' },
+                { pattern: ' compile fileTree', override: '  implementation fileTree' },
             ]);
     }
 };
@@ -208,8 +231,9 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const pluginImports = '';
     const pluginPackages = 'MainReactPackage(),\n';
     const pluginImplementations = '';
+    const pluginAfterEvaluate = '';
     const pluginConfig = {
-        pluginIncludes, pluginPaths, pluginImports, pluginPackages, pluginImplementations,
+        pluginIncludes, pluginPaths, pluginImports, pluginPackages, pluginImplementations, pluginAfterEvaluate,
     };
     // PLUGINS
     if (c.appConfigFile && c.pluginConfig) {
@@ -264,7 +288,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         }
     }
 
-
     writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'),
         path.join(appFolder, 'settings.gradle'),
         [
@@ -279,6 +302,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
             { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
             { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginConfig.pluginImplementations },
+            { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: pluginConfig.pluginAfterEvaluate },
         ]);
 
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
