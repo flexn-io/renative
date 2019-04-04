@@ -244,7 +244,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
                         if (plugins[key]['no-active'] !== true) {
                             const isNpm = plugins[key]['no-npm'] !== true;
                             if (isNpm) {
-                                const podPath = plugin.path || `../../node_modules/${key}`;
+                                const podPath = `../../${plugin.path}` || `../../node_modules/${key}`;
                                 pluginInject += `  pod '${plugin.podName}', :path => '${podPath}'\n`;
                             } else if (plugin.git) {
                                 pluginInject += `  pod '${plugin.podName}', :git => '${plugin.git}'\n`;

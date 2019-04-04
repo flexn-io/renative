@@ -98,6 +98,18 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     });
 });
 
+const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`buildAndroid:${platform}`);
+
+
+    const appFolder = getAppFolder(c, platform);
+
+    shell.cd(`${appFolder}`);
+    shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', resolve, (e) => {
+        logError(e);
+    });
+});
+
 const configureAndroidProperties = c => new Promise((resolve, reject) => {
     logTask('configureAndroidProperties');
 
@@ -129,6 +141,46 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
         .catch(e => reject(e));
 });
 
+const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
+    const className = pkg.split('.').pop();
+    let packageParams = '';
+    if (plugin.packageParams) {
+        packageParams = plugin.packageParams.join(',');
+    }
+    const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
+    const modulePath = `../../${pathFixed}`;
+    if (plugin.projectName) {
+        pluginConfig.pluginIncludes += `, ':${plugin.projectName}'`;
+        pluginConfig.pluginPaths += `project(':${plugin.projectName}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        pluginConfig.pluginImplementations += `  implementation project(':${plugin.projectName}')\n`;
+    } else {
+        pluginConfig.pluginIncludes += `, ':${key}'`;
+        pluginConfig.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        pluginConfig.pluginImplementations += `  implementation project(':${key}')\n`;
+    }
+    pluginConfig.pluginImports += `import ${pkg}\n`;
+    pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
+
+    _fixAndroidLegacy(c, pathFixed);
+};
+
+const _fixAndroidLegacy = (c, modulePath) => {
+    const buildGradle = path.join(c.projectRootFolder, modulePath, 'build.gradle');
+
+    if (fs.existsSync(buildGradle)) {
+        console.log('FIX:', buildGradle);
+        writeCleanFile(buildGradle, buildGradle,
+            [
+                { pattern: ' compile \'', override: ' implementation \'' },
+                { pattern: ' compile "', override: ' implementation "' },
+                { pattern: ' testCompile "', override: ' testImplementation "' },
+                { pattern: ' provided \'', override: ' compileOnly \'' },
+                { pattern: ' provided "', override: ' compileOnly "' },
+                { pattern: ' compile fileTree', override: ' implementation fileTree' },
+            ]);
+    }
+};
+
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
 
@@ -151,11 +203,14 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
     fs.chmodSync(gradlew, '755');
 
-    let pluginIncludes = 'include \':app\'';
-    let pluginPaths = '';
-    let pluginImports = '';
-    let pluginPackages = 'MainReactPackage(),\n';
-    let pluginImplementations = '';
+    const pluginIncludes = 'include \':app\'';
+    const pluginPaths = '';
+    const pluginImports = '';
+    const pluginPackages = 'MainReactPackage(),\n';
+    const pluginImplementations = '';
+    const pluginConfig = {
+        pluginIncludes, pluginPaths, pluginImports, pluginPackages, pluginImplementations,
+    };
     // PLUGINS
     if (c.appConfigFile && c.pluginConfig) {
         const includedPlugins = c.appConfigFile.common.includedPlugins;
@@ -169,44 +224,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                         if (plugin['no-active'] !== true) {
                             if (plugin.packages) {
                                 plugin.packages.forEach((ppkg) => {
-                                    const className = ppkg.split('.').pop();
-
-                                    const modulePath = plugin.modulePath || `../../node_modules/${key}/android`;
-                                    if (plugin.projectName) {
-                                        pluginIncludes += `, ':${plugin.projectName}'`;
-                                        pluginPaths += `project(':${plugin.projectName}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-                                        pluginImplementations += `implementation project(':${plugin.projectName}')\n`;
-                                    } else {
-                                        pluginIncludes += `, ':${key}'`;
-                                        pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-                                        pluginImplementations += `implementation project(':${key}')\n`;
-                                    }
-                                    pluginImports += `import ${ppkg}\n`;
-                                    pluginPackages += `${className}(),\n`;
+                                    _injectPlugin(c, plugin, key, ppkg, pluginConfig);
                                 });
                             } else {
-                                const ppkg = plugin.package;
-                                const className = ppkg.split('.').pop();
-
-                                const modulePath = plugin.path || `../../node_modules/${key}/android`;
-
-
-                                if (plugin.projectName) {
-                                    pluginIncludes += `, ':${plugin.projectName}'`;
-                                    pluginPaths += `project(':${plugin.projectName}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-                                    pluginImplementations += `implementation project(':${plugin.projectName}')\n`;
-                                } else {
-                                    pluginIncludes += `, ':${key}'`;
-                                    pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-                                    pluginImplementations += `implementation project(':${key}')\n`;
-                                }
-                                pluginImports += `import ${ppkg}\n`;
-                                pluginPackages += `${className}(),\n`;
-
-
-                                if (key === '@mapbox/react-native-mapbox-gl') {
-                                    console.log('SJHSKSHK', plugin.projectName, pluginPaths);
-                                }
+                                _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
                             }
                         }
                     }
@@ -214,7 +235,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             }
         }
     }
-    pluginPackages = pluginPackages.substring(0, pluginPackages.length - 2);
+    pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
 
     // FONTS
     if (c.appConfigFile) {
@@ -247,8 +268,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'),
         path.join(appFolder, 'settings.gradle'),
         [
-            { pattern: '{{PLUGIN_INCLUDES}}', override: pluginIncludes },
-            { pattern: '{{PLUGIN_PATHS}}', override: pluginPaths },
+            { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
+            { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
         ]);
 
     writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'),
@@ -257,7 +278,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
             { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
             { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
-            { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginImplementations },
+            { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginConfig.pluginImplementations },
         ]);
 
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
@@ -273,8 +294,15 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         [
             { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
             { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-            { pattern: '{{PLUGIN_IMPORTS}}', override: pluginImports },
-            { pattern: '{{PLUGIN_PACKAGES}}', override: pluginPackages },
+            { pattern: '{{PLUGIN_IMPORTS}}', override: pluginConfig.pluginImports },
+            { pattern: '{{PLUGIN_PACKAGES}}', override: pluginConfig.pluginPackages },
+        ]);
+
+    const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
+    writeCleanFile(path.join(appTemplateFolder, splashPath),
+        path.join(appFolder, splashPath),
+        [
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         ]);
 
     const stringsPath = 'app/src/main/res/values/strings.xml';
@@ -325,6 +353,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 });
 
 export {
-    copyAndroidAssets, configureGradleProject, launchAndroidSimulator,
+    copyAndroidAssets, configureGradleProject, launchAndroidSimulator, buildAndroid,
     listAndroidTargets, packageAndroid, runAndroid, configureAndroidProperties,
 };

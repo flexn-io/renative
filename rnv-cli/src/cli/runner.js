@@ -17,7 +17,7 @@ import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { runKaiOS } from '../platformTools/kaios';
 import { runElectron } from '../platformTools/electron';
-import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
+import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject, buildAndroid } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';
 
 
@@ -53,9 +53,9 @@ const run = (c) => {
     case PACKAGE:
         return _packageApp(c);
         break;
-    // case BUILD:
-    //     return Promise.resolve();
-    //     break;
+    case BUILD:
+        return _build(c);
+        break;
     // case DEPLOY:
     //     return Promise.resolve();
     //     break;
@@ -199,6 +199,28 @@ const _export = c => new Promise((resolve, reject) => {
         configureIfRequired(c, platform)
             .then(() => archiveXcodeProject(c, platform))
             .then(() => exportXcodeProject(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    logErrorPlatform(platform, resolve);
+});
+
+const _build = c => new Promise((resolve, reject) => {
+    logTask('_build');
+    const { platform } = c;
+    if (!isPlatformSupported(platform, null, reject)) return;
+
+    switch (platform) {
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        configureIfRequired(c, platform)
+            .then(() => configureAndroidProperties(c))
+            .then(() => configureGradleProject(c, platform))
+            .then(() => packageAndroid(c, platform))
+            .then(() => buildAndroid(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
