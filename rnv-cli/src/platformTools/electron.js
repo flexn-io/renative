@@ -1,12 +1,14 @@
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
+import chalk from 'chalk';
+import { createPlatformBuild } from '../cli/platform';
 import { executeAsync, execShellAsync } from '../exec';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive, configureIfRequired, getAppConfigId,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
-    getEntryFile, getAppDescription, getAppAuthor, getAppLicense,
+    getEntryFile, getAppDescription, getAppAuthor, getAppLicense, logWarning,
 } from '../common';
 import { buildWeb } from './web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -29,6 +31,17 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
 
     const packagePath = path.join(appFolder, 'package.json');
+
+    if (!fs.existsSync(packagePath)) {
+        logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
+        createPlatformBuild(c, platform)
+            .then(() => configureElectronProject(c, platform))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
+
+
     const pkgJson = path.join(getAppTemplateFolder(c, platform), 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(pkgJson));
 

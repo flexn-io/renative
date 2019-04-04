@@ -401,27 +401,30 @@ const configureApp = c => new Promise((resolve, reject) => {
 
     if (c.appID) {
         // App ID specified
-        _getConfig(c, c.appID);
-        configureEntryPoints(c);
-        resolve(c);
+        _getConfig(c, c.appID).then(() => {
+            configureEntryPoints(c);
+            resolve(c);
+        }).catch(e => reject(e));
     } else {
         // Use latest app from platformAssets
         if (!fs.existsSync(c.runtimeConfigPath)) {
             logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. RNV got you covered. Let\'s configure it for you!`);
 
-            _getConfig(c, c.defaultAppConfigId);
-            configureEntryPoints(c);
+            _getConfig(c, c.defaultAppConfigId).then(() => {
+                configureEntryPoints(c);
 
-            const newCommand = Object.assign({}, c);
-            newCommand.subCommand = 'configure';
-            newCommand.program = { appConfig: c.defaultAppConfigId, update: true, platform: c.program.platform };
-            appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
+                const newCommand = Object.assign({}, c);
+                newCommand.subCommand = 'configure';
+                newCommand.program = { appConfig: c.defaultAppConfigId, update: true, platform: c.program.platform };
+                appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
+            }).catch(e => reject(e));
         } else {
             try {
                 const assetConfig = JSON.parse(fs.readFileSync(c.runtimeConfigPath).toString());
-                _getConfig(c, assetConfig.id);
-                configureEntryPoints(c);
-                resolve(c);
+                _getConfig(c, assetConfig.id).then(() => {
+                    configureEntryPoints(c);
+                    resolve(c);
+                }).catch(e => reject(e));
             } catch (e) {
                 reject(e);
             }
@@ -486,27 +489,77 @@ const logEnd = () => {
     _currentProcess.exit();
 };
 
-const _getConfig = (c, appConfigId) => {
+const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
     c.appConfigFolder = path.join(c.appConfigsFolder, appConfigId);
+    c.appId = appConfigId;
+
+    if (!fs.existsSync(c.appConfigFolder)) {
+        const readline = require('readline').createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        });
+
+        const configDirs = [];
+        fs.readdirSync(c.appConfigsFolder).forEach((dir) => {
+            console.log('DIR', dir);
+            configDirs.push(dir);
+        });
+
+        logWarning(`It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(c.appConfigsFolder)} !`);
+        if (configDirs.length) {
+            let opts = '';
+            configDirs.forEach((v, i) => {
+                opts += `(${chalk.white(i)}) ${chalk.white(v)}\n`;
+            });
+
+            readline.question(getQuestion(`RNV found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
+                if (configDirs[v]) {
+                    c.defaultAppConfigId = configDirs[v];
+                    c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+                    _configureConfig(c).then(() => resolve()).catch(e => reject(e));
+                } else {
+                    reject('Wrong option!');
+                }
+            });
+        } else {
+            readline.question(getQuestion(`Do you want RNV to create new new sample appConfig (${chalk.white(appConfigId)}) for you? (y) to confirm`), (v) => {
+                c.defaultAppConfigId = SAMPLE_APP_ID;
+                c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+                copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),
+                    path.join(c.appConfigFolder));
+                _configureConfig(c).then(() => resolve()).catch(e => reject(e));
+            });
+        }
+    } else {
+        _configureConfig(c).then(() => resolve()).catch(e => reject(e));
+    }
+});
+
+const _configureConfig = c => new Promise((resolve, reject) => {
+    logTask(`_configureConfig:${c.appId}`);
     c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
     c.appConfigFile = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
-    c.appId = appConfigId;
 
     // EXTEND CONFIG
     const merge = require('deepmerge');
-    if (c.appConfigFile.extend) {
-        const parentAppConfigFolder = path.join(c.appConfigsFolder, c.appConfigFile.extend);
-        if (fs.existsSync(parentAppConfigFolder)) {
-            const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
-            const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
-            const mergedAppConfigFile = merge(parentAppConfigFile, c.appConfigFile);
-            c.appConfigFile = mergedAppConfigFile;
-            c.appConfigFolder = parentAppConfigFolder;
+    try {
+        if (c.appConfigFile.extend) {
+            const parentAppConfigFolder = path.join(c.appConfigsFolder, c.appConfigFile.extend);
+            if (fs.existsSync(parentAppConfigFolder)) {
+                const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
+                const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
+                const mergedAppConfigFile = merge(parentAppConfigFile, c.appConfigFile);
+                c.appConfigFile = mergedAppConfigFile;
+                c.appConfigFolder = parentAppConfigFolder;
+            }
         }
+        resolve();
+    } catch (e) {
+        reject(e);
     }
-};
+});
 
 const getAppFolder = (c, platform) => path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
 
