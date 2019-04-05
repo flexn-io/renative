@@ -8,7 +8,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive, configureIfRequired, getAppConfigId,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
-    getEntryFile, getAppDescription, getAppAuthor, getAppLicense, logWarning,
+    getEntryFile, getAppDescription, getAppAuthor, getAppLicense, logWarning, copyBuildsFolder,
 } from '../common';
 import { buildWeb } from './web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -35,6 +35,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (!fs.existsSync(packagePath)) {
         logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
         createPlatformBuild(c, platform)
+            .then(() => copyBuildsFolder(c, platform))
             .then(() => configureElectronProject(c, platform))
             .then(() => resolve(c))
             .catch(e => reject(e));

@@ -7,7 +7,7 @@ import { executeAsync, execShellAsync, execCLI } from '../exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformActive, configureIfRequired,
+    getAppFolder, isPlatformActive, configureIfRequired, copyBuildsFolder,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
@@ -136,6 +136,7 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
     //     .then(() => configureAndroidProperties(c, platform))
     configureAndroidProperties(c, platform)
         .then(() => copyAndroidAssets(c, platform))
+        .then(() => copyBuildsFolder(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -226,6 +227,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
     fs.chmodSync(gradlew, '755');
 
+    // INJECTORS
     const pluginIncludes = 'include \':app\'';
     const pluginPaths = '';
     const pluginImports = '';

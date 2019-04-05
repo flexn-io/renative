@@ -145,7 +145,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     configureRnvGlobal(c)
         .then(() => configureProject(c))
         .then(() => configureNodeModules(c))
-        .then(() => configureTizenGlobal(c))
+        // .then(() => configureTizenGlobal(c))
         // .then(() => configureAndroidGlobal(c))
         .then(() => configureApp(c))
         .then(() => logAppInfo(c))
@@ -225,7 +225,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     // Check rnv-config.local
     logTask('configureProject:check rnv-config.local');
     if (fs.existsSync(c.projectConfigLocalPath)) {
-        logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will it as preference for appConfig path!`);
+        logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will use it as preference for appConfig path!`);
         c.projectConfigLocal = JSON.parse(fs.readFileSync(c.projectConfigLocalPath).toString());
         if (c.projectConfigLocal.appConfigsPath) {
             if (!fs.existsSync(c.projectConfigLocal.appConfigsPath)) {
@@ -655,12 +655,23 @@ const writeCleanFile = (source, destination, overrides) => {
     fs.writeFileSync(destination, pFileClean);
 };
 
+const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`copyBuildsFolder:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    // FOLDER MERGERS
+    const destPath = path.join(getAppFolder(c, platform));
+    const sourcePath = path.join(c.appConfigFolder, `builds/${platform}`);
+    copyFolderContentsRecursiveSync(sourcePath, destPath);
+    resolve();
+});
+
 
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, getAppTemplateFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logInfo, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
-    getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile,
+    getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, copyBuildsFolder,
     getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense, getQuestion, logSuccess,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
@@ -669,6 +680,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    copyBuildsFolder,
     isPlatformSupported,
     getAppFolder,
     getAppTemplateFolder,

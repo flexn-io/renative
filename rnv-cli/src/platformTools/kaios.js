@@ -6,7 +6,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive, configureIfRequired, getAppConfigId,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
-    getEntryFile, getAppDescription, getAppAuthor, getAppLicense,
+    getEntryFile, getAppDescription, getAppAuthor, getAppLicense, copyBuildsFolder,
 } from '../common';
 import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_KAIOS_EMULATOR,
@@ -61,6 +61,7 @@ const configureKaiOSProject = (c, platform) => new Promise((resolve, reject) => 
     // configureIfRequired(c, platform)
     //     .then(() => copyKaiOSAssets(c, platform))
     copyKaiOSAssets(c, platform)
+        .then(() => copyBuildsFolder(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));

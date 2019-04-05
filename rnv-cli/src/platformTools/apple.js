@@ -7,7 +7,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
     getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
-    getAppId,
+    getAppId, copyBuildsFolder,
 } from '../common';
 import { IOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -191,6 +191,7 @@ const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => 
                 logWarning(`Looks like pod install is not enough! Let\'s try pod update! Error: ${e}`);
                 runPod('update', getAppFolder(c, platform))
                     .then(() => copyAppleAssets(c, platform, appFolderName))
+                    .then(() => copyBuildsFolder(c, platform))
                     .then(() => configureProject(c, platform, appFolderName))
                     .then(() => resolve())
                     .catch(e => reject(e));

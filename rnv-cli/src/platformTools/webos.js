@@ -9,7 +9,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
-    getEntryFile,
+    getEntryFile, copyBuildsFolder,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import { buildWeb } from './web';
@@ -90,6 +90,7 @@ const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => 
     // configureIfRequired(c, platform)
     //     .then(() => copyWebOSAssets(c, platform))
     copyWebOSAssets(c, platform)
+        .then(() => copyBuildsFolder(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
