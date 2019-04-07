@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from './fileutils';
-import { createPlatformBuild } from './cli/platform';
+import { createPlatformBuild, cleanPlaformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import {
@@ -625,13 +625,18 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     newCommand.subCommand = 'configure';
     newCommand.program = { appConfig: c.id, update: false, platform };
 
-    createPlatformBuild(c, platform)
-        .then(() => appRunner(newCommand))
-        .then(() => resolve(c))
-        .catch(e => reject(e));
-    // } else {
-    //     copyRuntimeAssets(c).then(() => resolve()).catch(e => reject(e));
-    // }
+    if (c.program.reset) {
+        cleanPlaformBuild(c, platform)
+            .then(() => createPlatformBuild(c, platform))
+            .then(() => appRunner(newCommand))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+    } else {
+        createPlatformBuild(c, platform)
+            .then(() => appRunner(newCommand))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+    }
 });
 
 const writeCleanFile = (source, destination, overrides) => {

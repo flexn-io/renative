@@ -234,6 +234,30 @@ open: http://0.0.0.0:8080/
 
 ## Advanced Configuration
 
+#### Reset options
+
+RNV Allows you to perform reset commands if you facing unforeseen problems or migrating RNV versions
+
+Reset Metro Bundler cache
+
+```bash
+rnv start -r
+```
+
+Reset specific platform of platformBuild project (fully recreate project based on provided template)
+
+```bash
+rnv run -p <PLATFORM> -r
+rnv app configure -p <PLATFORM> -r
+```
+
+Reset all platforms of platformBuild project (fully recreate projects based on provided template)
+
+```bash
+rnv app configure -r
+```
+
+
 #### Global Configurations
 
 `rnv` will create config folder at this location: `~/.rnv/config.json`

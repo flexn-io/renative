@@ -58,7 +58,7 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
     logTask(`_runCreatePlatforms:${p}`);
 
-    _runCleanPlaformFolders(c, p)
+    cleanPlaformBuild(c, p)
         .then(() => _runCleanPlaformAssets(c))
         .then(() => _runCopyPlatforms(c, p))
         .then(() => resolve())
@@ -170,8 +170,8 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     });
 });
 
-const _runCleanPlaformFolders = (c, platform) => new Promise((resolve, reject) => {
-    logTask('_runCleanPlaformFolders');
+const cleanPlaformBuild = (c, platform) => new Promise((resolve, reject) => {
+    logTask('cleanPlaformBuild');
 
     const cleanTasks = [];
 
@@ -209,6 +209,6 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { createPlatformBuild };
+export { createPlatformBuild, cleanPlaformBuild };
 
 export default run;
