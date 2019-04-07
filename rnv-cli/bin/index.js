@@ -24,6 +24,8 @@ program
     .option('-l, --list', 'Return list of items related to command') // <alpha|beta|prod>
     .option('-r, --reset', 'Also perform reset')
     .option('-b, --blueprint', 'Blueprint for targets')
+    .option('-h, --host <value>', 'Custom Host IP')
+    .option('-P, --port <value>', 'Custom Port')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

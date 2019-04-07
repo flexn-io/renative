@@ -617,8 +617,16 @@ open browser URL: http://0.0.0.0:8080/
 
 #### Advanced
 
+Run with verbose logging:
+
 ```
 rnv run -p web --info
+```
+
+Run app on custom port `9999`:
+
+```
+rnv run -p web --port 9999
 ```
 
 ---

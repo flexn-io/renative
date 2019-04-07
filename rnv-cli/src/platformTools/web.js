@@ -41,7 +41,7 @@ const runWeb = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
     const wpConfig = path.join(appFolder, 'webpack.config.js');
     const wpPublic = path.join(appFolder, 'public');
-    const port = 8080;
+    const port = c.program.port || 8080;
 
     const wds = path.resolve(c.nodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
 
