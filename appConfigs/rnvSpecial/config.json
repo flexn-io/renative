@@ -8,8 +8,7 @@
   "platforms":{
     "ios": {
       "scheme": "RNVAppRelease",
-      "runScheme": "Release",
-      "teamID": "PRNK99PXGZ"
+      "runScheme": "Release"
     }
   }
 }

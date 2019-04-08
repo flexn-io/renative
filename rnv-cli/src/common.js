@@ -567,9 +567,20 @@ const getAppTemplateFolder = (c, platform) => path.join(c.platformTemplatesFolde
 
 const getAppConfigId = (c, platform) => c.appConfigFile.id;
 
-const getAppId = (c, platform) => c.appConfigFile.platforms[platform].id || c.appConfigFile.common.id;
+const getConfigProp = (c, platform, key) => {
+    const p = c.appConfigFile.platforms[platform];
+    const ps = c.program.scheme || 'debug';
+    let scheme;
+    scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+    scheme = scheme || {};
+    const result = scheme[key] || (c.appConfigFile.platforms[platform][key] || c.appConfigFile.common[key]);
+    logTask(`getConfigProp:${result}`);
+    return result;
+};
 
-const getAppTitle = (c, platform) => c.appConfigFile.platforms[platform].title || c.appConfigFile.common.title;
+const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
+
+const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
 const getAppVersion = (c, platform) => c.appConfigFile.platforms[platform].version || c.appConfigFile.common.verion || c.projectPackage.version;
 
@@ -677,7 +688,7 @@ export {
     logTask, logComplete, logError, initializeBuilder, logDebug, logInfo, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, copyBuildsFolder,
-    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense, getQuestion, logSuccess,
+    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense, getQuestion, logSuccess, getConfigProp,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
@@ -714,6 +725,7 @@ export default {
     getAppLicense,
     getQuestion,
     logSuccess,
+    getConfigProp,
     IOS,
     ANDROID,
     ANDROID_TV,

@@ -7,7 +7,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
     getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
-    getAppId, copyBuildsFolder,
+    getAppId, copyBuildsFolder, getConfigProp,
 } from '../common';
 import { IOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -61,7 +61,8 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
             .catch(e => reject(e));
         return;
     }
-
+    const scheme = getConfigProp(c, platform, 'scheme');
+    const runScheme = getConfigProp(c, platform, 'runScheme');
     const p = [
         'run-ios',
         '--project-path',
@@ -69,12 +70,12 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
         '--simulator',
         target,
         '--scheme',
-        c.appConfigFile.platforms[platform].scheme,
+        scheme,
         '--configuration',
-        c.appConfigFile.platforms[platform].runScheme,
+        runScheme,
     ];
     logDebug('running', p);
-    if (c.appConfigFile.platforms[platform].runScheme === 'Release') {
+    if (runScheme === 'Release') {
         // iosPackage(buildConfig).then(v => executeAsync('react-native', p));
     } else {
         executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
@@ -99,19 +100,19 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     }
-
+    const scheme = getConfigProp(c, platform, 'scheme');
     const p = [
         '-workspace',
         `${appPath}/${appFolderName}.xcworkspace`,
         '-scheme',
-        c.appConfigFile.platforms[platform].scheme,
+        scheme,
         '-sdk',
         sdk,
         '-configuration',
         'Release',
         'archive',
         '-archivePath',
-        `${exportPath}/${c.appConfigFile.platforms[platform].scheme}.xcarchive`,
+        `${exportPath}/${scheme}.xcarchive`,
     ];
 
     logDebug('running', p);
@@ -139,11 +140,11 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     }
-
+    const scheme = getConfigProp(c, platform, 'scheme');
     const p = [
         '-exportArchive',
         '-archivePath',
-        `${exportPath}/${c.appConfigFile.platforms[platform].scheme}.xcarchive`,
+        `${exportPath}/${scheme}.xcarchive`,
         '-exportOptionsPlist',
         `${appPath}/exportOptions.plist`,
         '-exportPath',

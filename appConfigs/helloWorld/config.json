@@ -20,33 +20,70 @@
   "platforms":{
     "ios": {
       "entryFile": "index.ios",
-      "scheme": "RNVApp",
-      "runScheme": "Debug",
+      "teamID": "PRNK99PXGZ",
       "permissions": [
         "APPLE_MUSIC",
         "BLUETOOTH",
         "CALENDAR",
         "CAMERA"
-      ]
+      ],
+      "buildSchemes": {
+        "debug": {
+          "id": "reactnativevanilla.helloworld.debug",
+          "scheme": "RNVApp",
+          "runScheme": "Debug"
+        },
+        "release": {
+          "scheme": "RNVAppRelease",
+          "runScheme": "Release"
+        }
+      }
     },
     "tvos": {
       "entryFile": "index.tvos",
-      "scheme": "RNVAppTVOS",
-      "runScheme": "Debug"
+      "teamID": "PRNK99PXGZ",
+      "runScheme": "Debug",
+      "buildSchemes": {
+        "debug": {
+          "id": "reactnativevanilla.helloworld.debug",
+          "scheme": "RNVAppTVOS",
+          "runScheme": "Debug"
+        },
+        "release": {
+          "scheme": "RNVAppTVOSRelease",
+          "runScheme": "Release"
+        }
+      }
     },
     "android": {
       "entryFile": "index.android",
       "permissions": [
         "INTERNET",
         "SYSTEM_ALERT_WINDOW"
-      ]
+      ],
+      "buildSchemes": {
+        "debug": {
+          "id": "reactnativevanilla.helloworld.debug"
+        },
+        "release": {
+
+        }
+      }
     },
     "androidtv": {
       "entryFile": "index.androidtv",
       "permissions": [
         "INTERNET",
         "SYSTEM_ALERT_WINDOW"
-      ]
+      ],
+      "buildSchemes": {
+        "debug": {
+          "id": "reactnativevanilla.helloworld.debug"
+        },
+        "release": {
+
+        }
+      }
     },
     "androidwear": {
       "entryFile": "index.androidwear",
@@ -54,7 +91,15 @@
         "WAKE_LOCK",
         "INTERNET",
         "SYSTEM_ALERT_WINDOW"
-      ]
+      ],
+      "buildSchemes": {
+        "debug": {
+          "id": "reactnativevanilla.helloworld.debug"
+        },
+        "release": {
+
+        }
+      }
     },
     "macos": {
       "entryFile": "index.macos"
