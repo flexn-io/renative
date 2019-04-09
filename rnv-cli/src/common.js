@@ -84,6 +84,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.rnvRootFolder = path.join(__dirname, '../..');
     c.rnvHomeFolder = path.join(__dirname, '..');
     c.rnvPlatformTemplatesFolder = path.join(c.rnvHomeFolder, 'platformTemplates');
+    c.rnvPluginTemplatesFolder = path.join(c.rnvHomeFolder, 'pluginTemplates');
+    c.rnvPluginTemplatesConfigPath = path.join(c.rnvPluginTemplatesFolder, 'plugins.json');
     c.rnvPackagePath = path.join(c.rnvRootFolder, 'package.json');
     c.rnvPluginsFolder = path.join(c.rnvHomeFolder, 'plugins');
     c.rnvPackage = JSON.parse(fs.readFileSync(c.rnvPackagePath).toString());

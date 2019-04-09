@@ -6,6 +6,7 @@
   <img src="https://img.shields.io/badge/Platforms_Supported-12-blue.svg" />
   <img src="https://img.shields.io/badge/React_Native-0.58.5-blue.svg" />
   <img src="https://img.shields.io/badge/React-16.8.3-blue.svg" />
+  <img src="https://img.shields.io/badge/Plugins-43-red.svg" />
   </p>
 </p>
 
@@ -307,6 +308,20 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 ```bash
 rnv app configure -c helloWorld -u
 ```
+
+#### Plugins
+
+RNV Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
+
+`rnv plugin list`
+
+to add new plugin to your project:
+
+`rnv plugin add`
+
+and follow the command prompt steps
+
+
 
 #### Custom Plugin Support
 

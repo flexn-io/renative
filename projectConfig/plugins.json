@@ -1,6 +1,6 @@
 {
   "plugins": {
-    "react-native-gesture-handler" : {
+    "react-native-gesture-handler": {
       "version": "github:kmagiera/react-native-gesture-handler",
       "ios": {
         "podName": "RNGestureHandler",
@@ -9,6 +9,31 @@
       "android": {
         "path": "node_modules/react-native-gesture-handler/android",
         "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+      }
+    },
+    "react-native-call-log": {
+      "version": "git+https://github.com/wscodelabs/react-native-call-log.git",
+      "android": {
+        "package": "com.wscodelabs.callLogs.CallLogPackage"
+      }
+    },
+    "react-native-reanimated": {
+      "version": "1.0.0-alpha.12",
+      "ios": {
+        "podName": "RNReanimated"
+      },
+      "android": {
+        "package": "com.swmansion.reanimated.ReanimatedPackage"
+      }
+    },
+    "lottie-react-native": {
+      "version": "2.5.11",
+      "ios": {
+        "podName": "lottie-react-native"
+      },
+      "android": {
+        "package": "com.airbnb.android.react.lottie.LottiePackage",
+        "path": "node_modules/lottie-react-native/src/android"
       }
     }
   }
