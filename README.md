@@ -1029,7 +1029,7 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ## Sponsors
 
-<a href="https://www.24i.com"><img src="https://github.com/pavjacko/react-native-vanilla/blob/release/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
+<a href="https://www.24i.com"><img src="https://github.com/pavjacko/react-native-vanilla/blob/release/0.18/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/react-native-vanilla#sponsor)]
 
