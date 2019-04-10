@@ -438,11 +438,34 @@ Folder Structure (Generated Project)
 | Swift             |  `4.1`  |
 | Deployment Target | `11.4`  |
 
-#### Run
+#### Run on Simulator
 
 ```
 rnv start
 rnv run -p ios
+```
+
+#### Run on Device
+
+IMPORTANT: before you run RNV app on the actual iOS device you MUST:
+
+1) Have ios device connected on the same network as your dev machine
+2) Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
+3) Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+
+```
+rnv start
+rnv run -p ios -d
+```
+
+#### Deploy on Device
+
+This will run production version on your device (not connected to metro bundler)
+Same prerequisite as above applies here
+
+```
+rnv start
+rnv run -p ios -s release -d
 ```
 
 #### Advanced

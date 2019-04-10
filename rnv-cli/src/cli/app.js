@@ -114,6 +114,8 @@ const _runCreate = c => new Promise((resolve, reject) => {
             data.appTitle = v;
             data.appID = `com.mycompany.${data.projectName}`;
             readline.question(getQuestion(`What\'s your App ID? (${data.appID}) will be used by default`), (v) => {
+                // readline.question(getQuestion(`What\'s your Team ID (iOS)? You can configure it later as well.`), (teamID) => {
+                data.teamID = '';
                 if (v !== null && v !== '') {
                     data.appID = v.replace(/\s+/g, '-').toLowerCase();
                 }
@@ -132,7 +134,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
                 mkdirSync(c.projectRootFolder);
 
-                checkAndCreateProjectPackage(c, data.packageName, data.appTitle, data.appID, data.defaultAppConfigId);
+                checkAndCreateProjectPackage(c, data.packageName, data.appTitle, data.appID, data.defaultAppConfigId, data.teamID);
 
                 checkAndCreateGitignore(c);
 
@@ -141,12 +143,13 @@ const _runCreate = c => new Promise((resolve, reject) => {
                 logSuccess(`Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white('rnv run -p web')} to see magic happen!`);
 
                 resolve();
+            //  });
             });
         });
     });
 });
 
-const checkAndCreateProjectPackage = (c, pkgName, appTitle, appID, defaultAppConfigId) => {
+const checkAndCreateProjectPackage = (c, pkgName, appTitle, appID, defaultAppConfigId, teamID) => {
     logTask(`checkAndCreateProjectPackage:${pkgName}`);
     if (!fs.existsSync(c.projectPackagePath)) {
         logWarning('Looks like your package.json is missing. Let\'s create one for you!');

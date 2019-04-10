@@ -7,7 +7,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
     getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
-    getAppId, copyBuildsFolder, getConfigProp,
+    getAppId, copyBuildsFolder, getConfigProp, getIP,
 } from '../common';
 import { IOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -52,31 +52,62 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
     logTask(`runXcodeProject:${platform}:${target}`);
 
     const appPath = getAppFolder(c, platform);
+    const device = c.program.device;
+    const ip = device ? getIP() : 'localhost';
+    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+
+    // CHECK TEAM ID IF DEVICE
+    const tId = getConfigProp(c, platform, 'teamID');
+    if (device && (!tId || tId === '')) {
+        logError(`Looks like you're missing teamID in your ${chalk.white(c.appConfigPath)} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`);
+        resolve();
+        return;
+    }
 
     if (!fs.existsSync(path.join(appPath, 'Pods'))) {
         logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
-        configureXcodeProject(c, platform)
+        configureXcodeProject(c, platform, ip)
             .then(() => runXcodeProject(c, platform, target))
             .then(() => resolve())
             .catch(e => reject(e));
-        return;
+    } else {
+        _configureAppDelegate(c, platform, appPath, appFolderName, ip);
     }
     const scheme = getConfigProp(c, platform, 'scheme');
     const runScheme = getConfigProp(c, platform, 'runScheme');
-    const p = [
-        'run-ios',
-        '--project-path',
-        appPath,
-        '--simulator',
-        target,
-        '--scheme',
-        scheme,
-        '--configuration',
-        runScheme,
-    ];
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    let p;
+    if (device) {
+        p = [
+            'run-ios',
+            '--project-path',
+            appPath,
+            '--device',
+            'iPhone',
+            '--scheme',
+            scheme,
+            '--configuration',
+            runScheme,
+        ];
+    } else {
+        p = [
+            'run-ios',
+            '--project-path',
+            appPath,
+            '--simulator',
+            target,
+            '--scheme',
+            scheme,
+            '--configuration',
+            runScheme,
+        ];
+    }
+
     logDebug('running', p);
-    if (runScheme === 'Release') {
-        // iosPackage(buildConfig).then(v => executeAsync('react-native', p));
+    if (bundleAssets) {
+        packageBundleForXcode(c, platform)
+            .then(v => executeAsync('react-native', p))
+            .then(() => resolve()).catch(e => reject(e));
     } else {
         executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
     }
@@ -174,7 +205,7 @@ const packageBundleForXcode = (c, platform) => {
         `${getAppFolder(c, platform)}/main.jsbundle`]);
 };
 
-const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => {
+const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
     if (process.platform !== 'darwin') return;
     if (!isPlatformActive(c, platform, resolve)) return;
@@ -184,7 +215,7 @@ const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => 
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
     copyAppleAssets(c, platform, appFolderName)
-        .then(() => configureProject(c, platform, appFolderName))
+        .then(() => configureProject(c, platform, appFolderName, ip, port))
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => resolve())
         .catch((e) => {
@@ -193,7 +224,7 @@ const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => 
                 runPod('update', getAppFolder(c, platform))
                     .then(() => copyAppleAssets(c, platform, appFolderName))
                     .then(() => copyBuildsFolder(c, platform))
-                    .then(() => configureProject(c, platform, appFolderName))
+                    .then(() => configureProject(c, platform, appFolderName, ip, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
@@ -202,8 +233,20 @@ const configureXcodeProject = (c, platform) => new Promise((resolve, reject) => 
         });
 });
 
-const configureProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
-    logTask(`configureProject:${platform}`);
+const _configureAppDelegate = (c, platform, appFolder, appFolderName, ip = 'localhost', port = 8081) => {
+    logTask(`_configureAppDelegate:${platform}:${ip}:${port}`);
+    const appDelegate = 'AppDelegate.swift';
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
+        path.join(appFolder, appFolderName, appDelegate),
+        [
+            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+            { pattern: '{{IP}}', override: ip },
+            { pattern: '{{PORT}}', override: port },
+        ]);
+};
+
+const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+    logTask(`configureProject:${platform}:${appFolderName}:${ip}:${port}`);
 
     const appFolder = getAppFolder(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
@@ -221,14 +264,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
-
-
-    const appDelegate = 'AppDelegate.swift';
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
-        path.join(appFolder, appFolderName, appDelegate),
-        [
-            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-        ]);
+    _configureAppDelegate(c, platform, appFolder, appFolderName, ip, port);
 
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
@@ -286,7 +322,6 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse((err) => {
         const appId = getAppId(c, platform);
-
         if (c.appConfigFile.platforms[platform].teamID) {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', c.appConfigFile.platforms[platform].teamID);
         } else {

@@ -1,7 +1,7 @@
 {
   "id": "helloWorld",
   "common": {
-    "id": "reactnativevanilla.helloworld",
+    "id": "reactnativevanilla.helloworld.release",
     "title": "RNV Hello",
     "description": "Cross-platform application project based on React Native Vanilla",
     "author": {
@@ -20,6 +20,7 @@
   "platforms":{
     "ios": {
       "entryFile": "index.ios",
+      "scheme": "RNVApp",
       "teamID": "PRNK99PXGZ",
       "permissions": [
         "APPLE_MUSIC",
@@ -30,12 +31,11 @@
       "buildSchemes": {
         "debug": {
           "id": "reactnativevanilla.helloworld.debug",
-          "scheme": "RNVApp",
           "runScheme": "Debug"
         },
         "release": {
-          "scheme": "RNVAppRelease",
-          "runScheme": "Release"
+          "runScheme": "Release",
+          "bundleAssets": true
         }
       }
     },

@@ -18,7 +18,7 @@ program
     .option('-p, --platform <value>', 'Select specific platform') // <ios|android|web|...>
     .option('-c, --appConfigID <value>', 'Select specific appConfigID') // <ios|android|web|...>
     .option('-t, --target <value>', 'Select specific simulator') // <.....>
-    .option('-d, --device', 'Select connected device')
+    .option('-d, --device [value]', 'Select connected device')
     .option('-s, --scheme <value>', 'Select build scheme') // <Debug | Release>
     .option('-e, --env', 'Select environment') // <alpha|beta|prod>
     .option('-l, --list', 'Return list of items related to command') // <alpha|beta|prod>

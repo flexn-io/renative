@@ -164,7 +164,6 @@ const logAppInfo = c => new Promise((resolve, reject) => {
 const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject');
 
-
     // Parse Project Config
     checkAndCreateProjectPackage(c, 'rn-vanilla', 'RN Vanilla');
     c.projectPackage = JSON.parse(fs.readFileSync(c.projectPackagePath).toString());
@@ -217,6 +216,8 @@ const configureProject = c => new Promise((resolve, reject) => {
             appConfig.common.title = c.projectPackage.title;
             appConfig.common.id = c.projectPackage.defaultAppId;
             appConfig.id = c.defaultAppConfigId;
+            appConfig.platforms.ios.teamID = '';
+            appConfig.platforms.tvos.teamID = '';
 
             fs.writeFileSync(c.appConfigPath, JSON.stringify(appConfig, null, 2));
         } catch (e) {
@@ -417,7 +418,12 @@ const configureApp = c => new Promise((resolve, reject) => {
 
                 const newCommand = Object.assign({}, c);
                 newCommand.subCommand = 'configure';
-                newCommand.program = { appConfig: c.defaultAppConfigId, update: true, platform: c.program.platform };
+                newCommand.program = {
+                    appConfig: c.defaultAppConfigId,
+                    update: true,
+                    platform: c.program.platform,
+                    scheme: c.program.scheme,
+                };
                 appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
             }).catch(e => reject(e));
         } else {
@@ -636,7 +642,12 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
 
     const newCommand = Object.assign({}, c);
     newCommand.subCommand = 'configure';
-    newCommand.program = { appConfig: c.id, update: false, platform };
+    newCommand.program = {
+        appConfig: c.id,
+        update: false,
+        platform,
+        scheme: c.program.scheme,
+    };
 
     if (c.program.reset) {
         cleanPlaformBuild(c, platform)
@@ -684,13 +695,19 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
+const getIP = () => {
+    const ip = require('ip');
+    return ip.address();
+};
+
 
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, getAppTemplateFolder,
     logTask, logComplete, logError, initializeBuilder, logDebug, logInfo, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, copyBuildsFolder,
-    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense, getQuestion, logSuccess, getConfigProp,
+    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,
+    getQuestion, logSuccess, getConfigProp, getIP,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
@@ -728,6 +745,7 @@ export default {
     getQuestion,
     logSuccess,
     getConfigProp,
+    getIP,
     IOS,
     ANDROID,
     ANDROID_TV,
