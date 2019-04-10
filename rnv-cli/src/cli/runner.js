@@ -224,6 +224,12 @@ const _build = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case WEB:
+        configureIfRequired(c, platform)
+            .then(() => buildWeb(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
     logErrorPlatform(platform, resolve);

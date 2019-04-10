@@ -653,6 +653,14 @@ rnv run -p web
 
 open browser URL: http://0.0.0.0:8080/
 
+#### Run
+
+```
+rnv build -p web
+```
+
+your deployable web app folder will be located in `./platformBuilds/<APP_ID>_web/public`
+
 #### Advanced
 
 Run with verbose logging:

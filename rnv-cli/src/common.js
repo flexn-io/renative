@@ -616,7 +616,7 @@ const getAppVersionCode = (c, platform) => {
 };
 
 const logErrorPlatform = (platform, resolve) => {
-    console.log(`ERROR: Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
+    logError(`Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
     resolve();
 };
 
