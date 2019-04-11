@@ -203,14 +203,12 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     // Check appConfigs
     logTask('configureProject:check appConfigs');
-    c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+    _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
     if (!fs.existsSync(c.appConfigsFolder)) {
         logWarning(`Looks like your appConfig folder ${chalk.white(c.appConfigsFolder)} is missing! Let's create sample config for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', SAMPLE_APP_ID), c.appConfigFolder);
         // Update App Title to match package.json
         try {
-            c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
-
             const appConfig = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
 
             appConfig.common.title = c.projectPackage.title;
@@ -237,6 +235,8 @@ const configureProject = c => new Promise((resolve, reject) => {
                 logInfo(`Found custom appConfing location pointing to ${chalk.white(c.projectConfigLocal.appConfigsPath)}. RNV will now swith to that location!`);
                 c.appConfigsFolder = c.projectConfigLocal.appConfigsPath;
             }
+        } else {
+            logWarning(`Your local config file ${chalk.white(c.projectConfigLocal.appConfigsPath)} is missing appConfigsPath field!`);
         }
     }
 
@@ -497,10 +497,12 @@ const logEnd = () => {
     _currentProcess.exit();
 };
 
+const IGNORE_FOLDERS = ['.git'];
+
 const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
-    c.appConfigFolder = path.join(c.appConfigsFolder, appConfigId);
+    _setAppConfig(c, path.join(c.appConfigsFolder, appConfigId));
     c.appId = appConfigId;
 
     if (!fs.existsSync(c.appConfigFolder)) {
@@ -511,8 +513,9 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
 
         const configDirs = [];
         fs.readdirSync(c.appConfigsFolder).forEach((dir) => {
-            console.log('DIR', dir);
-            configDirs.push(dir);
+            if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.appConfigsFolder, dir)).isDirectory()) {
+                configDirs.push(dir);
+            }
         });
 
         logWarning(`It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(c.appConfigsFolder)} !`);
@@ -525,7 +528,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             readline.question(getQuestion(`RNV found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
                 if (configDirs[v]) {
                     c.defaultAppConfigId = configDirs[v];
-                    c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+                    _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
                     _configureConfig(c).then(() => resolve()).catch(e => reject(e));
                 } else {
                     reject('Wrong option!');
@@ -534,7 +537,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
         } else {
             readline.question(getQuestion(`Do you want RNV to create new new sample appConfig (${chalk.white(appConfigId)}) for you? (y) to confirm`), (v) => {
                 c.defaultAppConfigId = SAMPLE_APP_ID;
-                c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+                _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
                 copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),
                     path.join(c.appConfigFolder));
                 _configureConfig(c).then(() => resolve()).catch(e => reject(e));
@@ -547,7 +550,6 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
 
 const _configureConfig = c => new Promise((resolve, reject) => {
     logTask(`_configureConfig:${c.appId}`);
-    c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
     c.appConfigFile = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
 
     // EXTEND CONFIG
@@ -560,7 +562,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
                 const mergedAppConfigFile = merge(parentAppConfigFile, c.appConfigFile);
                 c.appConfigFile = mergedAppConfigFile;
-                c.appConfigFolder = parentAppConfigFolder;
+                _setAppConfig(c, parentAppConfigFolder);
             }
         }
         resolve();
@@ -698,6 +700,11 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 const getIP = () => {
     const ip = require('ip');
     return ip.address();
+};
+
+const _setAppConfig = (c, p) => {
+    c.appConfigFolder = p;
+    c.appConfigPath = path.join(p, RNV_APP_CONFIG_NAME);
 };
 
 
