@@ -422,6 +422,14 @@ Folder Structure (Generated Project)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios1.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
@@ -486,6 +494,14 @@ rnv run -p ios -t "iPhone 6 Plus"
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android1.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
@@ -545,6 +561,15 @@ rnv target launch -p android -t Nexus_5X_API_26
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
@@ -585,6 +610,14 @@ rnv run -p tvos -t "Apple TV 4K"
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest Android project
 -   Kotlin Support
@@ -630,6 +663,14 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Supports Chrome, Safari, Firefox, IE10+
 
@@ -684,6 +725,14 @@ rnv run -p web --port 9999
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
@@ -744,6 +793,14 @@ rnv run -p tizen -t T-samsung-5.0-x86
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
+<table>
+  <tr>
+    <th>
+      <img width=200 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizenwatch.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest Tizen project
 -   Support for Tizen 5.0
 
@@ -803,6 +860,14 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
+<table>
+  <tr>
+    <th>
+      <img width=600 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest LG webOS Project
 
 #### Requirements
@@ -832,13 +897,6 @@ usually located in something like:
 <USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
 ```
 
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/webos1.png?raw=true" />
-    </th>
-  </tr>
-</table>
 
 #### Run
 
@@ -855,6 +913,14 @@ rnv run -p webos
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   support for OSX/macOS
 -   Based on Electron
@@ -888,6 +954,14 @@ rnv run -p macos
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   support for Windows 10+
 -   Based on Electron
 
@@ -918,6 +992,14 @@ rnv run -p windows
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest Android project
 -   Kotlin Support
@@ -967,6 +1049,14 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 
 #### Requirements
