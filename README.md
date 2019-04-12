@@ -309,6 +309,34 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 rnv app configure -c helloWorld -u
 ```
 
+#### Build Flavors
+
+You can configure different app ID, Title etc. with buildScheme field in you appConfig file.
+
+Example:
+
+```
+"buildSchemes": {
+  "debug": {
+    "id": "reactnativevanilla.helloworld.debug",
+    "runScheme": "Debug"
+  },
+  "release": {
+    "id": "reactnativevanilla.helloworld.release",
+    "runScheme": "Release",
+    "bundleAssets": true
+  }
+}
+```
+
+this will allow you to build 2 separate iOS apps with slightly different configurations:
+
+`rnv run -ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
+
+and
+
+`rnv run -ios -s release`
+
 #### Plugins
 
 RNV Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:

@@ -579,7 +579,7 @@ const getAppConfigId = (c, platform) => c.appConfigFile.id;
 
 const getConfigProp = (c, platform, key) => {
     const p = c.appConfigFile.platforms[platform];
-    const ps = c.program.scheme || 'debug';
+    const ps = _getScheme(c);
     let scheme;
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
@@ -692,10 +692,18 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 
     // FOLDER MERGERS
     const destPath = path.join(getAppFolder(c, platform));
-    const sourcePath = path.join(c.appConfigFolder, `builds/${platform}`);
+    const sourcePath = _getBuildsFolder(c, platform);
     copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
 });
+
+const _getScheme = c => c.program.scheme || 'debug';
+
+const _getBuildsFolder = (c, platform) => {
+    const p = path.join(c.appConfigFolder, `builds/${platform}@${_getScheme(c)}`);
+    if (fs.existsSync(p)) return p;
+    return path.join(c.appConfigFolder, `builds/${platform}`);
+};
 
 const getIP = () => {
     const ip = require('ip');
