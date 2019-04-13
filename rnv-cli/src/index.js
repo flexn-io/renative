@@ -23,6 +23,7 @@ const commands = {
     package: Runner,
     target: Target,
     plugin: Plugin,
+    log: Runner,
 };
 
 const run = (cmd, subCmd, program, process) => {

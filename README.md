@@ -557,6 +557,11 @@ Get list of all available devices
 rnv target list -p ios
 ```
 
+Get device/simulator logs
+```
+rnv log -p ios
+```
+
 ---
 
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />

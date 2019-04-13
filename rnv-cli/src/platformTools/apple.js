@@ -498,8 +498,31 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
     return devices;
 };
 
+const runAppleLog = (c, platform) => new Promise((resolve, reject) => {
+    const child = require('child_process').execFile('xcrun', [
+        'simctl',
+        'spawn',
+        'booted',
+        'log',
+        'stream',
+        '--predicate',
+        'eventMessage contains \"RNV\"',
+    ], { stdio: 'inherit', customFds: [0, 1, 2] });
+    // use event hooks to provide a callback to execute when data are available:
+    child.stdout.on('data', (data) => {
+        const d = data.toString();
+        if (d.toLowerCase().includes('error')) {
+            console.log(chalk.red(d));
+        } else if (d.toLowerCase().includes('success')) {
+            console.log(chalk.green(d));
+        } else {
+            console.log(d);
+        }
+    });
+});
+
 export {
     runPod, copyAppleAssets, configureXcodeProject, runXcodeProject,
     exportXcodeProject, archiveXcodeProject, packageBundleForXcode,
-    listAppleDevices, launchAppleSimulator,
+    listAppleDevices, launchAppleSimulator, runAppleLog,
 };

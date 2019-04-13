@@ -11,7 +11,7 @@ import {
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../constants';
 import { executeAsync, execCLI } from '../exec';
-import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode, launchAppleSimulator } from '../platformTools/apple';
+import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode, launchAppleSimulator, runAppleLog } from '../platformTools/apple';
 import { buildWeb, runWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
@@ -22,6 +22,7 @@ import appRunner, { copyRuntimeAssets } from './app';
 
 
 const RUN = 'run';
+const LOG = 'log';
 const START = 'start';
 const PACKAGE = 'package';
 const BUILD = 'build';
@@ -55,6 +56,9 @@ const run = (c) => {
         break;
     case BUILD:
         return _build(c);
+        break;
+    case LOG:
+        return _log(c);
         break;
     // case DEPLOY:
     //     return Promise.resolve();
@@ -227,6 +231,23 @@ const _build = c => new Promise((resolve, reject) => {
     case WEB:
         configureIfRequired(c, platform)
             .then(() => buildWeb(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    logErrorPlatform(platform, resolve);
+});
+
+const _log = c => new Promise((resolve, reject) => {
+    logTask('_log');
+    const { platform } = c;
+    if (!isPlatformSupported(platform, null, reject)) return;
+
+    switch (platform) {
+    case IOS:
+    case TVOS:
+        runAppleLog(c, platform)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
