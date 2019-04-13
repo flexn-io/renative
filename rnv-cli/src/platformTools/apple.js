@@ -76,6 +76,7 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
     const scheme = getConfigProp(c, platform, 'scheme');
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     let p;
     if (device) {
         p = [
@@ -104,8 +105,9 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
     }
 
     logDebug('running', p);
+    console.log('BUNDLE_ASSETS', bundleAssets);
     if (bundleAssets) {
-        packageBundleForXcode(c, platform)
+        packageBundleForXcode(c, platform, bundleIsDev)
             .then(v => executeAsync('react-native', p))
             .then(() => resolve()).catch(e => reject(e));
     } else {
@@ -132,6 +134,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         return;
     }
     const scheme = getConfigProp(c, platform, 'scheme');
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const p = [
         '-workspace',
         `${appPath}/${appFolderName}.xcworkspace`,
@@ -149,7 +152,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logDebug('running', p);
 
     if (c.appConfigFile.platforms[platform].runScheme === 'Release') {
-        packageBundleForXcode(c, platform)
+        packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync('xcodebuild', p))
             .then(() => resolve()).catch(e => reject(e));
     } else {
@@ -186,7 +189,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     executeAsync('xcodebuild', p).then(() => resolve()).catch(e => reject(e));
 });
 
-const packageBundleForXcode = (c, platform) => {
+const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
     const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
     const appPath = path.join(getAppFolder(c, platform), appFolderName);
@@ -196,7 +199,7 @@ const packageBundleForXcode = (c, platform) => {
         '--platform',
         'ios',
         '--dev',
-        'false',
+        isDev,
         '--assets-dest',
         `platformBuilds/${c.appId}_${platform}`,
         '--entry-file',
@@ -366,13 +369,13 @@ const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8
                 { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
             ]);
 
-        // if (c.appConfigFile.platforms[platform].teamID) {
-        //     writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
-        //         path.join(appFolder, 'exportOptions.plist'),
-        //         [
-        //             { pattern: '{{TEAM_ID}}', override: c.appConfigFile.platforms[platform].teamID },
-        //         ]);
-        // }
+
+        writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
+            path.join(appFolder, 'exportOptions.plist'),
+            [
+                { pattern: '{{TEAM_ID}}', override: c.appConfigFile.platforms[platform].teamID },
+            ]);
+
 
         resolve();
     });
