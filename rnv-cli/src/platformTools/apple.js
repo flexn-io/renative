@@ -7,10 +7,12 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
     getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
-    getAppId, copyBuildsFolder, getConfigProp, getIP,
+    getAppId, copyBuildsFolder, getConfigProp, getIP, getQuestion,
 } from '../common';
-import { IOS } from '../constants';
+import { IOS, TVOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+
+const child_process = require('child_process');
 
 const xcode = require('xcode');
 
@@ -51,10 +53,23 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve, re
 const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runXcodeProject:${platform}:${target}`);
 
+    if (target === '?') {
+        launchAppleSimulator(c, platform, target)
+            .then((newTarget) => {
+                _runXcodeProject(c, platform, newTarget).then(() => resolve()).catch(e => reject(e));
+            });
+    } else {
+        _runXcodeProject(c, platform, target).then(() => resolve()).catch(e => reject(e));
+    }
+});
+
+const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) => {
+    logTask(`_runXcodeProject:${platform}:${target}`);
+
     const appPath = getAppFolder(c, platform);
     const device = c.program.device;
     const ip = device ? getIP() : 'localhost';
-    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+    const appFolderName = _getAppFolderName(platform);
 
     // CHECK TEAM ID IF DEVICE
     const tId = getConfigProp(c, platform, 'teamID');
@@ -117,7 +132,7 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
 const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`archiveXcodeProject:${platform}`);
 
-    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+    const appFolderName = _getAppFolderName(platform);
     const sdk = platform === IOS ? 'iphoneos' : 'tvos';
 
     const appPath = getAppFolder(c, platform);
@@ -190,7 +205,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
-    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+    const appFolderName = _getAppFolderName(platform);
     const appPath = path.join(getAppFolder(c, platform), appFolderName);
 
     return executeAsync('react-native', [
@@ -212,7 +227,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     if (process.platform !== 'darwin') return;
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolderName = platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+    const appFolderName = _getAppFolderName(platform);
 
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
@@ -380,4 +395,111 @@ const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8
     });
 });
 
-export { runPod, copyAppleAssets, configureXcodeProject, runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode };
+const _getAppFolderName = platform => (platform === IOS ? 'RNVApp' : 'RNVAppTVOS');
+
+const listAppleDevices = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`listAppleDevices:${platform}`);
+
+    const devicesArr = _getAppleDevices(c, platform);
+    let devicesString = '\n';
+    devicesArr.forEach((v, i) => {
+        devicesString += `-[${(i + 1)}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
+    });
+    console.log(devicesString);
+});
+
+const launchAppleSimulator = (c, platform, target) => new Promise((resolve, reject) => {
+    logTask(`launchAppleSimulator:${platform}:${target}`);
+
+    const devicesArr = _getAppleDevices(c, platform, true);
+    let selectedDevice;
+    for (let i = 0; i < devicesArr.length; i++) {
+        if (devicesArr[i].name === target) {
+            selectedDevice = devicesArr[i];
+        }
+    }
+    if (selectedDevice) {
+        _launchSimulator(selectedDevice);
+        resolve(selectedDevice.name);
+    } else {
+        logWarning(`Your specified simulator target ${chalk.white(target)} doesn't exists`);
+        const readline = require('readline').createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        });
+        let devicesString = '\n';
+        devicesArr.forEach((v, i) => {
+            devicesString += `-[${(i + 1)}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
+        });
+        readline.question(getQuestion(`${devicesString}\nType number of the simulator you want to launch`), (v) => {
+            const selectedDevice = devicesArr[(parseInt(v, 10) - 1)];
+            if (selectedDevice) {
+                _launchSimulator(selectedDevice);
+                resolve(selectedDevice.name);
+            } else {
+                logError(`Wrong choice ${v}! Ingoring`);
+            }
+        });
+    }
+});
+
+const _launchSimulator = (selectedDevice) => {
+    try {
+        child_process.spawnSync('xcrun', [
+            'instruments',
+            '-w',
+            selectedDevice.udid,
+        ]);
+    } catch (e) {
+        // instruments always fail with 255 because it expects more arguments,
+        // but we want it to only launch the simulator
+    }
+};
+
+const _getAppleDevices = (c, platform, ignoreDevices) => {
+    const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
+        encoding: 'utf8',
+    });
+
+    const devicesArr = _parseIOSDevicesList(devices, platform, ignoreDevices);
+    return devicesArr;
+};
+
+const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
+    const devices = [];
+    text.split('\n').forEach((line) => {
+        const device = line.match(/(.*?) \((.*?)\) \[(.*?)\]/);
+        const sim = line.match(/(.*?) \((.*?)\) \[(.*?)\] \((.*?)\)/);
+        if (device != null) {
+            const name = device[1];
+            const version = device[2];
+            const udid = device[3];
+            const isDevice = sim === null;
+            if (!isDevice || (isDevice && !ignoreDevices)) {
+                switch (platform) {
+                case IOS:
+                    if (name.startsWith('iPhone') || name.startsWith('iPad')) {
+                        devices.push({ udid, name, version, isDevice });
+                    }
+                    break;
+                case TVOS:
+                    if (name.startsWith('Apple TV')) {
+                        devices.push({ udid, name, version, isDevice });
+                    }
+                    break;
+                default:
+                    devices.push({ udid, name, version, isDevice });
+                    break;
+                }
+            }
+        }
+    });
+
+    return devices;
+};
+
+export {
+    runPod, copyAppleAssets, configureXcodeProject, runXcodeProject,
+    exportXcodeProject, archiveXcodeProject, packageBundleForXcode,
+    listAppleDevices, launchAppleSimulator,
+};

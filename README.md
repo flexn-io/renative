@@ -530,10 +530,31 @@ rnv run -p ios -s release -d
 
 #### Advanced
 
-Launch with specific iOS simulator
+Launch app with specific iOS simulator
 
 ```
 rnv run -p ios -t "iPhone 6 Plus"
+```
+
+Launch app with specific iOS simulator (let RNV to give you options):
+
+```
+rnv run -p ios -t ?
+```
+
+Launch specific emulator :
+```
+rnv target launch -p ios -t "iPhone 8"
+```
+
+Launch specific emulator (let RNV to give you options):
+```
+rnv target launch -p ios -t ?
+```
+
+Get list of all available devices
+```
+rnv target list -p ios
 ```
 
 ---

@@ -60,7 +60,7 @@ const executeAsync = (
         } else {
             ended = true;
 
-            logDebug('Execute Comman:', command);
+            logDebug('Execute Command:', command);
             resolve(stdout);
         }
     });

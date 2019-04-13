@@ -11,7 +11,7 @@ import {
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../constants';
 import { executeAsync, execCLI } from '../exec';
-import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode } from '../platformTools/apple';
+import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode, launchAppleSimulator } from '../platformTools/apple';
 import { buildWeb, runWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
