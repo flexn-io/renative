@@ -62,7 +62,7 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        launchAndroidSimulator(c, target)
+        launchAndroidSimulator(c, platform, target)
             .then(() => resolve())
             .catch(e => reject(e));
         return;

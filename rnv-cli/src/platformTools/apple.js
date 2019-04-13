@@ -7,7 +7,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError, logWarning,
     getAppFolder, isPlatformActive, logDebug, configureIfRequired,
     getAppVersion, getAppTitle, getEntryFile, writeCleanFile, getAppTemplateFolder,
-    getAppId, copyBuildsFolder, getConfigProp, getIP, getQuestion,
+    getAppId, copyBuildsFolder, getConfigProp, getIP, getQuestion, logSuccess,
 } from '../common';
 import { IOS, TVOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
@@ -200,7 +200,10 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     ];
     logDebug('running', p);
 
-    executeAsync('xcodebuild', p).then(() => resolve()).catch(e => reject(e));
+    executeAsync('xcodebuild', p).then(() => {
+        logSuccess(`Your IPA is located in ${chalk.white(exportPath)}.`);
+        resolve();
+    }).catch(e => reject(e));
 });
 
 const packageBundleForXcode = (c, platform, isDev = false) => {

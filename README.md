@@ -536,7 +536,7 @@ Launch app with specific iOS simulator
 rnv run -p ios -t "iPhone 6 Plus"
 ```
 
-Launch app with specific iOS simulator (let RNV to give you options):
+Launch app with specific iOS simulator (let RNV to give you the list of available options):
 
 ```
 rnv run -p ios -t ?
@@ -547,7 +547,7 @@ Launch specific emulator :
 rnv target launch -p ios -t "iPhone 8"
 ```
 
-Launch specific emulator (let RNV to give you options):
+Launch specific emulator (let RNV to give you the list of available options):
 ```
 rnv target launch -p ios -t ?
 ```
@@ -641,9 +641,35 @@ rnv run -p android -s release -d
 
 #### Advanced
 
-Launch specific emulator:
+Launch specific android emulator:
 ```
 rnv target launch -p android -t Nexus_5X_API_26
+```
+
+Launch app with specific iOS simulator (let RNV to give you the list of available options):
+
+```
+rnv run -p android -t ?
+```
+
+Launch specific emulator :
+```
+rnv target launch -p android -t Nexus_5X_API_26
+```
+
+Launch specific emulator (let RNV to give you the list of available options):
+```
+rnv target launch -p android -t ?
+```
+
+Get list of all available devices
+```
+rnv target list -p android
+```
+
+Get device/simulator logs
+```
+rnv log -p android
 ```
 
 ---

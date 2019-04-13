@@ -61,6 +61,7 @@
     },
     "android": {
       "entryFile": "index.android",
+      "keystoreConfig": "~/.rnv/helloWorld/config.json",
       "permissions": [
         "INTERNET",
         "SYSTEM_ALERT_WINDOW"
