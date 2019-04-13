@@ -309,7 +309,7 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 rnv app configure -c helloWorld -u
 ```
 
-#### Build Flavors
+#### Build Flavours
 
 You can configure different app ID, Title etc. with buildScheme field in you appConfig file.
 
@@ -319,12 +319,15 @@ Example:
 "buildSchemes": {
   "debug": {
     "id": "reactnativevanilla.helloworld.debug",
-    "runScheme": "Debug"
+    "runScheme": "Debug",
+    "bundleAssets": false,
+    "bundleIsDev": true
   },
   "release": {
     "id": "reactnativevanilla.helloworld.release",
     "runScheme": "Release",
-    "bundleAssets": true
+    "bundleAssets": true,
+    "bundleIsDev": false
   }
 }
 ```
@@ -336,6 +339,24 @@ this will allow you to build 2 separate iOS apps with slightly different configu
 and
 
 `rnv run -ios -s release`
+
+#### Build Flavour Injectors
+
+Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
+
+you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
+
+
+.
+├── appConfigs                 
+    └── helloWorld              
+        ├── assets              
+        └── builds     
+            ├── android@release
+            │   └── fileToBeInjectedInReleaseMode.txt                     
+            └── android@debug
+                └── fileToBeInjectedInDebugMode.txt
+
 
 #### Plugins
 
@@ -429,7 +450,8 @@ Folder Structure (Generated Project)
     .
     ├── appConfigs                  # Application flavour configuration files/assets
     │   └── helloWorld              # Example application flavour
-    │       ├── assets              # Cross platform assets
+    │       ├── assets              # Platform assets injected to `./platformAssets`
+    │       ├── builds              # Platform files injected to `./platformBuilds`
     │       └── config.json         # Application flavour config
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
@@ -488,6 +510,8 @@ IMPORTANT: before you run RNV app on the actual iOS device you MUST:
 1) Have ios device connected on the same network as your dev machine
 2) Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
 3) Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
 
 ```
 rnv start
@@ -563,13 +587,30 @@ You can create variety of emulators via Android Studio IDE
 </table>
 
 
-#### Run
+#### Run on Simulator
 
 NOTE: make sure you have 1 android device connected or 1 emulator running
 
 ```
 rnv start
 rnv run -p android
+```
+
+#### Run on Device
+
+```
+rnv start
+rnv run -p android -d
+```
+
+#### Deploy on Device
+
+This will run production version on your device (not connected to metro bundler)
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+
+```
+rnv start
+rnv run -p android -s release -d
 ```
 
 #### Advanced
