@@ -31,27 +31,31 @@
       "buildSchemes": {
         "debug": {
           "id": "reactnativevanilla.helloworld.debug",
-          "runScheme": "Debug"
+          "runScheme": "Debug",
+          "bundleAssets": false
         },
         "release": {
           "runScheme": "Release",
-          "bundleAssets": true
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
     "tvos": {
       "entryFile": "index.tvos",
       "teamID": "PRNK99PXGZ",
-      "runScheme": "Debug",
+      "scheme": "RNVAppTVOS",
       "buildSchemes": {
         "debug": {
           "id": "reactnativevanilla.helloworld.debug",
-          "scheme": "RNVAppTVOS",
-          "runScheme": "Debug"
+          "runScheme": "Debug",
+          "bundleAssets": false
         },
         "release": {
           "scheme": "RNVAppTVOSRelease",
-          "runScheme": "Release"
+          "runScheme": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
@@ -63,10 +67,14 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug"
+          "id": "reactnativevanilla.helloworld.debug",
+          "signingConfig": "Debug",
+          "bundleAssets": false
         },
         "release": {
-
+          "signingConfig": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
@@ -78,10 +86,14 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug"
+          "id": "reactnativevanilla.helloworld.debug",
+          "signingConfig": "Debug",
+          "bundleAssets": false
         },
         "release": {
-
+          "signingConfig": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
@@ -94,10 +106,14 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug"
+          "id": "reactnativevanilla.helloworld.debug",
+          "signingConfig": "Debug",
+          "bundleAssets": false
         },
         "release": {
-
+          "signingConfig": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },

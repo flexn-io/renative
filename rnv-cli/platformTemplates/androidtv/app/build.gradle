@@ -36,10 +36,6 @@ android {
     }
 }
 
-task appStart(type: Exec, dependsOn: 'installDebug') {
-    commandLine 'adb', 'shell', 'am', 'start', '-n', '{{APPLICATION_ID}}/.MainActivity'
-}
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

@@ -105,7 +105,6 @@ const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) =
     }
 
     logDebug('running', p);
-    console.log('BUNDLE_ASSETS', bundleAssets);
     if (bundleAssets) {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(v => executeAsync('react-native', p))

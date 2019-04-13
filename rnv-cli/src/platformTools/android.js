@@ -11,7 +11,7 @@ import {
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
-    getEntryFile, logWarning, logDebug,
+    getEntryFile, logWarning, logDebug, getConfigProp,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
@@ -89,13 +89,29 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runAndroid:${platform}:${target}`);
 
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
 
+    if (bundleAssets) {
+        packageAndroid(c, platform, bundleIsDev)
+            .then(v => _runGradle(c, platform))
+            .then(() => resolve()).catch(e => reject(e));
+    } else {
+        _runGradle(c, platform).then(() => resolve()).catch(e => reject(e));
+    }
+});
+
+const _runGradle = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
-
     shell.cd(`${appFolder}`);
-    shell.exec('./gradlew appStart', resolve, (e) => {
-        logError(e);
-    });
+
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+    const bundleId = getConfigProp(c, platform, 'id');
+    const g = `install${signingConfig}`;
+    executeAsync('./gradlew', [g, '-x', 'bundleReleaseJsAndAssets'])
+        .then(() => executeAsync('adb', ['shell', 'am', 'start', '-n', `${bundleId}/.MainActivity`]))
+        .then(() => resolve())
+        .catch(e => reject(e));
 });
 
 const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
