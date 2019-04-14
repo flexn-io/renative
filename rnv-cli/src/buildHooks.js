@@ -58,7 +58,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
             return;
         }
         const babel = path.resolve(c.nodeModulesFolder, '.bin/babel');
-        executeAsync(babel, [c.buildHooksFolder, '-d', c.buildHooksDistFolder])
+        executeAsync(babel, ['--no-babelrc', c.buildHooksFolder, '-d', c.buildHooksDistFolder, '--presets=env'])
             .then(() => {
                 const h = require(c.buildHooksDistIndexPath);
                 c.buildHooks = h.hooks;
@@ -66,6 +66,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
                 c.isBuildHooksReady = true;
                 resolve();
             }).catch((e) => {
+                console.log(e);
                 reject(e);
             });
     } else {

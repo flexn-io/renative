@@ -432,7 +432,7 @@ your projects will be build using `./node_modules/react-native-vanilla/rnv-cli/p
 
 Sometimes you need to extend CLI functionality with custom build scripts. RNV makes this easy for you.
 
-create file: `./buildHooks/index.js` with this script (NOTE: every top-level method must return Promise):
+create file: `./buildHooks/src/index.js` with this script (NOTE: every top-level method must return Promise):
 
 ```js
 import chalk from 'chalk';
@@ -471,7 +471,7 @@ To get list of available hook pipes run:
 
 `rnv hooks pipes`
 
-You can connect your hook method to one of predefined pipes in your `./buildHooks/index.js`:
+You can connect your hook method to one of predefined pipes in your `./buildHooks/src/index.js`:
 
 ```js
 const pipes = {
