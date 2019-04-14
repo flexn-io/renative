@@ -11,10 +11,11 @@ import { launchWebOSimulator } from '../platformTools/webos';
 import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
 import { listAppleDevices, launchAppleSimulator } from '../platformTools/apple';
 import { launchKaiOSSimulator } from '../platformTools/kaios';
-import { buildHooks, listHooks, executeHook } from '../platformTools/node';
+import { buildHooks, listHooks, executeHook, listPipes } from '../buildHooks';
 
 const RUN = 'run';
 const LIST = 'list';
+const PIPES = 'pipes';
 
 
 // ##########################################
@@ -30,6 +31,9 @@ const run = c => new Promise((resolve, reject) => {
         return;
     case LIST:
         listHooks(c).then(() => resolve()).catch(e => reject(e));
+        return;
+    case PIPES:
+        listPipes(c).then(() => resolve()).catch(e => reject(e));
         return;
     default:
         return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);

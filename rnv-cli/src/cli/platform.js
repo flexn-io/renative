@@ -16,6 +16,23 @@ const REMOVE = 'remove';
 const EJECT = 'eject';
 const CONNECT = 'connect';
 
+const PIPES = {
+    PLATFORM_CONFIGURE_BEFORE: 'platform:configure:before',
+    PLATFORM_CONFIGURE_AFTER: 'platform:configure:after',
+    PLATFORM_UPDATE_BEFORE: 'platform:update:before',
+    PLATFORM_UPDATE_AFTER: 'platform:update:after',
+    PLATFORM_LIST_BEFORE: 'platform:list:before',
+    PLATFORM_LIST_AFTER: 'platform:list:after',
+    PLATFORM_ADD_BEFORE: 'platform:add:before',
+    PLATFORM_ADD_AFTER: 'platform:add:after',
+    PLATFORM_REMOVE_BEFORE: 'platform:remove:before',
+    PLATFORM_REMOVE_AFTER: 'platform:remove:after',
+    PLATFORM_EJECT_BEFORE: 'platform:eject:before',
+    PLATFORM_EJECT_AFTER: 'platform:ejecct:after',
+    PLATFORM_CONNECT_BEFORE: 'platform:connect:before',
+    PLATFORM_CONNECT_AFTER: 'platform:connect:after',
+};
+
 // ##########################################
 // PUBLIC API
 // ##########################################
@@ -209,6 +226,6 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { createPlatformBuild, cleanPlaformBuild };
+export { createPlatformBuild, cleanPlaformBuild, PIPES };
 
 export default run;

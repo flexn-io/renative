@@ -18,6 +18,7 @@ import { configureKaiOSProject } from '../platformTools/kaios';
 import { configureWebProject } from '../platformTools/web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import platformRunner from './platform';
+import { executePipe } from '../buildHooks';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';
@@ -25,6 +26,11 @@ const CREATE = 'create';
 const REMOVE = 'remove';
 const LIST = 'list';
 const INFO = 'info';
+
+const PIPES = {
+    APP_CONFIGURE_BEFORE: 'app:configure:before',
+    APP_CONFIGURE_AFTER: 'app:configure:after',
+};
 
 // ##########################################
 // PUBLIC API
@@ -66,8 +72,8 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
     logTask(`_runConfigure:${p}`);
 
-
-    _checkAndCreatePlatforms(c, c.program.platform)
+    executePipe(c, 'app:configure:before')
+        .then(() => _checkAndCreatePlatforms(c, c.program.platform))
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c, c.rnvPluginsFolder))
         .then(() => _runPlugins(c, c.projectPluginsFolder))
@@ -85,6 +91,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => (_isOK(c, p, [KAIOS]) ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
+        .then(() => executePipe(c, 'app:configure:after'))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -268,6 +275,6 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore };
+export { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore, PIPES };
 
 export default run;

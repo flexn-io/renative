@@ -15,6 +15,13 @@ import { launchKaiOSSimulator } from '../platformTools/kaios';
 const LIST = 'list';
 const ADD = 'add';
 
+const PIPES = {
+    PLUGIN_LIST_BEFORE: 'plugin:list:before',
+    PLUGIN_LIST_AFTER: 'plugin:list:after',
+    PLUGIN_ADD_BEFORE: 'plugin:add:before',
+    PLUGIN_ADD_AFTER: 'plugin:add:after',
+};
+
 
 // ##########################################
 // PUBLIC API
@@ -114,5 +121,7 @@ const _runAdd = c => new Promise((resolve, reject) => {
         resolve();
     });
 });
+
+export { PIPES };
 
 export default run;

@@ -437,12 +437,18 @@ create file: `./buildHooks/index.js` with this script (NOTE: every top-level met
 ```js
 import chalk from 'chalk';
 
-export default {
-    hello: config => new Promise((resolve, reject) => {
+const hooks = {
+    hello: c => new Promise((resolve, reject) => {
         console.log(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
         resolve();
     }),
 };
+
+const pipes = {
+    'app:configure:before': hooks.hello,
+};
+
+export { pipes, hooks };
 ```
 
 then simply run:
@@ -456,6 +462,24 @@ RNV will transpile and execute it in real time!
 `index.js` is required entry point but you can create more complex scripts with multiple files/imports.
 
 every top-level method gets invoked with RNV `config` object containing all necessary build information
+
+#### Build Pipes
+
+Sometimes you want to execute specific hook automatically before/after certain RNV build phase.
+
+To get list of available hook pipes run:
+
+`rnv hooks pipes`
+
+You can connect your hook method to one of predefined pipes in your `./buildHooks/index.js`:
+
+```js
+const pipes = {
+    'app:configure:before': hooks.hello,
+};
+```
+
+Example code above will execute `hooks.hello()` before every time you run `rnv app configure` commands
 
 ---
 

@@ -17,6 +17,19 @@ const LAUNCH = 'launch';
 const QUIT = 'quit';
 const LIST = 'list';
 
+const PIPES = {
+    TARGET_CREATE_BEFORE: 'target:create:before',
+    TARGET_CREATE_AFTER: 'target:create:after',
+    TARGET_REMOVE_BEFORE: 'target:remove:before',
+    TARGET_REMOVE_AFTER: 'target:remove:after',
+    TARGET_LAUNCH_BEFORE: 'target:launch:before',
+    TARGET_LAUNCH_AFTER: 'target:launch:after',
+    TARGET_QUIT_BEFORE: 'target:quit:before',
+    TARGET_QUIT_AFTER: 'target:quit:after',
+    TARGET_LIST_BEFORE: 'target:list:before',
+    TARGET_LIST_AFTER: 'target:list:after',
+};
+
 
 // ##########################################
 // PUBLIC API
@@ -117,5 +130,6 @@ const _runList = c => new Promise((resolve, reject) => {
     }
 });
 
+export { PIPES };
 
 export default run;

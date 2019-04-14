@@ -33,6 +33,21 @@ const TEST = 'test';
 const DOC = 'doc';
 const UNINSTALL = 'uninstall';
 
+const PIPES = {
+    RUN_BEFORE: 'run:before',
+    RUN_AFTER: 'run:after',
+    LOG_BEFORE: 'log:before',
+    LOG_AFTER: 'log:after',
+    START_BEFORE: 'start:before',
+    START_AFTER: 'start:after',
+    PACKAGE_BEFORE: 'package:before',
+    PACKAGE_AFTER: 'package:after',
+    BUILD_BEFORE: 'build:before',
+    BUILD_AFTER: 'build:after',
+    DEPLOY_BEFORE: 'deploy:before',
+    DEPLOY_AFTER: 'deploy:after',
+};
+
 
 // ##########################################
 // PUBLIC API
@@ -275,5 +290,7 @@ const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve,
         runAndroid(c, platform, target).then(() => resolve()).catch(e => reject(e));
     }
 });
+
+export { PIPES };
 
 export default run;
