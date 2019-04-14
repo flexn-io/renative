@@ -52,5 +52,7 @@ buck-out/
 platformBuilds/
 platformAssets/
 
+buildHooks/dist
+
 release-configs.gradle
 rnv-config.local.json

@@ -20,12 +20,12 @@ program
     .option('-t, --target <value>', 'Select specific simulator') // <.....>
     .option('-d, --device [value]', 'Select connected device')
     .option('-s, --scheme <value>', 'Select build scheme') // <Debug | Release>
-    .option('-e, --env', 'Select environment') // <alpha|beta|prod>
     .option('-f, --filter <value>', 'Filter Value')
     .option('-l, --list', 'Return list of items related to command') // <alpha|beta|prod>
     .option('-r, --reset', 'Also perform reset')
     .option('-b, --blueprint', 'Blueprint for targets')
     .option('-h, --host <value>', 'Custom Host IP')
+    .option('-x, --exeMethod <value>', 'Executable method in buildHooks')
     .option('-P, --port <value>', 'Custom Port')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {

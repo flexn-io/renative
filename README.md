@@ -428,6 +428,34 @@ rnv platform connect
 
 your projects will be build using `./node_modules/react-native-vanilla/rnv-cli/platformTemplates` from this point
 
+#### Build Hooks
+
+Sometimes you need to extend CLI functionality with custom build scripts. RNV makes this easy for you.
+
+create file: `./buildHooks/index.js` with this script (NOTE: every top-level method must return Promise):
+
+```js
+import chalk from 'chalk';
+
+export default {
+    hello: config => new Promise((resolve, reject) => {
+        console.log(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
+        resolve();
+    }),
+};
+```
+
+then simply run:
+
+```
+rnv hooks run -x hello
+```
+
+RNV will transpile and execute it in real time!
+
+`index.js` is required entry point but you can create more complex scripts with multiple files/imports.
+
+every top-level method gets invoked with RNV `config` object containing all necessary build information
 
 ---
 

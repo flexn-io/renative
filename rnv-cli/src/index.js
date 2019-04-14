@@ -5,6 +5,7 @@ import Common, { initializeBuilder, logComplete, logError } from './common';
 import Runner from './cli/runner';
 import App from './cli/app';
 import Platform from './cli/platform';
+import Hooks from './cli/hooks';
 import Target from './cli/target';
 import Linker from './cli/linker';
 import Plugin from './cli/plugin';
@@ -24,6 +25,7 @@ const commands = {
     target: Target,
     plugin: Plugin,
     log: Runner,
+    hooks: Hooks,
 };
 
 const run = (cmd, subCmd, program, process) => {
