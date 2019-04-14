@@ -6,6 +6,7 @@
   <img src="https://img.shields.io/badge/Platforms_Supported-12-blue.svg" />
   <img src="https://img.shields.io/badge/React_Native-0.58.5-blue.svg" />
   <img src="https://img.shields.io/badge/React-16.8.3-blue.svg" />
+  <img src="https://img.shields.io/badge/Plugins-43-red.svg" />
   </p>
 </p>
 
@@ -308,6 +309,69 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 rnv app configure -c helloWorld -u
 ```
 
+#### Build Flavours
+
+You can configure different app ID, Title etc. with buildScheme field in you appConfig file.
+
+Example:
+
+```
+"buildSchemes": {
+  "debug": {
+    "id": "reactnativevanilla.helloworld.debug",
+    "runScheme": "Debug",
+    "bundleAssets": false,
+    "bundleIsDev": true
+  },
+  "release": {
+    "id": "reactnativevanilla.helloworld.release",
+    "runScheme": "Release",
+    "bundleAssets": true,
+    "bundleIsDev": false
+  }
+}
+```
+
+this will allow you to build 2 separate iOS apps with slightly different configurations:
+
+`rnv run -ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
+
+and
+
+`rnv run -ios -s release`
+
+#### Build Flavour Injectors
+
+Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
+
+you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
+
+
+.
+├── appConfigs                 
+    └── helloWorld              
+        ├── assets              
+        └── builds     
+            ├── android@release
+            │   └── fileToBeInjectedInReleaseMode.txt                     
+            └── android@debug
+                └── fileToBeInjectedInDebugMode.txt
+
+
+#### Plugins
+
+RNV Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
+
+`rnv plugin list`
+
+to add new plugin to your project:
+
+`rnv plugin add`
+
+and follow the command prompt steps
+
+
+
 #### Custom Plugin Support
 
 You can configure multiple React Native plugins without need to update project blueprints.
@@ -386,7 +450,8 @@ Folder Structure (Generated Project)
     .
     ├── appConfigs                  # Application flavour configuration files/assets
     │   └── helloWorld              # Example application flavour
-    │       ├── assets              # Cross platform assets
+    │       ├── assets              # Platform assets injected to `./platformAssets`
+    │       ├── builds              # Platform files injected to `./platformBuilds`
     │       └── config.json         # Application flavour config
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
@@ -407,6 +472,14 @@ Folder Structure (Generated Project)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios1.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
@@ -423,19 +496,75 @@ Folder Structure (Generated Project)
 | Swift             |  `4.1`  |
 | Deployment Target | `11.4`  |
 
-#### Run
+#### Run on Simulator
 
 ```
 rnv start
 rnv run -p ios
 ```
 
+#### Run on Device
+
+IMPORTANT: before you run RNV app on the actual iOS device you MUST:
+
+1) Have ios device connected on the same network as your dev machine
+2) Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
+3) Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+
+```
+rnv start
+rnv run -p ios -d
+```
+
+#### Deploy on Device
+
+This will run production version on your device (not connected to metro bundler)
+Same prerequisite as above applies here
+
+```
+rnv start
+rnv run -p ios -s release -d
+```
+
 #### Advanced
 
-Launch with specific iOS simulator
+Launch app with specific iOS simulator
 
 ```
 rnv run -p ios -t "iPhone 6 Plus"
+```
+
+Launch app with specific iOS simulator (let RNV to give you the list of available options):
+
+```
+rnv run -p ios -t ?
+```
+
+Launch specific emulator :
+```
+rnv target launch -p ios -t "iPhone 8"
+```
+
+Launch specific emulator (let RNV to give you the list of available options):
+```
+rnv target launch -p ios -t ?
+```
+
+Get list of all available devices
+```
+rnv target list -p ios
+```
+
+Get device/simulator logs
+```
+rnv log -p ios
+```
+
+Get device/simulator logs with filter
+```
+rnv log -p ios -f com.myapp
 ```
 
 ---
@@ -447,6 +576,14 @@ rnv run -p ios -t "iPhone 6 Plus"
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android1.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest Android project
 -   Kotlin Support
@@ -481,7 +618,7 @@ You can create variety of emulators via Android Studio IDE
 </table>
 
 
-#### Run
+#### Run on Simulator
 
 NOTE: make sure you have 1 android device connected or 1 emulator running
 
@@ -490,11 +627,59 @@ rnv start
 rnv run -p android
 ```
 
+#### Run on Device
+
+```
+rnv start
+rnv run -p android -d
+```
+
+#### Deploy on Device
+
+This will run production version on your device (not connected to metro bundler)
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+
+```
+rnv start
+rnv run -p android -s release -d
+```
+
 #### Advanced
 
-Launch specific emulator:
+Launch specific android emulator:
 ```
 rnv target launch -p android -t Nexus_5X_API_26
+```
+
+Launch app with specific iOS simulator (let RNV to give you the list of available options):
+
+```
+rnv run -p android -t ?
+```
+
+Launch specific emulator :
+```
+rnv target launch -p android -t Nexus_5X_API_26
+```
+
+Launch specific emulator (let RNV to give you the list of available options):
+```
+rnv target launch -p android -t ?
+```
+
+Get list of all available devices
+```
+rnv target list -p android
+```
+
+Get device/simulator logs
+```
+rnv log -p android
+```
+
+Get device/simulator logs with filter
+```
+rnv log -p android -f com.myapp
 ```
 
 ---
@@ -506,6 +691,15 @@ rnv target launch -p android -t Nexus_5X_API_26
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
@@ -547,6 +741,14 @@ rnv run -p tvos -t "Apple TV 4K"
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest Android project
 -   Kotlin Support
@@ -593,6 +795,14 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Supports Chrome, Safari, Firefox, IE10+
 
 #### Requirements
@@ -614,6 +824,14 @@ rnv run -p web
 ```
 
 open browser URL: http://0.0.0.0:8080/
+
+#### Run
+
+```
+rnv build -p web
+```
+
+your deployable web app folder will be located in `./platformBuilds/<APP_ID>_web/public`
 
 #### Advanced
 
@@ -638,6 +856,14 @@ rnv run -p web --port 9999
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
@@ -698,6 +924,14 @@ rnv run -p tizen -t T-samsung-5.0-x86
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
+<table>
+  <tr>
+    <th>
+      <img width=200 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizenwatch.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest Tizen project
 -   Support for Tizen 5.0
 
@@ -757,6 +991,14 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
 
+<table>
+  <tr>
+    <th>
+      <img width=600 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   Latest LG webOS Project
 
 #### Requirements
@@ -786,13 +1028,6 @@ usually located in something like:
 <USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
 ```
 
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/webos1.png?raw=true" />
-    </th>
-  </tr>
-</table>
 
 #### Run
 
@@ -809,6 +1044,14 @@ rnv run -p webos
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   support for OSX/macOS
 -   Based on Electron
@@ -842,6 +1085,14 @@ rnv run -p macos
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
 
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
 -   support for Windows 10+
 -   Based on Electron
 
@@ -872,6 +1123,14 @@ rnv run -p windows
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 -   Latest Android project
 -   Kotlin Support
@@ -921,6 +1180,14 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 
 #### Requirements
@@ -1013,6 +1280,8 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 <a href="https://opencollective.com/react-native-vanilla#backers" target="_blank"><img src="https://opencollective.com/react-native-vanilla/backers.svg?width=890"></a>
 
 ## Sponsors
+
+<a href="https://www.24i.com"><img src="https://github.com/pavjacko/react-native-vanilla/blob/release/0.18/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
 
 Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/react-native-vanilla#sponsor)]
 

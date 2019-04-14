@@ -7,6 +7,7 @@ import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, 
 import { launchTizenSimulator } from '../platformTools/tizen';
 import { launchWebOSimulator } from '../platformTools/webos';
 import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
+import { listAppleDevices, launchAppleSimulator } from '../platformTools/apple';
 import { launchKaiOSSimulator } from '../platformTools/kaios';
 
 
@@ -61,29 +62,31 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        launchAndroidSimulator(c, target)
+        launchAndroidSimulator(c, platform, target)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-        break;
+    case IOS:
+    case TVOS:
+        launchAppleSimulator(c, platform, target)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     case TIZEN:
         launchTizenSimulator(c, target)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-        break;
     case WEBOS:
         launchWebOSimulator(c, target)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-        break;
     case KAIOS:
         launchKaiOSSimulator(c, target)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-        break;
     default:
         reject(`"target launch" command does not support ${chalk.white.bold(platform)} platform yet. You will have to launch the emulator manually. Working on it!`);
     }
@@ -99,11 +102,16 @@ const _runList = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        listAndroidTargets(c, target)
+        listAndroidTargets(c, platform)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-        break;
+    case IOS:
+    case TVOS:
+        listAppleDevices(c, platform)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     default:
         reject(`"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`);
     }

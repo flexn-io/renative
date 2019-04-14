@@ -1,7 +1,7 @@
 {
   "id": "helloWorld",
   "common": {
-    "id": "reactnativevanilla.helloworld",
+    "id": "reactnativevanilla.helloworld.release",
     "title": "RNV Hello",
     "description": "Cross-platform application project based on React Native Vanilla",
     "author": {
@@ -20,6 +20,7 @@
   "platforms":{
     "ios": {
       "entryFile": "index.ios",
+      "scheme": "RNVApp",
       "teamID": "PRNK99PXGZ",
       "permissions": [
         "APPLE_MUSIC",
@@ -30,43 +31,51 @@
       "buildSchemes": {
         "debug": {
           "id": "reactnativevanilla.helloworld.debug",
-          "scheme": "RNVApp",
-          "runScheme": "Debug"
+          "runScheme": "Debug",
+          "bundleAssets": false
         },
         "release": {
-          "scheme": "RNVAppRelease",
-          "runScheme": "Release"
+          "runScheme": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
     "tvos": {
       "entryFile": "index.tvos",
       "teamID": "PRNK99PXGZ",
-      "runScheme": "Debug",
+      "scheme": "RNVAppTVOS",
       "buildSchemes": {
         "debug": {
           "id": "reactnativevanilla.helloworld.debug",
-          "scheme": "RNVAppTVOS",
-          "runScheme": "Debug"
+          "runScheme": "Debug",
+          "bundleAssets": false
         },
         "release": {
           "scheme": "RNVAppTVOSRelease",
-          "runScheme": "Release"
+          "runScheme": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
     "android": {
       "entryFile": "index.android",
+      "keystoreConfig": "~/.rnv/helloWorld/config.json",
       "permissions": [
         "INTERNET",
         "SYSTEM_ALERT_WINDOW"
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug"
+          "id": "reactnativevanilla.helloworld.debug",
+          "signingConfig": "Debug",
+          "bundleAssets": false
         },
         "release": {
-
+          "signingConfig": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
@@ -78,10 +87,14 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug"
+          "id": "reactnativevanilla.helloworld.debug",
+          "signingConfig": "Debug",
+          "bundleAssets": false
         },
         "release": {
-
+          "signingConfig": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },
@@ -94,10 +107,14 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug"
+          "id": "reactnativevanilla.helloworld.debug",
+          "signingConfig": "Debug",
+          "bundleAssets": false
         },
         "release": {
-
+          "signingConfig": "Release",
+          "bundleAssets": true,
+          "bundleIsDev": false
         }
       }
     },

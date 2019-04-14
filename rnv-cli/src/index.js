@@ -7,6 +7,7 @@ import App from './cli/app';
 import Platform from './cli/platform';
 import Target from './cli/target';
 import Linker from './cli/linker';
+import Plugin from './cli/plugin';
 import Constants from './constants';
 import Exec from './exec';
 import FileUtils from './fileutils';
@@ -21,6 +22,8 @@ const commands = {
     run: Runner,
     package: Runner,
     target: Target,
+    plugin: Plugin,
+    log: Runner,
 };
 
 const run = (cmd, subCmd, program, process) => {

@@ -19,7 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var uiView: RCTRootView!
     #if DEBUG
-    var bundleUrl = URL(string: "http://localhost:8081/{{ENTRY_FILE}}.bundle?platform=ios")
+    var bundleUrl = URL(string: "http://{{IP}}:{{PORT}}/{{ENTRY_FILE}}.bundle?platform=ios")
     #else
     let bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "{{ENTRY_FILE}}", fallbackResource: nil)
     #endif
@@ -28,22 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Override point for customization after application launch.
         let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")! + " ultrasonic-native,webkit," + (Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String) + ",v" + (Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String)
         UserDefaults.standard.register(defaults: ["UserAgent": userAgent])
-
-
-        #if DEBUG
-        var myDict: NSDictionary?
-        if let path = Bundle.main.path(forResource: "Debug-Info", ofType: "plist") {
-            myDict = NSDictionary(contentsOfFile: path)
-        }
-        if (myDict != nil) {
-            let serverIp = myDict!["serverIP"] as! String
-            if(serverIp != "bundle") {
-                bundleUrl = URL(string: "http://" + serverIp + ":8081/{{ENTRY_FILE}}.bundle?platform=ios")
-            } else {
-                bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "{{ENTRY_FILE}}", fallbackResource: nil)
-            }
-        }
-        #endif
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()

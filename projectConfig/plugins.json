@@ -1,6 +1,6 @@
 {
   "plugins": {
-    "react-native-gesture-handler" : {
+    "react-native-gesture-handler": {
       "version": "github:kmagiera/react-native-gesture-handler",
       "ios": {
         "podName": "RNGestureHandler",

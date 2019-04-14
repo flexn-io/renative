@@ -7,7 +7,8 @@ import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCre
 import { configureTizenGlobal } from './platformTools/tizen';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
-    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN,
+    CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
     RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME,
@@ -84,6 +85,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.rnvRootFolder = path.join(__dirname, '../..');
     c.rnvHomeFolder = path.join(__dirname, '..');
     c.rnvPlatformTemplatesFolder = path.join(c.rnvHomeFolder, 'platformTemplates');
+    c.rnvPluginTemplatesFolder = path.join(c.rnvHomeFolder, 'pluginTemplates');
+    c.rnvPluginTemplatesConfigPath = path.join(c.rnvPluginTemplatesFolder, 'plugins.json');
     c.rnvPackagePath = path.join(c.rnvRootFolder, 'package.json');
     c.rnvPluginsFolder = path.join(c.rnvHomeFolder, 'plugins');
     c.rnvPackage = JSON.parse(fs.readFileSync(c.rnvPackagePath).toString());
@@ -162,7 +165,6 @@ const logAppInfo = c => new Promise((resolve, reject) => {
 const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject');
 
-
     // Parse Project Config
     checkAndCreateProjectPackage(c, 'rn-vanilla', 'RN Vanilla');
     c.projectPackage = JSON.parse(fs.readFileSync(c.projectPackagePath).toString());
@@ -202,19 +204,19 @@ const configureProject = c => new Promise((resolve, reject) => {
 
     // Check appConfigs
     logTask('configureProject:check appConfigs');
-    c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+    _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
     if (!fs.existsSync(c.appConfigsFolder)) {
         logWarning(`Looks like your appConfig folder ${chalk.white(c.appConfigsFolder)} is missing! Let's create sample config for you.`);
         copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', SAMPLE_APP_ID), c.appConfigFolder);
         // Update App Title to match package.json
         try {
-            c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
-
             const appConfig = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
 
             appConfig.common.title = c.projectPackage.title;
             appConfig.common.id = c.projectPackage.defaultAppId;
             appConfig.id = c.defaultAppConfigId;
+            appConfig.platforms.ios.teamID = '';
+            appConfig.platforms.tvos.teamID = '';
 
             fs.writeFileSync(c.appConfigPath, JSON.stringify(appConfig, null, 2));
         } catch (e) {
@@ -234,6 +236,8 @@ const configureProject = c => new Promise((resolve, reject) => {
                 logInfo(`Found custom appConfing location pointing to ${chalk.white(c.projectConfigLocal.appConfigsPath)}. RNV will now swith to that location!`);
                 c.appConfigsFolder = c.projectConfigLocal.appConfigsPath;
             }
+        } else {
+            logWarning(`Your local config file ${chalk.white(c.projectConfigLocal.appConfigsPath)} is missing appConfigsPath field!`);
         }
     }
 
@@ -357,6 +361,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         // Check global SDKs
         c.cli[CLI_ANDROID_EMULATOR] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
         c.cli[CLI_ANDROID_ADB] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
+        c.cli[CLI_ANDROID_AVDMANAGER] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/bin/avdmanager');
         c.cli[CLI_TIZEN_EMULATOR] = path.join(c.globalConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
         c.cli[CLI_TIZEN] = path.join(c.globalConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
         c.cli[CLI_WEBOS_ARES] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
@@ -415,7 +420,12 @@ const configureApp = c => new Promise((resolve, reject) => {
 
                 const newCommand = Object.assign({}, c);
                 newCommand.subCommand = 'configure';
-                newCommand.program = { appConfig: c.defaultAppConfigId, update: true, platform: c.program.platform };
+                newCommand.program = {
+                    appConfig: c.defaultAppConfigId,
+                    update: true,
+                    platform: c.program.platform,
+                    scheme: c.program.scheme,
+                };
                 appRunner(newCommand).then(() => resolve(c)).catch(e => reject(e));
             }).catch(e => reject(e));
         } else {
@@ -489,10 +499,12 @@ const logEnd = () => {
     _currentProcess.exit();
 };
 
+const IGNORE_FOLDERS = ['.git'];
+
 const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
-    c.appConfigFolder = path.join(c.appConfigsFolder, appConfigId);
+    _setAppConfig(c, path.join(c.appConfigsFolder, appConfigId));
     c.appId = appConfigId;
 
     if (!fs.existsSync(c.appConfigFolder)) {
@@ -503,8 +515,9 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
 
         const configDirs = [];
         fs.readdirSync(c.appConfigsFolder).forEach((dir) => {
-            console.log('DIR', dir);
-            configDirs.push(dir);
+            if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.appConfigsFolder, dir)).isDirectory()) {
+                configDirs.push(dir);
+            }
         });
 
         logWarning(`It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(c.appConfigsFolder)} !`);
@@ -517,7 +530,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             readline.question(getQuestion(`RNV found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
                 if (configDirs[v]) {
                     c.defaultAppConfigId = configDirs[v];
-                    c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+                    _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
                     _configureConfig(c).then(() => resolve()).catch(e => reject(e));
                 } else {
                     reject('Wrong option!');
@@ -526,7 +539,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
         } else {
             readline.question(getQuestion(`Do you want RNV to create new new sample appConfig (${chalk.white(appConfigId)}) for you? (y) to confirm`), (v) => {
                 c.defaultAppConfigId = SAMPLE_APP_ID;
-                c.appConfigFolder = path.join(c.appConfigsFolder, c.defaultAppConfigId);
+                _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
                 copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),
                     path.join(c.appConfigFolder));
                 _configureConfig(c).then(() => resolve()).catch(e => reject(e));
@@ -539,7 +552,6 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
 
 const _configureConfig = c => new Promise((resolve, reject) => {
     logTask(`_configureConfig:${c.appId}`);
-    c.appConfigPath = path.join(c.appConfigFolder, RNV_APP_CONFIG_NAME);
     c.appConfigFile = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
 
     // EXTEND CONFIG
@@ -552,7 +564,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
                 const mergedAppConfigFile = merge(parentAppConfigFile, c.appConfigFile);
                 c.appConfigFile = mergedAppConfigFile;
-                c.appConfigFolder = parentAppConfigFolder;
+                _setAppConfig(c, parentAppConfigFolder);
             }
         }
         resolve();
@@ -569,7 +581,7 @@ const getAppConfigId = (c, platform) => c.appConfigFile.id;
 
 const getConfigProp = (c, platform, key) => {
     const p = c.appConfigFile.platforms[platform];
-    const ps = c.program.scheme || 'debug';
+    const ps = _getScheme(c);
     let scheme;
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
@@ -608,7 +620,7 @@ const getAppVersionCode = (c, platform) => {
 };
 
 const logErrorPlatform = (platform, resolve) => {
-    console.log(`ERROR: Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
+    logError(`Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
     resolve();
 };
 
@@ -634,7 +646,12 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
 
     const newCommand = Object.assign({}, c);
     newCommand.subCommand = 'configure';
-    newCommand.program = { appConfig: c.id, update: false, platform };
+    newCommand.program = {
+        appConfig: c.id,
+        update: false,
+        platform,
+        scheme: c.program.scheme,
+    };
 
     if (c.program.reset) {
         cleanPlaformBuild(c, platform)
@@ -677,10 +694,28 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 
     // FOLDER MERGERS
     const destPath = path.join(getAppFolder(c, platform));
-    const sourcePath = path.join(c.appConfigFolder, `builds/${platform}`);
+    const sourcePath = _getBuildsFolder(c, platform);
     copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
 });
+
+const _getScheme = c => c.program.scheme || 'debug';
+
+const _getBuildsFolder = (c, platform) => {
+    const p = path.join(c.appConfigFolder, `builds/${platform}@${_getScheme(c)}`);
+    if (fs.existsSync(p)) return p;
+    return path.join(c.appConfigFolder, `builds/${platform}`);
+};
+
+const getIP = () => {
+    const ip = require('ip');
+    return ip.address();
+};
+
+const _setAppConfig = (c, p) => {
+    c.appConfigFolder = p;
+    c.appConfigPath = path.join(p, RNV_APP_CONFIG_NAME);
+};
 
 
 export {
@@ -688,7 +723,8 @@ export {
     logTask, logComplete, logError, initializeBuilder, logDebug, logInfo, logErrorPlatform,
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, copyBuildsFolder,
-    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense, getQuestion, logSuccess, getConfigProp,
+    getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,
+    getQuestion, logSuccess, getConfigProp, getIP,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
@@ -726,6 +762,7 @@ export default {
     getQuestion,
     logSuccess,
     getConfigProp,
+    getIP,
     IOS,
     ANDROID,
     ANDROID_TV,
