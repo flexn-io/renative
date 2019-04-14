@@ -46,9 +46,9 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/nav/docs/rnv_android-tv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/nav/docs/rnv_macos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
     </th>
   </tr>
   <tr>
@@ -62,7 +62,7 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/nav/docs/rnv_webos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
     </th>
   </tr>
   <tr>
@@ -347,15 +347,15 @@ Sometimes you need to add buildFlavour specific file into project before build. 
 you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
 
-.
-├── appConfigs                 
-    └── helloWorld              
-        ├── assets              
-        └── builds     
-            ├── android@release
-            │   └── fileToBeInjectedInReleaseMode.txt                     
-            └── android@debug
-                └── fileToBeInjectedInDebugMode.txt
+    .
+    ├── appConfigs                 
+        └── helloWorld              
+            ├── assets              
+            └── builds     
+                ├── android@release
+                │   └── fileToBeInjectedInReleaseMode.txt                     
+                └── android@debug
+                    └── fileToBeInjectedInDebugMode.txt
 
 
 #### Plugins
@@ -1281,9 +1281,7 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ## Sponsors
 
-<a href="https://www.24i.com"><img src="https://github.com/pavjacko/react-native-vanilla/blob/release/0.18/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
-
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/react-native-vanilla#sponsor)]
+<a href="https://www.24i.com"><img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
 
 ---
 
