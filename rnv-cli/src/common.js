@@ -98,6 +98,10 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
     c.platform = program.platform;
     c.projectRootFolder = base;
+    c.buildHooksFolder = path.join(c.projectRootFolder, 'buildHooks');
+    c.buildHooksDistFolder = path.join(c.buildHooksFolder, 'dist');
+    c.buildHooksIndexPath = path.join(c.buildHooksFolder, 'index.js');
+    c.buildHooksDistIndexPath = path.join(c.buildHooksDistFolder, 'index.js');
     c.projectSourceFolder = path.join(c.projectRootFolder, 'src');
     c.projectNpmLinkPolyfillPath = path.join(c.projectRootFolder, 'npm_link_polyfill.json');
     c.homeFolder = homedir;

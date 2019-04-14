@@ -54,7 +54,7 @@ const executeAsync = (
     });
 
     command.on('close', (code) => {
-        console.log(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} exited with code ${code}`);
+        logDebug(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} exited with code ${code}`);
         if (code !== 0) {
             reject(new Error(`process exited with code ${code}`));
         } else {
@@ -66,7 +66,7 @@ const executeAsync = (
     });
 
     command.on('error', (error) => {
-        console.log(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} errored with ${error}`);
+        logDebug(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} errored with ${error}`);
         reject(new Error(`process errored with ${error}`));
     });
 
