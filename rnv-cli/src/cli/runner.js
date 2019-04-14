@@ -17,7 +17,7 @@ import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { runKaiOS } from '../platformTools/kaios';
 import { runElectron } from '../platformTools/electron';
-import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject, buildAndroid } from '../platformTools/android';
+import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject, buildAndroid, runAndroidLog } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';
 
 
@@ -248,6 +248,13 @@ const _log = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         runAppleLog(c, platform)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        runAndroidLog(c, platform)
             .then(() => resolve())
             .catch(e => reject(e));
         return;

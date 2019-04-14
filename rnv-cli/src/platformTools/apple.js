@@ -502,6 +502,7 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
 };
 
 const runAppleLog = (c, platform) => new Promise((resolve, reject) => {
+    const filter = c.program.filter || 'RNV';
     const child = require('child_process').execFile('xcrun', [
         'simctl',
         'spawn',
@@ -509,7 +510,7 @@ const runAppleLog = (c, platform) => new Promise((resolve, reject) => {
         'log',
         'stream',
         '--predicate',
-        'eventMessage contains \"RNV\"',
+        `eventMessage contains \"${filter}\"`,
     ], { stdio: 'inherit', customFds: [0, 1, 2] });
     // use event hooks to provide a callback to execute when data are available:
     child.stdout.on('data', (data) => {

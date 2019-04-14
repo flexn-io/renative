@@ -562,6 +562,11 @@ Get device/simulator logs
 rnv log -p ios
 ```
 
+Get device/simulator logs with filter
+```
+rnv log -p ios -f com.myapp
+```
+
 ---
 
 <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />
@@ -670,6 +675,11 @@ rnv target list -p android
 Get device/simulator logs
 ```
 rnv log -p android
+```
+
+Get device/simulator logs with filter
+```
+rnv log -p android -f com.myapp
 ```
 
 ---

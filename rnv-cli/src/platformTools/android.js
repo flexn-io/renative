@@ -19,7 +19,7 @@ import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, 
 const launchAndroidSimulator = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
 
-    if (target === '?') {
+    if (target === '?' || target === undefined || target === '') {
         _listAndroidTargets(c, true, false)
             .then((devicesArr) => {
                 let devicesString = '\n';
@@ -521,7 +521,26 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
+const runAndroidLog = (c, platform) => new Promise((resolve, reject) => {
+    const filter = c.program.filter || '';
+    const child = require('child_process').spawn(c.cli[CLI_ANDROID_ADB], [
+        'logcat']);
+    // use event hooks to provide a callback to execute when data are available:
+    child.stdout.on('data', (data) => {
+        const d = data.toString().split('\n');
+        d.forEach((v) => {
+            if (v.includes(' E ') && v.includes(filter)) {
+                console.log(chalk.red(v));
+            } else if (v.includes(' W ') && v.includes(filter)) {
+                console.log(chalk.yellow(v));
+            } else if (v.includes(filter)) {
+                console.log(v);
+            }
+        });
+    });
+});
+
 export {
     copyAndroidAssets, configureGradleProject, launchAndroidSimulator, buildAndroid,
-    listAndroidTargets, packageAndroid, runAndroid, configureAndroidProperties,
+    listAndroidTargets, packageAndroid, runAndroid, configureAndroidProperties, runAndroidLog,
 };
