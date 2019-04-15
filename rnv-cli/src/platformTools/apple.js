@@ -99,7 +99,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
             '--project-path',
             appPath,
             '--device',
-            'iPhone',
+            device,
             '--scheme',
             scheme,
             '--configuration',

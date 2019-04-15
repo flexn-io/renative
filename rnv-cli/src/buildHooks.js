@@ -72,6 +72,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
             });
     } else {
         logWarning(`Your buildHook ${chalk.white(c.buildHooksIndexPath)} is missing!. Skipping operation`);
+        resolve();
     }
 });
 
