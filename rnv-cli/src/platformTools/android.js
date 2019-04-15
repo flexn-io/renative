@@ -390,7 +390,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
                     if (plugin) {
-                        if (plugin['no-active'] !== true) {
+                        if (plugins[key]['no-active'] !== true) {
                             if (plugin.packages) {
                                 plugin.packages.forEach((ppkg) => {
                                     _injectPlugin(c, plugin, key, ppkg, pluginConfig);

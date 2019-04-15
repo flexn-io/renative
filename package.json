@@ -1,7 +1,7 @@
 {
   "name": "react-native-vanilla",
   "title": "React Native Vanilla",
-  "version": "0.18.2",
+  "version": "0.18.4",
   "codename": "Django Chained",
   "keywords": [
     "react",
@@ -116,7 +116,6 @@
     "@babel/preset-env": "7.3.4",
     "svg2js": "0.0.4-alpha1",
     "nodemon": "1.18.10",
-    "babel-preset-env": "1.7.0",
     "copy-webpack-plugin": "4.6.0",
     "css-hot-loader": "1.4.2",
     "css-loader": "0.28.7",

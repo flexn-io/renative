@@ -57,8 +57,9 @@ const buildHooks = c => new Promise((resolve, reject) => {
             resolve();
             return;
         }
-        const babel = path.resolve(c.nodeModulesFolder, '.bin/babel');
-        executeAsync(babel, ['--no-babelrc', c.buildHooksFolder, '-d', c.buildHooksDistFolder, '--presets=env'])
+        // const babel = path.resolve(c.nodeModulesFolder, '.bin/babel');
+        const babel = path.resolve(c.nodeModulesFolder, '@babel/cli/bin/babel.js');
+        executeAsync(babel, ['--no-babelrc', c.buildHooksFolder, '-d', c.buildHooksDistFolder, '--presets=@babel/env'])
             .then(() => {
                 const h = require(c.buildHooksDistIndexPath);
                 c.buildHooks = h.hooks;
@@ -67,7 +68,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
                 resolve();
             }).catch((e) => {
                 console.log(e);
-                reject(e);
+                resolve();
             });
     } else {
         logWarning(`Your buildHook ${chalk.white(c.buildHooksIndexPath)} is missing!. Skipping operation`);
