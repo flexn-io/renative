@@ -473,6 +473,7 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
     text.split('\n').forEach((line) => {
         const device = line.match(/(.*?) \((.*?)\) \[(.*?)\]/);
         const sim = line.match(/(.*?) \((.*?)\) \[(.*?)\] \((.*?)\)/);
+
         if (device != null) {
             const name = device[1];
             const version = device[2];
@@ -481,12 +482,12 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
             if (!isDevice || (isDevice && !ignoreDevices)) {
                 switch (platform) {
                 case IOS:
-                    if (name.startsWith('iPhone') || name.startsWith('iPad')) {
+                    if (name.includes('iPhone') || name.includes('iPad')) {
                         devices.push({ udid, name, version, isDevice });
                     }
                     break;
                 case TVOS:
-                    if (name.startsWith('Apple TV')) {
+                    if (name.includes('Apple TV')) {
                         devices.push({ udid, name, version, isDevice });
                     }
                     break;
