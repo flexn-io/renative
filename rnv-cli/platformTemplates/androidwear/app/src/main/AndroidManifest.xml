@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="{{APPLICATION_ID}}">
+    {{PERMISIONS}}
+
+    <uses-feature android:name="android.hardware.type.watch"/>
+
+    <application
+            android:name=".MainApplication"
+            android:allowBackup="true"
+            android:icon="@mipmap/ic_launcher_round"
+            android:label="@string/app_name"
+            android:supportsRtl="true"
+            android:theme="@android:style/Theme.DeviceDefault">
+        <uses-library
+                android:name="com.google.android.wearable"
+                android:required="true"/>
+
+        <!--
+               Set to true if your app is Standalone, that is, it does not require the handheld
+               app to run.
+        -->
+        <meta-data
+                android:name="com.google.android.wearable.standalone"
+                android:value="true"/>
+
+        <activity
+                android:name="reactnativevanilla.helloworld.MainActivity"
+                android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
+    </application>
+
+</manifest>

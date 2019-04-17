@@ -1,0 +1,11 @@
+{
+  "name": "{{PACKAGE_NAME}}",
+  "defaultAppId": "{{APP_ID}}",
+  "defaultAppConfigId": "{{DEFAULT_APP_CONFIG}}",
+  "title": "{{PACKAGE_TITLE}}",
+  "version": "{{PACKAGE_VERSION}}",
+  "dependencies": {},
+  "devDependencies": {
+    "react-native-vanilla": "{{RNV_VERSION}}"
+  }
+}

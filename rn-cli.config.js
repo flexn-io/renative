@@ -1,7 +1,7 @@
 const path = require('path');
 
 const config = {
-    projectRoot: path.resolve(__dirname, 'entry'),
+    projectRoot: path.resolve(__dirname),
     watchFolders: [
         path.resolve(__dirname),
     ],

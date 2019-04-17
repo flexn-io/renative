@@ -1,0 +1,15 @@
+{
+  "name": "{{PACKAGE_NAME}}-windows",
+  "productName": "{{APP_TITLE}} Windows",
+  "version": "{{APP_VERSION}}",
+  "description": "{{APP_DESCRIPTION}}",
+  "main": "./main.js",
+  "author": {
+    "name": "{{AUTHOR_NAME}}",
+    "email": "{{AUTHOR_EMAIL}}",
+    "url": "{{AUTHOR_URL}}"
+  },
+  "scripts": {},
+  "license": "{{LICENSE}}",
+  "dependencies": {}
+}

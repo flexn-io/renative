@@ -1,0 +1,15 @@
+{
+  "plugins": {
+    "react-native-gesture-handler": {
+      "version": "github:kmagiera/react-native-gesture-handler",
+      "ios": {
+        "podName": "RNGestureHandler",
+        "path": "node_modules/react-native-gesture-handler"
+      },
+      "android": {
+        "path": "node_modules/react-native-gesture-handler/android",
+        "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+      }
+    }
+  }
+}
