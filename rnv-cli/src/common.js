@@ -110,10 +110,10 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectConfigPath = path.join(c.projectRootFolder, RNV_PROJECT_CONFIG_NAME);
     c.projectConfigLocalPath = path.join(c.projectRootFolder, RNV_PROJECT_CONFIG_LOCAL_NAME);
     c.projectPackagePath = path.join(c.projectRootFolder, 'package.json');
-    c.projectPluginsFolder = path.join(c.projectRootFolder, 'plugins');
     c.rnCliConfigPath = path.join(c.projectRootFolder, RN_CLI_CONFIG_NAME);
     c.babelConfigPath = path.join(c.projectRootFolder, RN_BABEL_CONFIG_NAME);
     c.projectConfigFolder = path.join(c.projectRootFolder, 'projectConfig');
+    c.projectPluginsFolder = path.join(c.projectConfigFolder, 'plugins');
 
 
     if (_currentJob === 'target') {

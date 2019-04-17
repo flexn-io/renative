@@ -93,7 +93,62 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     let p;
-    if (device) {
+    if (device === true) {
+        const devicesArr = _getAppleDevices(c, platform, false, true);
+        if (devicesArr.length === 1) {
+            logSuccess(`Found one device connected! ${chalk.white(devicesArr[0].name)}`);
+            p = [
+                'run-ios',
+                '--project-path',
+                appPath,
+                '--device',
+                devicesArr[0].name,
+                '--scheme',
+                scheme,
+                '--configuration',
+                runScheme,
+            ];
+        } else if (devicesArr.length > 1) {
+            let devicesString = '\n';
+            devicesArr.forEach((v, i) => {
+                devicesString += `-[${(i + 1)}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
+            });
+
+            const readline = require('readline').createInterface({
+                input: process.stdin,
+                output: process.stdout,
+            });
+            readline.question(getQuestion(`${devicesString}\nType number of the device you want to launch`), (v) => {
+                const selectedDevice = devicesArr[(parseInt(v, 10) - 1)];
+                if (selectedDevice) {
+                    p = [
+                        'run-ios',
+                        '--project-path',
+                        appPath,
+                        '--device',
+                        selectedDevice.name,
+                        '--scheme',
+                        scheme,
+                        '--configuration',
+                        runScheme,
+                    ];
+                    if (bundleAssets) {
+                        packageBundleForXcode(c, platform, bundleIsDev)
+                            .then(v => executeAsync('react-native', p))
+                            .then(() => resolve()).catch(e => reject(e));
+                    } else {
+                        executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
+                    }
+                } else {
+                    reject(`Wrong choice ${v}! Ingoring`);
+                }
+            });
+            return;
+        } else {
+            reject(`No ${platform} devices connected!`);
+            return;
+        }
+    } else if (device) {
         p = [
             'run-ios',
             '--project-path',
@@ -120,12 +175,16 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     }
 
     logDebug('running', p);
-    if (bundleAssets) {
-        packageBundleForXcode(c, platform, bundleIsDev)
-            .then(v => executeAsync('react-native', p))
-            .then(() => resolve()).catch(e => reject(e));
+    if (p) {
+        if (bundleAssets) {
+            packageBundleForXcode(c, platform, bundleIsDev)
+                .then(v => executeAsync('react-native', p))
+                .then(() => resolve()).catch(e => reject(e));
+        } else {
+            executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
+        }
     } else {
-        executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
+        reject('Missing options for react-native command!');
     }
 });
 
@@ -459,16 +518,16 @@ const _launchSimulator = (selectedDevice) => {
     }
 };
 
-const _getAppleDevices = (c, platform, ignoreDevices) => {
+const _getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
     const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
         encoding: 'utf8',
     });
 
-    const devicesArr = _parseIOSDevicesList(devices, platform, ignoreDevices);
+    const devicesArr = _parseIOSDevicesList(devices, platform, ignoreDevices, ignoreSimulators);
     return devicesArr;
 };
 
-const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
+const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimulators = false) => {
     const devices = [];
     text.split('\n').forEach((line) => {
         const device = line.match(/(.*?) \((.*?)\) \[(.*?)\]/);
@@ -479,15 +538,15 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
             const version = device[2];
             const udid = device[3];
             const isDevice = sim === null;
-            if (!isDevice || (isDevice && !ignoreDevices)) {
+            if ((isDevice && !ignoreDevices) || (!isDevice && !ignoreSimulators)) {
                 switch (platform) {
                 case IOS:
-                    if (name.includes('iPhone') || name.includes('iPad')) {
+                    if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
                         devices.push({ udid, name, version, isDevice });
                     }
                     break;
                 case TVOS:
-                    if (name.includes('Apple TV')) {
+                    if (name.includes('Apple TV') || isDevice) {
                         devices.push({ udid, name, version, isDevice });
                     }
                     break;
