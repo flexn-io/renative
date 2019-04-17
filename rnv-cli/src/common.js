@@ -500,7 +500,7 @@ const logError = (e, isEnd = false) => {
 
 const logEnd = () => {
     console.log(chalk.bold(`\n${LINE}\n`));
-    _currentProcess.exit();
+    _currentProcess.exit(1);
 };
 
 const IGNORE_FOLDERS = ['.git'];
