@@ -346,21 +346,21 @@ if (file === __filename) {
         _runiOS()
             .catch((error) => {
                 console.error('ios failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'run_android':
         _runAndroid()
             .catch((error) => {
                 console.error('android failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'run_web':
         _runWeb()
             .catch((error) => {
                 console.error('web failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'run_androidtv':
@@ -373,28 +373,28 @@ if (file === __filename) {
         _runtvOS()
             .catch((error) => {
                 console.error('ios failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'fix_ios':
         _fixiOS()
             .catch((error) => {
                 console.error('ios:fix failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'update_ios':
         _updateiOS()
             .catch((error) => {
                 console.error('ios:update failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'update_tvos':
         _updatetvOS()
             .catch((error) => {
                 console.error('tvos:update failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'run_tizen':

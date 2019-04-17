@@ -40,14 +40,14 @@ if (file === __filename) {
         distWindows()
             .catch((error) => {
                 console.error('dist windows failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'dist_macos':
         distMacOS()
             .catch((error) => {
                 console.error('dist macos failed:', error.message);
-                process.exit();
+                process.exit(1);
             });
         break;
     case 'dist_tizen':
