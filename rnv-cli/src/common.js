@@ -484,7 +484,7 @@ const logDebug = (...args) => {
 
 const logComplete = (isEnd = false) => {
     console.log(chalk.white.bold(`\n ${RNV} ${_currentJob} - Done! 🚀`));
-    if (isEnd) logEnd();
+    if (isEnd) logEnd(0);
 };
 
 const logSuccess = (msg) => {
@@ -495,12 +495,12 @@ const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 const logError = (e, isEnd = false) => {
     console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`));
-    if (isEnd) logEnd();
+    if (isEnd) logEnd(1);
 };
 
-const logEnd = () => {
+const logEnd = (code) => {
     console.log(chalk.bold(`\n${LINE}\n`));
-    _currentProcess.exit(1);
+    _currentProcess.exit(code);
 };
 
 const IGNORE_FOLDERS = ['.git'];
