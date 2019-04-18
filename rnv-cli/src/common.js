@@ -116,7 +116,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.projectPluginsFolder = path.join(c.projectConfigFolder, 'plugins');
 
 
-    if (_currentJob === 'target') {
+    if (_currentJob === 'target' || _currentJob === 'log') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
             .catch(e => reject(e));

@@ -11,7 +11,7 @@ import {
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../constants';
 import { executeAsync, execCLI } from '../exec';
-import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode, launchAppleSimulator, runAppleLog } from '../platformTools/apple';
+import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode, launchAppleSimulator, runAppleLog, prepareXcodeProject } from '../platformTools/apple';
 import { buildWeb, runWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
@@ -115,6 +115,7 @@ const _runApp = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         configureIfRequired(c, platform)
+            .then(() => prepareXcodeProject(c, platform))
             .then(() => runXcodeProject(c, platform, target))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -216,6 +217,7 @@ const _export = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         configureIfRequired(c, platform)
+            .then(() => prepareXcodeProject(c, platform))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => exportXcodeProject(c, platform))
             .then(() => resolve())
@@ -240,6 +242,14 @@ const _build = c => new Promise((resolve, reject) => {
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform))
             .then(() => buildAndroid(c, platform))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case IOS:
+    case TVOS:
+        configureIfRequired(c, platform)
+            .then(() => prepareXcodeProject(c, platform))
+            .then(() => archiveXcodeProject(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
