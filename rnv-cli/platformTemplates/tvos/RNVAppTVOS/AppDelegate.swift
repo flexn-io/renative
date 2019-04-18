@@ -16,31 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let moduleName = "App"
 
     var uiView: RCTRootView!
-    #if DEBUG
-    var bundleUrl = URL(string: "http://localhost:8081/{{ENTRY_FILE}}.bundle?platform=ios")
-    #else
-    let bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "{{ENTRY_FILE}}", fallbackResource: nil)
-    #endif
+    let bundleUrl = {{BUNDLE}}
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-
-
-
-
-        #if DEBUG
-        var myDict: NSDictionary?
-        if let path = Bundle.main.path(forResource: "Debug-Info", ofType: "plist") {
-            myDict = NSDictionary(contentsOfFile: path)
-        }
-        if (myDict != nil) {
-            let serverIp = myDict!["serverIP"] as! String
-            if(serverIp != "bundle") {
-                bundleUrl = URL(string: "http://" + serverIp + ":8081/{{ENTRY_FILE}}.bundle?platform=ios")
-            } else {
-                bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "{{ENTRY_FILE}}", fallbackResource: nil)
-            }
-        }
-        #endif
 
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()

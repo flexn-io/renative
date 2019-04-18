@@ -68,32 +68,69 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
 
     const appPath = getAppFolder(c, platform);
     const device = c.program.device;
-    const ip = device ? getIP() : 'localhost';
     const appFolderName = _getAppFolderName(platform);
-
-    // CHECK TEAM ID IF DEVICE
-    const tId = getConfigProp(c, platform, 'teamID');
-    if (device && (!tId || tId === '')) {
-        logError(`Looks like you're missing teamID in your ${chalk.white(c.appConfigPath)} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`);
-        resolve();
-        return;
-    }
-
-    if (!fs.existsSync(path.join(appPath, 'Pods'))) {
-        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
-        configureXcodeProject(c, platform, ip)
-            .then(() => runXcodeProject(c, platform, target))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        _configureAppDelegate(c, platform, appPath, appFolderName, ip);
-    }
     const scheme = getConfigProp(c, platform, 'scheme');
     const runScheme = getConfigProp(c, platform, 'runScheme');
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     let p;
-    if (device) {
+
+    if (device === true) {
+        const devicesArr = _getAppleDevices(c, platform, false, true);
+        if (devicesArr.length === 1) {
+            logSuccess(`Found one device connected! ${chalk.white(devicesArr[0].name)}`);
+            p = [
+                'run-ios',
+                '--project-path',
+                appPath,
+                '--device',
+                devicesArr[0].name,
+                '--scheme',
+                scheme,
+                '--configuration',
+                runScheme,
+            ];
+        } else if (devicesArr.length > 1) {
+            let devicesString = '\n';
+            devicesArr.forEach((v, i) => {
+                devicesString += `-[${(i + 1)}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
+            });
+
+            const readline = require('readline').createInterface({
+                input: process.stdin,
+                output: process.stdout,
+            });
+            readline.question(getQuestion(`${devicesString}\nType number of the device you want to launch`), (v) => {
+                const selectedDevice = devicesArr[(parseInt(v, 10) - 1)];
+                if (selectedDevice) {
+                    p = [
+                        'run-ios',
+                        '--project-path',
+                        appPath,
+                        '--device',
+                        selectedDevice.name,
+                        '--scheme',
+                        scheme,
+                        '--configuration',
+                        runScheme,
+                    ];
+                    if (bundleAssets) {
+                        packageBundleForXcode(c, platform, bundleIsDev)
+                            .then(v => executeAsync('react-native', p))
+                            .then(() => resolve()).catch(e => reject(e));
+                    } else {
+                        executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
+                    }
+                } else {
+                    reject(`Wrong choice ${v}! Ingoring`);
+                }
+            });
+            return;
+        } else {
+            reject(`No ${platform} devices connected!`);
+            return;
+        }
+    } else if (device) {
         p = [
             'run-ios',
             '--project-path',
@@ -120,12 +157,16 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     }
 
     logDebug('running', p);
-    if (bundleAssets) {
-        packageBundleForXcode(c, platform, bundleIsDev)
-            .then(v => executeAsync('react-native', p))
-            .then(() => resolve()).catch(e => reject(e));
+    if (p) {
+        if (bundleAssets) {
+            packageBundleForXcode(c, platform, bundleIsDev)
+                .then(v => executeAsync('react-native', p))
+                .then(() => resolve()).catch(e => reject(e));
+        } else {
+            executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
+        }
     } else {
-        executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
+        reject('Missing options for react-native command!');
     }
 });
 
@@ -139,14 +180,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
 
-    if (!fs.existsSync(path.join(appPath, 'Pods'))) {
-        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
-        configureXcodeProject(c, platform)
-            .then(() => archiveXcodeProject(c, platform))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    }
+
     const scheme = getConfigProp(c, platform, 'scheme');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const p = [
@@ -180,14 +214,6 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
 
-    if (!fs.existsSync(path.join(appPath, 'Pods'))) {
-        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
-        configureXcodeProject(c, platform)
-            .then(() => exportXcodeProject(c, platform))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    }
     const scheme = getConfigProp(c, platform, 'scheme');
     const p = [
         '-exportArchive',
@@ -197,6 +223,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         `${appPath}/exportOptions.plist`,
         '-exportPath',
         `${exportPath}`,
+        '-allowProvisioningUpdates',
     ];
     logDebug('running', p);
 
@@ -225,6 +252,44 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         `${getAppFolder(c, platform)}/main.jsbundle`]);
 };
 
+const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
+    const device = c.program.device;
+    const ip = device ? getIP() : 'localhost';
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = _getAppFolderName(platform);
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
+    // CHECK TEAM ID IF DEVICE
+    const tId = getConfigProp(c, platform, 'teamID');
+    if (device && (!tId || tId === '')) {
+        logError(`Looks like you're missing teamID in your ${chalk.white(c.appConfigPath)} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`);
+        resolve();
+        return;
+    }
+
+    const check = path.join(appFolder, `${appFolderName}.xcodeproj`);
+    if (!fs.existsSync(check)) {
+        logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
+        createPlatformBuild(c, platform)
+            .then(() => configureXcodeProject(c, platform))
+            .then(() => _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
+    if (!fs.existsSync(path.join(appFolder, 'Pods'))) {
+        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
+        configureXcodeProject(c, platform)
+            .then(() => _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+    } else {
+        _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip)
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+    }
+});
+
 const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
     if (process.platform !== 'darwin') return;
@@ -235,7 +300,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
     copyAppleAssets(c, platform, appFolderName)
-        .then(() => configureProject(c, platform, appFolderName, ip, port))
+        .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => resolve())
         .catch((e) => {
@@ -244,7 +309,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
                 runPod('update', getAppFolder(c, platform))
                     .then(() => copyAppleAssets(c, platform, appFolderName))
                     .then(() => copyBuildsFolder(c, platform))
-                    .then(() => configureProject(c, platform, appFolderName, ip, port))
+                    .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
@@ -253,38 +318,62 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         });
 });
 
-const _configureAppDelegate = (c, platform, appFolder, appFolderName, ip = 'localhost', port = 8081) => {
-    logTask(`_configureAppDelegate:${platform}:${ip}:${port}`);
+const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+    logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
+
+    const entryFile = getEntryFile(c, platform);
+    const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const tId = getConfigProp(c, platform, 'teamID');
+    let bundle;
+    if (isBundled) {
+        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
+    } else {
+        bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
+    }
+
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
         path.join(appFolder, appFolderName, appDelegate),
         [
-            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+            { pattern: '{{BUNDLE}}', override: bundle },
+            { pattern: '{{ENTRY_FILE}}', override: entryFile },
             { pattern: '{{IP}}', override: ip },
             { pattern: '{{PORT}}', override: port },
         ]);
-};
 
-const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
-    logTask(`configureProject:${platform}:${appFolderName}:${ip}:${port}`);
+    writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
+        path.join(appFolder, 'exportOptions.plist'),
+        [
+            { pattern: '{{TEAM_ID}}', override: tId },
+        ]);
+
+
+    const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
+    const xcodeProj = xcode.project(projectPath);
+    xcodeProj.parse((err) => {
+        const appId = getAppId(c, platform);
+        if (tId) {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
+        } else {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
+        }
+
+        xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
+
+        resolve();
+    });
+});
+
+const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+    logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
 
     const appFolder = getAppFolder(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
-
-    const check = path.join(appFolder, `${appFolderName}.xcodeproj`);
-    if (!fs.existsSync(check)) {
-        logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
-        createPlatformBuild(c, platform)
-            .then(() => configureXcodeProject(c, platform))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
-    }
+    const tId = getConfigProp(c, platform, 'teamID');
 
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
-    _configureAppDelegate(c, platform, appFolder, appFolderName, ip, port);
 
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
@@ -342,8 +431,8 @@ const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse((err) => {
         const appId = getAppId(c, platform);
-        if (c.appConfigFile.platforms[platform].teamID) {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', c.appConfigFile.platforms[platform].teamID);
+        if (tId) {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
         } else {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
@@ -385,14 +474,6 @@ const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8
                 { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
                 { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
             ]);
-
-
-        writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
-            path.join(appFolder, 'exportOptions.plist'),
-            [
-                { pattern: '{{TEAM_ID}}', override: c.appConfigFile.platforms[platform].teamID },
-            ]);
-
 
         resolve();
     });
@@ -459,16 +540,16 @@ const _launchSimulator = (selectedDevice) => {
     }
 };
 
-const _getAppleDevices = (c, platform, ignoreDevices) => {
+const _getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
     const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
         encoding: 'utf8',
     });
 
-    const devicesArr = _parseIOSDevicesList(devices, platform, ignoreDevices);
+    const devicesArr = _parseIOSDevicesList(devices, platform, ignoreDevices, ignoreSimulators);
     return devicesArr;
 };
 
-const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
+const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimulators = false) => {
     const devices = [];
     text.split('\n').forEach((line) => {
         const device = line.match(/(.*?) \((.*?)\) \[(.*?)\]/);
@@ -479,15 +560,15 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false) => {
             const version = device[2];
             const udid = device[3];
             const isDevice = sim === null;
-            if (!isDevice || (isDevice && !ignoreDevices)) {
+            if ((isDevice && !ignoreDevices) || (!isDevice && !ignoreSimulators)) {
                 switch (platform) {
                 case IOS:
-                    if (name.includes('iPhone') || name.includes('iPad')) {
+                    if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
                         devices.push({ udid, name, version, isDevice });
                     }
                     break;
                 case TVOS:
-                    if (name.includes('Apple TV')) {
+                    if (name.includes('Apple TV') || isDevice) {
                         devices.push({ udid, name, version, isDevice });
                     }
                     break;
@@ -526,8 +607,9 @@ const runAppleLog = (c, platform) => new Promise((resolve, reject) => {
     });
 });
 
+
 export {
     runPod, copyAppleAssets, configureXcodeProject, runXcodeProject,
     exportXcodeProject, archiveXcodeProject, packageBundleForXcode,
-    listAppleDevices, launchAppleSimulator, runAppleLog,
+    listAppleDevices, launchAppleSimulator, runAppleLog, prepareXcodeProject,
 };

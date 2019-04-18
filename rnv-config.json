@@ -5,6 +5,6 @@
   "entryFolder": "./",
   "platformAssetsFolder": "./platformAssets",
   "platformBuildsFolder": "./platformBuilds",
-  "projectPlugins": "./plugins",
+  "projectPlugins": "./projectConfig/plugins",
   "projectConfigFolder": "./projectConfig"
 }
