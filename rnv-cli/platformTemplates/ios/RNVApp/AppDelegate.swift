@@ -18,11 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     let moduleName = "App"
 
     var uiView: RCTRootView!
-    #if DEBUG
-    var bundleUrl = URL(string: "http://{{IP}}:{{PORT}}/{{ENTRY_FILE}}.bundle?platform=ios")
-    #else
-    let bundleUrl = RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "{{ENTRY_FILE}}", fallbackResource: nil)
-    #endif
+    let bundleUrl = {{BUNDLE}}
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.

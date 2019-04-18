@@ -223,6 +223,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         `${appPath}/exportOptions.plist`,
         '-exportPath',
         `${exportPath}`,
+        '-allowProvisioningUpdates',
     ];
     logDebug('running', p);
 
@@ -271,24 +272,21 @@ const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
         createPlatformBuild(c, platform)
             .then(() => configureXcodeProject(c, platform))
-            .then(() => {
-                _configureAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, ip);
-                resolve(c);
-            })
+            .then(() => _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip))
+            .then(() => resolve(c))
             .catch(e => reject(e));
         return;
     }
     if (!fs.existsSync(path.join(appFolder, 'Pods'))) {
         logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
         configureXcodeProject(c, platform)
-            .then(() => {
-                _configureAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, ip);
-                resolve();
-            })
+            .then(() => _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip))
+            .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
-        _configureAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, ip);
-        resolve();
+        _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip)
+            .then(() => resolve(c))
+            .catch(e => reject(e));
     }
 });
 
@@ -302,7 +300,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
     copyAppleAssets(c, platform, appFolderName)
-        .then(() => configureProject(c, platform, appFolderName, ip, port))
+        .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => resolve())
         .catch((e) => {
@@ -311,7 +309,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
                 runPod('update', getAppFolder(c, platform))
                     .then(() => copyAppleAssets(c, platform, appFolderName))
                     .then(() => copyBuildsFolder(c, platform))
-                    .then(() => configureProject(c, platform, appFolderName, ip, port))
+                    .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
@@ -320,11 +318,13 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         });
 });
 
-const _configureAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => {
-    logTask(`_configureAppDelegate:${platform}:${ip}:${port}`);
+const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+    logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
+    const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const tId = getConfigProp(c, platform, 'teamID');
     let bundle;
     if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
@@ -340,13 +340,36 @@ const _configureAppDelegate = (c, platform, appFolder, appFolderName, isBundled 
             { pattern: '{{IP}}', override: ip },
             { pattern: '{{PORT}}', override: port },
         ]);
-};
 
-const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
-    logTask(`configureProject:${platform}:${appFolderName}:${ip}:${port}`);
+    writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
+        path.join(appFolder, 'exportOptions.plist'),
+        [
+            { pattern: '{{TEAM_ID}}', override: tId },
+        ]);
+
+
+    const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
+    const xcodeProj = xcode.project(projectPath);
+    xcodeProj.parse((err) => {
+        const appId = getAppId(c, platform);
+        if (tId) {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
+        } else {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
+        }
+
+        xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
+
+        resolve();
+    });
+});
+
+const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+    logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
 
     const appFolder = getAppFolder(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const tId = getConfigProp(c, platform, 'teamID');
 
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
@@ -408,8 +431,8 @@ const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse((err) => {
         const appId = getAppId(c, platform);
-        if (c.appConfigFile.platforms[platform].teamID) {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', c.appConfigFile.platforms[platform].teamID);
+        if (tId) {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
         } else {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
@@ -451,14 +474,6 @@ const configureProject = (c, platform, appFolderName, ip = 'localhost', port = 8
                 { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
                 { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
             ]);
-
-
-        writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
-            path.join(appFolder, 'exportOptions.plist'),
-            [
-                { pattern: '{{TEAM_ID}}', override: c.appConfigFile.platforms[platform].teamID },
-            ]);
-
 
         resolve();
     });
