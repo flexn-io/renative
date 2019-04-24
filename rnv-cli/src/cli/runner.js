@@ -218,6 +218,7 @@ const _export = c => new Promise((resolve, reject) => {
     case TVOS:
         configureIfRequired(c, platform)
             .then(() => prepareXcodeProject(c, platform))
+            .then(() => packageBundleForXcode(c, platform))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => exportXcodeProject(c, platform))
             .then(() => resolve())
@@ -249,6 +250,7 @@ const _build = c => new Promise((resolve, reject) => {
     case TVOS:
         configureIfRequired(c, platform)
             .then(() => prepareXcodeProject(c, platform))
+            .then(() => packageBundleForXcode(c, platform))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
