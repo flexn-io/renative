@@ -230,6 +230,25 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 
             return;
         }
+    } else {
+        const platforms = c.appConfigFile.platforms;
+        cmds = [];
+        for (const k in platforms) {
+            if (!fs.existsSync(k)) {
+                logWarning(`Platform ${k} not created yet. creating one for you...`);
+
+                const newCommand = Object.assign({}, c);
+                newCommand.subCommand = 'configure';
+                newCommand.program = { appConfig: c.defaultAppConfigId, platform };
+                cmds.push(platformRunner(newCommand));
+            }
+        }
+
+        Promise.all(cmds)
+            .then(() => resolve())
+            .catch(e => reject(e));
+
+        return;
     }
     resolve();
 });
