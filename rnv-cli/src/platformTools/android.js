@@ -245,11 +245,14 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
 
     shell.cd(`${appFolder}`);
-    shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', () => {
+    shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', (error) => {
+        if (error) {
+            logError(`Command 'gradlew assembleRelease -x bundleReleaseJsAndAssets' failed with error code ${error}`);
+            return;
+        }
+
         logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))}.`);
         resolve();
-    }, (e) => {
-        logError(e);
     });
 });
 
