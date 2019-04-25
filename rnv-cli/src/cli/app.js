@@ -72,7 +72,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
     logTask(`_runConfigure:${p}`);
 
-    executePipe(c, 'app:configure:before')
+    executePipe(c, PIPES.APP_CONFIGURE_BEFORE)
         .then(() => _checkAndCreatePlatforms(c, c.program.platform))
         .then(() => copyRuntimeAssets(c))
         .then(() => _runPlugins(c, c.rnvPluginsFolder))
@@ -91,7 +91,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => (_isOK(c, p, [KAIOS]) ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
-        .then(() => executePipe(c, 'app:configure:after'))
+        .then(() => executePipe(c, PIPES.APP_CONFIGURE_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));
 });

@@ -6,6 +6,7 @@ import {
     logError, getAppFolder, logInfo, getQuestion, logSuccess,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
+import { executePipe } from '../buildHooks';
 import AppCLI from './app';
 
 const CONFIGURE = 'configure';
@@ -75,9 +76,11 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
     logTask(`_runCreatePlatforms:${p}`);
 
-    cleanPlaformBuild(c, p)
+    executePipe(c, PIPES.PLATFORM_CONFIGURE_BEFORE)
+        .then(() => cleanPlaformBuild(c, p))
         .then(() => _runCleanPlaformAssets(c))
         .then(() => _runCopyPlatforms(c, p))
+        .then(() => executePipe(c, PIPES.PLATFORM_CONFIGURE_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));
 });
