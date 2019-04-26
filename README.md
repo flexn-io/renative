@@ -479,7 +479,15 @@ const pipes = {
 
 Example code above will execute `hooks.hello()` before every time you run `rnv app configure` commands
 
-List of pipe hooks:
+#### Run Multiple Pipes on One Hook
+
+```js
+const pipes = {
+    'app:configure:before': [hooks.hello, hooks.someOtherHook],
+};
+```
+
+List of available pipe hooks:
 
 ```
 'run:before', 'run:after',
@@ -491,6 +499,57 @@ List of pipe hooks:
 'deploy:before', 'deploy:after',
 'app:configure:before', 'app:configure:after',
 'platform:configure:before', 'platform:configure:after'
+```
+
+List of available config props injected into hooks methods:
+
+```js
+c.program
+c.process
+c.command
+c.subCommand
+c.appID
+c.rnvRootFolder
+c.rnvHomeFolder
+c.rnvPlatformTemplatesFolder
+c.rnvPluginTemplatesFolder
+c.rnvPluginTemplatesConfigPath
+c.rnvPackagePath
+c.rnvPluginsFolder
+c.rnvPackage
+c.platform
+c.projectRootFolder
+c.buildHooksFolder
+c.buildHooksDistFolder
+c.buildHooksIndexPath
+c.buildHooksDistIndexPath
+c.projectSourceFolder
+c.projectNpmLinkPolyfillPath
+c.homeFolder
+c.globalConfigFolder
+c.globalConfigPath
+c.projectConfigPath
+c.projectConfigLocalPath
+c.projectPackagePath
+c.rnCliConfigPath
+c.babelConfigPath
+c.projectConfigFolder
+c.projectPluginsFolder
+c.projectConfig
+c.globalConfigFolder
+c.globalConfigPath
+c.appConfigsFolder
+c.entryFolder
+c.platformTemplatesFolder
+c.platformAssetsFolder
+c.platformBuildsFolder
+c.projectPluginsFolder
+c.nodeModulesFolder
+c.runtimeConfigPath
+c.projectConfigFolder
+c.pluginConfigPath
+c.permissionsConfigPath
+c.fontsConfigFolder
 ```
 
 ---
