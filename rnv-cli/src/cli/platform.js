@@ -77,7 +77,7 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
     logTask(`_runCreatePlatforms:${p}`);
 
     executePipe(c, PIPES.PLATFORM_CONFIGURE_BEFORE)
-        .then(() => cleanPlaformBuild(c, p))
+        .then(() => cleanPlatformBuild(c, p))
         .then(() => _runCleanPlaformAssets(c))
         .then(() => _runCopyPlatforms(c, p))
         .then(() => executePipe(c, PIPES.PLATFORM_CONFIGURE_AFTER))
@@ -190,8 +190,8 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     });
 });
 
-const cleanPlaformBuild = (c, platform) => new Promise((resolve, reject) => {
-    logTask('cleanPlaformBuild');
+const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
+    logTask('cleanPlatformBuild');
 
     const cleanTasks = [];
 
@@ -229,6 +229,6 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { createPlatformBuild, cleanPlaformBuild, PIPES };
+export { createPlatformBuild, cleanPlatformBuild, PIPES };
 
 export default run;
