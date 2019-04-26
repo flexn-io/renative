@@ -335,19 +335,19 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
     logTask('configureRnvGlobal');
     // Check globalConfigFolder
     if (fs.existsSync(c.globalConfigFolder)) {
-        console.log('.rnv folder exists!');
+        console.log(`${c.globalConfigFolder} folder exists!`);
     } else {
-        console.log('.rnv folder missing! Creating one for you...');
+        console.log(`${c.globalConfigFolder} folder missing! Creating one for you...`);
         mkdirSync(c.globalConfigFolder);
     }
 
     // Check globalConfig
     if (fs.existsSync(c.globalConfigPath)) {
-        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} file exists!`);
+        console.log(`${c.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} file exists!`);
     } else {
-        console.log(`.rnv/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
+        console.log(`${c.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
         copyFileSync(path.join(c.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME), c.globalConfigPath);
-        console.log(`Don\'t forget to Edit: .rnv/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`);
+        console.log(`Don\'t forget to Edit: ${c.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`);
     }
 
     if (fs.existsSync(c.globalConfigPath)) {
