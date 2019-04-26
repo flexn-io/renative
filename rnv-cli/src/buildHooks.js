@@ -31,7 +31,7 @@ const executeHook = c => new Promise((resolve, reject) => {
 
     buildHooks(c).then(() => {
         if (c.buildHooks[c.program.exeMethod]) {
-            c.buildHooks[c.program.exeMethod](c).then(() => resolve()).catch(e => reject());
+            c.buildHooks[c.program.exeMethod](c).then(() => resolve()).catch(e => reject(e));
         } else {
             reject(`Method name ${chalk.white(c.program.exeMethod)} does not exists in your buildHooks!`);
         }
@@ -45,10 +45,10 @@ const executePipe = (c, key) => new Promise((resolve, reject) => {
         const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
         if (Array.isArray(pipe)) {
-            const chain = pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve()).then(() => resolve()).catch(e => reject());
+            const chain = pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve()).then(() => resolve()).catch(e => reject(e));
             return;
         } if (pipe) {
-            c.buildPipes[key](c).then(() => resolve()).catch(e => reject());
+            c.buildPipes[key](c).then(() => resolve()).catch(e => reject(e));
             return;
         }
 

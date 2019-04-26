@@ -195,6 +195,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         'archive',
         '-archivePath',
         `${exportPath}/${scheme}.xcarchive`,
+        '-allowProvisioningUpdates',
     ];
 
     logDebug('running', p);
