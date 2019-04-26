@@ -97,9 +97,12 @@
       "android": { "package": "com.reactnative.ivpusic.imagepicker.PickerPackage"}
     },
     "react-native-svg" : {
-      "version": "5.5.1",
+      "version": "9.4.0",
       "ios": { "podName": "RNSVG" },
       "android": { "package": "com.horcrux.svg.SvgPackage"}
+    },
+    "react-native-vector-icons" : {
+      "version": "6.4.2"
     },
     "react-native-webview-bridge" : {
       "version": "0.40.1",

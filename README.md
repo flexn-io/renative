@@ -4,8 +4,8 @@
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
   <p align='center'>
   <img src="https://img.shields.io/badge/Platforms_Supported-12-blue.svg" />
-  <img src="https://img.shields.io/badge/React_Native-0.58.5-blue.svg" />
-  <img src="https://img.shields.io/badge/React-16.8.3-blue.svg" />
+  <img src="https://img.shields.io/badge/React_Native-0.59.5-blue.svg" />
+  <img src="https://img.shields.io/badge/React-16.8.6-blue.svg" />
   <img src="https://img.shields.io/badge/Plugins-43-red.svg" />
   </p>
 </p>
