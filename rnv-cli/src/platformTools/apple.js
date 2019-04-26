@@ -68,7 +68,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
 
     const appPath = getAppFolder(c, platform);
     const device = c.program.device;
-    const appFolderName = _getAppFolderName(platform);
+    const appFolderName = _getAppFolderName(c, platform);
     const scheme = getConfigProp(c, platform, 'scheme');
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
@@ -173,7 +173,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
 const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`archiveXcodeProject:${platform}`);
 
-    const appFolderName = _getAppFolderName(platform);
+    const appFolderName = _getAppFolderName(c, platform);
     const sdk = platform === IOS ? 'iphoneos' : 'tvos';
 
     const appPath = getAppFolder(c, platform);
@@ -236,7 +236,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
-    const appFolderName = _getAppFolderName(platform);
+    const appFolderName = _getAppFolderName(c, platform);
     const appPath = path.join(getAppFolder(c, platform), appFolderName);
 
     return executeAsync('react-native', [
@@ -257,7 +257,7 @@ const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const device = c.program.device;
     const ip = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c, platform);
-    const appFolderName = _getAppFolderName(platform);
+    const appFolderName = _getAppFolderName(c, platform);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     // CHECK TEAM ID IF DEVICE
@@ -296,7 +296,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     if (process.platform !== 'darwin') return;
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolderName = _getAppFolderName(platform);
+    const appFolderName = _getAppFolderName(c, platform);
 
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
@@ -480,7 +480,13 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     });
 });
 
-const _getAppFolderName = platform => (platform === IOS ? 'RNVApp' : 'RNVAppTVOS');
+const _getAppFolderName = (c, platform) => {
+    const projectFolder = getConfigProp(c, platform, 'projectFolder');
+    if (projectFolder) {
+        return projectFolder;
+    }
+    return (platform === IOS ? 'RNVApp' : 'RNVAppTVOS');
+};
 
 const listAppleDevices = (c, platform) => new Promise((resolve, reject) => {
     logTask(`listAppleDevices:${platform}`);
