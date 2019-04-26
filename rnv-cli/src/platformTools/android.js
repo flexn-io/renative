@@ -16,7 +16,7 @@ import {
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 
-const launchAndroidSimulator = (c, platform, target) => new Promise((resolve, reject) => {
+const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => new Promise((resolve, reject) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
 
     if (target === '?' || target === undefined || target === '') {
@@ -34,9 +34,16 @@ const launchAndroidSimulator = (c, platform, target) => new Promise((resolve, re
                 readline.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), (v) => {
                     const selectedDevice = devicesArr[(parseInt(v, 10) - 1)];
                     if (selectedDevice) {
-                        execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`)
-                            .then(() => resolve())
-                            .catch(e => reject(e));
+                        if (isIndependentThread) {
+                            // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
+                            //     '-avd', `"${selectedDevice.name}"`]);
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
+                            resolve();
+                        } else {
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`)
+                                .then(() => resolve())
+                                .catch(e => reject(e));
+                        }
                     } else {
                         logError(`Wrong choice ${v}! Ingoring`);
                     }
@@ -47,9 +54,19 @@ const launchAndroidSimulator = (c, platform, target) => new Promise((resolve, re
     }
 
     if (target) {
-        execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        if (isIndependentThread) {
+            // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
+            //     '-avd', `"${target}"`]);
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
+            resolve();
+        } else {
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`)
+                .then(() => resolve())
+                .catch(e => reject(e));
+        }
+
+
+        return;
     }
     reject('No simulator -t target name specified!');
 });
@@ -215,10 +232,36 @@ const _runGradle = (c, platform) => new Promise((resolve, reject) => {
                         logError(`Wrong choice ${v}! Ingoring`);
                     }
                 });
+            } else if (c.globalConfig.defaultTargets[platform]) {
+                logWarning(`No connected devices found. Launching ${chalk.white(c.globalConfig.defaultTargets[platform])} emulator!`);
+                launchAndroidSimulator(c, platform, c.globalConfig.defaultTargets[platform], true)
+                    .then(() => _checkForActiveEmulator(c))
+                    .then(device => _runGradleApp(c, platform, appFolder, signingConfig, device))
+                    .then(() => resolve())
+                    .catch(e => reject(e));
             } else {
-                reject('No active or connected devices!');
+                reject(`No active or connected devices! You can launch android emulator with ${chalk.white('rnv target launch -p android -t <TARGET_NAME>')}`);
             }
         }).catch(e => reject(e));
+});
+
+const _checkForActiveEmulator = c => new Promise((resolve, reject) => {
+    let attempts = 1;
+    const maxAttempts = 8;
+    const poll = setInterval(() => {
+        _listAndroidTargets(c, false, true, false).then((v) => {
+            if (v.length > 0) {
+                resolve(v[0]);
+            } else {
+                console.log(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
+                attempts++;
+                if (attempts > maxAttempts) {
+                    clearInterval(poll);
+                    reject('Cannot find any active emulators');
+                }
+            }
+        });
+    }, 2000);
 });
 
 const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Promise((resolve, reject) => {
