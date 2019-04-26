@@ -17,6 +17,7 @@ import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { runKaiOS } from '../platformTools/kaios';
 import { runElectron } from '../platformTools/electron';
+import { executePipe } from '../buildHooks';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject, buildAndroid, runAndroidLog } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';
 
@@ -42,6 +43,8 @@ const PIPES = {
     START_AFTER: 'start:after',
     PACKAGE_BEFORE: 'package:before',
     PACKAGE_AFTER: 'package:after',
+    EXPORT_BEFORE: 'package:before',
+    EXPORT_AFTER: 'package:after',
     BUILD_BEFORE: 'build:before',
     BUILD_AFTER: 'build:after',
     DEPLOY_BEFORE: 'deploy:before',
@@ -114,9 +117,11 @@ const _runApp = c => new Promise((resolve, reject) => {
     switch (platform) {
     case IOS:
     case TVOS:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => prepareXcodeProject(c, platform))
             .then(() => runXcodeProject(c, platform, target))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -125,23 +130,29 @@ const _runApp = c => new Promise((resolve, reject) => {
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, reject)) return;
 
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => _runAndroid(c, platform, target, platform === ANDROID_WEAR))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case MACOS:
     case WINDOWS:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => runElectron(c, platform))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case WEB:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => runWeb(c, platform))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -149,24 +160,30 @@ const _runApp = c => new Promise((resolve, reject) => {
     case TIZEN_WATCH:
         if (!checkSdk(c, platform, reject)) return;
 
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => runTizen(c, platform, target))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case WEBOS:
         if (!checkSdk(c, platform, reject)) return;
 
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => runWebOS(c, platform, target))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case KAIOS:
         if (!checkSdk(c, platform, reject)) return;
 
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => runKaiOS(c, platform))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -185,8 +202,10 @@ const _packageApp = c => new Promise((resolve, reject) => {
     switch (platform) {
     case IOS:
     case TVOS:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.PACKAGE_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => packageBundleForXcode(c, platform))
+            .then(() => executePipe(c, PIPES.PACKAGE_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -195,10 +214,12 @@ const _packageApp = c => new Promise((resolve, reject) => {
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, reject)) return;
 
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.PACKAGE_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform, target, platform === ANDROID_WEAR))
+            .then(() => executePipe(c, PIPES.PACKAGE_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -216,11 +237,13 @@ const _export = c => new Promise((resolve, reject) => {
     switch (platform) {
     case IOS:
     case TVOS:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.EXPORT_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => prepareXcodeProject(c, platform))
             .then(() => packageBundleForXcode(c, platform))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => exportXcodeProject(c, platform))
+            .then(() => executePipe(c, PIPES.EXPORT_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -238,26 +261,32 @@ const _build = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform))
             .then(() => buildAndroid(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case IOS:
     case TVOS:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => prepareXcodeProject(c, platform))
             .then(() => packageBundleForXcode(c, platform))
             .then(() => archiveXcodeProject(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case WEB:
-        configureIfRequired(c, platform)
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => configureIfRequired(c, platform))
             .then(() => buildWeb(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -281,6 +310,7 @@ const _log = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
+
         runAndroidLog(c, platform)
             .then(() => resolve())
             .catch(e => reject(e));

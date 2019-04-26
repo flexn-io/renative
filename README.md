@@ -444,9 +444,7 @@ const hooks = {
     }),
 };
 
-const pipes = {
-    'app:configure:before': hooks.hello,
-};
+const pipes = {};
 
 export { pipes, hooks };
 ```
@@ -480,6 +478,20 @@ const pipes = {
 ```
 
 Example code above will execute `hooks.hello()` before every time you run `rnv app configure` commands
+
+List of pipe hooks:
+
+```
+'run:before', 'run:after',
+'log:before', 'log:after',
+'start:before', 'start:after',
+'package:before', 'package:after',
+'package:before', 'package:after',
+'build:before', 'build:after',
+'deploy:before', 'deploy:after',
+'app:configure:before', 'app:configure:after',
+'platform:configure:before', 'platform:configure:after'
+```
 
 ---
 
