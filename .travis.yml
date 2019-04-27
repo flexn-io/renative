@@ -1,0 +1,10 @@
+jobs:
+  include:
+    - stage: test
+      language: node_js
+      node_js: 10.15.3
+      install: yarn
+      script: npm run test
+
+stages:
+  - test
