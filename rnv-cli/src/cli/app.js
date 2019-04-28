@@ -261,6 +261,46 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     // copyFileSync(c.appConfigPath, path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME));
     fs.writeFileSync(path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME), JSON.stringify(c.appConfigFile, null, 2));
+
+    // FONTS
+    let fontsObj = 'export default [';
+
+    if (c.appConfigFile) {
+        if (fs.existsSync(c.fontsConfigFolder)) {
+            fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
+                if (font.includes('.ttf') || font.includes('.otf')) {
+                    const key = font.split('.')[0];
+                    const includedFonts = c.appConfigFile.common.includedFonts;
+                    if (includedFonts) {
+                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                            if (font) {
+                                const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                                if (fs.existsSync(fontSource)) {
+                                    // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                                    // mkdirSync(fontFolder);
+                                    // const fontDest = path.join(fontFolder, font);
+                                    // copyFileSync(fontSource, fontDest);
+                                    fontsObj += `{
+                                          fontFamily: '${key}',
+                                          file: require('../../projectConfig/fonts/${font}'),
+                                      },`;
+                                } else {
+                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    fontsObj += '];';
+    fs.writeFileSync(path.join(c.platformAssetsFolder, 'runtime', 'fonts.js'), fontsObj);
+    const supportFiles = path.resolve(c.rnvHomeFolder, 'supportFiles');
+    copyFileSync(path.resolve(supportFiles, 'fontManager.js'), path.resolve(c.platformAssetsFolder, 'runtime', 'fontManager.js'));
+    copyFileSync(path.resolve(supportFiles, 'fontManager.web.js'), path.resolve(c.platformAssetsFolder, 'runtime', 'fontManager.web.js'));
+
     resolve();
 });
 

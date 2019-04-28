@@ -83,14 +83,14 @@
 
 <br />
 
-[![build](https://travis-ci.org/pavjacko/react-native-vanilla.svg?branch=feat%2Frn59)](https://travis-ci.org/pavjacko/react-native-vanilla)
+[![build](https://travis-ci.org/pavjacko/react-native-vanilla.svg?branch=master)](https://travis-ci.org/pavjacko/react-native-vanilla)
 [![npm version](https://img.shields.io/npm/v/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/reactnativevanilla)
-[![OpenCollective](https://opencollective.com/react-native-vanilla/backers/badge.svg)](#backers)
-[![OpenCollective](https://opencollective.com/react-native-vanilla/sponsors/badge.svg)](#sponsors)
-[![StackOverflow](http://img.shields.io/badge/stackoverflow-react-native-vanilla-blue.svg)]( http://stackoverflow.com/questions/tagged/react-native-vanilla)
+<!-- [![OpenCollective](https://opencollective.com/react-native-vanilla/backers/badge.svg)](#backers) -->
+<!-- [![OpenCollective](https://opencollective.com/react-native-vanilla/sponsors/badge.svg)](#sponsors) -->
+<!-- [![StackOverflow](http://img.shields.io/badge/stackoverflow-react-native-vanilla-blue.svg)]( http://stackoverflow.com/questions/tagged/react-native-vanilla) -->
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 

@@ -115,6 +115,14 @@ const _start = (c, platform) => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case WEB:
+        executePipe(c, PIPES.START_BEFORE)
+            .then(() => configureIfRequired(c, platform))
+            .then(() => runWebDevServer(c, platform, port))
+            .then(() => executePipe(c, PIPES.START_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
 
