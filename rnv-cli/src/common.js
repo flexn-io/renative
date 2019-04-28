@@ -12,7 +12,7 @@ import {
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK,
     RNV_PROJECT_CONFIG_NAME, RNV_GLOBAL_CONFIG_NAME, RNV_APP_CONFIG_NAME, RN_CLI_CONFIG_NAME,
-    SAMPLE_APP_ID, RN_BABEL_CONFIG_NAME, RNV_PROJECT_CONFIG_LOCAL_NAME,
+    SAMPLE_APP_ID, RN_BABEL_CONFIG_NAME, RNV_PROJECT_CONFIG_LOCAL_NAME, DEFAULT_PORTS,
 } from './constants';
 import { executeAsync } from './exec';
 
@@ -81,6 +81,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.process = process;
     c.command = cmd;
     c.subCommand = subCmd;
+    c.defaultPorts = DEFAULT_PORTS;
     c.appID = program.appConfigID;
     c.rnvRootFolder = path.join(__dirname, '../..');
     c.rnvHomeFolder = path.join(__dirname, '..');
@@ -127,6 +128,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         reject(`Looks like this directory is not RNV project. Project config ${chalk.white(c.projectConfigPath)} is missing!. You can create new project with ${chalk.white('rnv app create')}`);
     }
     c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
+    c.defaultPorts = Object.assign(DEFAULT_PORTS, c.projectConfig.defaultPorts);
     c.globalConfigFolder = _getPath(c, c.projectConfig.globalConfigFolder, 'globalConfigFolder', c.globalConfigFolder);
     c.globalConfigPath = path.join(c.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.appConfigsFolder = _getPath(c, c.projectConfig.appConfigsFolder, 'appConfigsFolder', c.appConfigsFolder);
@@ -721,6 +723,17 @@ const _setAppConfig = (c, p) => {
     c.appConfigPath = path.join(p, RNV_APP_CONFIG_NAME);
 };
 
+const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
+    if (c.program.reset) {
+        logWarning(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
+        cleanPlatformBuild(c, platform)
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+    } else {
+        resolve();
+    }
+});
+
 
 export {
     SUPPORTED_PLATFORMS, isPlatformSupported, getAppFolder, getAppTemplateFolder,
@@ -728,7 +741,7 @@ export {
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, copyBuildsFolder,
     getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,
-    getQuestion, logSuccess, getConfigProp, getIP,
+    getQuestion, logSuccess, getConfigProp, getIP, cleanPlatformIfRequired,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
@@ -767,6 +780,7 @@ export default {
     logSuccess,
     getConfigProp,
     getIP,
+    cleanPlatformIfRequired,
     IOS,
     ANDROID,
     ANDROID_TV,

@@ -119,7 +119,19 @@
       }
     },
     "macos": {
-      "entryFile": "index.macos"
+      "entryFile": "index.macos",
+      "buildSchemes": {
+        "debug": {
+          "id": "reactnativevanilla.helloworld.debug",
+          "mainScript": "main.dev",
+          "bundleAssets": false
+        },
+        "release": {
+          "mainScript": "main",
+          "bundleAssets": true,
+          "bundleIsDev": false
+        }
+      }
     },
     "tizen": {
       "appName": "RNVanillaTV",

@@ -191,7 +191,7 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
-    logTask('cleanPlatformBuild');
+    logTask(`cleanPlatformBuild:${platform}`);
 
     const cleanTasks = [];
 

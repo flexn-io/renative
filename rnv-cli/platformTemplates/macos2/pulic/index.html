@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" width=device-width, initial-scale=1, shrink-to-fit=no />
+        <link rel="manifest" href="manifest.json" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link rel="stylesheet" href="app.css" />
+        <title>RNVApp</title>
+    </head>
+    <body>
+      <div id="root"></div>
+      <script>
+      {
+        const scripts = [];
+        if (process.env.NODE_ENV === 'development') {
+          scripts.push('../dll/renderer.dev.dll.js');
+        }
+        const port = process.env.PORT || 1212;
+        scripts.push(
+          process.env.HOT
+            ? 'http://localhost:' + port + '/dist/renderer.dev.js'
+            : './dist/renderer.prod.js'
+        );
+      }
+    </script>
+  <script type="text/javascript" src="assets/fetch.js"></script><script type="text/javascript" src="assets/polyfill.js"></script><script type="text/javascript" src="assets/bundle.js"></script></body>
+    </body>
+</html>

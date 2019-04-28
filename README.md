@@ -83,10 +83,15 @@
 
 <br />
 
+[![build](https://travis-ci.org/pavjacko/react-native-vanilla.svg?branch=feat%2Frn59)](https://travis-ci.org/pavjacko/react-native-vanilla)
 [![npm version](https://img.shields.io/npm/v/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
-[![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/reactnativevanilla)
+[![OpenCollective](https://opencollective.com/react-native-vanilla/backers/badge.svg)](#backers)
+[![OpenCollective](https://opencollective.com/react-native-vanilla/sponsors/badge.svg)](#sponsors)
+[![StackOverflow](http://img.shields.io/badge/stackoverflow-react-native-vanilla-blue.svg)]( http://stackoverflow.com/questions/tagged/react-native-vanilla)
+[![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
 > The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows` and `KaiOS` platforms
@@ -653,6 +658,12 @@ rnv run -p ios -s release -d
 
 #### Advanced
 
+Clean and Re-build platform project
+
+```
+rnv run -p ios -r
+```
+
 Launch app with specific iOS simulator
 
 ```
@@ -769,6 +780,12 @@ rnv run -p android -s release -d
 
 #### Advanced
 
+Clean and Re-build platform project
+
+```
+rnv run -p android -r
+```
+
 Launch specific android emulator:
 ```
 rnv target launch -p android -t Nexus_5X_API_26
@@ -849,6 +866,12 @@ rnv run -p tvos
 
 #### Advanced
 
+Clean and Re-build platform project
+
+```
+rnv run -p tvos -r
+```
+
 Launch with specific tvOS simulator
 
 ```
@@ -902,6 +925,12 @@ rnv run -p androidtv
 ```
 
 #### Advanced
+
+Clean and Re-build platform project
+
+```
+rnv run -p androidtv -r
+```
 
 Launch specific emulator:
 ```
@@ -957,6 +986,12 @@ rnv build -p web
 your deployable web app folder will be located in `./platformBuilds/<APP_ID>_web/public`
 
 #### Advanced
+
+Clean and Re-build platform project
+
+```
+rnv run -p web -r
+```
 
 Run with verbose logging:
 
@@ -1031,6 +1066,12 @@ rnv run -p tizen
 
 #### Advanced
 
+Clean and Re-build platform project
+
+```
+rnv run -p tizen -r
+```
+
 Launch with specific Tizen simulator:
 
 ```
@@ -1097,6 +1138,12 @@ rnv run -p tizenwatch
 ```
 
 #### Advanced
+
+Clean and Re-build platform project
+
+```
+rnv run -p tizenwatch -r
+```
 
 Launch with specific Tizen Watch simulator:
 
@@ -1285,6 +1332,12 @@ rnv run -p androidwear
 ```
 
 #### Advanced
+
+Clean and Re-build platform project
+
+```
+rnv run -p androidwear -r
+```
 
 Launch specific emulator:
 
