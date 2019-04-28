@@ -126,8 +126,11 @@ const _start = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const _runApp = c => new Promise((resolve, reject) => {
-    logTask('_runApp');
     const { platform } = c;
+    const port = c.program.port || c.defaultPorts[platform];
+
+    logTask(`_runApp:${platform}:${port}`);
+
     if (!isPlatformSupported(platform, null, reject)) return;
 
     const target = c.program.target || c.globalConfig.defaultTargets[platform];
@@ -164,7 +167,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => runElectron(c, platform))
+            .then(() => runElectron(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));

@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import chalk from 'chalk';
-import child_process from 'child_process';
+import { spawn, execSync } from 'child_process';
 import { createPlatformBuild } from '../cli/platform';
 import { executeAsync, execShellAsync } from '../exec';
 import {
@@ -80,30 +80,47 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 const buildElectron = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildElectron:${platform}`);
 
-    const elc = path.resolve(c.nodeModulesFolder, 'electron/cli.js');
-
     const appFolder = getAppFolder(c, platform);
     buildWeb(c, platform)
-        .then(() => shell.exec(`${elc} ${appFolder}`))
+        .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const runElectron = (c, platform) => new Promise((resolve, reject) => {
+const runElectron = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runElectron:${platform}`);
 
-    // if (bundleAssets) {
-    //     packageBundleForXcode(c, platform, bundleIsDev)
-    //         .then(v => executeAsync('react-native', p))
-    //         .then(() => resolve()).catch(e => reject(e));
-    // } else {
-    //     executeAsync('react-native', p).then(() => resolve()).catch(e => reject(e));
-    // }
 
     const elc = path.resolve(c.nodeModulesFolder, 'electron/cli.js');
-
     const appFolder = getAppFolder(c, platform);
-    console.log(`${elc} ${appFolder}`);
-    shell.exec(`${elc} ${appFolder}`);
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+
+    if (bundleAssets) {
+        buildElectron(c, platform, bundleIsDev)
+            .then(v => _runElectronSimulator(c, platform))
+            .then(() => resolve()).catch(e => reject(e));
+    } else {
+        _runElectronSimulator(c, platform)
+            .then(() => runElectronDevServer(c, platform, port))
+            .then(() => resolve()).catch(e => reject(e));
+    }
+});
+
+const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
+    const appFolder = getAppFolder(c, platform);
+    const elc = path.resolve(c.nodeModulesFolder, 'electron/cli.js');
+
+    const child = spawn(elc, [appFolder], {
+        detached: true,
+        shell: true,
+        env: process.env,
+        stdio: 'inherit',
+    })
+        .on('close', code => process.exit(code))
+        .on('error', spawnError => console.error(spawnError));
+
+    child.unref();
+    resolve();
 });
 
 const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject) => {

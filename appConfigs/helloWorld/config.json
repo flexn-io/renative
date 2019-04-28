@@ -123,11 +123,9 @@
       "buildSchemes": {
         "debug": {
           "id": "reactnativevanilla.helloworld.debug",
-          "mainScript": "main.dev",
           "bundleAssets": false
         },
         "release": {
-          "mainScript": "main",
           "bundleAssets": true,
           "bundleIsDev": false
         }
