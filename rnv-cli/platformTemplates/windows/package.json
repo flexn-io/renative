@@ -3,7 +3,7 @@
   "productName": "{{APP_TITLE}} Windows",
   "version": "{{APP_VERSION}}",
   "description": "{{APP_DESCRIPTION}}",
-  "main": "./main.js",
+  "main": "{{ENTRY_MAIN}}",
   "author": {
     "name": "{{AUTHOR_NAME}}",
     "email": "{{AUTHOR_EMAIL}}",
