@@ -6,7 +6,9 @@ import {
     getAppFolder, isPlatformActive, checkSdk, logWarning, configureIfRequired,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH, copyBuildsFolder,
+    getAppTemplateFolder,
 } from '../common';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 function buildWeb(c, platform) {
     logTask(`buildWeb:${platform}`);
@@ -39,7 +41,8 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const wpConfig = path.join(appFolder, 'webpack.config.dev.js');
+    const templateFolder = getAppTemplateFolder(c, platform);
+    const wpConfig = path.join(appFolder, 'webpack.config.js');
     const wpPublic = path.join(appFolder, 'public');
 
     const wds = path.resolve(c.nodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
@@ -48,5 +51,17 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     resolve();
 });
 
+const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
+    logTask(`runWebDevServer:${platform}`);
 
-export { buildWeb, runWeb, configureWebProject };
+    const appFolder = getAppFolder(c, platform);
+    const templateFolder = getAppTemplateFolder(c, platform);
+    copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'), path.join(appFolder, 'webpack.config.js'));
+
+    runWeb(c, platform, port)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+
+export { buildWeb, runWeb, configureWebProject, runWebDevServer };

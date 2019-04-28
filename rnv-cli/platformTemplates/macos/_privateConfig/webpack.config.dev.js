@@ -7,9 +7,10 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const appDirectory = path.resolve(__dirname, '../../');
 const platformBuildsDir = path.resolve(__dirname, '../');
 const appBuildDirectory = path.resolve(__dirname);
-const platform = 'web';
-const platformFamily = 'web';
+const platform = 'macos';
+const platformFamily = 'desktop';
 const formFactor = 'desktop';
+const platformFallback = 'web';
 const config = {};
 
 const babelLoaderConfiguration = {
@@ -74,7 +75,7 @@ module.exports = {
     output: {
         filename: '[name].js',
         publicPath: '/assets/',
-        path: path.resolve(appBuildDirectory, './public/assets'),
+        path: path.resolve(appBuildDirectory, './assets'),
     },
 
     module: {
@@ -109,6 +110,7 @@ module.exports = {
             `.${platform}.js`,
             `.${platformFamily}.js`,
             `.${formFactor}.js`,
+            `.${platformFallback}.js`,
             '.js',
         ],
         alias: {

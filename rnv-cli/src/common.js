@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import detectPort from 'detect-port';
 import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from './fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
@@ -683,7 +684,7 @@ const writeCleanFile = (source, destination, overrides) => {
         logWarning(`destination path doesn't exists: ${destination}. will create new one`);
         // return;
     }
-    const pFile = fs.readFileSync(source).toString();
+    const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
     overrides.forEach((v) => {
         const regEx = new RegExp(v.pattern, 'g');
@@ -691,7 +692,7 @@ const writeCleanFile = (source, destination, overrides) => {
     });
 
 
-    fs.writeFileSync(destination, pFileClean);
+    fs.writeFileSync(destination, pFileClean, 'utf8');
 };
 
 const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
@@ -732,6 +733,21 @@ const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) =
     } else {
         resolve();
     }
+});
+
+const checkPortInUse = (c, platform) => new Promise((resolve, reject) => {
+    // detectPort(port, (err: ?Error, availablePort: number) => {
+    //   if (port !== String(availablePort)) {
+    //     throw new Error(
+    //       chalk.whiteBright.bgRed.bold(
+    //         `Port "${port}" on "localhost" is already in use. Please use another port. ex: PORT=4343 yarn dev`
+    //       )
+    //     );
+    //   } else {
+    //     process.exit(0);
+    //   }
+    // });
+    resolve();
 });
 
 

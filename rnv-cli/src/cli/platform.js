@@ -224,7 +224,7 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
 
     const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
     const ptPath = path.join(c.platformTemplatesFolder, `${platform}`);
-    copyFolderContentsRecursiveSync(ptPath, pPath);
+    copyFolderContentsRecursiveSync(ptPath, pPath, false, [path.join(ptPath, '_privateConfig')]);
 
     resolve();
 });

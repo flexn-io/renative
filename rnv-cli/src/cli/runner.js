@@ -13,11 +13,11 @@ import {
 } from '../constants';
 import { executeAsync, execCLI } from '../exec';
 import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundleForXcode, launchAppleSimulator, runAppleLog, prepareXcodeProject } from '../platformTools/apple';
-import { buildWeb, runWeb } from '../platformTools/web';
+import { buildWeb, runWeb, runWebDevServer } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { runKaiOS } from '../platformTools/kaios';
-import { runElectron, buildElectron } from '../platformTools/electron';
+import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
 import { executePipe } from '../buildHooks';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject, buildAndroid, runAndroidLog } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';
@@ -110,7 +110,7 @@ const _start = (c, platform) => new Promise((resolve, reject) => {
     case MACOS:
     case WINDOWS:
         executePipe(c, PIPES.START_BEFORE)
-            .then(() => runWeb(c, platform, port))
+            .then(() => runElectronDevServer(c, platform, port))
             .then(() => executePipe(c, PIPES.START_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -173,7 +173,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => runWeb(c, platform, c.program.port || 8080))
+            .then(() => runWebDevServer(c, platform, c.program.port || 8080))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));

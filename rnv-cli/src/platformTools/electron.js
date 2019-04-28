@@ -30,6 +30,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const appFolder = getAppFolder(c, platform);
+    const templateFolder = getAppTemplateFolder(c, platform);
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const mainScript = getConfigProp(c, platform, 'mainScript');
@@ -39,15 +40,14 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (!fs.existsSync(packagePath)) {
         logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
         createPlatformBuild(c, platform)
-            // .then(() => copyBuildsFolder(c, platform))
+            .then(() => copyBuildsFolder(c, platform))
             .then(() => configureElectronProject(c, platform))
             .then(() => resolve(c))
             .catch(e => reject(e));
         return;
     }
 
-
-    const pkgJson = path.join(getAppTemplateFolder(c, platform), 'package.json');
+    const pkgJson = path.join(templateFolder, 'package.json');
     const packageJson = JSON.parse(fs.readFileSync(pkgJson));
 
     packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
@@ -58,13 +58,21 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     packageJson.license = `${getAppLicense(c, platform)}`;
     packageJson.main = './main.js';
 
+
     fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
 
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), `${mainScript}.js`),
-        path.join(appFolder, 'main.js'),
-        [
-            { pattern: '{{DEV_SERVER}}', override: `http://0.0.0.0:${c.defaultPorts[platform]}` },
-        ]);
+    if (bundleAssets) {
+        copyFileSync(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'));
+        copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.js'), path.join(appFolder, 'webpack.config.js'));
+    } else {
+        writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'),
+            path.join(appFolder, 'main.js'),
+            [
+                { pattern: '{{DEV_SERVER}}', override: `http://0.0.0.0:${c.defaultPorts[platform]}` },
+            ]);
+        copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'), path.join(appFolder, 'webpack.config.js'));
+    }
+
 
     resolve();
 });
@@ -98,4 +106,16 @@ const runElectron = (c, platform) => new Promise((resolve, reject) => {
     shell.exec(`${elc} ${appFolder}`);
 });
 
-export { configureElectronProject, runElectron, buildElectron };
+const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject) => {
+    logTask(`runElectronDevServer:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    const templateFolder = getAppTemplateFolder(c, platform);
+    copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'), path.join(appFolder, 'webpack.config.js'));
+
+    runWeb(c, platform, port)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+export { configureElectronProject, runElectron, buildElectron, runElectronDevServer };
