@@ -10,8 +10,9 @@ import {
     getAppFolder, isPlatformActive, configureIfRequired, getAppConfigId,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
     getEntryFile, getAppDescription, getAppAuthor, getAppLicense, logWarning, copyBuildsFolder, getConfigProp,
+    checkPortInUse, logInfo,
 } from '../common';
-import { buildWeb, runWeb } from './web';
+import { buildWeb, runWeb, runWebDevServer } from './web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
@@ -100,9 +101,18 @@ const runElectron = (c, platform, port) => new Promise((resolve, reject) => {
             .then(v => _runElectronSimulator(c, platform))
             .then(() => resolve()).catch(e => reject(e));
     } else {
-        _runElectronSimulator(c, platform)
-            .then(() => runElectronDevServer(c, platform, port))
-            .then(() => resolve()).catch(e => reject(e));
+        checkPortInUse(c, platform, port).then((isPortActive) => {
+            if (!isPortActive) {
+                logInfo(`Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(port)} is not running. Starting it up for you...`);
+                _runElectronSimulator(c, platform)
+                    .then(() => runElectronDevServer(c, platform, port))
+                    .then(() => resolve()).catch(e => reject(e));
+            } else {
+                logInfo(`Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(port)} is already running. RNV Will use it!`);
+                _runElectronSimulator(c, platform)
+                    .then(() => resolve()).catch(e => reject(e));
+            }
+        }).catch(e => reject(e));
     }
 });
 
@@ -130,7 +140,7 @@ const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject
     const templateFolder = getAppTemplateFolder(c, platform);
     copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'), path.join(appFolder, 'webpack.config.js'));
 
-    runWeb(c, platform, port)
+    runWebDevServer(c, platform, port)
         .then(() => resolve())
         .catch(e => reject(e));
 });

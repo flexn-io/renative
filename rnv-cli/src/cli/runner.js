@@ -176,7 +176,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => runWebDevServer(c, platform, c.program.port || 8080))
+            .then(() => runWeb(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));

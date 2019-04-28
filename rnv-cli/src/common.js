@@ -735,19 +735,14 @@ const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) =
     }
 });
 
-const checkPortInUse = (c, platform) => new Promise((resolve, reject) => {
-    // detectPort(port, (err: ?Error, availablePort: number) => {
-    //   if (port !== String(availablePort)) {
-    //     throw new Error(
-    //       chalk.whiteBright.bgRed.bold(
-    //         `Port "${port}" on "localhost" is already in use. Please use another port. ex: PORT=4343 yarn dev`
-    //       )
-    //     );
-    //   } else {
-    //     process.exit(0);
-    //   }
-    // });
-    resolve();
+const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
+    detectPort(port, (err, availablePort) => {
+        if (err) {
+            reject(err);
+            return;
+        }
+        resolve(port !== availablePort);
+    });
 });
 
 
@@ -757,7 +752,7 @@ export {
     isPlatformActive, isSdkInstalled, checkSdk, logEnd, logWarning, configureIfRequired,
     getAppId, getAppTitle, getAppVersion, getAppVersionCode, writeCleanFile, copyBuildsFolder,
     getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,
-    getQuestion, logSuccess, getConfigProp, getIP, cleanPlatformIfRequired,
+    getQuestion, logSuccess, getConfigProp, getIP, cleanPlatformIfRequired, checkPortInUse,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
@@ -797,6 +792,7 @@ export default {
     getConfigProp,
     getIP,
     cleanPlatformIfRequired,
+    checkPortInUse,
     IOS,
     ANDROID,
     ANDROID_TV,

@@ -146,7 +146,17 @@
       "certificateProfile": "RNVanillaCert"
     },
     "web": {
-      "entryFile": "index.web"
+      "entryFile": "index.web",
+      "buildSchemes": {
+        "debug": {
+          "id": "reactnativevanilla.helloworld.debug",
+          "bundleAssets": false
+        },
+        "release": {
+          "bundleAssets": true,
+          "bundleIsDev": false
+        }
+      }
     },
     "webos": {
       "entryFile": "index.webos"
