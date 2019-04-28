@@ -1244,6 +1244,14 @@ rnv run -p webos
 rnv run -p macos
 ```
 
+#### Deploy on Electron Simulator
+
+This will run production version on your simulator (not connected to devserver)
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+
+```
+rnv run -p macos -s release
+```
 
 ---
 
