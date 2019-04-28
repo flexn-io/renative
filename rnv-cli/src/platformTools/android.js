@@ -273,7 +273,7 @@ const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Pro
             if (!fs.existsSync(apkPath)) {
                 apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
             }
-            return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', apkPath]);
+            return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
         })
         .then(() => (device.isDevice ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081']) : Promise.resolve()))
         .then(() => executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'shell', 'am', 'start', '-n', `${bundleId}/.MainActivity`]))
