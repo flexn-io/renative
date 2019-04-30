@@ -17,7 +17,6 @@ const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shr
 
 const babelLoaderConfiguration = {
     test: /\.js$/,
-    // Add every directory that needs to be compiled by Babel during the build.
     include: [
         path.resolve(appDirectory, 'src'),
 
@@ -33,7 +32,6 @@ const babelLoaderConfiguration = {
     },
 };
 
-// This is needed for loading css
 const cssLoaderConfiguration = {
     test: /\.css$/,
     use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
@@ -60,10 +58,7 @@ const sourcemapLoaderConfiguration = {
     enforce: 'pre',
 };
 
-
-// todo refactor after demo
 module.exports = {
-    // your web-specific entry file
     entry: {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
@@ -91,11 +86,8 @@ module.exports = {
     },
 
     plugins: [
-        // process.env.NODE_ENV === 'production' must be true for production
-        // builds to eliminate development checks and reduce build size. You may
-        // wish to include additional optimizations.
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(/* process.env.NODE_ENV || */ platformFamily === 'smarttv' ? 'production' : 'development'),
+            'process.env.NODE_ENV': JSON.stringify('development'),
             __DEV__: process.env.NODE_ENV === 'production' || true,
         }),
         new HtmlWebpackPlugin({
@@ -108,9 +100,6 @@ module.exports = {
             },
         }),
         new HtmlWebpackHarddiskPlugin(),
-        new CopyWebpackPlugin([
-            { from: path.resolve(appBuildDirectory, 'app.css'), to: appBuildPublic },
-        ]),
     ],
     resolve: {
         symlinks: false,

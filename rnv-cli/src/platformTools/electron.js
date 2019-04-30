@@ -34,7 +34,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const templateFolder = getAppTemplateFolder(c, platform);
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-    const mainScript = getConfigProp(c, platform, 'mainScript');
 
     const packagePath = path.join(appFolder, 'package.json');
 

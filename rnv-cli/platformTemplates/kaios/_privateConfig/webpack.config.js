@@ -9,9 +9,9 @@ const appDirectory = path.resolve(__dirname, '../../');
 const platformBuildsDir = path.resolve(__dirname, '../');
 const appBuildDirectory = path.resolve(__dirname);
 const appBuildPublic = path.resolve(__dirname, 'public');
-const platform = 'macos';
-const platformFamily = 'desktop';
-const formFactor = 'desktop';
+const platform = 'kaios';
+const platformFamily = 'jsapp';
+const formFactor = 'mobile';
 const platformFallback = 'web';
 const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' } };
 
@@ -19,6 +19,7 @@ const babelLoaderConfiguration = {
     test: /\.js$/,
     include: [
         path.resolve(appDirectory, 'src'),
+        path.resolve(appDirectory, 'entry'),
 
     ],
     use: {
@@ -62,7 +63,7 @@ module.exports = {
     entry: {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(appDirectory, `./index.${platform}.js`),
+        bundle: path.resolve(appDirectory, `index.${platform}.js`),
     },
 
     devServer: config.devServer || {
@@ -92,7 +93,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             alwaysWriteToDisk: true,
-            filename: path.resolve(appBuildDirectory, './public/index.html'),
+            filename: path.resolve(appBuildPublic, './index.html'),
             template: path.resolve(platformBuildsDir, './_shared/template.js'),
             minify: false,
             templateParameters: {
@@ -106,7 +107,7 @@ module.exports = {
         extensions: [
             `.${platform}.js`,
             `.${platformFamily}.js`,
-            `.${formFactor}.js`,
+            // `.${formFactor}.js`,
             `.${platformFallback}.js`,
             '.js',
         ],
