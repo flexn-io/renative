@@ -537,6 +537,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             readline.question(getQuestion(`RNV found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
                 if (configDirs[v]) {
                     c.defaultAppConfigId = configDirs[v];
+                    c.appId = c.defaultAppConfigId;
                     _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
                     _configureConfig(c).then(() => resolve()).catch(e => reject(e));
                 } else {
