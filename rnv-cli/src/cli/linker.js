@@ -15,7 +15,7 @@ import { runXcodeProject } from '../platformTools/apple';
 import { buildWeb, runWeb } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
-import { runKaiOS } from '../platformTools/kaios';
+import { runFirefoxProject } from '../platformTools/firefox';
 import { runElectron } from '../platformTools/electron';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';

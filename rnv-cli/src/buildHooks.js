@@ -13,7 +13,7 @@ import { launchTizenSimulator } from './platformTools/tizen';
 import { launchWebOSimulator } from './platformTools/webos';
 import { launchAndroidSimulator, listAndroidTargets } from './platformTools/android';
 import { listAppleDevices, launchAppleSimulator } from './platformTools/apple';
-import { launchKaiOSSimulator } from './platformTools/kaios';
+import { launchKaiOSSimulator } from './platformTools/firefox';
 import { PIPES as RUNNER_PIPES } from './cli/runner';
 import { PIPES as PLATFORM_PIPES } from './cli/platform';
 import { PIPES as PLUGIN_PIPES } from './cli/plugin';

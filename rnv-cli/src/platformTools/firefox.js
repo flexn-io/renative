@@ -87,8 +87,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const runKaiOS = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`runKaiOS:${platform}`);
+const runFirefoxProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`runFirefoxProject:${platform}`);
 
     buildWeb(c, platform)
         .then(() => launchKaiOSSimulator(c, platform))
@@ -96,4 +96,12 @@ const runKaiOS = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-export { launchKaiOSSimulator, configureKaiOSProject, runKaiOS };
+const buildFirefoxProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`buildFirefoxProject:${platform}`);
+
+    buildWeb(c, platform)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+export { launchKaiOSSimulator, configureKaiOSProject, runFirefoxProject, buildFirefoxProject };

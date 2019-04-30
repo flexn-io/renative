@@ -7,7 +7,8 @@ import {
     cleanPlatformIfRequired,
 } from '../common';
 import {
-    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
+    IOS, TVOS, ANDROID, WEB, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, MACOS,
+    WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
 } from '../constants';
@@ -16,7 +17,7 @@ import { runXcodeProject, exportXcodeProject, archiveXcodeProject, packageBundle
 import { buildWeb, runWeb, runWebDevServer } from '../platformTools/web';
 import { runTizen } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
-import { runKaiOS } from '../platformTools/kaios';
+import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
 import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
 import { executePipe } from '../buildHooks';
 import { packageAndroid, runAndroid, configureAndroidProperties, configureGradleProject, buildAndroid, runAndroidLog } from '../platformTools/android';
@@ -222,7 +223,7 @@ const _runApp = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => runKaiOS(c, platform))
+            .then(() => runFirefoxProject(c, platform))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -342,6 +343,17 @@ const _build = c => new Promise((resolve, reject) => {
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
             .then(() => buildWeb(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case KAIOS:
+    case FIREFOX_OS:
+    case FIREFOX_TV:
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => buildFirefoxProject(c, platform))
             .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
