@@ -3,7 +3,7 @@
   <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
   <p align='center'>
-  <img src="https://img.shields.io/badge/Platforms_Supported-12-blue.svg" />
+  <img src="https://img.shields.io/badge/Platforms_Supported-14-blue.svg" />
   <img src="https://img.shields.io/badge/React_Native-0.59.5-blue.svg" />
   <img src="https://img.shields.io/badge/React-16.8.6-blue.svg" />
   <img src="https://img.shields.io/badge/Plugins-43-red.svg" />
@@ -38,7 +38,7 @@
 
 <table>
   <tr>
-    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th>
+    <th><a href="#ios">iOS</a></th><th><a href="#tvos">tvOS</a></th><th><a href="#android-tv">Android TV</a></th><th><a href="#macos">macOS</a></th><th><a href="#xbox">XXXX</a></th>
   </tr>
   <tr>
     <th>
@@ -49,10 +49,12 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_xbox.gif?raw=true" />
     </th>
   </tr>
   <tr>
-    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen-tv">Tizen TV</a></th><th><a href="#lg-webos">LG webOS</a></th>
+    <th><a href="#android">Android</a></th><th><a href="#web">Web</a></th><th><a href="#tizen-tv">Tizen TV</a></th><th><a href="#lg-webos">LG webOS</a></th><th><a href="#firefoxos">FirefoxOS</a></th>
   </tr>
   <tr>
     <th>
@@ -63,10 +65,12 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxos.gif?raw=true" />
     </th>
   </tr>
   <tr>
-    <th><a href="#tizen-watch">Tizen Watch</a></th><th><a href="#windows">Windows</a></th><th><a href="#android-wear">Android Wear</a></th><th><a href="#kaios">KaiOS</a></th>
+    <th><a href="#tizen-watch">Tizen Watch</a></th><th><a href="#windows">Windows</a></th><th><a href="#android-wear">Android Wear</a></th><th><a href="#kaios">KaiOS</a></th><th><a href="#firefoxtv">Firefox TV</a></th>
   </tr>
   <tr>
     <th>
@@ -77,6 +81,8 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/feat/firefox/rnv_firefoxtv.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -94,7 +100,7 @@
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
-> The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows` and `KaiOS` platforms
+> The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Firefox OS` and `Firefox TV` platforms
 
 -   Ideal starting point for advanced multi-platform projects.
 -   Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
@@ -1397,6 +1403,93 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 rnv run -p kaios
 ```
 
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefox.png?raw=true" width=50 height=50 />
+
+## FirefoxOS
+
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
+#### Requirements
+
+-   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
+
+After installation you can launch it via Applications:
+
+`Tools -> Web Developer -> WebIDE`
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/firefoxos.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
+#### Run
+
+NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+```
+rnv run -p firefoxos
+```
+
+---
+
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefox.png?raw=true" width=50 height=50 />
+
+## FirefoxTV
+
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
+#### Requirements
+
+-   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
+
+After installation you can launch it via Applications:
+
+`Tools -> Web Developer -> WebIDE`
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/firefoxos.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
+#### Run
+
+NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+```
+rnv run -p firefoxtv
+```
 
 
 ---
