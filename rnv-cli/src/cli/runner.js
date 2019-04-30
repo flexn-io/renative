@@ -218,7 +218,7 @@ const _runApp = c => new Promise((resolve, reject) => {
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:
-        if (!checkSdk(c, platform, reject)) return;
+        if (platform === KAIOS && !checkSdk(c, platform, reject)) return;
 
         executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))

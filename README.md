@@ -1405,7 +1405,7 @@ rnv run -p kaios
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefox.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefox.png?raw=true" width=50 height=50 />
 
 ## FirefoxOS
 
@@ -1416,7 +1416,7 @@ rnv run -p kaios
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1449,7 +1449,7 @@ rnv run -p firefoxos
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefox.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefox.png?raw=true" width=50 height=50 />
 
 ## FirefoxTV
 
@@ -1460,7 +1460,7 @@ rnv run -p firefoxos
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxtv.gif?raw=true" />
     </th>
   </tr>
 </table>
