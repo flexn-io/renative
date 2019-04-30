@@ -119,17 +119,17 @@
     </br>
     <a href="#windows">Windows</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxtv.png?raw=true" width=20 height=20 />
     </br>
-    <a href="#android-wear">Android Wear</a>
+    <a href="#firefoxtv">Firefox TV</a>
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_kaios.png?raw=true" width=55 height=20 />
     </br>
     <a href="#kaios">KaiOS</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxtv.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=20 height=20 />
     </br>
-    <a href="#firefoxtv">Firefox TV</a>
+    <a href="#android-wear">Android Wear</a>
     </th>
   </tr>
   <tr>
@@ -138,11 +138,11 @@
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/feat/firefox/rnv_firefoxtv.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/feat/firefox/rnv_firefoxtv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="120" height="120" />
     </th>
   </tr>
 </table>

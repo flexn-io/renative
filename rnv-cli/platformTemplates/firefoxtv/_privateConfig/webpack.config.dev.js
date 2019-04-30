@@ -3,7 +3,7 @@ const Configs = require('../_shared/configs.js');
 const config = {
     metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
     environment: 'development',
-    extensions: ['firefoxtv', 'firefox', 'web'],
+    extensions: ['firefoxtv', 'smarttv', 'firefox', 'web'],
 };
 
 const C = Configs.generateConfig(__dirname, config);

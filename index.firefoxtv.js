@@ -7,7 +7,6 @@ import { FIREFOX_TV, FORM_FACTOR_TV } from './src/constants';
 
 Api.platform = FIREFOX_TV;
 Api.formFactor = FORM_FACTOR_TV;
-Api.platformGroup = 'jsapp';
 
 ReactDOM.render(React.createElement(App), document.getElementById('root'));
 registerServiceWorker();
