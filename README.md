@@ -43,7 +43,7 @@
       </br>
       <a href="#ios">iOS</a>
     </th><th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=20 height=20 />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=36 height=20 />
       </br>
       <a href="#tvos">tvOS</a>
     </th><th>
@@ -79,11 +79,11 @@
     </br>
     <a href="#android">Android</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=80 height=20 />
     </br>
     <a href="#web">Web</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizentv.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizen.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-tv">Tizen TV</a>
     </th><th>
@@ -123,11 +123,11 @@
     </br>
     <a href="#android-wear">Android Wear</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_kaios.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_kaios.png?raw=true" width=55 height=20 />
     </br>
     <a href="#kaios">KaiOS</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxos.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxtv.png?raw=true" width=20 height=20 />
     </br>
     <a href="#firefoxtv">Firefox TV</a>
     </th>
@@ -1510,7 +1510,7 @@ rnv run -p firefoxos
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxtv.png?raw=true" width=50 height=50 />
 
 ## FirefoxTV
 
