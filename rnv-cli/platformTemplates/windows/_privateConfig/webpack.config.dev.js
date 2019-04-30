@@ -7,10 +7,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const appDirectory = path.resolve(__dirname, '../../');
 const platformBuildsDir = path.resolve(__dirname, '../');
 const appBuildDirectory = path.resolve(__dirname);
-const platform = 'windows';
-const platformFamily = 'desktop';
-const formFactor = 'desktop';
-const platformFallback = 'web';
+const extensions = ['windows', 'desktop', 'web'];
 const config = {};
 
 const babelLoaderConfiguration = {
@@ -60,7 +57,7 @@ module.exports = {
     entry: {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(appDirectory, `./index.${platform}.js`),
+        bundle: path.resolve(appDirectory, `./index.${extensions[0]}.js`),
     },
 
     devServer: config.devServer || {
@@ -99,10 +96,7 @@ module.exports = {
     resolve: {
         symlinks: false,
         extensions: [
-            `.${platform}.js`,
-            `.${platformFamily}.js`,
-            `.${formFactor}.js`,
-            `.${platformFallback}.js`,
+            extensions.map(v => `.${v}.js`),
             '.js',
         ],
         alias: {

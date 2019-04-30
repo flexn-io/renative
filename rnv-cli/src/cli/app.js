@@ -313,7 +313,8 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve, reject) => {
 
     mkdirSync(path.resolve(c.platformBuildsFolder, '_shared'));
 
-    copyFileSync(path.resolve(c.platformTemplatesFolder, '_shared/template.js'), path.resolve(c.platformBuildsFolder, '_shared/template.js'));
+    copyFolderContentsRecursiveSync(path.resolve(c.platformTemplatesFolder, '_shared'), path.resolve(c.platformBuildsFolder, '_shared'));
+    // copyFileSync(path.resolve(c.platformTemplatesFolder, '_shared/template.js'), path.resolve(c.platformBuildsFolder, '_shared/template.js'));
 
     if (!fs.existsSync(pluginsPath)) {
         logWarning(`Your project plugin folder ${pluginsPath} does not exists. skipping plugin configuration`);

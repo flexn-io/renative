@@ -88,7 +88,11 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     fs.writeFileSync(manifestFilePath2, JSON.stringify(manifestFile, null, 2));
 
     if (bundleAssets) {
-        copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.js'), path.join(appFolder, 'webpack.config.js'));
+        if (bundleIsDev) {
+            copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'), path.join(appFolder, 'webpack.config.js'));
+        } else {
+            copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.js'), path.join(appFolder, 'webpack.config.js'));
+        }
     } else {
         copyFileSync(path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'), path.join(appFolder, 'webpack.config.js'));
     }

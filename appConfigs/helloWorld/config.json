@@ -75,7 +75,7 @@
         "release": {
           "signingConfig": "Release",
           "bundleAssets": true,
-          "bundleIsDev": false
+          "bundleIsDev": true
         }
       }
     },
