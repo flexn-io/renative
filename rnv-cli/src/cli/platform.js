@@ -169,7 +169,7 @@ const _runCleanPlaformAssets = c => new Promise((resolve, reject) => {
 });
 
 const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
-    logTask('_runCopyPlatforms');
+    logTask(`_runCopyPlatforms:${platform}`);
     const copyPlatformTasks = [];
     if (platform === 'all') {
         for (const k in c.appConfigFile.platforms) {
@@ -183,6 +183,8 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
         const ptPath = path.join(c.platformTemplatesFolder, `${platform}`);
         const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
+    } else {
+        logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.appConfigPath)}`);
     }
 
     Promise.all(copyPlatformTasks).then((values) => {

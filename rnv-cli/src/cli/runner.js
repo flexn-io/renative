@@ -116,6 +116,8 @@ const _start = (c, platform) => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     case WEB:
+    case TIZEN:
+    case WEBOS:
         executePipe(c, PIPES.START_BEFORE)
             .then(() => configureIfRequired(c, platform))
             .then(() => runWebDevServer(c, platform, port))
@@ -213,6 +215,8 @@ const _runApp = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     case KAIOS:
+    case FIREFOX_OS:
+    case FIREFOX_TV:
         if (!checkSdk(c, platform, reject)) return;
 
         executePipe(c, PIPES.RUN_BEFORE)

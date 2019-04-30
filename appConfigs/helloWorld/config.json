@@ -166,6 +166,12 @@
     },
     "kaios": {
       "entryFile": "index.kaios"
+    },
+    "firefoxos": {
+      "entryFile": "index.firefoxos"
+    },
+    "firefoxtv": {
+      "entryFile": "index.firefoxtv"
     }
   }
 }

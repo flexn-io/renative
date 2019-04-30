@@ -7,7 +7,8 @@ import {
 } from '../common';
 import {
     IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, WEB, MACOS,
-    WINDOWS, TIZEN_WATCH, KAIOS, RNV_APP_CONFIG_NAME, RNV_PROJECT_CONFIG_NAME,
+    WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV, RNV_APP_CONFIG_NAME,
+    RNV_PROJECT_CONFIG_NAME,
 } from '../constants';
 import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
@@ -89,6 +90,8 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => (_isOK(c, p, [MACOS]) ? configureElectronProject(c, MACOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [WINDOWS]) ? configureElectronProject(c, WINDOWS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [KAIOS]) ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [FIREFOX_OS]) ? configureKaiOSProject(c, FIREFOX_OS) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [FIREFOX_TV]) ? configureKaiOSProject(c, FIREFOX_TV) : Promise.resolve()))
         .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
         .then(() => executePipe(c, PIPES.APP_CONFIGURE_AFTER))
