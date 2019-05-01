@@ -61,10 +61,6 @@
       <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_macos.png?raw=true" width=20 height=20 />
       </br>
       <a href="#macos">macOS</a>
-    </th><th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=20 height=20 />
-    </br>
-      <a href="#android-wear">Android Wear</a>
     </th>
   </tr>
   <tr>
@@ -76,8 +72,6 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="100" height="100" />
     </th>
   </tr>
   <tr>
@@ -97,10 +91,6 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_webos.png?raw=true" width=20 height=20 />
     </br>
     <a href="#lg-webos">LG webOS</a>
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxos.png?raw=true" width=20 height=20 />
-    </br>
-    <a href="#firefoxos">FirefoxOS</a>
     </th>
   </tr>
   <tr>
@@ -112,15 +102,13 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
-    </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxos.gif?raw=true" />
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizenwatch.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxos.png?raw=true" width=20 height=20 />
     </br>
-    <a href="#tizen-watch">Tizen Watch</a>
+    <a href="#firefoxos">FirefoxOS</a>
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_windows.png?raw=true" width=20 height=20 />
     </br>
@@ -133,18 +121,41 @@
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_kaios.png?raw=true" width=55 height=20 />
     </br>
     <a href="#kaios">KaiOS</a>
-    </th><th>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizenwatch.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxos.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxtv.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+    </th>
+  </tr>
+  
+  <tr>
+    <th>
+    ...</th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizenwatch.png?raw=true" width=20 height=20 />
+    </br>
+    <a href="#tizen-watch">Tizen Watch</a>
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=20 height=20 />
+    </br>
+    <a href="#android-wear">Android Wear</a>
+    </th><th>
+    ...
+    </th>
+  </tr>
+  <tr>
+    <th>
+    ...
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
+    </th><th>
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
     ...
     </th>
