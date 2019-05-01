@@ -14,6 +14,13 @@
    <br />
     <br />
       <br />
+      
+<p align='center'>
+    <a href="https://github.com/pavjacko/react-native-vanilla"><img src="https://img.shields.io/github/stars/pavjacko/react-native-vanilla.svg?style=social" /></a>
+    <a href="https://github.com/pavjacko/react-native-vanilla"><img src="https://img.shields.io/github/forks/pavjacko/react-native-vanilla.svg?style=social" /></a>
+    <a href="https://github.com/pavjacko"><img src="https://img.shields.io/github/followers/pavjacko.svg?label=Follow%20me%20on%20Github&style=social" /></a>
+    <a href="https://twitter.com/pavjacko"><img src="https://img.shields.io/twitter/follow/pavjacko.svg?style=social" /></a>
+</p>
 
 ---
 
