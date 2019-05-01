@@ -453,11 +453,30 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
 RNV Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
+Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
+
 `rnv plugin list`
 
-to add new plugin to your project:
+you should get colorised overview similar to this:
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/cli_plugins.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+add new plugin to your project:
 
 `rnv plugin add`
+
+and follow the command prompt steps
+
+
+Update your current plugins with latest ones from RNV
+
+`rnv plugin update`
 
 and follow the command prompt steps
 
