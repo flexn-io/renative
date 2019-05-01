@@ -16,7 +16,7 @@
     <br />
       <br />
        <br />
-      
+
 <p align='center'>
     <a href="https://github.com/pavjacko/react-native-vanilla"><img src="https://img.shields.io/github/stars/pavjacko/react-native-vanilla.svg?style=social" /></a>
     <a href="https://github.com/pavjacko/react-native-vanilla"><img src="https://img.shields.io/github/forks/pavjacko/react-native-vanilla.svg?style=social" /></a>
@@ -108,7 +108,7 @@
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxos.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxos.png?raw=true" width=20 height=20 />
     </br>
     <a href="#firefoxos">FirefoxOS</a>
     </th><th>
@@ -116,7 +116,7 @@
     </br>
     <a href="#windows">Windows</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxtv.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxtv.png?raw=true" width=20 height=20 />
     </br>
     <a href="#firefoxtv">Firefox TV</a>
     </th><th>
@@ -127,16 +127,16 @@
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxos.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxtv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxtv.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
     </th>
   </tr>
-  
+
   <tr>
     <th>
     ...</th><th>
@@ -1485,7 +1485,7 @@ rnv run -p kaios
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxos.png?raw=true" width=50 height=50 />
 
 ## FirefoxOS
 
@@ -1496,7 +1496,7 @@ rnv run -p kaios
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxos.gif?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1513,7 +1513,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/firefoxos.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/firefoxos.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1529,7 +1529,7 @@ rnv run -p firefoxos
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/ic_firefoxtv.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxtv.png?raw=true" width=50 height=50 />
 
 ## FirefoxTV
 
@@ -1540,7 +1540,7 @@ rnv run -p firefoxos
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/rnv_firefoxtv.gif?raw=true" />
+      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxtv.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1557,7 +1557,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/feat/firefox/docs/firefoxos.png?raw=true" />
+    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/firefoxos.png?raw=true" />
     </th>
   </tr>
 </table>

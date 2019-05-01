@@ -1,7 +1,7 @@
 {
   "name": "react-native-vanilla",
   "title": "React Native Vanilla",
-  "version": "0.20.0-alpha1",
+  "version": "0.20.0",
   "codename": "Ghostbuster",
   "keywords": [
     "react",
@@ -32,7 +32,9 @@
     "windows",
     "desktop",
     "tizen watch",
-    "kaios"
+    "kaios",
+    "firefoxox",
+    "firefox tv"
   ],
   "license": "MIT",
   "private": false,
