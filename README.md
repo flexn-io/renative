@@ -1,4 +1,5 @@
 <p align='center'>
+    <br />
   <h1 align='center'>🚀 React Native Vanilla</h1>
   <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
@@ -14,6 +15,7 @@
    <br />
     <br />
       <br />
+       <br />
       
 <p align='center'>
     <a href="https://github.com/pavjacko/react-native-vanilla"><img src="https://img.shields.io/github/stars/pavjacko/react-native-vanilla.svg?style=social" /></a>
@@ -167,13 +169,15 @@
 [![build](https://travis-ci.org/pavjacko/react-native-vanilla.svg?branch=master)](https://travis-ci.org/pavjacko/react-native-vanilla)
 [![npm version](https://img.shields.io/npm/v/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
 [![npm downloads](https://img.shields.io/npm/dm/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
-[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/github/contributors/pavjacko/react-native-vanilla.svg)](#contributors)
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/reactnativevanilla)
+[![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
+![hits](https://hits.dwyl.com/pavjacko/react-native-vanilla.svg)
+
 <!-- [![OpenCollective](https://opencollective.com/react-native-vanilla/backers/badge.svg)](#backers) -->
 <!-- [![OpenCollective](https://opencollective.com/react-native-vanilla/sponsors/badge.svg)](#sponsors) -->
 <!-- [![StackOverflow](http://img.shields.io/badge/stackoverflow-react-native-vanilla-blue.svg)]( http://stackoverflow.com/questions/tagged/react-native-vanilla) -->
-[![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
 
 > The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Firefox OS` and `Firefox TV` platforms
 
