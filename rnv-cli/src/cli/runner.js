@@ -80,9 +80,9 @@ const run = (c) => {
     case LOG:
         return _log(c);
         break;
-    // case DEPLOY:
-    //     return Promise.resolve();
-    //     break;
+    case DEPLOY:
+        return _deploy(c);
+        break;
     // case UPDATE:
     //     return Promise.resolve();
     //     break;
@@ -292,6 +292,28 @@ const _export = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     }
+
+    logErrorPlatform(platform, resolve);
+});
+
+const _deploy = c => new Promise((resolve, reject) => {
+    logTask('_deploy');
+    const { platform } = c;
+    if (!isPlatformSupported(platform, null, reject)) return;
+
+    // switch (platform) {
+    // case IOS:
+    // case TVOS:
+    // case TVOS:
+    executePipe(c, PIPES.DEPLOY_BEFORE)
+        // .then(() => cleanPlatformIfRequired(c, platform))
+        // .then(() => configureIfRequired(c, platform))
+    // TODO: ADD INTEGRATIONS
+        .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
+        .then(() => resolve())
+        .catch(e => reject(e));
+    return;
+    // }
 
     logErrorPlatform(platform, resolve);
 });

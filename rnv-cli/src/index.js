@@ -22,6 +22,7 @@ const commands = {
     platform: Platform,
     run: Runner,
     package: Runner,
+    deploy: Runner,
     target: Target,
     plugin: Plugin,
     log: Runner,

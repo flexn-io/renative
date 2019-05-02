@@ -594,7 +594,7 @@ const getConfigProp = (c, platform, key) => {
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
     const result = scheme[key] || (c.appConfigFile.platforms[platform][key] || c.appConfigFile.common[key]);
-    logTask(`getConfigProp:${result}`);
+    logTask(`getConfigProp:${platform}:${key}:${result}`);
     return result;
 };
 

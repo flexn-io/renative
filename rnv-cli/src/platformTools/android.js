@@ -225,7 +225,7 @@ const _runGradle = (c, platform) => new Promise((resolve, reject) => {
                 readline.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
                     const selectedDevice = devicesArr[(parseInt(v, 10) - 1)];
                     if (selectedDevice) {
-                        logInfo(`Selected device ${dv.name}:${dv.udid}!`);
+                        logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
                         _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
                             .then(() => resolve()).catch(e => reject(e));
                     } else {
