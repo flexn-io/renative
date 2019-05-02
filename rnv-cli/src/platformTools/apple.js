@@ -75,6 +75,11 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     let p;
 
+    if (!scheme) {
+        reject(`You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(c.appConfigPath)}! Check example config for more info:  ${chalk.blue('https://github.com/pavjacko/react-native-vanilla/blob/master/appConfigs/helloWorld/config.json')} `);
+        return;
+    }
+
     if (device === true) {
         const devicesArr = _getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {

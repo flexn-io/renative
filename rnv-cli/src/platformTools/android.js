@@ -553,14 +553,15 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     // RELEASE CONFIGS
     let releaseConfig = '';
     const globalAppConfigPath = path.join(c.globalConfigFolder, c.appConfigFile.id);
-    if (fs.existsSync(globalAppConfigPath)) {
+    const keystorePath = path.join(globalAppConfigPath, 'release.keystore');
+    if (fs.existsSync(keystorePath)) {
         const releaseConfigValue = fs.readFileSync(path.join(globalAppConfigPath, 'gradle.properties')).toString();
         releaseConfig = `ext {
-  RELEASE_STORE_FILE="${path.join(globalAppConfigPath, 'release.keystore')}"
+  RELEASE_STORE_FILE="${keystorePath}"
   ${releaseConfigValue}
   }`;
     } else {
-        logWarning(`You're missing global keystore path for this app: ${chalk.white(globalAppConfigPath)}. You won't be able to make releases without it!`);
+        logWarning(`You're missing keystore for this app: ${chalk.white(keystorePath)}. You won't be able to make production releases without it!`);
     }
     fs.writeFileSync(path.join(appFolder, 'app/release-configs.gradle'), releaseConfig);
 
