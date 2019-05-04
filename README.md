@@ -1,7 +1,9 @@
 <p align='center'>
     <br />
-  <h1 align='center'>🚀 ReNative</h1>
-  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/renative/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
+    <br />
+  <p align='center'><img width="300" height="300" src="https://github.com/pavjacko/renative/blob/feat/renative/docs/rn_logo_main.png?raw=true" /></p>
+  <br />
+  <br />
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
   <p align='center'>
   <img src="https://img.shields.io/badge/Platforms_Supported-14-blue.svg" />
