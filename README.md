@@ -1,7 +1,7 @@
 <p align='center'>
     <br />
     <br />
-  <p align='center'><img width="300" height="321" src="https://github.com/pavjacko/renative/blob/master/docs/rn_logo_main.png?raw=true" /></p>
+  <p align='center'><img width="300" height="321" src="https://github.com/pavjacko/renative/blob/master/docs/logo-512.png?raw=true" /></p>
   <br />
   <br />
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>

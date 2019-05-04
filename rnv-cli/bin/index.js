@@ -9,6 +9,8 @@ global.Headers = global.fetch.Headers;
 
 const cli = require('../dist/index.js');
 const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json')));
+var cmdValue
+var cmdOption
 
 
 program
@@ -35,10 +37,10 @@ program
 
 program.parse(process.argv);
 
-if (typeof cmdValue === 'undefined') {
-    console.error('no command given!');
-    process.exit(1);
-}
+// if (typeof cmdValue === 'undefined') {
+//     console.error('no command given!');
+//     process.exit(1);
+// }
 // console.log('command:', cmdValue, cmdOption, program);
 
 cli.default.run(cmdValue, cmdOption, program, process);

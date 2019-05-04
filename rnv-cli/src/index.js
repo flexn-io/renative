@@ -34,8 +34,37 @@ const run = (cmd, subCmd, program, process) => {
         .then((v) => {
             if (commands[cmd]) {
                 commands[cmd](v).then(() => logComplete(true)).catch(e => logError(e, true));
+            } else if (program.help) {
+                let cmdsString = '';
+                for (const key in commands) {
+                    cmdsString += `rnv ${key}\n`;
+                }
+                console.log(`
+${chalk.bold.white('COMMANDS:')}
+
+${cmdsString}
+
+${chalk.bold.white('OPTIONS:')}
+
+'-i, --info', 'Show full debug info'
+'-u, --update', 'Force update dependencies (iOS only)'
+'-p, --platform <value>', 'Select specific platform' // <ios|android|web|...>
+'-c, --appConfigID <value>', 'Select specific appConfigID' // <ios|android|web|...>
+'-t, --target <value>', 'Select specific simulator' // <.....>
+'-d, --device [value]', 'Select connected device'
+'-s, --scheme <value>', 'Select build scheme' // <Debug | Release>
+'-f, --filter <value>', 'Filter Value'
+'-l, --list', 'Return list of items related to command' // <alpha|beta|prod>
+'-r, --reset', 'Also perform reset'
+'-b, --blueprint', 'Blueprint for targets'
+'-h, --host <value>', 'Custom Host IP'
+'-x, --exeMethod <value>', 'Executable method in buildHooks'
+'-P, --port <value>', 'Custom Port'
+'-H, --help', 'Help'
+                `);
+                logComplete(true);
             } else {
-                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv -h')} for help`, true);
+                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv')} for help`, true);
             }
         }).catch(e => logError(e, true));
 };

@@ -486,7 +486,7 @@ const logDebug = (...args) => {
 };
 
 const logComplete = (isEnd = false) => {
-    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob} - Done! 🚀`));
+    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob || ''} - Done! 🚀`));
     if (isEnd) logEnd(0);
 };
 
