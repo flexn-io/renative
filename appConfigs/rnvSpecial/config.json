@@ -3,7 +3,7 @@
   "extend": "helloWorld",
   "common": {
     "id": "renative.helloworldSuper",
-    "title": "RNV Super"
+    "title": "ReNativeSuper"
   },
   "platforms":{
     "ios": {

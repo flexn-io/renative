@@ -21,8 +21,8 @@ const SUPPORTED_PLATFORMS = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN,
 const SUPPORTED_PLATFORMS_MAC = [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV];
 const SUPPORTED_PLATFORMS_WIN = [ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV];
 const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
-const RNV_START = '🚀 RNV';
-const RNV = 'RNV';
+const RNV_START = '🚀 ReNative';
+const RNV = 'ReNative';
 const LINE = chalk.white.bold('----------------------------------------------------------');
 const LINE2 = chalk.gray('----------------------------------------------------------');
 
@@ -126,7 +126,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     }
 
     if (!fs.existsSync(c.projectConfigPath)) {
-        reject(`Looks like this directory is not RNV project. Project config ${chalk.white(c.projectConfigPath)} is missing!. You can create new project with ${chalk.white('rnv app create')}`);
+        reject(`Looks like this directory is not ReNativeproject. Project config ${chalk.white(c.projectConfigPath)} is missing!. You can create new project with ${chalk.white('rnv app create')}`);
     }
     c.projectConfig = JSON.parse(fs.readFileSync(c.projectConfigPath).toString());
     c.defaultPorts = Object.assign(DEFAULT_PORTS, c.projectConfig.defaultPorts);
@@ -240,7 +240,7 @@ const configureProject = c => new Promise((resolve, reject) => {
             if (!fs.existsSync(c.projectConfigLocal.appConfigsPath)) {
                 logWarning(`Looks like your custom local appConfig is pointing to ${chalk.white(c.projectConfigLocal.appConfigsPath)} which doesn't exist! Make sure you create one in that location`);
             } else {
-                logInfo(`Found custom appConfing location pointing to ${chalk.white(c.projectConfigLocal.appConfigsPath)}. RNV will now swith to that location!`);
+                logInfo(`Found custom appConfing location pointing to ${chalk.white(c.projectConfigLocal.appConfigsPath)}. ReNativewill now swith to that location!`);
                 c.appConfigsFolder = c.projectConfigLocal.appConfigsPath;
             }
         } else {
@@ -307,7 +307,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
     } else {
         const newPath = path.join(c.rnvRootFolder, 'projectConfig/permissions.json');
-        logWarning(`Looks like your permission config is missing from ${chalk.white(c.permissionsConfigPath)}. RNV Default ${chalk.white(newPath)} will be used instead`);
+        logWarning(`Looks like your permission config is missing from ${chalk.white(c.permissionsConfigPath)}. ReNativeDefault ${chalk.white(newPath)} will be used instead`);
         c.permissionsConfigPath = newPath;
         c.permissionsConfig = JSON.parse(fs.readFileSync(c.permissionsConfigPath).toString());
     }
@@ -360,7 +360,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
             if (!fs.existsSync(c.globalConfig.appConfigsPath)) {
                 logWarning(`Looks like your custom global appConfig is pointing to ${chalk.white(c.globalConfig.appConfigsPath)} which doesn't exist! Make sure you create one in that location`);
             } else {
-                logInfo(`Found custom appConfing location pointing to ${chalk.white(c.globalConfig.appConfigsPath)}. RNV will now swith to that location!`);
+                logInfo(`Found custom appConfing location pointing to ${chalk.white(c.globalConfig.appConfigsPath)}. ReNativewill now swith to that location!`);
                 c.appConfigsFolder = c.globalConfig.appConfigsPath;
             }
         }
@@ -420,7 +420,7 @@ const configureApp = c => new Promise((resolve, reject) => {
     } else {
         // Use latest app from platformAssets
         if (!fs.existsSync(c.runtimeConfigPath)) {
-            logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. RNV got you covered. Let\'s configure it for you!`);
+            logWarning(`Seems like you\'re missing ${c.runtimeConfigPath} file. But don\'t worry. ReNativegot you covered. Let\'s configure it for you!`);
 
             _getConfig(c, c.defaultAppConfigId).then(() => {
                 configureEntryPoints(c);
@@ -534,7 +534,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 opts += `(${chalk.white(i)}) ${chalk.white(v)}\n`;
             });
 
-            readline.question(getQuestion(`RNV found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
+            readline.question(getQuestion(`ReNativefound existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
                 if (configDirs[v]) {
                     c.defaultAppConfigId = configDirs[v];
                     c.appId = c.defaultAppConfigId;
@@ -545,7 +545,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 }
             });
         } else {
-            readline.question(getQuestion(`Do you want RNV to create new new sample appConfig (${chalk.white(appConfigId)}) for you? (y) to confirm`), (v) => {
+            readline.question(getQuestion(`Do you want ReNativeto create new new sample appConfig (${chalk.white(appConfigId)}) for you? (y) to confirm`), (v) => {
                 c.defaultAppConfigId = SAMPLE_APP_ID;
                 _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
                 copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),

@@ -1,11 +1,11 @@
-# RNV CLI
+# ReNativeCLI
 
 Commands:
 
 ```
 //common.js
 rnv --help              //Print help
-rnv --version           //Print RNV Version
+rnv --version           //Print ReNativeVersion
 
 //runner.js
 rnv run                 //Run app on simulator/device/browser

@@ -35,7 +35,7 @@ const run = (cmd, subCmd, program, process) => {
             if (commands[cmd]) {
                 commands[cmd](v).then(() => logComplete(true)).catch(e => logError(e, true));
             } else {
-                logError(`Command ${chalk.white(cmd)} is not supported by RNV CLI. run ${chalk.white('rnv -h')} for help`, true);
+                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv -h')} for help`, true);
             }
         }).catch(e => logError(e, true));
 };

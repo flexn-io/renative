@@ -51,7 +51,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                 .then(() => runWebDevServer(c, platform, port))
                 .then(() => resolve()).catch(e => reject(e));
         } else {
-            logInfo(`Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(port)} is already running. RNV Will use it!`);
+            logInfo(`Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(port)} is already running. ReNativeWill use it!`);
             _runWebBrowser(c, platform, port)
                 .then(() => resolve()).catch(e => reject(e));
         }

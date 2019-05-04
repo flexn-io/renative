@@ -22,8 +22,8 @@
 <p align='center'>
     <a href="https://github.com/pavjacko/renative"><img src="https://img.shields.io/github/stars/pavjacko/renative.svg?style=social" /></a>
     <a href="https://github.com/pavjacko/renative"><img src="https://img.shields.io/github/forks/pavjacko/renative.svg?style=social" /></a>
-    <a href="https://github.com/pavjacko"><img src="https://img.shields.io/github/followers/pavjacko.svg?label=Follow%20me%20on%20Github&style=social" /></a>
-    <a href="https://twitter.com/pavjacko"><img src="https://img.shields.io/twitter/follow/pavjacko.svg?style=social" /></a>
+    <a href="https://twitter.com/renative"><img src="https://img.shields.io/twitter/follow/renative.svg?style=social" /></a>
+    <a href="https://spectrum.chat/renative"><img src="https://withspectrum.github.io/badge/badge.svg" /></a>
 </p>
 
 ---
@@ -33,8 +33,8 @@
   <a href="#features">Features</a> &bull;
   <a href="#advanced-configuration">Advanced Configuration</a> &bull;
   <a href="#architecture">Architecture</a> &bull;
-  <a href="#rnv-cli">RNV CLI</a> &bull;
-  <a href="#developing-rnv-locally">Developing RNV Locally</a> &bull;
+  <a href="#rnv-cli">ReNativeCLI</a> &bull;
+  <a href="#developing-rnv-locally">Developing ReNativeLocally</a> &bull;
   <a href="#discussions">Discussions</a> &bull;
   <a href="#contributors">Contributors</a> &bull;
   <a href="#backers">Backers</a> &bull;
@@ -42,6 +42,11 @@
   <a href="#community">Community</a> &bull;
   <a href="#stats">Stats</a> &bull;
   <a href="#license">License</a>
+</p>
+
+<p align='center'>
+    <a href="https://github.com/pavjacko"><img src="https://img.shields.io/github/followers/pavjacko.svg?label=Follow%20me%20on%20Github&style=social" /></a>
+    <a href="https://twitter.com/pavjacko"><img src="https://img.shields.io/twitter/follow/pavjacko.svg?label=Follow%20me%20on%20Twitter&style=social" /></a>
 </p>
 
 
@@ -172,7 +177,6 @@
 [![npm version](https://img.shields.io/npm/v/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![npm downloads](https://img.shields.io/npm/dm/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![All Contributors](https://img.shields.io/github/contributors/pavjacko/renative.svg)](#contributors)
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/renative)
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/renative/pulls)
 ![hits](https://hits.dwyl.com/pavjacko/renative.svg)
@@ -191,8 +195,8 @@
 
 
 
-<!-- - [RNV CLI](#rnv-cli)
-- [Developing RNV Locally](#developing-rnv-locally)
+<!-- - [ReNativeCLI](#rnv-cli)
+- [Developing ReNativeLocally](#developing-rnv-locally)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
 - [Backers](#backers)
@@ -228,8 +232,8 @@
 - [Windows](#windows)
 - [Android Wear](#android-wear)
 - [KaiOS](#kaios)
-- [RNV CLI](#rnv-cli)
-- [Developing RNV Locally](#developing-rnv-locally)
+- [ReNativeCLI](#rnv-cli)
+- [Developing ReNativeLocally](#developing-rnv-locally)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
 - [Backers](#backers)
@@ -244,7 +248,7 @@
 
 ## 🚀 Quick Start
 
-##### 1) Install RNV
+##### 1) Install ReNative
 
 ```bash
 $ npm install renative@latest -g
@@ -330,7 +334,7 @@ All app code is located in `./src` directory
 
 #### Reset options
 
-RNV Allows you to perform reset commands if you facing unforeseen problems or migrating RNV versions
+ReNativeAllows you to perform reset commands if you facing unforeseen problems or migrating ReNativeversions
 
 Reset Metro Bundler cache
 
@@ -453,7 +457,7 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
 #### Plugins
 
-RNV Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
+ReNativeSupports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
 Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
 
@@ -476,7 +480,7 @@ add new plugin to your project:
 and follow the command prompt steps
 
 
-Update your current plugins with latest ones from RNV
+Update your current plugins with latest ones from ReNative
 
 `rnv plugin update`
 
@@ -523,7 +527,7 @@ Contents of the file should follow this format:
 
 #### Ejecting Platforms
 
-By default, RNV controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
+By default, ReNativecontrols platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
 If however you need to customise them you can eject them directly into your project.
 
 ```bash
@@ -532,7 +536,7 @@ rnv platform eject
 
 your projects will be build using `./platformTemplates` from this point
 
-If you want to revert back to using RNV templates simply run
+If you want to revert back to using ReNativetemplates simply run
 
 ```bash
 rnv platform connect
@@ -542,7 +546,7 @@ your projects will be build using `./node_modules/renative/rnv-cli/platformTempl
 
 #### Build Hooks
 
-Sometimes you need to extend CLI functionality with custom build scripts. RNV makes this easy for you.
+Sometimes you need to extend CLI functionality with custom build scripts. ReNativemakes this easy for you.
 
 create file: `./buildHooks/src/index.js` with this script (NOTE: every top-level method must return Promise):
 
@@ -567,15 +571,15 @@ then simply run:
 rnv hooks run -x hello
 ```
 
-RNV will transpile and execute it in real time!
+ReNativewill transpile and execute it in real time!
 
 `index.js` is required entry point but you can create more complex scripts with multiple files/imports.
 
-every top-level method gets invoked with RNV `config` object containing all necessary build information
+every top-level method gets invoked with ReNative`config` object containing all necessary build information
 
 #### Build Pipes
 
-Sometimes you want to execute specific hook automatically before/after certain RNV build phase.
+Sometimes you want to execute specific hook automatically before/after certain ReNativebuild phase.
 
 To get list of available hook pipes run:
 
@@ -740,7 +744,7 @@ rnv run -p ios
 
 #### Run on Device
 
-IMPORTANT: before you run RNV app on the actual iOS device you MUST:
+IMPORTANT: before you run ReNativeapp on the actual iOS device you MUST:
 
 1) Have ios device connected on the same network as your dev machine
 2) Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
@@ -777,7 +781,7 @@ Launch app with specific iOS simulator
 rnv run -p ios -t "iPhone 6 Plus"
 ```
 
-Launch app with specific iOS simulator (let RNV to give you the list of available options):
+Launch app with specific iOS simulator (let ReNativeto give you the list of available options):
 
 ```
 rnv run -p ios -t ?
@@ -788,7 +792,7 @@ Launch specific emulator :
 rnv target launch -p ios -t "iPhone 8"
 ```
 
-Launch specific emulator (let RNV to give you the list of available options):
+Launch specific emulator (let ReNativeto give you the list of available options):
 ```
 rnv target launch -p ios -t ?
 ```
@@ -898,7 +902,7 @@ Launch specific android emulator:
 rnv target launch -p android -t Nexus_5X_API_26
 ```
 
-Launch app with specific iOS simulator (let RNV to give you the list of available options):
+Launch app with specific iOS simulator (let ReNativeto give you the list of available options):
 
 ```
 rnv run -p android -t ?
@@ -909,7 +913,7 @@ Launch specific emulator :
 rnv target launch -p android -t Nexus_5X_API_26
 ```
 
-Launch specific emulator (let RNV to give you the list of available options):
+Launch specific emulator (let ReNativeto give you the list of available options):
 ```
 rnv target launch -p android -t ?
 ```
@@ -1597,28 +1601,28 @@ rnv run -p firefoxtv
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
 
-## RNV CLI
+## ReNativeCLI
 
 Commands:
 
 ```
 rnv --help                          //Print help
-rnv --version                       //Print RNV Version
+rnv --version                       //Print ReNativeVersion
 rnv run -p <PLATFORM>               //Run app on simulator/device/browser
 rnv target launch -p <PLATFORM>     //Start target (i.e. simulator/ emulator)
 rnv app configure                   //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
 rnv app create                      //Create new app
 rnv platform eject                  //Eject platformTemplates into project
-rnv platform connect                //Use RNV predefined templates
+rnv platform connect                //Use ReNativepredefined templates
 ```
 
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_construction.png?raw=true" width=50 height=50 />
 
-## Developing RNV Locally
+## Developing ReNativeLocally
 
-If you need full control over whole RNV build you can clone and develop it locally
+If you need full control over whole ReNativebuild you can clone and develop it locally
 
 ```
 1) clone git@github.com:pavjacko/renative.git
