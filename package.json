@@ -1,8 +1,8 @@
 {
-  "name": "react-native-vanilla",
-  "title": "React Native Vanilla",
-  "version": "0.20.3",
-  "codename": "Ghostbuster",
+  "name": "renative",
+  "title": "ReNative",
+  "version": "0.21.0-alpha1",
+  "codename": "Drunk Thanos",
   "keywords": [
     "react",
     "react-native",
@@ -44,13 +44,13 @@
     "email": "i@pavjacko.com",
     "url": "https://github.com/pavjacko"
   },
-  "homepage": "https://github.com/pavjacko/react-native-vanilla#readme",
+  "homepage": "https://github.com/pavjacko/renative#readme",
   "bugs": {
-    "url": "https://github.com/pavjacko/react-native-vanilla/issues"
+    "url": "https://github.com/pavjacko/renative/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/pavjacko/react-native-vanilla.git"
+    "url": "git://github.com/pavjacko/renative.git"
   },
   "contributors": [
     "Sander Looijenga <https://github.com/sanderlooijenga>",

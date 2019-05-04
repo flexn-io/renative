@@ -6,6 +6,6 @@
   "version": "{{PACKAGE_VERSION}}",
   "dependencies": {},
   "devDependencies": {
-    "react-native-vanilla": "{{RNV_VERSION}}"
+    "renative": "{{RNV_VERSION}}"
   }
 }

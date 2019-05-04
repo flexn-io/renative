@@ -3,7 +3,7 @@
   "common": {
     "id": "reactnativevanilla.helloworld.release",
     "title": "RNV Hello",
-    "description": "Cross-platform application project based on React Native Vanilla",
+    "description": "Cross-platform application project based on ReNative",
     "author": {
       "name": "Pavel Jacko",
       "email": "Pavel Jacko <i@pavjacko.com>",

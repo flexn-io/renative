@@ -1,7 +1,7 @@
 <p align='center'>
     <br />
-  <h1 align='center'>🚀 React Native Vanilla</h1>
-  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
+  <h1 align='center'>🚀 ReNative</h1>
+  <p align='center'><img width="700" height="100" src="https://github.com/pavjacko/renative/blob/master/docs/rn_logo_exp.png?raw=true" /></p>
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
   <p align='center'>
   <img src="https://img.shields.io/badge/Platforms_Supported-14-blue.svg" />
@@ -18,8 +18,8 @@
        <br />
 
 <p align='center'>
-    <a href="https://github.com/pavjacko/react-native-vanilla"><img src="https://img.shields.io/github/stars/pavjacko/react-native-vanilla.svg?style=social" /></a>
-    <a href="https://github.com/pavjacko/react-native-vanilla"><img src="https://img.shields.io/github/forks/pavjacko/react-native-vanilla.svg?style=social" /></a>
+    <a href="https://github.com/pavjacko/renative"><img src="https://img.shields.io/github/stars/pavjacko/renative.svg?style=social" /></a>
+    <a href="https://github.com/pavjacko/renative"><img src="https://img.shields.io/github/forks/pavjacko/renative.svg?style=social" /></a>
     <a href="https://github.com/pavjacko"><img src="https://img.shields.io/github/followers/pavjacko.svg?label=Follow%20me%20on%20Github&style=social" /></a>
     <a href="https://twitter.com/pavjacko"><img src="https://img.shields.io/twitter/follow/pavjacko.svg?style=social" /></a>
 </p>
@@ -48,103 +48,103 @@
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_ios.png?raw=true" width=20 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_ios.png?raw=true" width=20 height=20 />
       </br>
       <a href="#ios">iOS</a>
     </th><th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=36 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tvos.png?raw=true" width=36 height=20 />
       </br>
       <a href="#tvos">tvOS</a>
     </th><th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidtv.png?raw=true" width=20 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_androidtv.png?raw=true" width=20 height=20 />
       </br>
       <a href="#android-tv">Android TV</a>
     </th><th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_macos.png?raw=true" width=20 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_macos.png?raw=true" width=20 height=20 />
       </br>
       <a href="#macos">macOS</a>
     </th>
   </tr>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios1.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_macos.gif?raw=true" />
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_android.png?raw=true" width=20 height=20 />
     </br>
     <a href="#android">Android</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=80 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_web.png?raw=true" width=80 height=20 />
     </br>
     <a href="#web">Web</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizen.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-tv">Tizen TV</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_webos.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_webos.png?raw=true" width=20 height=20 />
     </br>
     <a href="#lg-webos">LG webOS</a>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android1.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android1.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_webos.gif?raw=true" />
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxos.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_firefoxos.png?raw=true" width=20 height=20 />
     </br>
     <a href="#firefoxos">FirefoxOS</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_windows.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_windows.png?raw=true" width=20 height=20 />
     </br>
     <a href="#windows">Windows</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxtv.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_firefoxtv.png?raw=true" width=20 height=20 />
     </br>
     <a href="#firefoxtv">Firefox TV</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_kaios.png?raw=true" width=55 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_kaios.png?raw=true" width=55 height=20 />
     </br>
     <a href="#kaios">KaiOS</a>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_firefoxos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_windows.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxtv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_firefoxtv.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_kaios.gif?raw=true" />
     </th>
   </tr>
 
   <tr>
     <th>
     ...</th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizenwatch.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizenwatch.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-watch">Tizen Watch</a>
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_androidwear.png?raw=true" width=20 height=20 />
     </br>
     <a href="#android-wear">Android Wear</a>
     </th><th>
@@ -155,9 +155,9 @@
     <th>
     ...
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
     </th><th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
     ...
     </th>
@@ -166,18 +166,18 @@
 
 <br />
 
-[![build](https://travis-ci.org/pavjacko/react-native-vanilla.svg?branch=master)](https://travis-ci.org/pavjacko/react-native-vanilla)
-[![npm version](https://img.shields.io/npm/v/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
-[![npm downloads](https://img.shields.io/npm/dm/react-native-vanilla.svg?style=flat-square)](https://www.npmjs.com/package/react-native-vanilla)
-[![All Contributors](https://img.shields.io/github/contributors/pavjacko/react-native-vanilla.svg)](#contributors)
+[![build](https://travis-ci.org/pavjacko/renative.svg?branch=master)](https://travis-ci.org/pavjacko/renative)
+[![npm version](https://img.shields.io/npm/v/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
+[![npm downloads](https://img.shields.io/npm/dm/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
+[![All Contributors](https://img.shields.io/github/contributors/pavjacko/renative.svg)](#contributors)
 [![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/reactnativevanilla)
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/react-native-vanilla/pulls)
-![hits](https://hits.dwyl.com/pavjacko/react-native-vanilla.svg)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/renative/pulls)
+![hits](https://hits.dwyl.com/pavjacko/renative.svg)
 
-<!-- [![OpenCollective](https://opencollective.com/react-native-vanilla/backers/badge.svg)](#backers) -->
-<!-- [![OpenCollective](https://opencollective.com/react-native-vanilla/sponsors/badge.svg)](#sponsors) -->
-<!-- [![StackOverflow](http://img.shields.io/badge/stackoverflow-react-native-vanilla-blue.svg)]( http://stackoverflow.com/questions/tagged/react-native-vanilla) -->
+<!-- [![OpenCollective](https://opencollective.com/renative/backers/badge.svg)](#backers) -->
+<!-- [![OpenCollective](https://opencollective.com/renative/sponsors/badge.svg)](#sponsors) -->
+<!-- [![StackOverflow](http://img.shields.io/badge/stackoverflow-renative-blue.svg)]( http://stackoverflow.com/questions/tagged/renative) -->
 
 > The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Firefox OS` and `Firefox TV` platforms
 
@@ -245,7 +245,7 @@
 ##### 1) Install RNV
 
 ```bash
-$ npm install react-native-vanilla@latest -g
+$ npm install renative@latest -g
 ```
 
 ##### 2) Create new app:
@@ -261,7 +261,7 @@ Follow steps in the terminal
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/terminal.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/terminal.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -299,7 +299,7 @@ All app code is located in `./src` directory
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_features.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_features.png?raw=true" width=50 height=50 />
 
 ## Features:
 
@@ -322,7 +322,7 @@ All app code is located in `./src` directory
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
 
 ## Advanced Configuration
 
@@ -462,7 +462,7 @@ you should get colorised overview similar to this:
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/cli_plugins.png?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/cli_plugins.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -536,7 +536,7 @@ If you want to revert back to using RNV templates simply run
 rnv platform connect
 ```
 
-your projects will be build using `./node_modules/react-native-vanilla/rnv-cli/platformTemplates` from this point
+your projects will be build using `./node_modules/renative/rnv-cli/platformTemplates` from this point
 
 #### Build Hooks
 
@@ -664,7 +664,7 @@ c.fontsConfigFolder
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
 
 ## Architecture
 
@@ -673,7 +673,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -697,7 +697,7 @@ Folder Structure (Generated Project)
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_ios.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_ios.png?raw=true" width=50 height=50 />
 
 ## iOS
 
@@ -708,7 +708,7 @@ Folder Structure (Generated Project)
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_ios1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios1.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -808,7 +808,7 @@ rnv log -p ios -f com.myapp
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />
 
 ## Android
 
@@ -819,7 +819,7 @@ rnv log -p ios -f com.myapp
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android1.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -851,7 +851,7 @@ You can create variety of emulators via Android Studio IDE
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/android1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/android1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -929,7 +929,7 @@ rnv log -p android -f com.myapp
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tvos.png?raw=true" width=90 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tvos.png?raw=true" width=90 height=50 />
 
 ## tvOS
 
@@ -941,7 +941,7 @@ rnv log -p android -f com.myapp
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tvos.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -985,7 +985,7 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidtv.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_androidtv.png?raw=true" width=50 height=50 />
 
 ## Android TV
 
@@ -996,7 +996,7 @@ rnv run -p tvos -t "Apple TV 4K"
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_android-tv.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android-tv.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1044,7 +1044,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_web.png?raw=true" width=200 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_web.png?raw=true" width=200 height=50 />
 
 ## Web
 
@@ -1055,7 +1055,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_web.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_web.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1112,7 +1112,7 @@ rnv run -p web --port 9999
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
 
 ## Tizen TV
 
@@ -1123,7 +1123,7 @@ rnv run -p web --port 9999
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizen.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizen.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1153,7 +1153,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizen4.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/tizen4.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1185,7 +1185,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_tizenwatch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizenwatch.png?raw=true" width=50 height=50 />
 
 ## Tizen Watch
 
@@ -1196,7 +1196,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 <table>
   <tr>
     <th>
-      <img width=200 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_tizenwatch.gif?raw=true" />
+      <img width=200 src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizenwatch.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1226,7 +1226,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/tizenwatch1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/tizenwatch1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1258,7 +1258,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_webos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_webos.png?raw=true" width=50 height=50 />
 
 ## LG webOS
 
@@ -1269,7 +1269,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 <table>
   <tr>
     <th>
-      <img width=600 src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_webos.gif?raw=true" />
+      <img width=600 src="https://github.com/pavjacko/renative/blob/master/docs/rnv_webos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1312,7 +1312,7 @@ rnv run -p webos
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_macos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_macos.png?raw=true" width=50 height=50 />
 
 ## macOS
 
@@ -1323,7 +1323,7 @@ rnv run -p webos
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_macos.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_macos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1360,7 +1360,7 @@ rnv run -p macos -s release
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_windows.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_windows.png?raw=true" width=50 height=50 />
 
 ## Windows
 
@@ -1371,7 +1371,7 @@ rnv run -p macos -s release
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_windows.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_windows.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1399,7 +1399,7 @@ rnv run -p windows
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_androidwear.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_androidwear.png?raw=true" width=50 height=50 />
 
 ## Android Wear
 
@@ -1410,7 +1410,7 @@ rnv run -p windows
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_androidwear.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_androidwear.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1462,7 +1462,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_kaios.png?raw=true" width=140 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_kaios.png?raw=true" width=140 height=50 />
 
 ## KaiOS
 
@@ -1473,7 +1473,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_kaios.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_kaios.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1488,7 +1488,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/kaios1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/kaios1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1504,7 +1504,7 @@ rnv run -p kaios
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_firefoxos.png?raw=true" width=50 height=50 />
 
 ## FirefoxOS
 
@@ -1515,7 +1515,7 @@ rnv run -p kaios
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxos.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_firefoxos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1532,7 +1532,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/firefoxos.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/firefoxos.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1548,7 +1548,7 @@ rnv run -p firefoxos
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_firefoxtv.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_firefoxtv.png?raw=true" width=50 height=50 />
 
 ## FirefoxTV
 
@@ -1559,7 +1559,7 @@ rnv run -p firefoxos
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/rnv_firefoxtv.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_firefoxtv.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1576,7 +1576,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/firefoxos.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/firefoxos.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1593,7 +1593,7 @@ rnv run -p firefoxtv
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
 
 ## RNV CLI
 
@@ -1612,15 +1612,15 @@ rnv platform connect                //Use RNV predefined templates
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_construction.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_construction.png?raw=true" width=50 height=50 />
 
 ## Developing RNV Locally
 
 If you need full control over whole RNV build you can clone and develop it locally
 
 ```
-1) clone git@github.com:pavjacko/react-native-vanilla.git
-2) cd react-native-vanilla
+1) clone git@github.com:pavjacko/renative.git
+2) cd renative
 3) npm i
 4) npm run watch
 5) npm link
@@ -1632,7 +1632,7 @@ It's also best way to contribute back to RNV! :)
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_chat.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_chat.png?raw=true" width=50 height=50 />
 
 ## Discussions
 
@@ -1640,28 +1640,28 @@ https://spectrum.chat/reactnativevanilla
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_contributor.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_contributor.png?raw=true" width=50 height=50 />
 
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
 
-<a href="graphs/contributors"><img src="https://opencollective.com/react-native-vanilla/contributors.svg?width=890" /></a>
+<a href="graphs/contributors"><img src="https://opencollective.com/renative/contributors.svg?width=890" /></a>
 
 
 ## Backers
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/react-native-vanilla#backer)]
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/renative#backer)]
 
-<a href="https://opencollective.com/react-native-vanilla#backers" target="_blank"><img src="https://opencollective.com/react-native-vanilla/backers.svg?width=890"></a>
+<a href="https://opencollective.com/renative#backers" target="_blank"><img src="https://opencollective.com/renative/backers.svg?width=890"></a>
 
 ## Sponsors
 
-<a href="https://www.24i.com"><img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
+<a href="https://www.24i.com"><img src="https://github.com/pavjacko/renative/blob/master/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
 
 ---
 
-<img src="https://github.com/pavjacko/react-native-vanilla/blob/master/docs/ic_community.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_community.png?raw=true" width=50 height=50 />
 
 ## Community
 
@@ -1677,7 +1677,7 @@ Special thanks to open-source initiatives this project utilises, notably:
 
 ## Stats
 
-[![NPM](https://nodei.co/npm/react-native-vanilla.png)](https://nodei.co/npm/react-native-vanilla/)
+[![NPM](https://nodei.co/npm/renative.png)](https://nodei.co/npm/renative/)
 
 ## LICENSE
 
