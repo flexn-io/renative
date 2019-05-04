@@ -2,7 +2,7 @@
   "id": "rnvSpecial",
   "extend": "helloWorld",
   "common": {
-    "id": "reactnativevanilla.helloworldSuper",
+    "id": "renative.helloworldSuper",
     "title": "RNV Super"
   },
   "platforms":{

@@ -173,7 +173,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject');
 
     // Parse Project Config
-    checkAndCreateProjectPackage(c, 'rn-vanilla', 'RN Vanilla');
+    checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
     c.projectPackage = JSON.parse(fs.readFileSync(c.projectPackagePath).toString());
     c.defaultAppConfigId = c.projectPackage.defaultAppConfigId || SAMPLE_APP_ID;
 

@@ -1,7 +1,7 @@
 <p align='center'>
     <br />
     <br />
-  <p align='center'><img width="300" height="300" src="https://github.com/pavjacko/renative/blob/feat/renative/docs/rn_logo_main.png?raw=true" /></p>
+  <p align='center'><img width="300" height="300" src="https://github.com/pavjacko/renative/blob/master/docs/rn_logo_main.png?raw=true" /></p>
   <br />
   <br />
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
@@ -172,7 +172,7 @@
 [![npm version](https://img.shields.io/npm/v/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![npm downloads](https://img.shields.io/npm/dm/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![All Contributors](https://img.shields.io/github/contributors/pavjacko/renative.svg)](#contributors)
-[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/reactnativevanilla)
+[![Join the community on Spectrum](https://withspectrum.github.io/badge/badge.svg)](https://spectrum.chat/renative)
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/renative/pulls)
 ![hits](https://hits.dwyl.com/pavjacko/renative.svg)
@@ -411,13 +411,13 @@ Example:
 ```
 "buildSchemes": {
   "debug": {
-    "id": "reactnativevanilla.helloworld.debug",
+    "id": "renative.helloworld.debug",
     "runScheme": "Debug",
     "bundleAssets": false,
     "bundleIsDev": true
   },
   "release": {
-    "id": "reactnativevanilla.helloworld.release",
+    "id": "renative.helloworld.release",
     "runScheme": "Release",
     "bundleAssets": true,
     "bundleIsDev": false
@@ -1638,7 +1638,7 @@ It's also best way to contribute back to RNV! :)
 
 ## Discussions
 
-https://spectrum.chat/reactnativevanilla
+https://spectrum.chat/renative
 
 ---
 

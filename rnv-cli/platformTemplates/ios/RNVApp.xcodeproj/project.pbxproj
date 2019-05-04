@@ -522,7 +522,7 @@
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public/boost\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = reactnativevanilla.helloWorld;
+				PRODUCT_BUNDLE_IDENTIFIER = renative.helloWorld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./RNVApp/Bridge-Header.h";
@@ -589,7 +589,7 @@
 				INFOPLIST_FILE = RNVApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = reactnativevanilla.helloWorld;
+				PRODUCT_BUNDLE_IDENTIFIER = renative.helloWorld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./RNVApp/Bridge-Header.h";

@@ -1,7 +1,7 @@
 {
   "id": "helloWorld",
   "common": {
-    "id": "reactnativevanilla.helloworld.release",
+    "id": "renative.helloworld.release",
     "title": "RNV Hello",
     "description": "Cross-platform application project based on ReNative",
     "author": {
@@ -30,7 +30,7 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "runScheme": "Debug",
           "bundleAssets": false
         },
@@ -47,7 +47,7 @@
       "scheme": "RNVAppTVOS",
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "runScheme": "Debug",
           "bundleAssets": false
         },
@@ -68,7 +68,7 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "signingConfig": "Debug",
           "bundleAssets": false
         },
@@ -87,7 +87,7 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "signingConfig": "Debug",
           "bundleAssets": false
         },
@@ -107,7 +107,7 @@
       ],
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "signingConfig": "Debug",
           "bundleAssets": false
         },
@@ -122,7 +122,7 @@
       "entryFile": "index.macos",
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "bundleAssets": false
         },
         "release": {
@@ -149,7 +149,7 @@
       "entryFile": "index.web",
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "bundleAssets": false
         },
         "release": {
@@ -168,7 +168,7 @@
       "entryFile": "index.kaios",
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "bundleAssets": false
         },
         "release": {
@@ -181,7 +181,7 @@
       "entryFile": "index.firefoxos",
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "bundleAssets": false
         },
         "release": {
@@ -194,7 +194,7 @@
       "entryFile": "index.firefoxtv",
       "buildSchemes": {
         "debug": {
-          "id": "reactnativevanilla.helloworld.debug",
+          "id": "renative.helloworld.debug",
           "bundleAssets": false
         },
         "release": {
