@@ -227,7 +227,18 @@
       "version": "1.1.3",
       "ios": { "podName": "react-native-orientation-locker" },
       "tvos": { "podName": "react-native-orientation-locker" },
-      "android": { "package": "org.wonday.orientation.OrientationPackage"},
+      "android": {
+        "package": "org.wonday.orientation.OrientationPackage",
+        "activityImports": ["android.content.res.Configuration"],
+        "activityMethods": [
+          "override fun onConfigurationChanged(newConfig:Configuration) {",
+          "  super.onConfigurationChanged(newConfig)",
+          "  val intent = Intent(\"onConfigurationChanged\")",
+          "  intent.putExtra(\"newConfig\", newConfig)",
+          "  this.sendBroadcast(intent)",
+          "}"
+        ]
+      },
       "androidtv": { "package": "org.wonday.orientation.OrientationPackage"}
     },
     "react-native-reanimated" : {

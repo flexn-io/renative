@@ -360,6 +360,17 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
             }
         }
     }
+    if (plugin.activityImports instanceof Array) {
+        plugin.activityImports.forEach((activityImport) => {
+            // Avoid duplicate imports
+            if (pluginConfig.pluginActivityImports.indexOf(activityImport) === -1) {
+                pluginConfig.pluginActivityImports += `import ${activityImport}\n`;
+            }
+        });
+    }
+    if (plugin.activityMethods instanceof Array) {
+        pluginConfig.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
+    }
     if (pkg) pluginConfig.pluginImports += `import ${pkg}\n`;
     if (className) pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
 
@@ -423,8 +434,11 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const pluginPackages = 'MainReactPackage(),\n';
     const pluginImplementations = '';
     const pluginAfterEvaluate = '';
+    const pluginActivityImports = '';
+    const pluginActivityMethods = '';
     const pluginConfig = {
         pluginIncludes, pluginPaths, pluginImports, pluginPackages, pluginImplementations, pluginAfterEvaluate,
+        pluginActivityImports, pluginActivityMethods,
     };
     // PLUGINS
     if (c.appConfigFile && c.pluginConfig) {
@@ -501,6 +515,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         path.join(appFolder, activityPath),
         [
             { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: pluginConfig.pluginActivityImports },
+            { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: pluginConfig.pluginActivityMethods },
         ]);
 
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
