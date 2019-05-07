@@ -355,7 +355,6 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const pluginAppDelegateImports = '';
     const pluginAppDelegateMethods = '';
     const pluginConfig = {
-        pluginIncludes, pluginPaths, pluginImports, pluginPackages, pluginImplementations, pluginAfterEvaluate,
         pluginAppDelegateImports, pluginAppDelegateMethods,
     };
     // PLUGINS
