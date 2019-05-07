@@ -335,9 +335,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
             }
         });
     }
-    logTask('appDelegateMethods add')
     if (plugin.appDelegateMethods instanceof Array) {
-        logTask('appDelegateMethods add ok')
         pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     }
 }
@@ -380,9 +378,6 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         }
     }
 
-    logTask(`pluginConfig.pluginAppDelegateImports ${pluginConfig.pluginAppDelegateImports}`);
-    logTask(`pluginConfig.pluginAppDelegateMethods ${pluginConfig.pluginAppDelegateMethods}`);
-
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
         path.join(appFolder, appFolderName, appDelegate),
         [
@@ -391,7 +386,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             { pattern: '{{IP}}', override: ip },
             { pattern: '{{PORT}}', override: port },
             { pattern: '{{APPDELEGATE_IMPORTS}}', override: pluginConfig.pluginAppDelegateImports },
-            { pattern: '{{APPDELEGATE_METHODS}}', override: 'IM A METHOD' },
+            { pattern: '{{APPDELEGATE_METHODS}}', override: pluginConfig.pluginAppDelegateMethods },
         ]);
 
     writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
