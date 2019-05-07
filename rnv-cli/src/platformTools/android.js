@@ -551,19 +551,19 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
 
     // RELEASE CONFIGS
-    let releaseConfig = '';
     const globalAppConfigPath = path.join(c.globalConfigFolder, c.appConfigFile.id);
-    const keystorePath = path.join(globalAppConfigPath, 'release.keystore');
-    if (fs.existsSync(keystorePath)) {
-        const releaseConfigValue = fs.readFileSync(path.join(globalAppConfigPath, 'gradle.properties')).toString();
-        releaseConfig = `ext {
-  RELEASE_STORE_FILE="${keystorePath}"
-  ${releaseConfigValue}
-  }`;
+    const signingPropertiesPath = path.join(globalAppConfigPath, 'signing.properties');
+    let signingPropFile = null;
+    if (fs.existsSync(signingPropertiesPath)) {
+        signingPropFile = signingPropertiesPath;
     } else {
-        logWarning(`You're missing keystore for this app: ${chalk.white(keystorePath)}. You won't be able to make production releases without it!`);
+        logWarning(`You're missing signing.properties for this app: ${chalk.white(signingPropertiesPath)}. You won't be able to make production releases without it!`);
     }
-    fs.writeFileSync(path.join(appFolder, 'app/release-configs.gradle'), releaseConfig);
+    writeCleanFile(path.join(appTemplateFolder, 'build.gradle'),
+        path.join(appFolder, 'build.gradle'),
+        [
+            { pattern: '{{SIGNING_PROPS_FILE}}', override: signingPropFile },
+        ]);
 
     resolve();
 });
