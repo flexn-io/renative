@@ -357,6 +357,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const pluginConfig = {
         pluginAppDelegateImports, pluginAppDelegateMethods,
     };
+    logTask(`c.pluginConfig ${c.pluginConfig} c.appConfigFile ${c.appConfigFile}`);
     // PLUGINS
     if (c.appConfigFile && c.pluginConfig) {
         const includedPlugins = c.appConfigFile.common.includedPlugins;
