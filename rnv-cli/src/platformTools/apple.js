@@ -328,12 +328,16 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
     if (plugin.appDelegateImports instanceof Array) {
         plugin.appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
+            logTask('appDelegateImports add')
             if (pluginConfig.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
+                logTask('appDelegateImports add ok')
                 pluginConfig.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
             }
         });
     }
+    logTask('appDelegateMethods add')
     if (plugin.appDelegateMethods instanceof Array) {
+        logTask('appDelegateMethods add ok')
         pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     }
 }
