@@ -339,7 +339,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
 }
 
 const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
-    logTask(`!_postConfigureProject:${platform}:${ip}:${port}`);
+    logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
@@ -357,14 +357,12 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const pluginConfig = {
         pluginAppDelegateImports, pluginAppDelegateMethods,
     };
-    logTask(`c.pluginConfig ${c.pluginConfig} c.appConfigFile ${c.appConfigFile}`);
     // PLUGINS
     if (c.appConfigFile && c.pluginConfig) {
         const includedPlugins = c.appConfigFile.common.includedPlugins;
         const excludedPlugins = c.appConfigFile.common.excludedPlugins;
-        logTask(`c.pluginConfig`);
         if (includedPlugins) {
-            logTask(`includedPlugins`);
+            logTask(`includedPlugins ${JSON.stringify(c.pluginConfig.plugins)}`);
             const plugins = c.pluginConfig.plugins;
             for (const key in plugins) {
                 logTask(`key ${key}`);
