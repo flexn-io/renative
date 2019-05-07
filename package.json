@@ -85,7 +85,8 @@
     "test": "jest",
     "preversion": "npm run test",
     "version": "./rnv/utils/update-versions.sh",
-    "doc": "doctoc . --maxlevel 1"
+    "doc": "doctoc . --maxlevel 1",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
