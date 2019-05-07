@@ -555,7 +555,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const signingPropertiesPath = path.join(globalAppConfigPath, 'signing.properties');
     let signingPropFile = null;
     if (fs.existsSync(signingPropertiesPath)) {
-        signingPropFile = signingPropertiesPath;
+        signingPropFile = `new File("${signingPropertiesPath}")`;
     } else {
         logWarning(`You're missing signing.properties for this app: ${chalk.white(signingPropertiesPath)}. You won't be able to make production releases without it!`);
     }
