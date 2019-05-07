@@ -325,6 +325,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
 });
 
 const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
+    logTask(`injecting plugin ${key}`);
     if (plugin.appDelegateImports instanceof Array) {
         plugin.appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
@@ -377,6 +378,9 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             }
         }
     }
+
+    logTask(`pluginConfig.pluginAppDelegateImports ${pluginConfig.pluginAppDelegateImports}`);
+    logTask(`pluginConfig.pluginAppDelegateImports ${pluginConfig.pluginAppDelegateMethods}`);
 
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
         path.join(appFolder, appFolderName, appDelegate),

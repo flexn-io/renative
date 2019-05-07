@@ -227,7 +227,7 @@
       "version": "1.1.5",
       "ios": {
         "podName": "react-native-orientation-locker",
-        "appDelegateImport": ["react_native_orientation_locker"],
+        "appDelegateImports": ["react_native_orientation_locker"],
         "appDelegateMethods": [
           "func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {",
           "  return Orientation.getOrientation();",

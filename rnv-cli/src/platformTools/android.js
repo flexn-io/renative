@@ -332,6 +332,7 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
 });
 
 const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
+    logTask(`injecting plugin ${key}`);
     const className = pkg ? pkg.split('.').pop() : null;
     let packageParams = '';
     if (plugin.packageParams) {
