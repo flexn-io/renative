@@ -387,7 +387,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             { pattern: '{{IP}}', override: ip },
             { pattern: '{{PORT}}', override: port },
             { pattern: '{{APPDELEGATE_IMPORTS}}', override: pluginConfig.pluginAppDelegateImports },
-            { pattern: '{{APPDELEGATE_METHODS}}', override: pluginConfig.pluginAppDelegateMethods },
+            { pattern: '{{APPDELEGATE_METHODS}}', override: 'IM A METHOD' },
         ]);
 
     writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),
