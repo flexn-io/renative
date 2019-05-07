@@ -339,7 +339,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
 }
 
 const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
-    logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
+    logTask(`!_postConfigureProject:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
