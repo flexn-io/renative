@@ -325,7 +325,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
 });
 
 const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
-    logTask(`injecting plugin ${key}`);
+    logTask(`injecting plugin ${key} ${plugin.appDelegateImports && plugin.appDelegateImports.length} ${plugin.appDelegateMethods && plugin.appDelegateMethods.length}`);
     if (plugin.appDelegateImports instanceof Array) {
         plugin.appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
