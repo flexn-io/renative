@@ -361,9 +361,12 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     if (c.appConfigFile && c.pluginConfig) {
         const includedPlugins = c.appConfigFile.common.includedPlugins;
         const excludedPlugins = c.appConfigFile.common.excludedPlugins;
+        logTask(`c.pluginConfig`);
         if (includedPlugins) {
+            logTask(`includedPlugins`);
             const plugins = c.pluginConfig.plugins;
             for (const key in plugins) {
+                logTask(`key ${key}`);
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
                     if (plugin) {
