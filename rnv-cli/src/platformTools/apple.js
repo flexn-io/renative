@@ -368,13 +368,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
                     const plugin = plugins[key][platform];
                     if (plugin) {
                         if (plugins[key]['no-active'] !== true) {
-                            if (plugin.packages) {
-                                plugin.packages.forEach((ppkg) => {
-                                    _injectPlugin(c, plugin, key, ppkg, pluginConfig);
-                                });
-                            } else {
-                                _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
-                            }
+                            _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
                         }
                     }
                 }
