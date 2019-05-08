@@ -306,6 +306,8 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
     copyAppleAssets(c, platform, appFolderName)
+        .then(() => copyAppleAssets(c, platform, appFolderName))
+        .then(() => copyBuildsFolder(c, platform))
         .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => resolve())
@@ -313,8 +315,6 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
             if (!c.program.update) {
                 logWarning(`Looks like pod install is not enough! Let\'s try pod update! Error: ${e}`);
                 runPod('update', getAppFolder(c, platform))
-                    .then(() => copyAppleAssets(c, platform, appFolderName))
-                    .then(() => copyBuildsFolder(c, platform))
                     .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
