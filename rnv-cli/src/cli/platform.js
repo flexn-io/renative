@@ -93,7 +93,7 @@ const _runEjectPlatforms = c => new Promise((resolve, reject) => {
         output: process.stdout,
     });
 
-    readline.question(getQuestion('This will copy platformTemplates folder from ReNativemanaged directly to your project. Type (y) to confirm'), (v) => {
+    readline.question(getQuestion('This will copy platformTemplates folder from ReNative managed directly to your project. Type (y) to confirm'), (v) => {
         // console.log(`Hi ${v}!`);
         if (v.toLowerCase() === 'y') {
             const ptfn = 'platformTemplates';
@@ -126,7 +126,7 @@ const _runConnectPlatforms = c => new Promise((resolve, reject) => {
         output: process.stdout,
     });
 
-    readline.question(getQuestion('This will point platformTemplates folder from your local project to ReNativemanaged one. Type (y) to confirm'), (v) => {
+    readline.question(getQuestion('This will point platformTemplates folder from your local project to ReNative managed one. Type (y) to confirm'), (v) => {
         // console.log(`Hi ${v}!`);
         if (v.toLowerCase() === 'y') {
             const ptfn = 'platformTemplates';

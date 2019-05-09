@@ -534,7 +534,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 opts += `(${chalk.white(i)}) ${chalk.white(v)}\n`;
             });
 
-            readline.question(getQuestion(`ReNativefound existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
+            readline.question(getQuestion(`ReNative found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`), (v) => {
                 if (configDirs[v]) {
                     c.defaultAppConfigId = configDirs[v];
                     c.appId = c.defaultAppConfigId;
@@ -545,7 +545,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 }
             });
         } else {
-            readline.question(getQuestion(`Do you want ReNativeto create new new sample appConfig (${chalk.white(appConfigId)}) for you? (y) to confirm`), (v) => {
+            readline.question(getQuestion(`Do you want ReNative to create new sample appConfig (${chalk.white(appConfigId)}) for you? (y) to confirm`), (v) => {
                 c.defaultAppConfigId = SAMPLE_APP_ID;
                 _setAppConfig(c, path.join(c.appConfigsFolder, c.defaultAppConfigId));
                 copyFolderContentsRecursiveSync(path.join(c.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),
