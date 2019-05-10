@@ -8,7 +8,7 @@ import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCre
 import { configureTizenGlobal } from './platformTools/tizen';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS,
-    CLI_ANDROID_EMULATOR, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN,
     CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
     ANDROID_SDK, ANDROID_NDK, TIZEN_SDK, WEBOS_SDK, KAIOS_SDK, FIREFOX_OS, FIREFOX_TV,
@@ -369,6 +369,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         c.cli[CLI_ANDROID_EMULATOR] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
         c.cli[CLI_ANDROID_ADB] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
         c.cli[CLI_ANDROID_AVDMANAGER] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/bin/avdmanager');
+        c.cli[CLI_ANDROID_SDKMANAGER] = path.join(c.globalConfig.sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
         c.cli[CLI_TIZEN_EMULATOR] = path.join(c.globalConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
         c.cli[CLI_TIZEN] = path.join(c.globalConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
         c.cli[CLI_WEBOS_ARES] = path.join(c.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
@@ -755,8 +756,10 @@ export {
     getEntryFile, getAppConfigId, getAppDescription, getAppAuthor, getAppLicense,
     getQuestion, logSuccess, getConfigProp, getIP, cleanPlatformIfRequired, checkPortInUse,
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TVOS, WEBOS, MACOS, WINDOWS, TIZEN_WATCH,
-    CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
-    FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH, FORM_FACTOR_TV,
+    CLI_ANDROID_EMULATOR, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER, CLI_ANDROID_ADB,
+    CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES, CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL,
+    CLI_WEBBOS_ARES_LAUNCH, FORM_FACTOR_MOBILE, FORM_FACTOR_DESKTOP, FORM_FACTOR_WATCH,
+    FORM_FACTOR_TV,
 };
 
 export default {

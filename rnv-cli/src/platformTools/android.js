@@ -9,6 +9,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive, configureIfRequired, copyBuildsFolder,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
     getEntryFile, logWarning, logDebug, getConfigProp, logInfo, getQuestion, logSuccess,
@@ -163,19 +164,16 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
     });
     readline.question(getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`), (v) => {
         if (v.toLowerCase() === 'y') {
-            readline.question(getQuestion('Input desired Android API number (26 is prefered)'), (v) => {
+            readline.question(getQuestion('Input desired Android API version number'), (v) => {
                 const apiVersion = v;
                 readline.question(getQuestion('Select device type: \n 1: Android Phone \n 2: Android TV \n 3: Android Wear \n'), (v) => {
                     switch (parseInt(v)) {
                     case 1:
-                        _createEmulator(c, apiVersion, 'google_apis', emuName);
-                        break;
+                        return _createEmulator(c, apiVersion, 'google_apis', emuName);
                     case 2:
-                        _createEmulator(c, apiVersion, 'android-tv', emuName);
-                        break;
+                        return _createEmulator(c, apiVersion, 'android-tv', emuName);
                     case 3:
-                        _createEmulator(c, apiVersion, 'android-wear', emuName);
-                        break;
+                        return _createEmulator(c, apiVersion, 'android-wear', emuName);
                     default:
                         reject('Wrong value entered');
                     }
@@ -189,8 +187,9 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => new Promise((resolve, reject) => {
     logTask('_createEmulator');
-    return executeAsync(c.cli[CLI_ANDROID_AVDMANAGER], ['-h']);
-    // return executeAsync('c.cli[CLI_ANDROID_AVDMANAGER]', ['create', 'avd', '-n', `"${emuName}"`,'-k', `"system-images;android-${apiVersion};${emuPlatform};x86"`, '-d', `"${emuName}"`]);
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`).then(
+        () => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `),
+    );
 });
 
 const copyAndroidAssets = (c, platform) => new Promise((resolve, reject) => {
@@ -296,7 +295,7 @@ const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) =
                 attempts++;
                 if (attempts > maxAttempts) {
                     clearInterval(poll);
-                    _askForNewEmulator(c, platform);
+                    return _askForNewEmulator(c, platform);
                 }
             }
         });
