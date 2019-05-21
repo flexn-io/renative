@@ -32,7 +32,7 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) =
     // copy
     if (fs.lstatSync(source).isDirectory()) {
         files = fs.readdirSync(source);
-        files.forEach((file) => {
+        files.forEach(file => {
             const curSource = path.join(source, file);
             if (fs.lstatSync(curSource).isDirectory()) {
                 copyFolderRecursiveSync(curSource, targetFolder);
@@ -57,7 +57,7 @@ const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skip
     }
     if (fs.lstatSync(source).isDirectory()) {
         files = fs.readdirSync(source);
-        files.forEach((file) => {
+        files.forEach(file => {
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
@@ -81,20 +81,27 @@ const removeDir = (path, callback) => {
     rimraf(path, callback);
 };
 
-const mkdirSync = (dir) => {
+const mkdirSync = dir => {
     shelljs.mkdir('-p', dir);
 };
 
-const cleanFolder = d => new Promise((resolve, reject) => {
-    logDebug('cleanFolder', d);
-    removeDir(d, () => {
-        mkdirSync(d);
-        resolve();
+const cleanFolder = d =>
+    new Promise((resolve, reject) => {
+        logDebug('cleanFolder', d);
+        removeDir(d, () => {
+            mkdirSync(d);
+            resolve();
+        });
     });
-});
 
 export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync, copyFolderContentsRecursiveSync, cleanFolder };
 
 export default {
-    copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync, copyFolderContentsRecursiveSync, cleanFolder,
+    copyFileSync,
+    copyFolderRecursiveSync,
+    removeDir,
+    saveAsJs,
+    mkdirSync,
+    copyFolderContentsRecursiveSync,
+    cleanFolder,
 };

@@ -40,32 +40,33 @@ class Button extends React.Component {
         this.state = { currentStyle: this.blurState };
     }
 
-  blurState = {
-      borderColor: '#62DBFB',
-  }
+    blurState = {
+        borderColor: '#62DBFB',
+    };
 
-  focusState = {
-      borderColor: '#CC0000',
-  }
+    focusState = {
+        borderColor: '#CC0000',
+    };
 
-  render() {
-      return (
-
-          <TouchableOpacity
-              tvParallaxProperties={parallax}
-              style={[styles.button, this.state.currentStyle]}
-              onPress={() => {
-                  this.props.onPress();
-              }}
-              onFocus={() => { if (hasFocus) this.setState({ currentStyle: this.focusState }); }}
-              onBlur={() => { if (hasFocus) this.setState({ currentStyle: this.blurState }); }}
-          >
-              <Text style={styles.buttonText}>
-                  {this.props.title}
-              </Text>
-          </TouchableOpacity>
-      );
-  }
+    render() {
+        return (
+            <TouchableOpacity
+                tvParallaxProperties={parallax}
+                style={[styles.button, this.state.currentStyle]}
+                onPress={() => {
+                    this.props.onPress();
+                }}
+                onFocus={() => {
+                    if (hasFocus) this.setState({ currentStyle: this.focusState });
+                }}
+                onBlur={() => {
+                    if (hasFocus) this.setState({ currentStyle: this.blurState });
+                }}
+            >
+                <Text style={styles.buttonText}>{this.props.title}</Text>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export default Button;

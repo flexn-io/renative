@@ -18,18 +18,12 @@ const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shr
 const babelLoaderConfiguration = {
     test: /\.js$/,
     // Add every directory that needs to be compiled by Babel during the build.
-    include: [
-        path.resolve(appDirectory, 'src'),
-        path.resolve(appDirectory, 'entry'),
-
-    ],
+    include: [path.resolve(appDirectory, 'src'), path.resolve(appDirectory, 'entry')],
     use: {
         loader: 'babel-loader',
         options: {
             babelrc: false,
-            presets: [
-                ['module:metro-react-native-babel-preset'],
-            ],
+            presets: [['module:metro-react-native-babel-preset']],
         },
     },
 };
@@ -37,10 +31,12 @@ const babelLoaderConfiguration = {
 // This is needed for loading css
 const cssLoaderConfiguration = {
     test: /\.css$/,
-    use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader',
-    })),
+    use: ['css-hot-loader'].concat(
+        ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: 'css-loader',
+        })
+    ),
 };
 
 const imageLoaderConfiguration = {
@@ -60,7 +56,6 @@ const sourcemapLoaderConfiguration = {
     use: ['source-map-loader'],
     enforce: 'pre',
 };
-
 
 // todo refactor after demo
 module.exports = {
@@ -96,7 +91,9 @@ module.exports = {
         // builds to eliminate development checks and reduce build size. You may
         // wish to include additional optimizations.
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify(/* process.env.NODE_ENV || */ platformFamily === 'smarttv' ? 'production' : 'development'),
+            'process.env.NODE_ENV': JSON.stringify(
+                /* process.env.NODE_ENV || */ platformFamily === 'smarttv' ? 'production' : 'development'
+            ),
             __DEV__: process.env.NODE_ENV === 'production' || true,
         }),
         new HtmlWebpackPlugin({
@@ -109,21 +106,12 @@ module.exports = {
             },
         }),
         new HtmlWebpackHarddiskPlugin(),
-        new CopyWebpackPlugin([
-            { from: path.resolve(appBuildDirectory, 'app.css'), to: appBuildPublic },
-        ]),
+        new CopyWebpackPlugin([{ from: path.resolve(appBuildDirectory, 'app.css'), to: appBuildPublic }]),
     ],
     resolve: {
         symlinks: false,
-        extensions: [
-            `.${platform}.js`,
-            `.${platformFamily}.js`,
-            `.${formFactor}.js`,
-            `.${platformFallback}.js`,
-            '.js',
-        ],
+        extensions: [`.${platform}.js`, `.${platformFamily}.js`, `.${formFactor}.js`, `.${platformFallback}.js`, '.js'],
         alias: {
-
             react: path.resolve(appDirectory, 'node_modules/react'),
             'react-native': 'react-native-web',
             'react-native-linear-gradient': 'react-native-web-linear-gradient',

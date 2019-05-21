@@ -17,33 +17,37 @@ const RUN = 'run';
 const LIST = 'list';
 const PIPES = 'pipes';
 
-
 // ##########################################
 // PUBLIC API
 // ##########################################
 
-const run = c => new Promise((resolve, reject) => {
-    logTask('run');
+const run = c =>
+    new Promise((resolve, reject) => {
+        logTask('run');
 
-    switch (c.subCommand) {
-    case RUN:
-        executeHook(c).then(() => resolve()).catch(e => reject(e));
-        return;
-    case LIST:
-        listHooks(c).then(() => resolve()).catch(e => reject(e));
-        return;
-    case PIPES:
-        listPipes(c).then(() => resolve()).catch(e => reject(e));
-        return;
-    default:
-        return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
-    }
-});
-
+        switch (c.subCommand) {
+            case RUN:
+                executeHook(c)
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+                return;
+            case LIST:
+                listHooks(c)
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+                return;
+            case PIPES:
+                listPipes(c)
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+                return;
+            default:
+                return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
+        }
+    });
 
 // ##########################################
 // PRIVATE
 // ##########################################
-
 
 export default run;

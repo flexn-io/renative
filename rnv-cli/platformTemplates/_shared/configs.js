@@ -5,7 +5,6 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-
 function generateConfig(appDir, config) {
     const projectDir = path.resolve(appDir, '../../');
     const platformBuildsDir = path.resolve(appDir, '../');
@@ -16,26 +15,24 @@ function generateConfig(appDir, config) {
     const rules = {};
     rules.babel = {
         test: /\.js$/,
-        include: [
-            path.resolve(projectDir, 'src'),
-        ],
+        include: [path.resolve(projectDir, 'src')],
         use: {
             loader: 'babel-loader',
             options: {
                 babelrc: false,
-                presets: [
-                    ['module:metro-react-native-babel-preset'],
-                ],
+                presets: [['module:metro-react-native-babel-preset']],
             },
         },
     };
 
     rules.css = {
         test: /\.css$/,
-        use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: 'css-loader',
-        })),
+        use: ['css-hot-loader'].concat(
+            ExtractTextPlugin.extract({
+                fallback: 'style-loader',
+                use: 'css-loader',
+            })
+        ),
     };
 
     rules.image = {
@@ -113,7 +110,6 @@ function generateConfig(appDir, config) {
         platformBuildsSharedDir,
     };
 }
-
 
 module.exports = {
     generateConfig,
