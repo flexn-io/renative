@@ -10,6 +10,40 @@
         "path": "node_modules/react-native-gesture-handler/android",
         "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
       }
+    },
+    "react-native-orientation-locker": {
+      "version": "1.1.5",
+      "ios": {
+        "podName": "react-native-orientation-locker",
+        "appDelegateImports": [
+          "react_native_orientation_locker"
+        ],
+        "appDelegateMethods": [
+          "func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {",
+          "  return Orientation.getOrientation();",
+          "}"
+        ]
+      },
+      "tvos": {
+        "podName": "react-native-orientation-locker"
+      },
+      "android": {
+        "package": "org.wonday.orientation.OrientationPackage",
+        "activityImports": [
+          "android.content.res.Configuration"
+        ],
+        "activityMethods": [
+          "override fun onConfigurationChanged(newConfig:Configuration) {",
+          "  super.onConfigurationChanged(newConfig)",
+          "  val intent = Intent(\"onConfigurationChanged\")",
+          "  intent.putExtra(\"newConfig\", newConfig)",
+          "  this.sendBroadcast(intent)",
+          "}"
+        ]
+      },
+      "androidtv": {
+        "package": "org.wonday.orientation.OrientationPackage"
+      }
     }
   }
 }
