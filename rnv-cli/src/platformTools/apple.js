@@ -400,7 +400,8 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                                 const podPath = plugin.path ? `../../${plugin.path}` : `../../node_modules/${key}`;
                                 pluginInject += `  pod '${plugin.podName}', :path => '${podPath}'\n`;
                             } else if (plugin.git) {
-                                pluginInject += `  pod '${plugin.podName}', :git => '${plugin.git}'\n`;
+                                const commit = plugin.commit ? `, :commit => '${plugin.commit}'` : '';
+                                pluginInject += `  pod '${plugin.podName}', :git => '${plugin.git}'${commit}\n`;
                             } else if (plugin.version) {
                                 pluginInject += `  pod '${plugin.podName}', '${plugin.version}'\n`;
                             }

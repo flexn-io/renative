@@ -15,7 +15,12 @@
     ],
     "includedFonts": [
       "*"
-    ]
+    ],
+    "defaultSchemes": {
+      "run": "debug",
+      "build": "release",
+      "export": "release"
+    }
   },
   "platforms":{
     "ios": {
