@@ -9,6 +9,7 @@ import {
     isPlatformSupported, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformActive, configureIfRequired, copyBuildsFolder,
     CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_WEBOS_ARES,
+    CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER,
     CLI_WEBOS_ARES_PACKAGE, CLI_WEBBOS_ARES_INSTALL, CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion, getAppTitle, getAppVersionCode, writeCleanFile, getAppId, getAppTemplateFolder,
     getEntryFile, logWarning, logDebug, getConfigProp, logInfo, getQuestion, logSuccess,
@@ -154,6 +155,43 @@ const _getDeviceProp = (arr, prop) => {
     return '';
 };
 
+const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask('_askForNewEmulator');
+    const emuName = c.globalConfig.defaultTargets[platform];
+    const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+    readline.question(getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`), (v) => {
+        if (v.toLowerCase() === 'y') {
+            readline.question(getQuestion('Input desired Android API version number'), (v) => {
+                const apiVersion = v;
+                readline.question(getQuestion('Select device type: \n 1: Android Phone \n 2: Android TV \n 3: Android Wear \n'), (v) => {
+                    switch (parseInt(v)) {
+                    case 1:
+                        return _createEmulator(c, apiVersion, 'google_apis', emuName);
+                    case 2:
+                        return _createEmulator(c, apiVersion, 'android-tv', emuName);
+                    case 3:
+                        return _createEmulator(c, apiVersion, 'android-wear', emuName);
+                    default:
+                        reject('Wrong value entered');
+                    }
+                });
+            });
+        } else {
+            reject('Cannot find any active emulators');
+        }
+    });
+});
+
+const _createEmulator = (c, apiVersion, emuPlatform, emuName) => new Promise((resolve, reject) => {
+    logTask('_createEmulator');
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`).then(
+        () => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `),
+    );
+});
+
 const copyAndroidAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyAndroidAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
@@ -235,7 +273,7 @@ const _runGradle = (c, platform) => new Promise((resolve, reject) => {
             } else if (c.globalConfig.defaultTargets[platform]) {
                 logWarning(`No connected devices found. Launching ${chalk.white(c.globalConfig.defaultTargets[platform])} emulator!`);
                 launchAndroidSimulator(c, platform, c.globalConfig.defaultTargets[platform], true)
-                    .then(() => _checkForActiveEmulator(c))
+                    .then(() => _checkForActiveEmulator(c, platform))
                     .then(device => _runGradleApp(c, platform, appFolder, signingConfig, device))
                     .then(() => resolve())
                     .catch(e => reject(e));
@@ -245,7 +283,7 @@ const _runGradle = (c, platform) => new Promise((resolve, reject) => {
         }).catch(e => reject(e));
 });
 
-const _checkForActiveEmulator = c => new Promise((resolve, reject) => {
+const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     let attempts = 1;
     const maxAttempts = 8;
     const poll = setInterval(() => {
@@ -257,7 +295,7 @@ const _checkForActiveEmulator = c => new Promise((resolve, reject) => {
                 attempts++;
                 if (attempts > maxAttempts) {
                     clearInterval(poll);
-                    reject('Cannot find any active emulators');
+                    return _askForNewEmulator(c, platform);
                 }
             }
         });
@@ -567,19 +605,19 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
 
     // RELEASE CONFIGS
-    let releaseConfig = '';
     const globalAppConfigPath = path.join(c.globalConfigFolder, c.appConfigFile.id);
-    const keystorePath = path.join(globalAppConfigPath, 'release.keystore');
-    if (fs.existsSync(keystorePath)) {
-        const releaseConfigValue = fs.readFileSync(path.join(globalAppConfigPath, 'gradle.properties')).toString();
-        releaseConfig = `ext {
-  RELEASE_STORE_FILE="${keystorePath}"
-  ${releaseConfigValue}
-  }`;
+    const signingPropertiesPath = path.join(globalAppConfigPath, 'signing.properties');
+    let signingPropFile = null;
+    if (fs.existsSync(signingPropertiesPath)) {
+        signingPropFile = `new File("${signingPropertiesPath}")`;
     } else {
-        logWarning(`You're missing keystore for this app: ${chalk.white(keystorePath)}. You won't be able to make production releases without it!`);
+        logWarning(`You're missing signing.properties for this app: ${chalk.white(signingPropertiesPath)}. You won't be able to make production releases without it!`);
     }
-    fs.writeFileSync(path.join(appFolder, 'app/release-configs.gradle'), releaseConfig);
+    writeCleanFile(path.join(appTemplateFolder, 'build.gradle'),
+        path.join(appFolder, 'build.gradle'),
+        [
+            { pattern: '{{SIGNING_PROPS_FILE}}', override: signingPropFile },
+        ]);
 
     resolve();
 });
