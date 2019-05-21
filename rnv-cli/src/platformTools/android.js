@@ -267,7 +267,7 @@ const _checkForActiveEmulator = c => new Promise((resolve, reject) => {
 const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Promise((resolve, reject) => {
     const bundleId = getConfigProp(c, platform, 'id');
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
-    executeAsync('./gradlew', [`assemble${signingConfig}`, '-x', 'bundleReleaseJsAndAssets'])
+    executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [`assemble${signingConfig}`, '-x', 'bundleReleaseJsAndAssets'])
         .then(() => {
             let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
             if (!fs.existsSync(apkPath)) {
