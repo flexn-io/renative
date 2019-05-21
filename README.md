@@ -407,6 +407,24 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 rnv app configure -c helloWorld -u
 ```
 
+#### App Signing
+
+For Android release signing, create `~/.rnv/helloWorld/signing.properties` file
+with path to your release keystore file and its credentials.
+
+```
+STORE_FILE=~/.rnv/helloWorld/release.keystore
+STORE_PASSWORD= ************
+KEY_ALIAS= ************
+KEY_PASSWORD= ************
+```
+
+Then you can run the release app by:
+```bash
+rnv app configure -p android
+rnv run -p android -s release
+```
+
 #### Build Flavours
 
 You can configure different app ID, Title etc. with buildScheme field in you appConfig file.
@@ -432,11 +450,11 @@ Example:
 
 this will allow you to build 2 separate iOS apps with slightly different configurations:
 
-`rnv run -ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
+`rnv run -p ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
 
 and
 
-`rnv run -ios -s release`
+`rnv run -p ios -s release`
 
 #### Build Flavour Injectors
 

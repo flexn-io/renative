@@ -85,7 +85,8 @@
     "test": "jest",
     "preversion": "npm run test",
     "version": "./rnv/utils/update-versions.sh",
-    "doc": "doctoc . --maxlevel 1"
+    "doc": "doctoc . --maxlevel 1",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "babel-polyfill": "6.26.0",
@@ -164,7 +165,8 @@
     "write-json-webpack-plugin": "1.1.0",
     "babel-plugin-module-resolver": "3.2.0",
     "xcode": "2.0.0",
-    "deepmerge": "3.2.0"
+    "deepmerge": "3.2.0",
+    "react-native-orientation-locker": "1.1.5"
   },
   "optionalDependencies": {
     "ios-deploy": "1.9.4"

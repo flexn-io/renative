@@ -324,6 +324,22 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         });
 });
 
+const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
+    if (plugin.appDelegateImports instanceof Array) {
+        plugin.appDelegateImports.forEach((appDelegateImport) => {
+            // Avoid duplicate imports
+            logTask('appDelegateImports add')
+            if (pluginConfig.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
+                logTask('appDelegateImports add ok')
+                pluginConfig.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
+            }
+        });
+    }
+    if (plugin.appDelegateMethods instanceof Array) {
+        pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    }
+}
+
 const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
     logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
@@ -337,6 +353,30 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     } else {
         bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
     }
+    // INJECTORS
+    const pluginAppDelegateImports = '';
+    const pluginAppDelegateMethods = '';
+    const pluginConfig = {
+        pluginAppDelegateImports, pluginAppDelegateMethods,
+    };
+    // PLUGINS
+    if (c.appConfigFile && c.pluginConfig) {
+        const includedPlugins = c.appConfigFile.common.includedPlugins;
+        const excludedPlugins = c.appConfigFile.common.excludedPlugins;
+        if (includedPlugins) {
+            const plugins = c.pluginConfig.plugins;
+            for (const key in plugins) {
+                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
+                    const plugin = plugins[key][platform];
+                    if (plugin) {
+                        if (plugins[key]['no-active'] !== true) {
+                            _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
         path.join(appFolder, appFolderName, appDelegate),
@@ -345,6 +385,8 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             { pattern: '{{ENTRY_FILE}}', override: entryFile },
             { pattern: '{{IP}}', override: ip },
             { pattern: '{{PORT}}', override: port },
+            { pattern: '{{APPDELEGATE_IMPORTS}}', override: pluginConfig.pluginAppDelegateImports },
+            { pattern: '{{APPDELEGATE_METHODS}}', override: pluginConfig.pluginAppDelegateMethods },
         ]);
 
     writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'),

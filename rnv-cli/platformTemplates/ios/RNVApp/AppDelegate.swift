@@ -10,6 +10,7 @@ import UIKit
 import CoreData
 import React
 import UserNotifications
+{{APPDELEGATE_IMPORTS}}
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -40,4 +41,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         return true
     }
+
+    {{APPDELEGATE_METHODS}}
 }
