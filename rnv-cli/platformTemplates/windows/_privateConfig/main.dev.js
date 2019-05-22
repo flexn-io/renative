@@ -7,10 +7,12 @@ let mainWindow;
 
 const loadDevServer = () => {
     setTimeout(() => {
-        mainWindow.loadURL('{{DEV_SERVER}}').then(() => {
-        }).catch((e) => {
-            loadDevServer();
-        });
+        mainWindow
+            .loadURL('{{DEV_SERVER}}')
+            .then(() => {})
+            .catch(e => {
+                loadDevServer();
+            });
     }, 1000);
 };
 
@@ -20,7 +22,6 @@ function createWindow() {
 
     // and load the index.html of the app.
     loadDevServer();
-
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()

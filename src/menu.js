@@ -23,9 +23,7 @@ class Menu extends React.Component {
     render() {
         return (
             <View style={[styles.container, this.props.style]}>
-                <Text style={styles.text}>
-Menu
-                </Text>
+                <Text style={styles.text}>Menu</Text>
                 <Button
                     title="Home"
                     onPress={() => {

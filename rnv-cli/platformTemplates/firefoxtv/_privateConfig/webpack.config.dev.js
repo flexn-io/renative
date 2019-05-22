@@ -13,19 +13,9 @@ module.exports = {
     devServer: C.devServer,
     output: C.output,
     module: {
-        rules: [
-            C.Rules.babel,
-            C.Rules.css,
-            C.Rules.image,
-            C.Rules.ttf,
-            C.Rules.sourcemap,
-        ],
+        rules: [C.Rules.babel, C.Rules.css, C.Rules.image, C.Rules.ttf, C.Rules.sourcemap],
     },
-    plugins: [
-        C.Plugins.webpack,
-        C.Plugins.html,
-        C.Plugins.harddisk,
-    ],
+    plugins: [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk],
     resolve: {
         symlinks: false,
         extensions: C.extensions,

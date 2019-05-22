@@ -52,17 +52,9 @@ class ScreenHome extends React.Component {
         return (
             <View style={[styles.appContainer, { backgroundColor: this.state.bgColor }]}>
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
-                <Text style={styles.textH2}>
-
-                    {title}
-                </Text>
-                <Text style={styles.textH2}>
-v
-                    {packageJson.version}
-                </Text>
-                <Text style={styles.textH3}>
-                    {`platform: ${Api.platform}`}
-                </Text>
+                <Text style={styles.textH2}>{title}</Text>
+                <Text style={styles.textH2}>v{packageJson.version}</Text>
+                <Text style={styles.textH3}>{`platform: ${Api.platform}`}</Text>
                 <Button
                     title="Try Me!"
                     onPress={() => {
