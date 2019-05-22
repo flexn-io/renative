@@ -1,3 +1,5 @@
+const path = require('path');
+
 module.exports = {
     parser: 'babel-eslint',
     extends: ['airbnb'],
@@ -6,19 +8,19 @@ module.exports = {
         browser: true,
         es6: true,
         jest: true,
+        mocha: true,
     },
     parserOptions: {
         ecmaFeatures: {
             experimentalObjectRestSpread: true,
         },
     },
-    plugins: ['jest', 'prettier'],
+    plugins: ['jest', 'detox', 'mocha'],
     rules: {
         'arrow-body-style': ['warn', 'as-needed'],
-        'arrow-parens': [2, 'as-needed', { requireForBlockBody: false }],
         camelcase: 'off',
         'class-methods-use-this': 'off',
-        indent: ['error', 4, { SwitchCase: 1 }],
+        indent: ['error', 4],
         'max-statements': ['warn', 20],
         'new-cap': ['error', { capIsNew: false }],
         'no-duplicate-imports': 'off',
@@ -55,8 +57,15 @@ module.exports = {
         'import/prefer-default-export': 'off',
         'import/no-extraneous-dependencies': 'off',
         'import/no-duplicates': 'error',
-        'implicit-arrow-linebreak': 'off',
+        'import/no-named-as-default': 'off',
+
         'jsx-a11y/no-static-element-interactions': 'off',
-        'no-underscore-dangle': 'off',
+        'jsx-a11y/no-noninteractive-tabindex': 'off',
+        'jsx-a11y/media-has-caption': 'off',
+        'jsx-a11y/mouse-events-have-key-events': 'off',
+
+        'comma-dangle': ['error', 'only-multiline'],
+
+        'mocha/no-exclusive-tests': 'error',
     },
 };
