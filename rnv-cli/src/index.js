@@ -31,9 +31,11 @@ const commands = {
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
-        .then((v) => {
+        .then(v => {
             if (commands[cmd]) {
-                commands[cmd](v).then(() => logComplete(true)).catch(e => logError(e, true));
+                commands[cmd](v)
+                    .then(() => logComplete(true))
+                    .catch(e => logError(e, true));
             } else if (program.help) {
                 let cmdsString = '';
                 for (const key in commands) {
@@ -66,11 +68,10 @@ ${chalk.bold.white('OPTIONS:')}
             } else {
                 logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv')} for help`, true);
             }
-        }).catch(e => logError(e, true));
+        })
+        .catch(e => logError(e, true));
 };
 
-
 export { Constants, Runner, App, Platform, Target, Common, Exec, FileUtils };
-
 
 export default { run };

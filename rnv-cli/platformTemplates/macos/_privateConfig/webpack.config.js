@@ -17,27 +17,24 @@ const config = { metaTags: { viewport: 'width=device-width, initial-scale=1, shr
 
 const babelLoaderConfiguration = {
     test: /\.js$/,
-    include: [
-        path.resolve(appDirectory, 'src'),
-
-    ],
+    include: [path.resolve(appDirectory, 'src')],
     use: {
         loader: 'babel-loader',
         options: {
             babelrc: false,
-            presets: [
-                ['module:metro-react-native-babel-preset'],
-            ],
+            presets: [['module:metro-react-native-babel-preset']],
         },
     },
 };
 
 const cssLoaderConfiguration = {
     test: /\.css$/,
-    use: ['css-hot-loader'].concat(ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader',
-    })),
+    use: ['css-hot-loader'].concat(
+        ExtractTextPlugin.extract({
+            fallback: 'style-loader',
+            use: 'css-loader',
+        })
+    ),
 };
 
 const imageLoaderConfiguration = {
@@ -103,15 +100,8 @@ module.exports = {
     ],
     resolve: {
         symlinks: false,
-        extensions: [
-            `.${platform}.js`,
-            `.${platformFamily}.js`,
-            `.${formFactor}.js`,
-            `.${platformFallback}.js`,
-            '.js',
-        ],
+        extensions: [`.${platform}.js`, `.${platformFamily}.js`, `.${formFactor}.js`, `.${platformFallback}.js`, '.js'],
         alias: {
-
             react: path.resolve(appDirectory, 'node_modules/react'),
             'react-native': 'react-native-web',
             'react-native-linear-gradient': 'react-native-web-linear-gradient',

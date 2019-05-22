@@ -1,5 +1,5 @@
-const registerFonts = (fonts) => {
-    fonts.forEach((f) => {
+const registerFonts = fonts => {
+    fonts.forEach(f => {
         registerFont(f.fontFamily, f.file);
     });
     return {};

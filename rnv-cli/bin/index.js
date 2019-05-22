@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const program = require('commander');
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 
 global.fetch = require('node-fetch');
 
@@ -9,9 +9,8 @@ global.Headers = global.fetch.Headers;
 
 const cli = require('../dist/index.js');
 const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json')));
-var cmdValue
-var cmdOption
-
+var cmdValue;
+var cmdOption;
 
 program
     .version(package.version)

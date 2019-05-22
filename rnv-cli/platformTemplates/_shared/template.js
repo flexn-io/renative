@@ -17,11 +17,9 @@ const removeBlankLines = string => string.replace(/^\s*\n/gm, '');
 
 const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${tag}" ${tags[tag]} />`);
 
-const htmlTemp = (options) => {
+const htmlTemp = options => {
     const config = Object.assign(DEFAULT_CONFIG, options);
-    const {
-        docType, title, metaTags, htmlTag, contentType, isDebug, isTestVersion,
-    } = config;
+    const { docType, title, metaTags, htmlTag, contentType, isDebug, isTestVersion } = config;
 
     const linkTags = [
         '<link rel="manifest" href="manifest.json" />',
@@ -40,7 +38,9 @@ const htmlTemp = (options) => {
         }
         </script>`;
     const errDiv = '<div id="err" style="color: red; position: absolute; top: 0; left: 0; z-index: 0;"> </div>';
-    const customScripts = (config.customScripts || []).map(src => `<script type="text/javascript" src="${src}"></script>`).join('');
+    const customScripts = (config.customScripts || [])
+        .map(src => `<script type="text/javascript" src="${src}"></script>`)
+        .join('');
     const rootDiv = ' <div id="root" class="root"></div>';
     return removeBlankLines(`
 ${docType}

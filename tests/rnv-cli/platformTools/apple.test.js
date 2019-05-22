@@ -1,10 +1,8 @@
-
 const BOO = 'ssss';
 
 test('gets config xml', () => {
     expect(BOO).not.toBeNull();
 });
-
 
 // test('gets config xml', () => {
 //     expect(getConfigXML()).not.toBeNull();
