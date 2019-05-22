@@ -183,7 +183,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
-
     c.platform = program.platform;
     c.projectRootFolder = base;
     c.buildHooksFolder = path.join(c.projectRootFolder, 'buildHooks/src');
@@ -232,7 +231,12 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         c.projectPluginsFolder = _getPath(c, c.projectConfig.projectPlugins, 'projectPlugins', c.projectPluginsFolder);
         c.nodeModulesFolder = path.join(c.projectRootFolder, 'node_modules');
         c.runtimeConfigPath = path.join(c.platformAssetsFolder, RNV_APP_CONFIG_NAME);
-        c.projectConfigFolder = _getPath(c, c.projectConfig.projectConfigFolder, 'projectConfigFolder', c.projectConfigFolder);
+        c.projectConfigFolder = _getPath(
+            c,
+            c.projectConfig.projectConfigFolder,
+            'projectConfigFolder',
+            c.projectConfigFolder,
+        );
         c.pluginConfigPath = path.join(c.projectConfigFolder, 'plugins.json');
         c.permissionsConfigPath = path.join(c.projectConfigFolder, 'permissions.json');
         c.fontsConfigFolder = path.join(c.projectConfigFolder, 'fonts');
@@ -340,6 +344,16 @@ const configureProject = c => new Promise((resolve, reject) => {
             appConfig.id = c.defaultAppConfigId;
             appConfig.platforms.ios.teamID = '';
             appConfig.platforms.tvos.teamID = '';
+
+            const supPlats = c.projectPackage.supportedPlatforms;
+
+            if (supPlats) {
+                for (const pk in appConfig.platforms) {
+                    if (!supPlats.includes(pk)) {
+                        delete appConfig.platforms[pk];
+                    }
+                }
+            }
 
             fs.writeFileSync(c.appConfigPath, JSON.stringify(appConfig, null, 2));
         } catch (e) {
@@ -950,6 +964,25 @@ const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     });
 });
 
+let _currentQuestion;
+
+const askQuestion = question => new Promise((resolve, reject) => {
+    if (!_currentQuestion) {
+        _currentQuestion = require('readline').createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        });
+    }
+
+    _currentQuestion.question(getQuestion(question), (v) => {
+        resolve(v);
+    });
+});
+
+const finishQuestion = () => new Promise((resolve, reject) => {
+    _currentQuestion.close();
+});
+
 export {
     SUPPORTED_PLATFORMS,
     isPlatformSupported,
@@ -985,6 +1018,8 @@ export {
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
+    finishQuestion,
+    askQuestion,
     IOS,
     ANDROID,
     ANDROID_TV,
@@ -1047,6 +1082,8 @@ export default {
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
+    finishQuestion,
+    askQuestion,
     IOS,
     ANDROID,
     ANDROID_TV,
