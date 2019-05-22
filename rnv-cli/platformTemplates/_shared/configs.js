@@ -12,10 +12,31 @@ function generateConfig(appDir, config) {
     const appBuildDir = path.resolve(appDir);
     const appBuildPublicDir = path.resolve(appDir, 'public');
 
+    const baseUrl = '';
+    const devServerHost='0.0.0.0'
+
     const rules = {};
     rules.babel = {
         test: /\.js$/,
-        include: [path.resolve(projectDir, 'src')],
+        include: [
+          path.resolve(projectDir, 'src'),
+          path.resolve(projectDir, 'packages'),
+          path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
+          path.resolve(projectDir, 'node_modules/react-navigation-stack'),
+          path.resolve(projectDir, 'node_modules/react-navigation'),
+          path.resolve(projectDir, 'node_modules/@react-navigation'),
+          path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
+          path.resolve(projectDir, 'node_modules/react-native-reanimated'),
+          path.resolve(projectDir, 'node_modules/react-native-camera'),
+          path.resolve(projectDir, 'node_modules/react-native-actionsheet'),
+          path.resolve(projectDir, 'node_modules/react-native-root-toast'),
+          path.resolve(projectDir, 'node_modules/react-native-root-siblings'),
+          path.resolve(projectDir, 'node_modules/static-container'),
+          path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
+          path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
+          path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
+          path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
+        ],
         use: {
             loader: 'babel-loader',
             options: {
@@ -43,7 +64,7 @@ function generateConfig(appDir, config) {
     };
 
     rules.ttf = {
-        test: /\.(ttf)(\?[\s\S]+)?$/,
+        test: /\.(ttf|otf)(\?[\s\S]+)?$/,
         use: 'file-loader',
     };
 
@@ -54,17 +75,27 @@ function generateConfig(appDir, config) {
     };
 
     const aliases = {
-        react: path.resolve(projectDir, 'node_modules/react'),
-        'react-native': 'react-native-web',
-        'react-native-linear-gradient': 'react-native-web-linear-gradient',
-        'react-native-vector-icons': 'react-native-web-vector-icons',
+      react: path.resolve(projectDir, 'node_modules/react'),
+          'react-native': 'react-native-web',
+          'react-native-linear-gradient': 'react-native-web-linear-gradient',
+          'react-native-vector-icons': 'react-native-web-vector-icons',
+          svgs: path.resolve(projectDir, 'node_modules/svgs'),
+          'react-navigation-tabs': path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
+          'react-navigation-stack': path.resolve(projectDir, 'node_modules/react-navigation-stack'),
+          'react-native-reanimated': path.resolve(projectDir, 'node_modules/react-native-reanimated'),
+          'react-native-gesture-handler': path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
+          'react-native-material-dropdown': path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
+          'react-native-material-buttons': path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
+          'react-native-material-textfield': path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
+          'react-native-material-ripple': path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
+          'react-native-svg': 'svgs',
     };
 
     const plugins = {};
 
     plugins.webpack = new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(config.environment),
-        __DEV__: process.env.NODE_ENV === 'production' || true,
+        __DEV__: config.environment === 'production' || true,
     });
     plugins.html = new HtmlWebpackPlugin({
         alwaysWriteToDisk: true,
@@ -81,12 +112,12 @@ function generateConfig(appDir, config) {
 
     const output = {
         filename: '[name].js',
-        publicPath: 'assets/',
+        publicPath: `${baseUrl}/assets/`,
         path: path.join(appBuildPublicDir, 'assets'),
     };
 
     const devServer = {
-        host: '0.0.0.0',
+        host: devServerHost,
     };
 
     const entry = {
