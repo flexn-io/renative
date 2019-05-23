@@ -13,7 +13,6 @@
   </p>
 </p>
 
-
    <br />
     <br />
       <br />
@@ -49,7 +48,6 @@
     <a href="https://github.com/pavjacko"><img src="https://img.shields.io/github/followers/pavjacko.svg?label=Follow%20me%20on%20Github&style=social" /></a>
     <a href="https://twitter.com/pavjacko"><img src="https://img.shields.io/twitter/follow/pavjacko.svg?label=Follow%20me%20on%20Twitter&style=social" /></a>
 </p>
-
 
 <br />
 
@@ -194,8 +192,6 @@
 
 ---
 
-
-
 <!-- - [ReNativeCLI](#rnv-cli)
 - [Developing ReNativeLocally](#developing-rnv-locally)
 - [Discussions](#discussions)
@@ -245,8 +241,6 @@
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-
-
 ## 🚀 Quick Start
 
 ##### 1) Install ReNative
@@ -256,6 +250,14 @@ $ npm install renative@latest -g
 ```
 
 ##### 2) Create new app:
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/cli_app_create.gif?raw=true" />
+    </th>
+  </tr>
+</table>
 
 ```bash
 $ rnv app create
@@ -299,7 +301,6 @@ $ rnv run -p web
 
 open: http://0.0.0.0:8080/
 
-
 🎉 `Congratulations! You're now multi-platform developer!` 🎉
 
 All app code is located in `./src` directory
@@ -325,7 +326,6 @@ All app code is located in `./src` directory
 -   [Tizen Studio](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) (if you want to develop for Tizen)
 -   [WebOS SDK](http://webostv.developer.lge.com/sdk/installation/) (if you want to develop for WebOS)
 -   [KaiOS SDK](https://developer.kaiostech.com) (if you want to develop for KaiOS)
-
 
 ---
 
@@ -356,7 +356,6 @@ Reset all platforms of platformBuild project (fully recreate projects based on p
 rnv app configure -r
 ```
 
-
 #### Global Configurations
 
 `rnv` will create config folder at this location: `~/.rnv/config.json`
@@ -365,14 +364,14 @@ Open the file and edit SDK paths of platforms you plan to use:
 
 ```json
 {
-  "sdks": {
-    "ANDROID_SDK": "/Users/<USER>/Library/Android/sdk",
-    "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
-    "IOS_SDK": "No need. Just install Xcode",
-    "TIZEN_SDK": "/Users/<USER>/tizen-studio",
-    "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK",
-    "KAIOS_SDK": "/Applications/Kaiosrt.app"
-  }
+    "sdks": {
+        "ANDROID_SDK": "/Users/<USER>/Library/Android/sdk",
+        "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
+        "IOS_SDK": "No need. Just install Xcode",
+        "TIZEN_SDK": "/Users/<USER>/tizen-studio",
+        "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK",
+        "KAIOS_SDK": "/Applications/Kaiosrt.app"
+    }
 }
 ```
 
@@ -380,16 +379,16 @@ You can also edit your preferred emulator targets (allows you to run `rnv target
 
 ```json
 {
-  "defaultTargets": {
-    "android": "Nexus_5X_API_26",
-    "androidtv": "Android_TV_720p_API_22",
-    "androidwear": "Android_Wear_Round_API_28",
-    "ios": "iPhone 6",
-    "tvos": "Apple TV 4K",
-    "tizen": "T-samsung-5.0-x86",
-    "tizenwatch": "W-5.0-circle-x86",
-    "webos": "emulator"
-  }
+    "defaultTargets": {
+        "android": "Nexus_5X_API_26",
+        "androidtv": "Android_TV_720p_API_22",
+        "androidwear": "Android_Wear_Round_API_28",
+        "ios": "iPhone 6",
+        "tvos": "Apple TV 4K",
+        "tizen": "T-samsung-5.0-x86",
+        "tizenwatch": "W-5.0-circle-x86",
+        "webos": "emulator"
+    }
 }
 ```
 
@@ -420,6 +419,7 @@ KEY_PASSWORD= ************
 ```
 
 Then you can run the release app by:
+
 ```bash
 rnv app configure -p android
 rnv run -p android -s release
@@ -462,17 +462,15 @@ Sometimes you need to add buildFlavour specific file into project before build. 
 
 you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
-
     .
-    ├── appConfigs                 
-        └── helloWorld              
-            ├── assets              
-            └── builds     
+    ├── appConfigs
+        └── helloWorld
+            ├── assets
+            └── builds
                 ├── android@release
-                │   └── fileToBeInjectedInReleaseMode.txt                     
+                │   └── fileToBeInjectedInReleaseMode.txt
                 └── android@debug
                     └── fileToBeInjectedInDebugMode.txt
-
 
 #### Plugins
 
@@ -498,14 +496,11 @@ add new plugin to your project:
 
 and follow the command prompt steps
 
-
 Update your current plugins with latest ones from ReNative
 
 `rnv plugin update`
 
 and follow the command prompt steps
-
-
 
 #### Custom Plugin Support
 
@@ -516,19 +511,19 @@ Example:
 
 ```json
 {
-  "plugins": {
-    "react-native-gesture-handler" : {
-      "version": "0.1.0",
-      "ios": {
-        "podName": "RNGestureHandler",
-        "path": "node_modules/react-native-gesture-handler"
-      },
-      "android": {
-        "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
-        "path": "node_modules/react-native-gesture-handler/android"
-      }
+    "plugins": {
+        "react-native-gesture-handler": {
+            "version": "0.1.0",
+            "ios": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
+            "android": {
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
+                "path": "node_modules/react-native-gesture-handler/android"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -540,7 +535,7 @@ Contents of the file should follow this format:
 
 ```json
 {
-  "appConfigsPath": "/Users/<USER>/my-local-app-config-folder"
+    "appConfigsPath": "/Users/<USER>/my-local-app-config-folder"
 }
 ```
 
@@ -573,10 +568,11 @@ create file: `./buildHooks/src/index.js` with this script (NOTE: every top-level
 import chalk from 'chalk';
 
 const hooks = {
-    hello: c => new Promise((resolve, reject) => {
-        console.log(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
-        resolve();
-    }),
+    hello: c =>
+        new Promise((resolve, reject) => {
+            console.log(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
+            resolve();
+        }),
 };
 
 const pipes = {};
@@ -639,52 +635,52 @@ List of available pipe hooks:
 List of available config props injected into hooks methods:
 
 ```js
-c.program
-c.process
-c.command
-c.subCommand
-c.appID
-c.rnvRootFolder
-c.rnvHomeFolder
-c.rnvPlatformTemplatesFolder
-c.rnvPluginTemplatesFolder
-c.rnvPluginTemplatesConfigPath
-c.rnvPackagePath
-c.rnvPluginsFolder
-c.rnvPackage
-c.platform
-c.projectRootFolder
-c.buildHooksFolder
-c.buildHooksDistFolder
-c.buildHooksIndexPath
-c.buildHooksDistIndexPath
-c.projectSourceFolder
-c.projectNpmLinkPolyfillPath
-c.homeFolder
-c.globalConfigFolder
-c.globalConfigPath
-c.projectConfigPath
-c.projectConfigLocalPath
-c.projectPackagePath
-c.rnCliConfigPath
-c.babelConfigPath
-c.projectConfigFolder
-c.projectPluginsFolder
-c.projectConfig
-c.globalConfigFolder
-c.globalConfigPath
-c.appConfigsFolder
-c.entryFolder
-c.platformTemplatesFolder
-c.platformAssetsFolder
-c.platformBuildsFolder
-c.projectPluginsFolder
-c.nodeModulesFolder
-c.runtimeConfigPath
-c.projectConfigFolder
-c.pluginConfigPath
-c.permissionsConfigPath
-c.fontsConfigFolder
+c.program;
+c.process;
+c.command;
+c.subCommand;
+c.appID;
+c.rnvRootFolder;
+c.rnvHomeFolder;
+c.rnvPlatformTemplatesFolder;
+c.rnvPluginTemplatesFolder;
+c.rnvPluginTemplatesConfigPath;
+c.rnvPackagePath;
+c.rnvPluginsFolder;
+c.rnvPackage;
+c.platform;
+c.projectRootFolder;
+c.buildHooksFolder;
+c.buildHooksDistFolder;
+c.buildHooksIndexPath;
+c.buildHooksDistIndexPath;
+c.projectSourceFolder;
+c.projectNpmLinkPolyfillPath;
+c.homeFolder;
+c.globalConfigFolder;
+c.globalConfigPath;
+c.projectConfigPath;
+c.projectConfigLocalPath;
+c.projectPackagePath;
+c.rnCliConfigPath;
+c.babelConfigPath;
+c.projectConfigFolder;
+c.projectPluginsFolder;
+c.projectConfig;
+c.globalConfigFolder;
+c.globalConfigPath;
+c.appConfigsFolder;
+c.entryFolder;
+c.platformTemplatesFolder;
+c.platformAssetsFolder;
+c.platformBuildsFolder;
+c.projectPluginsFolder;
+c.nodeModulesFolder;
+c.runtimeConfigPath;
+c.projectConfigFolder;
+c.pluginConfigPath;
+c.permissionsConfigPath;
+c.fontsConfigFolder;
 ```
 
 ---
@@ -765,9 +761,9 @@ rnv run -p ios
 
 IMPORTANT: before you run ReNativeapp on the actual iOS device you MUST:
 
-1) Have ios device connected on the same network as your dev machine
-2) Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
-3) Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+1. Have ios device connected on the same network as your dev machine
+2. Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
+3. Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/config.json`
 
 You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
 
@@ -807,26 +803,31 @@ rnv run -p ios -t ?
 ```
 
 Launch specific emulator :
+
 ```
 rnv target launch -p ios -t "iPhone 8"
 ```
 
 Launch specific emulator (let ReNativeto give you the list of available options):
+
 ```
 rnv target launch -p ios -t ?
 ```
 
 Get list of all available devices
+
 ```
 rnv target list -p ios
 ```
 
 Get device/simulator logs
+
 ```
 rnv log -p ios
 ```
 
 Get device/simulator logs with filter
+
 ```
 rnv log -p ios -f com.myapp
 ```
@@ -853,7 +854,6 @@ rnv log -p ios -f com.myapp
 -   Kotlin Support
 -   Support for Gradle 4.9
 
-
 #### Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -861,13 +861,12 @@ rnv log -p ios -f com.myapp
 
 #### Project Configuration
 
-| Feature        |             Version              |
-| -------------- | :------------------------------: |
-| Gradle         |            `4.10.1`              |
-| Android Gradle |          `3.3.1`                 |
-| Kotlin         |             `1.3.20`             |
-| Target SDK     |               `27`               |
-
+| Feature        | Version  |
+| -------------- | :------: |
+| Gradle         | `4.10.1` |
+| Android Gradle | `3.3.1`  |
+| Kotlin         | `1.3.20` |
+| Target SDK     |   `27`   |
 
 #### Emulators
 
@@ -880,7 +879,6 @@ You can create variety of emulators via Android Studio IDE
     </th>
   </tr>
 </table>
-
 
 #### Run on Simulator
 
@@ -917,6 +915,7 @@ rnv run -p android -r
 ```
 
 Launch specific android emulator:
+
 ```
 rnv target launch -p android -t Nexus_5X_API_26
 ```
@@ -928,26 +927,31 @@ rnv run -p android -t ?
 ```
 
 Launch specific emulator :
+
 ```
 rnv target launch -p android -t Nexus_5X_API_26
 ```
 
 Launch specific emulator (let ReNativeto give you the list of available options):
+
 ```
 rnv target launch -p android -t ?
 ```
 
 Get list of all available devices
+
 ```
 rnv target list -p android
 ```
 
 Get device/simulator logs
+
 ```
 rnv log -p android
 ```
 
 Get device/simulator logs with filter
+
 ```
 rnv log -p android -f com.myapp
 ```
@@ -961,7 +965,6 @@ rnv log -p android -f com.myapp
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
-
 
 <table>
   <tr>
@@ -1037,13 +1040,12 @@ rnv run -p tvos -t "Apple TV 4K"
 
 #### Project Configuration
 
-| Feature        |             Version              |
-| -------------- | :------------------------------: |
-| Gradle         |            `4.10.1`              |
-| Android Gradle |          `3.3.1`                 |
-| Kotlin         |             `1.3.20`             |
-| Target SDK     |               `27`               |
-
+| Feature        | Version  |
+| -------------- | :------: |
+| Gradle         | `4.10.1` |
+| Android Gradle | `3.3.1`  |
+| Kotlin         | `1.3.20` |
+| Target SDK     |   `27`   |
 
 #### Run
 
@@ -1063,6 +1065,7 @@ rnv run -p androidtv -r
 ```
 
 Launch specific emulator:
+
 ```
 rnv target launch -p androidtv -t Android_TV_720p_API_22
 ```
@@ -1093,11 +1096,11 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 #### Project Configuration
 
-| Feature          |     Version     |
-| ---------------- | :-------------: |
-| Webpack          |    `3.11.0`     |
-| react-native-web |     `0.9.1`     |
-| Babel Core       | `7.1.2` |
+| Feature          | Version  |
+| ---------------- | :------: |
+| Webpack          | `3.11.0` |
+| react-native-web | `0.9.1`  |
+| Babel Core       | `7.1.2`  |
 
 #### Run
 
@@ -1105,9 +1108,15 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 rnv run -p web
 ```
 
-open browser URL: http://0.0.0.0:8080/
+RNV will run local server and attempt to open browser URL: http://0.0.0.0:8080/
 
-#### Run
+If you only want to run server:
+
+```
+rnv start -p web
+```
+
+#### Build
 
 ```
 rnv build -p web
@@ -1162,18 +1171,16 @@ rnv run -p web --port 9999
 
 #### Project Configuration
 
-| Feature          |     Version     |
-| ---------------- | :-------------: |
-| Tizen Studio     |      `2.5`      |
-| Tizen SDK        |      `5.0`      |
-| react-native-web |     `0.9.9`     |
-| Babel Core       |     `7.1.2`     |
-
+| Feature          | Version |
+| ---------------- | :-----: |
+| Tizen Studio     |  `2.5`  |
+| Tizen SDK        |  `5.0`  |
+| react-native-web | `0.9.9` |
+| Babel Core       | `7.1.2` |
 
 #### Emulator
 
 Make sure you have at least 1 TV VM setup
-
 
 <table>
   <tr>
@@ -1182,7 +1189,6 @@ Make sure you have at least 1 TV VM setup
     </th>
   </tr>
 </table>
-
 
 ```
 rnv target launch -p tizen -t T-samsung-5.0-x86
@@ -1235,18 +1241,16 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 #### Project Configuration
 
-| Feature          |     Version     |
-| ---------------- | :-------------: |
-| Tizen Studio     |      `2.5`      |
-| Tizen SDK        |      `5.0`      |
-| react-native-web |     `0.9.9`     |
-| Babel Core       |     `7.1.2`     |
-
+| Feature          | Version |
+| ---------------- | :-----: |
+| Tizen Studio     |  `2.5`  |
+| Tizen SDK        |  `5.0`  |
+| react-native-web | `0.9.9` |
+| Babel Core       | `7.1.2` |
 
 #### Emulator
 
 Make sure you have at least 1 TV VM setup
-
 
 <table>
   <tr>
@@ -1255,7 +1259,6 @@ Make sure you have at least 1 TV VM setup
     </th>
   </tr>
 </table>
-
 
 ```
 rnv target launch -p tizenwatch -t W-5.0-circle-x86
@@ -1307,11 +1310,10 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 #### Project Configuration
 
-| Feature          |     Version     |
-| ---------------- | :-------------: |
-| react-native-web |     `0.9.9`     |
+| Feature          | Version |
+| ---------------- | :-----: |
+| react-native-web | `0.9.9` |
 | Babel Core       | `7.1.2` |
-
 
 #### Emulator
 
@@ -1324,10 +1326,10 @@ rnv target launch -p webos -t emulator
 -   launch webOS emulator Manually
 
 usually located in something like:
+
 ```
 <USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
 ```
-
 
 #### Run
 
@@ -1444,7 +1446,6 @@ rnv run -p windows
 -   Kotlin Support
 -   Support for Gradle 4.9
 
-
 #### Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -1452,14 +1453,12 @@ rnv run -p windows
 
 #### Project Configuration
 
-| Feature        |             Version              |
-| -------------- | :------------------------------: |
-| Gradle         |            `4.10.1`              |
-| Android Gradle |          `3.3.1`                 |
-| Kotlin         |             `1.3.20`             |
-| Target SDK     |               `27`               |
-
-
+| Feature        | Version  |
+| -------------- | :------: |
+| Gradle         | `4.10.1` |
+| Android Gradle | `3.3.1`  |
+| Kotlin         | `1.3.20` |
+| Target SDK     |   `27`   |
 
 #### Run
 
@@ -1483,8 +1482,6 @@ Launch specific emulator:
 rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ```
 
-
-
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_kaios.png?raw=true" width=140 height=50 />
@@ -1503,7 +1500,6 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
   </tr>
 </table>
 
-
 #### Requirements
 
 -   [KaiOSrt](https://developer.kaiostech.com/simulator) for emulator
@@ -1517,7 +1513,6 @@ After installation you can launch it via Applications:
     </th>
   </tr>
 </table>
-
 
 #### Run
 
@@ -1545,7 +1540,6 @@ rnv run -p kaios
   </tr>
 </table>
 
-
 #### Requirements
 
 -   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
@@ -1561,7 +1555,6 @@ After installation you can launch it via Applications:
     </th>
   </tr>
 </table>
-
 
 #### Run
 
@@ -1589,7 +1582,6 @@ rnv run -p firefoxos
   </tr>
 </table>
 
-
 #### Requirements
 
 -   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
@@ -1606,7 +1598,6 @@ After installation you can launch it via Applications:
   </tr>
 </table>
 
-
 #### Run
 
 NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
@@ -1614,7 +1605,6 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 ```
 rnv run -p firefoxtv
 ```
-
 
 ---
 
@@ -1672,7 +1662,6 @@ https://spectrum.chat/renative
 This project exists thanks to all the people who contribute. [[Contribute]](CONTRIBUTING.md).
 
 <a href="graphs/contributors"><img src="https://opencollective.com/renative/contributors.svg?width=890" /></a>
-
 
 ## Backers
 

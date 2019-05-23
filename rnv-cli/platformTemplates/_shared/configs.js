@@ -5,15 +5,15 @@ const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-function generateConfig(appDir, config) {
-    const projectDir = path.resolve(appDir, '../../');
-    const platformBuildsDir = path.resolve(appDir, '../');
+function generateConfig(config) {
+    const projectDir = path.resolve(config.currentDir, '../../');
+    const platformBuildsDir = path.resolve(config.currentDir, '../');
     const platformBuildsSharedDir = path.join(platformBuildsDir, '_shared');
-    const appBuildDir = path.resolve(appDir);
-    const appBuildPublicDir = path.resolve(appDir, 'public');
+    const appBuildDir = path.resolve(config.currentDir);
+    const appBuildPublicDir = path.resolve(config.currentDir, 'public');
 
-    const baseUrl = '';
-    const devServerHost='0.0.0.0'
+    const baseUrl = config.baseUrl || '';
+    const devServerHost = config.devServerHost || '0.0.0.0'
 
     const rules = {};
     rules.babel = {
@@ -63,7 +63,7 @@ function generateConfig(appDir, config) {
         },
     };
 
-    rules.ttf = {
+    rules.fonts = {
         test: /\.(ttf|otf)(\?[\s\S]+)?$/,
         use: 'file-loader',
     };

@@ -1,19 +1,20 @@
 const Configs = require('../_shared/configs.js');
 
 const config = {
+    currentDir: __dirname,
     metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
     environment: 'development',
     extensions: ['macos', 'desktop', 'web'],
 };
 
-const C = Configs.generateConfig(__dirname, config);
+const C = Configs.generateConfig(config);
 
 module.exports = {
     entry: C.entry,
     devServer: C.devServer,
     output: C.output,
     module: {
-        rules: [C.Rules.babel, C.Rules.css, C.Rules.image, C.Rules.ttf, C.Rules.sourcemap],
+        rules: [C.Rules.babel, C.Rules.css, C.Rules.image, C.Rules.fonts, C.Rules.sourcemap],
     },
     plugins: [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk],
     resolve: {
