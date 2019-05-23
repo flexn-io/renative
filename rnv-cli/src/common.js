@@ -140,9 +140,8 @@ const isPlatformSupportedSync = (platform, resolve, reject) => {
     return true;
 };
 
-const isPlatformSupported = (c, platform) => new Promise((resolve, reject) => {
-    if (!platform) {
-        // console.log('SSSSS', c.appConfigFile.platforms);
+const isPlatformSupported = c => new Promise((resolve, reject) => {
+    if (!c.platform || c.platform === '?') {
         let platformsAsString = '';
         const platformsAsArray = [];
         let i = 1;
@@ -152,15 +151,21 @@ const isPlatformSupported = (c, platform) => new Promise((resolve, reject) => {
             i++;
         }
 
-        askQuestion(`Pick one of available platforms (number):\n${platformsAsString}`).then((v) => {
+        askQuestion(`Pick one of available platforms (number or text):\n${platformsAsString}`).then((v) => {
             finishQuestion();
-            const selectedPlatform = platformsAsArray[v - 1];
+            let selectedPlatform;
+            if (isNaN(v)) {
+                selectedPlatform = v;
+            } else {
+                selectedPlatform = platformsAsArray[v - 1];
+            }
+
             c.platform = selectedPlatform;
             c.program.platform = selectedPlatform;
             resolve(selectedPlatform);
         });
-    } else if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        reject(chalk.red(`Platform ${platform} is not supported`));
+    } else if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
+        reject(chalk.red(`Platform ${c.platform} is not supported`));
     } else {
         resolve();
     }
@@ -873,7 +878,7 @@ const getAppVersionCode = (c, platform) => {
 };
 
 const logErrorPlatform = (platform, resolve) => {
-    logError(`Platform: ${chalk.bold(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
+    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
     resolve();
 };
 

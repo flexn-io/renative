@@ -111,19 +111,19 @@ const run = (c) => {
         return _start(c);
         break;
     case EXPORT:
-        return _export(c);
+        return _exportApp(c);
         break;
     case PACKAGE:
         return _packageApp(c);
         break;
     case BUILD:
-        return _build(c);
+        return _buildApp(c);
         break;
     case LOG:
         return _log(c);
         break;
     case DEPLOY:
-        return _deploy(c);
+        return _deployApp(c);
         break;
         // case UPDATE:
         //     return Promise.resolve();
@@ -178,10 +178,9 @@ const _start = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const _runApp = c => new Promise((resolve, reject) => {
-    const { platform } = c;
-    logTask(`_runApp:${platform}`);
+    logTask(`_runApp:${c.platform}`);
 
-    isPlatformSupported(c, platform)
+    isPlatformSupported(c)
         .then(v => _runAppWithPlatform(c))
         .catch(e => reject(e));
 });
@@ -281,9 +280,16 @@ const _runAppWithPlatform = c => new Promise((resolve, reject) => {
 });
 
 const _packageApp = c => new Promise((resolve, reject) => {
-    logTask('_packageApp');
+    logTask(`_packageApp:${c.platform}`);
+
+    isPlatformSupported(c)
+        .then(v => _packageAppWithPlatform(c))
+        .catch(e => reject(e));
+});
+
+const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_packageAppWithPlatform:${c.platform}`);
     const { platform } = c;
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
 
     const target = c.program.target || c.globalConfig.defaultTargets[platform];
 
@@ -318,11 +324,17 @@ const _packageApp = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _export = c => new Promise((resolve, reject) => {
-    logTask('_export');
-    const { platform } = c;
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
+const _exportApp = c => new Promise((resolve, reject) => {
+    logTask(`_exportApp:${c.platform}`);
 
+    isPlatformSupported(c)
+        .then(v => _exportAppWithPlatform(c))
+        .catch(e => reject(e));
+});
+
+const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_exportAppWithPlatform:${c.platform}`);
+    const { platform } = c;
     switch (platform) {
     case IOS:
     case TVOS:
@@ -342,8 +354,8 @@ const _export = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _deploy = c => new Promise((resolve, reject) => {
-    logTask('_deploy');
+const _deployApp = c => new Promise((resolve, reject) => {
+    logTask(`_deployApp:${c.platform}`);
     const { platform } = c;
     if (!isPlatformSupportedSync(platform, null, reject)) return;
 
@@ -364,10 +376,17 @@ const _deploy = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _build = c => new Promise((resolve, reject) => {
-    logTask('_build');
+const _buildApp = c => new Promise((resolve, reject) => {
+    logTask(`_buildApp:${c.platform}`);
+
+    isPlatformSupported(c)
+        .then(v => _buildAppWithPlatform(c))
+        .catch(e => reject(e));
+});
+
+const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_buildAppWithPlatform:${c.platform}`);
     const { platform } = c;
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
 
     switch (platform) {
     case ANDROID:

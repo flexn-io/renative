@@ -41,101 +41,97 @@ import {
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
-const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) =>
-    new Promise((resolve, reject) => {
-        logTask(`launchAndroidSimulator:${platform}:${target}`);
+const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => new Promise((resolve, reject) => {
+    logTask(`launchAndroidSimulator:${platform}:${target}`);
 
-        if (target === '?' || target === undefined || target === '') {
-            _listAndroidTargets(c, true, false)
-                .then(devicesArr => {
-                    let devicesString = '\n';
-
-                    devicesArr.forEach((v, i) => {
-                        devicesString += _getDeviceString(v, i);
-                    });
-                    const readline = require('readline').createInterface({
-                        input: process.stdin,
-                        output: process.stdout,
-                    });
-                    readline.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), v => {
-                        const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-                        if (selectedDevice) {
-                            if (isIndependentThread) {
-                                // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
-                                //     '-avd', `"${selectedDevice.name}"`]);
-                                execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
-                                resolve();
-                            } else {
-                                execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`)
-                                    .then(() => resolve())
-                                    .catch(e => reject(e));
-                            }
-                        } else {
-                            logError(`Wrong choice ${v}! Ingoring`);
-                        }
-                    });
-                })
-                .catch(e => reject(e));
-
-            return;
-        }
-
-        if (target) {
-            if (isIndependentThread) {
-                // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
-                //     '-avd', `"${target}"`]);
-                execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
-                resolve();
-            } else {
-                execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`)
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-            }
-
-            return;
-        }
-        reject('No simulator -t target name specified!');
-    });
-
-const listAndroidTargets = c =>
-    new Promise((resolve, reject) => {
-        logTask('listAndroidTargets');
-
-        _listAndroidTargets(c, false, false)
-            .then(devicesArr => {
+    if (target === '?' || target === undefined || target === '') {
+        _listAndroidTargets(c, true, false)
+            .then((devicesArr) => {
                 let devicesString = '\n';
 
                 devicesArr.forEach((v, i) => {
                     devicesString += _getDeviceString(v, i);
                 });
-                console.log(devicesString);
+                const readline = require('readline').createInterface({
+                    input: process.stdin,
+                    output: process.stdout,
+                });
+                readline.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), (v) => {
+                    const selectedDevice = devicesArr[parseInt(v, 10) - 1];
+                    if (selectedDevice) {
+                        if (isIndependentThread) {
+                            // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
+                            //     '-avd', `"${selectedDevice.name}"`]);
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
+                            resolve();
+                        } else {
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`)
+                                .then(() => resolve())
+                                .catch(e => reject(e));
+                        }
+                    } else {
+                        logError(`Wrong choice ${v}! Ingoring`);
+                    }
+                });
             })
             .catch(e => reject(e));
-    });
 
-const _getDeviceString = (v, i) =>
-    `-[${i + 1}] ${chalk.white(v.name)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}${
-        v.isActive ? chalk.magenta(' (active)') : ''
-    }\n`;
+        return;
+    }
 
-const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) =>
-    new Promise((resolve, reject) => {
-        logTask('_listAndroidTargets');
-        try {
-            let devicesResult;
-            let avdResult;
-
-            if (!skipDevices) {
-                devicesResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} devices -l`).toString();
-            }
-            if (!skipAvds) {
-                avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
-            }
-            resolve(_parseDevicesResult(devicesResult, avdResult, deviceOnly));
-        } catch (e) {
-            reject(e);
+    if (target) {
+        if (isIndependentThread) {
+            // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
+            //     '-avd', `"${target}"`]);
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
+            resolve();
+        } else {
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`)
+                .then(() => resolve())
+                .catch(e => reject(e));
         }
-    });
+
+        return;
+    }
+    reject('No simulator -t target name specified!');
+});
+
+const listAndroidTargets = c => new Promise((resolve, reject) => {
+    logTask('listAndroidTargets');
+
+    _listAndroidTargets(c, false, false)
+        .then((devicesArr) => {
+            let devicesString = '\n';
+
+            devicesArr.forEach((v, i) => {
+                devicesString += _getDeviceString(v, i);
+            });
+            console.log(devicesString);
+        })
+        .catch(e => reject(e));
+});
+
+const _getDeviceString = (v, i) => `-[${i + 1}] ${chalk.white(v.name)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}${
+    v.isActive ? chalk.magenta(' (active)') : ''
+}\n`;
+
+const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => new Promise((resolve, reject) => {
+    logTask('_listAndroidTargets');
+    try {
+        let devicesResult;
+        let avdResult;
+
+        if (!skipDevices) {
+            devicesResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} devices -l`).toString();
+        }
+        if (!skipAvds) {
+            avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
+        }
+        resolve(_parseDevicesResult(devicesResult, avdResult, deviceOnly));
+    } catch (e) {
+        reject(e);
+    }
+});
 
 const _parseDevicesResult = (devicesString, avdsString, deviceOnly) => {
     const devices = [];
@@ -186,170 +182,164 @@ const _getDeviceProp = (arr, prop) => {
     return '';
 };
 
-const _askForNewEmulator = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask('_askForNewEmulator');
-        const emuName = c.globalConfig.defaultTargets[platform];
-        const readline = require('readline').createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-        readline.question(
-            getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`),
-            v => {
-                if (v.toLowerCase() === 'y') {
-                    readline.question(getQuestion('Input desired Android API version number'), v => {
-                        const apiVersion = v;
-                        readline.question(
-                            getQuestion('Select device type: \n 1: Android Phone \n 2: Android TV \n 3: Android Wear \n'),
-                            v => {
-                                switch (parseInt(v)) {
-                                    case 1:
-                                        return _createEmulator(c, apiVersion, 'google_apis', emuName);
-                                    case 2:
-                                        return _createEmulator(c, apiVersion, 'android-tv', emuName);
-                                    case 3:
-                                        return _createEmulator(c, apiVersion, 'android-wear', emuName);
-                                    default:
-                                        reject('Wrong value entered');
-                                }
+const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask('_askForNewEmulator');
+    const emuName = c.globalConfig.defaultTargets[platform];
+    const readline = require('readline').createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+    readline.question(
+        getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`),
+        (v) => {
+            if (v.toLowerCase() === 'y') {
+                readline.question(getQuestion('Input desired Android API version number'), (v) => {
+                    const apiVersion = v;
+                    readline.question(
+                        getQuestion('Select device type: \n 1: Android Phone \n 2: Android TV \n 3: Android Wear \n'),
+                        (v) => {
+                            switch (parseInt(v)) {
+                            case 1:
+                                return _createEmulator(c, apiVersion, 'google_apis', emuName);
+                            case 2:
+                                return _createEmulator(c, apiVersion, 'android-tv', emuName);
+                            case 3:
+                                return _createEmulator(c, apiVersion, 'android-wear', emuName);
+                            default:
+                                reject('Wrong value entered');
                             }
-                        );
-                    });
-                } else {
-                    reject('Cannot find any active emulators');
-                }
+                        },
+                    );
+                });
+            } else {
+                reject('Cannot find any active emulators');
             }
-        );
-    });
+        },
+    );
+});
 
-const _createEmulator = (c, apiVersion, emuPlatform, emuName) =>
-    new Promise((resolve, reject) => {
-        logTask('_createEmulator');
-        return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`).then(() =>
-            execCLI(
-                c,
-                CLI_ANDROID_AVDMANAGER,
-                `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `
-            )
-        );
-    });
+const _createEmulator = (c, apiVersion, emuPlatform, emuName) => new Promise((resolve, reject) => {
+    logTask('_createEmulator');
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`).then(() => execCLI(
+        c,
+        CLI_ANDROID_AVDMANAGER,
+        `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
+    ));
+});
 
-const copyAndroidAssets = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask('copyAndroidAssets');
-        if (!isPlatformActive(c, platform, resolve)) return;
+const copyAndroidAssets = (c, platform) => new Promise((resolve, reject) => {
+    logTask('copyAndroidAssets');
+    if (!isPlatformActive(c, platform, resolve)) return;
 
-        const destPath = path.join(getAppFolder(c, platform), 'app/src/main/res');
-        const sourcePath = path.join(c.appConfigFolder, `assets/${platform}/res`);
-        copyFolderContentsRecursiveSync(sourcePath, destPath);
-        resolve();
-    });
+    const destPath = path.join(getAppFolder(c, platform), 'app/src/main/res');
+    const sourcePath = path.join(c.appConfigFolder, `assets/${platform}/res`);
+    copyFolderContentsRecursiveSync(sourcePath, destPath);
+    resolve();
+});
 
-const packageAndroid = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask('packageAndroid');
+const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
+    logTask('packageAndroid');
 
-        const appFolder = getAppFolder(c, platform);
-        executeAsync('react-native', [
-            'bundle',
-            '--platform',
-            'android',
-            '--dev',
-            'false',
-            '--assets-dest',
-            `${appFolder}/app/src/main/res`,
-            '--entry-file',
-            `${c.appConfigFile.platforms[platform].entryFile}.js`,
-            '--bundle-output',
-            `${appFolder}/app/src/main/assets/index.android.bundle`,
-        ])
+    const appFolder = getAppFolder(c, platform);
+    executeAsync('react-native', [
+        'bundle',
+        '--platform',
+        'android',
+        '--dev',
+        'false',
+        '--assets-dest',
+        `${appFolder}/app/src/main/res`,
+        '--entry-file',
+        `${c.appConfigFile.platforms[platform].entryFile}.js`,
+        '--bundle-output',
+        `${appFolder}/app/src/main/assets/index.android.bundle`,
+    ])
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
+    logTask(`runAndroid:${platform}:${target}`);
+
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
+
+    if (bundleAssets) {
+        packageAndroid(c, platform, bundleIsDev)
+            .then(v => _runGradle(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
-    });
-
-const runAndroid = (c, platform, target) =>
-    new Promise((resolve, reject) => {
-        logTask(`runAndroid:${platform}:${target}`);
-
-        const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
-        const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
-
-        if (bundleAssets) {
-            packageAndroid(c, platform, bundleIsDev)
-                .then(v => _runGradle(c, platform))
-                .then(() => resolve())
-                .catch(e => reject(e));
-        } else {
-            _runGradle(c, platform)
-                .then(() => resolve())
-                .catch(e => reject(e));
-        }
-    });
-
-const _runGradle = (c, platform) =>
-    new Promise((resolve, reject) => {
-        const appFolder = getAppFolder(c, platform);
-        shell.cd(`${appFolder}`);
-
-        const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-
-        _listAndroidTargets(c, false, true, c.program.device !== undefined)
-            .then(devicesArr => {
-                if (devicesArr.length === 1) {
-                    const dv = devicesArr[0];
-                    logInfo(`Found device ${dv.name}:${dv.udid}!`);
-                    _runGradleApp(c, platform, appFolder, signingConfig, dv)
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                } else if (devicesArr.length > 1) {
-                    logWarning('More than one device is connected!');
-                    let devicesString = '\n';
-                    devicesArr.forEach((v, i) => {
-                        devicesString += _getDeviceString(v, i);
-                    });
-                    const readline = require('readline').createInterface({
-                        input: process.stdin,
-                        output: process.stdout,
-                    });
-                    readline.question(getQuestion(`${devicesString}\nType number of the device to use`), v => {
-                        const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-                        if (selectedDevice) {
-                            logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
-                            _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
-                                .then(() => resolve())
-                                .catch(e => reject(e));
-                        } else {
-                            logError(`Wrong choice ${v}! Ingoring`);
-                        }
-                    });
-                } else if (c.globalConfig.defaultTargets[platform]) {
-                    logWarning(
-                        `No connected devices found. Launching ${chalk.white(c.globalConfig.defaultTargets[platform])} emulator!`
-                    );
-                    launchAndroidSimulator(c, platform, c.globalConfig.defaultTargets[platform], true)
-                        .then(() => _checkForActiveEmulator(c, platform))
-                        .then(device => _runGradleApp(c, platform, appFolder, signingConfig, device))
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                } else {
-                    reject(
-                        `No active or connected devices! You can launch android emulator with ${chalk.white(
-                            'rnv target launch -p android -t <TARGET_NAME>'
-                        )}`
-                    );
-                }
-            })
+    } else {
+        _runGradle(c, platform)
+            .then(() => resolve())
             .catch(e => reject(e));
-    });
+    }
+});
 
-const _checkForActiveEmulator = (c, platform) =>
-    new Promise((resolve, reject) => {
-        let attempts = 1;
-        const maxAttempts = 8;
-        const poll = setInterval(() => {
-            _listAndroidTargets(c, false, true, false).then(v => {
+const _runGradle = (c, platform) => new Promise((resolve, reject) => {
+    const appFolder = getAppFolder(c, platform);
+    shell.cd(`${appFolder}`);
+
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+
+    _listAndroidTargets(c, false, true, c.program.device !== undefined)
+        .then((devicesArr) => {
+            if (devicesArr.length === 1) {
+                const dv = devicesArr[0];
+                logInfo(`Found device ${dv.name}:${dv.udid}!`);
+                _runGradleApp(c, platform, appFolder, signingConfig, dv)
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+            } else if (devicesArr.length > 1) {
+                logWarning('More than one device is connected!');
+                let devicesString = '\n';
+                devicesArr.forEach((v, i) => {
+                    devicesString += _getDeviceString(v, i);
+                });
+                const readline = require('readline').createInterface({
+                    input: process.stdin,
+                    output: process.stdout,
+                });
+                readline.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
+                    const selectedDevice = devicesArr[parseInt(v, 10) - 1];
+                    if (selectedDevice) {
+                        logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
+                        _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
+                            .then(() => resolve())
+                            .catch(e => reject(e));
+                    } else {
+                        logError(`Wrong choice ${v}! Ingoring`);
+                    }
+                });
+            } else if (c.globalConfig.defaultTargets[platform]) {
+                logWarning(
+                    `No connected devices found. Launching ${chalk.white(c.globalConfig.defaultTargets[platform])} emulator!`,
+                );
+                launchAndroidSimulator(c, platform, c.globalConfig.defaultTargets[platform], true)
+                    .then(() => _checkForActiveEmulator(c, platform))
+                    .then(device => _runGradleApp(c, platform, appFolder, signingConfig, device))
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+            } else {
+                reject(
+                    `No active or connected devices! You can launch android emulator with ${chalk.white(
+                        'rnv target launch -p android -t <TARGET_NAME>',
+                    )}`,
+                );
+            }
+        })
+        .catch(e => reject(e));
+});
+
+const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
+    let attempts = 1;
+    const maxAttempts = 8;
+    const poll = setInterval(() => {
+        _listAndroidTargets(c, false, true, false)
+            .then((v) => {
                 if (v.length > 0) {
+                    logSuccess(`Found active emulator! ${chalk.white(v[0].udid)}. Will use it`);
+                    clearInterval(poll);
                     resolve(v[0]);
                 } else {
                     console.log(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
@@ -359,100 +349,96 @@ const _checkForActiveEmulator = (c, platform) =>
                         return _askForNewEmulator(c, platform);
                     }
                 }
-            });
-        }, 2000);
-    });
-
-const _runGradleApp = (c, platform, appFolder, signingConfig, device) =>
-    new Promise((resolve, reject) => {
-        const bundleId = getConfigProp(c, platform, 'id');
-        const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
-        executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
-            `assemble${signingConfig}`,
-            '-x',
-            'bundleReleaseJsAndAssets',
-        ])
-            .then(() => {
-                let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
-                if (!fs.existsSync(apkPath)) {
-                    apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
-                }
-                return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
             })
-            .then(() =>
-                device.isDevice
-                    ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081'])
-                    : Promise.resolve()
-            )
-            .then(() =>
-                executeAsync(c.cli[CLI_ANDROID_ADB], [
-                    '-s',
-                    device.udid,
-                    'shell',
-                    'am',
-                    'start',
-                    '-n',
-                    `${bundleId}/.MainActivity`,
-                ])
-            )
-            .then(() => resolve())
-            .catch(e => reject(e));
-    });
+            .catch((e) => {
+                clearInterval(poll);
+                logError(e);
+            });
+    }, 2000);
+});
 
-const buildAndroid = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`buildAndroid:${platform}`);
-
-        const appFolder = getAppFolder(c, platform);
-
-        shell.cd(`${appFolder}`);
-        shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', error => {
-            if (error) {
-                logError(`Command 'gradlew assembleRelease -x bundleReleaseJsAndAssets' failed with error code ${error}`, true);
-                return;
+const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Promise((resolve, reject) => {
+    const bundleId = getConfigProp(c, platform, 'id');
+    const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
+    executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
+        `assemble${signingConfig}`,
+        '-x',
+        'bundleReleaseJsAndAssets',
+    ])
+        .then(() => {
+            let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
+            if (!fs.existsSync(apkPath)) {
+                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
             }
+            return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
+        })
+        .then(() => (device.isDevice
+            ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081'])
+            : Promise.resolve()))
+        .then(() => executeAsync(c.cli[CLI_ANDROID_ADB], [
+            '-s',
+            device.udid,
+            'shell',
+            'am',
+            'start',
+            '-n',
+            `${bundleId}/.MainActivity`,
+        ]))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
 
-            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))}.`);
-            resolve();
-        });
-    });
+const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`buildAndroid:${platform}`);
 
-const configureAndroidProperties = c =>
-    new Promise((resolve, reject) => {
-        logTask('configureAndroidProperties');
+    const appFolder = getAppFolder(c, platform);
 
-        const localProperties = path.join(c.globalConfigFolder, 'local.properties');
-        if (fs.existsSync(localProperties)) {
-            console.log('local.properties file exists!');
-        } else {
-            console.log('local.properties file missing! Creating one for you...');
+    shell.cd(`${appFolder}`);
+    shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', (error) => {
+        if (error) {
+            logError(`Command 'gradlew assembleRelease -x bundleReleaseJsAndAssets' failed with error code ${error}`, true);
+            return;
         }
 
-        fs.writeFileSync(
-            localProperties,
-            `#Generated by ReNative
-ndk.dir=${c.globalConfig.sdks.ANDROID_NDK}
-sdk.dir=${c.globalConfig.sdks.ANDROID_SDK}`
-        );
-
+        logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))}.`);
         resolve();
     });
+});
 
-const configureGradleProject = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`configureGradleProject:${platform}`);
+const configureAndroidProperties = c => new Promise((resolve, reject) => {
+    logTask('configureAndroidProperties');
 
-        if (!isPlatformActive(c, platform, resolve)) return;
+    const localProperties = path.join(c.globalConfigFolder, 'local.properties');
+    if (fs.existsSync(localProperties)) {
+        console.log('local.properties file exists!');
+    } else {
+        console.log('local.properties file missing! Creating one for you...');
+    }
 
-        // configureIfRequired(c, platform)
-        //     .then(() => configureAndroidProperties(c, platform))
-        configureAndroidProperties(c, platform)
-            .then(() => copyAndroidAssets(c, platform))
-            .then(() => copyBuildsFolder(c, platform))
-            .then(() => configureProject(c, platform))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    });
+    fs.writeFileSync(
+        localProperties,
+        `#Generated by ReNative
+ndk.dir=${c.globalConfig.sdks.ANDROID_NDK}
+sdk.dir=${c.globalConfig.sdks.ANDROID_SDK}`,
+    );
+
+    resolve();
+});
+
+const configureGradleProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`configureGradleProject:${platform}`);
+
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    // configureIfRequired(c, platform)
+    //     .then(() => configureAndroidProperties(c, platform))
+    configureAndroidProperties(c, platform)
+        .then(() => copyAndroidAssets(c, platform))
+        .then(() => copyBuildsFolder(c, platform))
+        .then(() => configureProject(c, platform))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
 
 const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
     const className = pkg ? pkg.split('.').pop() : null;
@@ -486,7 +472,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
         }
     }
     if (plugin.activityImports instanceof Array) {
-        plugin.activityImports.forEach(activityImport => {
+        plugin.activityImports.forEach((activityImport) => {
             // Avoid duplicate imports
             if (pluginConfig.pluginActivityImports.indexOf(activityImport) === -1) {
                 pluginConfig.pluginActivityImports += `import ${activityImport}\n`;
@@ -500,13 +486,13 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
     if (className) pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
 
     if (plugin.implementations) {
-        plugin.implementations.forEach(v => {
+        plugin.implementations.forEach((v) => {
             pluginConfig.pluginImplementations += `    implementation '${v}'\n`;
         });
     }
 
     if (plugin.afterEvaluate) {
-        plugin.afterEvaluate.forEach(v => {
+        plugin.afterEvaluate.forEach((v) => {
             pluginConfig.pluginAfterEvaluate += ` ${v}\n`;
         });
     }
@@ -529,197 +515,195 @@ const _fixAndroidLegacy = (c, modulePath) => {
     }
 };
 
-const configureProject = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`configureProject:${platform}`);
+const configureProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`configureProject:${platform}`);
 
-        const appFolder = getAppFolder(c, platform);
-        const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const appFolder = getAppFolder(c, platform);
+    const appTemplateFolder = getAppTemplateFolder(c, platform);
 
-        const gradlew = path.join(appFolder, 'gradlew');
+    const gradlew = path.join(appFolder, 'gradlew');
 
-        if (!fs.existsSync(gradlew)) {
-            logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
-            createPlatformBuild(c, platform)
-                .then(() => configureGradleProject(c, platform))
-                .then(() => resolve(c))
-                .catch(e => reject(e));
-            return;
-        }
+    if (!fs.existsSync(gradlew)) {
+        logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
+        createPlatformBuild(c, platform)
+            .then(() => configureGradleProject(c, platform))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
 
-        copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
-        mkdirSync(path.join(appFolder, 'app/src/main/assets'));
-        fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
-        fs.chmodSync(gradlew, '755');
+    copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
+    mkdirSync(path.join(appFolder, 'app/src/main/assets'));
+    fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
+    fs.chmodSync(gradlew, '755');
 
-        // INJECTORS
-        const pluginIncludes = "include ':app'";
-        const pluginPaths = '';
-        const pluginImports = '';
-        const pluginPackages = 'MainReactPackage(),\n';
-        const pluginImplementations = '';
-        const pluginAfterEvaluate = '';
-        const pluginActivityImports = '';
-        const pluginActivityMethods = '';
-        const pluginConfig = {
-            pluginIncludes,
-            pluginPaths,
-            pluginImports,
-            pluginPackages,
-            pluginImplementations,
-            pluginAfterEvaluate,
-            pluginActivityImports,
-            pluginActivityMethods,
-        };
+    // INJECTORS
+    const pluginIncludes = "include ':app'";
+    const pluginPaths = '';
+    const pluginImports = '';
+    const pluginPackages = 'MainReactPackage(),\n';
+    const pluginImplementations = '';
+    const pluginAfterEvaluate = '';
+    const pluginActivityImports = '';
+    const pluginActivityMethods = '';
+    const pluginConfig = {
+        pluginIncludes,
+        pluginPaths,
+        pluginImports,
+        pluginPackages,
+        pluginImplementations,
+        pluginAfterEvaluate,
+        pluginActivityImports,
+        pluginActivityMethods,
+    };
         // PLUGINS
-        if (c.appConfigFile && c.pluginConfig) {
-            const includedPlugins = c.appConfigFile.common.includedPlugins;
-            const excludedPlugins = c.appConfigFile.common.excludedPlugins;
-            if (includedPlugins) {
-                const plugins = c.pluginConfig.plugins;
-                for (const key in plugins) {
-                    if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                        const plugin = plugins[key][platform];
-                        if (plugin) {
-                            if (plugins[key]['no-active'] !== true) {
-                                if (plugin.packages) {
-                                    plugin.packages.forEach(ppkg => {
-                                        _injectPlugin(c, plugin, key, ppkg, pluginConfig);
-                                    });
+    if (c.appConfigFile && c.pluginConfig) {
+        const includedPlugins = c.appConfigFile.common.includedPlugins;
+        const excludedPlugins = c.appConfigFile.common.excludedPlugins;
+        if (includedPlugins) {
+            const plugins = c.pluginConfig.plugins;
+            for (const key in plugins) {
+                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
+                    const plugin = plugins[key][platform];
+                    if (plugin) {
+                        if (plugins[key]['no-active'] !== true) {
+                            if (plugin.packages) {
+                                plugin.packages.forEach((ppkg) => {
+                                    _injectPlugin(c, plugin, key, ppkg, pluginConfig);
+                                });
+                            } else {
+                                _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
+
+    // FONTS
+    if (c.appConfigFile) {
+        if (fs.existsSync(c.fontsConfigFolder)) {
+            fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
+                if (font.includes('.ttf') || font.includes('.otf')) {
+                    const key = font.split('.')[0];
+                    const includedFonts = c.appConfigFile.common.includedFonts;
+                    if (includedFonts) {
+                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                            if (font) {
+                                const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                                if (fs.existsSync(fontSource)) {
+                                    const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                                    mkdirSync(fontFolder);
+                                    const fontDest = path.join(fontFolder, font);
+                                    copyFileSync(fontSource, fontDest);
                                 } else {
-                                    _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
+                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                                 }
                             }
                         }
                     }
                 }
-            }
-        }
-        pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
-
-        // FONTS
-        if (c.appConfigFile) {
-            if (fs.existsSync(c.fontsConfigFolder)) {
-                fs.readdirSync(c.fontsConfigFolder).forEach(font => {
-                    if (font.includes('.ttf') || font.includes('.otf')) {
-                        const key = font.split('.')[0];
-                        const includedFonts = c.appConfigFile.common.includedFonts;
-                        if (includedFonts) {
-                            if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                                if (font) {
-                                    const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
-                                    if (fs.existsSync(fontSource)) {
-                                        const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-                                        mkdirSync(fontFolder);
-                                        const fontDest = path.join(fontFolder, font);
-                                        copyFileSync(fontSource, fontDest);
-                                    } else {
-                                        logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
-            { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
-            { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
-        ]);
-
-        writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
-            { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
-            { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginConfig.pluginImplementations },
-            { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: pluginConfig.pluginAfterEvaluate },
-        ]);
-
-        const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
-        writeCleanFile(path.join(appTemplateFolder, activityPath), path.join(appFolder, activityPath), [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: pluginConfig.pluginActivityImports },
-            { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: pluginConfig.pluginActivityMethods },
-        ]);
-
-        const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
-        writeCleanFile(path.join(appTemplateFolder, applicationPath), path.join(appFolder, applicationPath), [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-            { pattern: '{{PLUGIN_IMPORTS}}', override: pluginConfig.pluginImports },
-            { pattern: '{{PLUGIN_PACKAGES}}', override: pluginConfig.pluginPackages },
-        ]);
-
-        const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
-        writeCleanFile(path.join(appTemplateFolder, splashPath), path.join(appFolder, splashPath), [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        ]);
-
-        const stringsPath = 'app/src/main/res/values/strings.xml';
-        writeCleanFile(path.join(appTemplateFolder, stringsPath), path.join(appFolder, stringsPath), [
-            { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
-        ]);
-
-        let prms = '';
-        const permissions = c.appConfigFile.platforms[platform].permissions;
-        if (permissions) {
-            permissions.forEach(v => {
-                if (c.permissionsConfig) {
-                    const plat = c.permissionsConfig.permissions[platform] ? platform : 'ios';
-                    const pc = c.permissionsConfig.permissions[plat];
-                    if (pc[v]) {
-                        prms += `\n<uses-permission android:name="${pc[v].key}" />`;
-                    }
-                }
             });
         }
+    }
 
-        const manifestFile = 'app/src/main/AndroidManifest.xml';
-        writeCleanFile(path.join(appTemplateFolder, manifestFile), path.join(appFolder, manifestFile), [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{PERMISIONS}}', override: prms },
-        ]);
+    writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
+        { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
+        { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
+    ]);
 
-        // RELEASE CONFIGS
-        const globalAppConfigPath = path.join(c.globalConfigFolder, c.appConfigFile.id);
-        const signingPropertiesPath = path.join(globalAppConfigPath, 'signing.properties');
-        let signingPropFile = null;
-        if (fs.existsSync(signingPropertiesPath)) {
-            signingPropFile = `new File("${signingPropertiesPath}")`;
-        } else {
-            logWarning(
-                `You're missing signing.properties for this app: ${chalk.white(
-                    signingPropertiesPath
-                )}. You won't be able to make production releases without it!`
-            );
-        }
-        writeCleanFile(path.join(appTemplateFolder, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
-            { pattern: '{{SIGNING_PROPS_FILE}}', override: signingPropFile },
-        ]);
+    writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
+        { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
+        { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginConfig.pluginImplementations },
+        { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: pluginConfig.pluginAfterEvaluate },
+    ]);
 
-        resolve();
-    });
+    const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
+    writeCleanFile(path.join(appTemplateFolder, activityPath), path.join(appFolder, activityPath), [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: pluginConfig.pluginActivityImports },
+        { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: pluginConfig.pluginActivityMethods },
+    ]);
 
-const runAndroidLog = (c, platform) =>
-    new Promise((resolve, reject) => {
-        const filter = c.program.filter || '';
-        const child = require('child_process').spawn(c.cli[CLI_ANDROID_ADB], ['logcat']);
-        // use event hooks to provide a callback to execute when data are available:
-        child.stdout.on('data', data => {
-            const d = data.toString().split('\n');
-            d.forEach(v => {
-                if (v.includes(' E ') && v.includes(filter)) {
-                    console.log(chalk.red(v));
-                } else if (v.includes(' W ') && v.includes(filter)) {
-                    console.log(chalk.yellow(v));
-                } else if (v.includes(filter)) {
-                    console.log(v);
+    const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
+    writeCleanFile(path.join(appTemplateFolder, applicationPath), path.join(appFolder, applicationPath), [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+        { pattern: '{{PLUGIN_IMPORTS}}', override: pluginConfig.pluginImports },
+        { pattern: '{{PLUGIN_PACKAGES}}', override: pluginConfig.pluginPackages },
+    ]);
+
+    const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
+    writeCleanFile(path.join(appTemplateFolder, splashPath), path.join(appFolder, splashPath), [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+    ]);
+
+    const stringsPath = 'app/src/main/res/values/strings.xml';
+    writeCleanFile(path.join(appTemplateFolder, stringsPath), path.join(appFolder, stringsPath), [
+        { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
+    ]);
+
+    let prms = '';
+    const permissions = c.appConfigFile.platforms[platform].permissions;
+    if (permissions) {
+        permissions.forEach((v) => {
+            if (c.permissionsConfig) {
+                const plat = c.permissionsConfig.permissions[platform] ? platform : 'ios';
+                const pc = c.permissionsConfig.permissions[plat];
+                if (pc[v]) {
+                    prms += `\n<uses-permission android:name="${pc[v].key}" />`;
                 }
-            });
+            }
+        });
+    }
+
+    const manifestFile = 'app/src/main/AndroidManifest.xml';
+    writeCleanFile(path.join(appTemplateFolder, manifestFile), path.join(appFolder, manifestFile), [
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{PERMISIONS}}', override: prms },
+    ]);
+
+    // RELEASE CONFIGS
+    const globalAppConfigPath = path.join(c.globalConfigFolder, c.appConfigFile.id);
+    const signingPropertiesPath = path.join(globalAppConfigPath, 'signing.properties');
+    let signingPropFile = null;
+    if (fs.existsSync(signingPropertiesPath)) {
+        signingPropFile = `new File("${signingPropertiesPath}")`;
+    } else {
+        logWarning(
+            `You're missing signing.properties for this app: ${chalk.white(
+                signingPropertiesPath,
+            )}. You won't be able to make production releases without it!`,
+        );
+    }
+    writeCleanFile(path.join(appTemplateFolder, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
+        { pattern: '{{SIGNING_PROPS_FILE}}', override: signingPropFile },
+    ]);
+
+    resolve();
+});
+
+const runAndroidLog = (c, platform) => new Promise((resolve, reject) => {
+    const filter = c.program.filter || '';
+    const child = require('child_process').spawn(c.cli[CLI_ANDROID_ADB], ['logcat']);
+    // use event hooks to provide a callback to execute when data are available:
+    child.stdout.on('data', (data) => {
+        const d = data.toString().split('\n');
+        d.forEach((v) => {
+            if (v.includes(' E ') && v.includes(filter)) {
+                console.log(chalk.red(v));
+            } else if (v.includes(' W ') && v.includes(filter)) {
+                console.log(chalk.yellow(v));
+            } else if (v.includes(filter)) {
+                console.log(v);
+            }
         });
     });
+});
 
 export {
     copyAndroidAssets,
