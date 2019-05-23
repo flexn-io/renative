@@ -119,7 +119,7 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
-const isPlatformSupported = (platform, resolve, reject) => {
+const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
         if (reject) {
             reject(
@@ -139,6 +139,32 @@ const isPlatformSupported = (platform, resolve, reject) => {
     if (resolve) resolve();
     return true;
 };
+
+const isPlatformSupported = (c, platform) => new Promise((resolve, reject) => {
+    if (!platform) {
+        // console.log('SSSSS', c.appConfigFile.platforms);
+        let platformsAsString = '';
+        const platformsAsArray = [];
+        let i = 1;
+        for (const k in c.appConfigFile.platforms) {
+            platformsAsString += `-[${i}] ${chalk.white(k)}\n`;
+            platformsAsArray.push(k);
+            i++;
+        }
+
+        askQuestion(`Pick one of available platforms (number):\n${platformsAsString}`).then((v) => {
+            finishQuestion();
+            const selectedPlatform = platformsAsArray[v - 1];
+            c.platform = selectedPlatform;
+            c.program.platform = selectedPlatform;
+            resolve(selectedPlatform);
+        });
+    } else if (!SUPPORTED_PLATFORMS.includes(platform)) {
+        reject(chalk.red(`Platform ${platform} is not supported`));
+    } else {
+        resolve();
+    }
+});
 
 const _getPath = (c, p, key = 'undefined', original) => {
     if (!p) {
@@ -986,6 +1012,7 @@ const finishQuestion = () => new Promise((resolve, reject) => {
 export {
     SUPPORTED_PLATFORMS,
     isPlatformSupported,
+    isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
     logTask,
@@ -1051,6 +1078,7 @@ export default {
     SUPPORTED_PLATFORMS,
     copyBuildsFolder,
     isPlatformSupported,
+    isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
     logTask,

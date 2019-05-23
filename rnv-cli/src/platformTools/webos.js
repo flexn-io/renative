@@ -4,7 +4,7 @@ import shell from 'shelljs';
 import chalk from 'chalk';
 import { execShellAsync, executeAsync, execCLI } from '../exec';
 import {
-    isPlatformSupported,
+    isPlatformSupportedSync,
     getConfig,
     logTask,
     logComplete,

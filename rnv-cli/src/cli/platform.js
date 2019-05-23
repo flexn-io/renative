@@ -5,7 +5,7 @@ import {
     IOS,
     ANDROID,
     TVOS,
-    isPlatformSupported,
+    isPlatformSupportedSync,
     getConfig,
     logTask,
     logComplete,
@@ -175,7 +175,7 @@ const _runConnectPlatforms = c =>
 
 const _addPlatform = (platform, program, process) =>
     new Promise((resolve, reject) => {
-        if (!isPlatformSupported(platform, resolve)) return;
+        if (!isPlatformSupportedSync(platform, resolve)) return;
 
         getConfig().then(v => {
             _runAddPlatform()
@@ -186,7 +186,7 @@ const _addPlatform = (platform, program, process) =>
 
 const _removePlatform = (platform, program, process) =>
     new Promise((resolve, reject) => {
-        if (!isPlatformSupported(platform, resolve)) return;
+        if (!isPlatformSupportedSync(platform, resolve)) return;
         console.log('REMOVE_PLATFORM: ', platform);
         resolve();
     });
@@ -206,13 +206,13 @@ const _runCopyPlatforms = (c, platform) =>
         const copyPlatformTasks = [];
         if (platform === 'all') {
             for (const k in c.appConfigFile.platforms) {
-                if (isPlatformSupported(k)) {
+                if (isPlatformSupportedSync(k)) {
                     const ptPath = path.join(c.platformTemplatesFolder, `${k}`);
                     const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
                     copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
                 }
             }
-        } else if (isPlatformSupported(platform)) {
+        } else if (isPlatformSupportedSync(platform)) {
             const ptPath = path.join(c.platformTemplatesFolder, `${platform}`);
             const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
             copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
@@ -233,12 +233,12 @@ const cleanPlatformBuild = (c, platform) =>
 
         if (platform === 'all') {
             for (const k in c.appConfigFile.platforms) {
-                if (isPlatformSupported(k)) {
+                if (isPlatformSupportedSync(k)) {
                     const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${k}`);
                     cleanTasks.push(cleanFolder(pPath));
                 }
             }
-        } else if (isPlatformSupported(platform)) {
+        } else if (isPlatformSupportedSync(platform)) {
             const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
             cleanTasks.push(cleanFolder(pPath));
         }
@@ -258,7 +258,7 @@ const createPlatformBuild = (c, platform) =>
     new Promise((resolve, reject) => {
         logTask(`createPlatformBuild:${platform}`);
 
-        if (!isPlatformSupported(platform, null, reject)) return;
+        if (!isPlatformSupportedSync(platform, null, reject)) return;
 
         const pPath = path.join(c.platformBuildsFolder, `${c.appId}_${platform}`);
         const ptPath = path.join(c.platformTemplatesFolder, `${platform}`);

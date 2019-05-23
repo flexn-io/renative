@@ -6,7 +6,7 @@ import child_process from 'child_process';
 import { executeAsync, execShellAsync, execCLI } from '../exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
-    isPlatformSupported,
+    isPlatformSupportedSync,
     getConfig,
     logTask,
     logComplete,

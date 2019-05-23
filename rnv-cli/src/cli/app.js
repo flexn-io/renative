@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import {
-    isPlatformSupported,
+    isPlatformSupportedSync,
     getConfig,
     logTask,
     logComplete,

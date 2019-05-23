@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { executeAsync, execShellAsync } from '../exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
-    isPlatformSupported,
+    isPlatformSupportedSync,
     getConfig,
     logTask,
     logComplete,

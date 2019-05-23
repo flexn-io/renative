@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
+import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, getAppFolder } from '../common';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
@@ -37,7 +37,7 @@ const run = c =>
     new Promise((resolve, reject) => {
         logTask('run');
 
-        if (!isPlatformSupported(c.program.platform, null, reject)) return;
+        if (!isPlatformSupportedSync(c.program.platform, null, reject)) return;
 
         switch (c.subCommand) {
             // case CREATE:
@@ -117,7 +117,7 @@ const _runList = c =>
         logTask('_runLaunch');
         const { platform, program } = c;
         const { target } = program;
-        if (!isPlatformSupported(platform)) return;
+        if (!isPlatformSupportedSync(platform)) return;
 
         switch (platform) {
             case ANDROID:

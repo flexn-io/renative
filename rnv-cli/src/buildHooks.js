@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
-import { isPlatformSupported, getConfig, logTask, logComplete, logError, getAppFolder, logWarning } from './common';
+import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, getAppFolder, logWarning } from './common';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from './constants';
 import { executeAsync, execShellAsync, execCLI } from './exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from './fileutils';

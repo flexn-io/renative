@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import open from 'open';
 import { execShellAsync } from '../exec';
 import {
-    isPlatformSupported,
+    isPlatformSupportedSync,
     getConfig,
     logTask,
     logComplete,

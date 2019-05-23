@@ -3,7 +3,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { execShellAsync, execCLI } from '../exec';
 import {
-    isPlatformSupported,
+    isPlatformSupportedSync,
     getConfig,
     logTask,
     logComplete,
