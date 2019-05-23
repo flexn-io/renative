@@ -254,7 +254,7 @@ $ npm install renative@latest -g
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/cli_app_create.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/cli_app_create1.gif?raw=true" />
     </th>
   </tr>
 </table>
