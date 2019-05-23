@@ -222,7 +222,6 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logDebug('running', p);
 
-
     if (c.appConfigFile.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync('xcodebuild', p))
@@ -388,7 +387,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         pluginAppDelegateImports,
         pluginAppDelegateMethods,
     };
-    // PLUGINS
+        // PLUGINS
     if (c.appConfigFile && c.pluginConfig) {
         const includedPlugins = c.appConfigFile.common.includedPlugins;
         const excludedPlugins = c.appConfigFile.common.excludedPlugins;
@@ -476,7 +475,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                                 const podPath = plugin.path ? `../../${plugin.path}` : `../../node_modules/${key}`;
                                 pluginInject += `  pod '${plugin.podName}', :path => '${podPath}'\n`;
                             } else if (plugin.git) {
-                                const commit = plugin.version ? `, :version => '${plugin.commit}'` : '';
+                                const commit = plugin.commit ? `, :commit => '${plugin.commit}'` : '';
                                 pluginInject += `  pod '${plugin.podName}', :git => '${plugin.git}'${commit}\n`;
                             } else if (plugin.version) {
                                 pluginInject += `  pod '${plugin.podName}', '${plugin.version}'\n`;
@@ -574,7 +573,7 @@ const listAppleDevices = (c, platform) => new Promise((resolve, reject) => {
     devicesArr.forEach((v, i) => {
         devicesString += `-[${i + 1}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
             v.isDevice ? chalk.red(' (device)') : ''
-            }\n`;
+        }\n`;
     });
     console.log(devicesString);
 });
@@ -647,19 +646,19 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimul
             const isDevice = sim === null;
             if ((isDevice && !ignoreDevices) || (!isDevice && !ignoreSimulators)) {
                 switch (platform) {
-                    case IOS:
-                        if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
-                            devices.push({ udid, name, version, isDevice });
-                        }
-                        break;
-                    case TVOS:
-                        if (name.includes('Apple TV') || isDevice) {
-                            devices.push({ udid, name, version, isDevice });
-                        }
-                        break;
-                    default:
+                case IOS:
+                    if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
                         devices.push({ udid, name, version, isDevice });
-                        break;
+                    }
+                    break;
+                case TVOS:
+                    if (name.includes('Apple TV') || isDevice) {
+                        devices.push({ udid, name, version, isDevice });
+                    }
+                    break;
+                default:
+                    devices.push({ udid, name, version, isDevice });
+                    break;
                 }
             }
         }
@@ -675,7 +674,7 @@ const runAppleLog = (c, platform) => new Promise((resolve, reject) => {
         ['simctl', 'spawn', 'booted', 'log', 'stream', '--predicate', `eventMessage contains \"${filter}\"`],
         { stdio: 'inherit', customFds: [0, 1, 2] },
     );
-    // use event hooks to provide a callback to execute when data are available:
+        // use event hooks to provide a callback to execute when data are available:
     child.stdout.on('data', (data) => {
         const d = data.toString();
         if (d.toLowerCase().includes('error')) {
