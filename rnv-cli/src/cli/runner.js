@@ -52,7 +52,7 @@ import {
     prepareXcodeProject,
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer } from '../platformTools/web';
-import { runTizen } from '../platformTools/tizen';
+import { runTizen, buildTizenProject } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
 import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
@@ -182,6 +182,7 @@ const _runApp = c => new Promise((resolve, reject) => {
 
     isPlatformSupported(c)
         .then(v => _runAppWithPlatform(c))
+        .then(() => resolve())
         .catch(e => reject(e));
 });
 
@@ -284,6 +285,7 @@ const _packageApp = c => new Promise((resolve, reject) => {
 
     isPlatformSupported(c)
         .then(v => _packageAppWithPlatform(c))
+        .then(() => resolve())
         .catch(e => reject(e));
 });
 
@@ -329,6 +331,7 @@ const _exportApp = c => new Promise((resolve, reject) => {
 
     isPlatformSupported(c)
         .then(v => _exportAppWithPlatform(c))
+        .then(() => resolve())
         .catch(e => reject(e));
 });
 
@@ -381,6 +384,7 @@ const _buildApp = c => new Promise((resolve, reject) => {
 
     isPlatformSupported(c)
         .then(v => _buildAppWithPlatform(c))
+        .then(() => resolve())
         .catch(e => reject(e));
 });
 
@@ -441,6 +445,18 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
             .then(() => buildFirefoxProject(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case TIZEN:
+    case TIZEN_WATCH:
+        if (!checkSdk(c, platform, reject)) return;
+
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => buildTizenProject(c, platform))
             .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
