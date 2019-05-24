@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import Button from './button';
+import { Api, Button, Icon } from './renative';
 
 const styles = StyleSheet.create({
     container: {
@@ -17,23 +17,43 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
     },
+    button: {
+        alignSelf: 'stretch',
+        marginHorizontal: 20,
+        maxWidth: 400,
+    },
 });
 
 class Menu extends React.Component {
     render() {
         return (
             <View style={[styles.container, this.props.style]}>
-                <Text style={styles.text}>Menu</Text>
+                <Text style={styles.text}>
+Menu
+                </Text>
                 <Button
                     title="Home"
+                    style={styles.button}
                     onPress={() => {
-                        this.props.navigation.navigate('ScreenHome');
+                        Api.navigation.navigate('Home', {
+                            onSuccess: () => {
+
+                            }
+                        });
                     }}
                 />
                 <Button
-                    title="MyPage"
+                    title="My Page"
+                    style={styles.button}
                     onPress={() => {
-                        this.props.navigation.navigate('ScreenMyPage');
+                        Api.navigation.navigate('MyPage');
+                    }}
+                />
+                <Button
+                    title="My Modal"
+                    style={styles.button}
+                    onPress={() => {
+                        Api.navigation.navigate('MyModal');
                     }}
                 />
             </View>

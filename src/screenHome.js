@@ -1,9 +1,12 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import Api from './api';
 import config from '../platformAssets/config.json';
 import packageJson from '../package.json';
-import Button from './button';
+import { Icon, Button, Api } from './renative';
+
+const colors = {
+    primary: '#FB8D62',
+};
 
 const styles = StyleSheet.create({
     appContainer: {
@@ -33,6 +36,11 @@ const styles = StyleSheet.create({
         width: 83,
         height: 97,
     },
+    icon: {
+        width: 40,
+        height: 40,
+        margin: 10,
+    },
 });
 
 class ScreenHome extends React.Component {
@@ -52,9 +60,16 @@ class ScreenHome extends React.Component {
         return (
             <View style={[styles.appContainer, { backgroundColor: this.state.bgColor }]}>
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
-                <Text style={styles.textH2}>{title}</Text>
-                <Text style={styles.textH2}>v{packageJson.version}</Text>
-                <Text style={styles.textH3}>{`platform: ${Api.platform}`}</Text>
+                <Text style={styles.textH2}>
+                    {title}
+                </Text>
+                <Text style={styles.textH2}>
+v
+                    {packageJson.version}
+                </Text>
+                <Text style={styles.textH3}>
+                    {`platform: ${Api.platform}`}
+                </Text>
                 <Button
                     title="Try Me!"
                     onPress={() => {
@@ -64,9 +79,13 @@ class ScreenHome extends React.Component {
                 <Button
                     title="Now Try Me!"
                     onPress={() => {
-                        this.setState({ bgColor: this.state.bgColor === '#888888' ? '#222222' : '#888888' });
+                        Api.navigation.navigate('MyPage2');
                     }}
                 />
+                <View style={{ marginTop: 20, flexDirection: 'row' }}>
+                    <Icon iconFont="fontAwesome" iconName="github" iconColor={colors.primary} style={styles.icon} />
+                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={colors.primary} style={styles.icon} />
+                </View>
             </View>
         );
     }

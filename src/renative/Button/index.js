@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
-import Api from './api';
+import Api from '../Api';
 
 const hasFocus = Api.formFactor === 'tv' && Api.platform !== 'tvos';
 
@@ -52,7 +52,7 @@ class Button extends React.Component {
         return (
             <TouchableOpacity
                 tvParallaxProperties={parallax}
-                style={[styles.button, this.state.currentStyle]}
+                style={[styles.button, this.props.style, this.state.currentStyle]}
                 onPress={() => {
                     this.props.onPress();
                 }}
@@ -63,7 +63,9 @@ class Button extends React.Component {
                     if (hasFocus) this.setState({ currentStyle: this.blurState });
                 }}
             >
-                <Text style={styles.buttonText}>{this.props.title}</Text>
+                <Text style={styles.buttonText}>
+                    {this.props.title}
+                </Text>
             </TouchableOpacity>
         );
     }
