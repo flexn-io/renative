@@ -21,7 +21,6 @@ module.exports = {
         camelcase: 'off',
         'class-methods-use-this': 'off',
         indent: ['error', 4],
-        'max-statements': ['warn', 20],
         'new-cap': ['error', { capIsNew: false }],
         'no-duplicate-imports': 'off',
         'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['el', 'ref', 'event'] }],
@@ -65,7 +64,7 @@ module.exports = {
         'jsx-a11y/mouse-events-have-key-events': 'off',
 
         'comma-dangle': ['error', 'only-multiline'],
-
+        'no-underscore-dangle': 'off',
         'mocha/no-exclusive-tests': 'error',
     },
 };

@@ -1,18 +1,14 @@
+/* eslint-disable import/no-cycle */
+// @todo fix cycle dep
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import {
-    isPlatformSupportedSync,
-    getConfig,
     logTask,
-    logComplete,
-    getQuestion,
     logSuccess,
-    logError,
     getAppFolder,
     isPlatformActive,
     logWarning,
-    configureIfRequired,
     askQuestion,
     finishQuestion,
     SUPPORTED_PLATFORMS,
@@ -35,23 +31,19 @@ import {
     RNV_APP_CONFIG_NAME,
     RNV_PROJECT_CONFIG_NAME,
 } from '../constants';
-import { runPod, copyAppleAssets, configureXcodeProject } from '../platformTools/apple';
+import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
-import { configureTizenProject, createDevelopTizenCertificate, configureTizenGlobal } from '../platformTools/tizen';
+import { configureTizenProject, configureTizenGlobal } from '../platformTools/tizen';
 import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../buildHooks';
 
 const CONFIGURE = 'configure';
-const SWITCH = 'switch';
 const CREATE = 'create';
-const REMOVE = 'remove';
-const LIST = 'list';
-const INFO = 'info';
 
 const PIPES = {
     APP_CONFIGURE_BEFORE: 'app:configure:before',
@@ -68,10 +60,8 @@ const run = (c) => {
     switch (c.subCommand) {
     case CONFIGURE:
         return _runConfigure(c);
-        break;
     case CREATE:
         return _runCreate(c);
-        break;
         // case SWITCH:
         //     return Promise.resolve();
         //     break;
@@ -132,7 +122,7 @@ const _isOK = (c, p, list) => {
     return result;
 };
 
-const _runCreate = c => new Promise((resolve, reject) => {
+const _runCreate = c => new Promise((resolve) => {
     logTask('_runCreate');
 
     const data = {};
@@ -153,13 +143,13 @@ const _runCreate = c => new Promise((resolve, reject) => {
             data.projectName = v;
             return Promise.resolve(v);
         })
-        .then(v => askQuestion("What's your project Title?"))
+        .then(() => askQuestion("What's your project Title?"))
         .then((v) => {
             data.appTitle = v;
             data.appID = `com.mycompany.${data.projectName}`;
             return Promise.resolve(v);
         })
-        .then(v => askQuestion(`What\'s your App ID? (${chalk.white(data.appID)}) will be used by default`))
+        .then(() => askQuestion(`What's your App ID? (${chalk.white(data.appID)}) will be used by default`))
         .then((v) => {
             data.teamID = '';
             if (v !== null && v !== '') {
@@ -169,7 +159,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
             SUPPORTED_PLATFORMS.forEach((v, i) => (data.supportedPlatformsString += `-[${i + 1}] ${chalk.white(v)}\n`));
             return Promise.resolve(v);
         })
-        .then(v => askQuestion(
+        .then(() => askQuestion(
             `What platforms would you like to use? (Add numbers separated by comma or leave blank for all)\n${
                 data.supportedPlatformsString
             }`,
@@ -179,8 +169,8 @@ const _runCreate = c => new Promise((resolve, reject) => {
                 const platforms = v.split(',');
                 data.supportedPlatforms = [];
 
-                platforms.forEach((v) => {
-                    const i = parseInt(v, 10) - 1;
+                platforms.forEach((platform) => {
+                    const i = parseInt(platform, 10) - 1;
                     data.supportedPlatforms.push(SUPPORTED_PLATFORMS[i]);
                 });
             } else {
@@ -195,8 +185,8 @@ Supported Platforms: ${chalk.white(data.supportedPlatforms.join(','))}
 
 `);
         })
-        .then(v => askQuestion(`Is All Correct? (press ENTER for yes)\n${data.confirmString}`))
-        .then((v) => {
+        .then(() => askQuestion(`Is All Correct? (press ENTER for yes)\n${data.confirmString}`))
+        .then(() => {
             data.defaultAppConfigId = `${data.projectName}Example`;
 
             const base = path.resolve('.');
@@ -230,7 +220,7 @@ const checkAndCreateProjectPackage = (c, data) => {
     logTask(`checkAndCreateProjectPackage:${data.packageName}`);
     // pkgName, appTitle, appID, defaultAppConfigId, teamID
     const {
-        packageName, appTitle, appID, defaultAppConfigId, supportedPlatforms, teamID,
+        packageName, appTitle, appID, defaultAppConfigId, supportedPlatforms,
     } = data;
     // data.packageName,
     // data.appTitle,
@@ -281,8 +271,7 @@ const checkAndCreateGitignore = (c) => {
 const checkAndCreateProjectConfig = (c) => {
     logTask('checkAndCreateProjectConfig');
     // Check Project Config
-    if (fs.existsSync(c.projectConfigPath)) {
-    } else {
+    if (!fs.existsSync(c.projectConfigPath)) {
         logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
 
         copyFileSync(
@@ -324,9 +313,9 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
             return;
         }
     } else {
-        const platforms = c.appConfigFile.platforms;
-        cmds = [];
-        for (const k in platforms) {
+        const { platforms } = c.appConfigFile;
+        const cmds = [];
+        Object.keys(platforms).forEach((k) => {
             if (!fs.existsSync(k)) {
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
 
@@ -335,7 +324,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
                 newCommand.program = { appConfig: c.defaultAppConfigId, platform };
                 cmds.push(platformRunner(newCommand));
             }
-        }
+        });
 
         Promise.all(cmds)
             .then(() => resolve())
@@ -346,7 +335,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
     resolve();
 });
 
-const copyRuntimeAssets = c => new Promise((resolve, reject) => {
+const copyRuntimeAssets = c => new Promise((resolve) => {
     logTask('copyRuntimeAssets');
     const aPath = path.join(c.platformAssetsFolder, 'runtime');
     const cPath = path.join(c.appConfigFolder, 'assets/runtime');
@@ -363,7 +352,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
             fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const includedFonts = c.appConfigFile.common.includedFonts;
+                    const { includedFonts } = c.appConfigFile.common;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
@@ -403,7 +392,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _runPlugins = (c, pluginsPath) => new Promise((resolve, reject) => {
+const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     logTask('_runPlugins');
 
     mkdirSync(path.resolve(c.platformBuildsFolder, '_shared'));
