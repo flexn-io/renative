@@ -3,6 +3,7 @@ import fs from 'fs';
 import shell from 'shelljs';
 import {
     isPlatformSupported,
+    isBuildSchemeSupported,
     isPlatformSupportedSync,
     getConfig,
     logTask,
@@ -181,6 +182,7 @@ const _runApp = c => new Promise((resolve, reject) => {
     logTask(`_runApp:${c.platform}`);
 
     isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
         .then(v => _runAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -284,6 +286,7 @@ const _packageApp = c => new Promise((resolve, reject) => {
     logTask(`_packageApp:${c.platform}`);
 
     isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
         .then(v => _packageAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -330,6 +333,7 @@ const _exportApp = c => new Promise((resolve, reject) => {
     logTask(`_exportApp:${c.platform}`);
 
     isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
         .then(v => _exportAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -383,6 +387,7 @@ const _buildApp = c => new Promise((resolve, reject) => {
     logTask(`_buildApp:${c.platform}`);
 
     isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
         .then(v => _buildAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));

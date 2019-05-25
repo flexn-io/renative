@@ -141,11 +141,13 @@ const isPlatformSupportedSync = (platform, resolve, reject) => {
 };
 
 const isPlatformSupported = c => new Promise((resolve, reject) => {
+    logTask(`isPlatformSupported:${c.platform}`);
     if (!c.platform || c.platform === '?') {
         let platformsAsString = '';
         const platformsAsArray = [];
+        const platformsAsObj = c.appConfigFile.platforms;
         let i = 1;
-        for (const k in c.appConfigFile.platforms) {
+        for (const k in platformsAsObj) {
             platformsAsString += `-[${i}] ${chalk.white(k)}\n`;
             platformsAsArray.push(k);
             i++;
@@ -160,6 +162,11 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
                 selectedPlatform = platformsAsArray[v - 1];
             }
 
+            if (!platformsAsObj[selectedPlatform]) {
+                reject(`${chalk.white(v)} ...Really?! 🙈`);
+                return;
+            }
+
             c.platform = selectedPlatform;
             c.program.platform = selectedPlatform;
             resolve(selectedPlatform);
@@ -168,6 +175,56 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
         reject(chalk.red(`Platform ${c.platform} is not supported`));
     } else {
         resolve();
+    }
+});
+
+const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
+    logTask(`isBuildSchemeSupported:${c.platform}`);
+
+    const scheme = c.program.scheme;
+    const buildSchemes = c.appConfigFile.platforms[c.platform].buildSchemes;
+
+    if (!buildSchemes) {
+        logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
+        resolve();
+        return;
+    }
+
+    const schemeDoesNotExist = scheme && !buildSchemes[scheme];
+    if (scheme === '?' || schemeDoesNotExist) {
+        if (schemeDoesNotExist && scheme && scheme !== '?') {
+            logError('Build scheme you picked does not exists.');
+        }
+        let schemesAsString = '';
+        const schemesAsArray = [];
+        let i = 1;
+
+        for (const k in buildSchemes) {
+            schemesAsString += `-[${i}] ${chalk.white(k)}\n`;
+            schemesAsArray.push(k);
+            i++;
+        }
+
+        askQuestion(`Pick one of available buildSchemes (number or text):\n${schemesAsString}`).then((v) => {
+            finishQuestion();
+            let selectedScheme;
+            if (isNaN(v)) {
+                selectedScheme = v;
+            } else {
+                selectedScheme = schemesAsArray[v - 1];
+            }
+
+            if (!buildSchemes[selectedScheme]) {
+                reject(`${chalk.white(v)} ...Really?! 🙈`);
+                return;
+            }
+
+            c.program.scheme = selectedScheme;
+            console.log('SSJSJSJSJJS', selectedScheme);
+            resolve(selectedScheme);
+        });
+    } else {
+        resolve(scheme);
     }
 });
 
@@ -1012,11 +1069,13 @@ const askQuestion = question => new Promise((resolve, reject) => {
 
 const finishQuestion = () => new Promise((resolve, reject) => {
     _currentQuestion.close();
+    _currentQuestion = null;
 });
 
 export {
     SUPPORTED_PLATFORMS,
     isPlatformSupported,
+    isBuildSchemeSupported,
     isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
@@ -1083,6 +1142,7 @@ export default {
     SUPPORTED_PLATFORMS,
     copyBuildsFolder,
     isPlatformSupported,
+    isBuildSchemeSupported,
     isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
