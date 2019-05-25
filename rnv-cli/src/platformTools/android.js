@@ -35,11 +35,11 @@ import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fil
 
 const readline = require('readline');
 
-const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => new Promise((resolve, reject) => {
+const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
 
     if (target === '?' || target === undefined || target === '') {
-        _listAndroidTargets(c, true, false)
+        return _listAndroidTargets(c, true, false)
             .then((devicesArr) => {
                 let devicesString = '\n';
 
@@ -56,39 +56,25 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                         if (isIndependentThread) {
                             // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
                             //     '-avd', `"${selectedDevice.name}"`]);
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
-                            resolve();
-                        } else {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`)
-                                .then(() => resolve())
-                                .catch(e => reject(e));
+                            return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(logError);
                         }
-                    } else {
-                        logError(`Wrong choice ${v}! Ingoring`);
+                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
                     }
+                    logError(`Wrong choice ${v}! Ingoring`);
                 });
-            })
-            .catch(e => reject(e));
-
-        return;
+            });
     }
 
     if (target) {
         if (isIndependentThread) {
             // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
             //     '-avd', `"${target}"`]);
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
-            resolve();
-        } else {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`)
-                .then(() => resolve())
-                .catch(e => reject(e));
+            return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
         }
-
-        return;
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
     }
-    reject('No simulator -t target name specified!');
-});
+    return Promise.reject('No simulator -t target name specified!');
+};
 
 const listAndroidTargets = c => new Promise((resolve, reject) => {
     logTask('listAndroidTargets');
@@ -212,14 +198,16 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
     );
 });
 
-const _createEmulator = (c, apiVersion, emuPlatform, emuName) => new Promise((resolve, reject) => {
+const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
-    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`).then(() => execCLI(
-        c,
-        CLI_ANDROID_AVDMANAGER,
-        `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
-    ));
-});
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
+        .then(() => execCLI(
+            c,
+            CLI_ANDROID_AVDMANAGER,
+            `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
+        ))
+        .catch(e => logError(e, true));
+};
 
 const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
     logTask('copyAndroidAssets');
