@@ -147,6 +147,7 @@ const _runAdd = c => new Promise((resolve, reject) => {
 
         for (const k in selectedPlugins) {
             c.files.pluginConfig.plugins[k] = selectedPlugins[k];
+            _checkAndAddDependantPlugins(c, selectedPlugins[k]);
         }
 
         fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
@@ -156,6 +157,18 @@ const _runAdd = c => new Promise((resolve, reject) => {
         resolve();
     });
 });
+
+const _checkAndAddDependantPlugins = (c, plugin) => {
+    const templatePlugins = c.files.pluginTemplatesConfig.plugins;
+    if (plugin.dependsOn) {
+        plugin.dependsOn.forEach((v) => {
+            if (templatePlugins[v]) {
+                console.log(`Added dependant plugin ${v}`);
+                c.files.pluginConfig.plugins[v] = templatePlugins[v];
+            }
+        });
+    }
+};
 
 const _runUpdate = c => new Promise((resolve, reject) => {
     logTask('_runUpdate');

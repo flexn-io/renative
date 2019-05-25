@@ -37,6 +37,12 @@ function generateConfig(config) {
           path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
           path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
           path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
+          path.resolve(projectDir, 'node_modules/native-base-shoutem-theme'),
+          path.resolve(projectDir, 'node_modules/react-native-drawer'),
+          path.resolve(projectDir, 'node_modules/react-native-safe-area-view'),
+          path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
+          path.resolve(projectDir, 'node_modules/react-native-keyboard-aware-scroll-view'),
+          path.resolve(projectDir, 'node_modules/react-native-tab-view'),
         ],
         use: {
             loader: 'babel-loader',
@@ -76,10 +82,13 @@ function generateConfig(config) {
     };
 
     const aliases = {
-      react: path.resolve(projectDir, 'node_modules/react'),
+          react: path.resolve(projectDir, 'node_modules/react'),
           'react-native': 'react-native-web',
+          'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
           'react-native-linear-gradient': 'react-native-web-linear-gradient',
-          'react-native-vector-icons': 'react-native-web-vector-icons',
+          // 'react-native-vector-icons': 'react-native-web-vector-icons',
+          'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
+          'react-native-vector-icons/Entypo': path.resolve(projectDir, 'node_modules/react-native-vector-icons/dist/Entypo'),
           svgs: path.resolve(projectDir, 'node_modules/svgs'),
           'react-navigation-tabs': path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
           'react-navigation-stack': path.resolve(projectDir, 'node_modules/react-navigation-stack'),

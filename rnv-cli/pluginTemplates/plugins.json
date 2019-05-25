@@ -436,6 +436,10 @@
                     "copyEditorHtmlToAppAssets(file('../../../node_modules/react-native-zss-rich-text-editor'))"
                 ]
             }
+        },
+        "native-base": {
+            "version": "2.12.1",
+            "dependsOn": ["react-native-vector-icons"]
         }
     }
 }
