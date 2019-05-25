@@ -52,7 +52,7 @@ import {
     runAppleLog,
     prepareXcodeProject,
 } from '../platformTools/apple';
-import { buildWeb, runWeb, runWebDevServer } from '../platformTools/web';
+import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
 import { runWebOS } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
@@ -189,6 +189,7 @@ const _runApp = c => new Promise((resolve, reject) => {
 });
 
 const _runAppWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_runAppWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.defaultPorts[platform];
     const target = c.program.target || c.globalConfig.defaultTargets[platform];
@@ -366,19 +367,28 @@ const _deployApp = c => new Promise((resolve, reject) => {
     const { platform } = c;
     if (!isPlatformSupportedSync(platform, null, reject)) return;
 
-    // switch (platform) {
+    switch (platform) {
+    case WEB:
+        executePipe(c, PIPES.DEPLOY_BEFORE)
+            .then(() => _buildApp(c))
+            .then(() => deployWeb(c, platform))
+            .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     // case IOS:
     // case TVOS:
     // case TVOS:
-    executePipe(c, PIPES.DEPLOY_BEFORE)
-    // .then(() => cleanPlatformIfRequired(c, platform))
-    // .then(() => configureIfRequired(c, platform))
-    // TODO: ADD INTEGRATIONS
-        .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
-        .then(() => resolve())
-        .catch(e => reject(e));
-    return;
-    // }
+    default:
+        executePipe(c, PIPES.DEPLOY_BEFORE)
+        // .then(() => cleanPlatformIfRequired(c, platform))
+        // .then(() => configureIfRequired(c, platform))
+        // TODO: ADD INTEGRATIONS
+            .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
 
     logErrorPlatform(platform, resolve);
 });
