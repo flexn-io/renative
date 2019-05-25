@@ -100,7 +100,7 @@ const _getPluginList = (c, platform, isUpdate = false) => {
             if (p[v]) platforms += `${v}, `;
         });
         if (platforms.length) platforms = platforms.slice(0, platforms.length - 2);
-        const installedPlugin = c.pluginConfig && c.pluginConfig.plugins && c.pluginConfig.plugins[k];
+        const installedPlugin = c.files.pluginConfig && c.files.pluginConfig.plugins && c.files.pluginConfig.plugins[k];
         const installedString = installedPlugin ? chalk.red('installed') : chalk.green('not installed');
         if (isUpdate && installedPlugin) {
             output.plugins.push(k);
@@ -146,10 +146,10 @@ const _runAdd = c => new Promise((resolve, reject) => {
         console.log(msg);
 
         for (const k in selectedPlugins) {
-            c.pluginConfig.plugins[k] = selectedPlugins[k];
+            c.files.pluginConfig.plugins[k] = selectedPlugins[k];
         }
 
-        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
+        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
 
         logSuccess('Plugins installed successfully!');
 
@@ -172,11 +172,11 @@ const _runUpdate = c => new Promise((resolve, reject) => {
     readline.question(getQuestion('Above installed plugins will be updated with RNV. press (y) to confirm'), (v) => {
         const choices = v.split(',');
 
-        for (const k in c.pluginConfig.plugins) {
-            c.pluginConfig.plugins[k] = o.json[k];
+        for (const k in c.files.pluginConfig.plugins) {
+            c.files.pluginConfig.plugins[k] = o.json[k];
         }
 
-        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
+        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
 
         logSuccess('Plugins updated successfully!');
 

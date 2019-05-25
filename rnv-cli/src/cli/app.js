@@ -251,7 +251,7 @@ const checkAndCreateProjectPackage = (c, data) => {
         pkgJson.version = '0.1.0';
         pkgJson.supportedPlatforms = supportedPlatforms;
         pkgJson.dependencies = {
-            renative: c.rnvPackage.version,
+            renative: c.files.rnvPackage.version,
         };
 
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
@@ -259,7 +259,7 @@ const checkAndCreateProjectPackage = (c, data) => {
         //     .replace(/{{PACKAGE_NAME}}/g, packageName)
         //     .replace(/{{DEFAULT_APP_CONFIG}}/g, defaultAppConfigId)
         //     .replace(/{{APP_ID}}/g, appID)
-        //     .replace(/{{RNV_VERSION}}/g, c.rnvPackage.version)
+        //     .replace(/{{RNV_VERSION}}/g, c.files.rnvPackage.version)
         //     .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
         //     .replace(/{{PACKAGE_TITLE}}/g, appTitle);
         //     .replace(/{{SUPPORTED_PLATFORMS}}/g, supportedPlatforms.join(','));
@@ -324,7 +324,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
             return;
         }
     } else {
-        const platforms = c.appConfigFile.platforms;
+        const platforms = c.files.appConfigFile.platforms;
         cmds = [];
         for (const k in platforms) {
             if (!fs.existsSync(k)) {
@@ -353,17 +353,17 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     copyFolderContentsRecursiveSync(cPath, aPath);
 
     // copyFileSync(c.appConfigPath, path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME));
-    fs.writeFileSync(path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME), JSON.stringify(c.appConfigFile, null, 2));
+    fs.writeFileSync(path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME), JSON.stringify(c.files.appConfigFile, null, 2));
 
     // FONTS
     let fontsObj = 'export default [';
 
-    if (c.appConfigFile) {
+    if (c.files.appConfigFile) {
         if (fs.existsSync(c.paths.fontsConfigFolder)) {
             fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const includedFonts = c.appConfigFile.common.includedFonts;
+                    const includedFonts = c.files.appConfigFile.common.includedFonts;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {

@@ -116,13 +116,13 @@ const _runEjectPlatforms = c =>
 
                     copyFolderContentsRecursiveSync(c.paths.rnvPlatformTemplatesFolder, path.join(c.paths.projectRootFolder, ptfn));
 
-                    c.projectConfig.platformTemplatesFolder = `./${ptfn}`;
+                    c.files.projectConfig.platformTemplatesFolder = `./${ptfn}`;
 
-                    fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.projectConfig, null, 2));
+                    fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
 
                     logSuccess(
                         `Your platform templates are located in ${chalk.white(
-                            c.projectConfig.platformTemplatesFolder
+                            c.files.projectConfig.platformTemplatesFolder
                         )} now. You can edit them directly!`
                     );
 
@@ -157,9 +157,9 @@ const _runConnectPlatforms = c =>
                 if (v.toLowerCase() === 'y') {
                     const ptfn = 'platformTemplates';
 
-                    c.projectConfig.platformTemplatesFolder = `RNV_HOME/${ptfn}`;
+                    c.files.projectConfig.platformTemplatesFolder = `RNV_HOME/${ptfn}`;
 
-                    fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.projectConfig, null, 2));
+                    fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
 
                     logSuccess(
                         `You're now using ReNativeplatformTemplates located in ${chalk.white(c.paths.rnvPlatformTemplatesFolder)} now!`
@@ -205,7 +205,7 @@ const _runCopyPlatforms = (c, platform) =>
         logTask(`_runCopyPlatforms:${platform}`);
         const copyPlatformTasks = [];
         if (platform === 'all') {
-            for (const k in c.appConfigFile.platforms) {
+            for (const k in c.files.appConfigFile.platforms) {
                 if (isPlatformSupportedSync(k)) {
                     const ptPath = path.join(c.paths.platformTemplatesFolder, `${k}`);
                     const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${k}`);
@@ -232,7 +232,7 @@ const cleanPlatformBuild = (c, platform) =>
         const cleanTasks = [];
 
         if (platform === 'all') {
-            for (const k in c.appConfigFile.platforms) {
+            for (const k in c.files.appConfigFile.platforms) {
                 if (isPlatformSupportedSync(k)) {
                     const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${k}`);
                     cleanTasks.push(cleanFolder(pPath));

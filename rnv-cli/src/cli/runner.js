@@ -191,7 +191,7 @@ const _runApp = c => new Promise((resolve, reject) => {
 const _runAppWithPlatform = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.defaultPorts[platform];
-    const target = c.program.target || c.globalConfig.defaultTargets[platform];
+    const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
 
     logTask(`_runAppWithPlatform:${platform}:${port}`);
 
@@ -296,7 +296,7 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_packageAppWithPlatform:${c.platform}`);
     const { platform } = c;
 
-    const target = c.program.target || c.globalConfig.defaultTargets[platform];
+    const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
 
     switch (platform) {
     case IOS:
@@ -499,7 +499,7 @@ const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve,
     logTask(`_runAndroid:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    if (c.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
+    if (c.files.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
         packageAndroid(c, platform).then(() => {
             runAndroid(c, platform, target)
                 .then(() => resolve())

@@ -635,11 +635,17 @@ List of available pipe hooks:
 List of available config props injected into hooks methods:
 
 ```js
+//ROOT
 c.program;
 c.process;
 c.command;
 c.subCommand;
 c.appID;
+c.platform;
+//FILES
+c.files.projectConfig;
+c.files.rnvPackage;
+//PATHS
 c.paths.rnvRootFolder;
 c.paths.rnvHomeFolder;
 c.paths.rnvPlatformTemplatesFolder;
@@ -647,8 +653,6 @@ c.paths.rnvPluginTemplatesFolder;
 c.paths.rnvPluginTemplatesConfigPath;
 c.paths.rnvPackagePath;
 c.paths.rnvPluginsFolder;
-c.rnvPackage;
-c.platform;
 c.paths.projectRootFolder;
 c.paths.buildHooksFolder;
 c.paths.buildHooksDistFolder;
@@ -666,11 +670,10 @@ c.paths.rnCliConfigPath;
 c.paths.babelConfigPath;
 c.paths.projectConfigFolder;
 c.paths.projectPluginsFolder;
-c.projectConfig;
 c.paths.globalConfigFolder;
 c.paths.globalConfigPath;
 c.paths.appConfigsFolder;
-c.entryFolder;
+c.paths.entryFolder;
 c.paths.platformTemplatesFolder;
 c.paths.platformAssetsFolder;
 c.paths.platformBuildsFolder;
