@@ -54,7 +54,7 @@ import {
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer } from '../platformTools/web';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
-import { runWebOS } from '../platformTools/webos';
+import { runWebOS, buildWebOSProject } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
 import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
 import { executePipe } from '../buildHooks';
@@ -462,6 +462,17 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
             .then(() => buildTizenProject(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case WEBOS:
+        if (!checkSdk(c, platform, reject)) return;
+
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => buildWebOSProject(c, platform))
             .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
