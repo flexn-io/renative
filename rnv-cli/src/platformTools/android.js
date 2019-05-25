@@ -408,7 +408,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
 const configureAndroidProperties = c => new Promise((resolve, reject) => {
     logTask('configureAndroidProperties');
 
-    const localProperties = path.join(c.globalConfigFolder, 'local.properties');
+    const localProperties = path.join(c.paths.globalConfigFolder, 'local.properties');
     if (fs.existsSync(localProperties)) {
         console.log('local.properties file exists!');
     } else {
@@ -500,7 +500,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
 };
 
 const _fixAndroidLegacy = (c, modulePath) => {
-    const buildGradle = path.join(c.projectRootFolder, modulePath, 'build.gradle');
+    const buildGradle = path.join(c.paths.projectRootFolder, modulePath, 'build.gradle');
 
     if (fs.existsSync(buildGradle)) {
         logDebug('FIX:', buildGradle);
@@ -532,7 +532,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         return;
     }
 
-    copyFileSync(path.join(c.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
+    copyFileSync(path.join(c.paths.globalConfigFolder, 'local.properties'), path.join(appFolder, 'local.properties'));
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
     fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
     fs.chmodSync(gradlew, '755');
@@ -584,15 +584,15 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     // FONTS
     if (c.appConfigFile) {
-        if (fs.existsSync(c.fontsConfigFolder)) {
-            fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
+        if (fs.existsSync(c.paths.fontsConfigFolder)) {
+            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
                     const includedFonts = c.appConfigFile.common.includedFonts;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
-                                const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                                const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
                                 if (fs.existsSync(fontSource)) {
                                     const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                                     mkdirSync(fontFolder);
@@ -668,7 +668,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     ]);
 
     // RELEASE CONFIGS
-    const globalAppConfigPath = path.join(c.globalConfigFolder, c.appConfigFile.id);
+    const globalAppConfigPath = path.join(c.paths.globalConfigFolder, c.appConfigFile.id);
     const signingPropertiesPath = path.join(globalAppConfigPath, 'signing.properties');
     let signingPropFile = null;
     if (fs.existsSync(signingPropertiesPath)) {

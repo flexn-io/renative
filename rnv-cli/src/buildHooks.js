@@ -70,16 +70,16 @@ const executePipe = (c, key) =>
 const buildHooks = c =>
     new Promise((resolve, reject) => {
         logTask('buildHooks');
-        if (fs.existsSync(c.buildHooksIndexPath)) {
+        if (fs.existsSync(c.paths.buildHooksIndexPath)) {
             if (c.isBuildHooksReady) {
                 resolve();
                 return;
             }
-            // const babel = path.resolve(c.nodeModulesFolder, '.bin/babel');
-            const babel = path.resolve(c.nodeModulesFolder, '@babel/cli/bin/babel.js');
-            executeAsync(babel, ['--no-babelrc', c.buildHooksFolder, '-d', c.buildHooksDistFolder, '--presets=@babel/env'])
+            // const babel = path.resolve(c.paths.nodeModulesFolder, '.bin/babel');
+            const babel = path.resolve(c.paths.nodeModulesFolder, '@babel/cli/bin/babel.js');
+            executeAsync(babel, ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'])
                 .then(() => {
-                    const h = require(c.buildHooksDistIndexPath);
+                    const h = require(c.paths.buildHooksDistIndexPath);
                     c.buildHooks = h.hooks;
                     c.buildPipes = h.pipes;
                     c.isBuildHooksReady = true;
@@ -90,7 +90,7 @@ const buildHooks = c =>
                     resolve();
                 });
         } else {
-            logWarning(`Your buildHook ${chalk.white(c.buildHooksIndexPath)} is missing!. Skipping operation`);
+            logWarning(`Your buildHook ${chalk.white(c.paths.buildHooksIndexPath)} is missing!. Skipping operation`);
             resolve();
         }
     });

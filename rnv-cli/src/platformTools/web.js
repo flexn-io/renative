@@ -34,7 +34,7 @@ const { fork } = require('child_process');
 function buildWeb(c, platform) {
     logTask(`buildWeb:${platform}`);
 
-    const wbp = path.resolve(c.nodeModulesFolder, 'webpack/bin/webpack.js');
+    const wbp = path.resolve(c.paths.nodeModulesFolder, 'webpack/bin/webpack.js');
 
     return execShellAsync(`NODE_ENV=production ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 }
@@ -93,7 +93,7 @@ const runWeb = (c, platform, port) =>
 const _runWebBrowser = (c, platform, port, delay = 0) =>
     new Promise((resolve, reject) => {
         // if (delay) {
-        //         const process = fork(path.join(c.nodeModulesFolder, 'open', 'index.js'));
+        //         const process = fork(path.join(c.paths.nodeModulesFolder, 'open', 'index.js'));
         //         process.send(`http://0.0.0.0:${port}`);
         // } else {
         //     open(`http://0.0.0.0:${port}`);
@@ -116,7 +116,7 @@ const runWebDevServer = (c, platform, port) =>
             path.join(appFolder, 'webpack.config.js')
         );
 
-        const wds = path.resolve(c.nodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
+        const wds = path.resolve(c.paths.nodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
 
         shell.exec(
             `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`

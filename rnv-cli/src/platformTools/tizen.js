@@ -35,7 +35,7 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(c.globalConfigFolder, 'tizen_author.p12');
+    const tizenAuthorCert = path.join(c.paths.globalConfigFolder, 'tizen_author.p12');
     if (fs.existsSync(tizenAuthorCert)) {
         console.log('tizen_author.p12 file exists!');
         resolve();

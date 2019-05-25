@@ -1,0 +1,25 @@
+{
+    "version": "5.2.0",
+    "android": {
+        "packages": [
+            "io.invertase.firebase.RNFirebasePackage",
+            "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
+            "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
+        ],
+        "implementations": [
+            "com.google.firebase:firebase-core:16.0.4",
+            "com.google.firebase:firebase-messaging:17.3.4"
+        ]
+    },
+    "androidtv": {
+        "packages": [
+            "io.invertase.firebase.RNFirebasePackage",
+            "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
+            "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
+        ],
+        "implementations": [
+            "com.google.firebase:firebase-core:16.0.4",
+            "com.google.firebase:firebase-messaging:17.3.4"
+        ]
+    }
+}

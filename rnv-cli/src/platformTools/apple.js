@@ -521,13 +521,13 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
         let pluginFonts = '';
         if (c.appConfigFile) {
-            if (fs.existsSync(c.fontsConfigFolder)) {
-                fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
+            if (fs.existsSync(c.paths.fontsConfigFolder)) {
+                fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
                     if (font.includes('.ttf') || font.includes('.otf')) {
                         const key = font.split('.')[0];
                         const includedFonts = c.appConfigFile.common.includedFonts;
                         if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                            const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                            const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
                             if (fs.existsSync(fontSource)) {
                                 const fontFolder = path.join(appFolder, 'fonts');
                                 mkdirSync(fontFolder);
