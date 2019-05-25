@@ -1,0 +1,16 @@
+{
+    "name": "react-native-video",
+    "version": "2.0.0",
+    "ios": {
+        "podName": "react-native-video"
+    },
+    "tvos": {
+        "podName": "react-native-video"
+    },
+    "android": {
+        "package": "com.brentvatne.react.ReactVideoPackage"
+    },
+    "androidtv": {
+        "package": "com.brentvatne.react.ReactVideoPackage"
+    }
+}

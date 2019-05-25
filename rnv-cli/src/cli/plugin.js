@@ -83,7 +83,7 @@ const _runList = c => new Promise((resolve, reject) => {
 });
 
 const _getPluginList = (c, platform, isUpdate = false) => {
-    const plugins = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString()).plugins;
+    const plugins = c.files.pluginTemplatesConfig.plugins;
     const output = {
         asString: '',
         plugins: [],

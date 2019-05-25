@@ -1,0 +1,10 @@
+{
+    "name": "react-native-maps",
+    "version": "0.19.0",
+    "ios": {
+        "podName": "react-native-maps"
+    },
+    "tvos": {
+        "podName": "react-native-maps"
+    }
+}

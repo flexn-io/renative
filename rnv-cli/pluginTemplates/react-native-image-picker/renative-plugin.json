@@ -1,0 +1,16 @@
+{
+    "name": "react-native-image-picker",
+    "version": "0.27.1",
+    "ios": {
+        "podName": "react-native-image-picker"
+    },
+    "tvos": {
+        "podName": "react-native-image-picker"
+    },
+    "android": {
+        "package": "com.imagepicker.ImagePickerPackage"
+    },
+    "androidtv": {
+        "package": "com.imagepicker.ImagePickerPackage"
+    }
+}

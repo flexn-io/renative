@@ -1,0 +1,16 @@
+{
+    "name": "react-native-camera",
+    "version": "1.8.0",
+    "ios": {
+        "podName": "react-native-camera"
+    },
+    "tvos": {
+        "podName": "react-native-camera"
+    },
+    "android": {
+        "package": "org.reactnative.camera.RNCameraPackage"
+    },
+    "androidtv": {
+        "package": "org.reactnative.camera.RNCameraPackage"
+    }
+}

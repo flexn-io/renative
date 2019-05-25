@@ -265,6 +265,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvPackagePath = path.join(c.paths.rnvRootFolder, 'package.json');
     c.paths.rnvPluginsFolder = path.join(c.paths.rnvHomeFolder, 'plugins');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
+    c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
 
     if (c.command === 'app' && c.subCommand === 'create') {
         resolve(c);
