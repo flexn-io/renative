@@ -79,6 +79,7 @@ const EXPORT = 'export';
 const TEST = 'test';
 const DOC = 'doc';
 const UNINSTALL = 'uninstall';
+const FIX = 'fix';
 
 const PIPES = {
     RUN_BEFORE: 'run:before',
@@ -123,6 +124,9 @@ const run = (c) => {
     case LOG:
         return _log(c);
         break;
+    case FIX:
+        return _fix(c);
+        break;
     case DEPLOY:
         return _deployApp(c);
         break;
@@ -143,6 +147,10 @@ const run = (c) => {
 // ##########################################
 // PRIVATE
 // ##########################################
+
+const _fix = c => new Promise((resolve, reject) => {
+    cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
+});
 
 const _start = (c, platform) => new Promise((resolve, reject) => {
     const { platform } = c;

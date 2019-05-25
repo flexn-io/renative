@@ -1,7 +1,7 @@
 {
     "name": "renative",
     "title": "ReNative",
-    "version": "0.21.11",
+    "version": "0.21.12",
     "codename": "Magic Beans",
     "keywords": [
         "react",
@@ -170,7 +170,8 @@
         "webpack-dev-server": "3.2.1",
         "webpack-merge": "4.1.4",
         "write-json-webpack-plugin": "1.1.0",
-        "xcode": "2.0.0"
+        "xcode": "2.0.0",
+        "modclean": "3.0.0-beta.1"
     },
     "optionalDependencies": {
         "ios-deploy": "1.9.4"

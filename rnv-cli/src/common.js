@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from './fileutils';
+import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs } from './fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
@@ -579,6 +579,7 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
         executeAsync('npm', ['install'])
+            .then(() => cleanNodeModules(c))
             .then(() => {
                 resolve();
             })
@@ -586,6 +587,46 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
     } else {
         resolve();
     }
+});
+
+const cleanNodeModules = c => new Promise((resolve, reject) => {
+    removeDirs([
+        path.join(c.paths.nodeModulesFolder, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.nodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.nodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+    ]).then(() => resolve()).catch(e => reject(e));
+
+    // const ModClean = require('modclean').ModClean;
+    //
+    // const options = {
+    // // set the patterns to use
+    //     patterns: ['default:safe', 'default:caution'],
+    //     cwd: path.join(c.paths.nodeModulesFolder),
+    //     // example filter function, for ignoring files, you can use `ignorePatterns` option instead
+    //     filter: (file) => {
+    //     // Skip .gitignore files (keeping them)
+    //         if (file.name.match(/\.git/i)) return false;
+    //         return true;
+    //     }
+    // };
+    //
+    // const mc = new ModClean(options);
+    //
+    // mc.on('error', (err) => {
+    //     console.error(`Error in ${err.method}!`);
+    //     console.error(err);
+    // });
+    //
+    // mc.on('file:list', (files) => {
+    //     console.log(`Found ${files.length} files to delete...`);
+    // });
+    //
+    // mc.clean()
+    //     .then((result) => {
+    //         console.log(`Successfully removed ${result.deleted.length} files/folders from the project`);
+    //         resolve();
+    //     })
+    //     .catch(e => reject());
 });
 
 const configureRnvGlobal = c => new Promise((resolve, reject) => {
@@ -1076,6 +1117,7 @@ const finishQuestion = () => new Promise((resolve, reject) => {
 export {
     SUPPORTED_PLATFORMS,
     isPlatformSupported,
+    cleanNodeModules,
     isBuildSchemeSupported,
     isPlatformSupportedSync,
     getAppFolder,
@@ -1142,6 +1184,7 @@ export {
 export default {
     SUPPORTED_PLATFORMS,
     copyBuildsFolder,
+    cleanNodeModules,
     isPlatformSupported,
     isBuildSchemeSupported,
     isPlatformSupportedSync,

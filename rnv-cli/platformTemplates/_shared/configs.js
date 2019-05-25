@@ -36,6 +36,7 @@ function generateConfig(config) {
           path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
           path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
           path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
+          path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
         ],
         use: {
             loader: 'babel-loader',
@@ -88,6 +89,7 @@ function generateConfig(config) {
           'react-native-material-buttons': path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
           'react-native-material-textfield': path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
           'react-native-material-ripple': path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
+          'react-native-easy-grid': path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
           'react-native-svg': 'svgs',
     };
 
