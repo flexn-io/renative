@@ -56,3 +56,6 @@ buildHooks/dist
 
 release-configs.gradle
 rnv-config.local.json
+
+#dotenv
+.env
