@@ -1,0 +1,10 @@
+{
+    "name": "react-native-get-real-path",
+    "version": "1.0.0",
+    "android": {
+        "package": "com.rngrp.RNGRPPackage"
+    },
+    "androidtv": {
+        "package": "com.rngrp.RNGRPPackage"
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "name": "react-native-reanimated",
+    "version": "1.0.0-alpha.12",
+    "ios": {
+        "podName": "RNReanimated"
+    },
+    "tvos": {
+        "podName": "RNReanimated"
+    },
+    "android": {
+        "package": "com.swmansion.reanimated.ReanimatedPackage"
+    },
+    "androidtv": {
+        "package": "com.swmansion.reanimated.ReanimatedPackage"
+    }
+}

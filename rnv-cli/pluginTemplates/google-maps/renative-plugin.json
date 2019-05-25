@@ -1,0 +1,12 @@
+{
+    "name": "google-maps",
+    "no-npm": true,
+    "ios": {
+        "podName": "GoogleMaps",
+        "version": "2.5.0"
+    },
+    "tvos": {
+        "podName": "GoogleMaps",
+        "version": "2.5.0"
+    }
+}

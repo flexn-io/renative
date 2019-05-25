@@ -1,0 +1,12 @@
+{
+    "name": "ios-photo-editor",
+    "no-npm": true,
+    "ios": {
+        "podName": "iOSPhotoEditor",
+        "git": "https://github.com/prscX/photo-editor"
+    },
+    "tvos": {
+        "podName": "iOSPhotoEditor",
+        "git": "https://github.com/prscX/photo-editor"
+    }
+}

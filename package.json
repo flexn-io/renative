@@ -1,7 +1,7 @@
 {
     "name": "renative",
     "title": "ReNative",
-    "version": "0.21.10",
+    "version": "0.21.14",
     "codename": "Magic Beans",
     "keywords": [
         "react",
@@ -80,6 +80,7 @@
         "@babel/core": "7.1.2",
         "@babel/plugin-proposal-decorators": "7.1.2",
         "@babel/plugin-transform-runtime": "7.1.0",
+        "@babel/plugin-proposal-class-properties": "7.4.4",
         "@babel/preset-env": "7.3.4",
         "@babel/runtime": "7.1.2",
         "@react-navigation/core": "3.1.1",
@@ -160,7 +161,8 @@
         "webpack-dev-server": "3.2.1",
         "webpack-merge": "4.1.4",
         "write-json-webpack-plugin": "1.1.0",
-        "xcode": "2.0.0"
+        "xcode": "2.0.0",
+        "modclean": "3.0.0-beta.1"
     },
     "optionalDependencies": {
         "ios-deploy": "1.9.4"

@@ -1,0 +1,16 @@
+{
+    "name": "react-native-svg",
+    "version": "9.4.0",
+    "ios": {
+        "podName": "RNSVG"
+    },
+    "tvos": {
+        "podName": "RNSVG"
+    },
+    "android": {
+        "package": "com.horcrux.svg.SvgPackage"
+    },
+    "androidtv": {
+        "package": "com.horcrux.svg.SvgPackage"
+    }
+}

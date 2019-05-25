@@ -1,0 +1,10 @@
+{
+    "name": "react-native-simple-compass",
+    "version": "1.0.0",
+    "android": {
+        "package": "com.reactlibrary.RNSimpleCompassPackage"
+    },
+    "androidtv": {
+        "package": "com.reactlibrary.RNSimpleCompassPackage"
+    }
+}
