@@ -1,7 +1,7 @@
 {
     "name": "renative",
     "title": "ReNative",
-    "version": "0.21.14",
+    "version": "0.21.15",
     "codename": "Magic Beans",
     "keywords": [
         "react",
@@ -86,7 +86,8 @@
         "preversion": "npm run test",
         "version": "./rnv/utils/update-versions.sh",
         "doc": "doctoc . --maxlevel 1",
-        "prepare": "npm run build"
+        "prepare": "npm run build",
+        "fix": "rm -rf node_modules/react-native-safe-area-view/.git && rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-navigation/node_modules/react-native-safe-area-view/.git"
     },
     "dependencies": {
         "@babel/cli": "7.0.0",
