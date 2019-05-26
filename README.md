@@ -1694,7 +1694,7 @@ Special thanks to open-source initiatives this project utilises, notably:
 
 ## Stats
 
-[![NPM](https://nodei.co/npm/renative.png)](https://nodei.co/npm/renative/)
+[![NPM](https://nodei.co/npm/renative.png)](https://nodei.co/npm/renative/) [![Join the chat at https://gitter.im/pavjacko/renative](https://badges.gitter.im/pavjacko/renative.svg)](https://gitter.im/pavjacko/renative?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## LICENSE
 
