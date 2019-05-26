@@ -1,0 +1,16 @@
+{
+    "name": "react-native-languages",
+    "version": "3.0.2",
+    "ios": {
+        "podName": "RNLanguages"
+    },
+    "tvos": {
+        "podName": "RNLanguages"
+    },
+    "android": {
+        "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
+    },
+    "androidtv": {
+        "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
+    }
+}

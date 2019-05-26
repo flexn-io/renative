@@ -3,6 +3,7 @@ import path from 'path';
 import shell from 'shelljs';
 import Common, { initializeBuilder, logComplete, logError } from './common';
 import Runner from './cli/runner';
+import Tools from './cli/tools';
 import App from './cli/app';
 import Platform from './cli/platform';
 import Hooks from './cli/hooks';
@@ -27,11 +28,12 @@ const commands = {
     plugin: Plugin,
     log: Runner,
     hooks: Hooks,
+    fix: Tools
 };
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
-        .then(v => {
+        .then((v) => {
             if (commands[cmd]) {
                 commands[cmd](v)
                     .then(() => logComplete(true))

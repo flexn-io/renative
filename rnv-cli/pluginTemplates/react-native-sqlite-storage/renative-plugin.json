@@ -1,0 +1,18 @@
+{
+    "name": "react-native-sqlite-storage",
+    "version": "3.3.9",
+    "ios": {
+        "podName": "react-native-sqlite-storage"
+    },
+    "tvos": {
+        "podName": "react-native-sqlite-storage"
+    },
+    "android": {
+        "package": "org.pgsqlite.SQLitePluginPackage",
+        "path": "node_modules/react-native-sqlite-storage/src/android"
+    },
+    "androidtv": {
+        "package": "org.pgsqlite.SQLitePluginPackage",
+        "path": "node_modules/react-native-sqlite-storage/src/android"
+    }
+}

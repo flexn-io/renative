@@ -1,0 +1,16 @@
+{
+    "name": "react-native-image-resizer",
+    "version": "1.0.0",
+    "ios": {
+        "podName": "react-native-image-resizer"
+    },
+    "tvos": {
+        "podName": "react-native-image-resizer"
+    },
+    "android": {
+        "package": "fr.bamlab.rnimageresizer.ImageResizerPackage"
+    },
+    "androidtv": {
+        "package": "fr.bamlab.rnimageresizer.ImageResizerPackage"
+    }
+}

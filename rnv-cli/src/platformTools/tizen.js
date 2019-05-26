@@ -35,7 +35,7 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(c.globalConfigFolder, 'tizen_author.p12');
+    const tizenAuthorCert = path.join(c.paths.globalConfigFolder, 'tizen_author.p12');
     if (fs.existsSync(tizenAuthorCert)) {
         console.log('tizen_author.p12 file exists!');
         resolve();
@@ -94,7 +94,7 @@ const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
 const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runTizen:${platform}:${target}`);
 
-    const platformConfig = c.appConfigFile.platforms[platform];
+    const platformConfig = c.files.appConfigFile.platforms[platform];
     const tDir = getAppFolder(c, platform);
 
     const tOut = path.join(tDir, 'output');
@@ -150,7 +150,7 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
 const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildTizenProject:${platform}`);
 
-    const platformConfig = c.appConfigFile.platforms[platform];
+    const platformConfig = c.files.appConfigFile.platforms[platform];
     const tDir = getAppFolder(c, platform);
 
     const tOut = path.join(tDir, 'output');
@@ -190,7 +190,7 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
     const appFolder = getAppFolder(c, platform);
 
     const configFile = 'config.xml';
-    const p = c.appConfigFile.platforms[platform];
+    const p = c.files.appConfigFile.platforms[platform];
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
         { pattern: '{{PACKAGE}}', override: p.package },
         { pattern: '{{ID}}', override: p.id },

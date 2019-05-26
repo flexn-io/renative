@@ -54,7 +54,7 @@ import {
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
-import { runWebOS } from '../platformTools/webos';
+import { runWebOS, buildWebOSProject } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
 import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
 import { executePipe } from '../buildHooks';
@@ -79,6 +79,7 @@ const EXPORT = 'export';
 const TEST = 'test';
 const DOC = 'doc';
 const UNINSTALL = 'uninstall';
+const FIX = 'fix';
 
 const PIPES = {
     RUN_BEFORE: 'run:before',
@@ -123,6 +124,9 @@ const run = (c) => {
     case LOG:
         return _log(c);
         break;
+    case FIX:
+        return _fix(c);
+        break;
     case DEPLOY:
         return _deployApp(c);
         break;
@@ -143,6 +147,10 @@ const run = (c) => {
 // ##########################################
 // PRIVATE
 // ##########################################
+
+const _fix = c => new Promise((resolve, reject) => {
+    cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
+});
 
 const _start = (c, platform) => new Promise((resolve, reject) => {
     const { platform } = c;
@@ -192,7 +200,7 @@ const _runAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_runAppWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.defaultPorts[platform];
-    const target = c.program.target || c.globalConfig.defaultTargets[platform];
+    const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
 
     logTask(`_runAppWithPlatform:${platform}:${port}`);
 
@@ -297,7 +305,7 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_packageAppWithPlatform:${c.platform}`);
     const { platform } = c;
 
-    const target = c.program.target || c.globalConfig.defaultTargets[platform];
+    const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
 
     switch (platform) {
     case IOS:
@@ -476,6 +484,17 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case WEBOS:
+        if (!checkSdk(c, platform, reject)) return;
+
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => buildWebOSProject(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
     logErrorPlatform(platform, resolve);
@@ -509,7 +528,7 @@ const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve,
     logTask(`_runAndroid:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    if (c.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
+    if (c.files.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
         packageAndroid(c, platform).then(() => {
             runAndroid(c, platform, target)
                 .then(() => resolve())

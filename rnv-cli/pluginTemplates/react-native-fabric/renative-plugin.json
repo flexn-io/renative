@@ -1,0 +1,10 @@
+{
+    "name": "react-native-fabric",
+    "version": "",
+    "ios": {
+        "podName": "ReactNativeFabric"
+    },
+    "tvos": {
+        "podName": "ReactNativeFabric"
+    }
+}

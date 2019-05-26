@@ -32,7 +32,7 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) =
     // copy
     if (fs.lstatSync(source).isDirectory()) {
         files = fs.readdirSync(source);
-        files.forEach(file => {
+        files.forEach((file) => {
             const curSource = path.join(source, file);
             if (fs.lstatSync(curSource).isDirectory()) {
                 copyFolderRecursiveSync(curSource, targetFolder);
@@ -57,7 +57,7 @@ const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skip
     }
     if (fs.lstatSync(source).isDirectory()) {
         files = fs.readdirSync(source);
-        files.forEach(file => {
+        files.forEach((file) => {
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
@@ -81,25 +81,69 @@ const removeDir = (path, callback) => {
     rimraf(path, callback);
 };
 
-const mkdirSync = dir => {
+const mkdirSync = (dir) => {
     shelljs.mkdir('-p', dir);
 };
 
-const cleanFolder = d =>
-    new Promise((resolve, reject) => {
-        logDebug('cleanFolder', d);
-        removeDir(d, () => {
-            mkdirSync(d);
-            resolve();
-        });
+const cleanFolder = d => new Promise((resolve, reject) => {
+    logDebug('cleanFolder', d);
+    removeDir(d, () => {
+        mkdirSync(d);
+        resolve();
     });
+});
 
-export { copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync, copyFolderContentsRecursiveSync, cleanFolder };
+const removeFiles = filePaths => new Promise((resolve, reject) => {
+    logDebug('removeFiles', filePaths);
+    v.forEach((filePath) => {
+        fs.unlinkSync(filePath);
+    });
+});
+
+const removeDirs = dirPaths => new Promise((resolve, reject) => {
+    logDebug('removeDirs', dirPaths);
+    try {
+        for (let i = 0; i < dirPaths.length; i++) {
+            removeDirSync(dirPaths[i]);
+        }
+    } catch (e) {
+        reject(e);
+    }
+
+    resolve();
+});
+
+
+const removeDirSync = (dir, rmSelf) => {
+    let files;
+    rmSelf = (rmSelf === undefined) ? true : rmSelf;
+    dir += '/';
+    try { files = fs.readdirSync(dir); } catch (e) { logDebug('!Oops, directory not exist.'); return; }
+    if (files.length > 0) {
+        files.forEach((x, i) => {
+            if (fs.statSync(dir + x).isDirectory()) {
+                removeDirSync(dir + x);
+            } else {
+                fs.unlinkSync(dir + x);
+            }
+        });
+    }
+    if (rmSelf) {
+        // check if user want to delete the directory ir just the files in this directory
+        fs.rmdirSync(dir);
+    }
+};
+
+export {
+    copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
+    copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs
+};
 
 export default {
     copyFileSync,
     copyFolderRecursiveSync,
     removeDir,
+    removeFiles,
     saveAsJs,
     mkdirSync,
     copyFolderContentsRecursiveSync,

@@ -1,0 +1,16 @@
+{
+    "name": "react-native-sensors",
+    "version": "2.4.2",
+    "ios": {
+        "podName": "RNSensors"
+    },
+    "tvos": {
+        "podName": "RNSensors"
+    },
+    "android": {
+        "package": "com.sensors.RNSensorsPackage"
+    },
+    "androidtv": {
+        "package": "com.sensors.RNSensorsPackage"
+    }
+}

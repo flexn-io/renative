@@ -4,6 +4,7 @@ import { createNavigator, createNavigatorView, createApp } from './navigator';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
 import Menu from './menu';
+import Fonts from '../platformAssets/runtime/fontManager';
 
 const Navigator = createNavigator({ ScreenHome, ScreenMyPage }, Menu);
 

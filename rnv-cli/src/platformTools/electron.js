@@ -114,7 +114,7 @@ const runElectron = (c, platform, port) =>
     new Promise((resolve, reject) => {
         logTask(`runElectron:${platform}`);
 
-        const elc = path.resolve(c.nodeModulesFolder, 'electron/cli.js');
+        const elc = path.resolve(c.paths.nodeModulesFolder, 'electron/cli.js');
         const appFolder = getAppFolder(c, platform);
         const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
         const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
@@ -155,7 +155,7 @@ const runElectron = (c, platform, port) =>
 const _runElectronSimulator = (c, platform) =>
     new Promise((resolve, reject) => {
         const appFolder = getAppFolder(c, platform);
-        const elc = path.resolve(c.nodeModulesFolder, 'electron/cli.js');
+        const elc = path.resolve(c.paths.nodeModulesFolder, 'electron/cli.js');
 
         const child = spawn(elc, [appFolder], {
             detached: true,

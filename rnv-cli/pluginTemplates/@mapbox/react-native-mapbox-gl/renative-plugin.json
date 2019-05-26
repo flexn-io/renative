@@ -1,0 +1,22 @@
+{
+    "name": "@mapbox/react-native-mapbox-gl",
+    "version": "github:nitaliano/react-native-mapbox-gl",
+    "ios": {
+        "podName": "react-native-mapbox-gl"
+    },
+    "tvos": {
+        "podName": "react-native-mapbox-gl"
+    },
+    "android": {
+        "projectName": "mapbox-react-native-mapbox-gl",
+        "package": "com.mapbox.rctmgl.RCTMGLPackage",
+        "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
+        "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }\n"
+    },
+    "androidtv": {
+        "projectName": "mapbox-react-native-mapbox-gl",
+        "package": "com.mapbox.rctmgl.RCTMGLPackage",
+        "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
+        "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }\n"
+    }
+}
