@@ -3,8 +3,11 @@
     <tizen:application id="{{ID}}" package="{{PACKAGE}}" required_version="2.3"/>
     <content src="public/index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
+    <feature name="http://tizen.org/feature/network.internet"/>
+    <access origin="*" subdomains="true"></access>
     <icon src="icon.png"/>
     <name>{{APP_NAME}}</name>
+    <tizen:privilege name="http://tizen.org/privilege/internet"/> 
     <tizen:profile name="wearable"/>
     <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
 </widget>

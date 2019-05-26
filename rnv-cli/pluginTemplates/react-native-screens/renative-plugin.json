@@ -1,0 +1,16 @@
+{
+    "name": "react-native-screens",
+    "version": "1.0.0-alpha.22",
+    "ios": {
+        "podName": "RNScreens"
+    },
+    "tvos": {
+        "podName": "RNScreens"
+    },
+    "android": {
+        "package": "com.swmansion.rnscreens.RNScreensPackage"
+    },
+    "androidtv": {
+        "package": "com.swmansion.rnscreens.RNScreensPackage"
+    }
+}

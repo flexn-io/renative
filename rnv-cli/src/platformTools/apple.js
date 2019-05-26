@@ -218,7 +218,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logDebug('running', p);
 
-    if (c.appConfigFile.platforms[platform].runScheme === 'Release') {
+    if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync('xcodebuild', p))
             .then(() => resolve())
@@ -270,7 +270,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         '--assets-dest',
         `platformBuilds/${c.appId}_${platform}`,
         '--entry-file',
-        `${c.appConfigFile.platforms[platform].entryFile}.js`,
+        `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
         '--bundle-output',
         `${getAppFolder(c, platform)}/main.jsbundle`,
     ]);
@@ -383,10 +383,10 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         pluginAppDelegateMethods,
     };
         // PLUGINS
-    if (c.appConfigFile && c.pluginConfig) {
-        const { includedPlugins } = c.appConfigFile.common;
+    if (c.files.appConfigFile && c.files.pluginConfig) {
+        const { includedPlugins } = c.files.appConfigFile.common;
         if (includedPlugins) {
-            const { plugins } = c.pluginConfig;
+            const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
@@ -454,10 +454,10 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     let pluginInject = '';
     // PLUGINS
-    if (c.appConfigFile && c.pluginConfig) {
-        const { includedPlugins } = c.appConfigFile.common;
+    if (c.files.appConfigFile && c.files.pluginConfig) {
+        const { includedPlugins } = c.files.appConfigFile.common;
         if (includedPlugins) {
-            const { plugins } = c.pluginConfig;
+            const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
@@ -482,12 +482,12 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     // PERMISSIONS
     let pluginPermissions = '';
-    const { permissions } = c.appConfigFile.platforms[platform];
+    const { permissions } = c.files.appConfigFile.platforms[platform];
     if (permissions) {
         permissions.forEach((v) => {
-            if (c.permissionsConfig) {
-                const plat = c.permissionsConfig.permissions[platform] ? platform : 'ios';
-                const pc = c.permissionsConfig.permissions[plat];
+            if (c.files.permissionsConfig) {
+                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
+                const pc = c.files.permissionsConfig.permissions[plat];
                 if (pc[v]) {
                     pluginPermissions += `  <key>${pc[v].key}</key>\n  <string>${pc[v].desc}</string>\n`;
                 }
@@ -513,14 +513,14 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
         let pluginFonts = '';
-        if (c.appConfigFile) {
-            if (fs.existsSync(c.fontsConfigFolder)) {
-                fs.readdirSync(c.fontsConfigFolder).forEach((font) => {
+        if (c.files.appConfigFile) {
+            if (fs.existsSync(c.paths.fontsConfigFolder)) {
+                fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
                     if (font.includes('.ttf') || font.includes('.otf')) {
                         const key = font.split('.')[0];
-                        const { includedFonts } = c.appConfigFile.common;
+                        const { includedFonts } = c.files.appConfigFile.common;
                         if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                            const fontSource = path.join(c.projectConfigFolder, 'fonts', font);
+                            const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
                             if (fs.existsSync(fontSource)) {
                                 const fontFolder = path.join(appFolder, 'fonts');
                                 mkdirSync(fontFolder);

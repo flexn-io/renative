@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle
 import chalk from 'chalk';
-import path from 'path';
 import fs from 'fs';
 import readline from 'readline';
 import {
@@ -63,7 +62,7 @@ const _runList = c => new Promise((resolve) => {
 });
 
 const _getPluginList = (c, isUpdate = false) => {
-    const { plugins } = JSON.parse(fs.readFileSync(path.join(c.rnvPluginTemplatesConfigPath)).toString());
+    const { plugins } = c.files.pluginTemplatesConfig;
     const output = {
         asString: '',
         plugins: [],
@@ -80,7 +79,7 @@ const _getPluginList = (c, isUpdate = false) => {
             if (p[v]) platforms += `${v}, `;
         });
         if (platforms.length) platforms = platforms.slice(0, platforms.length - 2);
-        const installedPlugin = c.pluginConfig && c.pluginConfig.plugins && c.pluginConfig.plugins[k];
+        const installedPlugin = c.files.pluginConfig && c.files.pluginConfig.plugins && c.files.pluginConfig.plugins[k];
         const installedString = installedPlugin ? chalk.red('installed') : chalk.green('not installed');
         if (isUpdate && installedPlugin) {
             output.plugins.push(k);
@@ -127,16 +126,29 @@ const _runAdd = c => new Promise((resolve) => {
         console.log(msg);
 
         Object.keys(selectedPlugins).forEach((key) => {
-            c.pluginConfig.plugins[key] = selectedPlugins[key];
+            c.files.pluginConfig.plugins[key] = selectedPlugins[key];
+            _checkAndAddDependantPlugins(c, selectedPlugins[k]);
         });
 
-        fs.writeFileSync(c.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
+        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
 
         logSuccess('Plugins installed successfully!');
 
         resolve();
     });
 });
+
+const _checkAndAddDependantPlugins = (c, plugin) => {
+    const templatePlugins = c.files.pluginTemplatesConfig.plugins;
+    if (plugin.dependsOn) {
+        plugin.dependsOn.forEach((v) => {
+            if (templatePlugins[v]) {
+                console.log(`Added dependant plugin ${v}`);
+                c.files.pluginConfig.plugins[v] = templatePlugins[v];
+            }
+        });
+    }
+};
 
 const _runUpdate = c => new Promise((resolve) => {
     logTask('_runUpdate');
@@ -151,13 +163,13 @@ const _runUpdate = c => new Promise((resolve) => {
     });
 
     readlineInterface.question(getQuestion('Above installed plugins will be updated with RNV. press (y) to confirm'), (v) => {
-        const { plugins } = c.pluginConfig;
+        const { plugins } = c.files.pluginConfig;
         Object.keys(plugins).forEach((key) => {
-            c.pluginConfig.plugins[key] = o.json[key];
+            c.files.pluginConfig.plugins[key] = o.json[key];
         });
 
 
-        fs.writeFileSync(c.pluginConfigPath, JSON.stringify(c.pluginConfig, null, 2));
+        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
 
         logSuccess('Plugins updated successfully!');
 

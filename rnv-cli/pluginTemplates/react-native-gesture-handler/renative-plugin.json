@@ -1,0 +1,16 @@
+{
+    "name": "react-native-gesture-handler",
+    "version": "github:kmagiera/react-native-gesture-handler",
+    "ios": {
+        "podName": "RNGestureHandler"
+    },
+    "tvos": {
+        "podName": "RNGestureHandler"
+    },
+    "android": {
+        "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+    },
+    "androidtv": {
+        "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+    }
+}

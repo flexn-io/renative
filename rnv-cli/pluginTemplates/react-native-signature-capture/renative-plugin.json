@@ -1,0 +1,18 @@
+{
+    "name": "react-native-signature-capture",
+    "version": "0.4.9",
+    "ios": {
+        "podName": "react-native-signature-capture"
+    },
+    "tvos": {
+        "podName": "react-native-signature-capture"
+    },
+    "android": {
+        "projectName": "reactnativesignaturecapture",
+        "package": "com.rssignaturecapture.RSSignatureCapturePackage"
+    },
+    "androidtv": {
+        "projectName": "reactnativesignaturecapture",
+        "package": "com.rssignaturecapture.RSSignatureCapturePackage"
+    }
+}

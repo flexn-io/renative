@@ -25,13 +25,13 @@ const run = (c) => {
 // ##########################################
 
 const _link = c => new Promise((resolve) => {
-    if (fs.existsSync(c.projectNpmLinkPolyfillPath)) {
-        const l = JSON.parse(fs.readFileSync(c.projectNpmLinkPolyfillPath).toString());
+    if (fs.existsSync(c.paths.projectNpmLinkPolyfillPath)) {
+        const l = JSON.parse(fs.readFileSync(c.paths.projectNpmLinkPolyfillPath).toString());
         Object.keys(l).forEach((key) => {
             // console.log('COPY', key, l[key]);
             const source = path.resolve(l[key]);
             const nm = path.join(source, 'node_modules');
-            const dest = path.join(c.nodeModulesFolder, key);
+            const dest = path.join(c.paths.nodeModulesFolder, key);
             if (fs.existsSync(source)) {
                 copyFolderContentsRecursiveSync(source, dest, false, [nm]);
             } else {
@@ -39,7 +39,7 @@ const _link = c => new Promise((resolve) => {
             }
         });
     } else {
-        logWarning(`${c.projectNpmLinkPolyfillPath} file not found. nothing to link!`);
+        logWarning(`${c.paths.projectNpmLinkPolyfillPath} file not found. nothing to link!`);
         resolve();
     }
 });

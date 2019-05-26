@@ -1,0 +1,16 @@
+{
+    "name": "react-native-keep-awake",
+    "version": "2.0.6",
+    "ios": {
+        "podName": "react-native-keep-awake"
+    },
+    "tvos": {
+        "podName": "react-native-keep-awake"
+    },
+    "android": {
+        "package": "com.corbt.keepawake.KCKeepAwakePackage"
+    },
+    "androidtv": {
+        "package": "com.corbt.keepawake.KCKeepAwakePackage"
+    }
+}
