@@ -1,15 +1,20 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Api, Button, Icon } from './renative';
+import { navStructure } from './nav';
+
+console.log('SJDJJHDJ', navStructure);
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingTop: 40,
+        width: '100%',
+        height: '100%',
         backgroundColor: '#222222',
         alignItems: 'center',
         borderRightWidth: 1,
         borderRightColor: '#AAAAAA',
+        flexDirection: navStructure.root.menus.topMenu.isVisibleIn.includes(Api.platform) ? 'row' : 'column'
     },
     text: {
         fontFamily: 'TimeBurner',

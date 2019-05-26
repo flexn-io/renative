@@ -21,17 +21,19 @@ const shouldUse = (menu) => {
     return false;
 };
 
-const createFilteredStackNavigator = (rootRoute, rootScreen, rootNavOptions, allStacks, filter) => {
+const createFilteredStackNavigator = (componentMap, rootRoute, rootScreen, rootNavOptions, allStacks, filter) => {
     const stacks = {};
     stacks[rootRoute] = {
-        screen: rootScreen.screen,
+        screen: componentMap[rootScreen.screen],
         navigationOptions: Object.assign({}, rootNavOptions, rootScreen.navigationOptions),
     };
+
+    console.log('SLKJSJSL', stacks[rootRoute]);
 
     for (stackKey in allStacks.screens) {
         if (filter.includes(`stacks.${stackKey}`)) {
             stacks[stackKey] = {
-                screen: allStacks.screens[stackKey].screen,
+                screen: componentMap[allStacks.screens[stackKey].screen],
                 navigationOptions: Object.assign({}, allStacks.navigationOptions, allStacks.screens[stackKey].navigationOptions),
             };
         }
@@ -40,10 +42,7 @@ const createFilteredStackNavigator = (rootRoute, rootScreen, rootNavOptions, all
     return createStackNavigator(stacks);
 };
 
-const createApp = (c, navigation) => {
-    console.log('KDJKDJDL', c, Api.platform, navigation);
-    _currentNavigation = navigation;
-
+const createApp = (c, componentMap) => {
     const root = c.root;
     let rootNav;
     let stackNav;
@@ -52,7 +51,7 @@ const createApp = (c, navigation) => {
     for (rootKey in root.screens) {
         const rootConfig = root.screens[rootKey];
         roots[rootKey] = {
-            screen: createFilteredStackNavigator(rootKey, rootConfig, root.navigationOptions, c.stacks, rootConfig.stacks),
+            screen: createFilteredStackNavigator(componentMap, rootKey, rootConfig, root.navigationOptions, c.stacks, rootConfig.stacks),
             navigationOptions: Object.assign(root.navigationOptions, rootConfig.navigationOptions),
         };
     }
@@ -61,13 +60,23 @@ const createApp = (c, navigation) => {
         // ROOT CONTENT IS WRAPPED IN MENU
         if (shouldUse(root.menus.drawerMenu)) {
             rootNav = createDrawerNavigator(roots, {
-                contentComponent: root.menus.drawerMenu.component,
-                navigationOptions: {},
+                contentComponent: componentMap[root.menus.drawerMenu.component],
+                ...root.menus.drawerMenu.options,
             });
         } else if (shouldUse(root.menus.sideMenu)) {
             rootNav = createSideMenuNavigator(roots, {
-                tabBarComponent: root.menus.sideMenu.component,
-                navigationOptions: {},
+                tabBarComponent: componentMap[root.menus.sideMenu.component],
+                tabBarOptions: {
+                    style: {
+                        width: root.menus.sideMenu.options.menuWidth || 250
+                    }
+                },
+                navigationOptions: {
+                    tabStyle: {
+                        width: 100,
+                        backgroundColor: 'red'
+                    }
+                },
             });
         }
     } else {
