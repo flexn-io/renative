@@ -378,7 +378,7 @@ const _deployApp = c => new Promise((resolve, reject) => {
     switch (platform) {
     case WEB:
         executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(() => _buildApp(c))
+            .then(() => (c.program.only ? Promise.resolve() : _buildApp(c)))
             .then(() => deployWeb(c, platform))
             .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
             .then(() => resolve())
