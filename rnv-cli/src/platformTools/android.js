@@ -5,7 +5,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
-import { executeAsync, execCLI } from '../exec';
+import { executeAsync, execShellAsync, execCLI } from '../exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -31,7 +31,8 @@ import {
     getQuestion,
     logSuccess,
 } from '../common';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { IS_TABLET_ABOVE_INCH } from '../constants';
 
 const readline = require('readline');
 
@@ -86,16 +87,21 @@ const listAndroidTargets = c => new Promise((resolve, reject) => {
             devicesArr.forEach((v, i) => {
                 devicesString += _getDeviceString(v, i);
             });
-            console.log(devicesString);
         })
         .catch(e => reject(e));
 });
 
-const _getDeviceString = (v, i) => `-[${i + 1}] ${chalk.white(v.name)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}${
-    v.isActive ? chalk.magenta(' (active)') : ''
-}\n`;
+const _getDeviceString = async (v, i) => {
+    const { isTV, isTablet } = v;
+    let deviceIcon = isTV ? 'TV 📺' : 'Phone 📱';
+    if (!isTV && isTablet) deviceIcon = 'Tablet 💊';
 
-const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => new Promise((resolve, reject) => {
+    return `-[${i + 1}] ${deviceIcon} ${chalk.white(v.name)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''} ${
+        v.isActive ? chalk.magenta(' (active)') : ''
+    }\n`;
+};
+
+const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask('_listAndroidTargets');
     try {
         let devicesResult;
@@ -107,13 +113,46 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => ne
         if (!skipAvds) {
             avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
         }
-        resolve(_parseDevicesResult(devicesResult, avdResult, deviceOnly));
+        return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
     } catch (e) {
-        reject(e);
+        return Promise.reject(e);
     }
-});
+};
 
-const _parseDevicesResult = (devicesString, avdsString, deviceOnly) => {
+const getDeviceType = async (device, c) => {
+    const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
+    const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
+    const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
+
+    let screenProps;
+
+    if (screenSizeResult) {
+        const [width, height] = screenSizeResult.split('Physical size: ')[1].split('x');
+        screenProps = { width: parseInt(width, 10), height: parseInt(height, 10) };
+    }
+
+    if (screenDensityResult) {
+        const density = screenDensityResult.split('Physical density: ')[1];
+        screenProps = { ...screenProps, density: parseInt(density, 10) };
+    }
+
+    if (screenSizeResult && screenDensityResult) {
+        const { width, height, density } = screenProps;
+
+        // Calculate the diagonal in inches
+        const widthInches = width / density;
+        const heightInches = height / density;
+        const diagonalInches = Math.sqrt(widthInches * widthInches + heightInches * heightInches);
+        screenProps = { ...screenProps, diagonalInches };
+        device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
+    }
+
+    device.isTV = !!dumpsysResult;
+    device.screenProps = screenProps;
+    return device;
+};
+
+const _parseDevicesResult = (devicesString, avdsString, deviceOnly, c) => {
     const devices = [];
 
     if (devicesString) {
@@ -151,7 +190,7 @@ const _parseDevicesResult = (devicesString, avdsString, deviceOnly) => {
         }
     }
 
-    return devices;
+    return Promise.all(devices.map(device => getDeviceType(device, c)));
 };
 
 const _getDeviceProp = (arr, prop) => {
@@ -258,60 +297,55 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     }
 });
 
-const _runGradle = (c, platform) => new Promise((resolve, reject) => {
+const _runGradle = async (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     shell.cd(`${appFolder}`);
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
 
-    _listAndroidTargets(c, false, true, c.program.device !== undefined)
-        .then((devicesArr) => {
-            if (devicesArr.length === 1) {
-                const dv = devicesArr[0];
-                logInfo(`Found device ${dv.name}:${dv.udid}!`);
-                _runGradleApp(c, platform, appFolder, signingConfig, dv)
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-            } else if (devicesArr.length > 1) {
-                logWarning('More than one device is connected!');
-                let devicesString = '\n';
-                devicesArr.forEach((v, i) => {
-                    devicesString += _getDeviceString(v, i);
-                });
-                const readlineInterface = readline.createInterface({
-                    input: process.stdin,
-                    output: process.stdout,
-                });
-                readlineInterface.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
-                    const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-                    if (selectedDevice) {
-                        logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
-                        _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
-                            .then(() => resolve())
-                            .catch(e => reject(e));
-                    } else {
-                        logError(`Wrong choice ${v}! Ingoring`);
-                    }
-                });
-            } else if (c.files.globalConfig.defaultTargets[platform]) {
-                logWarning(
-                    `No connected devices found. Launching ${chalk.white(c.files.globalConfig.defaultTargets[platform])} emulator!`,
-                );
-                launchAndroidSimulator(c, platform, c.files.globalConfig.defaultTargets[platform], true)
-                    .then(() => _checkForActiveEmulator(c, platform))
-                    .then(device => _runGradleApp(c, platform, appFolder, signingConfig, device))
-                    .then(() => resolve())
-                    .catch(e => reject(e));
+    const devicesArr = await _listAndroidTargets(c, false, true, c.program.device !== undefined);
+    if (devicesArr.length === 1) {
+        const dv = devicesArr[0];
+        logInfo(`Found device ${dv.name}:${dv.udid}!`);
+        await _runGradleApp(c, platform, appFolder, signingConfig, dv);
+    } else if (devicesArr.length > 1) {
+        logWarning('More than one device is connected!');
+        const devicesArray = [];
+        await Promise.all(devicesArr.map(async (v, i) => {
+            devicesArray.push(await _getDeviceString(v, i));
+        }));
+        const devicesString = `\n${devicesArray.join('')}`;
+        const readlineInterface = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout,
+        });
+        await new Promise((resolve, reject) => readlineInterface.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
+            const selectedDevice = devicesArr[parseInt(v, 10) - 1];
+            if (selectedDevice) {
+                logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
+                _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
+                    .then(resolve)
+                    .catch(reject);
             } else {
-                reject(
-                    `No active or connected devices! You can launch android emulator with ${chalk.white(
-                        'rnv target launch -p android -t <TARGET_NAME>',
-                    )}`,
-                );
+                logError(`Wrong choice ${v}! Ingoring`);
             }
-        })
-        .catch(e => reject(e));
-});
+        }));
+    } else if (c.files.globalConfig.defaultTargets[platform]) {
+        logWarning(
+            `No connected devices found. Launching ${chalk.white(c.files.globalConfig.defaultTargets[platform])} emulator!`,
+        );
+        await launchAndroidSimulator(c, platform, c.files.globalConfig.defaultTargets[platform], true);
+        const device = await _checkForActiveEmulator(c, platform);
+        await _runGradleApp(c, platform, appFolder, signingConfig, device);
+    } else {
+        throw new Error(
+            `No active or connected devices! You can launch android emulator with ${chalk.white(
+                'rnv target launch -p android -t <TARGET_NAME>',
+            )}`,
+        );
+    }
+};
+
 
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
     let attempts = 1;

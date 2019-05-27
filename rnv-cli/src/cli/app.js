@@ -352,7 +352,7 @@ const copyRuntimeAssets = c => new Promise((resolve) => {
             fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.appConfigFile.common;
+                    const { includedFonts } = c.files.appConfigFile.common;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
