@@ -16,13 +16,16 @@ import {
 } from './renative';
 import Theme from './theme';
 
+const isDrawerMenuBased = () => navStructure.root.menus.drawerMenu.isVisibleIn.includes(Api.platform);
+
+const isTopMenuBased = () => navStructure.root.menus.topMenu.isVisibleIn.includes(Api.platform);
 
 const navStructure = {
     root: {
         menus: {
             drawerMenu: {
                 position: 'left',
-                isVisibleIn: [IOS, ANDROID, WEB],
+                isVisibleIn: [IOS, ANDROID],
                 component: 'Menu',
                 options: {
                     drawerBackgroundColor: '#222222',
@@ -40,8 +43,11 @@ const navStructure = {
                 navigationOptions: {},
             },
             topMenu: {
-                isVisibleIn: [TVOS, ANDROID_TV, TIZEN, FIREFOX_TV],
+                isVisibleIn: [TVOS, ANDROID_TV, TIZEN, FIREFOX_TV, WEB],
                 component: 'Menu',
+                options: {
+                    menuHeight: 100
+                },
                 navigationOptions: {},
             },
             tabMenu: {
@@ -60,7 +66,9 @@ const navStructure = {
         screens: {
             Home: {
                 screen: 'ScreenHome',
-                navigationOptions: {},
+                navigationOptions: {
+                    title: 'Home'
+                },
                 stacks: ['stacks.MyPage2', 'stacks.MyPage3'],
             },
             MyPage: {
@@ -70,7 +78,9 @@ const navStructure = {
                     isVisibleIn: [IOS, ANDROID],
                     screens: ['root.MyPage2', 'root.MyPage', 'stacks.MyPage2', 'stacks.MyPage3'],
                 },
-                navigationOptions: {},
+                navigationOptions: {
+                    title: 'My Page'
+                },
                 stacks: ['stacks.MyPage2'],
             },
         },
@@ -84,7 +94,7 @@ const navStructure = {
                 color: Theme.header.primaryColor,
             },
             headerLeft: (n) => {
-                if (![IOS, ANDROID, WEB].includes(Api.platform)) return null;
+                if (!isDrawerMenuBased()) return null;
                 return (
                     <Icon
                         iconFont="ionicons"
@@ -116,7 +126,7 @@ const navStructure = {
         },
         navigationOptions: {
             headerStyle: {
-                backgroundColor: '#000000',
+                backgroundColor: '#222222',
             },
             headerTitleStyle: {
                 color: Theme.header.primaryColor,
@@ -127,7 +137,7 @@ const navStructure = {
     modals: {
         screens: {
             MyModal: {
-                screen: 'ScreenMyPage',
+                screen: 'ScreenModal',
                 navigationOptions: {
                     title: 'My Modal',
                 },
@@ -139,4 +149,4 @@ const navStructure = {
     },
 };
 
-export { navStructure };
+export { navStructure, isDrawerMenuBased, isTopMenuBased };

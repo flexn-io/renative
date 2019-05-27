@@ -13,5 +13,9 @@ export default {
             const nav = getNavigation();
             nav.navigate(route);
         },
+        pop: () => {
+            const nav = getNavigation();
+            nav.pop();
+        }
     },
 };

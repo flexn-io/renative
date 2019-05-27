@@ -4,6 +4,7 @@ import { navStructure } from './nav';
 import Fonts from '../platformAssets/runtime/fontManager';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
+import ScreenModal from './screenModal';
 import Menu from './menu';
 
 let AppContainer;
@@ -11,7 +12,7 @@ let AppContainer;
 class App extends React.Component {
     constructor(props) {
         super(props);
-        AppContainer = createApp(navStructure, { ScreenHome, ScreenMyPage, Menu });
+        AppContainer = createApp(navStructure, { ScreenHome, ScreenMyPage, ScreenModal, Menu });
     }
 
     render() {

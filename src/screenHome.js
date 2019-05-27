@@ -44,12 +44,6 @@ const styles = StyleSheet.create({
 });
 
 class ScreenHome extends React.Component {
-    static path = '';
-
-    static navigationOptions = {
-        title: 'Home',
-    };
-
     constructor() {
         super();
         this.state = { bgColor: '#222222' };

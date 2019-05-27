@@ -1,12 +1,12 @@
 import React from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Api, Button, Icon } from './renative';
-import { navStructure } from './nav';
+import { isTopMenuBased } from './nav';
 
-console.log('SJDJJHDJ', navStructure);
+let isTop;
 
 const styles = StyleSheet.create({
-    container: {
+    containerVertical: {
         paddingTop: 40,
         width: '100%',
         height: '100%',
@@ -14,25 +14,41 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRightWidth: 1,
         borderRightColor: '#AAAAAA',
-        flexDirection: navStructure.root.menus.topMenu.isVisibleIn.includes(Api.platform) ? 'row' : 'column'
+        flexDirection: 'column'
+    },
+    containerHorizontal: {
+        paddingLeft: 40,
+        width: '100%',
+        height: '100%',
+        backgroundColor: '#222222',
+        alignItems: 'center',
+        borderBottomWidth: 1,
+        borderBottomColor: '#AAAAAA',
+        flexDirection: 'row'
     },
     text: {
         fontFamily: 'TimeBurner',
         color: '#FFFFFF',
         fontSize: 20,
+        marginTop: 10,
         textAlign: 'center',
     },
     button: {
-        alignSelf: 'stretch',
+        alignSelf: isTop ? 'flex-start' : 'stretch',
         marginHorizontal: 20,
         maxWidth: 400,
     },
 });
 
 class Menu extends React.Component {
+    constructor(props) {
+        super(props);
+        isTop = isTopMenuBased();
+    }
+
     render() {
         return (
-            <View style={[styles.container, this.props.style]}>
+            <View style={[isTop ? styles.containerHorizontal : styles.containerVertical, this.props.style]}>
                 <Text style={styles.text}>
 Menu
                 </Text>
