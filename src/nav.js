@@ -1,4 +1,5 @@
 import React from 'react';
+import { PixelRatio } from 'react-native';
 import {
     Icon,
     Api,
@@ -9,12 +10,15 @@ import {
     TIZEN,
     MACOS,
     ANDROID_TV,
+    ANDROID_WEAR,
     FIREFOX_TV,
     WINDOWS,
     TVOS,
     KAIOS
 } from './renative';
 import Theme from './theme';
+
+// PixelRatio.getPixelSizeForLayoutSize
 
 const isDrawerMenuBased = () => navStructure.root.menus.drawerMenu.isVisibleIn.includes(Api.platform);
 
@@ -43,7 +47,7 @@ const navStructure = {
                 navigationOptions: {},
             },
             topMenu: {
-                isVisibleIn: [TVOS, ANDROID_TV, TIZEN, FIREFOX_TV, WEB],
+                isVisibleIn: [TVOS, ANDROID_TV, TIZEN, FIREFOX_TV, WEB, WEBOS],
                 component: 'Menu',
                 options: {
                     menuHeight: 100
@@ -61,6 +65,9 @@ const navStructure = {
                 isVisibleIn: [KAIOS],
                 component: 'Menu',
                 navigationOptions: {},
+            },
+            swipeMenu: {
+                isVisibleIn: [ANDROID_WEAR],
             },
         },
         screens: {
@@ -128,6 +135,7 @@ const navStructure = {
             headerStyle: {
                 backgroundColor: '#222222',
             },
+            headerTintColor: Theme.header.primaryColor,
             headerTitleStyle: {
                 color: Theme.header.primaryColor,
                 fontFamily: Theme.primaryFontFamily,

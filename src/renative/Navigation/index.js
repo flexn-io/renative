@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { createDrawerNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
+import { createDrawerNavigator, createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { Icon, Api } from '../index';
 
 const createSideMenuNavigator = require('react-navigation-side-menu').createSideMenuNavigator;
@@ -10,12 +10,10 @@ let _currentNavigation;
 const getNavigation = () => _currentNavigation;
 
 const handleNavigationChange = (n) => {
-    console.log('LDKJLKD', n);
 };
 
 const shouldUse = (menu) => {
     if (menu && menu.isVisibleIn.includes(Api.platform)) {
-        console.log('YEEES');
         return true;
     }
     return false;
@@ -28,8 +26,6 @@ const createFilteredStackNavigator = (c, componentMap, rootRoute, rootScreen, ro
         navigationOptions: Object.assign({}, rootNavOptions, rootScreen.navigationOptions),
     };
 
-    console.log('SLKJSJSL', stacks[rootRoute]);
-
     for (stackKey in allStacks.screens) {
         if (filter.includes(`stacks.${stackKey}`)) {
             stacks[stackKey] = {
@@ -47,7 +43,6 @@ const createFilteredStackNavigator = (c, componentMap, rootRoute, rootScreen, ro
             };
         }
     }
-    console.log('SAAAAAA', stacks);
     return createStackNavigator(stacks);
 };
 
@@ -57,6 +52,7 @@ const createApp = (c, componentMap) => {
     let stackNav;
     const roots = {};
     const rootWrappersStacks = {};
+    let rootWrapper;
 
     // MODALS SCREENS
     for (modalKey in c.modals.screens) {
@@ -109,16 +105,23 @@ const createApp = (c, componentMap) => {
         }
     } else {
         // ROOT CONTENT HAS NO MENU
+
     }
 
-    rootWrappersStacks.ROOT = rootNav;
+    if (rootNav) {
+        rootWrappersStacks.ROOT = rootNav;
 
-    const rootWrapper = createStackNavigator(rootWrappersStacks, {
-        initialRouteName: 'ROOT',
-        defaultNavigationOptions: {
-            header: null
-        }
-    });
+        rootWrapper = createStackNavigator(rootWrappersStacks, {
+            initialRouteName: 'ROOT',
+            mode: 'modal',
+            defaultNavigationOptions: {
+                header: null
+            }
+        });
+    } else {
+        rootWrapper = createSwitchNavigator(roots);
+    }
+
 
     const Navigator = createAppContainer(rootWrapper);
 

@@ -11,8 +11,6 @@ const colors = {
 const styles = StyleSheet.create({
     appContainer: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     textH2: {
         fontFamily: 'TimeBurner',
@@ -52,7 +50,14 @@ class ScreenHome extends React.Component {
     render() {
         const title = `Hello from ${config.common.title}!`;
         return (
-            <View style={[styles.appContainer, { backgroundColor: this.state.bgColor }]}>
+            <ScrollView
+                style={[styles.appContainer, { backgroundColor: this.state.bgColor }, { paddingTop: 50 }]}
+                contentContainerStyle={{
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
                 <Text style={styles.textH2}>
                     {title}
@@ -80,7 +85,7 @@ v
                     <Icon iconFont="fontAwesome" iconName="github" iconColor={colors.primary} style={styles.icon} />
                     <Icon iconFont="fontAwesome" iconName="twitter" iconColor={colors.primary} style={styles.icon} />
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }

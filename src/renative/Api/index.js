@@ -1,3 +1,4 @@
+import { DrawerActions } from 'react-navigation';
 import { getNavigation } from '../Navigation';
 
 export default {
@@ -7,7 +8,9 @@ export default {
     navigation: {
         openDrawer: () => {
             const nav = getNavigation();
-            nav.openDrawer();
+            console.log('FKFJL');
+            // nav.openDrawer();
+            nav.dispatch(DrawerActions.openDrawer());
         },
         navigate: (route) => {
             const nav = getNavigation();
