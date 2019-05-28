@@ -38,7 +38,7 @@ class ScreenMyPage extends React.Component {
                     <Icon
                         iconFont="ionicons"
                         iconName="md-close-circle"
-                        iconColor={Theme.header.primaryColor}
+                        iconColor={Theme.color3}
                         style={{ width: 40, height: 40, marginLeft: 10 }}
                         onPress={() => {
                             Api.navigation.pop();

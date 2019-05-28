@@ -96,7 +96,7 @@ const navStructure = {
             },
             headerStyle: {
                 backgroundColor: Theme.color1,
-                borderBottomWidth: Platform.isTV ? 0 : 1,
+                borderBottomWidth: isTopMenuBased ? 0 : 1,
                 color: Theme.color3,
             },
             headerLeft: (n) => {
