@@ -3,10 +3,7 @@ import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'rea
 import config from '../platformAssets/config.json';
 import packageJson from '../package.json';
 import { Icon, Button, Api } from './renative';
-
-const colors = {
-    primary: '#FB8D62',
-};
+import Theme from './theme';
 
 const styles = StyleSheet.create({
     appContainer: {
@@ -16,7 +13,7 @@ const styles = StyleSheet.create({
         fontFamily: 'TimeBurner',
         fontSize: 20,
         marginHorizontal: 20,
-        color: '#FFFFFF',
+        color: Theme.color4,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -25,7 +22,7 @@ const styles = StyleSheet.create({
         fontSize: 15,
         marginHorizontal: 20,
         marginTop: 5,
-        color: '#62DBFB',
+        color: Theme.color2,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -47,7 +44,7 @@ const stylesObbj = {
 class ScreenHome extends React.Component {
     constructor() {
         super();
-        this.state = { bgColor: '#222222' };
+        this.state = { bgColor: Theme.color1 };
     }
 
     render() {
@@ -75,7 +72,7 @@ v
                 <Button
                     title="Try Me!"
                     onPress={() => {
-                        this.setState({ bgColor: this.state.bgColor === '#888888' ? '#222222' : '#888888' });
+                        this.setState({ bgColor: this.state.bgColor === '#666666' ? Theme.color1 : '#666666' });
                     }}
                 />
                 <Button
@@ -85,8 +82,8 @@ v
                     }}
                 />
                 <View style={{ marginTop: 20, flexDirection: 'row' }}>
-                    <Icon iconFont="fontAwesome" iconName="github" iconColor={colors.primary} style={stylesObbj.icon} />
-                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={colors.primary} style={stylesObbj.icon} />
+                    <Icon iconFont="fontAwesome" iconName="github" iconColor={Theme.color3} style={stylesObbj.icon} />
+                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={Theme.color3} style={stylesObbj.icon} />
                 </View>
             </ScrollView>
         );

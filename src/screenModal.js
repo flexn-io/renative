@@ -6,7 +6,7 @@ import Theme from './theme';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#222222',
+        backgroundColor: Theme.color1,
     },
     containerIn: {
         flex: 1,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         fontFamily: 'TimeBurner',
         fontSize: 20,
         marginHorizontal: 20,
-        color: '#FFFFFF',
+        color: Theme.color4,
         justifyContent: 'center',
         alignItems: 'center',
     },

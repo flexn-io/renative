@@ -8,8 +8,6 @@ export default {
     navigation: {
         openDrawer: () => {
             const nav = getNavigation();
-            console.log('FKFJL');
-            // nav.openDrawer();
             nav.dispatch(DrawerActions.openDrawer());
         },
         navigate: (route) => {

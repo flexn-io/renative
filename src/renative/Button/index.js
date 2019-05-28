@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 
 import Api from '../Api';
+import Icon from '../Icon';
 
 const hasFocus = Api.formFactor === 'tv' && Api.platform !== 'tvos';
 
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
         maxWidth: 200,
         alignItems: 'center',
         justifyContent: 'center',
+        flexDirection: 'row'
     },
     buttonText: {
         fontFamily: 'TimeBurner',
@@ -49,6 +51,8 @@ class Button extends React.Component {
     };
 
     render() {
+        const { iconName, iconFont, iconColor } = this.props;
+        const hasIcon = iconName && iconFont;
         return (
             <TouchableOpacity
                 tvParallaxProperties={parallax}
@@ -63,6 +67,9 @@ class Button extends React.Component {
                     if (hasFocus) this.setState({ currentStyle: this.blurState });
                 }}
             >
+                {hasIcon ? (
+                    <Icon iconFont={iconFont} iconName={iconName} iconColor={iconColor} style={{ width: 30, marginRight: 10 }} />
+                ) : undefined}
                 <Text style={styles.buttonText}>
                     {this.props.title}
                 </Text>
