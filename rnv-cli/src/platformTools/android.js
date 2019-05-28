@@ -5,7 +5,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
-import { executeAsync, execShellAsync, execCLI } from '../exec';
+import { executeAsync, execCLI } from '../exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -31,10 +31,20 @@ import {
     getQuestion,
     logSuccess,
 } from '../common';
-import { ANDROID_WEAR, IS_TABLET_ABOVE_INCH } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { IS_TABLET_ABOVE_INCH } from '../constants';
 
 const readline = require('readline');
+
+const composeDevicesString = (devices) => {
+    const devicesArray = [];
+
+    devices.forEach((v, i) => {
+        devicesArray.push(_getDeviceString(v, i));
+    });
+
+    return `\n${devicesArray.join('')}`;
+};
 
 const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
@@ -42,11 +52,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target === '?' || target === undefined || target === '') {
         return _listAndroidTargets(c, true, false)
             .then((devicesArr) => {
-                let devicesString = '\n';
-
-                devicesArr.forEach((v, i) => {
-                    devicesString += _getDeviceString(v, i);
-                });
+                const devicesString = composeDevicesString(devicesArr);
                 const readlineInterface = readline.createInterface({
                     input: process.stdin,
                     output: process.stdout,
@@ -77,21 +83,15 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     return Promise.reject('No simulator -t target name specified!');
 };
 
-const listAndroidTargets = c => new Promise((resolve, reject) => {
+const listAndroidTargets = (c) => {
     logTask('listAndroidTargets');
+    return _listAndroidTargets(c, false, false).then(composeDevicesString).then((devices) => {
+        console.log(devices);
+        return devices;
+    });
+};
 
-    _listAndroidTargets(c, false, false)
-        .then((devicesArr) => {
-            let devicesString = '\n';
-
-            devicesArr.forEach((v, i) => {
-                devicesString += _getDeviceString(v, i);
-            });
-        })
-        .catch(e => reject(e));
-});
-
-const _getDeviceString = async (v, i) => {
+const _getDeviceString = (v, i) => {
     const { isTV, isTablet } = v;
     let deviceIcon = isTV ? 'TV 📺' : 'Phone 📱';
     if (!isTV && isTablet) deviceIcon = 'Tablet 💊';
@@ -120,6 +120,7 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
 };
 
 const getDeviceType = async (device, c) => {
+    if (device.udid === 'unknown') return device;
     const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
     const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
     const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
@@ -261,10 +262,6 @@ const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
 const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask('packageAndroid');
 
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const entryFile = c.files.appConfigFile.platforms[platform].entryFile;
-    const outputFile = entryFile;
-
     const appFolder = getAppFolder(c, platform);
     executeAsync('react-native', [
         'bundle',
@@ -275,9 +272,9 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
         '--assets-dest',
         `${appFolder}/app/src/main/res`,
         '--entry-file',
-        `${entryFile}.js`,
+        `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
         '--bundle-output',
-        `${appFolder}/app/src/main/assets/${outputFile}.bundle`,
+        `${appFolder}/app/src/main/assets/index.android.bundle`,
     ])
         .then(() => resolve())
         .catch(e => reject(e));
@@ -314,11 +311,7 @@ const _runGradle = async (c, platform) => {
         await _runGradleApp(c, platform, appFolder, signingConfig, dv);
     } else if (devicesArr.length > 1) {
         logWarning('More than one device is connected!');
-        const devicesArray = [];
-        await Promise.all(devicesArr.map(async (v, i) => {
-            devicesArray.push(await _getDeviceString(v, i));
-        }));
-        const devicesString = `\n${devicesArray.join('')}`;
+        const devicesString = composeDevicesString(devicesArr);
         const readlineInterface = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
@@ -392,7 +385,7 @@ const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Pro
             }
             return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
         })
-        .then(() => ((device.isDevice && platform !== ANDROID_WEAR)
+        .then(() => (device.isDevice
             ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081'])
             : Promise.resolve()))
         .then(() => executeAsync(c.cli[CLI_ANDROID_ADB], [
@@ -671,7 +664,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (permissions) {
         permissions.forEach((v) => {
             if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'android';
+                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
                 const pc = c.files.permissionsConfig.permissions[plat];
                 if (pc[v]) {
                     prms += `\n<uses-permission android:name="${pc[v].key}" />`;
