@@ -19,16 +19,12 @@ const styles = StyleSheet.create({
 });
 
 class ScreenMyPage extends React.Component {
-    static path = 'mypage';
-
-    static navigationOptions = {
-        title: 'My Page',
-    };
-
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.textH2}>This is my Page!</Text>
+                <Text style={styles.textH2}>
+This is my Page!
+                </Text>
             </View>
         );
     }

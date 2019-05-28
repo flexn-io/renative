@@ -132,6 +132,8 @@ const RN_CLI_CONFIG_NAME = 'rn-cli.config.js';
 const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 const SAMPLE_APP_ID = 'helloWorld';
 
+const IS_TABLET_ABOVE_INCH = 6.5;
+
 export {
     ANDROID,
     ANDROID_AUTO,
@@ -207,6 +209,7 @@ export {
     RN_BABEL_CONFIG_NAME,
     RNV_PROJECT_CONFIG_LOCAL_NAME,
     DEFAULT_PORTS,
+    IS_TABLET_ABOVE_INCH
 };
 
 export default {

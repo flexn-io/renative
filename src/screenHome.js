@@ -1,15 +1,16 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import Api from './api';
 import config from '../platformAssets/config.json';
 import packageJson from '../package.json';
-import Button from './button';
+import { Icon, Button, Api } from './renative';
+
+const colors = {
+    primary: '#FB8D62',
+};
 
 const styles = StyleSheet.create({
     appContainer: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     textH2: {
         fontFamily: 'TimeBurner',
@@ -35,13 +36,15 @@ const styles = StyleSheet.create({
     },
 });
 
+const stylesObbj = {
+    icon: {
+        width: 40,
+        height: 40,
+        margin: 10,
+    }
+};
+
 class ScreenHome extends React.Component {
-    static path = '';
-
-    static navigationOptions = {
-        title: 'Home',
-    };
-
     constructor() {
         super();
         this.state = { bgColor: '#222222' };
@@ -50,11 +53,25 @@ class ScreenHome extends React.Component {
     render() {
         const title = `Hello from ${config.common.title}!`;
         return (
-            <View style={[styles.appContainer, { backgroundColor: this.state.bgColor }]}>
+            <ScrollView
+                style={[styles.appContainer, { backgroundColor: this.state.bgColor }, { paddingTop: 50 }]}
+                contentContainerStyle={{
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
-                <Text style={styles.textH2}>{title}</Text>
-                <Text style={styles.textH2}>v{packageJson.version}</Text>
-                <Text style={styles.textH3}>{`platform: ${Api.platform}`}</Text>
+                <Text style={styles.textH2}>
+                    {title}
+                </Text>
+                <Text style={styles.textH2}>
+v
+                    {packageJson.version}
+                </Text>
+                <Text style={styles.textH3}>
+                    {`platform: ${Api.platform}`}
+                </Text>
                 <Button
                     title="Try Me!"
                     onPress={() => {
@@ -64,10 +81,14 @@ class ScreenHome extends React.Component {
                 <Button
                     title="Now Try Me!"
                     onPress={() => {
-                        this.setState({ bgColor: this.state.bgColor === '#888888' ? '#222222' : '#888888' });
+                        Api.navigation.navigate('MyPage2');
                     }}
                 />
-            </View>
+                <View style={{ marginTop: 20, flexDirection: 'row' }}>
+                    <Icon iconFont="fontAwesome" iconName="github" iconColor={colors.primary} style={stylesObbj.icon} />
+                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={colors.primary} style={stylesObbj.icon} />
+                </View>
+            </ScrollView>
         );
     }
 }

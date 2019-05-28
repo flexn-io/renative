@@ -820,7 +820,11 @@ const logSuccess = (msg) => {
 const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 const logError = (e, isEnd = false) => {
-    console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERROR! ${e}`));
+    if (e && e.message) {
+        console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`));
+    } else {
+        console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`));
+    }
     if (isEnd) logEnd(1);
 };
 

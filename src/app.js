@@ -1,22 +1,24 @@
 import React from 'react';
 import { View } from 'react-native';
-import { createNavigator, createNavigatorView, createApp } from './navigator';
+import { createApp } from './renative';
+import { navStructure } from './nav';
+import Fonts from '../platformAssets/runtime/fontManager';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
+import ScreenModal from './screenModal';
 import Menu from './menu';
-import Fonts from '../platformAssets/runtime/fontManager';
 
-const Navigator = createNavigator({ ScreenHome, ScreenMyPage }, Menu);
+let AppContainer;
 
 class App extends React.Component {
-    static router = {
-        ...Navigator.router,
-        getStateForAction: (action, lastState) => Navigator.router.getStateForAction(action, lastState),
-    };
+    constructor(props) {
+        super(props);
+        AppContainer = createApp(navStructure, { ScreenHome, ScreenMyPage, ScreenModal, Menu });
+    }
 
     render() {
-        return createNavigatorView(Navigator, this.props.navigation);
+        return AppContainer;
     }
 }
 
-export default createApp(App);
+export default App;

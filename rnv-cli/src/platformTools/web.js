@@ -39,6 +39,15 @@ const { fork } = require('child_process');
 function buildWeb(c, platform) {
     logTask(`buildWeb:${platform}`);
 
+    const appFolder = getAppFolder(c, platform);
+    const templateFolder = getAppTemplateFolder(c, platform);
+
+
+    copyFileSync(
+        path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
+        path.join(appFolder, 'webpack.config.js')
+    );
+
     const wbp = path.resolve(c.paths.nodeModulesFolder, 'webpack/bin/webpack.js');
 
     return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
