@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
@@ -26,8 +27,12 @@ import {
     getAppTemplateFolder,
     checkPortInUse,
     logInfo,
+    askQuestion,
+    finishQuestion,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { checkDeployConfigTarget, deployToFtp, DEPLOY_TARGETS } from '../deployTools/ftp';
+import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const { fork } = require('child_process');
 
@@ -45,7 +50,7 @@ function buildWeb(c, platform) {
 
     const wbp = path.resolve(c.paths.nodeModulesFolder, 'webpack/bin/webpack.js');
 
-    return execShellAsync(`NODE_ENV=production ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
+    return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 }
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
@@ -128,4 +133,28 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     resolve();
 });
 
-export { buildWeb, runWeb, configureWebProject, runWebDevServer };
+const deployWeb = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`deployWeb:${platform}`);
+    const argv = require('minimist')(c.process.argv.slice(2));
+
+    const deployType = argv.t;
+    // If not passed as argument, check in appConfig
+    let promise = Promise.resolve(deployType);
+    if (!deployType) {
+        const p = c.files.appConfigFile.platforms[platform];
+        promise = checkDeployConfigTarget(c, platform, p);
+    }
+    promise.then((dt) => {
+        logTask(`deployType:${dt}`);
+        switch (dt) {
+        case DEPLOY_TARGETS.FTP:
+            deployToFtp(c, platform).then(resolve).catch(reject);
+            return;
+        default:
+            reject(new Error(`Deploy Type not supported ${dt}`));
+        }
+    });
+});
+
+
+export { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb };
