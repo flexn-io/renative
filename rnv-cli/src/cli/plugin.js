@@ -1,23 +1,14 @@
+/* eslint-disable import/no-cycle */
+// @todo fix cycle
 import chalk from 'chalk';
-import path from 'path';
 import fs from 'fs';
+import readline from 'readline';
 import {
-    isPlatformSupportedSync,
-    getConfig,
     logTask,
-    logComplete,
-    logError,
-    getAppFolder,
     SUPPORTED_PLATFORMS,
     getQuestion,
     logSuccess,
 } from '../common';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
-import { launchTizenSimulator } from '../platformTools/tizen';
-import { launchWebOSimulator } from '../platformTools/webos';
-import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
-import { launchKaiOSSimulator } from '../platformTools/firefox';
 import { executePipe } from '../buildHooks';
 
 const LIST = 'list';
@@ -37,53 +28,41 @@ const PIPES = {
 // PUBLIC API
 // ##########################################
 
-const run = c => new Promise((resolve, reject) => {
+const run = (c) => {
     logTask('run');
 
     switch (c.subCommand) {
     case LIST:
-        executePipe(c, PIPES.PLUGIN_LIST_BEFORE)
+        return executePipe(c, PIPES.PLUGIN_LIST_BEFORE)
             .then(() => _runList(c))
-            .then(() => executePipe(c, PIPES.PLUGIN_LIST_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
+            .then(() => executePipe(c, PIPES.PLUGIN_LIST_AFTER));
     case ADD:
         executePipe(c, PIPES.PLUGIN_ADD_BEFORE);
-        _runAdd(c)
-            .then(() => executePipe(c, PIPES.PLUGIN_ADD_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
+        return _runAdd(c).then(() => executePipe(c, PIPES.PLUGIN_ADD_AFTER));
     case UPDATE:
         executePipe(c, PIPES.PLUGIN_UPDATE_BEFORE);
-        _runUpdate(c)
-            .then(() => executePipe(c, PIPES.PLUGIN_UPDATE_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
+        return _runUpdate(c).then(() => executePipe(c, PIPES.PLUGIN_UPDATE_AFTER));
     default:
         return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
     }
-});
+};
 
 // ##########################################
 // PRIVATE
 // ##########################################
 
-const _runList = c => new Promise((resolve, reject) => {
+const _runList = c => new Promise((resolve) => {
     logTask('_runList');
-    const { platform, program } = c;
 
-    const o = _getPluginList(c, platform);
+    const o = _getPluginList(c);
 
     console.log(o.asString);
 
     resolve();
 });
 
-const _getPluginList = (c, platform, isUpdate = false) => {
-    const plugins = c.files.pluginTemplatesConfig.plugins;
+const _getPluginList = (c, isUpdate = false) => {
+    const { plugins } = c.files.pluginTemplatesConfig;
     const output = {
         asString: '',
         plugins: [],
@@ -91,11 +70,11 @@ const _getPluginList = (c, platform, isUpdate = false) => {
     };
 
     let i = 1;
-    const projectPlugins = c.projectPlugins;
-    for (const k in plugins) {
+
+    Object.keys(plugins).forEach((k) => {
         const p = plugins[k];
 
-        platforms = '';
+        let platforms = '';
         SUPPORTED_PLATFORMS.forEach((v) => {
             if (p[v]) platforms += `${v}, `;
         });
@@ -113,30 +92,31 @@ const _getPluginList = (c, platform, isUpdate = false) => {
             output.asString += `-[${i}] ${chalk.white(k)} (${chalk.blue(p.version)}) [${platforms}] - ${installedString}\n`;
             i++;
         }
-    }
+    });
+
     return output;
 };
 
-const _runAdd = c => new Promise((resolve, reject) => {
+const _runAdd = c => new Promise((resolve) => {
     logTask('_runAdd');
 
-    const o = _getPluginList(c, platform);
+    const o = _getPluginList(c);
 
     console.log(o.asString);
 
-    const readline = require('readline').createInterface({
+    const readlineInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
     });
 
-    readline.question(getQuestion('Type plugin numbers you want to add (comma separated)'), (v) => {
+    readlineInterface.question(getQuestion('Type plugin numbers you want to add (comma separated)'), (v) => {
         const choices = v.split(',');
 
         const selectedPlugins = {};
         let msg = 'Installing: \n';
 
-        choices.forEach((v) => {
-            const i = parseInt(v, 10) - 1;
+        choices.forEach((choice) => {
+            const i = parseInt(choice, 10) - 1;
             const key = o.plugins[i];
             if (key) {
                 selectedPlugins[key] = o.json[key];
@@ -145,10 +125,10 @@ const _runAdd = c => new Promise((resolve, reject) => {
         });
         console.log(msg);
 
-        for (const k in selectedPlugins) {
-            c.files.pluginConfig.plugins[k] = selectedPlugins[k];
+        Object.keys(selectedPlugins).forEach((key) => {
+            c.files.pluginConfig.plugins[key] = selectedPlugins[key];
             _checkAndAddDependantPlugins(c, selectedPlugins[k]);
-        }
+        });
 
         fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
 
@@ -170,24 +150,24 @@ const _checkAndAddDependantPlugins = (c, plugin) => {
     }
 };
 
-const _runUpdate = c => new Promise((resolve, reject) => {
+const _runUpdate = c => new Promise((resolve) => {
     logTask('_runUpdate');
 
-    const o = _getPluginList(c, platform, true);
+    const o = _getPluginList(c, true);
 
     console.log(o.asString);
 
-    const readline = require('readline').createInterface({
+    const readlineInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
     });
 
-    readline.question(getQuestion('Above installed plugins will be updated with RNV. press (y) to confirm'), (v) => {
-        const choices = v.split(',');
+    readlineInterface.question(getQuestion('Above installed plugins will be updated with RNV. press (y) to confirm'), (v) => {
+        const { plugins } = c.files.pluginConfig;
+        Object.keys(plugins).forEach((key) => {
+            c.files.pluginConfig.plugins[key] = o.json[key];
+        });
 
-        for (const k in c.files.pluginConfig.plugins) {
-            c.files.pluginConfig.plugins[k] = o.json[k];
-        }
 
         fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
 

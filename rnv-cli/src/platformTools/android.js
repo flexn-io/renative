@@ -1,30 +1,22 @@
+/* eslint-disable import/no-cycle */
+// @todo fix circular
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
-import { executeAsync, execShellAsync, execCLI } from '../exec';
+import { executeAsync, execCLI } from '../exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
-    isPlatformSupportedSync,
-    getConfig,
     logTask,
-    logComplete,
     logError,
     getAppFolder,
     isPlatformActive,
-    configureIfRequired,
     copyBuildsFolder,
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_WEBOS_ARES,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion,
     getAppTitle,
     getAppVersionCode,
@@ -42,60 +34,48 @@ import {
 import { ANDROID_WEAR } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
-const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => new Promise((resolve, reject) => {
+const readline = require('readline');
+
+const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
 
     if (target === '?' || target === undefined || target === '') {
-        _listAndroidTargets(c, true, false)
+        return _listAndroidTargets(c, true, false)
             .then((devicesArr) => {
                 let devicesString = '\n';
 
                 devicesArr.forEach((v, i) => {
                     devicesString += _getDeviceString(v, i);
                 });
-                const readline = require('readline').createInterface({
+                const readlineInterface = readline.createInterface({
                     input: process.stdin,
                     output: process.stdout,
                 });
-                readline.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), (v) => {
+                readlineInterface.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), (v) => {
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
                             // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
                             //     '-avd', `"${selectedDevice.name}"`]);
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
-                            resolve();
-                        } else {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`)
-                                .then(() => resolve())
-                                .catch(e => reject(e));
+                            return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(logError);
                         }
-                    } else {
-                        logError(`Wrong choice ${v}! Ingoring`);
+                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
                     }
+                    logError(`Wrong choice ${v}! Ingoring`);
                 });
-            })
-            .catch(e => reject(e));
-
-        return;
+            });
     }
 
     if (target) {
         if (isIndependentThread) {
             // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
             //     '-avd', `"${target}"`]);
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
-            resolve();
-        } else {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`)
-                .then(() => resolve())
-                .catch(e => reject(e));
+            return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
         }
-
-        return;
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
     }
-    reject('No simulator -t target name specified!');
-});
+    return Promise.reject('No simulator -t target name specified!');
+};
 
 const listAndroidTargets = c => new Promise((resolve, reject) => {
     logTask('listAndroidTargets');
@@ -186,20 +166,20 @@ const _getDeviceProp = (arr, prop) => {
 const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask('_askForNewEmulator');
     const emuName = c.files.globalConfig.defaultTargets[platform];
-    const readline = require('readline').createInterface({
+    const readlineInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
     });
-    readline.question(
+    readlineInterface.question(
         getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`),
         (v) => {
             if (v.toLowerCase() === 'y') {
-                readline.question(getQuestion('Input desired Android API version number'), (v) => {
+                readlineInterface.question(getQuestion('Input desired Android API version number'), (v) => {
                     const apiVersion = v;
-                    readline.question(
+                    readlineInterface.question(
                         getQuestion('Select device type: \n 1: Android Phone \n 2: Android TV \n 3: Android Wear \n'),
-                        (v) => {
-                            switch (parseInt(v)) {
+                        (val) => {
+                            switch (parseInt(val, 10)) {
                             case 1:
                                 return _createEmulator(c, apiVersion, 'google_apis', emuName);
                             case 2:
@@ -207,7 +187,7 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
                             case 3:
                                 return _createEmulator(c, apiVersion, 'android-wear', emuName);
                             default:
-                                reject('Wrong value entered');
+                                return reject('Wrong value entered');
                             }
                         },
                     );
@@ -219,16 +199,18 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
     );
 });
 
-const _createEmulator = (c, apiVersion, emuPlatform, emuName) => new Promise((resolve, reject) => {
+const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
-    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`).then(() => execCLI(
-        c,
-        CLI_ANDROID_AVDMANAGER,
-        `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
-    ));
-});
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
+        .then(() => execCLI(
+            c,
+            CLI_ANDROID_AVDMANAGER,
+            `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
+        ))
+        .catch(e => logError(e, true));
+};
 
-const copyAndroidAssets = (c, platform) => new Promise((resolve, reject) => {
+const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
     logTask('copyAndroidAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -271,7 +253,7 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
 
     if (bundleAssets) {
         packageAndroid(c, platform, bundleIsDev)
-            .then(v => _runGradle(c, platform))
+            .then(() => _runGradle(c, platform))
             .then(() => resolve())
             .catch(e => reject(e));
     } else {
@@ -301,11 +283,11 @@ const _runGradle = (c, platform) => new Promise((resolve, reject) => {
                 devicesArr.forEach((v, i) => {
                     devicesString += _getDeviceString(v, i);
                 });
-                const readline = require('readline').createInterface({
+                const readlineInterface = readline.createInterface({
                     input: process.stdin,
                     output: process.stdout,
                 });
-                readline.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
+                readlineInterface.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
@@ -336,7 +318,7 @@ const _runGradle = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
+const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
     let attempts = 1;
     const maxAttempts = 8;
     const poll = setInterval(() => {
@@ -393,7 +375,7 @@ const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Pro
         .catch(e => reject(e));
 });
 
-const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
+const buildAndroid = (c, platform) => new Promise((resolve) => {
     logTask(`buildAndroid:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -410,7 +392,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     });
 });
 
-const configureAndroidProperties = c => new Promise((resolve, reject) => {
+const configureAndroidProperties = c => new Promise((resolve) => {
     logTask('configureAndroidProperties');
 
     const localProperties = path.join(c.paths.globalConfigFolder, 'local.properties');
@@ -563,11 +545,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     };
         // PLUGINS
     if (c.files.appConfigFile && c.files.pluginConfig) {
-        const includedPlugins = c.files.appConfigFile.common.includedPlugins;
-        const excludedPlugins = c.files.appConfigFile.common.excludedPlugins;
+        const { includedPlugins } = c.files.appConfigFile.common;
         if (includedPlugins) {
-            const plugins = c.files.pluginConfig.plugins;
-            for (const key in plugins) {
+            const { plugins } = c.files.pluginConfig;
+            Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = plugins[key][platform];
                     if (plugin) {
@@ -582,7 +563,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                         }
                     }
                 }
-            }
+            });
         }
     }
     pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
@@ -593,7 +574,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const includedFonts = c.files.appConfigFile.common.includedFonts;
+                    const { includedFonts } = c.files.appConfigFile.common;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
@@ -653,7 +634,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     ]);
 
     let prms = '';
-    const permissions = c.files.appConfigFile.platforms[platform].permissions;
+    const { permissions } = c.files.appConfigFile.platforms[platform];
     if (permissions) {
         permissions.forEach((v) => {
             if (c.files.permissionsConfig) {
@@ -692,9 +673,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const runAndroidLog = (c, platform) => new Promise((resolve, reject) => {
+// Resolve or reject will not be called so this will keep running
+const runAndroidLog = c => new Promise(() => {
     const filter = c.program.filter || '';
-    const child = require('child_process').spawn(c.cli[CLI_ANDROID_ADB], ['logcat']);
+    const child = child_process.spawn(c.cli[CLI_ANDROID_ADB], ['logcat']);
     // use event hooks to provide a callback to execute when data are available:
     child.stdout.on('data', (data) => {
         const d = data.toString().split('\n');
