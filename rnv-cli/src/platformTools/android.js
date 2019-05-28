@@ -5,7 +5,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
-import { executeAsync, execShellAsync, execCLI } from '../exec';
+import { executeAsync, execCLI } from '../exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -31,10 +31,20 @@ import {
     getQuestion,
     logSuccess,
 } from '../common';
-import { ANDROID_WEAR, IS_TABLET_ABOVE_INCH } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR } from '../constants';
 
 const readline = require('readline');
+
+const composeDevicesString = (devices) => {
+    const devicesArray = [];
+
+    devices.forEach((v, i) => {
+        devicesArray.push(_getDeviceString(v, i));
+    });
+
+    return `\n${devicesArray.join('')}`;
+};
 
 const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
@@ -42,11 +52,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target === '?' || target === undefined || target === '') {
         return _listAndroidTargets(c, true, false)
             .then((devicesArr) => {
-                let devicesString = '\n';
-
-                devicesArr.forEach((v, i) => {
-                    devicesString += _getDeviceString(v, i);
-                });
+                const devicesString = composeDevicesString(devicesArr);
                 const readlineInterface = readline.createInterface({
                     input: process.stdin,
                     output: process.stdout,
@@ -77,21 +83,15 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     return Promise.reject('No simulator -t target name specified!');
 };
 
-const listAndroidTargets = c => new Promise((resolve, reject) => {
+const listAndroidTargets = (c) => {
     logTask('listAndroidTargets');
+    return _listAndroidTargets(c, false, false).then(composeDevicesString).then((devices) => {
+        console.log(devices);
+        return devices;
+    });
+};
 
-    _listAndroidTargets(c, false, false)
-        .then((devicesArr) => {
-            let devicesString = '\n';
-
-            devicesArr.forEach((v, i) => {
-                devicesString += _getDeviceString(v, i);
-            });
-        })
-        .catch(e => reject(e));
-});
-
-const _getDeviceString = async (v, i) => {
+const _getDeviceString = (v, i) => {
     const { isTV, isTablet } = v;
     let deviceIcon = isTV ? 'TV 📺' : 'Phone 📱';
     if (!isTV && isTablet) deviceIcon = 'Tablet 💊';
@@ -120,6 +120,7 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
 };
 
 const getDeviceType = async (device, c) => {
+    if (device.udid === 'unknown') return device;
     const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
     const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
     const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
@@ -262,7 +263,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask('packageAndroid');
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const entryFile = c.files.appConfigFile.platforms[platform].entryFile;
+    const { entryFile } = c.files.appConfigFile.platforms[platform];
     const outputFile = entryFile;
 
     const appFolder = getAppFolder(c, platform);
@@ -314,11 +315,7 @@ const _runGradle = async (c, platform) => {
         await _runGradleApp(c, platform, appFolder, signingConfig, dv);
     } else if (devicesArr.length > 1) {
         logWarning('More than one device is connected!');
-        const devicesArray = [];
-        await Promise.all(devicesArr.map(async (v, i) => {
-            devicesArray.push(await _getDeviceString(v, i));
-        }));
-        const devicesString = `\n${devicesArray.join('')}`;
+        const devicesString = composeDevicesString(devicesArr);
         const readlineInterface = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
