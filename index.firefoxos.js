@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './src/app';
-import Api from './src/api';
-import registerServiceWorker from './src/registerServiceWorker';
-import { FIREFOX_OS, FORM_FACTOR_MOBILE } from './src/constants';
+import { Api } from './src/renative';
+import { FIREFOX_OS, FORM_FACTOR_MOBILE, registerServiceWorker } from './src/renative';
 
 Api.platform = FIREFOX_OS;
 Api.formFactor = FORM_FACTOR_MOBILE;

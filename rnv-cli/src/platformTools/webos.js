@@ -69,7 +69,7 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
 const runWebOS = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runWebOS:${platform}:${target}`);
 
-    const tDir = path.join(getAppFolder(c, platform), 'public');
+    const tDir = path.join(getAppFolder(c, platform), 'RNVApp');
     const tOut = path.join(getAppFolder(c, platform), 'output');
     const tSim = c.program.target || 'emulator';
     const configFilePath = path.join(getAppFolder(c, platform), 'RNVApp/appinfo.json');

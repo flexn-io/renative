@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './src/app';
-import Api from './src/api';
-import registerServiceWorker from './src/registerServiceWorker';
-import { MACOS, FORM_FACTOR_DESKTOP } from './src/constants';
+import { Api } from './src/renative';
+import { MACOS, FORM_FACTOR_DESKTOP, registerServiceWorker } from './src/renative';
 
 Api.platform = MACOS;
 Api.formFactor = FORM_FACTOR_DESKTOP;
