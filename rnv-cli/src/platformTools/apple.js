@@ -125,7 +125,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
         } else if (devicesArr.length > 1) {
             let devicesString = '\n';
             devicesArr.forEach((v, i) => {
-                devicesString += `-[${i + 1}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
+                devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
                     v.udid,
                 )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
             });
@@ -564,7 +564,7 @@ const listAppleDevices = (c, platform) => new Promise((resolve) => {
     const devicesArr = _getAppleDevices(c, platform);
     let devicesString = '\n';
     devicesArr.forEach((v, i) => {
-        devicesString += `-[${i + 1}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
+        devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
             v.isDevice ? chalk.red(' (device)') : ''
         }\n`;
     });
@@ -592,7 +592,7 @@ const launchAppleSimulator = (c, platform, target) => new Promise((resolve) => {
         });
         let devicesString = '\n';
         devicesArr.forEach((v, i) => {
-            devicesString += `-[${i + 1}] ${chalk.white(v.name)} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
+            devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
                 v.udid,
             )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
         });
@@ -641,12 +641,14 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimul
                 switch (platform) {
                 case IOS:
                     if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
-                        devices.push({ udid, name, version, isDevice });
+                        let icon = 'Phone 📱';
+                        if (name.includes('iPad')) icon = 'Tablet 💊';
+                        devices.push({ udid, name, version, isDevice, icon });
                     }
                     break;
                 case TVOS:
                     if (name.includes('Apple TV') || isDevice) {
-                        devices.push({ udid, name, version, isDevice });
+                        devices.push({ udid, name, version, isDevice, icon: 'TV 📺' });
                     }
                     break;
                 default:

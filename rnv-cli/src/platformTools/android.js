@@ -102,7 +102,7 @@ const _getDeviceString = (device, i) => {
     if (isWear) deviceIcon = 'Wear ⌚ ';
     if (!deviceIcon && (udid !== 'unknown' || avdConfig)) deviceIcon = 'Phone 📱 ';
 
-    return `-[${i + 1}] ${deviceIcon}${chalk.white(name)} | udid: ${chalk.blue(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
+    return `-[${i + 1}] ${chalk.white(name)} | ${deviceIcon} | udid: ${chalk.blue(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
         isActive ? chalk.magenta(' (active)') : ''
     }\n`;
 };

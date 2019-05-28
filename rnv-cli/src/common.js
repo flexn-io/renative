@@ -145,7 +145,7 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
     if (!c.platform || c.platform === '?') {
         let platformsAsString = '';
         const platformsAsArray = [];
-        const platformsAsObj = c.files.appConfigFile.platforms;
+        const platformsAsObj = c.files.appConfigFile ? c.files.appConfigFile.platforms : c.supportedPlatforms;
         let i = 1;
         for (const k in platformsAsObj) {
             platformsAsString += `-[${i}] ${chalk.white(k)}\n`;
@@ -266,6 +266,11 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvPluginsFolder = path.join(c.paths.rnvHomeFolder, 'plugins');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
+    c.supportedPlatforms = {};
+    // TODO USE OS Specific Platforms
+    SUPPORTED_PLATFORMS.forEach((v) => {
+        c.supportedPlatforms[v] = true;
+    });
 
     if (c.command === 'app' && c.subCommand === 'create') {
         resolve(c);
