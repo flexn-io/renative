@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import path from 'path';
+import os from 'os';
 import fs from 'fs';
 import chalk from 'chalk';
 import shell from 'shelljs';
@@ -32,7 +33,7 @@ import {
     logSuccess,
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
-import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR } from '../constants';
+import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, IS_WEAR_UNDER_SIZE } from '../constants';
 
 const readline = require('readline');
 
@@ -91,13 +92,18 @@ const listAndroidTargets = (c) => {
     });
 };
 
-const _getDeviceString = (v, i) => {
-    const { isTV, isTablet } = v;
-    let deviceIcon = isTV ? 'TV 📺' : 'Phone 📱';
-    if (!isTV && isTablet) deviceIcon = 'Tablet 💊';
+const _getDeviceString = (device, i) => {
+    const {
+        isTV, isTablet, name, udid, isDevice, isActive, avdConfig, isWear
+    } = device;
+    let deviceIcon = '';
+    if (isTablet) deviceIcon = 'Tablet 💊 ';
+    if (isTV) deviceIcon = 'TV 📺 ';
+    if (isWear) deviceIcon = 'Wear ⌚ ';
+    if (!deviceIcon && (udid !== 'unknown' || avdConfig)) deviceIcon = 'Phone 📱 ';
 
-    return `-[${i + 1}] ${deviceIcon} ${chalk.white(v.name)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''} ${
-        v.isActive ? chalk.magenta(' (active)') : ''
+    return `-[${i + 1}] ${deviceIcon}${chalk.white(name)} | udid: ${chalk.blue(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
+        isActive ? chalk.magenta(' (active)') : ''
     }\n`;
 };
 
@@ -119,41 +125,79 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
     }
 };
 
+const calculateDeviceDiagonal = (width, height, density) => {
+    // Calculate the diagonal in inches
+    const widthInches = width / density;
+    const heightInches = height / density;
+    return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
+};
+
 const getDeviceType = async (device, c) => {
-    if (device.udid === 'unknown') return device;
-    const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
-    const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
-    const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
+    if (device.udid !== 'unknown') {
+        const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
+        const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
+        const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
 
-    let screenProps;
+        let screenProps;
 
-    if (screenSizeResult) {
-        const [width, height] = screenSizeResult.split('Physical size: ')[1].split('x');
-        screenProps = { width: parseInt(width, 10), height: parseInt(height, 10) };
+        if (screenSizeResult) {
+            const [width, height] = screenSizeResult.split('Physical size: ')[1].split('x');
+            screenProps = { width: parseInt(width, 10), height: parseInt(height, 10) };
+        }
+
+        if (screenDensityResult) {
+            const density = screenDensityResult.split('Physical density: ')[1];
+            screenProps = { ...screenProps, density: parseInt(density, 10) };
+        }
+
+        if (screenSizeResult && screenDensityResult) {
+            const { width, height, density } = screenProps;
+
+            const diagonalInches = calculateDeviceDiagonal(width, height, density);
+            screenProps = { ...screenProps, diagonalInches };
+            device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
+            device.isWear = width + height < IS_WEAR_UNDER_SIZE;
+        }
+
+        device.isTV = !!dumpsysResult;
+        device.screenProps = screenProps;
+        return device;
     }
 
-    if (screenDensityResult) {
-        const density = screenDensityResult.split('Physical density: ')[1];
-        screenProps = { ...screenProps, density: parseInt(density, 10) };
-    }
+    if (device.avdConfig) {
+        const batteryPresent = device.avdConfig['hw.battery'];
+        const density = parseInt(device.avdConfig['hw.lcd.density'], 10);
+        const width = parseInt(device.avdConfig['hw.lcd.width'], 10);
+        const height = parseInt(device.avdConfig['hw.lcd.height'], 10);
 
-    if (screenSizeResult && screenDensityResult) {
-        const { width, height, density } = screenProps;
-
-        // Calculate the diagonal in inches
-        const widthInches = width / density;
-        const heightInches = height / density;
-        const diagonalInches = Math.sqrt(widthInches * widthInches + heightInches * heightInches);
-        screenProps = { ...screenProps, diagonalInches };
+        const diagonalInches = calculateDeviceDiagonal(width, height, density);
         device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
-    }
+        device.isTV = batteryPresent !== 'yes';
+        device.isWear = width + height < IS_WEAR_UNDER_SIZE;
 
-    device.isTV = !!dumpsysResult;
-    device.screenProps = screenProps;
+        return device;
+    }
     return device;
 };
 
-const _parseDevicesResult = (devicesString, avdsString, deviceOnly, c) => {
+const getAvdDetails = async (deviceName) => {
+    const avdConfigPath = `${os.homedir()}/.android/avd/${deviceName}.avd/config.ini`;
+    if (fs.existsSync(avdConfigPath)) {
+        const fileData = fs.readFileSync(avdConfigPath).toString();
+        const lines = fileData.trim().split(/\r?\n/);
+        const avdConfig = {};
+        lines.forEach((line) => {
+            const [key, value] = line.split('=');
+            // also remove the white space
+            avdConfig[key.trim()] = value.trim();
+        });
+        return { avdConfig };
+    }
+
+    return {};
+};
+
+const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
     const devices = [];
 
     if (devicesString) {
@@ -179,16 +223,17 @@ const _parseDevicesResult = (devicesString, avdsString, deviceOnly, c) => {
     if (avdsString) {
         const avdLines = avdsString.trim().split(/\r?\n/);
 
-        for (let i = 0; i < avdLines.length; i++) {
-            const avdWords = avdLines[i];
+        await Promise.all(avdLines.map(async (line) => {
+            const avdDetails = await getAvdDetails(line);
 
             devices.push({
                 udid: 'unknown',
                 isDevice: false,
                 isActive: false,
-                name: avdWords,
+                name: line,
+                ...avdDetails
             });
-        }
+        }));
     }
 
     return Promise.all(devices.map(device => getDeviceType(device, c)));
