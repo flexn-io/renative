@@ -673,7 +673,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         }
 
         // Check global SDKs
-        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
+        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'emulator/emulator');
         c.cli[CLI_ANDROID_ADB] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
         c.cli[CLI_ANDROID_AVDMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/avdmanager');
         c.cli[CLI_ANDROID_SDKMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
