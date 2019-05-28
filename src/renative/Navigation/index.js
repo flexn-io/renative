@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { createDrawerNavigator, createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
 import { Icon, Api } from '../index';
 
@@ -120,6 +120,20 @@ const createApp = (c, componentMap) => {
         });
     } else {
         rootWrapper = createSwitchNavigator(roots);
+        const screensArr = [];
+        for (const rk in root.screens) {
+            screensArr.push(componentMap[root.screens[rk].screen]);
+        }
+        return (
+            <ScrollView style={{ flex: 1, flexDirection: 'row', backgroundColor: '#222222' }}>
+                {
+                    screensArr.map((v) => {
+                        const Screen = v;
+                        return <Screen />;
+                    })
+                }
+            </ScrollView>
+        );
     }
 
 

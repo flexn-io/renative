@@ -34,12 +34,15 @@ const styles = StyleSheet.create({
         width: 83,
         height: 97,
     },
+});
+
+const stylesObbj = {
     icon: {
         width: 40,
         height: 40,
         margin: 10,
-    },
-});
+    }
+};
 
 class ScreenHome extends React.Component {
     constructor() {
@@ -82,8 +85,8 @@ v
                     }}
                 />
                 <View style={{ marginTop: 20, flexDirection: 'row' }}>
-                    <Icon iconFont="fontAwesome" iconName="github" iconColor={colors.primary} style={styles.icon} />
-                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={colors.primary} style={styles.icon} />
+                    <Icon iconFont="fontAwesome" iconName="github" iconColor={colors.primary} style={stylesObbj.icon} />
+                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={colors.primary} style={stylesObbj.icon} />
                 </View>
             </ScrollView>
         );

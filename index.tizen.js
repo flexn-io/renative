@@ -9,4 +9,3 @@ Api.formFactor = FORM_FACTOR_TV;
 Api.platformGroup = PLATFORM_GROUP_SMARTTV;
 
 ReactDOM.render(React.createElement(App), document.getElementById('root'));
-registerServiceWorker();

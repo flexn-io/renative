@@ -14,6 +14,7 @@ import {
     FIREFOX_TV,
     WINDOWS,
     TVOS,
+    TIZEN_WATCH,
     KAIOS
 } from './renative';
 import Theme from './theme';
@@ -67,7 +68,7 @@ const navStructure = {
                 navigationOptions: {},
             },
             swipeMenu: {
-                isVisibleIn: [ANDROID_WEAR],
+                isVisibleIn: [ANDROID_WEAR, TIZEN_WATCH],
             },
         },
         screens: {

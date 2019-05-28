@@ -119,8 +119,8 @@
         },
         "tizen": {
             "appName": "RNVanillaTV",
-            "package": "NcVRhWHJST",
-            "id": "NcVRhWHJST.RNVanillaTV",
+            "package": "NkVRhWHJST",
+            "id": "NkVRhWHJST.RNVanillaTV",
             "entryFile": "index.tizen",
             "certificateProfile": "RNVanillaCert"
         },

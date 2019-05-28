@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { createApp } from './renative';
 import { navStructure } from './nav';
 import Fonts from '../platformAssets/runtime/fontManager';
