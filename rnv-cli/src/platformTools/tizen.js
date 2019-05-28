@@ -117,7 +117,7 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
         .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
         .then(() => resolve())
         .catch((e) => {
-            if (e && e.includes(TIZEN_UNINSTALL_APP)) {
+            if (e && e.includes && e.includes(TIZEN_UNINSTALL_APP)) {
                 execCLI(c, CLI_TIZEN, TIZEN_INSTALL_APP, logTask)
                     .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
                     .then(() => resolve())

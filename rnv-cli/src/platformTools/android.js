@@ -31,7 +31,8 @@ import {
     getQuestion,
     logSuccess,
 } from '../common';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { ANDROID_WEAR } from '../constants';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 
 const readline = require('readline');
 
@@ -222,6 +223,10 @@ const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
 const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask('packageAndroid');
 
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
+    const entryFile = c.files.appConfigFile.platforms[platform].entryFile;
+    const outputFile = entryFile;
+
     const appFolder = getAppFolder(c, platform);
     executeAsync('react-native', [
         'bundle',
@@ -232,9 +237,9 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
         '--assets-dest',
         `${appFolder}/app/src/main/res`,
         '--entry-file',
-        `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
+        `${entryFile}.js`,
         '--bundle-output',
-        `${appFolder}/app/src/main/assets/index.android.bundle`,
+        `${appFolder}/app/src/main/assets/${outputFile}.bundle`,
     ])
         .then(() => resolve())
         .catch(e => reject(e));
@@ -354,7 +359,7 @@ const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Pro
             }
             return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
         })
-        .then(() => (device.isDevice
+        .then(() => ((device.isDevice && platform !== ANDROID_WEAR)
             ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081'])
             : Promise.resolve()))
         .then(() => executeAsync(c.cli[CLI_ANDROID_ADB], [
@@ -633,7 +638,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (permissions) {
         permissions.forEach((v) => {
             if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
+                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'android';
                 const pc = c.files.permissionsConfig.permissions[plat];
                 if (pc[v]) {
                     prms += `\n<uses-permission android:name="${pc[v].key}" />`;

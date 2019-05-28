@@ -10,7 +10,7 @@ function generateConfig(config) {
     const platformBuildsDir = path.resolve(config.currentDir, '../');
     const platformBuildsSharedDir = path.join(platformBuildsDir, '_shared');
     const appBuildDir = path.resolve(config.currentDir);
-    const appBuildPublicDir = path.resolve(config.currentDir, 'public');
+    const appBuildPublicDir = path.resolve(config.currentDir, config.buildFolder || 'public');
 
     const baseUrl = config.baseUrl || '';
     const devServerHost = config.devServerHost || '0.0.0.0'

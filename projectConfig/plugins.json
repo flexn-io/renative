@@ -6,7 +6,19 @@
                 "podName": "RNGestureHandler",
                 "path": "node_modules/react-native-gesture-handler"
             },
+            "tvos": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
             "android": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "androidtv": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "androidwear": {
                 "path": "node_modules/react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             }
