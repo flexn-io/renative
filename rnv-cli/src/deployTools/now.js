@@ -54,7 +54,7 @@ const deployToNow = c => new Promise((resolve, reject) => {
 
     let envContent;
     try {
-        envContent = fs.readFileSync('foo.bar');
+        envContent = fs.readFileSync(path.resolve(c.paths.projectRootFolder, '.env'));
     } catch (err) {
         envContent = '';
     }
