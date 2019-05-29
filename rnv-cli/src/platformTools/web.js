@@ -32,6 +32,7 @@ import {
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import { checkDeployConfigTarget, deployToFtp, DEPLOY_TARGETS } from '../deployTools/ftp';
+import { deployToNow } from '../deployTools/now';
 import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const { fork } = require('child_process');
@@ -149,6 +150,9 @@ const deployWeb = (c, platform) => new Promise((resolve, reject) => {
         switch (dt) {
         case DEPLOY_TARGETS.FTP:
             deployToFtp(c, platform).then(resolve).catch(reject);
+            return;
+        case DEPLOY_TARGETS.NOW:
+            deployToNow(c, platform).then(resolve).catch(reject);
             return;
         default:
             reject(new Error(`Deploy Type not supported ${dt}`));

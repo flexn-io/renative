@@ -32,6 +32,7 @@ import { RNV_APP_CONFIG_NAME } from '../constants';
 // DEPLOY
 const DEPLOY_TARGETS = {
     FTP: 'ftp',
+    NOW: 'now',
 };
 
 
