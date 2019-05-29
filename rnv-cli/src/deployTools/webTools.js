@@ -25,7 +25,7 @@ const _runDeployment = (c, platform, deployType) => new Promise((resolve, reject
         deployToNow(c, platform).then(resolve).catch(reject);
         return;
     default:
-        reject(new Error(`Deploy Type not supported ${dt}`));
+        reject(new Error(`Deploy Type not supported ${deployType}`));
     }
 });
 
