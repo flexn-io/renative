@@ -244,7 +244,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
             try {
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                child_process.execSync(`ps x | grep "${line}" | grep -v grep`);
+                child_process.execSync(`ps x | grep "qemu.*${line}" | grep -v grep`);
             } catch (e) {
                 devices.push({
                     udid: 'unknown',
