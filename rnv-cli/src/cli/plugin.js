@@ -127,7 +127,7 @@ const _runAdd = c => new Promise((resolve) => {
 
         Object.keys(selectedPlugins).forEach((key) => {
             c.files.pluginConfig.plugins[key] = selectedPlugins[key];
-            _checkAndAddDependantPlugins(c, selectedPlugins[k]);
+            _checkAndAddDependantPlugins(c, selectedPlugins[key]);
         });
 
         fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));

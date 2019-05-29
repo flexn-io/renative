@@ -62,9 +62,8 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
-                            //     '-avd', `"${selectedDevice.name}"`]);
-                            return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(logError);
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(logError);
+                            resolve();
                         }
                         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
                     }
@@ -75,9 +74,8 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
 
     if (target) {
         if (isIndependentThread) {
-            // const child = require('child_process').spawn(c.cli[CLI_ANDROID_EMULATOR], [
-            //     '-avd', `"${target}"`]);
-            return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
+            return Promise.resolve();
         }
         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
     }
@@ -369,6 +367,7 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
 });
 
 const _runGradle = async (c, platform) => {
+    logTask(`_runGradle:${platform}`);
     const appFolder = getAppFolder(c, platform);
     shell.cd(`${appFolder}`);
 
