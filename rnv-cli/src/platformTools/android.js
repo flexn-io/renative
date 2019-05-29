@@ -132,6 +132,12 @@ const calculateDeviceDiagonal = (width, height, density) => {
     return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
 };
 
+const isSquareishDevice = (width, height) => {
+    const ratio = width / height;
+    if (ratio > 0.8 && ratio < 1.2) return true;
+    return false;
+};
+
 const getDeviceType = async (device, c) => {
     if (device.udid !== 'unknown') {
         const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
@@ -156,7 +162,7 @@ const getDeviceType = async (device, c) => {
             const diagonalInches = calculateDeviceDiagonal(width, height, density);
             screenProps = { ...screenProps, diagonalInches };
             device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
-            device.isWear = width + height < IS_WEAR_UNDER_SIZE;
+            device.isWear = isSquareishDevice(width, height);
         }
 
         device.isTV = !!dumpsysResult;
@@ -170,10 +176,20 @@ const getDeviceType = async (device, c) => {
         const width = parseInt(device.avdConfig['hw.lcd.width'], 10);
         const height = parseInt(device.avdConfig['hw.lcd.height'], 10);
 
+        // Better detect wear
+        const sysdir = device.avdConfig['image.sysdir.1'];
+        const tagId = device.avdConfig['tag.id'];
+        const tagDisplay = device.avdConfig['tag.display'];
+        const deviceName = device.avdConfig['hw.device.name'];
+
+        device.isWear = false;
+        [sysdir, tagId, tagDisplay, deviceName].forEach((string) => {
+            if (string.includes('wear')) device.isWear = true;
+        });
+
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
         device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
         device.isTV = batteryPresent !== 'yes';
-        device.isWear = width + height < IS_WEAR_UNDER_SIZE;
 
         return device;
     }
@@ -225,14 +241,19 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
         await Promise.all(avdLines.map(async (line) => {
             const avdDetails = await getAvdDetails(line);
-
-            devices.push({
-                udid: 'unknown',
-                isDevice: false,
-                isActive: false,
-                name: line,
-                ...avdDetails
-            });
+            try {
+                // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
+                // if this runs without throwing it means that the simulator is running so it needs to be excluded
+                child_process.execSync(`ps x | grep "${line}" | grep -v grep`);
+            } catch (e) {
+                devices.push({
+                    udid: 'unknown',
+                    isDevice: false,
+                    isActive: false,
+                    name: line,
+                    ...avdDetails
+                });
+            }
         }));
     }
 
