@@ -28,19 +28,19 @@ const _createConfigFiles = (configFilePath, envConfigPath, nowParamsExists = fal
                 finishQuestion();
                 content.name = v;
                 if (!nowParamsExists) {
-                    askQuestion('Now token? Leave empty and we will create one for you')
+                    askQuestion('Do you have now token? If no leave empty and you will be asked to create one')
                         .then((v) => {
                             finishQuestion();
                             if (v) {
                                 envContent += `NOW_TOKEN=${v}\n`;
                                 fs.writeFileSync(envConfigPath, envContent);
                             }
-                            fs.writeFileSync(configFilePath, JSON.stringify(content, null, 4));
+                            fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
                             resolve();
                         });
                     return;
                 }
-                fs.writeFileSync(configFilePath, JSON.stringify(content, null, 4));
+                fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
                 resolve();
             });
         return;
@@ -54,7 +54,7 @@ const deployToNow = c => new Promise((resolve, reject) => {
 
     let envContent;
     try {
-        envContent = fs.readFileSync(path.resolve(c.paths.projectRootFolder, '.env'));
+        envContent = fs.readFileSync(envConfigPath).toString();
     } catch (err) {
         envContent = '';
     }

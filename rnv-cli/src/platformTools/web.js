@@ -31,8 +31,8 @@ import {
     finishQuestion,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
-import { checkDeployConfigTarget, deployToFtp, DEPLOY_TARGETS } from '../deployTools/ftp';
-import { deployToNow } from '../deployTools/now';
+import { selectWebToolAndDeploy } from '../deployTools/webTools';
+
 import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const { fork } = require('child_process');
@@ -136,29 +136,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
 
 const deployWeb = (c, platform) => new Promise((resolve, reject) => {
     logTask(`deployWeb:${platform}`);
-    const argv = require('minimist')(c.process.argv.slice(2));
-
-    const deployType = argv.t;
-    // If not passed as argument, check in appConfig
-    let promise = Promise.resolve(deployType);
-    if (!deployType) {
-        const p = c.files.appConfigFile.platforms[platform];
-        promise = checkDeployConfigTarget(c, platform, p);
-    }
-    promise.then((dt) => {
-        logTask(`deployType:${dt}`);
-        switch (dt) {
-        case DEPLOY_TARGETS.FTP:
-            deployToFtp(c, platform).then(resolve).catch(reject);
-            return;
-        case DEPLOY_TARGETS.NOW:
-            deployToNow(c, platform).then(resolve).catch(reject);
-            return;
-        default:
-            reject(new Error(`Deploy Type not supported ${dt}`));
-        }
-    });
+    selectWebToolAndDeploy(c, platform).then(resolve).catch(reject);
 });
-
 
 export { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb };
