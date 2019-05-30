@@ -11,6 +11,7 @@ import {
     logWarning,
     askQuestion,
     finishQuestion,
+    generateOptions,
     logWelcome,
     SUPPORTED_PLATFORMS,
 } from '../common';
@@ -123,7 +124,7 @@ const _isOK = (c, p, list) => {
     return result;
 };
 
-const _runCreate = c => new Promise((resolve) => {
+const _runCreate = c => new Promise((resolve, reject) => {
     logTask('_runCreate');
 
     const data = {};
@@ -147,28 +148,17 @@ const _runCreate = c => new Promise((resolve) => {
             if (v !== null && v !== '') {
                 data.appID = v.replace(/\s+/g, '-').toLowerCase();
             }
-            data.supportedPlatformsString = '';
-            SUPPORTED_PLATFORMS.forEach((v, i) => (data.supportedPlatformsString += `-[${i + 1}] ${chalk.white(v)}\n`));
+            data.platformOptions = generateOptions(SUPPORTED_PLATFORMS, true);
             return Promise.resolve(v);
         })
         .then(() => askQuestion(
             `What platforms would you like to use? (Add numbers separated by comma or leave blank for all)\n${
-                data.supportedPlatformsString
+                data.platformOptions.asString
             }`,
         ))
+        .then(v => data.platformOptions.pick(v))
         .then((v) => {
-            if (v) {
-                const platforms = v.split(',');
-                data.supportedPlatforms = [];
-
-                platforms.forEach((platform) => {
-                    const i = parseInt(platform, 10) - 1;
-                    data.supportedPlatforms.push(SUPPORTED_PLATFORMS[i]);
-                });
-            } else {
-                data.supportedPlatforms = SUPPORTED_PLATFORMS.slice(0);
-            }
-
+            data.supportedPlatforms = v;
             data.confirmString = chalk.green(`
 App Folder (project name): ${chalk.white(data.projectName)}
 App Title: ${chalk.white(data.appTitle)}
@@ -205,21 +195,16 @@ Supported Platforms: ${chalk.white(data.supportedPlatforms.join(','))}
             );
 
             resolve();
-        });
+        })
+        .catch(e => reject(e));
 });
 
 const checkAndCreateProjectPackage = (c, data) => {
     logTask(`checkAndCreateProjectPackage:${data.packageName}`);
-    // pkgName, appTitle, appID, defaultAppConfigId, teamID
     const {
         packageName, appTitle, appID, defaultAppConfigId, supportedPlatforms,
     } = data;
-    // data.packageName,
-    // data.appTitle,
-    // data.appID,
-    // data.defaultAppConfigId,
-    // data.defaultPlatforms
-    // data.teamID,
+
     if (!fs.existsSync(c.paths.projectPackagePath)) {
         logWarning("Looks like your package.json is missing. Let's create one for you!");
 
@@ -237,14 +222,6 @@ const checkAndCreateProjectPackage = (c, data) => {
         };
 
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
-        // const pkgJsonStringClean = pkgJsonString
-        //     .replace(/{{PACKAGE_NAME}}/g, packageName)
-        //     .replace(/{{DEFAULT_APP_CONFIG}}/g, defaultAppConfigId)
-        //     .replace(/{{APP_ID}}/g, appID)
-        //     .replace(/{{RNV_VERSION}}/g, c.files.rnvPackage.version)
-        //     .replace(/{{PACKAGE_VERSION}}/g, '0.1.0')
-        //     .replace(/{{PACKAGE_TITLE}}/g, appTitle);
-        //     .replace(/{{SUPPORTED_PLATFORMS}}/g, supportedPlatforms.join(','));
 
         fs.writeFileSync(c.paths.projectPackagePath, pkgJsonStringClean);
     }

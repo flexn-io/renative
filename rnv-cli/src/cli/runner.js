@@ -346,8 +346,17 @@ const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
 
 const _deployApp = c => new Promise((resolve, reject) => {
     logTask(`_deployApp:${c.platform}`);
+
+    isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
+        .then(v => _deployAppWithPlatform(c))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_deployAppWithPlatform:${c.platform}`);
     const { platform } = c;
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
 
     switch (platform) {
     case WEB:
@@ -361,15 +370,15 @@ const _deployApp = c => new Promise((resolve, reject) => {
     // case IOS:
     // case TVOS:
     // case TVOS:
-    default:
-        executePipe(c, PIPES.DEPLOY_BEFORE)
-        // .then(() => cleanPlatformIfRequired(c, platform))
-        // .then(() => configureIfRequired(c, platform))
-        // TODO: ADD INTEGRATIONS
-            .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
+    // default:
+    //     executePipe(c, PIPES.DEPLOY_BEFORE)
+    //     // .then(() => cleanPlatformIfRequired(c, platform))
+    //     // .then(() => configureIfRequired(c, platform))
+    //     // TODO: ADD INTEGRATIONS
+    //         .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
+    //         .then(() => resolve())
+    //         .catch(e => reject(e));
+    //     return;
     }
 
     logErrorPlatform(platform, resolve);

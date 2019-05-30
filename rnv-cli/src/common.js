@@ -156,33 +156,19 @@ const isPlatformSupportedSync = (platform, resolve, reject) => {
 const isPlatformSupported = c => new Promise((resolve, reject) => {
     logTask(`isPlatformSupported:${c.platform}`);
     if (!c.platform || c.platform === '?') {
-        let platformsAsString = '';
-        const platformsAsArray = [];
         const platformsAsObj = c.files.appConfigFile ? c.files.appConfigFile.platforms : c.supportedPlatforms;
-        let i = 1;
-        for (const k in platformsAsObj) {
-            platformsAsString += `-[${i}] ${chalk.white(k)}\n`;
-            platformsAsArray.push(k);
-            i++;
-        }
+        const opts = generateOptions(platformsAsObj);
 
-        askQuestion(`Pick one of available platforms (number or text):\n${platformsAsString}`).then((v) => {
+        askQuestion(`Pick one of available platforms (number or text):\n${opts.asString}`).then((v) => {
             finishQuestion();
-            let selectedPlatform;
-            if (isNaN(v)) {
-                selectedPlatform = v;
-            } else {
-                selectedPlatform = platformsAsArray[v - 1];
-            }
 
-            if (!platformsAsObj[selectedPlatform]) {
-                reject(`${chalk.white(v)} ...Really?! 🙈`);
-                return;
-            }
-
-            c.platform = selectedPlatform;
-            c.program.platform = selectedPlatform;
-            resolve(selectedPlatform);
+            opts.pick(v)
+                .then((selectedPlatform) => {
+                    c.platform = selectedPlatform;
+                    c.program.platform = selectedPlatform;
+                    resolve(selectedPlatform);
+                })
+                .catch(e => reject(e));
         });
     } else if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
         reject(chalk.red(`Platform ${c.platform} is not supported`));
@@ -208,33 +194,15 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
         if (schemeDoesNotExist && scheme && scheme !== '?') {
             logError('Build scheme you picked does not exists.');
         }
-        let schemesAsString = '';
-        const schemesAsArray = [];
-        let i = 1;
+        const opts = generateOptions(buildSchemes);
 
-        for (const k in buildSchemes) {
-            schemesAsString += `-[${i}] ${chalk.white(k)}\n`;
-            schemesAsArray.push(k);
-            i++;
-        }
-
-        askQuestion(`Pick one of available buildSchemes (number or text):\n${schemesAsString}`).then((v) => {
+        askQuestion(`Pick one of available buildSchemes (number or text):\n${opts.asString}`).then((v) => {
             finishQuestion();
-            let selectedScheme;
-            if (isNaN(v)) {
-                selectedScheme = v;
-            } else {
-                selectedScheme = schemesAsArray[v - 1];
-            }
-
-            if (!buildSchemes[selectedScheme]) {
-                reject(`${chalk.white(v)} ...Really?! 🙈`);
-                return;
-            }
-
-            c.program.scheme = selectedScheme;
-            console.log('SSJSJSJSJJS', selectedScheme);
-            resolve(selectedScheme);
+            opts.pick(v)
+                .then((selectedScheme) => {
+                    c.program.scheme = selectedScheme;
+                    resolve(selectedScheme);
+                }).catch(e => reject(e));
         });
     } else {
         resolve(scheme);
@@ -999,7 +967,7 @@ const getAppVersionCode = (c, platform) => {
 };
 
 const logErrorPlatform = (platform, resolve) => {
-    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
+    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(_currentJob)}`);
     resolve();
 };
 
@@ -1116,6 +1084,81 @@ const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     });
 });
 
+const generateOptions = (inputData, isMultiChoice = false, mapping) => {
+    let asString = '';
+    const valuesAsObject = {};
+    const valuesAsArray = [];
+    const keysAsObject = {};
+    const keysAsArray = [];
+    const isArray = Array.isArray(inputData);
+
+    const output = {
+        pick: v => new Promise((resolve, reject) => {
+            let selectedOptions = [];
+            if (isMultiChoice) {
+                const wrongOptions = [];
+                if (v) {
+                    const choiceArr = v.split(',');
+                    choiceArr.forEach((choice) => {
+                        let selectedOption = choice;
+                        if (isNaN(choice)) {
+                            selectedOption = choice;
+                        } else {
+                            selectedOption = keysAsArray[choice - 1];
+                        }
+                        selectedOptions.push(selectedOption);
+                        if (!valuesAsObject[selectedOption]) {
+                            wrongOptions.push(choice);
+                        }
+                    });
+                } else {
+                    selectedOptions = keysAsArray;
+                }
+                if (wrongOptions.length) {
+                    reject(`${chalk.white(wrongOptions.join(','))} ...Really?! 🙈`);
+                } else {
+                    resolve(selectedOptions);
+                }
+            } else {
+                let selectedOption = v;
+                if (isNaN(v)) {
+                    selectedOption = v;
+                } else {
+                    selectedOption = keysAsArray[v - 1];
+                }
+                if (!valuesAsObject[selectedOption]) {
+                    reject(`${chalk.white(v)} ...Really?! 🙈`);
+                } else resolve(selectedOption);
+            }
+        })
+    };
+    if (isArray) {
+        inputData.map((v, i) => {
+            asString += _generateOptionString(i, v, mapping, v);
+            valuesAsArray.push(v);
+            if (!mapping) keysAsArray.push(v);
+            if (!mapping) valuesAsObject[v] = v;
+        });
+    } else {
+        let i = 0;
+        for (const k in inputData) {
+            const v = inputData[k];
+            asString += _generateOptionString(i, v, mapping, k);
+            keysAsArray.push(k);
+            keysAsObject[k] = true;
+            valuesAsObject[k] = v;
+            valuesAsArray.push(v);
+            i++;
+        }
+    }
+    output.valuesAsArray = valuesAsArray;
+    output.valuesAsObject = valuesAsObject;
+    output.asString = asString;
+    return output;
+};
+
+const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${i + 1}] ${chalk.white(mapping ? '' : defaultVal)} \n`;
+
 let _currentQuestion;
 
 const askQuestion = question => new Promise((resolve, reject) => {
@@ -1138,6 +1181,7 @@ const finishQuestion = () => new Promise((resolve, reject) => {
 
 export {
     SUPPORTED_PLATFORMS,
+    generateOptions,
     logWelcome,
     isPlatformSupported,
     cleanNodeModules,
@@ -1206,6 +1250,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    generateOptions,
     logWelcome,
     copyBuildsFolder,
     cleanNodeModules,

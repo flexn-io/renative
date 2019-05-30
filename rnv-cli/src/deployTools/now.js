@@ -22,7 +22,7 @@ const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) =
 const _createConfigFiles = (configFilePath, envConfigPath, nowParamsExists = false, envContent = '') => new Promise((resolve, reject) => {
     if (!fs.existsSync(configFilePath)) {
         const content = { public: true, version: 2 };
-        logInfo('now.json file does not exist. Creating one for you');
+        logInfo(`${chalk.white('now.json')} file does not exist. Creating one for you`);
         askQuestion('What is your project name?')
             .then((v) => {
                 finishQuestion();

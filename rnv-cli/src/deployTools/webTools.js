@@ -10,6 +10,7 @@ import {
     logComplete,
     logError,
     logInfo,
+    generateOptions
 } from '../common';
 import { RNV_APP_CONFIG_NAME } from '../constants';
 
@@ -38,40 +39,18 @@ const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) =>
         _runDeployment(c, platform, deployType || targetConfig.deploy.type)
             .then(resolve).catch(reject);
     } else {
-        askQuestion(`Which type of deploy would you like for ${platform}:\n${Object.values([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW])
-            .map((t, i) => `-[${i}] ${chalk.white(t)}\n`)}`)
-            .then((v) => {
+        const opts = generateOptions([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW]);
+        askQuestion(`Which type of deploy option would you like to use for ${chalk.white(platform)} deployment:\n${opts.asString}`)
+            .then(v => opts.pick(v))
+            .then((selectedDeployTarget) => {
                 finishQuestion();
-                let selectedDeployTarget;
-                if (isNaN(v)) {
-                    selectedDeployTarget = Object.values(
-                        [DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW]
-                    ).indexOf(v) ? v : null;
-                } else {
-                    selectedDeployTarget = Object.values([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW])[v];
-                }
-
-                if (selectedDeployTarget) {
-                    const configFilePath = path.resolve(
-                        c.files.projectConfig.appConfigsFolder,
-                        c.defaultAppConfigId,
-                        RNV_APP_CONFIG_NAME
-                    );
-
-                    if (Object.values(
-                        [DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW]
-                    ).indexOf(selectedDeployTarget) === -1) {
-                        reject(new Error(`Invalid deploy target ${selectedDeployTarget}`));
-                    }
-
-                    logInfo(`Setting your appconfig for ${platform} to include deploy type: ${selectedDeployTarget}
-                            on ${configFilePath}
-                    `);
-
-                    _runDeployment(c, platform, selectedDeployTarget).then(resolve).catch(reject);
-                } else {
-                    reject();
-                }
+                const configFilePath = path.resolve(
+                    c.files.projectConfig.appConfigsFolder,
+                    c.defaultAppConfigId,
+                    RNV_APP_CONFIG_NAME
+                );
+                logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(configFilePath)}`);
+                _runDeployment(c, platform, selectedDeployTarget).then(resolve).catch(reject);
             })
             .catch(e => reject(e));
     }
