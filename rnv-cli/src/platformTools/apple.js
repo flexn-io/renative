@@ -368,6 +368,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
 
     const entryFile = getEntryFile(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const { backgroundColor } = c.files.appConfigFile.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
     let bundle;
     if (isBundled) {
@@ -382,7 +383,8 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         pluginAppDelegateImports,
         pluginAppDelegateMethods,
     };
-        // PLUGINS
+
+    // PLUGINS
     if (c.files.appConfigFile && c.files.pluginConfig) {
         const { includedPlugins } = c.files.appConfigFile.common;
         if (includedPlugins) {
@@ -400,6 +402,17 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         }
     }
 
+    // BG COLOR
+    let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
+    const UI_COLORS = ['black', 'blue', 'brown', 'clear', 'cyan', 'darkGray', 'gray', 'green', 'lightGray', 'magneta', 'orange', 'purple', 'red', 'white', 'yellow'];
+    if (backgroundColor) {
+        if (UI_COLORS.includes(backgroundColor)) {
+            pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
+        } else {
+            logWarning(`Your choosen color in config.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
+        }
+    }
+
     writeCleanFile(
         path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
         path.join(appFolder, appFolderName, appDelegate),
@@ -408,6 +421,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             { pattern: '{{ENTRY_FILE}}', override: entryFile },
             { pattern: '{{IP}}', override: ip },
             { pattern: '{{PORT}}', override: port },
+            { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
             {
                 pattern: '{{APPDELEGATE_IMPORTS}}',
                 override: pluginConfig.pluginAppDelegateImports,
@@ -445,6 +459,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     const appFolder = getAppFolder(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
     const tId = getConfigProp(c, platform, 'teamID');
+    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
 
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
@@ -482,7 +497,6 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     // PERMISSIONS
     let pluginPermissions = '';
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
     if (permissions) {
         permissions.forEach((v) => {
             if (c.files.permissionsConfig) {
@@ -515,14 +529,14 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     if (orientationSupport) {
         if (orientationSupport.phone) {
-            pluginOrientationPhone = `${pluginOrientationPhoneKey}\n    <array>`;
+            pluginOrientationPhone = `${pluginOrientationPhoneKey}\n    <array>\n`;
             orientationSupport.phone.forEach((v) => {
                 pluginOrientationPhone += `<string>${v}</string>\n`;
             });
             pluginOrientationPhone += '    </array>';
         }
         if (orientationSupport.tab) {
-            pluginOrientationTab = `${pluginOrientationTabKey}\n    <array>`;
+            pluginOrientationTab = `${pluginOrientationTabKey}\n    <array>\n`;
             orientationSupport.tab.forEach((v) => {
                 pluginOrientationTab += `<string>${v}</string>\n`;
             });
@@ -559,7 +573,6 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             pluginPlistExtra += `<key>${key}</key>\n${value}\n`;
         }
     }
-
 
     // PROJECT
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);

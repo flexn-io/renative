@@ -64,7 +64,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     if (selectedDevice) {
                         if (isIndependentThread) {
                             execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(logError);
-                            resolve();
+                            return Promise.resolve();
                         }
                         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
                     }
@@ -76,7 +76,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         if (isIndependentThread) {
             execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
-            resolve();
+            return Promise.resolve();
         }
         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
     }
