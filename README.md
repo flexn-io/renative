@@ -260,7 +260,7 @@ $ npm install renative@latest -g
 </table>
 
 ```bash
-$ rnv app create
+$ rnv new
 ```
 
 Follow steps in the terminal
@@ -1649,7 +1649,7 @@ rnv --version                       //Print ReNativeVersion
 rnv run -p <PLATFORM>               //Run app on simulator/device/browser
 rnv target launch -p <PLATFORM>     //Start target (i.e. simulator/ emulator)
 rnv app configure                   //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
-rnv app create                      //Create new app
+rnv new                      //Create new app
 rnv platform eject                  //Eject platformTemplates into project
 rnv platform connect                //Use ReNativepredefined templates
 ```

@@ -19,6 +19,8 @@ const commands = {
     build: Runner,
     export: Runner,
     app: App,
+    new: App,
+    configure: App,
     link: Linker,
     platform: Platform,
     run: Runner,

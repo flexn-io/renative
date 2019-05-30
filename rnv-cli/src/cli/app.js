@@ -46,6 +46,7 @@ import { executePipe } from '../buildHooks';
 
 const CONFIGURE = 'configure';
 const CREATE = 'create';
+const NEW = 'new';
 
 const PIPES = {
     APP_CONFIGURE_BEFORE: 'app:configure:before',
@@ -58,6 +59,11 @@ const PIPES = {
 
 const run = (c) => {
     logTask('run');
+
+    switch (c.command) {
+    case NEW:
+        return _runCreate(c);
+    }
 
     switch (c.subCommand) {
     case CONFIGURE:

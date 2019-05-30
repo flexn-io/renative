@@ -256,7 +256,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         c.supportedPlatforms[v] = true;
     });
 
-    if (c.command === 'app' && c.subCommand === 'create') {
+    if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
         resolve(c);
         return;
     }
@@ -337,7 +337,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         reject(
             `Looks like this directory is not ReNativeproject. Project config ${chalk.white(
                 c.paths.projectConfigPath,
-            )} is missing!. You can create new project with ${chalk.white('rnv app create')}`,
+            )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
         );
     }
 
