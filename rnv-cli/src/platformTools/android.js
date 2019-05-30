@@ -14,6 +14,8 @@ import {
     getAppFolder,
     isPlatformActive,
     copyBuildsFolder,
+    askQuestion,
+    finishQuestion,
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
@@ -445,20 +447,50 @@ const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
     }, 2000);
 });
 
+const _checkSigningCerts = c => new Promise((resolve, reject) => {
+    const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
+
+    if (signingConfig === 'Release' && !c.files.privateConfig) {
+        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.privateConfigPath)} yet.`);
+        askQuestion('Do you want to configure it now? (y)')
+            .then((v) => {
+                const sc = {};
+                if (v === 'y') {
+                    askQuestion(`Paste asolute or relative path to ${chalk.white(c.paths.privateConfigDir)} of your existing ${chalk.white('release.keystore')} file.`, sc, 'storeFile')
+                        .then(() => askQuestion('storePassword', sc, 'storePassword'))
+                        .then(() => askQuestion('keyAlias', sc, 'keyAlias'))
+                        .then(() => askQuestion('keyPassword', sc, 'keyPassword'))
+                        .then(() => {
+                            finishQuestion();
+                            if (c.paths.privateConfigDir) {
+                                mkdirSync(c.paths.privateConfigDir);
+                                c.files.privateConfig = {
+                                    android: sc
+                                };
+                            }
+                            fs.writeFileSync(c.paths.privateConfigPath, JSON.stringify(c.files.privateConfig, null, 2));
+                            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.privateConfigPath)}.`);
+                            resolve();
+                        });
+                } else {
+                    reject(`You selected ${v}. Can't proceed`);
+                }
+            }).catch(e => reject(e));
+    } else {
+        resolve();
+    }
+});
+
 const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Promise((resolve, reject) => {
     const bundleId = getConfigProp(c, platform, 'id');
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
 
-    if (signingConfig === 'Release' && !c.files.privateConfig) {
-        reject(`You're attempting to run app in release mode but you have't configured your ${chalk.white(c.paths.privateConfigPath)} yet.`);
-        return;
-    }
-
-    executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
-        `assemble${signingConfig}`,
-        '-x',
-        'bundleReleaseJsAndAssets',
-    ])
+    _checkSigningCerts(c)
+        .then(() => executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
+            `assemble${signingConfig}`,
+            '-x',
+            'bundleReleaseJsAndAssets',
+        ]))
         .then(() => {
             let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
             if (!fs.existsSync(apkPath)) {
@@ -482,21 +514,24 @@ const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Pro
         .catch(e => reject(e));
 });
 
-const buildAndroid = (c, platform) => new Promise((resolve) => {
+const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildAndroid:${platform}`);
 
-    const appFolder = getAppFolder(c, platform);
+    _checkSigningCerts(c)
+        .then(() => {
+            const appFolder = getAppFolder(c, platform);
 
-    shell.cd(`${appFolder}`);
-    shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', (error) => {
-        if (error) {
-            logError(`Command 'gradlew assembleRelease -x bundleReleaseJsAndAssets' failed with error code ${error}`, true);
-            return;
-        }
+            shell.cd(`${appFolder}`);
+            shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', (error) => {
+                if (error) {
+                    logError(`Command 'gradlew assembleRelease -x bundleReleaseJsAndAssets' failed with error code ${error}`, true);
+                    return;
+                }
 
-        logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))}.`);
-        resolve();
-    });
+                logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))}.`);
+                resolve();
+            });
+        }).catch(e => reject(e));
 });
 
 const configureAndroidProperties = c => new Promise((resolve) => {
@@ -815,10 +850,11 @@ const _getPrivateConfig = (c, platform) => {
     const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.globalConfigFolder) : null;
     const privateConfigPath = appConfigSPPClean || path.join(privateConfigFolder, 'config.private.json');
     c.paths.privateConfigPath = privateConfigPath;
+    c.paths.privateConfigDir = privateConfigPath.replace('/config.private.json', '');
     if (fs.existsSync(privateConfigPath)) {
         try {
             const output = JSON.parse(fs.readFileSync(privateConfigPath));
-            output.parentFolder = privateConfigPath.replace('/config.private.json', '');
+            output.parentFolder = c.paths.privateConfigDir;
             output.path = privateConfigPath;
             logInfo(
                 `Found ${chalk.white(privateConfigPath)}. Will use it for production releases!`,

@@ -1170,7 +1170,7 @@ const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${i + 1}] ${ch
 
 let _currentQuestion;
 
-const askQuestion = question => new Promise((resolve, reject) => {
+const askQuestion = (question, obj, key) => new Promise((resolve, reject) => {
     if (!_currentQuestion) {
         _currentQuestion = require('readline').createInterface({
             input: process.stdin,
@@ -1179,6 +1179,7 @@ const askQuestion = question => new Promise((resolve, reject) => {
     }
 
     _currentQuestion.question(getQuestion(question), (v) => {
+        if (obj && key) obj[key] = v;
         resolve(v);
     });
 });
