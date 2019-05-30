@@ -119,6 +119,19 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
+const logWelcome = () => {
+    console.log(`
+
+ ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗
+ ${chalk.red('██╔══██╗')}██╔════╝${chalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalk.red('██║   ██║')}██╔════╝
+ ${chalk.red('██████╔╝')}█████╗  ${chalk.red('██╔██╗ ██║')}███████║   ██║   ██║${chalk.red('██║   ██║')}█████╗
+ ${chalk.red('██╔══██╗')}██╔══╝  ${chalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${chalk.red('╚██╗ ██╔╝')}██╔══╝
+ ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗
+ ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝
+      🚀🚀🚀 https://www.npmjs.com/package/renative 🚀🚀🚀
+    `);
+};
+
 const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
         if (reject) {
@@ -1125,6 +1138,7 @@ const finishQuestion = () => new Promise((resolve, reject) => {
 
 export {
     SUPPORTED_PLATFORMS,
+    logWelcome,
     isPlatformSupported,
     cleanNodeModules,
     isBuildSchemeSupported,
@@ -1192,6 +1206,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    logWelcome,
     copyBuildsFolder,
     cleanNodeModules,
     isPlatformSupported,

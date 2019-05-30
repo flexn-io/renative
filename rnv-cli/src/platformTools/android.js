@@ -33,15 +33,16 @@ import {
     logSuccess,
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
-import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, IS_WEAR_UNDER_SIZE } from '../constants';
+import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, IS_WEAR_UNDER_SIZE } from '../constants';
 
 const readline = require('readline');
 
-const composeDevicesString = (devices) => {
+const composeDevicesString = (devices, platform) => {
     const devicesArray = [];
 
+    const p = platform;
     devices.forEach((v, i) => {
-        devicesArray.push(_getDeviceString(v, i));
+        if ((p === ANDROID_WEAR && v.isWear) || (p === ANDROID_TV && v.isTV) || p === ANDROID && v.isMobile) devicesArray.push(_getDeviceString(v, i));
     });
 
     return `\n${devicesArray.join('')}`;
@@ -51,9 +52,9 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     logTask(`launchAndroidSimulator:${platform}:${target}`);
 
     if (target === '?' || target === undefined || target === '') {
-        return _listAndroidTargets(c, true, false)
+        return _listAndroidTargets(c, true, false, false)
             .then((devicesArr) => {
-                const devicesString = composeDevicesString(devicesArr);
+                const devicesString = composeDevicesString(devicesArr, platform);
                 const readlineInterface = readline.createInterface({
                     input: process.stdin,
                     output: process.stdout,
@@ -75,7 +76,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         if (isIndependentThread) {
             execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
-            return Promise.resolve();
+            resolve();
         }
         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
     }
@@ -84,7 +85,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
 
 const listAndroidTargets = (c) => {
     logTask('listAndroidTargets');
-    return _listAndroidTargets(c, false, false).then(composeDevicesString).then((devices) => {
+    return _listAndroidTargets(c, false, false).then(list => composeDevicesString(list, c.platform)).then((devices) => {
         console.log(devices);
         return devices;
     });
@@ -105,8 +106,8 @@ const _getDeviceString = (device, i) => {
     }\n`;
 };
 
-const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
-    logTask('_listAndroidTargets');
+const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false, skipPlatformFilter = false) => {
+    logTask(`_listAndroidTargets:${c.platform}`);
     try {
         let devicesResult;
         let avdResult;
@@ -117,7 +118,7 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
         if (!skipAvds) {
             avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
         }
-        return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
+        return _parseDevicesResult(devicesResult, avdResult, deviceOnly, skipPlatformFilter, c);
     } catch (e) {
         return Promise.reject(e);
     }
@@ -137,6 +138,8 @@ const isSquareishDevice = (width, height) => {
 };
 
 const getDeviceType = async (device, c) => {
+    device.isPhone = true;
+    device.isMobile = true;
     if (device.udid !== 'unknown') {
         const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
         const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
@@ -164,6 +167,8 @@ const getDeviceType = async (device, c) => {
         }
 
         device.isTV = !!dumpsysResult;
+        device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
+        device.isMobile = !device.isWear && !device.isTV;
         device.screenProps = screenProps;
         return device;
     }
@@ -188,7 +193,8 @@ const getDeviceType = async (device, c) => {
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
         device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
         device.isTV = batteryPresent !== 'yes';
-
+        device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
+        device.isMobile = !device.isWear && !device.isTV;
         return device;
     }
     return device;
@@ -211,7 +217,7 @@ const getAvdDetails = async (deviceName) => {
     return {};
 };
 
-const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
+const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, skipPlatformFilter, c) => {
     const devices = [];
 
     if (devicesString) {
@@ -380,7 +386,7 @@ const _runGradle = async (c, platform) => {
         await _runGradleApp(c, platform, appFolder, signingConfig, dv);
     } else if (devicesArr.length > 1) {
         logWarning('More than one device is connected!');
-        const devicesString = composeDevicesString(devicesArr);
+        const devicesString = composeDevicesString(devicesArr, platform);
         const readlineInterface = readline.createInterface({
             input: process.stdin,
             output: process.stdout,

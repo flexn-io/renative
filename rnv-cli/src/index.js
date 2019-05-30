@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import shell from 'shelljs';
-import Common, { initializeBuilder, logComplete, logError } from './common';
+import Common, { initializeBuilder, logComplete, logError, logWelcome } from './common';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
 import App from './cli/app';
@@ -32,18 +32,31 @@ const commands = {
 };
 
 const run = (cmd, subCmd, program, process) => {
-    initializeBuilder(cmd, subCmd, process, program)
+    checkWelcome(cmd, subCmd)
+        .then(() => initializeBuilder(cmd, subCmd, process, program))
         .then((v) => {
             if (commands[cmd]) {
                 commands[cmd](v)
                     .then(() => logComplete(true))
                     .catch(e => logError(e, true));
             } else if (program.help) {
-                let cmdsString = '';
-                for (const key in commands) {
-                    cmdsString += `rnv ${key}\n`;
-                }
-                console.log(`
+                logComplete(true);
+            } else {
+                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv')} for help`, true);
+            }
+        })
+        .catch(e => logError(e, true));
+};
+
+const checkWelcome = (cmd, subCmd) => new Promise((resolve, reject) => {
+    if (!cmd && !subCmd) {
+        let cmdsString = '';
+        for (const key in commands) {
+            cmdsString += `${key}, `;
+        }
+        logWelcome();
+
+        console.log(`
 ${chalk.bold.white('COMMANDS:')}
 
 ${cmdsString}
@@ -65,14 +78,11 @@ ${chalk.bold.white('OPTIONS:')}
 '-x, --exeMethod <value>', 'Executable method in buildHooks'
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
-                `);
-                logComplete(true);
-            } else {
-                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv')} for help`, true);
-            }
-        })
-        .catch(e => logError(e, true));
-};
+      `);
+    } else {
+        resolve();
+    }
+});
 
 export { Constants, Runner, App, Platform, Target, Common, Exec, FileUtils };
 
