@@ -217,7 +217,10 @@ const _getPath = (c, p, key = 'undefined', original) => {
     if (p.startsWith('./')) {
         return path.join(c.paths.projectRootFolder, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder).replace(/~/g, c.paths.homeFolder);
+    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
+        .replace(/~/g, c.paths.homeFolder)
+        .replace(/USER_HOME/g, c.paths.homeFolder)
+        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {

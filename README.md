@@ -392,6 +392,32 @@ You can also edit your preferred emulator targets (allows you to run `rnv target
 }
 ```
 
+#### Project Configurations
+
+If you want to use different settings to those defined globally per project you can update `./rnv-config.json`
+
+```json
+{
+  "globalConfigFolder": "~/.rnv",
+  "appConfigsFolder": "./appConfigs",
+  "platformTemplatesFolder": "RNV_HOME/platformTemplates",
+  "entryFolder": "./",
+  "platformAssetsFolder": "/platformAssets",
+  "platformBuildsFolder": "PROJECT_HOME/platformBuilds",
+  "projectPlugins": "./projectConfig/plugins",
+  "projectConfigFolder": "./projectConfig",
+  "defaultPorts": {}
+}
+```
+
+You can use following keys in path:
+
+```bash
+RNV_HOME - Home location of ReNative CLI
+USER_HOME - Home location of user
+PROJECT_HOME - Home location of actual project
+```
+
 #### App Configurations
 
 Re-Generate platform projects (for helloWorld app config platforms):
