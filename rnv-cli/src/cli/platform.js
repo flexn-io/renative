@@ -9,11 +9,11 @@ import {
     logTask,
     getQuestion,
     logSuccess,
+    askQuestion,
+    finishQuestion
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../fileutils';
 import { executePipe } from '../buildHooks';
-
-const readline = require('readline');
 
 const CONFIGURE = 'configure';
 const UPDATE = 'update';
@@ -91,21 +91,25 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
 const _runEjectPlatforms = c => new Promise((resolve) => {
     logTask('_runEjectPlatforms');
 
-    const readlineInterface = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    readlineInterface.question(
-        getQuestion(
-            'This will copy platformTemplates folder from ReNative managed directly to your project. Type (y) to confirm'
-        ),
-        (v) => {
-            // console.log(`Hi ${v}!`);
+    askQuestion('This will copy platformTemplates folder from ReNative managed directly to your project. Type (y) to confirm')
+        .then((v) => {
+            finishQuestion();
             if (v.toLowerCase() === 'y') {
                 const ptfn = 'platformTemplates';
 
-                copyFolderContentsRecursiveSync(c.paths.rnvPlatformTemplatesFolder, path.join(c.paths.projectRootFolder, ptfn));
+                const supportedPlatforms = c.files.projectPackage ? c.files.projectPackage.supportedPlatforms : null;
+                const rptf = c.paths.rnvPlatformTemplatesFolder;
+                const prf = c.paths.projectRootFolder;
+                if (supportedPlatforms) {
+                    copyFolderContentsRecursiveSync(path.join(rptf, '_shared'), path.join(prf, ptfn, '_shared'));
+                    for (let i = 0; i < supportedPlatforms.length; i++) {
+                        const sp = supportedPlatforms[i];
+                        copyFolderContentsRecursiveSync(path.join(rptf, sp), path.join(prf, ptfn, sp));
+                    }
+                } else {
+                    copyFolderContentsRecursiveSync(rptf, path.join(prf, ptfn));
+                }
+
 
                 c.files.projectConfig.platformTemplatesFolder = `./${ptfn}`;
 
@@ -118,32 +122,18 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
                 );
 
                 resolve();
-
-                // const newCommand = Object.assign({}, c);
-                // newCommand.command = 'app';
-                // newCommand.subCommand = 'configure';
-                // AppCLI(newCommand).then(() => resolve()).catch(e => reject(e));
             } else {
                 resolve();
             }
-        }
-    );
+        });
 });
 
 const _runConnectPlatforms = c => new Promise((resolve) => {
     logTask('_runConnectPlatforms');
 
-    const readlineInterface = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
-
-    readlineInterface.question(
-        getQuestion(
-            'This will point platformTemplates folder from your local project to ReNative managed one. Type (y) to confirm'
-        ),
-        (v) => {
-            // console.log(`Hi ${v}!`);
+    askQuestion('This will point platformTemplates folder from your local project to ReNative managed one. Type (y) to confirm')
+        .then((v) => {
+            finishQuestion();
             if (v.toLowerCase() === 'y') {
                 const ptfn = 'platformTemplates';
 
@@ -159,8 +149,7 @@ const _runConnectPlatforms = c => new Promise((resolve) => {
             } else {
                 resolve();
             }
-        }
-    );
+        });
 });
 
 const _addPlatform = (platform, program, process) => new Promise((resolve, reject) => {

@@ -482,7 +482,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     // PERMISSIONS
     let pluginPermissions = '';
-    const { permissions } = c.files.appConfigFile.platforms[platform];
+    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
     if (permissions) {
         permissions.forEach((v) => {
             if (c.files.permissionsConfig) {
@@ -500,6 +500,68 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
     ]);
 
+    // ORIENTATIONS
+    let pluginOrientations = '';
+    const pluginOrientationPhoneKey = '<key>UISupportedInterfaceOrientations</key>';
+    const pluginOrientationTabKey = '<key>UISupportedInterfaceOrientations~ipad</key>';
+    let pluginOrientationPhone = `${pluginOrientationPhoneKey}
+    <array>
+      <string>UIInterfaceOrientationPortrait</string>
+    </array>`;
+    let pluginOrientationTab = `${pluginOrientationTabKey}
+    <array>
+      <string>UIInterfaceOrientationPortrait</string>
+    </array>`;
+
+    if (orientationSupport) {
+        if (orientationSupport.phone) {
+            pluginOrientationPhone = `${pluginOrientationPhoneKey}\n    <array>`;
+            orientationSupport.phone.forEach((v) => {
+                pluginOrientationPhone += `<string>${v}</string>\n`;
+            });
+            pluginOrientationPhone += '    </array>';
+        }
+        if (orientationSupport.tab) {
+            pluginOrientationTab = `${pluginOrientationTabKey}\n    <array>`;
+            orientationSupport.tab.forEach((v) => {
+                pluginOrientationTab += `<string>${v}</string>\n`;
+            });
+            pluginOrientationTab += '    </array>';
+        }
+    }
+    pluginOrientations = `${pluginOrientationPhone}\n${pluginOrientationTab}`;
+
+    // URL_SCHEMES
+    let pluginUrlSchemes = '';
+
+    if (urlScheme) {
+        pluginUrlSchemes = `<key>CFBundleTypeRole</key>
+      <string>Editor</string>
+      <key>CFBundleURLName</key>
+      <string>${urlScheme}</string>
+      <key>CFBundleURLSchemes</key>
+      <array>
+        <string>${urlScheme}</string>
+      </array>`;
+    }
+
+    // PLIST EXTRAS
+    let pluginPlistExtra = '';
+
+    if (plistExtra) {
+        for (const key in plistExtra) {
+            let value;
+            if (typeof plistExtra[key] === 'boolean') {
+                value = `<${plistExtra[key]} />`;
+            } else {
+                value = `<string>${plistExtra[key]}</string>`;
+            }
+            pluginPlistExtra += `<key>${key}</key>\n${value}\n`;
+        }
+    }
+
+
+    // PROJECT
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse(() => {
@@ -544,6 +606,9 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             { pattern: '{{PLUGIN_PERMISSIONS}}', override: pluginPermissions },
             { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
             { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
+            { pattern: '{{PLUGIN_ORIENTATIONS}}', override: pluginOrientations },
+            { pattern: '{{PLUGIN_URL_SCHEMES}}', override: pluginUrlSchemes },
+            { pattern: '{{PLUGIN_PLIST_EXTRA}}', override: pluginPlistExtra },
         ]);
 
         resolve();

@@ -277,6 +277,12 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.projectConfigFolder = path.join(c.paths.projectRootFolder, 'projectConfig');
     c.paths.projectPluginsFolder = path.join(c.paths.projectConfigFolder, 'plugins');
 
+    try {
+        c.files.projectPackage = JSON.parse(fs.readFileSync(c.paths.projectPackagePath).toString());
+    } catch (e) {
+        // IGNORE
+    }
+
     const hasProjectConfigInCurrentDir = fs.existsSync(c.paths.projectConfigPath);
 
     if (hasProjectConfigInCurrentDir) {

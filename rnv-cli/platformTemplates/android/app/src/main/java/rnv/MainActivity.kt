@@ -5,7 +5,7 @@ import com.facebook.react.ReactActivity
 {{PLUGIN_ACTIVITY_IMPORTS}}
 
 /**
- * Created by paveljacko on 24/07/2018.
+ * Created by ReNative (https://renative.org)
  */
 
 class MainActivity : ReactActivity() {

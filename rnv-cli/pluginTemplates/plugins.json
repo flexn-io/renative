@@ -154,7 +154,7 @@
             "androidtv": { "package": "com.sensors.RNSensorsPackage" }
         },
         "react-native-keep-awake": {
-            "version": "2.0.6",
+            "version": "4.0.0",
             "ios": { "podName": "react-native-keep-awake" },
             "tvos": { "podName": "react-native-keep-awake" },
             "android": { "package": "com.corbt.keepawake.KCKeepAwakePackage" },
@@ -221,7 +221,7 @@
             "tvos": { "podName": "ReactNativePermissions" }
         },
         "react-native-device-info": {
-            "version": "1.4.3",
+            "version": "1.5.0",
             "ios": { "podName": "RNDeviceInfo" },
             "tvos": { "podName": "RNDeviceInfo" },
             "android": { "package": "com.learnium.RNDeviceInfo.RNDeviceInfo" },

@@ -7,6 +7,8 @@ import {
     logTask,
     SUPPORTED_PLATFORMS,
     getQuestion,
+    askQuestion,
+    finishQuestion,
     logSuccess,
 } from '../common';
 import { executePipe } from '../buildHooks';
@@ -83,9 +85,13 @@ const _getPluginList = (c, isUpdate = false) => {
         const installedString = installedPlugin ? chalk.red('installed') : chalk.green('not installed');
         if (isUpdate && installedPlugin) {
             output.plugins.push(k);
-            output.asString += `-[${i}] ${chalk.white(k)} (${chalk.red(installedPlugin.version)}) => (${chalk.green(
-                p.version
-            )})\n`;
+            let versionString;
+            if (installedPlugin.version !== p.version) {
+                versionString = `(${chalk.red(installedPlugin.version)}) => (${chalk.green(p.version)})`;
+            } else {
+                versionString = `(${chalk.green(installedPlugin.version)})`;
+            }
+            output.asString += `-[${i}] ${chalk.white(k)} ${versionString}\n`;
             i++;
         } else if (!isUpdate) {
             output.plugins.push(k);
@@ -157,24 +163,20 @@ const _runUpdate = c => new Promise((resolve) => {
 
     console.log(o.asString);
 
-    const readlineInterface = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-    });
+    askQuestion('Above installed plugins will be updated with RNV. press (y) to confirm')
+        .then((v) => {
+            finishQuestion();
+            const { plugins } = c.files.pluginConfig;
+            Object.keys(plugins).forEach((key) => {
+                c.files.pluginConfig.plugins[key] = o.json[key];
+            });
 
-    readlineInterface.question(getQuestion('Above installed plugins will be updated with RNV. press (y) to confirm'), (v) => {
-        const { plugins } = c.files.pluginConfig;
-        Object.keys(plugins).forEach((key) => {
-            c.files.pluginConfig.plugins[key] = o.json[key];
+            fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+
+            logSuccess('Plugins updated successfully!');
+
+            resolve();
         });
-
-
-        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
-
-        logSuccess('Plugins updated successfully!');
-
-        resolve();
-    });
 });
 
 export { PIPES };
