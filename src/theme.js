@@ -1,6 +1,7 @@
 export default {
-    primaryFontFamily: 'TimeBurner',
-    header: {
-        primaryColor: '#FB8D62',
-    },
+    color1: '#222222',
+    color2: '#62DBFB',
+    color3: '#FB8D62',
+    color4: '#FFFFFF',
+    primaryFontFamily: 'TimeBurner'
 };

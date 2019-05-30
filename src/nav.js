@@ -1,5 +1,5 @@
 import React from 'react';
-import { PixelRatio } from 'react-native';
+import { PixelRatio, Platform } from 'react-native';
 import {
     Icon,
     Api,
@@ -19,10 +19,7 @@ import {
 } from './renative';
 import Theme from './theme';
 
-// PixelRatio.getPixelSizeForLayoutSize
-
 const isDrawerMenuBased = () => navStructure.root.menus.drawerMenu.isVisibleIn.includes(Api.platform);
-
 const isTopMenuBased = () => navStructure.root.menus.topMenu.isVisibleIn.includes(Api.platform);
 
 const navStructure = {
@@ -33,7 +30,7 @@ const navStructure = {
                 isVisibleIn: [IOS, ANDROID],
                 component: 'Menu',
                 options: {
-                    drawerBackgroundColor: '#222222',
+                    drawerBackgroundColor: Theme.color1,
                     drawerWidth: 250
                 },
                 navigationOptions: {},
@@ -94,12 +91,13 @@ const navStructure = {
         },
         navigationOptions: {
             headerTitleStyle: {
-                color: Theme.header.primaryColor,
+                color: Theme.color3,
                 fontFamily: Theme.primaryFontFamily,
             },
             headerStyle: {
-                backgroundColor: '#222222',
-                color: Theme.header.primaryColor,
+                backgroundColor: Theme.color1,
+                borderBottomWidth: isTopMenuBased ? 0 : 1,
+                color: Theme.color3,
             },
             headerLeft: (n) => {
                 if (!isDrawerMenuBased()) return null;
@@ -107,7 +105,7 @@ const navStructure = {
                     <Icon
                         iconFont="ionicons"
                         iconName="md-menu"
-                        iconColor={Theme.header.primaryColor}
+                        iconColor={Theme.color3}
                         style={{ width: 40, height: 40, marginLeft: 10 }}
                         onPress={() => {
                             Api.navigation.openDrawer();
@@ -134,11 +132,11 @@ const navStructure = {
         },
         navigationOptions: {
             headerStyle: {
-                backgroundColor: '#222222',
+                backgroundColor: Theme.color1,
             },
-            headerTintColor: Theme.header.primaryColor,
+            headerTintColor: Theme.color3,
             headerTitleStyle: {
-                color: Theme.header.primaryColor,
+                color: Theme.color3,
                 fontFamily: Theme.primaryFontFamily,
             },
         },

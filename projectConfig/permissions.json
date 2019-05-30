@@ -1,43 +1,51 @@
 {
     "permissions": {
         "ios": {
-            "APPLE_MUSIC": {
+            "NSAppleMusicUsageDescription": {
                 "key": "NSAppleMusicUsageDescription",
                 "desc": "Get favorite music"
             },
-            "BLUETOOTH": {
+            "NSBluetoothPeripheralUsageDescription": {
                 "key": "NSBluetoothPeripheralUsageDescription",
                 "desc": "Allow you to use your bluetooth to play music"
             },
-            "CALENDAR": {
+            "NSCalendarsUsageDescription": {
                 "key": "NSCalendarsUsageDescription",
                 "desc": "Calendar for add events"
             },
-            "CAMERA": {
+            "NSCameraUsageDescription": {
                 "key": "NSCameraUsageDescription",
                 "desc": "Need camera to scan QR Codes"
             },
-            "LOCATION": {
+            "NSLocationWhenInUseUsageDescription": {
                 "key": "NSLocationWhenInUseUsageDescription",
                 "desc": "Geolocation tags for photos"
             },
-            "MISC": {
+            "NSLocationAlwaysAndWhenInUseUsageDescription": {
+                "key": "NSLocationAlwaysAndWhenInUseUsageDescription",
+                "desc": "Geolocation tags for photos"
+            },
+            "NSLocationAlwaysUsageDescription": {
+                "key": "NSLocationAlwaysUsageDescription",
+                "desc": "Geolocation tags for photos"
+            },
+            "NSMicrophoneUsageDescription": {
                 "key": "NSMicrophoneUsageDescription",
                 "desc": "Need microphone for videos"
             },
-            "MOTION": {
+            "NSMotionUsageDescription": {
                 "key": "NSMotionUsageDescription",
                 "desc": "To know when device is moving"
             },
-            "PHOTO_ADD": {
+            "NSPhotoLibraryAddUsageDescription": {
                 "key": "NSPhotoLibraryAddUsageDescription",
                 "desc": "Need library to save images"
             },
-            "PHOTO_USAGE": {
+            "NSPhotoLibraryUsageDescription": {
                 "key": "NSPhotoLibraryUsageDescription",
                 "desc": "Allows to upload images from photo library"
             },
-            "SPEECH": {
+            "NSSpeechRecognitionUsageDescription": {
                 "key": "NSSpeechRecognitionUsageDescription",
                 "desc": "Speech Recognition to run in app commands"
             }

@@ -34,6 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             initialProperties: nil,
             launchOptions: launchOptions)
         vc.view = v
+        {{BACKGROUND_COLOR}}
         v?.frame = vc.view.bounds
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()

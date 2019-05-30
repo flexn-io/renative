@@ -119,6 +119,19 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
+const logWelcome = () => {
+    console.log(`
+
+ ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗
+ ${chalk.red('██╔══██╗')}██╔════╝${chalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalk.red('██║   ██║')}██╔════╝
+ ${chalk.red('██████╔╝')}█████╗  ${chalk.red('██╔██╗ ██║')}███████║   ██║   ██║${chalk.red('██║   ██║')}█████╗
+ ${chalk.red('██╔══██╗')}██╔══╝  ${chalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${chalk.red('╚██╗ ██╔╝')}██╔══╝
+ ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗
+ ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝
+      🚀🚀🚀 https://www.npmjs.com/package/renative 🚀🚀🚀
+    `);
+};
+
 const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
         if (reject) {
@@ -143,33 +156,19 @@ const isPlatformSupportedSync = (platform, resolve, reject) => {
 const isPlatformSupported = c => new Promise((resolve, reject) => {
     logTask(`isPlatformSupported:${c.platform}`);
     if (!c.platform || c.platform === '?') {
-        let platformsAsString = '';
-        const platformsAsArray = [];
-        const platformsAsObj = c.files.appConfigFile.platforms;
-        let i = 1;
-        for (const k in platformsAsObj) {
-            platformsAsString += `-[${i}] ${chalk.white(k)}\n`;
-            platformsAsArray.push(k);
-            i++;
-        }
+        const platformsAsObj = c.files.appConfigFile ? c.files.appConfigFile.platforms : c.supportedPlatforms;
+        const opts = generateOptions(platformsAsObj);
 
-        askQuestion(`Pick one of available platforms (number or text):\n${platformsAsString}`).then((v) => {
+        askQuestion(`Pick one of available platforms (number or text):\n${opts.asString}`).then((v) => {
             finishQuestion();
-            let selectedPlatform;
-            if (isNaN(v)) {
-                selectedPlatform = v;
-            } else {
-                selectedPlatform = platformsAsArray[v - 1];
-            }
 
-            if (!platformsAsObj[selectedPlatform]) {
-                reject(`${chalk.white(v)} ...Really?! 🙈`);
-                return;
-            }
-
-            c.platform = selectedPlatform;
-            c.program.platform = selectedPlatform;
-            resolve(selectedPlatform);
+            opts.pick(v)
+                .then((selectedPlatform) => {
+                    c.platform = selectedPlatform;
+                    c.program.platform = selectedPlatform;
+                    resolve(selectedPlatform);
+                })
+                .catch(e => reject(e));
         });
     } else if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
         reject(chalk.red(`Platform ${c.platform} is not supported`));
@@ -195,33 +194,15 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
         if (schemeDoesNotExist && scheme && scheme !== '?') {
             logError('Build scheme you picked does not exists.');
         }
-        let schemesAsString = '';
-        const schemesAsArray = [];
-        let i = 1;
+        const opts = generateOptions(buildSchemes);
 
-        for (const k in buildSchemes) {
-            schemesAsString += `-[${i}] ${chalk.white(k)}\n`;
-            schemesAsArray.push(k);
-            i++;
-        }
-
-        askQuestion(`Pick one of available buildSchemes (number or text):\n${schemesAsString}`).then((v) => {
+        askQuestion(`Pick one of available buildSchemes (number or text):\n${opts.asString}`).then((v) => {
             finishQuestion();
-            let selectedScheme;
-            if (isNaN(v)) {
-                selectedScheme = v;
-            } else {
-                selectedScheme = schemesAsArray[v - 1];
-            }
-
-            if (!buildSchemes[selectedScheme]) {
-                reject(`${chalk.white(v)} ...Really?! 🙈`);
-                return;
-            }
-
-            c.program.scheme = selectedScheme;
-            console.log('SSJSJSJSJJS', selectedScheme);
-            resolve(selectedScheme);
+            opts.pick(v)
+                .then((selectedScheme) => {
+                    c.program.scheme = selectedScheme;
+                    resolve(selectedScheme);
+                }).catch(e => reject(e));
         });
     } else {
         resolve(scheme);
@@ -236,7 +217,10 @@ const _getPath = (c, p, key = 'undefined', original) => {
     if (p.startsWith('./')) {
         return path.join(c.paths.projectRootFolder, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder).replace(/~/g, c.paths.homeFolder);
+    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
+        .replace(/~/g, c.paths.homeFolder)
+        .replace(/USER_HOME/g, c.paths.homeFolder)
+        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
@@ -266,8 +250,13 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvPluginsFolder = path.join(c.paths.rnvHomeFolder, 'plugins');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
+    c.supportedPlatforms = {};
+    // TODO USE OS Specific Platforms
+    SUPPORTED_PLATFORMS.forEach((v) => {
+        c.supportedPlatforms[v] = true;
+    });
 
-    if (c.command === 'app' && c.subCommand === 'create') {
+    if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
         resolve(c);
         return;
     }
@@ -290,6 +279,12 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.babelConfigPath = path.join(c.paths.projectRootFolder, RN_BABEL_CONFIG_NAME);
     c.paths.projectConfigFolder = path.join(c.paths.projectRootFolder, 'projectConfig');
     c.paths.projectPluginsFolder = path.join(c.paths.projectConfigFolder, 'plugins');
+
+    try {
+        c.files.projectPackage = JSON.parse(fs.readFileSync(c.paths.projectPackagePath).toString());
+    } catch (e) {
+        // IGNORE
+    }
 
     const hasProjectConfigInCurrentDir = fs.existsSync(c.paths.projectConfigPath);
 
@@ -342,7 +337,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         reject(
             `Looks like this directory is not ReNativeproject. Project config ${chalk.white(
                 c.paths.projectConfigPath,
-            )} is missing!. You can create new project with ${chalk.white('rnv app create')}`,
+            )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
         );
     }
 
@@ -673,7 +668,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         }
 
         // Check global SDKs
-        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/emulator');
+        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'emulator/emulator');
         c.cli[CLI_ANDROID_ADB] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
         c.cli[CLI_ANDROID_AVDMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/avdmanager');
         c.cli[CLI_ANDROID_SDKMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
@@ -981,7 +976,7 @@ const getAppVersionCode = (c, platform) => {
 };
 
 const logErrorPlatform = (platform, resolve) => {
-    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.bold(_currentJob)}`);
+    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(_currentJob)}`);
     resolve();
 };
 
@@ -1098,6 +1093,81 @@ const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     });
 });
 
+const generateOptions = (inputData, isMultiChoice = false, mapping) => {
+    let asString = '';
+    const valuesAsObject = {};
+    const valuesAsArray = [];
+    const keysAsObject = {};
+    const keysAsArray = [];
+    const isArray = Array.isArray(inputData);
+
+    const output = {
+        pick: v => new Promise((resolve, reject) => {
+            let selectedOptions = [];
+            if (isMultiChoice) {
+                const wrongOptions = [];
+                if (v) {
+                    const choiceArr = v.split(',');
+                    choiceArr.forEach((choice) => {
+                        let selectedOption = choice;
+                        if (isNaN(choice)) {
+                            selectedOption = choice;
+                        } else {
+                            selectedOption = keysAsArray[choice - 1];
+                        }
+                        selectedOptions.push(selectedOption);
+                        if (!valuesAsObject[selectedOption]) {
+                            wrongOptions.push(choice);
+                        }
+                    });
+                } else {
+                    selectedOptions = keysAsArray;
+                }
+                if (wrongOptions.length) {
+                    reject(`${chalk.white(wrongOptions.join(','))} ...Really?! 🙈`);
+                } else {
+                    resolve(selectedOptions);
+                }
+            } else {
+                let selectedOption = v;
+                if (isNaN(v)) {
+                    selectedOption = v;
+                } else {
+                    selectedOption = keysAsArray[v - 1];
+                }
+                if (!valuesAsObject[selectedOption]) {
+                    reject(`${chalk.white(v)} ...Really?! 🙈`);
+                } else resolve(selectedOption);
+            }
+        })
+    };
+    if (isArray) {
+        inputData.map((v, i) => {
+            asString += _generateOptionString(i, v, mapping, v);
+            valuesAsArray.push(v);
+            if (!mapping) keysAsArray.push(v);
+            if (!mapping) valuesAsObject[v] = v;
+        });
+    } else {
+        let i = 0;
+        for (const k in inputData) {
+            const v = inputData[k];
+            asString += _generateOptionString(i, v, mapping, k);
+            keysAsArray.push(k);
+            keysAsObject[k] = true;
+            valuesAsObject[k] = v;
+            valuesAsArray.push(v);
+            i++;
+        }
+    }
+    output.valuesAsArray = valuesAsArray;
+    output.valuesAsObject = valuesAsObject;
+    output.asString = asString;
+    return output;
+};
+
+const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${i + 1}] ${chalk.white(mapping ? '' : defaultVal)} \n`;
+
 let _currentQuestion;
 
 const askQuestion = question => new Promise((resolve, reject) => {
@@ -1120,6 +1190,8 @@ const finishQuestion = () => new Promise((resolve, reject) => {
 
 export {
     SUPPORTED_PLATFORMS,
+    generateOptions,
+    logWelcome,
     isPlatformSupported,
     cleanNodeModules,
     isBuildSchemeSupported,
@@ -1187,6 +1259,8 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    generateOptions,
+    logWelcome,
     copyBuildsFolder,
     cleanNodeModules,
     isPlatformSupported,

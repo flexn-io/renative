@@ -3,6 +3,8 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: "../../../node_modules/react-native/react.gradle"
 
+{{PLUGIN_LOCAL_PROPERTIES}}
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -31,7 +33,7 @@ android {
         exclude 'META-INF/notice.txt'
     }
     signingConfigs {
-        release
+{{PLUGIN_SIGNING_CONFIGS}}
     }
     buildTypes {
         release {
@@ -40,25 +42,10 @@ android {
             signingConfig signingConfigs.release
         }
     }
-}
-
-if (signingPropsFile != null && signingPropsFile.canRead()){
-    Properties props = new Properties()
-    props.load(signingPropsFile.newReader('UTF-8'))
-
-    if (props!=null && props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
-            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
-        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
-        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
-        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
-        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
-    } else {
-        println 'signing.properties found but some entries are missing'
-        android.buildTypes.release.signingConfig = null
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
     }
-}else {
-    println 'signing.properties not found'
-    android.buildTypes.release.signingConfig = null
 }
 
 dependencies {

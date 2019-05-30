@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
-import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, getAppFolder, logWarning } from './common';
+import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, getAppFolder, logWarning, generateOptions } from './common';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from './constants';
 import { executeAsync, execShellAsync, execCLI } from './exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from './fileutils';
@@ -97,20 +97,13 @@ const listHooks = c => new Promise((resolve, reject) => {
 
     buildHooks(c)
         .then(() => {
-            let hooksAsString = `\n${chalk.blue('Hooks:')}\n`;
             if (c.buildHooks) {
-                let i = 1;
-                for (const k in c.buildHooks) {
-                    hooksAsString += `-[${i}] ${chalk.white(k)}\n`;
-                    i++;
-                }
+                const hookOpts = generateOptions(c.buildHooks);
+                let hooksAsString = `\n${chalk.blue('Hooks:')}\n${hookOpts.asString}`;
+
                 if (c.buildPipes) {
-                    hooksAsString += `\n${chalk.blue('Pipes:')}\n`;
-                    i = 1;
-                    for (const k in c.buildPipes) {
-                        hooksAsString += `-[${i}] ${chalk.white(k)}\n`;
-                        i++;
-                    }
+                    const pipeOpts = generateOptions(c.buildPipes);
+                    hooksAsString += `\n${chalk.blue('Pipes:')}\n${pipeOpts.asString}`;
                 }
                 console.log(hooksAsString);
                 resolve();
@@ -124,13 +117,11 @@ const listHooks = c => new Promise((resolve, reject) => {
 const listPipes = c => new Promise((resolve, reject) => {
     logTask('listPipes');
 
-    let pipesAsString = '\n';
-    let i = 1;
-    for (const k in PIPES) {
-        pipesAsString += `-[${i}] ${chalk.white(PIPES[k])}\n`;
-        i++;
-    }
-    console.log(pipesAsString);
+    buildHooks(c)
+        .then(() => {
+            const pipeOpts = generateOptions(c.buildPipes);
+            console.log(`Pipes:\n${pipeOpts.asString}`);
+        }).catch(e => reject(e));
 });
 
 export { buildHooks, listHooks, executeHook, executePipe, listPipes };

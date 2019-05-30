@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
@@ -26,8 +27,13 @@ import {
     getAppTemplateFolder,
     checkPortInUse,
     logInfo,
+    askQuestion,
+    finishQuestion,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { selectWebToolAndDeploy } from '../deployTools/webTools';
+
+import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const { fork } = require('child_process');
 
@@ -45,7 +51,7 @@ function buildWeb(c, platform) {
 
     const wbp = path.resolve(c.paths.nodeModulesFolder, 'webpack/bin/webpack.js');
 
-    return execShellAsync(`NODE_ENV=production ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
+    return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 }
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
@@ -128,4 +134,9 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     resolve();
 });
 
-export { buildWeb, runWeb, configureWebProject, runWebDevServer };
+const deployWeb = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`deployWeb:${platform}`);
+    selectWebToolAndDeploy(c, platform).then(resolve).catch(reject);
+});
+
+export { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb };

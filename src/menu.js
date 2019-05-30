@@ -2,15 +2,17 @@ import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Api, Button, Icon } from './renative';
 import { isTopMenuBased } from './nav';
+import Theme from './theme';
 
 let isTop;
 
 const styles = StyleSheet.create({
     containerVertical: {
         paddingTop: 40,
+        paddingLeft: 20,
         width: '100%',
         height: '100%',
-        backgroundColor: '#222222',
+        backgroundColor: Theme.color1,
         alignItems: 'center',
         borderRightWidth: 1,
         borderRightColor: '#AAAAAA',
@@ -20,7 +22,7 @@ const styles = StyleSheet.create({
         paddingLeft: 40,
         width: '100%',
         height: '100%',
-        backgroundColor: '#222222',
+        backgroundColor: Theme.color1,
         alignItems: 'center',
         borderBottomWidth: 1,
         borderBottomColor: '#AAAAAA',
@@ -28,15 +30,18 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: 'TimeBurner',
-        color: '#FFFFFF',
+        color: Theme.color4,
         fontSize: 20,
         marginTop: 10,
-        textAlign: 'center',
+        textAlign: 'left',
     },
     button: {
-        alignSelf: isTop ? 'flex-start' : 'stretch',
+        alignSelf: 'flex-start',
+        justifyContent: 'flex-start',
         marginHorizontal: 20,
         maxWidth: 400,
+        minWidth: 50,
+        borderWidth: 0,
     },
 });
 
@@ -54,6 +59,9 @@ Menu
                 </Text>
                 <Button
                     title="Home"
+                    iconFont="ionicons"
+                    iconName="md-home"
+                    iconColor={Theme.color3}
                     style={styles.button}
                     onPress={() => {
                         Api.navigation.navigate('Home', {
@@ -65,6 +73,9 @@ Menu
                 />
                 <Button
                     title="My Page"
+                    iconFont="ionicons"
+                    iconName="md-book"
+                    iconColor={Theme.color3}
                     style={styles.button}
                     onPress={() => {
                         Api.navigation.navigate('MyPage');
@@ -72,6 +83,9 @@ Menu
                 />
                 <Button
                     title="My Modal"
+                    iconFont="ionicons"
+                    iconName="ios-albums"
+                    iconColor={Theme.color3}
                     style={styles.button}
                     onPress={() => {
                         Api.navigation.navigate('MyModal');

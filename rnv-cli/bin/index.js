@@ -14,20 +14,21 @@ var cmdOption;
 
 program
     .version(package.version)
-    .option('-i, --info', 'Show full debug info')
-    .option('-u, --update', 'Force update dependencies (iOS only)')
-    .option('-p, --platform <value>', 'Select specific platform') // <ios|android|web|...>
-    .option('-c, --appConfigID <value>', 'Select specific appConfigID') // <ios|android|web|...>
-    .option('-t, --target <value>', 'Select specific simulator') // <.....>
-    .option('-d, --device [value]', 'Select connected device')
-    .option('-s, --scheme <value>', 'Select build scheme') // <Debug | Release>
-    .option('-f, --filter <value>', 'Filter Value')
-    .option('-l, --list', 'Return list of items related to command') // <alpha|beta|prod>
-    .option('-r, --reset', 'Also perform reset')
+    .option('-i, --info', 'show full debug Info')
+    .option('-u, --update', 'force Update dependencies (iOS only)')
+    .option('-p, --platform <value>', 'select specific Platform')
+    .option('-c, --appConfigID <value>', 'select specific app Config id')
+    .option('-t, --target <value>', 'select specific Target device/simulator')
+    .option('-d, --device [value]', 'select connected Device')
+    .option('-s, --scheme <value>', 'select build Scheme')
+    .option('-f, --filter <value>', 'Filter value')
+    .option('-l, --list', 'return List of items related to command')
+    .option('-o, --only', 'run Only top command (Skip dependencies)')
+    .option('-r, --reset', 'also perform Reset')
     .option('-b, --blueprint', 'Blueprint for targets')
-    .option('-h, --host <value>', 'Custom Host IP')
-    .option('-x, --exeMethod <value>', 'Executable method in buildHooks')
-    .option('-P, --port <value>', 'Custom Port')
+    .option('-H, --host <value>', 'custom Host ip')
+    .option('-x, --exeMethod <value>', 'eXecutable method in buildHooks')
+    .option('-P, --port <value>', 'custom Port')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

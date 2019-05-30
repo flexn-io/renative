@@ -260,7 +260,7 @@ $ npm install renative@latest -g
 </table>
 
 ```bash
-$ rnv app create
+$ rnv new
 ```
 
 Follow steps in the terminal
@@ -390,6 +390,32 @@ You can also edit your preferred emulator targets (allows you to run `rnv target
         "webos": "emulator"
     }
 }
+```
+
+#### Project Configurations
+
+If you want to use different settings to those defined globally per project you can update `./rnv-config.json`
+
+```json
+{
+  "globalConfigFolder": "~/.rnv",
+  "appConfigsFolder": "./appConfigs",
+  "platformTemplatesFolder": "RNV_HOME/platformTemplates",
+  "entryFolder": "./",
+  "platformAssetsFolder": "/platformAssets",
+  "platformBuildsFolder": "PROJECT_HOME/platformBuilds",
+  "projectPlugins": "./projectConfig/plugins",
+  "projectConfigFolder": "./projectConfig",
+  "defaultPorts": {}
+}
+```
+
+You can use following keys in path:
+
+```bash
+RNV_HOME - Home location of ReNative CLI
+USER_HOME - Home location of user
+PROJECT_HOME - Home location of actual project
 ```
 
 #### App Configurations
@@ -1623,7 +1649,7 @@ rnv --version                       //Print ReNativeVersion
 rnv run -p <PLATFORM>               //Run app on simulator/device/browser
 rnv target launch -p <PLATFORM>     //Start target (i.e. simulator/ emulator)
 rnv app configure                   //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
-rnv app create                      //Create new app
+rnv new                      //Create new app
 rnv platform eject                  //Eject platformTemplates into project
 rnv platform connect                //Use ReNativepredefined templates
 ```
