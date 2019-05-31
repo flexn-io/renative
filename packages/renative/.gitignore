@@ -50,6 +50,7 @@ platformAssets/
 
 package-lock.json
 
+rnv-cli/dist
 buildHooks/dist
 
 release-configs.gradle

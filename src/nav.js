@@ -16,7 +16,7 @@ import {
     TVOS,
     TIZEN_WATCH,
     KAIOS
-} from './renative';
+} from 'renative';
 import Theme from './theme';
 
 const isDrawerMenuBased = () => navStructure.root.menus.drawerMenu.isVisibleIn.includes(Api.platform);

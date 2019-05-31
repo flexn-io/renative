@@ -241,7 +241,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.subCommand = subCmd;
     c.defaultPorts = DEFAULT_PORTS;
     c.appID = program.appConfigID;
-    c.paths.rnvRootFolder = path.join(__dirname, '../..');
+    c.paths.rnvRootFolder = path.join(__dirname, '..');
     c.paths.rnvHomeFolder = path.join(__dirname, '..');
     c.paths.rnvPlatformTemplatesFolder = path.join(c.paths.rnvHomeFolder, 'platformTemplates');
     c.paths.rnvPluginTemplatesFolder = path.join(c.paths.rnvHomeFolder, 'pluginTemplates');

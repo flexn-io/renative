@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
-import { Api, Button, Icon } from './renative';
+import { Api, Button, Icon } from 'renative';
 import { isTopMenuBased } from './nav';
 import Theme from './theme';
 

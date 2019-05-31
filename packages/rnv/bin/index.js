@@ -8,7 +8,7 @@ global.fetch = require('node-fetch');
 global.Headers = global.fetch.Headers;
 
 const cli = require('../dist/index.js');
-const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../../package.json')));
+const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')));
 var cmdValue;
 var cmdOption;
 

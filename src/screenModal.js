@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Api } from './renative';
+import { Icon, Api } from 'renative';
 import Theme from './theme';
 
 const styles = StyleSheet.create({

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Icon, Button, Api } from 'renative';
 import config from '../platformAssets/config.json';
 import packageJson from '../package.json';
-import { Icon, Button, Api } from './renative';
 import Theme from './theme';
 
 const styles = StyleSheet.create({

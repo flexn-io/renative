@@ -49,8 +49,3 @@ platformBuilds/
 platformAssets/
 
 package-lock.json
-
-buildHooks/dist
-
-release-configs.gradle
-rnv-config.local.json
