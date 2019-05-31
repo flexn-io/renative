@@ -1,4 +1,5 @@
 const Configs = require('../_shared/configs.js');
+const Extend = require('./webpack.extend.js');
 
 const config = {
     currentDir: __dirname,
@@ -7,7 +8,8 @@ const config = {
     extensions: ['tizenwatch', 'smarttv', 'web'],
     customScripts: [],
     devServerHost: '0.0.0.0',
-    baseUrl: ''
+    baseUrl: '',
+    ...Extend
 };
 
 const C = Configs.generateConfig(config);

@@ -696,6 +696,7 @@ const _launchSimulator = (selectedDevice) => {
 };
 
 const _getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
+    logTask(`_getAppleDevices:${platform},ignoreDevices:${ignoreDevices},ignoreSimulators${ignoreSimulators}`);
     const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
         encoding: 'utf8',
     });

@@ -13,37 +13,39 @@ function generateConfig(config) {
     const appBuildPublicDir = path.resolve(config.currentDir, config.buildFolder || 'public');
 
     const baseUrl = config.baseUrl || '';
-    const devServerHost = config.devServerHost || '0.0.0.0'
+    const devServerHost = config.devServerHost || '0.0.0.0';
+
+    const modulePaths = [
+        'src',
+        'packages',
+        'node_modules/react-navigation-tabs',
+        'node_modules/react-navigation-stack',
+        'node_modules/react-navigation',
+        'node_modules/@react-navigation',
+        'node_modules/react-native-gesture-handler',
+        'node_modules/react-native-reanimated',
+        'node_modules/react-native-camera',
+        'node_modules/react-native-actionsheet',
+        'node_modules/react-native-root-toast',
+        'node_modules/react-native-root-siblings',
+        'node_modules/static-container',
+        'node_modules/react-native-material-dropdown',
+        'node_modules/react-native-material-buttons',
+        'node_modules/react-native-material-textfield',
+        'node_modules/react-native-material-ripple',
+        'node_modules/react-native-easy-grid',
+        'node_modules/native-base-shoutem-theme',
+        'node_modules/react-native-drawer',
+        'node_modules/react-native-safe-area-view',
+        'node_modules/react-native-vector-icons',
+        'node_modules/react-native-keyboard-aware-scroll-view',
+        'node_modules/react-native-tab-view',
+    ].concat(config.modulePaths);
 
     const rules = {};
     rules.babel = {
         test: /\.js$/,
-        include: [
-          path.resolve(projectDir, 'src'),
-          path.resolve(projectDir, 'packages'),
-          path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
-          path.resolve(projectDir, 'node_modules/react-navigation-stack'),
-          path.resolve(projectDir, 'node_modules/react-navigation'),
-          path.resolve(projectDir, 'node_modules/@react-navigation'),
-          path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
-          path.resolve(projectDir, 'node_modules/react-native-reanimated'),
-          path.resolve(projectDir, 'node_modules/react-native-camera'),
-          path.resolve(projectDir, 'node_modules/react-native-actionsheet'),
-          path.resolve(projectDir, 'node_modules/react-native-root-toast'),
-          path.resolve(projectDir, 'node_modules/react-native-root-siblings'),
-          path.resolve(projectDir, 'node_modules/static-container'),
-          path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
-          path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
-          path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
-          path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
-          path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
-          path.resolve(projectDir, 'node_modules/native-base-shoutem-theme'),
-          path.resolve(projectDir, 'node_modules/react-native-drawer'),
-          path.resolve(projectDir, 'node_modules/react-native-safe-area-view'),
-          path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
-          path.resolve(projectDir, 'node_modules/react-native-keyboard-aware-scroll-view'),
-          path.resolve(projectDir, 'node_modules/react-native-tab-view'),
-        ],
+        include: modulePaths.map(v => path.resolve(projectDir, v)),
         use: {
             loader: 'babel-loader',
             options: {
@@ -82,25 +84,31 @@ function generateConfig(config) {
     };
 
     const aliases = {
-          react: path.resolve(projectDir, 'node_modules/react'),
-          'react-native': 'react-native-web',
-          'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-          'react-native-linear-gradient': 'react-native-web-linear-gradient',
-          // 'react-native-vector-icons': 'react-native-web-vector-icons',
-          'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
-          'react-native-vector-icons/Entypo': path.resolve(projectDir, 'node_modules/react-native-vector-icons/dist/Entypo'),
-          svgs: path.resolve(projectDir, 'node_modules/svgs'),
-          'react-navigation-tabs': path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
-          'react-navigation-stack': path.resolve(projectDir, 'node_modules/react-navigation-stack'),
-          'react-native-reanimated': path.resolve(projectDir, 'node_modules/react-native-reanimated'),
-          'react-native-gesture-handler': path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
-          'react-native-material-dropdown': path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
-          'react-native-material-buttons': path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
-          'react-native-material-textfield': path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
-          'react-native-material-ripple': path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
-          'react-native-easy-grid': path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
-          'react-native-svg': 'svgs',
+        react: path.resolve(projectDir, 'node_modules/react'),
+        'react-native': 'react-native-web',
+        'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
+        'react-native-linear-gradient': 'react-native-web-linear-gradient',
+        // 'react-native-vector-icons': 'react-native-web-vector-icons',
+        'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
+        'react-native-vector-icons/Entypo': path.resolve(projectDir, 'node_modules/react-native-vector-icons/dist/Entypo'),
+        svgs: path.resolve(projectDir, 'node_modules/svgs'),
+        'react-navigation-tabs': path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
+        'react-navigation-stack': path.resolve(projectDir, 'node_modules/react-navigation-stack'),
+        'react-native-reanimated': path.resolve(projectDir, 'node_modules/react-native-reanimated'),
+        'react-native-gesture-handler': path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
+        'react-native-material-dropdown': path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
+        'react-native-material-buttons': path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
+        'react-native-material-textfield': path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
+        'react-native-material-ripple': path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
+        'react-native-easy-grid': path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
+        'react-native-svg': 'svgs',
     };
+
+    if (config.moduleAliases) {
+        for (const key in config.moduleAliases) {
+            aliases[key] = path.resolve(projectDir, config.moduleAliases[key].projectPath);
+        }
+    }
 
     const plugins = {};
 
