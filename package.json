@@ -62,13 +62,14 @@
     "rnv": "./rnv-cli/bin/index.js"
   },
   "scripts": {
-    "lerna": "npx lerna bootstrap",
-    "watch": "cd ./packages/rnv && npm run watch"
+    "lerna": "npx lerna bootstrap --hoist",
+    "watch": "cd ./packages/rnv && npm run watch",
+    "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git"
   },
   "dependencies": {
-    "renative": "file:./packages/renative",
-    "react-native-gesture-handler": "github:kmagiera/react-native-gesture-handler",
-    "react-native-orientation-locker": "1.1.5"
+    "react-native-gesture-handler": "1.2.2",
+    "react-native-orientation-locker": "1.1.5",
+    "renative": "file:./packages/renative"
   },
   "devDependencies": {
     "rnv": "file:./packages/rnv",

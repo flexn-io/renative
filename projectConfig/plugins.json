@@ -1,7 +1,7 @@
 {
     "plugins": {
         "react-native-gesture-handler": {
-            "version": "github:kmagiera/react-native-gesture-handler",
+            "version": "1.2.2",
             "ios": {
                 "podName": "RNGestureHandler",
                 "path": "node_modules/react-native-gesture-handler"
@@ -46,6 +46,17 @@
                     "}"
                 ]
             }
+        },
+        "renative": {
+          "version": "file:./packages/renative",
+          "webpack": {
+            "modulePaths": [],
+            "moduleAliases": {
+              "renative": {
+                "projectPath": "packages/renative"
+              }
+            }
+          }
         }
     }
 }

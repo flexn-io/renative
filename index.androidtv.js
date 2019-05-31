@@ -1,7 +1,7 @@
 import { AppRegistry, Platform } from 'react-native';
 import App from './src/app';
-import { Api } from './src/renative';
-import { ANDROID_TV, FORM_FACTOR_TV } from './src/renative';
+import { Api } from 'renative';
+import { ANDROID_TV, FORM_FACTOR_TV } from 'renative';
 
 Api.platform = ANDROID_TV;
 Api.formFactor = FORM_FACTOR_TV;

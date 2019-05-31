@@ -313,7 +313,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             c.paths.platformBuildsFolder,
         );
         c.paths.projectPluginsFolder = _getPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.projectPluginsFolder);
-        c.paths.nodeModulesFolder = path.join(c.paths.projectRootFolder, 'node_modules');
+        c.paths.nodeModulesFolder = path.join(c.paths.rnvRootFolder, 'node_modules');
         c.paths.runtimeConfigPath = path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME);
         c.paths.projectConfigFolder = _getPath(
             c,
