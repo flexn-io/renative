@@ -707,14 +707,21 @@ const _getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
 const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimulators = false) => {
     const devices = [];
     text.split('\n').forEach((line) => {
-        const device = line.match(/(.*?) \((.*?)\) \[(.*?)\]/);
-        const sim = line.match(/(.*?) \((.*?)\) \[(.*?)\] \((.*?)\)/);
+        const s1 = line.match(/\[.*?\]/);
+        const s2 = line.match(/\(.*?\)/g);
+        const s3 = line.substring(0, line.indexOf('(') - 1);
+        const s4 = line.substring(0, line.indexOf('[') - 1);
+        let isSim = false;
+        if (s2 && s1) {
+            if (s2[s2.length - 1] === '(Simulator)') {
+                isSim = true;
+                s2.pop();
+            }
+            const version = s2.pop();
+            const name = `${s4.substring(0, s4.lastIndexOf('(') - 1)}`;
+            const udid = s1[0].replace(/\[|\]/g, '');
+            const isDevice = !isSim;
 
-        if (device != null) {
-            const name = device[1];
-            const version = device[2];
-            const udid = device[3];
-            const isDevice = sim === null;
             if ((isDevice && !ignoreDevices) || (!isDevice && !ignoreSimulators)) {
                 switch (platform) {
                 case IOS:
