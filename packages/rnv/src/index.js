@@ -10,6 +10,7 @@ import Hooks from './cli/hooks';
 import Target from './cli/target';
 import Linker from './cli/linker';
 import Plugin from './cli/plugin';
+import Template from './cli/template';
 import Constants from './constants';
 import Exec from './exec';
 import FileUtils from './fileutils';
@@ -30,7 +31,8 @@ const commands = {
     plugin: Plugin,
     log: Runner,
     hooks: Hooks,
-    fix: Tools
+    fix: Tools,
+    template: Template
 };
 
 const run = (cmd, subCmd, program, process) => {

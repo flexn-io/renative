@@ -76,8 +76,9 @@
         "renative": "file:./packages/renative"
     },
     "devDependencies": {
-        "rnv": "file:./packages/rnv",
-        "lerna": "latest"
+        "lerna": "latest",
+        "renative-template-hello-world": "0.0.1",
+        "rnv": "file:./packages/rnv"
     },
     "jest": {
         "preset": "react-native",
