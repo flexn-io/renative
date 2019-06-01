@@ -704,7 +704,7 @@ c.paths.platformTemplatesFolder;
 c.paths.platformAssetsFolder;
 c.paths.platformBuildsFolder;
 c.paths.projectPluginsFolder;
-c.paths.nodeModulesFolder;
+c.paths.rnvNodeModulesFolder;
 c.paths.runtimeConfigPath;
 c.paths.projectConfigFolder;
 c.paths.pluginConfigPath;

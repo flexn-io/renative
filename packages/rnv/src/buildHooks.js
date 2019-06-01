@@ -72,8 +72,8 @@ const buildHooks = c => new Promise((resolve, reject) => {
             resolve();
             return;
         }
-        // const babel = path.resolve(c.paths.nodeModulesFolder, '.bin/babel');
-        const babel = path.resolve(c.paths.nodeModulesFolder, '@babel/cli/bin/babel.js');
+        // const babel = path.resolve(c.paths.rnvNodeModulesFolder, '.bin/babel');
+        const babel = path.resolve(c.paths.rnvNodeModulesFolder, '@babel/cli/bin/babel.js');
         const params = ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'];
         executeAsync(babel, params)
             .then(() => {

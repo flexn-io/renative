@@ -299,6 +299,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
                 c.platformDefaults[pk].defaultPort = c.files.projectConfig.defaultPorts[pk];
             }
         }
+        c.defaultProjectConfigs = c.files.projectConfig.defaultProjectConfigs || {};
         c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
@@ -321,7 +322,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
             c.paths.platformBuildsFolder,
         );
         c.paths.projectPluginsFolder = _getPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.projectPluginsFolder);
-        c.paths.nodeModulesFolder = path.join(c.paths.rnvRootFolder, 'node_modules');
+        c.paths.projectNodeModulesFolder = path.join(c.paths.projectRootFolder, 'node_modules');
+        c.paths.rnvNodeModulesFolder = path.join(c.paths.rnvRootFolder, 'node_modules');
         c.paths.runtimeConfigPath = path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME);
         c.paths.projectConfigFolder = _getPath(
             c,
@@ -357,8 +359,10 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     }
 
     configureRnvGlobal(c)
+        .then(() => _checkIfTemplateInstalled(c))
         .then(() => configureProject(c))
         .then(() => configureNodeModules(c))
+        .then(() => _configureProjectFromTemplate(c))
     // .then(() => configureTizenGlobal(c))
     // .then(() => configureAndroidGlobal(c))
         .then(() => configureApp(c))
@@ -379,7 +383,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     // Parse Project Config
     checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
     c.files.projectPackage = JSON.parse(fs.readFileSync(c.paths.projectPackagePath).toString());
-    c.defaultAppConfigId = c.files.projectPackage.defaultAppConfigId || SAMPLE_APP_ID;
+    c.defaultAppConfigId = c.defaultProjectConfigs.defaultAppConfigId || c.files.projectPackage.defaultAppConfigId || SAMPLE_APP_ID;
 
     // Check gitignore
     checkAndCreateGitignore(c);
@@ -410,48 +414,6 @@ const configureProject = c => new Promise((resolve, reject) => {
     //     copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'entry'), c.paths.entryFolder);
     // }
 
-    // Check src
-    logTask('configureProject:check src');
-    if (!fs.existsSync(c.paths.projectSourceFolder)) {
-        logWarning(`Looks like your src folder ${chalk.white(c.paths.projectSourceFolder)} is missing! Let's create one for you.`);
-        copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'src'), c.paths.projectSourceFolder);
-    }
-
-    // Check appConfigs
-    logTask('configureProject:check appConfigs');
-    _setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
-    if (!fs.existsSync(c.paths.appConfigsFolder)) {
-        logWarning(
-            `Looks like your appConfig folder ${chalk.white(
-                c.paths.appConfigsFolder,
-            )} is missing! Let's create sample config for you.`,
-        );
-        copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'appConfigs', SAMPLE_APP_ID), c.appConfigFolder);
-        // Update App Title to match package.json
-        try {
-            const appConfig = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
-
-            appConfig.common.title = c.files.projectPackage.title;
-            appConfig.common.id = c.files.projectPackage.defaultAppId;
-            appConfig.id = c.defaultAppConfigId;
-            appConfig.platforms.ios.teamID = '';
-            appConfig.platforms.tvos.teamID = '';
-
-            const supPlats = c.files.projectPackage.supportedPlatforms;
-
-            if (supPlats) {
-                for (const pk in appConfig.platforms) {
-                    if (!supPlats.includes(pk)) {
-                        delete appConfig.platforms[pk];
-                    }
-                }
-            }
-
-            fs.writeFileSync(c.appConfigPath, JSON.stringify(appConfig, null, 2));
-        } catch (e) {
-            logError(e);
-        }
-    }
 
     // Check rnv-config.local
     logTask('configureProject:check rnv-config.local');
@@ -477,6 +439,65 @@ const configureProject = c => new Promise((resolve, reject) => {
             logWarning(
                 `Your local config file ${chalk.white(c.files.projectConfigLocal.appConfigsPath)} is missing appConfigsPath field!`,
             );
+        }
+    }
+
+    resolve();
+});
+
+const _configureProjectFromTemplate = c => new Promise((resolve, reject) => {
+    const templateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
+    const templateAppConfigsFolder = path.join(templateFolder, 'appConfigs');
+    const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
+
+    console.log('GSGSGSGSSG', templateAppConfigFolder);
+    if (templateAppConfigFolder) c.defaultAppConfigId = templateAppConfigFolder;
+
+    // Check src
+    logTask('configureProject:check src');
+    if (!fs.existsSync(c.paths.projectSourceFolder)) {
+        logWarning(`Looks like your src folder ${chalk.white(c.paths.projectSourceFolder)} is missing! Let's create one for you.`);
+        copyFolderContentsRecursiveSync(path.join(templateFolder, 'src'), c.paths.projectSourceFolder);
+    }
+
+    // Check appConfigs
+    logTask('configureProject:check appConfigs');
+    _setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+    if (!fs.existsSync(c.paths.appConfigsFolder)) {
+        logWarning(
+            `Looks like your appConfig folder ${chalk.white(
+                c.paths.appConfigsFolder,
+            )} is missing! Let's create sample config for you.`,
+        );
+
+
+        // TODO: GET CORRECT PROJECT TEMPLATE
+        copyFolderContentsRecursiveSync(templateAppConfigsFolder, c.paths.appConfigsFolder);
+
+
+        // Update App Title to match package.json
+        try {
+            const appConfig = JSON.parse(fs.readFileSync(c.appConfigPath).toString());
+
+            appConfig.common.title = c.files.projectPackage.title;
+            appConfig.common.id = c.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
+            appConfig.id = c.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
+            appConfig.platforms.ios.teamID = '';
+            appConfig.platforms.tvos.teamID = '';
+
+            const supPlats = c.defaultProjectConfigs.supportedPlatforms || c.files.projectPackage.supportedPlatforms;
+
+            if (supPlats) {
+                for (const pk in appConfig.platforms) {
+                    if (!supPlats.includes(pk)) {
+                        delete appConfig.platforms[pk];
+                    }
+                }
+            }
+
+            fs.writeFileSync(c.appConfigPath, JSON.stringify(appConfig, null, 2));
+        } catch (e) {
+            logError(e);
         }
     }
 
@@ -566,15 +587,31 @@ const configureProject = c => new Promise((resolve, reject) => {
     resolve();
 });
 
+const _checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
+    let templateName = c.files.projectConfig.defaultProjectConfigs ? c.files.projectConfig.defaultProjectConfigs.template : null;
+    if (!templateName) {
+        templateName = 'renative-template-hello-world';
+        logWarning(`You're missing template name in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will add default ${chalk.white(templateName)} for you`);
+        if (c.files.projectConfig.defaultProjectConfigs) c.files.projectConfig.defaultProjectConfigs = {};
+        c.files.projectConfig.defaultProjectConfigs.template = templateName;
+        fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
+    }
+
+    c.paths.templateFolder = path.join(c.paths.projectNodeModulesFolder, templateName);
+    if (!fs.existsSync(c.paths.templateFolder)) {
+        logWarning(`Your ${chalk.white(c.paths.templateFolder)} template is not installed. ReNative will install it for you`);
+        c._requiresNpmInstall = true;
+    }
+    resolve();
+});
+
 const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules
-    if (!fs.existsSync(c.paths.nodeModulesFolder) || c._requiresNpmInstall) {
-        // reject(`Looks like your node_modules folder ${chalk.white(c.paths.nodeModulesFolder)} is missing! Run ${chalk.white('npm install')} first!`);
-
-        if (!fs.existsSync(c.paths.nodeModulesFolder)) {
+    if (!fs.existsSync(c.paths.projectNodeModulesFolder) || c._requiresNpmInstall) {
+        if (!fs.existsSync(c.paths.projectNodeModulesFolder)) {
             logWarning(
-                `Looks like your node_modules folder ${chalk.white(c.paths.nodeModulesFolder)} is missing! Let's run ${chalk.white(
+                `Looks like your node_modules folder ${chalk.white(c.paths.projectNodeModulesFolder)} is missing! Let's run ${chalk.white(
                     'npm install',
                 )} first!`,
             );
@@ -594,9 +631,9 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
 
 const cleanNodeModules = c => new Promise((resolve, reject) => {
     removeDirs([
-        path.join(c.paths.nodeModulesFolder, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.nodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.nodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+        path.join(c.paths.projectNodeModulesFolder, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.projectNodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.projectNodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git')
     ]).then(() => resolve()).catch(e => reject(e));
 
     // const ModClean = require('modclean').ModClean;
@@ -604,7 +641,7 @@ const cleanNodeModules = c => new Promise((resolve, reject) => {
     // const options = {
     // // set the patterns to use
     //     patterns: ['default:safe', 'default:caution'],
-    //     cwd: path.join(c.paths.nodeModulesFolder),
+    //     cwd: path.join(c.paths.rnvNodeModulesFolder),
     //     // example filter function, for ignoring files, you can use `ignorePatterns` option instead
     //     filter: (file) => {
     //     // Skip .gitignore files (keeping them)

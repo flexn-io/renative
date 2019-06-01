@@ -273,17 +273,15 @@ const checkAndCreateProjectPackage = (c, data) => {
 
         const pkgJson = JSON.parse(pkgJsonString);
         pkgJson.name = packageName;
-        // pkgJson.defaultAppId = appID;
-        // pkgJson.defaultAppConfigId = defaultAppConfigId;
         pkgJson.title = appTitle;
-        pkgJson.version = '0.1.0';
-        // pkgJson.supportedPlatforms = supportedPlatforms;
+        pkgJson.version = data.version;
         pkgJson.dependencies = {
             // renative: c.files.rnvPackage.version,
         };
         pkgJson.devDependencies = {
             rnv: c.files.rnvPackage.version,
         };
+        pkgJson.devDependencies[data.optionTemplates.selectedOption] = 'latest';
 
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
 

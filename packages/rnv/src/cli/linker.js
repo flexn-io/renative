@@ -31,7 +31,7 @@ const _link = c => new Promise((resolve) => {
             // console.log('COPY', key, l[key]);
             const source = path.resolve(l[key]);
             const nm = path.join(source, 'node_modules');
-            const dest = path.join(c.paths.nodeModulesFolder, key);
+            const dest = path.join(c.paths.projectNodeModulesFolder, key);
             if (fs.existsSync(source)) {
                 copyFolderContentsRecursiveSync(source, dest, false, [nm]);
             } else {

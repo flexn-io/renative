@@ -84,7 +84,7 @@ const buildWeb = (c, platform) => {
 
     _generateWebpackConfigs(c);
 
-    const wbp = path.resolve(c.paths.nodeModulesFolder, 'webpack/bin/webpack.js');
+    const wbp = path.resolve(c.paths.rnvNodeModulesFolder, 'webpack/bin/webpack.js');
 
     return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 };
@@ -139,7 +139,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
 
 const _runWebBrowser = (c, platform, port, delay = 0) => new Promise((resolve, reject) => {
     // if (delay) {
-    //         const process = fork(path.join(c.paths.nodeModulesFolder, 'open', 'index.js'));
+    //         const process = fork(path.join(c.paths.rnvNodeModulesFolder, 'open', 'index.js'));
     //         process.send(`http://0.0.0.0:${port}`);
     // } else {
     //     open(`http://0.0.0.0:${port}`);
@@ -157,7 +157,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
 
     _generateWebpackConfigs(c);
 
-    const wds = path.resolve(c.paths.nodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
+    const wds = path.resolve(c.paths.rnvNodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
 
     shell.exec(
         `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`
