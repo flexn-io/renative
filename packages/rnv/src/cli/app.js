@@ -134,19 +134,25 @@ const _isOK = (c, p, list) => {
 const _runCreate = c => new Promise((resolve, reject) => {
     logTask('_runCreate');
 
-    const data = { version: '0.1.0' };
+    const data = {
+        defaultVersion: '0.1.0',
+        defaultTemplate: 'renative-template-hello-world',
+        defaultProjectName: 'helloRenative',
+        defaultAppTitle: 'Hello Renative'
+    };
     data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
     data.optionTemplates = getTemplateOptions();
 
     logWelcome();
 
     askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)", data, 'inputProjectName')
-        .then(() => askQuestion("What's your project Title?", data, 'inputAppTitle'))
+        .then(() => askQuestion(`What's your project Title? (press ENTER to use default: ${chalk.white(data.defaultAppTitle)})`, data, 'inputAppTitle'))
         .then(() => { data.appID = `com.mycompany.${data.inputProjectName}`; })
         .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${chalk.white(data.appID)})`, data, 'inputAppID'))
-        .then(() => askQuestion(`What's your Version (press ENTER to use default: ${chalk.white(data.version)})`, data, 'inputVersion'))
-        .then(() => askQuestion(`What template to use ?\n${data.optionTemplates.asString})`, data, 'inputTemplate'))
-        .then(() => data.optionTemplates.pick(data.inputTemplate))
+        .then(() => askQuestion(`What's your Version? (press ENTER to use default: ${chalk.white(data.defaultVersion)})`, data, 'inputVersion'))
+        .then(() => askQuestion(`What template to use? (press ENTER to use default: ${chalk.white(data.defaultTemplate)})\n${data.optionTemplates.asString})`,
+            data, 'inputTemplate'))
+        .then(() => data.optionTemplates.pick(data.inputTemplate, data.defaultTemplate))
         .then(() => askQuestion(`What platforms would you like to use? (Add numbers separated by comma or leave blank for all)\n${
             data.optionPlatforms.asString}`, data, 'inputSupportedPlatforms'))
         .then(() => data.optionPlatforms.pick(data.inputSupportedPlatforms))
@@ -187,14 +193,10 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
 const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     data.projectName = data.inputProjectName;
-    data.appTitle = data.inputAppTitle;
+    data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
-    if (data.inputAppID !== null && data.inputAppID !== '') {
-        data.appID = v.replace(/\s+/g, '-').toLowerCase();
-    }
-    if (data.inputVersion !== null && data.inputVersion !== '') {
-        data.version = inputVersion;
-    }
+    data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
+    data.version = data.inputVersion || data.defaultVersion;
 
     data.confirmString = chalk.green(`
 ┌─────────────────────────────────────────────────────────────────────────────────┐
@@ -315,10 +317,16 @@ const checkAndCreateProjectConfig = (c, data) => {
             defaultAppConfigId
         };
 
-        copyFileSync(
-            path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json'),
-            path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME),
-        );
+        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json')));
+
+        obj.defaultProjectConfigs = defaultProjectConfigs;
+
+        fs.writeFileSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), JSON.stringify(obj, null, 2));
+
+        // copyFileSync(
+        //     path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json'),
+        //     path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME),
+        // );
     }
 };
 

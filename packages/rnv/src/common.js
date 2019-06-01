@@ -1110,11 +1110,12 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
     const isArray = Array.isArray(inputData);
 
     const output = {
-        pick: v => new Promise((resolve, reject) => {
+        pick: (v, defaultOption) => new Promise((resolve, reject) => {
             let selectedOptions = [];
+            const pickedOpt = v || defaultOption;
             if (isMultiChoice) {
                 const wrongOptions = [];
-                if (v) {
+                if (pickedOpt) {
                     const choiceArr = v.split(',');
                     choiceArr.forEach((choice) => {
                         let selectedOption = choice;
@@ -1138,14 +1139,14 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
                     resolve(selectedOptions);
                 }
             } else {
-                let selectedOption = v;
-                if (isNaN(v)) {
-                    selectedOption = v;
+                let selectedOption = pickedOpt;
+                if (isNaN(pickedOpt)) {
+                    selectedOption = pickedOpt;
                 } else {
                     selectedOption = keysAsArray[v - 1];
                 }
                 if (!valuesAsObject[selectedOption]) {
-                    reject(`${chalk.white(v)} ...Really?! 🙈`);
+                    reject(`${chalk.white(pickedOpt)} ...Really?! 🙈`);
                 } else {
                     output.selectedOption = selectedOption;
                     resolve(selectedOption);
@@ -1194,7 +1195,7 @@ const askQuestion = (question, obj, key) => new Promise((resolve, reject) => {
 
     _currentQuestion.question(getQuestion(question), (v) => {
         if (obj && key) obj[key] = v;
-        resolve(v);
+        resolve(v === '' ? null : v);
     });
 });
 

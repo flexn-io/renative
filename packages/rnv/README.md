@@ -2,7 +2,7 @@
     <br />
     <br />
   <p align='center'><img width="300" height="321" src="https://github.com/pavjacko/renative/blob/master/docs/logo-512.png?raw=true" /></p>
-  <h1 align='center'>CLI</h1>
+  <p align='center'>"One CLI to rule them all, one CLI to find them, One CLI to bring them all and in the darkness bind them."</p>
   <br />
   <br />
 
