@@ -128,7 +128,7 @@ const _fix = c => new Promise((resolve, reject) => {
 
 const _start = c => new Promise((resolve, reject) => {
     const { platform } = c;
-    const port = c.program.port || c.defaultPorts[platform];
+    const port = c.program.port || c.platformDefaults[platform].defaultPort;
 
     logTask(`_start:${platform}:${port}`);
 
@@ -173,7 +173,7 @@ const _runApp = c => new Promise((resolve, reject) => {
 const _runAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_runAppWithPlatform:${c.platform}`);
     const { platform } = c;
-    const port = c.program.port || c.defaultPorts[platform];
+    const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
 
     logTask(`_runAppWithPlatform:${platform}:${port}`);

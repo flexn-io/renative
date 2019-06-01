@@ -1,5 +1,5 @@
 import { executeAsync } from '../exec';
-import { logError } from '../common';
+import { logError, generateOptions } from '../common';
 
 const DEFAULT_TEMPLATES = [
     'renative-template-hello-world',
@@ -25,4 +25,7 @@ const addTemplate = () => new Promise((resolve, reject) => {
     // resolve();
 });
 
-export { listTemplates, addTemplate };
+
+const getTemplateOptions = () => generateOptions(DEFAULT_TEMPLATES);
+
+export { listTemplates, addTemplate, getTemplateOptions };

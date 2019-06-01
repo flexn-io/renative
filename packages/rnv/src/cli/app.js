@@ -40,6 +40,7 @@ import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
+import { getTemplateOptions } from '../templateTools/npm';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../buildHooks';
@@ -133,77 +134,129 @@ const _isOK = (c, p, list) => {
 const _runCreate = c => new Promise((resolve, reject) => {
     logTask('_runCreate');
 
-    const data = {};
+    const data = { version: '0.1.0' };
+    data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
+    data.optionTemplates = getTemplateOptions();
 
     logWelcome();
 
-    askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)")
-        .then((v) => {
-            data.projectName = v;
-            return Promise.resolve(v);
-        })
-        .then(() => askQuestion("What's your project Title?"))
-        .then((v) => {
-            data.appTitle = v;
-            data.appID = `com.mycompany.${data.projectName}`;
-            return Promise.resolve(v);
-        })
-        .then(() => askQuestion(`What's your App ID? (${chalk.white(data.appID)}) will be used by default`))
-        .then((v) => {
-            data.teamID = '';
-            if (v !== null && v !== '') {
-                data.appID = v.replace(/\s+/g, '-').toLowerCase();
-            }
-            data.platformOptions = generateOptions(SUPPORTED_PLATFORMS, true);
-            return Promise.resolve(v);
-        })
-        .then(() => askQuestion(
-            `What platforms would you like to use? (Add numbers separated by comma or leave blank for all)\n${
-                data.platformOptions.asString
-            }`,
-        ))
-        .then(v => data.platformOptions.pick(v))
-        .then((v) => {
-            data.supportedPlatforms = v;
-            data.confirmString = chalk.green(`
-App Folder (project name): ${chalk.white(data.projectName)}
-App Title: ${chalk.white(data.appTitle)}
-App ID: ${chalk.white(data.appID)}
-Supported Platforms: ${chalk.white(data.supportedPlatforms.join(','))}
-
-`);
-        })
+    askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)", data, 'inputProjectName')
+        .then(() => askQuestion("What's your project Title?", data, 'inputAppTitle'))
+        .then(() => { data.appID = `com.mycompany.${data.inputProjectName}`; })
+        .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${chalk.white(data.appID)})`, data, 'inputAppID'))
+        .then(() => askQuestion(`What's your Version (press ENTER to use default: ${chalk.white(data.version)})`, data, 'inputVersion'))
+        .then(() => askQuestion(`What template to use ?\n${data.optionTemplates.asString})`, data, 'inputTemplate'))
+        .then(() => data.optionTemplates.pick(data.inputTemplate))
+        .then(() => askQuestion(`What platforms would you like to use? (Add numbers separated by comma or leave blank for all)\n${
+            data.optionPlatforms.asString}`, data, 'inputSupportedPlatforms'))
+        .then(() => data.optionPlatforms.pick(data.inputSupportedPlatforms))
+        .then(() => _prepareProjectOverview(c, data))
         .then(() => askQuestion(`Is All Correct? (press ENTER for yes)\n${data.confirmString}`))
-        .then(() => {
-            data.defaultAppConfigId = `${data.projectName}Example`;
-
-            const base = path.resolve('.');
-
-            c.paths.projectRootFolder = path.join(base, data.projectName);
-            c.paths.projectPackagePath = path.join(c.paths.projectRootFolder, 'package.json');
-
-            data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
-
-            mkdirSync(c.paths.projectRootFolder);
-
-            checkAndCreateProjectPackage(c, data);
-
-            checkAndCreateGitignore(c);
-
-            checkAndCreateProjectConfig(c);
-
-            finishQuestion();
-
-            logSuccess(
-                `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
-                    'rnv run -p web',
-                )} to see magic happen!`,
-            );
-
-            resolve();
-        })
+        .then(() => _generateProject(c, data))
+        .then(() => resolve())
         .catch(e => reject(e));
 });
+
+const _generateProject = (c, data) => new Promise((resolve, reject) => {
+    finishQuestion();
+    data.defaultAppConfigId = `${data.projectName}Example`;
+
+    const base = path.resolve('.');
+
+    c.paths.projectRootFolder = path.join(base, data.projectName);
+    c.paths.projectPackagePath = path.join(c.paths.projectRootFolder, 'package.json');
+
+    data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
+
+    mkdirSync(c.paths.projectRootFolder);
+
+    checkAndCreateProjectPackage(c, data);
+
+    checkAndCreateGitignore(c);
+
+    checkAndCreateProjectConfig(c, data);
+
+    logSuccess(
+        `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
+            'rnv run -p web',
+        )} to see magic happen!`,
+    );
+
+    resolve();
+});
+
+const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
+    data.projectName = data.inputProjectName;
+    data.appTitle = data.inputAppTitle;
+    data.teamID = '';
+    if (data.inputAppID !== null && data.inputAppID !== '') {
+        data.appID = v.replace(/\s+/g, '-').toLowerCase();
+    }
+    if (data.inputVersion !== null && data.inputVersion !== '') {
+        data.version = inputVersion;
+    }
+
+    data.confirmString = chalk.green(`
+┌─────────────────────────────────────────────────────────────────────────────────┐
+│                      🚀  ReNative Project Generator 🚀                          │
+├─────────────────────────────────────────────────────────────────────────────────┤
+| ${_printIntoBox('Project Name (folder):', data.projectName)}
+| ${_printIntoBox('Project Title:', data.appTitle)}
+| ${_printIntoBox('Project Version:', data.version)}
+| ${_printIntoBox('App ID:', data.appID)}
+| ${_printIntoBox('Project Template:', data.optionTemplates.selectedOption)}
+| Project Platforms:                                                              |
+| ${_printArrIntoBox(c, data.optionPlatforms.selectedOptions)}
+| Project Strucutre:                                                              |
+|                                                                                 |
+| ${_printIntoBox(null, data.projectName)}
+|   ├── appConfigs              # Application flavour configuration files/assets  |
+|   │   └── default             # Example application flavour                     |
+|   │       ├── assets          # Platform assets injected to ./platformAssets    |
+|   │       ├── builds          # Platform files injected to ./platformBuilds     |
+|   │       └── config.json     # Application flavour config                      |
+|   ├── platformAssets          # Generated cross-platform assets                 |
+|   ├── platformBuilds          # Generated platform app projects                 |
+|   ├── projectConfigs          # Project configuration files/assets              |
+|   │   ├── fonts               # Folder for all custom fonts                     |
+|   │   ├── permissions.json    # Permissions configuration                       |
+|   │   └── plugins.json        # Multi-platform Plugins configuration            |
+|   ├── src                     # Source files                                    |
+|   ├── index.*.js              # Entry files                                     |
+|   └── rnv-config.json         # ReNative project configuration                  |
+|                                                                                 |
+└─────────────────────────────────────────────────────────────────────────────────┘
+
+`);
+    resolve();
+});
+
+const _printIntoBox = (str1, str2) => {
+    let output = '';
+    const endLine = '                                                                                          |';
+    if (str1) {
+        output += `${str1} `;
+    }
+    output += chalk.white(str2);
+    const l = output.length - endLine.length;
+    output += endLine.slice(l);
+    return output;
+};
+
+const _printArrIntoBox = (c, arr) => {
+    let output = '';
+    const stringArr = [''];
+    let i = 0;
+    arr.forEach((v) => {
+        if (stringArr[i].length > 135) {
+            i++;
+            stringArr[i] = '\n| ';
+        }
+        stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
+    });
+    output = stringArr.join('');
+    return output;
+};
 
 const checkAndCreateProjectPackage = (c, data) => {
     logTask(`checkAndCreateProjectPackage:${data.packageName}`);
@@ -218,11 +271,11 @@ const checkAndCreateProjectPackage = (c, data) => {
 
         const pkgJson = JSON.parse(pkgJsonString);
         pkgJson.name = packageName;
-        pkgJson.defaultAppId = appID;
-        pkgJson.defaultAppConfigId = defaultAppConfigId;
+        // pkgJson.defaultAppId = appID;
+        // pkgJson.defaultAppConfigId = defaultAppConfigId;
         pkgJson.title = appTitle;
         pkgJson.version = '0.1.0';
-        pkgJson.supportedPlatforms = supportedPlatforms;
+        // pkgJson.supportedPlatforms = supportedPlatforms;
         pkgJson.dependencies = {
             // renative: c.files.rnvPackage.version,
         };
@@ -246,11 +299,21 @@ const checkAndCreateGitignore = (c) => {
     }
 };
 
-const checkAndCreateProjectConfig = (c) => {
+const checkAndCreateProjectConfig = (c, data) => {
     logTask('checkAndCreateProjectConfig');
+    const {
+        packageName, appTitle, appID, defaultAppConfigId, supportedPlatforms,
+    } = data;
     // Check Project Config
     if (!fs.existsSync(c.paths.projectConfigPath)) {
         logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
+
+        const defaultProjectConfigs = {
+            supportedPlatforms: data.optionPlatforms.selectedOptions,
+            template: data.optionTemplates.selectedOption,
+            defaultAppId: appID,
+            defaultAppConfigId
+        };
 
         copyFileSync(
             path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json'),

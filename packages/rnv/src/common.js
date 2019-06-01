@@ -47,7 +47,7 @@ import {
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
     RNV_PROJECT_CONFIG_LOCAL_NAME,
-    DEFAULT_PORTS,
+    PLATFORMS
 } from './constants';
 import { executeAsync } from './exec';
 
@@ -97,6 +97,7 @@ const SUPPORTED_PLATFORMS_WIN = [
     FIREFOX_OS,
     FIREFOX_TV,
 ];
+
 const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
 const RNV_START = '🚀 ReNative';
 const RNV = 'ReNative';
@@ -121,14 +122,16 @@ SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
 const logWelcome = () => {
     console.log(`
-
- ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗
- ${chalk.red('██╔══██╗')}██╔════╝${chalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalk.red('██║   ██║')}██╔════╝
- ${chalk.red('██████╔╝')}█████╗  ${chalk.red('██╔██╗ ██║')}███████║   ██║   ██║${chalk.red('██║   ██║')}█████╗
- ${chalk.red('██╔══██╗')}██╔══╝  ${chalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${chalk.red('╚██╗ ██╔╝')}██╔══╝
- ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗
- ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝
-      🚀🚀🚀 https://www.npmjs.com/package/renative 🚀🚀🚀
+┌─────────────────────────────────────────────────────────────────────────────────┐
+|                                                                                 |
+|         ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗         |
+|         ${chalk.red('██╔══██╗')}██╔════╝${chalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalk.red('██║   ██║')}██╔════╝         |
+|         ${chalk.red('██████╔╝')}█████╗  ${chalk.red('██╔██╗ ██║')}███████║   ██║   ██║${chalk.red('██║   ██║')}█████╗           |
+|         ${chalk.red('██╔══██╗')}██╔══╝  ${chalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${chalk.red('╚██╗ ██╔╝')}██╔══╝           |
+|         ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗         |
+|         ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝         |
+|             🚀🚀🚀 https://www.npmjs.com/package/renative 🚀🚀🚀                |
+└─────────────────────────────────────────────────────────────────────────────────┘
     `);
 };
 
@@ -239,7 +242,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.process = process;
     c.command = cmd;
     c.subCommand = subCmd;
-    c.defaultPorts = DEFAULT_PORTS;
+    c.platformDefaults = PLATFORMS;
     c.appID = program.appConfigID;
     c.paths.rnvRootFolder = path.join(__dirname, '..');
     c.paths.rnvHomeFolder = path.join(__dirname, '..');
@@ -291,7 +294,11 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
     if (hasProjectConfigInCurrentDir) {
         c.files.projectConfig = JSON.parse(fs.readFileSync(c.paths.projectConfigPath).toString());
-        c.defaultPorts = Object.assign(DEFAULT_PORTS, c.files.projectConfig.defaultPorts);
+        if (c.files.projectConfig.defaultPorts) {
+            for (const pk in c.files.projectConfig.defaultPorts) {
+                c.platformDefaults[pk].defaultPort = c.files.projectConfig.defaultPorts[pk];
+            }
+        }
         c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
@@ -1127,6 +1134,7 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
                 if (wrongOptions.length) {
                     reject(`${chalk.white(wrongOptions.join(','))} ...Really?! 🙈`);
                 } else {
+                    output.selectedOptions = selectedOptions;
                     resolve(selectedOptions);
                 }
             } else {
@@ -1138,7 +1146,10 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
                 }
                 if (!valuesAsObject[selectedOption]) {
                     reject(`${chalk.white(v)} ...Really?! 🙈`);
-                } else resolve(selectedOption);
+                } else {
+                    output.selectedOption = selectedOption;
+                    resolve(selectedOption);
+                }
             }
         })
     };
@@ -1161,7 +1172,9 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
             i++;
         }
     }
+    output.keysAsArray = keysAsArray;
     output.valuesAsArray = valuesAsArray;
+    output.keysAsObject = keysAsObject;
     output.valuesAsObject = valuesAsObject;
     output.asString = asString;
     return output;
