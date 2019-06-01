@@ -246,7 +246,7 @@
 ##### 1) Install ReNative
 
 ```bash
-$ npm install renative@latest -g
+$ npm install renative -g
 ```
 
 ##### 2) Create new app:
