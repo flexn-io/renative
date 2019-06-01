@@ -37,22 +37,57 @@ import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const { fork } = require('child_process');
 
-function buildWeb(c, platform) {
-    logTask(`buildWeb:${platform}`);
+const _generateWebpackConfigs = (c) => {
+    const appFolder = getAppFolder(c, c.platform);
+    const templateFolder = getAppTemplateFolder(c, c.platform);
 
-    const appFolder = getAppFolder(c, platform);
-    const templateFolder = getAppTemplateFolder(c, platform);
+    const plugins = c.files.pluginConfig.plugins;
+    let modulePaths = [];
+    let moduleAliasesString = '';
 
+    for (const key in plugins) {
+        const plugin = plugins[key];
+        if (plugin.webpack) {
+            if (plugin.webpack.modulePaths) {
+                modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
+            }
+            if (plugin.webpack.moduleAliases) {
+                for (const aKey in plugin.webpack.moduleAliases) {
+                    moduleAliasesString += `'${aKey}': {
+                  projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'
+                },`;
+                }
+            }
+        }
+    }
+
+    const modulePathsString = modulePaths.length ? `'${modulePaths.join("','")}'` : '';
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
         path.join(appFolder, 'webpack.config.js')
     );
 
+    const extendJs = `
+module.exports = {
+  modulePaths: [${modulePathsString}],
+  moduleAliases: {
+    ${moduleAliasesString}
+  }
+}`;
+
+    fs.writeFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
+};
+
+const buildWeb = (c, platform) => {
+    logTask(`buildWeb:${platform}`);
+
+    _generateWebpackConfigs(c);
+
     const wbp = path.resolve(c.paths.nodeModulesFolder, 'webpack/bin/webpack.js');
 
     return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
-}
+};
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureWebOSProject:${platform}`);
@@ -117,14 +152,10 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     logTask(`runWebDevServer:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const templateFolder = getAppTemplateFolder(c, platform);
     const wpConfig = path.join(appFolder, 'webpack.config.js');
     const wpPublic = path.join(appFolder, 'public');
 
-    copyFileSync(
-        path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-        path.join(appFolder, 'webpack.config.js')
-    );
+    _generateWebpackConfigs(c);
 
     const wds = path.resolve(c.paths.nodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
 

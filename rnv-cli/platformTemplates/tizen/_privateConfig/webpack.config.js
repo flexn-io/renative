@@ -1,10 +1,12 @@
 const Configs = require('../_shared/configs.js');
+const Extend = require('./webpack.extend.js');
 
 const config = {
     currentDir: __dirname,
     metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
     environment: 'production',
-    extensions: ['tizen', 'smarttv', 'web']
+    extensions: ['tizen', 'smarttv', 'web'],
+    ...Extend
 };
 
 const C = Configs.generateConfig(config);
