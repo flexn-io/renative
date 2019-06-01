@@ -248,6 +248,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvPluginTemplatesConfigPath = path.join(c.paths.rnvPluginTemplatesFolder, 'plugins.json');
     c.paths.rnvPackagePath = path.join(c.paths.rnvRootFolder, 'package.json');
     c.paths.rnvPluginsFolder = path.join(c.paths.rnvHomeFolder, 'plugins');
+    c.paths.rnvProjectTemplateFolder = path.join(c.paths.rnvRootFolder, 'projectTemplate');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
     c.supportedPlatforms = {};
@@ -382,7 +383,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         logWarning(
             `Looks like your rn-cli config file ${chalk.white(c.paths.rnCliConfigPath)} is missing! Let's create one for you.`,
         );
-        copyFileSync(path.join(c.paths.rnvRootFolder, RN_CLI_CONFIG_NAME), c.paths.rnCliConfigPath);
+        copyFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles', RN_CLI_CONFIG_NAME), c.paths.rnCliConfigPath);
     }
 
     // Check babel-config
@@ -478,7 +479,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         logWarning(
             `Looks like your projectConfig folder ${chalk.white(c.paths.projectConfigFolder)} is missing! Let's create one for you.`,
         );
-        copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'projectConfig'), c.paths.projectConfigFolder);
+        copyFolderContentsRecursiveSync(path.join(c.paths.rnvProjectTemplateFolder, 'projectConfig'), c.paths.projectConfigFolder);
     }
 
     // Check plugins
@@ -706,7 +707,7 @@ const configureEntryPoints = (c) => {
     const p = c.files.appConfigFile.platforms;
     for (const k in p) {
         platform = p[k];
-        const source = path.join(c.paths.rnvRootFolder, `${platform.entryFile}.js`);
+        const source = path.join(c.paths.rnvRootFolder, 'supportFiles/entry', `${platform.entryFile}.js`);
         const dest = path.join(c.paths.projectRootFolder, `${platform.entryFile}.js`);
         if (!fs.existsSync(dest)) {
             logWarning(`You missing entry file ${chalk.white(platform.entryFile)} in your project. let's create one for you!`);

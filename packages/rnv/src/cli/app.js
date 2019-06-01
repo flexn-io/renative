@@ -224,7 +224,10 @@ const checkAndCreateProjectPackage = (c, data) => {
         pkgJson.version = '0.1.0';
         pkgJson.supportedPlatforms = supportedPlatforms;
         pkgJson.dependencies = {
-            renative: c.files.rnvPackage.version,
+            // renative: c.files.rnvPackage.version,
+        };
+        pkgJson.devDependencies = {
+            rnv: c.files.rnvPackage.version,
         };
 
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
@@ -250,7 +253,7 @@ const checkAndCreateProjectConfig = (c) => {
         logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
 
         copyFileSync(
-            path.join(c.paths.rnvRootFolder, RNV_PROJECT_CONFIG_NAME),
+            path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json'),
             path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME),
         );
     }

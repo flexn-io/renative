@@ -243,10 +243,10 @@
 
 ## 🚀 Quick Start
 
-##### 1) Install ReNative
+##### 1) Install ReNative CLI (rnv)
 
 ```bash
-$ npm install renative@latest -g
+$ npm install rnv@latest -g
 ```
 
 ##### 2) Create new app:

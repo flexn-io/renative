@@ -1,90 +1,91 @@
 {
-  "name": "renative-wrapper-app",
-  "private": false,
-  "title": "ReNative",
-  "version": "0.22.0-alpha.13",
-  "codename": "Hairy Goblin",
-  "keywords": [
-    "react",
-    "react-native",
-    "template",
-    "starter",
-    "boilerplate",
-    "kit",
-    "native",
-    "swift",
-    "cocoapods",
-    "kotlin",
-    "apple tv",
-    "tvos",
-    "android tv",
-    "android wear",
-    "web",
-    "multiplatform",
-    "cross-platform",
-    "tizen",
-    "macos",
-    "osx",
-    "electron",
-    "smart tv",
-    "lg",
-    "watch",
-    "webos",
-    "windows",
-    "desktop",
-    "tizen watch",
-    "kaios",
-    "firefoxox",
-    "firefox tv"
-  ],
-  "license": "MIT",
-  "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
-  "author": {
-    "name": "Pavel Jacko",
-    "email": "i@pavjacko.com",
-    "url": "https://github.com/pavjacko"
-  },
-  "homepage": "https://github.com/pavjacko/renative#readme",
-  "bugs": {
-    "url": "https://github.com/pavjacko/renative/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/pavjacko/renative.git"
-  },
-  "contributors": [
-    "Sander Looijenga <https://github.com/sanderlooijenga>",
-    "Daniel Marino Ruiz <https://github.com/CHaNGeTe>",
-    "David Rielo <https://github.com/davidrielo>",
-    "Aurimas Mickys <https://github.com/aurimas535>"
-  ],
-  "bin": {
-    "rnv": "./rnv-cli/bin/index.js"
-  },
-  "scripts": {
-    "lerna": "npx lerna bootstrap --hoist",
-    "watch": "cd ./packages/rnv && npm run watch",
-    "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git"
-  },
-  "dependencies": {
-    "react-native-gesture-handler": "1.2.2",
-    "react-native-orientation-locker": "1.1.5",
-    "renative": "file:./packages/renative"
-  },
-  "devDependencies": {
-    "rnv": "file:./packages/rnv",
-    "lerna": "latest"
-  },
-  "jest": {
-    "preset": "react-native",
-    "transform": {
-      "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+    "name": "renative-wrapper-app",
+    "private": false,
+    "title": "ReNative",
+    "version": "0.22.0-alpha.13",
+    "codename": "Hairy Goblin",
+    "keywords": [
+        "react",
+        "react-native",
+        "template",
+        "starter",
+        "boilerplate",
+        "kit",
+        "native",
+        "swift",
+        "cocoapods",
+        "kotlin",
+        "apple tv",
+        "tvos",
+        "android tv",
+        "android wear",
+        "web",
+        "multiplatform",
+        "cross-platform",
+        "tizen",
+        "macos",
+        "osx",
+        "electron",
+        "smart tv",
+        "lg",
+        "watch",
+        "webos",
+        "windows",
+        "desktop",
+        "tizen watch",
+        "kaios",
+        "firefoxox",
+        "firefox tv"
+    ],
+    "license": "MIT",
+    "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
+    "author": {
+        "name": "Pavel Jacko",
+        "email": "i@pavjacko.com",
+        "url": "https://github.com/pavjacko"
+    },
+    "homepage": "https://github.com/pavjacko/renative#readme",
+    "bugs": {
+        "url": "https://github.com/pavjacko/renative/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/pavjacko/renative.git"
+    },
+    "contributors": [
+        "Sander Looijenga <https://github.com/sanderlooijenga>",
+        "Daniel Marino Ruiz <https://github.com/CHaNGeTe>",
+        "David Rielo <https://github.com/davidrielo>",
+        "Aurimas Mickys <https://github.com/aurimas535>"
+    ],
+    "bin": {
+        "rnv": "./rnv-cli/bin/index.js"
+    },
+    "scripts": {
+        "lerna": "npx lerna bootstrap",
+        "watch": "cd ./packages/rnv && npm run watch",
+        "publish:rnv": "cd packages/rnv && npm publish",
+        "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git"
+    },
+    "dependencies": {
+        "react-native-gesture-handler": "1.2.2",
+        "react-native-orientation-locker": "1.1.5",
+        "renative": "file:./packages/renative"
+    },
+    "devDependencies": {
+        "rnv": "file:./packages/rnv",
+        "lerna": "latest"
+    },
+    "jest": {
+        "preset": "react-native",
+        "transform": {
+            "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
+        }
+    },
+    "engines": {
+        "node": ">=6.0.0",
+        "npm": ">=4.0.0",
+        "xcode": ">=8.0.0",
+        "cocoapods": ">=1.5.3"
     }
-  },
-  "engines": {
-    "node": ">=6.0.0",
-    "npm": ">=4.0.0",
-    "xcode": ">=8.0.0",
-    "cocoapods": ">=1.5.3"
-  }
 }

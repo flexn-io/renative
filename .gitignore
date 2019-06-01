@@ -52,5 +52,8 @@ package-lock.json
 
 buildHooks/dist
 
+/appConfigs
+/projectConfig
+
 release-configs.gradle
 rnv-config.local.json
