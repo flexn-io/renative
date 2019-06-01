@@ -65,6 +65,9 @@
         "lerna": "npx lerna bootstrap",
         "watch": "cd ./packages/rnv && npm run watch",
         "publish:rnv": "cd packages/rnv && npm publish",
+        "publish:hello": "cd packages/renative-template-hello-world && npm publish",
+        "publish:blank": "cd packages/renative-template-blank && npm publish",
+        "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git"
     },
     "dependencies": {

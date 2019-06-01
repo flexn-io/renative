@@ -54,6 +54,8 @@ buildHooks/dist
 
 /appConfigs
 /projectConfig
+/src
+/index.*.js
 
 release-configs.gradle
 rnv-config.local.json
