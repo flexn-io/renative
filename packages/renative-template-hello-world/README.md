@@ -4,15 +4,19 @@ Hello World Template for ReNative
 
 ```bash
 rnv new
-... follow steps and pick 'renative-template-hello-world'
+
+...
+
+? What template to use? => 'renative-template-hello-world'
+
 ```
 
 ## Screenshots
 
-![](docs/ios.png)
+<img src="https://github.com/pavjacko/renative/blob/feat/decouple-cli/packages/renative-template-hello-world/docs/ios.png?raw=true" width="300px" />
 
-![](docs/web.png)
+<img src="https://github.com/pavjacko/renative/blob/feat/decouple-cli/packages/renative-template-hello-world/docs/web.png?raw=true" width="600px" />
 
-![](docs/macos.png)
+<img src="https://github.com/pavjacko/renative/blob/feat/decouple-cli/packages/renative-template-hello-world/docs/macos.png?raw=true" width="600px" />
 
-![](docs/tvos.png)
+<img src="https://github.com/pavjacko/renative/blob/feat/decouple-cli/packages/renative-template-hello-world/docs/tvos.png?raw=true" width="600px" />

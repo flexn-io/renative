@@ -40,7 +40,7 @@ import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
-import { getTemplateOptions } from '../templateTools/npm';
+import { getTemplateOptions } from '../templateTools';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
@@ -274,7 +274,7 @@ const checkAndCreateProjectPackage = (c, data) => {
         pkgJson.title = appTitle;
         pkgJson.version = data.version;
         pkgJson.dependencies = {
-            'renative': 'latest',
+            renative: 'latest',
         };
         pkgJson.devDependencies = {
             rnv: c.files.rnvPackage.version,

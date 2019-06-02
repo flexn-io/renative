@@ -33,8 +33,8 @@
   <a href="#features">Features</a> &bull;
   <a href="#advanced-configuration">Advanced Configuration</a> &bull;
   <a href="#architecture">Architecture</a> &bull;
-  <a href="#rnv-cli">ReNativeCLI</a> &bull;
-  <a href="#developing-rnv-locally">Developing ReNativeLocally</a> &bull;
+  <a href="#rnv-cli">ReNative CLI</a> &bull;
+  <a href="#developing-rnv-locally">Developing ReNative Locally</a> &bull;
   <a href="#discussions">Discussions</a> &bull;
   <a href="#contributors">Contributors</a> &bull;
   <a href="#backers">Backers</a> &bull;
@@ -192,8 +192,8 @@
 
 ---
 
-<!-- - [ReNativeCLI](#rnv-cli)
-- [Developing ReNativeLocally](#developing-rnv-locally)
+<!-- - [ReNative CLI](#rnv-cli)
+- [Developing ReNative Locally](#developing-rnv-locally)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
 - [Backers](#backers)
@@ -229,8 +229,8 @@
 - [Windows](#windows)
 - [Android Wear](#android-wear)
 - [KaiOS](#kaios)
-- [ReNativeCLI](#rnv-cli)
-- [Developing ReNativeLocally](#developing-rnv-locally)
+- [ReNative CLI](#rnv-cli)
+- [Developing ReNative Locally](#developing-rnv-locally)
 - [Discussions](#discussions)
 - [Contributors](#contributors)
 - [Backers](#backers)
@@ -327,6 +327,83 @@ All app code is located in `./src` directory
 -   [WebOS SDK](http://webostv.developer.lge.com/sdk/installation/) (if you want to develop for WebOS)
 -   [KaiOS SDK](https://developer.kaiostech.com) (if you want to develop for KaiOS)
 
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
+
+## Templates / Starters
+
+Currently supported templates:
+
+Hello World:
+
+https://www.npmjs.com/package/renative-template-hello-world
+
+Blank:
+https://www.npmjs.com/package/renative-template-blank
+
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
+
+## Plugins
+
+ReNative Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
+
+Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
+
+`rnv plugin list`
+
+you should get colorised overview similar to this:
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/cli_plugins.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+add new plugin to your project:
+
+`rnv plugin add`
+
+and follow the command prompt steps
+
+Update your current plugins with latest ones from ReNative
+
+`rnv plugin update`
+
+and follow the command prompt steps
+
+#### Custom Plugin Support
+
+You can configure multiple React Native plugins without need to update project blueprints.
+default location of plugin configs is `./projectConfig/plugins.json`
+
+Example:
+
+```json
+{
+    "plugins": {
+        "react-native-gesture-handler": {
+            "version": "0.1.0",
+            "ios": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
+            "android": {
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
+                "path": "node_modules/react-native-gesture-handler/android"
+            }
+        }
+    }
+}
+```
+
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
@@ -335,7 +412,7 @@ All app code is located in `./src` directory
 
 #### Reset options
 
-ReNativeAllows you to perform reset commands if you facing unforeseen problems or migrating ReNativeversions
+ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
 
 Reset Metro Bundler cache
 
@@ -498,60 +575,6 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
                 └── android@debug
                     └── fileToBeInjectedInDebugMode.txt
 
-#### Plugins
-
-ReNativeSupports standard community driven react-native plugins you can use to enhance the functionality of your apps:
-
-Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
-
-`rnv plugin list`
-
-you should get colorised overview similar to this:
-
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/cli_plugins.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-add new plugin to your project:
-
-`rnv plugin add`
-
-and follow the command prompt steps
-
-Update your current plugins with latest ones from ReNative
-
-`rnv plugin update`
-
-and follow the command prompt steps
-
-#### Custom Plugin Support
-
-You can configure multiple React Native plugins without need to update project blueprints.
-default location of plugin configs is `./projectConfig/plugins.json`
-
-Example:
-
-```json
-{
-    "plugins": {
-        "react-native-gesture-handler": {
-            "version": "0.1.0",
-            "ios": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
-            },
-            "android": {
-                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
-                "path": "node_modules/react-native-gesture-handler/android"
-            }
-        }
-    }
-}
-```
 
 #### Custom appConfig Location per Project
 
@@ -567,7 +590,7 @@ Contents of the file should follow this format:
 
 #### Ejecting Platforms
 
-By default, ReNativecontrols platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
+By default, ReNative controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
 If however you need to customise them you can eject them directly into your project.
 
 ```bash
@@ -576,7 +599,7 @@ rnv platform eject
 
 your projects will be build using `./platformTemplates` from this point
 
-If you want to revert back to using ReNativetemplates simply run
+If you want to revert back to using ReNative templates simply run
 
 ```bash
 rnv platform connect
@@ -586,7 +609,7 @@ your projects will be build using `./node_modules/renative/rnv-cli/platformTempl
 
 #### Build Hooks
 
-Sometimes you need to extend CLI functionality with custom build scripts. ReNativemakes this easy for you.
+Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.
 
 create file: `./buildHooks/src/index.js` with this script (NOTE: every top-level method must return Promise):
 
@@ -612,15 +635,15 @@ then simply run:
 rnv hooks run -x hello
 ```
 
-ReNativewill transpile and execute it in real time!
+ReNative will transpile and execute it in real time!
 
 `index.js` is required entry point but you can create more complex scripts with multiple files/imports.
 
-every top-level method gets invoked with ReNative`config` object containing all necessary build information
+every top-level method gets invoked with ReNative `config` object containing all necessary build information
 
 #### Build Pipes
 
-Sometimes you want to execute specific hook automatically before/after certain ReNativebuild phase.
+Sometimes you want to execute specific hook automatically before/after certain ReNative build phase.
 
 To get list of available hook pipes run:
 
@@ -789,7 +812,7 @@ rnv run -p ios
 
 #### Run on Device
 
-IMPORTANT: before you run ReNativeapp on the actual iOS device you MUST:
+IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
 
 1. Have ios device connected on the same network as your dev machine
 2. Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
@@ -826,7 +849,7 @@ Launch app with specific iOS simulator
 rnv run -p ios -t "iPhone 6 Plus"
 ```
 
-Launch app with specific iOS simulator (let ReNativeto give you the list of available options):
+Launch app with specific iOS simulator (let ReNative to give you the list of available options):
 
 ```
 rnv run -p ios -t ?
@@ -838,7 +861,7 @@ Launch specific emulator :
 rnv target launch -p ios -t "iPhone 8"
 ```
 
-Launch specific emulator (let ReNativeto give you the list of available options):
+Launch specific emulator (let ReNative to give you the list of available options):
 
 ```
 rnv target launch -p ios -t ?
@@ -950,7 +973,7 @@ Launch specific android emulator:
 rnv target launch -p android -t Nexus_5X_API_26
 ```
 
-Launch app with specific iOS simulator (let ReNativeto give you the list of available options):
+Launch app with specific iOS simulator (let ReNative to give you the list of available options):
 
 ```
 rnv run -p android -t ?
@@ -962,7 +985,7 @@ Launch specific emulator :
 rnv target launch -p android -t Nexus_5X_API_26
 ```
 
-Launch specific emulator (let ReNativeto give you the list of available options):
+Launch specific emulator (let ReNative to give you the list of available options):
 
 ```
 rnv target launch -p android -t ?
@@ -1640,28 +1663,28 @@ rnv run -p firefoxtv
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
 
-## ReNativeCLI
+## ReNative CLI
 
 Commands:
 
 ```
 rnv --help                          //Print help
-rnv --version                       //Print ReNativeVersion
+rnv --version                       //Print ReNative Version
 rnv run -p <PLATFORM>               //Run app on simulator/device/browser
 rnv target launch -p <PLATFORM>     //Start target (i.e. simulator/ emulator)
 rnv app configure                   //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
 rnv new                      //Create new app
 rnv platform eject                  //Eject platformTemplates into project
-rnv platform connect                //Use ReNativepredefined templates
+rnv platform connect                //Use ReNative predefined templates
 ```
 
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_construction.png?raw=true" width=50 height=50 />
 
-## Developing ReNativeLocally
+## Developing ReNative Locally
 
-If you need full control over whole ReNativebuild you can clone and develop it locally
+If you need full control over whole ReNative build you can clone and develop it locally
 
 ```
 1) clone git@github.com:pavjacko/renative.git

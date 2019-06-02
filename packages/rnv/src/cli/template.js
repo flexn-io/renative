@@ -23,11 +23,12 @@ import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { executePipe } from '../projectTools/buildHooks';
 import appRunner, { copyRuntimeAssets } from './app';
-import { listTemplates, addTemplate } from '../templateTools/npm';
+import { listTemplates, addTemplate } from '../templateTools';
 
 const LIST = 'list';
 const ADD = 'add';
 const REMOVE = 'remove';
+const APPLY = 'apply';
 
 const PIPES = {
     ADD_BEFORE: 'add:before',
@@ -46,6 +47,8 @@ const run = (c) => {
         return _templateList(c);
     case ADD:
         return _templateAdd(c);
+    case APPLY:
+        return _templateApply(c);
 
     default:
         return Promise.reject(`Command ${c.command} not supported`);
@@ -58,7 +61,6 @@ const run = (c) => {
 
 const _templateList = c => new Promise((resolve, reject) => {
     logTask('_templateList');
-
     listTemplates()
         .then(() => resolve())
         .catch(e => reject());
@@ -68,6 +70,14 @@ const _templateAdd = c => new Promise((resolve, reject) => {
     logTask('_templateAdd');
 
     addTemplate()
+        .then(() => resolve())
+        .catch(e => reject());
+});
+
+const _templateApply = c => new Promise((resolve, reject) => {
+    logTask('_templateAdd');
+
+    listTemplates()
         .then(() => resolve())
         .catch(e => reject());
 });

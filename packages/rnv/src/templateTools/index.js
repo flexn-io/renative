@@ -12,21 +12,17 @@ const DEFAULT_TEMPLATES = [
 ];
 
 const listTemplates = () => new Promise((resolve, reject) => {
-    console.log('KDJHDJKDH');
+    opts = generateOptions(DEFAULT_TEMPLATES);
+    console.log(opts.asString);
     resolve();
 });
 
 const addTemplate = () => new Promise((resolve, reject) => {
-    console.log('KDJHDJKDH');
-
     executeAsync('npm', ['install', 'renative-template-hello-world', '--save-dev'])
-        // .then(() => cleanNodeModules(c))
         .then(() => {
-            console.log('AKJALKJALAKJAL');
             resolve();
         })
         .catch(error => logError(error));
-    // resolve();
 });
 
 const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
@@ -51,8 +47,8 @@ const applyTemplate = c => new Promise((resolve, reject) => {
     const templateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
     const templateAppConfigsFolder = path.join(templateFolder, 'appConfigs');
     const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
+    const templateProjectConfigFolder = path.join(templateFolder, 'projectConfig');
 
-    console.log('GSGSGSGSSG', templateAppConfigFolder);
     if (templateAppConfigFolder) c.defaultAppConfigId = templateAppConfigFolder;
 
     // Check src
@@ -109,7 +105,7 @@ const applyTemplate = c => new Promise((resolve, reject) => {
         logWarning(
             `Looks like your projectConfig folder ${chalk.white(c.paths.projectConfigFolder)} is missing! Let's create one for you.`,
         );
-        copyFolderContentsRecursiveSync(path.join(c.paths.rnvProjectTemplateFolder, 'projectConfig'), c.paths.projectConfigFolder);
+        copyFolderContentsRecursiveSync(templateProjectConfigFolder, c.paths.projectConfigFolder);
     }
 
     // Check plugins

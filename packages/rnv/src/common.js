@@ -364,6 +364,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         .then(() => configureProject(c))
         .then(() => configureNodeModules(c))
         .then(() => applyTemplate(c))
+        .then(() => configureNodeModules(c))
     // .then(() => configureTizenGlobal(c))
     // .then(() => configureAndroidGlobal(c))
         .then(() => configureApp(c))
@@ -460,18 +461,25 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
         } else {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
-        executeAsync('npm', ['install'])
-            .then(() => cleanNodeModules(c))
-            .then(() => {
-                resolve();
-            })
-            .catch(error => logError(error));
+        _npmInstall(c).then(resolve()).catch(e => reject(e));
     } else {
         resolve();
     }
 });
 
+const _npmInstall = c => new Promise((resolve, reject) => {
+    executeAsync('npm', ['install'])
+        .then(() => cleanNodeModules(c))
+        .then(() => {
+            resolve();
+        })
+        .catch((e) => {
+            reject(e);
+        });
+});
+
 const cleanNodeModules = c => new Promise((resolve, reject) => {
+    logTask(`cleanNodeModules:${c.paths.projectNodeModulesFolder}`);
     removeDirs([
         path.join(c.paths.projectNodeModulesFolder, 'react-native-safe-area-view/.git'),
         path.join(c.paths.projectNodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
