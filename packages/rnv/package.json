@@ -61,7 +61,7 @@
     "bin": {
         "rnv": "./bin/index.js"
     },
-    "main": "src/index.js",
+    "main": "dist/index.js",
     "scripts": {
         "prepublishOnly": "npm run build",
         "watch": "nodemon --watch src --exec npm run build",

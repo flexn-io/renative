@@ -14,6 +14,7 @@ import Template from './cli/template';
 import Constants from './constants';
 import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
+import PlatformTools from './platformTools';
 
 const commands = {
     start: Runner,
@@ -88,6 +89,9 @@ ${chalk.bold.white('OPTIONS:')}
     }
 });
 
-export { Constants, Runner, App, Platform, Target, Common, Exec, FileUtils };
+export {
+    Constants, Runner, App, Platform, Target, Common, Exec, FileUtils, PlatformTools,
+    run
+};
 
 export default { run };

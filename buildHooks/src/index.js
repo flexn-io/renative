@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import shelljs from 'shelljs';
 import path from 'path';
 import fs from 'fs';
+import { PlatformTools, FileUtils } from 'rnv';
 
 const hooks = {
     hello: c => new Promise((resolve, reject) => {
@@ -22,6 +23,13 @@ const hooks = {
             fs.writeFileSync(fp, JSON.stringify(plugin, null, 2));
         }
 
+        resolve();
+    }),
+    version: c => new Promise((resolve, reject) => {
+        console.log('DJDJDJDJ', PlatformTools);
+
+        const obj = FileUtils.updateObjectSync(path.join(c.projectRootFolder, 'packages/rnv', 'package.json'), { version: 'xxxxxx' });
+        console.log('DJDJDJDJ', obj);
         resolve();
     }),
 };

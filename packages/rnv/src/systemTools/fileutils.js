@@ -134,9 +134,33 @@ const removeDirSync = (dir, rmSelf) => {
     }
 };
 
+const writeObjectSync = (filePath, obj) => {
+    fs.writeFileSync(filePath, JSON.stringify(obj, null, 2));
+};
+
+const readObjectSync = (filePath) => {
+    if (!fs.existsSync(filePath)) {
+        logError(`File at ${filePath} does not exist`);
+        return null;
+    }
+    return JSON.parse(fs.readFileSync(filePath));
+};
+
+const updateObjectSync = (filePath, updateObj) => {
+    const merge = require('deepmerge');
+    let output;
+    const obj = readObjectSync(filePath);
+    if (obj) {
+        output = merge(obj, updateObj);
+        writeObjectSync(filePath, output);
+    }
+    return output;
+};
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
-    copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs
+    copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs,
+    writeObjectSync, readObjectSync, updateObjectSync
 };
 
 export default {
@@ -148,4 +172,7 @@ export default {
     mkdirSync,
     copyFolderContentsRecursiveSync,
     cleanFolder,
+    writeObjectSync,
+    readObjectSync,
+    updateObjectSync
 };
