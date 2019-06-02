@@ -40,7 +40,7 @@ import { runTizen, buildTizenProject } from '../platformTools/tizen';
 import { runWebOS, buildWebOSProject } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
 import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
-import { executePipe } from '../buildHooks';
+import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
     runAndroid,

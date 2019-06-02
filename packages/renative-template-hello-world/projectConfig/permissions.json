@@ -1,6 +1,11 @@
 {
     "permissions": {
         "ios": {},
-        "android": {}
+        "android": {
+            "INTERNET": {
+                "key": "android.permission.INTERNET",
+                "security": "normal"
+            }
+        }
     }
 }

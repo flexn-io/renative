@@ -43,7 +43,7 @@ import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools/npm';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
 import platformRunner from './platform';
-import { executePipe } from '../buildHooks';
+import { executePipe } from '../projectTools/buildHooks';
 
 const CONFIGURE = 'configure';
 const CREATE = 'create';
@@ -165,7 +165,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
 const _generateProject = (c, data) => new Promise((resolve, reject) => {
     finishQuestion();
-    data.defaultAppConfigId = `${data.projectName}Example`;
+    // data.defaultAppConfigId = `${data.projectName}Example`;
 
     const base = path.resolve('.');
 
@@ -263,7 +263,7 @@ const _printArrIntoBox = (c, arr) => {
 const checkAndCreateProjectPackage = (c, data) => {
     logTask(`checkAndCreateProjectPackage:${data.packageName}`);
     const {
-        packageName, appTitle, appID, defaultAppConfigId, supportedPlatforms,
+        packageName, appTitle, appID, supportedPlatforms,
     } = data;
 
     if (!fs.existsSync(c.paths.projectPackagePath)) {
@@ -302,7 +302,7 @@ const checkAndCreateGitignore = (c) => {
 const checkAndCreateProjectConfig = (c, data) => {
     logTask('checkAndCreateProjectConfig');
     const {
-        packageName, appTitle, appID, defaultAppConfigId, supportedPlatforms,
+        packageName, appTitle, appID, supportedPlatforms,
     } = data;
     // Check Project Config
     if (!fs.existsSync(c.paths.projectConfigPath)) {
@@ -311,8 +311,7 @@ const checkAndCreateProjectConfig = (c, data) => {
         const defaultProjectConfigs = {
             supportedPlatforms: data.optionPlatforms.selectedOptions,
             template: data.optionTemplates.selectedOption,
-            defaultAppId: appID,
-            defaultAppConfigId
+            defaultAppId: appID
         };
 
         const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json')));
@@ -385,10 +384,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 const copyRuntimeAssets = c => new Promise((resolve) => {
     logTask('copyRuntimeAssets');
     const aPath = path.join(c.paths.platformAssetsFolder, 'runtime');
-    const cPath = path.join(c.appConfigFolder, 'assets/runtime');
+    const cPath = path.join(c.paths.appConfigFolder, 'assets/runtime');
     copyFolderContentsRecursiveSync(cPath, aPath);
 
-    // copyFileSync(c.appConfigPath, path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME));
+    // copyFileSync(c.paths.appConfigPath, path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME));
     fs.writeFileSync(path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME), JSON.stringify(c.files.appConfigFile, null, 2));
 
     // FONTS

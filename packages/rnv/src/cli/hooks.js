@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { logTask } from '../common';
-import { listHooks, executeHook, listPipes } from '../buildHooks';
+import { listHooks, executeHook, listPipes } from '../projectTools/buildHooks';
 
 const RUN = 'run';
 const LIST = 'list';

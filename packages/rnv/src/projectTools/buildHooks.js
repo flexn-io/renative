@@ -6,11 +6,6 @@ import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, get
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from './constants';
 import { executeAsync, execShellAsync, execCLI } from './exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from './fileutils';
-import { launchTizenSimulator } from './platformTools/tizen';
-import { launchWebOSimulator } from './platformTools/webos';
-import { launchAndroidSimulator, listAndroidTargets } from './platformTools/android';
-import { listAppleDevices, launchAppleSimulator } from './platformTools/apple';
-import { launchKaiOSSimulator } from './platformTools/firefox';
 import { PIPES as RUNNER_PIPES } from './cli/runner';
 import { PIPES as PLATFORM_PIPES } from './cli/platform';
 import { PIPES as PLUGIN_PIPES } from './cli/plugin';

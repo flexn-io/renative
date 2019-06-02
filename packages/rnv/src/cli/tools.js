@@ -21,7 +21,7 @@ import {
 } from '../common';
 import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../exec';
-import { executePipe } from '../buildHooks';
+import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
     runAndroid,

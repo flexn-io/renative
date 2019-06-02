@@ -11,7 +11,7 @@ import {
     finishQuestion,
     logSuccess,
 } from '../common';
-import { executePipe } from '../buildHooks';
+import { executePipe } from '../projectTools/buildHooks';
 
 const LIST = 'list';
 const ADD = 'add';

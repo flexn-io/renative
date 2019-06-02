@@ -64,7 +64,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const iosPath = path.join(getAppFolder(c, platform), appFolderName);
-    const sPath = path.join(c.appConfigFolder, `assets/${platform}`);
+    const sPath = path.join(c.paths.appConfigFolder, `assets/${platform}`);
     copyFolderContentsRecursiveSync(sPath, iosPath);
     resolve();
 });
@@ -99,7 +99,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     if (!scheme) {
         reject(
             `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
-                c.appConfigPath,
+                c.paths.appConfigPath,
             )}! Check example config for more info:  ${chalk.blue(
                 'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/config.json',
             )} `,
@@ -288,7 +288,7 @@ const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     if (device && (!tId || tId === '')) {
         logError(
             `Looks like you're missing teamID in your ${chalk.white(
-                c.appConfigPath,
+                c.paths.appConfigPath,
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
         );
         resolve();

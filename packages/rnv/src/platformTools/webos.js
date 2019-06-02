@@ -59,7 +59,7 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyWebOSAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const sourcePath = path.join(c.appConfigFolder, 'assets', platform);
+    const sourcePath = path.join(c.paths.appConfigFolder, 'assets', platform);
     const destPath = path.join(getAppFolder(c, platform), 'RNVApp');
 
     copyFolderContentsRecursiveSync(sourcePath, destPath);

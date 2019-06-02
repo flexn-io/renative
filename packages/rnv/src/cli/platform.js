@@ -13,7 +13,7 @@ import {
     finishQuestion
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../fileutils';
-import { executePipe } from '../buildHooks';
+import { executePipe } from '../projectTools/buildHooks';
 
 const CONFIGURE = 'configure';
 const UPDATE = 'update';
@@ -192,7 +192,7 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
         const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
     } else {
-        logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.appConfigPath)}`);
+        logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.paths.appConfigPath)}`);
     }
 
     Promise.all(copyPlatformTasks).then((values) => {
