@@ -25,11 +25,16 @@ const hooks = {
 
         resolve();
     }),
-    version: c => new Promise((resolve, reject) => {
-        console.log('DJDJDJDJ', PlatformTools);
-
-        const obj = FileUtils.updateObjectSync(path.join(c.projectRootFolder, 'packages/rnv', 'package.json'), { version: 'xxxxxx' });
-        console.log('DJDJDJDJ', obj);
+    prePublish: c => new Promise((resolve, reject) => {
+        const v = {
+            version: c.files.projectPackage.version,
+            codename: c.files.projectPackage.codename,
+        };
+        const pkgFolder = path.join(c.paths.projectRootFolder, 'packages');
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'rnv/package.json'), v);
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-blank/package.json'), v);
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative/package.json'), v);
         resolve();
     }),
 };

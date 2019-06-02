@@ -1,8 +1,8 @@
 {
     "name": "renative-wrapper-app",
-    "private": false,
+    "private": true,
     "title": "ReNative",
-    "version": "0.22.0-alpha.13",
+    "version": "0.23.0-alpha.1",
     "codename": "Hairy Goblin",
     "keywords": [
         "react",
@@ -64,6 +64,8 @@
     "scripts": {
         "lerna": "npx lerna bootstrap",
         "watch": "cd ./packages/rnv && npm run watch",
+        "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank",
+        "prePublish": "rnv hooks run -x prePublish",
         "publish:rnv": "cd packages/rnv && npm publish",
         "publish:renative": "cd packages/renative && npm publish",
         "publish:hello": "cd packages/renative-template-hello-world && npm publish",
