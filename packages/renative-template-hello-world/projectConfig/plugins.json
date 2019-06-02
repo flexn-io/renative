@@ -23,13 +23,13 @@
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             }
         },
-        "renative-test": {
+        "renative": {
             "version": "latest",
             "webpack": {
-                "modulePaths": ["node_modules/renative-test"],
+                "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "node_modules/renative-test"
+                        "projectPath": "node_modules/renative"
                     }
                 }
             }

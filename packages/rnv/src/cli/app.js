@@ -274,7 +274,7 @@ const checkAndCreateProjectPackage = (c, data) => {
         pkgJson.title = appTitle;
         pkgJson.version = data.version;
         pkgJson.dependencies = {
-            'renative-test': 'latest',
+            'renative': 'latest',
         };
         pkgJson.devDependencies = {
             rnv: c.files.rnvPackage.version,

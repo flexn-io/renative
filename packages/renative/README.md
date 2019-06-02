@@ -243,10 +243,10 @@
 
 ## 🚀 Quick Start
 
-##### 1) Install ReNative
+##### 1) Install ReNative CLI (rnv)
 
 ```bash
-$ npm install renative@latest -g
+$ npm install rnv -g
 ```
 
 ##### 2) Create new app:
@@ -705,6 +705,7 @@ c.paths.platformAssetsFolder;
 c.paths.platformBuildsFolder;
 c.paths.projectPluginsFolder;
 c.paths.rnvNodeModulesFolder;
+c.paths.projectNodeModulesFolder;
 c.paths.runtimeConfigPath;
 c.paths.projectConfigFolder;
 c.paths.pluginConfigPath;

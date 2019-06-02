@@ -1028,7 +1028,7 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
     return output;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${i + 1}] ${chalk.white(mapping ? '' : defaultVal)} \n`;
+const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${chalk.white(i + 1)}] ${chalk.white(mapping ? '' : defaultVal)} \n`;
 
 let _currentQuestion;
 

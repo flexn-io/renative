@@ -35,6 +35,7 @@ const hooks = {
         FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
         FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-blank/package.json'), v);
         FileUtils.updateObjectSync(path.join(pkgFolder, 'renative/package.json'), v);
+        FileUtils.copyFileSync(path.join(c.paths.projectRootFolder, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
         resolve();
     }),
 };

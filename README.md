@@ -246,7 +246,7 @@
 ##### 1) Install ReNative CLI (rnv)
 
 ```bash
-$ npm install rnv@latest -g
+$ npm install rnv -g
 ```
 
 ##### 2) Create new app:

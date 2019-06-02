@@ -1,8 +1,8 @@
 {
-    "name": "renative-test",
+    "name": "renative",
     "title": "ReNative",
-    "version": "0.23.0-alpha.1",
-    "codename": "Hairy Goblin",
+    "version": "0.23.0-alpha.2",
+    "codename": "Iron Ladybird",
     "keywords": [
         "react",
         "react-native",
