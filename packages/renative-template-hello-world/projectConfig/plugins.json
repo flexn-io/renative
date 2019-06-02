@@ -1,0 +1,38 @@
+{
+    "plugins": {
+        "react-native-gesture-handler": {
+            "version": "1.2.2",
+            "ios": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
+            "tvos": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
+            "android": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "androidtv": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "androidwear": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            }
+        },
+        "renative": {
+            "version": "latest",
+            "webpack": {
+                "modulePaths": ["node_modules/renative"],
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "node_modules/renative"
+                    }
+                }
+            }
+        }
+    }
+}

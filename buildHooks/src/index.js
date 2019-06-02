@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import shelljs from 'shelljs';
 import path from 'path';
 import fs from 'fs';
+import { PlatformTools, FileUtils } from 'rnv';
 
 const hooks = {
     hello: c => new Promise((resolve, reject) => {
@@ -22,6 +23,19 @@ const hooks = {
             fs.writeFileSync(fp, JSON.stringify(plugin, null, 2));
         }
 
+        resolve();
+    }),
+    prePublish: c => new Promise((resolve, reject) => {
+        const v = {
+            version: c.files.projectPackage.version,
+            codename: c.files.projectPackage.codename,
+        };
+        const pkgFolder = path.join(c.paths.projectRootFolder, 'packages');
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'rnv/package.json'), v);
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-blank/package.json'), v);
+        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative/package.json'), v);
+        FileUtils.copyFileSync(path.join(c.paths.projectRootFolder, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
         resolve();
     }),
 };
