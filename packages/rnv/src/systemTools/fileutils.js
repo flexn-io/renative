@@ -3,7 +3,7 @@ import path from 'path';
 import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
-import { logDebug } from './common';
+import { logDebug } from '../common';
 
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);

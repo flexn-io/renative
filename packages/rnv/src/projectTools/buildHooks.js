@@ -2,15 +2,15 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
-import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, getAppFolder, logWarning, generateOptions } from './common';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from './constants';
-import { executeAsync, execShellAsync, execCLI } from './exec';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from './fileutils';
-import { PIPES as RUNNER_PIPES } from './cli/runner';
-import { PIPES as PLATFORM_PIPES } from './cli/platform';
-import { PIPES as PLUGIN_PIPES } from './cli/plugin';
-import { PIPES as TARGET_PIPES } from './cli/target';
-import { PIPES as APP_PIPES } from './cli/app';
+import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, getAppFolder, logWarning, generateOptions } from '../common';
+import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
+import { executeAsync, execShellAsync, execCLI } from '../systemTools/exec';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
+import { PIPES as RUNNER_PIPES } from '../cli/runner';
+import { PIPES as PLATFORM_PIPES } from '../cli/platform';
+import { PIPES as PLUGIN_PIPES } from '../cli/plugin';
+import { PIPES as TARGET_PIPES } from '../cli/target';
+import { PIPES as APP_PIPES } from '../cli/app';
 
 const PIPES = { ...RUNNER_PIPES, ...PLATFORM_PIPES, ...PLUGIN_PIPES, ...TARGET_PIPES, ...APP_PIPES };
 

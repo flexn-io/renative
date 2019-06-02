@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
-import { executeAsync } from '../exec';
+import { executeAsync } from '../systemTools/exec';
 import {
     logInfo,
     getAppFolder,

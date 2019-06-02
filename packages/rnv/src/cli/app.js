@@ -41,7 +41,7 @@ import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools/npm';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 

@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs } from './fileutils';
+import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
@@ -50,7 +50,7 @@ import {
     RNV_PROJECT_CONFIG_LOCAL_NAME,
     PLATFORMS
 } from './constants';
-import { executeAsync } from './exec';
+import { executeAsync } from './systemTools/exec';
 
 const SUPPORTED_PLATFORMS = [
     IOS,

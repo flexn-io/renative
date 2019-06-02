@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import chalk from 'chalk';
-import { execShellAsync, executeAsync, execCLI } from '../exec';
+import { execShellAsync, executeAsync, execCLI } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -32,7 +32,7 @@ import {
     getEntryFile,
     copyBuildsFolder,
 } from '../common';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
 
 const launchWebOSimulator = (c, name) => new Promise((resolve, reject) => {

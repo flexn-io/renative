@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { logTask, logWarning } from '../common';
-import { copyFolderContentsRecursiveSync } from '../fileutils';
+import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 
 const LINK = 'link';
 

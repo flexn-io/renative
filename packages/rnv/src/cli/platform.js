@@ -12,7 +12,7 @@ import {
     askQuestion,
     finishQuestion
 } from '../common';
-import { cleanFolder, copyFolderContentsRecursiveSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
 
 const CONFIGURE = 'configure';

@@ -6,7 +6,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
-import { executeAsync, execCLI } from '../exec';
+import { executeAsync, execCLI } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -34,7 +34,7 @@ import {
     getQuestion,
     logSuccess,
 } from '../common';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, IS_WEAR_UNDER_SIZE } from '../constants';
 
 const readline = require('readline');

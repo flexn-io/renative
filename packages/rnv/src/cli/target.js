@@ -6,7 +6,7 @@ import {
     getAppFolder, isPlatformSupported
 } from '../common';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
 import { launchWebOSimulator } from '../platformTools/webos';
 import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';

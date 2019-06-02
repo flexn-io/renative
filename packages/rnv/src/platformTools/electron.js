@@ -4,7 +4,7 @@ import shell from 'shelljs';
 import chalk from 'chalk';
 import { spawn, execSync } from 'child_process';
 import { createPlatformBuild } from '../cli/platform';
-import { executeAsync, execShellAsync } from '../exec';
+import { executeAsync, execShellAsync } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -32,7 +32,7 @@ import {
     logInfo,
 } from '../common';
 import { buildWeb, runWeb, runWebDevServer } from './web';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('configureElectronProject');

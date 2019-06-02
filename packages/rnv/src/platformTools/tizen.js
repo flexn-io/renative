@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execShellAsync, execCLI } from '../exec';
+import { execShellAsync, execCLI } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -28,7 +28,7 @@ import {
     copyBuildsFolder,
 } from '../common';
 import { TIZEN, TIZEN_WATCH } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
 
 const configureTizenGlobal = c => new Promise((resolve, reject) => {

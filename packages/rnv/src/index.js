@@ -12,8 +12,8 @@ import Linker from './cli/linker';
 import Plugin from './cli/plugin';
 import Template from './cli/template';
 import Constants from './constants';
-import Exec from './exec';
-import FileUtils from './fileutils';
+import Exec from './systemTools/exec';
+import FileUtils from './systemTools/fileutils';
 
 const commands = {
     start: Runner,

@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import child_process from 'child_process';
-import { executeAsync } from '../exec';
+import { executeAsync } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -26,7 +26,7 @@ import {
     logSuccess,
 } from '../common';
 import { IOS, TVOS } from '../constants';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 
 const xcode = require('xcode');
 const readline = require('readline');

@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execShellAsync, execCLI } from '../exec';
+import { execShellAsync, execCLI } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -37,7 +37,7 @@ import {
     CLI_WEBBOS_ARES_LAUNCH,
     KAIOS_SDK,
 } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
 
 const launchKaiOSSimulator = (c, name) =>

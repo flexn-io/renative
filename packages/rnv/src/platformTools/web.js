@@ -3,7 +3,7 @@ import fs from 'fs';
 import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
-import { execShellAsync } from '../exec';
+import { execShellAsync } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -30,7 +30,7 @@ import {
     askQuestion,
     finishQuestion,
 } from '../common';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
 import { RNV_APP_CONFIG_NAME } from '../constants';

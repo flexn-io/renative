@@ -1,4 +1,4 @@
-import { executeAsync } from '../exec';
+import { executeAsync } from '../systemTools/exec';
 import { logError, generateOptions } from '../common';
 
 const DEFAULT_TEMPLATES = [

@@ -20,7 +20,7 @@ import {
     cleanPlatformIfRequired,
 } from '../common';
 import { IOS } from '../constants';
-import { executeAsync, execCLI } from '../exec';
+import { executeAsync, execCLI } from '../systemTools/exec';
 import { executePipe } from '../projectTools/buildHooks';
 import appRunner, { copyRuntimeAssets } from './app';
 import { listTemplates, addTemplate } from '../templateTools/npm';
