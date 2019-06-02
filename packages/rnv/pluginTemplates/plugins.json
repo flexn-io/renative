@@ -452,6 +452,15 @@
         "native-base": {
             "version": "2.12.1",
             "dependsOn": ["react-native-vector-icons"]
+        },
+        "@react-native-community/async-storage": {
+            "version": "1.4.1",
+            "ios": {
+                "podName": "RNCAsyncStorage"
+            },
+            "android": {
+                "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
+            }
         }
     }
 }

@@ -132,7 +132,8 @@ const _runAdd = c => new Promise((resolve) => {
         console.log(msg);
 
         Object.keys(selectedPlugins).forEach((key) => {
-            c.files.pluginConfig.plugins[key] = selectedPlugins[key];
+            c.files.pluginConfig.plugins[key] = 'source:rnv';
+            // c.files.pluginConfig.plugins[key] = selectedPlugins[key];
             _checkAndAddDependantPlugins(c, selectedPlugins[key]);
         });
 

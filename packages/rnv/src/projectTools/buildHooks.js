@@ -68,7 +68,10 @@ const buildHooks = c => new Promise((resolve, reject) => {
             return;
         }
         // const babel = path.resolve(c.paths.rnvNodeModulesFolder, '.bin/babel');
-        const babel = path.resolve(c.paths.rnvNodeModulesFolder, '@babel/cli/bin/babel.js');
+        let babel = path.resolve(c.paths.rnvNodeModulesFolder, '@babel/cli/bin/babel.js');
+        if (!fs.existsSync(babel)) {
+            babel = path.resolve(c.paths.projectNodeModulesFolder, '@babel/cli/bin/babel.js');
+        }
         const params = ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'];
         executeAsync(babel, params)
             .then(() => {

@@ -31,6 +31,7 @@ import {
     finishQuestion,
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { getOriginalPlugin } from '../pluginTools';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
 import { RNV_APP_CONFIG_NAME } from '../constants';
@@ -46,7 +47,7 @@ const _generateWebpackConfigs = (c) => {
     let moduleAliasesString = '';
 
     for (const key in plugins) {
-        const plugin = plugins[key];
+        const plugin = getOriginalPlugin(c, key, plugins);
         if (plugin.webpack) {
             if (plugin.webpack.modulePaths) {
                 modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
