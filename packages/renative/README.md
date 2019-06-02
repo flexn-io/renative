@@ -334,13 +334,14 @@ All app code is located in `./src` directory
 
 ## Templates / Starters
 
-Currently supported templates:
+Currently supported templates out of the box:
 
 Hello World:
 
 https://www.npmjs.com/package/renative-template-hello-world
 
-Blank:
+Blank Template:
+
 https://www.npmjs.com/package/renative-template-blank
 
 
@@ -511,14 +512,18 @@ rnv app configure -c helloWorld -u
 
 #### App Signing
 
-For Android release signing, create `~/.rnv/helloWorld/signing.properties` file
+For Android release signing, ReNative creates `~/GLOBAL_RNV/PROJECT_NAME/APP_CONFIG_ID/config.private.json` file
 with path to your release keystore file and its credentials.
 
 ```
-STORE_FILE=~/.rnv/helloWorld/release.keystore
-STORE_PASSWORD= ************
-KEY_ALIAS= ************
-KEY_PASSWORD= ************
+{
+  "android": {
+    "storeFile": "./release.keystore",
+    "storePassword": "************",
+    "keyAlias": "************",
+    "keyPassword": "************"
+  }
+}
 ```
 
 Then you can run the release app by:

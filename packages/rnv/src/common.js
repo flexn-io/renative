@@ -461,13 +461,14 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
         } else {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
-        _npmInstall(c).then(resolve()).catch(e => reject(e));
+        _npmInstall(c).then(() => resolve()).catch(e => reject(e));
     } else {
         resolve();
     }
 });
 
 const _npmInstall = c => new Promise((resolve, reject) => {
+    logTask('_npmInstall');
     executeAsync('npm', ['install'])
         .then(() => cleanNodeModules(c))
         .then(() => {

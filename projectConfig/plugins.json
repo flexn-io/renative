@@ -1,52 +1,7 @@
 {
     "plugins": {
-        "react-native-gesture-handler": {
-            "version": "1.2.2",
-            "ios": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
-            },
-            "tvos": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
-            },
-            "android": {
-                "path": "node_modules/react-native-gesture-handler/android",
-                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
-            },
-            "androidtv": {
-                "path": "node_modules/react-native-gesture-handler/android",
-                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
-            },
-            "androidwear": {
-                "path": "node_modules/react-native-gesture-handler/android",
-                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
-            }
-        },
-        "react-native-orientation-locker": {
-            "version": "1.1.5",
-            "ios": {
-                "podName": "react-native-orientation-locker",
-                "appDelegateImports": ["react_native_orientation_locker"],
-                "appDelegateMethods": [
-                    "func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {",
-                    "  return Orientation.getOrientation();",
-                    "}"
-                ]
-            },
-            "android": {
-                "package": "org.wonday.orientation.OrientationPackage",
-                "activityImports": ["android.content.res.Configuration"],
-                "activityMethods": [
-                    "override fun onConfigurationChanged(newConfig:Configuration) {",
-                    "  super.onConfigurationChanged(newConfig)",
-                    "  val intent = Intent(\"onConfigurationChanged\")",
-                    "  intent.putExtra(\"newConfig\", newConfig)",
-                    "  this.sendBroadcast(intent)",
-                    "}"
-                ]
-            }
-        },
+        "react-native-gesture-handler": "source:rnv",
+        "react-native-orientation-locker": "source:rnv",
         "renative": {
           "version": "file:./packages/renative",
           "webpack": {
