@@ -1,7 +1,7 @@
 {
     "id": "helloWorld",
     "common": {
-        "id": "renative.helloworld.release",
+        "id": "renative.helloworld",
         "title": "ReNative",
         "description": "Cross-platform application project based on ReNative",
         "author": {
@@ -23,7 +23,7 @@
             "entryFile": "index.ios",
             "scheme": "RNVApp",
             "teamID": "PRNK99PXGZ",
-            "permissions": ["APPLE_MUSIC", "BLUETOOTH", "CALENDAR", "CAMERA"],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
@@ -57,8 +57,7 @@
         },
         "android": {
             "entryFile": "index.android",
-            "keystoreConfig": "~/.rnv/helloWorld/config.json",
-            "permissions": ["INTERNET", "SYSTEM_ALERT_WINDOW"],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
@@ -74,7 +73,7 @@
         },
         "androidtv": {
             "entryFile": "index.androidtv",
-            "permissions": ["INTERNET", "SYSTEM_ALERT_WINDOW"],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
@@ -90,7 +89,7 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
-            "permissions": ["WAKE_LOCK", "INTERNET", "SYSTEM_ALERT_WINDOW"],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",

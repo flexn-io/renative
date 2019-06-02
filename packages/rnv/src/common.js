@@ -394,7 +394,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         logWarning(
             `Looks like your rn-cli config file ${chalk.white(c.paths.rnCliConfigPath)} is missing! Let's create one for you.`,
         );
-        copyFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles', RN_CLI_CONFIG_NAME), c.paths.rnCliConfigPath);
+        copyFileSync(path.join(c.paths.rnvProjectTemplateFolder, RN_CLI_CONFIG_NAME), c.paths.rnCliConfigPath);
     }
 
     // Check babel-config
@@ -540,7 +540,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
                 `Looks like you\'re missing defaultTargets in your config ${chalk.white(c.paths.globalConfigPath)}. Let's add them!`,
             );
             const defaultConfig = JSON.parse(
-                fs.readFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME)).toString(),
+                fs.readFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'global-config-template.json')).toString(),
             );
             const newConfig = { ...c.files.globalConfig, defaultTargets: defaultConfig.defaultTargets };
             fs.writeFileSync(c.paths.globalConfigPath, JSON.stringify(newConfig, null, 2));
@@ -561,7 +561,7 @@ const configureEntryPoints = (c) => {
     const p = c.files.appConfigFile.platforms;
     for (const k in p) {
         platform = p[k];
-        const source = path.join(c.paths.rnvRootFolder, 'supportFiles/entry', `${platform.entryFile}.js`);
+        const source = path.join(c.paths.rnvProjectTemplateFolder, `${platform.entryFile}.js`);
         const dest = path.join(c.paths.projectRootFolder, `${platform.entryFile}.js`);
         if (!fs.existsSync(dest)) {
             logWarning(`You missing entry file ${chalk.white(platform.entryFile)} in your project. let's create one for you!`);
@@ -688,7 +688,7 @@ const IGNORE_FOLDERS = ['.git'];
 const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
-    _setAppConfig(c, path.join(c.paths.appConfigsFolder, appConfigId));
+    setAppConfig(c, path.join(c.paths.appConfigsFolder, appConfigId));
     c.appId = appConfigId;
 
     if (!fs.existsSync(c.paths.appConfigFolder)) {
@@ -721,7 +721,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                     if (configDirs[v]) {
                         c.defaultAppConfigId = configDirs[v];
                         c.appId = c.defaultAppConfigId;
-                        _setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+                        setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
                         _configureConfig(c)
                             .then(() => resolve())
                             .catch(e => reject(e));
@@ -739,7 +739,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 ),
                 (v) => {
                     c.defaultAppConfigId = SAMPLE_APP_ID;
-                    _setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+                    setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
                     copyFolderContentsRecursiveSync(
                         path.join(c.paths.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),
                         path.join(c.paths.appConfigFolder),
@@ -771,7 +771,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
                 const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile);
                 c.files.appConfigFile = mergedAppConfigFile;
-                _setAppConfig(c, parentAppConfigFolder);
+                setAppConfig(c, parentAppConfigFolder);
             }
         }
         resolve();
@@ -922,7 +922,7 @@ const getIP = () => {
     return ip.address();
 };
 
-const _setAppConfig = (c, p) => {
+const setAppConfig = (c, p) => {
     c.paths.appConfigFolder = p;
     c.paths.appConfigPath = path.join(p, RNV_APP_CONFIG_NAME);
 };
@@ -1053,6 +1053,7 @@ const finishQuestion = () => new Promise((resolve, reject) => {
 
 export {
     SUPPORTED_PLATFORMS,
+    setAppConfig,
     generateOptions,
     logWelcome,
     isPlatformSupported,
@@ -1122,6 +1123,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    setAppConfig,
     generateOptions,
     logWelcome,
     copyBuildsFolder,

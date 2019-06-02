@@ -1,10 +1,14 @@
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
 import { executeAsync } from '../systemTools/exec';
-import { logError, generateOptions } from '../common';
+import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs } from '../systemTools/fileutils';
+import { logError, generateOptions, logWarning, logTask, setAppConfig } from '../common';
 
 const DEFAULT_TEMPLATES = [
     'renative-template-hello-world',
     'renative-template-blank',
-    'renative-template-kitchen-sink'
+    // 'renative-template-kitchen-sink'
 ];
 
 const listTemplates = () => new Promise((resolve, reject) => {
@@ -60,7 +64,7 @@ const applyTemplate = c => new Promise((resolve, reject) => {
 
     // Check appConfigs
     logTask('configureProject:check appConfigs');
-    _setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+    setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
     if (!fs.existsSync(c.paths.appConfigsFolder)) {
         logWarning(
             `Looks like your appConfig folder ${chalk.white(

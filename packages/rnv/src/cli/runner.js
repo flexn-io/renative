@@ -128,7 +128,7 @@ const _fix = c => new Promise((resolve, reject) => {
 
 const _start = c => new Promise((resolve, reject) => {
     const { platform } = c;
-    const port = c.program.port || c.platformDefaults[platform].defaultPort;
+    const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
 
     logTask(`_start:${platform}:${port}`);
 

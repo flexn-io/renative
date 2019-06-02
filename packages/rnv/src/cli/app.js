@@ -269,14 +269,12 @@ const checkAndCreateProjectPackage = (c, data) => {
     if (!fs.existsSync(c.paths.projectPackagePath)) {
         logWarning("Looks like your package.json is missing. Let's create one for you!");
 
-        const pkgJsonString = fs.readFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles/package-template.json')).toString();
-
-        const pkgJson = JSON.parse(pkgJsonString);
+        const pkgJson = {};
         pkgJson.name = packageName;
         pkgJson.title = appTitle;
         pkgJson.version = data.version;
         pkgJson.dependencies = {
-            // renative: c.files.rnvPackage.version,
+            'renative-test': 'latest',
         };
         pkgJson.devDependencies = {
             rnv: c.files.rnvPackage.version,
@@ -314,16 +312,11 @@ const checkAndCreateProjectConfig = (c, data) => {
             defaultAppId: appID
         };
 
-        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json')));
+        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvProjectTemplateFolder, 'rnv-config.json')));
 
         obj.defaultProjectConfigs = defaultProjectConfigs;
 
         fs.writeFileSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), JSON.stringify(obj, null, 2));
-
-        // copyFileSync(
-        //     path.join(c.paths.rnvRootFolder, 'supportFiles', 'rnv-config-template.json'),
-        //     path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME),
-        // );
     }
 };
 

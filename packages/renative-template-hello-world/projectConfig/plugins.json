@@ -22,6 +22,17 @@
                 "path": "node_modules/react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             }
+        },
+        "renative-test": {
+            "version": "latest",
+            "webpack": {
+                "modulePaths": ["node_modules/renative-test"],
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "node_modules/renative-test"
+                    }
+                }
+            }
         }
     }
 }
