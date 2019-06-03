@@ -17,7 +17,7 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
     if (!fs.existsSync(p)) {
         reject(
             `Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
-                '~/.rnv/config.json'
+                c.paths.globalConfigPath
             )} file if you SDK path is correct`
         );
         return;

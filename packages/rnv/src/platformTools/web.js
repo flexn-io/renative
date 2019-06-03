@@ -29,6 +29,7 @@ import {
     logInfo,
     askQuestion,
     finishQuestion,
+    resolveNodeModulePath
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { getOriginalPlugin } from '../pluginTools';
@@ -85,7 +86,7 @@ const buildWeb = (c, platform) => {
 
     _generateWebpackConfigs(c);
 
-    const wbp = path.resolve(c.paths.rnvNodeModulesFolder, 'webpack/bin/webpack.js');
+    const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
     return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 };
@@ -157,12 +158,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     const wpPublic = path.join(appFolder, 'public');
 
     _generateWebpackConfigs(c);
-    const wdsp = 'webpack-dev-server/bin/webpack-dev-server.js';
-
-    let wds = path.resolve(c.paths.rnvNodeModulesFolder, wdsp);
-    if (!fs.existsSync(wds)) {
-        wds = path.resolve(c.paths.projectNodeModulesFolder, wdsp);
-    }
+    const wds = resolveNodeModulePath(c, 'webpack-dev-server/bin/webpack-dev-server.js');
 
     shell.exec(
         `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`

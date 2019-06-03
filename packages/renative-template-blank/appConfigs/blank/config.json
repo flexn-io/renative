@@ -1,7 +1,7 @@
 {
     "id": "helloWorld",
     "common": {
-        "id": "renative.helloworld.release",
+        "id": "renative.helloworld",
         "title": "ReNative",
         "description": "Cross-platform application project based on ReNative",
         "author": {
@@ -22,11 +22,11 @@
         "ios": {
             "entryFile": "index.ios",
             "scheme": "RNVApp",
-            "teamID": "PRNK99PXGZ",
-            "permissions": ["APPLE_MUSIC", "BLUETOOTH", "CALENDAR", "CAMERA"],
+            "teamID": "",
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -39,11 +39,11 @@
         },
         "tvos": {
             "entryFile": "index.tvos",
-            "teamID": "PRNK99PXGZ",
+            "teamID": "",
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -57,11 +57,10 @@
         },
         "android": {
             "entryFile": "index.android",
-            "keystoreConfig": "~/.rnv/helloWorld/config.json",
-            "permissions": ["INTERNET", "SYSTEM_ALERT_WINDOW"],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -74,10 +73,10 @@
         },
         "androidtv": {
             "entryFile": "index.androidtv",
-            "permissions": ["INTERNET", "SYSTEM_ALERT_WINDOW"],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -90,10 +89,10 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
-            "permissions": ["WAKE_LOCK", "INTERNET", "SYSTEM_ALERT_WINDOW"],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -108,7 +107,7 @@
             "entryFile": "index.macos",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -135,7 +134,7 @@
             "entryFile": "index.web",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -154,7 +153,7 @@
             "entryFile": "index.kaios",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -167,7 +166,7 @@
             "entryFile": "index.firefoxos",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -180,7 +179,7 @@
             "entryFile": "index.firefoxtv",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
+                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {

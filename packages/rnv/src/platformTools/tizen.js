@@ -71,7 +71,7 @@ const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
 const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, 'certificate -- ~/.rnv -a rnv -f tizen_author -p 1234')
+    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.globalConfigFolder} -a rnv -f tizen_author -p 1234`)
         .then(() => addDevelopTizenCertificate(c))
         .then(() => resolve())
         .catch((e) => {
@@ -83,7 +83,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
 const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('addDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, 'security-profiles add -n RNVanillaCert -a ~/.rnv/tizen_author.p12 -p 1234')
+    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.globalConfigFolder, 'tizen_author.p12')} -p 1234`)
         .then(() => resolve())
         .catch((e) => {
             logError(e);

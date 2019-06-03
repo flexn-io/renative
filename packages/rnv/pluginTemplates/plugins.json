@@ -368,7 +368,7 @@
             "tvos": { "podName": "GoogleMaps", "version": "2.5.0" }
         },
         "lottie-react-native": {
-            "version": "2.5.11",
+            "version": "2.6.1",
             "ios": { "podName": "lottie-react-native" },
             "tvos": { "podName": "lottie-react-native" },
             "android": {

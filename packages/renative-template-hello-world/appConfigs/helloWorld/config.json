@@ -22,7 +22,7 @@
         "ios": {
             "entryFile": "index.ios",
             "scheme": "RNVApp",
-            "teamID": "PRNK99PXGZ",
+            "teamID": "",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -39,7 +39,7 @@
         },
         "tvos": {
             "entryFile": "index.tvos",
-            "teamID": "PRNK99PXGZ",
+            "teamID": "",
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {

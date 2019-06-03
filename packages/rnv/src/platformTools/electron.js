@@ -30,6 +30,7 @@ import {
     getConfigProp,
     checkPortInUse,
     logInfo,
+    resolveNodeModulePath
 } from '../common';
 import { buildWeb, runWeb, runWebDevServer } from './web';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
@@ -110,7 +111,7 @@ const buildElectron = (c, platform) => new Promise((resolve, reject) => {
 const runElectron = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runElectron:${platform}`);
 
-    const elc = path.resolve(c.paths.rnvNodeModulesFolder, 'electron/cli.js');
+    const elc = resolveNodeModulePath(c, 'electron/cli.js');
     const appFolder = getAppFolder(c, platform);
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
@@ -150,7 +151,7 @@ const runElectron = (c, platform, port) => new Promise((resolve, reject) => {
 
 const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
-    const elc = path.resolve(c.paths.rnvNodeModulesFolder, 'electron/cli.js');
+    const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
     const child = spawn(elc, [appFolder], {
         detached: true,

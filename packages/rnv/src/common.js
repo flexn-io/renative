@@ -467,15 +467,22 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
     }
 });
 
-const _npmInstall = c => new Promise((resolve, reject) => {
+const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
     logTask('_npmInstall');
     executeAsync('npm', ['install'])
-        .then(() => cleanNodeModules(c))
         .then(() => {
             resolve();
         })
         .catch((e) => {
-            reject(e);
+            if (failOnError) {
+                reject();
+            } else {
+                logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
+                cleanNodeModules(c)
+                    .then(() => _npmInstall(c, true))
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+            }
         });
 });
 
@@ -484,7 +491,10 @@ const cleanNodeModules = c => new Promise((resolve, reject) => {
     removeDirs([
         path.join(c.paths.projectNodeModulesFolder, 'react-native-safe-area-view/.git'),
         path.join(c.paths.projectNodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.projectNodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+        path.join(c.paths.projectNodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnvNodeModulesFolder, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.rnvNodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnvNodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git')
     ]).then(() => resolve()).catch(e => reject(e));
 });
 
@@ -503,7 +513,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         console.log(`${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} file exists!`);
     } else {
         console.log(`${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
-        copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', RNV_GLOBAL_CONFIG_NAME), c.paths.globalConfigPath);
+        copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'global-config-template.json'), c.paths.globalConfigPath);
         console.log(
             `Don\'t forget to Edit: ${
                 c.paths.globalConfigFolder
@@ -645,7 +655,7 @@ const isSdkInstalled = (c, platform) => {
 
 const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        reject(`${platform} requires SDK to be installed. check your ~/.rnv/config.json file if you SDK path is correct`);
+        reject(`${platform} requires SDK to be installed. check your ${c.paths.globalConfigPath} file if you SDK path is correct`);
         return false;
     }
     return true;
@@ -1060,6 +1070,14 @@ const finishQuestion = () => new Promise((resolve, reject) => {
     _currentQuestion = null;
 });
 
+const resolveNodeModulePath = (c, filePath) => {
+    let pth = path.join(c.paths.rnvNodeModulesFolder, filePath);
+    if (!fs.existsSync(pth)) {
+        pth = path.join(c.paths.projectNodeModulesFolder, filePath);
+    }
+    return pth;
+};
+
 export {
     SUPPORTED_PLATFORMS,
     setAppConfig,
@@ -1103,6 +1121,7 @@ export {
     checkPortInUse,
     finishQuestion,
     askQuestion,
+    resolveNodeModulePath,
     IOS,
     ANDROID,
     ANDROID_TV,
@@ -1173,6 +1192,7 @@ export default {
     checkPortInUse,
     finishQuestion,
     askQuestion,
+    resolveNodeModulePath,
     IOS,
     ANDROID,
     ANDROID_TV,
