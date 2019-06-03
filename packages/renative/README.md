@@ -1670,15 +1670,17 @@ rnv run -p firefoxtv
 
 ## ReNative CLI
 
+Deployed to https://www.npmjs.com/package/rnv
+
 Commands:
 
 ```
-rnv --help                          //Print help
+rnv                                 //Print help
 rnv --version                       //Print ReNative Version
 rnv run -p <PLATFORM>               //Run app on simulator/device/browser
 rnv target launch -p <PLATFORM>     //Start target (i.e. simulator/ emulator)
 rnv app configure                   //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
-rnv new                      //Create new app
+rnv new                             //Create new app
 rnv platform eject                  //Eject platformTemplates into project
 rnv platform connect                //Use ReNative predefined templates
 ```

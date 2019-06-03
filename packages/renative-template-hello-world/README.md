@@ -1,6 +1,6 @@
 # renative-template-hello-world
 
-Hello World Template for ReNative
+Hello World Template for <a href="https://www.npmjs.com/package/renative">ReNative</a>
 
 ## 🚀 Quick Start
 

@@ -157,8 +157,12 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     const wpPublic = path.join(appFolder, 'public');
 
     _generateWebpackConfigs(c);
+    const wdsp = 'webpack-dev-server/bin/webpack-dev-server.js';
 
-    const wds = path.resolve(c.paths.rnvNodeModulesFolder, 'webpack-dev-server/bin/webpack-dev-server.js');
+    let wds = path.resolve(c.paths.rnvNodeModulesFolder, wdsp);
+    if (!fs.existsSync(wds)) {
+        wds = path.resolve(c.paths.projectNodeModulesFolder, wdsp);
+    }
 
     shell.exec(
         `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`

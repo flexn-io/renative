@@ -1,6 +1,6 @@
 # renative-template-blank
 
-Blank Template for ReNative
+Blank Template for  <a href="https://www.npmjs.com/package/renative">ReNative</a>
 
 ## 🚀 Quick Start
 
