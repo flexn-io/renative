@@ -1,7 +1,7 @@
 {
     "name": "renative-template-hello-world",
     "title": "Hello World ReNative Template",
-    "version": "0.23.0-alpha.6",
+    "version": "0.23.0-alpha.7",
     "codename": "Iron Ladybird",
     "keywords": [
         "react",
@@ -38,7 +38,7 @@
     ],
     "license": "MIT",
     "private": false,
-    "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
+    "description": "🚧 Hello World Template for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`",
     "author": {
         "name": "Pavel Jacko",
         "email": "i@pavjacko.com",

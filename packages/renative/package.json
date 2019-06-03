@@ -1,7 +1,7 @@
 {
     "name": "renative",
     "title": "ReNative",
-    "version": "0.23.0-alpha.6",
+    "version": "0.23.0-alpha.7",
     "codename": "Iron Ladybird",
     "keywords": [
         "react",
@@ -73,7 +73,7 @@
         "react-native-web-image-loader": "0.0.5",
         "react-native-vector-icons": "6.4.2",
         "react-web-vector-icons": "1.0.2",
-        "react-navigation": "3.5.1",
+        "react-navigation": "3.11.0",
         "react-navigation-tabs": "2.0.0-alpha.0",
         "react-native-reanimated": "1.0.0-alpha.12",
         "react-navigation-side-menu": "github:pavjacko/react-navigation-side-menu"
