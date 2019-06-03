@@ -1,7 +1,7 @@
 {
     "plugins": {
         "renative": {
-            "version": "0.23.0-alpha.11",
+            "version": "0.23.0-alpha.12",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -536,9 +536,6 @@
         "react-native-reanimated": {
             "version": "1.0.0-alpha.12",
             "ios": {
-                "podName": "RNReanimated"
-            },
-            "tvos": {
                 "podName": "RNReanimated"
             },
             "android": {

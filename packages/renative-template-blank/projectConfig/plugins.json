@@ -1,6 +1,5 @@
 {
     "plugins": {
-      "renative": "source:rnv",
       "react": "source:rnv",
       "react-art": "source:rnv",
       "react-dom": "source:rnv",

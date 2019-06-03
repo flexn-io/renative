@@ -125,14 +125,16 @@ const createApp = (c, componentMap) => {
             screensArr.push(componentMap[root.screens[rk].screen]);
         }
         return (
-            <ScrollView style={{ flex: 1, flexDirection: 'row', backgroundColor: '#222222' }}>
-                {
-                    screensArr.map((v) => {
-                        const Screen = v;
-                        return <Screen />;
-                    })
-                }
-            </ScrollView>
+            <View style={{ flex: 1, backgroundColor: '#222222' }}>
+                <ScrollView>
+                    {
+                        screensArr.map((v) => {
+                            const Screen = v;
+                            return <Screen />;
+                        })
+                    }
+                </ScrollView>
+            </View>
         );
     }
 
