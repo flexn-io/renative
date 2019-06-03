@@ -133,13 +133,17 @@ const applyTemplate = c => new Promise((resolve, reject) => {
         const devDependecies = c.files.projectPackage.devDependecies;
         const plugin = getMergedPlugin(c, k, c.files.pluginConfig.plugins);
 
-        if (dependencies && dependencies[k]) {
+        if (!plugin) {
+            logWarning(`Plugin with name ${
+                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
+                chalk.white(c.paths.pluginConfigPath)}`);
+        } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
                 logWarning(
                     `Version mismatch of dependency ${chalk.white(k)} between:
-${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
-${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
-package.json will be overriden`
+  ${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
+  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
+  package.json will be overriden`
                 );
                 hasPackageChanged = true;
                 dependencies[k] = plugin.version;
