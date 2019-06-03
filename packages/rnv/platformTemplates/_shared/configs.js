@@ -18,28 +18,28 @@ function generateConfig(config) {
     const modulePaths = [
         'src',
         'packages',
-        'node_modules/react-navigation-tabs',
-        'node_modules/react-navigation-stack',
-        'node_modules/react-navigation',
-        'node_modules/@react-navigation',
-        'node_modules/react-native-gesture-handler',
-        'node_modules/react-native-reanimated',
-        'node_modules/react-native-camera',
-        'node_modules/react-native-actionsheet',
-        'node_modules/react-native-root-toast',
-        'node_modules/react-native-root-siblings',
-        'node_modules/static-container',
-        'node_modules/react-native-material-dropdown',
-        'node_modules/react-native-material-buttons',
-        'node_modules/react-native-material-textfield',
-        'node_modules/react-native-material-ripple',
-        'node_modules/react-native-easy-grid',
-        'node_modules/native-base-shoutem-theme',
-        'node_modules/react-native-drawer',
-        'node_modules/react-native-safe-area-view',
-        'node_modules/react-native-vector-icons',
-        'node_modules/react-native-keyboard-aware-scroll-view',
-        'node_modules/react-native-tab-view',
+        // 'node_modules/react-navigation-tabs',
+        // 'node_modules/react-navigation-stack',
+        // 'node_modules/react-navigation',
+        // 'node_modules/@react-navigation',
+        // 'node_modules/react-native-gesture-handler',
+        // 'node_modules/react-native-reanimated',
+        // 'node_modules/react-native-camera',
+        // 'node_modules/react-native-actionsheet',
+        // 'node_modules/react-native-root-toast',
+        // 'node_modules/react-native-root-siblings',
+        // 'node_modules/static-container',
+        // 'node_modules/react-native-material-dropdown',
+        // 'node_modules/react-native-material-buttons',
+        // 'node_modules/react-native-material-textfield',
+        // 'node_modules/react-native-material-ripple',
+        // 'node_modules/react-native-easy-grid',
+        // 'node_modules/native-base-shoutem-theme',
+        // 'node_modules/react-native-drawer',
+        // 'node_modules/react-native-safe-area-view',
+        // 'node_modules/react-native-vector-icons',
+        // 'node_modules/react-native-keyboard-aware-scroll-view',
+        // 'node_modules/react-native-tab-view',
     ].concat(config.modulePaths);
 
     const rules = {};
@@ -87,26 +87,30 @@ function generateConfig(config) {
         react: path.resolve(projectDir, 'node_modules/react'),
         'react-native': 'react-native-web',
         'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-        'react-native-linear-gradient': 'react-native-web-linear-gradient',
+        // 'react-native-linear-gradient': 'react-native-web-linear-gradient',
         // 'react-native-vector-icons': 'react-native-web-vector-icons',
         'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
-        'react-native-vector-icons/Entypo': path.resolve(projectDir, 'node_modules/react-native-vector-icons/dist/Entypo'),
-        svgs: path.resolve(projectDir, 'node_modules/svgs'),
-        'react-navigation-tabs': path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
-        'react-navigation-stack': path.resolve(projectDir, 'node_modules/react-navigation-stack'),
-        'react-native-reanimated': path.resolve(projectDir, 'node_modules/react-native-reanimated'),
-        'react-native-gesture-handler': path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
-        'react-native-material-dropdown': path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
-        'react-native-material-buttons': path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
-        'react-native-material-textfield': path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
-        'react-native-material-ripple': path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
-        'react-native-easy-grid': path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
-        'react-native-svg': 'svgs',
+        // 'react-native-vector-icons/Entypo': path.resolve(projectDir, 'node_modules/react-native-vector-icons/dist/Entypo'),
+        // svgs: path.resolve(projectDir, 'node_modules/svgs'),
+        // 'react-navigation-tabs': path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
+        // 'react-navigation-stack': path.resolve(projectDir, 'node_modules/react-navigation-stack'),
+        // 'react-native-reanimated': path.resolve(projectDir, 'node_modules/react-native-reanimated'),
+        // 'react-native-gesture-handler': path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
+        // 'react-native-material-dropdown': path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
+        // 'react-native-material-buttons': path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
+        // 'react-native-material-textfield': path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
+        // 'react-native-material-ripple': path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
+        // 'react-native-easy-grid': path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
+        // 'react-native-svg': 'svgs',
     };
 
     if (config.moduleAliases) {
         for (const key in config.moduleAliases) {
-            aliases[key] = path.resolve(projectDir, config.moduleAliases[key].projectPath);
+            if (typeof config.moduleAliases[key] === 'string') {
+                aliases[key] = config.moduleAliases[key];
+            } else {
+                aliases[key] = path.resolve(projectDir, config.moduleAliases[key].projectPath);
+            }
         }
     }
 

@@ -475,13 +475,17 @@ const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) =>
         })
         .catch((e) => {
             if (failOnError) {
-                reject();
+                logError(e);
+                resolve();
             } else {
                 logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
                 cleanNodeModules(c)
                     .then(() => _npmInstall(c, true))
                     .then(() => resolve())
-                    .catch(e => reject(e));
+                    .catch((e) => {
+                        logError(e);
+                        resolve();
+                    });
             }
         });
 });

@@ -143,7 +143,9 @@
         "webpack-merge": "4.1.4",
         "write-json-webpack-plugin": "1.1.0",
         "xcode": "2.0.0",
-        "modclean": "3.0.0-beta.1"
+        "modclean": "3.0.0-beta.1",
+        "react-art": "16.7.0-alpha.2",
+        "react-hot-loader": "4.3.12"
     },
     "optionalDependencies": {
         "ios-deploy": "1.9.4"

@@ -1,5 +1,18 @@
 {
     "plugins": {
+      "renative": {
+          "version": "0.23.0-alpha.9",
+          "webpack": {
+              "modulePaths": [
+                  "node_modules/renative"
+              ],
+              "moduleAliases": {
+                  "renative": {
+                      "projectPath": "node_modules/renative"
+                  }
+              }
+          }
+      },
         "react-native-gesture-handler": {
             "version": "1.3.0",
             "ios": {
@@ -21,19 +34,35 @@
             "androidwear": {
                 "path": "node_modules/react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
             }
         },
         "react-native-video": {
             "version": "2.0.0",
-            "ios": { "podName": "react-native-video" },
-            "tvos": { "podName": "react-native-video" },
-            "android": { "package": "com.brentvatne.react.ReactVideoPackage" },
-            "androidtv": { "package": "com.brentvatne.react.ReactVideoPackage" }
+            "ios": {
+                "podName": "react-native-video"
+            },
+            "tvos": {
+                "podName": "react-native-video"
+            },
+            "android": {
+                "package": "com.brentvatne.react.ReactVideoPackage"
+            },
+            "androidtv": {
+                "package": "com.brentvatne.react.ReactVideoPackage"
+            }
         },
         "react-native-languages": {
             "version": "3.0.2",
-            "ios": { "podName": "RNLanguages" },
-            "tvos": { "podName": "RNLanguages" },
+            "ios": {
+                "podName": "RNLanguages"
+            },
+            "tvos": {
+                "podName": "RNLanguages"
+            },
             "android": {
                 "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
             },
@@ -43,62 +72,123 @@
         },
         "react-native-linear-gradient": {
             "version": "2.4.0",
-            "ios": { "podName": "BVLinearGradient" },
-            "tvos": { "podName": "BVLinearGradient" },
+            "ios": {
+                "podName": "BVLinearGradient"
+            },
+            "tvos": {
+                "podName": "BVLinearGradient"
+            },
             "android": {
                 "package": "com.BV.LinearGradient.LinearGradientPackage"
             },
             "androidtv": {
                 "package": "com.BV.LinearGradient.LinearGradientPackage"
-            }
+            },
+            "webpack": {
+                "moduleAliases": {
+                  "react-native-linear-gradient": "react-native-web-linear-gradient"
+                }
+            },
+            "dependsOn": ["react-native-web-linear-gradient"]
         },
         "react-native-fetch-blob": {
             "version": "0.10.8",
-            "ios": { "podName": "react-native-fetch-blob" },
-            "tvos": { "podName": "react-native-fetch-blob" },
-            "android": { "package": "com.RNFetchBlob.RNFetchBlobPackage" },
-            "androidtv": { "package": "com.RNFetchBlob.RNFetchBlobPackage" }
+            "ios": {
+                "podName": "react-native-fetch-blob"
+            },
+            "tvos": {
+                "podName": "react-native-fetch-blob"
+            },
+            "android": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "androidtv": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            }
         },
         "react-native-camera": {
             "version": "1.8.0",
-            "ios": { "podName": "react-native-camera" },
-            "tvos": { "podName": "react-native-camera" },
-            "android": { "package": "org.reactnative.camera.RNCameraPackage" },
-            "androidtv": { "package": "org.reactnative.camera.RNCameraPackage" }
+            "ios": {
+                "podName": "react-native-camera"
+            },
+            "tvos": {
+                "podName": "react-native-camera"
+            },
+            "android": {
+                "package": "org.reactnative.camera.RNCameraPackage"
+            },
+            "androidtv": {
+                "package": "org.reactnative.camera.RNCameraPackage"
+            },
+            "webpack": {
+                "modulePaths": true
+            }
         },
         "react-native-fs": {
             "version": "2.8.5",
-            "ios": { "podName": "RNFS" },
-            "tvos": { "podName": "RNFS" },
-            "android": { "package": "com.rnfs.RNFSPackage" },
-            "androidtv": { "package": "com.rnfs.RNFSPackage" }
+            "ios": {
+                "podName": "RNFS"
+            },
+            "tvos": {
+                "podName": "RNFS"
+            },
+            "android": {
+                "package": "com.rnfs.RNFSPackage"
+            },
+            "androidtv": {
+                "package": "com.rnfs.RNFSPackage"
+            }
         },
         "react-native-fbsdk": {
             "version": "0.8.0",
-            "ios": { "podName": "react-native-fbsdk" },
-            "tvos": { "podName": "react-native-fbsdk" },
+            "ios": {
+                "podName": "react-native-fbsdk"
+            },
+            "tvos": {
+                "podName": "react-native-fbsdk"
+            },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"]
+                "packageParams": [
+                    "mCallbackManager"
+                ]
             },
             "androidtv": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"]
+                "packageParams": [
+                    "mCallbackManager"
+                ]
             }
         },
         "react-native-zip-archive": {
             "version": "2.1.0",
-            "ios": { "podName": "RNZipArchive" },
-            "tvos": { "podName": "RNZipArchive" },
-            "android": { "package": "com.rnziparchive.RNZipArchivePackage" },
-            "androidtv": { "package": "com.rnziparchive.RNZipArchivePackage" }
+            "ios": {
+                "podName": "RNZipArchive"
+            },
+            "tvos": {
+                "podName": "RNZipArchive"
+            },
+            "android": {
+                "package": "com.rnziparchive.RNZipArchivePackage"
+            },
+            "androidtv": {
+                "package": "com.rnziparchive.RNZipArchivePackage"
+            }
         },
         "react-native-image-picker": {
             "version": "0.27.1",
-            "ios": { "podName": "react-native-image-picker" },
-            "tvos": { "podName": "react-native-image-picker" },
-            "android": { "package": "com.imagepicker.ImagePickerPackage" },
-            "androidtv": { "package": "com.imagepicker.ImagePickerPackage" }
+            "ios": {
+                "podName": "react-native-image-picker"
+            },
+            "tvos": {
+                "podName": "react-native-image-picker"
+            },
+            "android": {
+                "package": "com.imagepicker.ImagePickerPackage"
+            },
+            "androidtv": {
+                "package": "com.imagepicker.ImagePickerPackage"
+            }
         },
         "react-native-nfc-manager": {
             "version": "0.0.8",
@@ -119,8 +209,12 @@
         },
         "react-native-fabric": {
             "version": "",
-            "ios": { "podName": "ReactNativeFabric" },
-            "tvos": { "podName": "ReactNativeFabric" }
+            "ios": {
+                "podName": "ReactNativeFabric"
+            },
+            "tvos": {
+                "podName": "ReactNativeFabric"
+            }
         },
         "react-native-exception-handler": {
             "version": "2.6.0",
@@ -141,34 +235,66 @@
         },
         "react-native-pdf": {
             "version": "5.0.6",
-            "ios": { "podName": "react-native-pdf" },
-            "tvos": { "podName": "react-native-pdf" },
-            "android": { "package": "org.wonday.pdf.RCTPdfView" },
-            "androidtv": { "package": "org.wonday.pdf.RCTPdfView" }
+            "ios": {
+                "podName": "react-native-pdf"
+            },
+            "tvos": {
+                "podName": "react-native-pdf"
+            },
+            "android": {
+                "package": "org.wonday.pdf.RCTPdfView"
+            },
+            "androidtv": {
+                "package": "org.wonday.pdf.RCTPdfView"
+            }
         },
         "react-native-sensors": {
             "version": "2.4.2",
-            "ios": { "podName": "RNSensors" },
-            "tvos": { "podName": "RNSensors" },
-            "android": { "package": "com.sensors.RNSensorsPackage" },
-            "androidtv": { "package": "com.sensors.RNSensorsPackage" }
+            "ios": {
+                "podName": "RNSensors"
+            },
+            "tvos": {
+                "podName": "RNSensors"
+            },
+            "android": {
+                "package": "com.sensors.RNSensorsPackage"
+            },
+            "androidtv": {
+                "package": "com.sensors.RNSensorsPackage"
+            }
         },
         "react-native-keep-awake": {
             "version": "4.0.0",
-            "ios": { "podName": "react-native-keep-awake" },
-            "tvos": { "podName": "react-native-keep-awake" },
-            "android": { "package": "com.corbt.keepawake.KCKeepAwakePackage" },
-            "androidtv": { "package": "com.corbt.keepawake.KCKeepAwakePackage" }
+            "ios": {
+                "podName": "react-native-keep-awake"
+            },
+            "tvos": {
+                "podName": "react-native-keep-awake"
+            },
+            "android": {
+                "package": "com.corbt.keepawake.KCKeepAwakePackage"
+            },
+            "androidtv": {
+                "package": "com.corbt.keepawake.KCKeepAwakePackage"
+            }
         },
         "react-native-maps": {
             "version": "0.19.0",
-            "ios": { "podName": "react-native-maps" },
-            "tvos": { "podName": "react-native-maps" }
+            "ios": {
+                "podName": "react-native-maps"
+            },
+            "tvos": {
+                "podName": "react-native-maps"
+            }
         },
         "react-native-document-picker": {
             "version": "2.1.0",
-            "ios": { "podName": "react-native-document-picker" },
-            "tvos": { "podName": "react-native-document-picker" },
+            "ios": {
+                "podName": "react-native-document-picker"
+            },
+            "tvos": {
+                "podName": "react-native-document-picker"
+            },
             "android": {
                 "package": "com.reactnativedocumentpicker.ReactNativeDocumentPicker"
             },
@@ -178,8 +304,12 @@
         },
         "react-native-image-crop-picker": {
             "version": "0.21.2",
-            "ios": { "podName": "RNImageCropPicker" },
-            "tvos": { "podName": "RNImageCropPicker" },
+            "ios": {
+                "podName": "RNImageCropPicker"
+            },
+            "tvos": {
+                "podName": "RNImageCropPicker"
+            },
             "android": {
                 "package": "com.reactnative.ivpusic.imagepicker.PickerPackage"
             },
@@ -189,18 +319,42 @@
         },
         "react-native-svg": {
             "version": "9.4.0",
-            "ios": { "podName": "RNSVG" },
-            "tvos": { "podName": "RNSVG" },
-            "android": { "package": "com.horcrux.svg.SvgPackage" },
-            "androidtv": { "package": "com.horcrux.svg.SvgPackage" }
+            "ios": {
+                "podName": "RNSVG"
+            },
+            "tvos": {
+                "podName": "RNSVG"
+            },
+            "android": {
+                "package": "com.horcrux.svg.SvgPackage"
+            },
+            "androidtv": {
+                "package": "com.horcrux.svg.SvgPackage"
+            },
+            "webpack": {
+                "moduleAliases": {
+                  "react-native-svg": "svgs"
+                }
+            },
+            "dependsOn": [
+              "svgs"
+            ]
         },
         "react-native-vector-icons": {
-            "version": "6.4.2"
+            "version": "6.4.2",
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
+            }
         },
         "react-native-webview-bridge": {
             "version": "0.40.1",
-            "ios": { "podName": "react-native-webview-bridge" },
-            "tvos": { "podName": "react-native-webview-bridge" },
+            "ios": {
+                "podName": "react-native-webview-bridge"
+            },
+            "tvos": {
+                "podName": "react-native-webview-bridge"
+            },
             "android": {
                 "package": "com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage"
             },
@@ -210,27 +364,51 @@
         },
         "react-native-picker": {
             "version": "4.3.7",
-            "ios": { "podName": "Picker" },
-            "tvos": { "podName": "Picker" },
-            "android": { "package": "com.beefe.picker.PickerViewPackage" },
-            "androidtv": { "package": "com.beefe.picker.PickerViewPackage" }
+            "ios": {
+                "podName": "Picker"
+            },
+            "tvos": {
+                "podName": "Picker"
+            },
+            "android": {
+                "package": "com.beefe.picker.PickerViewPackage"
+            },
+            "androidtv": {
+                "package": "com.beefe.picker.PickerViewPackage"
+            }
         },
         "react-native-permissions": {
             "version": "1.1.1",
-            "ios": { "podName": "ReactNativePermissions" },
-            "tvos": { "podName": "ReactNativePermissions" }
+            "ios": {
+                "podName": "ReactNativePermissions"
+            },
+            "tvos": {
+                "podName": "ReactNativePermissions"
+            }
         },
         "react-native-device-info": {
             "version": "1.5.0",
-            "ios": { "podName": "RNDeviceInfo" },
-            "tvos": { "podName": "RNDeviceInfo" },
-            "android": { "package": "com.learnium.RNDeviceInfo.RNDeviceInfo" },
-            "androidtv": { "package": "com.learnium.RNDeviceInfo.RNDeviceInfo" }
+            "ios": {
+                "podName": "RNDeviceInfo"
+            },
+            "tvos": {
+                "podName": "RNDeviceInfo"
+            },
+            "android": {
+                "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
+            },
+            "androidtv": {
+                "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
+            }
         },
         "@mapbox/react-native-mapbox-gl": {
             "version": "github:nitaliano/react-native-mapbox-gl",
-            "ios": { "podName": "react-native-mapbox-gl" },
-            "tvos": { "podName": "react-native-mapbox-gl" },
+            "ios": {
+                "podName": "react-native-mapbox-gl"
+            },
+            "tvos": {
+                "podName": "react-native-mapbox-gl"
+            },
             "android": {
                 "projectName": "mapbox-react-native-mapbox-gl",
                 "package": "com.mapbox.rctmgl.RCTMGLPackage",
@@ -246,8 +424,12 @@
         },
         "react-native-image-resizer": {
             "version": "1.0.0",
-            "ios": { "podName": "react-native-image-resizer" },
-            "tvos": { "podName": "react-native-image-resizer" },
+            "ios": {
+                "podName": "react-native-image-resizer"
+            },
+            "tvos": {
+                "podName": "react-native-image-resizer"
+            },
             "android": {
                 "package": "fr.bamlab.rnimageresizer.ImageResizerPackage"
             },
@@ -265,13 +447,21 @@
                 "podName": "RNPhotoEditor",
                 "path": "node_modules/react-native-photo-editor/ios"
             },
-            "android": { "package": "ui.photoeditor.RNPhotoEditorPackage" },
-            "androidtv": { "package": "ui.photoeditor.RNPhotoEditorPackage" }
+            "android": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            },
+            "androidtv": {
+                "package": "ui.photoeditor.RNPhotoEditorPackage"
+            }
         },
         "react-native-sqlite-storage": {
             "version": "3.3.9",
-            "ios": { "podName": "react-native-sqlite-storage" },
-            "tvos": { "podName": "react-native-sqlite-storage" },
+            "ios": {
+                "podName": "react-native-sqlite-storage"
+            },
+            "tvos": {
+                "podName": "react-native-sqlite-storage"
+            },
             "android": {
                 "package": "org.pgsqlite.SQLitePluginPackage",
                 "path": "node_modules/react-native-sqlite-storage/src/android"
@@ -283,8 +473,12 @@
         },
         "react-native-signature-capture": {
             "version": "0.4.9",
-            "ios": { "podName": "react-native-signature-capture" },
-            "tvos": { "podName": "react-native-signature-capture" },
+            "ios": {
+                "podName": "react-native-signature-capture"
+            },
+            "tvos": {
+                "podName": "react-native-signature-capture"
+            },
             "android": {
                 "projectName": "reactnativesignaturecapture",
                 "package": "com.rssignaturecapture.RSSignatureCapturePackage"
@@ -296,8 +490,12 @@
         },
         "react-native-contacts": {
             "version": "3.1.2",
-            "ios": { "podName": "react-native-contacts" },
-            "tvos": { "podName": "react-native-contacts" },
+            "ios": {
+                "podName": "react-native-contacts"
+            },
+            "tvos": {
+                "podName": "react-native-contacts"
+            },
             "android": {
                 "package": "com.rt2zz.reactnativecontacts.ReactNativeContacts"
             },
@@ -309,7 +507,9 @@
             "version": "1.1.5",
             "ios": {
                 "podName": "react-native-orientation-locker",
-                "appDelegateImports": ["react_native_orientation_locker"],
+                "appDelegateImports": [
+                    "react_native_orientation_locker"
+                ],
                 "appDelegateMethods": [
                     "func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {",
                     "  return Orientation.getOrientation();",
@@ -318,7 +518,9 @@
             },
             "android": {
                 "package": "org.wonday.orientation.OrientationPackage",
-                "activityImports": ["android.content.res.Configuration"],
+                "activityImports": [
+                    "android.content.res.Configuration"
+                ],
                 "activityMethods": [
                     "override fun onConfigurationChanged(newConfig:Configuration) {",
                     "  super.onConfigurationChanged(newConfig)",
@@ -331,19 +533,31 @@
         },
         "react-native-reanimated": {
             "version": "1.0.0-alpha.12",
-            "ios": { "podName": "RNReanimated" },
-            "tvos": { "podName": "RNReanimated" },
+            "ios": {
+                "podName": "RNReanimated"
+            },
+            "tvos": {
+                "podName": "RNReanimated"
+            },
             "android": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
             "androidtv": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
+            },
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
             }
         },
         "react-native-screens": {
             "version": "1.0.0-alpha.22",
-            "ios": { "podName": "RNScreens" },
-            "tvos": { "podName": "RNScreens" },
+            "ios": {
+                "podName": "RNScreens"
+            },
+            "tvos": {
+                "podName": "RNScreens"
+            },
             "android": {
                 "package": "com.swmansion.rnscreens.RNScreensPackage"
             },
@@ -364,13 +578,23 @@
         },
         "google-maps": {
             "no-npm": true,
-            "ios": { "podName": "GoogleMaps", "version": "2.5.0" },
-            "tvos": { "podName": "GoogleMaps", "version": "2.5.0" }
+            "ios": {
+                "podName": "GoogleMaps",
+                "version": "2.5.0"
+            },
+            "tvos": {
+                "podName": "GoogleMaps",
+                "version": "2.5.0"
+            }
         },
         "lottie-react-native": {
             "version": "2.6.1",
-            "ios": { "podName": "lottie-react-native" },
-            "tvos": { "podName": "lottie-react-native" },
+            "ios": {
+                "podName": "lottie-react-native"
+            },
+            "tvos": {
+                "podName": "lottie-react-native"
+            },
             "android": {
                 "package": "com.airbnb.android.react.lottie.LottiePackage",
                 "path": "node_modules/lottie-react-native/src/android"
@@ -382,30 +606,48 @@
         },
         "react-native-get-real-path": {
             "version": "1.0.0",
-            "android": { "package": "com.rngrp.RNGRPPackage" },
-            "androidtv": { "package": "com.rngrp.RNGRPPackage" }
+            "android": {
+                "package": "com.rngrp.RNGRPPackage"
+            },
+            "androidtv": {
+                "package": "com.rngrp.RNGRPPackage"
+            }
         },
         "react-native-simple-compass": {
             "version": "1.0.0",
-            "android": { "package": "com.reactlibrary.RNSimpleCompassPackage" },
+            "android": {
+                "package": "com.reactlibrary.RNSimpleCompassPackage"
+            },
             "androidtv": {
                 "package": "com.reactlibrary.RNSimpleCompassPackage"
             }
         },
         "react-native-prompt-android": {
             "version": "0.3.1",
-            "android": { "package": "im.shimo.react.prompt.RNPromptPackage" },
-            "androidtv": { "package": "im.shimo.react.prompt.RNPromptPackage" }
+            "android": {
+                "package": "im.shimo.react.prompt.RNPromptPackage"
+            },
+            "androidtv": {
+                "package": "im.shimo.react.prompt.RNPromptPackage"
+            }
         },
         "react-native-ble-manager": {
             "version": "6.2.4",
-            "android": { "package": "it.innove.BleManagerPackage" },
-            "androidtv": { "package": "it.innove.BleManagerPackage" }
+            "android": {
+                "package": "it.innove.BleManagerPackage"
+            },
+            "androidtv": {
+                "package": "it.innove.BleManagerPackage"
+            }
         },
         "react-native-call-log": {
             "version": "git+https://github.com/wscodelabs/react-native-call-log.git",
-            "android": { "package": "com.wscodelabs.callLogs.CallLogPackage" },
-            "androidtv": { "package": "com.wscodelabs.callLogs.CallLogPackage" }
+            "android": {
+                "package": "com.wscodelabs.callLogs.CallLogPackage"
+            },
+            "androidtv": {
+                "package": "com.wscodelabs.callLogs.CallLogPackage"
+            }
         },
         "react-native-firebase": {
             "version": "5.2.0",
@@ -451,7 +693,9 @@
         },
         "native-base": {
             "version": "2.12.1",
-            "dependsOn": ["react-native-vector-icons"]
+            "dependsOn": [
+                "react-native-vector-icons"
+            ]
         },
         "@react-native-community/async-storage": {
             "version": "1.4.1",
@@ -460,6 +704,90 @@
             },
             "android": {
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
+            }
+        },
+        "react-native-web": {
+          "version": "0.9.9"
+        },
+        "react-native-web-image-loader": {
+          "version":"0.0.5"
+        },
+        "react-web-vector-icons": {
+          "version:": "1.0.2"
+        },
+        "react-navigation": {
+          "version": "3.5.1",
+          "webpack": {
+              "modulePaths": true
+          }
+        },
+        "react-navigation-stack": {
+          "version": "1.4.0",
+          "webpack": {
+              "modulePaths": true,
+              "moduleAliases": true
+          }
+        },
+        "react-navigation-tabs": {
+          "version:": "2.0.0-alpha.0",
+          "webpack": {
+              "modulePaths": true,
+              "moduleAliases": true
+          }
+        },
+        "react-navigation-side-menu": {
+          "version": "github:pavjacko/react-navigation-side-menu"
+        },
+        "react-native-easy-grid": {
+          "version:": "0.2.1",
+          "webpack": {
+              "modulePaths": true,
+              "moduleAliases": true
+          }
+        },
+        "react-native-safe-area-view": {
+          "version": "0.14.4",
+          "webpack": {
+              "modulePaths": true,
+          }
+        },
+        "react-native-drawer": {
+          "version": "0.14.4",
+          "webpack": {
+              "modulePaths": true,
+          }
+        },
+        "react-native-web-linear-gradient": {
+            "version": "1.0.5"
+        },
+        "svgs": {
+            "version": "4.1.0",
+            "webpack": {
+                "moduleAliases": true,
+            }
+        },
+        "native-base-shoutem-theme": {
+            "version": "0.2.3",
+            "webpack": {
+                "modulePaths": true,
+            }
+        },
+        "react-native-keyboard-aware-scroll-view": {
+            "version": "0.8.0",
+            "webpack": {
+                "modulePaths": true,
+            }
+        },
+        "react-native-tab-view": {
+            "version": "2.5.0",
+            "webpack": {
+                "modulePaths": true,
+            }
+        },
+        "static-container": {
+            "version": "1.3.0",
+            "webpack": {
+                "modulePaths": true,
             }
         }
     }

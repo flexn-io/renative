@@ -27,7 +27,7 @@ import {
 } from '../common';
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { getOriginalPlugin } from '../pluginTools';
+import { getMergedPlugin } from '../pluginTools';
 
 const xcode = require('xcode');
 const readline = require('readline');
@@ -392,7 +392,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getOriginalPlugin(c, key, plugins)[platform];
+                    const plugin = getMergedPlugin(c, key, plugins)[platform];
                     if (plugin) {
                         if (plugins[key]['no-active'] !== true) {
                             _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
@@ -476,7 +476,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getOriginalPlugin(c, key, plugins)[platform];
+                    const plugin = getMergedPlugin(c, key, plugins)[platform];
                     if (plugin) {
                         if (plugins[key]['no-active'] !== true) {
                             const isNpm = plugins[key]['no-npm'] !== true;

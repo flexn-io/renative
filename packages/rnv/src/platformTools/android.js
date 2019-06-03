@@ -36,7 +36,7 @@ import {
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, IS_WEAR_UNDER_SIZE } from '../constants';
-import { getOriginalPlugin } from '../pluginTools';
+import { getMergedPlugin } from '../pluginTools';
 
 const readline = require('readline');
 
@@ -693,7 +693,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getOriginalPlugin(c, key, plugins)[platform];
+                    const plugin = getMergedPlugin(c, key, plugins)[platform];
                     if (plugin) {
                         if (plugins[key]['no-active'] !== true) {
                             if (plugin.packages) {

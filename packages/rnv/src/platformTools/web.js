@@ -32,7 +32,7 @@ import {
     resolveNodeModulePath
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { getOriginalPlugin } from '../pluginTools';
+import { getMergedPlugin } from '../pluginTools';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
 import { RNV_APP_CONFIG_NAME } from '../constants';
@@ -48,16 +48,30 @@ const _generateWebpackConfigs = (c) => {
     let moduleAliasesString = '';
 
     for (const key in plugins) {
-        const plugin = getOriginalPlugin(c, key, plugins);
+        const plugin = getMergedPlugin(c, key, plugins);
         if (plugin.webpack) {
             if (plugin.webpack.modulePaths) {
-                modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
+                if (plugin.webpack.modulePaths === true) {
+                    modulePaths = modulePaths.push(`node_modules/${key}`);
+                } else {
+                    modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
+                }
             }
             if (plugin.webpack.moduleAliases) {
-                for (const aKey in plugin.webpack.moduleAliases) {
-                    moduleAliasesString += `'${aKey}': {
-                  projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'
-                },`;
+                if (plugin.webpack.moduleAliases === true) {
+                    moduleAliasesString += `'${key}': {
+                projectPath: 'node_modules/${key}'
+              },`;
+                } else {
+                    for (const aKey in plugin.webpack.moduleAliases) {
+                        if (typeof plugin.webpack.moduleAliases[aKey] === 'string') {
+                            moduleAliasesString += `'${aKey}': '${plugin.webpack.moduleAliases[aKey]}',`;
+                        } else {
+                            moduleAliasesString += `'${aKey}': {
+                      projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'
+                    },`;
+                        }
+                    }
                 }
             }
         }
