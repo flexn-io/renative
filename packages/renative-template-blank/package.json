@@ -1,0 +1,59 @@
+{
+    "name": "renative-template-blank",
+    "title": "Blank ReNative Template",
+    "version": "0.23.0-alpha.12",
+    "codename": "Iron Ladybird",
+    "keywords": [
+        "react",
+        "react-native",
+        "template",
+        "starter",
+        "boilerplate",
+        "kit",
+        "native",
+        "swift",
+        "cocoapods",
+        "kotlin",
+        "apple tv",
+        "tvos",
+        "android tv",
+        "android wear",
+        "web",
+        "multiplatform",
+        "cross-platform",
+        "tizen",
+        "macos",
+        "osx",
+        "electron",
+        "smart tv",
+        "lg",
+        "watch",
+        "webos",
+        "windows",
+        "desktop",
+        "tizen watch",
+        "kaios",
+        "firefoxox",
+        "firefox tv"
+    ],
+    "license": "MIT",
+    "private": false,
+    "description": "🚧 Blank Template for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`",
+    "author": {
+        "name": "Pavel Jacko",
+        "email": "i@pavjacko.com",
+        "url": "https://github.com/pavjacko"
+    },
+    "homepage": "https://github.com/pavjacko/renative#readme",
+    "bugs": {
+        "url": "https://github.com/pavjacko/renative/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/pavjacko/renative.git"
+    },
+    "contributors": [],
+    "scripts": {},
+    "dependencies": {},
+    "devDependencies": {}
+}

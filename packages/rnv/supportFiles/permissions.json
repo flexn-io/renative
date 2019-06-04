@@ -1,0 +1,420 @@
+{
+    "permissions": {
+        "ios": {
+            "NSAppleMusicUsageDescription": {
+                "key": "NSAppleMusicUsageDescription",
+                "desc": "Get favorite music"
+            },
+            "NSBluetoothPeripheralUsageDescription": {
+                "key": "NSBluetoothPeripheralUsageDescription",
+                "desc": "Allow you to use your bluetooth to play music"
+            },
+            "NSCalendarsUsageDescription": {
+                "key": "NSCalendarsUsageDescription",
+                "desc": "Calendar for add events"
+            },
+            "NSCameraUsageDescription": {
+                "key": "NSCameraUsageDescription",
+                "desc": "Need camera to scan QR Codes"
+            },
+            "NSLocationWhenInUseUsageDescription": {
+                "key": "NSLocationWhenInUseUsageDescription",
+                "desc": "Geolocation tags for photos"
+            },
+            "NSLocationAlwaysAndWhenInUseUsageDescription": {
+                "key": "NSLocationAlwaysAndWhenInUseUsageDescription",
+                "desc": "Geolocation tags for photos"
+            },
+            "NSLocationAlwaysUsageDescription": {
+                "key": "NSLocationAlwaysUsageDescription",
+                "desc": "Geolocation tags for photos"
+            },
+            "NSMicrophoneUsageDescription": {
+                "key": "NSMicrophoneUsageDescription",
+                "desc": "Need microphone for videos"
+            },
+            "NSMotionUsageDescription": {
+                "key": "NSMotionUsageDescription",
+                "desc": "To know when device is moving"
+            },
+            "NSPhotoLibraryAddUsageDescription": {
+                "key": "NSPhotoLibraryAddUsageDescription",
+                "desc": "Need library to save images"
+            },
+            "NSPhotoLibraryUsageDescription": {
+                "key": "NSPhotoLibraryUsageDescription",
+                "desc": "Allows to upload images from photo library"
+            },
+            "NSSpeechRecognitionUsageDescription": {
+                "key": "NSSpeechRecognitionUsageDescription",
+                "desc": "Speech Recognition to run in app commands"
+            }
+        },
+        "android": {
+            "ACCESS_LOCATION_EXTRA_COMMANDS": {
+                "key": "android.permission.ACCESS_LOCATION_EXTRA_COMMANDS",
+                "security": "normal"
+            },
+            "ACCESS_NETWORK_STATE": {
+                "key": "android.permission.ACCESS_NETWORK_STATE",
+                "security": "normal"
+            },
+            "ACCESS_NOTIFICATION_POLICY": {
+                "key": "android.permission.ACCESS_NOTIFICATION_POLICY",
+                "security": "normal"
+            },
+            "ACCESS_WIFI_STATE": {
+                "key": "android.permission.ACCESS_WIFI_STATE",
+                "security": "normal"
+            },
+            "BLUETOOTH": {
+                "key": "android.permission.BLUETOOTH",
+                "security": "normal"
+            },
+            "BLUETOOTH_ADMIN": {
+                "key": "android.permission.BLUETOOTH_ADMIN",
+                "security": "normal"
+            },
+            "BROADCAST_STICKY": {
+                "key": "android.permission.BROADCAST_STICKY",
+                "security": "normal"
+            },
+            "CHANGE_NETWORK_STATE": {
+                "key": "android.permission.CHANGE_NETWORK_STATE",
+                "security": "normal"
+            },
+            "CHANGE_WIFI_MULTICAST_STATE": {
+                "key": "android.permission.CHANGE_WIFI_MULTICAST_STATE",
+                "security": "normal"
+            },
+            "CHANGE_WIFI_STATE": {
+                "key": "android.permission.CHANGE_WIFI_STATE",
+                "security": "normal"
+            },
+            "DISABLE_KEYGUARD": {
+                "key": "android.permission.DISABLE_KEYGUARD",
+                "security": "normal"
+            },
+            "EXPAND_STATUS_BAR": {
+                "key": "android.permission.EXPAND_STATUS_BAR",
+                "security": "normal"
+            },
+            "FOREGROUND_SERVICE": {
+                "key": "android.permission.FOREGROUND_SERVICE",
+                "security": "normal"
+            },
+            "GET_PACKAGE_SIZE": {
+                "key": "android.permission.GET_PACKAGE_SIZE",
+                "security": "normal"
+            },
+            "INSTALL_SHORTCUT": {
+                "key": "android.permission.INSTALL_SHORTCUT",
+                "security": "normal"
+            },
+            "INTERNET": {
+                "key": "android.permission.INTERNET",
+                "security": "normal"
+            },
+            "KILL_BACKGROUND_PROCESSES": {
+                "key": "android.permission.KILL_BACKGROUND_PROCESSES",
+                "security": "normal"
+            },
+            "MANAGE_OWN_CALLS": {
+                "key": "android.permission.MANAGE_OWN_CALLS",
+                "security": "normal"
+            },
+            "MODIFY_AUDIO_SETTINGS": {
+                "key": "android.permission.MODIFY_AUDIO_SETTINGS",
+                "security": "normal"
+            },
+            "NFC": {
+                "key": "android.permission.NFC",
+                "security": "normal"
+            },
+            "READ_SYNC_SETTINGS": {
+                "key": "android.permission.READ_SYNC_SETTINGS",
+                "security": "normal"
+            },
+            "READ_SYNC_STATS": {
+                "key": "android.permission.READ_SYNC_STATS",
+                "security": "normal"
+            },
+            "RECEIVE_BOOT_COMPLETED": {
+                "key": "android.permission.RECEIVE_BOOT_COMPLETED",
+                "security": "normal"
+            },
+            "REORDER_TASKS": {
+                "key": "android.permission.REORDER_TASKS",
+                "security": "normal"
+            },
+            "REQUEST_COMPANION_RUN_IN_BACKGROUND": {
+                "key": "android.permission.REQUEST_COMPANION_RUN_IN_BACKGROUND",
+                "security": "normal"
+            },
+            "REQUEST_COMPANION_USE_DATA_IN_BACKGROUND": {
+                "key": "android.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND",
+                "security": "normal"
+            },
+            "REQUEST_DELETE_PACKAGES": {
+                "key": "android.permission.REQUEST_DELETE_PACKAGES",
+                "security": "normal"
+            },
+            "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS": {
+                "key": "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
+                "security": "normal"
+            },
+            "SET_ALARM": {
+                "key": "android.permission.SET_ALARM",
+                "security": "normal"
+            },
+            "SET_WALLPAPER": {
+                "key": "android.permission.SET_WALLPAPER",
+                "security": "normal"
+            },
+            "SET_WALLPAPER_HINTS": {
+                "key": "android.permission.SET_WALLPAPER_HINTS",
+                "security": "normal"
+            },
+            "TRANSMIT_IR": {
+                "key": "android.permission.TRANSMIT_IR",
+                "security": "normal"
+            },
+            "USE_FINGERPRINT": {
+                "key": "android.permission.USE_FINGERPRINT",
+                "security": "normal"
+            },
+            "VIBRATE": {
+                "key": "android.permission.VIBRATE",
+                "security": "normal"
+            },
+            "WAKE_LOCK": {
+                "key": "android.permission.WAKE_LOCK",
+                "security": "normal"
+            },
+            "WRITE_SYNC_SETTINGS": {
+                "key": "android.permission.WRITE_SYNC_SETTINGS",
+                "security": "normal"
+            },
+            "BIND_ACCESSIBILITY_SERVICE": {
+                "key": "android.permission.BIND_ACCESSIBILITY_SERVICE",
+                "security": "signature"
+            },
+            "BIND_AUTOFILL_SERVICE": {
+                "key": "android.permission.BIND_AUTOFILL_SERVICE",
+                "security": "signature"
+            },
+            "BIND_CARRIER_SERVICES": {
+                "key": "android.permission.BIND_CARRIER_SERVICES",
+                "security": "signature"
+            },
+            "BIND_CHOOSER_TARGET_SERVICE": {
+                "key": "android.permission.BIND_CHOOSER_TARGET_SERVICE",
+                "security": "signature"
+            },
+            "BIND_CONDITION_PROVIDER_SERVICE": {
+                "key": "android.permission.BIND_CONDITION_PROVIDER_SERVICE",
+                "security": "signature"
+            },
+            "BIND_DEVICE_ADMIN": {
+                "key": "android.permission.BIND_DEVICE_ADMIN",
+                "security": "signature"
+            },
+            "BIND_DREAM_SERVICE": {
+                "key": "android.permission.BIND_DREAM_SERVICE",
+                "security": "signature"
+            },
+            "BIND_INCALL_SERVICE": {
+                "key": "android.permission.BIND_INCALL_SERVICE",
+                "security": "signature"
+            },
+            "BIND_INPUT_METHOD": {
+                "key": "android.permission.BIND_INPUT_METHOD",
+                "security": "signature"
+            },
+            "BIND_MIDI_DEVICE_SERVICE": {
+                "key": "android.permission.BIND_MIDI_DEVICE_SERVICE",
+                "security": "signature"
+            },
+            "BIND_NFC_SERVICE": {
+                "key": "android.permission.BIND_NFC_SERVICE",
+                "security": "signature"
+            },
+            "BIND_NOTIFICATION_LISTENER_SERVICE": {
+                "key": "android.permission.BIND_NOTIFICATION_LISTENER_SERVICE",
+                "security": "signature"
+            },
+            "BIND_PRINT_SERVICE": {
+                "key": "android.permission.BIND_PRINT_SERVICE",
+                "security": "signature"
+            },
+            "BIND_SCREENING_SERVICE": {
+                "key": "android.permission.BIND_SCREENING_SERVICE",
+                "security": "signature"
+            },
+            "BIND_TELECOM_CONNECTION_SERVICE": {
+                "key": "android.permission.BIND_TELECOM_CONNECTION_SERVICE",
+                "security": "signature"
+            },
+            "BIND_TEXT_SERVICE": {
+                "key": "android.permission.BIND_TEXT_SERVICE",
+                "security": "signature"
+            },
+            "BIND_TV_INPUT": {
+                "key": "android.permission.BIND_TV_INPUT",
+                "security": "signature"
+            },
+            "BIND_VISUAL_VOICEMAIL_SERVICE": {
+                "key": "android.permission.BIND_VISUAL_VOICEMAIL_SERVICE",
+                "security": "signature"
+            },
+            "BIND_VOICE_INTERACTION": {
+                "key": "android.permission.BIND_VOICE_INTERACTION",
+                "security": "signature"
+            },
+            "BIND_VPN_SERVICE": {
+                "key": "android.permission.BIND_VPN_SERVICE",
+                "security": "signature"
+            },
+            "BIND_VR_LISTENER_SERVICE": {
+                "key": "android.permission.BIND_VR_LISTENER_SERVICE",
+                "security": "signature"
+            },
+            "BIND_WALLPAPER": {
+                "key": "android.permission.BIND_WALLPAPER",
+                "security": "signature"
+            },
+            "CLEAR_APP_CACHE": {
+                "key": "android.permission.CLEAR_APP_CACHE",
+                "security": "signature"
+            },
+            "MANAGE_DOCUMENTS": {
+                "key": "android.permission.MANAGE_DOCUMENTS",
+                "security": "signature"
+            },
+            "READ_VOICEMAIL": {
+                "key": "android.permission.READ_VOICEMAIL",
+                "security": "signature"
+            },
+            "REQUEST_INSTALL_PACKAGES": {
+                "key": "android.permission.REQUEST_INSTALL_PACKAGES",
+                "security": "signature"
+            },
+            "SYSTEM_ALERT_WINDOW": {
+                "key": "android.permission.SYSTEM_ALERT_WINDOW",
+                "security": "signature"
+            },
+            "WRITE_SETTINGS": {
+                "key": "android.permission.WRITE_SETTINGS",
+                "security": "signature"
+            },
+            "WRITE_VOICEMAIL": {
+                "key": "android.permission.WRITE_VOICEMAIL",
+                "security": "signature"
+            },
+            "READ_CALENDAR": {
+                "key": "android.permission.READ_CALENDAR",
+                "security": "dangerous"
+            },
+            "WRITE_CALENDAR": {
+                "key": "android.permission.WRITE_CALENDAR",
+                "security": "dangerous"
+            },
+            "READ_CALL_LOG": {
+                "key": "android.permission.READ_CALL_LOG",
+                "security": "dangerous"
+            },
+            "WRITE_CALL_LOG": {
+                "key": "android.permission.WRITE_CALL_LOG",
+                "security": "dangerous"
+            },
+            "PROCESS_OUTGOING_CALLS": {
+                "key": "android.permission.PROCESS_OUTGOING_CALLS",
+                "security": "dangerous"
+            },
+            "CAMERA": {
+                "key": "android.permission.CAMERA",
+                "security": "dangerous"
+            },
+            "READ_CONTACTS": {
+                "key": "android.permission.READ_CONTACTS",
+                "security": "dangerous"
+            },
+            "WRITE_CONTACTS": {
+                "key": "android.permission.WRITE_CONTACTS",
+                "security": "dangerous"
+            },
+            "GET_ACCOUNTS": {
+                "key": "android.permission.GET_ACCOUNTS",
+                "security": "dangerous"
+            },
+            "ACCESS_FINE_LOCATION": {
+                "key": "android.permission.ACCESS_FINE_LOCATION",
+                "security": "dangerous"
+            },
+            "ACCESS_COARSE_LOCATION": {
+                "key": "android.permission.ACCESS_COARSE_LOCATION",
+                "security": "dangerous"
+            },
+            "RECORD_AUDIO": {
+                "key": "android.permission.RECORD_AUDIO",
+                "security": "dangerous"
+            },
+            "READ_PHONE_STATE": {
+                "key": "android.permission.READ_PHONE_STATE",
+                "security": "dangerous"
+            },
+            "READ_PHONE_NUMBERS": {
+                "key": "android.permission.READ_PHONE_NUMBERS",
+                "security": "dangerous"
+            },
+            "CALL_PHONE": {
+                "key": "android.permission.CALL_PHONE",
+                "security": "dangerous"
+            },
+            "ANSWER_PHONE_CALLS": {
+                "key": "android.permission.ANSWER_PHONE_CALLS",
+                "security": "dangerous"
+            },
+            "ADD_VOICEMAIL": {
+                "key": "android.permission.ADD_VOICEMAIL",
+                "security": "dangerous"
+            },
+            "USE_SIP": {
+                "key": "android.permission.USE_SIP",
+                "security": "dangerous"
+            },
+            "BODY_SENSORS": {
+                "key": "android.permission.BODY_SENSORS",
+                "security": "dangerous"
+            },
+            "SEND_SMS": {
+                "key": "android.permission.SEND_SMS",
+                "security": "dangerous"
+            },
+            "RECEIVE_SMS": {
+                "key": "android.permission.RECEIVE_SMS",
+                "security": "dangerous"
+            },
+            "READ_SMS": {
+                "key": "android.permission.READ_SMS",
+                "security": "dangerous"
+            },
+            "RECEIVE_WAP_PUSH": {
+                "key": "android.permission.RECEIVE_WAP_PUSH",
+                "security": "dangerous"
+            },
+            "RECEIVE_MMS": {
+                "key": "android.permission.RECEIVE_MMS",
+                "security": "dangerous"
+            },
+            "READ_EXTERNAL_STORAGE": {
+                "key": "android.permission.READ_EXTERNAL_STORAGE",
+                "security": "dangerous"
+            },
+            "WRITE_EXTERNAL_STORAGE": {
+                "key": "android.permission.WRITE_EXTERNAL_STORAGE",
+                "security": "dangerous"
+            }
+        }
+    }
+}

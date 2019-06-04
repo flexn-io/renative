@@ -1,0 +1,14 @@
+{
+    "id": "rnvSpecial",
+    "extend": "helloWorld",
+    "common": {
+        "id": "renative.helloworldSuper",
+        "title": "ReNativeSuper"
+    },
+    "platforms": {
+        "ios": {
+            "scheme": "RNVAppRelease",
+            "runScheme": "Release"
+        }
+    }
+}

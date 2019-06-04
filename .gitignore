@@ -50,8 +50,12 @@ platformAssets/
 
 package-lock.json
 
-rnv-cli/dist
 buildHooks/dist
+
+# /appConfigs
+# /projectConfig
+# /src
+# /index.*.js
 
 release-configs.gradle
 rnv-config.local.json

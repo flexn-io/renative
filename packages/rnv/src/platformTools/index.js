@@ -1,0 +1,95 @@
+import {
+    copyAndroidAssets,
+    configureGradleProject,
+    launchAndroidSimulator,
+    buildAndroid,
+    listAndroidTargets,
+    packageAndroid,
+    runAndroid,
+    configureAndroidProperties,
+    runAndroidLog
+} from './android';
+import {
+    runPod,
+    copyAppleAssets,
+    configureXcodeProject,
+    runXcodeProject,
+    exportXcodeProject,
+    archiveXcodeProject,
+    packageBundleForXcode,
+    listAppleDevices,
+    launchAppleSimulator,
+    runAppleLog,
+    prepareXcodeProject
+} from './apple';
+import { configureElectronProject, runElectron, buildElectron, runElectronDevServer } from './electron';
+import { launchKaiOSSimulator, configureKaiOSProject, runFirefoxProject, buildFirefoxProject } from './firefox';
+import {
+    launchTizenSimulator,
+    copyTizenAssets,
+    configureTizenProject,
+    createDevelopTizenCertificate,
+    addDevelopTizenCertificate,
+    runTizen,
+    buildTizenProject,
+    configureTizenGlobal,
+} from './tizen';
+import { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb } from './web';
+import { launchWebOSimulator, copyWebOSAssets, configureWebOSProject, runWebOS, buildWebOSProject } from './webos';
+
+
+export default {
+    // ANDROID
+    copyAndroidAssets,
+    configureGradleProject,
+    launchAndroidSimulator,
+    buildAndroid,
+    listAndroidTargets,
+    packageAndroid,
+    runAndroid,
+    configureAndroidProperties,
+    runAndroidLog,
+    // APPLE
+    runPod,
+    copyAppleAssets,
+    configureXcodeProject,
+    runXcodeProject,
+    exportXcodeProject,
+    archiveXcodeProject,
+    packageBundleForXcode,
+    listAppleDevices,
+    launchAppleSimulator,
+    runAppleLog,
+    prepareXcodeProject,
+    // ELECTRON
+    configureElectronProject,
+    runElectron,
+    buildElectron,
+    runElectronDevServer,
+    // FIREFOX
+    launchKaiOSSimulator,
+    configureKaiOSProject,
+    runFirefoxProject,
+    buildFirefoxProject,
+    // TIZEN
+    launchTizenSimulator,
+    copyTizenAssets,
+    configureTizenProject,
+    createDevelopTizenCertificate,
+    addDevelopTizenCertificate,
+    runTizen,
+    buildTizenProject,
+    configureTizenGlobal,
+    // WEB
+    buildWeb,
+    runWeb,
+    configureWebProject,
+    runWebDevServer,
+    deployWeb,
+    // WEBOS
+    launchWebOSimulator,
+    copyWebOSAssets,
+    configureWebOSProject,
+    runWebOS,
+    buildWebOSProject
+};

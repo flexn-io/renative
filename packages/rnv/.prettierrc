@@ -1,0 +1,6 @@
+{
+    "requirePragma": true,
+    "tabWidth": 4,
+    "useTabs": false,
+    "singleQuote": true
+}
