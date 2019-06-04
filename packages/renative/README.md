@@ -389,6 +389,28 @@ Example:
 ```json
 {
     "plugins": {
+      "renative": "source:rnv",
+      "react": "source:rnv",
+      "react-art": "source:rnv",
+      "react-dom": "source:rnv",
+      "react-native": "source:rnv",
+      "react-native-web": "source:rnv",
+      "react-native-web-image-loader": "source:rnv",
+      "react-native-gesture-handler": "source:rnv",
+      "react-navigation-side-menu": "source:rnv",
+      "react-navigation": "source:rnv",
+      "react-navigation-tabs": "source:rnv",
+      "react-native-reanimated": "source:rnv",
+      "react-native-vector-icons": "source:rnv"
+    }
+}
+```
+
+You can also customise default plugin configuration:
+
+```json
+{
+    "plugins": {
         "react-native-gesture-handler": {
             "version": "0.1.0",
             "ios": {
@@ -484,7 +506,10 @@ If you want to use different settings to those defined globally per project you 
   "platformBuildsFolder": "PROJECT_HOME/platformBuilds",
   "projectPlugins": "./projectConfig/plugins",
   "projectConfigFolder": "./projectConfig",
-  "defaultPorts": {}
+  "defaultPorts": {},
+  "defaultProjectConfigs": {
+    "template": ""
+  }
 }
 ```
 

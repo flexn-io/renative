@@ -2,7 +2,7 @@
   "name": "renative-wrapper-app",
   "private": true,
   "title": "ReNative",
-  "version": "0.23.0-alpha.12",
+  "version": "0.23.0-alpha.13",
   "codename": "Iron Ladybird",
   "keywords": [
     "react",
@@ -65,6 +65,7 @@
     "lerna": "npx lerna bootstrap",
     "watch": "cd ./packages/rnv && npm run watch",
     "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank",
+    "link": "cd ./packages/rnv && npm link",
     "prePublish": "rnv hooks run -x prePublish",
     "publish:rnv": "cd packages/rnv && npm publish",
     "publish:renative": "cd packages/renative && npm publish",
