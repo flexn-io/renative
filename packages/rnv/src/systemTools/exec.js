@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import shell from 'shelljs';
 import fs from 'fs';
@@ -23,7 +24,7 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
         return;
     }
 
-    shell.exec(`${p} ${command}`, (error, stdout, stderr) => {
+    shell.exec(`${p} ${command}`, (error, stdout) => {
         if (error) {
             reject(`Command ${cli} failed: "${chalk.white(`${p} ${command}`)}". ${error}`);
             return;

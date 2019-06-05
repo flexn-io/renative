@@ -140,6 +140,7 @@ const CLI_ANDROID_SDKMANAGER = 'androidSdkManager';
 const CLI_TIZEN_EMULATOR = 'tizenEmulator';
 const CLI_KAIOS_EMULATOR = 'tizenEmulator';
 const CLI_TIZEN = 'tizen';
+const CLI_SDB_TIZEN = 'tizenSdb';
 const CLI_WEBOS_ARES = 'webosAres';
 const CLI_WEBOS_ARES_PACKAGE = 'webosAresPackage';
 const CLI_WEBBOS_ARES_INSTALL = 'webosAresInstall';
@@ -216,6 +217,7 @@ export {
     CLI_ANDROID_SDKMANAGER,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
+    CLI_SDB_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBBOS_ARES_INSTALL,
@@ -295,6 +297,7 @@ export default {
     CLI_ANDROID_SDKMANAGER,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
+    CLI_SDB_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBBOS_ARES_INSTALL,
