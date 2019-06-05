@@ -753,8 +753,17 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         }
     }
 
+    const debugSigning = `
+    debug {
+        storeFile file(project.property("debug.keystore"))
+        storePassword "android"
+        keyAlias "androiddebugkey"
+        keyPassword "android"
+    }`;
+
     // SIGNING CONFIGS
-    pluginConfig.signingConfigs = 'release';
+    pluginConfig.signingConfigs = `${debugSigning}
+    release`;
     pluginConfig.localProperties = '';
     c.files.privateConfig = _getPrivateConfig(c, platform);
 
@@ -777,7 +786,7 @@ keyAlias=${c.files.privateConfig[platform].keyAlias}
 storePassword=${c.files.privateConfig[platform].storePassword}
 keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
-            pluginConfig.signingConfigs = `
+            pluginConfig.signingConfigs = `${debugSigning}
             release {
                 storeFile file(keystoreProps['storeFile'])
                 storePassword keystoreProps['storePassword']
@@ -796,6 +805,67 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         }
     }
 
+    // BUILD_TYPES
+    pluginConfig.buildTypes = `
+    debug {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+    release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        signingConfig signingConfigs.release
+    }`;
+
+    const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
+    // MULTI APK
+    pluginConfig.multiAPKs = '';
+    if (isMultiApk) {
+        pluginConfig.multiAPKs = `
+      ext.abiCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
+      import com.android.build.OutputFile
+
+      android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+          def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+          if (bavc != null) {
+            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc))
+          }
+        }
+      }`;
+    }
+
+    // SPLITS
+    pluginConfig.splits = '';
+    if (isMultiApk) {
+        pluginConfig.splits = `
+      abi {
+          reset()
+          enable true
+          include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+          universalApk false
+      }`;
+    }
+
+
+    // PACKAGING OPTIONS
+    pluginConfig.packagingOptions = `
+    exclude 'META-INF/DEPENDENCIES.txt'
+    exclude 'META-INF/DEPENDENCIES'
+    exclude 'META-INF/dependencies.txt'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/license.txt'
+    exclude 'META-INF/LGPL2.1'
+    exclude 'META-INF/NOTICE.txt'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/notice.txt'`;
+
+    // COMPILE OPTIONS
+    pluginConfig.compileOptions = `
+    sourceCompatibility 1.8
+    targetCompatibility 1.8`;
+
     writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
         { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
         { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
@@ -808,6 +878,11 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginConfig.pluginImplementations },
         { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: pluginConfig.pluginAfterEvaluate },
         { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: pluginConfig.signingConfigs },
+        { pattern: '{{PLUGIN_SPLITS}}', override: pluginConfig.splits },
+        { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: pluginConfig.packagingOptions },
+        { pattern: '{{PLUGIN_BUILD_TYPES}}', override: pluginConfig.buildTypes },
+        { pattern: '{{PLUGIN_MULTI_APKS}}', override: pluginConfig.multiAPKs },
+        { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: pluginConfig.compileOptions },
         { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: pluginConfig.localProperties },
     ]);
 

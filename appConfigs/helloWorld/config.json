@@ -58,15 +58,18 @@
         "android": {
             "entryFile": "index.android",
             "keystoreConfig": "~/.rnv/helloWorld/config.json",
+            "universalApk": true,
             "permissions": ["INTERNET", "SYSTEM_ALERT_WINDOW"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
                     "signingConfig": "Debug",
+                    "multipleAPKs": false,
                     "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
+                    "multipleAPKs": false,
                     "bundleAssets": true,
                     "bundleIsDev": true
                 }
@@ -74,15 +77,18 @@
         },
         "androidtv": {
             "entryFile": "index.androidtv",
+            "universalApk": true,
             "permissions": ["INTERNET", "SYSTEM_ALERT_WINDOW"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
                     "signingConfig": "Debug",
+                    "multipleAPKs": false,
                     "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
+                    "multipleAPKs": false,
                     "bundleAssets": true,
                     "bundleIsDev": false
                 }
@@ -90,15 +96,18 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
+            "universalApk": true,
             "permissions": ["WAKE_LOCK", "INTERNET", "SYSTEM_ALERT_WINDOW"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
                     "signingConfig": "Debug",
+                    "multipleAPKs": false,
                     "bundleAssets": false
                 },
                 "release": {
                     "signingConfig": "Release",
+                    "multipleAPKs": false,
                     "bundleAssets": true,
                     "bundleIsDev": false
                 }
