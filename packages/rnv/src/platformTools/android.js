@@ -6,6 +6,8 @@ import fs from 'fs';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
+import inquirer from 'inquirer';
+
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
@@ -35,19 +37,15 @@ import {
     logSuccess,
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, IS_WEAR_UNDER_SIZE } from '../constants';
+import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
 import { getMergedPlugin } from '../pluginTools';
 
 const readline = require('readline');
 
-const composeDevicesString = (devices, platform) => {
+const composeDevicesString = (devices, returnArray) => {
     const devicesArray = [];
-
-    const p = platform;
-    devices.forEach((v, i) => {
-        if ((p === ANDROID_WEAR && v.isWear) || (p === ANDROID_TV && v.isTV) || p === ANDROID && v.isMobile) devicesArray.push(_getDeviceString(v, i));
-    });
-
+    devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, !returnArray ? i : null)));
+    if (returnArray) return devicesArray;
     return `\n${devicesArray.join('')}`;
 };
 
@@ -57,7 +55,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target === '?' || target === undefined || target === '') {
         return _listAndroidTargets(c, true, false, false)
             .then((devicesArr) => {
-                const devicesString = composeDevicesString(devicesArr, platform);
+                const devicesString = composeDevicesString(devicesArr);
                 const readlineInterface = readline.createInterface({
                     input: process.stdin,
                     output: process.stdout,
@@ -88,7 +86,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
 
 const listAndroidTargets = (c) => {
     logTask('listAndroidTargets');
-    return _listAndroidTargets(c, false, false).then(list => composeDevicesString(list, c.platform)).then((devices) => {
+    return _listAndroidTargets(c, false, false).then(list => composeDevicesString(list)).then((devices) => {
         console.log(devices);
         return devices;
     });
@@ -96,7 +94,7 @@ const listAndroidTargets = (c) => {
 
 const _getDeviceString = (device, i) => {
     const {
-        isTV, isTablet, name, udid, isDevice, isActive, avdConfig, isWear
+        isTV, isTablet, name, udid, isDevice, isActive, avdConfig, isWear, arch
     } = device;
     let deviceIcon = '';
     if (isTablet) deviceIcon = 'Tablet 💊 ';
@@ -104,12 +102,15 @@ const _getDeviceString = (device, i) => {
     if (isWear) deviceIcon = 'Wear ⌚ ';
     if (!deviceIcon && (udid !== 'unknown' || avdConfig)) deviceIcon = 'Phone 📱 ';
 
-    return `-[${i + 1}] ${chalk.white(name)} | ${deviceIcon} | udid: ${chalk.blue(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
-        isActive ? chalk.magenta(' (active)') : ''
-    }\n`;
+    const deviceString = `${chalk.white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk.blue(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
+        isActive ? chalk.magenta(' (active)') : ''}`;
+
+    if (i === null) return { key: name, name: deviceString, value: name };
+
+    return `-[${i + 1}] ${deviceString}\n`;
 };
 
-const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false, skipPlatformFilter = false) => {
+const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask(`_listAndroidTargets:${c.platform}`);
     try {
         let devicesResult;
@@ -121,7 +122,7 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false, skipP
         if (!skipAvds) {
             avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
         }
-        return _parseDevicesResult(devicesResult, avdResult, deviceOnly, skipPlatformFilter, c);
+        return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
     } catch (e) {
         return Promise.reject(e);
     }
@@ -147,6 +148,7 @@ const getDeviceType = async (device, c) => {
         const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
         const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
         const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
+        const arch = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell getprop ro.product.cpu.abi`).toString().trim();
 
         let screenProps;
 
@@ -173,6 +175,7 @@ const getDeviceType = async (device, c) => {
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
         device.isMobile = !device.isWear && !device.isTV;
         device.screenProps = screenProps;
+        device.arch = arch;
         return device;
     }
 
@@ -181,6 +184,7 @@ const getDeviceType = async (device, c) => {
         const density = parseInt(device.avdConfig['hw.lcd.density'], 10);
         const width = parseInt(device.avdConfig['hw.lcd.width'], 10);
         const height = parseInt(device.avdConfig['hw.lcd.height'], 10);
+        const arch = device.avdConfig['abi.type'];
 
         // Better detect wear
         const sysdir = device.avdConfig['image.sysdir.1'];
@@ -198,6 +202,7 @@ const getDeviceType = async (device, c) => {
         device.isTV = batteryPresent !== 'yes';
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
         device.isMobile = !device.isWear && !device.isTV;
+        device.arch = arch;
         return device;
     }
     return device;
@@ -220,27 +225,36 @@ const getAvdDetails = async (deviceName) => {
     return {};
 };
 
-const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, skipPlatformFilter, c) => {
+const getEmulatorName = (words) => {
+
+};
+
+const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
     const devices = [];
 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
 
-        for (let i = 0; i < lines.length; i++) {
-            const words = lines[i].split(/[ ,\t]+/).filter(w => w !== '');
+        await Promise.all(lines.map(async (line) => {
+            const words = line.split(/[ ,\t]+/).filter(w => w !== '');
 
             if (words[1] === 'device') {
                 const isDevice = !words[0].includes('emulator');
+                let name = _getDeviceProp(words, 'model:');
+                if (!isDevice) {
+                    name = await getEmulatorName(words);
+                }
                 if ((deviceOnly && isDevice) || !deviceOnly) {
                     devices.push({
                         udid: words[0],
                         isDevice,
                         isActive: true,
-                        name: _getDeviceProp(words, 'model:'),
+                        name,
                     });
                 }
+                return true;
             }
-        }
+        }));
     }
 
     if (avdsString) {
@@ -264,7 +278,12 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, skipPl
         }));
     }
 
-    return Promise.all(devices.map(device => getDeviceType(device, c)));
+    return Promise.all(devices.map(device => getDeviceType(device, c)))
+        .then(devicesArray => devicesArray.filter((device) => {
+            // filter devices based on selected platform
+            const { platform } = c;
+            return (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
+        }));
 };
 
 const _getDeviceProp = (arr, prop) => {
@@ -375,21 +394,69 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     }
 });
 
+// const _runGradle = async (c, platform) => {
+//     logTask(`_runGradle:${platform}`);
+//     const appFolder = getAppFolder(c, platform);
+//     shell.cd(`${appFolder}`);
+
+//     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+
+//     const devicesArr = await _listAndroidTargets(c, false, true, c.program.device !== undefined);
+//     if (devicesArr.length === 1) {
+//         const dv = devicesArr[0];
+//         logInfo(`Found device ${dv.name}:${dv.udid}!`);
+//         await _runGradleApp(c, platform, appFolder, signingConfig, dv);
+//     } else if (devicesArr.length > 1) {
+//         logWarning('More than one device is connected!');
+//         const devicesString = composeDevicesString(devicesArr, platform);
+//         const readlineInterface = readline.createInterface({
+//             input: process.stdin,
+//             output: process.stdout,
+//         });
+//         await new Promise((resolve, reject) => readlineInterface.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
+//             const selectedDevice = devicesArr[parseInt(v, 10) - 1];
+//             if (selectedDevice) {
+//                 logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
+//                 _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
+//                     .then(resolve)
+//                     .catch(reject);
+//             } else {
+//                 logError(`Wrong choice ${v}! Ingoring`);
+//             }
+//         }));
+//     } else if (c.files.globalConfig.defaultTargets[platform]) {
+//         logWarning(
+//             `No connected devices found. Launching ${chalk.white(c.files.globalConfig.defaultTargets[platform])} emulator!`,
+//         );
+//         await launchAndroidSimulator(c, platform, c.files.globalConfig.defaultTargets[platform], true);
+//         const device = await _checkForActiveEmulator(c, platform);
+//         await _runGradleApp(c, platform, appFolder, signingConfig, device);
+//     } else {
+//         throw new Error(
+//             `No active or connected devices! You can launch android emulator with ${chalk.white(
+//                 'rnv target launch -p android -t <TARGET_NAME>',
+//             )}`,
+//         );
+//     }
+// };
+
 const _runGradle = async (c, platform) => {
     logTask(`_runGradle:${platform}`);
     const appFolder = getAppFolder(c, platform);
     shell.cd(`${appFolder}`);
 
+    const { device, target } = c.program;
+
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
 
-    const devicesArr = await _listAndroidTargets(c, false, true, c.program.device !== undefined);
+    const devicesArr = await _listAndroidTargets(c, false, true, device !== undefined);
     if (devicesArr.length === 1) {
         const dv = devicesArr[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, appFolder, signingConfig, dv);
     } else if (devicesArr.length > 1) {
         logWarning('More than one device is connected!');
-        const devicesString = composeDevicesString(devicesArr, platform);
+        const devicesString = composeDevicesString(devicesArr);
         const readlineInterface = readline.createInterface({
             input: process.stdin,
             output: process.stdout,
@@ -405,19 +472,31 @@ const _runGradle = async (c, platform) => {
                 logError(`Wrong choice ${v}! Ingoring`);
             }
         }));
-    } else if (c.files.globalConfig.defaultTargets[platform]) {
-        logWarning(
-            `No connected devices found. Launching ${chalk.white(c.files.globalConfig.defaultTargets[platform])} emulator!`,
-        );
-        await launchAndroidSimulator(c, platform, c.files.globalConfig.defaultTargets[platform], true);
-        const device = await _checkForActiveEmulator(c, platform);
-        await _runGradleApp(c, platform, appFolder, signingConfig, device);
     } else {
-        throw new Error(
-            `No active or connected devices! You can launch android emulator with ${chalk.white(
-                'rnv target launch -p android -t <TARGET_NAME>',
-            )}`,
-        );
+        if (device !== undefined) return logError(`Device ${device} not found`, true);
+
+        const availableEmulators = await _listAndroidTargets(c, true, false, false);
+        if (availableEmulators.length) {
+            const devicesString = composeDevicesString(availableEmulators, true);
+            const choices = devicesString;
+            const response = await inquirer.prompt([{
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'What emulator would you like to start?',
+                choices
+            }]);
+            console.log('resp', response);
+            if (response.chosenEmulator) {
+                await launchAndroidSimulator(c, platform, response.chosenEmulator, true);
+                const devices = await _checkForActiveEmulator(c, platform);
+                await _runGradleApp(c, platform, appFolder, signingConfig, devices);
+            }
+        } else {
+
+            // logWarning(
+            //     `No connected devices found. Launching ${chalk.white(c.files.globalConfig.defaultTargets[platform])} emulator!`,
+            // );
+        }
     }
 };
 
