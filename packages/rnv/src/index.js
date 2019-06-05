@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import path from 'path';
 import shell from 'shelljs';
+import Webpack from 'webpack';
 import Common, { initializeBuilder, logComplete, logError, logWelcome } from './common';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
@@ -33,6 +34,7 @@ const commands = {
     log: Runner,
     hooks: Hooks,
     fix: Tools,
+    clean: Tools,
     template: Template
 };
 

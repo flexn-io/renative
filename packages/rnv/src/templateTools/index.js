@@ -4,7 +4,7 @@ import path from 'path';
 import { executeAsync } from '../systemTools/exec';
 import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs } from '../systemTools/fileutils';
 import { logError, generateOptions, logWarning, logTask, setAppConfig } from '../common';
-import { getOriginalPlugin } from '../pluginTools';
+import { getMergedPlugin } from '../pluginTools';
 
 const DEFAULT_TEMPLATES = [
     'renative-template-hello-world',
@@ -31,7 +31,7 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     if (!templateName) {
         templateName = 'renative-template-hello-world';
         logWarning(`You're missing template name in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will add default ${chalk.white(templateName)} for you`);
-        if (c.files.projectConfig.defaultProjectConfigs) c.files.projectConfig.defaultProjectConfigs = {};
+        if (!c.files.projectConfig.defaultProjectConfigs) c.files.projectConfig.defaultProjectConfigs = {};
         c.files.projectConfig.defaultProjectConfigs.template = templateName;
         fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
     }
@@ -131,15 +131,19 @@ const applyTemplate = c => new Promise((resolve, reject) => {
     for (const k in c.files.pluginConfig.plugins) {
         const dependencies = c.files.projectPackage.dependencies;
         const devDependecies = c.files.projectPackage.devDependecies;
-        const plugin = getOriginalPlugin(c, k, c.files.pluginConfig.plugins);
+        const plugin = getMergedPlugin(c, k, c.files.pluginConfig.plugins);
 
-        if (dependencies && dependencies[k]) {
+        if (!plugin) {
+            logWarning(`Plugin with name ${
+                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
+                chalk.white(c.paths.pluginConfigPath)}`);
+        } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
                 logWarning(
                     `Version mismatch of dependency ${chalk.white(k)} between:
-${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
-${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
-package.json will be overriden`
+  ${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
+  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
+  package.json will be overriden`
                 );
                 hasPackageChanged = true;
                 dependencies[k] = plugin.version;

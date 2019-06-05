@@ -2,6 +2,8 @@
 
 Blank Template for  <a href="https://www.npmjs.com/package/renative">ReNative</a>
 
+This provides the most basic multi platform setup with only the most fundamental dependencies/plugins added
+
 ## 🚀 Quick Start
 
 ```bash

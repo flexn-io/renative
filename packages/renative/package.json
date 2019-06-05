@@ -1,7 +1,7 @@
 {
     "name": "renative",
     "title": "ReNative",
-    "version": "0.23.0-alpha.6",
+    "version": "0.23.0-alpha.14",
     "codename": "Iron Ladybird",
     "keywords": [
         "react",
@@ -60,23 +60,10 @@
     ],
     "main": "src/index.js",
     "scripts": {},
-    "dependencies": {
+    "peerDependencies": {
         "react": "16.8.6",
-        "react-art": "16.7.0-alpha.2",
         "react-dom": "16.8.6",
-        "react-hot-loader": "4.3.12",
-        "react-native": "0.59.5",
-        "react-native-gesture-handler": "github:kmagiera/react-native-gesture-handler",
-        "react-native-orientation-locker": "1.1.5",
-        "react-native-screens": "1.0.0-alpha.22",
-        "react-native-web": "0.9.9",
-        "react-native-web-image-loader": "0.0.5",
-        "react-native-vector-icons": "6.4.2",
-        "react-web-vector-icons": "1.0.2",
-        "react-navigation": "3.5.1",
-        "react-navigation-tabs": "2.0.0-alpha.0",
-        "react-native-reanimated": "1.0.0-alpha.12",
-        "react-navigation-side-menu": "github:pavjacko/react-navigation-side-menu"
+        "react-native": "0.59.5"
     },
     "devDependencies": {
         "prettier": "^1.17.1",

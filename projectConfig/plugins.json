@@ -1,7 +1,5 @@
 {
     "plugins": {
-        "react-native-gesture-handler": "source:rnv",
-        "react-native-orientation-locker": "source:rnv",
         "renative": {
           "version": "file:./packages/renative",
           "webpack": {
@@ -12,6 +10,18 @@
               }
             }
           }
-        }
+        },
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv",
+        "react-native-web-image-loader": "source:rnv",
+        "react-native-gesture-handler": "source:rnv",
+        "react-navigation-side-menu": "source:rnv",
+        "react-navigation": "source:rnv",
+        "react-navigation-tabs": "source:rnv",
+        "react-native-reanimated": "source:rnv",
+        "react-native-vector-icons": "source:rnv"
     }
 }

@@ -36,6 +36,17 @@ const hooks = {
         FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-blank/package.json'), v);
         FileUtils.updateObjectSync(path.join(pkgFolder, 'renative/package.json'), v);
         FileUtils.copyFileSync(path.join(c.paths.projectRootFolder, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
+        FileUtils.updateObjectSync(c.paths.rnvPluginTemplatesConfigPath, {
+            plugins: {
+                renative: {
+                    version: c.files.projectPackage.version
+                }
+            }
+        });
+
+        resolve();
+    }),
+    awesomePlugins: c => new Promise((resolve, reject) => {
         resolve();
     }),
 };

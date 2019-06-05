@@ -2,7 +2,10 @@ import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
-import { isPlatformSupportedSync, getConfig, logTask, logComplete, logError, getAppFolder, logWarning, generateOptions } from '../common';
+import {
+    isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
+    getAppFolder, logWarning, generateOptions, resolveNodeModulePath
+} from '../common';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { executeAsync, execShellAsync, execCLI } from '../systemTools/exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
@@ -67,11 +70,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
             resolve();
             return;
         }
-        // const babel = path.resolve(c.paths.rnvNodeModulesFolder, '.bin/babel');
-        let babel = path.resolve(c.paths.rnvNodeModulesFolder, '@babel/cli/bin/babel.js');
-        if (!fs.existsSync(babel)) {
-            babel = path.resolve(c.paths.projectNodeModulesFolder, '@babel/cli/bin/babel.js');
-        }
+        const babel = resolveNodeModulePath(c, '@babel/cli/bin/babel.js');
         const params = ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'];
         executeAsync(babel, params)
             .then(() => {

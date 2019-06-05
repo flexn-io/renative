@@ -6,8 +6,15 @@ import packageJson from '../package.json';
 import Theme from './theme';
 
 const styles = StyleSheet.create({
-    appContainer: {
+    appContainerScroll: {
         flex: 1,
+        paddingTop: 50
+    },
+    appContainerView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 30,
     },
     textH2: {
         fontFamily: 'TimeBurner',
@@ -16,6 +23,7 @@ const styles = StyleSheet.create({
         color: Theme.color4,
         justifyContent: 'center',
         alignItems: 'center',
+        textAlign: 'center'
     },
     textH3: {
         fontFamily: 'TimeBurner',
@@ -25,12 +33,19 @@ const styles = StyleSheet.create({
         color: Theme.color2,
         justifyContent: 'center',
         alignItems: 'center',
+        textAlign: 'center'
     },
     image: {
         marginBottom: 30,
         width: 83,
         height: 97,
     },
+    buttonWear: {
+        minWidth: 130
+    },
+    button: {
+        minWidth: 150
+    }
 });
 
 const stylesObbj = {
@@ -48,10 +63,14 @@ class ScreenHome extends React.Component {
     }
 
     render() {
-        const title = `Hello from ${config.common.title}!`;
+        const isWear = Api.platform === 'androidwear';
+        const selectedStyle = isWear ? styles.appContainerView : styles.appContainerScroll;
+        const styleButton = isWear ? styles.buttonWear : styles.button;
+        const SelectedView = isWear ? View : ScrollView;
+        const title = `${config.common.title}!`;
         return (
-            <ScrollView
-                style={[styles.appContainer, { backgroundColor: this.state.bgColor }, { paddingTop: 50 }]}
+            <SelectedView
+                style={[selectedStyle, { backgroundColor: this.state.bgColor }]}
                 contentContainerStyle={{
                     alignItems: 'center',
                     justifyContent: 'center'
@@ -70,12 +89,14 @@ v
                     {`platform: ${Api.platform}`}
                 </Text>
                 <Button
+                    style={styleButton}
                     title="Try Me!"
                     onPress={() => {
                         this.setState({ bgColor: this.state.bgColor === '#666666' ? Theme.color1 : '#666666' });
                     }}
                 />
                 <Button
+                    style={styleButton}
                     title="Now Try Me!"
                     onPress={() => {
                         Api.navigation.navigate('MyPage2');
@@ -85,7 +106,7 @@ v
                     <Icon iconFont="fontAwesome" iconName="github" iconColor={Theme.color3} style={stylesObbj.icon} />
                     <Icon iconFont="fontAwesome" iconName="twitter" iconColor={Theme.color3} style={stylesObbj.icon} />
                 </View>
-            </ScrollView>
+            </SelectedView>
         );
     }
 }

@@ -29,9 +29,10 @@ import {
     logInfo,
     askQuestion,
     finishQuestion,
+    resolveNodeModulePath
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { getOriginalPlugin } from '../pluginTools';
+import { getMergedPlugin } from '../pluginTools';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
 import { RNV_APP_CONFIG_NAME } from '../constants';
@@ -47,16 +48,32 @@ const _generateWebpackConfigs = (c) => {
     let moduleAliasesString = '';
 
     for (const key in plugins) {
-        const plugin = getOriginalPlugin(c, key, plugins);
-        if (plugin.webpack) {
+        const plugin = getMergedPlugin(c, key, plugins);
+        if (!plugin) {
+
+        } else if (plugin.webpack) {
             if (plugin.webpack.modulePaths) {
-                modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
+                if (plugin.webpack.modulePaths === true) {
+                    modulePaths.push(`node_modules/${key}`);
+                } else {
+                    modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
+                }
             }
             if (plugin.webpack.moduleAliases) {
-                for (const aKey in plugin.webpack.moduleAliases) {
-                    moduleAliasesString += `'${aKey}': {
-                  projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'
+                if (plugin.webpack.moduleAliases === true) {
+                    moduleAliasesString += `'${key}': {
+                  projectPath: 'node_modules/${key}'
                 },`;
+                } else {
+                    for (const aKey in plugin.webpack.moduleAliases) {
+                        if (typeof plugin.webpack.moduleAliases[aKey] === 'string') {
+                            moduleAliasesString += `'${aKey}': '${plugin.webpack.moduleAliases[aKey]}',`;
+                        } else {
+                            moduleAliasesString += `'${aKey}': {
+                        projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'
+                      },`;
+                        }
+                    }
                 }
             }
         }
@@ -85,7 +102,7 @@ const buildWeb = (c, platform) => {
 
     _generateWebpackConfigs(c);
 
-    const wbp = path.resolve(c.paths.rnvNodeModulesFolder, 'webpack/bin/webpack.js');
+    const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
     return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 };
@@ -157,12 +174,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     const wpPublic = path.join(appFolder, 'public');
 
     _generateWebpackConfigs(c);
-    const wdsp = 'webpack-dev-server/bin/webpack-dev-server.js';
-
-    let wds = path.resolve(c.paths.rnvNodeModulesFolder, wdsp);
-    if (!fs.existsSync(wds)) {
-        wds = path.resolve(c.paths.projectNodeModulesFolder, wdsp);
-    }
+    const wds = resolveNodeModulePath(c, 'webpack-dev-server/bin/webpack-dev-server.js');
 
     shell.exec(
         `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`

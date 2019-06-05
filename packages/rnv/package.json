@@ -1,7 +1,7 @@
 {
     "name": "rnv",
     "title": "ReNative CLI",
-    "version": "0.23.0-alpha.6",
+    "version": "0.23.0-alpha.14",
     "codename": "Iron Ladybird",
     "keywords": [
         "react",
@@ -38,7 +38,7 @@
     ],
     "license": "MIT",
     "private": false,
-    "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
+    "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`",
     "author": {
         "name": "Pavel Jacko",
         "email": "i@pavjacko.com",
@@ -143,7 +143,9 @@
         "webpack-merge": "4.1.4",
         "write-json-webpack-plugin": "1.1.0",
         "xcode": "2.0.0",
-        "modclean": "3.0.0-beta.1"
+        "modclean": "3.0.0-beta.1",
+        "react-art": "16.7.0-alpha.2",
+        "react-hot-loader": "4.3.12"
     },
     "optionalDependencies": {
         "ios-deploy": "1.9.4"

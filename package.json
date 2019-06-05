@@ -2,7 +2,7 @@
   "name": "renative-wrapper-app",
   "private": true,
   "title": "ReNative",
-  "version": "0.23.0-alpha.6",
+  "version": "0.23.0-alpha.14",
   "codename": "Iron Ladybird",
   "keywords": [
     "react",
@@ -65,6 +65,7 @@
     "lerna": "npx lerna bootstrap",
     "watch": "cd ./packages/rnv && npm run watch",
     "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank",
+    "link": "cd ./packages/rnv && npm link",
     "prePublish": "rnv hooks run -x prePublish",
     "publish:rnv": "cd packages/rnv && npm publish",
     "publish:renative": "cd packages/renative && npm publish",
@@ -76,7 +77,18 @@
   "dependencies": {
     "react-native-gesture-handler": "1.3.0",
     "react-native-orientation-locker": "1.1.5",
-    "renative": "file:./packages/renative"
+    "renative": "file:./packages/renative",
+    "react": "16.8.6",
+    "react-art": "16.8.6",
+    "react-dom": "16.8.6",
+    "react-native": "0.59.5",
+    "react-native-web": "0.9.9",
+    "react-native-web-image-loader": "0.0.5",
+    "react-navigation-side-menu": "github:pavjacko/react-navigation-side-menu",
+    "react-navigation": "3.5.1",
+    "react-navigation-tabs": "2.0.0-alpha.0",
+    "react-native-reanimated": "1.0.0-alpha.12",
+    "react-native-vector-icons": "6.4.2"
   },
   "devDependencies": {
     "lerna": "latest",

@@ -36,6 +36,7 @@ import {
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, IS_WEAR_UNDER_SIZE } from '../constants';
+import { getMergedPlugin } from '../pluginTools';
 
 const readline = require('readline');
 
@@ -575,6 +576,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
     }
+
     const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     const modulePath = `../../${pathFixed}`;
     if (plugin.projectName) {
@@ -685,22 +687,24 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         pluginActivityImports,
         pluginActivityMethods,
     };
-        // PLUGINS
+
+    // PLUGINS
     if (c.files.appConfigFile && c.files.pluginConfig) {
         const { includedPlugins } = c.files.appConfigFile.common;
         if (includedPlugins) {
             const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = plugins[key][platform];
-                    if (plugin) {
-                        if (plugins[key]['no-active'] !== true) {
-                            if (plugin.packages) {
-                                plugin.packages.forEach((ppkg) => {
-                                    _injectPlugin(c, plugin, key, ppkg, pluginConfig);
+                    const plugin = getMergedPlugin(c, key, plugins);
+                    const pluginPlat = plugin[platform];
+                    if (pluginPlat) {
+                        if (plugin['no-active'] !== true) {
+                            if (pluginPlat.packages) {
+                                pluginPlat.packages.forEach((ppkg) => {
+                                    _injectPlugin(c, pluginPlat, key, ppkg, pluginConfig);
                                 });
                             } else {
-                                _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
+                                _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
                             }
                         }
                     }
