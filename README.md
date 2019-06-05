@@ -1251,6 +1251,8 @@ rnv run -p web --port 9999
 #### Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
+-   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
+-   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 
 #### Project Configuration
 

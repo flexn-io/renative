@@ -82,17 +82,16 @@ const addDevelopTizenCertificate = c => new Promise((resolve) => {
 });
 
 const getDeviceID = async (c, target) => {
-    const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`, logTask);
-    if (connectResponse.includes('failed to connect to remote target')) throw new Error(connectResponse);
+    const { device } = c.program;
+    if (device) {
+        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`, logTask);
+        if (connectResponse.includes('failed to connect to remote target')) throw new Error(connectResponse);
+    }
+
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices', logTask);
     if (devicesList.includes(target)) {
         const lines = devicesList.trim().split(/\r?\n/);
         const devices = lines.filter(line => line.includes(target));
-
-        if (!devices.length) {
-            // @todo handle nothing found
-            throw new Error(`No device matching ${target} could be found.`);
-        }
 
         if (devices.length > 1) {
             // @todo handle more than one
@@ -101,7 +100,7 @@ const getDeviceID = async (c, target) => {
         const deviceID = devices[0].split('device')[1].trim();
         return deviceID;
     }
-    // @todo handle no device
+    throw `No device matching ${target} could be found.`;
 };
 
 const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
@@ -125,13 +124,24 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
         .then(() => buildWeb(c, platform))
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
-        .then(() => getDeviceID(c, target).then((device) => { deviceID = device; }))
+        .then(() => getDeviceID(c, target).then((devID) => { deviceID = devID; }))
         .then(() => execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask))
         .then(() => resolve())
         .catch((e) => {
-            if (e && e.includes && e.includes(TIZEN_UNINSTALL_APP)) {
+            if (e && e.includes && e.includes('No device matching')) {
+                launchTizenSimulator(c, target)
+                    .then(() => {
+                        logInfo(
+                            `Once simulator is ready run: "${chalk.white.bold(
+                                `rnv run -p ${platform} -t ${target}`
+                            )}" again`
+                        );
+                        resolve();
+                    })
+                    .catch(reject);
+            } else if (e && e.includes && e.includes(TIZEN_UNINSTALL_APP)) {
                 execCLI(c, CLI_TIZEN, TIZEN_INSTALL_APP, logTask)
                     .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
                     .then(() => resolve())
