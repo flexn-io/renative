@@ -392,10 +392,11 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins)[platform];
-                    if (plugin) {
-                        if (plugins[key]['no-active'] !== true) {
-                            _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
+                    const plugin = getMergedPlugin(c, key, plugins);
+                    const pluginPlat = plugin[platform];
+                    if (pluginPlat) {
+                        if (plugin['no-active'] !== true) {
+                            _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
                         }
                     }
                 }
@@ -476,18 +477,19 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins)[platform];
-                    if (plugin) {
-                        if (plugins[key]['no-active'] !== true) {
-                            const isNpm = plugins[key]['no-npm'] !== true;
+                    const plugin = getMergedPlugin(c, key, plugins);
+                    const pluginPlat = plugin[platform];
+                    if (pluginPlat) {
+                        if (plugin['no-active'] !== true) {
+                            const isNpm = plugin['no-npm'] !== true;
                             if (isNpm) {
-                                const podPath = plugin.path ? `../../${plugin.path}` : `../../node_modules/${key}`;
-                                pluginInject += `  pod '${plugin.podName}', :path => '${podPath}'\n`;
-                            } else if (plugin.git) {
-                                const commit = plugin.commit ? `, :commit => '${plugin.commit}'` : '';
-                                pluginInject += `  pod '${plugin.podName}', :git => '${plugin.git}'${commit}\n`;
-                            } else if (plugin.version) {
-                                pluginInject += `  pod '${plugin.podName}', '${plugin.version}'\n`;
+                                const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+                                pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
+                            } else if (pluginPlat.git) {
+                                const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+                                pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
+                            } else if (pluginPlat.version) {
+                                pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
                             }
                         }
                     }

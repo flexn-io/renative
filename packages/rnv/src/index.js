@@ -34,6 +34,7 @@ const commands = {
     log: Runner,
     hooks: Hooks,
     fix: Tools,
+    clean: Tools,
     template: Template
 };
 

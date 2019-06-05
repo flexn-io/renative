@@ -1,7 +1,7 @@
 {
     "plugins": {
         "renative": {
-            "version": "0.23.0-alpha.13",
+            "version": "0.23.0-alpha.14",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -193,14 +193,14 @@
             }
         },
         "react-native-nfc-manager": {
-            "version": "0.0.8",
+            "version": "1.2.2",
             "ios": {
-                "podName": "NfcManager",
-                "path": "node_modules/react-native-nfc-manager/ios"
+                "podName": "react-native-nfc-manager",
+                "path": "node_modules/react-native-nfc-manager"
             },
             "tvos": {
-                "podName": "NfcManager",
-                "path": "node_modules/react-native-nfc-manager/ios"
+                "podName": "react-native-nfc-manager",
+                "path": "node_modules/react-native-nfc-manager"
             },
             "android": {
                 "package": "community.revteltech.nfc.NfcManagerPackage"
@@ -568,11 +568,13 @@
             "no-npm": true,
             "ios": {
                 "podName": "iOSPhotoEditor",
-                "git": "https://github.com/prscX/photo-editor"
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8"
             },
             "tvos": {
                 "podName": "iOSPhotoEditor",
-                "git": "https://github.com/prscX/photo-editor"
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8"
             }
         },
         "google-maps": {

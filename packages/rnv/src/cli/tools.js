@@ -21,6 +21,7 @@ import {
 } from '../common';
 import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
+import { cleanProjectModules } from '../systemTools/cleaner';
 import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
@@ -33,6 +34,7 @@ import {
 import appRunner, { copyRuntimeAssets } from './app';
 
 const FIX = 'fix';
+const CLEAN = 'clean';
 
 const PIPES = {
     FIX_BEFORE: 'fix:before',
@@ -49,6 +51,8 @@ const run = (c) => {
     switch (c.command) {
     case FIX:
         return _fix(c);
+    case CLEAN:
+        return cleanProjectModules(c);
 
     default:
         return Promise.reject(`Command ${c.command} not supported`);

@@ -46,6 +46,9 @@ const hooks = {
 
         resolve();
     }),
+    awesomePlugins: c => new Promise((resolve, reject) => {
+        resolve();
+    }),
 };
 
 const pipes = {
