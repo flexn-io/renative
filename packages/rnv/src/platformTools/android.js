@@ -377,16 +377,12 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
 
 const _runGradle = async (c, platform) => {
     logTask(`_runGradle:${platform}`);
-    const appFolder = getAppFolder(c, platform);
-    shell.cd(`${appFolder}`);
-
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
 
     const devicesArr = await _listAndroidTargets(c, false, true, c.program.device !== undefined);
     if (devicesArr.length === 1) {
         const dv = devicesArr[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
-        await _runGradleApp(c, platform, appFolder, signingConfig, dv);
+        await _runGradleApp(c, platform, dv);
     } else if (devicesArr.length > 1) {
         logWarning('More than one device is connected!');
         const devicesString = composeDevicesString(devicesArr, platform);
@@ -398,7 +394,7 @@ const _runGradle = async (c, platform) => {
             const selectedDevice = devicesArr[parseInt(v, 10) - 1];
             if (selectedDevice) {
                 logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
-                _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
+                _runGradleApp(c, platform, selectedDevice)
                     .then(resolve)
                     .catch(reject);
             } else {
@@ -411,7 +407,7 @@ const _runGradle = async (c, platform) => {
         );
         await launchAndroidSimulator(c, platform, c.files.globalConfig.defaultTargets[platform], true);
         const device = await _checkForActiveEmulator(c, platform);
-        await _runGradleApp(c, platform, appFolder, signingConfig, device);
+        await _runGradleApp(c, platform, device);
     } else {
         throw new Error(
             `No active or connected devices! You can launch android emulator with ${chalk.white(
@@ -449,6 +445,7 @@ const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
 });
 
 const _checkSigningCerts = c => new Promise((resolve, reject) => {
+    logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
 
     if (signingConfig === 'Release' && !c.files.privateConfig) {
@@ -482,9 +479,15 @@ const _checkSigningCerts = c => new Promise((resolve, reject) => {
     }
 });
 
-const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Promise((resolve, reject) => {
+const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => {
+    logTask(`_runGradleApp:${platform}`);
+
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+    const appFolder = getAppFolder(c, platform);
     const bundleId = getConfigProp(c, platform, 'id');
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
+
+    shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
         .then(() => executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
@@ -496,6 +499,14 @@ const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Pro
             let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
             if (!fs.existsSync(apkPath)) {
                 apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
+            } if (!fs.existsSync(apkPath)) {
+                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-x86-${outputFolder}.apk`);
+            } if (!fs.existsSync(apkPath)) {
+                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-x86_64-${outputFolder}.apk`);
+            } if (!fs.existsSync(apkPath)) {
+                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-arm64-v8a-${outputFolder}.apk`);
+            } if (!fs.existsSync(apkPath)) {
+                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-armeabi-v7a-${outputFolder}.apk`);
             }
             return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
         })
@@ -518,20 +529,21 @@ const _runGradleApp = (c, platform, appFolder, signingConfig, device) => new Pro
 const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildAndroid:${platform}`);
 
+    const appFolder = getAppFolder(c, platform);
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+    const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
+
+    shell.cd(`${appFolder}`);
+
     _checkSigningCerts(c)
+        .then(() => executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
+            `assemble${signingConfig}`,
+            '-x',
+            'bundleReleaseJsAndAssets',
+        ]))
         .then(() => {
-            const appFolder = getAppFolder(c, platform);
-
-            shell.cd(`${appFolder}`);
-            shell.exec('./gradlew assembleRelease -x bundleReleaseJsAndAssets', (error) => {
-                if (error) {
-                    logError(`Command 'gradlew assembleRelease -x bundleReleaseJsAndAssets' failed with error code ${error}`, true);
-                    return;
-                }
-
-                logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))}.`);
-                resolve();
-            });
+            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))}.`);
+            resolve();
         }).catch(e => reject(e));
 });
 
