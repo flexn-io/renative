@@ -405,52 +405,6 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     }
 });
 
-// const _runGradle = async (c, platform) => {
-//     logTask(`_runGradle:${platform}`);
-//     const appFolder = getAppFolder(c, platform);
-//     shell.cd(`${appFolder}`);
-
-//     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-
-//     const devicesArr = await _listAndroidTargets(c, false, true, c.program.device !== undefined);
-//     if (devicesArr.length === 1) {
-//         const dv = devicesArr[0];
-//         logInfo(`Found device ${dv.name}:${dv.udid}!`);
-//         await _runGradleApp(c, platform, appFolder, signingConfig, dv);
-//     } else if (devicesArr.length > 1) {
-//         logWarning('More than one device is connected!');
-//         const devicesString = composeDevicesString(devicesArr, platform);
-//         const readlineInterface = readline.createInterface({
-//             input: process.stdin,
-//             output: process.stdout,
-//         });
-//         await new Promise((resolve, reject) => readlineInterface.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
-//             const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-//             if (selectedDevice) {
-//                 logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
-//                 _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
-//                     .then(resolve)
-//                     .catch(reject);
-//             } else {
-//                 logError(`Wrong choice ${v}! Ingoring`);
-//             }
-//         }));
-//     } else if (c.files.globalConfig.defaultTargets[platform]) {
-//         logWarning(
-//             `No connected devices found. Launching ${chalk.white(c.files.globalConfig.defaultTargets[platform])} emulator!`,
-//         );
-//         await launchAndroidSimulator(c, platform, c.files.globalConfig.defaultTargets[platform], true);
-//         const device = await _checkForActiveEmulator(c, platform);
-//         await _runGradleApp(c, platform, appFolder, signingConfig, device);
-//     } else {
-//         throw new Error(
-//             `No active or connected devices! You can launch android emulator with ${chalk.white(
-//                 'rnv target launch -p android -t <TARGET_NAME>',
-//             )}`,
-//         );
-//     }
-// };
-
 const _runGradle = async (c, platform) => {
     logTask(`_runGradle:${platform}`);
     const appFolder = getAppFolder(c, platform);
