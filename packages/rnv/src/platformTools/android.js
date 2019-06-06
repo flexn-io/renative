@@ -416,7 +416,7 @@ const _runGradle = async (c, platform) => {
         // Only one that is active, running on that one
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
-        await _runGradleApp(c, platform, appFolder, signingConfig, dv);
+        await _runGradleApp(c, platform, dv);
     } else if (activeDevices.length === 0 && inactiveDevices.length > 0) {
         // No device active, but there are emulators created
         const devicesString = composeDevicesString(inactiveDevices, true);
@@ -430,7 +430,7 @@ const _runGradle = async (c, platform) => {
         if (response.chosenEmulator) {
             await launchAndroidSimulator(c, platform, response.chosenEmulator, true);
             const devices = await _checkForActiveEmulator(c, platform);
-            await _runGradleApp(c, platform, appFolder, signingConfig, devices);
+            await _runGradleApp(c, platform, devices);
         }
     } else if (activeDevices.length > 1) {
         const devicesString = composeDevicesString(activeDevices, true);
@@ -443,11 +443,11 @@ const _runGradle = async (c, platform) => {
         }]);
         if (response.chosenEmulator) {
             const dev = activeDevices.find(d => d.name === response.chosenEmulator);
-            await _runGradleApp(c, platform, appFolder, signingConfig, dev);
+            await _runGradleApp(c, platform, dev);
         }
     } else {
         const devices = await _checkForActiveEmulator(c, platform);
-        await _runGradleApp(c, platform, appFolder, signingConfig, devices);
+        await _runGradleApp(c, platform, devices);
     }
 };
 
@@ -520,6 +520,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     const appFolder = getAppFolder(c, platform);
     const bundleId = getConfigProp(c, platform, 'id');
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
+    const { arch, name } = device;
 
     shell.cd(`${appFolder}`);
 
@@ -534,14 +535,9 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
             if (!fs.existsSync(apkPath)) {
                 apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
             } if (!fs.existsSync(apkPath)) {
-                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-x86-${outputFolder}.apk`);
-            } if (!fs.existsSync(apkPath)) {
-                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-x86_64-${outputFolder}.apk`);
-            } if (!fs.existsSync(apkPath)) {
-                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-arm64-v8a-${outputFolder}.apk`);
-            } if (!fs.existsSync(apkPath)) {
-                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-armeabi-v7a-${outputFolder}.apk`);
+                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
             }
+            logInfo(`Installing ${apkPath} on ${name}`);
             return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
         })
         .then(() => ((device.isDevice && platform !== ANDROID_WEAR)
@@ -565,7 +561,6 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
 
     const appFolder = getAppFolder(c, platform);
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
-    const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
 
     shell.cd(`${appFolder}`);
 
