@@ -1,7 +1,9 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import chalk from 'chalk';
+import inquirer from 'inquirer';
 import { execShellAsync, executeAsync, execCLI } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
@@ -15,14 +17,6 @@ import {
     logInfo,
     logSuccess,
     configureIfRequired,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
     getAppVersion,
     getAppTitle,
     getAppVersionCode,
@@ -32,6 +26,17 @@ import {
     getEntryFile,
     copyBuildsFolder,
 } from '../common';
+import {
+    CLI_ANDROID_EMULATOR,
+    CLI_ANDROID_ADB,
+    CLI_TIZEN_EMULATOR,
+    CLI_TIZEN,
+    CLI_WEBOS_ARES,
+    CLI_WEBOS_ARES_PACKAGE,
+    CLI_WEBBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_DEVICE_INFO,
+    CLI_WEBBOS_ARES_LAUNCH
+} from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
 
@@ -66,8 +71,24 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const runWebOS = (c, platform, target) => new Promise((resolve, reject) => {
+const parseDevices = (devicesResponse) => {
+    const linesArray = devicesResponse.split('\n').slice(2).map(line => line.trim());
+    return linesArray.map((line) => {
+        const [name, device, connection, profile] = line.split(' ').map(word => word.trim()).filter(word => word !== '');
+        return {
+            name,
+            device,
+            connection,
+            profile,
+            isDevice: !device.includes('127.0.0.1')
+        };
+    });
+};
+
+const runWebOS = async (c, platform, target) => {
     logTask(`runWebOS:${platform}:${target}`);
+
+    const { device } = c.program;
 
     const tDir = path.join(getAppFolder(c, platform), 'RNVApp');
     const tOut = path.join(getAppFolder(c, platform), 'output');
@@ -78,33 +99,51 @@ const runWebOS = (c, platform, target) => new Promise((resolve, reject) => {
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
-    configureWebOSProject(c, platform)
-        .then(() => buildWeb(c, platform))
-        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask))
-        .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
-        .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
-        .then(() => resolve())
-        .catch((e) => {
-            if (e && e.toString().includes(CLI_WEBBOS_ARES_INSTALL)) {
-                logWarning(
-                    `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
-                        `rnv target launch -p webos -t ${target}`
-                    )}"`
-                );
+    // Start the fun
+    await configureWebOSProject(c, platform);
+    // await buildWeb(c, platform);
+    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask);
 
-                launchWebOSimulator(c, target)
-                    .then(() => {
-                        logInfo(
-                            `Once simulator is ready run: "${chalk.white.bold(`rnv run -p ${platform} -t ${target}`)}" again`
-                        );
-                        resolve();
-                    })
-                    .catch(e => reject(e));
-            } else {
-                reject(e);
-            }
-        });
-});
+    if (device) {
+        const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
+        const devices = parseDevices(devicesResponse);
+        const actualDevices = devices.filter(d => d.isDevice);
+
+        if (!actualDevices.length) {
+            // No device configured. Asking to configure
+            const response = await inquirer.prompt([{
+                type: 'confirm',
+                name: 'setupDevice',
+                message: 'Looks like you want to deploy on a device but have none configured. Do you want to configure one?',
+                default: false
+            }]);
+
+            console.log('response', response);
+        }
+    }
+    // .then(() => execCLI(c, CLI_WEBBOS_ARES_INSTALL, `--device ${tSim} ${appPath}`, logTask))
+    // .then(() => execCLI(c, CLI_WEBBOS_ARES_LAUNCH, `--device ${tSim} ${tId}`, logTask))
+    // .catch((e) => {
+    //     if (e && e.toString().includes(CLI_WEBBOS_ARES_INSTALL)) {
+    //         logWarning(
+    //             `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
+    //                 `rnv target launch -p webos -t ${target}`
+    //             )}"`
+    //         );
+
+    //         launchWebOSimulator(c, target)
+    //             .then(() => {
+    //                 logInfo(
+    //                     `Once simulator is ready run: "${chalk.white.bold(`rnv run -p ${platform} -t ${target}`)}" again`
+    //                 );
+    //                 resolve();
+    //             })
+    //             .catch(err => reject(err));
+    //     } else {
+    //         reject(e);
+    //     }
+    // });
+};
 
 
 const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {

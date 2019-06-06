@@ -24,7 +24,7 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
         return;
     }
 
-    shell.exec(`${p} ${command}`, (error, stdout) => {
+    shell.exec(`${p} ${command}`, { env: process.env, stdio: [process.stdin, 'pipe', 'pipe'] }, (error, stdout) => {
         if (error) {
             reject(`Command ${cli} failed: "${chalk.white(`${p} ${command}`)}". ${error}`);
             return;

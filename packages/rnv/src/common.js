@@ -37,7 +37,8 @@ import {
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
     ANDROID_SDK,
-    ANDROID_NDK,
+    CLI_WEBOS_ARES_SETUP_DEVICE,
+    CLI_WEBOS_ARES_DEVICE_INFO,
     TIZEN_SDK,
     WEBOS_SDK,
     KAIOS_SDK,
@@ -559,6 +560,8 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
         c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
         c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+        c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-setup-device');
+        c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-device-info');
 
         // Check config sanity
         if (c.files.globalConfig.defaultTargets === undefined) {
