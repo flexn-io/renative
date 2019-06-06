@@ -8,7 +8,7 @@ import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI } from '../systemTools/exec';
+import { executeAsync, execCLI, commandExistsSync } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -225,8 +225,19 @@ const getAvdDetails = async (deviceName) => {
     return {};
 };
 
-const getEmulatorName = (words) => {
+const getEmulatorName = async (words) => {
+    const emulator = words[0];
+    const port = emulator.split('-')[1];
+    // Use telnet or nc, whichever is available
+    let command = commandExistsSync('nc') ? 'nc' : null;
+    if (commandExistsSync('telnet')) command = 'telnet';
 
+    if (!command) throw new Error('You must have nc or telnet installed');
+
+    const emulatorReply = await execCLI(null, null, `echo "avd name" | ${command} localhost ${port}`);
+    const emulatorReplyArray = emulatorReply.split('OK');
+    const emulatorName = emulatorReplyArray[emulatorReplyArray.length - 2].trim();
+    return emulatorName;
 };
 
 const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
@@ -445,58 +456,48 @@ const _runGradle = async (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     shell.cd(`${appFolder}`);
 
-    const { device, target } = c.program;
-
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
 
-    const devicesArr = await _listAndroidTargets(c, false, true, device !== undefined);
-    if (devicesArr.length === 1) {
-        const dv = devicesArr[0];
+    const devicesAndEmulators = await _listAndroidTargets(c, false, false, c.program.device !== undefined);
+    const activeDevices = devicesAndEmulators.filter(d => d.isActive);
+    const inactiveDevices = devicesAndEmulators.filter(d => !d.isActive);
+
+    if (activeDevices.length === 1) {
+        // Only one that is active, running on that one
+        const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, appFolder, signingConfig, dv);
-    } else if (devicesArr.length > 1) {
-        logWarning('More than one device is connected!');
-        const devicesString = composeDevicesString(devicesArr);
-        const readlineInterface = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-        await new Promise((resolve, reject) => readlineInterface.question(getQuestion(`${devicesString}\nType number of the device to use`), (v) => {
-            const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-            if (selectedDevice) {
-                logInfo(`Selected device ${selectedDevice.name}:${selectedDevice.udid}!`);
-                _runGradleApp(c, platform, appFolder, signingConfig, selectedDevice)
-                    .then(resolve)
-                    .catch(reject);
-            } else {
-                logError(`Wrong choice ${v}! Ingoring`);
-            }
-        }));
-    } else {
-        if (device !== undefined) return logError(`Device ${device} not found`, true);
-
-        const availableEmulators = await _listAndroidTargets(c, true, false, false);
-        if (availableEmulators.length) {
-            const devicesString = composeDevicesString(availableEmulators, true);
-            const choices = devicesString;
-            const response = await inquirer.prompt([{
-                name: 'chosenEmulator',
-                type: 'list',
-                message: 'What emulator would you like to start?',
-                choices
-            }]);
-            console.log('resp', response);
-            if (response.chosenEmulator) {
-                await launchAndroidSimulator(c, platform, response.chosenEmulator, true);
-                const devices = await _checkForActiveEmulator(c, platform);
-                await _runGradleApp(c, platform, appFolder, signingConfig, devices);
-            }
-        } else {
-
-            // logWarning(
-            //     `No connected devices found. Launching ${chalk.white(c.files.globalConfig.defaultTargets[platform])} emulator!`,
-            // );
+    } else if (activeDevices.length === 0 && inactiveDevices.length > 0) {
+        // No device active, but there are emulators created
+        const devicesString = composeDevicesString(inactiveDevices, true);
+        const choices = devicesString;
+        const response = await inquirer.prompt([{
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'What emulator would you like to start?',
+            choices
+        }]);
+        if (response.chosenEmulator) {
+            await launchAndroidSimulator(c, platform, response.chosenEmulator, true);
+            const devices = await _checkForActiveEmulator(c, platform);
+            await _runGradleApp(c, platform, appFolder, signingConfig, devices);
         }
+    } else if (activeDevices.length > 1) {
+        const devicesString = composeDevicesString(activeDevices, true);
+        const choices = devicesString;
+        const response = await inquirer.prompt([{
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'Where would you like to run your app?',
+            choices
+        }]);
+        if (response.chosenEmulator) {
+            const dev = activeDevices.find(d => d.name === response.chosenEmulator);
+            await _runGradleApp(c, platform, appFolder, signingConfig, dev);
+        }
+    } else {
+        const devices = await _checkForActiveEmulator(c, platform);
+        await _runGradleApp(c, platform, appFolder, signingConfig, devices);
     }
 };
 
