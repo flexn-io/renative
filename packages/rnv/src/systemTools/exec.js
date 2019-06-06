@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import shell from 'shelljs';
 import fs, { access, accessSync, constants } from 'fs';

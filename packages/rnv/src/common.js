@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -26,6 +27,7 @@ import {
     CLI_ANDROID_ADB,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
+    CLI_SDB_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBBOS_ARES_INSTALL,
@@ -552,6 +554,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         c.cli[CLI_ANDROID_SDKMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
         c.cli[CLI_TIZEN_EMULATOR] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
         c.cli[CLI_TIZEN] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+        c.cli[CLI_SDB_TIZEN] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/sdb');
         c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
         c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
         c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
@@ -1143,6 +1146,7 @@ export {
     CLI_ANDROID_ADB,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
+    CLI_SDB_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBBOS_ARES_INSTALL,
