@@ -59,6 +59,7 @@
             "entryFile": "index.android",
             "universalApk": true,
             "multipleAPKs": false,
+            "minSdkVersion": 21,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -78,6 +79,7 @@
             "entryFile": "index.androidtv",
             "universalApk": true,
             "multipleAPKs": false,
+            "minSdkVersion": 21,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -97,6 +99,7 @@
             "entryFile": "index.androidwear",
             "universalApk": true,
             "multipleAPKs": false,
+            "minSdkVersion": 23,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {

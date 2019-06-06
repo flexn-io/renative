@@ -2,15 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply from: "../../../node_modules/react-native/react.gradle"
+{{PLUGIN_APPLY}}
 
 {{PLUGIN_LOCAL_PROPERTIES}}
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion {{COMPILE_SDK_VERSION}}
     defaultConfig {
         applicationId "{{APPLICATION_ID}}"
-        minSdkVersion 21
-        targetSdkVersion 27
+        minSdkVersion {{MIN_SDK_VERSION}}
+        targetSdkVersion {{TARGET_SDK_VERSION}}
         versionCode {{VERSION_CODE}}
         versionName "{{VERSION_NAME}}"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -18,39 +19,23 @@ android {
         multiDexEnabled true
     }
     packagingOptions {
-        exclude 'META-INF/DEPENDENCIES.txt'
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/dependencies.txt'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/LGPL2.1'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/notice.txt'
+{{PLUGIN_PACKAGING_OPTIONS}}
     }
     signingConfigs {
 {{PLUGIN_SIGNING_CONFIGS}}
     }
     buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
-        }
+{{PLUGIN_BUILD_TYPES}}
     }
     compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
+{{PLUGIN_COMPILE_OPTIONS}}
     }
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:leanback-v17:27.1.1'
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.github.bumptech.glide:glide:3.8.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:appcompat-v7:27.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation ("com.facebook.react:react-native:+") {
     }
@@ -64,3 +49,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 {{PLUGIN_IMPLEMENTATIONS}}
 }
+
+{{PLUGIN_MULTI_APKS}}
+
+{{PLUGIN_AFTER_EVALUATE}}

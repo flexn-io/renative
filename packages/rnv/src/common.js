@@ -548,17 +548,29 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         }
 
         // Check global SDKs
-        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'emulator/emulator');
-        c.cli[CLI_ANDROID_ADB] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
-        c.cli[CLI_ANDROID_AVDMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/avdmanager');
-        c.cli[CLI_ANDROID_SDKMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
-        c.cli[CLI_TIZEN_EMULATOR] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
-        c.cli[CLI_TIZEN] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
-        c.cli[CLI_SDB_TIZEN] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/sdb');
-        c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
-        c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
-        c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
-        c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+        const sdks = c.files.globalConfig.sdks;
+        if (sdks) {
+            if (sdks.ANDROID_SDK) {
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, 'emulator/emulator');
+                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, 'platform-tools/adb');
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/avdmanager');
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
+            }
+            if (sdks.TIZEN_SDK) {
+                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
+                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+                c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
+            }
+            if (sdks.WEBOS_SDK) {
+                c.cli[CLI_WEBOS_ARES] = path.join(sdks.WEBOS_SDK, 'CLI/bin/ares');
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(sdks.WEBOS_SDK, 'CLI/bin/ares-package');
+                c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(sdks.WEBOS_SDK, 'CLI/bin/ares-install');
+                c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+            }
+        } else {
+            logWarning(`Your ${c.paths.globalConfigPath} is missing SDK configuration object`);
+        }
+
 
         // Check config sanity
         if (c.files.globalConfig.defaultTargets === undefined) {
@@ -812,7 +824,7 @@ const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplate
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
-const getConfigProp = (c, platform, key) => {
+const getConfigProp = (c, platform, key, defaultVal) => {
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
     let scheme;
@@ -820,6 +832,7 @@ const getConfigProp = (c, platform, key) => {
     scheme = scheme || {};
     const result = scheme[key] || (c.files.appConfigFile.platforms[platform][key] || c.files.appConfigFile.common[key]);
     logTask(`getConfigProp:${platform}:${key}:${result}`);
+    if (result === null) return defaultVal;
     return result;
 };
 

@@ -753,9 +753,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         }
     }
 
+    // const debugSigning = 'debug';
     const debugSigning = `
     debug {
-        storeFile file(project.property("debug.keystore"))
+        storeFile file('debug.keystore')
         storePassword "android"
         keyAlias "androiddebugkey"
         keyPassword "android"
@@ -859,7 +860,13 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     exclude 'META-INF/LGPL2.1'
     exclude 'META-INF/NOTICE.txt'
     exclude 'META-INF/NOTICE'
-    exclude 'META-INF/notice.txt'`;
+    exclude 'META-INF/notice.txt'
+    pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+    pickFirst 'lib/x86_64/libc++_shared.so'
+    pickFirst 'lib/x86/libc++_shared.so'
+    pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    pickFirst 'lib/arm64-v8a/libjsc.so'
+    pickFirst 'lib/x86_64/libjsc.so'`;
 
     // COMPILE OPTIONS
     pluginConfig.compileOptions = `
@@ -871,7 +878,16 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
     ]);
 
+    // ANDROID PROPS
+    pluginConfig.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
+    pluginConfig.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
+    pluginConfig.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
+
+    // APPLY
+    plugin.apply = '';
+
     writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
+        { pattern: '{{PLUGIN_APPLY}}', override: pluginConfig.apply },
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
         { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
@@ -882,8 +898,15 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: pluginConfig.packagingOptions },
         { pattern: '{{PLUGIN_BUILD_TYPES}}', override: pluginConfig.buildTypes },
         { pattern: '{{PLUGIN_MULTI_APKS}}', override: pluginConfig.multiAPKs },
+        { pattern: '{{MIN_SDK_VERSION}}', override: pluginConfig.minSdkVersion },
+        { pattern: '{{TARGET_SDK_VERSION}}', override: pluginConfig.targetSdkVersion },
+        { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
         { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: pluginConfig.compileOptions },
         { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: pluginConfig.localProperties },
+    ]);
+
+    writeCleanFile(path.join(appTemplateFolder, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
+        { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
     ]);
 
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
