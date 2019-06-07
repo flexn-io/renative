@@ -8,6 +8,7 @@ import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
+import { getMergedPlugin } from './pluginTools';
 import {
     IOS,
     ANDROID,
@@ -366,6 +367,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         .then(() => configureProject(c))
         .then(() => configureNodeModules(c))
         .then(() => applyTemplate(c))
+        .then(() => configurePlugins(c))
         .then(() => configureNodeModules(c))
     // .then(() => configureTizenGlobal(c))
     // .then(() => configureAndroidGlobal(c))
@@ -608,6 +610,89 @@ const configureEntryPoints = (c) => {
     }
 };
 
+const configurePlugins = c => new Promise((resolve, reject) => {
+    // Check plugins
+    logTask('configureProject:check plugins');
+    if (fs.existsSync(c.paths.pluginConfigPath)) {
+        c.files.pluginConfig = JSON.parse(fs.readFileSync(c.paths.pluginConfigPath).toString());
+    } else {
+        logWarning(
+            `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,
+        );
+        c.files.pluginConfig = { plugins: {} };
+        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+    }
+
+    if (!c.files.projectPackage.dependencies) {
+        c.files.projectPackage.dependencies = {};
+    }
+
+    let hasPackageChanged = false;
+    for (const k in c.files.pluginConfig.plugins) {
+        const dependencies = c.files.projectPackage.dependencies;
+        const devDependencies = c.files.projectPackage.devDependencies;
+        const plugin = getMergedPlugin(c, k, c.files.pluginConfig.plugins);
+
+        if (!plugin) {
+            logWarning(`Plugin with name ${
+                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
+                chalk.white(c.paths.pluginConfigPath)}`);
+        } else if (dependencies && dependencies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
+                logWarning(
+                    `Version mismatch of dependency ${chalk.white(k)} between:
+${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
+${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
+package.json will be overriden`
+                );
+                hasPackageChanged = true;
+                dependencies[k] = plugin.version;
+            }
+        } else if (devDependencies && devDependencies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependencies[k] !== plugin.version) {
+                logWarning(
+                    `Version mismatch of devDependency ${chalk.white(k)} between package.json: v(${chalk.red(
+                        devDependencies[k],
+                    )}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`,
+                );
+                hasPackageChanged = true;
+                devDependencies[k] = plugin.version;
+            }
+        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+            // Dependency does not exists
+            logWarning(
+                `Missing dependency ${chalk.white(k)} v(${chalk.red(
+                    plugin.version,
+                )}) in package.json. package.json will be overriden`,
+            );
+
+            hasPackageChanged = true;
+            dependencies[k] = plugin.version;
+        }
+    }
+    if (hasPackageChanged) {
+        fs.writeFileSync(c.paths.projectPackagePath, JSON.stringify(c.files.projectPackage, null, 2));
+        c._requiresNpmInstall = true;
+    }
+
+    // Check permissions
+    logTask('configureProject:check permissions');
+    if (fs.existsSync(c.paths.permissionsConfigPath)) {
+        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
+    } else {
+        const newPath = path.join(c.paths.rnvRootFolder, 'projectConfig/permissions.json');
+        logWarning(
+            `Looks like your permission config is missing from ${chalk.white(
+                c.paths.permissionsConfigPath,
+            )}. ReNative Default ${chalk.white(newPath)} will be used instead`,
+        );
+        c.paths.permissionsConfigPath = newPath;
+        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
+    }
+
+    resolve();
+});
+
 const configureApp = c => new Promise((resolve, reject) => {
     logTask('configureApp');
 
@@ -832,7 +917,7 @@ const getConfigProp = (c, platform, key, defaultVal) => {
     scheme = scheme || {};
     const result = scheme[key] || (c.files.appConfigFile.platforms[platform][key] || c.files.appConfigFile.common[key]);
     logTask(`getConfigProp:${platform}:${key}:${result}`);
-    if (result === null) return defaultVal;
+    if (result === null || result === undefined) return defaultVal;
     return result;
 };
 
