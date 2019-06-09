@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { writeObjectSync } from './fileUtils';
+import { writeObjectSync, readObjectSync } from './fileUtils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
 import { logWarning } from '../common';
 
@@ -37,8 +37,14 @@ const checkForDuplicates = (arr) => {
     });
 };
 
-const fixPackageJson = c => new Promise((resolve, reject) => {
-    const pp = c.files.projectPackage;
+const fixPackageJson = (c, pkgPath) => new Promise((resolve, reject) => {
+    const pp = readObjectSync(pkgPath);
+    const output = fixPackageObject(pp);
+    writeObjectSync(c.paths.projectPackagePath, output, 4);
+    resolve();
+});
+
+const fixPackageObject = (pp) => {
     const output = {};
     const usedKeys = {};
     PACKAGE_JSON_FILEDS.forEach((v) => {
@@ -54,8 +60,10 @@ const fixPackageJson = c => new Promise((resolve, reject) => {
     }
     checkForDuplicates([pp.dependencies, pp.devDependencies]);
 
-    writeObjectSync(c.paths.projectPackagePath, output, 4);
-    resolve();
-});
+    return output;
+};
 
-export { fixPackageJson };
+export { fixPackageJson, fixPackageObject };
+export default {
+    fixPackageJson, fixPackageObject
+};
