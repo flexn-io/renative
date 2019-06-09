@@ -113,7 +113,7 @@ const applyTemplate = c => new Promise((resolve, reject) => {
         try {
             const appConfig = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
 
-            appConfig.common.title = c.files.projectPackage.title;
+            appConfig.common.title = c.defaultProjectConfigs.defaultTitle || c.files.projectPackage.title;
             appConfig.common.id = c.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
             appConfig.id = c.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
             appConfig.platforms.ios.teamID = '';

@@ -35,6 +35,7 @@ const commands = {
     hooks: Hooks,
     fix: Tools,
     clean: Tools,
+    tool: Tools,
     template: Template
 };
 
@@ -47,6 +48,9 @@ const run = (cmd, subCmd, program, process) => {
                     .then(() => logComplete(true))
                     .catch(e => logError(e, true));
             } else if (program.help) {
+                // program.help();
+                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. Here is some help:`);
+                logHelp();
                 logComplete(true);
             } else {
                 logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv')} for help`, true);
@@ -57,13 +61,21 @@ const run = (cmd, subCmd, program, process) => {
 
 const checkWelcome = (cmd, subCmd) => new Promise((resolve, reject) => {
     if (!cmd && !subCmd) {
-        let cmdsString = '';
-        for (const key in commands) {
-            cmdsString += `${key}, `;
-        }
         logWelcome();
 
-        console.log(`
+        logHelp();
+    } else {
+        resolve();
+    }
+});
+
+const logHelp = () => {
+    let cmdsString = '';
+    for (const key in commands) {
+        cmdsString += `${key}, `;
+    }
+
+    console.log(`
 ${chalk.bold.white('COMMANDS:')}
 
 ${cmdsString}
@@ -85,11 +97,8 @@ ${chalk.bold.white('OPTIONS:')}
 '-x, --exeMethod <value>', 'Executable method in buildHooks'
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
-      `);
-    } else {
-        resolve();
-    }
-});
+`);
+};
 
 export {
     Constants, Runner, App, Platform, Target, Common, Exec, FileUtils, PlatformTools,

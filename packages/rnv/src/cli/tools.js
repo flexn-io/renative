@@ -22,6 +22,7 @@ import {
 import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanProjectModules } from '../systemTools/cleaner';
+import { fixPackageJson } from '../systemTools/doctor';
 import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
@@ -35,6 +36,7 @@ import appRunner, { copyRuntimeAssets } from './app';
 
 const FIX = 'fix';
 const CLEAN = 'clean';
+const FIX_PACKAGE = 'fixPackage';
 
 const PIPES = {
     FIX_BEFORE: 'fix:before',
@@ -53,10 +55,14 @@ const run = (c) => {
         return _fix(c);
     case CLEAN:
         return cleanProjectModules(c);
-
-    default:
-        return Promise.reject(`Command ${c.command} not supported`);
     }
+
+    switch (c.subCommand) {
+    case FIX_PACKAGE:
+        return fixPackageJson(c);
+    }
+
+    return Promise.reject(`Command ${c.command} ${c.subCommand} not supported`);
 };
 
 // ##########################################

@@ -163,6 +163,39 @@ const SAMPLE_APP_ID = 'helloWorld';
 const IS_TABLET_ABOVE_INCH = 6.5;
 const IS_WEAR_UNDER_SIZE = 1000; // width + height
 
+const PACKAGE_JSON_FILEDS = [
+    'name',
+    'version',
+    'description',
+    'keywords',
+    'homepage',
+    'bugs',
+    'license',
+    'author',
+    'contributors',
+    'files',
+    'main',
+    'browser',
+    'bin',
+    'man',
+    'directories',
+    'repository',
+    'scripts',
+    'config',
+    'dependencies',
+    'devDependencies',
+    'peerDependencies',
+    'bundledDependencies',
+    'optionalDependencies',
+    'engines',
+    'engineStrict',
+    'os',
+    'cpu',
+    'private',
+    'publishConfig'
+];
+// custom: "title","codename","jest",
+
 export {
     PLATFORMS,
     ANDROID,
@@ -240,7 +273,8 @@ export {
     RN_BABEL_CONFIG_NAME,
     RNV_PROJECT_CONFIG_LOCAL_NAME,
     IS_TABLET_ABOVE_INCH,
-    IS_WEAR_UNDER_SIZE
+    IS_WEAR_UNDER_SIZE,
+    PACKAGE_JSON_FILEDS
 };
 
 export default {
@@ -318,5 +352,6 @@ export default {
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     SAMPLE_APP_ID,
-    RNV_PROJECT_CONFIG_LOCAL_NAME
+    RNV_PROJECT_CONFIG_LOCAL_NAME,
+    PACKAGE_JSON_FILEDS
 };

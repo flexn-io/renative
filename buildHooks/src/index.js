@@ -28,7 +28,7 @@ const hooks = {
     prePublish: c => new Promise((resolve, reject) => {
         const v = {
             version: c.files.projectPackage.version,
-            codename: c.files.projectPackage.codename,
+            // codename: c.files.projectPackage.codename,
         };
         const pkgFolder = path.join(c.paths.projectRootFolder, 'packages');
         FileUtils.updateObjectSync(path.join(pkgFolder, 'rnv/package.json'), v);

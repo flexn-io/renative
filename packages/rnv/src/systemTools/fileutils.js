@@ -134,8 +134,8 @@ const removeDirSync = (dir, rmSelf) => {
     }
 };
 
-const writeObjectSync = (filePath, obj) => {
-    fs.writeFileSync(filePath, JSON.stringify(obj, null, 2));
+const writeObjectSync = (filePath, obj, spaces) => {
+    fs.writeFileSync(filePath, JSON.stringify(obj, null, spaces || 2));
 };
 
 const readObjectSync = (filePath) => {
