@@ -120,6 +120,7 @@
     "metro-react-native-babel-preset": "0.51.1",
     "metro-resolver": "0.48.3",
     "minimist": "1.2.0",
+    "icon-toolkit": "0.0.9",
     "natives": "1.1.6",
     "ncp": "2.0.0",
     "nodemon": "1.18.10",
