@@ -18,6 +18,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
     }
+{{PLUGIN_SPLITS}}
     packagingOptions {
 {{PLUGIN_PACKAGING_OPTIONS}}
     }
@@ -47,7 +48,7 @@ dependencies {
         transitive = true
     }
     implementation 'com.facebook.android:facebook-android-sdk:4.22.1'
-    
+
 {{PLUGIN_IMPLEMENTATIONS}}
 }
 

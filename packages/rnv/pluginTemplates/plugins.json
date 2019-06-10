@@ -1,9 +1,11 @@
 {
     "plugins": {
         "renative": {
-            "version": "0.23.0-alpha.16",
+            "version": "0.23.0-alpha.17",
             "webpack": {
-                "modulePaths": ["node_modules/renative"],
+                "modulePaths": [
+                    "node_modules/renative"
+                ],
                 "moduleAliases": {
                     "renative": {
                         "projectPath": "node_modules/renative"
@@ -87,7 +89,9 @@
                     "react-native-linear-gradient": "react-native-web-linear-gradient"
                 }
             },
-            "dependsOn": ["react-native-web-linear-gradient"]
+            "dependsOn": [
+                "react-native-web-linear-gradient"
+            ]
         },
         "react-native-fetch-blob": {
             "version": "0.10.8",
@@ -147,11 +151,15 @@
             },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"]
+                "packageParams": [
+                    "mCallbackManager"
+                ]
             },
             "androidtv": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"]
+                "packageParams": [
+                    "mCallbackManager"
+                ]
             }
         },
         "react-native-zip-archive": {
@@ -330,7 +338,9 @@
                     "react-native-svg": "svgs"
                 }
             },
-            "dependsOn": ["svgs"]
+            "dependsOn": [
+                "svgs"
+            ]
         },
         "react-native-vector-icons": {
             "version": "6.4.2",
@@ -499,7 +509,9 @@
             "version": "1.1.5",
             "ios": {
                 "podName": "react-native-orientation-locker",
-                "appDelegateImports": ["react_native_orientation_locker"],
+                "appDelegateImports": [
+                    "react_native_orientation_locker"
+                ],
                 "appDelegateMethods": [
                     "func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {",
                     "  return Orientation.getOrientation();",
@@ -508,7 +520,9 @@
             },
             "android": {
                 "package": "org.wonday.orientation.OrientationPackage",
-                "activityImports": ["android.content.res.Configuration"],
+                "activityImports": [
+                    "android.content.res.Configuration"
+                ],
                 "activityMethods": [
                     "override fun onConfigurationChanged(newConfig:Configuration) {",
                     "  super.onConfigurationChanged(newConfig)",
@@ -680,7 +694,9 @@
         },
         "native-base": {
             "version": "2.12.1",
-            "dependsOn": ["react-native-vector-icons"]
+            "dependsOn": [
+                "react-native-vector-icons"
+            ]
         },
         "@react-native-community/async-storage": {
             "version": "1.4.1",

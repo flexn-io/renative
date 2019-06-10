@@ -58,13 +58,13 @@
         "android": {
             "entryFile": "index.android",
             "keystoreConfig": "~/.rnv/helloWorld/config.json",
-            "universalApk": true,
+            "universalApk": false,
             "permissions": ["INTERNET", "SYSTEM_ALERT_WINDOW"],
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
                     "signingConfig": "Debug",
-                    "multipleAPKs": false,
+                    "multipleAPKs": true,
                     "bundleAssets": false
                 },
                 "release": {

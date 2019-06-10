@@ -869,14 +869,18 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
     // SPLITS
     pluginConfig.splits = '';
+    console.log('SKJHSKJSH', isMultiApk);
     if (isMultiApk) {
         pluginConfig.splits = `
+    splits {
       abi {
           reset()
           enable true
           include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
           universalApk false
-      }`;
+      }
+    }
+`;
     }
 
 
