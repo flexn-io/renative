@@ -103,8 +103,6 @@ const buildWeb = (c, platform) => {
     _generateWebpackConfigs(c);
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
-    console.log('TCL: buildWeb -> wbp', wbp);
-
 
     return execShellAsync(`npx cross-env NODE_ENV=development node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 };
