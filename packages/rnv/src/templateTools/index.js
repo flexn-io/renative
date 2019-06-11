@@ -2,7 +2,10 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import { executeAsync } from '../systemTools/exec';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs } from '../systemTools/fileutils';
+import {
+    cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync
+} from '../systemTools/fileutils';
 import { logError, generateOptions, logWarning, logTask, setAppConfig } from '../common';
 import { getMergedPlugin } from '../pluginTools';
 
@@ -12,13 +15,15 @@ const DEFAULT_TEMPLATES = [
     // 'renative-template-kitchen-sink'
 ];
 
-const listTemplates = () => new Promise((resolve, reject) => {
+const listTemplates = c => new Promise((resolve, reject) => {
+    logTask('listTemplates');
     opts = generateOptions(DEFAULT_TEMPLATES);
     console.log(opts.asString);
     resolve();
 });
 
-const addTemplate = () => new Promise((resolve, reject) => {
+const addTemplate = c => new Promise((resolve, reject) => {
+    logTask('addTemplate');
     executeAsync('npm', ['install', 'renative-template-hello-world', '--save-dev'])
         .then(() => {
             resolve();
@@ -27,7 +32,14 @@ const addTemplate = () => new Promise((resolve, reject) => {
 });
 
 const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
-    let templateName = c.files.projectConfig.defaultProjectConfigs ? c.files.projectConfig.defaultProjectConfigs.template : null;
+    logTask('checkIfTemplateInstalled');
+    if (!c.files.projectConfig.defaultProjectConfigs) {
+        logWarning(`Your ${chalk.white(c.paths.projectConfigPath)} does not contain ${chalk.white('defaultProjectConfigs')} object. ReNative will skip template generation`);
+        resolve();
+        return;
+    }
+
+    let templateName = c.files.projectConfig.defaultProjectConfigs.template;
     if (!templateName) {
         templateName = 'renative-template-hello-world';
         logWarning(`You're missing template name in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will add default ${chalk.white(templateName)} for you`);
@@ -39,15 +51,36 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     c.paths.templateFolder = path.join(c.paths.projectNodeModulesFolder, templateName);
     if (!fs.existsSync(c.paths.templateFolder)) {
         logWarning(`Your ${chalk.white(c.paths.templateFolder)} template is not installed. ReNative will install it for you`);
+
+        if (c.files.projectPackage.devDependencies) {
+            if (!c.files.projectPackage.devDependencies[templateName]) {
+                c.files.projectPackage.devDependencies[templateName] = 'latest';
+                writeObjectSync(c.paths.projectPackagePath, c.files.projectPackage);
+            }
+        }
+
         c._requiresNpmInstall = true;
     }
     resolve();
 });
 
 const applyTemplate = c => new Promise((resolve, reject) => {
+    if (!c.files.projectConfig.defaultProjectConfigs) {
+        logTask('applyTemplate');
+        resolve();
+        return;
+    }
+
     logTask(`applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
 
     const templateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
+
+    if (!fs.existsSync(templateFolder)) {
+        logWarning(`Template ${chalk.white(c.files.projectConfig.defaultProjectConfigs.template)} does not exist in your ./node_modules. skipping`);
+        resolve();
+        return;
+    }
+
     const templateAppConfigsFolder = path.join(templateFolder, 'appConfigs');
     const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
     const templateProjectConfigFolder = path.join(templateFolder, 'projectConfig');
@@ -80,7 +113,7 @@ const applyTemplate = c => new Promise((resolve, reject) => {
         try {
             const appConfig = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
 
-            appConfig.common.title = c.files.projectPackage.title;
+            appConfig.common.title = c.defaultProjectConfigs.defaultTitle || c.files.projectPackage.title;
             appConfig.common.id = c.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
             appConfig.id = c.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
             appConfig.platforms.ios.teamID = '';
@@ -109,85 +142,6 @@ const applyTemplate = c => new Promise((resolve, reject) => {
             `Looks like your projectConfig folder ${chalk.white(c.paths.projectConfigFolder)} is missing! Let's create one for you.`,
         );
         copyFolderContentsRecursiveSync(templateProjectConfigFolder, c.paths.projectConfigFolder);
-    }
-
-    // Check plugins
-    logTask('configureProject:check plugins');
-    if (fs.existsSync(c.paths.pluginConfigPath)) {
-        c.files.pluginConfig = JSON.parse(fs.readFileSync(c.paths.pluginConfigPath).toString());
-    } else {
-        logWarning(
-            `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,
-        );
-        c.files.pluginConfig = { plugins: {} };
-        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
-    }
-
-    if (!c.files.projectPackage.dependencies) {
-        c.files.projectPackage.dependencies = {};
-    }
-
-    let hasPackageChanged = false;
-    for (const k in c.files.pluginConfig.plugins) {
-        const dependencies = c.files.projectPackage.dependencies;
-        const devDependecies = c.files.projectPackage.devDependecies;
-        const plugin = getMergedPlugin(c, k, c.files.pluginConfig.plugins);
-
-        if (!plugin) {
-            logWarning(`Plugin with name ${
-                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
-                chalk.white(c.paths.pluginConfigPath)}`);
-        } else if (dependencies && dependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
-                logWarning(
-                    `Version mismatch of dependency ${chalk.white(k)} between:
-  ${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
-  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
-  package.json will be overriden`
-                );
-                hasPackageChanged = true;
-                dependencies[k] = plugin.version;
-            }
-        } else if (devDependecies && devDependecies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependecies[k] !== plugin.version) {
-                logWarning(
-                    `Version mismatch of devDependency ${chalk.white(k)} between package.json: v(${chalk.red(
-                        devDependecies[k],
-                    )}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`,
-                );
-                hasPackageChanged = true;
-                devDependecies[k] = plugin.version;
-            }
-        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
-            // Dependency does not exists
-            logWarning(
-                `Missing dependency ${chalk.white(k)} v(${chalk.red(
-                    plugin.version,
-                )}) in package.json. package.json will be overriden`,
-            );
-
-            hasPackageChanged = true;
-            dependencies[k] = plugin.version;
-        }
-    }
-    if (hasPackageChanged) {
-        fs.writeFileSync(c.paths.projectPackagePath, JSON.stringify(c.files.projectPackage, null, 2));
-        c._requiresNpmInstall = true;
-    }
-
-    // Check permissions
-    logTask('configureProject:check permissions');
-    if (fs.existsSync(c.paths.permissionsConfigPath)) {
-        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
-    } else {
-        const newPath = path.join(c.paths.rnvRootFolder, 'projectConfig/permissions.json');
-        logWarning(
-            `Looks like your permission config is missing from ${chalk.white(
-                c.paths.permissionsConfigPath,
-            )}. ReNative Default ${chalk.white(newPath)} will be used instead`,
-        );
-        c.paths.permissionsConfigPath = newPath;
-        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
     }
 
     resolve();

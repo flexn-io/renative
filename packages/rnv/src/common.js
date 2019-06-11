@@ -8,6 +8,7 @@ import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
+import { getMergedPlugin } from './pluginTools';
 import {
     IOS,
     ANDROID,
@@ -368,6 +369,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         .then(() => configureProject(c))
         .then(() => configureNodeModules(c))
         .then(() => applyTemplate(c))
+        .then(() => configurePlugins(c))
         .then(() => configureNodeModules(c))
     // .then(() => configureTizenGlobal(c))
     // .then(() => configureAndroidGlobal(c))
@@ -550,20 +552,32 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         }
 
         // Check global SDKs
-        c.cli[CLI_ANDROID_EMULATOR] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'emulator/emulator');
-        c.cli[CLI_ANDROID_ADB] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'platform-tools/adb');
-        c.cli[CLI_ANDROID_AVDMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/avdmanager');
-        c.cli[CLI_ANDROID_SDKMANAGER] = path.join(c.files.globalConfig.sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
-        c.cli[CLI_TIZEN_EMULATOR] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
-        c.cli[CLI_TIZEN] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
-        c.cli[CLI_SDB_TIZEN] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/sdb');
-        c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
-        c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
-        c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
-        c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
-        c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-setup-device');
-        c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-device-info');
-        c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-novacom');
+        const { sdks } = c.files.globalConfig;
+        if (sdks) {
+            if (sdks.ANDROID_SDK) {
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, 'emulator/emulator');
+                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, 'platform-tools/adb');
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/avdmanager');
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
+            }
+            if (sdks.TIZEN_SDK) {
+                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
+                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+                c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
+            }
+            if (sdks.WEBOS_SDK) {
+                c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
+                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
+                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-setup-device');
+                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-device-info');
+                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-novacom');
+            }
+        } else {
+            logWarning(`Your ${c.paths.globalConfigPath} is missing SDK configuration object`);
+        }
+
 
         // Check config sanity
         if (c.files.globalConfig.defaultTargets === undefined) {
@@ -600,6 +614,89 @@ const configureEntryPoints = (c) => {
         }
     }
 };
+
+const configurePlugins = c => new Promise((resolve, reject) => {
+    // Check plugins
+    logTask('configureProject:check plugins');
+    if (fs.existsSync(c.paths.pluginConfigPath)) {
+        c.files.pluginConfig = JSON.parse(fs.readFileSync(c.paths.pluginConfigPath).toString());
+    } else {
+        logWarning(
+            `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,
+        );
+        c.files.pluginConfig = { plugins: {} };
+        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+    }
+
+    if (!c.files.projectPackage.dependencies) {
+        c.files.projectPackage.dependencies = {};
+    }
+
+    let hasPackageChanged = false;
+    for (const k in c.files.pluginConfig.plugins) {
+        const dependencies = c.files.projectPackage.dependencies;
+        const devDependencies = c.files.projectPackage.devDependencies;
+        const plugin = getMergedPlugin(c, k, c.files.pluginConfig.plugins);
+
+        if (!plugin) {
+            logWarning(`Plugin with name ${
+                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
+                chalk.white(c.paths.pluginConfigPath)}`);
+        } else if (dependencies && dependencies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
+                logWarning(
+                    `Version mismatch of dependency ${chalk.white(k)} between:
+${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
+${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
+package.json will be overriden`
+                );
+                hasPackageChanged = true;
+                dependencies[k] = plugin.version;
+            }
+        } else if (devDependencies && devDependencies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependencies[k] !== plugin.version) {
+                logWarning(
+                    `Version mismatch of devDependency ${chalk.white(k)} between package.json: v(${chalk.red(
+                        devDependencies[k],
+                    )}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`,
+                );
+                hasPackageChanged = true;
+                devDependencies[k] = plugin.version;
+            }
+        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+            // Dependency does not exists
+            logWarning(
+                `Missing dependency ${chalk.white(k)} v(${chalk.red(
+                    plugin.version,
+                )}) in package.json. package.json will be overriden`,
+            );
+
+            hasPackageChanged = true;
+            dependencies[k] = plugin.version;
+        }
+    }
+    if (hasPackageChanged) {
+        fs.writeFileSync(c.paths.projectPackagePath, JSON.stringify(c.files.projectPackage, null, 2));
+        c._requiresNpmInstall = true;
+    }
+
+    // Check permissions
+    logTask('configureProject:check permissions');
+    if (fs.existsSync(c.paths.permissionsConfigPath)) {
+        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
+    } else {
+        const newPath = path.join(c.paths.rnvRootFolder, 'projectConfig/permissions.json');
+        logWarning(
+            `Looks like your permission config is missing from ${chalk.white(
+                c.paths.permissionsConfigPath,
+            )}. ReNative Default ${chalk.white(newPath)} will be used instead`,
+        );
+        c.paths.permissionsConfigPath = newPath;
+        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
+    }
+
+    resolve();
+});
 
 const configureApp = c => new Promise((resolve, reject) => {
     logTask('configureApp');
@@ -817,7 +914,7 @@ const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplate
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
-const getConfigProp = (c, platform, key) => {
+const getConfigProp = (c, platform, key, defaultVal) => {
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
     let scheme;
@@ -825,6 +922,7 @@ const getConfigProp = (c, platform, key) => {
     scheme = scheme || {};
     const result = scheme[key] || (c.files.appConfigFile.platforms[platform][key] || c.files.appConfigFile.common[key]);
     logTask(`getConfigProp:${platform}:${key}:${result}`);
+    if (result === null || result === undefined) return defaultVal;
     return result;
 };
 

@@ -3,7 +3,7 @@ import path from 'path';
 import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
-import { logDebug } from '../common';
+import { logDebug, logError } from '../common';
 
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);
@@ -134,8 +134,12 @@ const removeDirSync = (dir, rmSelf) => {
     }
 };
 
-const writeObjectSync = (filePath, obj) => {
-    fs.writeFileSync(filePath, JSON.stringify(obj, null, 4));
+const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
+    if (addNewLine) {
+        fs.writeFileSync(filePath, `${JSON.stringify(obj, null, spaces || 4)}\n`);
+    } else {
+        fs.writeFileSync(filePath, JSON.stringify(obj, null, spaces || 4));
+    }
 };
 
 const readObjectSync = (filePath) => {

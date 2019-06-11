@@ -1,7 +1,7 @@
 {
     "plugins": {
         "renative": {
-            "version": "0.23.0-alpha.15",
+            "version": "0.23.0-alpha.18",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -155,7 +155,7 @@
             }
         },
         "react-native-zip-archive": {
-            "version": "2.1.0",
+            "version": "4.0.2",
             "ios": {
                 "podName": "RNZipArchive"
             },

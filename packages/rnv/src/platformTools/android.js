@@ -367,7 +367,9 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.files.appConfigFile.platforms[platform];
-    const outputFile = entryFile;
+    // TODO Android PROD Crashes if not using this hardcoded one
+    const outputFile = 'index.android';
+    // const outputFile = entryFile;
 
     const appFolder = getAppFolder(c, platform);
     executeAsync('react-native', [
@@ -782,8 +784,18 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         }
     }
 
+    // const debugSigning = 'debug';
+    const debugSigning = `
+    debug {
+        storeFile file('debug.keystore')
+        storePassword "android"
+        keyAlias "androiddebugkey"
+        keyPassword "android"
+    }`;
+
     // SIGNING CONFIGS
-    pluginConfig.signingConfigs = 'release';
+    pluginConfig.signingConfigs = `${debugSigning}
+    release`;
     pluginConfig.localProperties = '';
     c.files.privateConfig = _getPrivateConfig(c, platform);
 
@@ -806,7 +818,7 @@ keyAlias=${c.files.privateConfig[platform].keyAlias}
 storePassword=${c.files.privateConfig[platform].storePassword}
 keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
-            pluginConfig.signingConfigs = `
+            pluginConfig.signingConfigs = `${debugSigning}
             release {
                 storeFile file(keystoreProps['storeFile'])
                 storePassword keystoreProps['storePassword']
@@ -825,19 +837,111 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         }
     }
 
+    // BUILD_TYPES
+    pluginConfig.buildTypes = `
+    debug {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    }
+    release {
+        minifyEnabled false
+        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        signingConfig signingConfigs.release
+    }`;
+
+    const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
+    // MULTI APK
+    pluginConfig.multiAPKs = '';
+    if (isMultiApk) {
+        pluginConfig.multiAPKs = `
+      ext.abiCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
+      import com.android.build.OutputFile
+
+      android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+          def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
+          if (bavc != null) {
+            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc))
+          }
+        }
+      }`;
+    }
+
+    // SPLITS
+    pluginConfig.splits = '';
+    console.log('SKJHSKJSH', isMultiApk);
+    if (isMultiApk) {
+        pluginConfig.splits = `
+    splits {
+      abi {
+          reset()
+          enable true
+          include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
+          universalApk false
+      }
+    }
+`;
+    }
+
+
+    // PACKAGING OPTIONS
+    pluginConfig.packagingOptions = `
+    exclude 'META-INF/DEPENDENCIES.txt'
+    exclude 'META-INF/DEPENDENCIES'
+    exclude 'META-INF/dependencies.txt'
+    exclude 'META-INF/LICENSE.txt'
+    exclude 'META-INF/LICENSE'
+    exclude 'META-INF/license.txt'
+    exclude 'META-INF/LGPL2.1'
+    exclude 'META-INF/NOTICE.txt'
+    exclude 'META-INF/NOTICE'
+    exclude 'META-INF/notice.txt'
+    pickFirst 'lib/armeabi-v7a/libc++_shared.so'
+    pickFirst 'lib/x86_64/libc++_shared.so'
+    pickFirst 'lib/x86/libc++_shared.so'
+    pickFirst 'lib/arm64-v8a/libc++_shared.so'
+    pickFirst 'lib/arm64-v8a/libjsc.so'
+    pickFirst 'lib/x86_64/libjsc.so'`;
+
+    // COMPILE OPTIONS
+    pluginConfig.compileOptions = `
+    sourceCompatibility 1.8
+    targetCompatibility 1.8`;
+
     writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
         { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
         { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
     ]);
 
+    // ANDROID PROPS
+    pluginConfig.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
+    pluginConfig.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
+    pluginConfig.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
+
+    // APPLY
+    pluginConfig.apply = '';
+
     writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
+        { pattern: '{{PLUGIN_APPLY}}', override: pluginConfig.apply },
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
         { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
         { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginConfig.pluginImplementations },
         { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: pluginConfig.pluginAfterEvaluate },
         { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: pluginConfig.signingConfigs },
+        { pattern: '{{PLUGIN_SPLITS}}', override: pluginConfig.splits },
+        { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: pluginConfig.packagingOptions },
+        { pattern: '{{PLUGIN_BUILD_TYPES}}', override: pluginConfig.buildTypes },
+        { pattern: '{{PLUGIN_MULTI_APKS}}', override: pluginConfig.multiAPKs },
+        { pattern: '{{MIN_SDK_VERSION}}', override: pluginConfig.minSdkVersion },
+        { pattern: '{{TARGET_SDK_VERSION}}', override: pluginConfig.targetSdkVersion },
+        { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
+        { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: pluginConfig.compileOptions },
         { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: pluginConfig.localProperties },
+    ]);
+
+    writeCleanFile(path.join(appTemplateFolder, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
+        { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
     ]);
 
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
