@@ -38,9 +38,10 @@ const checkForDuplicates = (arr) => {
 };
 
 const fixPackageJson = (c, pkgPath) => new Promise((resolve, reject) => {
-    const pp = readObjectSync(pkgPath);
+    const pth = pkgPath || c.paths.projectPackagePath;
+    const pp = readObjectSync(pth);
     const output = fixPackageObject(pp);
-    writeObjectSync(c.paths.projectPackagePath, output, 4);
+    writeObjectSync(pth, output, 4);
     resolve();
 });
 

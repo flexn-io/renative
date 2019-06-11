@@ -35,7 +35,7 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
 
     shell.exec(toBeExecuted, { silent: true }, (error, stdout) => {
         if (error) {
-            reject(`Command ${cli} failed: "${chalk.white(`${p} ${command}`)}". ${error}`);
+            reject(`Command ${cli} failed: "${chalk.white(`${toBeExecuted} ${command}`)}". ${error}`);
             return;
         }
 
