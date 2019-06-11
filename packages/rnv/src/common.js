@@ -30,8 +30,9 @@ import {
     CLI_SDB_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_NOVACOM,
     FORM_FACTOR_MOBILE,
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
@@ -558,10 +559,11 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         c.cli[CLI_SDB_TIZEN] = path.join(c.files.globalConfig.sdks.TIZEN_SDK, 'tools/sdb');
         c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
         c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
-        c.cli[CLI_WEBBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
-        c.cli[CLI_WEBBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
+        c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
+        c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
         c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-setup-device');
         c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-device-info');
+        c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-novacom');
 
         // Check config sanity
         if (c.files.globalConfig.defaultTargets === undefined) {
@@ -1152,8 +1154,8 @@ export {
     CLI_SDB_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE,
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
@@ -1221,8 +1223,8 @@ export default {
     CLI_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_LAUNCH,
     FORM_FACTOR_MOBILE,
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,

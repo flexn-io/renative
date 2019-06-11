@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
@@ -8,7 +9,7 @@ import {
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
 import { launchTizenSimulator } from '../platformTools/tizen';
-import { launchWebOSimulator } from '../platformTools/webos';
+import { launchWebOSimulator, listWebOSTargets } from '../platformTools/webos';
 import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
 import { listAppleDevices, launchAppleSimulator } from '../platformTools/apple';
 import { launchKaiOSSimulator } from '../platformTools/firefox';
@@ -115,8 +116,7 @@ const _runLaunch = c => new Promise((resolve, reject) => {
 
 const _runList = c => new Promise((resolve, reject) => {
     logTask('_runLaunch');
-    const { platform, program } = c;
-    const { target } = program;
+    const { platform } = c;
     if (!isPlatformSupportedSync(platform)) return;
 
     switch (platform) {
@@ -130,6 +130,11 @@ const _runList = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         listAppleDevices(c, platform)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case WEBOS:
+        listWebOSTargets(c)
             .then(() => resolve())
             .catch(e => reject(e));
         return;

@@ -1,5 +1,7 @@
-const registerFonts = fonts => ({});
+function registerFonts(fonts) {
+    return {};
+}
 
-const fonts = registerFonts(null);
+let fonts = registerFonts(null);
 
 export default fonts;
