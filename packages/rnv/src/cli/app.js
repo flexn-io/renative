@@ -13,6 +13,7 @@ import {
     finishQuestion,
     generateOptions,
     logWelcome,
+    writeObjectSync,
     SUPPORTED_PLATFORMS,
 } from '../common';
 import {
@@ -317,7 +318,7 @@ const checkAndCreateProjectConfig = (c, data) => {
 
         obj.defaultProjectConfigs = defaultProjectConfigs;
 
-        fs.writeFileSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), JSON.stringify(obj, null, 2));
+        writeObjectSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), obj);
     }
 };
 

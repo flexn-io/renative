@@ -690,7 +690,7 @@ package.json will be overriden`
         }
     }
     if (hasPackageChanged) {
-        fs.writeFileSync(c.paths.projectPackagePath, JSON.stringify(c.files.projectPackage, null, 2));
+        writeObjectSync(c.paths.projectPackagePath, c.files.projectPackage);
         c._requiresNpmInstall = true;
     }
 
