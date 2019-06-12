@@ -1,8 +1,10 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
+import ip from 'ip';
 import { execShellAsync } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
@@ -98,13 +100,21 @@ module.exports = {
 };
 
 const buildWeb = (c, platform) => {
+    const { debug, debugIp } = c.program;
     logTask(`buildWeb:${platform}`);
+
+    let debugVariables = '';
+
+    if (debug) {
+        logInfo(`Starting a remote debugger build with ip ${debugIp || ip.address()}. If this IP is not correct, you can always override it with --debugIp`);
+        debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
+    }
 
     _generateWebpackConfigs(c);
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    return execShellAsync(`npx cross-env NODE_ENV=development node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
+    return execShellAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 };
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {

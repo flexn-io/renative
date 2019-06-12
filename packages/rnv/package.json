@@ -114,6 +114,7 @@
         "husky": "1.2.0",
         "icon-toolkit": "0.0.9",
         "inquirer": "6.3.1",
+        "ip": "1.1.5",
         "jest": "23.4.1",
         "lint-staged": "8.1.0",
         "metro-react-native-babel-preset": "0.51.1",

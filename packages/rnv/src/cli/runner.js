@@ -62,6 +62,7 @@ const TEST = 'test';
 const DOC = 'doc';
 const UNINSTALL = 'uninstall';
 const FIX = 'fix';
+const DEBUG = 'debug';
 
 const PIPES = {
     RUN_BEFORE: 'run:before',
@@ -104,6 +105,8 @@ const run = (c) => {
         return _fix(c);
     case DEPLOY:
         return _deployApp(c);
+    case DEBUG:
+        return _debug(c);
         // case UPDATE:
         //     return Promise.resolve();
         //     break;
@@ -159,6 +162,14 @@ const _start = c => new Promise((resolve, reject) => {
         shell.exec('node ./node_modules/react-native/local-cli/cli.js start');
     }
 });
+
+const runWeinre = () => {
+    shell.exec('npx weinre --boundHost -all-');
+};
+
+const _debug = c => executePipe(c, PIPES.START_BEFORE)
+    .then(() => runWeinre())
+    .then(() => executePipe(c, PIPES.START_AFTER));
 
 const _runApp = c => new Promise((resolve, reject) => {
     logTask(`_runApp:${c.platform}`);
