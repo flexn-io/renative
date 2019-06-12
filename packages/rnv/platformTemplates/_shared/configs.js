@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function generateConfig(config) {
     const projectDir = path.resolve(config.currentDir, '../../');
@@ -120,6 +119,7 @@ function generateConfig(config) {
         'process.env.NODE_ENV': JSON.stringify(config.environment),
         __DEV__: config.environment === 'production' || true,
     });
+
     plugins.html = new HtmlWebpackPlugin({
         alwaysWriteToDisk: true,
         filename: path.resolve(appBuildPublicDir, './index.html'),
@@ -127,6 +127,8 @@ function generateConfig(config) {
         minify: false,
         templateParameters: {
             ...config,
+            debug: process.env.DEBUG,
+            debugIp: process.env.DEBUG_IP
         },
     });
     plugins.harddisk = new HtmlWebpackHarddiskPlugin();

@@ -1,8 +1,5 @@
 import chalk from 'chalk';
-import path from 'path';
-import shell from 'shelljs';
-import Webpack from 'webpack';
-import Common, { initializeBuilder, logComplete, logError, logWelcome } from './common';
+import Common, { initializeBuilder, logComplete, logError, logWelcome, logInfo } from './common';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
 import App from './cli/app';
@@ -37,7 +34,8 @@ const commands = {
     fix: Tools,
     clean: Tools,
     tool: Tools,
-    template: Template
+    template: Template,
+    debug: Runner
 };
 
 const run = (cmd, subCmd, program, process) => {
@@ -46,7 +44,10 @@ const run = (cmd, subCmd, program, process) => {
         .then((v) => {
             if (commands[cmd]) {
                 commands[cmd](v)
-                    .then(() => logComplete(true))
+                    .then(() => {
+                        if (program.debug) logInfo('You started a debug build. Make sure you have the debugger started or start it with `rnv debug`');
+                        logComplete(true);
+                    })
                     .catch(e => logError(e, true));
             } else if (program.help) {
                 // program.help();
