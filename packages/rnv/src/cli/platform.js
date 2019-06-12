@@ -10,10 +10,14 @@ import {
     getQuestion,
     logSuccess,
     askQuestion,
-    finishQuestion
+    finishQuestion,
+    generateOptions,
+    getProjectPlatforms,
+    writeObjectSync
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
+import { PLATFORMS } from '../constants';
 
 const CONFIGURE = 'configure';
 const UPDATE = 'update';
@@ -54,10 +58,9 @@ const run = (c) => {
         return _runEjectPlatforms(c);
     case CONNECT:
         return _runConnectPlatforms(c);
+    case LIST:
+        return _runListPlatforms(c);
         // case UPDATE:
-        //     return Promise.resolve();
-        //     break;
-        // case LIST:
         //     return Promise.resolve();
         //     break;
         // case ADD:
@@ -66,6 +69,8 @@ const run = (c) => {
         // case REMOVE:
         //     return Promise.resolve();
         //     break;
+
+
     default:
         return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
     }
@@ -74,6 +79,13 @@ const run = (c) => {
 // ##########################################
 // PRIVATE
 // ##########################################
+
+
+const _runListPlatforms = c => new Promise((resolve, reject) => {
+    const opts = _genPlatOptions(c);
+    console.log(`\n${opts.asString}`);
+    resolve();
+});
 
 const _runCreatePlatforms = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
@@ -91,64 +103,74 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
 const _runEjectPlatforms = c => new Promise((resolve) => {
     logTask('_runEjectPlatforms');
 
-    askQuestion('This will copy platformTemplates folder from ReNative managed directly to your project. Type (y) to confirm')
+    const opts = _genPlatOptions(c);
+
+    askQuestion(`This will copy platformTemplates folders from ReNative managed directly to your project. Select platforms you would like to eject comma separated\n${opts.asString}`)
+        .then(v => opts.pick(v))
         .then((v) => {
             finishQuestion();
-            if (v.toLowerCase() === 'y') {
-                const ptfn = 'platformTemplates';
 
-                const supportedPlatforms = c.files.projectPackage ? c.files.projectPackage.supportedPlatforms : null;
-                const rptf = c.paths.rnvPlatformTemplatesFolder;
-                const prf = c.paths.projectRootFolder;
-                if (supportedPlatforms) {
+
+            const ptfn = 'platformTemplates';
+            const rptf = c.paths.rnvPlatformTemplatesFolder;
+            const prf = c.paths.projectRootFolder;
+
+            const WEB_BASED_PLATFORMS = [];
+            let copyShared = false;
+
+            opts.selectedOptions.forEach((v) => {
+                if (PLATFORMS[v].usesSharedConfig) {
+                    copyShared = true;
+                }
+
+                copyFolderContentsRecursiveSync(path.join(rptf, v), path.join(prf, ptfn, v));
+
+                if (copyShared) {
                     copyFolderContentsRecursiveSync(path.join(rptf, '_shared'), path.join(prf, ptfn, '_shared'));
-                    for (let i = 0; i < supportedPlatforms.length; i++) {
-                        const sp = supportedPlatforms[i];
-                        copyFolderContentsRecursiveSync(path.join(rptf, sp), path.join(prf, ptfn, sp));
-                    }
-                } else {
-                    copyFolderContentsRecursiveSync(rptf, path.join(prf, ptfn));
                 }
 
 
-                c.files.projectConfig.platformTemplatesFolder = `./${ptfn}`;
+                c.files.projectConfig.platformTemplatesFolders[v] = `./${ptfn}`;
 
-                fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
-
-                logSuccess(
-                    `Your platform templates are located in ${chalk.white(
-                        c.files.projectConfig.platformTemplatesFolder
-                    )} now. You can edit them directly!`
-                );
-
-                resolve();
-            } else {
-                resolve();
-            }
+                writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig));
+            });
+            logSuccess(
+                `${chalk.white(opts.selectedOptions.join(','))} platform templates are located in ${chalk.white(
+                    c.files.projectConfig.platformTemplatesFolders[opts.selectedOptions[0]]
+                )} now. You can edit them directly!`
+            );
+            resolve();
         });
 });
+
+const _genPlatOptions = (c) => {
+    const opts = generateOptions(getProjectPlatforms(c), true, null, (i, obj, mapping, defaultVal) => {
+        const isEjected = c.paths.platformTemplatesFolders[obj].includes(c.paths.rnvPlatformTemplatesFolder) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
+        return `-[${chalk.white(i + 1)}] ${chalk.white(defaultVal)} - ${isEjected} \n`;
+    });
+    return opts;
+};
 
 const _runConnectPlatforms = c => new Promise((resolve) => {
     logTask('_runConnectPlatforms');
 
-    askQuestion('This will point platformTemplates folder from your local project to ReNative managed one. Type (y) to confirm')
-        .then((v) => {
+    const opts = _genPlatOptions(c);
+
+    askQuestion(`This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect comma separated\n${opts.asString}`)
+        .then(v => opts.pick(v))
+        .then(() => {
             finishQuestion();
-            if (v.toLowerCase() === 'y') {
+            opts.selectedOptions.forEach((v) => {
                 const ptfn = 'platformTemplates';
 
-                c.files.projectConfig.platformTemplatesFolder = `RNV_HOME/${ptfn}`;
+                c.files.projectConfig.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
 
-                fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
-
-                logSuccess(
-                    `You're now using ReNativeplatformTemplates located in ${chalk.white(c.paths.rnvPlatformTemplatesFolder)} now!`
-                );
-
-                resolve();
-            } else {
-                resolve();
-            }
+                writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig));
+            });
+            logSuccess(
+                `${chalk.white(opts.selectedOptions.join(','))} now using ReNative platformTemplates located in ${chalk.white(c.paths.rnvPlatformTemplatesFolder)} now!`
+            );
+            resolve();
         });
 });
 
@@ -182,13 +204,13 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     if (platform === 'all') {
         for (const k in c.files.appConfigFile.platforms) {
             if (isPlatformSupportedSync(k)) {
-                const ptPath = path.join(c.paths.platformTemplatesFolder, `${k}`);
+                const ptPath = path.join(c.paths.platformTemplatesFolders[k], `${k}`);
                 const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${k}`);
                 copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
             }
         }
     } else if (isPlatformSupportedSync(platform)) {
-        const ptPath = path.join(c.paths.platformTemplatesFolder, `${platform}`);
+        const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
         const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
     } else {
@@ -233,7 +255,7 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     if (!isPlatformSupportedSync(platform, null, reject)) return;
 
     const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
-    const ptPath = path.join(c.paths.platformTemplatesFolder, `${platform}`);
+    const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
     copyFolderContentsRecursiveSync(ptPath, pPath, false, [path.join(ptPath, '_privateConfig')]);
 
     resolve();
