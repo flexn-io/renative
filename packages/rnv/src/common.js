@@ -332,7 +332,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
         c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
-        console.log('DGGDDGDGDG', c.paths.platformTemplatesFolders);
         c.paths.platformAssetsFolder = _getPath(
             c,
             c.files.projectConfig.platformAssetsFolder,
