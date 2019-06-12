@@ -99,6 +99,8 @@ ${chalk.bold.white('OPTIONS:')}
 '-x, --exeMethod <value>', 'Executable method in buildHooks'
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
+'-D, --debug', 'enable remote debugger'
+'--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
 `);
 };
 
