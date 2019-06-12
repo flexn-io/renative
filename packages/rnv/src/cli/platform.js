@@ -10,7 +10,9 @@ import {
     getQuestion,
     logSuccess,
     askQuestion,
-    finishQuestion
+    finishQuestion,
+    generateOptions,
+    getProjectPlatforms
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
@@ -131,7 +133,13 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 const _runConnectPlatforms = c => new Promise((resolve) => {
     logTask('_runConnectPlatforms');
 
-    askQuestion('This will point platformTemplates folder from your local project to ReNative managed one. Type (y) to confirm')
+    const opts = generateOptions(getProjectPlatforms(c), true, null, (i, obj, mapping, defaultVal) => {
+        console.log('DKJDHDKJ', i, obj, defaultVal);
+        const isEjected = c.paths.platformTemplatesFolders[obj].includes(c.paths.rnvPlatformTemplatesFolder) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
+        return `-[${chalk.white(i + 1)}] ${chalk.white(defaultVal)} - ${isEjected} \n`;
+    });
+
+    askQuestion(`This will point platformTemplates folder from your local project to ReNative managed one. Select platforms you would like to connect\n${opts.asString}`)
         .then((v) => {
             finishQuestion();
             if (v.toLowerCase() === 'y') {
@@ -182,13 +190,13 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     if (platform === 'all') {
         for (const k in c.files.appConfigFile.platforms) {
             if (isPlatformSupportedSync(k)) {
-                const ptPath = path.join(c.paths.platformTemplatesFolder, `${k}`);
+                const ptPath = path.join(c.paths.platformTemplatesFolders[k], `${k}`);
                 const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${k}`);
                 copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
             }
         }
     } else if (isPlatformSupportedSync(platform)) {
-        const ptPath = path.join(c.paths.platformTemplatesFolder, `${platform}`);
+        const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
         const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
     } else {
@@ -233,7 +241,7 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     if (!isPlatformSupportedSync(platform, null, reject)) return;
 
     const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
-    const ptPath = path.join(c.paths.platformTemplatesFolder, `${platform}`);
+    const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
     copyFolderContentsRecursiveSync(ptPath, pPath, false, [path.join(ptPath, '_privateConfig')]);
 
     resolve();

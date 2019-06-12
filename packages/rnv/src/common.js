@@ -230,6 +230,30 @@ const _getPath = (c, p, key = 'undefined', original) => {
         .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
 };
 
+const _generatePlatformTemplatePaths = (c) => {
+    const pt = c.files.projectConfig.platformTemplatesFolders || {};
+    const originalPath = c.files.projectConfig.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
+    const result = {};
+    SUPPORTED_PLATFORMS.forEach((v) => {
+        if (!pt[v]) {
+            result[v] = _getPath(
+                c,
+                originalPath,
+                'platformTemplatesFolder',
+                originalPath,
+            );
+        } else {
+            result[v] = _getPath(
+                c,
+                pt[v],
+                'platformTemplatesFolder',
+                originalPath,
+            );
+        }
+    });
+    return result;
+};
+
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     _currentJob = cmd;
     _currentProcess = process;
@@ -307,12 +331,8 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
-        c.paths.platformTemplatesFolder = _getPath(
-            c,
-            c.files.projectConfig.platformTemplatesFolder,
-            'platformTemplatesFolder',
-            c.paths.platformTemplatesFolder,
-        );
+        c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
+        console.log('DGGDDGDGDG', c.paths.platformTemplatesFolders);
         c.paths.platformAssetsFolder = _getPath(
             c,
             c.files.projectConfig.platformAssetsFolder,
@@ -905,7 +925,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
 
 const getAppFolder = (c, platform) => path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
 
-const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplatesFolder, `${platform}`);
+const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
@@ -1072,7 +1092,7 @@ const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     });
 });
 
-const generateOptions = (inputData, isMultiChoice = false, mapping) => {
+const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
     let asString = '';
     const valuesAsObject = {};
     const valuesAsArray = [];
@@ -1125,9 +1145,10 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
             }
         })
     };
+    const renderer = renderMethod || _generateOptionString;
     if (isArray) {
         inputData.map((v, i) => {
-            asString += _generateOptionString(i, v, mapping, v);
+            asString += renderer(i, v, mapping, v);
             valuesAsArray.push(v);
             if (!mapping) keysAsArray.push(v);
             if (!mapping) valuesAsObject[v] = v;
@@ -1136,7 +1157,7 @@ const generateOptions = (inputData, isMultiChoice = false, mapping) => {
         let i = 0;
         for (const k in inputData) {
             const v = inputData[k];
-            asString += _generateOptionString(i, v, mapping, k);
+            asString += renderer(i, v, mapping, k);
             keysAsArray.push(k);
             keysAsObject[k] = true;
             valuesAsObject[k] = v;
@@ -1183,8 +1204,14 @@ const resolveNodeModulePath = (c, filePath) => {
     return pth;
 };
 
+const getProjectPlatforms = (c) => {
+    const dpc = c.files.projectConfig.defaultProjectConfigs || {};
+    return dpc.supportedPlatforms || SUPPORTED_PLATFORMS;
+};
+
 export {
     SUPPORTED_PLATFORMS,
+    getProjectPlatforms,
     setAppConfig,
     generateOptions,
     logWelcome,
@@ -1257,6 +1284,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    getProjectPlatforms,
     setAppConfig,
     generateOptions,
     logWelcome,

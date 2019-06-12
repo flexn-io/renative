@@ -753,7 +753,7 @@ c.paths.globalConfigFolder;
 c.paths.globalConfigPath;
 c.paths.appConfigsFolder;
 c.paths.entryFolder;
-c.paths.platformTemplatesFolder;
+c.paths.platformTemplatesFolders;
 c.paths.platformAssetsFolder;
 c.paths.platformBuildsFolder;
 c.paths.projectPluginsFolder;
