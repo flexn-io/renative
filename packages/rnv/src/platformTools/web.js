@@ -21,8 +21,8 @@ import {
     CLI_TIZEN,
     CLI_WEBOS_ARES,
     CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_LAUNCH,
     copyBuildsFolder,
     getAppTemplateFolder,
     checkPortInUse,
@@ -104,7 +104,7 @@ const buildWeb = (c, platform) => {
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    return execShellAsync(`npx cross-env NODE_ENV=production node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
+    return execShellAsync(`npx cross-env NODE_ENV=development node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
 };
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {

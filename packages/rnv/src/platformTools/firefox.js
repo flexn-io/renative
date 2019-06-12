@@ -33,8 +33,8 @@ import {
     CLI_WEBOS_ARES,
     CLI_KAIOS_EMULATOR,
     CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
+    CLI_WEBOS_ARES_INSTALL,
+    CLI_WEBOS_ARES_LAUNCH,
     KAIOS_SDK,
 } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
