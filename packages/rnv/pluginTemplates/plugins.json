@@ -1,7 +1,7 @@
 {
   "reactCore": {
     "ios": {
-      "subSpecs": [
+      "reactSubSpecs": [
           "Core",
           "RCTImage",
           "RCTNetwork",
@@ -38,34 +38,44 @@
             "reactSubSpecs": [
               "RCTPushNotification"
             ],
-            "appDelegateApplicationMethods": {
-              "didReceiveRemoteNotification": [
-                "RCTPushNotificationManager.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)"
-              ],
-              "didFailToRegisterForRemoteNotificationsWithError": [
-                "RCTPushNotificationManager.didFailToRegisterForRemoteNotificationsWithError(error)"
-              ],
-              "didReceive": [
-                "RCTPushNotificationManager.didReceive(notification)"
-              ],
-              "didRegister": [
-                "RCTPushNotificationManager.didRegister(notificationSettings)"
-              ],
-              "didRegisterForRemoteNotificationsWithDeviceToken": [
-                "RCTPushNotificationManager.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)"
-              ]
+            "appDelegateMethods": {
+              "application": {
+                "didReceiveRemoteNotification": [
+                  "RCTPushNotificationManager.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)"
+                ],
+                "didFailToRegisterForRemoteNotificationsWithError": [
+                  "RCTPushNotificationManager.didFailToRegisterForRemoteNotificationsWithError(error)"
+                ],
+                "didReceive": [
+                  "RCTPushNotificationManager.didReceive(notification)"
+                ],
+                "didRegister": [
+                  "RCTPushNotificationManager.didRegister(notificationSettings)"
+                ],
+                "didRegisterForRemoteNotificationsWithDeviceToken": [
+                  "RCTPushNotificationManager.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)"
+                ]
+              },
+              "userNotificationCenter": {
+                "willPresent": [
+                  "completionHandler([.alert, .badge, .sound])"
+                ]
+              }
             }
           }
         },
-        "RCTLinkingManager": {
+        "RCTLinkingIOS": {
+          "no-npm": true,
           "ios": {
             "reactSubSpecs": [
-              "RCTLinkingManager"
+              "RCTLinkingIOS"
             ],
-            "appDelegateApplicationMethods": {
-              "open": [
-                "RCTLinkingManager.application(app, open: url, options: options)"
-              ]
+            "appDelegateMethods": {
+              "application": {
+                "open": [
+                  "RCTLinkingManager.application(app, open: url, options: options)"
+                ]
+              }
             }
           }
         },
@@ -200,13 +210,15 @@
             "ios": {
                 "podName": "react-native-fbsdk",
                 "appDelegateImports": ["FBSDKCoreKit"],
-                "appDelegateApplicationMethods": {
-                  "didFinishLaunchingWithOptions": [
-                    "FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)"
-                  ],
-                  "open": [
-                    "FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)"
-                  ]
+                "appDelegateMethods": {
+                  "application": {
+                    "didFinishLaunchingWithOptions": [
+                      "FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)"
+                    ],
+                    "open": [
+                      "FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)"
+                    ]
+                  }
                 }
             },
             "tvos": {
@@ -568,8 +580,10 @@
             "ios": {
                 "podName": "react-native-orientation-locker",
                 "appDelegateImports": ["react_native_orientation_locker"],
-                "appDelegateApplicationMethods": {
-                  "supportedInterfaceOrientationsFor": ["return Orientation.getOrientation();"]
+                "appDelegateMethods": {
+                  "application": {
+                    "supportedInterfaceOrientationsFor": ["Orientation.getOrientation();"]
+                  }
                 }
             },
             "android": {
@@ -636,8 +650,10 @@
                 "podName": "GoogleMaps",
                 "appDelegateImports": ["GoogleMaps"],
                 "version": "2.5.0",
-                "appDelegateApplicationMethods": {
-                  "didFinishLaunchingWithOptions": ["GMSServices.provideAPIKey(\"{{MAPS_API_KEY}}\")"]
+                "appDelegateMethods": {
+                  "application": {
+                    "didFinishLaunchingWithOptions": ["GMSServices.provideAPIKey(\"{{MAPS_API_KEY}}\")"]
+                  }
                 }
             },
             "tvos": {
@@ -660,8 +676,10 @@
               "podName": "Fabric",
               "appDelegateImports": ["Fabric"],
               "version": "1.7.13",
-              "appDelegateApplicationMethods": {
-                "didFinishLaunchingWithOptions": ["Fabric.with([Crashlytics.self])"]
+              "appDelegateMethods": {
+                "application": {
+                  "didFinishLaunchingWithOptions": ["Fabric.with([Crashlytics.self])"]
+                }
               }
           }
         },
@@ -669,8 +687,11 @@
           "no-npm": true,
           "ios": {
               "podName": "Firebase/Core",
-              "appDelegateApplicationMethods": {
-                "didFinishLaunchingWithOptions": ["FirebaseApp.configure()"]
+              "appDelegateImports": ["Firebase"],
+              "appDelegateMethods": {
+                "application": {
+                  "didFinishLaunchingWithOptions": ["FirebaseApp.configure()"]
+                }
               }
           }
         },

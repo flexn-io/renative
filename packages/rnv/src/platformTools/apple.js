@@ -361,12 +361,15 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
     // if (plugin.appDelegateMethods instanceof Array) {
     //     pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
-    if (plugin.appDelegateApplicationMethods) {
-        for (const key in plugin.appDelegateApplicationMethods) {
-            const plugArr = pluginConfig.appDelegateApplicationMethods[key];
-            const plugVal = plugin.appDelegateApplicationMethods[key];
-            if (!plugArr.includes(plugVal)) {
-                plugArr.push(plugVal);
+
+    if (plugin.appDelegateMethods) {
+        for (const key in plugin.appDelegateMethods) {
+            for (const key2 in plugin.appDelegateMethods[key]) {
+                const plugArr = pluginConfig.appDelegateMethods[key][key2];
+                const plugVal = plugin.appDelegateMethods[key][key2];
+                if (!plugArr.includes(plugVal)) {
+                    plugArr.push(plugVal);
+                }
             }
         }
     }
@@ -392,15 +395,20 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const pluginConfig = {
         pluginAppDelegateImports,
         pluginAppDelegateMethods,
-        appDelegateApplicationMethods: {
-            didFinishLaunchingWithOptions: [],
-            open: [],
-            supportedInterfaceOrientationsFor: [],
-            didReceiveRemoteNotification: [],
-            didFailToRegisterForRemoteNotificationsWithError: [],
-            didReceive: [],
-            didRegister: [],
-            didRegisterForRemoteNotificationsWithDeviceToken: []
+        appDelegateMethods: {
+            application: {
+                didFinishLaunchingWithOptions: [],
+                open: [],
+                supportedInterfaceOrientationsFor: [],
+                didReceiveRemoteNotification: [],
+                didFailToRegisterForRemoteNotificationsWithError: [],
+                didReceive: [],
+                didRegister: [],
+                didRegisterForRemoteNotificationsWithDeviceToken: []
+            },
+            userNotificationCenter: {
+                willPresent: []
+            }
         }
     };
 
@@ -434,24 +442,98 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         }
     }
 
-    const adap = pluginConfig.appDelegateApplicationMethods;
     const methods = {
-        didFinishLaunchingWithOptions: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
-        open: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
-        supportedInterfaceOrientationsFor: 'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
-        didReceiveRemoteNotification: 'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
-        didFailToRegisterForRemoteNotificationsWithError: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
-        didReceive: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
-        didRegister: 'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
-        didRegisterForRemoteNotificationsWithDeviceToken: 'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {'
+        application: {
+            didFinishLaunchingWithOptions: {
+                func: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
+                begin: `
+        let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")! + " ultrasonic-native,webkit," + (Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String) + ",v" + (Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String)
+        UserDefaults.standard.register(defaults: ["UserAgent": userAgent])
+
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let vc = UIViewController()
+        let v = RCTRootView(
+            bundleURL: bundleUrl,
+            moduleName: moduleName,
+            initialProperties: nil,
+            launchOptions: launchOptions)
+        vc.view = v
+        vc.view.backgroundColor = UIColor.white
+        v?.frame = vc.view.bounds
+        self.window?.rootViewController = vc
+        self.window?.makeKeyAndVisible()
+        UNUserNotificationCenter.current().delegate = self
+                `,
+                render: v => `${v}`,
+                end: 'return true',
+
+            },
+            open: {
+                func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
+                begin: 'var handled = false',
+                render: v => `if(!handled) { handled = ${v} }`,
+                end: 'return handled',
+
+            },
+            supportedInterfaceOrientationsFor: {
+                func: 'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
+                begin: null,
+                render: v => `return ${v}`,
+                end: null,
+
+            },
+            didReceiveRemoteNotification: {
+                func: 'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didFailToRegisterForRemoteNotificationsWithError: {
+                func: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didReceive: {
+                func: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didRegister: {
+                func: 'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didRegisterForRemoteNotificationsWithDeviceToken: {
+                func: 'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            }
+        },
+        userNotificationCenter: {
+            willPresent: {
+                func: 'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null
+            }
+        }
     };
 
-    const constructMethod = (adap, methods, key, begin, returnMethod, end) => {
+    const constructMethod = (lines, func, begin, returnMethod, end) => {
         let output = '';
-        if (adap[key].length) {
-            output += `\n${methods[key]}\n`;
+        if (lines.length) {
+            output += `\n${func}\n`;
             if (begin) output += `   ${begin}\n`;
-            adap[key].forEach((v) => {
+            lines.forEach((v) => {
                 output += `    ${returnMethod(v)}\n`;
             });
             if (end) output += `   ${end}\n`;
@@ -460,14 +542,15 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         return output;
     };
 
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didFinishLaunchingWithOptions', null, v => `${v}`, null);
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'open', 'var handled = false', v => `if(!handled) handled = ${v}`, 'return handled');
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'supportedInterfaceOrientationsFor', null, v => `return ${v}`, null);
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didReceiveRemoteNotification', null, v => `${v}`, null);
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didFailToRegisterForRemoteNotificationsWithError', null, v => `${v}`, null);
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didReceive', null, v => `${v}`, null);
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didRegister', null, v => `${v}`, null);
-    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didRegisterForRemoteNotificationsWithDeviceToken', null, v => `${v}`, null);
+
+    // pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didFinishLaunchingWithOptions', null, v => `${v}`, null);
+    for (const key in methods) {
+        const method = methods[key];
+        for (const key2 in method) {
+            const f = method[key2];
+            pluginConfig.pluginAppDelegateMethods += constructMethod(pluginConfig.appDelegateMethods[key][key2], f.func, f.begin, f.render, f.end);
+        }
+    }
 
     writeCleanFile(
         path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
@@ -538,20 +621,23 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                     if (pluginPlat) {
                         if (plugin['no-active'] !== true) {
                             const isNpm = plugin['no-npm'] !== true;
-                            if (isNpm) {
-                                const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
-                                pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
-                            } else if (pluginPlat.git) {
-                                const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
-                                pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
-                            } else if (pluginPlat.version) {
-                                pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
-                            } else {
-                                pluginInject += `  pod '${pluginPlat.podName}'\n`;
+                            if (pluginPlat.podName) {
+                                if (isNpm) {
+                                    const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+                                    pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
+                                } else if (pluginPlat.git) {
+                                    const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+                                    pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
+                                } else if (pluginPlat.version) {
+                                    pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
+                                } else {
+                                    pluginInject += `  pod '${pluginPlat.podName}'\n`;
+                                }
                             }
+
                             if (pluginPlat.reactSubSpecs) {
                                 pluginPlat.reactSubSpecs.forEach((v) => {
-                                    if (pluginSubspecs.includes(`'${v}'`)) {
+                                    if (!pluginSubspecs.includes(`'${v}'`)) {
                                         pluginSubspecs += `  '${v}',\n`;
                                     }
                                 });
@@ -567,9 +653,9 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
     if (reactCore) {
-        if (reactCore.ios.subSpecs) {
-            reactCore.ios.subSpecs.forEach((v) => {
-                if (pluginSubspecs.includes(`'${v}'`)) {
+        if (reactCore.ios.reactSubSpecs) {
+            reactCore.ios.reactSubSpecs.forEach((v) => {
+                if (!pluginSubspecs.includes(`'${v}'`)) {
                     pluginSubspecs += `  '${v}',\n`;
                 }
             });
