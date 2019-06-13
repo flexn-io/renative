@@ -132,7 +132,7 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 
                 c.files.projectConfig.platformTemplatesFolders[v] = `./${ptfn}`;
 
-                writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig));
+                writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig);
             });
             logSuccess(
                 `${chalk.white(opts.selectedOptions.join(','))} platform templates are located in ${chalk.white(
@@ -165,7 +165,7 @@ const _runConnectPlatforms = c => new Promise((resolve) => {
 
                 c.files.projectConfig.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
 
-                writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig));
+                writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig);
             });
             logSuccess(
                 `${chalk.white(opts.selectedOptions.join(','))} now using ReNative platformTemplates located in ${chalk.white(c.paths.rnvPlatformTemplatesFolder)} now!`
