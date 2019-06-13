@@ -1,4 +1,26 @@
 {
+  "reactCore": {
+    "ios": {
+      "subSpecs": [
+          "Core",
+          "RCTImage",
+          "RCTNetwork",
+          "RCTText",
+          "RCTWebSocket",
+          "DevSupport",
+          "CxxBridge",
+          "RCTAnimation",
+          "RCTLinkingIOS",
+          "RCTGeolocation",
+          "RCTVibration",
+          "PrivateDatabase",
+          "RCTActionSheet",
+          "RCTSettings",
+          "RCTPushNotification",
+          "RCTCameraRoll"
+      ]
+    }
+  },
     "plugins": {
         "renative": {
             "version": "0.23.0-alpha.18",
@@ -567,12 +589,36 @@
             "no-npm": true,
             "ios": {
                 "podName": "GoogleMaps",
+                "appDelegateImports": ["GoogleMaps"],
                 "version": "2.5.0"
             },
             "tvos": {
                 "podName": "GoogleMaps",
+                "appDelegateImports": ["GoogleMaps"],
                 "version": "2.5.0"
             }
+        },
+        "crashlytics": {
+          "no-npm": true,
+          "ios": {
+              "podName": "Crashlytics",
+              "appDelegateImports": ["Crashlytics"],
+              "version": "3.10.5"
+          }
+        },
+        "fabric": {
+          "no-npm": true,
+          "ios": {
+              "podName": "Fabric",
+              "appDelegateImports": ["Fabric"],
+              "version": "1.7.13"
+          }
+        },
+        "firebase-core": {
+          "no-npm": true,
+          "ios": {
+              "podName": "Firebase/Core"
+          }
         },
         "lottie-react-native": {
             "version": "2.6.1",

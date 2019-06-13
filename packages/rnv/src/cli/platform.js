@@ -12,10 +12,9 @@ import {
     askQuestion,
     finishQuestion,
     generateOptions,
-    getProjectPlatforms,
-    writeObjectSync
+    getProjectPlatforms
 } from '../common';
-import { cleanFolder, copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
 import { PLATFORMS } from '../constants';
 

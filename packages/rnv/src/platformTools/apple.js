@@ -490,10 +490,23 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                                 pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
                             } else if (pluginPlat.version) {
                                 pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
+                            } else {
+                                pluginInject += `  pod '${pluginPlat.podName}'\n`;
                             }
                         }
                     }
                 }
+            });
+        }
+    }
+
+    // SUBSPECS
+    let pluginSubspecs = '';
+    const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
+    if (reactCore) {
+        if (reactCore.ios.subSpecs) {
+            reactCore.ios.subSpecs.forEach((v) => {
+                pluginSubspecs += `  '${v}',\n`;
             });
         }
     }
@@ -515,6 +528,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
+        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs }
     ]);
 
     // ORIENTATIONS
