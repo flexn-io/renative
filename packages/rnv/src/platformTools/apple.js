@@ -358,8 +358,17 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
             }
         });
     }
-    if (plugin.appDelegateMethods instanceof Array) {
-        pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    // if (plugin.appDelegateMethods instanceof Array) {
+    //     pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    // }
+    if (plugin.appDelegateApplicationMethods) {
+        for (const key in plugin.appDelegateApplicationMethods) {
+            const plugArr = pluginConfig.appDelegateApplicationMethods[key];
+            const plugVal = plugin.appDelegateApplicationMethods[key];
+            if (!plugArr.includes(plugVal)) {
+                plugArr.push(plugVal);
+            }
+        }
     }
 };
 
@@ -383,6 +392,16 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const pluginConfig = {
         pluginAppDelegateImports,
         pluginAppDelegateMethods,
+        appDelegateApplicationMethods: {
+            didFinishLaunchingWithOptions: [],
+            open: [],
+            supportedInterfaceOrientationsFor: [],
+            didReceiveRemoteNotification: [],
+            didFailToRegisterForRemoteNotificationsWithError: [],
+            didReceive: [],
+            didRegister: [],
+            didRegisterForRemoteNotificationsWithDeviceToken: []
+        }
     };
 
     // PLUGINS
@@ -414,6 +433,41 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             logWarning(`Your choosen color in config.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
         }
     }
+
+    const adap = pluginConfig.appDelegateApplicationMethods;
+    const methods = {
+        didFinishLaunchingWithOptions: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
+        open: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
+        supportedInterfaceOrientationsFor: 'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
+        didReceiveRemoteNotification: 'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
+        didFailToRegisterForRemoteNotificationsWithError: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
+        didReceive: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
+        didRegister: 'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
+        didRegisterForRemoteNotificationsWithDeviceToken: 'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {'
+    };
+
+    const constructMethod = (adap, methods, key, begin, returnMethod, end) => {
+        let output = '';
+        if (adap[key].length) {
+            output += `\n${methods[key]}\n`;
+            if (begin) output += `   ${begin}\n`;
+            adap[key].forEach((v) => {
+                output += `    ${returnMethod(v)}\n`;
+            });
+            if (end) output += `   ${end}\n`;
+            output += '}\n';
+        }
+        return output;
+    };
+
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didFinishLaunchingWithOptions', null, v => `${v}`, null);
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'open', 'var handled = false', v => `if(!handled) handled = ${v}`, 'return handled');
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'supportedInterfaceOrientationsFor', null, v => `return ${v}`, null);
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didReceiveRemoteNotification', null, v => `${v}`, null);
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didFailToRegisterForRemoteNotificationsWithError', null, v => `${v}`, null);
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didReceive', null, v => `${v}`, null);
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didRegister', null, v => `${v}`, null);
+    pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didRegisterForRemoteNotificationsWithDeviceToken', null, v => `${v}`, null);
 
     writeCleanFile(
         path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
@@ -469,6 +523,8 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
 
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
+    let pluginSubspecs = '';
+
     let pluginInject = '';
     // PLUGINS
     if (c.files.appConfigFile && c.files.pluginConfig) {
@@ -493,6 +549,13 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                             } else {
                                 pluginInject += `  pod '${pluginPlat.podName}'\n`;
                             }
+                            if (pluginPlat.reactSubSpecs) {
+                                pluginPlat.reactSubSpecs.forEach((v) => {
+                                    if (pluginSubspecs.includes(`'${v}'`)) {
+                                        pluginSubspecs += `  '${v}',\n`;
+                                    }
+                                });
+                            }
                         }
                     }
                 }
@@ -501,12 +564,14 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     }
 
     // SUBSPECS
-    let pluginSubspecs = '';
+
     const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
     if (reactCore) {
         if (reactCore.ios.subSpecs) {
             reactCore.ios.subSpecs.forEach((v) => {
-                pluginSubspecs += `  '${v}',\n`;
+                if (pluginSubspecs.includes(`'${v}'`)) {
+                    pluginSubspecs += `  '${v}',\n`;
+                }
             });
         }
     }

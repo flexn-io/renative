@@ -16,7 +16,6 @@
           "PrivateDatabase",
           "RCTActionSheet",
           "RCTSettings",
-          "RCTPushNotification",
           "RCTCameraRoll"
       ]
     }
@@ -32,6 +31,43 @@
                     }
                 }
             }
+        },
+        "RCTPushNotification": {
+          "no-npm": true,
+          "ios": {
+            "reactSubSpecs": [
+              "RCTPushNotification"
+            ],
+            "appDelegateApplicationMethods": {
+              "didReceiveRemoteNotification": [
+                "RCTPushNotificationManager.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)"
+              ],
+              "didFailToRegisterForRemoteNotificationsWithError": [
+                "RCTPushNotificationManager.didFailToRegisterForRemoteNotificationsWithError(error)"
+              ],
+              "didReceive": [
+                "RCTPushNotificationManager.didReceive(notification)"
+              ],
+              "didRegister": [
+                "RCTPushNotificationManager.didRegister(notificationSettings)"
+              ],
+              "didRegisterForRemoteNotificationsWithDeviceToken": [
+                "RCTPushNotificationManager.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)"
+              ]
+            }
+          }
+        },
+        "RCTLinkingManager": {
+          "ios": {
+            "reactSubSpecs": [
+              "RCTLinkingManager"
+            ],
+            "appDelegateApplicationMethods": {
+              "open": [
+                "RCTLinkingManager.application(app, open: url, options: options)"
+              ]
+            }
+          }
         },
         "react-native-gesture-handler": {
             "version": "1.3.0",
@@ -162,10 +198,20 @@
         "react-native-fbsdk": {
             "version": "0.8.0",
             "ios": {
-                "podName": "react-native-fbsdk"
+                "podName": "react-native-fbsdk",
+                "appDelegateImports": ["FBSDKCoreKit"],
+                "appDelegateApplicationMethods": {
+                  "didFinishLaunchingWithOptions": [
+                    "FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)"
+                  ],
+                  "open": [
+                    "FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)"
+                  ]
+                }
             },
             "tvos": {
-                "podName": "react-native-fbsdk"
+                "podName": "react-native-fbsdk",
+                "appDelegateImports": ["FBSDKCoreKit"]
             },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
@@ -522,11 +568,9 @@
             "ios": {
                 "podName": "react-native-orientation-locker",
                 "appDelegateImports": ["react_native_orientation_locker"],
-                "appDelegateMethods": [
-                    "func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {",
-                    "  return Orientation.getOrientation();",
-                    "}"
-                ]
+                "appDelegateApplicationMethods": {
+                  "supportedInterfaceOrientationsFor": ["return Orientation.getOrientation();"]
+                }
             },
             "android": {
                 "package": "org.wonday.orientation.OrientationPackage",
@@ -587,10 +631,14 @@
         },
         "google-maps": {
             "no-npm": true,
+            "MAPS_API_KEY": "define_your_own_api_key",
             "ios": {
                 "podName": "GoogleMaps",
                 "appDelegateImports": ["GoogleMaps"],
-                "version": "2.5.0"
+                "version": "2.5.0",
+                "appDelegateApplicationMethods": {
+                  "didFinishLaunchingWithOptions": ["GMSServices.provideAPIKey(\"{{MAPS_API_KEY}}\")"]
+                }
             },
             "tvos": {
                 "podName": "GoogleMaps",
@@ -611,13 +659,19 @@
           "ios": {
               "podName": "Fabric",
               "appDelegateImports": ["Fabric"],
-              "version": "1.7.13"
+              "version": "1.7.13",
+              "appDelegateApplicationMethods": {
+                "didFinishLaunchingWithOptions": ["Fabric.with([Crashlytics.self])"]
+              }
           }
         },
         "firebase-core": {
           "no-npm": true,
           "ios": {
-              "podName": "Firebase/Core"
+              "podName": "Firebase/Core",
+              "appDelegateApplicationMethods": {
+                "didFinishLaunchingWithOptions": ["FirebaseApp.configure()"]
+              }
           }
         },
         "lottie-react-native": {

@@ -426,6 +426,37 @@ You can also customise default plugin configuration:
 }
 ```
 
+Plugin Spec:
+
+```json
+{
+  "pugin-name": {
+      "version": "",
+      "ios": {
+          "podName": "",
+          "path": "",
+          "appDelegateApplicationMethods": {
+            "didFinishLaunchingWithOptions": [],
+            "open": [],
+            "supportedInterfaceOrientationsFor": [],
+            "didReceiveRemoteNotification": [],
+            "didFailToRegisterForRemoteNotificationsWithError": [],
+            "didReceive": [],
+            "didRegister": [],
+            "didRegisterForRemoteNotificationsWithDeviceToken": [],
+          }
+      },
+      "android": {
+          "package": "",
+          "path": ""
+      },
+      "webpack": {
+
+      }
+  }
+}
+```
+
 
 ---
 
