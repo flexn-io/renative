@@ -217,7 +217,7 @@ const _runAppWithPlatform = async (c) => {
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, logError)) {
             let sdkInstall;
-            if (!c.program.yes) {
+            if (!c.program.ci) {
                 const response = await inquirer.prompt([{
                     name: 'sdkInstall',
                     type: 'confirm',
@@ -227,7 +227,7 @@ const _runAppWithPlatform = async (c) => {
                 sdkInstall = response.sdkInstall;
             }
 
-            if (c.program.yes || sdkInstall) {
+            if (c.program.ci || sdkInstall) {
                 const setupInstance = PlatformSetup(c);
                 const newPath = await setupInstance.installAndroidSdk();
                 // @todo find a more elegant way to update this
