@@ -161,10 +161,20 @@ const updateObjectSync = (filePath, updateObj) => {
     return output;
 };
 
+const updateConfigFile = async (update, globalConfigPath) => {
+    const configContents = JSON.parse(fs.readFileSync(globalConfigPath));
+
+    if (update.androidSdk) {
+        configContents.sdks.ANDROID_SDK = update.androidSdk;
+    }
+
+    fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
+};
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs,
-    writeObjectSync, readObjectSync, updateObjectSync
+    writeObjectSync, readObjectSync, updateObjectSync, updateConfigFile
 };
 
 export default {
@@ -178,5 +188,6 @@ export default {
     cleanFolder,
     writeObjectSync,
     readObjectSync,
-    updateObjectSync
+    updateObjectSync,
+    updateConfigFile
 };

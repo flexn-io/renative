@@ -980,7 +980,7 @@ const getAppVersionCode = (c, platform) => {
 
 const logErrorPlatform = (platform, resolve) => {
     logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(_currentJob)}`);
-    resolve();
+    resolve && resolve();
 };
 
 const isPlatformActive = (c, platform, resolve) => {
