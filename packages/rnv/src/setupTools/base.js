@@ -64,8 +64,8 @@ class BasePlatformSetup {
     async installAndroidSdk() {
         this.checkPrereqs();
         await this.installPrereqs();
-        // await this.downloadAndroidSdk();
-        // await this.unzipAndroidSdk();
+        await this.downloadAndroidSdk();
+        await this.unzipAndroidSdk();
         await this.installSdksAndEmulator();
         await updateConfigFile({ androidSdk: this.androidSdkLocation }, this.globalConfigPath);
         return this.androidSdkLocation;
