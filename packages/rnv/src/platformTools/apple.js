@@ -26,7 +26,7 @@ import {
     logSuccess,
 } from '../common';
 import { IOS, TVOS } from '../constants';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin } from '../pluginTools';
 
 const xcode = require('xcode');
@@ -605,6 +605,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+    const entitlementsPath = path.join(appFolder, `${appFolderName}/RNVApp.entitlements`);
 
     let pluginSubspecs = '';
 
@@ -742,6 +743,31 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         }
     }
 
+    // PLUGIN ENTITLEMENTS
+    let pluginEntitlements = '';
+    const appConfigEntitlement = getConfigProp(c, platform, 'entitlements');
+    const pluginsEntitlementsObj = mergeObjects(
+        readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json')),
+        appConfigEntitlement
+    );
+
+    console.log('LKDDLKDHDJD', pluginsEntitlementsObj);
+    for (const key in pluginsEntitlementsObj) {
+        pluginEntitlements += `  <key>${key}</key>\n`;
+        const val = pluginsEntitlementsObj[key];
+        if (Array.isArray(val)) {
+            pluginEntitlements += '  <array>\n';
+            val.forEach((v) => {
+                pluginEntitlements += `  <string>${v}</string>\n`;
+            });
+            pluginEntitlements += '  </array>\n';
+        } else {
+            pluginEntitlements += `  <string>${val}</string>\n`;
+        }
+    }
+
+    console.log('DLKDJD', pluginEntitlements);
+
     // PROJECT
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
     const xcodeProj = xcode.project(projectPath);
@@ -791,6 +817,12 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             { pattern: '{{PLUGIN_URL_SCHEMES}}', override: pluginUrlSchemes },
             { pattern: '{{PLUGIN_PLIST_EXTRA}}', override: pluginPlistExtra },
         ]);
+
+        writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/RNVApp.entitlements`), entitlementsPath, [
+            { pattern: '{{PLUGIN_ENTITLEMENTS}}', override: pluginEntitlements }
+        ]);
+
+        console.log('SUUUUUSSUSUSU');
 
         resolve();
     });

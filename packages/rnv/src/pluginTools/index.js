@@ -1,10 +1,4 @@
-import merge from 'deepmerge';
-
-const _arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
-    const jointArray = destinationArray.concat(sourceArray);
-    const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
-    return uniqueArray;
-};
+import { mergeObjects } from '../systemTools/fileutils';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
@@ -18,7 +12,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     }
 
     if (origPlugin) {
-        return merge(origPlugin, plugin, { arrayMerge: _arrayMerge });
+        return mergeObjects(origPlugin, plugin);
     }
 
     return plugin;

@@ -3,6 +3,7 @@ import path from 'path';
 import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
+import merge from 'deepmerge';
 import { logDebug, logError } from '../common';
 
 const copyFileSync = (source, target) => {
@@ -151,7 +152,6 @@ const readObjectSync = (filePath) => {
 };
 
 const updateObjectSync = (filePath, updateObj) => {
-    const merge = require('deepmerge');
     let output;
     const obj = readObjectSync(filePath);
     if (obj) {
@@ -161,10 +161,18 @@ const updateObjectSync = (filePath, updateObj) => {
     return output;
 };
 
+const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
+    const jointArray = destinationArray.concat(sourceArray);
+    const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
+    return uniqueArray;
+};
+
+const mergeObjects = (obj1, obj2) => merge(obj1, obj2, { arrayMerge });
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs,
-    writeObjectSync, readObjectSync, updateObjectSync
+    writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects
 };
 
 export default {
@@ -178,5 +186,7 @@ export default {
     cleanFolder,
     writeObjectSync,
     readObjectSync,
-    updateObjectSync
+    updateObjectSync,
+    arrayMerge,
+    mergeObjects
 };
