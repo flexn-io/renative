@@ -1,0 +1,58 @@
+{
+    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+    "CFBundleDisplayName": "{{PLUGIN_APPTITLE}}",
+    "CFBundleExecutable": "$(EXECUTABLE_NAME)",
+    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+    "CFBundleInfoDictionaryVersion": "6.0",
+    "CFBundleName": "$(PRODUCT_NAME)",
+    "CFBundlePackageType": "APPL",
+    "CFBundleShortVersionString": "{{PLUGIN_VERSION_STRING}}",
+    "CFBundleURLTypes": [{
+            "CFBundleTypeRole": "Editor",
+            "CFBundleURLSchemes": [
+                "fb196409484257769"
+            ]
+        },
+        {
+            "CFBundleTypeRole": "Editor",
+            "CFBundleURLName": "scannerapp",
+            "CFBundleURLSchemes": [
+                "appgyverrn"
+            ]
+        }
+    ],
+    "CFBundleVersion": "1700",
+    "Fabric": {
+        "APIKey": "7bf74e97fdbab35d1e294c680d76f71c976413ee",
+        "Kits": [{
+            "KitInfo": {},
+            "KitName": "Crashlytics"
+        }]
+    },
+    "FacebookAppID": "196409484257769",
+    "FacebookDisplayName": "Skunkworks Client",
+    "LSApplicationQueriesSchemes": [
+        "fbauth2",
+        "fb-messenger-api",
+        "fb-messenger-share-api"
+    ],
+    "LSRequiresIPhoneOS": true,
+    "NSAppTransportSecurity": {
+        "NSAllowsArbitraryLoads": true
+    },
+    "UIAppFonts": [],
+    "UIBackgroundModes": [
+        "remote-notification"
+    ],
+    "UIRequiredDeviceCapabilities": [
+        "armv7"
+    ],
+    "UIRequiresFullScreen": true,
+    "UISupportedInterfaceOrientations": [
+        "UIInterfaceOrientationPortrait"
+    ],
+    "UISupportedInterfaceOrientations~ipad": [
+        "UIInterfaceOrientationPortrait"
+    ],
+    "UIViewControllerBasedStatusBarAppearance": false
+}
