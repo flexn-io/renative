@@ -7,9 +7,32 @@
     "CFBundleName": "$(PRODUCT_NAME)",
     "CFBundlePackageType": "APPL",
     "CFBundleShortVersionString": "{{PLUGIN_VERSION_STRING}}",
-    "CFBundleURLTypes": [],
+    "CFBundleURLTypes": [
+        {
+            "CFBundleTypeRole": "Editor",
+            "CFBundleURLSchemes": [
+                "{{FB_URL_SCHEMES}}"
+            ]
+        },
+        {
+            "CFBundleTypeRole": "Editor",
+            "CFBundleURLName": "scannerapp",
+            "CFBundleURLSchemes": [
+                "appgyverrn"
+            ]
+        }
+    ],
     "CFBundleVersion": "1700",
-    "LSApplicationQueriesSchemes": [],
+    "Fabric": {
+        "APIKey": "{{FABRIC_KEY}}",
+        "Kits": [{
+            "KitInfo": {},
+            "KitName": "Crashlytics"
+        }]
+    },
+    "FacebookAppID": "{{FB_KEY}}",
+    "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
+    "LSApplicationQueriesSchemes": ["{{FB_URL_SCHEMES}}"],
     "LSRequiresIPhoneOS": true,
     "NSAppTransportSecurity": {
         "NSAllowsArbitraryLoads": true

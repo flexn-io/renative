@@ -5,6 +5,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import child_process from 'child_process';
 import { executeAsync } from '../systemTools/exec';
+import { isObject } from '../systemTools/objectUtils';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -28,6 +29,7 @@ import {
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin } from '../pluginTools';
+import { saveObjToPlistSync } from './apple/plistParser';
 
 const xcode = require('xcode');
 const readline = require('readline');
@@ -596,20 +598,69 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
 
     const appFolder = getAppFolder(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
     const tId = getConfigProp(c, platform, 'teamID');
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
 
+
+    // ASSETS
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
-    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
-    const entitlementsPath = path.join(appFolder, `${appFolderName}/RNVApp.entitlements`);
 
+    // PROJECT
+    const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
+    const xcodeProj = xcode.project(projectPath);
+    const embeddedFonts = [];
+    xcodeProj.parse(() => {
+        const appId = getAppId(c, platform);
+        if (tId) {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
+        } else {
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
+        }
+        xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
+
+        if (c.files.appConfigFile) {
+            if (fs.existsSync(c.paths.fontsConfigFolder)) {
+                fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+                    if (font.includes('.ttf') || font.includes('.otf')) {
+                        const key = font.split('.')[0];
+                        const { includedFonts } = c.files.appConfigFile.common;
+                        if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
+                            const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                            if (fs.existsSync(fontSource)) {
+                                const fontFolder = path.join(appFolder, 'fonts');
+                                mkdirSync(fontFolder);
+                                const fontDest = path.join(fontFolder, font);
+                                copyFileSync(fontSource, fontDest);
+                                xcodeProj.addResourceFile(fontSource);
+                                embeddedFonts.push(font);
+                            } else {
+                                logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        fs.writeFileSync(projectPath, xcodeProj.writeSync());
+
+        _parsePodFile(c, platform);
+        _parseEntitlements(c, platform);
+        _parsePlist(c, platform, embeddedFonts);
+
+        resolve();
+    });
+});
+
+const _parsePodFile = (c, platform) => {
+    logTask(`_parsePodFile:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
     let pluginSubspecs = '';
-
     let pluginInject = '';
+
     // PLUGINS
     if (c.files.appConfigFile && c.files.pluginConfig) {
         const { includedPlugins } = c.files.appConfigFile.common;
@@ -651,7 +702,6 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     }
 
     // SUBSPECS
-
     const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
     if (reactCore) {
         if (reactCore.ios.reactSubSpecs) {
@@ -663,170 +713,83 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         }
     }
 
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
+        { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
+        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs }
+    ]);
+};
+
+const _parseEntitlements = (c, platform) => {
+    logTask(`_parseEntitlements:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = _getAppFolderName(c, platform);
+    const entitlementsPath = path.join(appFolder, `${appFolderName}/RNVApp.entitlements`);
+    // PLUGIN ENTITLEMENTS
+    const pluginsEntitlementsObj = mergeObjects(
+        readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json')),
+        getConfigProp(c, platform, 'entitlements')
+    );
+    saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
+};
+
+const _parsePlist = (c, platform, embeddedFonts) => {
+    logTask(`_parsePlist:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = _getAppFolderName(c, platform);
+    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
+    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+
+    // PLIST
+    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/info.plist.json'));
+    plistObj.CFBundleDisplayName = getAppTitle(c, platform);
+    plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
+    // FONTS
+    if (embeddedFonts.length) {
+        plistObj.UIAppFonts = embeddedFonts;
+    }
     // PERMISSIONS
-    let pluginPermissions = '';
+    const pluginPermissions = '';
     if (permissions) {
         permissions.forEach((v) => {
             if (c.files.permissionsConfig) {
                 const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
                 const pc = c.files.permissionsConfig.permissions[plat];
                 if (pc[v]) {
-                    pluginPermissions += `  <key>${pc[v].key}</key>\n  <string>${pc[v].desc}</string>\n`;
+                    // pluginPermissions += `  <key>${pc[v].key}</key>\n  <string>${pc[v].desc}</string>\n`;
+                    plistObj[pc[v].key] = pc[v].desc;
                 }
             }
         });
     }
-    pluginPermissions = pluginPermissions.substring(0, pluginPermissions.length - 1);
-
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
-        { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs }
-    ]);
-
-    // ORIENTATIONS
-    let pluginOrientations = '';
-    const pluginOrientationPhoneKey = '<key>UISupportedInterfaceOrientations</key>';
-    const pluginOrientationTabKey = '<key>UISupportedInterfaceOrientations~ipad</key>';
-    let pluginOrientationPhone = `${pluginOrientationPhoneKey}
-    <array>
-      <string>UIInterfaceOrientationPortrait</string>
-    </array>`;
-    let pluginOrientationTab = `${pluginOrientationTabKey}
-    <array>
-      <string>UIInterfaceOrientationPortrait</string>
-    </array>`;
-
+    // ORIENATATIONS
     if (orientationSupport) {
         if (orientationSupport.phone) {
-            pluginOrientationPhone = `${pluginOrientationPhoneKey}\n    <array>\n`;
-            orientationSupport.phone.forEach((v) => {
-                pluginOrientationPhone += `<string>${v}</string>\n`;
-            });
-            pluginOrientationPhone += '    </array>';
+            plistObj.UISupportedInterfaceOrientations = orientationSupport.phone;
+        } else {
+            plistObj.UISupportedInterfaceOrientations = ['UIInterfaceOrientationPortrait'];
         }
         if (orientationSupport.tab) {
-            pluginOrientationTab = `${pluginOrientationTabKey}\n    <array>\n`;
-            orientationSupport.tab.forEach((v) => {
-                pluginOrientationTab += `<string>${v}</string>\n`;
-            });
-            pluginOrientationTab += '    </array>';
+            plistObj['UISupportedInterfaceOrientations~ipad'] = orientationSupport.tab;
+        } else {
+            plistObj['UISupportedInterfaceOrientations~ipad'] = ['UIInterfaceOrientationPortrait'];
         }
     }
-    pluginOrientations = `${pluginOrientationPhone}\n${pluginOrientationTab}`;
-
     // URL_SCHEMES
-    let pluginUrlSchemes = '';
-
     if (urlScheme) {
-        pluginUrlSchemes = `<key>CFBundleTypeRole</key>
-      <string>Editor</string>
-      <key>CFBundleURLName</key>
-      <string>${urlScheme}</string>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>${urlScheme}</string>
-      </array>`;
+        plistObj.CFBundleURLTypes.push({
+            CFBundleTypeRole: 'Editor',
+            CFBundleURLName: urlScheme,
+            CFBundleURLSchemes: [urlScheme]
+        });
     }
-
     // PLIST EXTRAS
-    let pluginPlistExtra = '';
-
     if (plistExtra) {
-        for (const key in plistExtra) {
-            let value;
-            if (typeof plistExtra[key] === 'boolean') {
-                value = `<${plistExtra[key]} />`;
-            } else {
-                value = `<string>${plistExtra[key]}</string>`;
-            }
-            pluginPlistExtra += `<key>${key}</key>\n${value}\n`;
-        }
+        plistObj = mergeObjects(plistObj, plistExtra);
     }
-
-    // PLUGIN ENTITLEMENTS
-    let pluginEntitlements = '';
-    const appConfigEntitlement = getConfigProp(c, platform, 'entitlements');
-    const pluginsEntitlementsObj = mergeObjects(
-        readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json')),
-        appConfigEntitlement
-    );
-
-    console.log('LKDDLKDHDJD', pluginsEntitlementsObj);
-    for (const key in pluginsEntitlementsObj) {
-        pluginEntitlements += `  <key>${key}</key>\n`;
-        const val = pluginsEntitlementsObj[key];
-        if (Array.isArray(val)) {
-            pluginEntitlements += '  <array>\n';
-            val.forEach((v) => {
-                pluginEntitlements += `  <string>${v}</string>\n`;
-            });
-            pluginEntitlements += '  </array>\n';
-        } else {
-            pluginEntitlements += `  <string>${val}</string>\n`;
-        }
-    }
-
-    console.log('DLKDJD', pluginEntitlements);
-
-    // PROJECT
-    const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
-    const xcodeProj = xcode.project(projectPath);
-    xcodeProj.parse(() => {
-        const appId = getAppId(c, platform);
-        if (tId) {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
-        } else {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
-        }
-
-        xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
-
-        let pluginFonts = '';
-        if (c.files.appConfigFile) {
-            if (fs.existsSync(c.paths.fontsConfigFolder)) {
-                fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
-                    if (font.includes('.ttf') || font.includes('.otf')) {
-                        const key = font.split('.')[0];
-                        const { includedFonts } = c.files.appConfigFile.common;
-                        if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                            const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
-                            if (fs.existsSync(fontSource)) {
-                                const fontFolder = path.join(appFolder, 'fonts');
-                                mkdirSync(fontFolder);
-                                const fontDest = path.join(fontFolder, font);
-                                copyFileSync(fontSource, fontDest);
-                                xcodeProj.addResourceFile(fontSource);
-                                pluginFonts += `  <string>${font}</string>\n`;
-                            } else {
-                                logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                            }
-                        }
-                    }
-                });
-            }
-        }
-
-        fs.writeFileSync(projectPath, xcodeProj.writeSync());
-
-        writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/Info.plist`), plistPath, [
-            { pattern: '{{PLUGIN_FONTS}}', override: pluginFonts },
-            { pattern: '{{PLUGIN_PERMISSIONS}}', override: pluginPermissions },
-            { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
-            { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
-            { pattern: '{{PLUGIN_ORIENTATIONS}}', override: pluginOrientations },
-            { pattern: '{{PLUGIN_URL_SCHEMES}}', override: pluginUrlSchemes },
-            { pattern: '{{PLUGIN_PLIST_EXTRA}}', override: pluginPlistExtra },
-        ]);
-
-        writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/RNVApp.entitlements`), entitlementsPath, [
-            { pattern: '{{PLUGIN_ENTITLEMENTS}}', override: pluginEntitlements }
-        ]);
-
-        console.log('SUUUUUSSUSUSU');
-
-        resolve();
-    });
-});
+    saveObjToPlistSync(plistPath, plistObj);
+};
 
 const _getAppFolderName = (c, platform) => {
     const projectFolder = getConfigProp(c, platform, 'projectFolder');

@@ -206,6 +206,10 @@
             }
         },
         "react-native-fbsdk": {
+            "FB_KEY": "",
+            "FB_DISPLAY_NAME": "",
+            "FB_URL_SCHEMES": [],
+            "FB_QUERY_SCHEMES": [],
             "version": "0.8.0",
             "ios": {
                 "podName": "react-native-fbsdk",
@@ -219,6 +223,11 @@
                       "FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)"
                     ]
                   }
+                },
+                "plist": {
+                  "FacebookAppID": "{{FB_KEY}}",
+                  "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
+                  "LSApplicationQueriesSchemes": "{{FB_URL_SCHEMES}}"
                 }
             },
             "tvos": {
@@ -284,7 +293,7 @@
         "react-native-fabric": {
             "version": "",
             "ios": {
-                "podName": "ReactNativeFabric",
+                "podName": "ReactNativeFabric"
             },
             "tvos": {
                 "podName": "ReactNativeFabric"
@@ -671,6 +680,7 @@
           }
         },
         "fabric": {
+          "FABRIC_KEY": "",
           "no-npm": true,
           "ios": {
               "podName": "Fabric",
