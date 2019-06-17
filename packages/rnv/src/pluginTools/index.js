@@ -1,5 +1,5 @@
 import { mergeObjects } from '../systemTools/fileutils';
-import { logTask } from '../common';
+import { logTask, logWarning } from '../common';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
@@ -9,11 +9,14 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
             return origPlugin;
         }
         // NOT RECOGNIZED
+        logWarning(`Plugin ${key} is not recognized RNV plugin`);
         return null;
     }
 
+
     if (origPlugin) {
-        return mergeObjects(origPlugin, plugin);
+        const mergedPlugin = mergeObjects(origPlugin, plugin);
+        return mergedPlugin;
     }
 
     return plugin;
@@ -21,6 +24,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
 const parsePlugins = (c, pluginCallback) => {
     logTask('parsePlugins');
+
     if (c.files.appConfigFile && c.files.pluginConfig) {
         const { includedPlugins } = c.files.appConfigFile.common;
         if (includedPlugins) {
@@ -28,10 +32,12 @@ const parsePlugins = (c, pluginCallback) => {
             Object.keys(plugins).forEach((key) => {
                 if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
                     const plugin = getMergedPlugin(c, key, plugins);
-                    const pluginPlat = plugin[c.platform];
-                    if (pluginPlat) {
-                        if (plugin['no-active'] !== true) {
-                            pluginCallback(plugin, pluginPlat, key);
+                    if (plugin) {
+                        const pluginPlat = plugin[c.platform];
+                        if (pluginPlat) {
+                            if (plugin['no-active'] !== true) {
+                                if (pluginCallback) pluginCallback(plugin, pluginPlat, key);
+                            }
                         }
                     }
                 }
