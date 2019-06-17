@@ -8,7 +8,7 @@ import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
-import { getMergedPlugin } from './pluginTools';
+import { getMergedPlugin, parsePlugins } from './pluginTools';
 import {
     IOS,
     ANDROID,
@@ -1054,15 +1054,24 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     const destPath = path.join(getAppFolder(c, platform));
     const sourcePath = _getBuildsFolder(c, platform);
     copyFolderContentsRecursiveSync(sourcePath, destPath);
+
+    // PLUGIN FOLDER MERGES
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        const pDestPath = path.join(getAppFolder(c, platform));
+        const pSourcePath = _getBuildsFolder(c, platform, key);
+        copyFolderContentsRecursiveSync(pSourcePath, pDestPath);
+    });
+
     resolve();
 });
 
 const _getScheme = c => c.program.scheme || 'debug';
 
-const _getBuildsFolder = (c, platform) => {
-    const p = path.join(c.paths.appConfigFolder, `builds/${platform}@${_getScheme(c)}`);
+const _getBuildsFolder = (c, platform, pluginKey) => {
+    const pp = pluginKey ? `plugins/${pluginKey}/` : '';
+    const p = path.join(c.paths.appConfigFolder, `${pp}builds/${platform}@${_getScheme(c)}`);
     if (fs.existsSync(p)) return p;
-    return path.join(c.paths.appConfigFolder, `builds/${platform}`);
+    return path.join(c.paths.appConfigFolder, `${pp}builds/${platform}`);
 };
 
 const getIP = () => {

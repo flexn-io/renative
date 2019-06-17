@@ -28,7 +28,7 @@ import {
 } from '../common';
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
-import { getMergedPlugin } from '../pluginTools';
+import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { saveObjToPlistSync } from './apple/plistParser';
 
 const xcode = require('xcode');
@@ -415,23 +415,9 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     };
 
     // PLUGINS
-    if (c.files.appConfigFile && c.files.pluginConfig) {
-        const { includedPlugins } = c.files.appConfigFile.common;
-        if (includedPlugins) {
-            const { plugins } = c.files.pluginConfig;
-            Object.keys(plugins).forEach((key) => {
-                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins);
-                    const pluginPlat = plugin[platform];
-                    if (pluginPlat) {
-                        if (plugin['no-active'] !== true) {
-                            _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
-                        }
-                    }
-                }
-            });
-        }
-    }
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
+    });
 
     // BG COLOR
     let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
@@ -662,44 +648,30 @@ const _parsePodFile = (c, platform) => {
     let pluginInject = '';
 
     // PLUGINS
-    if (c.files.appConfigFile && c.files.pluginConfig) {
-        const { includedPlugins } = c.files.appConfigFile.common;
-        if (includedPlugins) {
-            const { plugins } = c.files.pluginConfig;
-            Object.keys(plugins).forEach((key) => {
-                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins);
-                    const pluginPlat = plugin[platform];
-                    if (pluginPlat) {
-                        if (plugin['no-active'] !== true) {
-                            const isNpm = plugin['no-npm'] !== true;
-                            if (pluginPlat.podName) {
-                                if (isNpm) {
-                                    const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
-                                    pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
-                                } else if (pluginPlat.git) {
-                                    const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
-                                    pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
-                                } else if (pluginPlat.version) {
-                                    pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
-                                } else {
-                                    pluginInject += `  pod '${pluginPlat.podName}'\n`;
-                                }
-                            }
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        const isNpm = plugin['no-npm'] !== true;
+        if (pluginPlat.podName) {
+            if (isNpm) {
+                const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+                pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
+            } else if (pluginPlat.git) {
+                const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+                pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
+            } else if (pluginPlat.version) {
+                pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
+            } else {
+                pluginInject += `  pod '${pluginPlat.podName}'\n`;
+            }
+        }
 
-                            if (pluginPlat.reactSubSpecs) {
-                                pluginPlat.reactSubSpecs.forEach((v) => {
-                                    if (!pluginSubspecs.includes(`'${v}'`)) {
-                                        pluginSubspecs += `  '${v}',\n`;
-                                    }
-                                });
-                            }
-                        }
-                    }
+        if (pluginPlat.reactSubSpecs) {
+            pluginPlat.reactSubSpecs.forEach((v) => {
+                if (!pluginSubspecs.includes(`'${v}'`)) {
+                    pluginSubspecs += `  '${v}',\n`;
                 }
             });
         }
-    }
+    });
 
     // SUBSPECS
     const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
@@ -788,6 +760,12 @@ const _parsePlist = (c, platform, embeddedFonts) => {
     if (plistExtra) {
         plistObj = mergeObjects(plistObj, plistExtra);
     }
+    // PLUGINS
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        if (pluginPlat.plist) {
+            plistObj = mergeObjects(plistObj, pluginPlat.plist);
+        }
+    });
     saveObjToPlistSync(plistPath, plistObj);
 };
 

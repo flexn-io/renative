@@ -227,7 +227,7 @@
                 "plist": {
                   "FacebookAppID": "{{FB_KEY}}",
                   "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
-                  "LSApplicationQueriesSchemes": "{{FB_URL_SCHEMES}}"
+                  "LSApplicationQueriesSchemes": []
                 }
             },
             "tvos": {
