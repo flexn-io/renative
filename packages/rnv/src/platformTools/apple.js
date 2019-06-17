@@ -433,6 +433,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const methods = {
         application: {
             didFinishLaunchingWithOptions: {
+                isRequired: true,
                 func: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
                 begin: `
         let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")! + " ultrasonic-native,webkit," + (Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String) + ",v" + (Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String)
@@ -516,27 +517,25 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         }
     };
 
-    const constructMethod = (lines, func, begin, returnMethod, end) => {
+    const constructMethod = (lines, method) => {
         let output = '';
-        if (lines.length) {
-            output += `\n${func}\n`;
-            if (begin) output += `   ${begin}\n`;
+        if (lines.length || method.isRequired) {
+            output += `\n${method.func}\n`;
+            if (method.begin) output += `   ${method.begin}\n`;
             lines.forEach((v) => {
-                output += `    ${returnMethod(v)}\n`;
+                output += `    ${method.render(v)}\n`;
             });
-            if (end) output += `   ${end}\n`;
+            if (method.end) output += `   ${method.end}\n`;
             output += '}\n';
         }
         return output;
     };
 
-
-    // pluginConfig.pluginAppDelegateMethods += constructMethod(adap, methods, 'didFinishLaunchingWithOptions', null, v => `${v}`, null);
     for (const key in methods) {
         const method = methods[key];
         for (const key2 in method) {
             const f = method[key2];
-            pluginConfig.pluginAppDelegateMethods += constructMethod(pluginConfig.appDelegateMethods[key][key2], f.func, f.begin, f.render, f.end);
+            pluginConfig.pluginAppDelegateMethods += constructMethod(pluginConfig.appDelegateMethods[key][key2], f);
         }
     }
 

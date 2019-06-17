@@ -167,7 +167,11 @@ const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     return uniqueArray;
 };
 
-const mergeObjects = (obj1, obj2) => merge(obj1, obj2, { arrayMerge });
+const mergeObjects = (obj1, obj2) => {
+    if (!obj2) return obj1;
+    if (!obj1) return obj2;
+    return merge(obj1, obj2, { arrayMerge });
+};
 
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
