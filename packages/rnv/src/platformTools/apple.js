@@ -638,6 +638,17 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                         xcodeProj.addResourceFile(path.join(appFolder, v));
                     });
                 }
+                if (pluginPlat.xcodeproj.sourceFiles) {
+                    pluginPlat.xcodeproj.sourceFiles.forEach((v) => {
+                        // const group = xcodeProj.hash.project.objects.PBXGroup['200132F21F6BF9CF00450340'];
+                        xcodeProj.addSourceFile(v, null, '200132F21F6BF9CF00450340');
+                    });
+                }
+                if (pluginPlat.xcodeproj.headerFiles) {
+                    pluginPlat.xcodeproj.headerFiles.forEach((v) => {
+                        xcodeProj.addHeaderFile(v, null, '200132F21F6BF9CF00450340');
+                    });
+                }
             }
         });
 
