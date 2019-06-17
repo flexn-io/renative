@@ -25,6 +25,7 @@ import {
     getIP,
     getQuestion,
     logSuccess,
+    getBuildsFolder
 } from '../common';
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
@@ -628,6 +629,17 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                 });
             }
         }
+
+        // PLUGINS
+        parsePlugins(c, (plugin, pluginPlat, key) => {
+            if (pluginPlat.xcodeproj) {
+                if (pluginPlat.xcodeproj.resourceFiles) {
+                    pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
+                        xcodeProj.addResourceFile(path.join(appFolder, v));
+                    });
+                }
+            }
+        });
 
         fs.writeFileSync(projectPath, xcodeProj.writeSync());
         _parsePodFile(c, platform);

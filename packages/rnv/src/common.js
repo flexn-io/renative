@@ -1052,16 +1052,16 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 
     // FOLDER MERGERS
     const destPath = path.join(getAppFolder(c, platform));
-    const sourcePath1 = _getBuildsFolder(c, platform);
+    const sourcePath1 = getBuildsFolder(c, platform);
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
     parsePlugins(c, (plugin, pluginPlat, key) => {
         // APP CONFIG PLUGIN FOLDER MERGES
-        const sourcePath2 = _getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
+        const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
         // PROJECT CONFIG PLUGIN FOLDER MERGES
-        const sourcePath3 = _getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
+        const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath3, destPath);
     });
 
@@ -1070,7 +1070,7 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 
 const _getScheme = c => c.program.scheme || 'debug';
 
-const _getBuildsFolder = (c, platform, customPath) => {
+const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfigFolder;
     const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
     if (fs.existsSync(p)) return p;
@@ -1227,6 +1227,7 @@ const getProjectPlatforms = (c) => {
 
 export {
     SUPPORTED_PLATFORMS,
+    getBuildsFolder,
     getProjectPlatforms,
     setAppConfig,
     generateOptions,
@@ -1300,6 +1301,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    getBuildsFolder,
     getProjectPlatforms,
     setAppConfig,
     generateOptions,
