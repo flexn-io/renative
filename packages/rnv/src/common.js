@@ -1052,14 +1052,17 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 
     // FOLDER MERGERS
     const destPath = path.join(getAppFolder(c, platform));
-    const sourcePath = _getBuildsFolder(c, platform);
-    copyFolderContentsRecursiveSync(sourcePath, destPath);
+    const sourcePath1 = _getBuildsFolder(c, platform);
+    copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
-    // PLUGIN FOLDER MERGES
     parsePlugins(c, (plugin, pluginPlat, key) => {
-        const pDestPath = path.join(getAppFolder(c, platform));
-        const pSourcePath = _getBuildsFolder(c, platform, key);
-        copyFolderContentsRecursiveSync(pSourcePath, pDestPath);
+        // APP CONFIG PLUGIN FOLDER MERGES
+        const sourcePath2 = _getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath2, destPath);
+
+        // PROJECT CONFIG PLUGIN FOLDER MERGES
+        const sourcePath3 = _getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath3, destPath);
     });
 
     resolve();
@@ -1067,11 +1070,11 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 
 const _getScheme = c => c.program.scheme || 'debug';
 
-const _getBuildsFolder = (c, platform, pluginKey) => {
-    const pp = pluginKey ? `plugins/${pluginKey}/` : '';
-    const p = path.join(c.paths.appConfigFolder, `${pp}builds/${platform}@${_getScheme(c)}`);
+const _getBuildsFolder = (c, platform, customPath) => {
+    const pp = customPath || c.paths.appConfigFolder;
+    const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
     if (fs.existsSync(p)) return p;
-    return path.join(c.paths.appConfigFolder, `${pp}builds/${platform}`);
+    return path.join(pp, `builds/${platform}`);
 };
 
 const getIP = () => {

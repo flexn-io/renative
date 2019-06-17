@@ -339,8 +339,8 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .catch((e) => {
             if (!c.program.update) {
                 logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                runPod('update', getAppFolder(c, platform))
-                    .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
+                _preConfigureProject(c, platform, appFolderName, ip, port)
+                    .then(() => runPod('update', getAppFolder(c, platform)))
                     .then(() => resolve())
                     .catch(err => reject(err));
             } else {
@@ -631,11 +631,9 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         }
 
         fs.writeFileSync(projectPath, xcodeProj.writeSync());
-
         _parsePodFile(c, platform);
         _parseEntitlements(c, platform);
         _parsePlist(c, platform, embeddedFonts);
-
         resolve();
     });
 });
