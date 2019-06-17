@@ -58,7 +58,7 @@ ${htmlTag}
         ${constructMetaTags({ ...metaTags, ...config.metaTags }).join(`\n${indent(2)}`)}
         ${linkTags.join(`\n${indent(2)}`)}
         ${titleTag}
-        ${remoteDebugScript}
+        ${remoteDebugScript || ''}
         ${isDebug ? errScript : ''}
     </head>
     <body>

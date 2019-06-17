@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, Platform } from 'react-native';
-import { Api, Button, Icon } from 'renative';
+import { Text, View, StyleSheet } from 'react-native';
+import { Api, Button } from 'renative';
 import { isTopMenuBased } from './nav';
 import Theme from './theme';
 
@@ -55,7 +55,7 @@ class Menu extends React.Component {
         return (
             <View style={[isTop ? styles.containerHorizontal : styles.containerVertical, this.props.style]}>
                 <Text style={styles.text}>
-Menu
+                    Menu
                 </Text>
                 <Button
                     title="Home"

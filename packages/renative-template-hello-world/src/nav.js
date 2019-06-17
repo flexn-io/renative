@@ -1,5 +1,4 @@
 import React from 'react';
-import { PixelRatio, Platform } from 'react-native';
 import {
     Icon,
     Api,
@@ -97,7 +96,6 @@ const navStructure = {
             headerStyle: {
                 backgroundColor: Theme.color1,
                 borderBottomWidth: isTopMenuBased ? 0 : 1,
-                color: Theme.color3,
             },
             headerLeft: (n) => {
                 if (!isDrawerMenuBased()) return null;
