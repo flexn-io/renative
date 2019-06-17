@@ -1,4 +1,5 @@
 import { mergeObjects } from '../systemTools/fileutils';
+import { logTask } from '../common';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];

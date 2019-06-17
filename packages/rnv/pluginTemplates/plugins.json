@@ -680,7 +680,6 @@
           }
         },
         "fabric": {
-          "FABRIC_KEY": "",
           "no-npm": true,
           "ios": {
               "podName": "Fabric",
@@ -692,13 +691,15 @@
                 }
               },
               "plist": {
-                "Fabric": "{{FABRIC_KEY}}",
-                "Kits": [
-                  {
-                    "KitInfo": {},
-                    "KitName": "Crashlytics"
-                  }
-                ]
+                "Fabric": {
+                  "APIKey": "",
+                  "Kits": [
+                    {
+                      "KitInfo": {},
+                      "KitName": "Crashlytics"
+                    }
+                  ]
+                }
               }
           }
         },
