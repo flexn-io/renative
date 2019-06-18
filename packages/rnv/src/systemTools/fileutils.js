@@ -173,10 +173,21 @@ const mergeObjects = (obj1, obj2) => {
     return merge(obj1, obj2, { arrayMerge });
 };
 
+const updateConfigFile = async (update, globalConfigPath) => {
+    const configContents = JSON.parse(fs.readFileSync(globalConfigPath));
+
+    if (update.androidSdk) {
+        configContents.sdks.ANDROID_SDK = update.androidSdk;
+    }
+
+    fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
+};
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs,
-    writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects
+    writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
+    updateConfigFile
 };
 
 export default {
@@ -192,5 +203,6 @@ export default {
     readObjectSync,
     updateObjectSync,
     arrayMerge,
-    mergeObjects
+    mergeObjects,
+    updateConfigFile
 };

@@ -88,6 +88,7 @@ const listAndroidTargets = (c) => {
     logTask('listAndroidTargets');
     return _listAndroidTargets(c, false, false).then(list => composeDevicesString(list)).then((devices) => {
         console.log(devices);
+        if (devices.trim() === '') console.log('No devices found');
         return devices;
     });
 };
