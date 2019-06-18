@@ -3,299 +3,277 @@
         "react-native": {
             "version": "0.59.5",
             "ios": {
-              "reactSubSpecs": [
-                  "Core",
-                  "RCTImage",
-                  "RCTNetwork",
-                  "RCTText",
-                  "RCTWebSocket",
-                  "DevSupport",
-                  "CxxBridge",
-                  "RCTAnimation",
-                  "RCTLinkingIOS",
-                  "RCTGeolocation",
-                  "RCTVibration",
-                  "PrivateDatabase",
-                  "RCTActionSheet",
-                  "RCTSettings"
-              ]
+                "reactSubSpecs": [
+                    "Core",
+                    "RCTImage",
+                    "RCTNetwork",
+                    "RCTText",
+                    "RCTWebSocket",
+                    "DevSupport",
+                    "CxxBridge",
+                    "RCTAnimation",
+                    "RCTLinkingIOS",
+                    "RCTGeolocation",
+                    "RCTVibration",
+                    "PrivateDatabase",
+                    "RCTActionSheet",
+                    "RCTSettings"
+                ]
             },
             "android": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {
-                exclude group: 'com.android.support'
-                exclude group: 'javax.inject'
-                exclude group: 'com.squareup.okhttp3',
-                module: 'okhttp'
-                exclude group: 'com.squareup.okio'
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support'\n exclude group: 'javax.inject'\n exclude group: 'com.squareup.okhttp3',\n module: 'okhttp'\n exclude group: 'com.squareup.okio'\n}"
             }
-            "
-        }
-    },
-    "renative": {
-        "version": "0.23.0-alpha.18",
-        "webpack": {
-            "modulePaths": ["node_modules/renative"],
-            "moduleAliases": {
-                "renative": {
-                    "projectPath": "node_modules/renative"
+        },
+        "renative": {
+            "version": "0.23.0-alpha.18",
+            "webpack": {
+                "modulePaths": ["node_modules/renative"],
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "node_modules/renative"
+                    }
                 }
             }
-        }
-    },
-    "RCTPushNotification": {
-        "no-npm": true,
-        "ios": {
-            "reactSubSpecs": [
-                "RCTPushNotification"
-            ],
-            "appDelegateMethods": {
-                "application": {
-                    "didReceiveRemoteNotification": [
-                        "RCTPushNotificationManager.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)"
-                    ],
-                    "didFailToRegisterForRemoteNotificationsWithError": [
-                        "RCTPushNotificationManager.didFailToRegisterForRemoteNotificationsWithError(error)"
-                    ],
-                    "didReceive": [
-                        "RCTPushNotificationManager.didReceive(notification)"
-                    ],
-                    "didRegister": [
-                        "RCTPushNotificationManager.didRegister(notificationSettings)"
-                    ],
-                    "didRegisterForRemoteNotificationsWithDeviceToken": [
-                        "RCTPushNotificationManager.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)"
-                    ]
-                },
-                "userNotificationCenter": {
-                    "willPresent": [
-                        "completionHandler([.alert, .badge, .sound])"
-                    ]
+        },
+        "RCTPushNotification": {
+            "no-npm": true,
+            "ios": {
+                "reactSubSpecs": [
+                    "RCTPushNotification"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "didReceiveRemoteNotification": [
+                            "RCTPushNotificationManager.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)"
+                        ],
+                        "didFailToRegisterForRemoteNotificationsWithError": [
+                            "RCTPushNotificationManager.didFailToRegisterForRemoteNotificationsWithError(error)"
+                        ],
+                        "didReceive": [
+                            "RCTPushNotificationManager.didReceive(notification)"
+                        ],
+                        "didRegister": [
+                            "RCTPushNotificationManager.didRegister(notificationSettings)"
+                        ],
+                        "didRegisterForRemoteNotificationsWithDeviceToken": [
+                            "RCTPushNotificationManager.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)"
+                        ]
+                    },
+                    "userNotificationCenter": {
+                        "willPresent": [
+                            "completionHandler([.alert, .badge, .sound])"
+                        ]
+                    }
                 }
             }
-        }
-    },
-    "RCTLinkingIOS": {
-        "no-npm": true,
-        "ios": {
-            "reactSubSpecs": [
-                "RCTLinkingIOS"
-            ],
-            "appDelegateMethods": {
-                "application": {
-                    "open": [
-                        "RCTLinkingManager.application(app, open: url, options: options)"
-                    ]
+        },
+        "RCTLinkingIOS": {
+            "no-npm": true,
+            "ios": {
+                "reactSubSpecs": [
+                    "RCTLinkingIOS"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "open": [
+                            "RCTLinkingManager.application(app, open: url, options: options)"
+                        ]
+                    }
                 }
             }
-        }
-    },
-    "react-native-gesture-handler": {
-        "version": "1.3.0",
-        "ios": {
-            "podName": "RNGestureHandler",
-            "path": "node_modules/react-native-gesture-handler"
         },
-        "tvos": {
-            "podName": "RNGestureHandler",
-            "path": "node_modules/react-native-gesture-handler"
-        },
-        "android": {
-            "path": "node_modules/react-native-gesture-handler/android",
-            "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
-        },
-        "androidtv": {
-            "path": "node_modules/react-native-gesture-handler/android",
-            "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
-        },
-        "androidwear": {
-            "path": "node_modules/react-native-gesture-handler/android",
-            "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
-        },
-        "webpack": {
-            "modulePaths": true,
-            "moduleAliases": true
-        }
-    },
-    "react-native-video": {
-        "version": "2.0.0",
-        "ios": {
-            "podName": "react-native-video"
-        },
-        "tvos": {
-            "podName": "react-native-video"
-        },
-        "android": {
-            "package": "com.brentvatne.react.ReactVideoPackage"
-        },
-        "androidtv": {
-            "package": "com.brentvatne.react.ReactVideoPackage"
-        }
-    },
-    "react-native-languages": {
-        "version": "3.0.2",
-        "ios": {
-            "podName": "RNLanguages"
-        },
-        "tvos": {
-            "podName": "RNLanguages"
-        },
-        "android": {
-            "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
-        },
-        "androidtv": {
-            "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
-        }
-    },
-    "react-native-linear-gradient": {
-        "version": "2.4.0",
-        "ios": {
-            "podName": "BVLinearGradient"
-        },
-        "tvos": {
-            "podName": "BVLinearGradient"
-        },
-        "android": {
-            "package": "com.BV.LinearGradient.LinearGradientPackage"
-        },
-        "androidtv": {
-            "package": "com.BV.LinearGradient.LinearGradientPackage"
-        },
-        "webpack": {
-            "moduleAliases": {
-                "react-native-linear-gradient": "react-native-web-linear-gradient"
+        "react-native-gesture-handler": {
+            "version": "1.3.0",
+            "ios": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
+            "tvos": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
+            "android": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "androidtv": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "androidwear": {
+                "path": "node_modules/react-native-gesture-handler/android",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+            },
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
             }
         },
-        "dependsOn": ["react-native-web-linear-gradient"]
-    },
-    "react-native-fetch-blob": {
-        "version": "0.10.8",
-        "ios": {
-            "podName": "react-native-fetch-blob"
+        "react-native-video": {
+            "version": "2.0.0",
+            "ios": {
+                "podName": "react-native-video"
+            },
+            "tvos": {
+                "podName": "react-native-video"
+            },
+            "android": {
+                "package": "com.brentvatne.react.ReactVideoPackage"
+            },
+            "androidtv": {
+                "package": "com.brentvatne.react.ReactVideoPackage"
+            }
         },
-        "tvos": {
-            "podName": "react-native-fetch-blob"
+        "react-native-languages": {
+            "version": "3.0.2",
+            "ios": {
+                "podName": "RNLanguages"
+            },
+            "tvos": {
+                "podName": "RNLanguages"
+            },
+            "android": {
+                "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
+            },
+            "androidtv": {
+                "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
+            }
         },
-        "android": {
-            "package": "com.RNFetchBlob.RNFetchBlobPackage"
-        },
-        "androidtv": {
-            "package": "com.RNFetchBlob.RNFetchBlobPackage"
-        }
-    },
-    "react-native-camera": {
-        "version": "1.8.0",
-        "ios": {
-            "podName": "react-native-camera"
-        },
-        "tvos": {
-            "podName": "react-native-camera"
-        },
-        "android": {
-            "package": "org.reactnative.camera.RNCameraPackage"
-        },
-        "androidtv": {
-            "package": "org.reactnative.camera.RNCameraPackage"
-        },
-        "webpack": {
-            "modulePaths": true
-        }
-    },
-    "react-native-fs": {
-        "version": "2.8.5",
-        "ios": {
-            "podName": "RNFS"
-        },
-        "tvos": {
-            "podName": "RNFS"
-        },
-        "android": {
-            "package": "com.rnfs.RNFSPackage"
-        },
-        "androidtv": {
-            "package": "com.rnfs.RNFSPackage"
-        }
-    },
-    "react-native-fbsdk": {
-        "FB_KEY": "",
-        "FB_DISPLAY_NAME": "",
-        "FB_URL_SCHEMES": [],
-        "FB_QUERY_SCHEMES": [],
-        "version": "0.8.0",
-        "ios": {
-            "podName": "react-native-fbsdk",
-            "appDelegateImports": ["FBSDKCoreKit"],
-            "appDelegateMethods": {
-                "application": {
-                    "didFinishLaunchingWithOptions": [
-                        "FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)"
-                    ],
-                    "open": [
-                        "FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)"
-                    ]
+        "react-native-linear-gradient": {
+            "version": "2.4.0",
+            "ios": {
+                "podName": "BVLinearGradient"
+            },
+            "tvos": {
+                "podName": "BVLinearGradient"
+            },
+            "android": {
+                "package": "com.BV.LinearGradient.LinearGradientPackage"
+            },
+            "androidtv": {
+                "package": "com.BV.LinearGradient.LinearGradientPackage"
+            },
+            "webpack": {
+                "moduleAliases": {
+                    "react-native-linear-gradient": "react-native-web-linear-gradient"
                 }
             },
-            "plist": {
-                "FacebookAppID": "{{FB_KEY}}",
-                "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
-                "LSApplicationQueriesSchemes": []
+            "dependsOn": ["react-native-web-linear-gradient"]
+        },
+        "react-native-fetch-blob": {
+            "version": "0.10.8",
+            "ios": {
+                "podName": "react-native-fetch-blob"
+            },
+            "tvos": {
+                "podName": "react-native-fetch-blob"
+            },
+            "android": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "androidtv": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
             }
         },
-        "tvos": {
-            "podName": "react-native-fbsdk",
-            "appDelegateImports": ["FBSDKCoreKit"]
+        "react-native-camera": {
+            "version": "1.8.0",
+            "ios": {
+                "podName": "react-native-camera"
+            },
+            "tvos": {
+                "podName": "react-native-camera"
+            },
+            "android": {
+                "package": "org.reactnative.camera.RNCameraPackage"
+            },
+            "androidtv": {
+                "package": "org.reactnative.camera.RNCameraPackage"
+            },
+            "webpack": {
+                "modulePaths": true
+            }
         },
-        "android": {
-            "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-            "packageParams": ["mCallbackManager"]
+        "react-native-fs": {
+            "version": "2.8.5",
+            "ios": {
+                "podName": "RNFS"
+            },
+            "tvos": {
+                "podName": "RNFS"
+            },
+            "android": {
+                "package": "com.rnfs.RNFSPackage"
+            },
+            "androidtv": {
+                "package": "com.rnfs.RNFSPackage"
+            }
         },
-        "androidtv": {
-            "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-            "packageParams": ["mCallbackManager"]
-        }
-    },
-    "react-native-zip-archive": {
-        "version": "4.0.2",
-        "ios": {
-            "podName": "RNZipArchive"
-        },
-        "tvos": {
-            "podName": "RNZipArchive"
-        },
-        "android": {
-            "package": "com.rnziparchive.RNZipArchivePackage"
-        },
-        "androidtv": {
-            "package": "com.rnziparchive.RNZipArchivePackage"
-        }
-    },
-    "react-native-image-picker": {
-        "version": "0.27.1",
-        "ios": {
-            "podName": "react-native-image-picker"
-        },
-        "tvos": {
-            "podName": "react-native-image-picker"
-        },
-        "android": {
-            "package": "com.imagepicker.ImagePickerPackage",
-            "build.gradle": {
-                "subprojects": "
-                if (project.name.contains('react-native-image-picker') ||
-                    project.name.contains('react-native-fetch-blob') ||
-                    project.name.contains('react-native-linear-gradient') ||
-                    project.name.contains('react-native-prompt-android')) {
-                    buildscript {
-                        repositories {
-                            jcenter()
-                            google()
-                            maven {
-                                url 'https://dl.bintray.com/android/android-tools/'  }
-                            }
-                        }
+        "react-native-fbsdk": {
+            "FB_KEY": "",
+            "FB_DISPLAY_NAME": "",
+            "FB_URL_SCHEMES": [],
+            "FB_QUERY_SCHEMES": [],
+            "version": "0.8.0",
+            "ios": {
+                "podName": "react-native-fbsdk",
+                "appDelegateImports": ["FBSDKCoreKit"],
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)"
+                        ],
+                        "open": [
+                            "FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)"
+                        ]
                     }
-                    "
+                },
+                "plist": {
+                    "FacebookAppID": "{{FB_KEY}}",
+                    "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
+                    "LSApplicationQueriesSchemes": []
                 }
-
+            },
+            "tvos": {
+                "podName": "react-native-fbsdk",
+                "appDelegateImports": ["FBSDKCoreKit"]
+            },
+            "android": {
+                "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
+                "packageParams": ["mCallbackManager"]
+            },
+            "androidtv": {
+                "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
+                "packageParams": ["mCallbackManager"]
+            }
+        },
+        "react-native-zip-archive": {
+            "version": "4.0.2",
+            "ios": {
+                "podName": "RNZipArchive"
+            },
+            "tvos": {
+                "podName": "RNZipArchive"
+            },
+            "android": {
+                "package": "com.rnziparchive.RNZipArchivePackage"
+            },
+            "androidtv": {
+                "package": "com.rnziparchive.RNZipArchivePackage"
+            }
+        },
+        "react-native-image-picker": {
+            "version": "0.27.1",
+            "ios": {
+                "podName": "react-native-image-picker"
+            },
+            "tvos": {
+                "podName": "react-native-image-picker"
+            },
+            "android": {
+                "package": "com.imagepicker.ImagePickerPackage",
+                "build.gradle": {
+                    "subprojects": "if (project.name.contains('react-native-image-picker') || project.name.contains('react-native-fetch-blob') || project.name.contains('react-native-linear-gradient') || project.name.contains('react-native-prompt-android')) {\n buildscript {\n repositories {\n  jcenter()\n  google()\n  maven {\n      url 'https://dl.bintray.com/android/android-tools/'  }\n  }\n    }\n  }"
+                }
             },
             "androidtv": {
                 "package": "com.imagepicker.ImagePickerPackage"
