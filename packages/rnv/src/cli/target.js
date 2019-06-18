@@ -1,10 +1,8 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
-import path from 'path';
-import fs from 'fs';
 import {
     isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformSupported
+    getAppFolder, isPlatformSupported, checkSdk
 } from '../common';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
@@ -123,6 +121,7 @@ const _runList = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
+        if (!checkSdk(c, platform, reject)) return;
         listAndroidTargets(c, platform)
             .then(() => resolve())
             .catch(e => reject(e));
@@ -134,6 +133,7 @@ const _runList = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     case WEBOS:
+        if (!checkSdk(c, platform, reject)) return;
         listWebOSTargets(c)
             .then(() => resolve())
             .catch(e => reject(e));
