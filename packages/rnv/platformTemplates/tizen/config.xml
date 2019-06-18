@@ -4,10 +4,13 @@
     <content src="public/index.html"/>
     <feature name="http://tizen.org/feature/screen.size.normal.1080.1920"/>
     <feature name="http://tizen.org/feature/network.internet"/>
+    <feature name="http://tizen.org/api/tizen" required="true"/>
     <access origin="*" subdomains="true"></access>
     <icon src="icon.png"/>
     <name>{{APP_NAME}}</name>
     <tizen:profile name="tv-samsung"/>
     <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:privilege name="http://tizen.org/privilege/tizen"/>
+    <tizen:privilege name="http://tizen.org/privilege/tv.inputdevice"/>
     <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
 </widget>
