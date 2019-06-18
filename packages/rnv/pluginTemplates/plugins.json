@@ -239,11 +239,13 @@
             },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"]
+                "packageParams": ["mCallbackManager"],
+                "implementation": "implementation 'com.facebook.android:facebook-android-sdk:4.22.1'"
             },
             "androidtv": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"]
+                "packageParams": ["mCallbackManager"],
+                "implementation": "implementation 'com.facebook.android:facebook-android-sdk:4.22.1'"
             }
         },
         "react-native-zip-archive": {
@@ -500,13 +502,13 @@
                 "projectName": "mapbox-react-native-mapbox-gl",
                 "package": "com.mapbox.rctmgl.RCTMGLPackage",
                 "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
-                "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }\n"
+                "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }"
             },
             "androidtv": {
                 "projectName": "mapbox-react-native-mapbox-gl",
                 "package": "com.mapbox.rctmgl.RCTMGLPackage",
                 "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
-                "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }\n"
+                "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }"
             }
         },
         "react-native-image-resizer": {
@@ -683,6 +685,9 @@
                 "podName": "Crashlytics",
                 "appDelegateImports": ["Crashlytics"],
                 "version": "3.10.5"
+            },
+            "android": {
+                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true \n}"
             }
         },
         "fabric": {

@@ -664,7 +664,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
         }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
-                pluginConfig.pluginImplementations += `${plugin.implementation}`;
+                pluginConfig.pluginImplementations += `${plugin.implementation}\n`;
             } else {
                 pluginConfig.pluginImplementations += `    implementation project(':${plugin.projectName}')\n`;
             }
@@ -674,7 +674,7 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
         pluginConfig.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
-                pluginConfig.pluginImplementations += `${plugin.implementation}`;
+                pluginConfig.pluginImplementations += `${plugin.implementation}\n`;
             } else {
                 pluginConfig.pluginImplementations += `    implementation project(':${key}')\n`;
             }
