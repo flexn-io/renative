@@ -13,7 +13,6 @@ import {
     finishQuestion,
     generateOptions,
     logWelcome,
-    writeObjectSync,
     SUPPORTED_PLATFORMS,
 } from '../common';
 import {
@@ -42,7 +41,7 @@ import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 
@@ -149,7 +148,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
     askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)", data, 'inputProjectName')
         .then(() => askQuestion(`What's your project Title? (press ENTER to use default: ${chalk.white(data.defaultAppTitle)})`, data, 'inputAppTitle'))
-        .then(() => { data.appID = `com.mycompany.${data.inputProjectName}`; })
+        .then(() => { data.appID = `com.mycompany.${data.inputProjectName.toLowerCase()}`; })
         .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${chalk.white(data.appID)})`, data, 'inputAppID'))
         .then(() => askQuestion(`What's your Version? (press ENTER to use default: ${chalk.white(data.defaultVersion)})`, data, 'inputVersion'))
         .then(() => askQuestion(`What template to use? (press ENTER to use default: ${chalk.white(data.defaultTemplate)})\n${data.optionTemplates.asString})`,
@@ -311,7 +310,7 @@ const checkAndCreateProjectConfig = (c, data) => {
         const defaultProjectConfigs = {
             supportedPlatforms: data.optionPlatforms.selectedOptions,
             template: data.optionTemplates.selectedOption,
-            defaultAppId: appID
+            defaultAppId: appID.toLowerCase()
         };
 
         const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvProjectTemplateFolder, 'rnv-config.json')));
