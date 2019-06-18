@@ -253,6 +253,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
                 const isDevice = !words[0].includes('emulator');
                 let name = _getDeviceProp(words, 'model:');
                 if (!isDevice) {
+                    await waitForEmulatorToBeReady(c, words[0]);
                     name = await getEmulatorName(words);
                 }
                 if ((deviceOnly && isDevice) || !deviceOnly) {
@@ -389,6 +390,34 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
+const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    const poll = setInterval(() => {
+        try {
+            const isBooting = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${emulator} shell getprop init.svc.bootanim`).toString();
+            if (isBooting.includes('stopped')) {
+                clearInterval(poll);
+                resolve(emulator);
+            } else {
+                attempts++;
+                console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
+                if (attempts === maxAttempts) {
+                    clearInterval(poll);
+                    throw new Error('Can\'t connect to the running emulator. Try restarting it.');
+                }
+            }
+        } catch (e) {
+            console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
+            attempts++;
+            if (attempts > maxAttempts) {
+                clearInterval(poll);
+                throw new Error('Can\'t connect to the running emulator. Try restarting it.');
+            }
+        }
+    }, 2000);
+});
+
 const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runAndroid:${platform}:${target}`);
 
@@ -453,30 +482,35 @@ const _runGradle = async (c, platform) => {
     }
 };
 
-
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
     let attempts = 1;
-    const maxAttempts = 8;
+    const maxAttempts = 10;
+    let running = false;
     const poll = setInterval(() => {
-        _listAndroidTargets(c, false, true, false)
-            .then((v) => {
-                if (v.length > 0) {
-                    logSuccess(`Found active emulator! ${chalk.white(v[0].udid)}. Will use it`);
-                    clearInterval(poll);
-                    resolve(v[0]);
-                } else {
-                    console.log(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
-                    attempts++;
-                    if (attempts > maxAttempts) {
+        // Prevent the interval from running until enough promises return to make it stop or we get a result
+        if (!running) {
+            running = true;
+            _listAndroidTargets(c, false, true, false)
+                .then((v) => {
+                    if (v.length > 0) {
+                        logSuccess(`Found active emulator! ${chalk.white(v[0].udid)}. Will use it`);
                         clearInterval(poll);
-                        return _askForNewEmulator(c, platform);
+                        resolve(v[0]);
+                    } else {
+                        running = false;
+                        console.log(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
+                        attempts++;
+                        if (attempts > maxAttempts) {
+                            clearInterval(poll);
+                            return _askForNewEmulator(c, platform);
+                        }
                     }
-                }
-            })
-            .catch((e) => {
-                clearInterval(poll);
-                logError(e);
-            });
+                })
+                .catch((e) => {
+                    clearInterval(poll);
+                    logError(e);
+                });
+        }
     }, 2000);
 });
 
@@ -869,7 +903,6 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
     // SPLITS
     pluginConfig.splits = '';
-    console.log('SKJHSKJSH', isMultiApk);
     if (isMultiApk) {
         pluginConfig.splits = `
     splits {
