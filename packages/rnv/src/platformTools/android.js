@@ -1024,6 +1024,20 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     ]);
 
 
+    // GRADLE.PROPERTIES
+    let pluginGradleProperties = '';
+    const pluginConfigAndroid = c.files.pluginConfig ? c.files.pluginConfig.android : null;
+    const gradleProps = pluginConfigAndroid ? pluginConfigAndroid['gradle.properties'] : null;
+    if (gradleProps) {
+        for (const key in gradleProps) {
+            pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
+        }
+    }
+    const gradleProperties = 'gradle.properties';
+    writeCleanFile(path.join(appTemplateFolder, gradleProperties), path.join(appFolder, gradleProperties), [
+        { pattern: '{{PLUGIN_GRADLE_PROPERTIES}}', override: pluginGradleProperties }
+    ]);
+
     resolve();
 });
 

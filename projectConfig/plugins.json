@@ -1,15 +1,20 @@
 {
+    "android": {
+        "gradle.properties": {
+            "android.useDeprecatedNdk": true
+        }
+    },
     "plugins": {
         "renative": {
-          "version": "file:./packages/renative",
-          "webpack": {
-            "modulePaths": [],
-            "moduleAliases": {
-              "renative": {
-                "projectPath": "packages/renative"
-              }
+            "version": "file:./packages/renative",
+            "webpack": {
+                "modulePaths": [],
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "packages/renative"
+                    }
+                }
             }
-          }
         },
         "react": "source:rnv",
         "react-art": "source:rnv",
