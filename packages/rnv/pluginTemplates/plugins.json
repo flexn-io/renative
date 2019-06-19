@@ -1023,6 +1023,30 @@
         },
         "react-art": {
             "version": "16.8.6"
+        },
+        "react-native-navigation-bar-color": {
+            "version": "0.1.0",
+            "android": {
+                "package": "com.thebylito.navigationbarcolor.NavigationBarColorPackage"
+            }
+        },
+        "@react-native-community/netinfo": {
+            "version": "3.2.1",
+            "ios": {
+                "podName": "react-native-netinfo"
+            },
+            "android": {
+                "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
+            }
+        },
+        "react-native-fast-image": {
+            "version": "6.0.3",
+            "ios": {
+                "podName": "react-native-fast-image"
+            },
+            "android": {
+                "package": "com.dylanvann.fastimage.FastImageViewPackage"
+            }
         }
     }
 }
