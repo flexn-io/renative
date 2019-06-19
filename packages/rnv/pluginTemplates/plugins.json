@@ -118,7 +118,19 @@
             },
             "android": {
                 "path": "node_modules/react-native-gesture-handler/android",
-                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
+                "mainActivity": {
+                  "imports": [
+                    "com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView"
+                  ],
+                  "methods": ["  override fun createReactActivityDelegate(): ReactActivityDelegate {",
+                      "return object : ReactActivityDelegate(this, mainComponentName) {",
+                      "override fun createRootView():ReactRootView {",
+                      "  return RNGestureHandlerEnabledRootView(this@MainActivity)",
+                      "  } \n } \n}"
+                  ]
+                }
+
             },
             "androidtv": {
                 "path": "node_modules/react-native-gesture-handler/android",
@@ -272,14 +284,48 @@
                 "packageParams": [
                     "mCallbackManager"
                 ],
-                "implementation": "implementation 'com.facebook.android:facebook-android-sdk:4.22.1'"
+                "implementations": [
+                    "'com.facebook.android:facebook-android-sdk:4.22.1'"
+                ],
+                "imports": [
+                    "com.facebook.CallbackManager"
+                ],
+                "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
+                "mainActivity": {
+                  "imports": [
+                    "com.facebook.appevents.AppEventsLogger",
+                    "com.facebook.FacebookSdk"
+                  ],
+                  "createMethods": [
+                    "FacebookSdk.sdkInitialize(applicationContext)",
+                    "AppEventsLogger.activateApp(this)"
+                  ],
+                  "resultMethods": [
+                    "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                  ]
+                }
             },
             "androidtv": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
                 "packageParams": [
                     "mCallbackManager"
                 ],
-                "implementation": "implementation 'com.facebook.android:facebook-android-sdk:4.22.1'"
+                "implementations": [
+                    "'com.facebook.android:facebook-android-sdk:4.22.1'"
+                ],
+                "imports": [
+                    "com.facebook.CallbackManager"
+                ],
+                "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
+                "mainActivity": {
+                  "resultMethods": [
+                    "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                  ],
+                  "createMethods": [
+                    "FacebookSdk.sdkInitialize(applicationContext)",
+                    "AppEventsLogger.activateApp(this)"
+                  ]
+                }
             }
         },
         "react-native-zip-archive": {
@@ -645,17 +691,19 @@
             },
             "android": {
                 "package": "org.wonday.orientation.OrientationPackage",
-                "activityImports": [
+                "mainActivity": {
+                  "imports": [
                     "android.content.res.Configuration"
-                ],
-                "activityMethods": [
-                    "override fun onConfigurationChanged(newConfig:Configuration) {",
-                    "  super.onConfigurationChanged(newConfig)",
-                    "  val intent = Intent(\"onConfigurationChanged\")",
-                    "  intent.putExtra(\"newConfig\", newConfig)",
-                    "  this.sendBroadcast(intent)",
-                    "}"
-                ]
+                  ],
+                  "methods": [
+                      "override fun onConfigurationChanged(newConfig:Configuration) {",
+                      "  super.onConfigurationChanged(newConfig)",
+                      "  val intent = Intent(\"onConfigurationChanged\")",
+                      "  intent.putExtra(\"newConfig\", newConfig)",
+                      "  this.sendBroadcast(intent)",
+                      "}"
+                  ]
+                }
             }
         },
         "react-native-reanimated": {
@@ -735,6 +783,21 @@
                     "Crashlytics"
                 ],
                 "version": "3.10.5"
+            },
+            "android": {
+              "skipImplementation": true,
+              "mainActivity": {
+                "imports": [
+                  "com.crashlytics.android.Crashlytics",
+                  "com.crashlytics.android.core.CrashlyticsCore"
+                ],
+                "createMethods": [
+                  "val core = CrashlyticsCore.Builder().listener {}.build()",
+                  "val crashlyticsKit = Crashlytics.Builder().core(core).build()",
+                  "Fabric.with(this, crashlyticsKit)"
+                ]
+              }
+
             }
         },
         "fabric": {
@@ -755,12 +818,10 @@
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [
-                            {
-                                "KitInfo": {},
-                                "KitName": "Crashlytics"
-                            }
-                        ]
+                        "Kits": [{
+                            "KitInfo": {},
+                            "KitName": "Crashlytics"
+                        }]
                     }
                 }
             },
@@ -774,6 +835,17 @@
                     "repositories": [
                         "maven { url 'https://maven.fabric.io/public' }"
                     ]
+                },
+                "skipImplementation": true,
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'io.fabric'"
+                    ]
+                },
+                "mainActivity": {
+                  "imports": [
+                    "io.fabric.sdk.android.Fabric"
+                  ]
                 }
             },
             "androidtv": {
@@ -785,6 +857,12 @@
                     },
                     "repositories": [
                         "maven { url 'https://maven.fabric.io/public' }"
+                    ]
+                },
+                "skipImplementation": true,
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'io.fabric'"
                     ]
                 }
             }
@@ -876,8 +954,8 @@
                     "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
                 ],
                 "implementations": [
-                    "com.google.firebase:firebase-core:16.0.4",
-                    "com.google.firebase:firebase-messaging:17.3.4"
+                    "'com.google.firebase:firebase-core:16.0.4'",
+                    "'com.google.firebase:firebase-messaging:17.3.4'"
                 ],
                 "build.gradle": {
                     "buildscript": {
@@ -885,6 +963,11 @@
                             "classpath 'com.google.gms:google-services:4.2.0'"
                         ]
                     }
+                },
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'com.google.gms.google-services'"
+                    ]
                 }
             },
             "androidtv": {
@@ -894,8 +977,8 @@
                     "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
                 ],
                 "implementations": [
-                    "com.google.firebase:firebase-core:16.0.4",
-                    "com.google.firebase:firebase-messaging:17.3.4"
+                    "'com.google.firebase:firebase-core:16.0.4'",
+                    "'com.google.firebase:firebase-messaging:17.3.4'"
                 ],
                 "build.gradle": {
                     "buildscript": {
@@ -903,6 +986,11 @@
                             "classpath 'com.google.gms:google-services:4.2.0'"
                         ]
                     }
+                },
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'com.google.gms.google-services'"
+                    ]
                 }
             }
         },

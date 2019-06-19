@@ -38,7 +38,7 @@ import {
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
-import { getMergedPlugin } from '../pluginTools';
+import { getMergedPlugin, parsePlugins } from '../pluginTools';
 
 const readline = require('readline');
 
@@ -693,16 +693,62 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
             }
         });
     }
+
     if (plugin.activityMethods instanceof Array) {
+        pluginConfig.pluginActivityMethods += '\n';
         pluginConfig.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
     }
+
+    const mainActivity = plugin.mainActivity;
+    if (mainActivity) {
+        if (mainActivity.createMethods instanceof Array) {
+            pluginConfig.pluginActivityCreateMethods += '\n';
+            pluginConfig.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
+        }
+
+        if (mainActivity.resultMethods instanceof Array) {
+            pluginConfig.pluginActivityResultMethods += '\n';
+            pluginConfig.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
+        }
+
+        if (mainActivity.imports instanceof Array) {
+            mainActivity.imports.forEach((v) => {
+                pluginConfig.pluginActivityImports += `import ${v}\n`;
+            });
+        }
+
+        if (mainActivity.methods instanceof Array) {
+            pluginConfig.pluginActivityMethods += '\n';
+            pluginConfig.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
+        }
+    }
+
     if (pkg) pluginConfig.pluginImports += `import ${pkg}\n`;
     if (className) pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
 
+    if (plugin.imports) {
+        plugin.imports.forEach((v) => {
+            pluginConfig.pluginImports += `import ${v}\n`;
+        });
+    }
+
     if (plugin.implementations) {
         plugin.implementations.forEach((v) => {
-            pluginConfig.pluginImplementations += `    implementation '${v}'\n`;
+            pluginConfig.pluginImplementations += `    implementation ${v}\n`;
         });
+    }
+
+    if (plugin.mainApplicationMethods) {
+        pluginConfig.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+    }
+
+    const appBuildGradle = plugin['app/build.gradle'];
+    if (appBuildGradle) {
+        if (appBuildGradle.apply) {
+            appBuildGradle.apply.forEach((v) => {
+                pluginConfig.applyPlugin += `apply ${v}\n`;
+            });
+        }
     }
 
     if (plugin.afterEvaluate) {
@@ -760,6 +806,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const pluginAfterEvaluate = '';
     const pluginActivityImports = '';
     const pluginActivityMethods = '';
+    const mainApplicationMethods = '';
+    const applyPlugin = '';
+    const pluginActivityCreateMethods = '';
+    const pluginActivityResultMethods = '';
     const pluginConfig = {
         pluginIncludes,
         pluginPaths,
@@ -769,32 +819,21 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         pluginAfterEvaluate,
         pluginActivityImports,
         pluginActivityMethods,
+        mainApplicationMethods,
+        applyPlugin,
+        pluginActivityCreateMethods,
+        pluginActivityResultMethods
     };
 
     // PLUGINS
-    if (c.files.appConfigFile && c.files.pluginConfig) {
-        const { includedPlugins } = c.files.appConfigFile.common;
-        if (includedPlugins) {
-            const { plugins } = c.files.pluginConfig;
-            Object.keys(plugins).forEach((key) => {
-                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins);
-                    const pluginPlat = plugin[platform];
-                    if (pluginPlat) {
-                        if (plugin['no-active'] !== true) {
-                            if (pluginPlat.packages) {
-                                pluginPlat.packages.forEach((ppkg) => {
-                                    _injectPlugin(c, pluginPlat, key, ppkg, pluginConfig);
-                                });
-                            } else {
-                                _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    }
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        // if (pluginPlat.packages) {
+        //     pluginPlat.packages.forEach((ppkg) => {
+        //         _injectPlugin(c, pluginPlat, key, ppkg, pluginConfig);
+        //     });
+        _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
+    });
+
     pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
 
     // FONTS
@@ -960,11 +999,8 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     pluginConfig.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
 
 
-    // APPLY
-    pluginConfig.apply = '';
-
     writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
-        { pattern: '{{PLUGIN_APPLY}}', override: pluginConfig.apply },
+        { pattern: '{{PLUGIN_APPLY}}', override: pluginConfig.applyPlugin },
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
         { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
@@ -993,6 +1029,8 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: pluginConfig.pluginActivityImports },
         { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: pluginConfig.pluginActivityMethods },
+        { pattern: '{{PLUGIN_ON_CREATE}}', override: pluginConfig.pluginActivityCreateMethods },
+        { pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}', override: pluginConfig.pluginActivityResultMethods },
     ]);
 
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
@@ -1001,6 +1039,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
         { pattern: '{{PLUGIN_IMPORTS}}', override: pluginConfig.pluginImports },
         { pattern: '{{PLUGIN_PACKAGES}}', override: pluginConfig.pluginPackages },
+        { pattern: '{{PLUGIN_METHODS}}', override: pluginConfig.mainApplicationMethods },
     ]);
 
     const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
