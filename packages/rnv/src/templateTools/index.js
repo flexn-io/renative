@@ -64,7 +64,14 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const applyTemplate = c => new Promise((resolve, reject) => {
+const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    if (selectedTemplate) {
+        logTask(`applyTemplate:${selectedTemplate}`);
+
+        resolve();
+        return;
+    }
+
     if (!c.files.projectConfig.defaultProjectConfigs) {
         logTask('applyTemplate');
         resolve();

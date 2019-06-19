@@ -38,6 +38,12 @@
             },
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+            },
+            "androidtv": {
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+            },
+            "androidwear": {
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
             }
         },
         "renative": {
@@ -769,6 +775,18 @@
                         "maven { url 'https://maven.fabric.io/public' }"
                     ]
                 }
+            },
+            "androidtv": {
+                "build.gradle": {
+                    "buildscript": {
+                        "dependencies": [
+                            "classpath 'io.fabric.tools:gradle:1.25.4'"
+                        ]
+                    },
+                    "repositories": [
+                        "maven { url 'https://maven.fabric.io/public' }"
+                    ]
+                }
             }
         },
         "firebase-core": {
@@ -918,6 +936,9 @@
             },
             "android": {
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
+            },
+            "androidtv": {
+                "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
             }
         },
         "react-native-web": {
@@ -1025,6 +1046,9 @@
             "version": "0.1.0",
             "android": {
                 "package": "com.thebylito.navigationbarcolor.NavigationBarColorPackage"
+            },
+            "androidtv": {
+                "package": "com.thebylito.navigationbarcolor.NavigationBarColorPackage"
             }
         },
         "@react-native-community/netinfo": {
@@ -1034,6 +1058,9 @@
             },
             "android": {
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
+            },
+            "androidtv": {
+                "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
             }
         },
         "react-native-fast-image": {
@@ -1042,6 +1069,9 @@
                 "podName": "react-native-fast-image"
             },
             "android": {
+                "package": "com.dylanvann.fastimage.FastImageViewPackage"
+            },
+            "androidtv": {
                 "package": "com.dylanvann.fastimage.FastImageViewPackage"
             }
         }
