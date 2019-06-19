@@ -128,7 +128,7 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
                     copyFolderContentsRecursiveSync(path.join(rptf, '_shared'), path.join(prf, ptfn, '_shared'));
                 }
 
-
+                c.files.projectConfig.platformTemplatesFolders = c.files.projectConfig.platformTemplatesFolders || {};
                 c.files.projectConfig.platformTemplatesFolders[v] = `./${ptfn}`;
 
                 writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig);
