@@ -426,6 +426,37 @@ You can also customise default plugin configuration:
 }
 ```
 
+Plugin Spec:
+
+```json
+{
+  "pugin-name": {
+      "version": "",
+      "ios": {
+          "podName": "",
+          "path": "",
+          "appDelegateApplicationMethods": {
+            "didFinishLaunchingWithOptions": [],
+            "open": [],
+            "supportedInterfaceOrientationsFor": [],
+            "didReceiveRemoteNotification": [],
+            "didFailToRegisterForRemoteNotificationsWithError": [],
+            "didReceive": [],
+            "didRegister": [],
+            "didRegisterForRemoteNotificationsWithDeviceToken": [],
+          }
+      },
+      "android": {
+          "package": "",
+          "path": ""
+      },
+      "webpack": {
+
+      }
+  }
+}
+```
+
 
 ---
 
@@ -599,6 +630,13 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
     ├── appConfigs
         └── helloWorld
             ├── assets
+            ├── plugins
+            │   └── some-plugin
+            │       └── builds
+            │            ├── android@release
+            │            │   └── fileToBeInjectedInReleaseMode.txt
+            │            └── android@debug
+            │                └── fileToBeInjectedInDebugMode.txt
             └── builds
                 ├── android@release
                 │   └── fileToBeInjectedInReleaseMode.txt

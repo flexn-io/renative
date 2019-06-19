@@ -41,9 +41,11 @@
             }
         },
         "renative": {
-            "version": "0.23.0-alpha.18",
+            "version": "0.23.0-alpha.19",
             "webpack": {
-                "modulePaths": ["node_modules/renative"],
+                "modulePaths": [
+                    "node_modules/renative"
+                ],
                 "moduleAliases": {
                     "renative": {
                         "projectPath": "node_modules/renative"
@@ -174,7 +176,9 @@
                     "react-native-linear-gradient": "react-native-web-linear-gradient"
                 }
             },
-            "dependsOn": ["react-native-web-linear-gradient"]
+            "dependsOn": [
+                "react-native-web-linear-gradient"
+            ]
         },
         "react-native-fetch-blob": {
             "version": "0.10.8",
@@ -232,7 +236,9 @@
             "version": "0.8.0",
             "ios": {
                 "podName": "react-native-fbsdk",
-                "appDelegateImports": ["FBSDKCoreKit"],
+                "appDelegateImports": [
+                    "FBSDKCoreKit"
+                ],
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
@@ -251,16 +257,22 @@
             },
             "tvos": {
                 "podName": "react-native-fbsdk",
-                "appDelegateImports": ["FBSDKCoreKit"]
+                "appDelegateImports": [
+                    "FBSDKCoreKit"
+                ]
             },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"],
+                "packageParams": [
+                    "mCallbackManager"
+                ],
                 "implementation": "implementation 'com.facebook.android:facebook-android-sdk:4.22.1'"
             },
             "androidtv": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"],
+                "packageParams": [
+                    "mCallbackManager"
+                ],
                 "implementation": "implementation 'com.facebook.android:facebook-android-sdk:4.22.1'"
             }
         },
@@ -443,7 +455,9 @@
                     "react-native-svg": "svgs"
                 }
             },
-            "dependsOn": ["svgs"]
+            "dependsOn": [
+                "svgs"
+            ]
         },
         "react-native-vector-icons": {
             "version": "6.4.2",
@@ -612,16 +626,22 @@
             "version": "1.1.5",
             "ios": {
                 "podName": "react-native-orientation-locker",
-                "appDelegateImports": ["react_native_orientation_locker"],
+                "appDelegateImports": [
+                    "react_native_orientation_locker"
+                ],
                 "appDelegateMethods": {
                     "application": {
-                        "supportedInterfaceOrientationsFor": ["Orientation.getOrientation();"]
+                        "supportedInterfaceOrientationsFor": [
+                            "Orientation.getOrientation();"
+                        ]
                     }
                 }
             },
             "android": {
                 "package": "org.wonday.orientation.OrientationPackage",
-                "activityImports": ["android.content.res.Configuration"],
+                "activityImports": [
+                    "android.content.res.Configuration"
+                ],
                 "activityMethods": [
                     "override fun onConfigurationChanged(newConfig:Configuration) {",
                     "  super.onConfigurationChanged(newConfig)",
@@ -681,17 +701,23 @@
             "MAPS_API_KEY": "define_your_own_api_key",
             "ios": {
                 "podName": "GoogleMaps",
-                "appDelegateImports": ["GoogleMaps"],
+                "appDelegateImports": [
+                    "GoogleMaps"
+                ],
                 "version": "2.5.0",
                 "appDelegateMethods": {
                     "application": {
-                        "didFinishLaunchingWithOptions": ["GMSServices.provideAPIKey(\"{{MAPS_API_KEY}}\")"]
+                        "didFinishLaunchingWithOptions": [
+                            "GMSServices.provideAPIKey(\"{{MAPS_API_KEY}}\")"
+                        ]
                     }
                 }
             },
             "tvos": {
                 "podName": "GoogleMaps",
-                "appDelegateImports": ["GoogleMaps"],
+                "appDelegateImports": [
+                    "GoogleMaps"
+                ],
                 "version": "2.5.0"
             }
         },
@@ -699,7 +725,9 @@
             "no-npm": true,
             "ios": {
                 "podName": "Crashlytics",
-                "appDelegateImports": ["Crashlytics"],
+                "appDelegateImports": [
+                    "Crashlytics"
+                ],
                 "version": "3.10.5"
             },
             "android": {
@@ -710,20 +738,26 @@
             "no-npm": true,
             "ios": {
                 "podName": "Fabric",
-                "appDelegateImports": ["Fabric"],
+                "appDelegateImports": [
+                    "Fabric"
+                ],
                 "version": "1.7.13",
                 "appDelegateMethods": {
                     "application": {
-                        "didFinishLaunchingWithOptions": ["Fabric.with([Crashlytics.self])"]
+                        "didFinishLaunchingWithOptions": [
+                            "Fabric.with([Crashlytics.self])"
+                        ]
                     }
                 },
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [{
-                            "KitInfo": {},
-                            "KitName": "Crashlytics"
-                        }]
+                        "Kits": [
+                            {
+                                "KitInfo": {},
+                                "KitName": "Crashlytics"
+                            }
+                        ]
                     }
                 }
             },
@@ -744,10 +778,14 @@
             "no-npm": true,
             "ios": {
                 "podName": "Firebase/Core",
-                "appDelegateImports": ["Firebase"],
+                "appDelegateImports": [
+                    "Firebase"
+                ],
                 "appDelegateMethods": {
                     "application": {
-                        "didFinishLaunchingWithOptions": ["FirebaseApp.configure()"]
+                        "didFinishLaunchingWithOptions": [
+                            "FirebaseApp.configure()"
+                        ]
                     }
                 }
             }
@@ -872,7 +910,9 @@
         },
         "native-base": {
             "version": "2.12.1",
-            "dependsOn": ["react-native-vector-icons"]
+            "dependsOn": [
+                "react-native-vector-icons"
+            ]
         },
         "@react-native-community/async-storage": {
             "version": "1.4.1",
