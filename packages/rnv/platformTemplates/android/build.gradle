@@ -27,7 +27,7 @@ allprojects {
 
 ext {
     compileSdkVersion = {{COMPILE_SDK_VERSION}}
-    supportLibVersion = '28.0.3'
+    supportLibVersion = '{{SUPPORT_LIB_VERSION}}'
 }
 
 subprojects {
@@ -35,7 +35,7 @@ subprojects {
         if (project.hasProperty("android")) {
             android {
                 compileSdkVersion {{COMPILE_SDK_VERSION}}
-                buildToolsVersion '28.0.3'
+                buildToolsVersion '{{BUILD_TOOLS_VERSION}}'
             }
         }
     }

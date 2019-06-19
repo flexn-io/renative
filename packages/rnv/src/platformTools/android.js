@@ -951,6 +951,9 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     pluginConfig.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
     pluginConfig.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
     pluginConfig.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
+    pluginConfig.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
+    pluginConfig.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
+
 
     // APPLY
     pluginConfig.apply = '';
@@ -976,6 +979,8 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
     writeCleanFile(path.join(appTemplateFolder, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
         { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
+        { pattern: '{{SUPPORT_LIB_VERSION}}', override: pluginConfig.supportLibVersion },
+        { pattern: '{{BUILD_TOOLS_VERSION}}', override: pluginConfig.buildToolsVersion }
     ]);
 
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
