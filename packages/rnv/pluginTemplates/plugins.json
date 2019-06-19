@@ -729,9 +729,6 @@
                     "Crashlytics"
                 ],
                 "version": "3.10.5"
-            },
-            "android": {
-                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true \n}"
             }
         },
         "fabric": {
