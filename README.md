@@ -1591,6 +1591,8 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 rnv run -p androidwear
 ```
 
+NOTE: There is a bug in RN. for now you must NOT have running bundler (`rnv start`) in order for wear sim to work
+
 #### Advanced
 
 Clean and Re-build platform project

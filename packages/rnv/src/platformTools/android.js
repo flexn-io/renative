@@ -370,8 +370,13 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.files.appConfigFile.platforms[platform];
     // TODO Android PROD Crashes if not using this hardcoded one
-    const outputFile = 'index.android';
-    // const outputFile = entryFile;
+    let outputFile;
+    if (platform === ANDROID_WEAR) {
+        outputFile = entryFile;
+    } else {
+        outputFile = 'index.android';
+    }
+
 
     const appFolder = getAppFolder(c, platform);
     executeAsync('react-native', [
