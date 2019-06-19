@@ -6,6 +6,8 @@ import ScreenMyPage from './screenMyPage';
 import ScreenModal from './screenModal';
 import Menu from './menu';
 
+import '../platformAssets/runtime/fontManager';
+
 let AppContainer;
 
 class App extends React.Component {
