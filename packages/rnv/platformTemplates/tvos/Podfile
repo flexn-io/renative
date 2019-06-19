@@ -1,19 +1,9 @@
-
+platform :tvos, '10.0'
 use_frameworks!
 
 target 'RNVAppTVOS' do
-  platform :tvos, '10.0'
   pod 'React', :path => '../../node_modules/react-native', :subspecs => [
-  'Core',
-  'RCTImage',
-  'RCTNetwork',
-  'RCTText',
-  'RCTWebSocket',
-  'DevSupport',
-  'CxxBridge',
-  'RCTAnimation',
-  'RCTLinkingIOS',
-  'RCTSettings'
+{{PLUGIN_SUBSPECS}}
   ]
 
   pod "yoga", :path => "../../node_modules/react-native/ReactCommon/yoga"

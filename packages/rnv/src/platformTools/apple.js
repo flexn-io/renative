@@ -437,9 +437,6 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
                 isRequired: true,
                 func: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
                 begin: `
-        let userAgent = UIWebView().stringByEvaluatingJavaScript(from: "navigator.userAgent")! + " ultrasonic-native,webkit," + (Bundle.main.object(forInfoDictionaryKey: "CFBundleIdentifier") as! String) + ",v" + (Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as! String)
-        UserDefaults.standard.register(defaults: ["UserAgent": userAgent])
-
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()
         let v = RCTRootView(

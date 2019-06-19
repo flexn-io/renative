@@ -2,9 +2,30 @@
 
 These commands must work IN ReNative REPO and STANDALONE apps
 
+## Commands PRIORITY 1
+
+```
+rnv new
+rnv run
+rnv run -p android
+rnv run -p ios
+rnv run -p web
+rnv run -p tizen
+rnv run -p webos
+rnv run -p androidtv
+rnv run -p tvos
+rnv run -p macos
+rnv run -p androidwear
+rnv run -p tizenwatch
+rnv platform eject
+rnv target list
+```
+
 ## Android
 
-Given: No Simulators or Devices are connected
+Given:
+- ~/.rnv config exists
+- No Simulators or Devices are connected
 
 When: `rnv run`
 Then:

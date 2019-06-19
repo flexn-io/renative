@@ -1,25 +1,4 @@
 {
-  "reactCore": {
-    "ios": {
-      "reactSubSpecs": [
-          "Core",
-          "RCTImage",
-          "RCTNetwork",
-          "RCTText",
-          "RCTWebSocket",
-          "DevSupport",
-          "CxxBridge",
-          "RCTAnimation",
-          "RCTLinkingIOS",
-          "RCTGeolocation",
-          "RCTVibration",
-          "PrivateDatabase",
-          "RCTActionSheet",
-          "RCTSettings",
-          "RCTCameraRoll"
-      ]
-    }
-  },
     "plugins": {
         "renative": {
           "version": "file:./packages/renative",

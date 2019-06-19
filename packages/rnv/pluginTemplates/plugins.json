@@ -20,6 +20,22 @@
                     "RCTSettings"
                 ]
             },
+            "tvos": {
+                "reactSubSpecs": [
+                    "Core",
+                    "RCTImage",
+                    "RCTNetwork",
+                    "RCTText",
+                    "RCTWebSocket",
+                    "DevSupport",
+                    "CxxBridge",
+                    "RCTAnimation",
+                    "RCTLinkingIOS",
+                    "RCTVibration",
+                    "PrivateDatabase",
+                    "RCTSettings"
+                ]
+            },
             "android": {
                 "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support'\n exclude group: 'javax.inject'\n exclude group: 'com.squareup.okhttp3',\n module: 'okhttp'\n exclude group: 'com.squareup.okio'\n}"
             }
