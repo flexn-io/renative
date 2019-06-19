@@ -14,6 +14,7 @@ android {
         targetSdkVersion {{TARGET_SDK_VERSION}}
         versionCode {{VERSION_CODE}}
         versionName "{{VERSION_NAME}}"
+        renderscriptSupportModeEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
