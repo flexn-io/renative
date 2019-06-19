@@ -37,7 +37,7 @@
                 ]
             },
             "android": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support'\n exclude group: 'javax.inject'\n exclude group: 'com.squareup.okhttp3',\n module: 'okhttp'\n exclude group: 'com.squareup.okio'\n}"
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
             }
         },
         "renative": {
