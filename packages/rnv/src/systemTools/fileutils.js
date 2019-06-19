@@ -3,7 +3,8 @@ import path from 'path';
 import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
-import { logDebug } from '../common';
+import merge from 'deepmerge';
+import { logDebug, logError } from '../common';
 
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);
@@ -134,8 +135,12 @@ const removeDirSync = (dir, rmSelf) => {
     }
 };
 
-const writeObjectSync = (filePath, obj) => {
-    fs.writeFileSync(filePath, JSON.stringify(obj, null, 4));
+const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
+    if (addNewLine) {
+        fs.writeFileSync(filePath, `${JSON.stringify(obj, null, spaces || 4)}\n`);
+    } else {
+        fs.writeFileSync(filePath, JSON.stringify(obj, null, spaces || 4));
+    }
 };
 
 const readObjectSync = (filePath) => {
@@ -147,7 +152,6 @@ const readObjectSync = (filePath) => {
 };
 
 const updateObjectSync = (filePath, updateObj) => {
-    const merge = require('deepmerge');
     let output;
     const obj = readObjectSync(filePath);
     if (obj) {
@@ -157,10 +161,33 @@ const updateObjectSync = (filePath, updateObj) => {
     return output;
 };
 
+const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
+    const jointArray = destinationArray.concat(sourceArray);
+    const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
+    return uniqueArray;
+};
+
+const mergeObjects = (obj1, obj2) => {
+    if (!obj2) return obj1;
+    if (!obj1) return obj2;
+    return merge(obj1, obj2, { arrayMerge });
+};
+
+const updateConfigFile = async (update, globalConfigPath) => {
+    const configContents = JSON.parse(fs.readFileSync(globalConfigPath));
+
+    if (update.androidSdk) {
+        configContents.sdks.ANDROID_SDK = update.androidSdk;
+    }
+
+    fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
+};
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs,
-    writeObjectSync, readObjectSync, updateObjectSync
+    writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
+    updateConfigFile
 };
 
 export default {
@@ -174,5 +201,8 @@ export default {
     cleanFolder,
     writeObjectSync,
     readObjectSync,
-    updateObjectSync
+    updateObjectSync,
+    arrayMerge,
+    mergeObjects,
+    updateConfigFile
 };

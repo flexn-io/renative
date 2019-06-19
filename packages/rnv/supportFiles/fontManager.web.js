@@ -1,18 +1,15 @@
-const registerFonts = fonts => {
-    fonts.forEach(f => {
+function registerFonts(fonts) {
+    fonts.forEach(function (f) {
         registerFont(f.fontFamily, f.file);
     });
     return {};
-};
+}
 
-const registerFont = (fontFamily, ttf) => {
-    const fontStyles = `@font-face {
-        src: url(${ttf});
-        font-family: ${fontFamily};
-    }`;
-    const id = `${fontFamily}FontFace`;
+function registerFont(fontFamily, ttf) {
+    var fontStyles = '@font-face { src: url(' + ttf + '); font-family: ' + fontFamily + ';}';
+    var id = fontFamily + 'FontFace';
     if (!document.getElementById(id)) {
-        const fStyle = document.createElement('style');
+        var fStyle = document.createElement('style');
         fStyle.type = 'text/css';
         fStyle.id = id;
         if (fStyle.styleSheet) {
@@ -24,6 +21,6 @@ const registerFont = (fontFamily, ttf) => {
     }
 };
 
-const fonts = registerFonts(require('./fonts.js').default);
+var fonts = registerFonts(require('./fonts.js').default);
 
 export default fonts;

@@ -35,10 +35,6 @@
 	<string>Automatic</string>
 	<key>UIAppFonts</key>
 	<array>
-{{PLUGIN_FONTS}}
 	</array>
-{{PLUGIN_PERMISSIONS}}
-{{PLUGIN_ORIENTATIONS}}
-{{PLUGIN_PLIST_EXTRA}}
 </dict>
 </plist>

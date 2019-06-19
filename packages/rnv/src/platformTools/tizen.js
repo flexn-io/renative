@@ -1,34 +1,24 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execShellAsync, execCLI } from '../systemTools/exec';
+import { execCLI } from '../systemTools/exec';
 import {
-    isPlatformSupportedSync,
-    getConfig,
     logTask,
-    logComplete,
     logError,
     getAppFolder,
     isPlatformActive,
-    checkSdk,
     logWarning,
     logInfo,
     logSuccess,
-    configureIfRequired,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBBOS_ARES_INSTALL,
-    CLI_WEBBOS_ARES_LAUNCH,
+    CLI_SDB_TIZEN,
     writeCleanFile,
     getAppTemplateFolder,
     copyBuildsFolder,
 } from '../common';
-import { TIZEN, TIZEN_WATCH } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
 
 const configureTizenGlobal = c => new Promise((resolve, reject) => {
@@ -80,7 +70,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
         });
 });
 
-const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
+const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
 
     execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.globalConfigFolder, 'tizen_author.p12')} -p 1234`)
@@ -91,7 +81,29 @@ const addDevelopTizenCertificate = c => new Promise((resolve, reject) => {
         });
 });
 
-const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
+const getDeviceID = async (c, target) => {
+    const { device } = c.program;
+    if (device) {
+        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`, logTask);
+        if (connectResponse.includes('failed to connect to remote target')) throw new Error(connectResponse);
+    }
+
+    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices', logTask);
+    if (devicesList.includes(target)) {
+        const lines = devicesList.trim().split(/\r?\n/);
+        const devices = lines.filter(line => line.includes(target));
+
+        if (devices.length > 1) {
+            // @todo handle more than one
+        }
+
+        const deviceID = devices[0].split('device')[1].trim();
+        return deviceID;
+    }
+    throw `No device matching ${target} could be found.`;
+};
+
+const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.files.appConfigFile.platforms[platform];
@@ -100,52 +112,70 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
     const tId = platformConfig.id;
-    const tSim = target;
     const gwt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile;
+    let deviceID;
 
-    const TIZEN_UNINSTALL_APP = `uninstall -p ${tId} -t ${tSim}`;
-    const TIZEN_INSTALL_APP = `install -- ${tOut} -n ${gwt} -t ${tSim}`;
-    const TIZEN_RUN_APP = `run -p ${tId} -t ${tSim}`;
+    try {
+        deviceID = await getDeviceID(c, target);
+    } catch (err) {
+        if (err && err.includes && err.includes(`No device matching ${target} could be found`)) {
+            await launchTizenSimulator(c, target);
+            logInfo(
+                `Once simulator is ready run: "${chalk.white.bold(
+                    `rnv run -p ${platform} -t ${target}`
+                )}" again`
+            );
+            return true;
+        }
+    }
+    if (!deviceID) throw new Error('no deviceid');
+    let hasDevice = false;
 
-    configureTizenProject(c, platform)
-        .then(() => buildWeb(c, platform))
-        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, TIZEN_UNINSTALL_APP, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, TIZEN_INSTALL_APP, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
-        .then(() => resolve())
-        .catch((e) => {
-            if (e && e.includes && e.includes(TIZEN_UNINSTALL_APP)) {
-                execCLI(c, CLI_TIZEN, TIZEN_INSTALL_APP, logTask)
-                    .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
-                    .then(() => resolve())
-                    .catch((e) => {
-                        logError(e);
-                        logWarning(
-                            `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
-                                `rnv target launch -p ${platform} -t ${target}`
-                            )}"`
-                        );
+    await configureTizenProject(c, platform);
+    await buildWeb(c, platform);
+    await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
+    await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
 
-                        launchTizenSimulator(c, target)
-                            .then(() => {
-                                logInfo(
-                                    `Once simulator is ready run: "${chalk.white.bold(
-                                        `rnv run -p ${platform} -t ${target}`
-                                    )}" again`
-                                );
-                                resolve();
-                            })
-                            .catch(e => reject(e));
-                    });
-            } else {
-                reject(e);
-            }
-        });
-});
+    try {
+        await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask);
+        hasDevice = true;
+    } catch (e) {
+        if (e && e.includes && e.includes('No device matching')) {
+            await launchTizenSimulator(c, target);
+            logInfo(
+                `Once simulator is ready run: "${chalk.white.bold(
+                    `rnv run -p ${platform} -t ${target}`
+                )}" again`
+            );
+        }
+    }
+    try {
+        await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask);
+        hasDevice = true;
+    } catch (err) {
+        logError(err);
+        logWarning(
+            `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
+                `rnv target launch -p ${platform} -t ${target}`
+            )}"`
+        );
 
+        await launchTizenSimulator(c, target);
+        logInfo(
+            `Once simulator is ready run: "${chalk.white.bold(
+                `rnv run -p ${platform} -t ${target}`
+            )}" again`
+        );
+    }
+
+    if (platform !== 'tizenwatch' && hasDevice) {
+        await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask);
+    } else if (platform === 'tizenwatch' && hasDevice) {
+        logInfo('App installed. Please start it manually');
+    }
+    return true;
+};
 
 const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildTizenProject:${platform}`);
@@ -155,8 +185,6 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
 
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
-    const tId = platformConfig.id;
-    const gwt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile;
 
     configureTizenProject(c, platform)
@@ -184,7 +212,7 @@ const configureTizenProject = (c, platform) => new Promise((resolve, reject) => 
         .catch(e => reject(e));
 });
 
-const configureProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+const configureProject = (c, platform) => new Promise((resolve) => {
     logTask(`configureProject:${platform}`);
 
     const appFolder = getAppFolder(c, platform);

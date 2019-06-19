@@ -41,7 +41,7 @@ import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 
@@ -100,6 +100,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     executePipe(c, PIPES.APP_CONFIGURE_BEFORE)
         .then(() => _checkAndCreatePlatforms(c, c.program.platform))
         .then(() => copyRuntimeAssets(c))
+        .then(() => _copySharedPlatforms(c))
         .then(() => _runPlugins(c, c.paths.rnvPluginsFolder))
         .then(() => _runPlugins(c, c.paths.projectPluginsFolder))
         .then(() => (_isOK(c, p, [ANDROID, ANDROID_TV, ANDROID_WEAR]) ? configureAndroidProperties(c) : Promise.resolve()))
@@ -147,7 +148,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
     askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)", data, 'inputProjectName')
         .then(() => askQuestion(`What's your project Title? (press ENTER to use default: ${chalk.white(data.defaultAppTitle)})`, data, 'inputAppTitle'))
-        .then(() => { data.appID = `com.mycompany.${data.inputProjectName}`; })
+        .then(() => { data.appID = `com.mycompany.${data.inputProjectName.toLowerCase()}`; })
         .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${chalk.white(data.appID)})`, data, 'inputAppID'))
         .then(() => askQuestion(`What's your Version? (press ENTER to use default: ${chalk.white(data.defaultVersion)})`, data, 'inputVersion'))
         .then(() => askQuestion(`What template to use? (press ENTER to use default: ${chalk.white(data.defaultTemplate)})\n${data.optionTemplates.asString})`,
@@ -309,14 +310,14 @@ const checkAndCreateProjectConfig = (c, data) => {
         const defaultProjectConfigs = {
             supportedPlatforms: data.optionPlatforms.selectedOptions,
             template: data.optionTemplates.selectedOption,
-            defaultAppId: appID
+            defaultAppId: appID.toLowerCase()
         };
 
         const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvProjectTemplateFolder, 'rnv-config.json')));
 
         obj.defaultProjectConfigs = defaultProjectConfigs;
 
-        fs.writeFileSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), JSON.stringify(obj, null, 2));
+        writeObjectSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), obj);
     }
 };
 
@@ -431,16 +432,23 @@ const copyRuntimeAssets = c => new Promise((resolve) => {
     resolve();
 });
 
+const _copySharedPlatforms = c => new Promise((resolve) => {
+    logTask(`_copySharedPlatform:${c.platform}`);
+
+    if (c.platform) {
+        mkdirSync(path.resolve(c.paths.platformTemplatesFolders[c.platform], '_shared'));
+
+        copyFolderContentsRecursiveSync(
+            path.resolve(c.paths.platformTemplatesFolders[c.platform], '_shared'),
+            path.resolve(c.paths.platformBuildsFolder, '_shared'),
+        );
+    }
+
+    resolve();
+});
+
 const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     logTask('_runPlugins');
-
-    mkdirSync(path.resolve(c.paths.platformBuildsFolder, '_shared'));
-
-    copyFolderContentsRecursiveSync(
-        path.resolve(c.paths.platformTemplatesFolder, '_shared'),
-        path.resolve(c.paths.platformBuildsFolder, '_shared'),
-    );
-    // copyFileSync(path.resolve(c.paths.platformTemplatesFolder, '_shared/template.js'), path.resolve(c.paths.platformBuildsFolder, '_shared/template.js'));
 
     if (!fs.existsSync(pluginsPath)) {
         logWarning(`Your project plugin folder ${pluginsPath} does not exists. skipping plugin configuration`);

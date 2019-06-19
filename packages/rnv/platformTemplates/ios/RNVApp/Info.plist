@@ -46,15 +46,10 @@
 			<string>Editor</string>
 		</dict>
 		<dict>
-{{PLUGIN_URL_SCHEMES}}
 		</dict>
 	</array>
 	<key>UIAppFonts</key>
 	<array>
-{{PLUGIN_FONTS}}
 	</array>
-{{PLUGIN_PERMISSIONS}}
-{{PLUGIN_ORIENTATIONS}}
-{{PLUGIN_PLIST_EXTRA}}
 </dict>
 </plist>

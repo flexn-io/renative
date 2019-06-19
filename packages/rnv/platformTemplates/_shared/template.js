@@ -17,9 +17,11 @@ const removeBlankLines = string => string.replace(/^\s*\n/gm, '');
 
 const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${tag}" ${tags[tag]} />`);
 
-const htmlTemp = options => {
+const htmlTemp = (options) => {
     const config = Object.assign(DEFAULT_CONFIG, options);
-    const { docType, title, metaTags, htmlTag, contentType, isDebug, isTestVersion } = config;
+    const {
+        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp
+    } = config;
 
     const linkTags = [
         '<link rel="manifest" href="manifest.json" />',
@@ -30,6 +32,11 @@ const htmlTemp = options => {
     const titleTag = `<title>${title}</title>`;
 
     const noScript = '<noscript>You need to enable JavaScript to run this app.</noscript>';
+    let remoteDebugScript;
+
+    if (debug === 'true' && debugIp) {
+        remoteDebugScript = `<script src="http://${debugIp}:8080/target/target-script-min.js#anonymous"></script>`;
+    }
 
     const errScript = `
         <script>window.onerror = function(err) {
@@ -51,6 +58,7 @@ ${htmlTag}
         ${constructMetaTags({ ...metaTags, ...config.metaTags }).join(`\n${indent(2)}`)}
         ${linkTags.join(`\n${indent(2)}`)}
         ${titleTag}
+        ${remoteDebugScript || ''}
         ${isDebug ? errScript : ''}
     </head>
     <body>

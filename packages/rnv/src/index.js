@@ -1,8 +1,5 @@
 import chalk from 'chalk';
-import path from 'path';
-import shell from 'shelljs';
-import Webpack from 'webpack';
-import Common, { initializeBuilder, logComplete, logError, logWelcome } from './common';
+import Common, { initializeBuilder, logComplete, logError, logWelcome, logInfo } from './common';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
 import App from './cli/app';
@@ -15,6 +12,7 @@ import Template from './cli/template';
 import Constants from './constants';
 import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
+import Doctor from './systemTools/doctor';
 import PlatformTools from './platformTools';
 
 const commands = {
@@ -34,7 +32,10 @@ const commands = {
     log: Runner,
     hooks: Hooks,
     fix: Tools,
-    template: Template
+    clean: Tools,
+    tool: Tools,
+    template: Template,
+    debug: Runner
 };
 
 const run = (cmd, subCmd, program, process) => {
@@ -43,9 +44,15 @@ const run = (cmd, subCmd, program, process) => {
         .then((v) => {
             if (commands[cmd]) {
                 commands[cmd](v)
-                    .then(() => logComplete(true))
+                    .then(() => {
+                        if (program.debug) logInfo('You started a debug build. Make sure you have the debugger started or start it with `rnv debug`');
+                        logComplete(true);
+                    })
                     .catch(e => logError(e, true));
             } else if (program.help) {
+                // program.help();
+                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. Here is some help:`);
+                logHelp();
                 logComplete(true);
             } else {
                 logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv')} for help`, true);
@@ -56,13 +63,21 @@ const run = (cmd, subCmd, program, process) => {
 
 const checkWelcome = (cmd, subCmd) => new Promise((resolve, reject) => {
     if (!cmd && !subCmd) {
-        let cmdsString = '';
-        for (const key in commands) {
-            cmdsString += `${key}, `;
-        }
         logWelcome();
 
-        console.log(`
+        logHelp();
+    } else {
+        resolve();
+    }
+});
+
+const logHelp = () => {
+    let cmdsString = '';
+    for (const key in commands) {
+        cmdsString += `${key}, `;
+    }
+
+    console.log(`
 ${chalk.bold.white('COMMANDS:')}
 
 ${cmdsString}
@@ -84,14 +99,14 @@ ${chalk.bold.white('OPTIONS:')}
 '-x, --exeMethod <value>', 'Executable method in buildHooks'
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
-      `);
-    } else {
-        resolve();
-    }
-});
+'-D, --debug', 'enable remote debugger'
+'--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
+`);
+};
 
 export {
-    Constants, Runner, App, Platform, Target, Common, Exec, FileUtils, PlatformTools,
+    Constants, Runner, App, Platform, Target, Common, Exec, FileUtils,
+    PlatformTools, Doctor,
     run
 };
 

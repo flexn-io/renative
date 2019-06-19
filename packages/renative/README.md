@@ -389,6 +389,28 @@ Example:
 ```json
 {
     "plugins": {
+      "renative": "source:rnv",
+      "react": "source:rnv",
+      "react-art": "source:rnv",
+      "react-dom": "source:rnv",
+      "react-native": "source:rnv",
+      "react-native-web": "source:rnv",
+      "react-native-web-image-loader": "source:rnv",
+      "react-native-gesture-handler": "source:rnv",
+      "react-navigation-side-menu": "source:rnv",
+      "react-navigation": "source:rnv",
+      "react-navigation-tabs": "source:rnv",
+      "react-native-reanimated": "source:rnv",
+      "react-native-vector-icons": "source:rnv"
+    }
+}
+```
+
+You can also customise default plugin configuration:
+
+```json
+{
+    "plugins": {
         "react-native-gesture-handler": {
             "version": "0.1.0",
             "ios": {
@@ -401,6 +423,37 @@ Example:
             }
         }
     }
+}
+```
+
+Plugin Spec:
+
+```json
+{
+  "pugin-name": {
+      "version": "",
+      "ios": {
+          "podName": "",
+          "path": "",
+          "appDelegateApplicationMethods": {
+            "didFinishLaunchingWithOptions": [],
+            "open": [],
+            "supportedInterfaceOrientationsFor": [],
+            "didReceiveRemoteNotification": [],
+            "didFailToRegisterForRemoteNotificationsWithError": [],
+            "didReceive": [],
+            "didRegister": [],
+            "didRegisterForRemoteNotificationsWithDeviceToken": [],
+          }
+      },
+      "android": {
+          "package": "",
+          "path": ""
+      },
+      "webpack": {
+
+      }
+  }
 }
 ```
 
@@ -484,7 +537,10 @@ If you want to use different settings to those defined globally per project you 
   "platformBuildsFolder": "PROJECT_HOME/platformBuilds",
   "projectPlugins": "./projectConfig/plugins",
   "projectConfigFolder": "./projectConfig",
-  "defaultPorts": {}
+  "defaultPorts": {},
+  "defaultProjectConfigs": {
+    "template": ""
+  }
 }
 ```
 
@@ -574,6 +630,13 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
     ├── appConfigs
         └── helloWorld
             ├── assets
+            ├── plugins
+            │   └── some-plugin
+            │       └── builds
+            │            ├── android@release
+            │            │   └── fileToBeInjectedInReleaseMode.txt
+            │            └── android@debug
+            │                └── fileToBeInjectedInDebugMode.txt
             └── builds
                 ├── android@release
                 │   └── fileToBeInjectedInReleaseMode.txt
@@ -728,7 +791,7 @@ c.paths.globalConfigFolder;
 c.paths.globalConfigPath;
 c.paths.appConfigsFolder;
 c.paths.entryFolder;
-c.paths.platformTemplatesFolder;
+c.paths.platformTemplatesFolders;
 c.paths.platformAssetsFolder;
 c.paths.platformBuildsFolder;
 c.paths.projectPluginsFolder;
@@ -1226,6 +1289,8 @@ rnv run -p web --port 9999
 #### Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
+-   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
+-   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 
 #### Project Configuration
 
@@ -1525,6 +1590,8 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 ```
 rnv run -p androidwear
 ```
+
+NOTE: There is a bug in RN. for now you must NOT have running bundler (`rnv start`) in order for wear sim to work
 
 #### Advanced
 

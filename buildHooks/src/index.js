@@ -2,7 +2,7 @@ import chalk from 'chalk';
 import shelljs from 'shelljs';
 import path from 'path';
 import fs from 'fs';
-import { PlatformTools, FileUtils } from 'rnv';
+import { PlatformTools, FileUtils, Doctor } from 'rnv';
 
 const hooks = {
     hello: c => new Promise((resolve, reject) => {
@@ -28,13 +28,13 @@ const hooks = {
     prePublish: c => new Promise((resolve, reject) => {
         const v = {
             version: c.files.projectPackage.version,
-            codename: c.files.projectPackage.codename,
         };
         const pkgFolder = path.join(c.paths.projectRootFolder, 'packages');
-        FileUtils.updateObjectSync(path.join(pkgFolder, 'rnv/package.json'), v);
-        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
-        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative-template-blank/package.json'), v);
-        FileUtils.updateObjectSync(path.join(pkgFolder, 'renative/package.json'), v);
+        _updatePackageJson(c, c.paths.projectPackagePath, v);
+        _updatePackageJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
+        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
+        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-blank/package.json'), v);
+        _updatePackageJson(c, path.join(pkgFolder, 'renative/package.json'), v);
         FileUtils.copyFileSync(path.join(c.paths.projectRootFolder, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
         FileUtils.updateObjectSync(c.paths.rnvPluginTemplatesConfigPath, {
             plugins: {
@@ -46,10 +46,25 @@ const hooks = {
 
         resolve();
     }),
+    awesomePlugins: c => new Promise((resolve, reject) => {
+        resolve();
+    }),
 };
 
 const pipes = {
     'app:configure:before': hooks.hello,
+};
+
+const _updatePackageJson = (c, pPath, updateObj) => {
+    const pObj = FileUtils.readObjectSync(pPath);
+
+    const merge = require('deepmerge');
+    let obj;
+    if (pObj) {
+        obj = merge(pObj, updateObj);
+    }
+    const output = Doctor.fixPackageObject(obj);
+    FileUtils.writeObjectSync(pPath, output, 4, true);
 };
 
 export { pipes, hooks };

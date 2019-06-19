@@ -66,6 +66,7 @@ module.exports = {
         'comma-dangle': ['error', 'only-multiline'],
         'no-underscore-dangle': 'off',
         'mocha/no-exclusive-tests': 'error',
-        "prefer-destructuring": ["error", {"object": true, "array": false}]
+        "prefer-destructuring": ["error", {"object": true, "array": false}],
+        "prefer-promise-reject-errors": "off"
     },
 };

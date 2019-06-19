@@ -31,6 +31,8 @@ class MainApplication : Application(), ReactApplication {
         override fun getJSMainModuleName(): String = "{{ENTRY_FILE}}"
     }
 
+{{PLUGIN_METHODS}}
+
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost
 
     override fun onCreate() {

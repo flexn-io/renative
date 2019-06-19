@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function generateConfig(config) {
     const projectDir = path.resolve(config.currentDir, '../../');
@@ -18,28 +17,60 @@ function generateConfig(config) {
     const modulePaths = [
         'src',
         'packages',
-        // 'node_modules/react-navigation-tabs',
-        // 'node_modules/react-navigation-stack',
-        // 'node_modules/react-navigation',
-        // 'node_modules/@react-navigation',
-        // 'node_modules/react-native-gesture-handler',
-        // 'node_modules/react-native-reanimated',
-        // 'node_modules/react-native-camera',
-        // 'node_modules/react-native-actionsheet',
-        // 'node_modules/react-native-root-toast',
-        // 'node_modules/react-native-root-siblings',
-        // 'node_modules/static-container',
-        // 'node_modules/react-native-material-dropdown',
-        // 'node_modules/react-native-material-buttons',
-        // 'node_modules/react-native-material-textfield',
-        // 'node_modules/react-native-material-ripple',
-        // 'node_modules/react-native-easy-grid',
-        // 'node_modules/native-base-shoutem-theme',
-        // 'node_modules/react-native-drawer',
-        // 'node_modules/react-native-safe-area-view',
-        // 'node_modules/react-native-vector-icons',
-        // 'node_modules/react-native-keyboard-aware-scroll-view',
-        // 'node_modules/react-native-tab-view',
+        'node_modules/react-native-screens',
+        'node_modules/react-navigation-tabs',
+        'node_modules/react-navigation-stack',
+        'node_modules/react-navigation',
+        'node_modules/@react-navigation',
+        'node_modules/react-native-gesture-handler',
+        'node_modules/react-native-reanimated',
+        'node_modules/react-native-camera',
+        'node_modules/react-native-actionsheet',
+        'node_modules/react-native-root-toast',
+        'node_modules/react-native-root-siblings',
+        'node_modules/static-container',
+        'node_modules/react-native-material-dropdown',
+        'node_modules/react-native-material-buttons',
+        'node_modules/react-native-material-textfield',
+        'node_modules/react-native-material-ripple',
+        'node_modules/react-native-easy-grid',
+        'node_modules/native-base-shoutem-theme',
+        'node_modules/react-native-drawer',
+        'node_modules/react-native-safe-area-view',
+        'node_modules/react-native-vector-icons',
+        'node_modules/react-native-keyboard-aware-scroll-view',
+        'node_modules/react-native-tab-view',
+        'node_modules/query-string',
+        'node_modules/split-on-first',
+        'node_modules/strict-uri-encode',
+        'node_modules/@react-navigation/core',
+        'node_modules/@react-navigation/web',
+        'node_modules/react-native-animatable',
+        'node_modules/react-native-collapse-view',
+        'node_modules/react-native-color-picker',
+        'node_modules/react-native-ios-picker',
+        'node_modules/react-native-modal-datetime-picker',
+        'node_modules/react-native-modal',
+        'node_modules/react-native-paper',
+
+        'node_modules/react-native-animatable',
+        'node_modules/react-native-collapse-view',
+        'node_modules/react-native-color-picker',
+        'node_modules/react-native-ios-picker',
+        'node_modules/react-native-modal-datetime-picker/',
+        'node_modules/react-native-modal',
+        'node_modules/react-native-paper',
+        'node_modules/react-native-platform-touchable',
+        'node_modules/react-native-safe-area-view',
+        'node_modules/react-native-super-grid',
+        'node_modules/react-native-tab-view',
+        'node_modules/react-native-vector-icons',
+        'node_modules/react-native-simple-markdown',
+        'node_modules/react-native-swipe-gestures',
+        'node_modules/react-native-switch',
+        'node_modules/react-native-orientation-locker',
+        'node_modules/react-navigation',
+        'node_modules/@react-navigation/native',
     ].concat(config.modulePaths);
 
     const rules = {};
@@ -50,7 +81,7 @@ function generateConfig(config) {
             loader: 'babel-loader',
             options: {
                 babelrc: false,
-                presets: [['module:metro-react-native-babel-preset']],
+                presets: ['module:metro-react-native-babel-preset'],
             },
         },
     };
@@ -120,6 +151,7 @@ function generateConfig(config) {
         'process.env.NODE_ENV': JSON.stringify(config.environment),
         __DEV__: config.environment === 'production' || true,
     });
+
     plugins.html = new HtmlWebpackPlugin({
         alwaysWriteToDisk: true,
         filename: path.resolve(appBuildPublicDir, './index.html'),
@@ -127,6 +159,8 @@ function generateConfig(config) {
         minify: false,
         templateParameters: {
             ...config,
+            debug: process.env.DEBUG,
+            debugIp: process.env.DEBUG_IP
         },
     });
     plugins.harddisk = new HtmlWebpackHarddiskPlugin();

@@ -8,12 +8,13 @@ global.fetch = require('node-fetch');
 global.Headers = global.fetch.Headers;
 
 const cli = require('../dist/index.js');
-const package = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')));
-var cmdValue;
-var cmdOption;
+
+const packageJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../package.json')));
+let cmdValue;
+let cmdOption;
 
 program
-    .version(package.version)
+    .version(packageJson.version)
     .option('-i, --info', 'show full debug Info')
     .option('-u, --update', 'force Update dependencies (iOS only)')
     .option('-p, --platform <value>', 'select specific Platform')
@@ -29,6 +30,9 @@ program
     .option('-H, --host <value>', 'custom Host ip')
     .option('-x, --exeMethod <value>', 'eXecutable method in buildHooks')
     .option('-P, --port <value>', 'custom Port')
+    .option('-D, --debug', 'enable remote debugger')
+    .option('--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect')
+    .option('--ci', 'CI/CD flag so it wont ask questions')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

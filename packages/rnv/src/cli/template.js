@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import shell from 'shelljs';
+import chalk from 'chalk';
 import {
     isPlatformSupported,
     cleanNodeModules,
@@ -18,12 +19,14 @@ import {
     logWarning,
     configureIfRequired,
     cleanPlatformIfRequired,
+    askQuestion,
+    finishQuestion
 } from '../common';
 import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { executePipe } from '../projectTools/buildHooks';
 import appRunner, { copyRuntimeAssets } from './app';
-import { listTemplates, addTemplate } from '../templateTools';
+import { listTemplates, addTemplate, getTemplateOptions, applyTemplate } from '../templateTools';
 
 const LIST = 'list';
 const ADD = 'add';
@@ -75,11 +78,19 @@ const _templateAdd = c => new Promise((resolve, reject) => {
 });
 
 const _templateApply = c => new Promise((resolve, reject) => {
-    logTask('_templateAdd');
+    logTask('_templateApply');
 
-    listTemplates()
+    const opts = getTemplateOptions();
+
+    askQuestion(`Pick which template to apply ${chalk.yellow('(NOTE: your project content will be overriden!)')}: \n${opts.asString}`)
+        .then(v => opts.pick(v))
+        .then((v) => {
+            finishQuestion();
+            return Promise.resolve();
+        })
+        .then(() => applyTemplate(c, opts.selectedOption))
         .then(() => resolve())
-        .catch(e => reject());
+        .catch(e => reject(e));
 });
 
 export { PIPES };

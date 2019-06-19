@@ -5,6 +5,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import child_process from 'child_process';
 import { executeAsync } from '../systemTools/exec';
+import { isObject } from '../systemTools/objectUtils';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -24,10 +25,12 @@ import {
     getIP,
     getQuestion,
     logSuccess,
+    getBuildsFolder
 } from '../common';
 import { IOS, TVOS } from '../constants';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { getMergedPlugin } from '../pluginTools';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
+import { getMergedPlugin, parsePlugins } from '../pluginTools';
+import { saveObjToPlistSync } from './apple/plistParser';
 
 const xcode = require('xcode');
 const readline = require('readline');
@@ -337,8 +340,8 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .catch((e) => {
             if (!c.program.update) {
                 logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                runPod('update', getAppFolder(c, platform))
-                    .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
+                _preConfigureProject(c, platform, appFolderName, ip, port)
+                    .then(() => runPod('update', getAppFolder(c, platform)))
                     .then(() => resolve())
                     .catch(err => reject(err));
             } else {
@@ -358,8 +361,20 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
             }
         });
     }
-    if (plugin.appDelegateMethods instanceof Array) {
-        pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    // if (plugin.appDelegateMethods instanceof Array) {
+    //     pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    // }
+
+    if (plugin.appDelegateMethods) {
+        for (const key in plugin.appDelegateMethods) {
+            for (const key2 in plugin.appDelegateMethods[key]) {
+                const plugArr = pluginConfig.appDelegateMethods[key][key2];
+                const plugVal = plugin.appDelegateMethods[key][key2];
+                if (!plugArr.includes(plugVal)) {
+                    plugArr.push(plugVal);
+                }
+            }
+        }
     }
 };
 
@@ -383,25 +398,27 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const pluginConfig = {
         pluginAppDelegateImports,
         pluginAppDelegateMethods,
+        appDelegateMethods: {
+            application: {
+                didFinishLaunchingWithOptions: [],
+                open: [],
+                supportedInterfaceOrientationsFor: [],
+                didReceiveRemoteNotification: [],
+                didFailToRegisterForRemoteNotificationsWithError: [],
+                didReceive: [],
+                didRegister: [],
+                didRegisterForRemoteNotificationsWithDeviceToken: []
+            },
+            userNotificationCenter: {
+                willPresent: []
+            }
+        }
     };
 
     // PLUGINS
-    if (c.files.appConfigFile && c.files.pluginConfig) {
-        const { includedPlugins } = c.files.appConfigFile.common;
-        if (includedPlugins) {
-            const { plugins } = c.files.pluginConfig;
-            Object.keys(plugins).forEach((key) => {
-                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins)[platform];
-                    if (plugin) {
-                        if (plugins[key]['no-active'] !== true) {
-                            _injectPlugin(c, plugin, key, plugin.package, pluginConfig);
-                        }
-                    }
-                }
-            });
-        }
-    }
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
+    });
 
     // BG COLOR
     let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
@@ -411,6 +428,112 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
         } else {
             logWarning(`Your choosen color in config.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
+        }
+    }
+
+    const methods = {
+        application: {
+            didFinishLaunchingWithOptions: {
+                isRequired: true,
+                func: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
+                begin: `
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        let vc = UIViewController()
+        let v = RCTRootView(
+            bundleURL: bundleUrl,
+            moduleName: moduleName,
+            initialProperties: nil,
+            launchOptions: launchOptions)
+        vc.view = v
+        vc.view.backgroundColor = UIColor.white
+        v?.frame = vc.view.bounds
+        self.window?.rootViewController = vc
+        self.window?.makeKeyAndVisible()
+        UNUserNotificationCenter.current().delegate = self
+                `,
+                render: v => `${v}`,
+                end: 'return true',
+
+            },
+            open: {
+                func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
+                begin: 'var handled = false',
+                render: v => `if(!handled) { handled = ${v} }`,
+                end: 'return handled',
+
+            },
+            supportedInterfaceOrientationsFor: {
+                func: 'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
+                begin: null,
+                render: v => `return ${v}`,
+                end: null,
+
+            },
+            didReceiveRemoteNotification: {
+                func: 'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didFailToRegisterForRemoteNotificationsWithError: {
+                func: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didReceive: {
+                func: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didRegister: {
+                func: 'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            },
+            didRegisterForRemoteNotificationsWithDeviceToken: {
+                func: 'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+
+            }
+        },
+        userNotificationCenter: {
+            willPresent: {
+                func: 'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null
+            }
+        }
+    };
+
+    const constructMethod = (lines, method) => {
+        let output = '';
+        if (lines.length || method.isRequired) {
+            output += `\n${method.func}\n`;
+            if (method.begin) output += `   ${method.begin}\n`;
+            lines.forEach((v) => {
+                output += `    ${method.render(v)}\n`;
+            });
+            if (method.end) output += `   ${method.end}\n`;
+            output += '}\n';
+        }
+        return output;
+    };
+
+    for (const key in methods) {
+        const method = methods[key];
+        for (const key2 in method) {
+            const f = method[key2];
+            pluginConfig.pluginAppDelegateMethods += constructMethod(pluginConfig.appDelegateMethods[key][key2], f);
         }
     }
 
@@ -458,126 +581,19 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
 
     const appFolder = getAppFolder(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
     const tId = getConfigProp(c, platform, 'teamID');
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
 
+
+    // ASSETS
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 
-    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
-
-    let pluginInject = '';
-    // PLUGINS
-    if (c.files.appConfigFile && c.files.pluginConfig) {
-        const { includedPlugins } = c.files.appConfigFile.common;
-        if (includedPlugins) {
-            const { plugins } = c.files.pluginConfig;
-            Object.keys(plugins).forEach((key) => {
-                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins)[platform];
-                    if (plugin) {
-                        if (plugins[key]['no-active'] !== true) {
-                            const isNpm = plugins[key]['no-npm'] !== true;
-                            if (isNpm) {
-                                const podPath = plugin.path ? `../../${plugin.path}` : `../../node_modules/${key}`;
-                                pluginInject += `  pod '${plugin.podName}', :path => '${podPath}'\n`;
-                            } else if (plugin.git) {
-                                const commit = plugin.commit ? `, :commit => '${plugin.commit}'` : '';
-                                pluginInject += `  pod '${plugin.podName}', :git => '${plugin.git}'${commit}\n`;
-                            } else if (plugin.version) {
-                                pluginInject += `  pod '${plugin.podName}', '${plugin.version}'\n`;
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    // PERMISSIONS
-    let pluginPermissions = '';
-    if (permissions) {
-        permissions.forEach((v) => {
-            if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
-                const pc = c.files.permissionsConfig.permissions[plat];
-                if (pc[v]) {
-                    pluginPermissions += `  <key>${pc[v].key}</key>\n  <string>${pc[v].desc}</string>\n`;
-                }
-            }
-        });
-    }
-    pluginPermissions = pluginPermissions.substring(0, pluginPermissions.length - 1);
-
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
-        { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-    ]);
-
-    // ORIENTATIONS
-    let pluginOrientations = '';
-    const pluginOrientationPhoneKey = '<key>UISupportedInterfaceOrientations</key>';
-    const pluginOrientationTabKey = '<key>UISupportedInterfaceOrientations~ipad</key>';
-    let pluginOrientationPhone = `${pluginOrientationPhoneKey}
-    <array>
-      <string>UIInterfaceOrientationPortrait</string>
-    </array>`;
-    let pluginOrientationTab = `${pluginOrientationTabKey}
-    <array>
-      <string>UIInterfaceOrientationPortrait</string>
-    </array>`;
-
-    if (orientationSupport) {
-        if (orientationSupport.phone) {
-            pluginOrientationPhone = `${pluginOrientationPhoneKey}\n    <array>\n`;
-            orientationSupport.phone.forEach((v) => {
-                pluginOrientationPhone += `<string>${v}</string>\n`;
-            });
-            pluginOrientationPhone += '    </array>';
-        }
-        if (orientationSupport.tab) {
-            pluginOrientationTab = `${pluginOrientationTabKey}\n    <array>\n`;
-            orientationSupport.tab.forEach((v) => {
-                pluginOrientationTab += `<string>${v}</string>\n`;
-            });
-            pluginOrientationTab += '    </array>';
-        }
-    }
-    pluginOrientations = `${pluginOrientationPhone}\n${pluginOrientationTab}`;
-
-    // URL_SCHEMES
-    let pluginUrlSchemes = '';
-
-    if (urlScheme) {
-        pluginUrlSchemes = `<key>CFBundleTypeRole</key>
-      <string>Editor</string>
-      <key>CFBundleURLName</key>
-      <string>${urlScheme}</string>
-      <key>CFBundleURLSchemes</key>
-      <array>
-        <string>${urlScheme}</string>
-      </array>`;
-    }
-
-    // PLIST EXTRAS
-    let pluginPlistExtra = '';
-
-    if (plistExtra) {
-        for (const key in plistExtra) {
-            let value;
-            if (typeof plistExtra[key] === 'boolean') {
-                value = `<${plistExtra[key]} />`;
-            } else {
-                value = `<string>${plistExtra[key]}</string>`;
-            }
-            pluginPlistExtra += `<key>${key}</key>\n${value}\n`;
-        }
-    }
 
     // PROJECT
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
     const xcodeProj = xcode.project(projectPath);
+    const embeddedFonts = [];
     xcodeProj.parse(() => {
         const appId = getAppId(c, platform);
         if (tId) {
@@ -585,10 +601,8 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         } else {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
-
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
-        let pluginFonts = '';
         if (c.files.appConfigFile) {
             if (fs.existsSync(c.paths.fontsConfigFolder)) {
                 fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
@@ -603,7 +617,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
                                 const fontDest = path.join(fontFolder, font);
                                 copyFileSync(fontSource, fontDest);
                                 xcodeProj.addResourceFile(fontSource);
-                                pluginFonts += `  <string>${font}</string>\n`;
+                                embeddedFonts.push(font);
                             } else {
                                 logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                             }
@@ -613,21 +627,164 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             }
         }
 
+        // PLUGINS
+        parsePlugins(c, (plugin, pluginPlat, key) => {
+            if (pluginPlat.xcodeproj) {
+                if (pluginPlat.xcodeproj.resourceFiles) {
+                    pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
+                        xcodeProj.addResourceFile(path.join(appFolder, v));
+                    });
+                }
+                if (pluginPlat.xcodeproj.sourceFiles) {
+                    pluginPlat.xcodeproj.sourceFiles.forEach((v) => {
+                        // const group = xcodeProj.hash.project.objects.PBXGroup['200132F21F6BF9CF00450340'];
+                        xcodeProj.addSourceFile(v, null, '200132F21F6BF9CF00450340');
+                    });
+                }
+                if (pluginPlat.xcodeproj.headerFiles) {
+                    pluginPlat.xcodeproj.headerFiles.forEach((v) => {
+                        xcodeProj.addHeaderFile(v, null, '200132F21F6BF9CF00450340');
+                    });
+                }
+            }
+        });
+
         fs.writeFileSync(projectPath, xcodeProj.writeSync());
-
-        writeCleanFile(path.join(appTemplateFolder, `${appFolderName}/Info.plist`), plistPath, [
-            { pattern: '{{PLUGIN_FONTS}}', override: pluginFonts },
-            { pattern: '{{PLUGIN_PERMISSIONS}}', override: pluginPermissions },
-            { pattern: '{{PLUGIN_APPTITLE}}', override: getAppTitle(c, platform) },
-            { pattern: '{{PLUGIN_VERSION_STRING}}', override: getAppVersion(c, platform) },
-            { pattern: '{{PLUGIN_ORIENTATIONS}}', override: pluginOrientations },
-            { pattern: '{{PLUGIN_URL_SCHEMES}}', override: pluginUrlSchemes },
-            { pattern: '{{PLUGIN_PLIST_EXTRA}}', override: pluginPlistExtra },
-        ]);
-
+        _parsePodFile(c, platform);
+        _parseEntitlements(c, platform);
+        _parsePlist(c, platform, embeddedFonts);
         resolve();
     });
 });
+
+const _parsePodFile = (c, platform) => {
+    logTask(`_parsePodFile:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    let pluginSubspecs = '';
+    let pluginInject = '';
+
+    // PLUGINS
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        const isNpm = plugin['no-npm'] !== true;
+        if (pluginPlat.podName) {
+            if (isNpm) {
+                const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+                pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
+            } else if (pluginPlat.git) {
+                const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+                pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
+            } else if (pluginPlat.version) {
+                pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
+            } else {
+                pluginInject += `  pod '${pluginPlat.podName}'\n`;
+            }
+        }
+
+        if (pluginPlat.reactSubSpecs) {
+            pluginPlat.reactSubSpecs.forEach((v) => {
+                if (!pluginSubspecs.includes(`'${v}'`)) {
+                    pluginSubspecs += `  '${v}',\n`;
+                }
+            });
+        }
+    });
+
+    // SUBSPECS
+    const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
+    if (reactCore) {
+        if (reactCore.ios.reactSubSpecs) {
+            reactCore.ios.reactSubSpecs.forEach((v) => {
+                if (!pluginSubspecs.includes(`'${v}'`)) {
+                    pluginSubspecs += `  '${v}',\n`;
+                }
+            });
+        }
+    }
+
+    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
+        { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
+        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs }
+    ]);
+};
+
+const _parseEntitlements = (c, platform) => {
+    logTask(`_parseEntitlements:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = _getAppFolderName(c, platform);
+    const entitlementsPath = path.join(appFolder, `${appFolderName}/RNVApp.entitlements`);
+    // PLUGIN ENTITLEMENTS
+    const pluginsEntitlementsObj = mergeObjects(
+        readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json')),
+        getConfigProp(c, platform, 'entitlements')
+    );
+    saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
+};
+
+const _parsePlist = (c, platform, embeddedFonts) => {
+    logTask(`_parsePlist:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = _getAppFolderName(c, platform);
+    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
+    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
+
+    // PLIST
+    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/info.plist.json'));
+    plistObj.CFBundleDisplayName = getAppTitle(c, platform);
+    plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
+    // FONTS
+    if (embeddedFonts.length) {
+        plistObj.UIAppFonts = embeddedFonts;
+    }
+    // PERMISSIONS
+    const pluginPermissions = '';
+    if (permissions) {
+        permissions.forEach((v) => {
+            if (c.files.permissionsConfig) {
+                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
+                const pc = c.files.permissionsConfig.permissions[plat];
+                if (pc[v]) {
+                    // pluginPermissions += `  <key>${pc[v].key}</key>\n  <string>${pc[v].desc}</string>\n`;
+                    plistObj[pc[v].key] = pc[v].desc;
+                }
+            }
+        });
+    }
+    // ORIENATATIONS
+    if (orientationSupport) {
+        if (orientationSupport.phone) {
+            plistObj.UISupportedInterfaceOrientations = orientationSupport.phone;
+        } else {
+            plistObj.UISupportedInterfaceOrientations = ['UIInterfaceOrientationPortrait'];
+        }
+        if (orientationSupport.tab) {
+            plistObj['UISupportedInterfaceOrientations~ipad'] = orientationSupport.tab;
+        } else {
+            plistObj['UISupportedInterfaceOrientations~ipad'] = ['UIInterfaceOrientationPortrait'];
+        }
+    }
+    // URL_SCHEMES
+    if (urlScheme) {
+        plistObj.CFBundleURLTypes.push({
+            CFBundleTypeRole: 'Editor',
+            CFBundleURLName: urlScheme,
+            CFBundleURLSchemes: [urlScheme]
+        });
+    }
+    // PLIST EXTRAS
+    if (plistExtra) {
+        plistObj = mergeObjects(plistObj, plistExtra);
+    }
+    // PLUGINS
+    parsePlugins(c, (plugin, pluginPlat, key) => {
+        if (pluginPlat.plist) {
+            plistObj = mergeObjects(plistObj, pluginPlat.plist);
+        }
+    });
+    saveObjToPlistSync(plistPath, plistObj);
+};
 
 const _getAppFolderName = (c, platform) => {
     const projectFolder = getConfigProp(c, platform, 'projectFolder');

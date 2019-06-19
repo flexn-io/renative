@@ -3,23 +3,10 @@ use_frameworks!
 
 target 'RNVApp' do
   pod 'React', :path => '../../node_modules/react-native', :subspecs => [
-  'Core',
-  'RCTImage',
-  'RCTNetwork',
-  'RCTText',
-  'RCTWebSocket',
-  'DevSupport',
-  'CxxBridge',
-  'RCTAnimation',
-  'RCTLinkingIOS',
-  'RCTGeolocation',
-  'RCTVibration',
-  'PrivateDatabase',
-  'RCTActionSheet',
-  'RCTSettings'
+{{PLUGIN_SUBSPECS}}
   ]
 
-  pod "yoga", :path => "../../node_modules/react-native/ReactCommon/yoga"
+  pod 'yoga', :path => "../../node_modules/react-native/ReactCommon/yoga"
   pod 'Folly', :podspec => '../../node_modules/react-native/third-party-podspecs/Folly.podspec'
   pod 'DoubleConversion', :podspec => '../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../../node_modules/react-native/third-party-podspecs/glog.podspec'
