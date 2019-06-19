@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.0-alpha.22",
+            "version": "0.23.0",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -120,17 +120,17 @@
                 "path": "node_modules/react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
                 "mainActivity": {
-                  "imports": [
-                    "com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView"
-                  ],
-                  "methods": ["  override fun createReactActivityDelegate(): ReactActivityDelegate {",
-                      "return object : ReactActivityDelegate(this, mainComponentName) {",
-                      "override fun createRootView():ReactRootView {",
-                      "  return RNGestureHandlerEnabledRootView(this@MainActivity)",
-                      "  } \n } \n}"
-                  ]
+                    "imports": [
+                        "com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView"
+                    ],
+                    "methods": [
+                        "  override fun createReactActivityDelegate(): ReactActivityDelegate {",
+                        "return object : ReactActivityDelegate(this, mainComponentName) {",
+                        "override fun createRootView():ReactRootView {",
+                        "  return RNGestureHandlerEnabledRootView(this@MainActivity)",
+                        "  } \n } \n}"
+                    ]
                 }
-
             },
             "androidtv": {
                 "path": "node_modules/react-native-gesture-handler/android",
@@ -292,17 +292,17 @@
                 ],
                 "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
                 "mainActivity": {
-                  "imports": [
-                    "com.facebook.appevents.AppEventsLogger",
-                    "com.facebook.FacebookSdk"
-                  ],
-                  "createMethods": [
-                    "FacebookSdk.sdkInitialize(applicationContext)",
-                    "AppEventsLogger.activateApp(this)"
-                  ],
-                  "resultMethods": [
-                    "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
-                  ]
+                    "imports": [
+                        "com.facebook.appevents.AppEventsLogger",
+                        "com.facebook.FacebookSdk"
+                    ],
+                    "createMethods": [
+                        "FacebookSdk.sdkInitialize(applicationContext)",
+                        "AppEventsLogger.activateApp(this)"
+                    ],
+                    "resultMethods": [
+                        "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                    ]
                 }
             },
             "androidtv": {
@@ -318,13 +318,13 @@
                 ],
                 "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
                 "mainActivity": {
-                  "resultMethods": [
-                    "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
-                  ],
-                  "createMethods": [
-                    "FacebookSdk.sdkInitialize(applicationContext)",
-                    "AppEventsLogger.activateApp(this)"
-                  ]
+                    "resultMethods": [
+                        "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                    ],
+                    "createMethods": [
+                        "FacebookSdk.sdkInitialize(applicationContext)",
+                        "AppEventsLogger.activateApp(this)"
+                    ]
                 }
             }
         },
@@ -692,17 +692,17 @@
             "android": {
                 "package": "org.wonday.orientation.OrientationPackage",
                 "mainActivity": {
-                  "imports": [
-                    "android.content.res.Configuration"
-                  ],
-                  "methods": [
-                      "override fun onConfigurationChanged(newConfig:Configuration) {",
-                      "  super.onConfigurationChanged(newConfig)",
-                      "  val intent = Intent(\"onConfigurationChanged\")",
-                      "  intent.putExtra(\"newConfig\", newConfig)",
-                      "  this.sendBroadcast(intent)",
-                      "}"
-                  ]
+                    "imports": [
+                        "android.content.res.Configuration"
+                    ],
+                    "methods": [
+                        "override fun onConfigurationChanged(newConfig:Configuration) {",
+                        "  super.onConfigurationChanged(newConfig)",
+                        "  val intent = Intent(\"onConfigurationChanged\")",
+                        "  intent.putExtra(\"newConfig\", newConfig)",
+                        "  this.sendBroadcast(intent)",
+                        "}"
+                    ]
                 }
             }
         },
@@ -785,19 +785,18 @@
                 "version": "3.10.5"
             },
             "android": {
-              "skipImplementation": true,
-              "mainActivity": {
-                "imports": [
-                  "com.crashlytics.android.Crashlytics",
-                  "com.crashlytics.android.core.CrashlyticsCore"
-                ],
-                "createMethods": [
-                  "val core = CrashlyticsCore.Builder().listener {}.build()",
-                  "val crashlyticsKit = Crashlytics.Builder().core(core).build()",
-                  "Fabric.with(this, crashlyticsKit)"
-                ]
-              }
-
+                "skipImplementation": true,
+                "mainActivity": {
+                    "imports": [
+                        "com.crashlytics.android.Crashlytics",
+                        "com.crashlytics.android.core.CrashlyticsCore"
+                    ],
+                    "createMethods": [
+                        "val core = CrashlyticsCore.Builder().listener {}.build()",
+                        "val crashlyticsKit = Crashlytics.Builder().core(core).build()",
+                        "Fabric.with(this, crashlyticsKit)"
+                    ]
+                }
             }
         },
         "fabric": {
@@ -818,10 +817,12 @@
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [{
-                            "KitInfo": {},
-                            "KitName": "Crashlytics"
-                        }]
+                        "Kits": [
+                            {
+                                "KitInfo": {},
+                                "KitName": "Crashlytics"
+                            }
+                        ]
                     }
                 }
             },
@@ -843,9 +844,9 @@
                     ]
                 },
                 "mainActivity": {
-                  "imports": [
-                    "io.fabric.sdk.android.Fabric"
-                  ]
+                    "imports": [
+                        "io.fabric.sdk.android.Fabric"
+                    ]
                 }
             },
             "androidtv": {
