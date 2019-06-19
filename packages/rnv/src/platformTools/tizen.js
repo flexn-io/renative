@@ -103,7 +103,7 @@ const getDeviceID = async (c, target) => {
     throw `No device matching ${target} could be found.`;
 };
 
-const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
+const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.files.appConfigFile.platforms[platform];
@@ -114,61 +114,68 @@ const runTizen = (c, platform, target) => new Promise((resolve, reject) => {
     const tId = platformConfig.id;
     const gwt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile;
-
     let deviceID;
-    const TIZEN_UNINSTALL_APP = `uninstall -p ${tId} -t ${deviceID}`;
-    const TIZEN_INSTALL_APP = `install -- ${tOut} -n ${gwt} -t ${deviceID}`;
-    const TIZEN_RUN_APP = `run -p ${tId} -t ${deviceID}`;
 
-    configureTizenProject(c, platform)
-        .then(() => buildWeb(c, platform))
-        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
-        .then(() => getDeviceID(c, target).then((devID) => { deviceID = devID; }))
-        .then(() => execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask))
-        .then(() => resolve())
-        .catch((e) => {
-            if (e && e.includes && e.includes('No device matching')) {
-                launchTizenSimulator(c, target)
-                    .then(() => {
-                        logInfo(
-                            `Once simulator is ready run: "${chalk.white.bold(
-                                `rnv run -p ${platform} -t ${target}`
-                            )}" again`
-                        );
-                        resolve();
-                    })
-                    .catch(reject);
-            } else if (e && e.includes && e.includes(TIZEN_UNINSTALL_APP)) {
-                execCLI(c, CLI_TIZEN, TIZEN_INSTALL_APP, logTask)
-                    .then(() => execCLI(c, CLI_TIZEN, TIZEN_RUN_APP, logTask))
-                    .then(() => resolve())
-                    .catch((err) => {
-                        logError(err);
-                        logWarning(
-                            `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
-                                `rnv target launch -p ${platform} -t ${target}`
-                            )}"`
-                        );
+    try {
+        deviceID = await getDeviceID(c, target);
+    } catch (err) {
+        if (err && err.includes && err.includes(`No device matching ${target} could be found`)) {
+            await launchTizenSimulator(c, target);
+            logInfo(
+                `Once simulator is ready run: "${chalk.white.bold(
+                    `rnv run -p ${platform} -t ${target}`
+                )}" again`
+            );
+            return true;
+        }
+    }
+    if (!deviceID) throw new Error('no deviceid');
+    let hasDevice = false;
 
-                        launchTizenSimulator(c, target)
-                            .then(() => {
-                                logInfo(
-                                    `Once simulator is ready run: "${chalk.white.bold(
-                                        `rnv run -p ${platform} -t ${target}`
-                                    )}" again`
-                                );
-                                resolve();
-                            })
-                            .catch(reject);
-                    });
-            } else {
-                reject(e);
-            }
-        });
-});
+    await configureTizenProject(c, platform);
+    await buildWeb(c, platform);
+    await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
+    await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
+
+    try {
+        await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask);
+        hasDevice = true;
+    } catch (e) {
+        if (e && e.includes && e.includes('No device matching')) {
+            await launchTizenSimulator(c, target);
+            logInfo(
+                `Once simulator is ready run: "${chalk.white.bold(
+                    `rnv run -p ${platform} -t ${target}`
+                )}" again`
+            );
+        }
+    }
+    try {
+        await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask);
+        hasDevice = true;
+    } catch (err) {
+        logError(err);
+        logWarning(
+            `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
+                `rnv target launch -p ${platform} -t ${target}`
+            )}"`
+        );
+
+        await launchTizenSimulator(c, target);
+        logInfo(
+            `Once simulator is ready run: "${chalk.white.bold(
+                `rnv run -p ${platform} -t ${target}`
+            )}" again`
+        );
+    }
+
+    if (platform !== 'tizenwatch' && hasDevice) {
+        await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask);
+    } else if (platform === 'tizenwatch' && hasDevice) {
+        logInfo('App installed. Please start it manually');
+    }
+    return true;
+};
 
 const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildTizenProject:${platform}`);
