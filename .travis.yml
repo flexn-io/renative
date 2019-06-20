@@ -3,7 +3,13 @@ jobs:
     - stage: test
       language: node_js
       node_js: 10.15.3
-      install: yarn
+      cache: npm
+      install: 
+       - npm i
+       - cd packages/rnv
+       - npm i
+       - npm run build
+       - npm link
       script: npm run test
 
 stages:
