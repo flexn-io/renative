@@ -43,6 +43,7 @@ import { getMergedPlugin, parsePlugins } from '../pluginTools';
 const readline = require('readline');
 
 const composeDevicesString = (devices, returnArray) => {
+    logTask(`composeDevicesString:${devices ? devices.length : null}`);
     const devicesArray = [];
     devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, !returnArray ? i : null)));
     if (returnArray) return devicesArray;
@@ -112,7 +113,7 @@ const _getDeviceString = (device, i) => {
 };
 
 const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
-    logTask(`_listAndroidTargets:${c.platform}`);
+    logTask(`_listAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`);
     try {
         let devicesResult;
         let avdResult;
@@ -242,6 +243,7 @@ const getEmulatorName = async (words) => {
 };
 
 const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
+    logTask(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices = [];
 
     if (devicesString) {
