@@ -249,7 +249,7 @@ const getEmulatorName = async (words) => {
 };
 
 const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
-    logTask(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
+    logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices = [];
 
     if (devicesString) {
@@ -313,7 +313,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         .then(devicesArray => devicesArray.filter((device) => {
             // filter devices based on selected platform
             const { platform } = c;
-            const matches = (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
+            const matches = (platform === ANDROID && device.isTablet) || (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', { device, matches, platform });
             return matches;
         }));
