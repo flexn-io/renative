@@ -9,6 +9,7 @@ jobs:
        - cd packages/rnv
        - npm i
        - npm run build
+       - npm run fix
        - npm link
       script: npm run test
 
