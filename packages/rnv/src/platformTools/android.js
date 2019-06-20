@@ -86,7 +86,8 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
 
 const listAndroidTargets = (c) => {
     logTask('listAndroidTargets');
-    return _listAndroidTargets(c, false, false).then(list => composeDevicesString(list)).then((devices) => {
+    const { program: { device } } = c;
+    return _listAndroidTargets(c, false, device, device).then(list => composeDevicesString(list)).then((devices) => {
         console.log(devices);
         if (devices.trim() === '') console.log('No devices found');
         return devices;
@@ -119,9 +120,11 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
 
         if (!skipDevices) {
             devicesResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} devices -l`).toString();
+            logDebug(`${c.cli[CLI_ANDROID_ADB]} devices -l`, devicesResult);
         }
         if (!skipAvds) {
             avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
+            logDebug(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`, avdResult);
         }
         return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
     } catch (e) {
@@ -145,6 +148,7 @@ const isSquareishDevice = (width, height) => {
 const getDeviceType = async (device, c) => {
     device.isPhone = true;
     device.isMobile = true;
+    logDebug('getDeviceType - in', { device });
     if (device.udid !== 'unknown') {
         const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
         const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
@@ -177,6 +181,7 @@ const getDeviceType = async (device, c) => {
         device.isMobile = !device.isWear && !device.isTV;
         device.screenProps = screenProps;
         device.arch = arch;
+        logDebug('getDeviceType - out', { device });
         return device;
     }
 
@@ -204,6 +209,7 @@ const getDeviceType = async (device, c) => {
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
         device.isMobile = !device.isWear && !device.isTV;
         device.arch = arch;
+        logDebug('getDeviceType - out', { device });
         return device;
     }
     return device;
@@ -246,17 +252,22 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
+        logDebug('_parseDevicesResult', { lines });
 
         await Promise.all(lines.map(async (line) => {
             const words = line.split(/[ ,\t]+/).filter(w => w !== '');
+            logDebug('_parseDevicesResult', { words });
 
             if (words[1] === 'device') {
                 const isDevice = !words[0].includes('emulator');
                 let name = _getDeviceProp(words, 'model:');
+                logDebug('_parseDevicesResult', { name });
                 if (!isDevice) {
                     await waitForEmulatorToBeReady(c, words[0]);
                     name = await getEmulatorName(words);
+                    logDebug('_parseDevicesResult', { name });
                 }
+                logDebug('_parseDevicesResult', { deviceOnly, isDevice });
                 if ((deviceOnly && isDevice) || !deviceOnly) {
                     devices.push({
                         udid: words[0],
@@ -272,13 +283,16 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
     if (avdsString) {
         const avdLines = avdsString.trim().split(/\r?\n/);
+        logDebug('_parseDevicesResult', { avdLines });
 
         await Promise.all(avdLines.map(async (line) => {
             const avdDetails = await getAvdDetails(line);
+            logDebug('_parseDevicesResult', { avdDetails });
             try {
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
                 child_process.execSync(`ps x | grep "qemu.*${line}" | grep -v grep`);
+                logDebug('_parseDevicesResult - excluding running emulator');
             } catch (e) {
                 devices.push({
                     udid: 'unknown',
@@ -291,11 +305,15 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         }));
     }
 
+    logDebug('_parseDevicesResult', { devices });
+
     return Promise.all(devices.map(device => getDeviceType(device, c)))
         .then(devicesArray => devicesArray.filter((device) => {
             // filter devices based on selected platform
             const { platform } = c;
-            return (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
+            const matches = (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
+            logDebug('getDeviceType - filter', { device, matches, platform });
+            return matches;
         }));
 };
 
@@ -404,6 +422,7 @@ const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
             const isBooting = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${emulator} shell getprop init.svc.bootanim`).toString();
             if (isBooting.includes('stopped')) {
                 clearInterval(poll);
+                logDebug('waitForEmulatorToBeReady - boot complete');
                 resolve(emulator);
             } else {
                 attempts++;
