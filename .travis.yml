@@ -14,6 +14,27 @@ jobs:
        - npm run fix
        - npm link
       script: npm run test
+    - language: android
+      dist: xenial
+      sudo: required
+      jdk: oraclejdk8
+      android:
+        components:
+          - tools
+          - build-tools-28.0.3
+          - emulator
+          - extra-google-m2repository
+          - extra-android-m2repository
+          - patcher-v4
+          - platform-tools
+          - android-28
+          - sys-img-x86-android-28
+      before_install:
+        - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+        - sudo apt-get install -y nodejs
+      script: echo "done"
+      
+      
 
 stages:
   - test
