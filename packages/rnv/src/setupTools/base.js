@@ -35,7 +35,7 @@ class BasePlatformSetup {
         const downloader = this.availableDownloader;
         if (!downloader) throw new Error('Wget or cURL not installed!');
         // remove the file if existing first
-        await shell.exec(`rm ${this.androidSdkDownloadLocation} > /dev/null`);
+        await shell.exec(`rm ${this.androidSdkDownloadLocation} > /dev/null 2>&1`);
 
         let aditionalArguments;
         let locationArgument;
