@@ -1,11 +1,13 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
+import path from 'path';
+import inquirer from 'inquirer';
 import {
     isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
     getAppFolder, isPlatformSupported, checkSdk
 } from '../common';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
+import PlatformSetup from '../setupTools';
+import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_EMULATOR, CLI_ANDROID_SDKMANAGER } from '../constants';
 import { launchTizenSimulator } from '../platformTools/tizen';
 import { launchWebOSimulator, listWebOSTargets } from '../platformTools/webos';
 import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
@@ -112,36 +114,54 @@ const _runLaunch = c => new Promise((resolve, reject) => {
     }
 });
 
-const _runList = c => new Promise((resolve, reject) => {
+const _runList = async (c) => {
     logTask('_runLaunch');
     const { platform } = c;
     if (!isPlatformSupportedSync(platform)) return;
+
+    const throwError = (err) => {
+        throw err;
+    };
 
     switch (platform) {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        if (!checkSdk(c, platform, reject)) return;
-        listAndroidTargets(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
+        if (!checkSdk(c, platform, logError)) {
+            let sdkInstall;
+            if (!c.program.ci) {
+                const response = await inquirer.prompt([{
+                    name: 'sdkInstall',
+                    type: 'confirm',
+                    message: 'Do you want to install the Android SDK?',
+                }]);
+                // eslint-disable-next-line prefer-destructuring
+                sdkInstall = response.sdkInstall;
+            }
+
+            if (c.program.ci || sdkInstall) {
+                const setupInstance = PlatformSetup(c);
+                const newPath = await setupInstance.installAndroidSdk();
+                // @todo find a more elegant way to update this
+                c.files.globalConfig.sdks.ANDROID_SDK = newPath;
+                const { sdks: { ANDROID_SDK } } = c.files.globalConfig;
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
+                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager');
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager');
+            }
+        }
+        return listAndroidTargets(c, platform);
     case IOS:
     case TVOS:
-        listAppleDevices(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
+        return listAppleDevices(c, platform);
     case WEBOS:
-        if (!checkSdk(c, platform, reject)) return;
-        listWebOSTargets(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
+        if (!checkSdk(c, platform, throwError)) return;
+        return listWebOSTargets(c);
     default:
-        reject(`"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`);
+        throw `"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`;
     }
-});
+};
 
 export { PIPES };
 
