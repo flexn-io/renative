@@ -8,9 +8,9 @@ jobs:
       cache: npm
       install: 
        - npm run fix
-       - npm i
+       - npm i > /dev/null
        - cd packages/rnv
-       - npm i
+       - npm i > /dev/null
        - npm run fix
        - npm link
       script: npm run test
