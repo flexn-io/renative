@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { removeDirs } from './fileUtils';
+import { removeDirs } from './fileutils';
 import { logTask, askQuestion, finishQuestion } from '../common';
 
 const cleanProjectModules = c => new Promise((resolve, reject) => {
