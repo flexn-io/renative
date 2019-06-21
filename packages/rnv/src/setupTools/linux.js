@@ -11,7 +11,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
 
     async installSoftware(software) {
         if (commandExistsSync('apt-get')) {
-            await shell.exec(`apt-get -qq update && apt-get install ${software} -y`);
+            await shell.exec(`apt-get -qq update && apt-get install ${software} -y > /dev/null`);
         }
         // @todo also treat other linux flavours
         return true;

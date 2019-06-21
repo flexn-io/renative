@@ -35,7 +35,7 @@ class BasePlatformSetup {
         const downloader = this.availableDownloader;
         if (!downloader) throw new Error('Wget or cURL not installed!');
         // remove the file if existing first
-        await shell.exec(`rm ${this.androidSdkDownloadLocation}`);
+        await shell.exec(`rm ${this.androidSdkDownloadLocation} > /dev/null`);
 
         let aditionalArguments;
         let locationArgument;
@@ -64,7 +64,7 @@ class BasePlatformSetup {
         logDebug('BasePlatformSetup -> installSdksAndEmulator -> accepting licenses');
         await shell.exec(`yes | ${this.androidSdkLocation}/tools/bin/sdkmanager --licenses > /dev/null`);
         logDebug('BasePlatformSetup -> installSdksAndEmulator -> installing sdk', this.sdksToInstall);
-        await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager ${this.sdksToInstall}`);
+        await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`);
     }
 
     async installAndroidSdk() {
