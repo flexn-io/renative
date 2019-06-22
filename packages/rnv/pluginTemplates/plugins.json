@@ -160,12 +160,7 @@
                 "package": "com.brentvatne.react.ReactVideoPackage"
             },
             "webpack": {
-                "modulePaths": true,
-                "moduleAliases": {
-                  "react-native/Libraries/Image/resolveAssetSource": {
-                    "projectPath": "node_modules/react-native/Libraries/Image/resolveAssetSource"
-                  }
-                }
+                "modulePaths": true
             }
         },
         "react-native-languages": {
