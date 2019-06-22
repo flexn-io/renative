@@ -158,6 +158,14 @@
             },
             "androidtv": {
                 "package": "com.brentvatne.react.ReactVideoPackage"
+            },
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": {
+                  "react-native/Libraries/Image/resolveAssetSource": {
+                    "projectPath": "node_modules/react-native/Libraries/Image/resolveAssetSource"
+                  }
+                }
             }
         },
         "react-native-languages": {
@@ -190,13 +198,17 @@
                 "package": "com.BV.LinearGradient.LinearGradientPackage"
             },
             "webpack": {
+                "modulePaths": [
+                  "react-native-web-linear-gradient",
+                  "react-native-linear-gradient"
+                ],
                 "moduleAliases": {
                     "react-native-linear-gradient": "react-native-web-linear-gradient"
                 }
             },
-            "dependsOn": [
-                "react-native-web-linear-gradient"
-            ]
+            "npm": {
+              "react-native-web-linear-gradient": "1.0.5"
+            }
         },
         "react-native-fetch-blob": {
             "version": "0.10.8",
@@ -447,6 +459,9 @@
             },
             "androidtv": {
                 "package": "com.corbt.keepawake.KCKeepAwakePackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-maps": {
@@ -1028,6 +1043,9 @@
             },
             "androidtv": {
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-web": {
@@ -1085,9 +1103,6 @@
             "webpack": {
                 "modulePaths": true
             }
-        },
-        "react-native-web-linear-gradient": {
-            "version": "1.0.5"
         },
         "svgs": {
             "version": "4.1.0",
@@ -1147,6 +1162,9 @@
             },
             "androidtv": {
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-fast-image": {
@@ -1159,7 +1177,16 @@
             },
             "androidtv": {
                 "package": "com.dylanvann.fastimage.FastImageViewPackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
+        },
+        "react-native-snap-carousel": {
+          "version": "3.7.5",
+          "webpack": {
+              "modulePaths": true
+          }
         }
     }
 }

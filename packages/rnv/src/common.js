@@ -693,6 +693,17 @@ package.json will be overriden`
             hasPackageChanged = true;
             dependencies[k] = plugin.version;
         }
+
+        if (plugin && plugin.npm) {
+            for (const npmKey in plugin.npm) {
+                const npmDep = plugin.npm[npmKey];
+                if (dependencies[npmKey] !== npmDep) {
+                    logWarning(`Plugin ${chalk.white(k)} requires npm dependency ${chalk.white(npmKey)} .Adding missing npm dependency to you package.json`);
+                    dependencies[npmKey] = npmDep;
+                    hasPackageChanged = true;
+                }
+            }
+        }
     }
     if (hasPackageChanged) {
         writeObjectSync(c.paths.projectPackagePath, c.files.projectPackage);
