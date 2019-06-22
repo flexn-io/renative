@@ -5,18 +5,19 @@ jobs:
     - stage: test
       language: node_js
       node_js: 10.15.3
-      cache: npm
+      cache: yarn
       install: 
        - npm run fix
-       - npm i > /dev/null 2>&1
+       - yarn > /dev/null 2>&1
        - cd packages/rnv
-       - npm i > /dev/null 2>&1
+       - yarn > /dev/null 2>&1
        - npm run fix
        - npm link
       script: npm run setup
     - language: android
       sudo: required
       jdk: oraclejdk8
+      cache: yarn
       android:
         components:
           - tools-26.1.1
@@ -33,6 +34,7 @@ jobs:
         - sudo apt-get install -y nodejs
       script: 
         - cd packages/rnv
+        - yarn
         - npm run test
       
       
