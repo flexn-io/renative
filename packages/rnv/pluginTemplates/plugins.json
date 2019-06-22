@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.2",
+            "version": "0.23.3",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1066,9 +1066,6 @@
                 "modulePaths": true,
                 "moduleAliases": true
             }
-        },
-        "react-navigation-side-menu": {
-            "version": "github:pavjacko/react-navigation-side-menu"
         },
         "react-native-easy-grid": {
             "version": "0.2.1",

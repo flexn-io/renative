@@ -397,7 +397,6 @@ Example:
       "react-native-web": "source:rnv",
       "react-native-web-image-loader": "source:rnv",
       "react-native-gesture-handler": "source:rnv",
-      "react-navigation-side-menu": "source:rnv",
       "react-navigation": "source:rnv",
       "react-navigation-tabs": "source:rnv",
       "react-native-reanimated": "source:rnv",

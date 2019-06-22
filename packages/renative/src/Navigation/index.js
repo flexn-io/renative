@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, ScrollView } from 'react-native';
 import { createDrawerNavigator, createAppContainer, createStackNavigator, createSwitchNavigator } from 'react-navigation';
-import { Icon, Api } from '../index';
-
-const createSideMenuNavigator = require('react-navigation-side-menu').createSideMenuNavigator;
+import { Icon, Api, createSideMenuNavigator } from '../index';
 
 let _currentNavigation;
 
