@@ -13,7 +13,7 @@ jobs:
        - npm i > /dev/null 2>&1
        - npm run fix
        - npm link
-      script: npm run test
+      script: npm run setup
     - language: android
       sudo: required
       jdk: oraclejdk8
@@ -31,7 +31,7 @@ jobs:
       before_install:
         - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
         - sudo apt-get install -y nodejs
-      script: echo "done"
+      script: npm run test
       
       
 
