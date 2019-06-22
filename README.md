@@ -32,9 +32,10 @@
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
   <a href="#advanced-configuration">Advanced Configuration</a> &bull;
+  <a href="#runtime">Runtime</a> &bull;
   <a href="#architecture">Architecture</a> &bull;
-  <a href="#rnv-cli">ReNative CLI</a> &bull;
-  <a href="#developing-rnv-locally">Developing ReNative Locally</a> &bull;
+  <a href="##renative-cli">ReNative CLI</a> &bull;
+  <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
   <a href="#discussions">Discussions</a> &bull;
   <a href="#contributors">Contributors</a> &bull;
   <a href="#backers">Backers</a> &bull;
@@ -397,7 +398,6 @@ Example:
       "react-native-web": "source:rnv",
       "react-native-web-image-loader": "source:rnv",
       "react-native-gesture-handler": "source:rnv",
-      "react-navigation-side-menu": "source:rnv",
       "react-navigation": "source:rnv",
       "react-navigation-tabs": "source:rnv",
       "react-native-reanimated": "source:rnv",
@@ -803,6 +803,21 @@ c.paths.pluginConfigPath;
 c.paths.permissionsConfigPath;
 c.paths.fontsConfigFolder;
 ```
+
+
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
+
+## Runtime
+
+ReNative provides runtime SDK library to support multiplatform development
+
+```js
+import { Api } from 'renative'
+```
+
 
 ---
 
