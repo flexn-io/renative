@@ -42,6 +42,8 @@ import { getMergedPlugin, parsePlugins } from '../pluginTools';
 
 const readline = require('readline');
 
+let currentDeviceProps = null;
+
 const composeDevicesString = (devices, returnArray) => {
     logTask(`composeDevicesString:${devices ? devices.length : null}`);
     const devicesArray = [];
@@ -146,16 +148,42 @@ const isSquareishDevice = (width, height) => {
     return false;
 };
 
+const getRunningDeviceProp = (c, udid, prop) => {
+    // avoid multiple calls to the same device
+    if (currentDeviceProps) {
+        if (!prop) return currentDeviceProps;
+        return currentDeviceProps[prop];
+    }
+    const rawProps = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${udid} shell getprop`).toString().trim();
+    const lines = rawProps.trim().split(/\r?\n/);
+    lines.forEach((line) => {
+        const words = line.split(']: [');
+        const key = words[0].slice(1);
+        const value = words[1].slice(0, words[1].length - 1);
+
+        if (!currentDeviceProps) currentDeviceProps = {};
+        currentDeviceProps[key] = value;
+    });
+
+    return getRunningDeviceProp(c, udid, prop);
+};
+
+const decideIfTV = (c, udid) => {
+    const model = getRunningDeviceProp(c, udid, 'ro.product.model');
+    const name = getRunningDeviceProp(c, udid, 'ro.product.name');
+    const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
+    const description = getRunningDeviceProp(c, udid, 'ro.build.description');
+
+    if (model.includes('atv') || name.includes('atv') || flavor.includes('atv') || description.includes('atv')) return true;
+    return false;
+};
+
 const getDeviceType = async (device, c) => {
-    device.isPhone = true;
-    device.isMobile = true;
     logDebug('getDeviceType - in', { device });
     if (device.udid !== 'unknown') {
-        const dumpsysResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell dumpsys tv_input`).toString();
         const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
         const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
-        const arch = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell getprop ro.product.cpu.abi`).toString().trim();
-
+        const arch = getRunningDeviceProp(c, device.udid, 'ro.product.cpu.abi');
         let screenProps;
 
         if (screenSizeResult) {
@@ -168,16 +196,17 @@ const getDeviceType = async (device, c) => {
             screenProps = { ...screenProps, density: parseInt(density, 10) };
         }
 
+        device.isTV = decideIfTV(c, device.udid);
+
         if (screenSizeResult && screenDensityResult) {
             const { width, height, density } = screenProps;
 
             const diagonalInches = calculateDeviceDiagonal(width, height, density);
             screenProps = { ...screenProps, diagonalInches };
-            device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
+            device.isTablet = !device.isTV && diagonalInches > IS_TABLET_ABOVE_INCH && diagonalInches <= 15;
             device.isWear = isSquareishDevice(width, height);
         }
 
-        device.isTV = !!dumpsysResult;
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
         device.isMobile = !device.isWear && !device.isTV;
         device.screenProps = screenProps;
@@ -187,7 +216,6 @@ const getDeviceType = async (device, c) => {
     }
 
     if (device.avdConfig) {
-        const batteryPresent = device.avdConfig['hw.battery'];
         const density = parseInt(device.avdConfig['hw.lcd.density'], 10);
         const width = parseInt(device.avdConfig['hw.lcd.width'], 10);
         const height = parseInt(device.avdConfig['hw.lcd.height'], 10);
@@ -204,9 +232,18 @@ const getDeviceType = async (device, c) => {
             if (string.includes('wear')) device.isWear = true;
         });
 
+        const avdId = device.avdConfig.AvdId;
+        const name = device.avdConfig['hw.device.name'];
+        const skin = device.avdConfig['skin.name'];
+        const image = device.avdConfig['image.sysdir.1'];
+
+        device.isTV = false;
+        [avdId, name, skin, image].forEach((string) => {
+            if (string.includes('tv') || string.includes('TV')) device.isTV = true;
+        });
+
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
-        device.isTablet = diagonalInches > IS_TABLET_ABOVE_INCH;
-        device.isTV = batteryPresent !== 'yes';
+        device.isTablet = !device.isTV && diagonalInches > IS_TABLET_ABOVE_INCH;
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
         device.isMobile = !device.isWear && !device.isTV;
         device.arch = arch;
@@ -313,6 +350,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         .then(devicesArray => devicesArray.filter((device) => {
             // filter devices based on selected platform
             const { platform } = c;
+            console.log(device);
             const matches = (platform === ANDROID && device.isTablet) || (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', { device, matches, platform });
             return matches;
