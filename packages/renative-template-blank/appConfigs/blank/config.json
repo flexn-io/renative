@@ -135,11 +135,12 @@
             "buildSchemes": {
                 "debug": {
                     "id": "renative.blank.debug",
-                    "bundleAssets": false
+                    "bundleAssets": false,
+                    "environment": "developement"
                 },
                 "release": {
                     "bundleAssets": true,
-                    "bundleIsDev": false
+                    "environment": "production"
                 }
             }
         },
