@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.4",
+            "version": "0.23.5",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -194,15 +194,15 @@
             },
             "webpack": {
                 "modulePaths": [
-                  "react-native-web-linear-gradient",
-                  "react-native-linear-gradient"
+                    "react-native-web-linear-gradient",
+                    "react-native-linear-gradient"
                 ],
                 "moduleAliases": {
                     "react-native-linear-gradient": "react-native-web-linear-gradient"
                 }
             },
             "npm": {
-              "react-native-web-linear-gradient": "1.0.5"
+                "react-native-web-linear-gradient": "1.0.5"
             }
         },
         "react-native-fetch-blob": {
@@ -1178,10 +1178,10 @@
             }
         },
         "react-native-snap-carousel": {
-          "version": "3.7.5",
-          "webpack": {
-              "modulePaths": true
-          }
+            "version": "3.7.5",
+            "webpack": {
+                "modulePaths": true
+            }
         }
     }
 }

@@ -1780,7 +1780,7 @@ If you need full control over whole ReNative build you can clone and develop it 
 2) cd renative
 3) npm i
 4) npm run watch
-5) npm link
+5) npm run link
 ```
 
 At this point your global `$ rnv` command is linked directly into project above.
