@@ -1182,6 +1182,12 @@
             "webpack": {
                 "modulePaths": true
             }
+        },
+        "react-native-render-html": {
+          "version": "4.1.1",
+          "webpack": {
+              "modulePaths": true
+          }
         }
     }
 }
