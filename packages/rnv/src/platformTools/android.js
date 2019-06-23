@@ -273,13 +273,8 @@ const getAvdDetails = async (deviceName) => {
 const getEmulatorName = async (words) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
-    // Use telnet or nc, whichever is available
-    let command = commandExistsSync('nc') ? 'nc' : null;
-    if (commandExistsSync('telnet')) command = 'telnet';
 
-    if (!command) throw new Error('You must have nc or telnet installed');
-
-    const emulatorReply = await execCLI(null, null, `echo "avd name" | ${command} localhost ${port}`);
+    const emulatorReply = await execCLI(null, null, `echo "avd name" | npx nc localhost ${port}`);
     const emulatorReplyArray = emulatorReply.split('OK');
     const emulatorName = emulatorReplyArray[emulatorReplyArray.length - 2].trim();
     return emulatorName;
@@ -549,7 +544,7 @@ const _runGradle = async (c, platform) => {
 
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
     let attempts = 1;
-    const maxAttempts = 10;
+    const maxAttempts = process.platform === 'win32' ? 30 : 10;
     let running = false;
     const poll = setInterval(() => {
         // Prevent the interval from running until enough promises return to make it stop or we get a result
