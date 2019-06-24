@@ -2,18 +2,19 @@
 
 jobs:
   include:
-    - stage: test
-      language: node_js
-      node_js: 10.15.3
-      cache: npm
-      install: 
-       - npm run fix
-       - npm i > /dev/null 2>&1
-       - cd packages/rnv
-       - npm i > /dev/null 2>&1
-       - npm run fix
-       - npm link 
-      script: npm run setup
+    # commented out since it's failing because of travis (curl SSL read: error when downloading node)
+    # - stage: test
+    #   language: node_js
+    #   node_js: 10.15.3
+    #   cache: npm
+    #   install: 
+    #    - npm run fix
+    #    - npm i > /dev/null 2>&1
+    #    - cd packages/rnv
+    #    - npm i > /dev/null 2>&1
+    #    - npm run fix
+    #    - npm link 
+    #   script: npm run setup
     - language: android
       sudo: required
       jdk: oraclejdk8
@@ -39,6 +40,8 @@ jobs:
         - npm i
         - npm run fix
         - sudo npm link
+        - mkdir /home/travis/.rnv
+        - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/config.json
       script: npm run test
 
 stages:
