@@ -12,7 +12,7 @@ jobs:
        - cd packages/rnv
        - npm i > /dev/null 2>&1
        - npm run fix
-       - npm link
+       - npm link > /dev/null 2>&1
       script: npm run setup
     - language: android
       sudo: required
@@ -32,15 +32,12 @@ jobs:
       before_install:
         - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
         - sudo apt-get install -y nodejs
-      script: 
         - npm run fix
         - npm i > /dev/null 2>&1
         - cd packages/rnv
-        - npm i > /dev/null 2>&1
-        - ls node_modules/react-native
-        - npm run test
-      
-      
+        - npm run fix
+        - npm link > /dev/null 2>&1
+      script: npm run test
 
 stages:
   - test
