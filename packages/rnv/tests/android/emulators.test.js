@@ -2,7 +2,7 @@ import shell from 'shelljs';
 
 describe('It deals with Android emulators correctly', () => {
     beforeAll(async (done) => {
-        await shell.exec('echo no | android create avd --force -n test_android -t android-28 --abi x86');
+        await shell.exec('echo no | avdmanager create avd -n android_test -k "system-images;android-28;google_apis;x86"');
         done();
     });
 
