@@ -292,32 +292,34 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
         logDebug('_parseDevicesResult', { lines });
+        if (lines.length !== 0) {
+            await Promise.all(lines.map(async (line) => {
+                const words = line.split(/[ ,\t]+/).filter(w => w !== '');
+                if (words.length === 0) return;
+                logDebug('_parseDevicesResult', { words });
 
-        await Promise.all(lines.map(async (line) => {
-            const words = line.split(/[ ,\t]+/).filter(w => w !== '');
-            logDebug('_parseDevicesResult', { words });
-
-            if (words[1] === 'device') {
-                const isDevice = !words[0].includes('emulator');
-                let name = _getDeviceProp(words, 'model:');
-                logDebug('_parseDevicesResult', { name });
-                if (!isDevice) {
-                    await waitForEmulatorToBeReady(c, words[0]);
-                    name = await getEmulatorName(words);
+                if (words[1] === 'device') {
+                    const isDevice = !words[0].includes('emulator');
+                    let name = _getDeviceProp(words, 'model:');
                     logDebug('_parseDevicesResult', { name });
+                    if (!isDevice) {
+                        await waitForEmulatorToBeReady(c, words[0]);
+                        name = await getEmulatorName(words);
+                        logDebug('_parseDevicesResult', { name });
+                    }
+                    logDebug('_parseDevicesResult', { deviceOnly, isDevice });
+                    if ((deviceOnly && isDevice) || !deviceOnly) {
+                        devices.push({
+                            udid: words[0],
+                            isDevice,
+                            isActive: true,
+                            name,
+                        });
+                    }
+                    return true;
                 }
-                logDebug('_parseDevicesResult', { deviceOnly, isDevice });
-                if ((deviceOnly && isDevice) || !deviceOnly) {
-                    devices.push({
-                        udid: words[0],
-                        isDevice,
-                        isActive: true,
-                        name,
-                    });
-                }
-                return true;
-            }
-        }));
+            }));
+        }
     }
 
     if (avdsString) {
