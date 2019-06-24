@@ -7,7 +7,7 @@ describe('It deals with Android emulators correctly', () => {
     });
 
     it('Should return one emulator', async () => {
-        const output = await shell.exec('rnv target list -p android --info');
-        expect(output.stdout).toMatch('test_android');
+        const output = await shell.exec('rnv target list -p android');
+        expect(output.stdout).toMatch('android_test');
     });
 });
