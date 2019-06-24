@@ -229,7 +229,7 @@ const getDeviceType = async (device, c) => {
 
         device.isWear = false;
         [sysdir, tagId, tagDisplay, deviceName].forEach((string) => {
-            if (string.includes('wear')) device.isWear = true;
+            if (string && string.includes('wear')) device.isWear = true;
         });
 
         const avdId = device.avdConfig.AvdId;
@@ -239,7 +239,7 @@ const getDeviceType = async (device, c) => {
 
         device.isTV = false;
         [avdId, name, skin, image].forEach((string) => {
-            if (string.includes('tv') || string.includes('TV')) device.isTV = true;
+            if ((string && string.includes('tv')) || (string && string.includes('TV'))) device.isTV = true;
         });
 
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
