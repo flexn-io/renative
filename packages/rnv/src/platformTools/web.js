@@ -31,7 +31,8 @@ import {
     logInfo,
     askQuestion,
     finishQuestion,
-    resolveNodeModulePath
+    resolveNodeModulePath,
+    getConfigProp
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { getMergedPlugin } from '../pluginTools';
@@ -83,8 +84,10 @@ const _generateWebpackConfigs = (c) => {
 
     const modulePathsString = modulePaths.length ? `'${modulePaths.join("','")}'` : '';
 
+    const env = getConfigProp(c, c.platform, 'environment');
+
     copyFileSync(
-        path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
+        path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
         path.join(appFolder, 'webpack.config.js')
     );
 
@@ -187,7 +190,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     const wds = resolveNodeModulePath(c, 'webpack-dev-server/bin/webpack-dev-server.js');
 
     shell.exec(
-        `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --host 0.0.0.0 --port ${port}`
+        `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port}`
     );
     resolve();
 });

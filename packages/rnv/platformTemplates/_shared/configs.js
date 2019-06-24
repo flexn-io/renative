@@ -52,7 +52,6 @@ function generateConfig(config) {
         'node_modules/react-native-modal-datetime-picker',
         'node_modules/react-native-modal',
         'node_modules/react-native-paper',
-
         'node_modules/react-native-animatable',
         'node_modules/react-native-collapse-view',
         'node_modules/react-native-color-picker',
@@ -118,6 +117,7 @@ function generateConfig(config) {
         react: path.resolve(projectDir, 'node_modules/react'),
         'react-native': 'react-native-web',
         'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
+        // 'react-native/Libraries/Image/resolveAssetSource': 'react-native-web/dist/exports/Image/resolveAssetUri',
         // 'react-native-linear-gradient': 'react-native-web-linear-gradient',
         // 'react-native-vector-icons': 'react-native-web-vector-icons',
         'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),

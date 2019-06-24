@@ -21,3 +21,5 @@ rnv new
 
 
 ## Screenshots
+
+<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-blank/docs/web.png?raw=true" width="600px" />
