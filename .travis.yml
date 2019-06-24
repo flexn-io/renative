@@ -12,7 +12,7 @@ jobs:
        - cd packages/rnv
        - npm i > /dev/null 2>&1
        - npm run fix
-       - npm link > /dev/null 2>&1
+       - npm link 
       script: npm run setup
     - language: android
       sudo: required
@@ -36,7 +36,7 @@ jobs:
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm run fix
-        - npm link > /dev/null 2>&1
+        - npm link
       script: npm run test
 
 stages:
