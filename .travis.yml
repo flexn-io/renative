@@ -21,12 +21,10 @@ jobs:
       cache: npm
       android:
         components:
-          - tools-26.1.1
+          - tools
           - build-tools-28.0.3
-          - emulator
           - extra-google-m2repository
           - extra-android-m2repository
-          - patcher-v4
           - platform-tools
           - android-28
           - sys-img-x86-android-28
