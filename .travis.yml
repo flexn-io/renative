@@ -41,8 +41,6 @@ jobs:
         - mkdir /home/travis/.rnv
         - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/config.json
         - yes | sdkmanager "emulator" 
-        - ls /usr/local/android-sdk/tools/bin
-        - ls /usr/local/android-sdk
       script: npm run test
 
 stages:
