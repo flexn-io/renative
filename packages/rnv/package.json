@@ -64,8 +64,8 @@
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "prepare": "npm run build",
         "prepublishOnly": "npm run build",
-        "test": "jest -c tests/jest.config.integration.js",
-        "setup": "jest -c tests/jest.config.setup.js",
+        "test": "jest -c jest.config.integration.js",
+        "setup": "jest -c jest.config.setup.js",
         "watch": "nodemon --watch src --exec npm run build"
     },
     "dependencies": {
