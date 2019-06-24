@@ -7,6 +7,8 @@ jobs:
       node_js: 10.15.3
       cache: npm
       install: 
+       - npm run fix
+       - npm i > /dev/null 2>&1
        - cd packages/rnv
        - npm i > /dev/null 2>&1
        - npm run fix
@@ -31,8 +33,10 @@ jobs:
         - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
         - sudo apt-get install -y nodejs
       script: 
+        - npm run fix
+        - npm i > /dev/null 2>&1
         - cd packages/rnv
-        - npm i
+        - npm i > /dev/null 2>&1
         - ls node_modules/react-native
         - npm run test
       
