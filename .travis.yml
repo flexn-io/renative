@@ -36,7 +36,7 @@ jobs:
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm run fix
-        - npm link
+        - sudo npm link
       script: npm run test
 
 stages:
