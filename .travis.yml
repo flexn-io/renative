@@ -37,6 +37,7 @@ jobs:
         - cd packages/rnv
         - npm run fix
         - npm i
+        - npm run fix
         - sudo npm link
       script: npm run test
 
