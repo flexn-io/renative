@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.5",
+            "version": "0.23.6",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1184,10 +1184,10 @@
             }
         },
         "react-native-render-html": {
-          "version": "4.1.1",
-          "webpack": {
-              "modulePaths": true
-          }
+            "version": "4.1.1",
+            "webpack": {
+                "modulePaths": true
+            }
         }
     }
 }
