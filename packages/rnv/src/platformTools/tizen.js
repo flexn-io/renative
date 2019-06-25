@@ -2,7 +2,12 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import child_process from 'child_process';
+import inquirer from 'inquirer';
+import net from 'net';
+
 import { execCLI } from '../systemTools/exec';
+import { RNV_GLOBAL_CONFIG_NAME } from '../constants';
 import {
     logTask,
     logError,
@@ -10,6 +15,7 @@ import {
     isPlatformActive,
     logWarning,
     logInfo,
+    logDebug,
     logSuccess,
     CLI_TIZEN_EMULATOR,
     CLI_TIZEN,
@@ -103,6 +109,62 @@ const getDeviceID = async (c, target) => {
     throw `No device matching ${target} could be found.`;
 };
 
+const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    const poll = setInterval(() => {
+        try {
+            const devicesList = child_process.execSync(`${c.cli[CLI_SDB_TIZEN]} devices`).toString();
+            const lines = devicesList.trim().split(/\r?\n/);
+            const devices = lines.filter(line => line.includes(emulator) && line.includes('device'));
+            if (devices.length > 0) {
+                clearInterval(poll);
+                logDebug('waitForEmulatorToBeReady - boot complete');
+                resolve(true);
+            } else {
+                attempts++;
+                console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
+                if (attempts === maxAttempts) {
+                    clearInterval(poll);
+                    throw new Error('Can\'t connect to the running emulator. Try restarting it.');
+                }
+            }
+        } catch (e) {
+            console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
+            attempts++;
+            if (attempts > maxAttempts) {
+                clearInterval(poll);
+                throw new Error('Can\'t connect to the running emulator. Try restarting it.');
+            }
+        }
+    }, 2000);
+});
+
+const getRunningDevices = async (c) => {
+    const devicesList = child_process.execSync(`${c.cli[CLI_SDB_TIZEN]} devices`).toString();
+    const lines = devicesList.trim().split(/\r?\n/);
+    const devices = [];
+
+    if (lines.length > 1) { // skipping header
+        lines.forEach((line) => {
+            if (!line.includes('List of devices')) {
+                const words = line.replace(/\t/g, '').split('    ');
+                if (words.length >= 3) {
+                    devices.push({
+                        name: words[0].trim(),
+                        type: words[1].trim(),
+                        id: words[2].trim()
+                    });
+                }
+            }
+        });
+    }
+
+    return devices;
+};
+
+const composeDevicesString = devices => devices.map(device => ({ key: device.id, name: device.name, value: device.id }));
+
 const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
@@ -114,67 +176,116 @@ const runTizen = async (c, platform, target) => {
     const tId = platformConfig.id;
     const gwt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile;
+
+
     let deviceID;
 
-    try {
-        deviceID = await getDeviceID(c, target);
-    } catch (err) {
-        if (err && err.includes && err.includes(`No device matching ${target} could be found`)) {
-            await launchTizenSimulator(c, target);
-            logInfo(
-                `Once simulator is ready run: "${chalk.white.bold(
-                    `rnv run -p ${platform} -t ${target}`
-                )}" again`
-            );
-            return true;
+    const askForEmulator = async () => {
+        const { startEmulator } = await inquirer.prompt([{
+            name: 'startEmulator',
+            type: 'confirm',
+            message: `Could not find or connect to the specified target (${target}). Would you like to start an emulator?`,
+        }]);
+
+        if (startEmulator) {
+            try {
+                const defaultTarget = c.files.globalConfig.defaultTargets[platform];
+                await launchTizenSimulator(c, defaultTarget);
+                deviceID = defaultTarget;
+                await waitForEmulatorToBeReady(c, defaultTarget);
+                return continueLaunching();
+            } catch (e) {
+                logError(`Looks like the defaultTarget specified in ${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} is not correct. Replace it with the ID of an existing emulator`);
+            }
         }
-    }
-    if (!deviceID) throw new Error('no deviceid');
-    let hasDevice = false;
+    };
 
-    await configureTizenProject(c, platform);
-    await buildWeb(c, platform);
-    await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
-    await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
+    const continueLaunching = async () => {
+        let hasDevice = false;
 
-    try {
-        await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask);
-        hasDevice = true;
-    } catch (e) {
-        if (e && e.includes && e.includes('No device matching')) {
-            await launchTizenSimulator(c, target);
-            logInfo(
-                `Once simulator is ready run: "${chalk.white.bold(
-                    `rnv run -p ${platform} -t ${target}`
-                )}" again`
-            );
+        await configureTizenProject(c, platform);
+        await buildWeb(c, platform);
+        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
+        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
+
+        try {
+            await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask);
+            hasDevice = true;
+        } catch (e) {
+            if (e && e.includes && e.includes('No device matching')) {
+                await launchTizenSimulator(c, target);
+                hasDevice = await waitForEmulatorToBeReady(c, target);
+            }
         }
-    }
-    try {
-        await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask);
-        hasDevice = true;
-    } catch (err) {
-        logError(err);
-        logWarning(
-            `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
-                `rnv target launch -p ${platform} -t ${target}`
-            )}"`
-        );
+        try {
+            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask);
+            hasDevice = true;
+        } catch (err) {
+            logError(err);
+            logWarning(
+                `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
+                    `rnv target launch -p ${platform} -t ${target}`
+                )}"`
+            );
 
-        await launchTizenSimulator(c, target);
-        logInfo(
-            `Once simulator is ready run: "${chalk.white.bold(
-                `rnv run -p ${platform} -t ${target}`
-            )}" again`
-        );
-    }
+            await launchTizenSimulator(c, target);
+            hasDevice = await waitForEmulatorToBeReady(c, target);
+        }
 
-    if (platform !== 'tizenwatch' && hasDevice) {
-        await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask);
-    } else if (platform === 'tizenwatch' && hasDevice) {
-        logInfo('App installed. Please start it manually');
+        if (platform !== 'tizenwatch' && hasDevice) {
+            await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask);
+        } else if (platform === 'tizenwatch' && hasDevice) {
+            logInfo('App installed. Please start it manually');
+        }
+        return true;
+    };
+
+    // Check if target is present or it's the default one
+    const isTargetSpecified = c.program.target;
+
+    // Check for running devices
+    const devices = await getRunningDevices(c);
+
+    if (isTargetSpecified) {
+        // The user requested a specific target, searching for it in active ones
+        if (net.isIP(target)) {
+            deviceID = await getDeviceID(c, target);
+            return continueLaunching();
+        }
+
+        if (devices.length > 0) {
+            const targetDevice = devices.find(device => device.id === target || device.name === target);
+            if (targetDevice) {
+                deviceID = targetDevice.id;
+                return continueLaunching();
+            }
+        }
+        try {
+            // try to launch it, see if it's a simulator that's not started yet
+            await launchTizenSimulator(c, target);
+            await waitForEmulatorToBeReady(c, target);
+            deviceID = target;
+            return continueLaunching();
+        } catch (e) {
+            return askForEmulator();
+        }
+    } else {
+        if (devices.length === 1) {
+            deviceID = devices[0].id;
+            return continueLaunching();
+        } if (devices.length > 1) {
+            const choices = composeDevicesString(devices);
+            const { chosenEmulator } = await inquirer.prompt([{
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'On what emulator would you like to run the app?',
+                choices
+            }]);
+            deviceID = chosenEmulator;
+            return continueLaunching();
+        }
+        return askForEmulator();
     }
-    return true;
 };
 
 const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
