@@ -14,7 +14,7 @@ jobs:
        - npm i > /dev/null 2>&1
        - npm run fix
        - npm link 
-      script: npm run setup
+      script: npm run test:setup
     - language: android
       sudo: required
       jdk: oraclejdk8
@@ -54,7 +54,7 @@ jobs:
         - npm i > /dev/null 2>&1
         - npm run fix
         - npm link
-      script: echo "ok"
+      script: npm run test:ios
 
 
 stages:
