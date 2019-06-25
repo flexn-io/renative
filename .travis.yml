@@ -43,6 +43,7 @@ jobs:
         - yes | sdkmanager "emulator" 
       script: npm run test
     - language: node_js
+      node_js: 10.15.3
       os: osx
       osx_image: xcode10.2
       cache: npm
