@@ -53,7 +53,8 @@ import {
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
     RNV_PROJECT_CONFIG_LOCAL_NAME,
-    PLATFORMS
+    PLATFORMS,
+    WEBNEXT
 } from './constants';
 import { executeAsync } from './systemTools/exec';
 
@@ -72,6 +73,7 @@ const SUPPORTED_PLATFORMS = [
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    WEBNEXT,
 ];
 const SUPPORTED_PLATFORMS_MAC = [
     IOS,
@@ -88,6 +90,7 @@ const SUPPORTED_PLATFORMS_MAC = [
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    WEBNEXT,
 ];
 const SUPPORTED_PLATFORMS_WIN = [
     ANDROID,
@@ -102,6 +105,7 @@ const SUPPORTED_PLATFORMS_WIN = [
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    WEBNEXT,
 ];
 
 const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];

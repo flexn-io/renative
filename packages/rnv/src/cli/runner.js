@@ -23,6 +23,7 @@ import {
     WEB,
     TIZEN,
     WEBOS,
+    WEBNEXT,
     ANDROID_TV,
     ANDROID_WEAR,
     MACOS,
@@ -45,6 +46,7 @@ import {
     prepareXcodeProject,
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
+import { buildNext, configureNextProject, deployNext, runNext, runNextDevServer } from '../platformTools/webnext';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
 import { runWebOS, buildWebOSProject } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
@@ -157,6 +159,7 @@ const _start = c => new Promise((resolve, reject) => {
     case WEB:
     case TIZEN:
     case WEBOS:
+    case WEBNEXT:
         executePipe(c, PIPES.START_BEFORE)
             .then(() => configureIfRequired(c, platform))
             .then(() => runWebDevServer(c, platform, port))
@@ -256,6 +259,7 @@ const _runAppWithPlatform = async (c) => {
             .then(() => runElectron(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case WEB:
+    case WEBNEXT:
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))

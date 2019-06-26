@@ -86,6 +86,7 @@ const PLATFORMS = {
     web: { defaultPort: 8080, icon: ICONS.BROWSER, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     webos: { defaultPort: 8083, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     windows: { defaultPort: 8085, icon: ICONS.DESKTOP, supportedOS: OS.WINDOWS_ONLY, isActive: true, useSharedConfig: true },
+    webnext: { defaultPort: 3000, icon: ICONS.BROWSER, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     // NON ACTIVE
     watchos: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
     androidauto: { defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
@@ -112,7 +113,6 @@ const PLATFORMS = {
     vewd: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
     vieraconnect: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
     vizio: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
-    webnext: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
     webian: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
     wii: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
     wp10: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },

@@ -1,0 +1,29 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+body::-webkit-scrollbar, div::-webkit-scrollbar {
+  width: 3px;
+  height: 0px;
+}
+
+::-webkit-scrollbar-track {
+  background: #ff000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #88888855;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
