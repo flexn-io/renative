@@ -3,6 +3,7 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
+import net from 'net';
 import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
@@ -285,6 +286,13 @@ const getEmulatorName = async (words) => {
     return emulatorName;
 };
 
+const connectToWifiDevice = async (c, ip) => {
+    const deviceResponse = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} connect ${ip}:5555`).toString();
+    if (deviceResponse.includes('connected')) return true;
+    logError(`Failed to connect to ${ip}:5555`);
+    return false;
+};
+
 const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices = [];
@@ -504,46 +512,72 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
 const _runGradle = async (c, platform) => {
     logTask(`_runGradle:${platform}`);
 
+    const { target } = c.program;
+
+    if (target && net.isIP(target)) {
+        await connectToWifiDevice(c, target);
+    }
+
     const devicesAndEmulators = await _listAndroidTargets(c, false, false, c.program.device !== undefined);
     const activeDevices = devicesAndEmulators.filter(d => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter(d => !d.isActive);
 
-    if (activeDevices.length === 1) {
+    const askWhereToRun = async () => {
+        if (activeDevices.length === 0 && inactiveDevices.length > 0) {
+        // No device active, but there are emulators created
+            const devicesString = composeDevicesString(inactiveDevices, true);
+            const choices = devicesString;
+            const response = await inquirer.prompt([{
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'What emulator would you like to start?',
+                choices
+            }]);
+            if (response.chosenEmulator) {
+                await launchAndroidSimulator(c, platform, response.chosenEmulator, true);
+                const devices = await _checkForActiveEmulator(c, platform);
+                await _runGradleApp(c, platform, devices);
+            }
+        } else if (activeDevices.length > 1) {
+            const devicesString = composeDevicesString(activeDevices, true);
+            const choices = devicesString;
+            const response = await inquirer.prompt([{
+                name: 'chosenEmulator',
+                type: 'list',
+                message: 'Where would you like to run your app?',
+                choices
+            }]);
+            if (response.chosenEmulator) {
+                const dev = activeDevices.find(d => d.name === response.chosenEmulator);
+                await _runGradleApp(c, platform, dev);
+            }
+        } else {
+            const devices = await _checkForActiveEmulator(c, platform);
+            await _runGradleApp(c, platform, devices);
+        }
+    };
+
+    if (target) {
+        console.log('TCL: _runGradle -> devicesAndEmulators', devicesAndEmulators);
+        const foundDevice = devicesAndEmulators.find(d => d.udid.includes(target) || d.name.includes(target));
+        if (foundDevice) {
+            if (foundDevice.isActive) {
+                await _runGradleApp(c, platform, foundDevice);
+            } else {
+                await launchAndroidSimulator(c, platform, foundDevice, true);
+                const device = await _checkForActiveEmulator(c, platform);
+                await _runGradleApp(c, platform, device);
+            }
+        } else {
+            await askWhereToRun();
+        }
+    } else if (activeDevices.length === 1) {
         // Only one that is active, running on that one
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, dv);
-    } else if (activeDevices.length === 0 && inactiveDevices.length > 0) {
-        // No device active, but there are emulators created
-        const devicesString = composeDevicesString(inactiveDevices, true);
-        const choices = devicesString;
-        const response = await inquirer.prompt([{
-            name: 'chosenEmulator',
-            type: 'list',
-            message: 'What emulator would you like to start?',
-            choices
-        }]);
-        if (response.chosenEmulator) {
-            await launchAndroidSimulator(c, platform, response.chosenEmulator, true);
-            const devices = await _checkForActiveEmulator(c, platform);
-            await _runGradleApp(c, platform, devices);
-        }
-    } else if (activeDevices.length > 1) {
-        const devicesString = composeDevicesString(activeDevices, true);
-        const choices = devicesString;
-        const response = await inquirer.prompt([{
-            name: 'chosenEmulator',
-            type: 'list',
-            message: 'Where would you like to run your app?',
-            choices
-        }]);
-        if (response.chosenEmulator) {
-            const dev = activeDevices.find(d => d.name === response.chosenEmulator);
-            await _runGradleApp(c, platform, dev);
-        }
     } else {
-        const devices = await _checkForActiveEmulator(c, platform);
-        await _runGradleApp(c, platform, devices);
+        await askWhereToRun();
     }
 };
 
