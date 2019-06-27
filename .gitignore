@@ -47,7 +47,7 @@ buck-out/
 
 platformBuilds/
 platformAssets/
-
+.next/
 package-lock.json
 
 buildHooks/dist

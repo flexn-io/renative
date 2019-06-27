@@ -46,7 +46,7 @@ import {
     prepareXcodeProject,
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
-import { buildNext, configureNextProject, deployNext, runNext, runNextDevServer } from '../platformTools/webnext';
+import { buildNext, runNext, runNextDevServer } from '../platformTools/webnext';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
 import { runWebOS, buildWebOSProject } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
@@ -159,10 +159,16 @@ const _start = c => new Promise((resolve, reject) => {
     case WEB:
     case TIZEN:
     case WEBOS:
-    case WEBNEXT:
         executePipe(c, PIPES.START_BEFORE)
             .then(() => configureIfRequired(c, platform))
             .then(() => runWebDevServer(c, platform, port))
+            .then(() => executePipe(c, PIPES.START_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+    case WEBNEXT:
+        executePipe(c, PIPES.START_BEFORE)
+            .then(() => configureIfRequired(c, platform))
+            .then(() => runNextDevServer(c, platform, port))
             .then(() => executePipe(c, PIPES.START_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -259,11 +265,16 @@ const _runAppWithPlatform = async (c) => {
             .then(() => runElectron(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case WEB:
-    case WEBNEXT:
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
             .then(() => runWeb(c, platform, port))
+            .then(() => executePipe(c, PIPES.RUN_AFTER));
+    case WEBNEXT:
+        return executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => runNext(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case TIZEN:
     case TIZEN_WATCH:
@@ -474,6 +485,15 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
             .then(() => buildWeb(c, platform))
+            .then(() => executePipe(c, PIPES.BUILD_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case WEBNEXT:
+        executePipe(c, PIPES.BUILD_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => buildNext(c, platform))
             .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));

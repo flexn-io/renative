@@ -85,7 +85,8 @@
         "react-navigation": "3.5.1",
         "react-navigation-tabs": "2.0.0-alpha.0",
         "renative": "file:./packages/renative",
-        "next": "latest"
+        "next": "8.1.0",
+        "next-images": "1.1.2"
     },
     "devDependencies": {
         "lerna": "latest",
