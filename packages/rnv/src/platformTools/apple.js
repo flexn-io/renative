@@ -445,7 +445,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             initialProperties: nil,
             launchOptions: launchOptions)
         vc.view = v
-        vc.view.backgroundColor = UIColor.white
+        ${pluginBgColor}
         v?.frame = vc.view.bounds
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()
