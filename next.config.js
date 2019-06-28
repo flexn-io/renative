@@ -1,7 +1,8 @@
 
 const withImages = require('next-images');
+const withFonts = require('next-fonts');
 
-module.exports = withImages({
+module.exports = withFonts(withImages({
 
     webpack: (config) => {
         // Alias all `react-native` imports to `react-native-web`
@@ -12,4 +13,4 @@ module.exports = withImages({
         };
         return config;
     }
-});
+}));

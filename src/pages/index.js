@@ -45,17 +45,22 @@ class ScreenHome extends React.Component {
                 <Text style={styles.textH3}>
                     {this.props.platform}
                 </Text>
-                <Button
-                    style={styleButton}
-                    title="Try Me!"
+                <TouchableOpacity
                     onPress={() => {
                         this.setState({ bgColor: this.state.bgColor === '#666666' ? Theme.color1 : '#666666' });
                     }}
-                />
-                <Button
                     style={styleButton}
-                    title="Now Try Me!"
-                />
+                >
+                    <Text style={styles.buttonText}>
+                      Try Me!
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styleButton}>
+                    <Text style={styles.buttonText}>
+                    Now Try Me!
+                    </Text>
+                </TouchableOpacity>
+
             </View>
         );
     }
@@ -99,8 +104,23 @@ const styles = StyleSheet.create({
         minWidth: 130
     },
     button: {
-        minWidth: 150
-    }
+        marginTop: 30,
+        marginHorizontal: 20,
+        borderWidth: 2,
+        borderRadius: 25,
+        borderColor: '#62DBFB',
+        height: 50,
+        minWidth: 150,
+        maxWidth: 200,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row'
+    },
+    buttonText: {
+        fontFamily: 'TimeBurner',
+        color: '#62DBFB',
+        fontSize: 20,
+    },
 });
 
 const stylesObbj = {

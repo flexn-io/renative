@@ -72,6 +72,9 @@
         "watch": "cd ./packages/rnv && npm run watch"
     },
     "dependencies": {
+        "next": "8.1.0",
+        "next-fonts": "^0.17.0",
+        "next-images": "1.1.2",
         "react": "16.8.6",
         "react-art": "16.8.6",
         "react-dom": "16.8.6",
@@ -84,9 +87,7 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.5.1",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative",
-        "next": "8.1.0",
-        "next-images": "1.1.2"
+        "renative": "file:./packages/renative"
     },
     "devDependencies": {
         "lerna": "latest",
