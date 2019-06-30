@@ -636,7 +636,6 @@ const configureEntryPoints = (c) => {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
     //     copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'entry'), c.paths.entryFolder);
     // }
-    console.log('SGSSGGSSG', c.files.appConfigFile);
     const p = c.files.appConfigFile.platforms;
     for (const k in p) {
         platform = p[k];
