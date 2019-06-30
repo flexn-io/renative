@@ -4,9 +4,9 @@ import path from 'path';
 import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync, removeFiles
 } from '../systemTools/fileutils';
-import { logError, generateOptions, logWarning, logTask, setAppConfig } from '../common';
+import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
 import { getMergedPlugin } from '../pluginTools';
 
 const DEFAULT_TEMPLATES = [
@@ -43,7 +43,6 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     if (!templateName) {
         templateName = 'renative-template-hello-world';
         logWarning(`You're missing template name in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will add default ${chalk.white(templateName)} for you`);
-        if (!c.files.projectConfig.defaultProjectConfigs) c.files.projectConfig.defaultProjectConfigs = {};
         c.files.projectConfig.defaultProjectConfigs.template = templateName;
         fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
     }
@@ -64,8 +63,27 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     resolve();
 });
 
+const _applyLocalRenative = c => new Promise((resolve, reject) => {
+    if (c.files.pluginConfig.plugins.renative) {
+        c.files.pluginConfig.plugins.renative = {
+            version: 'file:./packages/renative',
+            webpack: {
+                modulePaths: [],
+                moduleAliases: {
+                    renative: {
+                        projectPath: 'packages/renative'
+                    }
+                }
+            }
+        };
+    }
+    writeObjectSync(c.paths.pluginConfigPath, c.files.pluginConfig);
+    resolve();
+});
+
 
 const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    const currentTemplate = c.files.projectConfig.defaultProjectConfigs.template;
     if (selectedTemplate) {
         logTask(`applyTemplate:${selectedTemplate}`);
         // LOCAL TEMPLATE
@@ -73,9 +91,23 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
             logWarning(`Current template ${chalk.red(currentTemplate)} will be overriden by ${chalk.green(selectedTemplate)}`);
         }
 
+        // removeDirs();
+        const dirsToRemove = [
+            path.join(c.paths.projectConfigFolder),
+            path.join(c.paths.projectSourceFolder)
+        ];
+
+        const filesToRemove = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms.map(p => path.join(c.paths.projectRootFolder, `index.${p}.js`));
+
+        removeDirs(dirsToRemove);
+        // TODO: NOT SERVED FROM TEMPLATE YET
+        removeFiles(filesToRemove);
+
         const templateFolder = path.join(c.paths.projectNodeModulesFolder, selectedTemplate);
 
         _applyTemplate(c, templateFolder)
+            .then(() => configureEntryPoints(c))
+            .then(() => _applyLocalRenative(c))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -87,11 +119,12 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
         reject('Your rnv-config.json is missing defaultProjectConfigs object');
         return;
     }
-    const currentTemplate = c.files.projectConfig.defaultProjectConfigs.template;
+
     const templateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
 
 
     _applyTemplate(c, templateFolder)
+        // .then(() => configureEntryPoints(c)) //NOT READY YET
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -138,13 +171,13 @@ const _applyTemplate = (c, templateFolder) => new Promise((resolve, reject) => {
         try {
             const appConfig = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
 
-            appConfig.common.title = c.defaultProjectConfigs.defaultTitle || c.files.projectPackage.title;
-            appConfig.common.id = c.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
-            appConfig.id = c.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
+            appConfig.common.title = c.files.projectConfig.defaultProjectConfigs.defaultTitle || c.files.projectPackage.title;
+            appConfig.common.id = c.files.projectConfig.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
+            appConfig.id = c.files.projectConfig.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
             appConfig.platforms.ios.teamID = '';
             appConfig.platforms.tvos.teamID = '';
 
-            const supPlats = c.defaultProjectConfigs.supportedPlatforms || c.files.projectPackage.supportedPlatforms;
+            const supPlats = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms;
 
             if (supPlats) {
                 for (const pk in appConfig.platforms) {

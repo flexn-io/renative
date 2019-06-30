@@ -290,11 +290,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvProjectTemplateFolder = path.join(c.paths.rnvRootFolder, 'projectTemplate');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
-    c.supportedPlatforms = {};
-    // TODO USE OS Specific Platforms
-    SUPPORTED_PLATFORMS.forEach((v) => {
-        c.supportedPlatforms[v] = true;
-    });
 
     if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
         resolve(c);
@@ -335,7 +330,20 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
                 c.platformDefaults[pk].defaultPort = c.files.projectConfig.defaultPorts[pk];
             }
         }
-        c.defaultProjectConfigs = c.files.projectConfig.defaultProjectConfigs || {};
+        if (!c.files.projectConfig.defaultProjectConfigs) {
+            logWarning(`You're missing ${chalk.white('defaultProjectConfigs')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
+            c.files.projectConfig.defaultProjectConfigs = {};
+        }
+        if (!c.files.projectConfig.defaultProjectConfigs.supportedPlatforms) {
+            if (c.files.projectPackage.supportedPlatforms) {
+                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = c.files.projectPackage.supportedPlatforms;
+            } else {
+                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = SUPPORTED_PLATFORMS;
+            }
+
+            logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
+        }
+
         c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
@@ -628,6 +636,7 @@ const configureEntryPoints = (c) => {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
     //     copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'entry'), c.paths.entryFolder);
     // }
+    console.log('SGSSGGSSG', c.files.appConfigFile);
     const p = c.files.appConfigFile.platforms;
     for (const k in p) {
         platform = p[k];
@@ -1237,15 +1246,10 @@ const resolveNodeModulePath = (c, filePath) => {
     return pth;
 };
 
-const getProjectPlatforms = (c) => {
-    const dpc = c.files.projectConfig.defaultProjectConfigs || {};
-    return dpc.supportedPlatforms || SUPPORTED_PLATFORMS;
-};
-
 export {
     SUPPORTED_PLATFORMS,
+    configureEntryPoints,
     getBuildsFolder,
-    getProjectPlatforms,
     setAppConfig,
     generateOptions,
     logWelcome,
@@ -1319,7 +1323,7 @@ export {
 export default {
     SUPPORTED_PLATFORMS,
     getBuildsFolder,
-    getProjectPlatforms,
+    configureEntryPoints,
     setAppConfig,
     generateOptions,
     logWelcome,

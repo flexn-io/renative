@@ -96,7 +96,7 @@ const cleanFolder = d => new Promise((resolve, reject) => {
 
 const removeFiles = filePaths => new Promise((resolve, reject) => {
     logDebug('removeFiles', filePaths);
-    v.forEach((filePath) => {
+    filePaths.forEach((filePath) => {
         fs.unlinkSync(filePath);
     });
 });
