@@ -84,7 +84,10 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.5.1",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative"
+        "renative": "file:./packages/renative",
+        "@react-navigation/core": "3.1.1",
+        "@react-navigation/native": "3.1.5",
+        "@react-navigation/web": "1.0.0-alpha.7"
     },
     "devDependencies": {
         "lerna": "latest",
