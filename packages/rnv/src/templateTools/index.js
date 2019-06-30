@@ -94,7 +94,8 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
         // removeDirs();
         const dirsToRemove = [
             path.join(c.paths.projectConfigFolder),
-            path.join(c.paths.projectSourceFolder)
+            path.join(c.paths.projectSourceFolder),
+            path.join(c.paths.appConfigsFolder)
         ];
 
         const filesToRemove = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms.map(p => path.join(c.paths.projectRootFolder, `index.${p}.js`));
