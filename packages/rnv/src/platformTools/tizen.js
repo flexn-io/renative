@@ -188,14 +188,24 @@ const runTizen = async (c, platform, target) => {
         }]);
 
         if (startEmulator) {
+            const defaultTarget = c.files.globalConfig.defaultTargets[platform];
             try {
-                const defaultTarget = c.files.globalConfig.defaultTargets[platform];
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;
                 await waitForEmulatorToBeReady(c, defaultTarget);
                 return continueLaunching();
             } catch (e) {
-                logError(`Looks like the defaultTarget specified in ${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} is not correct. Replace it with the ID of an existing emulator`);
+                logDebug(e);
+                try {
+                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`, logTask);
+                    await launchTizenSimulator(c, defaultTarget);
+                    deviceID = defaultTarget;
+                    await waitForEmulatorToBeReady(c, defaultTarget);
+                    return continueLaunching();
+                } catch (err) {
+                    logDebug(err);
+                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME}`);
+                }
             }
         }
     };
