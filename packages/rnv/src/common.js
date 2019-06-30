@@ -189,8 +189,14 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
 const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     logTask(`isBuildSchemeSupported:${c.platform}`);
 
-    const scheme = c.program.scheme;
-    const buildSchemes = c.files.appConfigFile.platforms[c.platform].buildSchemes;
+    const { scheme } = c.program;
+
+    if (!c.files.appConfigFile.platforms[c.platform]) {
+        c.files.appConfigFile.platforms[c.platform] = {};
+    }
+
+    const { buildSchemes } = c.files.appConfigFile.platforms[c.platform];
+
 
     if (!buildSchemes) {
         logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);

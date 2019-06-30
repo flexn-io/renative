@@ -162,6 +162,8 @@ const _runConnectPlatforms = c => new Promise((resolve) => {
             opts.selectedOptions.forEach((v) => {
                 const ptfn = 'platformTemplates';
 
+                if (!c.files.projectConfig.platformTemplatesFolders) c.files.projectConfig.platformTemplatesFolders = {};
+
                 c.files.projectConfig.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
 
                 writeObjectSync(c.paths.projectConfigPath, c.files.projectConfig);
