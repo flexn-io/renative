@@ -794,7 +794,7 @@ const isSdkInstalled = (c, platform) => {
 
 const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        reject(`${platform} requires SDK to be installed. check your ${c.paths.globalConfigPath} file if you SDK path is correct`);
+        reject && reject(`${platform} requires SDK to be installed. check your ${c.paths.globalConfigPath} file if you SDK path is correct`);
         return false;
     }
     return true;

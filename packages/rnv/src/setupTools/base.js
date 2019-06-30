@@ -2,7 +2,7 @@
 import shell from 'shelljs';
 
 import { commandExistsSync } from '../systemTools/exec';
-import { logInfo } from '../common';
+import { logInfo, logDebug } from '../common';
 import { updateConfigFile } from '../systemTools/fileutils';
 
 class BasePlatformSetup {
@@ -35,30 +35,36 @@ class BasePlatformSetup {
         const downloader = this.availableDownloader;
         if (!downloader) throw new Error('Wget or cURL not installed!');
         // remove the file if existing first
-        await shell.exec(`rm ${this.androidSdkDownloadLocation}`);
+        await shell.exec(`rm ${this.androidSdkDownloadLocation} > /dev/null 2>&1`);
 
-        let pathArgument;
+        let aditionalArguments;
         let locationArgument;
         if (downloader === 'wget') {
-            pathArgument = '-P';
-            locationArgument = '~/';
+            aditionalArguments = '-q';
+            locationArgument = '-P ~/';
         }
         if (downloader === 'curl') {
-            pathArgument = '--output';
-            locationArgument = this.androidSdkDownloadLocation;
+            aditionalArguments = '-#';
+            locationArgument = `--output ${this.androidSdkDownloadLocation}`;
         }
 
-        await shell.exec(`${downloader} ${this.androidSdkURL} ${pathArgument} ${locationArgument}`);
+        const command = `${downloader} ${aditionalArguments} ${this.androidSdkURL} ${locationArgument}`;
+
+        logDebug('BasePlatformSetup -> downloadAndroidSdk -> command', command);
+        logInfo('Downloading Android SDK...');
+        await shell.exec(command);
     }
 
     async unzipAndroidSdk() {
         if (!commandExistsSync('unzip')) throw new Error('unzip is not installed');
-        await shell.exec(`unzip -o ${this.androidSdkDownloadLocation} -d ${this.androidSdkLocation}`);
+        await shell.exec(`unzip -qq -o ${this.androidSdkDownloadLocation} -d ${this.androidSdkLocation}`);
     }
 
     async installSdksAndEmulator() {
-        await shell.exec(`yes | ${this.androidSdkLocation}/tools/bin/sdkmanager --licenses`);
-        await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager ${this.sdksToInstall}`);
+        logDebug('BasePlatformSetup -> installSdksAndEmulator -> accepting licenses');
+        await shell.exec(`yes | ${this.androidSdkLocation}/tools/bin/sdkmanager --licenses > /dev/null`);
+        logDebug('BasePlatformSetup -> installSdksAndEmulator -> installing sdk', this.sdksToInstall);
+        await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`);
     }
 
     async installAndroidSdk() {

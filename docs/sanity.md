@@ -17,6 +17,7 @@ rnv run -p tvos
 rnv run -p macos
 rnv run -p androidwear
 rnv run -p tizenwatch
+rnv target list -p android
 rnv platform eject
 rnv target list
 ```
@@ -52,6 +53,11 @@ Then:
 - I see warning that no devices are connected
 - I see option press Enter to retry OR ip address (=> given valid IP address was entered)
 - app runs on device in debug mode
+
+When: `rnv target list -p android`
+Then:
+- I see available android targets if the sdk is installed
+- I get the option to install the sdk if it's not
 
 ## iOS
 

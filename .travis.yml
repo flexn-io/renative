@@ -1,10 +1,61 @@
+# 2
+
 jobs:
   include:
+    # commented out since it's failing because of travis (curl SSL read: error when downloading node)
     - stage: test
       language: node_js
       node_js: 10.15.3
-      install: yarn
+      cache: npm
+      install: 
+       - npm run fix
+       - npm i > /dev/null 2>&1
+       - cd packages/rnv
+       - npm i > /dev/null 2>&1
+       - npm run fix
+       - npm link 
+      script: npm run test:setup
+    - language: android
+      sudo: required
+      jdk: oraclejdk8
+      cache: npm
+      android:
+        components:
+          - tools
+          - build-tools-28.0.3
+          - extra-google-m2repository
+          - extra-android-m2repository
+          - platform-tools
+          - android-28
+          - sys-img-x86-android-28
+      before_install:
+        - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+        - sudo apt-get install -y nodejs
+        - npm run fix
+        - npm i > /dev/null 2>&1
+        - cd packages/rnv
+        - npm run fix
+        - npm i > /dev/null 2>&1
+        - npm run fix
+        - sudo npm link > /dev/null 2>&1
+        - mkdir /home/travis/.rnv
+        - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/config.json
+        - yes | sdkmanager "emulator" 
       script: npm run test
+    - language: node_js
+      node_js: 10.15.3
+      os: osx
+      osx_image: xcode10.2
+      cache: npm
+      install: 
+        - npm run fix
+        - npm i > /dev/null 2>&1
+        - cd packages/rnv
+        - npm i > /dev/null 2>&1
+        - npm run fix
+        - npm link
+      script: npm run test:ios
+
 
 stages:
   - test

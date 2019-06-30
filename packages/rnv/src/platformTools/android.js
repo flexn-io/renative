@@ -229,7 +229,7 @@ const getDeviceType = async (device, c) => {
 
         device.isWear = false;
         [sysdir, tagId, tagDisplay, deviceName].forEach((string) => {
-            if (string.includes('wear')) device.isWear = true;
+            if (string && string.includes('wear')) device.isWear = true;
         });
 
         const avdId = device.avdConfig.AvdId;
@@ -239,7 +239,7 @@ const getDeviceType = async (device, c) => {
 
         device.isTV = false;
         [avdId, name, skin, image].forEach((string) => {
-            if (string.includes('tv') || string.includes('TV')) device.isTV = true;
+            if ((string && string.includes('tv')) || (string && string.includes('TV'))) device.isTV = true;
         });
 
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
@@ -292,32 +292,34 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
         logDebug('_parseDevicesResult', { lines });
+        if (lines.length !== 0) {
+            await Promise.all(lines.map(async (line) => {
+                const words = line.split(/[ ,\t]+/).filter(w => w !== '');
+                if (words.length === 0) return;
+                logDebug('_parseDevicesResult', { words });
 
-        await Promise.all(lines.map(async (line) => {
-            const words = line.split(/[ ,\t]+/).filter(w => w !== '');
-            logDebug('_parseDevicesResult', { words });
-
-            if (words[1] === 'device') {
-                const isDevice = !words[0].includes('emulator');
-                let name = _getDeviceProp(words, 'model:');
-                logDebug('_parseDevicesResult', { name });
-                if (!isDevice) {
-                    await waitForEmulatorToBeReady(c, words[0]);
-                    name = await getEmulatorName(words);
+                if (words[1] === 'device') {
+                    const isDevice = !words[0].includes('emulator');
+                    let name = _getDeviceProp(words, 'model:');
                     logDebug('_parseDevicesResult', { name });
+                    if (!isDevice) {
+                        await waitForEmulatorToBeReady(c, words[0]);
+                        name = await getEmulatorName(words);
+                        logDebug('_parseDevicesResult', { name });
+                    }
+                    logDebug('_parseDevicesResult', { deviceOnly, isDevice });
+                    if ((deviceOnly && isDevice) || !deviceOnly) {
+                        devices.push({
+                            udid: words[0],
+                            isDevice,
+                            isActive: true,
+                            name,
+                        });
+                    }
+                    return true;
                 }
-                logDebug('_parseDevicesResult', { deviceOnly, isDevice });
-                if ((deviceOnly && isDevice) || !deviceOnly) {
-                    devices.push({
-                        udid: words[0],
-                        isDevice,
-                        isActive: true,
-                        name,
-                    });
-                }
-                return true;
-            }
-        }));
+            }));
+        }
     }
 
     if (avdsString) {
@@ -350,7 +352,6 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         .then(devicesArray => devicesArray.filter((device) => {
             // filter devices based on selected platform
             const { platform } = c;
-            console.log(device);
             const matches = (platform === ANDROID && device.isTablet) || (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', { device, matches, platform });
             return matches;
