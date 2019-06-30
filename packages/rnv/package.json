@@ -61,6 +61,7 @@
     },
     "scripts": {
         "build": "babel src -d dist",
+        "build:dev": "babel src -d dist",
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "prepare": "npm run build",
         "prepublishOnly": "npm run build",

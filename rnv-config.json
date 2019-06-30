@@ -1,4 +1,5 @@
 {
+    "isWrapper": true,
     "globalConfigFolder": "~/.rnv",
     "appConfigsFolder": "./appConfigs",
     "platformTemplatesFolder": "RNV_HOME/platformTemplates",
@@ -9,6 +10,22 @@
     "projectConfigFolder": "./projectConfig",
     "defaultPorts": {},
     "defaultProjectConfigs": {
-        "template": "renative-template-hello-world"
+        "template": "renative-template-hello-world",
+        "supportedPlatforms": [
+            "ios",
+            "android",
+            "androidtv",
+            "androidwear",
+            "web",
+            "tizen",
+            "tvos",
+            "webos",
+            "macos",
+            "windows",
+            "tizenwatch",
+            "kaios",
+            "firefoxos",
+            "firefoxtv"
+        ]
     }
 }

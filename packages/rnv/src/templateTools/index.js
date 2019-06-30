@@ -7,7 +7,7 @@ import {
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, removeFiles
 } from '../systemTools/fileutils';
 import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
-import { getMergedPlugin } from '../pluginTools';
+import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 
 const DEFAULT_TEMPLATES = [
     'renative-template-hello-world',
@@ -64,25 +64,21 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
 });
 
 const _applyLocalRenative = c => new Promise((resolve, reject) => {
+    if (!c.isWrapper) {
+        resolve();
+        return;
+    }
+
     if (c.files.pluginConfig.plugins.renative) {
-        c.files.pluginConfig.plugins.renative = {
-            version: 'file:./packages/renative',
-            webpack: {
-                modulePaths: [],
-                moduleAliases: {
-                    renative: {
-                        projectPath: 'packages/renative'
-                    }
-                }
-            }
-        };
+        c.files.pluginConfig.plugins.renative = getLocalRenativePlugin();
     }
     writeObjectSync(c.paths.pluginConfigPath, c.files.pluginConfig);
     resolve();
 });
 
 
-const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    logTask(`applyLocalTemplate:${selectedTemplate}`);
     const currentTemplate = c.files.projectConfig.defaultProjectConfigs.template;
     if (selectedTemplate) {
         logTask(`applyTemplate:${selectedTemplate}`);
@@ -111,12 +107,14 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
             .then(() => _applyLocalRenative(c))
             .then(() => resolve())
             .catch(e => reject(e));
-        return;
     }
+});
 
+const applyTemplate = c => new Promise((resolve, reject) => {
+    logTask('applyTemplate');
+    const currentTemplate = c.files.projectConfig.defaultProjectConfigs.template;
 
     if (!c.files.projectConfig.defaultProjectConfigs) {
-        logTask('applyTemplate');
         reject('Your rnv-config.json is missing defaultProjectConfigs object');
         return;
     }
@@ -126,12 +124,13 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
 
     _applyTemplate(c, templateFolder)
         // .then(() => configureEntryPoints(c)) //NOT READY YET
+        // .then(() => _applyLocalRenative(c)) //NOT READY YET
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
 const _applyTemplate = (c, templateFolder) => new Promise((resolve, reject) => {
-    logTask(`applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
+    logTask(`_applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
 
 
     if (!fs.existsSync(templateFolder)) {
@@ -208,4 +207,7 @@ const _applyTemplate = (c, templateFolder) => new Promise((resolve, reject) => {
 
 const getTemplateOptions = () => generateOptions(DEFAULT_TEMPLATES);
 
-export { listTemplates, addTemplate, getTemplateOptions, applyTemplate, checkIfTemplateInstalled };
+export {
+    listTemplates, addTemplate, getTemplateOptions, applyTemplate,
+    applyLocalTemplate, checkIfTemplateInstalled
+};

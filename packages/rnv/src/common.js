@@ -343,7 +343,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
             logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
         }
-
+        c.isWrapper = c.files.projectConfig.isWrapper;
         c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
@@ -677,14 +677,18 @@ const configurePlugins = c => new Promise((resolve, reject) => {
                 chalk.white(c.paths.pluginConfigPath)}`);
         } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
-                logWarning(
-                    `Version mismatch of dependency ${chalk.white(k)} between:
-${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
-${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
-package.json will be overriden`
-                );
-                hasPackageChanged = true;
-                dependencies[k] = plugin.version;
+                if (k === 'renative' && c.isWrapper) {
+                    logWarning('You\'re in ReNative wrapper mode. plugin renative will stay as local dep!');
+                } else {
+                    logWarning(
+                        `Version mismatch of dependency ${chalk.white(k)} between:
+  ${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
+  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
+  package.json will be overriden`
+                    );
+                    hasPackageChanged = true;
+                    dependencies[k] = plugin.version;
+                }
             }
         } else if (devDependencies && devDependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependencies[k] !== plugin.version) {
