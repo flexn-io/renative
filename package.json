@@ -91,7 +91,8 @@
     },
     "devDependencies": {
         "lerna": "latest",
-        "renative-template-hello-world": "0.0.1",
+        "renative-template-hello-world": "file:./packages/renative-template-hello-world",
+        "renative-template-blank": "file:./packages/renative-template-blank",
         "rnv": "file:./packages/rnv"
     },
     "engines": {

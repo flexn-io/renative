@@ -64,26 +64,44 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     resolve();
 });
 
+
 const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
     if (selectedTemplate) {
         logTask(`applyTemplate:${selectedTemplate}`);
+        // LOCAL TEMPLATE
+        if (currentTemplate !== selectedTemplate) {
+            logWarning(`Current template ${chalk.red(currentTemplate)} will be overriden by ${chalk.green(selectedTemplate)}`);
+        }
 
-        resolve();
+        const templateFolder = path.join(c.paths.projectNodeModulesFolder, selectedTemplate);
+
+        _applyTemplate(c, templateFolder)
+            .then(() => resolve())
+            .catch(e => reject(e));
         return;
     }
+
 
     if (!c.files.projectConfig.defaultProjectConfigs) {
         logTask('applyTemplate');
-        resolve();
+        reject('Your rnv-config.json is missing defaultProjectConfigs object');
         return;
     }
-
-    logTask(`applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
-
+    const currentTemplate = c.files.projectConfig.defaultProjectConfigs.template;
     const templateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
 
+
+    _applyTemplate(c, templateFolder)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _applyTemplate = (c, templateFolder) => new Promise((resolve, reject) => {
+    logTask(`applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
+
+
     if (!fs.existsSync(templateFolder)) {
-        logWarning(`Template ${chalk.white(c.files.projectConfig.defaultProjectConfigs.template)} does not exist in your ./node_modules. skipping`);
+        logWarning(`Template ${chalk.white(c.files.projectConfig.defaultProjectConfigs.template)} does not exist in your ${chalk.white(templateFolder)}. skipping`);
         resolve();
         return;
     }
@@ -153,7 +171,6 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
 
     resolve();
 });
-
 
 const getTemplateOptions = () => generateOptions(DEFAULT_TEMPLATES);
 
