@@ -189,8 +189,14 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
 const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     logTask(`isBuildSchemeSupported:${c.platform}`);
 
-    const scheme = c.program.scheme;
-    const buildSchemes = c.files.appConfigFile.platforms[c.platform].buildSchemes;
+    const { scheme } = c.program;
+
+    if (!c.files.appConfigFile.platforms[c.platform]) {
+        c.files.appConfigFile.platforms[c.platform] = {};
+    }
+
+    const { buildSchemes } = c.files.appConfigFile.platforms[c.platform];
+
 
     if (!buildSchemes) {
         logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
@@ -284,11 +290,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvProjectTemplateFolder = path.join(c.paths.rnvRootFolder, 'projectTemplate');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
-    c.supportedPlatforms = {};
-    // TODO USE OS Specific Platforms
-    SUPPORTED_PLATFORMS.forEach((v) => {
-        c.supportedPlatforms[v] = true;
-    });
 
     if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
         resolve(c);
@@ -329,7 +330,20 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
                 c.platformDefaults[pk].defaultPort = c.files.projectConfig.defaultPorts[pk];
             }
         }
-        c.defaultProjectConfigs = c.files.projectConfig.defaultProjectConfigs || {};
+        if (!c.files.projectConfig.defaultProjectConfigs) {
+            logWarning(`You're missing ${chalk.white('defaultProjectConfigs')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
+            c.files.projectConfig.defaultProjectConfigs = {};
+        }
+        if (!c.files.projectConfig.defaultProjectConfigs.supportedPlatforms) {
+            if (c.files.projectPackage.supportedPlatforms) {
+                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = c.files.projectPackage.supportedPlatforms;
+            } else {
+                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = SUPPORTED_PLATFORMS;
+            }
+
+            logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
+        }
+        c.isWrapper = c.files.projectConfig.isWrapper;
         c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
@@ -627,7 +641,9 @@ const configureEntryPoints = (c) => {
         platform = p[k];
         const source = path.join(c.paths.rnvProjectTemplateFolder, `${platform.entryFile}.js`);
         const dest = path.join(c.paths.projectRootFolder, `${platform.entryFile}.js`);
-        if (!fs.existsSync(dest)) {
+        if (!platform.entryFile) {
+            logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
+        } else if (!fs.existsSync(dest)) {
             logWarning(`You missing entry file ${chalk.white(platform.entryFile)} in your project. let's create one for you!`);
             copyFileSync(source, dest);
         }
@@ -663,14 +679,18 @@ const configurePlugins = c => new Promise((resolve, reject) => {
                 chalk.white(c.paths.pluginConfigPath)}`);
         } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
-                logWarning(
-                    `Version mismatch of dependency ${chalk.white(k)} between:
-${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
-${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
-package.json will be overriden`
-                );
-                hasPackageChanged = true;
-                dependencies[k] = plugin.version;
+                if (k === 'renative' && c.isWrapper) {
+                    logWarning('You\'re in ReNative wrapper mode. plugin renative will stay as local dep!');
+                } else {
+                    logWarning(
+                        `Version mismatch of dependency ${chalk.white(k)} between:
+  ${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
+  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
+  package.json will be overriden`
+                    );
+                    hasPackageChanged = true;
+                    dependencies[k] = plugin.version;
+                }
             }
         } else if (devDependencies && devDependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependencies[k] !== plugin.version) {
@@ -692,6 +712,17 @@ package.json will be overriden`
 
             hasPackageChanged = true;
             dependencies[k] = plugin.version;
+        }
+
+        if (plugin && plugin.npm) {
+            for (const npmKey in plugin.npm) {
+                const npmDep = plugin.npm[npmKey];
+                if (dependencies[npmKey] !== npmDep) {
+                    logWarning(`Plugin ${chalk.white(k)} requires npm dependency ${chalk.white(npmKey)} .Adding missing npm dependency to you package.json`);
+                    dependencies[npmKey] = npmDep;
+                    hasPackageChanged = true;
+                }
+            }
         }
     }
     if (hasPackageChanged) {
@@ -783,7 +814,7 @@ const isSdkInstalled = (c, platform) => {
 
 const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        reject(`${platform} requires SDK to be installed. check your ${c.paths.globalConfigPath} file if you SDK path is correct`);
+        reject && reject(`${platform} requires SDK to be installed. check your ${c.paths.globalConfigPath} file if you SDK path is correct`);
         return false;
     }
     return true;
@@ -1220,15 +1251,10 @@ const resolveNodeModulePath = (c, filePath) => {
     return pth;
 };
 
-const getProjectPlatforms = (c) => {
-    const dpc = c.files.projectConfig.defaultProjectConfigs || {};
-    return dpc.supportedPlatforms || SUPPORTED_PLATFORMS;
-};
-
 export {
     SUPPORTED_PLATFORMS,
+    configureEntryPoints,
     getBuildsFolder,
-    getProjectPlatforms,
     setAppConfig,
     generateOptions,
     logWelcome,
@@ -1302,7 +1328,7 @@ export {
 export default {
     SUPPORTED_PLATFORMS,
     getBuildsFolder,
-    getProjectPlatforms,
+    configureEntryPoints,
     setAppConfig,
     generateOptions,
     logWelcome,

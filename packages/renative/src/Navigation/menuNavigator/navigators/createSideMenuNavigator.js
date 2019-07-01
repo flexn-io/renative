@@ -55,7 +55,7 @@ class TabNavigationView extends React.PureComponent<Props, State> {
 
   _renderTabBar = () => {
       const {
-          tabBarComponent: TabBarComponent = this.props.tabBarOptions.position === 'top' ? HorizontalMenu : HorizontalMenu,
+          tabBarComponent: TabBarComponent = this.props.tabBarOptions.position === 'top' ? HorizontalMenu : VerticalMenu,
           tabBarOptions,
           navigation,
           screenProps,

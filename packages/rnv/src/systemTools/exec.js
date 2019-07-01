@@ -94,6 +94,7 @@ const executeAsync = (
 });
 
 function execShellAsync(command) {
+    logDebug('Exec:', command);
     return new Promise((resolve) => {
         shell.exec(command, resolve);
     });

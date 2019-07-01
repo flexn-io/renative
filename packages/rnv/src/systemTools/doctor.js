@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { writeObjectSync, readObjectSync } from './fileUtils';
+import { writeObjectSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
 import { logWarning } from '../common';
 

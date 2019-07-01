@@ -26,7 +26,7 @@ import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { executePipe } from '../projectTools/buildHooks';
 import appRunner, { copyRuntimeAssets } from './app';
-import { listTemplates, addTemplate, getTemplateOptions, applyTemplate } from '../templateTools';
+import { listTemplates, addTemplate, getTemplateOptions, applyLocalTemplate } from '../templateTools';
 
 const LIST = 'list';
 const ADD = 'add';
@@ -88,7 +88,7 @@ const _templateApply = c => new Promise((resolve, reject) => {
             finishQuestion();
             return Promise.resolve();
         })
-        .then(() => applyTemplate(c, opts.selectedOption))
+        .then(() => applyLocalTemplate(c, opts.selectedOption))
         .then(() => resolve())
         .catch(e => reject(e));
 });

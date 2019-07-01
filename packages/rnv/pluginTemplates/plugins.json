@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.4",
+            "version": "0.23.11",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -158,6 +158,9 @@
             },
             "androidtv": {
                 "package": "com.brentvatne.react.ReactVideoPackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-languages": {
@@ -190,13 +193,17 @@
                 "package": "com.BV.LinearGradient.LinearGradientPackage"
             },
             "webpack": {
+                "modulePaths": [
+                    "react-native-web-linear-gradient",
+                    "react-native-linear-gradient"
+                ],
                 "moduleAliases": {
                     "react-native-linear-gradient": "react-native-web-linear-gradient"
                 }
             },
-            "dependsOn": [
-                "react-native-web-linear-gradient"
-            ]
+            "npm": {
+                "react-native-web-linear-gradient": "1.0.5"
+            }
         },
         "react-native-fetch-blob": {
             "version": "0.10.8",
@@ -447,6 +454,9 @@
             },
             "androidtv": {
                 "package": "com.corbt.keepawake.KCKeepAwakePackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-maps": {
@@ -1028,6 +1038,9 @@
             },
             "androidtv": {
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-web": {
@@ -1051,7 +1064,12 @@
                 "react-navigation-stack",
                 "react-navigation-tabs",
                 "react-native-reanimated"
-            ]
+            ],
+            "npm": {
+                "@react-navigation/core": "3.1.1",
+                "@react-navigation/native": "3.1.5",
+                "@react-navigation/web": "1.0.0-alpha.7"
+            }
         },
         "react-navigation-stack": {
             "version": "1.4.0",
@@ -1085,9 +1103,6 @@
             "webpack": {
                 "modulePaths": true
             }
-        },
-        "react-native-web-linear-gradient": {
-            "version": "1.0.5"
         },
         "svgs": {
             "version": "4.1.0",
@@ -1128,6 +1143,9 @@
         "react-art": {
             "version": "16.8.6"
         },
+        "react-hot-loader": {
+            "version": "4.3.12"
+        },
         "react-native-navigation-bar-color": {
             "version": "0.1.0",
             "android": {
@@ -1147,6 +1165,9 @@
             },
             "androidtv": {
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
+            },
+            "webpack": {
+                "modulePaths": true
             }
         },
         "react-native-fast-image": {
@@ -1159,6 +1180,21 @@
             },
             "androidtv": {
                 "package": "com.dylanvann.fastimage.FastImageViewPackage"
+            },
+            "webpack": {
+                "modulePaths": true
+            }
+        },
+        "react-native-snap-carousel": {
+            "version": "3.7.5",
+            "webpack": {
+                "modulePaths": true
+            }
+        },
+        "react-native-render-html": {
+            "version": "4.1.1",
+            "webpack": {
+                "modulePaths": true
             }
         }
     }
