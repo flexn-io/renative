@@ -254,21 +254,34 @@ const getDeviceType = async (device, c) => {
     return device;
 };
 
-const getAvdDetails = async (deviceName) => {
-    const avdConfigPath = `${os.homedir()}/.android/avd/${deviceName}.avd/config.ini`;
-    if (fs.existsSync(avdConfigPath)) {
-        const fileData = fs.readFileSync(avdConfigPath).toString();
-        const lines = fileData.trim().split(/\r?\n/);
-        const avdConfig = {};
-        lines.forEach((line) => {
-            const [key, value] = line.split('=');
-            // also remove the white space
-            avdConfig[key.trim()] = value.trim();
-        });
-        return { avdConfig };
-    }
+const getAvdDetails = (deviceName) => {
+    const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
 
-    return {};
+    // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
+    const avdConfigPaths = [
+        `${ANDROID_AVD_HOME}/${deviceName}.avd/config.ini`,
+        `${ANDROID_SDK_HOME}/.android/avd/${deviceName}.avd/config.ini`,
+        `${os.homedir()}/.android/avd/${deviceName}.avd/config.ini`,
+    ]
+
+    const results = {};
+
+    avdConfigPaths.some(path => {
+        if (fs.existsSync(path)) {
+            const fileData = fs.readFileSync(path).toString();
+            const lines = fileData.trim().split(/\r?\n/);
+            const avdConfig = {};
+            lines.forEach((line) => {
+                const [key, value] = line.split('=');
+                // also remove the white space
+                avdConfig[key.trim()] = value.trim();
+            });
+            results.avdConfig = avdConfig;
+            return true;
+        }
+    });
+
+    return results;
 };
 
 const getEmulatorName = async (words) => {
@@ -335,7 +348,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         logDebug('_parseDevicesResult', { avdLines });
 
         await Promise.all(avdLines.map(async (line) => {
-            const avdDetails = await getAvdDetails(line);
+            const avdDetails = getAvdDetails(line);
             logDebug('_parseDevicesResult', { avdDetails });
             try {
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
