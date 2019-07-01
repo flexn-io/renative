@@ -4,7 +4,7 @@ import path from 'path';
 import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, removeFiles
+    copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs
 } from '../systemTools/fileutils';
 import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
@@ -87,7 +87,6 @@ const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject
             logWarning(`Current template ${chalk.red(currentTemplate)} will be overriden by ${chalk.green(selectedTemplate)}`);
         }
 
-        // removeDirs();
         const dirsToRemove = [
             path.join(c.paths.projectConfigFolder),
             path.join(c.paths.projectSourceFolder),
@@ -96,9 +95,9 @@ const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject
 
         const filesToRemove = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms.map(p => path.join(c.paths.projectRootFolder, `index.${p}.js`));
 
-        removeDirs(dirsToRemove);
+        removeDirsSync(dirsToRemove);
         // TODO: NOT SERVED FROM TEMPLATE YET
-        removeFiles(filesToRemove);
+        removeFilesSync(filesToRemove);
 
         const templateFolder = path.join(c.paths.projectNodeModulesFolder, selectedTemplate);
 
