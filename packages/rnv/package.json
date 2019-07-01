@@ -142,10 +142,10 @@
         "webpack-dev-server": "3.2.1",
         "webpack-merge": "4.1.4",
         "write-json-webpack-plugin": "1.1.0",
-        "xcode": "2.0.0"
+        "xcode": "2.0.0",
+        "react-native": "0.59.5"
     },
     "peerDependencies": {
-        "react-native": "0.59.5"
     },
     "devDependencies": {},
     "optionalDependencies": {
