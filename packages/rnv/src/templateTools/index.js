@@ -4,10 +4,10 @@ import path from 'path';
 import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync
+    copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs
 } from '../systemTools/fileutils';
-import { logError, generateOptions, logWarning, logTask, setAppConfig } from '../common';
-import { getMergedPlugin } from '../pluginTools';
+import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
+import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 
 const DEFAULT_TEMPLATES = [
     'renative-template-hello-world',
@@ -43,7 +43,6 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     if (!templateName) {
         templateName = 'renative-template-hello-world';
         logWarning(`You're missing template name in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will add default ${chalk.white(templateName)} for you`);
-        if (!c.files.projectConfig.defaultProjectConfigs) c.files.projectConfig.defaultProjectConfigs = {};
         c.files.projectConfig.defaultProjectConfigs.template = templateName;
         fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
     }
@@ -64,26 +63,77 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+const _applyLocalRenative = c => new Promise((resolve, reject) => {
+    if (!c.isWrapper) {
+        resolve();
+        return;
+    }
+
+    if (c.files.pluginConfig.plugins.renative) {
+        c.files.pluginConfig.plugins.renative = getLocalRenativePlugin();
+    }
+    writeObjectSync(c.paths.pluginConfigPath, c.files.pluginConfig);
+    resolve();
+});
+
+
+const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    logTask(`applyLocalTemplate:${selectedTemplate}`);
+    const currentTemplate = c.files.projectConfig.defaultProjectConfigs.template;
     if (selectedTemplate) {
         logTask(`applyTemplate:${selectedTemplate}`);
+        // LOCAL TEMPLATE
+        if (currentTemplate !== selectedTemplate) {
+            logWarning(`Current template ${chalk.red(currentTemplate)} will be overriden by ${chalk.green(selectedTemplate)}`);
+        }
 
-        resolve();
-        return;
+        const dirsToRemove = [
+            path.join(c.paths.projectConfigFolder),
+            path.join(c.paths.projectSourceFolder),
+            path.join(c.paths.appConfigsFolder)
+        ];
+
+        const filesToRemove = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms.map(p => path.join(c.paths.projectRootFolder, `index.${p}.js`));
+
+        removeDirsSync(dirsToRemove);
+        // TODO: NOT SERVED FROM TEMPLATE YET
+        removeFilesSync(filesToRemove);
+
+        const templateFolder = path.join(c.paths.projectNodeModulesFolder, selectedTemplate);
+
+        _applyTemplate(c, templateFolder)
+            .then(() => configureEntryPoints(c))
+            .then(() => _applyLocalRenative(c))
+            .then(() => resolve())
+            .catch(e => reject(e));
     }
+});
+
+const applyTemplate = c => new Promise((resolve, reject) => {
+    logTask('applyTemplate');
+    const currentTemplate = c.files.projectConfig.defaultProjectConfigs.template;
 
     if (!c.files.projectConfig.defaultProjectConfigs) {
-        logTask('applyTemplate');
-        resolve();
+        reject('Your rnv-config.json is missing defaultProjectConfigs object');
         return;
     }
-
-    logTask(`applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
 
     const templateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
 
+
+    _applyTemplate(c, templateFolder)
+        // .then(() => configureEntryPoints(c)) //NOT READY YET
+        // .then(() => _applyLocalRenative(c)) //NOT READY YET
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _applyTemplate = (c, templateFolder) => new Promise((resolve, reject) => {
+    logTask(`_applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
+
+
     if (!fs.existsSync(templateFolder)) {
-        logWarning(`Template ${chalk.white(c.files.projectConfig.defaultProjectConfigs.template)} does not exist in your ./node_modules. skipping`);
+        logWarning(`Template ${chalk.white(c.files.projectConfig.defaultProjectConfigs.template)} does not exist in your ${chalk.white(templateFolder)}. skipping`);
         resolve();
         return;
     }
@@ -120,13 +170,13 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
         try {
             const appConfig = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
 
-            appConfig.common.title = c.defaultProjectConfigs.defaultTitle || c.files.projectPackage.title;
-            appConfig.common.id = c.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
-            appConfig.id = c.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
+            appConfig.common.title = c.files.projectConfig.defaultProjectConfigs.defaultTitle || c.files.projectPackage.title;
+            appConfig.common.id = c.files.projectConfig.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
+            appConfig.id = c.files.projectConfig.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
             appConfig.platforms.ios.teamID = '';
             appConfig.platforms.tvos.teamID = '';
 
-            const supPlats = c.defaultProjectConfigs.supportedPlatforms || c.files.projectPackage.supportedPlatforms;
+            const supPlats = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms;
 
             if (supPlats) {
                 for (const pk in appConfig.platforms) {
@@ -154,7 +204,9 @@ const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => 
     resolve();
 });
 
-
 const getTemplateOptions = () => generateOptions(DEFAULT_TEMPLATES);
 
-export { listTemplates, addTemplate, getTemplateOptions, applyTemplate, checkIfTemplateInstalled };
+export {
+    listTemplates, addTemplate, getTemplateOptions, applyTemplate,
+    applyLocalTemplate, checkIfTemplateInstalled
+};
