@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.11",
+            "version": "0.23.12",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1093,7 +1093,7 @@
             }
         },
         "react-native-safe-area-view": {
-            "version": "0.14.4",
+            "version": "0.14.5",
             "webpack": {
                 "modulePaths": true
             }

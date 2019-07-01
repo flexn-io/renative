@@ -397,6 +397,11 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
+    if (c.command === 'fix') {
+        resolve(c);
+        return;
+    }
+
     configureRnvGlobal(c)
         .then(() => checkIfTemplateInstalled(c))
         .then(() => configureProject(c))
