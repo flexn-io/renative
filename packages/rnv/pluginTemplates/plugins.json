@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.13",
+            "version": "0.23.14",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -168,9 +168,6 @@
             "ios": {
                 "podName": "RNLanguages"
             },
-            "tvos": {
-                "podName": "RNLanguages"
-            },
             "android": {
                 "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
             },
@@ -208,9 +205,6 @@
         "react-native-fetch-blob": {
             "version": "0.10.8",
             "ios": {
-                "podName": "react-native-fetch-blob"
-            },
-            "tvos": {
                 "podName": "react-native-fetch-blob"
             },
             "android": {
