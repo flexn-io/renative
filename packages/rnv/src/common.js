@@ -397,7 +397,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
-    if (c.command === 'fix') {
+    if (c.command === 'fix' || c.command === 'clean') {
         resolve(c);
         return;
     }
