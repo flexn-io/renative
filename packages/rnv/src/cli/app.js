@@ -355,6 +355,11 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
     } else {
         const { platforms } = c.files.appConfigFile;
         const cmds = [];
+        if (!platforms) {
+            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platform: {} }')} object at root`);
+            return;
+        }
+
         Object.keys(platforms).forEach((k) => {
             if (!fs.existsSync(k)) {
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
@@ -375,7 +380,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
     resolve();
 });
 
-const copyRuntimeAssets = c => new Promise((resolve) => {
+const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('copyRuntimeAssets');
     const aPath = path.join(c.paths.platformAssetsFolder, 'runtime');
     const cPath = path.join(c.paths.appConfigFolder, 'assets/runtime');
@@ -388,6 +393,10 @@ const copyRuntimeAssets = c => new Promise((resolve) => {
     let fontsObj = 'export default [';
 
     if (c.files.appConfigFile) {
+        if (!c.files.appConfigFile.common) {
+            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
+            return;
+        }
         if (fs.existsSync(c.paths.fontsConfigFolder)) {
             fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
@@ -403,9 +412,9 @@ const copyRuntimeAssets = c => new Promise((resolve) => {
                                     // const fontDest = path.join(fontFolder, font);
                                     // copyFileSync(fontSource, fontDest);
                                     fontsObj += `{
-                                          fontFamily: '${key}',
-                                          file: require('../../projectConfig/fonts/${font}'),
-                                      },`;
+                                            fontFamily: '${key}',
+                                            file: require('../../projectConfig/fonts/${font}'),
+                                        },`;
                                 } else {
                                     logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                                 }

@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.9",
+            "version": "0.23.11",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1064,7 +1064,12 @@
                 "react-navigation-stack",
                 "react-navigation-tabs",
                 "react-native-reanimated"
-            ]
+            ],
+            "npm": {
+                "@react-navigation/core": "3.1.1",
+                "@react-navigation/native": "3.1.5",
+                "@react-navigation/web": "1.0.0-alpha.7"
+            }
         },
         "react-navigation-stack": {
             "version": "1.4.0",
@@ -1137,6 +1142,9 @@
         },
         "react-art": {
             "version": "16.8.6"
+        },
+        "react-hot-loader": {
+            "version": "4.3.12"
         },
         "react-native-navigation-bar-color": {
             "version": "0.1.0",

@@ -12,7 +12,6 @@ import {
     askQuestion,
     finishQuestion,
     generateOptions,
-    getProjectPlatforms
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
@@ -143,7 +142,7 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 });
 
 const _genPlatOptions = (c) => {
-    const opts = generateOptions(getProjectPlatforms(c), true, null, (i, obj, mapping, defaultVal) => {
+    const opts = generateOptions(c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
         const isEjected = c.paths.platformTemplatesFolders[obj].includes(c.paths.rnvPlatformTemplatesFolder) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
         return `-[${chalk.white(i + 1)}] ${chalk.white(defaultVal)} - ${isEjected} \n`;
     });

@@ -46,4 +46,16 @@ const parsePlugins = (c, pluginCallback) => {
     }
 };
 
-export { getMergedPlugin, parsePlugins };
+const getLocalRenativePlugin = () => ({
+    version: 'file:./packages/renative',
+    webpack: {
+        modulePaths: [],
+        moduleAliases: {
+            renative: {
+                projectPath: 'packages/renative'
+            }
+        }
+    }
+});
+
+export { getMergedPlugin, parsePlugins, getLocalRenativePlugin };

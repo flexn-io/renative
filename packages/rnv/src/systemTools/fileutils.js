@@ -94,24 +94,39 @@ const cleanFolder = d => new Promise((resolve, reject) => {
     });
 });
 
-const removeFiles = filePaths => new Promise((resolve, reject) => {
-    logDebug('removeFiles', filePaths);
-    v.forEach((filePath) => {
+const removeFilesSync = filePaths => new Promise((resolve, reject) => {
+    logDebug('removeFilesSync', filePaths);
+    filePaths.forEach((filePath) => {
         fs.unlinkSync(filePath);
     });
 });
 
+const removeDirsSync = (dirPaths) => {
+    logDebug('removeDirsSync', dirPaths);
+
+    for (let i = 0; i < dirPaths.length; i++) {
+        try {
+            removeDirSync(dirPaths[i]);
+        } catch (e) {
+            logError(e);
+        }
+    }
+};
+
+
 const removeDirs = dirPaths => new Promise((resolve, reject) => {
     logDebug('removeDirs', dirPaths);
-    try {
-        for (let i = 0; i < dirPaths.length; i++) {
-            removeDirSync(dirPaths[i]);
-        }
-    } catch (e) {
-        reject(e);
+    const allFolders = dirPaths.length;
+    let deletedFolders = 0;
+    for (let i = 0; i < allFolders; i++) {
+        rimraf(dirPaths[i], (e) => {
+            if (e) {
+                logError(e);
+            }
+            deletedFolders++;
+            if (deletedFolders >= allFolders) resolve();
+        });
     }
-
-    resolve();
 });
 
 
@@ -185,16 +200,17 @@ const updateConfigFile = async (update, globalConfigPath) => {
 
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
-    copyFolderContentsRecursiveSync, cleanFolder, removeFiles, removeDirs,
+    copyFolderContentsRecursiveSync, cleanFolder, removeFilesSync, removeDirs,
     writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
-    updateConfigFile
+    updateConfigFile, removeDirsSync
 };
 
 export default {
     copyFileSync,
     copyFolderRecursiveSync,
     removeDir,
-    removeFiles,
+    removeDirsSync,
+    removeFilesSync,
     saveAsJs,
     mkdirSync,
     copyFolderContentsRecursiveSync,
