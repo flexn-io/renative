@@ -641,7 +641,9 @@ const configureEntryPoints = (c) => {
         platform = p[k];
         const source = path.join(c.paths.rnvProjectTemplateFolder, `${platform.entryFile}.js`);
         const dest = path.join(c.paths.projectRootFolder, `${platform.entryFile}.js`);
-        if (!fs.existsSync(dest)) {
+        if (!platform.entryFile) {
+            logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
+        } else if (!fs.existsSync(dest)) {
             logWarning(`You missing entry file ${chalk.white(platform.entryFile)} in your project. let's create one for you!`);
             copyFileSync(source, dest);
         }
