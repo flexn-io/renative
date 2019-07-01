@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
+import fs from 'fs-extra';
 import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
@@ -40,14 +40,15 @@ import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
 import { RNV_APP_CONFIG_NAME } from '../constants';
 
+
 const { fork } = require('child_process');
 
 const buildNext = (c, platform) => {
     logTask(`build:${platform}`);
     const defaultDir = 'src';
     const wbp = resolveNodeModulePath(c, 'next/dist/bin/next');
-
-    return execShellAsync(`node ${wbp} build ${defaultDir} `);
+    return execShellAsync(`node ${wbp} build ${defaultDir} `)
+        .then(() => fs.moveSync('./src/build', `./platformBuilds/${c.files.appConfigFile.id}_webnext`, { overwrite: true }));
 };
 
 const _runNextBrowser = (c, platform, port, delay = 0) => new Promise((resolve, reject) => {
@@ -57,14 +58,13 @@ const _runNextBrowser = (c, platform, port, delay = 0) => new Promise((resolve, 
 
 const runNextDevServer = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runNextDevServer:${platform}`);
-
     const defaultDir = 'src';
-
     const wds = resolveNodeModulePath(c, 'next/dist/bin/next');
     shell.exec(
         `node ${wds} dev ${defaultDir} --port ${port}`
     );
-    resolve();
+    fs.move('./src/build', `./platformBuilds/${c.files.appConfigFile.id}_webnext`, { overwrite: true })
+        .then(() => resolve());
 });
 
 const runNext = (c, platform, port) => new Promise((resolve, reject) => {

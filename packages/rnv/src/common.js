@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs, writeObjectSync } from './systemTools/fileutils';
+import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
@@ -54,7 +54,8 @@ import {
     RN_BABEL_CONFIG_NAME,
     RNV_PROJECT_CONFIG_LOCAL_NAME,
     PLATFORMS,
-    WEBNEXT
+    WEBNEXT,
+    NEXT_CONFIG_NAME
 } from './constants';
 import { executeAsync } from './systemTools/exec';
 
@@ -315,6 +316,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.projectPackagePath = path.join(c.paths.projectRootFolder, 'package.json');
     c.paths.rnCliConfigPath = path.join(c.paths.projectRootFolder, RN_CLI_CONFIG_NAME);
     c.paths.babelConfigPath = path.join(c.paths.projectRootFolder, RN_BABEL_CONFIG_NAME);
+    c.paths.nextConfigPath = path.join(c.paths.projectRootFolder, NEXT_CONFIG_NAME);
     c.paths.projectConfigFolder = path.join(c.paths.projectRootFolder, 'projectConfig');
     c.paths.projectPluginsFolder = path.join(c.paths.projectConfigFolder, 'plugins');
 
@@ -436,6 +438,16 @@ const configureProject = c => new Promise((resolve, reject) => {
         copyFileSync(path.join(c.paths.rnvRootFolder, RN_BABEL_CONFIG_NAME), c.paths.babelConfigPath);
     }
 
+    if (c.supportedPlatforms.webnext) {
+    // Check next-config
+        logTask('configureProject:check next config');
+        if (!fs.existsSync(c.paths.nextConfigPath)) {
+            logWarning(
+                `Looks like your next config file ${chalk.white(c.paths.nextConfigPath)} is missing! Let's create one for you.`,
+            );
+            copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'next.config.js'), c.paths.nextConfigPath);
+        }
+    }
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logTask('configureProject:check entry');

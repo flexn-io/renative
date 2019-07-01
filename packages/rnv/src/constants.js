@@ -161,6 +161,7 @@ const RNV_GLOBAL_CONFIG_NAME = 'config.json';
 const RNV_APP_CONFIG_NAME = 'config.json';
 const RN_CLI_CONFIG_NAME = 'rn-cli.config.js';
 const RN_BABEL_CONFIG_NAME = 'babel.config.js';
+const NEXT_CONFIG_NAME = 'next.config.js';
 const SAMPLE_APP_ID = 'helloWorld';
 
 const IS_TABLET_ABOVE_INCH = 6.5;
@@ -273,6 +274,7 @@ export {
     KAIOS_SDK,
     RNV_PROJECT_CONFIG_NAME,
     RNV_GLOBAL_CONFIG_NAME,
+    NEXT_CONFIG_NAME,
     RNV_APP_CONFIG_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
@@ -358,6 +360,7 @@ export default {
     RNV_PROJECT_CONFIG_NAME,
     RNV_GLOBAL_CONFIG_NAME,
     RNV_APP_CONFIG_NAME,
+    NEXT_CONFIG_NAME,
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     SAMPLE_APP_ID,
