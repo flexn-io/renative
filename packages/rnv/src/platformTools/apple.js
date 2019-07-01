@@ -114,7 +114,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     if (device === true) {
         const devicesArr = _getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
-            logSuccess(`Found one device connected! ${chalk.white(devicesArr[0].name)}`);
+            logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)}`);
             p = [
                 'run-ios',
                 '--project-path',

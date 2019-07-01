@@ -1093,7 +1093,7 @@
             }
         },
         "react-native-safe-area-view": {
-            "version": "0.14.4",
+            "version": "0.14.5",
             "webpack": {
                 "modulePaths": true
             }
