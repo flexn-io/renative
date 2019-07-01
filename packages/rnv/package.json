@@ -144,6 +144,9 @@
         "write-json-webpack-plugin": "1.1.0",
         "xcode": "2.0.0"
     },
+    "peerDependencies": {
+        "react-native": "0.59.5"
+    },
     "devDependencies": {},
     "optionalDependencies": {
         "ios-deploy": "1.9.4"
