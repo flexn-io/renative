@@ -4,7 +4,8 @@ import path from 'path';
 import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs
+    copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
+    removeFilesSync
 } from '../systemTools/fileutils';
 import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
