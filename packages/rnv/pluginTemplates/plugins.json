@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.14",
+            "version": "0.23.15",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -821,10 +821,12 @@
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [{
-                            "KitInfo": {},
-                            "KitName": "Crashlytics"
-                        }]
+                        "Kits": [
+                            {
+                                "KitInfo": {},
+                                "KitName": "Crashlytics"
+                            }
+                        ]
                     }
                 }
             },
