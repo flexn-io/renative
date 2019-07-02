@@ -2,6 +2,7 @@ import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, Button } from 'react-native';
 import packageJson from '../../package.json';
 import Theme from '../theme';
+
 /**
  * This for server side rendering.
  */
@@ -17,14 +18,15 @@ class ScreenHome extends React.Component {
         return {
             title: 'Hello Renative!',
             platform: 'platform: NEXT.js',
-            image: require('/static/logo.png')
+            image: require('/static/images/logo.png')
         };
     }
 
     render() {
         const selectedStyle = styles.appContainerView;
         const styleButton = styles.button;
-        const { title, platform } = this.props;
+        const { title, platform, image } = this.props;
+
         return (
             <View
                 style={[selectedStyle, { backgroundColor: this.state.bgColor }]}
@@ -34,16 +36,16 @@ class ScreenHome extends React.Component {
                 }}
             >
                 <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
-                <Image style={styles.image} source={this.props.image} />
+                <Image style={styles.image} source={image} />
                 <Text style={styles.textH2}>
-                    {this.props.title}
+                    {title}
                 </Text>
                 <Text style={styles.textH2}>
                         v
                     {packageJson.version}
                 </Text>
                 <Text style={styles.textH3}>
-                    {this.props.platform}
+                    {platform}
                 </Text>
                 <TouchableOpacity
                     onPress={() => {

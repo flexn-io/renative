@@ -1,17 +1,18 @@
+
 import Document, { Head, Main, NextScript } from 'next/document';
 import React from 'react';
 import { AppRegistry } from 'react-native-web';
 
-let index = 0;
-
+// Force Next-generated DOM elements to fill their parent's height
 const normalizeNextElements = `
 @font-face {
     font-family: TimeBurner;
     src: url(${require('../../projectConfig/fonts/TimeBurner.ttf')});
   }
 
-  body > div:first-child,
   #__next {
+    display: flex;
+    flex-direction: column;
     height: 100%;
   }
 `;
@@ -22,20 +23,19 @@ export default class MyDocument extends Document {
         const { getStyleElement } = AppRegistry.getApplication('Main');
         const page = renderPage();
         const styles = [
-            <style
-                key={index++}
-                dangerouslySetInnerHTML={{ __html: normalizeNextElements }}
-            />,
+            <style dangerouslySetInnerHTML={{ __html: normalizeNextElements }} />,
             getStyleElement()
         ];
-        return { ...page, styles };
+        return { ...page, styles: React.Children.toArray(styles) };
     }
 
     render() {
         return (
-            <html style={{ height: '100%', width: '100%' }}>
-                <Head />
-                <body style={{ height: '100%', width: '100%' }}>
+            <html style={{ height: '100%' }}>
+                <Head>
+                    <meta name="viewport" content="width=device-width, initial-scale=1" />
+                </Head>
+                <body style={{ height: '100%', overflow: 'hidden' }}>
                     <Main />
                     <NextScript />
                 </body>

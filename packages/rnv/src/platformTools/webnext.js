@@ -45,10 +45,11 @@ const { fork } = require('child_process');
 
 const buildNext = (c, platform) => {
     logTask(`build:${platform}`);
+    fs.removeSync(`./platformBuilds/${c.files.appConfigFile.id}_webnext`);
     const defaultDir = 'src';
     const wbp = resolveNodeModulePath(c, 'next/dist/bin/next');
     return execShellAsync(`node ${wbp} build ${defaultDir} `)
-        .then(() => fs.moveSync('./src/build', `./platformBuilds/${c.files.appConfigFile.id}_webnext`, { overwrite: true }));
+        .then(() => fs.moveSync('./src/.next', `./platformBuilds/${c.files.appConfigFile.id}_webnext`, { overwrite: true }));
 };
 
 const _runNextBrowser = (c, platform, port, delay = 0) => new Promise((resolve, reject) => {
@@ -60,16 +61,18 @@ const runNextDevServer = (c, platform, port) => new Promise((resolve, reject) =>
     logTask(`runNextDevServer:${platform}`);
     const defaultDir = 'src';
     const wds = resolveNodeModulePath(c, 'next/dist/bin/next');
+    _runNextBrowser(c, platform, port, 500);
     shell.exec(
         `node ${wds} dev ${defaultDir} --port ${port}`
     );
-    fs.move('./src/build', `./platformBuilds/${c.files.appConfigFile.id}_webnext`, { overwrite: true })
+
+    fs.move('./src/.next', `./platformBuilds/${c.files.appConfigFile.id}_webnext`, { overwrite: true })
         .then(() => resolve());
 });
 
 const runNext = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
-
+    fs.removeSync(`./platformBuilds/${c.files.appConfigFile.id}_webnext`);
     checkPortInUse(c, platform, port)
         .then((isPortActive) => {
             if (!isPortActive) {
@@ -78,8 +81,8 @@ const runNext = (c, platform, port) => new Promise((resolve, reject) => {
                         port
                     )} is not running. Starting it up for you...`
                 );
-                _runNextBrowser(c, platform, port, 500)
-                    .then(() => runNextDevServer(c, platform, port))
+
+                runNextDevServer(c, platform, port)
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
