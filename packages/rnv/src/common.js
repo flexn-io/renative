@@ -690,7 +690,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
                     logWarning(
                         `Version mismatch of dependency ${chalk.white(k)} between:
   ${chalk.white(c.paths.projectPackagePath)}: v(${chalk.red(dependencies[k])}) and
-  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.red(plugin.version)}).
+  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.green(plugin.version)}).
   package.json will be overriden`
                     );
                     hasPackageChanged = true;

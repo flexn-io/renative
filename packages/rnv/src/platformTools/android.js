@@ -972,7 +972,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     pluginConfig.localProperties = '';
     c.files.privateConfig = _getPrivateConfig(c, platform);
 
-    if (c.files.privateConfig) {
+    if (c.files.privateConfig && c.files.privateConfig[platform]) {
         const keystorePath = c.files.privateConfig[platform].storeFile;
         let keystorePathFull;
         if (keystorePath) {

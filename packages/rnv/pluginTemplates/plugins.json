@@ -821,12 +821,10 @@
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [
-                            {
-                                "KitInfo": {},
-                                "KitName": "Crashlytics"
-                            }
-                        ]
+                        "Kits": [{
+                            "KitInfo": {},
+                            "KitName": "Crashlytics"
+                        }]
                     }
                 }
             },
@@ -1038,7 +1036,7 @@
             }
         },
         "react-native-web": {
-            "version": "0.9.9"
+            "version": "0.11.4"
         },
         "react-native-web-image-loader": {
             "version": "0.0.5"
@@ -1047,7 +1045,7 @@
             "version": "1.0.2"
         },
         "react-navigation": {
-            "version": "3.5.1",
+            "version": "3.9.2",
             "webpack": {
                 "modulePaths": [
                     "node_modules/react-navigation",
@@ -1060,9 +1058,9 @@
                 "react-native-reanimated"
             ],
             "npm": {
-                "@react-navigation/core": "3.1.1",
-                "@react-navigation/native": "3.1.5",
-                "@react-navigation/web": "1.0.0-alpha.7"
+                "@react-navigation/core": "3.4.2",
+                "@react-navigation/native": "3.5.0",
+                "@react-navigation/web": "1.0.0-alpha.9"
             }
         },
         "react-navigation-stack": {
