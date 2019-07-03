@@ -173,20 +173,6 @@
             "entryFile": "index.windows",
             "backgroundColor": "black"
         },
-        "kaios": {
-            "entryFile": "index.kaios",
-            "backgroundColor": "black",
-            "buildSchemes": {
-                "debug": {
-                    "id": "renative.helloworld.debug",
-                    "bundleAssets": false
-                },
-                "release": {
-                    "bundleAssets": true,
-                    "bundleIsDev": false
-                }
-            }
-        },
         "webnext": {
             "entryFile": "index.web",
             "buildSchemes": {
@@ -199,6 +185,20 @@
                     "bundleAssets": true,
                     "bundleIsDev": false,
                     "environment": "production"
+                }
+            }
+        },
+        "kaios": {
+            "entryFile": "index.kaios",
+            "backgroundColor": "black",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
                 }
             }
         },

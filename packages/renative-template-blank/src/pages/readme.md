@@ -1,0 +1,1 @@
+pages for NextJS server side rendering .

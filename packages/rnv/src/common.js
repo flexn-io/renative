@@ -462,23 +462,23 @@ const configureProject = c => new Promise((resolve, reject) => {
         copyFileSync(path.join(c.paths.rnvRootFolder, RN_BABEL_CONFIG_NAME), c.paths.babelConfigPath);
     }
 
-    if (c.supportedPlatforms.webnext) {
+
     // Check next-config
-        logTask('configureProject:check next config');
-        if (!fs.existsSync(c.paths.nextConfigPath)) {
-            logWarning(
-                `Looks like your next config file ${chalk.white(c.paths.nextConfigPath)} is missing! Let's create one for you.`,
-            );
-            copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'next.config.js'), c.paths.nextConfigPath);
-        }
-        logTask('configureProject:check .babelrc');
-        if (!fs.existsSync(c.paths.nextBabelPath)) {
-            logWarning(
-                `Looks like your next config file ${chalk.white(c.paths.nextBabelPath)} is missing! Let's create one for you.`,
-            );
-            copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', '.babelrc'), c.paths.nextBabelPath);
-        }
+    logTask('configureProject:check next config');
+    if (!fs.existsSync(c.paths.nextConfigPath)) {
+        logWarning(
+            `Looks like your next config file ${chalk.white(c.paths.nextConfigPath)} is missing! Let's create one for you.`,
+        );
+        copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'next.config.js'), c.paths.nextConfigPath);
     }
+    logTask('configureProject:check .babelrc');
+    if (!fs.existsSync(c.paths.nextBabelPath)) {
+        logWarning(
+            `Looks like your next config file ${chalk.white(c.paths.nextBabelPath)} is missing! Let's create one for you.`,
+        );
+        copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', '.babelrc'), c.paths.nextBabelPath);
+    }
+
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logTask('configureProject:check entry');

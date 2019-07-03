@@ -16,6 +16,9 @@
         "react-navigation": "source:rnv",
         "react-navigation-tabs": "source:rnv",
         "react-native-reanimated": "source:rnv",
-        "react-native-vector-icons": "source:rnv"
+        "next": "source:rnv",
+        "next-compose-plugins": "source:rnv",
+        "next-fonts": "source:rnv",
+        "next-images": "source:rnv"
     }
 }
