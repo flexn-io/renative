@@ -56,7 +56,8 @@ import {
     PLATFORMS,
     WEBNEXT,
     MACOSNEXT,
-    NEXT_CONFIG_NAME
+    NEXT_CONFIG_NAME,
+    NEXT_BABEL_RC
 } from './constants';
 import { executeAsync } from './systemTools/exec';
 
@@ -320,6 +321,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnCliConfigPath = path.join(c.paths.projectRootFolder, RN_CLI_CONFIG_NAME);
     c.paths.babelConfigPath = path.join(c.paths.projectRootFolder, RN_BABEL_CONFIG_NAME);
     c.paths.nextConfigPath = path.join(c.paths.projectRootFolder, NEXT_CONFIG_NAME);
+    c.paths.nextBabelPath = path.join(c.paths.projectRootFolder, NEXT_BABEL_RC);
     c.paths.projectConfigFolder = path.join(c.paths.projectRootFolder, 'projectConfig');
     c.paths.projectPluginsFolder = path.join(c.paths.projectConfigFolder, 'plugins');
 
@@ -449,6 +451,13 @@ const configureProject = c => new Promise((resolve, reject) => {
                 `Looks like your next config file ${chalk.white(c.paths.nextConfigPath)} is missing! Let's create one for you.`,
             );
             copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'next.config.js'), c.paths.nextConfigPath);
+        }
+        logTask('configureProject:check .babelrc');
+        if (!fs.existsSync(c.paths.nextBabelPath)) {
+            logWarning(
+                `Looks like your next config file ${chalk.white(c.paths.nextBabelPath)} is missing! Let's create one for you.`,
+            );
+            copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', '.babelrc'), c.paths.nextBabelPath);
         }
     }
     // Check entry
