@@ -35,7 +35,8 @@ import {
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_SDKMANAGER
+    CLI_ANDROID_SDKMANAGER,
+    MACOSNEXT
 } from '../constants';
 import {
     runXcodeProject,
@@ -46,11 +47,12 @@ import {
     prepareXcodeProject,
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
-import { buildNext, runNext, runNextDevServer } from '../platformTools/webnext';
+import { buildNext, runNext, runNextDevServer } from '../platformTools/web.next';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
 import { runWebOS, buildWebOSProject } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
 import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
+import { runElectronNext } from '../platformTools/electron.next';
 import PlatformSetup from '../setupTools';
 import { executePipe } from '../projectTools/buildHooks';
 import {
@@ -150,6 +152,13 @@ const _start = c => new Promise((resolve, reject) => {
     switch (platform) {
     case MACOS:
     case WINDOWS:
+        executePipe(c, PIPES.START_BEFORE)
+            .then(() => runElectronDevServer(c, platform, port))
+            .then(() => executePipe(c, PIPES.START_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case MACOSNEXT:
         executePipe(c, PIPES.START_BEFORE)
             .then(() => runElectronDevServer(c, platform, port))
             .then(() => executePipe(c, PIPES.START_AFTER))
@@ -263,6 +272,12 @@ const _runAppWithPlatform = async (c) => {
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
             .then(() => runElectron(c, platform, port))
+            .then(() => executePipe(c, PIPES.RUN_AFTER));
+    case MACOSNEXT:
+        return executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => runElectronNext(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case WEB:
         return executePipe(c, PIPES.RUN_BEFORE)
@@ -460,6 +475,15 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
         return;
     case MACOS:
     case WINDOWS:
+        executePipe(c, PIPES.RUN_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => buildElectron(c, platform))
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case MACOSNEXT:
         executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))

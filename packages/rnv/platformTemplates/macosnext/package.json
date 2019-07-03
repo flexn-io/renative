@@ -1,0 +1,31 @@
+{
+    "name": "electron-next-skeleton",
+    "productName": "ElectronNext",
+    "version": "1.0.0",
+    "main": "main/index.js",
+    "scripts": {
+        "start": "electron .",
+        "build": "next build renderer && next export renderer",
+        "dist": "npm run build && build --dir"
+    },
+    "build": {
+        "asar": false,
+        "extraResources": [
+            {
+                "from": "renderer/out",
+                "to": "app/renderer"
+            }
+        ]
+    },
+    "devDependencies": {
+        "electron": "^4.1.0",
+        "electron-builder": "^20.39.0",
+        "next": "latest",
+        "react": "^16.8.4",
+        "react-dom": "^16.8.4"
+    },
+    "dependencies": {
+        "electron-is-dev": "^1.0.1",
+        "electron-next": "^3.1.5"
+    }
+}
