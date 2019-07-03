@@ -262,11 +262,11 @@ const getAvdDetails = (deviceName) => {
         `${ANDROID_AVD_HOME}/${deviceName}.avd/config.ini`,
         `${ANDROID_SDK_HOME}/.android/avd/${deviceName}.avd/config.ini`,
         `${os.homedir()}/.android/avd/${deviceName}.avd/config.ini`,
-    ]
+    ];
 
     const results = {};
 
-    avdConfigPaths.some(path => {
+    avdConfigPaths.some((path) => {
         if (fs.existsSync(path)) {
             const fileData = fs.readFileSync(path).toString();
             const lines = fileData.trim().split(/\r?\n/);
@@ -917,6 +917,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const applyPlugin = '';
     const pluginActivityCreateMethods = '';
     const pluginActivityResultMethods = '';
+    const manifestApplication = '';
     const pluginConfig = {
         pluginIncludes,
         pluginPaths,
@@ -929,7 +930,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         mainApplicationMethods,
         applyPlugin,
         pluginActivityCreateMethods,
-        pluginActivityResultMethods
+        pluginActivityResultMethods,
+        manifestApplication
     };
 
     // PLUGINS
@@ -942,6 +944,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     });
 
     pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
+    const pluginConfigAndroid = c.files.pluginConfig ? c.files.pluginConfig.android : {};
 
     // FONTS
     if (c.files.appConfigFile) {
@@ -1093,6 +1096,15 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     sourceCompatibility 1.8
     targetCompatibility 1.8`;
 
+
+    // MANIFEST APPLICATION
+    const manifestApplicationParams = pluginConfigAndroid.manifest?.application?.parameters;
+    if (manifestApplicationParams) {
+        manifestApplicationParams.forEach((v) => {
+            pluginConfig.manifestApplication += `     ${v}\n`;
+        });
+    }
+
     writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
         { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
         { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
@@ -1161,29 +1173,35 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
     let prms = '';
     const { permissions } = c.files.appConfigFile.platforms[platform];
-    if (permissions) {
-        permissions.forEach((v) => {
-            if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'android';
-                const pc = c.files.permissionsConfig.permissions[plat];
-                if (pc[v]) {
-                    prms += `\n<uses-permission android:name="${pc[v].key}" />`;
-                }
+    const configPermissions = c.files.permissionsConfig?.permissions;
+
+    if (permissions && configPermissions) {
+        const platPerm = configPermissions[platform] ? platform : 'android';
+        const pc = configPermissions[platPerm];
+        if (permissions[0] === '*') {
+            for (const k in pc) {
+                prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
             }
-        });
+        } else {
+            permissions.forEach((v) => {
+                if (pc[v]) {
+                    prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
+                }
+            });
+        }
     }
 
     const manifestFile = 'app/src/main/AndroidManifest.xml';
     writeCleanFile(path.join(appTemplateFolder, manifestFile), path.join(appFolder, manifestFile), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{PERMISIONS}}', override: prms },
+        { pattern: '{{PLUGIN_MANIFEST_PERMISSIONS}}', override: prms },
+        { pattern: '{{PLUGIN_MANIFEST_APPLICATION}}', override: pluginConfig.manifestApplication },
     ]);
-
 
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
-    const pluginConfigAndroid = c.files.pluginConfig ? c.files.pluginConfig.android : null;
-    const gradleProps = pluginConfigAndroid ? pluginConfigAndroid['gradle.properties'] : null;
+
+    const gradleProps = pluginConfigAndroid['gradle.properties'];
     if (gradleProps) {
         for (const key in gradleProps) {
             pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
