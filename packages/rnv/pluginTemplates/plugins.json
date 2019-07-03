@@ -1003,6 +1003,12 @@
         "next": {
             "version": "8.1.0"
         },
+        "next-compose-plugins": {
+            "version": "2.2.0"
+        },
+        "next-fonts": {
+            "version": "0.17.0"
+        },
         "next-images": {
             "version": "1.1.2"
         },

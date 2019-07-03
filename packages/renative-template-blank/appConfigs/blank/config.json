@@ -150,6 +150,21 @@
         "windows": {
             "entryFile": "index.windows"
         },
+        "webnext": {
+            "entryFile": "index.web",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
+                }
+            }
+        },
         "kaios": {
             "entryFile": "index.kaios",
             "buildSchemes": {
