@@ -69,7 +69,8 @@
         "publish:renative": "cd packages/renative && npm publish",
         "publish:rnv": "cd packages/rnv && npm publish",
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
-        "watch": "cd ./packages/rnv && npm run watch"
+        "watch": "cd ./packages/rnv && npm run watch",
+        "test:rnv": "cd ./packages/rnv && npm run test:local"
     },
     "dependencies": {
         "@react-navigation/core": "3.4.2",
