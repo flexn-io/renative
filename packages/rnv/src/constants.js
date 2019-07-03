@@ -18,6 +18,7 @@ const IOS = 'ios';
 const KAIOS = 'kaios';
 const MACOS = 'macos';
 const MEEGO = 'meego';
+const MACOSNEXT = 'macosnext';
 const NETCAST = 'netcast';
 const OCCULUS = 'occulus';
 const ORSAY = 'orsay';
@@ -87,6 +88,7 @@ const PLATFORMS = {
     webos: { defaultPort: 8083, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     windows: { defaultPort: 8085, icon: ICONS.DESKTOP, supportedOS: OS.WINDOWS_ONLY, isActive: true, useSharedConfig: true },
     webnext: { defaultPort: 3000, icon: ICONS.BROWSER, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
+    macosnext: { defaultPort: 3000, icon: ICONS.DESKTOP, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     // NON ACTIVE
     watchos: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
     androidauto: { defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
@@ -220,6 +222,7 @@ export {
     IOS,
     KAIOS,
     MACOS,
+    MACOSNEXT,
     MEEGO,
     NETCAST,
     OCCULUS,
@@ -305,6 +308,7 @@ export default {
     IOS,
     KAIOS,
     MACOS,
+    MACOSNEXT,
     MEEGO,
     NETCAST,
     OCCULUS,

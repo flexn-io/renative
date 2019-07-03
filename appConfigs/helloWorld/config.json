@@ -200,6 +200,21 @@
                 }
             }
         },
+        "macosnext": {
+            "entryFile": "index.web",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
+                }
+            }
+        },
         "firefoxtv": {
             "entryFile": "index.firefoxtv",
             "buildSchemes": {

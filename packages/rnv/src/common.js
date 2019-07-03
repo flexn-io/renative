@@ -55,6 +55,7 @@ import {
     RNV_PROJECT_CONFIG_LOCAL_NAME,
     PLATFORMS,
     WEBNEXT,
+    MACOSNEXT,
     NEXT_CONFIG_NAME
 } from './constants';
 import { executeAsync } from './systemTools/exec';
@@ -75,6 +76,7 @@ const SUPPORTED_PLATFORMS = [
     FIREFOX_OS,
     FIREFOX_TV,
     WEBNEXT,
+    MACOSNEXT,
 ];
 const SUPPORTED_PLATFORMS_MAC = [
     IOS,
@@ -92,6 +94,7 @@ const SUPPORTED_PLATFORMS_MAC = [
     FIREFOX_OS,
     FIREFOX_TV,
     WEBNEXT,
+    MACOSNEXT,
 ];
 const SUPPORTED_PLATFORMS_WIN = [
     ANDROID,
