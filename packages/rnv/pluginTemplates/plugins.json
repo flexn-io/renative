@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.7",
+            "version": "0.23.17",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -162,9 +162,6 @@
             "ios": {
                 "podName": "RNLanguages"
             },
-            "tvos": {
-                "podName": "RNLanguages"
-            },
             "android": {
                 "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
             },
@@ -202,9 +199,6 @@
         "react-native-fetch-blob": {
             "version": "0.10.8",
             "ios": {
-                "podName": "react-native-fetch-blob"
-            },
-            "tvos": {
                 "podName": "react-native-fetch-blob"
             },
             "android": {
@@ -998,7 +992,7 @@
             }
         },
         "react-native-web": {
-            "version": "0.9.9"
+            "version": "0.11.4"
         },
         "next": {
             "version": "8.1.0"
@@ -1019,7 +1013,7 @@
             "version": "1.0.2"
         },
         "react-navigation": {
-            "version": "3.5.1",
+            "version": "3.9.2",
             "webpack": {
                 "modulePaths": [
                     "node_modules/react-navigation",
@@ -1030,7 +1024,12 @@
                 "react-navigation-stack",
                 "react-navigation-tabs",
                 "react-native-reanimated"
-            ]
+            ],
+            "npm": {
+                "@react-navigation/core": "3.4.2",
+                "@react-navigation/native": "3.5.0",
+                "@react-navigation/web": "1.0.0-alpha.9"
+            }
         },
         "react-navigation-stack": {
             "version": "1.4.0",
@@ -1054,7 +1053,7 @@
             }
         },
         "react-native-safe-area-view": {
-            "version": "0.14.4",
+            "version": "0.14.5",
             "webpack": {
                 "modulePaths": true
             }
@@ -1103,6 +1102,9 @@
         },
         "react-art": {
             "version": "16.8.6"
+        },
+        "react-hot-loader": {
+            "version": "4.3.12"
         },
         "react-native-navigation-bar-color": {
             "version": "0.1.0",

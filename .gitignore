@@ -52,10 +52,14 @@ package-lock.json
 
 buildHooks/dist
 
-# /appConfigs
-# /projectConfig
-# /src
-# /index.*.js
+
 
 release-configs.gradle
 rnv-config.local.json
+
+# ONLY FOR ReNative WRAPPER PROJECT
+
+/appConfigs
+/projectConfig
+/src
+/index.*.js

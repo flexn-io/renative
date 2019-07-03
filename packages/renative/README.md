@@ -247,7 +247,7 @@
 ##### 1) Install ReNative CLI (rnv)
 
 ```bash
-$ npm install rnv@latest -g
+$ npm install rnv -g
 ```
 
 ##### 2) Create new app:
@@ -1783,9 +1783,16 @@ If you need full control over whole ReNative build you can clone and develop it 
 5) npm run link
 ```
 
+
 At this point your global `$ rnv` command is linked directly into project above.
 
 It's also best way to contribute back to RNV! :)
+
+
+```
+rnv template apply
+=> pick renative-template-hello-world
+```
 
 ---
 

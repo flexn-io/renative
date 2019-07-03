@@ -23,6 +23,7 @@
             "entryFile": "index.ios",
             "scheme": "RNVApp",
             "teamID": "",
+            "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -40,6 +41,7 @@
         "tvos": {
             "entryFile": "index.tvos",
             "teamID": "",
+            "backgroundColor": "black",
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
@@ -60,6 +62,7 @@
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
+            "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -80,6 +83,7 @@
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
+            "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -100,6 +104,7 @@
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 23,
+            "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -116,6 +121,7 @@
         },
         "macos": {
             "entryFile": "index.macos",
+            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
@@ -132,6 +138,7 @@
             "package": "NkVRhWHJST",
             "id": "NkVRhWHJST.RNVanillaTV",
             "entryFile": "index.tizen",
+            "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert"
         },
         "tizenwatch": {
@@ -139,10 +146,12 @@
             "package": "cHIP2fIRQZ",
             "id": "cHIP2fIRQZ.RNVanillaWatch",
             "entryFile": "index.tizenwatch",
+            "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert"
         },
         "web": {
             "entryFile": "index.web",
+            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
@@ -157,13 +166,16 @@
             }
         },
         "webos": {
-            "entryFile": "index.webos"
+            "entryFile": "index.webos",
+            "backgroundColor": "black"
         },
         "windows": {
-            "entryFile": "index.windows"
+            "entryFile": "index.windows",
+            "backgroundColor": "black"
         },
         "kaios": {
             "entryFile": "index.kaios",
+            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
@@ -192,6 +204,7 @@
         },
         "firefoxos": {
             "entryFile": "index.firefoxos",
+            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
@@ -205,6 +218,7 @@
         },
         "firefoxtv": {
             "entryFile": "index.firefoxtv",
+            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
