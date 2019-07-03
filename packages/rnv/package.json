@@ -67,6 +67,7 @@
         "prepublishOnly": "npm run build",
         "test": "jest -c jest.config.unit.js",
         "test:ios": "jest -c jest.config.ios.js",
+        "test:local": "./scripts/test.sh",
         "test:setup": "jest -c jest.config.setup.js",
         "watch": "nodemon --watch src --exec npm run build"
     },
@@ -157,6 +158,9 @@
         "xcode": ">=8.0.0"
     },
     "private": false,
+    "jest": {
+        "preset": "react-native"
+    },
     "title": "ReNative CLI",
     "codename": "Iron Ladybird",
     "husky": {
