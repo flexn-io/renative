@@ -650,6 +650,8 @@ const configureEntryPoints = (c) => {
         const dest = path.join(c.paths.projectRootFolder, `${plat.entryFile}.js`);
         if (!plat.entryFile) {
             logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
+        } else if (!fs.existsSync(source)) {
+            logError(`You missing entry file ${chalk.white(source)} in your template!`);
         } else if (!fs.existsSync(dest)) {
             logWarning(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
             copyFileSync(source, dest);
