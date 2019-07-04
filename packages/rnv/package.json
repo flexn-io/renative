@@ -61,7 +61,7 @@
     },
     "scripts": {
         "build": "babel src -d dist",
-        "build:dev": "babel src -d dist",
+        "build:dev": "babel src -d dist -retainLines",
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "prepare": "npm run build",
         "prepublishOnly": "npm run build",
@@ -69,7 +69,7 @@
         "test:ios": "jest -c jest.config.ios.js",
         "test:local": "./scripts/test.sh",
         "test:setup": "jest -c jest.config.setup.js",
-        "watch": "nodemon --watch src --exec npm run build"
+        "watch": "nodemon --watch src --exec npm run build:dev"
     },
     "dependencies": {
         "@babel/cli": "7.0.0",

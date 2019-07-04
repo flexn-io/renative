@@ -214,6 +214,18 @@
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
             }
         },
+        "rn-fetch-blob": {
+          "version": "0.10.13",
+          "ios": {
+              "podName": "rn-fetch-blob"
+          },
+          "android": {
+              "package": "com.RNFetchBlob.RNFetchBlobPackage"
+          },
+          "androidtv": {
+              "package": "com.RNFetchBlob.RNFetchBlobPackage"
+          }
+        },
         "react-native-camera": {
             "version": "1.8.0",
             "ios": {

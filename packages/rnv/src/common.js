@@ -482,7 +482,7 @@ const configureProject = c => new Promise((resolve, reject) => {
             }
         } else {
             logWarning(
-                `Your local config file ${chalk.white(c.files.projectConfigLocal.appConfigsPath)} is missing appConfigsPath field!`,
+                `Your local config file ${chalk.white(c.paths.projectConfigLocalPath)} is missing ${chalk.white('{ appConfigsPath: "" }')} field!`,
             );
         }
         // c.defaultAppConfigId = c.files.projectConfigLocal.defaultAppConfigId;
@@ -634,6 +634,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 });
 
 const configureEntryPoints = (c) => {
+    logTask('configureEntryPoints');
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logTask('configureProject:check entry');
@@ -641,15 +642,16 @@ const configureEntryPoints = (c) => {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
     //     copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'entry'), c.paths.entryFolder);
     // }
+    let plat;
     const p = c.files.appConfigFile.platforms;
     for (const k in p) {
-        platform = p[k];
-        const source = path.join(c.paths.rnvProjectTemplateFolder, `${platform.entryFile}.js`);
-        const dest = path.join(c.paths.projectRootFolder, `${platform.entryFile}.js`);
-        if (!platform.entryFile) {
+        plat = p[k];
+        const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
+        const dest = path.join(c.paths.projectRootFolder, `${plat.entryFile}.js`);
+        if (!plat.entryFile) {
             logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
         } else if (!fs.existsSync(dest)) {
-            logWarning(`You missing entry file ${chalk.white(platform.entryFile)} in your project. let's create one for you!`);
+            logWarning(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
             copyFileSync(source, dest);
         }
     }

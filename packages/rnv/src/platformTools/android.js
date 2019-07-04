@@ -944,7 +944,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     });
 
     pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
-    const pluginConfigAndroid = c.files.pluginConfig ? c.files.pluginConfig.android : {};
+
+    const pluginConfigAndroid = c.files.pluginConfig?.android || {};
 
     // FONTS
     if (c.files.appConfigFile) {
@@ -1194,7 +1195,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     const manifestFile = 'app/src/main/AndroidManifest.xml';
     writeCleanFile(path.join(appTemplateFolder, manifestFile), path.join(appFolder, manifestFile), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{PLUGIN_MANIFEST_PERMISSIONS}}', override: prms },
+        { pattern: '{{PLUGIN_MANIFEST}}', override: prms },
         { pattern: '{{PLUGIN_MANIFEST_APPLICATION}}', override: pluginConfig.manifestApplication },
     ]);
 

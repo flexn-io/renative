@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="{{APPLICATION_ID}}">
-{{PLUGIN_MANIFEST_PERMISSIONS}}
+{{PLUGIN_MANIFEST}}
 
     <uses-feature android:name="android.hardware.type.watch"/>
 
