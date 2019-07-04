@@ -263,6 +263,7 @@ const _generatePlatformTemplatePaths = (c) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+    _messages = [];
     _currentJob = cmd;
     _currentProcess = process;
     console.log(
@@ -833,16 +834,23 @@ const checkSdk = (c, platform, reject) => {
     return true;
 };
 
+let _messages = [];
+
+const logAndSave = (msg, skipLog) => {
+    if (!_messages.includes(msg)) _messages.push(msg);
+    if (!skipLog) console.log(`${msg}`);
+};
+
 const logTask = (task) => {
-    console.log(chalk.green(`\n${RNV} ${_currentJob} - ${task} - Starting!`));
+    console.log(chalk.green(`${RNV} ${_currentJob} - ${task} - Starting!`));
 };
 
 const logWarning = (msg) => {
-    console.log(chalk.yellow(`\n${RNV} ${_currentJob} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`⚠️  ${RNV} ${_currentJob} - WARNING: ${msg}`));
 };
 
 const logInfo = (msg) => {
-    console.log(chalk.magenta(`\n${RNV} ${_currentJob} - NOTE: ${msg}`));
+    console.log(chalk.magenta(`ℹ️  ${RNV} ${_currentJob} - NOTE: ${msg}`));
 };
 
 const logDebug = (...args) => {
@@ -855,22 +863,46 @@ const logComplete = (isEnd = false) => {
 };
 
 const logSuccess = (msg) => {
-    console.log(`\n ✅ ${chalk.magenta(msg)}`);
+    console.log(`✅ ${chalk.magenta(msg)}`);
 };
 
 const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 const logError = (e, isEnd = false) => {
     if (e && e.message) {
-        console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`));
+        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
-        console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`));
+        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e}`), isEnd);
     }
     if (isEnd) logEnd(1);
 };
 
 const logEnd = (code) => {
-    console.log(chalk.bold(`\n${LINE}\n`));
+    // console.log('JHKJHKJHKJHKJ', _messages);
+    // console.log(chalk.bold(`\n\n${LINE}\n`));
+    // console.log('SUMMARY OF YOUR WARNINGS');
+    // console.log(chalk.bold(`\n${LINE}\n\n`));
+
+
+    let str = chalk.white(`
+    ┌─────────────────────────────────────────────────────────────────────────────────┐
+    │                                🚀  SUMMARY 🚀                                   │
+    ├─────────────────────────────────────────────────────────────────────────────────┤
+    |                                                                                 |
+
+`);
+
+    _messages.forEach((m) => {
+        str += `    ${m}\n`;
+    });
+    str += chalk.white(`
+    |                                                                                 |
+    └─────────────────────────────────────────────────────────────────────────────────┘
+
+    `);
+
+    // console.log(chalk.bold(`\n${LINE}\n`));
+    console.log(str);
     _currentProcess.exit(code);
 };
 

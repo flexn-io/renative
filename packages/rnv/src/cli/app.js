@@ -460,7 +460,7 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     logTask('_runPlugins');
 
     if (!fs.existsSync(pluginsPath)) {
-        logWarning(`Your project plugin folder ${pluginsPath} does not exists. skipping plugin configuration`);
+        logWarning(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
         resolve();
         return;
     }
