@@ -649,14 +649,16 @@ const configureEntryPoints = (c) => {
         const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
         const backupSource = path.join(c.paths.rnvProjectTemplateFolder, 'entry', `${plat.entryFile}.js`);
         const dest = path.join(c.paths.projectRootFolder, `${plat.entryFile}.js`);
-        if (!plat.entryFile) {
-            logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
-        } else if (!fs.existsSync(source)) {
-            logWarning(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
-            copyFileSync(backupSource, dest);
-        } else if (!fs.existsSync(dest)) {
-            logWarning(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
-            copyFileSync(source, dest);
+        if (!fs.existsSync(dest)) {
+            if (!plat.entryFile) {
+                logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
+            } else if (!fs.existsSync(source)) {
+                logWarning(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                copyFileSync(backupSource, dest);
+            } else {
+                logWarning(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                copyFileSync(source, dest);
+            }
         }
     }
 };
