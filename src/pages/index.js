@@ -1,72 +1,10 @@
 import React from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet, Button } from 'react-native';
+import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Icon, Button, Api } from 'renative';
+import config from '../../platformAssets/config.json';
 import packageJson from '../../package.json';
 import Theme from '../theme';
 
-/**
- * This for server side rendering.
- */
-
-
-class ScreenHome extends React.Component {
-    constructor() {
-        super();
-        this.state = { bgColor: Theme.color1 };
-    }
-
-    static getInitialProps() {
-        return {
-            title: 'Hello Renative!',
-            platform: 'platform: NEXT.js',
-            image: require('../../platformAssets/runtime/logo.png')
-        };
-    }
-
-    render() {
-        const selectedStyle = styles.appContainerView;
-        const styleButton = styles.button;
-        const { title, platform, image } = this.props;
-
-        return (
-            <View
-                style={[selectedStyle, { backgroundColor: this.state.bgColor }]}
-                contentContainerStyle={{
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
-            >
-                <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
-                <Image style={styles.image} source={image} />
-                <Text style={styles.textH2}>
-                    {title}
-                </Text>
-                <Text style={styles.textH2}>
-                        v
-                    {packageJson.version}
-                </Text>
-                <Text style={styles.textH3}>
-                    {platform}
-                </Text>
-                <TouchableOpacity
-                    onPress={() => {
-                        this.setState({ bgColor: this.state.bgColor === '#666666' ? Theme.color1 : '#666666' });
-                    }}
-                    style={styleButton}
-                >
-                    <Text style={styles.buttonText}>
-                      Try Me!
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styleButton}>
-                    <Text style={styles.buttonText}>
-                    Now Try Me!
-                    </Text>
-                </TouchableOpacity>
-
-            </View>
-        );
-    }
-}
 const styles = StyleSheet.create({
     appContainerScroll: {
         flex: 1,
@@ -76,7 +14,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        height: '100%'
+        paddingVertical: 30,
     },
     textH2: {
         fontFamily: 'TimeBurner',
@@ -106,23 +44,8 @@ const styles = StyleSheet.create({
         minWidth: 130
     },
     button: {
-        marginTop: 30,
-        marginHorizontal: 20,
-        borderWidth: 2,
-        borderRadius: 25,
-        borderColor: '#62DBFB',
-        height: 50,
-        minWidth: 150,
-        maxWidth: 200,
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row'
-    },
-    buttonText: {
-        fontFamily: 'TimeBurner',
-        color: '#62DBFB',
-        fontSize: 20,
-    },
+        minWidth: 150
+    }
 });
 
 const stylesObbj = {
@@ -132,5 +55,60 @@ const stylesObbj = {
         margin: 10,
     }
 };
+
+class ScreenHome extends React.Component {
+    constructor() {
+        super();
+        this.state = { bgColor: Theme.color1 };
+    }
+
+    render() {
+        const isWear = Api.platform === 'androidwear';
+        const selectedStyle = isWear ? styles.appContainerView : styles.appContainerScroll;
+        const styleButton = isWear ? styles.buttonWear : styles.button;
+        const SelectedView = isWear ? View : ScrollView;
+        const title = `${config.common.title}!`;
+        return (
+            <SelectedView
+                style={[selectedStyle, { backgroundColor: this.state.bgColor }]}
+                contentContainerStyle={{
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }}
+            >
+                <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
+                <Image style={styles.image} source={require('../../platformAssets/runtime/logo.png')} />
+                <Text style={styles.textH2}>
+                    {title}
+                </Text>
+                <Text style={styles.textH2}>
+v
+                    {packageJson.version}
+                </Text>
+                <Text style={styles.textH3}>
+                    {`platform: ${Api.platform}`}
+                </Text>
+                <Button
+                    style={styleButton}
+                    title="Try Me!"
+                    onPress={() => {
+                        this.setState({ bgColor: this.state.bgColor === '#666666' ? Theme.color1 : '#666666' });
+                    }}
+                />
+                <Button
+                    style={styleButton}
+                    title="Now Try Me!"
+                    onPress={() => {
+                        Api.navigation.navigate('MyPage2');
+                    }}
+                />
+                <View style={{ marginTop: 20, flexDirection: 'row' }}>
+                    <Icon iconFont="fontAwesome" iconName="github" iconColor={Theme.color3} style={stylesObbj.icon} />
+                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={Theme.color3} style={stylesObbj.icon} />
+                </View>
+            </SelectedView>
+        );
+    }
+}
 
 export default ScreenHome;
