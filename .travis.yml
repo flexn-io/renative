@@ -6,7 +6,6 @@ jobs:
     - stage: test
       language: node_js
       node_js: 10.15.3
-      cache: npm
       install: 
        - npm run fix
        - npm i > /dev/null 2>&1
@@ -19,7 +18,6 @@ jobs:
     - language: android
       sudo: required
       jdk: oraclejdk8
-      cache: npm
       android:
         components:
           - tools
@@ -48,7 +46,6 @@ jobs:
       node_js: 10.15.3
       os: osx
       osx_image: xcode10.2
-      cache: npm
       install: 
         - npm run fix
         - npm i > /dev/null 2>&1
