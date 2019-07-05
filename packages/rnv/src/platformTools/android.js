@@ -175,7 +175,8 @@ const decideIfTV = (c, udid) => {
     const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
     const description = getRunningDeviceProp(c, udid, 'ro.build.description');
 
-    if (model.includes('atv') || name.includes('atv') || flavor.includes('atv') || description.includes('atv')) return true;
+    if (model.toLowerCase().includes('atv') || name.toLowerCase().includes('atv') || flavor.toLowerCase().includes('atv') || description.toLowerCase().includes('atv')) return true;
+    if (model.includes('SHIELD')) return true;
     return false;
 };
 
@@ -240,7 +241,7 @@ const getDeviceType = async (device, c) => {
 
         device.isTV = false;
         [avdId, name, skin, image].forEach((string) => {
-            if ((string && string.includes('tv')) || (string && string.includes('TV'))) device.isTV = true;
+            if (string && string.toLowerCase().includes('tv')) device.isTV = true;
         });
 
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
