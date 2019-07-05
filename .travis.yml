@@ -6,19 +6,18 @@ jobs:
     - stage: test
       language: node_js
       node_js: 10.15.3
-      cache: npm
       install: 
        - npm run fix
        - npm i > /dev/null 2>&1
        - cd packages/rnv
        - npm i > /dev/null 2>&1
        - npm run fix
+       - npm run build:dev
        - npm link 
       script: npm run test:setup
     - language: android
       sudo: required
       jdk: oraclejdk8
-      cache: npm
       android:
         components:
           - tools
@@ -37,6 +36,7 @@ jobs:
         - npm run fix
         - npm i > /dev/null 2>&1
         - npm run fix
+        - npm run build:dev
         - sudo npm link > /dev/null 2>&1
         - mkdir /home/travis/.rnv
         - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/config.json
@@ -46,13 +46,13 @@ jobs:
       node_js: 10.15.3
       os: osx
       osx_image: xcode10.2
-      cache: npm
       install: 
         - npm run fix
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm i > /dev/null 2>&1
         - npm run fix
+        - npm run build:dev
         - npm link
       script: npm run test:ios
 
