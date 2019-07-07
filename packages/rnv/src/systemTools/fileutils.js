@@ -4,6 +4,7 @@ import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
+import chalk from 'chalk';
 import { logDebug, logError } from '../common';
 
 const copyFileSync = (source, target) => {
@@ -163,7 +164,14 @@ const readObjectSync = (filePath) => {
         logError(`File at ${filePath} does not exist`);
         return null;
     }
-    return JSON.parse(fs.readFileSync(filePath));
+    let obj;
+    try {
+        obj = JSON.parse(fs.readFileSync(filePath));
+    } catch (e) {
+        logError(`Parsing of ${chalk.white(filePath)} failed with ${e}`);
+        return null;
+    }
+    return obj;
 };
 
 const updateObjectSync = (filePath, updateObj) => {

@@ -148,7 +148,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 
     askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)", data, 'inputProjectName')
         .then(() => askQuestion(`What's your project Title? (press ENTER to use default: ${chalk.white(data.defaultAppTitle)})`, data, 'inputAppTitle'))
-        .then(() => { data.appID = `com.mycompany.${data.inputProjectName.toLowerCase()}`; })
+        .then(() => { data.appID = `com.mycompany.${data.inputProjectName.replace(/\s+/g, '').toLowerCase()}`; })
         .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${chalk.white(data.appID)})`, data, 'inputAppID'))
         .then(() => askQuestion(`What's your Version? (press ENTER to use default: ${chalk.white(data.defaultVersion)})`, data, 'inputVersion'))
         .then(() => askQuestion(`What template to use? (press ENTER to use default: ${chalk.white(data.defaultTemplate)})\n${data.optionTemplates.asString})`,
@@ -170,7 +170,7 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     const base = path.resolve('.');
 
-    c.paths.projectRootFolder = path.join(base, data.projectName);
+    c.paths.projectRootFolder = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
     c.paths.projectPackagePath = path.join(c.paths.projectRootFolder, 'package.json');
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
@@ -460,7 +460,7 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     logTask('_runPlugins');
 
     if (!fs.existsSync(pluginsPath)) {
-        logWarning(`Your project plugin folder ${pluginsPath} does not exists. skipping plugin configuration`);
+        logWarning(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
         resolve();
         return;
     }

@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.17",
+            "version": "0.23.18",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -200,6 +200,18 @@
             "version": "0.10.8",
             "ios": {
                 "podName": "react-native-fetch-blob"
+            },
+            "android": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "androidtv": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            }
+        },
+        "rn-fetch-blob": {
+            "version": "0.10.13",
+            "ios": {
+                "podName": "rn-fetch-blob"
             },
             "android": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"

@@ -3,7 +3,10 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync } from './systemTools/fileutils';
+import {
+    cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync
+} from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
@@ -272,6 +275,7 @@ const _generatePlatformTemplatePaths = (c) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+    _messages = [];
     _currentJob = cmd;
     _currentProcess = process;
     console.log(
@@ -510,7 +514,7 @@ const configureProject = c => new Promise((resolve, reject) => {
             }
         } else {
             logWarning(
-                `Your local config file ${chalk.white(c.files.projectConfigLocal.appConfigsPath)} is missing appConfigsPath field!`,
+                `Your local config file ${chalk.white(c.paths.projectConfigLocalPath)} is missing ${chalk.white('{ appConfigsPath: "" }')} field!`,
             );
         }
         // c.defaultAppConfigId = c.files.projectConfigLocal.defaultAppConfigId;
@@ -662,6 +666,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
 });
 
 const configureEntryPoints = (c) => {
+    logTask('configureEntryPoints');
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logTask('configureProject:check entry');
@@ -669,16 +674,23 @@ const configureEntryPoints = (c) => {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
     //     copyFolderContentsRecursiveSync(path.join(c.paths.rnvRootFolder, 'entry'), c.paths.entryFolder);
     // }
+    let plat;
     const p = c.files.appConfigFile.platforms;
     for (const k in p) {
-        platform = p[k];
-        const source = path.join(c.paths.rnvProjectTemplateFolder, `${platform.entryFile}.js`);
-        const dest = path.join(c.paths.projectRootFolder, `${platform.entryFile}.js`);
-        if (!platform.entryFile) {
-            logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
-        } else if (!fs.existsSync(dest)) {
-            logWarning(`You missing entry file ${chalk.white(platform.entryFile)} in your project. let's create one for you!`);
-            copyFileSync(source, dest);
+        plat = p[k];
+        const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
+        const backupSource = path.join(c.paths.rnvProjectTemplateFolder, 'entry', `${plat.entryFile}.js`);
+        const dest = path.join(c.paths.projectRootFolder, `${plat.entryFile}.js`);
+        if (!fs.existsSync(dest)) {
+            if (!plat.entryFile) {
+                logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
+            } else if (!fs.existsSync(source)) {
+                logWarning(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                copyFileSync(backupSource, dest);
+            } else {
+                logWarning(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                copyFileSync(source, dest);
+            }
         }
     }
 };
@@ -687,7 +699,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
     // Check plugins
     logTask('configureProject:check plugins');
     if (fs.existsSync(c.paths.pluginConfigPath)) {
-        c.files.pluginConfig = JSON.parse(fs.readFileSync(c.paths.pluginConfigPath).toString());
+        c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath);
     } else {
         logWarning(
             `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,
@@ -853,16 +865,23 @@ const checkSdk = (c, platform, reject) => {
     return true;
 };
 
+let _messages = [];
+
+const logAndSave = (msg, skipLog) => {
+    if (!_messages.includes(msg)) _messages.push(msg);
+    if (!skipLog) console.log(`${msg}`);
+};
+
 const logTask = (task) => {
-    console.log(chalk.green(`\n${RNV} ${_currentJob} - ${task} - Starting!`));
+    console.log(chalk.green(`${RNV} ${_currentJob} - ${task} - Starting!`));
 };
 
 const logWarning = (msg) => {
-    console.log(chalk.yellow(`\n${RNV} ${_currentJob} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`⚠️  ${RNV} ${_currentJob} - WARNING: ${msg}`));
 };
 
 const logInfo = (msg) => {
-    console.log(chalk.magenta(`\n${RNV} ${_currentJob} - NOTE: ${msg}`));
+    console.log(chalk.magenta(`ℹ️  ${RNV} ${_currentJob} - NOTE: ${msg}`));
 };
 
 const logDebug = (...args) => {
@@ -875,22 +894,46 @@ const logComplete = (isEnd = false) => {
 };
 
 const logSuccess = (msg) => {
-    console.log(`\n ✅ ${chalk.magenta(msg)}`);
+    console.log(`✅ ${chalk.magenta(msg)}`);
 };
 
 const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 const logError = (e, isEnd = false) => {
     if (e && e.message) {
-        console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`));
+        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
-        console.log(chalk.red.bold(`\n${RNV} ${_currentJob} - ERRROR! ${e}`));
+        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e}`), isEnd);
     }
     if (isEnd) logEnd(1);
 };
 
 const logEnd = (code) => {
-    console.log(chalk.bold(`\n${LINE}\n`));
+    // console.log('JHKJHKJHKJHKJ', _messages);
+    // console.log(chalk.bold(`\n\n${LINE}\n`));
+    // console.log('SUMMARY OF YOUR WARNINGS');
+    // console.log(chalk.bold(`\n${LINE}\n\n`));
+
+
+    let str = chalk.white(`
+    ┌─────────────────────────────────────────────────────────────────────────────────┐
+    │                                🚀  SUMMARY 🚀                                   │
+    ├─────────────────────────────────────────────────────────────────────────────────┤
+    |                                                                                 |
+
+`);
+
+    _messages.forEach((m) => {
+        str += `    ${m}\n`;
+    });
+    str += chalk.white(`
+    |                                                                                 |
+    └─────────────────────────────────────────────────────────────────────────────────┘
+
+    `);
+
+    // console.log(chalk.bold(`\n${LINE}\n`));
+    console.log(str);
     _currentProcess.exit(code);
 };
 

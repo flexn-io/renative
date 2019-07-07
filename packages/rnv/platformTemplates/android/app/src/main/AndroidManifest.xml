@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="{{APPLICATION_ID}}">
-    {{PERMISIONS}}
+{{PLUGIN_MANIFEST}}
 
     <application
       android:name=".MainApplication"
@@ -10,7 +10,9 @@
       android:allowBackup="false"
       tools:replace="android:appComponentFactory"
       android:appComponentFactory="appComponentFactoryFix"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+{{PLUGIN_MANIFEST_APPLICATION}}
+      >
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

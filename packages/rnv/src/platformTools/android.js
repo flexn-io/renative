@@ -78,12 +78,12 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
             });
     }
 
-    if (target) {
+    if (target && target.name) {
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target.name}"`).catch(logError);
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target.name}"`);
     }
     return Promise.reject('No simulator -t target name specified!');
 };
@@ -175,7 +175,8 @@ const decideIfTV = (c, udid) => {
     const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
     const description = getRunningDeviceProp(c, udid, 'ro.build.description');
 
-    if (model.includes('atv') || name.includes('atv') || flavor.includes('atv') || description.includes('atv')) return true;
+    if (model.toLowerCase().includes('atv') || name.toLowerCase().includes('atv') || flavor.toLowerCase().includes('atv') || description.toLowerCase().includes('atv')) return true;
+    if (model.includes('SHIELD')) return true;
     return false;
 };
 
@@ -240,7 +241,7 @@ const getDeviceType = async (device, c) => {
 
         device.isTV = false;
         [avdId, name, skin, image].forEach((string) => {
-            if ((string && string.includes('tv')) || (string && string.includes('TV'))) device.isTV = true;
+            if (string && string.toLowerCase().includes('tv')) device.isTV = true;
         });
 
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
@@ -262,11 +263,11 @@ const getAvdDetails = (deviceName) => {
         `${ANDROID_AVD_HOME}/${deviceName}.avd/config.ini`,
         `${ANDROID_SDK_HOME}/.android/avd/${deviceName}.avd/config.ini`,
         `${os.homedir()}/.android/avd/${deviceName}.avd/config.ini`,
-    ]
+    ];
 
     const results = {};
 
-    avdConfigPaths.some(path => {
+    avdConfigPaths.some((path) => {
         if (fs.existsSync(path)) {
             const fileData = fs.readFileSync(path).toString();
             const lines = fileData.trim().split(/\r?\n/);
@@ -595,7 +596,7 @@ const _runGradle = async (c, platform) => {
     }
 };
 
-const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
+const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     let attempts = 1;
     const maxAttempts = 10;
     let running = false;
@@ -615,7 +616,10 @@ const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
                         attempts++;
                         if (attempts > maxAttempts) {
                             clearInterval(poll);
-                            return _askForNewEmulator(c, platform);
+                            reject('Could not find any active emulatros');
+                            // TODO: Asking for new emulator is worng as it diverts
+                            // user from underlying failure of not being able to connect
+                            // return _askForNewEmulator(c, platform);
                         }
                     }
                 })
@@ -917,6 +921,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const applyPlugin = '';
     const pluginActivityCreateMethods = '';
     const pluginActivityResultMethods = '';
+    const manifestApplication = '';
     const pluginConfig = {
         pluginIncludes,
         pluginPaths,
@@ -929,7 +934,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         mainApplicationMethods,
         applyPlugin,
         pluginActivityCreateMethods,
-        pluginActivityResultMethods
+        pluginActivityResultMethods,
+        manifestApplication
     };
 
     // PLUGINS
@@ -942,6 +948,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     });
 
     pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
+
+    const pluginConfigAndroid = c.files.pluginConfig?.android || {};
 
     // FONTS
     if (c.files.appConfigFile) {
@@ -1093,6 +1101,15 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     sourceCompatibility 1.8
     targetCompatibility 1.8`;
 
+
+    // MANIFEST APPLICATION
+    const manifestApplicationParams = pluginConfigAndroid.manifest?.application?.parameters;
+    if (manifestApplicationParams) {
+        manifestApplicationParams.forEach((v) => {
+            pluginConfig.manifestApplication += `     ${v}\n`;
+        });
+    }
+
     writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
         { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
         { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
@@ -1161,29 +1178,35 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
     let prms = '';
     const { permissions } = c.files.appConfigFile.platforms[platform];
-    if (permissions) {
-        permissions.forEach((v) => {
-            if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'android';
-                const pc = c.files.permissionsConfig.permissions[plat];
-                if (pc[v]) {
-                    prms += `\n<uses-permission android:name="${pc[v].key}" />`;
-                }
+    const configPermissions = c.files.permissionsConfig?.permissions;
+
+    if (permissions && configPermissions) {
+        const platPerm = configPermissions[platform] ? platform : 'android';
+        const pc = configPermissions[platPerm];
+        if (permissions[0] === '*') {
+            for (const k in pc) {
+                prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
             }
-        });
+        } else {
+            permissions.forEach((v) => {
+                if (pc[v]) {
+                    prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
+                }
+            });
+        }
     }
 
     const manifestFile = 'app/src/main/AndroidManifest.xml';
     writeCleanFile(path.join(appTemplateFolder, manifestFile), path.join(appFolder, manifestFile), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{PERMISIONS}}', override: prms },
+        { pattern: '{{PLUGIN_MANIFEST}}', override: prms },
+        { pattern: '{{PLUGIN_MANIFEST_APPLICATION}}', override: pluginConfig.manifestApplication },
     ]);
-
 
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
-    const pluginConfigAndroid = c.files.pluginConfig ? c.files.pluginConfig.android : null;
-    const gradleProps = pluginConfigAndroid ? pluginConfigAndroid['gradle.properties'] : null;
+
+    const gradleProps = pluginConfigAndroid['gradle.properties'];
     if (gradleProps) {
         for (const key in gradleProps) {
             pluginGradleProperties += `${key}=${gradleProps[key]}\n`;

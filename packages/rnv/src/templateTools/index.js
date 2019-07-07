@@ -100,9 +100,9 @@ const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject
         // TODO: NOT SERVED FROM TEMPLATE YET
         removeFilesSync(filesToRemove);
 
-        const templateFolder = path.join(c.paths.projectNodeModulesFolder, selectedTemplate);
+        c.paths.projectTemplateFolder = path.join(c.paths.projectNodeModulesFolder, selectedTemplate);
 
-        _applyTemplate(c, templateFolder)
+        _applyTemplate(c)
             .then(() => configureEntryPoints(c))
             .then(() => _applyLocalRenative(c))
             .then(() => resolve())
@@ -119,29 +119,28 @@ const applyTemplate = c => new Promise((resolve, reject) => {
         return;
     }
 
-    const templateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
+    c.paths.projectTemplateFolder = path.join(c.paths.projectNodeModulesFolder, c.files.projectConfig.defaultProjectConfigs.template);
 
-
-    _applyTemplate(c, templateFolder)
-        // .then(() => configureEntryPoints(c)) //NOT READY YET
+    _applyTemplate(c)
+        // .then(() => configureEntryPoints(c)) // NOT READY YET
         // .then(() => _applyLocalRenative(c)) //NOT READY YET
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _applyTemplate = (c, templateFolder) => new Promise((resolve, reject) => {
-    logTask(`_applyTemplate:${c.files.projectConfig.defaultProjectConfigs.template}`);
+const _applyTemplate = c => new Promise((resolve, reject) => {
+    logTask(`_applyTemplate:${c.paths.projectTemplateFolder}`);
 
 
-    if (!fs.existsSync(templateFolder)) {
-        logWarning(`Template ${chalk.white(c.files.projectConfig.defaultProjectConfigs.template)} does not exist in your ${chalk.white(templateFolder)}. skipping`);
+    if (!fs.existsSync(c.paths.projectTemplateFolder)) {
+        logWarning(`Template ${chalk.white(c.files.projectConfig.defaultProjectConfigs.template)} does not exist in your ${chalk.white(c.paths.projectTemplateFolder)}. skipping`);
         resolve();
         return;
     }
 
-    const templateAppConfigsFolder = path.join(templateFolder, 'appConfigs');
+    const templateAppConfigsFolder = path.join(c.paths.projectTemplateFolder, 'appConfigs');
     const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
-    const templateProjectConfigFolder = path.join(templateFolder, 'projectConfig');
+    const templateProjectConfigFolder = path.join(c.paths.projectTemplateFolder, 'projectConfig');
 
     if (templateAppConfigFolder) c.defaultAppConfigId = templateAppConfigFolder;
 
@@ -149,7 +148,7 @@ const _applyTemplate = (c, templateFolder) => new Promise((resolve, reject) => {
     logTask('configureProject:check src');
     if (!fs.existsSync(c.paths.projectSourceFolder)) {
         logWarning(`Looks like your src folder ${chalk.white(c.paths.projectSourceFolder)} is missing! Let's create one for you.`);
-        copyFolderContentsRecursiveSync(path.join(templateFolder, 'src'), c.paths.projectSourceFolder);
+        copyFolderContentsRecursiveSync(path.join(c.paths.projectTemplateFolder, 'src'), c.paths.projectSourceFolder);
     }
 
     // Check appConfigs
