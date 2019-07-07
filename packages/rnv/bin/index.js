@@ -20,6 +20,7 @@ program
     .option('-p, --platform <value>', 'select specific Platform')
     .option('-c, --appConfigID <value>', 'select specific app Config id')
     .option('-t, --target <value>', 'select specific Target device/simulator')
+    .option('-T, --template <value>', 'select specific template')
     .option('-d, --device [value]', 'select connected Device')
     .option('-s, --scheme <value>', 'select build Scheme')
     .option('-f, --filter <value>', 'Filter value')

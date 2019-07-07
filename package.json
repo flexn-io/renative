@@ -71,6 +71,7 @@
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
         "test:publish": "concurrently \"rnv run -p ios\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p macos\" \"rnv run -p web\" \"rnv run -p tvos\"",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
+        "test": "rnv template apply --template renative-template-hello-world && npm run test:rnv && npm run test:publish",
         "watch": "cd ./packages/rnv && npm run watch"
     },
     "dependencies": {
