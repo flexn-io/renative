@@ -3,7 +3,10 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
-import { cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, removeDirs, writeObjectSync } from './systemTools/fileutils';
+import {
+    cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync
+} from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
@@ -668,7 +671,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
     // Check plugins
     logTask('configureProject:check plugins');
     if (fs.existsSync(c.paths.pluginConfigPath)) {
-        c.files.pluginConfig = JSON.parse(fs.readFileSync(c.paths.pluginConfigPath).toString());
+        c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath);
     } else {
         logWarning(
             `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,

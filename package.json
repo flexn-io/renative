@@ -69,8 +69,7 @@
         "publish:renative": "cd packages/renative && npm publish",
         "publish:rnv": "cd packages/rnv && npm publish",
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
-        "test:publish": "concurrently \"npm:run:ios\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p macos\" \"rnv run -p web\"",
-        "run:ios": "rnv run -p ios -t \"iPhone 6\"",
+        "test:publish": "concurrently \"rnv run -p ios\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p macos\" \"rnv run -p web\" \"rnv run -p tvos\"",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
         "watch": "cd ./packages/rnv && npm run watch"
     },
