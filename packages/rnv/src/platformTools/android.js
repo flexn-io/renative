@@ -78,12 +78,12 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
             });
     }
 
-    if (target) {
+    if (target && target.name) {
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`).catch(logError);
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target.name}"`).catch(logError);
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target}"`);
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${target.name}"`);
     }
     return Promise.reject('No simulator -t target name specified!');
 };
