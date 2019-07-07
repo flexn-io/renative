@@ -69,6 +69,9 @@
         "publish:renative": "cd packages/renative && npm publish",
         "publish:rnv": "cd packages/rnv && npm publish",
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
+        "test:publish": "concurrently \"npm:run:ios\" \"npm:run:android\"",
+        "run:ios": "rnv run -p ios -t \"iPhone 6\"",
+        "run:android": "rnv run -p android -t Nexus_5X_API_26",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
         "watch": "cd ./packages/rnv && npm run watch"
     },
@@ -91,6 +94,7 @@
         "renative": "file:./packages/renative"
     },
     "devDependencies": {
+        "concurrently": "4.1.1",
         "lerna": "latest",
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",

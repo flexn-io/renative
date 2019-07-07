@@ -596,7 +596,7 @@ const _runGradle = async (c, platform) => {
     }
 };
 
-const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
+const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     let attempts = 1;
     const maxAttempts = 10;
     let running = false;
@@ -616,7 +616,10 @@ const _checkForActiveEmulator = (c, platform) => new Promise((resolve) => {
                         attempts++;
                         if (attempts > maxAttempts) {
                             clearInterval(poll);
-                            return _askForNewEmulator(c, platform);
+                            reject('Could not find any active emulatros');
+                            // TODO: Asking for new emulator is worng as it diverts
+                            // user from underlying failure of not being able to connect
+                            // return _askForNewEmulator(c, platform);
                         }
                     }
                 })
