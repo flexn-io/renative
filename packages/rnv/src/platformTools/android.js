@@ -446,7 +446,7 @@ const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
 });
 
 const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
-    logTask('packageAndroid');
+    logTask(`packageAndroid:${platform}`);
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.files.appConfigFile.platforms[platform];
