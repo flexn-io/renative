@@ -78,19 +78,25 @@ const _templateAdd = c => new Promise((resolve, reject) => {
 });
 
 const _templateApply = c => new Promise((resolve, reject) => {
-    logTask('_templateApply');
+    logTask(`_templateApply:${c.program.template}`);
 
-    const opts = getTemplateOptions();
+    if (c.program.template) {
+        applyLocalTemplate(c, c.program.template)
+            .then(() => resolve())
+            .catch(e => reject(e));
+    } else {
+        const opts = getTemplateOptions();
 
-    askQuestion(`Pick which template to apply ${chalk.yellow('(NOTE: your project content will be overriden!)')}: \n${opts.asString}`)
-        .then(v => opts.pick(v))
-        .then((v) => {
-            finishQuestion();
-            return Promise.resolve();
-        })
-        .then(() => applyLocalTemplate(c, opts.selectedOption))
-        .then(() => resolve())
-        .catch(e => reject(e));
+        askQuestion(`Pick which template to apply ${chalk.yellow('(NOTE: your project content will be overriden!)')}: \n${opts.asString}`)
+            .then(v => opts.pick(v))
+            .then((v) => {
+                finishQuestion();
+                return Promise.resolve();
+            })
+            .then(() => applyLocalTemplate(c, opts.selectedOption))
+            .then(() => resolve())
+            .catch(e => reject(e));
+    }
 });
 
 export { PIPES };

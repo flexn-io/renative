@@ -1,3 +1,5 @@
+
+
 Object.defineProperty(exports, '__esModule', {
     value: true,
 });
@@ -6,7 +8,7 @@ exports.default = void 0;
 function _child_process() {
     const data = _interopRequireDefault(require('child_process'));
 
-    _child_process = function() {
+    _child_process = function () {
         return data;
     };
 
@@ -16,7 +18,7 @@ function _child_process() {
 function _fs() {
     const data = _interopRequireDefault(require('fs'));
 
-    _fs = function() {
+    _fs = function () {
         return data;
     };
 
@@ -26,7 +28,7 @@ function _fs() {
 function _path() {
     const data = _interopRequireDefault(require('path'));
 
-    _path = function() {
+    _path = function () {
         return data;
     };
 
@@ -56,7 +58,7 @@ function _objectSpread(target) {
                 Object.getOwnPropertySymbols(source).filter(sym => Object.getOwnPropertyDescriptor(source, sym).enumerable)
             );
         }
-        ownKeys.forEach(key => {
+        ownKeys.forEach((key) => {
             _defineProperty(target, key, source[key]);
         });
     }
@@ -226,9 +228,10 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
         '--id',
         selectedDevice.udid,
         '--justlaunch',
+        '-r'
     ];
 
-    _logger.default.info(`installing and launching your app on ${selectedDevice.name}...`);
+    _logger.default.info(`installing and launching your app on ${selectedDevice.name}... `);
 
     const iosDeployOutput = _child_process().default.spawnSync('ios-deploy', iosDeployInstallArgs, {
         encoding: 'utf8',
@@ -264,9 +267,8 @@ function buildProject(xcodeProject, udid, scheme, configuration, launchPackager 
         let xcpretty;
 
         if (!verbose) {
-            xcpretty =
-                xcprettyAvailable() &&
-                _child_process().default.spawn('xcpretty', [], {
+            xcpretty = xcprettyAvailable()
+                && _child_process().default.spawn('xcpretty', [], {
                     stdio: ['pipe', process.stdout, process.stderr],
                 });
         }
@@ -279,7 +281,7 @@ function buildProject(xcodeProject, udid, scheme, configuration, launchPackager 
 
         let buildOutput = '';
         let errorOutput = '';
-        buildProcess.stdout.on('data', data => {
+        buildProcess.stdout.on('data', (data) => {
             buildOutput += data.toString();
 
             if (xcpretty) {
@@ -288,10 +290,10 @@ function buildProject(xcodeProject, udid, scheme, configuration, launchPackager 
                 _logger.default.info(data.toString());
             }
         });
-        buildProcess.stderr.on('data', data => {
+        buildProcess.stderr.on('data', (data) => {
             errorOutput += data;
         });
-        buildProcess.on('close', code => {
+        buildProcess.on('close', (code) => {
             if (xcpretty) {
                 xcpretty.stdin.end();
             }
@@ -335,6 +337,9 @@ function getBuildPath(configuration, appName, isDevice, scheme) {
 
     if (isDevice) {
         device = 'iphoneos';
+        if (appName.toLowerCase().includes('tvos')) {
+            device = 'appletvos';
+        }
     } else if (appName.toLowerCase().includes('tvos')) {
         device = 'appletvsimulator';
     } else {
@@ -443,8 +448,8 @@ const _default = {
         {
             command: '--simulator [string]',
             description:
-                'Explicitly set simulator to use. Optionally include iOS version between' +
-                'parenthesis at the end to match an exact version: "iPhone 6 (10.0)"',
+                'Explicitly set simulator to use. Optionally include iOS version between'
+                + 'parenthesis at the end to match an exact version: "iPhone 6 (10.0)"',
             default: 'iPhone X',
         },
         {

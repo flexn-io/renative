@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import { mergeObjects } from '../systemTools/fileutils';
 import { logTask, logWarning } from '../common';
 
@@ -42,6 +43,8 @@ const parsePlugins = (c, pluginCallback) => {
                     }
                 }
             });
+        } else {
+            logWarning(`You haven't included any ${chalk.white('{ common: { includedPlugins: [] }}')} in your ${chalk.white(c.paths.appConfigPath)}. Your app might not work correctly`);
         }
     }
 };

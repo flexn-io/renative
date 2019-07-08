@@ -1783,9 +1783,16 @@ If you need full control over whole ReNative build you can clone and develop it 
 5) npm run link
 ```
 
+
 At this point your global `$ rnv` command is linked directly into project above.
 
 It's also best way to contribute back to RNV! :)
+
+
+```
+rnv template apply
+=> pick renative-template-hello-world
+```
 
 ---
 

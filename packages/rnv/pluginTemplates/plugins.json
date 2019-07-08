@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.11",
+            "version": "0.23.21",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -168,9 +168,6 @@
             "ios": {
                 "podName": "RNLanguages"
             },
-            "tvos": {
-                "podName": "RNLanguages"
-            },
             "android": {
                 "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
             },
@@ -210,8 +207,17 @@
             "ios": {
                 "podName": "react-native-fetch-blob"
             },
-            "tvos": {
-                "podName": "react-native-fetch-blob"
+            "android": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            },
+            "androidtv": {
+                "package": "com.RNFetchBlob.RNFetchBlobPackage"
+            }
+        },
+        "rn-fetch-blob": {
+            "version": "0.10.13",
+            "ios": {
+                "podName": "rn-fetch-blob"
             },
             "android": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
@@ -1044,7 +1050,7 @@
             }
         },
         "react-native-web": {
-            "version": "0.9.9"
+            "version": "0.11.4"
         },
         "react-native-web-image-loader": {
             "version": "0.0.5"
@@ -1053,7 +1059,7 @@
             "version": "1.0.2"
         },
         "react-navigation": {
-            "version": "3.5.1",
+            "version": "3.9.2",
             "webpack": {
                 "modulePaths": [
                     "node_modules/react-navigation",
@@ -1066,9 +1072,9 @@
                 "react-native-reanimated"
             ],
             "npm": {
-                "@react-navigation/core": "3.1.1",
-                "@react-navigation/native": "3.1.5",
-                "@react-navigation/web": "1.0.0-alpha.7"
+                "@react-navigation/core": "3.4.2",
+                "@react-navigation/native": "3.5.0",
+                "@react-navigation/web": "1.0.0-alpha.9"
             }
         },
         "react-navigation-stack": {
@@ -1093,7 +1099,7 @@
             }
         },
         "react-native-safe-area-view": {
-            "version": "0.14.4",
+            "version": "0.14.5",
             "webpack": {
                 "modulePaths": true
             }

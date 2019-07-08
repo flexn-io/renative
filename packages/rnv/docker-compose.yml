@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  test:
+    build:
+      context: .
+    environment:
+      - DOCKER=true
+    command: npm test

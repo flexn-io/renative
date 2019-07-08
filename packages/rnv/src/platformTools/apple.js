@@ -114,18 +114,33 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     if (device === true) {
         const devicesArr = _getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
-            logSuccess(`Found one device connected! ${chalk.white(devicesArr[0].name)}`);
-            p = [
-                'run-ios',
-                '--project-path',
-                appPath,
-                '--device',
-                devicesArr[0].name,
-                '--scheme',
-                scheme,
-                '--configuration',
-                runScheme,
-            ];
+            logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)} udid: ${chalk.white(devicesArr[0].udid)}`);
+            if (devicesArr[0].udid) {
+                p = [
+                    'run-ios',
+                    '--project-path',
+                    appPath,
+                    '--device',
+                    '--udid',
+                    devicesArr[0].udid,
+                    '--scheme',
+                    scheme,
+                    '--configuration',
+                    runScheme,
+                ];
+            } else {
+                p = [
+                    'run-ios',
+                    '--project-path',
+                    appPath,
+                    '--device',
+                    devicesArr[0].name,
+                    '--scheme',
+                    scheme,
+                    '--configuration',
+                    runScheme,
+                ];
+            }
         } else if (devicesArr.length > 1) {
             let devicesString = '\n';
             devicesArr.forEach((v, i) => {
