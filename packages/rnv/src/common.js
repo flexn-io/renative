@@ -13,6 +13,11 @@ import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
 import { getMergedPlugin, parsePlugins } from './pluginTools';
 import {
+    logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
+    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
+    logInitialize, logAppInfo
+} from './systemTools/logger';
+import {
     IOS,
     ANDROID,
     ANDROID_TV,
@@ -108,14 +113,10 @@ const SUPPORTED_PLATFORMS_WIN = [
 ];
 
 const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
-const RNV_START = '🚀 ReNative';
-const RNV = 'ReNative';
-const LINE = chalk.white.bold('----------------------------------------------------------');
-const LINE2 = chalk.gray('----------------------------------------------------------');
 
 let _currentJob;
 let _currentProcess;
-let _isInfoEnabled = false;
+
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -129,22 +130,6 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
-const logWelcome = () => {
-    console.log(`
-┌──────────────────────────────────────────────────────────────────────────────┐
-│                                                                              │
-│        ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗       │
-│        ${chalk.red('██╔══██╗')}██╔════╝${chalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalk.red('██║   ██║')}██╔════╝       │
-│        ${chalk.red('██████╔╝')}█████╗  ${chalk.red('██╔██╗ ██║')}███████║   ██║   ██║${chalk.red('██║   ██║')}█████╗         │
-│        ${chalk.red('██╔══██╗')}██╔══╝  ${chalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${chalk.red('╚██╗ ██╔╝')}██╔══╝         │
-│        ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗       │
-│        ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝       │
-│                                                                              │
-│        v0.23.22                                                              │
-│        🚀🚀🚀 https://renative.org 🚀🚀🚀                                    │
-└──────────────────────────────────────────────────────────────────────────────┘
-    `);
-};
 
 const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -268,16 +253,14 @@ const _generatePlatformTemplatePaths = (c) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
-    _messages = [];
     _currentJob = cmd;
     _currentProcess = process;
-    console.log(
-        chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${cmd} ${subCmd || ''}`)} is firing up! 🔥\n${LINE}\n`),
-    );
+    configureLogger(_currentProcess, _currentJob, subCmd, program.info === true);
+    logInitialize();
+
 
     logTask('initializeBuilder');
 
-    _isInfoEnabled = program.info === true;
     const c = { cli: {}, paths: {}, files: {} };
 
     c.program = program;
@@ -421,12 +404,6 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         .then(() => logAppInfo(c))
         .then(() => resolve(c))
         .catch(e => reject(e));
-});
-
-const logAppInfo = c => new Promise((resolve, reject) => {
-    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.white.bold(c.files.appConfigFile.id)}\n${LINE2}`));
-
-    resolve();
 });
 
 const configureProject = c => new Promise((resolve, reject) => {
@@ -839,82 +816,7 @@ const checkSdk = (c, platform, reject) => {
     return true;
 };
 
-let _messages = [];
-
-const logAndSave = (msg, skipLog) => {
-    if (!_messages.includes(msg)) _messages.push(msg);
-    if (!skipLog) console.log(`${msg}`);
-};
-
-const logTask = (task) => {
-    console.log(chalk.green(`${RNV} ${_currentJob} - ${task} - Starting!`));
-};
-
-const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} ${_currentJob} - WARNING: ${msg}`));
-};
-
-const logInfo = (msg) => {
-    console.log(chalk.magenta(`ℹ️  ${RNV} ${_currentJob} - NOTE: ${msg}`));
-};
-
-const logDebug = (...args) => {
-    if (_isInfoEnabled) console.log.apply(null, args);
-};
-
-const logComplete = (isEnd = false) => {
-    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob || ''} - Done! 🚀`));
-    if (isEnd) logEnd(0);
-};
-
-const logSuccess = (msg) => {
-    console.log(`✅ ${chalk.magenta(msg)}`);
-};
-
 const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
-
-const logError = (e, isEnd = false) => {
-    if (e && e.message) {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
-    } else {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e}`), isEnd);
-    }
-    if (isEnd) logEnd(1);
-};
-
-const logEnd = (code) => {
-    // console.log('JHKJHKJHKJHKJ', _messages);
-    // console.log(chalk.bold(`\n\n${LINE}\n`));
-    // console.log('SUMMARY OF YOUR WARNINGS');
-    // console.log(chalk.bold(`\n${LINE}\n\n`));
-
-    let logContent = chalk.default('│  All good as 🦄                                                              │');
-    if (_messages.length) {
-        logContent = '\n';
-        _messages.forEach((m) => {
-            logContent += `    ${m}\n`;
-        });
-    }
-
-
-    let str = chalk.default(`
-┌──────────────────────────────────────────────────────────────────────────────┐
-│  🚀  SUMMARY                                                                 │
-├──────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-`);
-
-    str += logContent;
-    str += chalk.default(`
-│                                                                              │
-└──────────────────────────────────────────────────────────────────────────────┘
-
-    `);
-
-    // console.log(chalk.bold(`\n${LINE}\n`));
-    console.log(str);
-    _currentProcess.exit(code);
-};
 
 const IGNORE_FOLDERS = ['.git'];
 

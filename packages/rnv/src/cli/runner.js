@@ -398,11 +398,19 @@ const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     case IOS:
-    default:
         executePipe(c, PIPES.DEPLOY_BEFORE)
             .then(v => isPlatformSupported(c))
             .then(v => isBuildSchemeSupported(c))
             .then(v => _exportAppWithPlatform(c))
+            .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case ANDROID:
+        executePipe(c, PIPES.DEPLOY_BEFORE)
+            .then(v => isPlatformSupported(c))
+            .then(v => isBuildSchemeSupported(c))
+            .then(v => _buildAppWithPlatform(c))
             .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
