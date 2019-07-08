@@ -43,6 +43,8 @@ import { getMergedPlugin, parsePlugins } from '../pluginTools';
 
 const readline = require('readline');
 
+const CHECK_INTEVAL = 5000;
+
 let currentDeviceProps = null;
 
 const composeDevicesString = (devices, returnArray) => {
@@ -503,7 +505,7 @@ const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
                 throw new Error('Can\'t connect to the running emulator. Try restarting it.');
             }
         }
-    }, 2000);
+    }, CHECK_INTEVAL);
 });
 
 const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
@@ -628,7 +630,7 @@ const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) =
                     logError(e);
                 });
         }
-    }, 2000);
+    }, CHECK_INTEVAL);
 });
 
 const _checkSigningCerts = c => new Promise((resolve, reject) => {
