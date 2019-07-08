@@ -13,6 +13,7 @@ import {
     finishQuestion,
     generateOptions,
     logWelcome,
+    logInfo,
     SUPPORTED_PLATFORMS,
 } from '../common';
 import {
@@ -460,7 +461,7 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     logTask('_runPlugins');
 
     if (!fs.existsSync(pluginsPath)) {
-        logWarning(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
+        logInfo(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
         resolve();
         return;
     }
@@ -475,7 +476,7 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
             //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.projectRootFolder, 'node_modules', dir));
             // });
         } else {
-            logWarning(`Your plugin configuration has no override path ${source}. skipping`);
+            logWarning(`Your plugin configuration has no override path ${chalk.white(source)}. skipping`);
         }
     });
 

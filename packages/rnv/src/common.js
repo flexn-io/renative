@@ -1168,7 +1168,7 @@ const setAppConfig = (c, p) => {
 
 const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
     if (c.program.reset) {
-        logWarning(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
+        logInfo(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
         cleanPlatformBuild(c, platform)
             .then(() => resolve(c))
             .catch(e => reject(e));
