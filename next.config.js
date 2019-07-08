@@ -5,6 +5,8 @@ const withFonts = require('next-fonts');
 const withPlugins = require('next-compose-plugins');
 const withCSS = require('@zeit/next-css');
 
+const internalNodeModulesRegExp = /(?:react-native-tab-view)(?!.*node_modules)/;
+
 const modulePaths = [
     'src',
     'packages',
@@ -115,7 +117,19 @@ const nextConfig = {
             'react-native-orientation-locker': 'react-native-orientation-locker',
             '@react-navigation/native': '@react-navigation/native',
         };
-
+        config.module.rules.push({
+            test: /\.+(js|jsx)$/,
+            use: {
+                loader: 'next-babel-loader',
+                options: {
+                    presets: ['module:metro-react-native-babel-preset'],
+                    plugins: [
+                        ['react-native-web', { commonjs: true }],
+                    ],
+                },
+            },
+            include: [internalNodeModulesRegExp],
+        });
 
         // defaultLoaders.babel.options.plugins.push(...modulePaths);
         config.module.rules.push({
