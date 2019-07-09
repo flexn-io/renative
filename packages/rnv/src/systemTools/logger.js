@@ -7,7 +7,7 @@ const LINE = chalk.white.bold('-------------------------------------------------
 const LINE2 = chalk.gray('----------------------------------------------------------');
 
 export const logWelcome = () => {
-    let str = `
+    let str = _defaultColor(`
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                                                                              │
 │        ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗       │
@@ -17,12 +17,14 @@ export const logWelcome = () => {
 │        ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗       │
 │        ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝       │
 │                                                                              │
-`;
+`);
 
-    str += printIntoBox(`      🚀 Version: ${_c.files.rnvPackage.version}`);
-    str += printIntoBox('      🚀 https://renative.org');
+    str += printIntoBox(`      Version: ${chalk.green(_c.files.rnvPackage.version)}`, 1);
+    str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
+    str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox('');
     str += printBoxEnd();
+    str += '\n';
     console.log(str);
 };
 
@@ -58,9 +60,9 @@ export const logSummary = () => {
 
     let str = printBoxStart('🚀  SUMMARY');
     // str += printIntoBox('SHlelelele euheu ehhh');
-    if (_c.appId) str += printIntoBox(`App Config: ${_c.appId}`);
-    if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_c.program.scheme}`);
-    if (_c.platform) str += printIntoBox(`Platform: ${_c.platform}`);
+    if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+    if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
+    if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
     str += printIntoBox('');
     str += logContent;
     str += printIntoBox('');
@@ -125,20 +127,28 @@ export const logAppInfo = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const printIntoBox = (str2) => {
-    let output = chalk.default('│  ');
-    const endLine = '                                                                               │\n';
-    output += chalk.default(str2);
+const _defaultColor = chalk.gray;
+const _highlightColor = chalk.green;
+
+export const printIntoBox = (str2, chalkIntend = 0) => {
+    let output = _defaultColor('│  ');
+    let endLine = '';
+    const intend = str2 === '' ? 1 : 2;
+    for (let i = 0; i < chalkIntend + intend; i++) {
+        endLine += '          ';
+    }
+    endLine += '                                                                               │\n';
+    output += _defaultColor(str2);
     const l = output.length - endLine.length;
-    output += chalk.default(endLine.slice(l));
+    output += _defaultColor(endLine.slice(l));
     return output;
 };
 
 export const printBoxStart = (str) => {
-    let output = chalk.default('┌──────────────────────────────────────────────────────────────────────────────┐\n');
+    let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
-    output += '├──────────────────────────────────────────────────────────────────────────────┤\n';
+    output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
     return output;
 };
 
-export const printBoxEnd = () => chalk.default('└──────────────────────────────────────────────────────────────────────────────┘');
+export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');
