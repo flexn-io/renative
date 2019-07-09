@@ -839,11 +839,14 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             }
         });
 
-        logWarning(
-            `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
-                c.paths.appConfigsFolder,
-            )} !`,
-        );
+        if (appConfigId !== '?') {
+            logWarning(
+                `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
+                    c.paths.appConfigsFolder,
+                )} !`,
+            );
+        }
+
         if (configDirs.length) {
             let opts = '';
             configDirs.forEach((v, i) => {
