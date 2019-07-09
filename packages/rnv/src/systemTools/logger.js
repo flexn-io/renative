@@ -7,7 +7,7 @@ const LINE = chalk.white.bold('-------------------------------------------------
 const LINE2 = chalk.gray('----------------------------------------------------------');
 
 export const logWelcome = () => {
-    console.log(`
+    let str = `
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                                                                              │
 │        ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗       │
@@ -17,19 +17,24 @@ export const logWelcome = () => {
 │        ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗       │
 │        ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝       │
 │                                                                              │
-│        v0.23.22                                                              │
-│        🚀🚀🚀 https://renative.org 🚀🚀🚀                                    │
-└──────────────────────────────────────────────────────────────────────────────┘
-    `);
+`;
+
+    str += printIntoBox(`      🚀 Version: ${_c.files.rnvPackage.version}`);
+    str += printIntoBox('      🚀 https://renative.org');
+    str += printIntoBox('');
+    str += printBoxEnd();
+    console.log(str);
 };
 
 let _messages;
 let _currentJob;
 let _currentProcess;
 let _isInfoEnabled = false;
+let _c;
 
-export const configureLogger = (process, job, subCommand, isInfoEnabled) => {
+export const configureLogger = (c, process, job, subCommand, isInfoEnabled) => {
     _messages = [];
+    _c = c;
     _currentJob = job;
     _currentProcess = process;
     _currentSubCommand = subCommand;
@@ -42,22 +47,24 @@ export const logAndSave = (msg, skipLog) => {
 };
 
 export const logSummary = () => {
-    let logContent = _printIntoBox('All good as 🦄 ');
+    let logContent = printIntoBox('All good as 🦄 ');
     if (_messages.length) {
         logContent = '';
         _messages.forEach((m) => {
             logContent += `│ ${m}\n`;
         });
-        logContent += '│';
     }
 
 
-    let str = _printBoxStart('🚀  SUMMARY');
-    // str += _printIntoBox('SHlelelele euheu ehhh');
-    str += _printIntoBox('');
+    let str = printBoxStart('🚀  SUMMARY');
+    // str += printIntoBox('SHlelelele euheu ehhh');
+    if (_c.appId) str += printIntoBox(`App Config: ${_c.appId}`);
+    if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_c.program.scheme}`);
+    if (_c.platform) str += printIntoBox(`Platform: ${_c.platform}`);
+    str += printIntoBox('');
     str += logContent;
-    str += _printIntoBox('');
-    str += _printBoxEnd();
+    str += printIntoBox('');
+    str += printBoxEnd();
 
     console.log(str);
 };
@@ -106,9 +113,10 @@ export const logEnd = (code) => {
 };
 
 export const logInitialize = () => {
-    console.log(
-        chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentJob} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
-    );
+    logWelcome();
+    // console.log(
+    //     chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentJob} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
+    // );
 };
 
 export const logAppInfo = c => new Promise((resolve, reject) => {
@@ -117,7 +125,7 @@ export const logAppInfo = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _printIntoBox = (str2) => {
+export const printIntoBox = (str2) => {
     let output = chalk.default('│  ');
     const endLine = '                                                                               │\n';
     output += chalk.default(str2);
@@ -126,11 +134,11 @@ const _printIntoBox = (str2) => {
     return output;
 };
 
-const _printBoxStart = (str) => {
+export const printBoxStart = (str) => {
     let output = chalk.default('┌──────────────────────────────────────────────────────────────────────────────┐\n');
-    output += _printIntoBox(str);
+    output += printIntoBox(str);
     output += '├──────────────────────────────────────────────────────────────────────────────┤\n';
     return output;
 };
 
-const _printBoxEnd = () => chalk.default('└──────────────────────────────────────────────────────────────────────────────┘');
+export const printBoxEnd = () => chalk.default('└──────────────────────────────────────────────────────────────────────────────┘');
