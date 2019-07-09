@@ -19,12 +19,13 @@ export const logWelcome = () => {
 │                                                                              │
 `);
 
-    str += printIntoBox(`      Version: ${chalk.green(_c.files.rnvPackage.version)}`, 1);
+    if (_c?.files?.rnvPackage?.version) str += printIntoBox(`      Version: ${chalk.green(_c.files.rnvPackage.version)}`, 1);
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox('');
     str += printBoxEnd();
     str += '\n';
+
     console.log(str);
 };
 
@@ -44,13 +45,13 @@ export const configureLogger = (c, process, job, subCommand, isInfoEnabled) => {
 };
 
 export const logAndSave = (msg, skipLog) => {
-    if (!_messages.includes(msg)) _messages.push(msg);
+    if (_messages && _messages.includes(msg)) _messages.push(msg);
     if (!skipLog) console.log(`${msg}`);
 };
 
 export const logSummary = () => {
     let logContent = printIntoBox('All good as 🦄 ');
-    if (_messages.length) {
+    if (_messages && _messages.length) {
         logContent = '';
         _messages.forEach((m) => {
             logContent += `│ ${m}\n`;
@@ -60,9 +61,12 @@ export const logSummary = () => {
 
     let str = printBoxStart('🚀  SUMMARY');
     // str += printIntoBox('SHlelelele euheu ehhh');
-    if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
-    if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
-    if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
+    if (_c) {
+        if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+        if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
+        if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
+    }
+
     str += printIntoBox('');
     str += logContent;
     str += printIntoBox('');
@@ -111,7 +115,7 @@ export const logError = (e, isEnd = false) => {
 
 export const logEnd = (code) => {
     logSummary();
-    _currentProcess.exit(code);
+    if (_currentProcess) _currentProcess.exit(code);
 };
 
 export const logInitialize = () => {

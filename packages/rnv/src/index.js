@@ -1,5 +1,6 @@
 import chalk from 'chalk';
-import Common, { initializeBuilder, logComplete, logError, logWelcome, logInfo } from './common';
+import Common, { initializeBuilder } from './common';
+import { logComplete, logError, logWelcome, logInfo } from './systemTools/logger';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
 import App from './cli/app';
