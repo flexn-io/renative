@@ -156,17 +156,33 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
             readlineInterface.question(getQuestion(`${devicesString}\nType number of the device you want to launch`), (v) => {
                 const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                 if (selectedDevice) {
-                    p = [
-                        'run-ios',
-                        '--project-path',
-                        appPath,
-                        '--device',
-                        selectedDevice.name,
-                        '--scheme',
-                        scheme,
-                        '--configuration',
-                        runScheme,
-                    ];
+                    if (selectedDevice.udid) {
+                        p = [
+                            'run-ios',
+                            '--project-path',
+                            appPath,
+                            '--device',
+                            '--udid',
+                            selectedDevice.udid,
+                            '--scheme',
+                            scheme,
+                            '--configuration',
+                            runScheme,
+                        ];
+                    } else {
+                        p = [
+                            'run-ios',
+                            '--project-path',
+                            appPath,
+                            '--device',
+                            selectedDevice.name,
+                            '--scheme',
+                            scheme,
+                            '--configuration',
+                            runScheme,
+                        ];
+                    }
+
                     if (bundleAssets) {
                         packageBundleForXcode(c, platform, bundleIsDev)
                             .then(v => executeAsync('react-native', p))
