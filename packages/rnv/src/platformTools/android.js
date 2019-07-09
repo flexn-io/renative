@@ -159,7 +159,9 @@ const getRunningDeviceProp = (c, udid, prop) => {
         return currentDeviceProps[prop];
     }
     const rawProps = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${udid} shell getprop`).toString().trim();
-    const lines = rawProps.trim().split(/\r?\n/);
+    const reg = /\[.+\]: \[.*\n?[^\[]*\]/gm;
+    const lines = rawProps.match(reg);
+
     lines.forEach((line) => {
         const words = line.split(']: [');
         const key = words[0].slice(1);
@@ -275,7 +277,7 @@ const getAvdDetails = (deviceName) => {
             const filesPath = fs.readdirSync(path, { withFileTypes: true });
 
             filesPath.forEach((dirent) => {
-                if (!dirent.isDirectory() && dirent.name.includes('.ini')) {
+                if (!dirent.isDirectory() && dirent.name === `${deviceName}.ini`) {
                     const avdData = fs.readFileSync(`${path}/${dirent.name}`).toString();
                     const lines = avdData.trim().split(/\r?\n/);
                     lines.forEach((line) => {
@@ -368,7 +370,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
             try {
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                child_process.execSync(`ps x | grep "qemu.*${line}" | grep -v grep`);
+                child_process.execSync(`ps x | grep "avd ${line}" | grep -v grep`);
                 logDebug('_parseDevicesResult - excluding running emulator');
             } catch (e) {
                 devices.push({
