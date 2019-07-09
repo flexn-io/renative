@@ -255,12 +255,6 @@ const _generatePlatformTemplatePaths = (c) => {
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     _currentJob = cmd;
     _currentProcess = process;
-    configureLogger(_currentProcess, _currentJob, subCmd, program.info === true);
-    logInitialize();
-
-
-    logTask('initializeBuilder');
-
     const c = { cli: {}, paths: {}, files: {} };
 
     c.program = program;
@@ -278,6 +272,13 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvPluginsFolder = path.join(c.paths.rnvHomeFolder, 'plugins');
     c.paths.rnvProjectTemplateFolder = path.join(c.paths.rnvRootFolder, 'projectTemplate');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
+
+    configureLogger(c, _currentProcess, _currentJob, subCmd, program.info === true);
+    logInitialize();
+
+
+    logTask('initializeBuilder');
+
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
 
     if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
@@ -839,11 +840,14 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             }
         });
 
-        logWarning(
-            `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
-                c.paths.appConfigsFolder,
-            )} !`,
-        );
+        if (appConfigId !== '?') {
+            logWarning(
+                `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
+                    c.paths.appConfigsFolder,
+                )} !`,
+            );
+        }
+
         if (configDirs.length) {
             let opts = '';
             configDirs.forEach((v, i) => {
