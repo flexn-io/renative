@@ -263,28 +263,39 @@ const getAvdDetails = (deviceName) => {
 
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
     const avdConfigPaths = [
-        `${ANDROID_AVD_HOME}/${deviceName}.avd/config.ini`,
-        `${ANDROID_SDK_HOME}/.android/avd/${deviceName}.avd/config.ini`,
-        `${os.homedir()}/.android/avd/${deviceName}.avd/config.ini`,
+        `${ANDROID_AVD_HOME}`,
+        `${ANDROID_SDK_HOME}/.android/avd`,
+        `${os.homedir()}/.android/avd`,
     ];
 
     const results = {};
 
-    avdConfigPaths.some((path) => {
+    avdConfigPaths.forEach((path) => {
         if (fs.existsSync(path)) {
-            const fileData = fs.readFileSync(path).toString();
-            const lines = fileData.trim().split(/\r?\n/);
-            const avdConfig = {};
-            lines.forEach((line) => {
-                const [key, value] = line.split('=');
-                // also remove the white space
-                avdConfig[key.trim()] = value.trim();
+            const filesPath = fs.readdirSync(path, { withFileTypes: true });
+
+            filesPath.forEach((dirent) => {
+                if (!dirent.isDirectory() && dirent.name.includes('.ini')) {
+                    const avdData = fs.readFileSync(`${path}/${dirent.name}`).toString();
+                    const lines = avdData.trim().split(/\r?\n/);
+                    lines.forEach((line) => {
+                        const [key, value] = line.split('=');
+                        if (key === 'path') {
+                            const initData = fs.readFileSync(`${value}/config.ini`).toString();
+                            const initLines = initData.trim().split(/\r?\n/);
+                            const avdConfig = {};
+                            initLines.forEach((initLine) => {
+                                const [iniKey, iniValue] = initLine.split('=');
+                                // also remove the white space
+                                avdConfig[iniKey.trim()] = iniValue.trim();
+                            });
+                            results.avdConfig = avdConfig;
+                        }
+                    });
+                }
             });
-            results.avdConfig = avdConfig;
-            return true;
         }
     });
-
     return results;
 };
 
