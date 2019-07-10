@@ -276,10 +276,12 @@ const getAvdDetails = (c, deviceName) => {
         if (fs.existsSync(cPath)) {
             const filesPath = fs.readdirSync(cPath);
 
+
             filesPath.forEach((fName) => {
-                const dirent = fs.lstatSync(path.join(cPath, fName));
-                if (!dirent.isDirectory() && dirent.name === `${deviceName}.ini`) {
-                    const avdData = fs.readFileSync(`${path}/${dirent.name}`).toString();
+                const fPath = path.join(cPath, fName);
+                const dirent = fs.lstatSync(fPath);
+                if (!dirent.isDirectory() && fName === `${deviceName}.ini`) {
+                    const avdData = fs.readFileSync(fPath).toString();
                     const lines = avdData.trim().split(/\r?\n/);
                     lines.forEach((line) => {
                         const [key, value] = line.split('=');
@@ -367,15 +369,21 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
         await Promise.all(avdLines.map(async (line) => {
             let avdDetails;
+
             try {
                 avdDetails = getAvdDetails(c, line);
+            } catch (e) {
+                logError(e);
+            }
+
+            try {
                 logDebug('_parseDevicesResult', { avdDetails });
+
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
                 child_process.execSync(`ps x | grep "avd ${line}" | grep -v grep`);
                 logDebug('_parseDevicesResult - excluding running emulator');
             } catch (e) {
-                logError(e);
                 if (avdDetails) {
                     devices.push({
                         udid: 'unknown',
