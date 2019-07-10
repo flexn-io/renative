@@ -647,6 +647,20 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
+        const systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
+
+
+        if (systemCapabilities) {
+            const sysCapObj = {};
+            for (const sk in systemCapabilities) {
+                const val = systemCapabilities[sk];
+                sysCapObj[sk] = { enabled: val === true ? 1 : 0 };
+            }
+            // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
+            xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
+        }
+
+
         if (c.files.appConfigFile) {
             if (fs.existsSync(c.paths.fontsConfigFolder)) {
                 fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
@@ -759,10 +773,11 @@ const _parseEntitlements = (c, platform) => {
     const appFolderName = _getAppFolderName(c, platform);
     const entitlementsPath = path.join(appFolder, `${appFolderName}/RNVApp.entitlements`);
     // PLUGIN ENTITLEMENTS
-    const pluginsEntitlementsObj = mergeObjects(
-        readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json')),
-        getConfigProp(c, platform, 'entitlements')
-    );
+    let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
+    if (!pluginsEntitlementsObj) {
+        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json'));
+    }
+
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
 };
 
