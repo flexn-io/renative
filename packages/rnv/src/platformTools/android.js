@@ -159,7 +159,9 @@ const getRunningDeviceProp = (c, udid, prop) => {
         return currentDeviceProps[prop];
     }
     const rawProps = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${udid} shell getprop`).toString().trim();
-    const lines = rawProps.trim().split(/\r?\n/);
+    const reg = /\[.+\]: \[.*\n?[^\[]*\]/gm;
+    const lines = rawProps.match(reg);
+
     lines.forEach((line) => {
         const words = line.split(']: [');
         const key = words[0].slice(1);
@@ -258,33 +260,47 @@ const getDeviceType = async (device, c) => {
     return device;
 };
 
-const getAvdDetails = (deviceName) => {
+const getAvdDetails = (c, deviceName) => {
     const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
 
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
     const avdConfigPaths = [
-        `${ANDROID_AVD_HOME}/${deviceName}.avd/config.ini`,
-        `${ANDROID_SDK_HOME}/.android/avd/${deviceName}.avd/config.ini`,
-        `${os.homedir()}/.android/avd/${deviceName}.avd/config.ini`,
+        `${ANDROID_AVD_HOME}`,
+        `${ANDROID_SDK_HOME}/.android/avd`,
+        `${os.homedir()}/.android/avd`,
     ];
 
     const results = {};
 
-    avdConfigPaths.some((path) => {
-        if (fs.existsSync(path)) {
-            const fileData = fs.readFileSync(path).toString();
-            const lines = fileData.trim().split(/\r?\n/);
-            const avdConfig = {};
-            lines.forEach((line) => {
-                const [key, value] = line.split('=');
-                // also remove the white space
-                avdConfig[key.trim()] = value.trim();
+    avdConfigPaths.forEach((cPath) => {
+        if (fs.existsSync(cPath)) {
+            const filesPath = fs.readdirSync(cPath);
+
+
+            filesPath.forEach((fName) => {
+                const fPath = path.join(cPath, fName);
+                const dirent = fs.lstatSync(fPath);
+                if (!dirent.isDirectory() && fName === `${deviceName}.ini`) {
+                    const avdData = fs.readFileSync(fPath).toString();
+                    const lines = avdData.trim().split(/\r?\n/);
+                    lines.forEach((line) => {
+                        const [key, value] = line.split('=');
+                        if (key === 'path') {
+                            const initData = fs.readFileSync(`${value}/config.ini`).toString();
+                            const initLines = initData.trim().split(/\r?\n/);
+                            const avdConfig = {};
+                            initLines.forEach((initLine) => {
+                                const [iniKey, iniValue] = initLine.split('=');
+                                // also remove the white space
+                                avdConfig[iniKey.trim()] = iniValue.trim();
+                            });
+                            results.avdConfig = avdConfig;
+                        }
+                    });
+                }
             });
-            results.avdConfig = avdConfig;
-            return true;
         }
     });
-
     return results;
 };
 
@@ -352,21 +368,31 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         logDebug('_parseDevicesResult', { avdLines });
 
         await Promise.all(avdLines.map(async (line) => {
-            const avdDetails = getAvdDetails(line);
-            logDebug('_parseDevicesResult', { avdDetails });
+            let avdDetails;
+
             try {
+                avdDetails = getAvdDetails(c, line);
+            } catch (e) {
+                logError(e);
+            }
+
+            try {
+                logDebug('_parseDevicesResult', { avdDetails });
+
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                child_process.execSync(`ps x | grep "qemu.*${line}" | grep -v grep`);
+                child_process.execSync(`ps x | grep "avd ${line}" | grep -v grep`);
                 logDebug('_parseDevicesResult - excluding running emulator');
             } catch (e) {
-                devices.push({
-                    udid: 'unknown',
-                    isDevice: false,
-                    isActive: false,
-                    name: line,
-                    ...avdDetails
-                });
+                if (avdDetails) {
+                    devices.push({
+                        udid: 'unknown',
+                        isDevice: false,
+                        isActive: false,
+                        name: line,
+                        ...avdDetails
+                    });
+                }
             }
         }));
     }
@@ -536,7 +562,12 @@ const _runGradle = async (c, platform) => {
         await connectToWifiDevice(c, target);
     }
 
-    const devicesAndEmulators = await _listAndroidTargets(c, false, false, c.program.device !== undefined);
+    let devicesAndEmulators;
+    try {
+        devicesAndEmulators = await _listAndroidTargets(c, false, false, c.program.device !== undefined);
+    } catch (e) {
+        return Promise.reject();
+    }
     const activeDevices = devicesAndEmulators.filter(d => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter(d => !d.isActive);
 
@@ -570,8 +601,9 @@ const _runGradle = async (c, platform) => {
                 await _runGradleApp(c, platform, dev);
             }
         } else {
-            const devices = await _checkForActiveEmulator(c, platform);
-            await _runGradleApp(c, platform, devices);
+            // const devices = await _checkForActiveEmulator(c, platform);
+            // await _runGradleApp(c, platform, devices);
+
         }
     };
 
@@ -600,6 +632,7 @@ const _runGradle = async (c, platform) => {
 };
 
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_checkForActiveEmulator:${platform}`);
     let attempts = 1;
     const maxAttempts = 10;
     let running = false;

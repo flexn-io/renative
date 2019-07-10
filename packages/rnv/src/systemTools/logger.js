@@ -45,7 +45,7 @@ export const configureLogger = (c, process, job, subCommand, isInfoEnabled) => {
 };
 
 export const logAndSave = (msg, skipLog) => {
-    if (_messages && _messages.includes(msg)) _messages.push(msg);
+    if (_messages && !_messages.includes(msg)) _messages.push(msg);
     if (!skipLog) console.log(`${msg}`);
 };
 

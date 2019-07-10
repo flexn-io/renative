@@ -364,7 +364,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         const { platforms } = c.files.appConfigFile;
         const cmds = [];
         if (!platforms) {
-            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platform: {} }')} object at root`);
+            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
             return;
         }
 
