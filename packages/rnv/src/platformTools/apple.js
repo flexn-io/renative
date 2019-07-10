@@ -326,8 +326,8 @@ const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 c.paths.appConfigPath,
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
         );
-        resolve();
-        return;
+        // resolve();
+        // return;
     }
 
     const check = path.join(appFolder, `${appFolderName}.xcodeproj`);
