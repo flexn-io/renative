@@ -23,6 +23,7 @@
             "entryFile": "index.ios",
             "scheme": "RNVApp",
             "teamID": "",
+            "provisioningStyle": "Automatic",
             "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
@@ -41,6 +42,7 @@
         "tvos": {
             "entryFile": "index.tvos",
             "teamID": "",
+            "provisioningStyle": "Automatic",
             "backgroundColor": "black",
             "scheme": "RNVAppTVOS",
             "buildSchemes": {

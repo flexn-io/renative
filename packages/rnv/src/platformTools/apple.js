@@ -602,11 +602,19 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
 
+        xcodeProj.addTargetAttribute('ProvisioningStyle', getConfigProp(c, platform, 'provisioningStyle', 'Automatic'));
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
         resolve();
     });
 });
+
+VALUES = {
+    provisioningStyle: {
+        allowedValues: ['Automatic', 'Manual'],
+        defaultValue: 'Automatic'
+    }
+};
 
 const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
     logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
@@ -633,6 +641,8 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
+
+        xcodeProj.addTargetAttribute('ProvisioningStyle', getConfigProp(c, platform, 'provisioningStyle', 'Automatic'));
 
         if (c.files.appConfigFile) {
             if (fs.existsSync(c.paths.fontsConfigFolder)) {
