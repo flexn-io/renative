@@ -757,7 +757,7 @@ c.program;
 c.process;
 c.command;
 c.subCommand;
-c.appID;
+c.appId;
 c.platform;
 //FILES
 c.files.projectConfig;

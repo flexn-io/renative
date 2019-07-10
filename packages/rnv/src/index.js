@@ -32,6 +32,7 @@ const commands = {
     plugin: Plugin,
     log: Runner,
     hooks: Hooks,
+    status: Tools,
     fix: Tools,
     clean: Tools,
     tool: Tools,
