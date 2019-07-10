@@ -260,7 +260,7 @@ const getDeviceType = async (device, c) => {
     return device;
 };
 
-const getAvdDetails = (deviceName) => {
+const getAvdDetails = (c, deviceName) => {
     const { ANDROID_SDK_HOME, ANDROID_AVD_HOME } = process.env;
 
     // .avd dir might be in other place than homedir. (https://developer.android.com/studio/command-line/variables)
@@ -272,11 +272,12 @@ const getAvdDetails = (deviceName) => {
 
     const results = {};
 
-    avdConfigPaths.forEach((path) => {
-        if (fs.existsSync(path)) {
-            const filesPath = fs.readdirSync(path, { withFileTypes: true });
+    avdConfigPaths.forEach((cPath) => {
+        if (fs.existsSync(cPath)) {
+            const filesPath = fs.readdirSync(cPath);
 
-            filesPath.forEach((dirent) => {
+            filesPath.forEach((fName) => {
+                const dirent = fs.lstatSync(path.join(cPath, fName));
                 if (!dirent.isDirectory() && dirent.name === `${deviceName}.ini`) {
                     const avdData = fs.readFileSync(`${path}/${dirent.name}`).toString();
                     const lines = avdData.trim().split(/\r?\n/);
@@ -365,21 +366,25 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         logDebug('_parseDevicesResult', { avdLines });
 
         await Promise.all(avdLines.map(async (line) => {
-            const avdDetails = getAvdDetails(line);
-            logDebug('_parseDevicesResult', { avdDetails });
+            let avdDetails;
             try {
+                avdDetails = getAvdDetails(c, line);
+                logDebug('_parseDevicesResult', { avdDetails });
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
                 child_process.execSync(`ps x | grep "avd ${line}" | grep -v grep`);
                 logDebug('_parseDevicesResult - excluding running emulator');
             } catch (e) {
-                devices.push({
-                    udid: 'unknown',
-                    isDevice: false,
-                    isActive: false,
-                    name: line,
-                    ...avdDetails
-                });
+                logError(e);
+                if (avdDetails) {
+                    devices.push({
+                        udid: 'unknown',
+                        isDevice: false,
+                        isActive: false,
+                        name: line,
+                        ...avdDetails
+                    });
+                }
             }
         }));
     }
@@ -549,7 +554,12 @@ const _runGradle = async (c, platform) => {
         await connectToWifiDevice(c, target);
     }
 
-    const devicesAndEmulators = await _listAndroidTargets(c, false, false, c.program.device !== undefined);
+    let devicesAndEmulators;
+    try {
+        devicesAndEmulators = await _listAndroidTargets(c, false, false, c.program.device !== undefined);
+    } catch (e) {
+        return Promise.reject();
+    }
     const activeDevices = devicesAndEmulators.filter(d => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter(d => !d.isActive);
 
@@ -583,8 +593,9 @@ const _runGradle = async (c, platform) => {
                 await _runGradleApp(c, platform, dev);
             }
         } else {
-            const devices = await _checkForActiveEmulator(c, platform);
-            await _runGradleApp(c, platform, devices);
+            // const devices = await _checkForActiveEmulator(c, platform);
+            // await _runGradleApp(c, platform, devices);
+
         }
     };
 
@@ -613,6 +624,7 @@ const _runGradle = async (c, platform) => {
 };
 
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_checkForActiveEmulator:${platform}`);
     let attempts = 1;
     const maxAttempts = 10;
     let running = false;
