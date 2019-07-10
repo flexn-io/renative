@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.24",
+            "version": "0.23.27",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -801,12 +801,10 @@
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [
-                            {
-                                "KitInfo": {},
-                                "KitName": "Crashlytics"
-                            }
-                        ]
+                        "Kits": [{
+                            "KitInfo": {},
+                            "KitName": "Crashlytics"
+                        }]
                     }
                 }
             },
@@ -1155,6 +1153,12 @@
             "version": "4.1.1",
             "webpack": {
                 "modulePaths": true
+            }
+        },
+        "react-native-view-overflow": {
+            "version": "0.0.4",
+            "android": {
+                "package": "com.entria.views.RNViewOverflowPackage"
             }
         }
     }

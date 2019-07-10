@@ -117,6 +117,7 @@ const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
 let _currentJob;
 let _currentProcess;
 
+const highlight = chalk.green;
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -374,7 +375,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 
     if (!hasProjectConfigInCurrentDir) {
         reject(
-            `Looks like this directory is not ReNativeproject. Project config ${chalk.white(
+            `Looks like this directory is not ReNative project. Project config ${chalk.white(
                 c.paths.projectConfigPath,
             )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
         );
@@ -1132,7 +1133,7 @@ const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod
                     selectedOptions = keysAsArray;
                 }
                 if (wrongOptions.length) {
-                    reject(`${chalk.white(wrongOptions.join(','))} ...Really?! 🙈`);
+                    reject(`${highlight(wrongOptions.join(','))} ...Really?! 🙈`);
                 } else {
                     output.selectedOptions = selectedOptions;
                     resolve(selectedOptions);
@@ -1145,7 +1146,7 @@ const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod
                     selectedOption = keysAsArray[v - 1];
                 }
                 if (!valuesAsObject[selectedOption]) {
-                    reject(`${chalk.white(pickedOpt)} ...Really?! 🙈`);
+                    reject(`${highlight(pickedOpt)} ...Really?! 🙈`);
                 } else {
                     output.selectedOption = selectedOption;
                     resolve(selectedOption);
@@ -1181,7 +1182,7 @@ const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod
     return output;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${chalk.white(i + 1)}] ${chalk.white(mapping ? '' : defaultVal)} \n`;
+const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${highlight(i + 1)}] ${highlight(mapping ? '' : defaultVal)} \n`;
 
 let _currentQuestion;
 

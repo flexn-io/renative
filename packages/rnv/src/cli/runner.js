@@ -546,7 +546,7 @@ const _log = c => new Promise((resolve, reject) => {
 const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve, reject) => {
     logTask(`_runAndroid:${platform}`);
 
-    if (c.files.appConfigFile.platforms.android.runScheme === 'Release' || forcePackage) {
+    if (c.files.appConfigFile.platforms[platform].runScheme === 'Release' || forcePackage) {
         packageAndroid(c, platform).then(() => {
             runAndroid(c, platform, target)
                 .then(() => resolve())

@@ -45,6 +45,7 @@ import { getTemplateOptions } from '../templateTools';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
+import { printIntoBox, printBoxStart, printBoxEnd } from '../systemTools/logger';
 
 const CONFIGURE = 'configure';
 const CREATE = 'create';
@@ -54,6 +55,8 @@ const PIPES = {
     APP_CONFIGURE_BEFORE: 'app:configure:before',
     APP_CONFIGURE_AFTER: 'app:configure:after',
 };
+
+const highlight = chalk.green;
 
 // ##########################################
 // PUBLIC API
@@ -145,14 +148,14 @@ const _runCreate = c => new Promise((resolve, reject) => {
     data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
     data.optionTemplates = getTemplateOptions();
 
-    logWelcome();
+    // logWelcome();
 
     askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)", data, 'inputProjectName')
-        .then(() => askQuestion(`What's your project Title? (press ENTER to use default: ${chalk.white(data.defaultAppTitle)})`, data, 'inputAppTitle'))
+        .then(() => askQuestion(`What's your project Title? (press ENTER to use default: ${highlight(data.defaultAppTitle)})`, data, 'inputAppTitle'))
         .then(() => { data.appID = `com.mycompany.${data.inputProjectName.replace(/\s+/g, '').toLowerCase()}`; })
-        .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${chalk.white(data.appID)})`, data, 'inputAppID'))
-        .then(() => askQuestion(`What's your Version? (press ENTER to use default: ${chalk.white(data.defaultVersion)})`, data, 'inputVersion'))
-        .then(() => askQuestion(`What template to use? (press ENTER to use default: ${chalk.white(data.defaultTemplate)})\n${data.optionTemplates.asString})`,
+        .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${highlight(data.appID)})`, data, 'inputAppID'))
+        .then(() => askQuestion(`What's your Version? (press ENTER to use default: ${highlight(data.defaultVersion)})`, data, 'inputVersion'))
+        .then(() => askQuestion(`What template to use? (press ENTER to use default: ${highlight(data.defaultTemplate)})\n${data.optionTemplates.asString})`,
             data, 'inputTemplate'))
         .then(() => data.optionTemplates.pick(data.inputTemplate, data.defaultTemplate))
         .then(() => askQuestion(`What platforms would you like to use? (Add numbers separated by comma or leave blank for all)\n${
@@ -200,38 +203,40 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
     data.version = data.inputVersion || data.defaultVersion;
 
-    data.confirmString = chalk.green(`
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                      🚀  ReNative Project Generator 🚀                          │
-├─────────────────────────────────────────────────────────────────────────────────┤
-| ${_printIntoBox('Project Name (folder):', data.projectName)}
-| ${_printIntoBox('Project Title:', data.appTitle)}
-| ${_printIntoBox('Project Version:', data.version)}
-| ${_printIntoBox('App ID:', data.appID)}
-| ${_printIntoBox('Project Template:', data.optionTemplates.selectedOption)}
-| Project Platforms:                                                              |
-| ${_printArrIntoBox(c, data.optionPlatforms.selectedOptions)}
-| Project Strucutre:                                                              |
-|                                                                                 |
-| ${_printIntoBox(null, data.projectName)}
-|   ├── appConfigs              # Application flavour configuration files/assets  |
-|   │   └── default             # Example application flavour                     |
-|   │       ├── assets          # Platform assets injected to ./platformAssets    |
-|   │       ├── builds          # Platform files injected to ./platformBuilds     |
-|   │       └── config.json     # Application flavour config                      |
-|   ├── platformAssets          # Generated cross-platform assets                 |
-|   ├── platformBuilds          # Generated platform app projects                 |
-|   ├── projectConfigs          # Project configuration files/assets              |
-|   │   ├── fonts               # Folder for all custom fonts                     |
-|   │   ├── permissions.json    # Permissions configuration                       |
-|   │   └── plugins.json        # Multi-platform Plugins configuration            |
-|   ├── src                     # Source files                                    |
-|   ├── index.*.js              # Entry files                                     |
-|   └── rnv-config.json         # ReNative project configuration                  |
-|                                                                                 |
-└─────────────────────────────────────────────────────────────────────────────────┘
-
+    let str = printBoxStart('🚀  ReNative Project Generator');
+    str += printIntoBox('');
+    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`, 1);
+    str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`, 1);
+    str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
+    str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
+    str += printIntoBox(`Project Template: ${highlight(data.optionTemplates.selectedOption)}`, 1);
+    str += printIntoBox('');
+    str += printIntoBox('Project Platforms:');
+    str += _printArrIntoBox(c, data.optionPlatforms.selectedOptions);
+    str += printIntoBox('');
+    str += printIntoBox('Project Structure:');
+    str += printIntoBox('');
+    str += printIntoBox(data.projectName);
+    str += chalk.grey(`│   ├── appConfigs           # Application flavour configuration files/assets  │
+│   │   └── default          # Example application flavour                     │
+│   │       ├── assets       # Platform assets injected to ./platformAssets    │
+│   │       ├── builds       # Platform files injected to ./platformBuilds     │
+│   │       └── config.json  # Application flavour config                      │
+│   ├── platformAssets       # Generated cross-platform assets                 │
+│   ├── platformBuilds       # Generated platform app projects                 │
+│   ├── projectConfigs       # Project configuration files/assets              │
+│   │   ├── fonts            # Folder for all custom fonts                     │
+│   │   ├── permissions.json # Permissions configuration                       │
+│   │   └── plugins.json     # Multi-platform Plugins configuration            │
+│   ├── src                  # Source files                                    │
+│   ├── index.*.js           # Entry files                                     │
+│   └── rnv-config.json      # ReNative project configuration                  │
 `);
+    str += printIntoBox('');
+    str += printBoxEnd();
+    str += '\n';
+
+    data.confirmString = str;
     resolve();
 });
 
@@ -249,16 +254,18 @@ const _printIntoBox = (str1, str2) => {
 
 const _printArrIntoBox = (c, arr) => {
     let output = '';
-    const stringArr = [''];
-    let i = 0;
+    let stringArr = '';
+    const i = 0;
     arr.forEach((v) => {
-        if (stringArr[i].length > 135) {
-            i++;
-            stringArr[i] = '\n| ';
+        if (stringArr.length > 60) {
+            output += printIntoBox(highlight(stringArr), 1);
+            stringArr = '';
         }
-        stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
+        stringArr += `${v}, `;
+        // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
     });
-    output = stringArr.join('');
+    output += printIntoBox(highlight(stringArr), 1);
+
     return output;
 };
 
@@ -357,7 +364,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         const { platforms } = c.files.appConfigFile;
         const cmds = [];
         if (!platforms) {
-            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platform: {} }')} object at root`);
+            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
             return;
         }
 
