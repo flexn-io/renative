@@ -170,7 +170,8 @@ export const printArrIntoBox = (arr, prefix = '') => {
     let stringArr = '';
     let i = 0;
     arr.forEach((v) => {
-        if (stringArr.length > 60) {
+        const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
+        if (stringArr.length > l) {
             if (i === 0 && prefix.length) {
                 output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr)}`, 2);
             } else {
