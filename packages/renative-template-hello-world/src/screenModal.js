@@ -36,6 +36,7 @@ const ScreenMyPage = () => (
             <Icon
                 iconFont="ionicons"
                 iconName="md-close-circle"
+                className="focusable"
                 iconColor={Theme.color3}
                 style={{ width: 40, height: 40, marginLeft: 10 }}
                 onPress={() => {

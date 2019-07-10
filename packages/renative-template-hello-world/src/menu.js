@@ -60,6 +60,7 @@ class Menu extends React.Component {
                 <Button
                     title="Home"
                     iconFont="ionicons"
+                    className="focusable"
                     iconName="md-home"
                     iconColor={Theme.color3}
                     style={styles.button}
@@ -75,6 +76,7 @@ class Menu extends React.Component {
                     title="My Page"
                     iconFont="ionicons"
                     iconName="md-book"
+                    className="focusable"
                     iconColor={Theme.color3}
                     style={styles.button}
                     onPress={() => {
@@ -84,6 +86,7 @@ class Menu extends React.Component {
                 <Button
                     title="My Modal"
                     iconFont="ionicons"
+                    className="focusable"
                     iconName="ios-albums"
                     iconColor={Theme.color3}
                     style={styles.button}

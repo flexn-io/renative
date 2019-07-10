@@ -91,6 +91,7 @@ v
                 <Button
                     style={styleButton}
                     title="Try Me!"
+                    className="focusable"
                     onPress={() => {
                         this.setState({ bgColor: this.state.bgColor === '#666666' ? Theme.color1 : '#666666' });
                     }}
@@ -98,13 +99,14 @@ v
                 <Button
                     style={styleButton}
                     title="Now Try Me!"
+                    className="focusable"
                     onPress={() => {
                         Api.navigation.navigate('MyPage2');
                     }}
                 />
                 <View style={{ marginTop: 20, flexDirection: 'row' }}>
-                    <Icon iconFont="fontAwesome" iconName="github" iconColor={Theme.color3} style={stylesObbj.icon} />
-                    <Icon iconFont="fontAwesome" iconName="twitter" iconColor={Theme.color3} style={stylesObbj.icon} />
+                    <Icon iconFont="fontAwesome" className="focusable" iconName="github" iconColor={Theme.color3} style={stylesObbj.icon} />
+                    <Icon iconFont="fontAwesome" className="focusable" iconName="twitter" iconColor={Theme.color3} style={stylesObbj.icon} />
                 </View>
             </SelectedView>
         );
