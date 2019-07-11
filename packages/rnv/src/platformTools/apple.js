@@ -652,6 +652,25 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             xcodeProj.updateBuildProperty('PROVISIONING_PROFILE_SPECIFIER', `"${provisionProfileSpecifier}"`);
         }
 
+        const codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity');
+        if (codeSignIdentity) {
+            const runScheme = getConfigProp(c, platform, 'runScheme');
+            const bc = xcodeProj.pbxXCBuildConfigurationSection();
+
+            // xcodeProj.updateBuildProperty('CODE_SIGN_IDENTITY', `"${codeSignIdentity}"`, runScheme);
+            // xcodeProj.updateBuildProperty('"CODE_SIGN_IDENTITY[sdk=iphoneos*]"', `"${codeSignIdentity}"`, runScheme);
+            const cs1 = 'CODE_SIGN_IDENTITY';
+            const cs2 = '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"';
+            for (const configName in bc) {
+                const config = bc[configName];
+                if ((runScheme && config.name === runScheme) || (!runScheme)) {
+                    if (config.buildSettings[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
+                    if (config.buildSettings[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
+                }
+            }
+        }
+
+
         const systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
         if (systemCapabilities) {
             const sysCapObj = {};
