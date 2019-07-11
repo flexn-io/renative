@@ -647,9 +647,12 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
+        const provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
+        if (provisionProfileSpecifier) {
+            xcodeProj.updateBuildProperty('PROVISIONING_PROFILE_SPECIFIER', `"${provisionProfileSpecifier}"`);
+        }
+
         const systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
-
-
         if (systemCapabilities) {
             const sysCapObj = {};
             for (const sk in systemCapabilities) {
