@@ -417,6 +417,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const appTemplateFolder = getAppTemplateFolder(c, platform);
     const { backgroundColor } = c.files.appConfigFile.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
+    const runScheme = getConfigProp(c, platform, 'runScheme');
     let bundle;
     if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
@@ -591,6 +592,18 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'), path.join(appFolder, 'exportOptions.plist'), [
         { pattern: '{{TEAM_ID}}', override: tId },
     ]);
+
+    // XCSCHEME
+
+    const debuggerId = runScheme === 'Release' ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
+    const launcherId = runScheme === 'Release' ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
+    const schemePath = 'RNVApp.xcodeproj/xcshareddata/xcschemes/RNVApp.xcscheme';
+    writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), [
+        { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
+        { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
+    ]);
+
+    console.log('SHSKJSHSKJH', runScheme, debuggerId, launcherId);
 
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
     const xcodeProj = xcode.project(projectPath);
