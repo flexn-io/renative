@@ -51,11 +51,12 @@ class Button extends React.Component {
     };
 
     render() {
-        const { iconName, iconFont, iconColor } = this.props;
+        const { iconName, iconFont, iconColor, className } = this.props;
         const hasIcon = iconName && iconFont;
         return (
             <TouchableOpacity
                 tvParallaxProperties={parallax}
+                className={className}
                 style={[styles.button, this.props.style, this.state.currentStyle]}
                 onPress={() => {
                     this.props.onPress();
