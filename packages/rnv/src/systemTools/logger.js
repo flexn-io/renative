@@ -62,7 +62,24 @@ export const logSummary = () => {
     let str = printBoxStart('🚀  SUMMARY');
     // str += printIntoBox('SHlelelele euheu ehhh');
     if (_c) {
-        if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+        if (_c.files.projectPackage) {
+            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
+        }
+        if (_c.files.appConfigFile) {
+            str += printIntoBox(`App Config: ${_highlightColor(_c.files.appConfigFile.id)}`, 1);
+        }
+        if (_c.files.projectConfig) {
+            const defaultProjectConfigs = _c.files.projectConfig.defaultProjectConfigs;
+            if (defaultProjectConfigs.supportedPlatforms) {
+                str += printArrIntoBox(defaultProjectConfigs.supportedPlatforms, 'Supported Platfroms: ');
+            }
+            if (defaultProjectConfigs.template) {
+                str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
+            }
+        }
+
+        // console.log('SJHSKJSH', _c.process);
+
         if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
         if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
     }
@@ -148,11 +165,55 @@ export const printIntoBox = (str2, chalkIntend = 0) => {
     return output;
 };
 
+export const printArrIntoBox = (arr, prefix = '') => {
+    let output = '';
+    let stringArr = '';
+    let i = 0;
+    arr.forEach((v) => {
+        const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
+        if (stringArr.length > l) {
+            if (i === 0 && prefix.length) {
+                output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr)}`, 2);
+            } else {
+                output += printIntoBox(_highlightColor(stringArr), 1);
+            }
+
+            stringArr = '';
+            i++;
+        }
+        stringArr += `${v}, `;
+        // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
+    });
+    if (i === 0 && prefix.length) {
+        output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr.slice(0, -2))}`, 2);
+    } else {
+        output += printIntoBox(_highlightColor(stringArr.slice(0, -2)), 1);
+    }
+
+    return output;
+};
+
 export const printBoxStart = (str) => {
     let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
     output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
     return output;
+};
+
+export const logStatus = () => {
+    // let str = printBoxStart('🚀  STATUS');
+    // // str += printIntoBox('SHlelelele euheu ehhh');
+    // // console.log('SSKJJSKL', _c);
+    // if (_c) {
+    //     if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+    //     if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
+    //     if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
+    // }
+    //
+    // str += printIntoBox('');
+    // str += printBoxEnd();
+
+    // console.log(str);
 };
 
 export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');

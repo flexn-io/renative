@@ -464,6 +464,22 @@ Plugin Spec:
 
 ## Advanced Configuration
 
+#### Get Status
+
+Get basic info about your current project
+
+```bash
+rnv status
+```
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/feat/android-emulator-list/docs/info.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
 #### Reset options
 
 ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
@@ -757,7 +773,7 @@ c.program;
 c.process;
 c.command;
 c.subCommand;
-c.appID;
+c.appId;
 c.platform;
 //FILES
 c.files.projectConfig;

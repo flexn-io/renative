@@ -326,8 +326,8 @@ const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 c.paths.appConfigPath,
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
         );
-        resolve();
-        return;
+        // resolve();
+        // return;
     }
 
     const check = path.join(appFolder, `${appFolderName}.xcodeproj`);
@@ -417,6 +417,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const appTemplateFolder = getAppTemplateFolder(c, platform);
     const { backgroundColor } = c.files.appConfigFile.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
+    const runScheme = getConfigProp(c, platform, 'runScheme');
     let bundle;
     if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
@@ -592,6 +593,18 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         { pattern: '{{TEAM_ID}}', override: tId },
     ]);
 
+    // XCSCHEME
+
+    const debuggerId = runScheme === 'Release' ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
+    const launcherId = runScheme === 'Release' ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
+    const schemePath = 'RNVApp.xcodeproj/xcshareddata/xcschemes/RNVApp.xcscheme';
+    writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), [
+        { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
+        { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
+    ]);
+
+    console.log('SHSKJSHSKJH', runScheme, debuggerId, launcherId);
+
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse(() => {
@@ -602,11 +615,21 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
 
+        const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+        xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
+        xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
         resolve();
     });
 });
+
+VALUES = {
+    provisioningStyle: {
+        allowedValues: ['Automatic', 'Manual'],
+        defaultValue: 'Automatic'
+    }
+};
 
 const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
     logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
@@ -632,7 +655,46 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         } else {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
+        const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+        xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
+        xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
+
+        const provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
+        if (provisionProfileSpecifier) {
+            xcodeProj.updateBuildProperty('PROVISIONING_PROFILE_SPECIFIER', `"${provisionProfileSpecifier}"`);
+        }
+
+        const codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity');
+        if (codeSignIdentity) {
+            const runScheme = getConfigProp(c, platform, 'runScheme');
+            const bc = xcodeProj.pbxXCBuildConfigurationSection();
+
+            // xcodeProj.updateBuildProperty('CODE_SIGN_IDENTITY', `"${codeSignIdentity}"`, runScheme);
+            // xcodeProj.updateBuildProperty('"CODE_SIGN_IDENTITY[sdk=iphoneos*]"', `"${codeSignIdentity}"`, runScheme);
+            const cs1 = 'CODE_SIGN_IDENTITY';
+            const cs2 = '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"';
+            for (const configName in bc) {
+                const config = bc[configName];
+                if ((runScheme && config.name === runScheme) || (!runScheme)) {
+                    if (config.buildSettings[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
+                    if (config.buildSettings[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
+                }
+            }
+        }
+
+
+        const systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
+        if (systemCapabilities) {
+            const sysCapObj = {};
+            for (const sk in systemCapabilities) {
+                const val = systemCapabilities[sk];
+                sysCapObj[sk] = { enabled: val === true ? 1 : 0 };
+            }
+            // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
+            xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
+        }
+
 
         if (c.files.appConfigFile) {
             if (fs.existsSync(c.paths.fontsConfigFolder)) {
@@ -746,10 +808,11 @@ const _parseEntitlements = (c, platform) => {
     const appFolderName = _getAppFolderName(c, platform);
     const entitlementsPath = path.join(appFolder, `${appFolderName}/RNVApp.entitlements`);
     // PLUGIN ENTITLEMENTS
-    const pluginsEntitlementsObj = mergeObjects(
-        readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json')),
-        getConfigProp(c, platform, 'entitlements')
-    );
+    let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
+    if (!pluginsEntitlementsObj) {
+        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json'));
+    }
+
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
 };
 

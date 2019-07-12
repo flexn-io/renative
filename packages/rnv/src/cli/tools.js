@@ -22,6 +22,7 @@ import {
 import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanProjectModules } from '../systemTools/cleaner';
+import { logStatus } from '../systemTools/logger';
 import { fixPackageJson } from '../systemTools/doctor';
 import { executePipe } from '../projectTools/buildHooks';
 import {
@@ -36,6 +37,7 @@ import appRunner, { copyRuntimeAssets } from './app';
 
 const FIX = 'fix';
 const CLEAN = 'clean';
+const STATUS = 'status';
 const FIX_PACKAGE = 'fixPackage';
 
 const PIPES = {
@@ -55,6 +57,8 @@ const run = (c) => {
         return _fix(c);
     case CLEAN:
         return cleanProjectModules(c);
+    case STATUS:
+        return _status(c);
     }
 
     switch (c.subCommand) {
@@ -71,6 +75,11 @@ const run = (c) => {
 
 const _fix = c => new Promise((resolve, reject) => {
     cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
+});
+
+const _status = c => new Promise((resolve, reject) => {
+    logStatus();
+    resolve();
 });
 
 export { PIPES };
