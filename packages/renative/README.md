@@ -475,7 +475,7 @@ rnv status
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/android-emulator-list/docs/info.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/info.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -881,7 +881,7 @@ Folder Structure (Generated Project)
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -997,7 +997,7 @@ rnv log -p ios -f com.myapp
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android.gif?raw=true" />
     </th>
   </tr>
 </table>
