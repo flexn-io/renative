@@ -74,7 +74,7 @@
   </tr>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
@@ -104,7 +104,7 @@
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android1.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
