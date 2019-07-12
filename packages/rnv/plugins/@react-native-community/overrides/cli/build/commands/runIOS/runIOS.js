@@ -100,7 +100,7 @@ function runIOS(_, ctx, args) {
     );
 
     if (args.device) {
-        const selectedDevice = matchingDevice(devices, args.device);
+        const selectedDevice = matchingDevice(devices, args.udid || args.device);
 
         if (selectedDevice) {
             return runOnDevice(selectedDevice, scheme, xcodeProject, args.configuration, args.packager, args.verbose, args.port);
@@ -374,7 +374,7 @@ function matchingDevice(devices, deviceName) {
     }
 
     for (let i = devices.length - 1; i >= 0; i--) {
-        if (devices[i].name === deviceName || formattedDeviceName(devices[i]) === deviceName) {
+        if (devices[i].udid === deviceName || devices[i].name === deviceName || formattedDeviceName(devices[i]) === deviceName) {
             return devices[i];
         }
     }

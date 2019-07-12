@@ -142,6 +142,60 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 ];
             }
         } else if (devicesArr.length > 1) {
+            const run = (selectedDevice) => {
+                logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
+                if (selectedDevice.udid) {
+                    p = [
+                        'run-ios',
+                        '--project-path',
+                        appPath,
+                        '--device',
+                        '--udid',
+                        selectedDevice.udid,
+                        '--scheme',
+                        scheme,
+                        '--configuration',
+                        runScheme,
+                    ];
+                } else {
+                    p = [
+                        'run-ios',
+                        '--project-path',
+                        appPath,
+                        '--device',
+                        selectedDevice.name,
+                        '--scheme',
+                        scheme,
+                        '--configuration',
+                        runScheme,
+                    ];
+                }
+
+                logDebug(`RN params: ${p}`);
+
+                if (bundleAssets) {
+                    logDebug('Assets will be bundled');
+                    packageBundleForXcode(c, platform, bundleIsDev)
+                        .then(v => executeAsync('react-native', p))
+                        .then(() => resolve())
+                        .catch(e => reject(e));
+                } else {
+                    executeAsync('react-native', p)
+                        .then(() => resolve())
+                        .catch(e => reject(e));
+                }
+            };
+
+            if (c.program.target) {
+                const selectedDevice = devicesArr.find(d => d.name === c.program.target);
+                if (selectedDevice) {
+                    run(selectedDevice);
+                } else {
+                    reject(`Could not find device ${c.program.target}`);
+                }
+                return;
+            }
+
             let devicesString = '\n';
             devicesArr.forEach((v, i) => {
                 devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
@@ -156,43 +210,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
             readlineInterface.question(getQuestion(`${devicesString}\nType number of the device you want to launch`), (v) => {
                 const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                 if (selectedDevice) {
-                    if (selectedDevice.udid) {
-                        p = [
-                            'run-ios',
-                            '--project-path',
-                            appPath,
-                            '--device',
-                            '--udid',
-                            selectedDevice.udid,
-                            '--scheme',
-                            scheme,
-                            '--configuration',
-                            runScheme,
-                        ];
-                    } else {
-                        p = [
-                            'run-ios',
-                            '--project-path',
-                            appPath,
-                            '--device',
-                            selectedDevice.name,
-                            '--scheme',
-                            scheme,
-                            '--configuration',
-                            runScheme,
-                        ];
-                    }
-
-                    if (bundleAssets) {
-                        packageBundleForXcode(c, platform, bundleIsDev)
-                            .then(v => executeAsync('react-native', p))
-                            .then(() => resolve())
-                            .catch(e => reject(e));
-                    } else {
-                        executeAsync('react-native', p)
-                            .then(() => resolve())
-                            .catch(e => reject(e));
-                    }
+                    run(selectedDevice);
                 } else {
                     reject(`Wrong choice ${v}! Ingoring`);
                 }
