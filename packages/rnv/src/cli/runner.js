@@ -227,16 +227,18 @@ const _runAppWithPlatform = async (c) => {
                 sdkInstall = response.sdkInstall;
             }
 
+            const appendExeIfWindows = (process.platform === 'win32' ? 'emulator/emulator.exe' : '');
+
             if (c.program.ci || sdkInstall) {
                 const setupInstance = PlatformSetup(c);
                 const newPath = await setupInstance.installAndroidSdk();
                 // @todo find a more elegant way to update this
                 c.files.globalConfig.sdks.ANDROID_SDK = newPath;
                 const { sdks: { ANDROID_SDK } } = c.files.globalConfig;
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
-                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager');
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager');
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator', appendExeIfWindows);
+                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb', appendExeIfWindows);
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager', appendExeIfWindows);
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager', appendExeIfWindows);
             }
         }
 
