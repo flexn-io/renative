@@ -41,8 +41,8 @@ const commands = {
 };
 
 const run = (cmd, subCmd, program, process) => {
-    checkWelcome(cmd, subCmd)
-        .then(() => initializeBuilder(cmd, subCmd, process, program))
+    initializeBuilder(cmd, subCmd, process, program)
+        .then(c => checkWelcome(c))
         .then(c => startBuilder(c))
         .then((v) => {
             if (commands[cmd]) {
@@ -54,23 +54,23 @@ const run = (cmd, subCmd, program, process) => {
                     .catch(e => logError(e, true));
             } else if (program.help) {
                 // program.help();
-                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. Here is some help:`);
+                logError(`Command ${chalk.white(cmd)} is not supported by ReNative CLI. Here is some help:`);
                 logHelp();
                 logComplete(true);
             } else {
-                logError(`Command ${chalk.white(cmd)} is not supported by ReNativeCLI. run ${chalk.white('rnv')} for help`, true);
+                logError(`Command ${chalk.white(cmd)} is not supported by ReNative CLI. run ${chalk.white('rnv')} for help`, true);
             }
         })
         .catch(e => logError(e, true));
 };
 
-const checkWelcome = (cmd, subCmd) => new Promise((resolve, reject) => {
-    if (!cmd && !subCmd) {
+const checkWelcome = c => new Promise((resolve, reject) => {
+    if (!c.command && !c.subCommand) {
         logWelcome();
 
         logHelp();
     } else {
-        resolve();
+        resolve(c);
     }
 });
 
