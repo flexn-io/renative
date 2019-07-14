@@ -30,18 +30,22 @@ export const logWelcome = () => {
 };
 
 let _messages;
-let _currentJob;
+let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
 let _c;
+let _isMono = false;
 
-export const configureLogger = (c, process, job, subCommand, isInfoEnabled) => {
+export const configureLogger = (c, process, command, subCommand, isInfoEnabled) => {
     _messages = [];
     _c = c;
-    _currentJob = job;
     _currentProcess = process;
+    _currentCommand = command;
     _currentSubCommand = subCommand;
     _isInfoEnabled = isInfoEnabled;
+    _isMono = c.program.mono;
+
+    console.log('AKJGAHGJAHGAJHGA', _isMono);
 };
 
 export const logAndSave = (msg, skipLog) => {
@@ -93,19 +97,19 @@ export const logSummary = () => {
 };
 
 export const setCurrentJob = (job) => {
-    _currentJob = job;
+    _currentCommand = job;
 };
 
 export const logTask = (task) => {
-    console.log(chalk.green(`${RNV} ${_currentJob} - ${task} - Starting!`));
+    console.log(chalk.green(`${RNV} ${_currentCommand} - ${task} - Starting!`));
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} ${_currentJob} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`⚠️  ${RNV} ${_currentCommand} - WARNING: ${msg}`));
 };
 
 export const logInfo = (msg) => {
-    console.log(chalk.magenta(`ℹ️  ${RNV} ${_currentJob} - NOTE: ${msg}`));
+    console.log(chalk.magenta(`ℹ️  ${RNV} ${_currentCommand} - NOTE: ${msg}`));
 };
 
 export const logDebug = (...args) => {
@@ -113,7 +117,7 @@ export const logDebug = (...args) => {
 };
 
 export const logComplete = (isEnd = false) => {
-    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob || ''} - Done! 🚀`));
+    console.log(chalk.white.bold(`\n ${RNV} ${_currentCommand || ''} - Done! 🚀`));
     if (isEnd) logEnd(0);
 };
 
@@ -123,9 +127,9 @@ export const logSuccess = (msg) => {
 
 export const logError = (e, isEnd = false) => {
     if (e && e.message) {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
+        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentCommand} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e}`), isEnd);
+        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentCommand} - ERRROR! ${e}`), isEnd);
     }
     if (isEnd) logEnd(1);
 };
@@ -138,7 +142,7 @@ export const logEnd = (code) => {
 export const logInitialize = () => {
     logWelcome();
     // console.log(
-    //     chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentJob} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
+    //     chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentCommand} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
     // );
 };
 

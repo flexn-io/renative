@@ -277,7 +277,10 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     configureLogger(c, _currentProcess, _currentJob, subCmd, program.info === true);
     logInitialize();
 
+    resolve(c);
+});
 
+const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
@@ -287,7 +290,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
-    c.platform = program.platform;
+    c.platform = c.program.platform;
     c.paths.projectRootFolder = base;
     c.paths.buildHooksFolder = path.join(c.paths.projectRootFolder, 'buildHooks/src');
     c.paths.buildHooksDistFolder = path.join(c.paths.projectRootFolder, 'buildHooks/dist');
@@ -1259,6 +1262,7 @@ export {
     logComplete,
     logError,
     initializeBuilder,
+    startBuilder,
     logDebug,
     logInfo,
     logErrorPlatform,
@@ -1334,6 +1338,7 @@ export default {
     logComplete,
     logError,
     initializeBuilder,
+    startBuilder,
     logDebug,
     logInfo,
     logErrorPlatform,
