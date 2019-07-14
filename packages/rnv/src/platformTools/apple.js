@@ -603,8 +603,6 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
     ]);
 
-    console.log('SHSKJSHSKJH', runScheme, debuggerId, launcherId);
-
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse(() => {

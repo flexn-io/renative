@@ -852,7 +852,18 @@ c.paths.permissionsConfigPath;
 c.paths.fontsConfigFolder;
 ```
 
+#### Monochrome logs
 
+If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
+This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
+
+Examples:
+
+```bash
+rnv status --mono
+rnv start --mono
+...
+```
 
 ---
 

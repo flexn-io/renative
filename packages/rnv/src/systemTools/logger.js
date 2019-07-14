@@ -1,10 +1,28 @@
-import chalk from 'chalk';
+import _chalk from 'chalk';
+
+const _chalkCols = {
+    white: v => v,
+    green: v => v,
+    red: v => v,
+    yellow: v => v,
+    default: v => v,
+    gray: v => v,
+    blue: v => v,
+    magenta: v => v,
+};
+const _chalkMono = {
+    ..._chalkCols,
+    bold: _chalkCols
+};
+
+let chalk = _chalk;
 
 
 const RNV_START = '🚀 ReNative';
-const RNV = 'ReNative';
-const LINE = chalk.white.bold('----------------------------------------------------------');
+let RNV = 'ReNative';
+const LINE = chalk.bold.white('----------------------------------------------------------');
 const LINE2 = chalk.gray('----------------------------------------------------------');
+
 
 export const logWelcome = () => {
     let str = _defaultColor(`
@@ -22,6 +40,7 @@ export const logWelcome = () => {
     if (_c?.files?.rnvPackage?.version) str += printIntoBox(`      Version: ${chalk.green(_c.files.rnvPackage.version)}`, 1);
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
+    str += printIntoBox(`      ${_getCurrentCommand()}`);
     str += printIntoBox('');
     str += printBoxEnd();
     str += '\n';
@@ -35,6 +54,8 @@ let _currentProcess;
 let _isInfoEnabled = false;
 let _c;
 let _isMono = false;
+let _defaultColor;
+let _highlightColor;
 
 export const configureLogger = (c, process, command, subCommand, isInfoEnabled) => {
     _messages = [];
@@ -44,13 +65,26 @@ export const configureLogger = (c, process, command, subCommand, isInfoEnabled) 
     _currentSubCommand = subCommand;
     _isInfoEnabled = isInfoEnabled;
     _isMono = c.program.mono;
+    if (_isMono) {
+        chalk = _chalkMono;
+    }
+    _updateDefaultColors();
+    RNV = _getCurrentCommand();
+};
 
-    console.log('AKJGAHGJAHGAJHGA', _isMono);
+const _updateDefaultColors = () => {
+    _defaultColor = chalk.gray;
+    _highlightColor = chalk.green;
 };
 
 export const logAndSave = (msg, skipLog) => {
     if (_messages && !_messages.includes(msg)) _messages.push(msg);
     if (!skipLog) console.log(`${msg}`);
+};
+
+const _getCurrentCommand = () => {
+    const argArr = _c.process.argv.slice(2);
+    return `$ rnv ${argArr.join(' ')}`;
 };
 
 export const logSummary = () => {
@@ -63,7 +97,7 @@ export const logSummary = () => {
     }
 
 
-    let str = printBoxStart('🚀  SUMMARY');
+    let str = printBoxStart('🚀  SUMMARY', _getCurrentCommand());
     // str += printIntoBox('SHlelelele euheu ehhh');
     if (_c) {
         if (_c.files.projectPackage) {
@@ -101,15 +135,15 @@ export const setCurrentJob = (job) => {
 };
 
 export const logTask = (task) => {
-    console.log(chalk.green(`${RNV} ${_currentCommand} - ${task} - Starting!`));
+    console.log(chalk.green(`${RNV} - ${task} - Starting!`));
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} ${_currentCommand} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
 };
 
 export const logInfo = (msg) => {
-    console.log(chalk.magenta(`ℹ️  ${RNV} ${_currentCommand} - NOTE: ${msg}`));
+    console.log(chalk.magenta(`ℹ️  ${RNV} - NOTE: ${msg}`));
 };
 
 export const logDebug = (...args) => {
@@ -117,7 +151,7 @@ export const logDebug = (...args) => {
 };
 
 export const logComplete = (isEnd = false) => {
-    console.log(chalk.white.bold(`\n ${RNV} ${_currentCommand || ''} - Done! 🚀`));
+    console.log(chalk.bold.white(`\n ${RNV} - Done! 🚀`));
     if (isEnd) logEnd(0);
 };
 
@@ -127,9 +161,9 @@ export const logSuccess = (msg) => {
 
 export const logError = (e, isEnd = false) => {
     if (e && e.message) {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentCommand} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
+        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentCommand} - ERRROR! ${e}`), isEnd);
+        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
     }
     if (isEnd) logEnd(1);
 };
@@ -147,18 +181,21 @@ export const logInitialize = () => {
 };
 
 export const logAppInfo = c => new Promise((resolve, reject) => {
-    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.white.bold(c.files.appConfigFile.id)}\n${LINE2}`));
+    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.files.appConfigFile.id)}\n${LINE2}`));
 
     resolve();
 });
 
-const _defaultColor = chalk.gray;
-const _highlightColor = chalk.green;
-
 export const printIntoBox = (str2, chalkIntend = 0) => {
     let output = _defaultColor('│  ');
     let endLine = '';
-    const intend = str2 === '' ? 1 : 2;
+    let intend;
+    if (_isMono) {
+        intend = 0;
+        chalkIntend = 0;
+    } else {
+        intend = str2 === '' ? 1 : 2;
+    }
     for (let i = 0; i < chalkIntend + intend; i++) {
         endLine += '          ';
     }
@@ -197,9 +234,10 @@ export const printArrIntoBox = (arr, prefix = '') => {
     return output;
 };
 
-export const printBoxStart = (str) => {
+export const printBoxStart = (str, str2) => {
     let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
+    output += printIntoBox(str2);
     output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
     return output;
 };
