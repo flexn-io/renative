@@ -217,7 +217,7 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
 
 const _getPath = (c, p, key = 'undefined', original) => {
     if (!p) {
-        logWarning(`Path ${chalk.white(key)} is not defined`);
+        logInfo(`Path ${chalk.white(key)} is not defined. using default: ${chalk.white(original)}`);
         return original;
     }
     if (p.startsWith('./')) {
@@ -303,6 +303,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
     c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
     c.paths.projectConfigPath = path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME);
     c.paths.projectConfigLocalPath = path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_LOCAL_NAME);
+    c.paths.appConfigsFolder = path.join(c.paths.projectRootFolder, 'appConfigs');
     c.paths.projectPackagePath = path.join(c.paths.projectRootFolder, 'package.json');
     c.paths.rnCliConfigPath = path.join(c.paths.projectRootFolder, RN_CLI_CONFIG_NAME);
     c.paths.babelConfigPath = path.join(c.paths.projectRootFolder, RN_BABEL_CONFIG_NAME);

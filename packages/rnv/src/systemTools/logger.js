@@ -41,6 +41,7 @@ export const logWelcome = () => {
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      ${_getCurrentCommand()}`);
+    if (_c?.timeStart) str += printIntoBox(`      Start Time: ${_c.timeStart.toLocaleString()}`);
     str += printIntoBox('');
     str += printBoxEnd();
     str += '\n';
@@ -60,6 +61,7 @@ let _highlightColor;
 export const configureLogger = (c, process, command, subCommand, isInfoEnabled) => {
     _messages = [];
     _c = c;
+    _c.timeStart = new Date();
     _currentProcess = process;
     _currentCommand = command;
     _currentSubCommand = subCommand;
@@ -97,7 +99,13 @@ export const logSummary = () => {
     }
 
 
-    let str = printBoxStart('🚀  SUMMARY', _getCurrentCommand());
+    let timeString = '';
+    if (_c) {
+        _c.timeEnd = new Date();
+        timeString = `| ${_c.timeEnd.toLocaleString()}`;
+    }
+
+    let str = printBoxStart(`🚀  SUMMARY ${timeString}`, _getCurrentCommand());
     // str += printIntoBox('SHlelelele euheu ehhh');
     if (_c) {
         if (_c.files.projectPackage) {
@@ -120,6 +128,9 @@ export const logSummary = () => {
 
         if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
         if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
+        if (_c.timeEnd) {
+            str += printIntoBox(`Executed Time: ${chalk.yellow(_msToTime(_c.timeEnd - _c.timeStart))}`, 1);
+        }
     }
 
     str += printIntoBox('');
@@ -128,6 +139,17 @@ export const logSummary = () => {
     str += printBoxEnd();
 
     console.log(str);
+};
+
+const _msToTime = (s) => {
+    const ms = s % 1000;
+    s = (s - ms) / 1000;
+    const secs = s % 60;
+    s = (s - secs) / 60;
+    const mins = s % 60;
+    const hrs = (s - mins) / 60;
+
+    return `${hrs}h:${mins}m:${secs}s:${ms}ms`;
 };
 
 export const setCurrentJob = (job) => {

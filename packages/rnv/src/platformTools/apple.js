@@ -271,6 +271,8 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logDebug('running', p);
 
+    logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
+
     if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync('xcodebuild', p))
@@ -310,6 +312,8 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
     if (ignoreLogs) p.push('-quiet');
     logDebug('running', p);
+
+    logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
 
     executeAsync('xcodebuild', p)
         .then(() => {

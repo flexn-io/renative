@@ -454,7 +454,7 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
             //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.projectRootFolder, 'node_modules', dir));
             // });
         } else {
-            logWarning(`Your plugin configuration has no override path ${chalk.white(source)}. skipping`);
+            logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping override action`);
         }
     });
 
