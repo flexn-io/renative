@@ -1,5 +1,6 @@
 platform :ios, '10.0'
 use_frameworks!
+{{PLUGIN_WARNINGS}}
 
 target 'RNVApp' do
   pod 'React', :path => '../../node_modules/react-native', :subspecs => [

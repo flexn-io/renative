@@ -247,8 +247,9 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
-    const quiet = getConfigProp(c, platform, 'quiet');
+    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
+    const exportPathArchive = `${exportPath}/${scheme}.xcarchive`;
     const p = [
         '-workspace',
         `${appPath}/${appFolderName}.xcworkspace`,
@@ -260,11 +261,11 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         runScheme,
         'archive',
         '-archivePath',
-        `${exportPath}/${scheme}.xcarchive`,
+        exportPathArchive
     ];
 
     if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
-    if (quiet) p.push('-quiet');
+    if (ignoreLogs) p.push('-quiet');
     // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
 
@@ -273,11 +274,17 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync('xcodebuild', p))
-            .then(() => resolve())
+            .then(() => {
+                logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
+                resolve();
+            })
             .catch(e => reject(e));
     } else {
         executeAsync('xcodebuild', p)
-            .then(() => resolve())
+            .then(() => {
+                logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
+                resolve();
+            })
             .catch(e => reject(e));
     }
 });
@@ -290,7 +297,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
-    const quiet = getConfigProp(c, platform, 'quiet');
+    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const p = [
         '-exportArchive',
         '-archivePath',
@@ -301,7 +308,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         `${exportPath}`,
     ];
     if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
-    if (quiet) p.push('-quiet');
+    if (ignoreLogs) p.push('-quiet');
     logDebug('running', p);
 
     executeAsync('xcodebuild', p)
@@ -814,9 +821,14 @@ const _parsePodFile = (c, platform) => {
         }
     }
 
+    // WARNINGS
+    const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
+    const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
+
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs }
+        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
+        { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings }
     ]);
 };
 
