@@ -286,7 +286,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     executeAsync('xcodebuild', p)
         .then(() => {
-            logSuccess(`Your IPA is located in ${chalk.white(exportPath)}.`);
+            logSuccess(`Your IPA is located in ${chalk.white(exportPath)} .`);
             resolve();
         })
         .catch(e => reject(e));

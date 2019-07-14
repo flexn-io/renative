@@ -156,7 +156,7 @@ export const logComplete = (isEnd = false) => {
 };
 
 export const logSuccess = (msg) => {
-    console.log(`✅ ${chalk.magenta(msg)}`);
+    logAndSave(`✅ ${chalk.magenta(msg)}`);
 };
 
 export const logError = (e, isEnd = false) => {
