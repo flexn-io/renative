@@ -229,6 +229,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`archiveXcodeProject:${platform}`);
 
     const appFolderName = _getAppFolderName(c, platform);
+    const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
         sdk = platform === IOS ? 'iphoneos' : 'tvos';
@@ -246,6 +247,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
+    const quiet = getConfigProp(c, platform, 'quiet');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const p = [
         '-workspace',
@@ -255,15 +257,15 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         '-sdk',
         ...sdkArr,
         '-configuration',
-        'Debbug',
+        runScheme,
         'archive',
         '-archivePath',
         `${exportPath}/${scheme}.xcarchive`,
     ];
 
     if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
-
-    if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
+    if (quiet) p.push('-quiet');
+    // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
 
     logDebug('running', p);
@@ -288,6 +290,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
+    const quiet = getConfigProp(c, platform, 'quiet');
     const p = [
         '-exportArchive',
         '-archivePath',
@@ -298,6 +301,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         `${exportPath}`,
     ];
     if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
+    if (quiet) p.push('-quiet');
     logDebug('running', p);
 
     executeAsync('xcodebuild', p)
