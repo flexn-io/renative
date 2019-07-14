@@ -258,8 +258,7 @@ function buildProject(xcodeProject, udid, scheme, configuration, launchPackager 
             '-destination',
             `id=${udid}`,
             '-derivedDataPath',
-            `build/${scheme}`,
-            '-allowProvisioningUpdates',
+            `build/${scheme}`
         ];
 
         _logger.default.info(`Building using "xcodebuild ${xcodebuildArgs.join(' ')}"`);

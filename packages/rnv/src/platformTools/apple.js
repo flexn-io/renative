@@ -229,12 +229,23 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`archiveXcodeProject:${platform}`);
 
     const appFolderName = _getAppFolderName(c, platform);
-    const sdk = platform === IOS ? 'iphoneos' : 'tvos';
+    let sdk = getConfigProp(c, platform, 'sdk');
+    if (!sdk) {
+        sdk = platform === IOS ? 'iphoneos' : 'tvos';
+    }
+    // else if (sdk === 'iphonesimulator') {
+    //     sdk += ' ONLY_ACTIVE_ARCH=NO';
+    // }
+    const sdkArr = [sdk];
+    // if (sdk === 'iphonesimulator') {
+    //     sdkArr.push('ONLY_ACTIVE_ARCH=NO');
+    // }
 
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const p = [
         '-workspace',
@@ -242,14 +253,18 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         '-scheme',
         scheme,
         '-sdk',
-        sdk,
+        ...sdkArr,
         '-configuration',
-        'Release',
+        'Debbug',
         'archive',
         '-archivePath',
         `${exportPath}/${scheme}.xcarchive`,
-        '-allowProvisioningUpdates',
     ];
+
+    if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
+
+    if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
+
 
     logDebug('running', p);
 
@@ -272,6 +287,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
     const p = [
         '-exportArchive',
         '-archivePath',
@@ -280,8 +296,8 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         `${appPath}/exportOptions.plist`,
         '-exportPath',
         `${exportPath}`,
-        '-allowProvisioningUpdates',
     ];
+    if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
     logDebug('running', p);
 
     executeAsync('xcodebuild', p)
