@@ -72,7 +72,7 @@
         "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && npm run watch",
         "test": "rnv template apply --template renative-template-hello-world && npm run test:rnv && npm run test:run",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
-        "test:run": "rnv run -p androidwear -t Android_Wear_Round_API_28 && concurrently \"rnv start\" \"rnv run -p tizen -t T-samsung-5.0-x86\" \"rnv run -p ios\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p macos\" \"rnv run -p web\" \"rnv run -p tvos\"",
+        "test:run": "rnv run -p androidwear -t Android_Wear_Round_API_28 && concurrently \"rnv start\" \"rnv run -p tizen -t T-samsung-5.0-x86\" \"rnv run -p ios\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p androidtv -t Android_TV_1080p_API_22\" \"rnv run -p macos\" \"rnv run -p web\" \"rnv run -p tvos\"",
         "watch": "cd ./packages/rnv && npm run watch"
     },
     "dependencies": {
