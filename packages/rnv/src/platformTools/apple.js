@@ -382,6 +382,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
 });
 
 const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
+    logTask(`_injectPlugin:${c.platform}:${key}`);
     if (plugin.appDelegateImports instanceof Array) {
         plugin.appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
@@ -597,7 +598,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
 
     const debuggerId = runScheme === 'Release' ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
     const launcherId = runScheme === 'Release' ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
-    const schemePath = 'RNVApp.xcodeproj/xcshareddata/xcschemes/RNVApp.xcscheme';
+    const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
     writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), [
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
         { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
@@ -804,7 +805,7 @@ const _parseEntitlements = (c, platform) => {
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = _getAppFolderName(c, platform);
-    const entitlementsPath = path.join(appFolder, `${appFolderName}/RNVApp.entitlements`);
+    const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
     // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
     if (!pluginsEntitlementsObj) {
