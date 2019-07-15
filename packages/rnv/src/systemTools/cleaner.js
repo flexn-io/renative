@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 import { removeDirs } from './fileutils';
 import { logTask, askQuestion, finishQuestion } from '../common';
 
@@ -9,13 +10,13 @@ const cleanProjectModules = c => new Promise((resolve, reject) => {
         c.paths.projectNodeModulesFolder,
         path.join(c.paths.projectRootFolder, 'package-lock.json')
     ];
-    let msg = './node_modules\n./package-lock.json\n';
+    let msg = chalk.red('./node_modules\n./package-lock.json\n');
     const packagesFolder = path.join(c.paths.projectRootFolder, 'packages');
     if (fs.existsSync(packagesFolder)) {
         fs.readdirSync(packagesFolder).forEach((dir) => {
             pathsToRemove.push(path.join(packagesFolder, dir, 'node_modules'));
             pathsToRemove.push(path.join(packagesFolder, dir, 'package-lock.json'));
-            msg += `./packages/${dir}/node_modules\n./packages/${dir}/package-lock.json\n`;
+            msg += chalk.red(`./packages/${dir}/node_modules\n./packages/${dir}/package-lock.json\n`);
         });
     }
 

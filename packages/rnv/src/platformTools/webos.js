@@ -242,7 +242,7 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
         .then(() => buildWeb(c, platform))
         .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask))
         .then(() => {
-            logSuccess(`Your IPK package is located in ${chalk.white(tOut)}.`);
+            logSuccess(`Your IPK package is located in ${chalk.white(tOut)} .`);
             return resolve();
         })
         .catch(reject);

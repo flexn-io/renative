@@ -263,7 +263,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.command = cmd;
     c.subCommand = subCmd;
     c.platformDefaults = PLATFORMS;
-    c.appID = program.appConfigID;
+    c.appId = program.appConfigID;
     c.paths.rnvRootFolder = path.join(__dirname, '..');
     c.paths.rnvHomeFolder = path.join(__dirname, '..');
     c.paths.rnvPlatformTemplatesFolder = path.join(c.paths.rnvHomeFolder, 'platformTemplates');
@@ -277,7 +277,10 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     configureLogger(c, _currentProcess, _currentJob, subCmd, program.info === true);
     logInitialize();
 
+    resolve(c);
+});
 
+const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
     c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
@@ -287,7 +290,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
-    c.platform = program.platform;
+    c.platform = c.program.platform;
     c.paths.projectRootFolder = base;
     c.paths.buildHooksFolder = path.join(c.paths.projectRootFolder, 'buildHooks/src');
     c.paths.buildHooksDistFolder = path.join(c.paths.projectRootFolder, 'buildHooks/dist');
@@ -388,8 +391,10 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         return;
     }
 
-    if (c.command === 'fix' || c.command === 'clean' || c.command === 'tool') {
-        resolve(c);
+    if (c.command === 'fix' || c.command === 'clean' || c.command === 'tool' || c.command === 'status') {
+        gatherInfo(c)
+            .then(() => resolve(c))
+            .catch(e => reject(c));
         return;
     }
 
@@ -406,6 +411,33 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
         .then(() => logAppInfo(c))
         .then(() => resolve(c))
         .catch(e => reject(e));
+});
+
+const gatherInfo = c => new Promise((resolve, reject) => {
+    logTask('gatherInfo');
+    try {
+        if (fs.existsSync(c.paths.projectPackagePath)) {
+            c.files.projectPackage = JSON.parse(fs.readFileSync(c.paths.projectPackagePath).toString());
+        } else {
+            console.log('Missing appConfigPath', c.paths.projectPackagePath);
+        }
+        if (fs.existsSync(c.paths.runtimeConfigPath)) {
+            c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.runtimeConfigPath).toString());
+            c.appId = c.files.appConfigFile.id;
+        } else {
+            console.log('Missing runtimeConfigPath', c.paths.runtimeConfigPath);
+        }
+        if (fs.existsSync(c.paths.projectConfigPath)) {
+            c.files.projectConfig = JSON.parse(fs.readFileSync(c.paths.projectConfigPath).toString());
+        } else {
+            console.log('Missing projectConfigPath', c.paths.projectConfigPath);
+        }
+        // console.log('SJKHHJS', c.files);
+    } catch (e) {
+        reject(e);
+    }
+
+    resolve();
 });
 
 const configureProject = c => new Promise((resolve, reject) => {
@@ -749,9 +781,9 @@ const configurePlugins = c => new Promise((resolve, reject) => {
 const configureApp = c => new Promise((resolve, reject) => {
     logTask('configureApp');
 
-    if (c.appID) {
+    if (c.appId) {
         // App ID specified
-        _getConfig(c, c.appID)
+        _getConfig(c, c.appId)
             .then(() => {
                 configureEntryPoints(c);
                 resolve(c);
@@ -1230,6 +1262,7 @@ export {
     logComplete,
     logError,
     initializeBuilder,
+    startBuilder,
     logDebug,
     logInfo,
     logErrorPlatform,
@@ -1305,6 +1338,7 @@ export default {
     logComplete,
     logError,
     initializeBuilder,
+    startBuilder,
     logDebug,
     logInfo,
     logErrorPlatform,

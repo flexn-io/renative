@@ -32,7 +32,8 @@ import {
     askQuestion,
     finishQuestion,
     resolveNodeModulePath,
-    getConfigProp
+    getConfigProp,
+    logSuccess
 } from '../common';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { getMergedPlugin } from '../pluginTools';
@@ -102,9 +103,11 @@ module.exports = {
     fs.writeFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
-const buildWeb = (c, platform) => {
+const buildWeb = (c, platform) => new Promise((resolve, reject) => {
     const { debug, debugIp } = c.program;
     logTask(`buildWeb:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
 
     let debugVariables = '';
 
@@ -117,8 +120,13 @@ const buildWeb = (c, platform) => {
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    return execShellAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`);
-};
+    execShellAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`)
+        .then(() => {
+            logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'public'))} .`);
+            resolve();
+        })
+        .catch(e => reject(e));
+});
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureWebOSProject:${platform}`);

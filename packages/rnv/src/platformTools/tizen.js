@@ -313,7 +313,7 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
         .then(() => {
-            logSuccess(`Your GWT package is located in ${chalk.white(tOut)}.`);
+            logSuccess(`Your GWT package is located in ${chalk.white(tOut)} .`);
             return resolve();
         })
         .catch(e => reject(e));

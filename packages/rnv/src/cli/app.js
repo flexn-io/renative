@@ -45,7 +45,7 @@ import { getTemplateOptions } from '../templateTools';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
-import { printIntoBox, printBoxStart, printBoxEnd } from '../systemTools/logger';
+import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 
 const CONFIGURE = 'configure';
 const CREATE = 'create';
@@ -212,7 +212,7 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     str += printIntoBox(`Project Template: ${highlight(data.optionTemplates.selectedOption)}`, 1);
     str += printIntoBox('');
     str += printIntoBox('Project Platforms:');
-    str += _printArrIntoBox(c, data.optionPlatforms.selectedOptions);
+    str += printArrIntoBox(data.optionPlatforms.selectedOptions);
     str += printIntoBox('');
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
@@ -240,35 +240,6 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _printIntoBox = (str1, str2) => {
-    let output = '';
-    const endLine = '                                                                                          |';
-    if (str1) {
-        output += `${str1} `;
-    }
-    output += chalk.white(str2);
-    const l = output.length - endLine.length;
-    output += endLine.slice(l);
-    return output;
-};
-
-const _printArrIntoBox = (c, arr) => {
-    let output = '';
-    let stringArr = '';
-    const i = 0;
-    arr.forEach((v) => {
-        if (stringArr.length > 60) {
-            output += printIntoBox(highlight(stringArr), 1);
-            stringArr = '';
-        }
-        stringArr += `${v}, `;
-        // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
-    });
-    output += printIntoBox(highlight(stringArr), 1);
-
-    return output;
-};
-
 const checkAndCreateProjectPackage = (c, data) => {
     logTask(`checkAndCreateProjectPackage:${data.packageName}`);
     const {
@@ -276,7 +247,7 @@ const checkAndCreateProjectPackage = (c, data) => {
     } = data;
 
     if (!fs.existsSync(c.paths.projectPackagePath)) {
-        logWarning("Looks like your package.json is missing. Let's create one for you!");
+        logInfo("Looks like your package.json is missing. Let's create one for you!");
 
         const pkgJson = {};
         pkgJson.name = packageName;
@@ -300,7 +271,7 @@ const checkAndCreateGitignore = (c) => {
     logTask('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.projectRootFolder, '.gitignore');
     if (!fs.existsSync(ignrPath)) {
-        logWarning("Looks like your .gitignore is missing. Let's create one for you!");
+        logInfo("Looks like your .gitignore is missing. Let's create one for you!");
 
         copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles/gitignore-template'), ignrPath);
     }
@@ -313,7 +284,7 @@ const checkAndCreateProjectConfig = (c, data) => {
     } = data;
     // Check Project Config
     if (!fs.existsSync(c.paths.projectConfigPath)) {
-        logWarning(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
+        logInfo(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
 
         const defaultProjectConfigs = {
             supportedPlatforms: data.optionPlatforms.selectedOptions,

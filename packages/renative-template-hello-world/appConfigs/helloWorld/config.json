@@ -23,7 +23,36 @@
             "entryFile": "index.ios",
             "scheme": "RNVApp",
             "teamID": "",
+            "provisioningStyle": "Manual",
             "backgroundColor": "black",
+            "systemCapabilities": {
+                "com.apple.AccessWiFi": false,
+                "com.apple.ApplePay": false,
+                "com.apple.ApplicationGroups.iOS": false,
+                "com.apple.AutoFillCredentialProvider": false,
+                "com.apple.BackgroundModes": false,
+                "com.apple.ClassKit": false,
+                "com.apple.DataProtection": false,
+                "com.apple.GameCenter.iOS": false,
+                "com.apple.HealthKit": false,
+                "com.apple.HomeKit": false,
+                "com.apple.HotspotConfiguration": false,
+                "com.apple.InAppPurchase": false,
+                "com.apple.InterAppAudio": false,
+                "com.apple.Keychain": false,
+                "com.apple.Maps.iOS": false,
+                "com.apple.Multipath": false,
+                "com.apple.NearFieldCommunicationTagReading": false,
+                "com.apple.NetworkExtensions.iOS": false,
+                "com.apple.Push": false,
+                "com.apple.SafariKeychain": false,
+                "com.apple.Siri": false,
+                "com.apple.VPNLite": false,
+                "com.apple.WAC": false,
+                "com.apple.Wallet": false,
+                "com.apple.iCloud": false
+            },
+            "entitlements": {},
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -41,7 +70,10 @@
         "tvos": {
             "entryFile": "index.tvos",
             "teamID": "",
+            "provisioningStyle": "Manual",
             "backgroundColor": "black",
+            "entitlements": {},
+            "permissions": ["*"],
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {

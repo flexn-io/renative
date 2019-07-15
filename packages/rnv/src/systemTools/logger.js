@@ -1,10 +1,28 @@
-import chalk from 'chalk';
+import _chalk from 'chalk';
+
+const _chalkCols = {
+    white: v => v,
+    green: v => v,
+    red: v => v,
+    yellow: v => v,
+    default: v => v,
+    gray: v => v,
+    blue: v => v,
+    magenta: v => v,
+};
+const _chalkMono = {
+    ..._chalkCols,
+    bold: _chalkCols
+};
+
+let chalk = _chalk;
 
 
 const RNV_START = '🚀 ReNative';
-const RNV = 'ReNative';
-const LINE = chalk.white.bold('----------------------------------------------------------');
+let RNV = 'ReNative';
+const LINE = chalk.bold.white('----------------------------------------------------------');
 const LINE2 = chalk.gray('----------------------------------------------------------');
+
 
 export const logWelcome = () => {
     let str = _defaultColor(`
@@ -22,6 +40,7 @@ export const logWelcome = () => {
     if (_c?.files?.rnvPackage?.version) str += printIntoBox(`      Version: ${chalk.green(_c.files.rnvPackage.version)}`, 1);
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
+    str += printIntoBox(`      ${_getCurrentCommand()}`);
     str += printIntoBox('');
     str += printBoxEnd();
     str += '\n';
@@ -30,23 +49,42 @@ export const logWelcome = () => {
 };
 
 let _messages;
-let _currentJob;
+let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
 let _c;
+let _isMono = false;
+let _defaultColor;
+let _highlightColor;
 
-export const configureLogger = (c, process, job, subCommand, isInfoEnabled) => {
+export const configureLogger = (c, process, command, subCommand, isInfoEnabled) => {
     _messages = [];
     _c = c;
-    _currentJob = job;
     _currentProcess = process;
+    _currentCommand = command;
     _currentSubCommand = subCommand;
     _isInfoEnabled = isInfoEnabled;
+    _isMono = c.program.mono;
+    if (_isMono) {
+        chalk = _chalkMono;
+    }
+    _updateDefaultColors();
+    RNV = _getCurrentCommand();
+};
+
+const _updateDefaultColors = () => {
+    _defaultColor = chalk.gray;
+    _highlightColor = chalk.green;
 };
 
 export const logAndSave = (msg, skipLog) => {
     if (_messages && !_messages.includes(msg)) _messages.push(msg);
     if (!skipLog) console.log(`${msg}`);
+};
+
+const _getCurrentCommand = () => {
+    const argArr = _c.process.argv.slice(2);
+    return `$ rnv ${argArr.join(' ')}`;
 };
 
 export const logSummary = () => {
@@ -59,10 +97,27 @@ export const logSummary = () => {
     }
 
 
-    let str = printBoxStart('🚀  SUMMARY');
+    let str = printBoxStart('🚀  SUMMARY', _getCurrentCommand());
     // str += printIntoBox('SHlelelele euheu ehhh');
     if (_c) {
-        if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+        if (_c.files.projectPackage) {
+            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
+        }
+        if (_c.files.appConfigFile) {
+            str += printIntoBox(`App Config: ${_highlightColor(_c.files.appConfigFile.id)}`, 1);
+        }
+        if (_c.files.projectConfig) {
+            const defaultProjectConfigs = _c.files.projectConfig.defaultProjectConfigs;
+            if (defaultProjectConfigs.supportedPlatforms) {
+                str += printArrIntoBox(defaultProjectConfigs.supportedPlatforms, 'Supported Platfroms: ');
+            }
+            if (defaultProjectConfigs.template) {
+                str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
+            }
+        }
+
+        // console.log('SJHSKJSH', _c.process);
+
         if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
         if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
     }
@@ -76,19 +131,19 @@ export const logSummary = () => {
 };
 
 export const setCurrentJob = (job) => {
-    _currentJob = job;
+    _currentCommand = job;
 };
 
 export const logTask = (task) => {
-    console.log(chalk.green(`${RNV} ${_currentJob} - ${task} - Starting!`));
+    console.log(chalk.green(`${RNV} - ${task} - Starting!`));
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} ${_currentJob} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
 };
 
 export const logInfo = (msg) => {
-    console.log(chalk.magenta(`ℹ️  ${RNV} ${_currentJob} - NOTE: ${msg}`));
+    console.log(chalk.magenta(`ℹ️  ${RNV} - NOTE: ${msg}`));
 };
 
 export const logDebug = (...args) => {
@@ -96,19 +151,19 @@ export const logDebug = (...args) => {
 };
 
 export const logComplete = (isEnd = false) => {
-    console.log(chalk.white.bold(`\n ${RNV} ${_currentJob || ''} - Done! 🚀`));
+    console.log(chalk.bold.white(`\n ${RNV} - Done! 🚀`));
     if (isEnd) logEnd(0);
 };
 
 export const logSuccess = (msg) => {
-    console.log(`✅ ${chalk.magenta(msg)}`);
+    logAndSave(`✅ ${chalk.magenta(msg)}`);
 };
 
 export const logError = (e, isEnd = false) => {
     if (e && e.message) {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
+        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
-        logAndSave(chalk.red.bold(`🛑  ${RNV} ${_currentJob} - ERRROR! ${e}`), isEnd);
+        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
     }
     if (isEnd) logEnd(1);
 };
@@ -121,23 +176,26 @@ export const logEnd = (code) => {
 export const logInitialize = () => {
     logWelcome();
     // console.log(
-    //     chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentJob} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
+    //     chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentCommand} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
     // );
 };
 
 export const logAppInfo = c => new Promise((resolve, reject) => {
-    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.white.bold(c.files.appConfigFile.id)}\n${LINE2}`));
+    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.files.appConfigFile.id)}\n${LINE2}`));
 
     resolve();
 });
 
-const _defaultColor = chalk.gray;
-const _highlightColor = chalk.green;
-
 export const printIntoBox = (str2, chalkIntend = 0) => {
     let output = _defaultColor('│  ');
     let endLine = '';
-    const intend = str2 === '' ? 1 : 2;
+    let intend;
+    if (_isMono) {
+        intend = 0;
+        chalkIntend = 0;
+    } else {
+        intend = str2 === '' ? 1 : 2;
+    }
     for (let i = 0; i < chalkIntend + intend; i++) {
         endLine += '          ';
     }
@@ -148,11 +206,56 @@ export const printIntoBox = (str2, chalkIntend = 0) => {
     return output;
 };
 
-export const printBoxStart = (str) => {
+export const printArrIntoBox = (arr, prefix = '') => {
+    let output = '';
+    let stringArr = '';
+    let i = 0;
+    arr.forEach((v) => {
+        const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
+        if (stringArr.length > l) {
+            if (i === 0 && prefix.length) {
+                output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr)}`, 2);
+            } else {
+                output += printIntoBox(_highlightColor(stringArr), 1);
+            }
+
+            stringArr = '';
+            i++;
+        }
+        stringArr += `${v}, `;
+        // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
+    });
+    if (i === 0 && prefix.length) {
+        output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr.slice(0, -2))}`, 2);
+    } else {
+        output += printIntoBox(_highlightColor(stringArr.slice(0, -2)), 1);
+    }
+
+    return output;
+};
+
+export const printBoxStart = (str, str2) => {
     let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
+    output += printIntoBox(str2);
     output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
     return output;
+};
+
+export const logStatus = () => {
+    // let str = printBoxStart('🚀  STATUS');
+    // // str += printIntoBox('SHlelelele euheu ehhh');
+    // // console.log('SSKJJSKL', _c);
+    // if (_c) {
+    //     if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+    //     if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
+    //     if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
+    // }
+    //
+    // str += printIntoBox('');
+    // str += printBoxEnd();
+
+    // console.log(str);
 };
 
 export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');

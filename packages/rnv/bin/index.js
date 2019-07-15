@@ -34,6 +34,7 @@ program
     .option('-D, --debug', 'enable remote debugger')
     .option('--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect')
     .option('--ci', 'CI/CD flag so it wont ask questions')
+    .option('--mono', 'Monochrome console output without chalk')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

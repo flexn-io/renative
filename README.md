@@ -74,7 +74,7 @@
   </tr>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tvos.gif?raw=true" />
     </th><th>
@@ -104,7 +104,7 @@
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android1.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_web.gif?raw=true" />
     </th><th>
@@ -464,6 +464,38 @@ Plugin Spec:
 
 ## Advanced Configuration
 
+#### Get Status
+
+Get basic info about your current project
+
+```bash
+rnv status
+```
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/info.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+#### Clean Project
+
+This will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
+
+```bash
+rnv clean
+```
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/clean.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
 #### Reset options
 
 ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
@@ -539,7 +571,23 @@ If you want to use different settings to those defined globally per project you 
   "projectConfigFolder": "./projectConfig",
   "defaultPorts": {},
   "defaultProjectConfigs": {
-    "template": ""
+    "template": "renative-template-hello-world",
+    "supportedPlatforms": [
+        "ios",
+        "android",
+        "androidtv",
+        "androidwear",
+        "web",
+        "tizen",
+        "tvos",
+        "webos",
+        "macos",
+        "windows",
+        "tizenwatch",
+        "kaios",
+        "firefoxos",
+        "firefoxtv"
+    ]
   }
 }
 ```
@@ -757,7 +805,7 @@ c.program;
 c.process;
 c.command;
 c.subCommand;
-c.appID;
+c.appId;
 c.platform;
 //FILES
 c.files.projectConfig;
@@ -804,7 +852,18 @@ c.paths.permissionsConfigPath;
 c.paths.fontsConfigFolder;
 ```
 
+#### Monochrome logs
 
+If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
+This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
+
+Examples:
+
+```bash
+rnv status --mono
+rnv start --mono
+...
+```
 
 ---
 
@@ -865,7 +924,7 @@ Folder Structure (Generated Project)
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_ios.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -981,7 +1040,7 @@ rnv log -p ios -f com.myapp
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android1.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_android.gif?raw=true" />
     </th>
   </tr>
 </table>

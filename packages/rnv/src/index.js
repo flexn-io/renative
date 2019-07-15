@@ -1,6 +1,6 @@
 import chalk from 'chalk';
-import Common, { initializeBuilder } from './common';
-import { logComplete, logError, logWelcome, logInfo } from './systemTools/logger';
+import Common, { initializeBuilder, startBuilder } from './common';
+import { logComplete, logError, logWelcome, logInfo, configureLogger, logInitialize } from './systemTools/logger';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
 import App from './cli/app';
@@ -32,6 +32,7 @@ const commands = {
     plugin: Plugin,
     log: Runner,
     hooks: Hooks,
+    status: Tools,
     fix: Tools,
     clean: Tools,
     tool: Tools,
@@ -42,6 +43,7 @@ const commands = {
 const run = (cmd, subCmd, program, process) => {
     checkWelcome(cmd, subCmd)
         .then(() => initializeBuilder(cmd, subCmd, process, program))
+        .then(c => startBuilder(c))
         .then((v) => {
             if (commands[cmd]) {
                 commands[cmd](v)
