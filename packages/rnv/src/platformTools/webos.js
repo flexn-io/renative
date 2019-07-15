@@ -2,6 +2,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import semver from 'semver';
 import inquirer from 'inquirer';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import {
@@ -271,7 +272,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
-        { pattern: '{{APP_VERSION}}', override: getAppVersion(c, platform) },
+        { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
     ]);
 
     resolve();
