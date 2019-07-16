@@ -156,8 +156,7 @@ const isPlatformSupportedSync = (platform, resolve, reject) => {
 const isPlatformSupported = c => new Promise((resolve, reject) => {
     logTask(`isPlatformSupported:${c.platform}`);
     if (!c.platform || c.platform === '?') {
-        const platformsAsObj = c.files.appConfigFile ? c.files.appConfigFile.platforms : c.supportedPlatforms;
-        const opts = generateOptions(platformsAsObj);
+        const opts = generateOptions(SUPPORTED_PLATFORMS);
 
         askQuestion(`Pick one of available platforms (number or text):\n${opts.asString}`).then((v) => {
             finishQuestion();
