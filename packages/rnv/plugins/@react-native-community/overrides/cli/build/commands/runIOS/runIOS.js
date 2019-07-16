@@ -233,16 +233,32 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
 
     _logger.default.info(`installing and launching your app on ${selectedDevice.name}... `);
 
-    const iosDeployOutput = _child_process().default.spawnSync('ios-deploy', iosDeployInstallArgs, {
+    // check if six is installed
+    const pipPackagesOutput = _child_process().default.spawnSync('pip', ['freeze'], {
         encoding: 'utf8',
     });
 
-    if (iosDeployOutput.error) {
-        _logger.default.error(
-            '** INSTALLATION FAILED **\nMake sure you have ios-deploy installed globally.\n(e.g "npm install -g ios-deploy")'
-        );
+    function doInstall() {
+        const iosDeployOutput = _child_process().default.spawnSync('ios-deploy', iosDeployInstallArgs, {
+            encoding: 'utf8',
+        });
+
+        if (iosDeployOutput.error) {
+            _logger.default.error(
+                '** INSTALLATION FAILED **\nMake sure you have ios-deploy installed globally.\n(e.g "npm install -g ios-deploy")'
+            );
+        } else {
+            _logger.default.info('** INSTALLATION SUCCEEDED **');
+        }
+    }
+
+    if (pipPackagesOutput.stdout.includes('six==')) {
+        doInstall();
     } else {
-        _logger.default.info('** INSTALLATION SUCCEEDED **');
+        _child_process().default.spawnSync('pip', ['install', 'six'], {
+            encoding: 'utf8',
+        });
+        doInstall();
     }
 }
 
@@ -258,7 +274,8 @@ function buildProject(xcodeProject, udid, scheme, configuration, launchPackager 
             '-destination',
             `id=${udid}`,
             '-derivedDataPath',
-            `build/${scheme}`
+            `build/${scheme}`,
+            '-allowProvisioningUpdates',
         ];
 
         _logger.default.info(`Building using "xcodebuild ${xcodebuildArgs.join(' ')}"`);

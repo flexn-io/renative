@@ -423,26 +423,18 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
         getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`),
         (v) => {
             if (v.toLowerCase() === 'y') {
-                readlineInterface.question(getQuestion('Input desired Android API version number'), (v) => {
-                    const apiVersion = v;
-                    readlineInterface.question(
-                        getQuestion('Select device type: \n 1: Android Phone \n 2: Android TV \n 3: Android Wear \n'),
-                        (val) => {
-                            switch (parseInt(val, 10)) {
-                            case 1:
-                                return _createEmulator(c, apiVersion, 'google_apis', emuName);
-                            case 2:
-                                return _createEmulator(c, apiVersion, 'android-tv', emuName);
-                            case 3:
-                                return _createEmulator(c, apiVersion, 'android-wear', emuName);
-                            default:
-                                return reject('Wrong value entered');
-                            }
-                        },
-                    );
-                });
+                switch (platform) {
+                case 'android':
+                    return _createEmulator(c, '28', 'google_apis', emuName);
+                case 'androidtv':
+                    return _createEmulator(c, '28', 'android-tv', emuName);
+                case 'androidwear':
+                    return _createEmulator(c, '28', 'android-wear', emuName);
+                default:
+                    return reject('Cannot find any active or created emulators');
+                }
             } else {
-                reject('Cannot find any active emulators');
+                reject('Cannot find any active or created emulators');
             }
         },
     );
@@ -452,9 +444,9 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
         .then(() => execCLI(
-            c,
-            CLI_ANDROID_AVDMANAGER,
-            `create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
+            null,
+            null,
+            `sh echo no | ${c.cli[CLI_ANDROID_AVDMANAGER]} create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
         ))
         .catch(e => logError(e, true));
 };
@@ -596,14 +588,14 @@ const _runGradle = async (c, platform) => {
                 await _runGradleApp(c, platform, dev);
             }
         } else {
-            // const devices = await _checkForActiveEmulator(c, platform);
-            // await _runGradleApp(c, platform, devices);
-
+            await _askForNewEmulator(c, platform);
+            const devices = await _checkForActiveEmulator(c, platform);
+            await _runGradleApp(c, platform, devices);
         }
     };
 
     if (target) {
-        console.log('TCL: _runGradle -> devicesAndEmulators', devicesAndEmulators);
+        logDebug('Target provided', target);
         const foundDevice = devicesAndEmulators.find(d => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
             if (foundDevice.isActive) {
@@ -622,6 +614,7 @@ const _runGradle = async (c, platform) => {
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, dv);
     } else {
+        logDebug('Target not provided, asking where to run');
         await askWhereToRun();
     }
 };
