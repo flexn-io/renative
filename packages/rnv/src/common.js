@@ -1077,21 +1077,21 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     logTask(`copyBuildsFolder:${platform}`);
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    // FOLDER MERGERS
+    // FOLDER MERGERS FROM APP CONFIG
     const destPath = path.join(getAppFolder(c, platform));
     const sourcePath0 = getBuildsFolder(c, platform);
     copyFolderContentsRecursiveSync(sourcePath0, destPath);
 
-    // PROJECT CONFIG MERGES
+    // FOLDER MERGERS PROJECT CONFIG
     const sourcePath1 = getBuildsFolder(c, platform, c.paths.projectConfigFolder);
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
     parsePlugins(c, (plugin, pluginPlat, key) => {
-        // APP CONFIG PLUGIN FOLDER MERGES
+        // FOLDER MERGES FROM APP CONFIG PLUGIN
         const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
-        // PROJECT CONFIG PLUGIN FOLDER MERGES
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
         const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath3, destPath);
     });

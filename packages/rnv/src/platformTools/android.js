@@ -36,6 +36,7 @@ import {
     logInfo,
     getQuestion,
     logSuccess,
+    getBuildsFolder,
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
@@ -1134,7 +1135,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         });
     }
 
-    writeCleanFile(path.join(appTemplateFolder, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
+    writeCleanFile(_getBuildFilePath(c, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
         { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
         { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
     ]);
@@ -1147,7 +1148,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     pluginConfig.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
 
 
-    writeCleanFile(path.join(appTemplateFolder, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
+    writeCleanFile(_getBuildFilePath(c, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
         { pattern: '{{PLUGIN_APPLY}}', override: pluginConfig.applyPlugin },
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
@@ -1166,14 +1167,14 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: pluginConfig.localProperties },
     ]);
 
-    writeCleanFile(path.join(appTemplateFolder, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
+    writeCleanFile(_getBuildFilePath(c, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
         { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
         { pattern: '{{SUPPORT_LIB_VERSION}}', override: pluginConfig.supportLibVersion },
         { pattern: '{{BUILD_TOOLS_VERSION}}', override: pluginConfig.buildToolsVersion }
     ]);
 
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
-    writeCleanFile(path.join(appTemplateFolder, activityPath), path.join(appFolder, activityPath), [
+    writeCleanFile(_getBuildFilePath(c, activityPath), path.join(appFolder, activityPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: pluginConfig.pluginActivityImports },
         { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: pluginConfig.pluginActivityMethods },
@@ -1182,7 +1183,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     ]);
 
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
-    writeCleanFile(path.join(appTemplateFolder, applicationPath), path.join(appFolder, applicationPath), [
+    writeCleanFile(_getBuildFilePath(c, applicationPath), path.join(appFolder, applicationPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
         { pattern: '{{PLUGIN_IMPORTS}}', override: pluginConfig.pluginImports },
@@ -1191,12 +1192,12 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     ]);
 
     const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
-    writeCleanFile(path.join(appTemplateFolder, splashPath), path.join(appFolder, splashPath), [
+    writeCleanFile(_getBuildFilePath(c, splashPath), path.join(appFolder, splashPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
     ]);
 
     const stringsPath = 'app/src/main/res/values/strings.xml';
-    writeCleanFile(path.join(appTemplateFolder, stringsPath), path.join(appFolder, stringsPath), [
+    writeCleanFile(_getBuildFilePath(c, stringsPath), path.join(appFolder, stringsPath), [
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
     ]);
 
@@ -1220,8 +1221,10 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         }
     }
 
+    // get correct source of manifest
     const manifestFile = 'app/src/main/AndroidManifest.xml';
-    writeCleanFile(path.join(appTemplateFolder, manifestFile), path.join(appFolder, manifestFile), [
+
+    writeCleanFile(_getBuildFilePath(c, manifestFile), path.join(appFolder, manifestFile), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{PLUGIN_MANIFEST}}', override: prms },
         { pattern: '{{PLUGIN_MANIFEST_APPLICATION}}', override: pluginConfig.manifestApplication },
@@ -1237,12 +1240,23 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         }
     }
     const gradleProperties = 'gradle.properties';
-    writeCleanFile(path.join(appTemplateFolder, gradleProperties), path.join(appFolder, gradleProperties), [
+    writeCleanFile(_getBuildFilePath(c, gradleProperties), path.join(appFolder, gradleProperties), [
         { pattern: '{{PLUGIN_GRADLE_PROPERTIES}}', override: pluginGradleProperties }
     ]);
 
     resolve();
 });
+
+const _getBuildFilePath = (c, filePath) => {
+    let sp = path.join(getAppTemplateFolder(c, c.platform), filePath);
+    const sp2 = path.join(getBuildsFolder(c, c.platform, c.paths.projectConfigFolder), filePath);
+    if (fs.existsSync(sp2)) sp = sp2;
+
+    const sp3 = path.join(getBuildsFolder(c, c.platform), filePath);
+    if (fs.existsSync(sp3)) sp = sp3;
+
+    return sp;
+};
 
 const _getPrivateConfig = (c, platform) => {
     const privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
