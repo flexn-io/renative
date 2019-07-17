@@ -180,7 +180,7 @@ function generateConfig(config) {
     const entry = {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(projectDir, `index.${config.extensions[0]}.js`),
+        bundle: path.resolve(projectDir, `${config.entryFile}.js`),
     };
 
     return {

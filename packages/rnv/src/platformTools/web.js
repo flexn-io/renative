@@ -91,6 +91,7 @@ const _generateWebpackConfigs = (c) => {
 
     const env = getConfigProp(c, c.platform, 'environment');
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    const entryFile = getConfigProp(c, c.platform, 'entryFile', 'index.web');
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
@@ -100,6 +101,7 @@ const _generateWebpackConfigs = (c) => {
     const obj = {
         modulePaths,
         moduleAliases,
+        entryFile,
         ...extendConfig
     };
 
@@ -157,7 +159,6 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    console.log('SJJSKSKL', extendConfig);
     const devServerHost = extendConfig.devServerHost || '0.0.0.0';
 
     checkPortInUse(c, platform, port)
