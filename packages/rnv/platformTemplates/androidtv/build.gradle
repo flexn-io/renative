@@ -6,10 +6,13 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'io.fabric.tools:gradle:1.25.4'
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 }
 
@@ -21,6 +24,7 @@ allprojects {
         maven {
             url "$rootDir/../../node_modules/react-native/android"
         }
+        maven { url 'https://maven.fabric.io/public' }
         maven { url "https://jitpack.io" }
     }
 }
@@ -39,4 +43,19 @@ subprojects {
             }
         }
     }
+}
+
+//temporary hotfix for https://github.com/react-native-community/react-native-image-picker/issues/1002
+// NOTE: project.name.startsWith('react-native-') would also work but this avoids breaking other modules
+if (project.name.contains('react-native-image-picker')
+    || project.name.contains('react-native-fetch-blob')
+    || project.name.contains('react-native-linear-gradient')
+    || project.name.contains('react-native-prompt-android')) {
+  buildscript {
+      repositories {
+          jcenter()
+          google()
+          maven { url "https://dl.bintray.com/android/android-tools/"  }
+      }
+  }
 }
