@@ -50,6 +50,7 @@ const _generateWebpackConfigs = (c) => {
     const plugins = c.files.pluginConfig.plugins;
     let modulePaths = [];
     let moduleAliasesString = '';
+    const moduleAliases = {};
 
     for (const key in plugins) {
         const plugin = getMergedPlugin(c, key, plugins);
@@ -68,14 +69,17 @@ const _generateWebpackConfigs = (c) => {
                     moduleAliasesString += `'${key}': {
                   projectPath: 'node_modules/${key}'
                 },`;
+                    moduleAliases[key] = { projectPath: `node_modules/${key}` };
                 } else {
                     for (const aKey in plugin.webpack.moduleAliases) {
                         if (typeof plugin.webpack.moduleAliases[aKey] === 'string') {
                             moduleAliasesString += `'${aKey}': '${plugin.webpack.moduleAliases[aKey]}',`;
+                            moduleAliases[key] = plugin.webpack.moduleAliases[aKey];
                         } else {
-                            moduleAliasesString += `'${aKey}': {
-                        projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'
-                      },`;
+                            moduleAliasesString += `'${aKey}': {projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'},`;
+                            if (plugin.webpack.moduleAliases[aKey].projectPath) {
+                                moduleAliases[key] = { projectPath: plugin.webpack.moduleAliases[aKey].projectPath };
+                            }
                         }
                     }
                 }
@@ -86,19 +90,21 @@ const _generateWebpackConfigs = (c) => {
     const modulePathsString = modulePaths.length ? `'${modulePaths.join("','")}'` : '';
 
     const env = getConfigProp(c, c.platform, 'environment');
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
         path.join(appFolder, 'webpack.config.js')
     );
 
+    const obj = {
+        modulePaths,
+        moduleAliases,
+        ...extendConfig
+    };
+
     const extendJs = `
-module.exports = {
-  modulePaths: [${modulePathsString}],
-  moduleAliases: {
-    ${moduleAliasesString}
-  }
-}`;
+    module.exports = ${JSON.stringify(obj, null, 2)}`;
 
     fs.writeFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };

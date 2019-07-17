@@ -289,23 +289,41 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logDebug('running', p);
 
+    logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
+
+
+    _workerTimer = setInterval(_archiveLogger, 30000);
+
     if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync('xcodebuild', p))
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
+                clearInterval(_workerTimer);
                 resolve();
             })
-            .catch(e => reject(e));
+            .catch((e) => {
+                clearInterval(_workerTimer);
+                reject(e);
+            });
     } else {
         executeAsync('xcodebuild', p)
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
+                clearInterval(_workerTimer);
                 resolve();
             })
-            .catch(e => reject(e));
+            .catch((e) => {
+                clearInterval(_workerTimer);
+                reject(e);
+            });
     }
 });
+
+let _workerTimer;
+const _archiveLogger = () => {
+    console.log(`ARCHIVING .... ${(new Date()).toLocaleString()}`);
+};
 
 const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`exportXcodeProject:${platform}`);
@@ -328,6 +346,8 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
     if (ignoreLogs) p.push('-quiet');
     logDebug('running', p);
+
+    logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
 
     executeAsync('xcodebuild', p)
         .then(() => {
