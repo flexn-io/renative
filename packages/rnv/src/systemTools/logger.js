@@ -37,7 +37,10 @@ export const logWelcome = () => {
 │                                                                              │
 `);
 
-    if (_c?.files?.rnvPackage?.version) str += printIntoBox(`      Version: ${chalk.green(_c.files.rnvPackage.version)}`, 1);
+    if (_c?.files?.rnvPackage?.version) {
+        _c.rnvVersion = _c.files.rnvPackage.version;
+        str += printIntoBox(`      Version: ${chalk.green(_c.rnvVersion)}`, 1);
+    }
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      ${_getCurrentCommand()}`);
@@ -106,7 +109,6 @@ export const logSummary = () => {
     }
 
     let str = printBoxStart(`🚀  SUMMARY ${timeString}`, _getCurrentCommand());
-    // str += printIntoBox('SHlelelele euheu ehhh');
     if (_c) {
         if (_c.files.projectPackage) {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
@@ -123,8 +125,10 @@ export const logSummary = () => {
                 str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
             }
         }
-
-        // console.log('SJHSKJSH', _c.process);
+        if (_c.process) {
+            const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node} | rnv v${_c.rnvVersion}`;
+            str += printIntoBox(`Env Info: ${chalk.grey(envString)}`, 1);
+        }
 
         if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
         if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
