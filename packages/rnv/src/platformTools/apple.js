@@ -904,16 +904,25 @@ const _parsePlist = (c, platform, embeddedFonts) => {
     // PERMISSIONS
     const pluginPermissions = '';
     if (permissions) {
-        permissions.forEach((v) => {
+        if (permissions.length && permissions[0] === '*') {
             if (c.files.permissionsConfig) {
                 const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
                 const pc = c.files.permissionsConfig.permissions[plat];
-                if (pc[v]) {
-                    // pluginPermissions += `  <key>${pc[v].key}</key>\n  <string>${pc[v].desc}</string>\n`;
+                for (const v in pc) {
                     plistObj[pc[v].key] = pc[v].desc;
                 }
             }
-        });
+        } else {
+            permissions.forEach((v) => {
+                if (c.files.permissionsConfig) {
+                    const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
+                    const pc = c.files.permissionsConfig.permissions[plat];
+                    if (pc[v]) {
+                        plistObj[pc[v].key] = pc[v].desc;
+                    }
+                }
+            });
+        }
     }
     // ORIENATATIONS
     if (orientationSupport) {
