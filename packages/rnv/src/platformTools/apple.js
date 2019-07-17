@@ -44,8 +44,8 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
     logTask(`runPod:${command}`);
 
     if (!fs.existsSync(cwd)) {
+        if (rejectOnFail) return reject(`Location ${cwd} does not exists!`);
         logError(`Location ${cwd} does not exists!`);
-        if (rejectOnFail) return reject();
         return resolve();
     }
     return checkIfCommandExists('pod')

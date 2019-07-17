@@ -553,7 +553,7 @@ const _runGradle = async (c, platform) => {
     try {
         devicesAndEmulators = await _listAndroidTargets(c, false, false, c.program.device !== undefined);
     } catch (e) {
-        return Promise.reject();
+        return Promise.reject(e);
     }
     const activeDevices = devicesAndEmulators.filter(d => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter(d => !d.isActive);

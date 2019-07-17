@@ -66,7 +66,7 @@ const _templateList = c => new Promise((resolve, reject) => {
     logTask('_templateList');
     listTemplates()
         .then(() => resolve())
-        .catch(e => reject());
+        .catch(e => reject(e));
 });
 
 const _templateAdd = c => new Promise((resolve, reject) => {
@@ -74,7 +74,7 @@ const _templateAdd = c => new Promise((resolve, reject) => {
 
     addTemplate()
         .then(() => resolve())
-        .catch(e => reject());
+        .catch(e => reject(e));
 });
 
 const _templateApply = c => new Promise((resolve, reject) => {
