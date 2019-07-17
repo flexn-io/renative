@@ -45,7 +45,7 @@ const readline = require('readline');
 
 const CHECK_INTEVAL = 5000;
 
-let currentDeviceProps = {};
+const currentDeviceProps = {};
 
 const composeDevicesString = (devices, returnArray) => {
     logTask(`composeDevicesString:${devices ? devices.length : null}`);
@@ -174,15 +174,16 @@ const getRunningDeviceProp = (c, udid, prop) => {
     return getRunningDeviceProp(c, udid, prop);
 };
 
-const decideIfTV = (c, udid) => {
-    const model = getRunningDeviceProp(c, udid, 'ro.product.model');
+const decideIfTVRunning = (c, device) => {
+    const { udid, model, product } = device;
+    const mod = getRunningDeviceProp(c, udid, 'ro.product.model');
     const name = getRunningDeviceProp(c, udid, 'ro.product.name');
     const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
     const description = getRunningDeviceProp(c, udid, 'ro.build.description');
 
     let isTV = false;
-    [model, name, flavor, description].forEach((string) => {
-        if (string && string.toLowerCase().includes('atv')) isTV = true;
+    [mod, name, flavor, description, model, product].forEach((string) => {
+        if (string && string.toLowerCase().includes('tv')) isTV = true;
     });
 
     if (model.includes('SHIELD')) isTV = true;
@@ -190,18 +191,20 @@ const decideIfTV = (c, udid) => {
     return isTV;
 };
 
-const decideIfWear = (c, udid) => {
-    let isWear = false;
+const decideIfWearRunning = (c, device) => {
+    const { udid, model, product } = device;
     const fingerprint = getRunningDeviceProp(c, udid, 'ro.vendor.build.fingerprint');
     const name = getRunningDeviceProp(c, udid, 'ro.product.vendor.name');
-    const model = getRunningDeviceProp(c, udid, 'ro.product.vendor.model');
+    const mod = getRunningDeviceProp(c, udid, 'ro.product.vendor.model');
     const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
     const description = getRunningDeviceProp(c, udid, 'ro.build.description');
-    [fingerprint, name, model, flavor, description].forEach((string) => {
+
+    let isWear = false;
+    [fingerprint, name, mod, flavor, description, model, product].forEach((string) => {
         if (string && string.toLowerCase().includes('wear')) isWear = true;
     });
     return isWear;
-}
+};
 
 const getDeviceType = async (device, c) => {
     logDebug('getDeviceType - in', { device });
@@ -221,7 +224,7 @@ const getDeviceType = async (device, c) => {
             screenProps = { ...screenProps, density: parseInt(density, 10) };
         }
 
-        device.isTV = decideIfTV(c, device.udid);
+        device.isTV = decideIfTVRunning(c, device);
 
         if (screenSizeResult && screenDensityResult) {
             const { width, height, density } = screenProps;
@@ -229,7 +232,7 @@ const getDeviceType = async (device, c) => {
             const diagonalInches = calculateDeviceDiagonal(width, height, density);
             screenProps = { ...screenProps, diagonalInches };
             device.isTablet = !device.isTV && diagonalInches > IS_TABLET_ABOVE_INCH && diagonalInches <= 15;
-            device.isWear = decideIfWear(c, device.udid);
+            device.isWear = decideIfWearRunning(c, device);
         }
 
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
@@ -355,6 +358,8 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
                 if (words[1] === 'device') {
                     const isDevice = !words[0].includes('emulator');
                     let name = _getDeviceProp(words, 'model:');
+                    const model = name;
+                    const product = _getDeviceProp(words, 'product:');
                     logDebug('_parseDevicesResult', { name });
                     if (!isDevice) {
                         await waitForEmulatorToBeReady(c, words[0]);
@@ -368,6 +373,8 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
                             isDevice,
                             isActive: true,
                             name,
+                            model,
+                            product
                         });
                     }
                     return true;
