@@ -331,12 +331,16 @@
                 ],
                 "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
                 "mainActivity": {
-                    "resultMethods": [
-                        "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                    "imports": [
+                        "com.facebook.appevents.AppEventsLogger",
+                        "com.facebook.FacebookSdk"
                     ],
                     "createMethods": [
                         "FacebookSdk.sdkInitialize(applicationContext)",
                         "AppEventsLogger.activateApp(this)"
+                    ],
+                    "resultMethods": [
+                        "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
                     ]
                 }
             }

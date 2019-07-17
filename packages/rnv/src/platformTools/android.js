@@ -349,25 +349,25 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
-        logDebug('_parseDevicesResult', { lines });
+        logDebug('_parseDevicesResult 2', { lines });
         if (lines.length !== 0) {
             await Promise.all(lines.map(async (line) => {
                 const words = line.split(/[ ,\t]+/).filter(w => w !== '');
                 if (words.length === 0) return;
-                logDebug('_parseDevicesResult', { words });
+                logDebug('_parseDevicesResult 3', { words });
 
                 if (words[1] === 'device') {
                     const isDevice = !words[0].includes('emulator');
                     let name = _getDeviceProp(words, 'model:');
                     const model = name;
                     const product = _getDeviceProp(words, 'product:');
-                    logDebug('_parseDevicesResult', { name });
+                    logDebug('_parseDevicesResult 4', { name });
                     if (!isDevice) {
                         await waitForEmulatorToBeReady(c, words[0]);
                         name = await getEmulatorName(words);
-                        logDebug('_parseDevicesResult', { name });
+                        logDebug('_parseDevicesResult 5', { name });
                     }
-                    logDebug('_parseDevicesResult', { deviceOnly, isDevice });
+                    logDebug('_parseDevicesResult 6', { deviceOnly, isDevice });
                     if ((deviceOnly && isDevice) || !deviceOnly) {
                         devices.push({
                             udid: words[0],
@@ -386,7 +386,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
     if (avdsString) {
         const avdLines = avdsString.trim().split(/\r?\n/);
-        logDebug('_parseDevicesResult', { avdLines });
+        logDebug('_parseDevicesResult 7', { avdLines });
 
         await Promise.all(avdLines.map(async (line) => {
             let avdDetails;
@@ -398,12 +398,12 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
             }
 
             try {
-                logDebug('_parseDevicesResult', { avdDetails });
+                logDebug('_parseDevicesResult 8', { avdDetails });
 
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
                 child_process.execSync(`ps x | grep "avd ${line}" | grep -v grep`);
-                logDebug('_parseDevicesResult - excluding running emulator');
+                logDebug('_parseDevicesResult 9 - excluding running emulator');
             } catch (e) {
                 if (avdDetails) {
                     devices.push({
@@ -418,7 +418,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         }));
     }
 
-    logDebug('_parseDevicesResult', { devices });
+    logDebug('_parseDevicesResult 10', { devices });
 
     return Promise.all(devices.map(device => getDeviceType(device, c)))
         .then(devicesArray => devicesArray.filter((device) => {
@@ -1153,11 +1153,16 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
 
     // MANIFEST APPLICATION
-    const manifestApplicationParams = pluginConfigAndroid.manifest?.application?.parameters;
-    if (manifestApplicationParams) {
-        manifestApplicationParams.forEach((v) => {
-            pluginConfig.manifestApplication += `     ${v}\n`;
-        });
+    let manifestApplicationParams = {
+        'android:allowBackup': true
+    };
+    const manifestApplicationParamsExt = pluginConfigAndroid.manifest?.application?.parameters;
+    if (manifestApplicationParamsExt) {
+        manifestApplicationParams = { ...manifestApplicationParams, ...manifestApplicationParamsExt };
+    }
+
+    for (const k in manifestApplicationParams) {
+        pluginConfig.manifestApplication += `       ${k}="${manifestApplicationParams[k]}"\n`;
     }
 
     writeCleanFile(_getBuildFilePath(c, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
