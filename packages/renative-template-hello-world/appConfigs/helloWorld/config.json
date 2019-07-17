@@ -184,6 +184,10 @@
         "web": {
             "entryFile": "index.web",
             "backgroundColor": "black",
+            "webpackConfig": {
+              "devServerHost": "0.0.0.0",
+              "baseUrl": ""
+            },
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",

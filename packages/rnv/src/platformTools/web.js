@@ -156,25 +156,29 @@ const configureProject = (c, platform, appFolderName) => new Promise((resolve, r
 const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
 
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    console.log('SJJSKSKL', extendConfig);
+    const devServerHost = extendConfig.devServerHost || '0.0.0.0';
+
     checkPortInUse(c, platform, port)
         .then((isPortActive) => {
             if (!isPortActive) {
                 logInfo(
-                    `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
+                    `Looks like your ${chalk.white(platform)} devServerHost ${chalk.white(devServerHost)} at port ${chalk.white(
                         port
                     )} is not running. Starting it up for you...`
                 );
-                _runWebBrowser(c, platform, port, 500)
+                _runWebBrowser(c, platform, devServerHost, port, 500)
                     .then(() => runWebDevServer(c, platform, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
                 logInfo(
-                    `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
+                    `Looks like your ${chalk.white(platform)} devServerHost at port ${chalk.white(
                         port
-                    )} is already running. ReNativeWill use it!`
+                    )} is already running. ReNative Will use it!`
                 );
-                _runWebBrowser(c, platform, port)
+                _runWebBrowser(c, platform, devServerHost, port)
                     .then(() => resolve())
                     .catch(e => reject(e));
             }
@@ -182,14 +186,14 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _runWebBrowser = (c, platform, port, delay = 0) => new Promise((resolve, reject) => {
+const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
     // if (delay) {
     //         const process = fork(path.join(c.paths.rnvNodeModulesFolder, 'open', 'index.js'));
     //         process.send(`http://0.0.0.0:${port}`);
     // } else {
     //     open(`http://0.0.0.0:${port}`);
     // }
-    open(`http://0.0.0.0:${port}`);
+    open(`http://${devServerHost}:${port}`);
     resolve();
 });
 
