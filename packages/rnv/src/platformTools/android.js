@@ -46,7 +46,7 @@ const readline = require('readline');
 
 const CHECK_INTEVAL = 5000;
 
-let currentDeviceProps = null;
+const currentDeviceProps = {};
 
 const composeDevicesString = (devices, returnArray) => {
     logTask(`composeDevicesString:${devices ? devices.length : null}`);
@@ -155,9 +155,9 @@ const isSquareishDevice = (width, height) => {
 
 const getRunningDeviceProp = (c, udid, prop) => {
     // avoid multiple calls to the same device
-    if (currentDeviceProps) {
-        if (!prop) return currentDeviceProps;
-        return currentDeviceProps[prop];
+    if (currentDeviceProps[udid]) {
+        if (!prop) return currentDeviceProps[udid];
+        return currentDeviceProps[udid][prop];
     }
     const rawProps = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${udid} shell getprop`).toString().trim();
     const reg = /\[.+\]: \[.*\n?[^\[]*\]/gm;
@@ -168,22 +168,43 @@ const getRunningDeviceProp = (c, udid, prop) => {
         const key = words[0].slice(1);
         const value = words[1].slice(0, words[1].length - 1);
 
-        if (!currentDeviceProps) currentDeviceProps = {};
-        currentDeviceProps[key] = value;
+        if (!currentDeviceProps[udid]) currentDeviceProps[udid] = {};
+        currentDeviceProps[udid][key] = value;
     });
 
     return getRunningDeviceProp(c, udid, prop);
 };
 
-const decideIfTV = (c, udid) => {
-    const model = getRunningDeviceProp(c, udid, 'ro.product.model');
+const decideIfTVRunning = (c, device) => {
+    const { udid, model, product } = device;
+    const mod = getRunningDeviceProp(c, udid, 'ro.product.model');
     const name = getRunningDeviceProp(c, udid, 'ro.product.name');
     const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
     const description = getRunningDeviceProp(c, udid, 'ro.build.description');
 
-    if (model.toLowerCase().includes('atv') || name.toLowerCase().includes('atv') || flavor.toLowerCase().includes('atv') || description.toLowerCase().includes('atv')) return true;
-    if (model.includes('SHIELD')) return true;
-    return false;
+    let isTV = false;
+    [mod, name, flavor, description, model, product].forEach((string) => {
+        if (string && string.toLowerCase().includes('tv')) isTV = true;
+    });
+
+    if (model.includes('SHIELD')) isTV = true;
+
+    return isTV;
+};
+
+const decideIfWearRunning = (c, device) => {
+    const { udid, model, product } = device;
+    const fingerprint = getRunningDeviceProp(c, udid, 'ro.vendor.build.fingerprint');
+    const name = getRunningDeviceProp(c, udid, 'ro.product.vendor.name');
+    const mod = getRunningDeviceProp(c, udid, 'ro.product.vendor.model');
+    const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
+    const description = getRunningDeviceProp(c, udid, 'ro.build.description');
+
+    let isWear = false;
+    [fingerprint, name, mod, flavor, description, model, product].forEach((string) => {
+        if (string && string.toLowerCase().includes('wear')) isWear = true;
+    });
+    return isWear;
 };
 
 const getDeviceType = async (device, c) => {
@@ -204,7 +225,7 @@ const getDeviceType = async (device, c) => {
             screenProps = { ...screenProps, density: parseInt(density, 10) };
         }
 
-        device.isTV = decideIfTV(c, device.udid);
+        device.isTV = decideIfTVRunning(c, device);
 
         if (screenSizeResult && screenDensityResult) {
             const { width, height, density } = screenProps;
@@ -212,7 +233,7 @@ const getDeviceType = async (device, c) => {
             const diagonalInches = calculateDeviceDiagonal(width, height, density);
             screenProps = { ...screenProps, diagonalInches };
             device.isTablet = !device.isTV && diagonalInches > IS_TABLET_ABOVE_INCH && diagonalInches <= 15;
-            device.isWear = isSquareishDevice(width, height);
+            device.isWear = decideIfWearRunning(c, device);
         }
 
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
@@ -338,6 +359,8 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
                 if (words[1] === 'device') {
                     const isDevice = !words[0].includes('emulator');
                     let name = _getDeviceProp(words, 'model:');
+                    const model = name;
+                    const product = _getDeviceProp(words, 'product:');
                     logDebug('_parseDevicesResult', { name });
                     if (!isDevice) {
                         await waitForEmulatorToBeReady(c, words[0]);
@@ -351,6 +374,8 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
                             isDevice,
                             isActive: true,
                             name,
+                            model,
+                            product
                         });
                     }
                     return true;
