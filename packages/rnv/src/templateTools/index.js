@@ -10,15 +10,12 @@ import {
 import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 
-const DEFAULT_TEMPLATES = [
-    'renative-template-hello-world',
-    'renative-template-blank',
-    // 'renative-template-kitchen-sink'
-];
+import { templates } from '../../renativeTemplates/templates.json';
+
 
 const listTemplates = c => new Promise((resolve, reject) => {
     logTask('listTemplates');
-    opts = generateOptions(DEFAULT_TEMPLATES);
+    opts = generateOptions(templates);
     console.log(opts.asString);
     resolve();
 });
@@ -204,7 +201,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const getTemplateOptions = () => generateOptions(DEFAULT_TEMPLATES);
+const getTemplateOptions = () => generateOptions(templates);
 
 export {
     listTemplates, addTemplate, getTemplateOptions, applyTemplate,

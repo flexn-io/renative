@@ -98,6 +98,7 @@
         "lerna": "latest",
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
+        "@reactseals/renative-template-chat":"0.1.2",
         "rnv": "file:./packages/rnv"
     },
     "engines": {
