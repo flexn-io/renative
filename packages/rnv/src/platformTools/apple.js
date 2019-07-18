@@ -7,6 +7,7 @@ import child_process from 'child_process';
 import { executeAsync } from '../systemTools/exec';
 import { isObject } from '../systemTools/objectUtils';
 import { createPlatformBuild } from '../cli/platform';
+import { launchAppleSimulator, getAppleDevices } from './apple/deviceManager';
 import {
     logTask,
     logError,
@@ -112,7 +113,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     }
 
     if (device === true) {
-        const devicesArr = _getAppleDevices(c, platform, false, true);
+        const devicesArr = getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
             logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)} udid: ${chalk.white(devicesArr[0].udid)}`);
             if (devicesArr[0].udid) {
@@ -264,7 +265,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const exportPathArchive = `${exportPath}/${scheme}.xcarchive`;
@@ -332,7 +333,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const p = [
         '-exportArchive',
@@ -879,7 +880,7 @@ const _parseEntitlements = (c, platform) => {
     // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
     if (!pluginsEntitlementsObj) {
-        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json'));
+        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/entitlements.json'));
     }
 
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
@@ -894,7 +895,7 @@ const _parsePlist = (c, platform, embeddedFonts) => {
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/info.plist.json'));
+    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/info.plist.json'));
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     // FONTS
@@ -969,7 +970,7 @@ const _getAppFolderName = (c, platform) => {
 const listAppleDevices = (c, platform) => new Promise((resolve) => {
     logTask(`listAppleDevices:${platform}`);
 
-    const devicesArr = _getAppleDevices(c, platform);
+    const devicesArr = getAppleDevices(c, platform);
     let devicesString = '\n';
     devicesArr.forEach((v, i) => {
         devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
@@ -978,105 +979,6 @@ const listAppleDevices = (c, platform) => new Promise((resolve) => {
     });
     console.log(devicesString);
 });
-
-const launchAppleSimulator = (c, platform, target) => new Promise((resolve) => {
-    logTask(`launchAppleSimulator:${platform}:${target}`);
-
-    const devicesArr = _getAppleDevices(c, platform, true);
-    let selectedDevice;
-    for (let i = 0; i < devicesArr.length; i++) {
-        if (devicesArr[i].name === target) {
-            selectedDevice = devicesArr[i];
-        }
-    }
-    if (selectedDevice) {
-        _launchSimulator(selectedDevice);
-        resolve(selectedDevice.name);
-    } else {
-        logWarning(`Your specified simulator target ${chalk.white(target)} doesn't exists`);
-        const readlineInterface = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-        let devicesString = '\n';
-        devicesArr.forEach((v, i) => {
-            devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
-                v.udid,
-            )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
-        });
-        readlineInterface.question(getQuestion(`${devicesString}\nType number of the simulator you want to launch`), (v) => {
-            const chosenDevice = devicesArr[parseInt(v, 10) - 1];
-            if (chosenDevice) {
-                _launchSimulator(chosenDevice);
-                resolve(chosenDevice.name);
-            } else {
-                logError(`Wrong choice ${v}! Ingoring`);
-            }
-        });
-    }
-});
-
-const _launchSimulator = (selectedDevice) => {
-    try {
-        child_process.spawnSync('xcrun', ['instruments', '-w', selectedDevice.udid]);
-    } catch (e) {
-        // instruments always fail with 255 because it expects more arguments,
-        // but we want it to only launch the simulator
-    }
-};
-
-const _getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
-    logTask(`_getAppleDevices:${platform},ignoreDevices:${ignoreDevices},ignoreSimulators${ignoreSimulators}`);
-    const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
-        encoding: 'utf8',
-    });
-
-    const devicesArr = _parseIOSDevicesList(devices, platform, ignoreDevices, ignoreSimulators);
-    return devicesArr;
-};
-
-const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimulators = false) => {
-    const devices = [];
-    text.split('\n').forEach((line) => {
-        const s1 = line.match(/\[.*?\]/);
-        const s2 = line.match(/\(.*?\)/g);
-        const s3 = line.substring(0, line.indexOf('(') - 1);
-        const s4 = line.substring(0, line.indexOf('[') - 1);
-        let isSim = false;
-        if (s2 && s1) {
-            if (s2[s2.length - 1] === '(Simulator)') {
-                isSim = true;
-                s2.pop();
-            }
-            const version = s2.pop();
-            const name = `${s4.substring(0, s4.lastIndexOf('(') - 1)}`;
-            const udid = s1[0].replace(/\[|\]/g, '');
-            const isDevice = !isSim;
-
-            if ((isDevice && !ignoreDevices) || (!isDevice && !ignoreSimulators)) {
-                switch (platform) {
-                case IOS:
-                    if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
-                        let icon = 'Phone 📱';
-                        if (name.includes('iPad')) icon = 'Tablet 💊';
-                        devices.push({ udid, name, version, isDevice, icon });
-                    }
-                    break;
-                case TVOS:
-                    if (name.includes('Apple TV') || isDevice) {
-                        devices.push({ udid, name, version, isDevice, icon: 'TV 📺' });
-                    }
-                    break;
-                default:
-                    devices.push({ udid, name, version, isDevice });
-                    break;
-                }
-            }
-        }
-    });
-
-    return devices;
-};
 
 // Resolve or reject will not be called so this will keep running
 const runAppleLog = c => new Promise(() => {
