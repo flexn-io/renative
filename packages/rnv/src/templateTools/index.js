@@ -12,7 +12,6 @@ import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 
 import { templates } from '../../renativeTemplates/templates.json';
 
-
 const listTemplates = c => new Promise((resolve, reject) => {
     logTask('listTemplates');
     opts = generateOptions(templates);
