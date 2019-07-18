@@ -103,7 +103,7 @@ function runIOS(_, ctx, args) {
         const selectedDevice = matchingDevice(devices, args.udid || args.device);
 
         if (selectedDevice) {
-            return runOnDevice(selectedDevice, scheme, xcodeProject, args.configuration, args.packager, args.verbose, args.port);
+            return runOnDevice(selectedDevice, scheme, xcodeProject, args.configuration, args.packager, args.verbose, args.port, args.allowProvisioningUpdates);
         }
 
         if (devices && devices.length > 0) {
@@ -193,7 +193,8 @@ async function runOnSimulator(xcodeProject, args, scheme) {
         args.configuration,
         args.packager,
         args.verbose,
-        args.port
+        args.port,
+        args.allowProvisioningUpdates
     );
     const appPath = getBuildPath(args.configuration, appName, false, scheme);
 
@@ -220,8 +221,8 @@ async function runOnSimulator(xcodeProject, args, scheme) {
     });
 }
 
-async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, launchPackager, verbose, port) {
-    const appName = await buildProject(xcodeProject, selectedDevice.udid, scheme, configuration, launchPackager, verbose, port);
+async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, launchPackager, verbose, port, allowProvisioningUpdates) {
+    const appName = await buildProject(xcodeProject, selectedDevice.udid, scheme, configuration, launchPackager, verbose, port, allowProvisioningUpdates);
     const iosDeployInstallArgs = [
         '--bundle',
         getBuildPath(configuration, appName, true, scheme),
@@ -262,7 +263,7 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
     }
 }
 
-function buildProject(xcodeProject, udid, scheme, configuration, launchPackager = false, verbose, port) {
+function buildProject(xcodeProject, udid, scheme, configuration, launchPackager = false, verbose, port, allowProvisioningUpdates) {
     return new Promise((resolve, reject) => {
         const xcodebuildArgs = [
             xcodeProject.isWorkspace ? '-workspace' : '-project',
@@ -274,9 +275,9 @@ function buildProject(xcodeProject, udid, scheme, configuration, launchPackager 
             '-destination',
             `id=${udid}`,
             '-derivedDataPath',
-            `build/${scheme}`,
-            '-allowProvisioningUpdates',
+            `build/${scheme}`
         ];
+        if (allowProvisioningUpdates) xcodebuildArgs.push(allowProvisioningUpdates);
 
         _logger.default.info(`Building using "xcodebuild ${xcodebuildArgs.join(' ')}"`);
 

@@ -7,6 +7,7 @@ const _chalkCols = {
     yellow: v => v,
     default: v => v,
     gray: v => v,
+    grey: v => v,
     blue: v => v,
     magenta: v => v,
 };
