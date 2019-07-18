@@ -14,9 +14,14 @@ const cleanProjectModules = c => new Promise((resolve, reject) => {
     const packagesFolder = path.join(c.paths.projectRootFolder, 'packages');
     if (fs.existsSync(packagesFolder)) {
         fs.readdirSync(packagesFolder).forEach((dir) => {
-            pathsToRemove.push(path.join(packagesFolder, dir, 'node_modules'));
-            pathsToRemove.push(path.join(packagesFolder, dir, 'package-lock.json'));
-            msg += chalk.red(`./packages/${dir}/node_modules\n./packages/${dir}/package-lock.json\n`);
+            if (dir === '.DS_Store') {
+                pathsToRemove.push(path.join(packagesFolder, dir));
+                msg += chalk.red(`./packages/${dir}\n`);
+            } else {
+                pathsToRemove.push(path.join(packagesFolder, dir, 'node_modules'));
+                pathsToRemove.push(path.join(packagesFolder, dir, 'package-lock.json'));
+                msg += chalk.red(`./packages/${dir}/node_modules\n./packages/${dir}/package-lock.json\n`);
+            }
         });
     }
 
