@@ -1029,7 +1029,7 @@ rnv log -p ios -f com.myapp
 
 #### App Config
 
-<a href="##apple-based-config">see: Apple based config</a>
+<a href="#apple-based-config">see: Apple based config</a>
 
 ---
 
@@ -1157,7 +1157,7 @@ rnv log -p android -f com.myapp
 
 #### App Config
 
-<a href="##android-based-config">see: Android based config</a>
+<a href="#android-based-config">see: Android based config</a>
 
 ---
 
@@ -1216,7 +1216,7 @@ rnv run -p tvos -t "Apple TV 4K"
 
 #### App Config
 
-<a href="##apple-based-config">see: Apple based config</a>
+<a href="#apple-based-config">see: Apple based config</a>
 
 ---
 
@@ -1279,7 +1279,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 #### App Config
 
-<a href="##android-based-config">see: Android based config</a>
+<a href="#android-based-config">see: Android based config</a>
 
 ---
 
@@ -1700,6 +1700,10 @@ Launch specific emulator:
 ```
 rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ```
+
+#### App Config
+
+<a href="#android-based-config">see: Android based config</a>
 
 ---
 
