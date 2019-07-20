@@ -157,11 +157,13 @@
             "buildSchemes": {
                 "debug": {
                     "id": "renative.helloworld.debug",
-                    "bundleAssets": false
+                    "bundleAssets": false,
+                    "environment": "development"
                 },
                 "release": {
                     "bundleAssets": true,
-                    "bundleIsDev": false
+                    "bundleIsDev": false,
+                    "environment": "production"
                 }
             }
         },
