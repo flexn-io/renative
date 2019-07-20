@@ -38,9 +38,12 @@ import {
     logSuccess,
     getBuildsFolder,
 } from '../common';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
+import { parseAndroidManifest } from './android/manifestParser';
+
+// import baseManifestFile from './android/supportFiles/AndroidManifest.json';
 
 const readline = require('readline');
 
@@ -1152,19 +1155,6 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     targetCompatibility 1.8`;
 
 
-    // MANIFEST APPLICATION
-    let manifestApplicationParams = {
-        'android:allowBackup': true
-    };
-    const manifestApplicationParamsExt = pluginConfigAndroid.manifest?.application?.parameters;
-    if (manifestApplicationParamsExt) {
-        manifestApplicationParams = { ...manifestApplicationParams, ...manifestApplicationParamsExt };
-    }
-
-    for (const k in manifestApplicationParams) {
-        pluginConfig.manifestApplication += `       ${k}="${manifestApplicationParams[k]}"\n`;
-    }
-
     writeCleanFile(_getBuildFilePath(c, platform, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
         { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
         { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
@@ -1231,34 +1221,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
     ]);
 
-    let prms = '';
-    const { permissions } = c.files.appConfigFile.platforms[platform];
-    const configPermissions = c.files.permissionsConfig?.permissions;
-
-    if (permissions && configPermissions) {
-        const platPerm = configPermissions[platform] ? platform : 'android';
-        const pc = configPermissions[platPerm];
-        if (permissions[0] === '*') {
-            for (const k in pc) {
-                prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
-            }
-        } else {
-            permissions.forEach((v) => {
-                if (pc[v]) {
-                    prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
-                }
-            });
-        }
-    }
-
-    // get correct source of manifest
-    const manifestFile = 'app/src/main/AndroidManifest.xml';
-
-    writeCleanFile(_getBuildFilePath(c, platform, manifestFile), path.join(appFolder, manifestFile), [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{PLUGIN_MANIFEST}}', override: prms },
-        { pattern: '{{PLUGIN_MANIFEST_APPLICATION}}', override: pluginConfig.manifestApplication },
-    ]);
+    parseAndroidManifest(c, platform);
 
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
@@ -1276,17 +1239,6 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
     resolve();
 });
-
-const _getBuildFilePath = (c, platform, filePath) => {
-    let sp = path.join(getAppTemplateFolder(c, platform), filePath);
-    const sp2 = path.join(getBuildsFolder(c, platform, c.paths.projectConfigFolder), filePath);
-    if (fs.existsSync(sp2)) sp = sp2;
-
-    const sp3 = path.join(getBuildsFolder(c, platform), filePath);
-    if (fs.existsSync(sp3)) sp = sp3;
-
-    return sp;
-};
 
 const _getPrivateConfig = (c, platform) => {
     const privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
