@@ -1027,6 +1027,10 @@ Get device/simulator logs with filter
 rnv log -p ios -f com.myapp
 ```
 
+#### App Config
+
+<a href="##apple-based-config">see: Apple based config</a>
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_android.png?raw=true" width=50 height=50 />
@@ -1151,6 +1155,10 @@ Get device/simulator logs with filter
 rnv log -p android -f com.myapp
 ```
 
+#### App Config
+
+<a href="##android-based-config">see: Android based config</a>
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tvos.png?raw=true" width=90 height=50 />
@@ -1205,6 +1213,10 @@ Launch with specific tvOS simulator
 ```
 rnv run -p tvos -t "Apple TV 4K"
 ```
+
+#### App Config
+
+<a href="##apple-based-config">see: Apple based config</a>
 
 ---
 
@@ -1264,6 +1276,10 @@ Launch specific emulator:
 ```
 rnv target launch -p androidtv -t Android_TV_720p_API_22
 ```
+
+#### App Config
+
+<a href="##android-based-config">see: Android based config</a>
 
 ---
 
@@ -1339,6 +1355,10 @@ Run app on custom port `9999`:
 rnv run -p web --port 9999
 ```
 
+#### App Config
+
+<a href="##web-based-config">see: Web based config</a>
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
@@ -1358,7 +1378,7 @@ rnv run -p web --port 9999
 </table>
 
 -   Latest Tizen project
--   Support for Tizen 5.0
+-   Support for Tizen 5.0, 4.0, 3.0
 
 #### Requirements
 
@@ -1803,6 +1823,110 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 
 ```
 rnv run -p firefoxtv
+```
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
+
+## AppConfigs
+
+`./appConfigs` offers powerful configuration system which allows you to configure various flavours in your projects.
+
+`./appConfigs/APP_ID/config.json` spec:
+
+```json
+{
+  "id": "APP_ID",
+  "common": {
+    "title": "",
+    "description": "",
+    "author": {
+      "name": ""
+    },
+    "includedPlugins": ["*"],
+    "includedFonts": ["*"]
+  },
+  "platforms": {
+
+  }
+}
+
+```
+
+#### Android based config
+
+Applies for `android`, `androidtv`, `androidwear`
+
+```json
+{
+  "entryFile": "",
+  "universalApk": true,
+  "multipleAPKs": false,
+  "minSdkVersion": 21,
+  "backgroundColor": "",
+  "id": "",
+  "signingConfig": "",
+  "bundleAssets": false,
+  "permissions": [],
+  "bundleAssets": true,
+  "bundleIsDev": true,
+  "buildSchemes": {}
+}
+```
+
+#### Apple based config
+
+Applies for `ios`, `tvos`
+
+```json
+{
+  "entryFile": "",
+  "backgroundColor": "",
+  "id": "",
+  "bundleAssets": false,
+  "permissions": [],
+  "bundleAssets": true,
+  "bundleIsDev": true,
+  "teamID": "",
+  "scheme": "",
+  "permissions": ["*"],
+  "orientationSupport": {
+    "phone": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ],
+    "tab": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ]
+  },
+  "provisioningStyle": "",
+  "systemCapabilities": {},
+  "entitlements": {},
+  "buildSchemes": {}
+}
+```
+
+#### Web based config
+
+Applies for `web`
+
+```json
+{
+  "id": "",
+  "entryFile": "",
+  "title": "",
+  "webpackConfig": {
+    "devServerHost": "",
+    "customScripts": []
+  },
+  "buildSchemes": {}
+}
 ```
 
 ---
