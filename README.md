@@ -889,7 +889,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -910,6 +910,20 @@ Folder Structure (Generated Project)
     │   ├── permissions.json        # Permissions configuration
     │   └── plugins.json            # React Native Plugins configuration
     └── src                         # Source files
+
+
+#### Override Mechanism
+
+ReNative support flexible override mechanism which allows you customise your project to great degree
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch2.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
 
 ---
 
