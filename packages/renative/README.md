@@ -348,7 +348,7 @@ https://www.npmjs.com/package/renative-template-blank
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_plugins.png?raw=true" width=50 height=50 />
 
 ## Plugins
 
@@ -867,7 +867,7 @@ rnv start --mono
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_runtime.png?raw=true" width=50 height=50 />
 
 ## Runtime
 
@@ -889,7 +889,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -910,6 +910,20 @@ Folder Structure (Generated Project)
     │   ├── permissions.json        # Permissions configuration
     │   └── plugins.json            # React Native Plugins configuration
     └── src                         # Source files
+
+
+#### Override Mechanism
+
+ReNative support flexible override mechanism which allows you customise your project to great degree
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch2.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
 
 ---
 
@@ -1831,7 +1845,7 @@ rnv run -p firefoxtv
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_appconfigs.png?raw=true" width=50 height=50 />
 
 ## AppConfigs
 
