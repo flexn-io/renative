@@ -1251,8 +1251,20 @@ const resolveNodeModulePath = (c, filePath) => {
     return pth;
 };
 
+const getBuildFilePath = (c, platform, filePath) => {
+    let sp = path.join(getAppTemplateFolder(c, platform), filePath);
+    const sp2 = path.join(getBuildsFolder(c, platform, c.paths.projectConfigFolder), filePath);
+    if (fs.existsSync(sp2)) sp = sp2;
+
+    const sp3 = path.join(getBuildsFolder(c, platform), filePath);
+    if (fs.existsSync(sp3)) sp = sp3;
+
+    return sp;
+};
+
 export {
     SUPPORTED_PLATFORMS,
+    getBuildFilePath,
     configureEntryPoints,
     getBuildsFolder,
     setAppConfig,
@@ -1328,6 +1340,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    getBuildFilePath,
     getBuildsFolder,
     configureEntryPoints,
     setAppConfig,

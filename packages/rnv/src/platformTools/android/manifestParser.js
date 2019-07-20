@@ -24,6 +24,7 @@ import {
     writeCleanFile,
     getAppId,
     getAppTemplateFolder,
+    getBuildFilePath,
     getEntryFile,
     logWarning,
     logDebug,
@@ -78,25 +79,21 @@ const _parseNode = (n, level) => {
     return output;
 };
 
-export const parseAndroidManifest = (c, platform) => new Promise((resolve, reject) => {
+export const parseAndroidManifestSync = (c, platform) => {
     const pluginConfig = {};
-    // ANDROID MANIFET
-    console.log('DHKJDDJKD', c.paths.rnvRootFolder);
     try {
         const baseManifestFilePath = path.join(c.paths.rnvRootFolder, 'src/platformTools/android/supportFiles/AndroidManifest.json');
         const baseManifestFile = readObjectSync(baseManifestFilePath);
+        const appFolder = getAppFolder(c, platform);
 
         const pluginConfigAndroid = c.files.pluginConfig?.android || {};
 
-
         const application = _findChildNode('application', '.MainApplication', baseManifestFile);
-        console.log('DHKJDDJKD2', application);
         const manifestApplicationParams = application.parameters;
         const manifestApplicationParamsExt = pluginConfigAndroid.manifest?.application?.parameters;
         if (manifestApplicationParamsExt) {
             application.parameters = { ...manifestApplicationParams, ...manifestApplicationParamsExt };
         }
-
 
         const prms = '';
         const { permissions } = c.files.appConfigFile.platforms[platform];
@@ -135,16 +132,16 @@ export const parseAndroidManifest = (c, platform) => new Promise((resolve, rejec
         // get correct source of manifest
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
-        writeCleanFile(_getBuildFilePath(c, platform, manifestFile), path.join(appFolder, manifestFile), [
+        writeCleanFile(getBuildFilePath(c, platform, manifestFile), path.join(appFolder, manifestFile), [
             { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
             { pattern: '{{PLUGIN_MANIFEST}}', override: prms },
             { pattern: '{{PLUGIN_MANIFEST_APPLICATION}}', override: pluginConfig.manifestApplication },
+            { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml },
         ]);
 
-        resolve();
+
         return;
     } catch (e) {
         logError(e);
-        reject(e);
     }
-});
+};
