@@ -904,7 +904,7 @@ Folder Structure (Generated Project)
     │       └── config.json         # Application flavour config
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
-    ├── projectConfigs              # Project configuration files/assets
+    ├── projectConfig               # Project configuration files/assets
     │   ├── fonts                   # Folder for all custom fonts
     │   ├── fonts.json              # Fonts configuration
     │   ├── permissions.json        # Permissions configuration
@@ -1614,6 +1614,12 @@ You can configure each `buldScheme` ie `-s release` in your config file `./appCo
 
 ```
 rnv run -p macos -s release
+```
+
+#### Export
+
+```
+rnv export -p macos -s release
 ```
 
 ---
