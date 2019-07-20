@@ -348,7 +348,7 @@ https://www.npmjs.com/package/renative-template-blank
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_plugins.png?raw=true" width=50 height=50 />
 
 ## Plugins
 
@@ -867,7 +867,7 @@ rnv start --mono
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_runtime.png?raw=true" width=50 height=50 />
 
 ## Runtime
 
@@ -1845,7 +1845,7 @@ rnv run -p firefoxtv
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_cli.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_appconfigs.png?raw=true" width=50 height=50 />
 
 ## AppConfigs
 
