@@ -48,7 +48,10 @@ import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/w
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
 import { runWebOS, buildWebOSProject } from '../platformTools/webos';
 import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
-import { runElectron, buildElectron, runElectronDevServer } from '../platformTools/electron';
+import {
+    runElectron,
+    buildElectron, runElectronDevServer, configureElectronProject, exportElectron
+} from '../platformTools/electron';
 import PlatformSetup from '../setupTools';
 import { executePipe } from '../projectTools/buildHooks';
 import {
@@ -66,7 +69,6 @@ const START = 'start';
 const PACKAGE = 'package';
 const BUILD = 'build';
 const DEPLOY = 'deploy';
-// const UPDATE = 'update';
 const EXPORT = 'export';
 const TEST = 'test';
 const DOC = 'doc';
@@ -371,6 +373,18 @@ const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    case MACOS:
+    case WINDOWS:
+        executePipe(c, PIPES.EXPORT_BEFORE)
+            .then(() => cleanPlatformIfRequired(c, platform))
+            .then(() => configureIfRequired(c, platform))
+            .then(() => configureElectronProject(c, platform))
+            .then(() => buildElectron(c, platform))
+            .then(() => exportElectron(c, platform))
+            .then(() => executePipe(c, PIPES.EXPORT_AFTER))
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
     }
 
     logErrorPlatform(platform, resolve);
@@ -456,6 +470,7 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
+            .then(() => configureElectronProject(c, platform))
             .then(() => buildElectron(c, platform))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => resolve())
