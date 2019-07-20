@@ -26,6 +26,7 @@ import {
     getAppAuthor,
     getAppLicense,
     logWarning,
+    logSuccess,
     copyBuildsFolder,
     getConfigProp,
     checkPortInUse,
@@ -33,14 +34,19 @@ import {
     resolveNodeModulePath
 } from '../common';
 import { buildWeb, runWeb, runWebDevServer } from './web';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import {
+    cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
+    copyFileSync, mkdirSync, writeObjectSync, readObjectSync
+} from '../systemTools/fileutils';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask('configureElectronProject');
+    logTask(`configureElectronProject:${platform}`);
 
     // configureIfRequired(c, platform)
     //     .then(() => configureProject(c, platform))
-    configureProject(c, platform)
+    copyElectronAssets(c, platform)
+        .then(() => copyBuildsFolder(c, platform))
+        .then(() => configureProject(c, platform))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -54,13 +60,13 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const templateFolder = getAppTemplateFolder(c, platform);
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
+    const electronConfigPath = path.join(appFolder, 'electronConfig.json');
     const packagePath = path.join(appFolder, 'package.json');
+    const appId = getAppId(c, platform);
 
     if (!fs.existsSync(packagePath)) {
         logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
         createPlatformBuild(c, platform)
-            .then(() => copyBuildsFolder(c, platform))
             .then(() => configureElectronProject(c, platform))
             .then(() => resolve(c))
             .catch(e => reject(e));
@@ -68,7 +74,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     }
 
     const pkgJson = path.join(templateFolder, 'package.json');
-    const packageJson = JSON.parse(fs.readFileSync(pkgJson));
+    const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
     packageJson.productName = `${getAppTitle(c, platform)} - ${platform}`;
@@ -78,7 +84,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     packageJson.license = `${getAppLicense(c, platform)}`;
     packageJson.main = './main.js';
 
-    fs.writeFileSync(packagePath, JSON.stringify(packageJson, null, 2));
+    writeObjectSync(packagePath, packageJson);
 
     if (bundleAssets) {
         copyFileSync(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'));
@@ -96,6 +102,27 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         );
     }
 
+    const electronConfig = {
+        appId
+        directories: {
+            app: appFolder,
+            buildResources: path.join(appFolder, 'resources'),
+            output: path.join(appFolder, 'build/release')
+        }
+    };
+    writeObjectSync(electronConfigPath, electronConfig);
+
+
+    resolve();
+});
+
+const copyElectronAssets = (c, platform) => new Promise((resolve) => {
+    logTask(`copyElectronAssets:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    const destPath = path.join(getAppFolder(c, platform), 'resources');
+    const sourcePath = path.join(c.paths.appConfigFolder, `assets/${platform}/resources`);
+    copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
 });
 
@@ -105,6 +132,18 @@ const buildElectron = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
     buildWeb(c, platform)
         .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const exportElectron = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`exportElectron:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+    execShellAsync(`npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
+        .then(() => {
+            logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
+            resolve();
+        })
         .catch(e => reject(e));
 });
 
@@ -181,4 +220,4 @@ const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject
         .catch(e => reject(e));
 });
 
-export { configureElectronProject, runElectron, buildElectron, runElectronDevServer };
+export { configureElectronProject, runElectron, buildElectron, exportElectron, runElectronDevServer };
