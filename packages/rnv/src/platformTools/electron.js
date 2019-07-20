@@ -149,7 +149,7 @@ const exportElectron = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
     execShellAsync(`npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
         .then(() => {
-            logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
+            logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
             resolve();
         })
         .catch(e => reject(e));
