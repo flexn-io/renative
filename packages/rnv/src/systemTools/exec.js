@@ -53,6 +53,9 @@ const executeAsync = (
     }
 ) => new Promise((resolve, reject) => {
     if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
+
+    logDebug(`executeAsync:${cmd} ${args ? args.join(' ') : ''}`);
+
     const command = spawn(cmd, args, opts);
 
     let stdout = '';

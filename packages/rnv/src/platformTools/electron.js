@@ -33,6 +33,7 @@ import {
     logInfo,
     resolveNodeModulePath
 } from '../common';
+import { MACOS } from '../constants';
 import { buildWeb, runWeb, runWebDevServer } from './web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
@@ -103,7 +104,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     }
 
     const electronConfig = {
-        appId
+        appId,
         directories: {
             app: appFolder,
             buildResources: path.join(appFolder, 'resources'),
@@ -120,10 +121,17 @@ const copyElectronAssets = (c, platform) => new Promise((resolve) => {
     logTask(`copyElectronAssets:${platform}`);
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const destPath = path.join(getAppFolder(c, platform), 'resources');
-    const sourcePath = path.join(c.paths.appConfigFolder, `assets/${platform}/resources`);
-    copyFolderContentsRecursiveSync(sourcePath, destPath);
-    resolve();
+
+    if (platform === MACOS) {
+        _generateICNS(c, platform)
+            .then(() => resolve())
+            .catch(e => reject(e));
+    } else {
+        const destPath = path.join(getAppFolder(c, platform), 'resources');
+        const sourcePath = path.join(c.paths.appConfigFolder, `assets/${platform}/resources`);
+        copyFolderContentsRecursiveSync(sourcePath, destPath);
+        resolve();
+    }
 });
 
 const buildElectron = (c, platform) => new Promise((resolve, reject) => {
@@ -218,6 +226,36 @@ const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject
     runWebDevServer(c, platform, port)
         .then(() => resolve())
         .catch(e => reject(e));
+});
+
+const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_generateICNS:${platform}`);
+
+    const source = path.join(c.paths.appConfigFolder, `assets/${platform}/AppIcon.iconset`);
+
+    const dest = path.join(getAppFolder(c, platform), 'resources/icon.icns');
+
+    if (!fs.existsSync(source)) {
+        logWarning(`Your app config is missing ${chalk.white(source)}. icon.icns will not be generated!`);
+        resolve();
+        return;
+    }
+
+    mkdirSync(path.join(getAppFolder(c, platform), 'resources'));
+
+    const p = [
+        '--convert',
+        'icns',
+        source,
+        '--output',
+        dest
+    ];
+    try {
+        executeAsync('iconutil', p);
+        resolve();
+    } catch (e) {
+        reject(e);
+    }
 });
 
 export { configureElectronProject, runElectron, buildElectron, exportElectron, runElectronDevServer };
