@@ -852,15 +852,17 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         pluginPaths: '',
         pluginImports: '',
         pluginPackages: 'MainReactPackage(),\n',
-        pluginImplementations: '',
-        pluginAfterEvaluate: '',
         pluginActivityImports: '',
         pluginActivityMethods: '',
         mainApplicationMethods: '',
         applyPlugin: '',
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
-        manifestApplication: ''
+        manifestApplication: '',
+        buildGradleAllProjectsRepositories: '',
+        appBuildGradleSigningConfigs: '',
+        appBuildGradleImplementations: '',
+        appBuildGradleAfterEvaluate: '',
     };
 
     // PLUGINS
