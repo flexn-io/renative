@@ -6,13 +6,13 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
-        maven { url 'https://maven.fabric.io/public' }
+        {{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.3.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'io.fabric.tools:gradle:1.25.4'
         classpath 'com.google.gms:google-services:4.2.0'
+        {{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}
     }
 }
 
@@ -22,7 +22,6 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "$rootDir/../../node_modules/react-native/android" }
-        maven { url 'https://maven.fabric.io/public' }
         maven { url "https://jitpack.io" }
         {{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}
     }

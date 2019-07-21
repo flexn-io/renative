@@ -858,6 +858,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         pluginActivityResultMethods: '',
         manifestApplication: '',
         buildGradleAllProjectsRepositories: '',
+        buildGradleBuildScriptRepositories: '',
+        buildGradleBuildScriptDependencies: '',
         appBuildGradleSigningConfigs: '',
         appBuildGradleImplementations: '',
         appBuildGradleAfterEvaluate: '',

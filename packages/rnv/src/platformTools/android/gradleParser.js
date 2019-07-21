@@ -37,7 +37,9 @@ export const parseBuildGradleSync = (c, platform) => {
         { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfig.compileSdkVersion },
         { pattern: '{{SUPPORT_LIB_VERSION}}', override: c.pluginConfig.supportLibVersion },
         { pattern: '{{BUILD_TOOLS_VERSION}}', override: c.pluginConfig.buildToolsVersion },
-        { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfig.buildGradleAllProjectsRepositories }
+        { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfig.buildGradleAllProjectsRepositories },
+        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfig.buildGradleBuildScriptRepositories },
+        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfig.buildGradleBuildScriptDependencies }
     ]);
 };
 
@@ -286,6 +288,24 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         for (k in allProjRepos) {
             if (allProjRepos[k] === true) {
                 c.pluginConfig.buildGradleAllProjectsRepositories += `${k}`;
+            }
+        }
+    }
+
+    const buildscriptRepos = buildGradle?.buildscript?.repositories;
+    if (buildscriptRepos) {
+        for (k in buildscriptRepos) {
+            if (buildscriptRepos[k] === true) {
+                c.pluginConfig.buildGradleBuildScriptRepositories += `${k}`;
+            }
+        }
+    }
+
+    const buildscriptDeps = buildGradle?.buildscript?.dependencies;
+    if (buildscriptDeps) {
+        for (k in buildscriptDeps) {
+            if (buildscriptDeps[k] === true) {
+                c.pluginConfig.buildGradleBuildScriptDependencies += `${k}`;
             }
         }
     }
