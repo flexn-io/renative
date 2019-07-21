@@ -156,7 +156,7 @@ export const parseAndroidManifestSync = (c, platform) => {
         });
 
         // appConfig PERMISSIONS OVERRIDES
-        const prms = '';
+        let prms = '';
         const { permissions } = c.files.appConfigFile.platforms[platform];
         const configPermissions = c.files.permissionsConfig?.permissions;
 
@@ -165,7 +165,7 @@ export const parseAndroidManifestSync = (c, platform) => {
             const pc = configPermissions[platPerm];
             if (permissions[0] === '*') {
                 for (const k in pc) {
-                    // prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
+                    prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
                     baseManifestFile.children.push({
                         tag: 'uses-permission',
                         'android:name': pc[k].key
@@ -174,7 +174,7 @@ export const parseAndroidManifestSync = (c, platform) => {
             } else {
                 permissions.forEach((v) => {
                     if (pc[v]) {
-                        // prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
+                        prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
                             'android:name': pc[v].key
@@ -190,6 +190,8 @@ export const parseAndroidManifestSync = (c, platform) => {
 
         writeCleanFile(getBuildFilePath(c, platform, manifestFile), path.join(appFolder, manifestFile), [
             { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml },
+            { pattern: '{{PERMISIONS}}', override: prms },
+            { pattern: '{{APPLICATION_ID}}', override: baseManifestFile.package }
         ]);
 
         return;

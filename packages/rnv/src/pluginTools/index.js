@@ -36,8 +36,10 @@ const parsePlugins = (c, pluginCallback) => {
                     if (plugin) {
                         const pluginPlat = plugin[c.platform];
                         if (pluginPlat) {
-                            if (plugin['no-active'] !== true) {
+                            if (plugin['no-active'] !== true && plugin.enabled !== false) {
                                 if (pluginCallback) pluginCallback(plugin, pluginPlat, key);
+                            } else {
+                                logWarning(`Plugin ${key} is marked disabled. skipping.`);
                             }
                         }
                     }

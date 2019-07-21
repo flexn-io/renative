@@ -282,9 +282,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     // BUILD.GRADLE
     const buildGradle = plugin.BuildGradle;
     const allProjRepos = buildGradle?.allprojects?.repositories;
-    console.log('SGJSHGSJSHG1', buildGradle);
     if (allProjRepos) {
-        console.log('LOOOOOOOOO', allProjRepos);
         for (k in allProjRepos) {
             if (allProjRepos[k] === true) {
                 c.pluginConfig.buildGradleAllProjectsRepositories += `${k}`;
