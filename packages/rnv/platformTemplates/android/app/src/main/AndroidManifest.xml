@@ -1,2 +1,5 @@
-<!-- Generate by ReNative (https://renative.org) -->
+<!-- 
+Generate by ReNative (https://renative.org)
+BASE: packages/rnv/src/platformTools/android/supportFiles/AndroidManifest_android.json
+-->
 {{PLUGIN_MANIFEST_FILE}}

@@ -139,7 +139,7 @@ export const parseAndroidManifestSync = (c, platform) => {
     logTask(`parseAndroidManifestSync:${platform}`);
     const pluginConfig = {};
     try {
-        const baseManifestFilePath = path.join(c.paths.rnvRootFolder, 'src/platformTools/android/supportFiles/AndroidManifest.json');
+        const baseManifestFilePath = path.join(c.paths.rnvRootFolder, `src/platformTools/android/supportFiles/AndroidManifest_${platform}.json`);
         const baseManifestFile = readObjectSync(baseManifestFilePath);
         const appFolder = getAppFolder(c, platform);
         const application = _findChildNode('application', '.MainApplication', baseManifestFile);

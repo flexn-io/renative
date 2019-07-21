@@ -50,8 +50,6 @@ import {
 } from './android/gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync } from './android/xmlValuesParser';
 
-// import baseManifestFile from './android/supportFiles/AndroidManifest.json';
-
 const readline = require('readline');
 
 const CHECK_INTEVAL = 5000;
