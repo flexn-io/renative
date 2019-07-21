@@ -1,3 +1,34 @@
+import path from 'path';
+import os from 'os';
+import fs from 'fs';
+import net from 'net';
+import chalk from 'chalk';
+import shell from 'shelljs';
+import child_process from 'child_process';
+import inquirer from 'inquirer';
+import {
+    logTask,
+    logError,
+    getAppFolder,
+    isPlatformActive,
+    copyBuildsFolder,
+    getAppVersion,
+    getAppTitle,
+    getAppVersionCode,
+    writeCleanFile,
+    getAppId,
+    getAppTemplateFolder,
+    getBuildFilePath,
+    getEntryFile,
+    logWarning,
+    logDebug,
+    getConfigProp,
+    logInfo,
+    logSuccess,
+    getBuildsFolder,
+} from '../../common';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 export const parseValuesStringsSync = (c, platform) => {
     const stringsPath = 'app/src/main/res/values/strings.xml';

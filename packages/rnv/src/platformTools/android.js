@@ -42,7 +42,10 @@ import {
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
-import { parseAndroidManifestSync } from './android/manifestParser';
+import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
+import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './android/kotlinParser';
+import { parseAppBuildGradleSync, parseBuildGradleSync, injectPluginGradleSync } from './android/gradleParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync } from './android/xmlValuesParser';
 
 // import baseManifestFile from './android/supportFiles/AndroidManifest.json';
 
