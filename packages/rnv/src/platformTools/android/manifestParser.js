@@ -37,11 +37,12 @@ import {
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
-const _findChildNode = (tag, name, manifestObj) => {
-    for (let i = 0; i < manifestObj.children.length; i++) {
-        const ch = manifestObj.children[i];
+const _findChildNode = (tag, name, node) => {
+    if (!name && !PROHIBITED_DUPLICATE_TAGS.includes(tag)) return null; // Can't determine reused child nodes without unique name identifier
+    for (let i = 0; i < node.children.length; i++) {
+        const ch = node.children[i];
         if (ch.tag === tag) {
-            if ((ch.parameters && ch.parameters['android:name'] === name) || PROHIBITED_DUPLICATE_TAGS.includes(tag)) return ch;
+            if ((ch['android:name'] === name) || PROHIBITED_DUPLICATE_TAGS.includes(tag)) return ch;
         }
     }
     return null;
@@ -55,23 +56,34 @@ const _parseNode = (n, level) => {
     for (let i = 0; i < level; i++) {
         space += '    ';
     }
-    let isSingleLine = true;
 
-    if (n.parameters) {
-        isSingleLine = Object.keys(n.parameters).length < 2;
+    let nodeKeysCount = 0;
+    Object.keys(n).forEach((v) => {
+        if (!SYSTEM_TAGS.includes(v)) nodeKeysCount++;
+    });
+    const isSingleLine = nodeKeysCount < 2;
+
+    if (!n.tag) {
+        logWarning('Each node must have tag key!');
+        return;
+    }
+
+    if (n) {
         const endLine = isSingleLine ? ' ' : '\n';
         output += `${space}<${n.tag}${endLine}`;
-        for (const k in n.parameters) {
-            output += `${isSingleLine ? '' : `${space}  `}${k}="${n.parameters[k]}"${endLine}`;
+        for (const k in n) {
+            if (!SYSTEM_TAGS.includes(k)) {
+                output += `${isSingleLine ? '' : `${space}  `}${k}="${n[k]}"${endLine}`;
+            }
         }
     } else {
         output += `${space}<${n.tag}`;
     }
     if (n.children && n.children.length) {
-        if (n.parameters) {
-            output += `${isSingleLine ? '' : space}>\n`;
-        } else {
+        if (isSingleLine) {
             output += '>\n';
+        } else {
+            output += `${space}>\n`;
         }
 
         const nextLevel = level += 1;
@@ -86,31 +98,36 @@ const _parseNode = (n, level) => {
 };
 
 const _mergeNodeParameters = (node, nodeParamsExt) => {
-    if (!nodeParamsExt) return;
-
-    if (node) {
-        if (!node.parameters) node.parameters = {};
+    if (!nodeParamsExt) {
+        logWarning('_mergeNodeParameters: nodeParamsExt value is null');
+        return;
     }
-    const nodeParams = node.parameters;
-    node.parameters = { ...nodeParams, ...nodeParamsExt };
+    if (!node) {
+        logWarning('_mergeNodeParameters: node value is null');
+        return;
+    }
+
+    for (const k in nodeParamsExt) {
+        if (!SYSTEM_TAGS.includes(k)) node[k] = nodeParamsExt[k];
+    }
 };
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
+const SYSTEM_TAGS = ['tag', 'children'];
 
 const _mergeNodeChildren = (node, nodeChildrenExt) => {
-    console.log('_mergeNodeChildren');
+    // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);
     if (!node.children) node.children = [];
     nodeChildrenExt.forEach((v) => {
-        const nameExt = v.parameters ? v.parameters['android:name'] : null;
-        console.log('AASSAAAAAA', nameExt, v.tag, v);
+        const nameExt = v['android:name'];
         if (v.tag) {
             const childNode = _findChildNode(v.tag, nameExt, node);
             if (childNode) {
-                console.log('FOUND EXISTING SHIT TO MERGE', nameExt, v.tag, childNode, v.children);
-                _mergeNodeParameters(childNode, v.parameters);
+                console.log('_mergeNodeChildren: FOUND EXISTING NODE TO MERGE', nameExt, v.tag);
+                _mergeNodeParameters(childNode, v);
                 _mergeNodeChildren(childNode, v.children);
             } else {
-                console.log('NO android:name found. adding to children', v);
+                console.log('_mergeNodeChildren: NO android:name found. adding to children', nameExt, v.tag);
                 node.children.push(v);
             }
         }
@@ -118,25 +135,27 @@ const _mergeNodeChildren = (node, nodeChildrenExt) => {
 };
 
 export const parseAndroidManifestSync = (c, platform) => {
+    logTask(`parseAndroidManifestSync:${platform}`);
     const pluginConfig = {};
     try {
         const baseManifestFilePath = path.join(c.paths.rnvRootFolder, 'src/platformTools/android/supportFiles/AndroidManifest.json');
         const baseManifestFile = readObjectSync(baseManifestFilePath);
         const appFolder = getAppFolder(c, platform);
         const application = _findChildNode('application', '.MainApplication', baseManifestFile);
-        const manifestApplicationParams = application.parameters;
+
+        baseManifestFile.package = getAppId(c, platform);
 
         // projectConfig/plugins.json PLUGIN CONFIG ROOT OVERRIDES
-        const pluginConfigAndroid = c.files.pluginConfig?.android || {};
-        _mergeNodeParameters(application, pluginConfigAndroid.manifest?.application?.parameters);
+        const pluginConfigAndroid = c.files.pluginConfig?.android?.AndroidManifest;
+        const applicationExt = _findChildNode('application', '.MainApplication', pluginConfigAndroid);
+        _mergeNodeParameters(application, applicationExt);
 
         // projectConfig/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, (plugin, pluginPlat, key) => {
             if (pluginPlat && pluginPlat.AndroidManifest) {
                 const pluginApplication = _findChildNode('application', '.MainApplication', pluginPlat.AndroidManifest);
-                console.log('SJHGSJSHGSSG', pluginApplication);
                 if (pluginApplication) {
-                    _mergeNodeParameters(application, pluginApplication.parameters);
+                    _mergeNodeParameters(application, pluginApplication);
 
                     _mergeNodeChildren(application, pluginApplication.children);
                 }
@@ -156,9 +175,7 @@ export const parseAndroidManifestSync = (c, platform) => {
                     // prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
                     baseManifestFile.children.push({
                         tag: 'uses-permission',
-                        parameters: {
-                            'android:name': pc[k].key
-                        }
+                        'android:name': pc[k].key
                     });
                 }
             } else {
@@ -167,28 +184,20 @@ export const parseAndroidManifestSync = (c, platform) => {
                         // prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
-                            parameters: {
-                                'android:name': pc[v].key
-                            }
+                            'android:name': pc[v].key
                         });
                     }
                 });
             }
         }
 
-
         const manifestXml = _convertToXML(baseManifestFile);
-        console.log('SJHGSJHSJSGSJHGSHSGSJHGSJH', manifestXml);
         // get correct source of manifest
         const manifestFile = 'app/src/main/AndroidManifest.xml';
 
         writeCleanFile(getBuildFilePath(c, platform, manifestFile), path.join(appFolder, manifestFile), [
-            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-            { pattern: '{{PLUGIN_MANIFEST}}', override: prms },
-            { pattern: '{{PLUGIN_MANIFEST_APPLICATION}}', override: pluginConfig.manifestApplication },
             { pattern: '{{PLUGIN_MANIFEST_FILE}}', override: manifestXml },
         ]);
-
 
         return;
     } catch (e) {
