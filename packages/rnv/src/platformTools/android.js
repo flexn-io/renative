@@ -44,7 +44,10 @@ import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../cons
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
 import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './android/kotlinParser';
-import { parseAppBuildGradleSync, parseBuildGradleSync, injectPluginGradleSync } from './android/gradleParser';
+import {
+    parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
+    parseGradlePropertiesSync, injectPluginGradleSync
+} from './android/gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync } from './android/xmlValuesParser';
 
 // import baseManifestFile from './android/supportFiles/AndroidManifest.json';
@@ -909,34 +912,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     resolve();
 });
-
-const _getPrivateConfig = (c, platform) => {
-    const privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
-    const appConfigSPP = c.files.appConfigFile.platforms[platform] ? c.files.appConfigFile.platforms[platform].signingPropertiesPath : null;
-    const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.globalConfigFolder) : null;
-    const privateConfigPath = appConfigSPPClean || path.join(privateConfigFolder, 'config.private.json');
-    c.paths.privateConfigPath = privateConfigPath;
-    c.paths.privateConfigDir = privateConfigPath.replace('/config.private.json', '');
-    if (fs.existsSync(privateConfigPath)) {
-        try {
-            const output = JSON.parse(fs.readFileSync(privateConfigPath));
-            output.parentFolder = c.paths.privateConfigDir;
-            output.path = privateConfigPath;
-            logInfo(
-                `Found ${chalk.white(privateConfigPath)}. Will use it for production releases!`,
-            );
-            return output;
-        } catch (e) {
-            logError(e);
-            return null;
-        }
-    } else {
-        logWarning(
-            `You're missing ${chalk.white(privateConfigPath)} for this app: . You won't be able to make production releases without it!`,
-        );
-        return null;
-    }
-};
 
 // Resolve or reject will not be called so this will keep running
 const runAndroidLog = c => new Promise(() => {

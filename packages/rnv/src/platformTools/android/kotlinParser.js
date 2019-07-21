@@ -31,6 +31,7 @@ import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSyn
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 export const parseMainApplicationSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     writeCleanFile(getBuildFilePath(c, platform, applicationPath), path.join(appFolder, applicationPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
@@ -42,6 +43,7 @@ export const parseMainApplicationSync = (c, platform) => {
 };
 
 export const parseMainActivitySync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
     writeCleanFile(getBuildFilePath(c, platform, activityPath), path.join(appFolder, activityPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
@@ -53,6 +55,7 @@ export const parseMainActivitySync = (c, platform) => {
 };
 
 export const parseSplashActivitySync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
     const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
     writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
@@ -68,29 +71,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     const modulePath = `../../${pathFixed}`;
-    if (plugin.projectName) {
-        c.pluginConfig.pluginIncludes += `, ':${plugin.projectName}'`;
-        c.pluginConfig.pluginPaths += `project(':${
-            plugin.projectName
-        }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-        if (!plugin.skipImplementation) {
-            if (plugin.implementation) {
-                c.pluginConfig.pluginImplementations += `${plugin.implementation}\n`;
-            } else {
-                c.pluginConfig.pluginImplementations += `    implementation project(':${plugin.projectName}')\n`;
-            }
-        }
-    } else {
-        c.pluginConfig.pluginIncludes += `, ':${key}'`;
-        c.pluginConfig.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-        if (!plugin.skipImplementation) {
-            if (plugin.implementation) {
-                c.pluginConfig.pluginImplementations += `${plugin.implementation}\n`;
-            } else {
-                c.pluginConfig.pluginImplementations += `    implementation project(':${key}')\n`;
-            }
-        }
-    }
+
     if (plugin.activityImports instanceof Array) {
         plugin.activityImports.forEach((activityImport) => {
             // Avoid duplicate imports
@@ -138,29 +119,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         });
     }
 
-    if (plugin.implementations) {
-        plugin.implementations.forEach((v) => {
-            c.pluginConfig.pluginImplementations += `    implementation ${v}\n`;
-        });
-    }
-
     if (plugin.mainApplicationMethods) {
         c.pluginConfig.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
-
-    const appBuildGradle = plugin['app/build.gradle'];
-    if (appBuildGradle) {
-        if (appBuildGradle.apply) {
-            appBuildGradle.apply.forEach((v) => {
-                c.pluginConfig.applyPlugin += `apply ${v}\n`;
-            });
-        }
-    }
-
-    if (plugin.afterEvaluate) {
-        plugin.afterEvaluate.forEach((v) => {
-            c.pluginConfig.pluginAfterEvaluate += ` ${v}\n`;
-        });
-    }
-    _fixAndroidLegacy(c, pathFixed);
 };

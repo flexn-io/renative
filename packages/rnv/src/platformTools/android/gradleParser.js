@@ -31,6 +31,7 @@ import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSyn
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 export const parseBuildGradleSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
     writeCleanFile(getBuildFilePath(c, platform, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
         { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfig.compileSdkVersion },
         { pattern: '{{SUPPORT_LIB_VERSION}}', override: c.pluginConfig.supportLibVersion },
@@ -39,6 +40,8 @@ export const parseBuildGradleSync = (c, platform) => {
 };
 
 export const parseAppBuildGradleSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+
     // ANDROID PROPS
     c.pluginConfig.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
     c.pluginConfig.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
@@ -191,6 +194,8 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 };
 
 export const parseSettingsGradleSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+
     writeCleanFile(getBuildFilePath(c, platform, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
         { pattern: '{{PLUGIN_INCLUDES}}', override: c.pluginConfig.pluginIncludes },
         { pattern: '{{PLUGIN_PATHS}}', override: c.pluginConfig.pluginPaths },
@@ -198,6 +203,7 @@ export const parseSettingsGradleSync = (c, platform) => {
 };
 
 export const parseGradlePropertiesSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
     const pluginConfigAndroid = c.files.pluginConfig?.android || {};
@@ -246,61 +252,11 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             }
         }
     }
-    if (plugin.activityImports instanceof Array) {
-        plugin.activityImports.forEach((activityImport) => {
-            // Avoid duplicate imports
-            if (c.pluginConfig.pluginActivityImports.indexOf(activityImport) === -1) {
-                c.pluginConfig.pluginActivityImports += `import ${activityImport}\n`;
-            }
-        });
-    }
-
-    if (plugin.activityMethods instanceof Array) {
-        c.pluginConfig.pluginActivityMethods += '\n';
-        c.pluginConfig.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
-    }
-
-    const mainActivity = plugin.mainActivity;
-    if (mainActivity) {
-        if (mainActivity.createMethods instanceof Array) {
-            c.pluginConfig.pluginActivityCreateMethods += '\n';
-            c.pluginConfig.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
-        }
-
-        if (mainActivity.resultMethods instanceof Array) {
-            c.pluginConfig.pluginActivityResultMethods += '\n';
-            c.pluginConfig.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
-        }
-
-        if (mainActivity.imports instanceof Array) {
-            mainActivity.imports.forEach((v) => {
-                c.pluginConfig.pluginActivityImports += `import ${v}\n`;
-            });
-        }
-
-        if (mainActivity.methods instanceof Array) {
-            c.pluginConfig.pluginActivityMethods += '\n';
-            c.pluginConfig.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
-        }
-    }
-
-    if (pkg) c.pluginConfig.pluginImports += `import ${pkg}\n`;
-    if (className) c.pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
-
-    if (plugin.imports) {
-        plugin.imports.forEach((v) => {
-            c.pluginConfig.pluginImports += `import ${v}\n`;
-        });
-    }
 
     if (plugin.implementations) {
         plugin.implementations.forEach((v) => {
             c.pluginConfig.pluginImplementations += `    implementation ${v}\n`;
         });
-    }
-
-    if (plugin.mainApplicationMethods) {
-        c.pluginConfig.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 
     const appBuildGradle = plugin['app/build.gradle'];
@@ -333,5 +289,33 @@ const _fixAndroidLegacy = (c, modulePath) => {
             { pattern: ' provided "', override: '  compileOnly "' },
             { pattern: ' compile fileTree', override: '  implementation fileTree' },
         ]);
+    }
+};
+
+const _getPrivateConfig = (c, platform) => {
+    const privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
+    const appConfigSPP = c.files.appConfigFile.platforms[platform] ? c.files.appConfigFile.platforms[platform].signingPropertiesPath : null;
+    const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.globalConfigFolder) : null;
+    const privateConfigPath = appConfigSPPClean || path.join(privateConfigFolder, 'config.private.json');
+    c.paths.privateConfigPath = privateConfigPath;
+    c.paths.privateConfigDir = privateConfigPath.replace('/config.private.json', '');
+    if (fs.existsSync(privateConfigPath)) {
+        try {
+            const output = JSON.parse(fs.readFileSync(privateConfigPath));
+            output.parentFolder = c.paths.privateConfigDir;
+            output.path = privateConfigPath;
+            logInfo(
+                `Found ${chalk.white(privateConfigPath)}. Will use it for production releases!`,
+            );
+            return output;
+        } catch (e) {
+            logError(e);
+            return null;
+        }
+    } else {
+        logWarning(
+            `You're missing ${chalk.white(privateConfigPath)} for this app: . You won't be able to make production releases without it!`,
+        );
+        return null;
     }
 };
