@@ -818,128 +818,6 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
         .catch(e => reject(e));
 });
 
-const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
-    const className = pkg ? pkg.split('.').pop() : null;
-    let packageParams = '';
-    if (plugin.packageParams) {
-        packageParams = plugin.packageParams.join(',');
-    }
-
-    const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
-    const modulePath = `../../${pathFixed}`;
-    if (plugin.projectName) {
-        pluginConfig.pluginIncludes += `, ':${plugin.projectName}'`;
-        pluginConfig.pluginPaths += `project(':${
-            plugin.projectName
-        }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-        if (!plugin.skipImplementation) {
-            if (plugin.implementation) {
-                pluginConfig.pluginImplementations += `${plugin.implementation}\n`;
-            } else {
-                pluginConfig.pluginImplementations += `    implementation project(':${plugin.projectName}')\n`;
-            }
-        }
-    } else {
-        pluginConfig.pluginIncludes += `, ':${key}'`;
-        pluginConfig.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-        if (!plugin.skipImplementation) {
-            if (plugin.implementation) {
-                pluginConfig.pluginImplementations += `${plugin.implementation}\n`;
-            } else {
-                pluginConfig.pluginImplementations += `    implementation project(':${key}')\n`;
-            }
-        }
-    }
-    if (plugin.activityImports instanceof Array) {
-        plugin.activityImports.forEach((activityImport) => {
-            // Avoid duplicate imports
-            if (pluginConfig.pluginActivityImports.indexOf(activityImport) === -1) {
-                pluginConfig.pluginActivityImports += `import ${activityImport}\n`;
-            }
-        });
-    }
-
-    if (plugin.activityMethods instanceof Array) {
-        pluginConfig.pluginActivityMethods += '\n';
-        pluginConfig.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
-    }
-
-    const mainActivity = plugin.mainActivity;
-    if (mainActivity) {
-        if (mainActivity.createMethods instanceof Array) {
-            pluginConfig.pluginActivityCreateMethods += '\n';
-            pluginConfig.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
-        }
-
-        if (mainActivity.resultMethods instanceof Array) {
-            pluginConfig.pluginActivityResultMethods += '\n';
-            pluginConfig.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
-        }
-
-        if (mainActivity.imports instanceof Array) {
-            mainActivity.imports.forEach((v) => {
-                pluginConfig.pluginActivityImports += `import ${v}\n`;
-            });
-        }
-
-        if (mainActivity.methods instanceof Array) {
-            pluginConfig.pluginActivityMethods += '\n';
-            pluginConfig.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
-        }
-    }
-
-    if (pkg) pluginConfig.pluginImports += `import ${pkg}\n`;
-    if (className) pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
-
-    if (plugin.imports) {
-        plugin.imports.forEach((v) => {
-            pluginConfig.pluginImports += `import ${v}\n`;
-        });
-    }
-
-    if (plugin.implementations) {
-        plugin.implementations.forEach((v) => {
-            pluginConfig.pluginImplementations += `    implementation ${v}\n`;
-        });
-    }
-
-    if (plugin.mainApplicationMethods) {
-        pluginConfig.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
-    }
-
-    const appBuildGradle = plugin['app/build.gradle'];
-    if (appBuildGradle) {
-        if (appBuildGradle.apply) {
-            appBuildGradle.apply.forEach((v) => {
-                pluginConfig.applyPlugin += `apply ${v}\n`;
-            });
-        }
-    }
-
-    if (plugin.afterEvaluate) {
-        plugin.afterEvaluate.forEach((v) => {
-            pluginConfig.pluginAfterEvaluate += ` ${v}\n`;
-        });
-    }
-    _fixAndroidLegacy(c, pathFixed);
-};
-
-const _fixAndroidLegacy = (c, modulePath) => {
-    const buildGradle = path.join(c.paths.projectRootFolder, modulePath, 'build.gradle');
-
-    if (fs.existsSync(buildGradle)) {
-        logDebug('FIX:', buildGradle);
-        writeCleanFile(buildGradle, buildGradle, [
-            { pattern: " compile '", override: "  implementation '" },
-            { pattern: ' compile "', override: '  implementation "' },
-            { pattern: ' testCompile "', override: '  testImplementation "' },
-            { pattern: " provided '", override: "  compileOnly '" },
-            { pattern: ' provided "', override: '  compileOnly "' },
-            { pattern: ' compile fileTree', override: '  implementation fileTree' },
-        ]);
-    }
-};
-
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
 
@@ -963,47 +841,31 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     fs.chmodSync(gradlew, '755');
 
     // INJECTORS
-    const pluginIncludes = "include ':app'";
-    const pluginPaths = '';
-    const pluginImports = '';
-    const pluginPackages = 'MainReactPackage(),\n';
-    const pluginImplementations = '';
-    const pluginAfterEvaluate = '';
-    const pluginActivityImports = '';
-    const pluginActivityMethods = '';
-    const mainApplicationMethods = '';
-    const applyPlugin = '';
-    const pluginActivityCreateMethods = '';
-    const pluginActivityResultMethods = '';
-    const manifestApplication = '';
-    const pluginConfig = {
-        pluginIncludes,
-        pluginPaths,
-        pluginImports,
-        pluginPackages,
-        pluginImplementations,
-        pluginAfterEvaluate,
-        pluginActivityImports,
-        pluginActivityMethods,
-        mainApplicationMethods,
-        applyPlugin,
-        pluginActivityCreateMethods,
-        pluginActivityResultMethods,
-        manifestApplication
+    c.pluginConfig = {
+        pluginIncludes: "include ':app'",
+        pluginPaths: '',
+        pluginImports: '',
+        pluginPackages: 'MainReactPackage(),\n',
+        pluginImplementations: '',
+        pluginAfterEvaluate: '',
+        pluginActivityImports: '',
+        pluginActivityMethods: '',
+        mainApplicationMethods: '',
+        applyPlugin: '',
+        pluginActivityCreateMethods: '',
+        pluginActivityResultMethods: '',
+        manifestApplication: ''
     };
 
     // PLUGINS
     parsePlugins(c, (plugin, pluginPlat, key) => {
-        // if (pluginPlat.packages) {
-        //     pluginPlat.packages.forEach((ppkg) => {
-        //         _injectPlugin(c, pluginPlat, key, ppkg, pluginConfig);
-        //     });
-        _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
+        injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginManifestSync(c, pluginPlat, key, pluginPlat.package);
+        injectPluginXmlValuesSync(c, pluginPlat, key, pluginPlat.package);
     });
 
-    pluginConfig.pluginPackages = pluginConfig.pluginPackages.substring(0, pluginConfig.pluginPackages.length - 2);
-
-    const pluginConfigAndroid = c.files.pluginConfig?.android || {};
+    c.pluginConfig.pluginPackages = c.pluginConfig.pluginPackages.substring(0, c.pluginConfig.pluginPackages.length - 2);
 
     // FONTS
     if (c.files.appConfigFile) {
@@ -1032,211 +894,15 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         }
     }
 
-    // const debugSigning = 'debug';
-    const debugSigning = `
-    debug {
-        storeFile file('debug.keystore')
-        storePassword "android"
-        keyAlias "androiddebugkey"
-        keyPassword "android"
-    }`;
-
-    // SIGNING CONFIGS
-    pluginConfig.signingConfigs = `${debugSigning}
-    release`;
-    pluginConfig.localProperties = '';
-    c.files.privateConfig = _getPrivateConfig(c, platform);
-
-    if (c.files.privateConfig && c.files.privateConfig[platform]) {
-        const keystorePath = c.files.privateConfig[platform].storeFile;
-        let keystorePathFull;
-        if (keystorePath) {
-            if (keystorePath.startsWith('./')) {
-                keystorePathFull = path.join(c.files.privateConfig.parentFolder, keystorePath);
-            } else {
-                keystorePathFull = keystorePath;
-            }
-        }
-
-        if (fs.existsSync(keystorePathFull)) {
-            const genPropsPath = path.join(appFolder, 'keystore.properties');
-            fs.writeFileSync(genPropsPath, `# auto generated by ReNative
-storeFile=${keystorePathFull}
-keyAlias=${c.files.privateConfig[platform].keyAlias}
-storePassword=${c.files.privateConfig[platform].storePassword}
-keyPassword=${c.files.privateConfig[platform].keyPassword}`);
-
-            pluginConfig.signingConfigs = `${debugSigning}
-            release {
-                storeFile file(keystoreProps['storeFile'])
-                storePassword keystoreProps['storePassword']
-                keyAlias keystoreProps['keyAlias']
-                keyPassword keystoreProps['keyPassword']
-            }`;
-
-            pluginConfig.localProperties = `
-          def keystorePropsFile = rootProject.file("keystore.properties")
-          def keystoreProps = new Properties()
-          keystoreProps.load(new FileInputStream(keystorePropsFile))`;
-        } else {
-            logWarning(
-                `Your ${chalk.white(keystorePathFull)} does not exist. You won't be able to make production releases without it!`,
-            );
-        }
-    }
-
-    // BUILD_TYPES
-    pluginConfig.buildTypes = `
-    debug {
-        minifyEnabled false
-        proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-    }
-    release {
-        minifyEnabled false
-        proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        signingConfig signingConfigs.release
-    }`;
-
-    const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
-    // MULTI APK
-    pluginConfig.multiAPKs = '';
-    if (isMultiApk) {
-        pluginConfig.multiAPKs = `
-      ext.abiCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-      import com.android.build.OutputFile
-
-      android.applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-          def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
-          if (bavc != null) {
-            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc))
-          }
-        }
-      }`;
-    }
-
-    // SPLITS
-    pluginConfig.splits = '';
-    if (isMultiApk) {
-        pluginConfig.splits = `
-    splits {
-      abi {
-          reset()
-          enable true
-          include "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
-          universalApk false
-      }
-    }
-`;
-    }
-
-
-    // PACKAGING OPTIONS
-    pluginConfig.packagingOptions = `
-    exclude 'META-INF/DEPENDENCIES.txt'
-    exclude 'META-INF/DEPENDENCIES'
-    exclude 'META-INF/dependencies.txt'
-    exclude 'META-INF/LICENSE.txt'
-    exclude 'META-INF/LICENSE'
-    exclude 'META-INF/license.txt'
-    exclude 'META-INF/LGPL2.1'
-    exclude 'META-INF/NOTICE.txt'
-    exclude 'META-INF/NOTICE'
-    exclude 'META-INF/notice.txt'
-    pickFirst 'lib/armeabi-v7a/libc++_shared.so'
-    pickFirst 'lib/x86_64/libc++_shared.so'
-    pickFirst 'lib/x86/libc++_shared.so'
-    pickFirst 'lib/arm64-v8a/libc++_shared.so'
-    pickFirst 'lib/arm64-v8a/libjsc.so'
-    pickFirst 'lib/x86_64/libjsc.so'`;
-
-    // COMPILE OPTIONS
-    pluginConfig.compileOptions = `
-    sourceCompatibility 1.8
-    targetCompatibility 1.8`;
-
-
-    writeCleanFile(getBuildFilePath(c, platform, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
-        { pattern: '{{PLUGIN_INCLUDES}}', override: pluginConfig.pluginIncludes },
-        { pattern: '{{PLUGIN_PATHS}}', override: pluginConfig.pluginPaths },
-    ]);
-
-    // ANDROID PROPS
-    pluginConfig.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
-    pluginConfig.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
-    pluginConfig.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
-    pluginConfig.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
-    pluginConfig.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
-
-
-    writeCleanFile(getBuildFilePath(c, platform, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
-        { pattern: '{{PLUGIN_APPLY}}', override: pluginConfig.applyPlugin },
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
-        { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
-        { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: pluginConfig.pluginImplementations },
-        { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: pluginConfig.pluginAfterEvaluate },
-        { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: pluginConfig.signingConfigs },
-        { pattern: '{{PLUGIN_SPLITS}}', override: pluginConfig.splits },
-        { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: pluginConfig.packagingOptions },
-        { pattern: '{{PLUGIN_BUILD_TYPES}}', override: pluginConfig.buildTypes },
-        { pattern: '{{PLUGIN_MULTI_APKS}}', override: pluginConfig.multiAPKs },
-        { pattern: '{{MIN_SDK_VERSION}}', override: pluginConfig.minSdkVersion },
-        { pattern: '{{TARGET_SDK_VERSION}}', override: pluginConfig.targetSdkVersion },
-        { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
-        { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: pluginConfig.compileOptions },
-        { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: pluginConfig.localProperties },
-    ]);
-
-    writeCleanFile(getBuildFilePath(c, platform, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
-        { pattern: '{{COMPILE_SDK_VERSION}}', override: pluginConfig.compileSdkVersion },
-        { pattern: '{{SUPPORT_LIB_VERSION}}', override: pluginConfig.supportLibVersion },
-        { pattern: '{{BUILD_TOOLS_VERSION}}', override: pluginConfig.buildToolsVersion }
-    ]);
-
-    const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
-    writeCleanFile(getBuildFilePath(c, platform, activityPath), path.join(appFolder, activityPath), [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: pluginConfig.pluginActivityImports },
-        { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: pluginConfig.pluginActivityMethods },
-        { pattern: '{{PLUGIN_ON_CREATE}}', override: pluginConfig.pluginActivityCreateMethods },
-        { pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}', override: pluginConfig.pluginActivityResultMethods },
-    ]);
-
-    const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
-    writeCleanFile(getBuildFilePath(c, platform, applicationPath), path.join(appFolder, applicationPath), [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-        { pattern: '{{PLUGIN_IMPORTS}}', override: pluginConfig.pluginImports },
-        { pattern: '{{PLUGIN_PACKAGES}}', override: pluginConfig.pluginPackages },
-        { pattern: '{{PLUGIN_METHODS}}', override: pluginConfig.mainApplicationMethods },
-    ]);
-
-    const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
-    writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-    ]);
-
-    const stringsPath = 'app/src/main/res/values/strings.xml';
-    writeCleanFile(getBuildFilePath(c, platform, stringsPath), path.join(appFolder, stringsPath), [
-        { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
-    ]);
-
+    parseSettingsGradleSync(c, platform);
+    parseAppBuildGradleSync(c, platform);
+    parseBuildGradleSync(c, platform);
+    parseMainActivitySync(c, platform);
+    parseMainApplicationSync(c, platform);
+    parseSplashActivitySync(c, platform);
+    parseValuesStringsSync(c, platform);
     parseAndroidManifestSync(c, platform);
-
-    // GRADLE.PROPERTIES
-    let pluginGradleProperties = '';
-
-    const gradleProps = pluginConfigAndroid['gradle.properties'];
-    if (gradleProps) {
-        for (const key in gradleProps) {
-            pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
-        }
-    }
-    const gradleProperties = 'gradle.properties';
-    writeCleanFile(getBuildFilePath(c, platform, gradleProperties), path.join(appFolder, gradleProperties), [
-        { pattern: '{{PLUGIN_GRADLE_PROPERTIES}}', override: pluginGradleProperties }
-    ]);
+    parseGradlePropertiesSync(c, platform);
 
     resolve();
 });
