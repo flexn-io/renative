@@ -287,7 +287,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (allProjRepos) {
         for (k in allProjRepos) {
             if (allProjRepos[k] === true) {
-                c.pluginConfig.buildGradleAllProjectsRepositories += `${k}`;
+                c.pluginConfig.buildGradleAllProjectsRepositories += `${k}\n`;
             }
         }
     }
@@ -296,7 +296,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (buildscriptRepos) {
         for (k in buildscriptRepos) {
             if (buildscriptRepos[k] === true) {
-                c.pluginConfig.buildGradleBuildScriptRepositories += `${k}`;
+                c.pluginConfig.buildGradleBuildScriptRepositories += `${k}\n`;
             }
         }
     }
