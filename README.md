@@ -432,26 +432,12 @@ Plugin Spec:
 {
   "pugin-name": {
       "version": "",
-      "ios": {
-          "podName": "",
-          "path": "",
-          "appDelegateApplicationMethods": {
-            "didFinishLaunchingWithOptions": [],
-            "open": [],
-            "supportedInterfaceOrientationsFor": [],
-            "didReceiveRemoteNotification": [],
-            "didFailToRegisterForRemoteNotificationsWithError": [],
-            "didReceive": [],
-            "didRegister": [],
-            "didRegisterForRemoteNotificationsWithDeviceToken": [],
-          }
-      },
-      "android": {
-          "package": "",
-          "path": ""
-      },
+      "enabled": true,
+      "ios": {},
+      "android": {},
       "webpack": {
-
+          "modulePaths": [],
+          "moduleAliases": []
       }
   }
 }
@@ -1882,6 +1868,8 @@ rnv run -p firefoxtv
 
 Applies for `android`, `androidtv`, `androidwear`
 
+For appConfigs:
+
 ```json
 {
   "entryFile": "",
@@ -1899,9 +1887,23 @@ Applies for `android`, `androidtv`, `androidwear`
 }
 ```
 
+For plugins:
+
+```json
+{
+    "package": "",
+    "path": "",
+    "AndroidManifest": {},
+    "BuildGradle": {},
+    "AppBuildGradle": {}
+}
+```
+
 #### Apple based config
 
 Applies for `ios`, `tvos`
+
+For appConfigs:
 
 ```json
 {
@@ -1933,6 +1935,25 @@ Applies for `ios`, `tvos`
   "systemCapabilities": {},
   "entitlements": {},
   "buildSchemes": {}
+}
+```
+
+For plugins:
+
+```json
+{
+    "podName": "",
+    "path": "",
+    "appDelegateApplicationMethods": {
+      "didFinishLaunchingWithOptions": [],
+      "open": [],
+      "supportedInterfaceOrientationsFor": [],
+      "didReceiveRemoteNotification": [],
+      "didFailToRegisterForRemoteNotificationsWithError": [],
+      "didReceive": [],
+      "didRegister": [],
+      "didRegisterForRemoteNotificationsWithDeviceToken": [],
+    }
 }
 ```
 
