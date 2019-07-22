@@ -7,7 +7,6 @@ const _chalkCols = {
     yellow: v => v,
     default: v => v,
     gray: v => v,
-    grey: v => v,
     blue: v => v,
     magenta: v => v,
 };
@@ -128,7 +127,7 @@ export const logSummary = () => {
         }
         if (_c.process) {
             const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node} | rnv v${_c.rnvVersion}`;
-            str += printIntoBox(`Env Info: ${chalk.grey(envString)}`, 1);
+            str += printIntoBox(`Env Info: ${chalk.gray(envString)}`, 1);
         }
 
         if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);

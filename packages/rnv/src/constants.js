@@ -27,6 +27,7 @@ const SAILFISH = 'sailfish';
 const TIVO = 'tivo';
 const TIZEN = 'tizen';
 const TIZEN_WATCH = 'tizenwatch';
+const TIZEN_MOBILE = 'tizenmobile';
 const TVOS = 'tvos';
 const UBUNTU = 'ubuntu';
 const UBUNTU_TOUCH = 'ubuntutouch';
@@ -229,6 +230,7 @@ export {
     TIVO,
     TIZEN,
     TIZEN_WATCH,
+    TIZEN_MOBILE,
     TVOS,
     UBUNTU,
     UBUNTU_TOUCH,
@@ -313,6 +315,7 @@ export default {
     TIVO,
     TIZEN,
     TIZEN_WATCH,
+    TIZEN_MOBILE,
     TVOS,
     UBUNTU,
     UBUNTU_TOUCH,

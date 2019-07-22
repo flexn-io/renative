@@ -348,7 +348,7 @@ https://www.npmjs.com/package/renative-template-blank
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_plugins.png?raw=true" width=50 height=50 />
 
 ## Plugins
 
@@ -432,26 +432,12 @@ Plugin Spec:
 {
   "pugin-name": {
       "version": "",
-      "ios": {
-          "podName": "",
-          "path": "",
-          "appDelegateApplicationMethods": {
-            "didFinishLaunchingWithOptions": [],
-            "open": [],
-            "supportedInterfaceOrientationsFor": [],
-            "didReceiveRemoteNotification": [],
-            "didFailToRegisterForRemoteNotificationsWithError": [],
-            "didReceive": [],
-            "didRegister": [],
-            "didRegisterForRemoteNotificationsWithDeviceToken": [],
-          }
-      },
-      "android": {
-          "package": "",
-          "path": ""
-      },
+      "enabled": true,
+      "ios": {},
+      "android": {},
       "webpack": {
-
+          "modulePaths": [],
+          "moduleAliases": []
       }
   }
 }
@@ -867,7 +853,7 @@ rnv start --mono
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_runtime.png?raw=true" width=50 height=50 />
 
 ## Runtime
 
@@ -889,7 +875,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -904,12 +890,26 @@ Folder Structure (Generated Project)
     │       └── config.json         # Application flavour config
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
-    ├── projectConfigs              # Project configuration files/assets
+    ├── projectConfig               # Project configuration files/assets
     │   ├── fonts                   # Folder for all custom fonts
     │   ├── fonts.json              # Fonts configuration
     │   ├── permissions.json        # Permissions configuration
     │   └── plugins.json            # React Native Plugins configuration
     └── src                         # Source files
+
+
+#### Override Mechanism
+
+ReNative support flexible override mechanism which allows you customise your project to great degree
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch2.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
 
 ---
 
@@ -1026,6 +1026,10 @@ Get device/simulator logs with filter
 ```
 rnv log -p ios -f com.myapp
 ```
+
+#### App Config
+
+<a href="#apple-based-config">see: Apple based config</a>
 
 ---
 
@@ -1151,6 +1155,10 @@ Get device/simulator logs with filter
 rnv log -p android -f com.myapp
 ```
 
+#### App Config
+
+<a href="#android-based-config">see: Android based config</a>
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tvos.png?raw=true" width=90 height=50 />
@@ -1205,6 +1213,10 @@ Launch with specific tvOS simulator
 ```
 rnv run -p tvos -t "Apple TV 4K"
 ```
+
+#### App Config
+
+<a href="#apple-based-config">see: Apple based config</a>
 
 ---
 
@@ -1264,6 +1276,10 @@ Launch specific emulator:
 ```
 rnv target launch -p androidtv -t Android_TV_720p_API_22
 ```
+
+#### App Config
+
+<a href="#android-based-config">see: Android based config</a>
 
 ---
 
@@ -1339,6 +1355,10 @@ Run app on custom port `9999`:
 rnv run -p web --port 9999
 ```
 
+#### App Config
+
+<a href="##web-based-config">see: Web based config</a>
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
@@ -1358,7 +1378,7 @@ rnv run -p web --port 9999
 </table>
 
 -   Latest Tizen project
--   Support for Tizen 5.0
+-   Support for Tizen 5.0, 4.0, 3.0
 
 #### Requirements
 
@@ -1582,6 +1602,12 @@ You can configure each `buldScheme` ie `-s release` in your config file `./appCo
 rnv run -p macos -s release
 ```
 
+#### Export
+
+```
+rnv export -p macos -s release
+```
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_windows.png?raw=true" width=50 height=50 />
@@ -1680,6 +1706,10 @@ Launch specific emulator:
 ```
 rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ```
+
+#### App Config
+
+<a href="#android-based-config">see: Android based config</a>
 
 ---
 
@@ -1803,6 +1833,145 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 
 ```
 rnv run -p firefoxtv
+```
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_appconfigs.png?raw=true" width=50 height=50 />
+
+## AppConfigs
+
+`./appConfigs` offers powerful configuration system which allows you to configure various flavours in your projects.
+
+`./appConfigs/APP_ID/config.json` spec:
+
+```json
+{
+  "id": "APP_ID",
+  "common": {
+    "title": "",
+    "description": "",
+    "author": {
+      "name": ""
+    },
+    "includedPlugins": ["*"],
+    "includedFonts": ["*"]
+  },
+  "platforms": {
+
+  }
+}
+
+```
+
+#### Android based config
+
+Applies for `android`, `androidtv`, `androidwear`
+
+For appConfigs:
+
+```json
+{
+  "entryFile": "",
+  "universalApk": true,
+  "multipleAPKs": false,
+  "minSdkVersion": 21,
+  "backgroundColor": "",
+  "id": "",
+  "signingConfig": "",
+  "bundleAssets": false,
+  "permissions": [],
+  "bundleAssets": true,
+  "bundleIsDev": true,
+  "buildSchemes": {}
+}
+```
+
+For plugins:
+
+```json
+{
+    "package": "",
+    "path": "",
+    "AndroidManifest": {},
+    "BuildGradle": {},
+    "AppBuildGradle": {}
+}
+```
+
+#### Apple based config
+
+Applies for `ios`, `tvos`
+
+For appConfigs:
+
+```json
+{
+  "entryFile": "",
+  "backgroundColor": "",
+  "id": "",
+  "bundleAssets": false,
+  "permissions": [],
+  "bundleAssets": true,
+  "bundleIsDev": true,
+  "teamID": "",
+  "scheme": "",
+  "permissions": ["*"],
+  "orientationSupport": {
+    "phone": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ],
+    "tab": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ]
+  },
+  "provisioningStyle": "",
+  "systemCapabilities": {},
+  "entitlements": {},
+  "buildSchemes": {}
+}
+```
+
+For plugins:
+
+```json
+{
+    "podName": "",
+    "path": "",
+    "appDelegateApplicationMethods": {
+      "didFinishLaunchingWithOptions": [],
+      "open": [],
+      "supportedInterfaceOrientationsFor": [],
+      "didReceiveRemoteNotification": [],
+      "didFailToRegisterForRemoteNotificationsWithError": [],
+      "didReceive": [],
+      "didRegister": [],
+      "didRegisterForRemoteNotificationsWithDeviceToken": [],
+    }
+}
+```
+
+#### Web based config
+
+Applies for `web`
+
+```json
+{
+  "id": "",
+  "entryFile": "",
+  "title": "",
+  "webpackConfig": {
+    "devServerHost": "",
+    "customScripts": []
+  },
+  "buildSchemes": {}
+}
 ```
 
 ---

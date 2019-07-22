@@ -217,7 +217,7 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
     str += printIntoBox(data.projectName);
-    str += chalk.grey(`│   ├── appConfigs           # Application flavour configuration files/assets  │
+    str += chalk.gray(`│   ├── appConfigs           # Application flavour configuration files/assets  │
 │   │   └── default          # Example application flavour                     │
 │   │       ├── assets       # Platform assets injected to ./platformAssets    │
 │   │       ├── builds       # Platform files injected to ./platformBuilds     │

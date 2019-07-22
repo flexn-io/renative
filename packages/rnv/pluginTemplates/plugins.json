@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.36-alpha10",
+            "version": "0.23.42-alpha5",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -847,6 +847,21 @@
                 }
             },
             "android": {
+                "BuildGradle": {
+                    "buildscript": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        },
+                        "dependencies": {
+                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
+                        }
+                    },
+                    "allprojects": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    }
+                },
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
@@ -857,7 +872,7 @@
                         "maven { url 'https://maven.fabric.io/public' }"
                     ]
                 },
-                "skipImplementation": true,
+                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
                 "app/build.gradle": {
                     "apply": [
                         "plugin: 'io.fabric'"
@@ -891,7 +906,10 @@
         "firebase-core": {
             "no-npm": true,
             "ios": {
-                "podName": "Firebase/Core",
+                "podNames": [
+                    "Firebase/Core",
+                    "Firebase/Messaging"
+                ],
                 "appDelegateImports": [
                     "Firebase"
                 ],

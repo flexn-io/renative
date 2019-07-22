@@ -7,6 +7,7 @@ import child_process from 'child_process';
 import { executeAsync } from '../systemTools/exec';
 import { isObject } from '../systemTools/objectUtils';
 import { createPlatformBuild } from '../cli/platform';
+import { launchAppleSimulator, getAppleDevices } from './apple/deviceManager';
 import {
     logTask,
     logError,
@@ -56,8 +57,8 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         })
             .then(() => resolve())
             .catch((e) => {
-                logError(e);
                 if (rejectOnFail) return reject(e);
+                logWarning(e);
                 return resolve();
             }))
         .catch(err => logError(err));
@@ -112,7 +113,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     }
 
     if (device === true) {
-        const devicesArr = _getAppleDevices(c, platform, false, true);
+        const devicesArr = getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
             logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)} udid: ${chalk.white(devicesArr[0].udid)}`);
             if (devicesArr[0].udid) {
@@ -264,7 +265,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const exportPathArchive = `${exportPath}/${scheme}.xcarchive`;
@@ -332,7 +333,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const exportPath = path.join(appPath, 'release');
 
     const scheme = getConfigProp(c, platform, 'scheme');
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const p = [
         '-exportArchive',
@@ -484,6 +485,8 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const { backgroundColor } = c.files.appConfigFile.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
     const runScheme = getConfigProp(c, platform, 'runScheme');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
+    const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
     let bundle;
     if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
@@ -514,7 +517,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     };
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
     });
 
@@ -660,9 +663,10 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     ]);
 
     // XCSCHEME
+    const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
 
-    const debuggerId = runScheme === 'Release' ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
-    const launcherId = runScheme === 'Release' ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
+    const debuggerId = poisxSpawn ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
+    const launcherId = poisxSpawn ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
     writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), [
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
@@ -679,7 +683,6 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
 
-        const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
         xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
@@ -785,7 +788,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         }
 
         // PLUGINS
-        parsePlugins(c, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
             if (pluginPlat.xcodeproj) {
                 if (pluginPlat.xcodeproj.resourceFiles) {
                     pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
@@ -814,6 +817,23 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     });
 });
 
+const _injectPod = (podName, pluginPlat, plugin) => {
+    let pluginInject = '';
+    const isNpm = plugin['no-npm'] !== true;
+    if (isNpm) {
+        const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+        pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
+    } else if (pluginPlat.git) {
+        const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+        pluginInject += `  pod '${podName}', :git => '${pluginPlat.git}'${commit}\n`;
+    } else if (pluginPlat.version) {
+        pluginInject += `  pod '${podName}', '${pluginPlat.version}'\n`;
+    } else {
+        pluginInject += `  pod '${podName}'\n`;
+    }
+    return pluginInject;
+};
+
 const _parsePodFile = (c, platform) => {
     logTask(`_parsePodFile:${platform}`);
 
@@ -822,20 +842,14 @@ const _parsePodFile = (c, platform) => {
     let pluginInject = '';
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
-        const isNpm = plugin['no-npm'] !== true;
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.podName) {
-            if (isNpm) {
-                const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
-                pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
-            } else if (pluginPlat.git) {
-                const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
-                pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
-            } else if (pluginPlat.version) {
-                pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
-            } else {
-                pluginInject += `  pod '${pluginPlat.podName}'\n`;
-            }
+            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin);
+        }
+        if (pluginPlat.podNames) {
+            pluginPlat.podNames.forEach((v) => {
+                pluginInject += _injectPod(v, pluginPlat, plugin);
+            });
         }
 
         if (pluginPlat.reactSubSpecs) {
@@ -879,7 +893,7 @@ const _parseEntitlements = (c, platform) => {
     // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
     if (!pluginsEntitlementsObj) {
-        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/entitlements.json'));
+        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/entitlements.json'));
     }
 
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
@@ -894,7 +908,7 @@ const _parsePlist = (c, platform, embeddedFonts) => {
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/info.plist.json'));
+    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/info.plist.json'));
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     // FONTS
@@ -950,7 +964,7 @@ const _parsePlist = (c, platform, embeddedFonts) => {
         plistObj = mergeObjects(plistObj, plistExtra);
     }
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.plist) {
             plistObj = mergeObjects(plistObj, pluginPlat.plist);
         }
@@ -969,7 +983,7 @@ const _getAppFolderName = (c, platform) => {
 const listAppleDevices = (c, platform) => new Promise((resolve) => {
     logTask(`listAppleDevices:${platform}`);
 
-    const devicesArr = _getAppleDevices(c, platform);
+    const devicesArr = getAppleDevices(c, platform);
     let devicesString = '\n';
     devicesArr.forEach((v, i) => {
         devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
@@ -978,105 +992,6 @@ const listAppleDevices = (c, platform) => new Promise((resolve) => {
     });
     console.log(devicesString);
 });
-
-const launchAppleSimulator = (c, platform, target) => new Promise((resolve) => {
-    logTask(`launchAppleSimulator:${platform}:${target}`);
-
-    const devicesArr = _getAppleDevices(c, platform, true);
-    let selectedDevice;
-    for (let i = 0; i < devicesArr.length; i++) {
-        if (devicesArr[i].name === target) {
-            selectedDevice = devicesArr[i];
-        }
-    }
-    if (selectedDevice) {
-        _launchSimulator(selectedDevice);
-        resolve(selectedDevice.name);
-    } else {
-        logWarning(`Your specified simulator target ${chalk.white(target)} doesn't exists`);
-        const readlineInterface = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-        let devicesString = '\n';
-        devicesArr.forEach((v, i) => {
-            devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
-                v.udid,
-            )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
-        });
-        readlineInterface.question(getQuestion(`${devicesString}\nType number of the simulator you want to launch`), (v) => {
-            const chosenDevice = devicesArr[parseInt(v, 10) - 1];
-            if (chosenDevice) {
-                _launchSimulator(chosenDevice);
-                resolve(chosenDevice.name);
-            } else {
-                logError(`Wrong choice ${v}! Ingoring`);
-            }
-        });
-    }
-});
-
-const _launchSimulator = (selectedDevice) => {
-    try {
-        child_process.spawnSync('xcrun', ['instruments', '-w', selectedDevice.udid]);
-    } catch (e) {
-        // instruments always fail with 255 because it expects more arguments,
-        // but we want it to only launch the simulator
-    }
-};
-
-const _getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
-    logTask(`_getAppleDevices:${platform},ignoreDevices:${ignoreDevices},ignoreSimulators${ignoreSimulators}`);
-    const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
-        encoding: 'utf8',
-    });
-
-    const devicesArr = _parseIOSDevicesList(devices, platform, ignoreDevices, ignoreSimulators);
-    return devicesArr;
-};
-
-const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimulators = false) => {
-    const devices = [];
-    text.split('\n').forEach((line) => {
-        const s1 = line.match(/\[.*?\]/);
-        const s2 = line.match(/\(.*?\)/g);
-        const s3 = line.substring(0, line.indexOf('(') - 1);
-        const s4 = line.substring(0, line.indexOf('[') - 1);
-        let isSim = false;
-        if (s2 && s1) {
-            if (s2[s2.length - 1] === '(Simulator)') {
-                isSim = true;
-                s2.pop();
-            }
-            const version = s2.pop();
-            const name = `${s4.substring(0, s4.lastIndexOf('(') - 1)}`;
-            const udid = s1[0].replace(/\[|\]/g, '');
-            const isDevice = !isSim;
-
-            if ((isDevice && !ignoreDevices) || (!isDevice && !ignoreSimulators)) {
-                switch (platform) {
-                case IOS:
-                    if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
-                        let icon = 'Phone 📱';
-                        if (name.includes('iPad')) icon = 'Tablet 💊';
-                        devices.push({ udid, name, version, isDevice, icon });
-                    }
-                    break;
-                case TVOS:
-                    if (name.includes('Apple TV') || isDevice) {
-                        devices.push({ udid, name, version, isDevice, icon: 'TV 📺' });
-                    }
-                    break;
-                default:
-                    devices.push({ udid, name, version, isDevice });
-                    break;
-                }
-            }
-        }
-    });
-
-    return devices;
-};
 
 // Resolve or reject will not be called so this will keep running
 const runAppleLog = c => new Promise(() => {

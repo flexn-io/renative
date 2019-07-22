@@ -1086,7 +1086,7 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     const sourcePath1 = getBuildsFolder(c, platform, c.paths.projectConfigFolder);
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         // FOLDER MERGES FROM APP CONFIG PLUGIN
         const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
@@ -1251,8 +1251,20 @@ const resolveNodeModulePath = (c, filePath) => {
     return pth;
 };
 
+const getBuildFilePath = (c, platform, filePath) => {
+    let sp = path.join(getAppTemplateFolder(c, platform), filePath);
+    const sp2 = path.join(getBuildsFolder(c, platform, c.paths.projectConfigFolder), filePath);
+    if (fs.existsSync(sp2)) sp = sp2;
+
+    const sp3 = path.join(getBuildsFolder(c, platform), filePath);
+    if (fs.existsSync(sp3)) sp = sp3;
+
+    return sp;
+};
+
 export {
     SUPPORTED_PLATFORMS,
+    getBuildFilePath,
     configureEntryPoints,
     getBuildsFolder,
     setAppConfig,
@@ -1328,6 +1340,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    getBuildFilePath,
     getBuildsFolder,
     configureEntryPoints,
     setAppConfig,
