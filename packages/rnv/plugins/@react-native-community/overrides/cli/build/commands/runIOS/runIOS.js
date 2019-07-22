@@ -45,6 +45,10 @@ const _errors = require('../../tools/errors');
 
 const _logger = _interopRequireDefault(require('../../tools/logger'));
 
+const _commandExistsSync = require('rnv/dist/systemTools/exec').commandExistsSync;
+
+const _shell = require('shelljs');
+
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
 }
@@ -234,17 +238,32 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
 
     _logger.default.info(`installing and launching your app on ${selectedDevice.name}... `);
 
+    // check if brew is used and if it is, if python@2 is installed, which will cause issues with lldb
+    if (_commandExistsSync('brew')) {
+        const installed = _shell.exec('brew list');
+        if (installed.includes('python@2')) {
+            console.log('You have Python@2 installed with Brew. Unlinking it since it will cause problems with LLDB');
+            _shell.exec('brew unlink python@2');
+        }
+    }
+
+    if (!_commandExistsSync('pip')) {
+        console.log('Installing pip...');
+        _child_process().default.spawnSync('sudo', ['easy_install', 'pip'], {
+            encoding: 'utf8',
+        });
+    }
+
     // check if six is installed
     const pipPackagesOutput = _child_process().default.spawnSync('pip', ['freeze'], {
         encoding: 'utf8',
     });
 
     function doInstall() {
-        const iosDeployOutput = _child_process().default.spawnSync('ios-deploy', iosDeployInstallArgs, {
-            encoding: 'utf8',
-        });
+        console.log('Running ios-deploy', iosDeployInstallArgs.join(' '));
+        const iosDeployOutput = _shell.exec(`ios-deploy ${iosDeployInstallArgs.join(' ')}`);
 
-        if (iosDeployOutput.error) {
+        if (iosDeployOutput.stderr) {
             _logger.default.error(
                 '** INSTALLATION FAILED **\nMake sure you have ios-deploy installed globally.\n(e.g "npm install -g ios-deploy")'
             );
@@ -254,8 +273,10 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
     }
 
     if (pipPackagesOutput.stdout.includes('six==')) {
+        console.log('Six Python package already installed');
         doInstall();
     } else {
+        console.log('Installing six Python package');
         _child_process().default.spawnSync('pip', ['install', 'six'], {
             encoding: 'utf8',
         });
@@ -277,7 +298,7 @@ function buildProject(xcodeProject, udid, scheme, configuration, launchPackager 
             '-derivedDataPath',
             `build/${scheme}`
         ];
-        if (allowProvisioningUpdates) xcodebuildArgs.push(allowProvisioningUpdates);
+        if (allowProvisioningUpdates) xcodebuildArgs.push('-allowProvisioningUpdates');
 
         _logger.default.info(`Building using "xcodebuild ${xcodebuildArgs.join(' ')}"`);
 
@@ -505,6 +526,10 @@ const _default = {
             default: process.env.RCT_METRO_PORT || 8081,
             parse: val => Number(val),
         },
+        {
+            command: '--allowProvisioningUpdates',
+            description: 'Allow provisioning profiles updates'
+        }
     ],
 };
 exports.default = _default;
