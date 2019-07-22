@@ -57,8 +57,8 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         })
             .then(() => resolve())
             .catch((e) => {
-                logError(e);
                 if (rejectOnFail) return reject(e);
+                logWarning(e);
                 return resolve();
             }))
         .catch(err => logError(err));
@@ -815,6 +815,23 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     });
 });
 
+const _injectPod = (podName, pluginPlat, plugin) => {
+    let pluginInject = '';
+    const isNpm = plugin['no-npm'] !== true;
+    if (isNpm) {
+        const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+        pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
+    } else if (pluginPlat.git) {
+        const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+        pluginInject += `  pod '${podName}', :git => '${pluginPlat.git}'${commit}\n`;
+    } else if (pluginPlat.version) {
+        pluginInject += `  pod '${podName}', '${pluginPlat.version}'\n`;
+    } else {
+        pluginInject += `  pod '${podName}'\n`;
+    }
+    return pluginInject;
+};
+
 const _parsePodFile = (c, platform) => {
     logTask(`_parsePodFile:${platform}`);
 
@@ -824,19 +841,13 @@ const _parsePodFile = (c, platform) => {
 
     // PLUGINS
     parsePlugins(c, (plugin, pluginPlat, key) => {
-        const isNpm = plugin['no-npm'] !== true;
         if (pluginPlat.podName) {
-            if (isNpm) {
-                const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
-                pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
-            } else if (pluginPlat.git) {
-                const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
-                pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
-            } else if (pluginPlat.version) {
-                pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
-            } else {
-                pluginInject += `  pod '${pluginPlat.podName}'\n`;
-            }
+            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin);
+        }
+        if (pluginPlat.podNames) {
+            pluginPlat.podNames.forEach((v) => {
+                pluginInject += _injectPod(v, pluginPlat, plugin);
+            });
         }
 
         if (pluginPlat.reactSubSpecs) {

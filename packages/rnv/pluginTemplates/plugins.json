@@ -906,7 +906,7 @@
         "firebase-core": {
             "no-npm": true,
             "ios": {
-                "podName": "Firebase/Core",
+                "podNames": ["Firebase/Core", "Firebase/Messaging"],
                 "appDelegateImports": [
                     "Firebase"
                 ],
