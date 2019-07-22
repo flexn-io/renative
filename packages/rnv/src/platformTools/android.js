@@ -782,7 +782,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
             'bundleReleaseJsAndAssets',
         ]))
         .then(() => {
-            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))} .`);
+            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`))} .`);
             resolve();
         }).catch(e => reject(e));
 });
