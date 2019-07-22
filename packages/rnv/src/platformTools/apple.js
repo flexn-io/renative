@@ -485,6 +485,8 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const { backgroundColor } = c.files.appConfigFile.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
     const runScheme = getConfigProp(c, platform, 'runScheme');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
+    const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
     let bundle;
     if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
@@ -661,9 +663,10 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     ]);
 
     // XCSCHEME
+    const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
 
-    const debuggerId = runScheme === 'Release' ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
-    const launcherId = runScheme === 'Release' ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
+    const debuggerId = poisxSpawn ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
+    const launcherId = poisxSpawn ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
     writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), [
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
@@ -680,7 +683,6 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
 
-        const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
         xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
