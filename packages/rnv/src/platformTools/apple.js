@@ -57,8 +57,11 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         })
             .then(() => resolve())
             .catch((e) => {
-                if (rejectOnFail) return reject(e);
-                logWarning(e);
+                if (rejectOnFail) {
+                    logWarning(e);
+                    return reject(e);
+                }
+                logError(e);
                 return resolve();
             }))
         .catch(err => logError(err));
@@ -817,7 +820,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     });
 });
 
-const _injectPod = (podName, pluginPlat, plugin) => {
+const _injectPod = (podName, pluginPlat, plugin, key) => {
     let pluginInject = '';
     const isNpm = plugin['no-npm'] !== true;
     if (isNpm) {
@@ -844,11 +847,11 @@ const _parsePodFile = (c, platform) => {
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.podName) {
-            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin);
+            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin, key);
         }
         if (pluginPlat.podNames) {
             pluginPlat.podNames.forEach((v) => {
-                pluginInject += _injectPod(v, pluginPlat, plugin);
+                pluginInject += _injectPod(v, pluginPlat, plugin, key);
             });
         }
 
