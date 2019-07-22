@@ -517,7 +517,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     };
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
     });
 
@@ -788,7 +788,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         }
 
         // PLUGINS
-        parsePlugins(c, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
             if (pluginPlat.xcodeproj) {
                 if (pluginPlat.xcodeproj.resourceFiles) {
                     pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
@@ -842,7 +842,7 @@ const _parsePodFile = (c, platform) => {
     let pluginInject = '';
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.podName) {
             pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin);
         }
@@ -964,7 +964,7 @@ const _parsePlist = (c, platform, embeddedFonts) => {
         plistObj = mergeObjects(plistObj, plistExtra);
     }
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.plist) {
             plistObj = mergeObjects(plistObj, pluginPlat.plist);
         }

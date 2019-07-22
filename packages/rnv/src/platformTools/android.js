@@ -866,7 +866,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     };
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync(c, pluginPlat, key, pluginPlat.package);

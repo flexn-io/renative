@@ -154,7 +154,7 @@ export const parseAndroidManifestSync = (c, platform) => {
         }
 
         // projectConfig/plugins.json PLUGIN CONFIG OVERRIDES
-        parsePlugins(c, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
             if (pluginPlat && pluginPlat.AndroidManifest) {
                 _mergeNodeChildren(baseManifestFile, pluginPlat.AndroidManifest.children);
                 // const pluginApplication = _findChildNode('application', '.MainApplication', pluginPlat.AndroidManifest);
