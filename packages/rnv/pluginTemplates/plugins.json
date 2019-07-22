@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.42-alpha1",
+            "version": "0.23.42-alpha2",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -837,10 +837,12 @@
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [{
-                            "KitInfo": {},
-                            "KitName": "Crashlytics"
-                        }]
+                        "Kits": [
+                            {
+                                "KitInfo": {},
+                                "KitName": "Crashlytics"
+                            }
+                        ]
                     }
                 }
             },
@@ -851,7 +853,7 @@
                             "maven { url 'https://maven.fabric.io/public' }": true
                         },
                         "dependencies": {
-                          "classpath 'io.fabric.tools:gradle:1.25.4'": true
+                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
                         }
                     },
                     "allprojects": {
