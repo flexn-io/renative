@@ -27,6 +27,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     WINDOWS,
+    TIZEN_MOBILE,
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
@@ -266,6 +267,7 @@ const _runAppWithPlatform = async (c) => {
             .then(() => runWeb(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case TIZEN:
+    case TIZEN_MOBILE:
     case TIZEN_WATCH:
         if (!checkSdk(c, platform, throwErr)) return;
 
@@ -509,6 +511,7 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     case TIZEN:
+    case TIZEN_MOBILE:
     case TIZEN_WATCH:
         if (!checkSdk(c, platform, reject)) return;
 

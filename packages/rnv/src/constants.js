@@ -83,6 +83,7 @@ const PLATFORMS = {
     macos: { defaultPort: 8084, icon: ICONS.DESKTOP, supportedOS: OS.MAC_ONLY, isActive: true, useSharedConfig: true },
     tizen: { defaultPort: 8083, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     tizenwatch: { defaultPort: 8087, icon: ICONS.WATCH, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
+    tizenmobile: { defaultPort: 8087, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     tvos: { defaultPort: 8081, icon: ICONS.TV, supportedOS: OS.MAC_ONLY, isActive: true, useSharedConfig: false },
     web: { defaultPort: 8080, icon: ICONS.BROWSER, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },
     webos: { defaultPort: 8083, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, useSharedConfig: true },

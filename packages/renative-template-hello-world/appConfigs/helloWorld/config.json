@@ -183,6 +183,14 @@
             "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert"
         },
+        "tizenmobile": {
+            "appName": "RNVanillaMobile",
+            "package": "PauodvCU2r",
+            "id": "PauodvCU2r.RNVanillaMobile",
+            "entryFile": "index.tizenmobile",
+            "backgroundColor": "black",
+            "certificateProfile": "RNVanillaCert"
+        },
         "web": {
             "entryFile": "index.web",
             "backgroundColor": "black",

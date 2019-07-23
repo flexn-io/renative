@@ -29,6 +29,7 @@
         "template",
         "tizen",
         "tizen watch",
+        "tizen mobile",
         "tvos",
         "watch",
         "web",
