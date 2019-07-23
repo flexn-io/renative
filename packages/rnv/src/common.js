@@ -1091,7 +1091,7 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     const sourcePath1 = getBuildsFolder(c, platform, c.paths.projectConfigFolder);
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         // FOLDER MERGES FROM APP CONFIG PLUGIN
         const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath);

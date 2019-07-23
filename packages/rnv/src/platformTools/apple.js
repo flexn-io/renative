@@ -57,8 +57,11 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         })
             .then(() => resolve())
             .catch((e) => {
+                if (rejectOnFail) {
+                    logWarning(e);
+                    return reject(e);
+                }
                 logError(e);
-                if (rejectOnFail) return reject(e);
                 return resolve();
             }))
         .catch(err => logError(err));
@@ -485,6 +488,8 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     const { backgroundColor } = c.files.appConfigFile.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
     const runScheme = getConfigProp(c, platform, 'runScheme');
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
+    const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
     let bundle;
     if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
@@ -515,7 +520,7 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     };
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
     });
 
@@ -661,9 +666,10 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     ]);
 
     // XCSCHEME
+    const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
 
-    const debuggerId = runScheme === 'Release' ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
-    const launcherId = runScheme === 'Release' ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
+    const debuggerId = poisxSpawn ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
+    const launcherId = poisxSpawn ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';
     const schemePath = `${appFolderName}.xcodeproj/xcshareddata/xcschemes/${appFolderName}.xcscheme`;
     writeCleanFile(path.join(appTemplateFolder, schemePath), path.join(appFolder, schemePath), [
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
@@ -680,7 +686,6 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
 
-        const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
         xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
@@ -786,7 +791,7 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         }
 
         // PLUGINS
-        parsePlugins(c, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
             if (pluginPlat.xcodeproj) {
                 if (pluginPlat.xcodeproj.resourceFiles) {
                     pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
@@ -815,6 +820,23 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
     });
 });
 
+const _injectPod = (podName, pluginPlat, plugin, key) => {
+    let pluginInject = '';
+    const isNpm = plugin['no-npm'] !== true;
+    if (isNpm) {
+        const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+        pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
+    } else if (pluginPlat.git) {
+        const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
+        pluginInject += `  pod '${podName}', :git => '${pluginPlat.git}'${commit}\n`;
+    } else if (pluginPlat.version) {
+        pluginInject += `  pod '${podName}', '${pluginPlat.version}'\n`;
+    } else {
+        pluginInject += `  pod '${podName}'\n`;
+    }
+    return pluginInject;
+};
+
 const _parsePodFile = (c, platform) => {
     logTask(`_parsePodFile:${platform}`);
 
@@ -823,20 +845,14 @@ const _parsePodFile = (c, platform) => {
     let pluginInject = '';
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
-        const isNpm = plugin['no-npm'] !== true;
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.podName) {
-            if (isNpm) {
-                const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
-                pluginInject += `  pod '${pluginPlat.podName}', :path => '${podPath}'\n`;
-            } else if (pluginPlat.git) {
-                const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
-                pluginInject += `  pod '${pluginPlat.podName}', :git => '${pluginPlat.git}'${commit}\n`;
-            } else if (pluginPlat.version) {
-                pluginInject += `  pod '${pluginPlat.podName}', '${pluginPlat.version}'\n`;
-            } else {
-                pluginInject += `  pod '${pluginPlat.podName}'\n`;
-            }
+            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin, key);
+        }
+        if (pluginPlat.podNames) {
+            pluginPlat.podNames.forEach((v) => {
+                pluginInject += _injectPod(v, pluginPlat, plugin, key);
+            });
         }
 
         if (pluginPlat.reactSubSpecs) {
@@ -951,7 +967,7 @@ const _parsePlist = (c, platform, embeddedFonts) => {
         plistObj = mergeObjects(plistObj, plistExtra);
     }
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.plist) {
             plistObj = mergeObjects(plistObj, pluginPlat.plist);
         }

@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.42-alpha2",
+            "version": "0.23.42-alpha6",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -906,7 +906,10 @@
         "firebase-core": {
             "no-npm": true,
             "ios": {
-                "podName": "Firebase/Core",
+                "podNames": [
+                    "Firebase/Core",
+                    "Firebase/Messaging"
+                ],
                 "appDelegateImports": [
                     "Firebase"
                 ],

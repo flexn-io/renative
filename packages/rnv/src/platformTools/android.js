@@ -782,7 +782,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
             'bundleReleaseJsAndAssets',
         ]))
         .then(() => {
-            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))} .`);
+            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`))} .`);
             resolve();
         }).catch(e => reject(e));
 });
@@ -866,7 +866,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     };
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync(c, pluginPlat, key, pluginPlat.package);
