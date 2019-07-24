@@ -36,9 +36,9 @@ export const parseMainApplicationSync = (c, platform) => {
     writeCleanFile(getBuildFilePath(c, platform, applicationPath), path.join(appFolder, applicationPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfig.pluginImports },
-        { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfig.pluginPackages },
-        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfig.mainApplicationMethods },
+        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginImports },
+        { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
+        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.mainApplicationMethods },
     ]);
 };
 
@@ -47,10 +47,10 @@ export const parseMainActivitySync = (c, platform) => {
     const activityPath = 'app/src/main/java/rnv/MainActivity.kt';
     writeCleanFile(getBuildFilePath(c, platform, activityPath), path.join(appFolder, activityPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: c.pluginConfig.pluginActivityImports },
-        { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: c.pluginConfig.pluginActivityMethods },
-        { pattern: '{{PLUGIN_ON_CREATE}}', override: c.pluginConfig.pluginActivityCreateMethods },
-        { pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}', override: c.pluginConfig.pluginActivityResultMethods },
+        { pattern: '{{PLUGIN_ACTIVITY_IMPORTS}}', override: c.pluginConfigAndroid.pluginActivityImports },
+        { pattern: '{{PLUGIN_ACTIVITY_METHODS}}', override: c.pluginConfigAndroid.pluginActivityMethods },
+        { pattern: '{{PLUGIN_ON_CREATE}}', override: c.pluginConfigAndroid.pluginActivityCreateMethods },
+        { pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}', override: c.pluginConfigAndroid.pluginActivityResultMethods },
     ]);
 };
 
@@ -75,51 +75,51 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     if (plugin.activityImports instanceof Array) {
         plugin.activityImports.forEach((activityImport) => {
             // Avoid duplicate imports
-            if (c.pluginConfig.pluginActivityImports.indexOf(activityImport) === -1) {
-                c.pluginConfig.pluginActivityImports += `import ${activityImport}\n`;
+            if (c.pluginConfigAndroid.pluginActivityImports.indexOf(activityImport) === -1) {
+                c.pluginConfigAndroid.pluginActivityImports += `import ${activityImport}\n`;
             }
         });
     }
 
     if (plugin.activityMethods instanceof Array) {
-        c.pluginConfig.pluginActivityMethods += '\n';
-        c.pluginConfig.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
+        c.pluginConfigAndroid.pluginActivityMethods += '\n';
+        c.pluginConfigAndroid.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
     }
 
     const mainActivity = plugin.mainActivity;
     if (mainActivity) {
         if (mainActivity.createMethods instanceof Array) {
-            c.pluginConfig.pluginActivityCreateMethods += '\n';
-            c.pluginConfig.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
+            c.pluginConfigAndroid.pluginActivityCreateMethods += '\n';
+            c.pluginConfigAndroid.pluginActivityCreateMethods += `${mainActivity.createMethods.join('\n    ')}`;
         }
 
         if (mainActivity.resultMethods instanceof Array) {
-            c.pluginConfig.pluginActivityResultMethods += '\n';
-            c.pluginConfig.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
+            c.pluginConfigAndroid.pluginActivityResultMethods += '\n';
+            c.pluginConfigAndroid.pluginActivityResultMethods += `${mainActivity.resultMethods.join('\n    ')}`;
         }
 
         if (mainActivity.imports instanceof Array) {
             mainActivity.imports.forEach((v) => {
-                c.pluginConfig.pluginActivityImports += `import ${v}\n`;
+                c.pluginConfigAndroid.pluginActivityImports += `import ${v}\n`;
             });
         }
 
         if (mainActivity.methods instanceof Array) {
-            c.pluginConfig.pluginActivityMethods += '\n';
-            c.pluginConfig.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
+            c.pluginConfigAndroid.pluginActivityMethods += '\n';
+            c.pluginConfigAndroid.pluginActivityMethods += `${mainActivity.methods.join('\n    ')}`;
         }
     }
 
-    if (pkg) c.pluginConfig.pluginImports += `import ${pkg}\n`;
-    if (className) c.pluginConfig.pluginPackages += `${className}(${packageParams}),\n`;
+    if (pkg) c.pluginConfigAndroid.pluginImports += `import ${pkg}\n`;
+    if (className) c.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
 
     if (plugin.imports) {
         plugin.imports.forEach((v) => {
-            c.pluginConfig.pluginImports += `import ${v}\n`;
+            c.pluginConfigAndroid.pluginImports += `import ${v}\n`;
         });
     }
 
     if (plugin.mainApplicationMethods) {
-        c.pluginConfig.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+        c.pluginConfigAndroid.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };

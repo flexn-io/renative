@@ -429,6 +429,11 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
 
     const appFolderName = _getAppFolderName(c, platform);
 
+    // INJECTORS
+    c.pluginConfigiOS = {
+        podfileInject: ''
+    };
+
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
     copyAppleAssets(c, platform, appFolderName)
@@ -471,8 +476,12 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
             for (const key2 in plugin.appDelegateMethods[key]) {
                 const plugArr = pluginConfig.appDelegateMethods[key][key2];
                 const plugVal = plugin.appDelegateMethods[key][key2];
-                if (!plugArr.includes(plugVal)) {
-                    plugArr.push(plugVal);
+                if (plugVal) {
+                    plugVal.forEach((v) => {
+                        if (!plugArr.includes(v)) {
+                            plugArr.push(v);
+                        }
+                    });
                 }
             }
         }
@@ -862,6 +871,16 @@ const _parsePodFile = (c, platform) => {
                 }
             });
         }
+
+        if (pluginPlat.Podfile) {
+            const injectLines = pluginPlat.Podfile.injectLines;
+            if (injectLines) {
+                injectLines.forEach((v) => {
+                    console.log('SJHSKJSHKJ', v);
+                    c.pluginConfigiOS.podfileInject += `${v}\n`;
+                });
+            }
+        }
     });
 
     // SUBSPECS
@@ -883,7 +902,8 @@ const _parsePodFile = (c, platform) => {
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
-        { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings }
+        { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
+        { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
     ]);
 };
 

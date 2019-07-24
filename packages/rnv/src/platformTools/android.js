@@ -845,7 +845,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     fs.chmodSync(gradlew, '755');
 
     // INJECTORS
-    c.pluginConfig = {
+    c.pluginConfigAndroid = {
         pluginIncludes: "include ':app'",
         pluginPaths: '',
         pluginImports: '',
@@ -873,7 +873,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         injectPluginXmlValuesSync(c, pluginPlat, key, pluginPlat.package);
     });
 
-    c.pluginConfig.pluginPackages = c.pluginConfig.pluginPackages.substring(0, c.pluginConfig.pluginPackages.length - 2);
+    c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(0, c.pluginConfigAndroid.pluginPackages.length - 2);
 
     // FONTS
     if (c.files.appConfigFile) {
