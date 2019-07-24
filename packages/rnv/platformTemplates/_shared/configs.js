@@ -12,7 +12,7 @@ function generateConfig(config) {
     const appBuildPublicDir = path.resolve(config.currentDir, config.buildFolder || 'public');
 
     const baseUrl = config.baseUrl || '';
-    const devServerHost = config.devServerHost || '0.0.0.0';
+    const devServerHost = config.devServerHost || '1.1.1.1';
 
     const modulePaths = [
         'src',

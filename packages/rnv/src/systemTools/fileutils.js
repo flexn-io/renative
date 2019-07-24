@@ -7,6 +7,8 @@ import merge from 'deepmerge';
 import chalk from 'chalk';
 import { logDebug, logError } from '../common';
 
+const isRunningOnWindows = process.platform === 'win32';
+
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);
     let targetFile = target;
@@ -206,11 +208,16 @@ const updateConfigFile = async (update, globalConfigPath) => {
     fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
 
+const replaceHomeFolder = (path) => {
+    if (isRunningOnWindows) return path.replace('~', process.env.USERPROFILE)
+    return path.replace('~', process.env.HOME);
+}
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFilesSync, removeDirs,
     writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
-    updateConfigFile, removeDirsSync
+    updateConfigFile, removeDirsSync, replaceHomeFolder
 };
 
 export default {
@@ -228,5 +235,6 @@ export default {
     updateObjectSync,
     arrayMerge,
     mergeObjects,
-    updateConfigFile
+    updateConfigFile,
+    replaceHomeFolder
 };

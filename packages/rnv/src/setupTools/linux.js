@@ -21,6 +21,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         if (!this.availableDownloader) {
             logInfo('Looks like you don\'t have wget or curl installed. We\'ll install wget for you');
             await this.installSoftware('wget');
+            this.availableDownloader = 'wget';
         }
 
         if (!commandExistsSync('unzip')) {
