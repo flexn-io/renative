@@ -1252,13 +1252,14 @@ const resolveNodeModulePath = (c, filePath) => {
 };
 
 const getBuildFilePath = (c, platform, filePath) => {
+    // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
+    // P2 => projectConfigs + @buildSchemes
     const sp2 = path.join(getBuildsFolder(c, platform, c.paths.projectConfigFolder), filePath);
     if (fs.existsSync(sp2)) sp = sp2;
-
+    // P3 => appConfigs + @buildSchemes
     const sp3 = path.join(getBuildsFolder(c, platform), filePath);
     if (fs.existsSync(sp3)) sp = sp3;
-
     return sp;
 };
 

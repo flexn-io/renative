@@ -7,7 +7,7 @@ import child_process from 'child_process';
 import { executeAsync } from '../systemTools/exec';
 import { isObject } from '../systemTools/objectUtils';
 import { createPlatformBuild } from '../cli/platform';
-import { launchAppleSimulator, getAppleDevices } from './apple/deviceManager';
+import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './apple/deviceManager';
 import {
     logTask,
     logError,
@@ -32,7 +32,11 @@ import {
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
-import { saveObjToPlistSync, objToPlist } from './apple/plistParser';
+import {
+    saveObjToPlistSync, objToPlist, parseExportOptionsPlistSync,
+    parseInfoPlistSync, parseEntitlementsPlistSync
+} from './apple/plistParser';
+import { parsePodFileSync } from './apple/plistParser';
 
 const xcode = require('xcode');
 const readline = require('readline');
@@ -498,200 +502,16 @@ const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
 
 const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve) => {
     logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
-    const appDelegate = 'AppDelegate.swift';
 
-    const entryFile = getEntryFile(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
-    const { backgroundColor } = c.files.appConfigFile.platforms[platform];
-    const tId = getConfigProp(c, platform, 'teamID');
-    const runScheme = getConfigProp(c, platform, 'runScheme');
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-    const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
-    let bundle;
-    if (isBundled) {
-        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
-    } else {
-        bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
-    }
-    // INJECTORS
-    const pluginAppDelegateImports = '';
-    const pluginAppDelegateMethods = '';
-    const pluginConfig = {
-        pluginAppDelegateImports,
-        pluginAppDelegateMethods,
-        appDelegateMethods: {
-            application: {
-                didFinishLaunchingWithOptions: [],
-                open: [],
-                supportedInterfaceOrientationsFor: [],
-                didReceiveRemoteNotification: [],
-                didFailToRegisterForRemoteNotificationsWithError: [],
-                didReceive: [],
-                didRegister: [],
-                didRegisterForRemoteNotificationsWithDeviceToken: []
-            },
-            userNotificationCenter: {
-                willPresent: []
-            }
-        }
-    };
 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
     });
 
-    // BG COLOR
-    let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
-    const UI_COLORS = ['black', 'blue', 'brown', 'clear', 'cyan', 'darkGray', 'gray', 'green', 'lightGray', 'magneta', 'orange', 'purple', 'red', 'white', 'yellow'];
-    if (backgroundColor) {
-        if (UI_COLORS.includes(backgroundColor)) {
-            pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
-        } else {
-            logWarning(`Your choosen color in config.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
-        }
-    }
+    parseAppDelegateSync(c, platform, appFolder, appFolderName, isBundled, ip, port);
 
-    const methods = {
-        application: {
-            didFinishLaunchingWithOptions: {
-                isRequired: true,
-                func: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
-                begin: `
-        self.window = UIWindow(frame: UIScreen.main.bounds)
-        let vc = UIViewController()
-        let v = RCTRootView(
-            bundleURL: bundleUrl,
-            moduleName: moduleName,
-            initialProperties: nil,
-            launchOptions: launchOptions)
-        vc.view = v
-        ${pluginBgColor}
-        v?.frame = vc.view.bounds
-        self.window?.rootViewController = vc
-        self.window?.makeKeyAndVisible()
-        UNUserNotificationCenter.current().delegate = self
-                `,
-                render: v => `${v}`,
-                end: 'return true',
-
-            },
-            open: {
-                func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
-                begin: 'var handled = false',
-                render: v => `if(!handled) { handled = ${v} }`,
-                end: 'return handled',
-
-            },
-            supportedInterfaceOrientationsFor: {
-                func: 'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
-                begin: null,
-                render: v => `return ${v}`,
-                end: null,
-
-            },
-            didReceiveRemoteNotification: {
-                func: 'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
-                begin: null,
-                render: v => `${v}`,
-                end: null,
-
-            },
-            didFailToRegisterForRemoteNotificationsWithError: {
-                func: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
-                begin: null,
-                render: v => `${v}`,
-                end: null,
-
-            },
-            didReceive: {
-                func: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
-                begin: null,
-                render: v => `${v}`,
-                end: null,
-
-            },
-            didRegister: {
-                func: 'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
-                begin: null,
-                render: v => `${v}`,
-                end: null,
-
-            },
-            didRegisterForRemoteNotificationsWithDeviceToken: {
-                func: 'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
-                begin: null,
-                render: v => `${v}`,
-                end: null,
-
-            }
-        },
-        userNotificationCenter: {
-            willPresent: {
-                func: 'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
-                begin: null,
-                render: v => `${v}`,
-                end: null
-            }
-        }
-    };
-
-    const constructMethod = (lines, method) => {
-        let output = '';
-        if (lines.length || method.isRequired) {
-            output += `\n${method.func}\n`;
-            if (method.begin) output += `   ${method.begin}\n`;
-            lines.forEach((v) => {
-                output += `    ${method.render(v)}\n`;
-            });
-            if (method.end) output += `   ${method.end}\n`;
-            output += '}\n';
-        }
-        return output;
-    };
-
-    for (const key in methods) {
-        const method = methods[key];
-        for (const key2 in method) {
-            const f = method[key2];
-            pluginConfig.pluginAppDelegateMethods += constructMethod(pluginConfig.appDelegateMethods[key][key2], f);
-        }
-    }
-
-    writeCleanFile(
-        path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
-        path.join(appFolder, appFolderName, appDelegate),
-        [
-            { pattern: '{{BUNDLE}}', override: bundle },
-            { pattern: '{{ENTRY_FILE}}', override: entryFile },
-            { pattern: '{{IP}}', override: ip },
-            { pattern: '{{PORT}}', override: port },
-            { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
-            {
-                pattern: '{{APPDELEGATE_IMPORTS}}',
-                override: pluginConfig.pluginAppDelegateImports,
-            },
-            {
-                pattern: '{{APPDELEGATE_METHODS}}',
-                override: pluginConfig.pluginAppDelegateMethods,
-            },
-        ],
-    );
-
-
-    // EXPORT OPTIONS
-
-    const exportOptions = {
-        method: 'app-store',
-        teamID: tId
-    };
-
-    c.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
-
-    writeCleanFile(getBuildFilePath(c, platform, 'exportOptions.plist'), path.join(appFolder, 'exportOptions.plist'), [
-        { pattern: '{{TEAM_ID}}', override: tId },
-        { pattern: '{{PLUGIN_EXPORT_OPTIONS}}', override: c.pluginConfigiOS.exportOptions },
-    ]);
+    parseExportOptions();
 
     // XCSCHEME
     const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
@@ -841,178 +661,13 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
         });
 
         fs.writeFileSync(projectPath, xcodeProj.writeSync());
-        _parsePodFile(c, platform);
-        _parseEntitlements(c, platform);
-        _parsePlist(c, platform, embeddedFonts);
+        parsePodFileSync(c, platform);
+        parseEntitlementsPlistSync(c, platform);
+        parseInfoPlistSync(c, platform, embeddedFonts);
         resolve();
     });
 });
 
-const _injectPod = (podName, pluginPlat, plugin, key) => {
-    let pluginInject = '';
-    const isNpm = plugin['no-npm'] !== true;
-    if (isNpm) {
-        const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
-        pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
-    } else if (pluginPlat.git) {
-        const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
-        pluginInject += `  pod '${podName}', :git => '${pluginPlat.git}'${commit}\n`;
-    } else if (pluginPlat.version) {
-        pluginInject += `  pod '${podName}', '${pluginPlat.version}'\n`;
-    } else {
-        pluginInject += `  pod '${podName}'\n`;
-    }
-    return pluginInject;
-};
-
-const _parsePodFile = (c, platform) => {
-    logTask(`_parsePodFile:${platform}`);
-
-    const appFolder = getAppFolder(c, platform);
-    let pluginSubspecs = '';
-    let pluginInject = '';
-
-    // PLUGINS
-    c.pluginConfigiOS.podfileInject = '';
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        if (pluginPlat.podName) {
-            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin, key);
-        }
-        if (pluginPlat.podNames) {
-            pluginPlat.podNames.forEach((v) => {
-                pluginInject += _injectPod(v, pluginPlat, plugin, key);
-            });
-        }
-
-        if (pluginPlat.reactSubSpecs) {
-            pluginPlat.reactSubSpecs.forEach((v) => {
-                if (!pluginSubspecs.includes(`'${v}'`)) {
-                    pluginSubspecs += `  '${v}',\n`;
-                }
-            });
-        }
-
-        if (pluginPlat.Podfile) {
-            const injectLines = pluginPlat.Podfile.injectLines;
-            if (injectLines) {
-                injectLines.forEach((v) => {
-                    c.pluginConfigiOS.podfileInject += `${v}\n`;
-                });
-            }
-        }
-    });
-
-    // SUBSPECS
-    const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
-    if (reactCore) {
-        if (reactCore.ios.reactSubSpecs) {
-            reactCore.ios.reactSubSpecs.forEach((v) => {
-                if (!pluginSubspecs.includes(`'${v}'`)) {
-                    pluginSubspecs += `  '${v}',\n`;
-                }
-            });
-        }
-    }
-
-    // WARNINGS
-    const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
-    const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
-
-    writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
-        { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
-        { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
-        { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
-    ]);
-};
-
-const _parseEntitlements = (c, platform) => {
-    logTask(`_parseEntitlements:${platform}`);
-
-    const appFolder = getAppFolder(c, platform);
-    const appFolderName = _getAppFolderName(c, platform);
-    const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
-    // PLUGIN ENTITLEMENTS
-    let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
-    if (!pluginsEntitlementsObj) {
-        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/entitlements.json'));
-    }
-
-    saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
-};
-
-const _parsePlist = (c, platform, embeddedFonts) => {
-    logTask(`_parsePlist:${platform}`);
-
-    const appFolder = getAppFolder(c, platform);
-    const appFolderName = _getAppFolderName(c, platform);
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
-    const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
-
-    // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/info.plist.json'));
-    plistObj.CFBundleDisplayName = getAppTitle(c, platform);
-    plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
-    // FONTS
-    if (embeddedFonts.length) {
-        plistObj.UIAppFonts = embeddedFonts;
-    }
-    // PERMISSIONS
-    const pluginPermissions = '';
-    if (permissions) {
-        if (permissions.length && permissions[0] === '*') {
-            if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
-                const pc = c.files.permissionsConfig.permissions[plat];
-                for (const v in pc) {
-                    plistObj[pc[v].key] = pc[v].desc;
-                }
-            }
-        } else {
-            permissions.forEach((v) => {
-                if (c.files.permissionsConfig) {
-                    const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
-                    const pc = c.files.permissionsConfig.permissions[plat];
-                    if (pc[v]) {
-                        plistObj[pc[v].key] = pc[v].desc;
-                    }
-                }
-            });
-        }
-    }
-    // ORIENATATIONS
-    if (orientationSupport) {
-        if (orientationSupport.phone) {
-            plistObj.UISupportedInterfaceOrientations = orientationSupport.phone;
-        } else {
-            plistObj.UISupportedInterfaceOrientations = ['UIInterfaceOrientationPortrait'];
-        }
-        if (orientationSupport.tab) {
-            plistObj['UISupportedInterfaceOrientations~ipad'] = orientationSupport.tab;
-        } else {
-            plistObj['UISupportedInterfaceOrientations~ipad'] = ['UIInterfaceOrientationPortrait'];
-        }
-    }
-    // URL_SCHEMES
-    if (urlScheme) {
-        plistObj.CFBundleURLTypes.push({
-            CFBundleTypeRole: 'Editor',
-            CFBundleURLName: urlScheme,
-            CFBundleURLSchemes: [urlScheme]
-        });
-    }
-    // PLIST EXTRAS
-    if (plistExtra) {
-        plistObj = mergeObjects(plistObj, plistExtra);
-    }
-    // PLUGINS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        if (pluginPlat.plist) {
-            plistObj = mergeObjects(plistObj, pluginPlat.plist);
-        }
-    });
-    saveObjToPlistSync(plistPath, plistObj);
-};
 
 const _getAppFolderName = (c, platform) => {
     const projectFolder = getConfigProp(c, platform, 'projectFolder');
@@ -1022,18 +677,6 @@ const _getAppFolderName = (c, platform) => {
     return platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
 };
 
-const listAppleDevices = (c, platform) => new Promise((resolve) => {
-    logTask(`listAppleDevices:${platform}`);
-
-    const devicesArr = getAppleDevices(c, platform);
-    let devicesString = '\n';
-    devicesArr.forEach((v, i) => {
-        devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
-            v.isDevice ? chalk.red(' (device)') : ''
-        }\n`;
-    });
-    console.log(devicesString);
-});
 
 // Resolve or reject will not be called so this will keep running
 const runAppleLog = c => new Promise(() => {
