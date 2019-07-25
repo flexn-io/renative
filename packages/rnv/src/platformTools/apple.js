@@ -873,6 +873,7 @@ const _parsePodFile = (c, platform) => {
     let pluginInject = '';
 
     // PLUGINS
+    c.pluginConfigiOS.podfileInject = '';
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.podName) {
             pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin, key);
@@ -891,7 +892,6 @@ const _parsePodFile = (c, platform) => {
             });
         }
 
-        c.pluginConfigiOS.podfileInject = '';
         if (pluginPlat.Podfile) {
             const injectLines = pluginPlat.Podfile.injectLines;
             if (injectLines) {
