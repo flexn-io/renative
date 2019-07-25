@@ -12,6 +12,11 @@ body::-webkit-scrollbar, div::-webkit-scrollbar {
 /* native css scrolling smooth */
 html {
     scroll-behavior: smooth;
+    height: 100%;
+}
+
+body{
+    height: 100%;
 }
 
 /* remove outline */
