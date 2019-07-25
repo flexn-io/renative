@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.42-alpha6",
+            "version": "0.23.42-alpha7",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -837,10 +837,12 @@
                 "plist": {
                     "Fabric": {
                         "APIKey": "",
-                        "Kits": [{
-                            "KitInfo": {},
-                            "KitName": "Crashlytics"
-                        }]
+                        "Kits": [
+                            {
+                                "KitInfo": {},
+                                "KitName": "Crashlytics"
+                            }
+                        ]
                     }
                 }
             },
@@ -1045,19 +1047,25 @@
                     ]
                 },
                 "AndroidManifest": {
-                    "children": [{
+                    "children": [
+                        {
                             "tag": "application",
                             "android:name": ".MainApplication",
-                            "children": [{
+                            "children": [
+                                {
                                     "tag": "service",
                                     "android:name": "io.invertase.firebase.messaging.RNFirebaseMessagingService",
-                                    "children": [{
-                                        "tag": "intent-filter",
-                                        "children": [{
-                                            "tag": "action",
-                                            "android:name": "com.google.firebase.MESSAGING_EVENT"
-                                        }]
-                                    }]
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "com.google.firebase.MESSAGING_EVENT"
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 {
                                     "tag": "service",
@@ -1067,13 +1075,17 @@
                                     "tag": "receiver",
                                     "android:name": "io.invertase.firebase.notifications.RNFirebaseBackgroundNotificationActionReceiver",
                                     "android:exported": true,
-                                    "children": [{
-                                        "tag": "intent-filter",
-                                        "children": [{
-                                            "tag": "action",
-                                            "android:name": "io.invertase.firebase.notifications.BackgroundAction"
-                                        }]
-                                    }]
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "io.invertase.firebase.notifications.BackgroundAction"
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 },
                                 {
                                     "tag": "service",
@@ -1088,30 +1100,32 @@
                                     "android:name": "io.invertase.firebase.notifications.RNFirebaseNotificationsRebootReceiver",
                                     "android:exported": true,
                                     "android:enabled": true,
-                                    "children": [{
-                                        "tag": "intent-filter",
-                                        "children": [{
-                                                "tag": "action",
-                                                "android:name": "android.intent.action.BOOT_COMPLETED"
-                                            },
-                                            {
-                                                "tag": "action",
-                                                "android:name": "android.intent.action.QUICKBOOT_POWERON"
-                                            },
-                                            {
-                                                "tag": "action",
-                                                "android:name": "com.htc.intent.action.QUICKBOOT_POWERON"
-                                            },
-                                            {
-                                                "tag": "category",
-                                                "android:name": "android.intent.category.DEFAULT"
-                                            }
-                                        ]
-                                    }]
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.BOOT_COMPLETED"
+                                                },
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.QUICKBOOT_POWERON"
+                                                },
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "com.htc.intent.action.QUICKBOOT_POWERON"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.DEFAULT"
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 }
                             ]
                         }
-
                     ]
                 }
             },
