@@ -25,13 +25,14 @@ import {
     getConfigProp,
     getIP,
     getQuestion,
+    getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../common';
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
-import { saveObjToPlistSync } from './apple/plistParser';
+import { saveObjToPlistSync, objToPlist } from './apple/plistParser';
 
 const xcode = require('xcode');
 const readline = require('readline');
@@ -416,6 +417,12 @@ const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
+        // configureXcodeProject(c, platform)
+        // INJECTORS
+        c.pluginConfigiOS = {
+            podfileInject: '',
+            exportOptions: ''
+        };
         _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip)
             .then(() => resolve(c))
             .catch(e => reject(e));
@@ -427,12 +434,13 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     if (process.platform !== 'darwin') return;
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const appFolderName = _getAppFolderName(c, platform);
-
     // INJECTORS
     c.pluginConfigiOS = {
-        podfileInject: ''
+        podfileInject: '',
+        exportOptions: ''
     };
+
+    const appFolderName = _getAppFolderName(c, platform);
 
     // configureIfRequired(c, platform)
     //     .then(() => copyAppleAssets(c, platform, appFolderName))
@@ -670,8 +678,19 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
         ],
     );
 
-    writeCleanFile(path.join(appTemplateFolder, 'exportOptions.plist'), path.join(appFolder, 'exportOptions.plist'), [
+
+    // EXPORT OPTIONS
+
+    const exportOptions = {
+        method: 'app-store',
+        teamID: tId
+    };
+
+    c.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
+
+    writeCleanFile(getBuildFilePath(c, platform, 'exportOptions.plist'), path.join(appFolder, 'exportOptions.plist'), [
         { pattern: '{{TEAM_ID}}', override: tId },
+        { pattern: '{{PLUGIN_EXPORT_OPTIONS}}', override: c.pluginConfigiOS.exportOptions },
     ]);
 
     // XCSCHEME
@@ -876,7 +895,6 @@ const _parsePodFile = (c, platform) => {
             const injectLines = pluginPlat.Podfile.injectLines;
             if (injectLines) {
                 injectLines.forEach((v) => {
-                    console.log('SJHSKJSHKJ', v);
                     c.pluginConfigiOS.podfileInject += `${v}\n`;
                 });
             }
