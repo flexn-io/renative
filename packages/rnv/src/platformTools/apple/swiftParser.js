@@ -183,3 +183,36 @@ export const parseAppDelegateSync = (c, platform, appFolder, appFolderName, isBu
         ],
     );
 });
+
+const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
+    logTask(`_injectPlugin:${c.platform}:${key}`);
+    if (plugin.appDelegateImports instanceof Array) {
+        plugin.appDelegateImports.forEach((appDelegateImport) => {
+            // Avoid duplicate imports
+            logTask('appDelegateImports add');
+            if (pluginConfig.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
+                logTask('appDelegateImports add ok');
+                pluginConfig.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
+            }
+        });
+    }
+    // if (plugin.appDelegateMethods instanceof Array) {
+    //     pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    // }
+
+    if (plugin.appDelegateMethods) {
+        for (const key in plugin.appDelegateMethods) {
+            for (const key2 in plugin.appDelegateMethods[key]) {
+                const plugArr = pluginConfig.appDelegateMethods[key][key2];
+                const plugVal = plugin.appDelegateMethods[key][key2];
+                if (plugVal) {
+                    plugVal.forEach((v) => {
+                        if (!plugArr.includes(v)) {
+                            plugArr.push(v);
+                        }
+                    });
+                }
+            }
+        }
+    }
+};

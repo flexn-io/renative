@@ -385,6 +385,77 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
     ]);
 };
 
+VALUES = {
+    provisioningStyle: {
+        allowedValues: ['Automatic', 'Manual'],
+        defaultValue: 'Automatic'
+    }
+};
+
+const _getAppFolderName = (c, platform) => {
+    const projectFolder = getConfigProp(c, platform, 'projectFolder');
+    if (projectFolder) {
+        return projectFolder;
+    }
+    return platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
+};
+
+
+// Resolve or reject will not be called so this will keep running
+const runAppleLog = c => new Promise(() => {
+    const filter = c.program.filter || 'RNV';
+    const child = child_process.execFile(
+        'xcrun',
+        ['simctl', 'spawn', 'booted', 'log', 'stream', '--predicate', `eventMessage contains \"${filter}\"`],
+        { stdio: 'inherit', customFds: [0, 1, 2] },
+    );
+        // use event hooks to provide a callback to execute when data are available:
+    child.stdout.on('data', (data) => {
+        const d = data.toString();
+        if (d.toLowerCase().includes('error')) {
+            console.log(chalk.red(d));
+        } else if (d.toLowerCase().includes('success')) {
+            console.log(chalk.green(d));
+        } else {
+            console.log(d);
+        }
+    });
+});
+
+//
+//
+//
+//
+//
+//
+//
+
+const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
+    createPlatformBuild(c, platform)
+        .then(() => copyAppleAssets(c, platform, appFolderName))
+        .then(() => copyAppleAssets(c, platform, appFolderName))
+        .then(() => copyBuildsFolder(c, platform))
+        .then(() => {
+            parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+                _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
+            });
+            parseAppDelegateSync(c, platform, appFolder, appFolderName, isBundled, ip, port);
+            parseExportOptionsPlistSync(c, platform);
+            parseXcschemeSync(c, platform);
+            parsePodFileSync(c, platform);
+            parseEntitlementsPlistSync(c, platform);
+            parseInfoPlistSync(c, platform, embeddedFonts);
+            return Promise.resolve();
+        })
+        .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
+
+
+        .then(() => parseXcodeProject())
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+
 const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     const { device } = c.program;
     const ip = device ? getIP() : 'localhost';
@@ -433,7 +504,7 @@ const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     }
 });
 
-const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
+const configureXcodeProjectOLD = (c, platform, ip, port) => new Promise((resolve, reject) => {
     logTask('configureXcodeProject');
     if (process.platform !== 'darwin') return;
     if (!isPlatformActive(c, platform, resolve)) return;
@@ -467,38 +538,6 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         });
 });
 
-const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
-    logTask(`_injectPlugin:${c.platform}:${key}`);
-    if (plugin.appDelegateImports instanceof Array) {
-        plugin.appDelegateImports.forEach((appDelegateImport) => {
-            // Avoid duplicate imports
-            logTask('appDelegateImports add');
-            if (pluginConfig.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
-                logTask('appDelegateImports add ok');
-                pluginConfig.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
-            }
-        });
-    }
-    // if (plugin.appDelegateMethods instanceof Array) {
-    //     pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
-    // }
-
-    if (plugin.appDelegateMethods) {
-        for (const key in plugin.appDelegateMethods) {
-            for (const key2 in plugin.appDelegateMethods[key]) {
-                const plugArr = pluginConfig.appDelegateMethods[key][key2];
-                const plugVal = plugin.appDelegateMethods[key][key2];
-                if (plugVal) {
-                    plugVal.forEach((v) => {
-                        if (!plugArr.includes(v)) {
-                            plugArr.push(v);
-                        }
-                    });
-                }
-            }
-        }
-    }
-};
 
 const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve) => {
     logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
@@ -516,30 +555,8 @@ const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled 
     parseXcschemeSync();
 
 
-    const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
-    const xcodeProj = xcode.project(projectPath);
-    xcodeProj.parse(() => {
-        const appId = getAppId(c, platform);
-        if (tId) {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
-        } else {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
-        }
-
-        xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
-        xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
-        xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
-
-        resolve();
-    });
+    parseXcodeProject2();
 });
-
-VALUES = {
-    provisioningStyle: {
-        allowedValues: ['Automatic', 'Manual'],
-        defaultValue: 'Automatic'
-    }
-};
 
 const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
     logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
@@ -560,37 +577,6 @@ const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port
             parseEntitlementsPlistSync(c, platform);
             parseInfoPlistSync(c, platform, embeddedFonts);
         }).catch(e => reject(e));
-});
-
-
-const _getAppFolderName = (c, platform) => {
-    const projectFolder = getConfigProp(c, platform, 'projectFolder');
-    if (projectFolder) {
-        return projectFolder;
-    }
-    return platform === IOS ? 'RNVApp' : 'RNVAppTVOS';
-};
-
-
-// Resolve or reject will not be called so this will keep running
-const runAppleLog = c => new Promise(() => {
-    const filter = c.program.filter || 'RNV';
-    const child = child_process.execFile(
-        'xcrun',
-        ['simctl', 'spawn', 'booted', 'log', 'stream', '--predicate', `eventMessage contains \"${filter}\"`],
-        { stdio: 'inherit', customFds: [0, 1, 2] },
-    );
-        // use event hooks to provide a callback to execute when data are available:
-    child.stdout.on('data', (data) => {
-        const d = data.toString();
-        if (d.toLowerCase().includes('error')) {
-            console.log(chalk.red(d));
-        } else if (d.toLowerCase().includes('success')) {
-            console.log(chalk.green(d));
-        } else {
-            console.log(d);
-        }
-    });
 });
 
 export {
