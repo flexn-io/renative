@@ -335,15 +335,21 @@ All app code is located in `./src` directory
 
 ## Templates / Starters
 
-Currently supported templates out of the box:
+#### Built-in
 
 Hello World:
 
 https://www.npmjs.com/package/renative-template-hello-world
 
-Blank Template:
+Blank:
 
 https://www.npmjs.com/package/renative-template-blank
+
+#### Community
+
+Chat App:
+
+https://www.npmjs.com/package/@reactseals/renative-template-chat
 
 
 ---
