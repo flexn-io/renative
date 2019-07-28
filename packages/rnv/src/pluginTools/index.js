@@ -65,3 +65,5 @@ const getLocalRenativePlugin = () => ({
 });
 
 export { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
+
+export default { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
