@@ -242,10 +242,11 @@ const runTizen = async (c, platform, target) => {
             hasDevice = await waitForEmulatorToBeReady(c, target);
         }
 
-        if (platform !== 'tizenwatch' && hasDevice) {
+        if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
             await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask);
-        } else if (platform === 'tizenwatch' && hasDevice) {
-            logInfo('App installed. Please start it manually');
+        } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
+            const packageID = tId.split('.');
+            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`, logTask);
         }
         return true;
     };
