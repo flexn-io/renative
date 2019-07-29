@@ -43,6 +43,8 @@ import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const { fork } = require('child_process');
 
+const isRunningOnWindows = process.platform === 'win32'
+
 const _generateWebpackConfigs = (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const templateFolder = getAppTemplateFolder(c, c.platform);
@@ -159,7 +161,12 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    const devServerHost = extendConfig.devServerHost || '0.0.0.0';
+    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
+
+    
+    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+        devServerHost = '127.0.0.1'
+    }
 
     checkPortInUse(c, platform, port)
         .then((isPortActive) => {
