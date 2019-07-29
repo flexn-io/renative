@@ -608,14 +608,16 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
             }
         }
 
+        const isRunningOnWindows = process.platform === 'win32';
+
         // Check global SDKs
         const { sdks } = c.files.globalConfig;
         if (sdks) {
             if (sdks.ANDROID_SDK) {
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, 'emulator/emulator');
-                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, 'platform-tools/adb');
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/avdmanager');
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, `platform-tools/adb${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/avdmanager${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`);
             }
             if (sdks.TIZEN_SDK) {
                 c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');

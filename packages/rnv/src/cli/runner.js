@@ -229,7 +229,7 @@ const _runAppWithPlatform = async (c) => {
                 sdkInstall = response.sdkInstall;
             }
 
-            const appendExeIfWindows = (process.platform === 'win32' ? 'emulator/emulator.exe' : '');
+            const isRunningOnWindows = process.platform === 'win32';
 
             if (c.program.ci || sdkInstall) {
                 const setupInstance = PlatformSetup(c);
@@ -237,10 +237,10 @@ const _runAppWithPlatform = async (c) => {
                 // @todo find a more elegant way to update this
                 c.files.globalConfig.sdks.ANDROID_SDK = newPath;
                 const { sdks: { ANDROID_SDK } } = c.files.globalConfig;
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator', appendExeIfWindows);
-                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb', appendExeIfWindows);
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager', appendExeIfWindows);
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager', appendExeIfWindows);
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, `platform-tools/adb${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, `tools/bin/avdmanager${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`);
             }
         }
 

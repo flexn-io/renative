@@ -54,6 +54,8 @@ const readline = require('readline');
 
 const CHECK_INTEVAL = 5000;
 
+const isRunningOnWindows = process.platform === 'win32';
+
 const currentDeviceProps = {};
 
 const composeDevicesString = (devices, returnArray) => {
@@ -79,7 +81,13 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(logError);
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(err => {
+                                if (err.includes && err.includes('WHPX')) {
+                                    logWarning(err)
+                                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true)
+                                }
+                                logError(err);
+                            });
                             return Promise.resolve();
                         }
                         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
@@ -92,7 +100,13 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch(logError);
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch(err => {
+                if (err.includes && err.includes('WHPX')) {
+                    logWarning(err)
+                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true)
+                }
+                logError(err);
+            });
             return Promise.resolve();
         }
         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`);
@@ -410,7 +424,8 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                child_process.execSync(`ps x | grep "avd ${line}" | grep -v grep`);
+                const findProcess = isRunningOnWindows ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`
+                child_process.execSync(findProcess);
                 logDebug('_parseDevicesResult 9 - excluding running emulator');
             } catch (e) {
                 if (avdDetails) {
@@ -477,11 +492,7 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
-        .then(() => execCLI(
-            null,
-            null,
-            `sh echo no | ${c.cli[CLI_ANDROID_AVDMANAGER]} create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
-        ))
+        .then(() => executeAsync(c.cli[CLI_ANDROID_AVDMANAGER],  ['create', 'avd', '-n', emuName, '-k', `system-images;android-${apiVersion};${emuPlatform};x86`]))
         .catch(e => logError(e, true));
 };
 
@@ -510,7 +521,15 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 
 
     const appFolder = getAppFolder(c, platform);
-    executeAsync('react-native', [
+    let reactNative = 'react-native';
+
+    if (isRunningOnWindows) {
+        reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
+    }
+
+    console.log('((((((((', reactNative)
+
+    executeAsync(reactNative, [
         'bundle',
         '--platform',
         'android',
@@ -656,7 +675,7 @@ const _runGradle = async (c, platform) => {
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_checkForActiveEmulator:${platform}`);
     let attempts = 1;
-    const maxAttempts = process.platform === 'win32' ? 30 : 10;
+    const maxAttempts = isRunningOnWindows ? 3 : 10;
     let running = false;
     const poll = setInterval(() => {
         // Prevent the interval from running until enough promises return to make it stop or we get a result
@@ -736,7 +755,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
+        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
             `assemble${signingConfig}`,
             '-x',
             'bundleReleaseJsAndAssets',
@@ -776,7 +795,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
+        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
             `assemble${signingConfig}`,
             '-x',
             'bundleReleaseJsAndAssets',
@@ -797,11 +816,19 @@ const configureAndroidProperties = c => new Promise((resolve) => {
         console.log('local.properties file missing! Creating one for you...');
     }
 
+    const addNDK = c.files.globalConfig.sdks.ANDROID_NDK && !c.files.globalConfig.sdks.ANDROID_NDK.includes('<USER>')
+    const ndkString = `ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}`;
+    let sdkDir = c.files.globalConfig.sdks.ANDROID_SDK;
+
+    if (isRunningOnWindows) {
+        sdkDir = sdkDir.replace(/\\/g, '/');
+    }
+
     fs.writeFileSync(
         localProperties,
         `#Generated by ReNative (https://renative.org)
-ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}
-sdk.dir=${c.files.globalConfig.sdks.ANDROID_SDK}`,
+${addNDK ? ndkString : ''}
+sdk.dir=${sdkDir}`,
     );
 
     resolve();

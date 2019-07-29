@@ -7,13 +7,16 @@ import { updateConfigFile, replaceHomeFolder } from '../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
 
+let platform = isRunningOnWindows ? 'windows' : 'linux';
+if (process.platform === 'darwin') platform = 'darwin';
+
 class BasePlatformSetup {
     constructor(os, globalConfigPath) {
         this.os = os;
         this.globalConfigPath = globalConfigPath;
         this.availableDownloader = null;
-        this.androidSdkURL = 'https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip';
-        this.androidSdkDownloadLocation = replaceHomeFolder('~/sdk-tools-linux-4333796.zip');
+        this.androidSdkURL = `https://dl.google.com/android/repository/sdk-tools-${platform}-4333796.zip`;
+        this.androidSdkDownloadLocation = replaceHomeFolder(`~/sdk-tools-${platform}-4333796.zip`);
         this.androidSdkLocation = replaceHomeFolder('~/Android');
         this.sdksToInstall = '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';
     }

@@ -1,8 +1,8 @@
 import shell from 'shelljs';
 import { getInstalledPathSync } from 'get-installed-path';
 
-import { commandExistsSync } from '../systemTools/exec';
-import { logInfo } from '../common';
+import { commandExistsSync, executeAsync } from '../systemTools/exec';
+import { logInfo, logDebug } from '../common';
 import BasePlatformSetup from './base';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
@@ -59,11 +59,19 @@ class LinuxPlatformSetup extends BasePlatformSetup {
 
         if (!commandExistsSync('javac')) {
             logInfo('Looks like you don\'t have java installed. We\'ll install it for you');
-            await this.addScoopBucket('java')
-            await this.installSoftware('openjdk');
+            await this.installSoftware('shellcheck');
+            await this.addScoopBucket('java');
+            await this.installSoftware('ojdkbuild8');
         }
 
         return true;
+    }
+
+    async installSdksAndEmulator() {
+        logDebug('Accepting licenses');
+        await executeAsync(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat`,  ['--licenses']); // different because interactive
+        logDebug('Installing SDKs', this.sdksToInstall);
+        await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat ${this.sdksToInstall}`);
     }
 }
 
