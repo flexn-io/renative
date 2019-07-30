@@ -1,5 +1,6 @@
 /* eslint-disable import/no-cycle */
 import shell from 'shelljs';
+import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemTools/exec';
 import { logInfo, logDebug } from '../common';
@@ -11,8 +12,10 @@ let platform = isRunningOnWindows ? 'windows' : 'linux';
 if (process.platform === 'darwin') platform = 'darwin';
 
 class BasePlatformSetup {
-    constructor(os, globalConfigPath) {
+    constructor(os, c) {
+        const { paths: { globalConfigPath } } = c;
         this.os = os;
+        this.c = c;
         this.globalConfigPath = globalConfigPath;
         this.availableDownloader = null;
         this.androidSdkURL = `https://dl.google.com/android/repository/sdk-tools-${platform}-4333796.zip`;
@@ -32,6 +35,11 @@ class BasePlatformSetup {
     }
 
     async installPrereqs() {
+        // to be overwritten
+        return true;
+    }
+
+    async postInstall() {
         // to be overwritten
         return true;
     }
@@ -80,9 +88,51 @@ class BasePlatformSetup {
         await this.downloadAndroidSdk();
         await this.unzipAndroidSdk();
         await this.installSdksAndEmulator();
-        logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify({ androidSdk: this.androidSdkLocation })}`)
+        logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify({ androidSdk: this.androidSdkLocation })}`);
         await updateConfigFile({ androidSdk: this.androidSdkLocation }, this.globalConfigPath);
         return this.androidSdkLocation;
+    }
+
+    async installTizenSdk() {
+        this.checkPrereqs();
+        await this.installPrereqs();
+    }
+
+    async installWebosSdk() {
+        this.checkPrereqs();
+        await this.installPrereqs();
+    }
+
+    async askToInstallSDK(sdk) {
+        let sdkInstall;
+        if (!this.c.program.ci) {
+            const response = await inquirer.prompt([{
+                name: 'sdkInstall',
+                type: 'confirm',
+                message: `Do you want to install ${sdk} SDK?`,
+            }]);
+            // eslint-disable-next-line prefer-destructuring
+            sdkInstall = response.sdkInstall;
+        }
+
+        if (this.c.program.ci || sdkInstall) {
+            switch (sdk) {
+            case 'android':
+                const android = await this.installAndroidSdk();
+                this.postInstall({ android });
+                break;
+            case 'tizen':
+                const tizen = await this.installTizenSdk();
+                this.postInstall({ tizen });
+                break;
+            case 'webos':
+                const webos = await this.installWebosSdk();
+                this.postInstall({ webos });
+                break;
+            default:
+                break;
+            }
+        }
     }
 }
 

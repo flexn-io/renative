@@ -9,7 +9,7 @@ import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI, commandExistsSync } from '../systemTools/exec';
+import { executeAsync, execCLI } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -23,25 +23,17 @@ import {
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER,
-    getAppVersion,
-    getAppTitle,
-    getAppVersionCode,
-    writeCleanFile,
-    getAppId,
     getAppTemplateFolder,
-    getEntryFile,
     logWarning,
     logDebug,
     getConfigProp,
     logInfo,
     getQuestion,
     logSuccess,
-    getBuildsFolder,
-    getBuildFilePath,
 } from '../common';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
-import { getMergedPlugin, parsePlugins } from '../pluginTools';
+import { parsePlugins } from '../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
 import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './android/kotlinParser';
 import {

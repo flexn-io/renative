@@ -1,12 +1,19 @@
 import shell from 'shelljs';
+import path from 'path';
 
 import { commandExistsSync } from '../systemTools/exec';
 import { logInfo } from '../common';
 import BasePlatformSetup from './base';
+import {
+    CLI_ANDROID_ADB,
+    CLI_ANDROID_AVDMANAGER,
+    CLI_ANDROID_EMULATOR,
+    CLI_ANDROID_SDKMANAGER
+} from '../constants';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
-    constructor(globalConfigPath) {
-        super('linux', globalConfigPath);
+    constructor(c) {
+        super('linux', c);
     }
 
     async installSoftware(software) {
@@ -35,6 +42,18 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         }
 
         return true;
+    }
+
+    async postInstall({ android }) {
+        if (android) {
+            // @todo find a more elegant way to update this
+            this.c.files.globalConfig.sdks.ANDROID_SDK = android;
+            const { sdks: { ANDROID_SDK } } = this.c.files.globalConfig;
+            this.c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
+            this.c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');
+            this.c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager');
+            this.c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager');
+        }
     }
 }
 

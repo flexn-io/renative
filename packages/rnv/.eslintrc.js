@@ -67,6 +67,7 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'mocha/no-exclusive-tests': 'error',
         "prefer-destructuring": ["error", {"object": true, "array": false}],
-        "prefer-promise-reject-errors": "off"
+        "prefer-promise-reject-errors": "off",
+        "no-case-declarations": "off"
     },
 };

@@ -1,13 +1,20 @@
 import shell from 'shelljs';
 import { getInstalledPathSync } from 'get-installed-path';
+import path from 'path';
 
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
 import { logInfo, logDebug } from '../common';
 import BasePlatformSetup from './base';
+import {
+    CLI_ANDROID_ADB,
+    CLI_ANDROID_AVDMANAGER,
+    CLI_ANDROID_EMULATOR,
+    CLI_ANDROID_SDKMANAGER
+} from '../constants';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
-    constructor(globalConfigPath) {
-        super('win32', globalConfigPath);
+    constructor(c) {
+        super('win32', c);
         this.scoopInstalled = false;
     }
 
@@ -36,13 +43,13 @@ class LinuxPlatformSetup extends BasePlatformSetup {
 
     async reloadPathEnv() {
         await shell.exec(`${getInstalledPathSync('rnv')}/scripts/resetPath.vbs`);
-        await shell.exec('%TEMP%/resetvars.bat')
+        await shell.exec('%TEMP%/resetvars.bat');
         return true;
     }
 
     async installPrereqs() {
         if (!this.scoopInstalled) {
-            logInfo('Installing Scoop...')
+            logInfo('Installing Scoop...');
             await shell.exec(`powershell -executionpolicy remotesigned "& ""${getInstalledPathSync('rnv')}/scripts/installPackageManager.ps1"""`);
             await this.reloadPathEnv();
         }
@@ -69,9 +76,21 @@ class LinuxPlatformSetup extends BasePlatformSetup {
 
     async installSdksAndEmulator() {
         logDebug('Accepting licenses');
-        await executeAsync(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat`,  ['--licenses']); // different because interactive
+        await executeAsync(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat`, ['--licenses']); // different because interactive
         logDebug('Installing SDKs', this.sdksToInstall);
         await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat ${this.sdksToInstall}`);
+    }
+
+    async postInstall({ android }) {
+        if (android) {
+            // @todo find a more elegant way to update this
+            this.c.files.globalConfig.sdks.ANDROID_SDK = android;
+            const { sdks: { ANDROID_SDK } } = this.c.files.globalConfig;
+            this.c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator.exe');
+            this.c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb.exe');
+            this.c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager.bat');
+            this.c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager.bat');
+        }
     }
 }
 
