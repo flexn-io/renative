@@ -25,6 +25,8 @@ import {
 } from '../../common';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from '../apple';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
+
 
 export const parseExportOptionsPlistSync = (c, platform) => {
 // EXPORT OPTIONS
@@ -58,7 +60,7 @@ export const parseEntitlementsPlistSync = (c, platform) => {
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
 };
 
-const parseInfoPlistSync = (c, platform, embeddedFonts) => {
+export const parseInfoPlistSync = (c, platform) => {
     logTask(`parseInfoPlistSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -71,8 +73,8 @@ const parseInfoPlistSync = (c, platform, embeddedFonts) => {
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     // FONTS
-    if (embeddedFonts.length) {
-        plistObj.UIAppFonts = embeddedFonts;
+    if (c.pluginConfigiOS.embeddedFonts.length) {
+        plistObj.UIAppFonts = c.pluginConfigiOS.embeddedFonts;
     }
     // PERMISSIONS
     const pluginPermissions = '';

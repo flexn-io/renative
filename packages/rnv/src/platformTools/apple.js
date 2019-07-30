@@ -41,7 +41,6 @@ import { parsePodFileSync } from './apple/podfileParser';
 import { parseXcodeProject } from './apple/xcodeParser';
 import { injectPluginSwiftSync, parseAppDelegateSync } from './apple/swiftParser';
 
-const xcode = require('xcode');
 const readline = require('readline');
 
 const checkIfCommandExists = command => new Promise((resolve, reject) => child_process.exec(`command -v ${command} 2>/dev/null`, (error) => {
@@ -437,6 +436,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     c.pluginConfigiOS = {
         podfileInject: '',
         exportOptions: '',
+        embeddedFonts: [],
         pluginAppDelegateImports: '',
         pluginAppDelegateMethods: '',
         appDelegateMethods: {
@@ -479,18 +479,18 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
             parseXcschemeSync(c, platform);
             parsePodFileSync(c, platform);
             parseEntitlementsPlistSync(c, platform);
-            parseInfoPlistSync(c, platform, embeddedFonts);
+            parseInfoPlistSync(c, platform);
             return Promise.resolve();
         })
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
-        .then(() => parseXcodeProject())
+        .then(() => parseXcodeProject(c, platform))
         .then(() => resolve())
         .catch((e) => {
             if (!c.program.update) {
                 throw e;
                 logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
                 runPod('update', getAppFolder(c, platform))
-                    .then(() => parseXcodeProject())
+                    .then(() => parseXcodeProject(c, platform))
                     .then(() => resolve())
                     .catch(err => reject(err));
             } else {

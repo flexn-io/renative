@@ -23,15 +23,23 @@ import {
     getBuildsFolder
 } from '../../common';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { getAppFolderName } from '../apple';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
+
+const xcode = require('xcode');
 
 
-export const parseXcodeProject = () => new Promise((resolve, reject) => {
+export const parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     // PROJECT
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = getAppFolderName(c, platform);
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
     const xcodeProj = xcode.project(projectPath);
-    const embeddedFonts = [];
+
     xcodeProj.parse(() => {
         const appId = getAppId(c, platform);
+
+        const tId = getConfigProp(c, platform, 'teamID');
         if (tId) {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
         } else {
@@ -77,7 +85,6 @@ export const parseXcodeProject = () => new Promise((resolve, reject) => {
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
         }
 
-
         if (c.files.appConfigFile) {
             if (fs.existsSync(c.paths.fontsConfigFolder)) {
                 fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
@@ -92,7 +99,7 @@ export const parseXcodeProject = () => new Promise((resolve, reject) => {
                                 const fontDest = path.join(fontFolder, font);
                                 copyFileSync(fontSource, fontDest);
                                 xcodeProj.addResourceFile(fontSource);
-                                embeddedFonts.push(font);
+                                c.pluginConfigiOS.embeddedFonts.push(font);
                             } else {
                                 logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                             }
