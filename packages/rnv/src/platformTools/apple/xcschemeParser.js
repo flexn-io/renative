@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs';
+import chalk from 'chalk';
 import {
     logTask,
     logError,
@@ -19,10 +22,16 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { getAppFolderName } from '../apple';
 
 export const parseXcschemeSync = (c, platform) => {
 // XCSCHEME
     const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
+    const runScheme = getConfigProp(c, platform, 'runScheme');
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = getAppFolderName(c, platform);
+    const appTemplateFolder = getAppTemplateFolder(c, platform);
 
     const debuggerId = poisxSpawn ? '' : 'Xcode.DebuggerFoundation.Debugger.LLDB';
     const launcherId = poisxSpawn ? 'Xcode.IDEFoundation.Launcher.PosixSpawn' : 'Xcode.DebuggerFoundation.Launcher.LLDB';

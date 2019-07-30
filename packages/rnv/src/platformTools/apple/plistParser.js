@@ -1,4 +1,6 @@
+import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import { isObject, isArray, isBool, isString } from '../../systemTools/objectUtils';
 import {
     logTask,
@@ -21,9 +23,13 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { getAppFolderName } from '../apple';
 
 export const parseExportOptionsPlistSync = (c, platform) => {
 // EXPORT OPTIONS
+    const tId = getConfigProp(c, platform, 'teamID');
+    const appFolder = getAppFolder(c, platform);
     const exportOptions = {
         method: 'app-store',
         teamID: tId
@@ -38,10 +44,10 @@ export const parseExportOptionsPlistSync = (c, platform) => {
 };
 
 export const parseEntitlementsPlistSync = (c, platform) => {
-    logTask(`_parseEntitlements:${platform}`);
+    logTask(`parseEntitlementsPlistSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const appFolderName = _getAppFolderName(c, platform);
+    const appFolderName = getAppFolderName(c, platform);
     const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
     // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
@@ -53,10 +59,10 @@ export const parseEntitlementsPlistSync = (c, platform) => {
 };
 
 const parseInfoPlistSync = (c, platform, embeddedFonts) => {
-    logTask(`_parsePlist:${platform}`);
+    logTask(`parseInfoPlistSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const appFolderName = _getAppFolderName(c, platform);
+    const appFolderName = getAppFolderName(c, platform);
     const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 

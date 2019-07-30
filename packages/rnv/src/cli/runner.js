@@ -42,7 +42,7 @@ import {
     archiveXcodeProject,
     packageBundleForXcode,
     runAppleLog,
-    prepareXcodeProject,
+    configureXcodeProject,
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
@@ -211,7 +211,7 @@ const _runAppWithPlatform = async (c) => {
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => prepareXcodeProject(c, platform))
+            .then(() => configureXcodeProject(c, platform))
             .then(() => runXcodeProject(c, platform, target))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case ANDROID:
@@ -365,7 +365,7 @@ const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.EXPORT_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => prepareXcodeProject(c, platform))
+            .then(() => configureXcodeProject(c, platform))
             .then(() => packageBundleForXcode(c, platform))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => exportXcodeProject(c, platform))
@@ -481,7 +481,7 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.BUILD_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => prepareXcodeProject(c, platform))
+            .then(() => configureXcodeProject(c, platform))
             .then(() => packageBundleForXcode(c, platform))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => executePipe(c, PIPES.BUILD_AFTER))

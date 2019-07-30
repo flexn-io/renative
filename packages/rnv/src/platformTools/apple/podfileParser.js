@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs';
+import chalk from 'chalk';
 import {
     logTask,
     logError,
@@ -19,9 +22,10 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 export const parsePodFileSync = (c, platform) => {
-    logTask(`_parsePodFile:${platform}`);
+    logTask(`parsePodFileSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
     let pluginSubspecs = '';

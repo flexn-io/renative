@@ -36,7 +36,10 @@ import {
     saveObjToPlistSync, objToPlist, parseExportOptionsPlistSync,
     parseInfoPlistSync, parseEntitlementsPlistSync
 } from './apple/plistParser';
-import { parsePodFileSync } from './apple/plistParser';
+import { parseXcschemeSync } from './apple/xcschemeParser';
+import { parsePodFileSync } from './apple/podfileParser';
+import { parseXcodeProject } from './apple/xcodeParser';
+import { injectPluginSwiftSync, parseAppDelegateSync } from './apple/swiftParser';
 
 const xcode = require('xcode');
 const readline = require('readline');
@@ -264,7 +267,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
 const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`archiveXcodeProject:${platform}`);
 
-    const appFolderName = _getAppFolderName(c, platform);
+    const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
@@ -377,7 +380,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
-    const appFolderName = _getAppFolderName(c, platform);
+    const appFolderName = getAppFolderName(c, platform);
 
     return executeAsync('react-native', [
         'bundle',
@@ -394,7 +397,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
     ]);
 };
 
-const _getAppFolderName = (c, platform) => {
+export const getAppFolderName = (c, platform) => {
     const projectFolder = getConfigProp(c, platform, 'projectFolder');
     if (projectFolder) {
         return projectFolder;
@@ -425,36 +428,53 @@ const runAppleLog = c => new Promise(() => {
 });
 
 const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
-  const { device } = c.program;
-  const ip = device ? getIP() : 'localhost';
-  const appFolder = getAppFolder(c, platform);
-  const appFolderName = _getAppFolderName(c, platform);
-  const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-  // INJECTORS
-  c.pluginConfigiOS = {
-      podfileInject: '',
-      exportOptions: ''
-  };
+    const { device } = c.program;
+    const ip = device ? getIP() : 'localhost';
+    const appFolder = getAppFolder(c, platform);
+    const appFolderName = getAppFolderName(c, platform);
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    // INJECTORS
+    c.pluginConfigiOS = {
+        podfileInject: '',
+        exportOptions: '',
+        pluginAppDelegateImports: '',
+        pluginAppDelegateMethods: '',
+        appDelegateMethods: {
+            application: {
+                didFinishLaunchingWithOptions: [],
+                open: [],
+                supportedInterfaceOrientationsFor: [],
+                didReceiveRemoteNotification: [],
+                didFailToRegisterForRemoteNotificationsWithError: [],
+                didReceive: [],
+                didRegister: [],
+                didRegisterForRemoteNotificationsWithDeviceToken: []
+            },
+            userNotificationCenter: {
+                willPresent: []
+            }
+        }
+    };
 
-  // CHECK TEAM ID IF DEVICE
-  const tId = getConfigProp(c, platform, 'teamID');
-  if (device && (!tId || tId === '')) {
-      logError(
-          `Looks like you're missing teamID in your ${chalk.white(
-              c.paths.appConfigPath,
-          )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
-      );
-  }
+    // CHECK TEAM ID IF DEVICE
+    const tId = getConfigProp(c, platform, 'teamID');
+    if (device && (!tId || tId === '')) {
+        logError(
+            `Looks like you're missing teamID in your ${chalk.white(
+                c.paths.appConfigPath,
+            )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
+        );
+    }
 
 
     createPlatformBuild(c, platform)
         .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => copyBuildsFolder(c, platform))
         .then(() => {
-            parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-                _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
-            });
-            parseAppDelegateSync(c, platform, appFolder, appFolderName, isBundled, ip, port);
+            // parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+            //     injectPluginSwiftSync(c, pluginPlat, key, pluginPlat.package, pluginConfig);
+            // });
+            parseAppDelegateSync(c, platform, appFolder, appFolderName, bundleAssets, ip, port);
             parseExportOptionsPlistSync(c, platform);
             parseXcschemeSync(c, platform);
             parsePodFileSync(c, platform);
@@ -467,8 +487,9 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .then(() => resolve())
         .catch((e) => {
             if (!c.program.update) {
+                throw e;
                 logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                    .then(() => runPod('update', getAppFolder(c, platform)))
+                runPod('update', getAppFolder(c, platform))
                     .then(() => parseXcodeProject())
                     .then(() => resolve())
                     .catch(err => reject(err));
@@ -489,5 +510,4 @@ export {
     listAppleDevices,
     launchAppleSimulator,
     runAppleLog,
-    prepareXcodeProject,
 };

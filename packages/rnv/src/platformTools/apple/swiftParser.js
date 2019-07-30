@@ -1,4 +1,6 @@
-
+import path from 'path';
+import fs from 'fs';
+import chalk from 'chalk';
 import {
     logTask,
     logError,
@@ -20,6 +22,7 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 
 VALUES = {
@@ -46,32 +49,10 @@ export const parseAppDelegateSync = (c, platform, appFolder, appFolderName, isBu
     } else {
         bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
     }
-    // INJECTORS
-    const pluginAppDelegateImports = '';
-    const pluginAppDelegateMethods = '';
-    const pluginConfig = {
-        pluginAppDelegateImports,
-        pluginAppDelegateMethods,
-        appDelegateMethods: {
-            application: {
-                didFinishLaunchingWithOptions: [],
-                open: [],
-                supportedInterfaceOrientationsFor: [],
-                didReceiveRemoteNotification: [],
-                didFailToRegisterForRemoteNotificationsWithError: [],
-                didReceive: [],
-                didRegister: [],
-                didRegisterForRemoteNotificationsWithDeviceToken: []
-            },
-            userNotificationCenter: {
-                willPresent: []
-            }
-        }
-    };
 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
+        injectPluginSwiftSync(c, pluginPlat, key, pluginPlat.package);
     });
 
     // BG COLOR
@@ -187,7 +168,7 @@ export const parseAppDelegateSync = (c, platform, appFolder, appFolderName, isBu
         const method = methods[key];
         for (const key2 in method) {
             const f = method[key2];
-            pluginConfig.pluginAppDelegateMethods += constructMethod(pluginConfig.appDelegateMethods[key][key2], f);
+            c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(c.pluginConfigiOS.appDelegateMethods[key][key2], f);
         }
     }
 
@@ -202,36 +183,36 @@ export const parseAppDelegateSync = (c, platform, appFolder, appFolderName, isBu
             { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
             {
                 pattern: '{{APPDELEGATE_IMPORTS}}',
-                override: pluginConfig.pluginAppDelegateImports,
+                override: c.pluginConfigiOS.pluginAppDelegateImports,
             },
             {
                 pattern: '{{APPDELEGATE_METHODS}}',
-                override: pluginConfig.pluginAppDelegateMethods,
+                override: c.pluginConfigiOS.pluginAppDelegateMethods,
             },
         ],
     );
-});
+};
 
-const _injectPlugin = (c, plugin, key, pkg, pluginConfig) => {
-    logTask(`_injectPlugin:${c.platform}:${key}`);
+export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
+    logTask(`injectPluginSwiftSync:${c.platform}:${key}`);
     if (plugin.appDelegateImports instanceof Array) {
         plugin.appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
             logTask('appDelegateImports add');
-            if (pluginConfig.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
+            if (c.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
                 logTask('appDelegateImports add ok');
-                pluginConfig.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
+                c.pluginConfigiOS.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
             }
         });
     }
     // if (plugin.appDelegateMethods instanceof Array) {
-    //     pluginConfig.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
+    //     c.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
 
     if (plugin.appDelegateMethods) {
         for (const key in plugin.appDelegateMethods) {
             for (const key2 in plugin.appDelegateMethods[key]) {
-                const plugArr = pluginConfig.appDelegateMethods[key][key2];
+                const plugArr = c.pluginConfigiOS.appDelegateMethods[key][key2];
                 const plugVal = plugin.appDelegateMethods[key][key2];
                 if (plugVal) {
                     plugVal.forEach((v) => {

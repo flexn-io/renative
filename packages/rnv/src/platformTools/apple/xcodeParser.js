@@ -1,3 +1,6 @@
+import path from 'path';
+import fs from 'fs';
+import chalk from 'chalk';
 import {
     logTask,
     logError,
@@ -19,6 +22,7 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 
 export const parseXcodeProject = () => new Promise((resolve, reject) => {
