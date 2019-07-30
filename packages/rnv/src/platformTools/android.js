@@ -474,11 +474,17 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
             if (v.toLowerCase() === 'y') {
                 switch (platform) {
                 case 'android':
-                    return _createEmulator(c, '28', 'google_apis', emuName);
+                    return _createEmulator(c, '28', 'google_apis', emuName)
+                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
+                        .then(resolve);
                 case 'androidtv':
-                    return _createEmulator(c, '28', 'android-tv', emuName);
+                    return _createEmulator(c, '28', 'android-tv', emuName)
+                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
+                        .then(resolve);
                 case 'androidwear':
-                    return _createEmulator(c, '28', 'android-wear', emuName);
+                    return _createEmulator(c, '28', 'android-wear', emuName)
+                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
+                        .then(resolve);
                 default:
                     return reject('Cannot find any active or created emulators');
                 }
@@ -526,8 +532,6 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     if (isRunningOnWindows) {
         reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
     }
-
-    console.log('((((((((', reactNative)
 
     executeAsync(reactNative, [
         'bundle',
@@ -675,7 +679,7 @@ const _runGradle = async (c, platform) => {
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_checkForActiveEmulator:${platform}`);
     let attempts = 1;
-    const maxAttempts = isRunningOnWindows ? 3 : 10;
+    const maxAttempts = isRunningOnWindows ? 20 : 10;
     let running = false;
     const poll = setInterval(() => {
         // Prevent the interval from running until enough promises return to make it stop or we get a result

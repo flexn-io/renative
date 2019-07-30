@@ -1057,6 +1057,7 @@ rnv log -p ios -f com.myapp
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
 -   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
+-   Windows 10 Pro or a better variant if you want to start the emulator on a Windows machine. Windows Home or Educational do not support Hyper-V and that's required for starting the Android emulators 
 
 #### Project Configuration
 
