@@ -931,6 +931,8 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     }
 });
 
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
+
 const _configureConfig = c => new Promise((resolve, reject) => {
     logTask(`_configureConfig:${c.appId}`);
     c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
@@ -943,7 +945,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
             if (fs.existsSync(parentAppConfigFolder)) {
                 const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
-                const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile);
+                const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile, { arrayMerge: _arrayMergeOverride });
                 c.files.appConfigFile = mergedAppConfigFile;
                 setAppConfig(c, parentAppConfigFolder);
             }

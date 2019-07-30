@@ -32,9 +32,10 @@
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
   <a href="#advanced-configuration">Advanced Configuration</a> &bull;
+  <a href="#build-hooks">Build Hooks</a> &bull;
   <a href="#runtime">Runtime</a> &bull;
   <a href="#architecture">Architecture</a> &bull;
-  <a href="##renative-cli">ReNative CLI</a> &bull;
+  <a href="#renative-cli">ReNative CLI</a> &bull;
   <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
   <a href="#discussions">Discussions</a> &bull;
   <a href="#contributors">Contributors</a> &bull;
@@ -335,15 +336,21 @@ All app code is located in `./src` directory
 
 ## Templates / Starters
 
-Currently supported templates out of the box:
+#### Built-in
 
 Hello World:
 
 https://www.npmjs.com/package/renative-template-hello-world
 
-Blank Template:
+Blank:
 
 https://www.npmjs.com/package/renative-template-blank
+
+#### Community
+
+Chat App:
+
+https://www.npmjs.com/package/@reactseals/renative-template-chat
 
 
 ---
@@ -709,7 +716,24 @@ rnv platform connect
 
 your projects will be build using `./node_modules/renative/rnv-cli/platformTemplates` from this point
 
-#### Build Hooks
+#### Monochrome logs
+
+If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
+This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
+
+Examples:
+
+```bash
+rnv status --mono
+rnv start --mono
+...
+```
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/ic_hooks.png?raw=true" width=50 height=50 />
+
+## Build Hooks
 
 Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.
 
@@ -742,6 +766,17 @@ ReNative will transpile and execute it in real time!
 `index.js` is required entry point but you can create more complex scripts with multiple files/imports.
 
 every top-level method gets invoked with ReNative `config` object containing all necessary build information
+
+#### Using RNV in Build Hooks
+
+You can utilize RNV CLI functionality inside of build hooks by simply importing rnv packages:
+
+```js
+import {
+    Constants, Runner, App, Platform, Target, Common, Exec,
+    PlatformTools, Doctor, PluginTools, SetupTools, FileUtils
+} from 'rnv'
+```
 
 #### Build Pipes
 
@@ -836,19 +871,6 @@ c.paths.projectConfigFolder;
 c.paths.pluginConfigPath;
 c.paths.permissionsConfigPath;
 c.paths.fontsConfigFolder;
-```
-
-#### Monochrome logs
-
-If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
-This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
-
-Examples:
-
-```bash
-rnv status --mono
-rnv start --mono
-...
 ```
 
 ---

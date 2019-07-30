@@ -128,6 +128,7 @@ const removeDirs = dirPaths => new Promise((resolve, reject) => {
             if (deletedFolders >= allFolders) resolve();
         });
     }
+    if (allFolders === 0) resolve();
 });
 
 
@@ -214,6 +215,7 @@ export {
 };
 
 export default {
+    removeDirs,
     copyFileSync,
     copyFolderRecursiveSync,
     removeDir,

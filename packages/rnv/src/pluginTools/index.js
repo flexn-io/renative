@@ -37,7 +37,7 @@ const parsePlugins = (c, platform, pluginCallback) => {
                     if (plugin) {
                         const pluginPlat = plugin[c.platform];
                         if (pluginPlat) {
-                            if (plugin['no-active'] !== true && plugin.enabled !== false) {
+                            if (plugin['no-active'] !== true && plugin.enabled !== false && pluginPlat.enabled !== false) {
                                 if (pluginCallback) pluginCallback(plugin, pluginPlat, key);
                             } else {
                                 logWarning(`Plugin ${key} is marked disabled. skipping.`);
@@ -65,3 +65,5 @@ const getLocalRenativePlugin = () => ({
 });
 
 export { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
+
+export default { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
