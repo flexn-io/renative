@@ -76,9 +76,18 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     logTask('copyAppleAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
+    const appFolder = getAppFolder(c, platform);
+    const tId = getConfigProp(c, platform, 'teamID');
+
     const iosPath = path.join(getAppFolder(c, platform), appFolderName);
     const sPath = path.join(c.paths.appConfigFolder, `assets/${platform}`);
     copyFolderContentsRecursiveSync(sPath, iosPath);
+
+    // ASSETS
+    fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
+    mkdirSync(path.join(appFolder, 'assets'));
+    mkdirSync(path.join(appFolder, `${appFolderName}/images`));
+
     resolve();
 });
 
@@ -415,17 +424,30 @@ const runAppleLog = c => new Promise(() => {
     });
 });
 
-//
-//
-//
-//
-//
-//
-//
-
 const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
+  const { device } = c.program;
+  const ip = device ? getIP() : 'localhost';
+  const appFolder = getAppFolder(c, platform);
+  const appFolderName = _getAppFolderName(c, platform);
+  const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+  // INJECTORS
+  c.pluginConfigiOS = {
+      podfileInject: '',
+      exportOptions: ''
+  };
+
+  // CHECK TEAM ID IF DEVICE
+  const tId = getConfigProp(c, platform, 'teamID');
+  if (device && (!tId || tId === '')) {
+      logError(
+          `Looks like you're missing teamID in your ${chalk.white(
+              c.paths.appConfigPath,
+          )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
+      );
+  }
+
+
     createPlatformBuild(c, platform)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => copyBuildsFolder(c, platform))
         .then(() => {
@@ -441,135 +463,19 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
             return Promise.resolve();
         })
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
-
-
         .then(() => parseXcodeProject())
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
-
-const prepareXcodeProject = (c, platform) => new Promise((resolve, reject) => {
-    const { device } = c.program;
-    const ip = device ? getIP() : 'localhost';
-    const appFolder = getAppFolder(c, platform);
-    const appFolderName = _getAppFolderName(c, platform);
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-
-    // CHECK TEAM ID IF DEVICE
-    const tId = getConfigProp(c, platform, 'teamID');
-    if (device && (!tId || tId === '')) {
-        logError(
-            `Looks like you're missing teamID in your ${chalk.white(
-                c.paths.appConfigPath,
-            )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
-        );
-        // resolve();
-        // return;
-    }
-
-    const check = path.join(appFolder, `${appFolderName}.xcodeproj`);
-    if (!fs.existsSync(check)) {
-        logWarning(`Looks like your ${chalk.white(platform)} platformBuild is misconfigured!. let's repair it.`);
-        createPlatformBuild(c, platform)
-            .then(() => configureXcodeProject(c, platform))
-            .then(() => _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
-    }
-    if (!fs.existsSync(path.join(appFolder, 'Pods'))) {
-        logWarning(`Looks like your ${platform} project is not configured yet. Let's configure it!`);
-        configureXcodeProject(c, platform)
-            .then(() => _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        // configureXcodeProject(c, platform)
-        // INJECTORS
-        c.pluginConfigiOS = {
-            podfileInject: '',
-            exportOptions: ''
-        };
-        _postConfigureProject(c, platform, appFolder, appFolderName, bundleAssets, ip)
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    }
-});
-
-const configureXcodeProjectOLD = (c, platform, ip, port) => new Promise((resolve, reject) => {
-    logTask('configureXcodeProject');
-    if (process.platform !== 'darwin') return;
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    // INJECTORS
-    c.pluginConfigiOS = {
-        podfileInject: '',
-        exportOptions: ''
-    };
-
-    const appFolderName = _getAppFolderName(c, platform);
-
-    // configureIfRequired(c, platform)
-    //     .then(() => copyAppleAssets(c, platform, appFolderName))
-    copyAppleAssets(c, platform, appFolderName)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => _preConfigureProject(c, platform, appFolderName, ip, port))
-        .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => resolve())
         .catch((e) => {
             if (!c.program.update) {
                 logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                _preConfigureProject(c, platform, appFolderName, ip, port)
                     .then(() => runPod('update', getAppFolder(c, platform)))
+                    .then(() => parseXcodeProject())
                     .then(() => resolve())
                     .catch(err => reject(err));
             } else {
                 reject(e);
             }
         });
-});
-
-
-const _postConfigureProject = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve) => {
-    logTask(`_postConfigureProject:${platform}:${ip}:${port}`);
-
-
-    // PLUGINS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        _injectPlugin(c, pluginPlat, key, pluginPlat.package, pluginConfig);
-    });
-
-    parseAppDelegateSync(c, platform, appFolder, appFolderName, isBundled, ip, port);
-
-    parseExportOptions();
-
-    parseXcschemeSync();
-
-
-    parseXcodeProject2();
-});
-
-const _preConfigureProject = (c, platform, appFolderName, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
-    logTask(`_preConfigureProject:${platform}:${appFolderName}:${ip}:${port}`);
-
-    const appFolder = getAppFolder(c, platform);
-    const tId = getConfigProp(c, platform, 'teamID');
-
-
-    // ASSETS
-    fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
-    mkdirSync(path.join(appFolder, 'assets'));
-    mkdirSync(path.join(appFolder, `${appFolderName}/images`));
-
-
-    parseXcodeProject()
-        .then(() => {
-            parsePodFileSync(c, platform);
-            parseEntitlementsPlistSync(c, platform);
-            parseInfoPlistSync(c, platform, embeddedFonts);
-        }).catch(e => reject(e));
 });
 
 export {
