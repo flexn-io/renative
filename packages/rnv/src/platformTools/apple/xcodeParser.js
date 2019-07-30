@@ -85,29 +85,11 @@ export const parseXcodeProject = (c, platform) => new Promise((resolve, reject) 
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
         }
 
-        if (c.files.appConfigFile) {
-            if (fs.existsSync(c.paths.fontsConfigFolder)) {
-                fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
-                    if (font.includes('.ttf') || font.includes('.otf')) {
-                        const key = font.split('.')[0];
-                        const { includedFonts } = c.files.appConfigFile.common;
-                        if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                            const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
-                            if (fs.existsSync(fontSource)) {
-                                const fontFolder = path.join(appFolder, 'fonts');
-                                mkdirSync(fontFolder);
-                                const fontDest = path.join(fontFolder, font);
-                                copyFileSync(fontSource, fontDest);
-                                xcodeProj.addResourceFile(fontSource);
-                                c.pluginConfigiOS.embeddedFonts.push(font);
-                            } else {
-                                logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                            }
-                        }
-                    }
-                });
-            }
-        }
+        // FONTS
+        c.pluginConfigiOS.embeddedFontSources.forEach((v) => {
+            xcodeProj.addResourceFile(v);
+        });
+
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {

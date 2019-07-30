@@ -437,6 +437,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         podfileInject: '',
         exportOptions: '',
         embeddedFonts: [],
+        embeddedFontSources: [],
         pluginAppDelegateImports: '',
         pluginAppDelegateMethods: '',
         appDelegateMethods: {
@@ -456,6 +457,31 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         }
     };
 
+    // FONTS
+    if (c.files.appConfigFile) {
+        if (fs.existsSync(c.paths.fontsConfigFolder)) {
+            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+                if (font.includes('.ttf') || font.includes('.otf')) {
+                    const key = font.split('.')[0];
+                    const { includedFonts } = c.files.appConfigFile.common;
+                    if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
+                        const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                        if (fs.existsSync(fontSource)) {
+                            const fontFolder = path.join(appFolder, 'fonts');
+                            mkdirSync(fontFolder);
+                            const fontDest = path.join(fontFolder, font);
+                            copyFileSync(fontSource, fontDest);
+                            c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                            c.pluginConfigiOS.embeddedFonts.push(font);
+                        } else {
+                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
     // CHECK TEAM ID IF DEVICE
     const tId = getConfigProp(c, platform, 'teamID');
     if (device && (!tId || tId === '')) {
@@ -466,7 +492,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         );
     }
 
-
+    // PARSERS
     createPlatformBuild(c, platform)
         .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => copyBuildsFolder(c, platform))
