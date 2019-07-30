@@ -1,5 +1,26 @@
 import fs from 'fs';
 import { isObject, isArray, isBool, isString } from '../../systemTools/objectUtils';
+import {
+    logTask,
+    logError,
+    logWarning,
+    getAppFolder,
+    isPlatformActive,
+    logDebug,
+    getAppVersion,
+    getAppTitle,
+    getEntryFile,
+    writeCleanFile,
+    getAppTemplateFolder,
+    getAppId,
+    copyBuildsFolder,
+    getConfigProp,
+    getIP,
+    getQuestion,
+    getBuildFilePath,
+    logSuccess,
+    getBuildsFolder
+} from '../../common';
 
 export const parseExportOptionsPlistSync = (c, platform) => {
 // EXPORT OPTIONS

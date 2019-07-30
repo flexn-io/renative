@@ -385,13 +385,6 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
     ]);
 };
 
-VALUES = {
-    provisioningStyle: {
-        allowedValues: ['Automatic', 'Manual'],
-        defaultValue: 'Automatic'
-    }
-};
-
 const _getAppFolderName = (c, platform) => {
     const projectFolder = getConfigProp(c, platform, 'projectFolder');
     if (projectFolder) {

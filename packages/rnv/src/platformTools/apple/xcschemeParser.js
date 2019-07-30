@@ -1,3 +1,24 @@
+import {
+    logTask,
+    logError,
+    logWarning,
+    getAppFolder,
+    isPlatformActive,
+    logDebug,
+    getAppVersion,
+    getAppTitle,
+    getEntryFile,
+    writeCleanFile,
+    getAppTemplateFolder,
+    getAppId,
+    copyBuildsFolder,
+    getConfigProp,
+    getIP,
+    getQuestion,
+    getBuildFilePath,
+    logSuccess,
+    getBuildsFolder
+} from '../../common';
 
 export const parseXcschemeSync = (c, platform) => {
 // XCSCHEME

@@ -1,4 +1,24 @@
-
+import {
+    logTask,
+    logError,
+    logWarning,
+    getAppFolder,
+    isPlatformActive,
+    logDebug,
+    getAppVersion,
+    getAppTitle,
+    getEntryFile,
+    writeCleanFile,
+    getAppTemplateFolder,
+    getAppId,
+    copyBuildsFolder,
+    getConfigProp,
+    getIP,
+    getQuestion,
+    getBuildFilePath,
+    logSuccess,
+    getBuildsFolder
+} from '../../common';
 
 export const parsePodFileSync = (c, platform) => {
     logTask(`_parsePodFile:${platform}`);

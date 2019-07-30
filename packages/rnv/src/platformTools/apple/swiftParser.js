@@ -1,5 +1,33 @@
 
+import {
+    logTask,
+    logError,
+    logWarning,
+    getAppFolder,
+    isPlatformActive,
+    logDebug,
+    getAppVersion,
+    getAppTitle,
+    getEntryFile,
+    writeCleanFile,
+    getAppTemplateFolder,
+    getAppId,
+    copyBuildsFolder,
+    getConfigProp,
+    getIP,
+    getQuestion,
+    getBuildFilePath,
+    logSuccess,
+    getBuildsFolder
+} from '../../common';
 
+
+VALUES = {
+    provisioningStyle: {
+        allowedValues: ['Automatic', 'Manual'],
+        defaultValue: 'Automatic'
+    }
+};
 
 export const parseAppDelegateSync = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => {
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
