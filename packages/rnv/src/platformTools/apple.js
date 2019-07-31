@@ -493,8 +493,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     }
 
     // PARSERS
-    createPlatformBuild(c, platform)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
+    copyAppleAssets(c, platform, appFolderName)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, ip, port))
         .then(() => parseExportOptionsPlist(c, platform))

@@ -115,7 +115,7 @@ export const parseXcodeProject = (c, platform) => new Promise((resolve, reject) 
                         xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', null, null, {
                             shellPath: v.shellPath || '/bin/sh',
                             shellScript: v.shellScript,
-                            inputPaths: v.inputPaths || ['$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)']
+                            inputPaths: v.inputPaths || ['"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"']
                         });
                     });
                 }

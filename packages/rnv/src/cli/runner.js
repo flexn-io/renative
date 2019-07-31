@@ -3,6 +3,7 @@
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import path from 'path';
+import chalk from 'chalk';
 
 import {
     isPlatformSupported,
@@ -199,7 +200,7 @@ const _runAppWithPlatform = async (c) => {
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
 
-    logTask(`_runAppWithPlatform:${platform}:${port}`);
+    logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
     const throwErr = (err) => {
         throw err;
@@ -211,7 +212,6 @@ const _runAppWithPlatform = async (c) => {
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureXcodeProject(c, platform))
             .then(() => runXcodeProject(c, platform, target))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case ANDROID:
@@ -248,7 +248,6 @@ const _runAppWithPlatform = async (c) => {
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
         await configureAndroidProperties(c);
-        await configureGradleProject(c, platform);
         await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
         await executePipe(c, PIPES.RUN_AFTER);
         return;
