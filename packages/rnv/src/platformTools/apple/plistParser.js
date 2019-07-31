@@ -28,7 +28,7 @@ import { getAppFolderName } from '../apple';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
 
 
-export const parseExportOptionsPlistSync = (c, platform) => {
+export const parseExportOptionsPlist = (c, platform) => new Promise((resolve, reject) => {
 // EXPORT OPTIONS
     const tId = getConfigProp(c, platform, 'teamID');
     const appFolder = getAppFolder(c, platform);
@@ -43,9 +43,10 @@ export const parseExportOptionsPlistSync = (c, platform) => {
         { pattern: '{{TEAM_ID}}', override: tId },
         { pattern: '{{PLUGIN_EXPORT_OPTIONS}}', override: c.pluginConfigiOS.exportOptions },
     ]);
-};
+    resolve();
+});
 
-export const parseEntitlementsPlistSync = (c, platform) => {
+export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, reject) => {
     logTask(`parseEntitlementsPlistSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -58,9 +59,10 @@ export const parseEntitlementsPlistSync = (c, platform) => {
     }
 
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
-};
+    resolve();
+});
 
-export const parseInfoPlistSync = (c, platform) => {
+export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => {
     logTask(`parseInfoPlistSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -131,7 +133,8 @@ export const parseInfoPlistSync = (c, platform) => {
         }
     });
     saveObjToPlistSync(plistPath, plistObj);
-};
+    resolve();
+});
 
 const PLIST_START = `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
