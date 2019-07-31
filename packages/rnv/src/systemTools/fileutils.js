@@ -185,16 +185,75 @@ const updateObjectSync = (filePath, updateObj) => {
     return output;
 };
 
+export const getRealPath = (c, p, key = 'undefined', original) => {
+    if (!p) {
+        logInfo(`Path ${chalk.white(key)} is not defined. using default: ${chalk.white(original)}`);
+        return original;
+    }
+    if (p.startsWith('./')) {
+        return path.join(c.paths.projectRootFolder, p);
+    }
+    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
+        .replace(/~/g, c.paths.homeFolder)
+        .replace(/USER_HOME/g, c.paths.homeFolder)
+        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
+};
+
+const _refToValue = (c, ref, key) => {
+    const val = ref.replace('$REF$:', '').split('$...');
+
+    const realPath = getRealPath(c, val[0], key);
+
+    if (realPath && realPath.includes('.json') && val.length === 2) {
+        if (fs.existsSync(realPath)) {
+            const obj = readObjectSync(realPath);
+
+            try {
+                const output = val[1].split('.').reduce((o, i) => o[i], obj);
+                return output;
+            } catch (e) {
+                logWarning(`_refToValue: ${e}`);
+            }
+        } else {
+            logWarning(`_refToValue: ${chalk.white(realPath)} does not exist!`);
+        }
+    }
+    return ref;
+};
+
 const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     const jointArray = destinationArray.concat(sourceArray);
     const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
     return uniqueArray;
 };
 
-const mergeObjects = (obj1, obj2) => {
+const sanitizeDynamicProps = (c, obj) => {
+    if (!obj) return obj;
+    if (Array.isArray(obj)) {
+        obj.forEach((v) => {
+            sanitizeDynamicProps(c, v);
+        });
+    }
+    Object.keys(obj).forEach((key) => {
+        const val = obj[key];
+        if (val) {
+            if (typeof val === 'string') {
+                if (val.startsWith('$REF$:')) {
+                    _refToValue(c, val, key);
+                }
+            } else {
+                sanitizeDynamicProps(c, val);
+            }
+        }
+    });
+    return obj;
+};
+
+const mergeObjects = (c, obj1, obj2) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
-    return merge(obj1, obj2, { arrayMerge });
+    const obj = merge(obj1, obj2, { arrayMerge });
+    return sanitizeDynamicProps(c, obj);
 };
 
 const updateConfigFile = async (update, globalConfigPath) => {

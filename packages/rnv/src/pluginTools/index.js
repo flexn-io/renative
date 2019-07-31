@@ -16,7 +16,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
 
     if (origPlugin) {
-        const mergedPlugin = mergeObjects(origPlugin, plugin);
+        const mergedPlugin = mergeObjects(c, origPlugin, plugin);
         return mergedPlugin;
     }
 

@@ -122,12 +122,12 @@ export const parseInfoPlistSync = (c, platform) => {
     }
     // PLIST EXTRAS
     if (plistExtra) {
-        plistObj = mergeObjects(plistObj, plistExtra);
+        plistObj = mergeObjects(c, plistObj, plistExtra);
     }
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.plist) {
-            plistObj = mergeObjects(plistObj, pluginPlat.plist);
+            plistObj = mergeObjects(c, plistObj, pluginPlat.plist);
         }
     });
     saveObjToPlistSync(plistPath, plistObj);

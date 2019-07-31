@@ -802,7 +802,7 @@
                 "appDelegateImports": [
                     "Crashlytics"
                 ],
-                "version": "3.10.5"
+                "version": "3.13.4"
             },
             "android": {
                 "skipImplementation": true,
@@ -826,7 +826,7 @@
                 "appDelegateImports": [
                     "Fabric"
                 ],
-                "version": "1.7.13",
+                "version": "1.10.2",
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [

@@ -5,7 +5,8 @@ import path from 'path';
 import detectPort from 'detect-port';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
+    getRealPath
 } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
@@ -213,34 +214,20 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     }
 });
 
-const _getPath = (c, p, key = 'undefined', original) => {
-    if (!p) {
-        logInfo(`Path ${chalk.white(key)} is not defined. using default: ${chalk.white(original)}`);
-        return original;
-    }
-    if (p.startsWith('./')) {
-        return path.join(c.paths.projectRootFolder, p);
-    }
-    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
-        .replace(/~/g, c.paths.homeFolder)
-        .replace(/USER_HOME/g, c.paths.homeFolder)
-        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
-};
-
 const _generatePlatformTemplatePaths = (c) => {
     const pt = c.files.projectConfig.platformTemplatesFolders || {};
     const originalPath = c.files.projectConfig.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {
-            result[v] = _getPath(
+            result[v] = getRealPath(
                 c,
                 originalPath,
                 'platformTemplatesFolder',
                 originalPath,
             );
         } else {
-            result[v] = _getPath(
+            result[v] = getRealPath(
                 c,
                 pt[v],
                 'platformTemplatesFolder',
@@ -335,27 +322,27 @@ const startBuilder = c => new Promise((resolve, reject) => {
             logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
         }
         c.isWrapper = c.files.projectConfig.isWrapper;
-        c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
+        c.paths.globalConfigFolder = getRealPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
-        c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
+        c.paths.appConfigsFolder = getRealPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
         c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
-        c.paths.platformAssetsFolder = _getPath(
+        c.paths.platformAssetsFolder = getRealPath(
             c,
             c.files.projectConfig.platformAssetsFolder,
             'platformAssetsFolder',
             c.paths.platformAssetsFolder,
         );
-        c.paths.platformBuildsFolder = _getPath(
+        c.paths.platformBuildsFolder = getRealPath(
             c,
             c.files.projectConfig.platformBuildsFolder,
             'platformBuildsFolder',
             c.paths.platformBuildsFolder,
         );
-        c.paths.projectPluginsFolder = _getPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.projectPluginsFolder);
+        c.paths.projectPluginsFolder = getRealPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.projectPluginsFolder);
         c.paths.projectNodeModulesFolder = path.join(c.paths.projectRootFolder, 'node_modules');
         c.paths.rnvNodeModulesFolder = path.join(c.paths.rnvRootFolder, 'node_modules');
         c.paths.runtimeConfigPath = path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME);
-        c.paths.projectConfigFolder = _getPath(
+        c.paths.projectConfigFolder = getRealPath(
             c,
             c.files.projectConfig.projectConfigFolder,
             'projectConfigFolder',
