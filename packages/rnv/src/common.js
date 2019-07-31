@@ -114,9 +114,6 @@ const SUPPORTED_PLATFORMS_WIN = [
 
 const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
 
-let _currentJob;
-let _currentProcess;
-
 const highlight = chalk.green;
 
 const base = path.resolve('.');
@@ -255,8 +252,6 @@ const _generatePlatformTemplatePaths = (c) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
-    _currentJob = cmd;
-    _currentProcess = process;
     const c = { cli: {}, paths: {}, files: {} };
 
     c.program = program;
@@ -275,7 +270,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvProjectTemplateFolder = path.join(c.paths.rnvRootFolder, 'projectTemplate');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
 
-    configureLogger(c, _currentProcess, _currentJob, subCmd, program.info === true);
+    configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
     logInitialize();
 
     resolve(c);
@@ -371,7 +366,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         c.paths.fontsConfigFolder = path.join(c.paths.projectConfigFolder, 'fonts');
     }
 
-    if (_currentJob === 'target' || _currentJob === 'log') {
+    if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
             .catch(e => reject(e));
@@ -386,7 +381,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         );
     }
 
-    if (_currentJob === 'platform') {
+    if (c.command === 'platform') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
             .catch(e => reject(e));
@@ -1008,7 +1003,7 @@ const getAppVersionCode = (c, platform) => {
 };
 
 const logErrorPlatform = (platform, resolve) => {
-    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(_currentJob)}`);
+    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
     resolve && resolve();
 };
 
