@@ -160,7 +160,7 @@ const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
     }
 };
 
-const readObjectSync = (filePath) => {
+const readObjectSync = (filePath, c) => {
     if (!fs.existsSync(filePath)) {
         logError(`File at ${filePath} does not exist`);
         return null;
@@ -168,6 +168,12 @@ const readObjectSync = (filePath) => {
     let obj;
     try {
         obj = JSON.parse(fs.readFileSync(filePath));
+        if (c) {
+            obj = sanitizeDynamicRefs(c, obj);
+        }
+        if (obj._refs) {
+            obj = sanitizeDynamicProps(obj, obj._refs);
+        }
     } catch (e) {
         logError(`Parsing of ${chalk.white(filePath)} failed with ${e}`);
         return null;
@@ -227,11 +233,11 @@ const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     return uniqueArray;
 };
 
-const sanitizeDynamicProps = (c, obj) => {
+const sanitizeDynamicRefs = (c, obj) => {
     if (!obj) return obj;
     if (Array.isArray(obj)) {
         obj.forEach((v) => {
-            sanitizeDynamicProps(c, v);
+            sanitizeDynamicRefs(c, v);
         });
     }
     Object.keys(obj).forEach((key) => {
@@ -242,7 +248,30 @@ const sanitizeDynamicProps = (c, obj) => {
                     obj[key] = _refToValue(c, val, key);
                 }
             } else {
-                sanitizeDynamicProps(c, val);
+                sanitizeDynamicRefs(c, val);
+            }
+        }
+    });
+    return obj;
+};
+
+const sanitizeDynamicProps = (obj, props) => {
+    if (!obj) return obj;
+    if (Array.isArray(obj)) {
+        obj.forEach((v) => {
+            sanitizeDynamicProps(v, props);
+        });
+    }
+    Object.keys(obj).forEach((key) => {
+        let val = obj[key];
+        if (val) {
+            if (typeof val === 'string') {
+                Object.keys(props).forEach((pk) => {
+                    val = val.replace(`@${pk}@`, props[pk]);
+                    obj[key] = val;
+                });
+            } else {
+                sanitizeDynamicProps(val, props);
             }
         }
     });
@@ -253,7 +282,7 @@ const mergeObjects = (c, obj1, obj2) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
     const obj = merge(obj1, obj2, { arrayMerge });
-    return sanitizeDynamicProps(c, obj);
+    return sanitizeDynamicRefs(c, obj);
 };
 
 const updateConfigFile = async (update, globalConfigPath) => {

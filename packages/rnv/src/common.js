@@ -668,7 +668,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
     // Check plugins
     logTask('configureProject:check plugins');
     if (fs.existsSync(c.paths.pluginConfigPath)) {
-        c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath);
+        c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath, c);
     } else {
         logWarning(
             `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,

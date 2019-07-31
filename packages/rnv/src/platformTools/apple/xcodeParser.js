@@ -112,7 +112,7 @@ export const parseXcodeProject = (c, platform) => new Promise((resolve, reject) 
                 }
                 if (pluginPlat.xcodeproj.buildPhases) {
                     pluginPlat.xcodeproj.buildPhases.forEach((v) => {
-                        xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', null, null, {
+                        xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'ShellScript', null, {
                             shellPath: v.shellPath || '/bin/sh',
                             shellScript: v.shellScript,
                             inputPaths: v.inputPaths || ['"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"']
