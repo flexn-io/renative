@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.42-alpha16",
+            "version": "0.23.42-alpha17",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1032,7 +1032,7 @@
                 ],
                 "implementations": [
                     "'com.google.firebase:firebase-core:16.0.4'",
-                    "'com.google.firebase:firebase-messaging:17.3.4'"
+                    "'com.google.firebase:firebase-messaging:18.0.0'"
                 ],
                 "build.gradle": {
                     "buildscript": {
