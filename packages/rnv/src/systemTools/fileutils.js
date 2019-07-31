@@ -5,7 +5,7 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
-import { logDebug, logError } from '../common';
+import { logDebug, logError, logWarning } from '../common';
 
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);
@@ -239,7 +239,7 @@ const sanitizeDynamicProps = (c, obj) => {
         if (val) {
             if (typeof val === 'string') {
                 if (val.startsWith('$REF$:')) {
-                    _refToValue(c, val, key);
+                    obj[key] = _refToValue(c, val, key);
                 }
             } else {
                 sanitizeDynamicProps(c, val);

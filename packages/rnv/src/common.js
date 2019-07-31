@@ -951,7 +951,7 @@ const getConfigProp = (c, platform, key, defaultVal) => {
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
     const result = scheme[key] || (c.files.appConfigFile.platforms[platform][key] || c.files.appConfigFile.common[key]);
-    logTask(`getConfigProp:${platform}:${key}:${result}`);
+    logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
     if (result === null || result === undefined) return defaultVal;
     return result;
 };
