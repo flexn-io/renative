@@ -32,10 +32,7 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve, re
 // EXPORT OPTIONS
     const tId = getConfigProp(c, platform, 'teamID');
     const appFolder = getAppFolder(c, platform);
-    const exportOptions = {
-        method: 'app-store',
-        teamID: tId
-    };
+    const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
 
     c.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
     const bPath = getBuildFilePath(c, platform, 'exportOptions.plist');

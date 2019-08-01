@@ -944,13 +944,31 @@ const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplate
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
+const _getValueOrMergedObject = (o1, o2, o3) => {
+    if (o1) {
+        if (typeof o1 !== 'object') return o1;
+        const val = Object.assign(o3 || {}, o2 || {}, o1);
+        return val;
+    }
+    if (o2) {
+        if (typeof o2 !== 'object') return o2;
+        return Object.assign(o3 || {}, o2);
+    }
+    return o3;
+};
+
 const getConfigProp = (c, platform, key, defaultVal) => {
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
     let scheme;
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
-    const result = scheme[key] || (c.files.appConfigFile.platforms[platform][key] || c.files.appConfigFile.common[key]);
+    const resultScheme = scheme[key];
+    const resultPlatforms = c.files.appConfigFile.platforms[platform][key];
+    const resultCommon = c.files.appConfigFile.common[key];
+
+    const result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
     if (result === null || result === undefined) return defaultVal;
     return result;
