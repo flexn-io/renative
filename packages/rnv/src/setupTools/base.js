@@ -4,12 +4,8 @@ import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemTools/exec';
 import { logInfo, logDebug } from '../common';
-import { updateConfigFile, replaceHomeFolder } from '../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
-
-let platform = isRunningOnWindows ? 'windows' : 'linux';
-if (process.platform === 'darwin') platform = 'darwin';
+import { replaceHomeFolder } from '../systemTools/fileutils';
+import setupConfig from './config';
 
 class BasePlatformSetup {
     constructor(os, c) {
@@ -18,8 +14,6 @@ class BasePlatformSetup {
         this.c = c;
         this.globalConfigPath = globalConfigPath;
         this.availableDownloader = null;
-        this.androidSdkURL = `https://dl.google.com/android/repository/sdk-tools-${platform}-4333796.zip`;
-        this.androidSdkDownloadLocation = replaceHomeFolder(`~/sdk-tools-${platform}-4333796.zip`);
         this.androidSdkLocation = replaceHomeFolder('~/Android');
         this.sdksToInstall = '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';
     }
@@ -44,12 +38,12 @@ class BasePlatformSetup {
         return true;
     }
 
-    async downloadAndroidSdk() {
+    async downloadSdk(sdk) {
         const downloader = this.availableDownloader;
         if (!downloader) throw new Error('Wget or cURL not installed!');
-        logDebug(`Downloading Android SDK to ${this.androidSdkDownloadLocation} using ${downloader}`);
+        logDebug(`Downloading ${sdk} SDK to ${setupConfig[sdk].downloadLocation} using ${downloader}`);
         // remove the file if existing first
-        await shell.rm(this.androidSdkDownloadLocation);
+        await shell.rm(setupConfig[sdk].downloadLocation);
 
         let aditionalArguments;
         let locationArgument;
@@ -59,43 +53,55 @@ class BasePlatformSetup {
         }
         if (downloader === 'curl') {
             aditionalArguments = '-#';
-            locationArgument = `--output ${this.androidSdkDownloadLocation}`;
+            locationArgument = `--output ${setupConfig[sdk].downloadLocation}`;
         }
 
-        const command = `${downloader} ${aditionalArguments} ${this.androidSdkURL} ${locationArgument}`;
+        const command = `${downloader} ${aditionalArguments} ${setupConfig[sdk].sdkUrl} ${locationArgument}`;
 
         logDebug('Running', command);
-        logInfo('Downloading Android SDK...');
+        logInfo(`Downloading ${sdk} SDK...`);
         await shell.exec(command);
     }
 
-    async unzipAndroidSdk() {
-        logDebug(`Unzipping from ${this.androidSdkDownloadLocation} to ${this.androidSdkLocation}`);
+    async unzipSdk(sdk) {
+        logDebug(`Unzipping from ${setupConfig[sdk].downloadLocation} to ${setupConfig[sdk].location}`);
         if (!commandExistsSync('unzip')) throw new Error('unzip is not installed');
-        await shell.exec(`unzip -qq -o ${this.androidSdkDownloadLocation} -d ${this.androidSdkLocation}`);
+        await shell.exec(`unzip -qq -o ${setupConfig[sdk].downloadLocation} -d ${setupConfig[sdk].location}`);
     }
 
     async installSdksAndEmulator() {
         logDebug('Accepting licenses');
-        await shell.exec(`yes | ${this.androidSdkLocation}/tools/bin/sdkmanager --licenses > /dev/null`);
+        await shell.exec(`yes | ${setupConfig.android.location}/tools/bin/sdkmanager --licenses > /dev/null`);
         logDebug('Installing SDKs', this.sdksToInstall);
-        await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`);
+        await shell.exec(`${setupConfig.android.location}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`);
     }
 
-    async installAndroidSdk() {
+    async installSdk(sdk) {
         this.checkPrereqs();
         await this.installPrereqs();
-        await this.downloadAndroidSdk();
-        await this.unzipAndroidSdk();
-        await this.installSdksAndEmulator();
-        logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify({ androidSdk: this.androidSdkLocation })}`);
-        await updateConfigFile({ androidSdk: this.androidSdkLocation }, this.globalConfigPath);
-        return this.androidSdkLocation;
+        // await this.downloadSdk(sdk);
+
+        switch (sdk) {
+        case 'android':
+            await this.unzipSdk(sdk);
+            await this.installSdksAndEmulator();
+            break;
+        case 'tizen':
+            await this.installTizenSdk();
+            break;
+        case 'webos':
+            await this.installWebosSdk();
+            break;
+        default:
+            break;
+        }
+
+        this.postInstall(sdk);
     }
 
-    async installTizenSdk() {
-        this.checkPrereqs();
-        await this.installPrereqs();
+    installTizenSdk() {
+        // to be overwritten
+        return true;
     }
 
     async installWebosSdk() {
@@ -116,22 +122,7 @@ class BasePlatformSetup {
         }
 
         if (this.c.program.ci || sdkInstall) {
-            switch (sdk) {
-            case 'android':
-                const android = await this.installAndroidSdk();
-                this.postInstall({ android });
-                break;
-            case 'tizen':
-                const tizen = await this.installTizenSdk();
-                this.postInstall({ tizen });
-                break;
-            case 'webos':
-                const webos = await this.installWebosSdk();
-                this.postInstall({ webos });
-                break;
-            default:
-                break;
-            }
+            await this.installSdk(sdk);
         }
     }
 }

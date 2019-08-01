@@ -2,8 +2,10 @@ import shell from 'shelljs';
 import path from 'path';
 
 import { commandExistsSync } from '../systemTools/exec';
-import { logInfo } from '../common';
+import { logInfo, logDebug } from '../common';
 import BasePlatformSetup from './base';
+import { updateConfigFile } from '../systemTools/fileutils';
+import setupConfig from './config';
 import {
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
@@ -44,10 +46,13 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         return true;
     }
 
-    async postInstall({ android }) {
-        if (android) {
+    async postInstall(sdk) {
+        if (sdk === 'android') {
+            const { location } = setupConfig.android;
+            logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify({ androidSdk: location })}`);
+            await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
             // @todo find a more elegant way to update this
-            this.c.files.globalConfig.sdks.ANDROID_SDK = android;
+            this.c.files.globalConfig.sdks.ANDROID_SDK = location;
             const { sdks: { ANDROID_SDK } } = this.c.files.globalConfig;
             this.c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
             this.c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');

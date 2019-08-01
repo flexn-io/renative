@@ -620,8 +620,8 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
                 c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`);
             }
             if (sdks.TIZEN_SDK) {
-                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
-                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, `tools/emulator/bin/em-cli${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, `tools/ide/bin/tizen${isRunningOnWindows ? '.bat' : ''}`);
                 c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
             }
             if (sdks.WEBOS_SDK) {
@@ -1338,6 +1338,7 @@ export {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
+    configureRnvGlobal
 };
 
 export default {
@@ -1411,4 +1412,5 @@ export default {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
+    configureRnvGlobal
 };

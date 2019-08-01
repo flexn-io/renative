@@ -139,7 +139,7 @@ const _runList = async (c) => {
                 sdkInstall = response.sdkInstall;
             }
 
-            const isRunningOnWindows = process.platform === 'win32'
+            const isRunningOnWindows = process.platform === 'win32';
 
             if (c.program.ci || sdkInstall) {
                 const setupInstance = PlatformSetup(c);

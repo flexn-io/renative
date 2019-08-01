@@ -1,15 +1,20 @@
 import shell from 'shelljs';
 import { getInstalledPathSync } from 'get-installed-path';
 import path from 'path';
+import { exec } from 'child_process';
+import inquirer from 'inquirer';
+import fs from 'fs';
 
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
-import { logInfo, logDebug } from '../common';
+import { logInfo, logDebug, configureRnvGlobal } from '../common';
+import { updateConfigFile, replaceHomeFolder } from '../systemTools/fileutils';
 import BasePlatformSetup from './base';
+import setupConfig from './config';
 import {
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_SDKMANAGER
+    CLI_ANDROID_SDKMANAGER,
 } from '../constants';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
@@ -32,13 +37,13 @@ class LinuxPlatformSetup extends BasePlatformSetup {
     }
 
     async installSoftware(software) {
-        await shell.exec(`%USERPROFILE%/scoop/shims/scoop install ${software}`);
+        await shell.exec(replaceHomeFolder(`~/scoop/shims/scoop install ${software}`));
         await this.reloadPathEnv();
         return true;
     }
 
     addScoopBucket(bucket) {
-        return shell.exec(`%USERPROFILE%/scoop/shims/scoop bucket add ${bucket}`);
+        return shell.exec(replaceHomeFolder(`~/scoop/shims/scoop bucket add ${bucket}`));
     }
 
     async reloadPathEnv() {
@@ -81,16 +86,47 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat ${this.sdksToInstall}`);
     }
 
-    async postInstall({ android }) {
-        if (android) {
-            // @todo find a more elegant way to update this
-            this.c.files.globalConfig.sdks.ANDROID_SDK = android;
-            const { sdks: { ANDROID_SDK } } = this.c.files.globalConfig;
-            this.c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator.exe');
-            this.c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb.exe');
-            this.c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager.bat');
-            this.c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager.bat');
+    async postInstall(sdk) {
+        if (sdk === 'android') {
+            const { location } = setupConfig.android;
+            await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
+            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
         }
+
+        if (sdk === 'tizen') {
+            await updateConfigFile({ tizenSdk: this.tizenSdkPath }, this.globalConfigPath);
+            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
+        }
+    }
+
+    async installTizenSdk() {
+        let downloadDir = setupConfig.tizen.downloadLocation.split('/');
+        downloadDir.pop();
+        downloadDir = downloadDir.join('/');
+        logInfo(`Opening ${downloadDir}. Please install the SDK then continue after it finished installing.`);
+        exec(`start "" "${downloadDir}"`);
+
+        const res = await inquirer.prompt({
+            type: 'input',
+            name: 'sdkPath',
+            message: "Where did you install the SDK? (if you haven't changed the default just press enter)",
+            default: 'C:\\tizen-studio',
+            validate(value) {
+                if (fs.existsSync(value)) return true;
+                return 'Path does not exist';
+            }
+        });
+
+        await inquirer.prompt({
+            type: 'confirm',
+            name: 'Tools installed',
+            message: 'Please open Package Manager and install: Tizen SDK Tools (Main SDK), TV Extensions-* (Extension SDK). Continue after you finished installing them.',
+            validate() {
+                return fs.existsSync(path.join(res.sdkPath, 'tools/ide/bin/tizen.bat')) || 'This does not look like a Tizen SDK path';
+            }
+        });
+
+        this.tizenSdkPath = res.sdkPath;
     }
 }
 

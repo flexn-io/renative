@@ -205,13 +205,19 @@ const updateConfigFile = async (update, globalConfigPath) => {
         configContents.sdks.ANDROID_SDK = update.androidSdk;
     }
 
+    if (update.tizenSdk) {
+        configContents.sdks.TIZEN_SDK = update.tizenSdk;
+    }
+
+    logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify(update, null, 3)}`);
+
     fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
 
-const replaceHomeFolder = (path) => {
-    if (isRunningOnWindows) return path.replace('~', process.env.USERPROFILE)
-    return path.replace('~', process.env.HOME);
-}
+const replaceHomeFolder = (p) => {
+    if (isRunningOnWindows) return p.replace('~', process.env.USERPROFILE);
+    return p.replace('~', process.env.HOME);
+};
 
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
