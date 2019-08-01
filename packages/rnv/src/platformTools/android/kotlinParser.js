@@ -63,12 +63,6 @@ export const parseSplashActivitySync = (c, platform) => {
 };
 
 export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
-    const className = pkg ? pkg.split('.').pop() : null;
-    let packageParams = '';
-    if (plugin.packageParams) {
-        packageParams = plugin.packageParams.join(',');
-    }
-
     const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     const modulePath = `../../${pathFixed}`;
 
@@ -110,16 +104,36 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         }
     }
 
-    if (pkg) c.pluginConfigAndroid.pluginImports += `import ${pkg}\n`;
-    if (className) c.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
-
     if (plugin.imports) {
         plugin.imports.forEach((v) => {
             c.pluginConfigAndroid.pluginImports += `import ${v}\n`;
         });
     }
 
+    _injectPackage(c, plugin, pkg);
+
+    if (plugin.MainApplication) {
+        if (plugin.MainApplication.packages) {
+            plugin.MainApplication.packages.forEach((v) => {
+                _injectPackage(c, plugin, v);
+            });
+        }
+    }
+
     if (plugin.mainApplicationMethods) {
         c.pluginConfigAndroid.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };
+
+const _injectPackage = (c, plugin, pkg) => {
+    if (pkg) c.pluginConfigAndroid.pluginImports += `import ${pkg}\n`;
+    let packageParams = '';
+    if (plugin.packageParams) {
+        packageParams = plugin.packageParams.join(',');
+    }
+
+    const className = _extractClassName(pkg);
+    if (className) c.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
+};
+
+const _extractClassName = pkg => (pkg ? pkg.split('.').pop() : null);

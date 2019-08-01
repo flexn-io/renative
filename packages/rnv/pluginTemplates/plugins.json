@@ -1025,15 +1025,17 @@
                 }
             },
             "android": {
-                "packages": [
-                    "io.invertase.firebase.RNFirebasePackage",
-                    "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
-                    "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
-                ],
                 "implementations": [
                     "'com.google.firebase:firebase-core:16.0.4'",
                     "'com.google.firebase:firebase-messaging:18.0.0'"
                 ],
+                "MainApplication": {
+                  "packages": [
+                      "io.invertase.firebase.RNFirebasePackage",
+                      "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
+                      "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
+                  ]
+                },
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
@@ -1130,7 +1132,7 @@
                 }
             },
             "androidtv": {
-                "packages": [
+                "imports": [
                     "io.invertase.firebase.RNFirebasePackage",
                     "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
                     "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"

@@ -5,7 +5,7 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
-import { logDebug, logError, logWarning } from '../common';
+import { logDebug, logError, logWarning, logInfo } from '../common';
 
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);

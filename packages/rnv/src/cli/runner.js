@@ -362,11 +362,11 @@ const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         executePipe(c, PIPES.EXPORT_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => configureXcodeProject(c, platform))
-            .then(() => packageBundleForXcode(c, platform))
-            .then(() => archiveXcodeProject(c, platform))
+            .then(() => (c.program.only ? Promise.resolve() : cleanPlatformIfRequired(c, platform)))
+            .then(() => (c.program.only ? Promise.resolve() : configureIfRequired(c, platform)))
+            .then(() => (c.program.only ? Promise.resolve() : configureXcodeProject(c, platform)))
+            .then(() => (c.program.only ? Promise.resolve() : packageBundleForXcode(c, platform)))
+            .then(() => (c.program.only ? Promise.resolve() : archiveXcodeProject(c, platform)))
             .then(() => exportXcodeProject(c, platform))
             .then(() => executePipe(c, PIPES.EXPORT_AFTER))
             .then(() => resolve())
