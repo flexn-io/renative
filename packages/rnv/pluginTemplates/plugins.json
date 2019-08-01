@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.42-alpha18",
+            "version": "0.23.42-alpha19",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1030,11 +1030,11 @@
                     "'com.google.firebase:firebase-messaging:18.0.0'"
                 ],
                 "MainApplication": {
-                  "packages": [
-                      "io.invertase.firebase.RNFirebasePackage",
-                      "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
-                      "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
-                  ]
+                    "packages": [
+                        "io.invertase.firebase.RNFirebasePackage",
+                        "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
+                        "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
+                    ]
                 },
                 "build.gradle": {
                     "buildscript": {
