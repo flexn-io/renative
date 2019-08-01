@@ -6,8 +6,8 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
-import { logInfo, logDebug, configureRnvGlobal } from '../common';
-import { updateConfigFile, replaceHomeFolder } from '../systemTools/fileutils';
+import { logInfo, logDebug } from '../common';
+import { replaceHomeFolder } from '../systemTools/fileutils';
 import BasePlatformSetup from './base';
 import setupConfig from './config';
 import {
@@ -86,19 +86,6 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         await shell.exec(`${this.androidSdkLocation}/tools/bin/sdkmanager.bat ${this.sdksToInstall}`);
     }
 
-    async postInstall(sdk) {
-        if (sdk === 'android') {
-            const { location } = setupConfig.android;
-            await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
-            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
-        }
-
-        if (sdk === 'tizen') {
-            await updateConfigFile({ tizenSdk: this.tizenSdkPath }, this.globalConfigPath);
-            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
-        }
-    }
-
     async installTizenSdk() {
         let downloadDir = setupConfig.tizen.downloadLocation.split('/');
         downloadDir.pop();
@@ -119,7 +106,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
 
         await inquirer.prompt({
             type: 'confirm',
-            name: 'Tools installed',
+            name: 'toolsInstalled',
             message: 'Please open Package Manager and install: Tizen SDK Tools (Main SDK), TV Extensions-* (Extension SDK). Continue after you finished installing them.',
             validate() {
                 return fs.existsSync(path.join(res.sdkPath, 'tools/ide/bin/tizen.bat')) || 'This does not look like a Tizen SDK path';
@@ -127,6 +114,34 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         });
 
         this.tizenSdkPath = res.sdkPath;
+    }
+
+    async installWebosSdk() {
+        const { downloadLink } = setupConfig.webos;
+        logInfo(`Opening ${downloadLink}. Please download and install the SDK then continue after it finished installing. Make sure you also install the CLI and Emulator components`);
+        const start = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
+        exec(`${start} ${downloadLink}`);
+        const res = await inquirer.prompt({
+            type: 'input',
+            name: 'sdkPath',
+            message: "Where did you install the SDK? (if you haven't changed the default just press enter)",
+            default: 'C:\\webOS_TV_SDK',
+            validate(value) {
+                if (fs.existsSync(value)) return true;
+                return 'Path does not exist';
+            }
+        });
+
+        await inquirer.prompt({
+            type: 'confirm',
+            name: 'toolsInstalled',
+            message: 'Are the CLI and Emulator components installed?',
+            validate() {
+                return fs.existsSync(path.join(res.sdkPath, 'tools/ide/bin/tizen.bat')) || 'This does not look like a Tizen SDK path';
+            }
+        });
+
+        this.webosSdkPath = res.sdkPath;
     }
 }
 

@@ -3,8 +3,8 @@ import shell from 'shelljs';
 import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemTools/exec';
-import { logInfo, logDebug } from '../common';
-import { replaceHomeFolder } from '../systemTools/fileutils';
+import { logInfo, logDebug, configureRnvGlobal } from '../common';
+import { replaceHomeFolder, updateConfigFile } from '../systemTools/fileutils';
 import setupConfig from './config';
 
 class BasePlatformSetup {
@@ -33,9 +33,20 @@ class BasePlatformSetup {
         return true;
     }
 
-    async postInstall() {
-        // to be overwritten
-        return true;
+    async postInstall(sdk) {
+        if (sdk === 'android') {
+            const { location } = setupConfig.android;
+            await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
+        }
+
+        if (sdk === 'tizen') {
+            await updateConfigFile({ tizenSdk: this.tizenSdkPath }, this.globalConfigPath);
+        }
+
+        if (sdk === 'webos') {
+            await updateConfigFile({ webosSdk: this.webosSdkPath }, this.globalConfigPath);
+        }
+        await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
     }
 
     async downloadSdk(sdk) {
@@ -79,10 +90,10 @@ class BasePlatformSetup {
     async installSdk(sdk) {
         this.checkPrereqs();
         await this.installPrereqs();
-        // await this.downloadSdk(sdk);
 
         switch (sdk) {
         case 'android':
+            await this.downloadSdk(sdk);
             await this.unzipSdk(sdk);
             await this.installSdksAndEmulator();
             break;
@@ -99,14 +110,14 @@ class BasePlatformSetup {
         this.postInstall(sdk);
     }
 
-    installTizenSdk() {
+    async installTizenSdk() {
         // to be overwritten
         return true;
     }
 
     async installWebosSdk() {
-        this.checkPrereqs();
-        await this.installPrereqs();
+        // to be overwritten
+        return true;
     }
 
     async askToInstallSDK(sdk) {

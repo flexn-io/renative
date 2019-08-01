@@ -209,6 +209,10 @@ const updateConfigFile = async (update, globalConfigPath) => {
         configContents.sdks.TIZEN_SDK = update.tizenSdk;
     }
 
+    if (update.webosSdk) {
+        configContents.sdks.WEBOS_SDK = update.webosSdk;
+    }
+
     logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify(update, null, 3)}`);
 
     fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
