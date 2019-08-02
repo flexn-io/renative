@@ -33,6 +33,7 @@ const UBUNTU = 'ubuntu';
 const UBUNTU_TOUCH = 'ubuntutouch';
 const UNITY = 'unity';
 const VEWD = 'vewd';
+const VIDAA = 'vidaa';
 const VIERACONNECT = 'vieraconnect';
 const VIZIO = 'vizio';
 const WATCHOS = 'watchos';

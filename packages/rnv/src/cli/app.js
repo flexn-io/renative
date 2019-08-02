@@ -436,7 +436,7 @@ const _copySharedPlatforms = c => new Promise((resolve) => {
 });
 
 const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
-    logTask('_runPlugins');
+    logTask(`_runPlugins:${pluginsPath}`, chalk.grey);
 
     if (!fs.existsSync(pluginsPath)) {
         logInfo(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);

@@ -435,7 +435,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     checkAndCreateGitignore(c);
 
     // Check rn-cli-config
-    logTask('configureProject:check rn-cli');
+    logTask('configureProject:check rn-cli', chalk.grey);
     if (!fs.existsSync(c.paths.rnCliConfigPath)) {
         logWarning(
             `Looks like your rn-cli config file ${chalk.white(c.paths.rnCliConfigPath)} is missing! Let's create one for you.`,
@@ -444,7 +444,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     }
 
     // Check babel-config
-    logTask('configureProject:check babel config');
+    logTask('configureProject:check babel config', chalk.grey);
     if (!fs.existsSync(c.paths.babelConfigPath)) {
         logWarning(
             `Looks like your babel config file ${chalk.white(c.paths.babelConfigPath)} is missing! Let's create one for you.`,
@@ -462,7 +462,7 @@ const configureProject = c => new Promise((resolve, reject) => {
 
 
     // Check rnv-config.local
-    logTask('configureProject:check rnv-config.local');
+    logTask('configureProject:check rnv-config.local', chalk.grey);
     if (fs.existsSync(c.paths.projectConfigLocalPath)) {
         logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will use it as preference for appConfig path!`);
         c.files.projectConfigLocal = JSON.parse(fs.readFileSync(c.paths.projectConfigLocalPath).toString());
@@ -666,7 +666,7 @@ const configureEntryPoints = (c) => {
 
 const configurePlugins = c => new Promise((resolve, reject) => {
     // Check plugins
-    logTask('configureProject:check plugins');
+    logTask('configureProject:check plugins', chalk.grey);
     if (fs.existsSync(c.paths.pluginConfigPath)) {
         c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath, c);
     } else {
@@ -745,7 +745,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
     }
 
     // Check permissions
-    logTask('configureProject:check permissions');
+    logTask('configureProject:check permissions', chalk.grey);
     if (fs.existsSync(c.paths.permissionsConfigPath)) {
         c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
     } else {
@@ -944,13 +944,31 @@ const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplate
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
+const _getValueOrMergedObject = (o1, o2, o3) => {
+    if (o1) {
+        if (typeof o1 !== 'object') return o1;
+        const val = Object.assign(o3 || {}, o2 || {}, o1);
+        return val;
+    }
+    if (o2) {
+        if (typeof o2 !== 'object') return o2;
+        return Object.assign(o3 || {}, o2);
+    }
+    return o3;
+};
+
 const getConfigProp = (c, platform, key, defaultVal) => {
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
     let scheme;
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
-    const result = scheme[key] || (c.files.appConfigFile.platforms[platform][key] || c.files.appConfigFile.common[key]);
+    const resultScheme = scheme[key];
+    const resultPlatforms = c.files.appConfigFile.platforms[platform][key];
+    const resultCommon = c.files.appConfigFile.common[key];
+
+    const result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
     if (result === null || result === undefined) return defaultVal;
     return result;
@@ -1008,9 +1026,16 @@ const isPlatformActive = (c, platform, resolve) => {
     return true;
 };
 
+const PLATFORM_RUNS = {};
+
 const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_configureIfRequired:${platform}`);
 
+    if (PLATFORM_RUNS[platform]) {
+        resolve();
+        return;
+    }
+    PLATFORM_RUNS[platform] = true;
     // if (!fs.existsSync(getAppFolder(c, platform))) {
     //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
 
