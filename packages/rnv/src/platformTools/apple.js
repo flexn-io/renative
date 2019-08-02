@@ -427,6 +427,7 @@ const runAppleLog = c => new Promise(() => {
 });
 
 const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
+    logTask(`configureXcodeProject:${platform}`);
     const { device } = c.program;
     const ip = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c, platform);
