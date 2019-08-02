@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.42-alpha16",
+            "version": "0.23.42-alpha19",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -792,7 +792,7 @@
             "ios": {
                 "podName": "Crashlytics",
                 "appDelegateImports": ["Crashlytics"],
-                "version": "3.10.5"
+                "version": "3.13.4"
             },
             "android": {
                 "skipImplementation": true,
@@ -814,7 +814,7 @@
             "ios": {
                 "podName": "Fabric",
                 "appDelegateImports": ["Fabric"],
-                "version": "1.7.13",
+                "version": "1.10.2",
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
@@ -1003,15 +1003,17 @@
                 }
             },
             "android": {
-                "packages": [
-                    "io.invertase.firebase.RNFirebasePackage",
-                    "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
-                    "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
-                ],
                 "implementations": [
                     "'com.google.firebase:firebase-core:16.0.4'",
-                    "'com.google.firebase:firebase-messaging:17.3.4'"
+                    "'com.google.firebase:firebase-messaging:18.0.0'"
                 ],
+                "MainApplication": {
+                    "packages": [
+                        "io.invertase.firebase.RNFirebasePackage",
+                        "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
+                        "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
+                    ]
+                },
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
@@ -1106,7 +1108,7 @@
                 }
             },
             "androidtv": {
-                "packages": [
+                "imports": [
                     "io.invertase.firebase.RNFirebasePackage",
                     "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
                     "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"

@@ -25,7 +25,7 @@ import {
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from '../apple';
 
-export const parseXcschemeSync = (c, platform) => {
+export const parseXcscheme = (c, platform) => new Promise((resolve, reject) => {
 // XCSCHEME
     const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
     const runScheme = getConfigProp(c, platform, 'runScheme');
@@ -40,4 +40,5 @@ export const parseXcschemeSync = (c, platform) => {
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
         { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
     ]);
-};
+    resolve();
+});

@@ -24,7 +24,7 @@ import {
 } from '../../common';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
-export const parsePodFileSync = (c, platform) => {
+export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
     logTask(`parsePodFileSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -83,7 +83,8 @@ export const parsePodFileSync = (c, platform) => {
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
     ]);
-};
+    resolve();
+});
 
 const _injectPod = (podName, pluginPlat, plugin, key) => {
     let pluginInject = '';

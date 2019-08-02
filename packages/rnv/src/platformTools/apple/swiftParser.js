@@ -32,7 +32,7 @@ VALUES = {
     }
 };
 
-export const parseAppDelegateSync = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => {
+export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 
@@ -191,16 +191,17 @@ export const parseAppDelegateSync = (c, platform, appFolder, appFolderName, isBu
             },
         ],
     );
-};
+    resolve();
+});
 
 export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
-    logTask(`injectPluginSwiftSync:${c.platform}:${key}`);
+    logTask(`injectPluginSwiftSync:${c.platform}:${key}`, chalk.grey);
     if (plugin.appDelegateImports instanceof Array) {
         plugin.appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
-            logTask('appDelegateImports add');
+            logTask('appDelegateImports add', chalk.grey);
             if (c.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
-                logTask('appDelegateImports add ok');
+                logTask('appDelegateImports add ok', chalk.grey);
                 c.pluginConfigiOS.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
             }
         });

@@ -110,6 +110,15 @@ export const parseXcodeProject = (c, platform) => new Promise((resolve, reject) 
                         xcodeProj.addHeaderFile(v, null, '200132F21F6BF9CF00450340');
                     });
                 }
+                if (pluginPlat.xcodeproj.buildPhases) {
+                    pluginPlat.xcodeproj.buildPhases.forEach((v) => {
+                        xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'ShellScript', null, {
+                            shellPath: v.shellPath || '/bin/sh',
+                            shellScript: v.shellScript,
+                            inputPaths: v.inputPaths || ['"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"']
+                        });
+                    });
+                }
             }
         });
 

@@ -33,13 +33,13 @@ import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import {
-    saveObjToPlistSync, objToPlist, parseExportOptionsPlistSync,
-    parseInfoPlistSync, parseEntitlementsPlistSync
+    saveObjToPlistSync, objToPlist, parseExportOptionsPlist,
+    parseInfoPlist, parseEntitlementsPlist
 } from './apple/plistParser';
-import { parseXcschemeSync } from './apple/xcschemeParser';
-import { parsePodFileSync } from './apple/podfileParser';
+import { parseXcscheme } from './apple/xcschemeParser';
+import { parsePodFile } from './apple/podfileParser';
 import { parseXcodeProject } from './apple/xcodeParser';
-import { injectPluginSwiftSync, parseAppDelegateSync } from './apple/swiftParser';
+import { parseAppDelegate } from './apple/swiftParser';
 
 const readline = require('readline');
 
@@ -493,21 +493,14 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     }
 
     // PARSERS
-    createPlatformBuild(c, platform)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
+    copyAppleAssets(c, platform, appFolderName)
         .then(() => copyBuildsFolder(c, platform))
-        .then(() => {
-            // parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            //     injectPluginSwiftSync(c, pluginPlat, key, pluginPlat.package, pluginConfig);
-            // });
-            parseAppDelegateSync(c, platform, appFolder, appFolderName, bundleAssets, ip, port);
-            parseExportOptionsPlistSync(c, platform);
-            parseXcschemeSync(c, platform);
-            parsePodFileSync(c, platform);
-            parseEntitlementsPlistSync(c, platform);
-            parseInfoPlistSync(c, platform);
-            return Promise.resolve();
-        })
+        .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, ip, port))
+        .then(() => parseExportOptionsPlist(c, platform))
+        .then(() => parseXcscheme(c, platform))
+        .then(() => parsePodFile(c, platform))
+        .then(() => parseEntitlementsPlist(c, platform))
+        .then(() => parseInfoPlist(c, platform))
         .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => parseXcodeProject(c, platform))
         .then(() => resolve())
