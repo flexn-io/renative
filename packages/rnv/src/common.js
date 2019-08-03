@@ -946,12 +946,12 @@ const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
 const _getValueOrMergedObject = (o1, o2, o3) => {
     if (o1) {
-        if (typeof o1 !== 'object') return o1;
+        if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
         const val = Object.assign(o3 || {}, o2 || {}, o1);
         return val;
     }
     if (o2) {
-        if (typeof o2 !== 'object') return o2;
+        if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
         return Object.assign(o3 || {}, o2);
     }
     return o3;

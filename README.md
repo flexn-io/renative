@@ -31,6 +31,8 @@
 <p align="center">
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
+  <a href="#templates--starters">Templates</a> &bull;
+  <a href="#plugins">Plugins</a> &bull;
   <a href="#advanced-configuration">Advanced Configuration</a> &bull;
   <a href="#build-hooks">Build Hooks</a> &bull;
   <a href="#runtime">Runtime</a> &bull;
@@ -311,7 +313,7 @@ All app code is located in `./src` directory
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_features.png?raw=true" width=50 height=50 />
 
-## Features:
+## Features
 
 #### Development platforms
 
@@ -932,6 +934,46 @@ ReNative support flexible override mechanism which allows you customise your pro
   </tr>
 </table>
 
+`./appConfigs/APP_ID/config.json` RULES:
+
+There are 3 levels of override entry objects for your props to fine-tune your app config:
+
+1) `.common` //Applies for all platforms + all schemes
+2) `.platforms.YOUR_PLATFORM` //Applies specific platforms + all schemes
+3) `.platforms.YOUR_PLATFORM.buildSchemes.YOUR_SCHEME` //Applies for specific platform + specific scheme
+
+Example:
+
+```json
+{
+  "common": {
+    "MY_PROP": "Value1"
+  },
+  "platforms": {
+    "ios": {
+      "MY_PROP": "Value2 overrides Value1",
+      "buildSchemes": {
+        "debug": {
+          "MY_PROP": "Value3 overrides Value 2"
+        }
+      }
+    }
+  }
+}
+```
+
+Override Rules for json props:
+
+`Strings` => Replaced
+`Numbers` => Replaced
+`Arrays` => Replaced
+`Objects` => Merged by top level (not deep merge)
+
+Example:
+https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L4
+
+Will be overridden by:
+https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L59
 
 ---
 
