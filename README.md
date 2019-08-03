@@ -975,6 +975,16 @@ https://github.com/pavjacko/renative/blob/master/packages/renative-template-hell
 Will be overridden by:
 https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L59
 
+This allows you to configure and build large number of flavoured builds with almost no extra configuration
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch3.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_ios.png?raw=true" width=50 height=50 />
