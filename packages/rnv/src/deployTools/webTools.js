@@ -16,6 +16,7 @@ import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const DEPLOY_TARGET_FTP = 'ftp';
 const DEPLOY_TARGET_NOW = 'now';
+const DEPLOY_TARGET_NONE = 'none';
 
 const _runDeployment = (c, platform, deployType) => new Promise((resolve, reject) => {
     switch (deployType) {
@@ -24,6 +25,9 @@ const _runDeployment = (c, platform, deployType) => new Promise((resolve, reject
         return;
     case DEPLOY_TARGET_NOW:
         deployToNow(c, platform).then(resolve).catch(reject);
+        return;
+    case DEPLOY_TARGET_NONE:
+        resolve();
         return;
     default:
         reject(new Error(`Deploy Type not supported ${deployType}`));
@@ -39,7 +43,7 @@ const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) =>
         _runDeployment(c, platform, deployType || targetConfig.deploy.type)
             .then(resolve).catch(reject);
     } else {
-        const opts = generateOptions([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW]);
+        const opts = generateOptions([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE]);
         askQuestion(`Which type of deploy option would you like to use for ${chalk.white(platform)} deployment:\n${opts.asString}`)
             .then(v => opts.pick(v))
             .then((selectedDeployTarget) => {
@@ -60,4 +64,5 @@ export {
     selectWebToolAndDeploy,
     DEPLOY_TARGET_FTP,
     DEPLOY_TARGET_NOW,
+    DEPLOY_TARGET_NONE
 };

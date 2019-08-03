@@ -782,7 +782,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
             'bundleReleaseJsAndAssets',
         ]))
         .then(() => {
-            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, 'app/build/outputs/apk/release'))} .`);
+            logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`))} .`);
             resolve();
         }).catch(e => reject(e));
 });
@@ -845,7 +845,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     fs.chmodSync(gradlew, '755');
 
     // INJECTORS
-    c.pluginConfig = {
+    c.pluginConfigAndroid = {
         pluginIncludes: "include ':app'",
         pluginPaths: '',
         pluginImports: '',
@@ -866,14 +866,14 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     };
 
     // PLUGINS
-    parsePlugins(c, (plugin, pluginPlat, key) => {
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginManifestSync(c, pluginPlat, key, pluginPlat.package);
         injectPluginXmlValuesSync(c, pluginPlat, key, pluginPlat.package);
     });
 
-    c.pluginConfig.pluginPackages = c.pluginConfig.pluginPackages.substring(0, c.pluginConfig.pluginPackages.length - 2);
+    c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(0, c.pluginConfigAndroid.pluginPackages.length - 2);
 
     // FONTS
     if (c.files.appConfigFile) {

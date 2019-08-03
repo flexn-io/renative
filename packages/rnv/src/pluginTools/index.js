@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { mergeObjects } from '../systemTools/fileutils';
-import { logTask, logWarning } from '../common';
+import { logTask, logWarning, getConfigProp } from '../common';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
@@ -16,27 +16,28 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
 
     if (origPlugin) {
-        const mergedPlugin = mergeObjects(origPlugin, plugin);
+        const mergedPlugin = mergeObjects(c, origPlugin, plugin);
         return mergedPlugin;
     }
 
     return plugin;
 };
 
-const parsePlugins = (c, pluginCallback) => {
-    logTask('parsePlugins');
+const parsePlugins = (c, platform, pluginCallback) => {
+    logTask(`parsePlugins:${platform}`);
 
     if (c.files.appConfigFile && c.files.pluginConfig) {
-        const { includedPlugins } = c.files.appConfigFile.common;
+        const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
+        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
             const { plugins } = c.files.pluginConfig;
             Object.keys(plugins).forEach((key) => {
-                if (includedPlugins.includes('*') || includedPlugins.includes(key)) {
+                if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {
                     const plugin = getMergedPlugin(c, key, plugins);
                     if (plugin) {
                         const pluginPlat = plugin[c.platform];
                         if (pluginPlat) {
-                            if (plugin['no-active'] !== true && plugin.enabled !== false) {
+                            if (plugin['no-active'] !== true && plugin.enabled !== false && pluginPlat.enabled !== false) {
                                 if (pluginCallback) pluginCallback(plugin, pluginPlat, key);
                             } else {
                                 logWarning(`Plugin ${key} is marked disabled. skipping.`);
@@ -64,3 +65,5 @@ const getLocalRenativePlugin = () => ({
 });
 
 export { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
+
+export default { getMergedPlugin, parsePlugins, getLocalRenativePlugin };

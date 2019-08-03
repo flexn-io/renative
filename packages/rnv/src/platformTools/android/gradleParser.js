@@ -34,12 +34,12 @@ export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
 
     writeCleanFile(getBuildFilePath(c, platform, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
-        { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfig.compileSdkVersion },
-        { pattern: '{{SUPPORT_LIB_VERSION}}', override: c.pluginConfig.supportLibVersion },
-        { pattern: '{{BUILD_TOOLS_VERSION}}', override: c.pluginConfig.buildToolsVersion },
-        { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfig.buildGradleAllProjectsRepositories },
-        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfig.buildGradleBuildScriptRepositories },
-        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfig.buildGradleBuildScriptDependencies }
+        { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
+        { pattern: '{{SUPPORT_LIB_VERSION}}', override: c.pluginConfigAndroid.supportLibVersion },
+        { pattern: '{{BUILD_TOOLS_VERSION}}', override: c.pluginConfigAndroid.buildToolsVersion },
+        { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleAllProjectsRepositories },
+        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptRepositories },
+        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies }
     ]);
 };
 
@@ -47,11 +47,11 @@ export const parseAppBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
 
     // ANDROID PROPS
-    c.pluginConfig.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
-    c.pluginConfig.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
-    c.pluginConfig.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
-    c.pluginConfig.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
-    c.pluginConfig.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
+    c.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
+    c.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
+    c.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
+    c.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
+    c.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
 
     // SIGNING CONFIGS
     const debugSigning = `
@@ -62,9 +62,9 @@ export const parseAppBuildGradleSync = (c, platform) => {
         keyPassword "android"
     }`;
 
-    c.pluginConfig.appBuildGradleSigningConfigs = `${debugSigning}
+    c.pluginConfigAndroid.appBuildGradleSigningConfigs = `${debugSigning}
     release`;
-    c.pluginConfig.localProperties = '';
+    c.pluginConfigAndroid.localProperties = '';
     c.files.privateConfig = _getPrivateConfig(c, platform);
 
     if (c.files.privateConfig && c.files.privateConfig[platform]) {
@@ -86,7 +86,7 @@ keyAlias=${c.files.privateConfig[platform].keyAlias}
 storePassword=${c.files.privateConfig[platform].storePassword}
 keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
-            c.pluginConfig.appBuildGradleSigningConfigs = `${debugSigning}
+            c.pluginConfigAndroid.appBuildGradleSigningConfigs = `${debugSigning}
             release {
                 storeFile file(keystoreProps['storeFile'])
                 storePassword keystoreProps['storePassword']
@@ -94,7 +94,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
                 keyPassword keystoreProps['keyPassword']
             }`;
 
-            c.pluginConfig.localProperties = `
+            c.pluginConfigAndroid.localProperties = `
           def keystorePropsFile = rootProject.file("keystore.properties")
           def keystoreProps = new Properties()
           keystoreProps.load(new FileInputStream(keystorePropsFile))`;
@@ -106,7 +106,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     }
 
     // BUILD_TYPES
-    c.pluginConfig.buildTypes = `
+    c.pluginConfigAndroid.buildTypes = `
     debug {
         minifyEnabled false
         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -120,9 +120,9 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
     // MULTI APK
     const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
-    c.pluginConfig.multiAPKs = '';
+    c.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
-        c.pluginConfig.multiAPKs = `
+        c.pluginConfigAndroid.multiAPKs = `
       ext.abiCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
       import com.android.build.OutputFile
 
@@ -137,9 +137,9 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     }
 
     // SPLITS
-    c.pluginConfig.splits = '';
+    c.pluginConfigAndroid.splits = '';
     if (isMultiApk) {
-        c.pluginConfig.splits = `
+        c.pluginConfigAndroid.splits = `
     splits {
       abi {
           reset()
@@ -153,7 +153,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
 
 
     // PACKAGING OPTIONS
-    c.pluginConfig.packagingOptions = `
+    c.pluginConfigAndroid.packagingOptions = `
     exclude 'META-INF/DEPENDENCIES.txt'
     exclude 'META-INF/DEPENDENCIES'
     exclude 'META-INF/dependencies.txt'
@@ -172,28 +172,28 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     pickFirst 'lib/x86_64/libjsc.so'`;
 
     // COMPILE OPTIONS
-    c.pluginConfig.compileOptions = `
+    c.pluginConfigAndroid.compileOptions = `
     sourceCompatibility 1.8
     targetCompatibility 1.8`;
 
 
     writeCleanFile(getBuildFilePath(c, platform, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
-        { pattern: '{{PLUGIN_APPLY}}', override: c.pluginConfig.applyPlugin },
+        { pattern: '{{PLUGIN_APPLY}}', override: c.pluginConfigAndroid.applyPlugin },
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
         { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
-        { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: c.pluginConfig.appBuildGradleImplementations },
-        { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: c.pluginConfig.appBuildGradleAfterEvaluate },
-        { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: c.pluginConfig.appBuildGradleSigningConfigs },
-        { pattern: '{{PLUGIN_SPLITS}}', override: c.pluginConfig.splits },
-        { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: c.pluginConfig.packagingOptions },
-        { pattern: '{{PLUGIN_BUILD_TYPES}}', override: c.pluginConfig.buildTypes },
-        { pattern: '{{PLUGIN_MULTI_APKS}}', override: c.pluginConfig.multiAPKs },
-        { pattern: '{{MIN_SDK_VERSION}}', override: c.pluginConfig.minSdkVersion },
-        { pattern: '{{TARGET_SDK_VERSION}}', override: c.pluginConfig.targetSdkVersion },
-        { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfig.compileSdkVersion },
-        { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: c.pluginConfig.compileOptions },
-        { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: c.pluginConfig.localProperties },
+        { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: c.pluginConfigAndroid.appBuildGradleImplementations },
+        { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate },
+        { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: c.pluginConfigAndroid.appBuildGradleSigningConfigs },
+        { pattern: '{{PLUGIN_SPLITS}}', override: c.pluginConfigAndroid.splits },
+        { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: c.pluginConfigAndroid.packagingOptions },
+        { pattern: '{{PLUGIN_BUILD_TYPES}}', override: c.pluginConfigAndroid.buildTypes },
+        { pattern: '{{PLUGIN_MULTI_APKS}}', override: c.pluginConfigAndroid.multiAPKs },
+        { pattern: '{{MIN_SDK_VERSION}}', override: c.pluginConfigAndroid.minSdkVersion },
+        { pattern: '{{TARGET_SDK_VERSION}}', override: c.pluginConfigAndroid.targetSdkVersion },
+        { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
+        { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: c.pluginConfigAndroid.compileOptions },
+        { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: c.pluginConfigAndroid.localProperties },
     ]);
 };
 
@@ -201,8 +201,8 @@ export const parseSettingsGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
 
     writeCleanFile(getBuildFilePath(c, platform, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
-        { pattern: '{{PLUGIN_INCLUDES}}', override: c.pluginConfig.pluginIncludes },
-        { pattern: '{{PLUGIN_PATHS}}', override: c.pluginConfig.pluginPaths },
+        { pattern: '{{PLUGIN_INCLUDES}}', override: c.pluginConfigAndroid.pluginIncludes },
+        { pattern: '{{PLUGIN_PATHS}}', override: c.pluginConfigAndroid.pluginPaths },
     ]);
 };
 
@@ -236,32 +236,32 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
 
     // APP/BUILD.GRADLE
     if (plugin.projectName) {
-        c.pluginConfig.pluginIncludes += `, ':${plugin.projectName}'`;
-        c.pluginConfig.pluginPaths += `project(':${
+        c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
+        c.pluginConfigAndroid.pluginPaths += `project(':${
             plugin.projectName
         }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
-                c.pluginConfig.appBuildGradleImplementations += `${plugin.implementation}\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
-                c.pluginConfig.appBuildGradleImplementations += `    implementation project(':${plugin.projectName}')\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${plugin.projectName}')\n`;
             }
         }
     } else {
-        c.pluginConfig.pluginIncludes += `, ':${key}'`;
-        c.pluginConfig.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        c.pluginConfigAndroid.pluginIncludes += `, ':${key}'`;
+        c.pluginConfigAndroid.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
-                c.pluginConfig.appBuildGradleImplementations += `${plugin.implementation}\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
-                c.pluginConfig.appBuildGradleImplementations += `    implementation project(':${key}')\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${key}')\n`;
             }
         }
     }
 
     if (plugin.implementations) {
         plugin.implementations.forEach((v) => {
-            c.pluginConfig.appBuildGradleImplementations += `    implementation ${v}\n`;
+            c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation ${v}\n`;
         });
     }
 
@@ -269,14 +269,14 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (appBuildGradle) {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
-                c.pluginConfig.applyPlugin += `apply ${v}\n`;
+                c.pluginConfigAndroid.applyPlugin += `apply ${v}\n`;
             });
         }
     }
 
     if (plugin.afterEvaluate) {
         plugin.afterEvaluate.forEach((v) => {
-            c.pluginConfig.appBuildGradleAfterEvaluate += ` ${v}\n`;
+            c.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${v}\n`;
         });
     }
     _fixAndroidLegacy(c, pathFixed);
@@ -287,7 +287,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (allProjRepos) {
         for (k in allProjRepos) {
             if (allProjRepos[k] === true) {
-                c.pluginConfig.buildGradleAllProjectsRepositories += `${k}`;
+                c.pluginConfigAndroid.buildGradleAllProjectsRepositories += `${k}\n`;
             }
         }
     }
@@ -296,7 +296,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (buildscriptRepos) {
         for (k in buildscriptRepos) {
             if (buildscriptRepos[k] === true) {
-                c.pluginConfig.buildGradleBuildScriptRepositories += `${k}`;
+                c.pluginConfigAndroid.buildGradleBuildScriptRepositories += `${k}\n`;
             }
         }
     }
@@ -305,7 +305,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (buildscriptDeps) {
         for (k in buildscriptDeps) {
             if (buildscriptDeps[k] === true) {
-                c.pluginConfig.buildGradleBuildScriptDependencies += `${k}`;
+                c.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}`;
             }
         }
     }
