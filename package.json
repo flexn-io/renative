@@ -94,7 +94,6 @@
         "renative": "file:./packages/renative"
     },
     "devDependencies": {
-        "@reactseals/renative-template-chat": "0.1.2",
         "concurrently": "4.1.1",
         "lerna": "latest",
         "renative-template-blank": "file:./packages/renative-template-blank",
