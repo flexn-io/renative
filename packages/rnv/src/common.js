@@ -134,6 +134,8 @@ SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
+const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto'];
+
 
 const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -383,7 +385,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         return;
     }
 
-    if (c.command === 'fix' || c.command === 'clean' || c.command === 'tool' || c.command === 'status') {
+    if (NO_OP_COMMANDS.includes(c.command)) {
         gatherInfo(c)
             .then(() => resolve(c))
             .catch(e => reject(c));
