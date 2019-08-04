@@ -24,6 +24,7 @@ import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanProjectModules } from '../systemTools/cleaner';
 import { logStatus } from '../systemTools/logger';
 import { fixPackageJson } from '../systemTools/doctor';
+import { encrypt, decrypt } from '../systemTools/crypto';
 import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
@@ -35,10 +36,15 @@ import {
 } from '../platformTools/android';
 import appRunner, { copyRuntimeAssets } from './app';
 
+// COMMANDS
 const FIX = 'fix';
 const CLEAN = 'clean';
 const STATUS = 'status';
+const CRYPTO = 'crypto';
+
+// SUB_COMMANDS
 const FIX_PACKAGE = 'fixPackage';
+const ENCRYPT = 'encrypt';
 
 const PIPES = {
     FIX_BEFORE: 'fix:before',
@@ -59,6 +65,8 @@ const run = (c) => {
         return cleanProjectModules(c);
     case STATUS:
         return _status(c);
+    case CRYPTO:
+        return _crypto(c);
     }
 
     switch (c.subCommand) {
@@ -75,6 +83,18 @@ const run = (c) => {
 
 const _fix = c => new Promise((resolve, reject) => {
     cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
+});
+
+const _crypto = c => new Promise((resolve, reject) => {
+    switch (c.subCommand) {
+    case ENCRYPT:
+        encrypt(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    reject(`Command ${c.command} ${c.subCommand} not supported`);
 });
 
 const _status = c => new Promise((resolve, reject) => {

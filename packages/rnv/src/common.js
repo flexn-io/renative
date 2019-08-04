@@ -487,8 +487,8 @@ const configureProject = c => new Promise((resolve, reject) => {
                 c.paths.appConfigsFolder = c.files.projectConfigLocal.appConfigsPath;
             }
         } else {
-            logWarning(
-                `Your local config file ${chalk.white(c.paths.projectConfigLocalPath)} is missing ${chalk.white('{ appConfigsPath: "" }')} field!`,
+            logInfo(
+                `Your local config file ${chalk.white(c.paths.projectConfigLocalPath)} is missing ${chalk.white('{ appConfigsPath: "" }')} field. ${chalk.white(c.paths.appConfigsFolder)} will be used instead`,
             );
         }
         // c.defaultAppConfigId = c.files.projectConfigLocal.defaultAppConfigId;
