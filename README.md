@@ -47,7 +47,7 @@ Contributing
   <a href="#platforms"><b>Platforms</b></a> &bull;
   <a href="#templates--starters"><b>Templates</b></a> &bull;
   <a href="#plugins"><b>Plugins</b></a> &bull;
-  <a href="#plugins">Integrations</a> &bull;
+  <a href="#integrations">Integrations</a> &bull;
   <a href="#configurations"><b>Configurations</b></a> &bull;
   <a href="#architecture">Architecture</a> &bull;
   <a href="#project-config">Project Config</a> &bull;
