@@ -29,7 +29,6 @@ import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
     runAndroid,
-    configureAndroidProperties,
     configureGradleProject,
     buildAndroid,
     runAndroidLog,
@@ -45,6 +44,7 @@ const CRYPTO = 'crypto';
 // SUB_COMMANDS
 const FIX_PACKAGE = 'fixPackage';
 const ENCRYPT = 'encrypt';
+const DECRYPT = 'decrypt';
 
 const PIPES = {
     FIX_BEFORE: 'fix:before',
@@ -89,6 +89,11 @@ const _crypto = c => new Promise((resolve, reject) => {
     switch (c.subCommand) {
     case ENCRYPT:
         encrypt(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case DECRYPT:
+        decrypt(c)
             .then(() => resolve())
             .catch(e => reject(e));
         return;

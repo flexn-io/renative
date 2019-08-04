@@ -16,11 +16,7 @@ const getEnvVar = (c) => {
 export const encrypt = c => new Promise((resolve, reject) => {
     logTask('encrypt');
 
-    // const source = c.paths.globalProjectFolder;
     const source = `./${c.files.projectPackage.name}`;
-
-    process.env.PORT;
-
     const destRaw = c.files.projectConfig?.crypto?.encrypt?.dest;
 
     if (destRaw) {
@@ -61,9 +57,10 @@ export const encrypt = c => new Promise((resolve, reject) => {
         logWarning(`You don\'t have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         resolve();
     }
-    // const dest = path.join(c.paths.projectRootFolder, 'travis/globalConfig.tgz');
 });
 
 export const decrypt = c => new Promise((resolve, reject) => {
+    logTask('encrypt');
 
+    resolve();
 });
