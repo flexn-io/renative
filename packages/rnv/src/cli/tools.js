@@ -24,7 +24,7 @@ import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanProjectModules } from '../systemTools/cleaner';
 import { logStatus } from '../systemTools/logger';
 import { fixPackageJson } from '../systemTools/doctor';
-import { encrypt, decrypt } from '../systemTools/crypto';
+import { encrypt, decrypt, importAppleCerts } from '../systemTools/crypto';
 import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
@@ -45,6 +45,7 @@ const CRYPTO = 'crypto';
 const FIX_PACKAGE = 'fixPackage';
 const ENCRYPT = 'encrypt';
 const DECRYPT = 'decrypt';
+const IMPORT_CERTS = 'importCerts';
 
 const PIPES = {
     FIX_BEFORE: 'fix:before',
@@ -94,6 +95,11 @@ const _crypto = c => new Promise((resolve, reject) => {
         return;
     case DECRYPT:
         decrypt(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case IMPORT_CERTS:
+        importAppleCerts(c)
             .then(() => resolve())
             .catch(e => reject(e));
         return;

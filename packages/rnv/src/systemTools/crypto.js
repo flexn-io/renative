@@ -1,8 +1,9 @@
 import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
+import fs from 'fs';
 import { logWarning, logInfo, logError, logTask, logDebug } from '../common';
-import { getRealPath, removeFilesSync } from './fileutils';
+import { getRealPath, removeFilesSync, getFileListSync, copyFileSync } from './fileutils';
 import { executeAsync } from './exec';
 
 const getEnvVar = (c) => {
@@ -104,4 +105,35 @@ export const decrypt = c => new Promise((resolve, reject) => {
         logWarning(`You don\'t have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         resolve();
     }
+});
+
+export const importAppleCerts = c => new Promise((resolve, reject) => {
+    logTask('importAppleCerts');
+    const ppFolder = path.join(c.paths.homeFolder, 'Library/MobileDevice/Provisioning Profiles');
+
+    if (!fs.existsSync(ppFolder)) {
+        logWarning(`folder ${ppFolder} does not exist!`);
+    }
+
+    const list = getFileListSync(c.paths.globalProjectFolder);
+
+    const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
+    const cerArr = list.filter(v => v.endsWith('.cer'));
+
+    mobileprovisionArr.forEach((v) => {
+        copyFileSync(v, );
+    });
+
+    cerPromises = [];
+    cerArr.map(v => cerPromises.push(executeAsync('security', [
+        'import',
+        v,
+        '-k',
+        'ios-build.keychain',
+        '-A'
+    ])));
+
+    Promise.all(cerPromises)
+        .then(() => resolve())
+        .catch(e => reject(e));
 });

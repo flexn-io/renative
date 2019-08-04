@@ -295,14 +295,32 @@ const updateConfigFile = async (update, globalConfigPath) => {
     fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
 
+const getFileListSync = (dir) => {
+    let results = [];
+    const list = fs.readdirSync(dir);
+    list.forEach((file) => {
+        file = `${dir}/${file}`;
+        const stat = fs.statSync(file);
+        if (stat && stat.isDirectory()) {
+            /* Recurse into a subdirectory */
+            results = results.concat(getFileListSync(file));
+        } else {
+            /* Is a file */
+            results.push(file);
+        }
+    });
+    return results;
+};
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFilesSync, removeDirs,
     writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
-    updateConfigFile, removeDirsSync
+    updateConfigFile, removeDirsSync, getFileListSync
 };
 
 export default {
+    getFileListSync,
     removeDirs,
     copyFileSync,
     copyFolderRecursiveSync,
