@@ -7,7 +7,7 @@ import { executeAsync } from './exec';
 
 const getEnvVar = (c) => {
     const p1 = c.paths.globalConfigFolder.split('/').pop().replace('.', '');
-    const p2 = c.files.projectPackage.name.replace('@', '').replace('/', '_');
+    const p2 = c.files.projectPackage.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
     logDebug('encrypt looking for env var:', envVar);
     return envVar;
