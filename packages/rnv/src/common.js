@@ -5,7 +5,8 @@ import path from 'path';
 import detectPort from 'detect-port';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
+    getRealPath
 } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from './cli/app';
@@ -118,9 +119,6 @@ const SUPPORTED_PLATFORMS_WIN = [
 
 const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
 
-let _currentJob;
-let _currentProcess;
-
 const highlight = chalk.green;
 
 const base = path.resolve('.');
@@ -221,34 +219,20 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     }
 });
 
-const _getPath = (c, p, key = 'undefined', original) => {
-    if (!p) {
-        logInfo(`Path ${chalk.white(key)} is not defined. using default: ${chalk.white(original)}`);
-        return original;
-    }
-    if (p.startsWith('./')) {
-        return path.join(c.paths.projectRootFolder, p);
-    }
-    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
-        .replace(/~/g, c.paths.homeFolder)
-        .replace(/USER_HOME/g, c.paths.homeFolder)
-        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
-};
-
 const _generatePlatformTemplatePaths = (c) => {
     const pt = c.files.projectConfig.platformTemplatesFolders || {};
     const originalPath = c.files.projectConfig.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {
-            result[v] = _getPath(
+            result[v] = getRealPath(
                 c,
                 originalPath,
                 'platformTemplatesFolder',
                 originalPath,
             );
         } else {
-            result[v] = _getPath(
+            result[v] = getRealPath(
                 c,
                 pt[v],
                 'platformTemplatesFolder',
@@ -260,8 +244,6 @@ const _generatePlatformTemplatePaths = (c) => {
 };
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
-    _currentJob = cmd;
-    _currentProcess = process;
     const c = { cli: {}, paths: {}, files: {} };
 
     c.program = program;
@@ -280,7 +262,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     c.paths.rnvProjectTemplateFolder = path.join(c.paths.rnvRootFolder, 'projectTemplate');
     c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
 
-    configureLogger(c, _currentProcess, _currentJob, subCmd, program.info === true);
+    configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
     logInitialize();
 
     resolve(c);
@@ -345,27 +327,27 @@ const startBuilder = c => new Promise((resolve, reject) => {
             logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
         }
         c.isWrapper = c.files.projectConfig.isWrapper;
-        c.paths.globalConfigFolder = _getPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
+        c.paths.globalConfigFolder = getRealPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
-        c.paths.appConfigsFolder = _getPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
+        c.paths.appConfigsFolder = getRealPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
         c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
-        c.paths.platformAssetsFolder = _getPath(
+        c.paths.platformAssetsFolder = getRealPath(
             c,
             c.files.projectConfig.platformAssetsFolder,
             'platformAssetsFolder',
             c.paths.platformAssetsFolder,
         );
-        c.paths.platformBuildsFolder = _getPath(
+        c.paths.platformBuildsFolder = getRealPath(
             c,
             c.files.projectConfig.platformBuildsFolder,
             'platformBuildsFolder',
             c.paths.platformBuildsFolder,
         );
-        c.paths.projectPluginsFolder = _getPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.projectPluginsFolder);
+        c.paths.projectPluginsFolder = getRealPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.projectPluginsFolder);
         c.paths.projectNodeModulesFolder = path.join(c.paths.projectRootFolder, 'node_modules');
         c.paths.rnvNodeModulesFolder = path.join(c.paths.rnvRootFolder, 'node_modules');
         c.paths.runtimeConfigPath = path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME);
-        c.paths.projectConfigFolder = _getPath(
+        c.paths.projectConfigFolder = getRealPath(
             c,
             c.files.projectConfig.projectConfigFolder,
             'projectConfigFolder',
@@ -376,7 +358,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         c.paths.fontsConfigFolder = path.join(c.paths.projectConfigFolder, 'fonts');
     }
 
-    if (_currentJob === 'target' || _currentJob === 'log') {
+    if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
             .catch(e => reject(e));
@@ -391,7 +373,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         );
     }
 
-    if (_currentJob === 'platform') {
+    if (c.command === 'platform') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
             .catch(e => reject(e));
@@ -458,7 +440,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     checkAndCreateGitignore(c);
 
     // Check rn-cli-config
-    logTask('configureProject:check rn-cli');
+    logTask('configureProject:check rn-cli', chalk.grey);
     if (!fs.existsSync(c.paths.rnCliConfigPath)) {
         logWarning(
             `Looks like your rn-cli config file ${chalk.white(c.paths.rnCliConfigPath)} is missing! Let's create one for you.`,
@@ -467,7 +449,7 @@ const configureProject = c => new Promise((resolve, reject) => {
     }
 
     // Check babel-config
-    logTask('configureProject:check babel config');
+    logTask('configureProject:check babel config', chalk.grey);
     if (!fs.existsSync(c.paths.babelConfigPath)) {
         logWarning(
             `Looks like your babel config file ${chalk.white(c.paths.babelConfigPath)} is missing! Let's create one for you.`,
@@ -485,7 +467,7 @@ const configureProject = c => new Promise((resolve, reject) => {
 
 
     // Check rnv-config.local
-    logTask('configureProject:check rnv-config.local');
+    logTask('configureProject:check rnv-config.local', chalk.grey);
     if (fs.existsSync(c.paths.projectConfigLocalPath)) {
         logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will use it as preference for appConfig path!`);
         c.files.projectConfigLocal = JSON.parse(fs.readFileSync(c.paths.projectConfigLocalPath).toString());
@@ -689,9 +671,9 @@ const configureEntryPoints = (c) => {
 
 const configurePlugins = c => new Promise((resolve, reject) => {
     // Check plugins
-    logTask('configureProject:check plugins');
+    logTask('configureProject:check plugins', chalk.grey);
     if (fs.existsSync(c.paths.pluginConfigPath)) {
-        c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath);
+        c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath, c);
     } else {
         logWarning(
             `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,
@@ -768,7 +750,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
     }
 
     // Check permissions
-    logTask('configureProject:check permissions');
+    logTask('configureProject:check permissions', chalk.grey);
     if (fs.existsSync(c.paths.permissionsConfigPath)) {
         c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
     } else {
@@ -936,6 +918,8 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     }
 });
 
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
+
 const _configureConfig = c => new Promise((resolve, reject) => {
     logTask(`_configureConfig:${c.appId}`);
     c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
@@ -948,7 +932,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
             if (fs.existsSync(parentAppConfigFolder)) {
                 const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
-                const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile);
+                const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile, { arrayMerge: _arrayMergeOverride });
                 c.files.appConfigFile = mergedAppConfigFile;
                 setAppConfig(c, parentAppConfigFolder);
             }
@@ -965,14 +949,32 @@ const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplate
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
+const _getValueOrMergedObject = (o1, o2, o3) => {
+    if (o1) {
+        if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
+        const val = Object.assign(o3 || {}, o2 || {}, o1);
+        return val;
+    }
+    if (o2) {
+        if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
+        return Object.assign(o3 || {}, o2);
+    }
+    return o3;
+};
+
 const getConfigProp = (c, platform, key, defaultVal) => {
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
     let scheme;
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
-    const result = scheme[key] || (c.files.appConfigFile.platforms[platform][key] || c.files.appConfigFile.common[key]);
-    logTask(`getConfigProp:${platform}:${key}:${result}`);
+    const resultScheme = scheme[key];
+    const resultPlatforms = c.files.appConfigFile.platforms[platform][key];
+    const resultCommon = c.files.appConfigFile.common[key];
+
+    const result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+
+    logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
     if (result === null || result === undefined) return defaultVal;
     return result;
 };
@@ -1011,7 +1013,7 @@ const getAppVersionCode = (c, platform) => {
 };
 
 const logErrorPlatform = (platform, resolve) => {
-    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(_currentJob)}`);
+    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
     resolve && resolve();
 };
 
@@ -1029,9 +1031,16 @@ const isPlatformActive = (c, platform, resolve) => {
     return true;
 };
 
+const PLATFORM_RUNS = {};
+
 const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_configureIfRequired:${platform}`);
 
+    if (PLATFORM_RUNS[platform]) {
+        resolve();
+        return;
+    }
+    PLATFORM_RUNS[platform] = true;
     // if (!fs.existsSync(getAppFolder(c, platform))) {
     //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
 
@@ -1257,13 +1266,14 @@ const resolveNodeModulePath = (c, filePath) => {
 };
 
 const getBuildFilePath = (c, platform, filePath) => {
+    // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
+    // P2 => projectConfigs + @buildSchemes
     const sp2 = path.join(getBuildsFolder(c, platform, c.paths.projectConfigFolder), filePath);
     if (fs.existsSync(sp2)) sp = sp2;
-
+    // P3 => appConfigs + @buildSchemes
     const sp3 = path.join(getBuildsFolder(c, platform), filePath);
     if (fs.existsSync(sp3)) sp = sp3;
-
     return sp;
 };
 

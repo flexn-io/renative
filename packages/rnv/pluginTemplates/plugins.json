@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.23.42-alpha6",
+            "version": "0.23.42",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -802,7 +802,7 @@
                 "appDelegateImports": [
                     "Crashlytics"
                 ],
-                "version": "3.10.5"
+                "version": "3.13.4"
             },
             "android": {
                 "skipImplementation": true,
@@ -826,7 +826,7 @@
                 "appDelegateImports": [
                     "Fabric"
                 ],
-                "version": "1.7.13",
+                "version": "1.10.2",
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
@@ -907,8 +907,14 @@
             "no-npm": true,
             "ios": {
                 "podNames": [
-                    "Firebase/Core",
-                    "Firebase/Messaging"
+                    "Firebase/Core', '~> 6.3.0",
+                    "Firebase/Analytics', '~> 6.3.0",
+                    "Firebase/Auth', '~> 6.3.0",
+                    "Firebase/Database', '~> 6.3.0",
+                    "Firebase/DynamicLinks', '~> 6.3.0",
+                    "Firebase/Messaging', '~> 6.3.0",
+                    "Firebase/RemoteConfig', '~> 6.3.0",
+                    "Firebase/Storage', '~> 6.3.0"
                 ],
                 "appDelegateImports": [
                     "Firebase"
@@ -916,7 +922,20 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FirebaseApp.configure()"
+                            "FirebaseApp.configure()",
+                            "if #available(iOS 10.0, *) {",
+                            "  // For iOS 10 display notification (sent via APNS)",
+                            "  UNUserNotificationCenter.current().delegate = self",
+                            "  let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]",
+                            "  UNUserNotificationCenter.current().requestAuthorization(",
+                            "    options: authOptions,",
+                            "    completionHandler: {_, _ in })",
+                            "} else {",
+                            "  let settings: UIUserNotificationSettings =",
+                            "  UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)",
+                            "  application.registerUserNotificationSettings(settings)",
+                            "}",
+                            "application.registerForRemoteNotifications()"
                         ]
                     }
                 }
@@ -985,17 +1004,38 @@
             }
         },
         "react-native-firebase": {
-            "version": "5.2.0",
+            "version": "5.5.5",
+            "ios": {
+                "podName": "RNFirebase",
+                "path": "node_modules/react-native-firebase/ios",
+                "xcodeproj": {
+                    "resourceFiles": [
+                        "RNVApp/GoogleService-Info.plist"
+                    ]
+                },
+                "Podfile": {
+                    "injectLines": [
+                        "post_install do |installer|",
+                        "  rnfirebase = installer.pods_project.targets.find { |target| target.name == 'RNFirebase' }",
+                        "  rnfirebase.build_configurations.each do |config|",
+                        "    config.build_settings['HEADER_SEARCH_PATHS'] = '$(inherited) ${PODS_ROOT}/Headers/Public/**'",
+                        "  end",
+                        "end"
+                    ]
+                }
+            },
             "android": {
-                "packages": [
-                    "io.invertase.firebase.RNFirebasePackage",
-                    "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
-                    "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
-                ],
                 "implementations": [
                     "'com.google.firebase:firebase-core:16.0.4'",
-                    "'com.google.firebase:firebase-messaging:17.3.4'"
+                    "'com.google.firebase:firebase-messaging:18.0.0'"
                 ],
+                "MainApplication": {
+                    "packages": [
+                        "io.invertase.firebase.RNFirebasePackage",
+                        "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
+                        "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
+                    ]
+                },
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
@@ -1007,10 +1047,92 @@
                     "apply": [
                         "plugin: 'com.google.gms.google-services'"
                     ]
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "service",
+                                    "android:name": "io.invertase.firebase.messaging.RNFirebaseMessagingService",
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "com.google.firebase.MESSAGING_EVENT"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "service",
+                                    "android:name": "io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService"
+                                },
+                                {
+                                    "tag": "receiver",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseBackgroundNotificationActionReceiver",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "io.invertase.firebase.notifications.BackgroundAction"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "service",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseBackgroundNotificationActionsService"
+                                },
+                                {
+                                    "tag": "receiver",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseNotificationReceiver"
+                                },
+                                {
+                                    "tag": "receiver",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseNotificationsRebootReceiver",
+                                    "android:exported": true,
+                                    "android:enabled": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.BOOT_COMPLETED"
+                                                },
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.QUICKBOOT_POWERON"
+                                                },
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "com.htc.intent.action.QUICKBOOT_POWERON"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.DEFAULT"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             },
             "androidtv": {
-                "packages": [
+                "imports": [
                     "io.invertase.firebase.RNFirebasePackage",
                     "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
                     "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"

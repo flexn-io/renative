@@ -112,6 +112,7 @@ export const logSummary = () => {
     if (_c) {
         if (_c.files.projectPackage) {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
+            str += printIntoBox(`Project Version: ${_highlightColor(_c.files.projectPackage.version)}`, 1);
         }
         if (_c.files.appConfigFile) {
             str += printIntoBox(`App Config: ${_highlightColor(_c.files.appConfigFile.id)}`, 1);
@@ -160,8 +161,9 @@ export const setCurrentJob = (job) => {
     _currentCommand = job;
 };
 
-export const logTask = (task) => {
-    console.log(chalk.green(`${RNV} - ${task} - Starting!`));
+export const logTask = (task, customChalk) => {
+    const ch = customChalk || chalk.green;
+    console.log(ch(`${RNV} - ${task} - Starting!`));
 };
 
 export const logWarning = (msg) => {

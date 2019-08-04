@@ -20,7 +20,6 @@ import {
     listAppleDevices,
     launchAppleSimulator,
     runAppleLog,
-    prepareXcodeProject
 } from './apple';
 import { configureElectronProject, runElectron, buildElectron, runElectronDevServer } from './electron';
 import { launchKaiOSSimulator, configureKaiOSProject, runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -60,7 +59,6 @@ export default {
     listAppleDevices,
     launchAppleSimulator,
     runAppleLog,
-    prepareXcodeProject,
     // ELECTRON
     configureElectronProject,
     runElectron,

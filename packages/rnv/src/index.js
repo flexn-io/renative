@@ -15,6 +15,8 @@ import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
 import Doctor from './systemTools/doctor';
 import PlatformTools from './platformTools';
+import PluginTools from './pluginTools';
+import SetupTools from './setupTools';
 
 const commands = {
     start: Runner,
@@ -109,7 +111,7 @@ ${chalk.bold.white('OPTIONS:')}
 
 export {
     Constants, Runner, App, Platform, Target, Common, Exec, FileUtils,
-    PlatformTools, Doctor,
+    PlatformTools, Doctor, PluginTools, SetupTools,
     run
 };
 
