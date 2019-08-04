@@ -87,9 +87,23 @@ export const logAndSave = (msg, skipLog) => {
     if (!skipLog) console.log(`${msg}`);
 };
 
+const PRIVATE_PARAMS = ['-k', '--key'];
+
 const _getCurrentCommand = () => {
     const argArr = _c.process.argv.slice(2);
-    return `$ rnv ${argArr.join(' ')}`;
+    let hideNext = false;
+    const output = argArr.map((v) => {
+        if (hideNext) {
+            hideNext = false;
+            return '********';
+        }
+        if (PRIVATE_PARAMS.includes(v)) {
+            hideNext = true;
+        }
+
+        return v;
+    }).join(' ');
+    return `$ rnv ${output}`;
 };
 
 export const logSummary = () => {
