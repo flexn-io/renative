@@ -55,7 +55,7 @@ class TabNavigationView extends React.PureComponent<Props, State> {
 
   _renderTabBar = () => {
       const {
-          tabBarComponent: TabBarComponent = this.props.tabBarOptions.position === 'top' ? HorizontalMenu : VerticalMenu,
+          tabBarComponent: TabBarComponent = this.props.tabBarOptions.position === 'top' || this.props.tabBarOptions.position === 'bottom' ? HorizontalMenu : VerticalMenu,
           tabBarOptions,
           navigation,
           screenProps,
@@ -110,12 +110,13 @@ class TabNavigationView extends React.PureComponent<Props, State> {
       return (
           <View
               style={
-                  tabBarOptions.position === 'top'
+                  tabBarOptions.position === 'top' ||
+                  tabBarOptions.position === 'bottom'
                       ? styles.topContainer
                       : styles.sideContainer
               }
           >
-              {this._renderTabBar()}
+              {tabBarOptions.position !== 'bottom' && this._renderTabBar()}
               <ScreenContainer style={styles.pages}>
                   {routes.map((route, index) => {
                       if (lazy && !loaded.includes(index)) {
@@ -136,6 +137,7 @@ class TabNavigationView extends React.PureComponent<Props, State> {
                       );
                   })}
               </ScreenContainer>
+              {tabBarOptions.position === 'bottom' && this._renderTabBar()}
           </View>
       );
   }

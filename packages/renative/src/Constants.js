@@ -23,6 +23,7 @@ const ROKU = 'roku';
 const TIVO = 'tivo';
 const TIZEN = 'tizen';
 const TIZEN_WATCH = 'tizenwatch';
+const TIZEN_MOBILE = 'tizenmobile';
 const TVOS = 'tvos';
 const UBUNTU = 'ubuntu';
 const UNITY = 'unity';
@@ -74,6 +75,7 @@ export {
     TIVO,
     TIZEN,
     TIZEN_WATCH,
+    TIZEN_MOBILE,
     TVOS,
     UBUNTU,
     UNITY,

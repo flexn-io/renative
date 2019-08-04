@@ -6,7 +6,7 @@
   <br />
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
   <p align='center'>
-  <img src="https://img.shields.io/badge/Platforms_Supported-14-blue.svg" />
+  <img src="https://img.shields.io/badge/Platforms_Supported-15-blue.svg" />
   <img src="https://img.shields.io/badge/React_Native-0.59.5-blue.svg" />
   <img src="https://img.shields.io/badge/React-16.8.6-blue.svg" />
   <img src="https://img.shields.io/badge/Plugins-45-red.svg" />
@@ -28,17 +28,36 @@
 
 ---
 
+<!--
+Quickstart
+Platforms
+Plugins
+Templates
+Configuration
+Integrations
+Build Hooks
+CLI
+Runtime
+Contributing
+-->
+
 <p align="center">
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
-  <a href="#templates--starters">Templates</a> &bull;
-  <a href="#plugins">Plugins</a> &bull;
-  <a href="#advanced-configuration">Advanced Configuration</a> &bull;
-  <a href="#build-hooks">Build Hooks</a> &bull;
-  <a href="#runtime">Runtime</a> &bull;
+  <a href="#platforms"><b>Platforms</b></a> &bull;
+  <a href="#templates--starters"><b>Templates</b></a> &bull;
+  <a href="#plugins"><b>Plugins</b></a> &bull;
+  <a href="#integrations">Integrations</a> &bull;
+  <a href="#configurations"><b>Configurations</b></a> &bull;
   <a href="#architecture">Architecture</a> &bull;
+  <a href="#project-config">Project Config</a> &bull;
+  <a href="#app-configs">App Configs</a> &bull;
+  <a href="#build-hooks">Build Hooks</a> &bull;
+  <a href="#cli"><b>CLI</b></a> &bull;
   <a href="#renative-cli">ReNative CLI</a> &bull;
   <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
+  <a href="#runtime"><b>Runtime</b></a> &bull;
+  <a href="#contributing"><b>Contributing</b></a> &bull;
   <a href="#discussions">Discussions</a> &bull;
   <a href="#contributors">Contributors</a> &bull;
   <a href="#backers">Backers</a> &bull;
@@ -149,7 +168,10 @@
 
   <tr>
     <th>
-    ...</th><th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=20 height=20 />
+    </br>
+    <a href="#tizen-mobile">Tizen Mobile</a>
+    </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizenwatch.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-watch">Tizen Watch</a>
@@ -163,7 +185,7 @@
   </tr>
   <tr>
     <th>
-    ...
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/rnv_tizenmobile.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
     </th><th>
@@ -315,6 +337,16 @@ All app code is located in `./src` directory
 
 ## Features
 
+Build app blazingly fast with built-in features:
+
+* Standard react-native community plugins
+* React-Navigation Support
+* Embedded 0 configuration custom font support
+* SVG Icon Support
+* Hot-reload development / debugging
+* Deployment Ready project
+* Generated projects can be opened and profiled in standard IDEs like Xcode, Android Studio, Tizen IDE etc  
+
 #### Development platforms
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
@@ -453,65 +485,174 @@ Plugin Spec:
 ```
 
 
+# Configurations
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_configuration.png?raw=true" width=50 height=50 />
 
-## Advanced Configuration
+## Project Config
 
-#### Get Status
+`./projectConfig` folder is used to configure your project properties which can be used in appConfigs / buildFlavours
 
-Get basic info about your current project
 
-```bash
-rnv status
+    .
+    ├── projectConfig               # Project configuration files/assets
+        ├── fonts                   # Folder for all custom fonts
+        ├── fonts.json              # Fonts configuration
+        ├── permissions.json        # Permissions configuration
+        └── plugins.json            # React Native Plugins configuration
+
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_appconfigs.png?raw=true" width=50 height=50 />
+
+## App Configs
+
+`./appConfigs` offers powerful configuration system which allows you to configure various flavours in your projects.
+
+`./appConfigs/APP_ID/config.json` spec:
+
+```json
+{
+  "id": "APP_ID",
+  "common": {
+    "title": "",
+    "description": "",
+    "author": {
+      "name": ""
+    },
+    "includedPlugins": ["*"],
+    "includedFonts": ["*"]
+  },
+  "platforms": {
+
+  }
+}
 ```
 
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/info.png?raw=true" />
-    </th>
-  </tr>
-</table>
 
-#### Clean Project
-
-This will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
+Re-Generate platform projects (for helloWorld app config platforms):
 
 ```bash
-rnv clean
+rnv platform configure -c helloWorld
 ```
 
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/clean.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Reset options
-
-ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
-
-Reset Metro Bundler cache
+Configure your multi-platform app based on `./appConfigs/helloWorld` configuration:
 
 ```bash
-rnv start -r
+rnv app configure -c helloWorld -u
 ```
 
-Reset specific platform of platformBuild project (fully recreate project based on provided template)
+#### Android based config
 
-```bash
-rnv run -p <PLATFORM> -r
-rnv app configure -p <PLATFORM> -r
+Applies for `android`, `androidtv`, `androidwear`
+
+For appConfigs:
+
+```json
+{
+  "entryFile": "",
+  "universalApk": true,
+  "multipleAPKs": false,
+  "minSdkVersion": 21,
+  "backgroundColor": "",
+  "id": "",
+  "signingConfig": "",
+  "bundleAssets": false,
+  "permissions": [],
+  "bundleAssets": true,
+  "bundleIsDev": true,
+  "buildSchemes": {}
+}
 ```
 
-Reset all platforms of platformBuild project (fully recreate projects based on provided template)
+For plugins:
 
-```bash
-rnv app configure -r
+```json
+{
+    "package": "",
+    "path": "",
+    "AndroidManifest": {},
+    "BuildGradle": {},
+    "AppBuildGradle": {}
+}
+```
+
+#### Apple based config
+
+Applies for `ios`, `tvos`
+
+For appConfigs:
+
+```json
+{
+  "entryFile": "",
+  "backgroundColor": "",
+  "id": "",
+  "bundleAssets": false,
+  "permissions": [],
+  "bundleAssets": true,
+  "bundleIsDev": true,
+  "teamID": "",
+  "scheme": "",
+  "permissions": ["*"],
+  "orientationSupport": {
+    "phone": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ],
+    "tab": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ]
+  },
+  "provisioningStyle": "",
+  "systemCapabilities": {},
+  "entitlements": {},
+  "buildSchemes": {}
+}
+```
+
+For plugins:
+
+```json
+{
+    "podName": "",
+    "path": "",
+    "appDelegateApplicationMethods": {
+      "didFinishLaunchingWithOptions": [],
+      "open": [],
+      "supportedInterfaceOrientationsFor": [],
+      "didReceiveRemoteNotification": [],
+      "didFailToRegisterForRemoteNotificationsWithError": [],
+      "didReceive": [],
+      "didRegister": [],
+      "didRegisterForRemoteNotificationsWithDeviceToken": [],
+    }
+}
+```
+
+#### Web based config
+
+Applies for `web`
+
+```json
+{
+  "id": "",
+  "entryFile": "",
+  "title": "",
+  "webpackConfig": {
+    "devServerHost": "",
+    "customScripts": []
+  },
+  "buildSchemes": {}
+}
 ```
 
 #### Global Configurations
@@ -550,64 +691,7 @@ You can also edit your preferred emulator targets (allows you to run `rnv target
 }
 ```
 
-#### Project Configurations
 
-If you want to use different settings to those defined globally per project you can update `./rnv-config.json`
-
-```json
-{
-  "globalConfigFolder": "~/.rnv",
-  "appConfigsFolder": "./appConfigs",
-  "platformTemplatesFolder": "RNV_HOME/platformTemplates",
-  "entryFolder": "./",
-  "platformAssetsFolder": "/platformAssets",
-  "platformBuildsFolder": "PROJECT_HOME/platformBuilds",
-  "projectPlugins": "./projectConfig/plugins",
-  "projectConfigFolder": "./projectConfig",
-  "defaultPorts": {},
-  "defaultProjectConfigs": {
-    "template": "renative-template-hello-world",
-    "supportedPlatforms": [
-        "ios",
-        "android",
-        "androidtv",
-        "androidwear",
-        "web",
-        "tizen",
-        "tvos",
-        "webos",
-        "macos",
-        "windows",
-        "tizenwatch",
-        "kaios",
-        "firefoxos",
-        "firefoxtv"
-    ]
-  }
-}
-```
-
-You can use following keys in path:
-
-```bash
-RNV_HOME - Home location of ReNative CLI
-USER_HOME - Home location of user
-PROJECT_HOME - Home location of actual project
-```
-
-#### App Configurations
-
-Re-Generate platform projects (for helloWorld app config platforms):
-
-```bash
-rnv platform configure -c helloWorld
-```
-
-Configure your multi-platform app based on `./appConfigs/helloWorld` configuration:
-
-```bash
-rnv app configure -c helloWorld -u
-```
 
 #### App Signing
 
@@ -697,38 +781,6 @@ Contents of the file should follow this format:
 {
     "appConfigsPath": "/Users/<USER>/my-local-app-config-folder"
 }
-```
-
-#### Ejecting Platforms
-
-By default, ReNative controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
-If however you need to customise them you can eject them directly into your project.
-
-```bash
-rnv platform eject
-```
-
-your projects will be build using `./platformTemplates` from this point
-
-If you want to revert back to using ReNative templates simply run
-
-```bash
-rnv platform connect
-```
-
-your projects will be build using `./node_modules/renative/rnv-cli/platformTemplates` from this point
-
-#### Monochrome logs
-
-If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
-This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
-
-Examples:
-
-```bash
-rnv status --mono
-rnv start --mono
-...
 ```
 
 ---
@@ -974,6 +1026,19 @@ https://github.com/pavjacko/renative/blob/master/packages/renative-template-hell
 
 Will be overridden by:
 https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L59
+
+This allows you to configure and build large number of flavoured builds with almost no extra configuration
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_arch3.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+
+# Platforms
 
 ---
 
@@ -1620,6 +1685,78 @@ rnv run -p webos
 
 ---
 
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
+
+## Tizen Mobile
+
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/rnv_tizenmobile.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
+-   Latest Tizen project
+-   Support for Tizen 5.0, 4.0, 3.0
+
+#### Requirements
+
+-   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
+-   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
+-   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
+
+#### Project Configuration
+
+| Feature          | Version |
+| ---------------- | :-----: |
+| Tizen Studio     |  `2.5`  |
+| Tizen SDK        |  `5.0`  |
+| react-native-web | `0.9.9` |
+| Babel Core       | `7.1.2` |
+
+#### Emulator
+
+Make sure you have at least 1 TV VM setup
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/tizen_mobile1.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+```
+rnv target launch -p tizenmobile -t M-5.0-x86
+```
+
+#### Run
+
+```
+rnv run -p tizenmobile
+```
+
+#### Advanced
+
+Clean and Re-build platform project
+
+```
+rnv run -p tizenmobile -r
+```
+
+Launch with specific Tizen simulator:
+
+```
+rnv run -p tizenmobile -t M-5.0-x86
+```
+
+---
+
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_macos.png?raw=true" width=50 height=50 />
 
 ## macOS
@@ -1899,144 +2036,7 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 rnv run -p firefoxtv
 ```
 
----
-
-<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_appconfigs.png?raw=true" width=50 height=50 />
-
-## AppConfigs
-
-`./appConfigs` offers powerful configuration system which allows you to configure various flavours in your projects.
-
-`./appConfigs/APP_ID/config.json` spec:
-
-```json
-{
-  "id": "APP_ID",
-  "common": {
-    "title": "",
-    "description": "",
-    "author": {
-      "name": ""
-    },
-    "includedPlugins": ["*"],
-    "includedFonts": ["*"]
-  },
-  "platforms": {
-
-  }
-}
-
-```
-
-#### Android based config
-
-Applies for `android`, `androidtv`, `androidwear`
-
-For appConfigs:
-
-```json
-{
-  "entryFile": "",
-  "universalApk": true,
-  "multipleAPKs": false,
-  "minSdkVersion": 21,
-  "backgroundColor": "",
-  "id": "",
-  "signingConfig": "",
-  "bundleAssets": false,
-  "permissions": [],
-  "bundleAssets": true,
-  "bundleIsDev": true,
-  "buildSchemes": {}
-}
-```
-
-For plugins:
-
-```json
-{
-    "package": "",
-    "path": "",
-    "AndroidManifest": {},
-    "BuildGradle": {},
-    "AppBuildGradle": {}
-}
-```
-
-#### Apple based config
-
-Applies for `ios`, `tvos`
-
-For appConfigs:
-
-```json
-{
-  "entryFile": "",
-  "backgroundColor": "",
-  "id": "",
-  "bundleAssets": false,
-  "permissions": [],
-  "bundleAssets": true,
-  "bundleIsDev": true,
-  "teamID": "",
-  "scheme": "",
-  "permissions": ["*"],
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  },
-  "provisioningStyle": "",
-  "systemCapabilities": {},
-  "entitlements": {},
-  "buildSchemes": {}
-}
-```
-
-For plugins:
-
-```json
-{
-    "podName": "",
-    "path": "",
-    "appDelegateApplicationMethods": {
-      "didFinishLaunchingWithOptions": [],
-      "open": [],
-      "supportedInterfaceOrientationsFor": [],
-      "didReceiveRemoteNotification": [],
-      "didFailToRegisterForRemoteNotificationsWithError": [],
-      "didReceive": [],
-      "didRegister": [],
-      "didRegisterForRemoteNotificationsWithDeviceToken": [],
-    }
-}
-```
-
-#### Web based config
-
-Applies for `web`
-
-```json
-{
-  "id": "",
-  "entryFile": "",
-  "title": "",
-  "webpackConfig": {
-    "devServerHost": "",
-    "customScripts": []
-  },
-  "buildSchemes": {}
-}
-```
+# CLI
 
 ---
 
@@ -2058,6 +2058,95 @@ rnv new                             //Create new app
 rnv platform eject                  //Eject platformTemplates into project
 rnv platform connect                //Use ReNative predefined templates
 ```
+
+#### Get Status
+
+Get basic info about your current project
+
+```bash
+rnv status
+```
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/info.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+#### Clean Project
+
+This will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
+
+```bash
+rnv clean
+```
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/clean.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+#### Reset options
+
+ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
+
+Reset Metro Bundler cache
+
+```bash
+rnv start -r
+```
+
+Reset specific platform of platformBuild project (fully recreate project based on provided template)
+
+```bash
+rnv run -p <PLATFORM> -r
+rnv app configure -p <PLATFORM> -r
+```
+
+Reset all platforms of platformBuild project (fully recreate projects based on provided template)
+
+```bash
+rnv app configure -r
+```
+
+#### Monochrome logs
+
+If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
+This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
+
+Examples:
+
+```bash
+rnv status --mono
+rnv start --mono
+...
+```
+
+#### Ejecting Platforms
+
+By default, ReNative controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
+If however you need to customise them you can eject them directly into your project.
+
+```bash
+rnv platform eject
+```
+
+your projects will be build using `./platformTemplates` from this point
+
+If you want to revert back to using ReNative templates simply run
+
+```bash
+rnv platform connect
+```
+
+your projects will be build using `./node_modules/renative/rnv-cli/platformTemplates` from this point
+
+
 
 ---
 
@@ -2085,6 +2174,8 @@ It's also best way to contribute back to RNV! :)
 rnv template apply
 => pick renative-template-hello-world
 ```
+
+# Contributing
 
 ---
 
