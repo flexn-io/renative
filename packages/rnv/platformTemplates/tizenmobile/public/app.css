@@ -1,0 +1,65 @@
+#root {
+  display: -webkit-flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  min-height: 100%;
+}
+
+body::-webkit-scrollbar, div::-webkit-scrollbar {
+     display: none;
+}
+
+/* native css scrolling smooth */
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+}
+
+body{
+    height: 100%;
+}
+
+/* remove outline */
+*:focus {
+   outline: none;
+}
+
+
+/* Media Queries
+–––––––––––––––––––––––––––––––––––––––––––––––––– */
+/*
+Note: The best way to structure the use of media queries is to create the queries
+near the relevant code. For example, if you wanted to change the styles for buttons
+on small devices, paste the mobile query code up in the buttons section and style it
+there.
+*/
+
+/* [Layout rendering issues, current devices in the scope fully support media queries] */
+
+/* Modal */
+.overlay {
+  background: rgba(250, 250, 250, 0.75);
+}
+
+.modal {
+    background-color: rgba(34, 34, 34, 0.6);
+    font-family: 'sans-serif';
+    color: white;
+}
+
+
+/* Larger than Desktop HD and HD ready */
+@media (min-width: 1200px) {
+    .root {
+        height: 720px;
+        width: 1280px;
+    }
+}
+
+/* Full HD and Larger */
+@media (min-width: 1900px) {
+    .root {
+        height: 1080px;
+        width: 1920px;
+    }
+}

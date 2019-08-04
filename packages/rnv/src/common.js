@@ -30,6 +30,7 @@ import {
     MACOS,
     WINDOWS,
     TIZEN_WATCH,
+    TIZEN_MOBILE,
     KAIOS,
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_AVDMANAGER,
@@ -73,6 +74,7 @@ const SUPPORTED_PLATFORMS = [
     ANDROID_WEAR,
     WEB,
     TIZEN,
+    TIZEN_MOBILE,
     TVOS,
     WEBOS,
     MACOS,
@@ -88,6 +90,7 @@ const SUPPORTED_PLATFORMS_MAC = [
     ANDROID_TV,
     ANDROID_WEAR,
     WEB,
+    TIZEN_MOBILE,
     TIZEN,
     TVOS,
     WEBOS,
@@ -105,6 +108,7 @@ const SUPPORTED_PLATFORMS_WIN = [
     WEB,
     TIZEN,
     TVOS,
+    TIZEN_MOBILE,
     WEBOS,
     WINDOWS,
     TIZEN_WATCH,
@@ -126,6 +130,7 @@ SDK_PLATFORMS[ANDROID_TV] = ANDROID_SDK;
 SDK_PLATFORMS[ANDROID_WEAR] = ANDROID_SDK;
 SDK_PLATFORMS[TIZEN] = TIZEN_SDK;
 SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
+SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
@@ -946,12 +951,12 @@ const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
 const _getValueOrMergedObject = (o1, o2, o3) => {
     if (o1) {
-        if (typeof o1 !== 'object') return o1;
+        if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
         const val = Object.assign(o3 || {}, o2 || {}, o1);
         return val;
     }
     if (o2) {
-        if (typeof o2 !== 'object') return o2;
+        if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
         return Object.assign(o3 || {}, o2);
     }
     return o3;
@@ -1402,6 +1407,7 @@ export default {
     ANDROID_WEAR,
     WEB,
     TIZEN,
+    TIZEN_MOBILE,
     TVOS,
     WEBOS,
     MACOS,

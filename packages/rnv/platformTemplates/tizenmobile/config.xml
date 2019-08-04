@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:tizen="http://tizen.org/ns/widgets" id="http://pavjacko/ReactNativeVanilla" version="0.8.5" viewmodes="fullscreen">
+    <tizen:application id="{{ID}}" package="{{PACKAGE}}" required_version="2.3"/>
+    <content src="public/index.html"/>
+<feature name="http://tizen.org/feature/screen.size.all"/>/>
+    <feature name="http://tizen.org/feature/network.internet"/>
+    <feature name="http://tizen.org/api/tizen" required="true"/>
+    <access origin="*" subdomains="true"></access>
+    <icon src="icon.png"/>
+    <name>{{APP_NAME}}</name>
+    <tizen:profile name="mobile"/>
+    <tizen:privilege name="http://tizen.org/privilege/internet"/>
+    <tizen:privilege name="http://tizen.org/privilege/tizen"/>
+    <tizen:setting screen-orientation="portrait" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"/>
+</widget>

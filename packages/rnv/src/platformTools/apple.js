@@ -248,6 +248,9 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
 
     logDebug('running', p);
     if (p) {
+        const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
+        if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
+
         if (bundleAssets) {
             packageBundleForXcode(c, platform, bundleIsDev)
                 .then(v => executeAsync('react-native', p))
