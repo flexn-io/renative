@@ -169,6 +169,14 @@ const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.files.appConfigFile.platforms[platform];
+
+    if (!platformConfig) {
+        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+    }
+    if (!platformConfig.appName) {
+        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+    }
+
     const tDir = getAppFolder(c, platform);
 
     const tOut = path.join(tDir, 'output');
@@ -195,7 +203,7 @@ const runTizen = async (c, platform, target) => {
                 await waitForEmulatorToBeReady(c, defaultTarget);
                 return continueLaunching();
             } catch (e) {
-                logDebug(e);
+                logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
                     await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`, logTask);
                     await launchTizenSimulator(c, defaultTarget);
