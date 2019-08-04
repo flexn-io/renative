@@ -2,7 +2,7 @@ import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
 import fs from 'fs';
-import { logWarning, logInfo, logError, logTask, logDebug } from '../common';
+import { logWarning, logInfo, logError, logTask, logDebug, logSuccess } from '../common';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync } from './fileutils';
 import { executeAsync } from './exec';
 
