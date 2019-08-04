@@ -3,7 +3,7 @@ import tar from 'tar';
 import chalk from 'chalk';
 import fs from 'fs';
 import { logWarning, logInfo, logError, logTask, logDebug } from '../common';
-import { getRealPath, removeFilesSync, getFileListSync, copyFileSync } from './fileutils';
+import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync } from './fileutils';
 import { executeAsync } from './exec';
 
 const getEnvVar = (c) => {
@@ -95,6 +95,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
                     }
                 ).then(() => {
                     removeFilesSync([destTemp]);
+                    logSuccess(`Files succesfully extracted into ${c.paths.globalConfigFolder}`);
                     resolve();
                 })
                     .catch(e => reject(e));
@@ -107,33 +108,48 @@ export const decrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const importAppleCerts = c => new Promise((resolve, reject) => {
-    logTask('importAppleCerts');
+export const setupCI = (c) => {
+    logTask('setupCI');
+    if (c.platform === 'ios') return _setupAppleCI(c);
+
+    logError(`setupCI: platform ${c.platform} not supported`);
+    return Promise.resolve();
+};
+
+const _setupAppleCI = c => new Promise((resolve, reject) => {
+    logTask('_setupAppleCI');
     const ppFolder = path.join(c.paths.homeFolder, 'Library/MobileDevice/Provisioning Profiles');
+    const kChain = 'ios-build.keychain';
+    const kChainPath = path.join(c.paths.homeFolder, 'Library/Keychains', kChain);
+    const tempPass = '***********';
 
     if (!fs.existsSync(ppFolder)) {
         logWarning(`folder ${ppFolder} does not exist!`);
+        mkdirSync(ppFolder);
     }
 
     const list = getFileListSync(c.paths.globalProjectFolder);
-
+    const cerPromises = [];
     const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
     const cerArr = list.filter(v => v.endsWith('.cer'));
 
     mobileprovisionArr.forEach((v) => {
-        copyFileSync(v, );
+        copyFileSync(v, ppFolder);
     });
 
-    cerPromises = [];
-    cerArr.map(v => cerPromises.push(executeAsync('security', [
-        'import',
-        v,
-        '-k',
-        'ios-build.keychain',
-        '-A'
-    ])));
+    copyFileSync(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/AppleWWDRCA.cer', ppFolder);
 
-    Promise.all(cerPromises)
+    executeAsync('security', ['create-keychain', '-p', tempPass, kChain])
+        .then(() => executeAsync('security', ['default-keychain', '-s', kChain]))
+        .then(() => executeAsync('security', ['unlock-keychain', '-p', tempPass, kChain]))
+        .then(() => executeAsync('security', ['set-keychain-settings', '-t', '3600', '-l', kChainPath]))
+        .then(() => Promise.all(cerArr.map(v => executeAsync('security', [
+            'import',
+            v,
+            '-k',
+            tempPass,
+            '-A'
+        ]))))
         .then(() => resolve())
         .catch(e => reject(e));
 });

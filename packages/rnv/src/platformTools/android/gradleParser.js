@@ -330,7 +330,7 @@ const _fixAndroidLegacy = (c, modulePath) => {
 const _getPrivateConfig = (c, platform) => {
     let privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
     if (!fs.existsSync(privateConfigFolder)) {
-        privateConfigFolder = path.join(privateConfigFolder, 'appConfigs');
+        privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, 'appConfigs', c.files.appConfigFile.id);
     }
     const appConfigSPP = c.files.appConfigFile.platforms[platform] ? c.files.appConfigFile.platforms[platform].signingPropertiesPath : null;
     const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.globalConfigFolder) : null;
