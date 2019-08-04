@@ -6,7 +6,7 @@
   <br />
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
   <p align='center'>
-  <img src="https://img.shields.io/badge/Platforms_Supported-14-blue.svg" />
+  <img src="https://img.shields.io/badge/Platforms_Supported-15-blue.svg" />
   <img src="https://img.shields.io/badge/React_Native-0.59.5-blue.svg" />
   <img src="https://img.shields.io/badge/React-16.8.6-blue.svg" />
   <img src="https://img.shields.io/badge/Plugins-45-red.svg" />
@@ -168,7 +168,10 @@ Contributing
 
   <tr>
     <th>
-    ...</th><th>
+    <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=20 height=20 />
+    </br>
+    <a href="#tizen-mobile">Tizen Mobile</a>
+    </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizenwatch.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-watch">Tizen Watch</a>
@@ -182,7 +185,7 @@ Contributing
   </tr>
   <tr>
     <th>
-    ...
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/rnv_tizenmobile.gif?raw=true" />
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
     </th><th>
@@ -1678,6 +1681,78 @@ usually located in something like:
 
 ```
 rnv run -p webos
+```
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/master/docs/ic_tizen.png?raw=true" width=50 height=50 />
+
+## Tizen Mobile
+
+![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizenmobile.gif?raw=true" />
+    </th>
+  </tr>
+</table>
+
+-   Latest Tizen project
+-   Support for Tizen 5.0, 4.0, 3.0
+
+#### Requirements
+
+-   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
+-   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
+-   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
+
+#### Project Configuration
+
+| Feature          | Version |
+| ---------------- | :-----: |
+| Tizen Studio     |  `2.5`  |
+| Tizen SDK        |  `5.0`  |
+| react-native-web | `0.9.9` |
+| Babel Core       | `7.1.2` |
+
+#### Emulator
+
+Make sure you have at least 1 TV VM setup
+
+<table>
+  <tr>
+    <th>
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/tizen_mobile1.png?raw=true" />
+    </th>
+  </tr>
+</table>
+
+```
+rnv target launch -p tizenmobile -t M-5.0-x86
+```
+
+#### Run
+
+```
+rnv run -p tizenmobile
+```
+
+#### Advanced
+
+Clean and Re-build platform project
+
+```
+rnv run -p tizenmobile -r
+```
+
+Launch with specific Tizen simulator:
+
+```
+rnv run -p tizenmobile -t M-5.0-x86
 ```
 
 ---
