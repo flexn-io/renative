@@ -27,6 +27,7 @@ program
     .option('-l, --list', 'return List of items related to command')
     .option('-o, --only', 'run Only top command (Skip dependencies)')
     .option('-r, --reset', 'also perform Reset')
+    .option('-k, --key <value>', 'Pass the key/password')
     .option('-b, --blueprint', 'Blueprint for targets')
     .option('-H, --host <value>', 'custom Host ip')
     .option('-x, --exeMethod <value>', 'eXecutable method in buildHooks')

@@ -329,6 +329,9 @@ const startBuilder = c => new Promise((resolve, reject) => {
         c.isWrapper = c.files.projectConfig.isWrapper;
         c.paths.globalConfigFolder = getRealPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
+        if (c.files.projectPackage) {
+            c.paths.globalProjectFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name);
+        }
         c.paths.appConfigsFolder = getRealPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
         c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
         c.paths.platformAssetsFolder = getRealPath(
