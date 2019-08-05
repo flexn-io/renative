@@ -1273,7 +1273,7 @@
             }
         },
         "react-native-fast-image": {
-            "version": "6.0.3",
+            "version": "7.0.2",
             "ios": {
                 "podName": "react-native-fast-image"
             },
