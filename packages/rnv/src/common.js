@@ -3,6 +3,8 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
+import { exec } from 'child_process';
+
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
@@ -180,6 +182,11 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
         resolve();
     }
 });
+
+const openBrowser = (url) => {
+    const start = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
+    exec(`${start} ${url}`);
+};
 
 const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     logTask(`isBuildSchemeSupported:${c.platform}`);
@@ -1325,6 +1332,7 @@ export {
     finishQuestion,
     askQuestion,
     resolveNodeModulePath,
+    openBrowser,
     IOS,
     ANDROID,
     ANDROID_TV,
@@ -1401,6 +1409,7 @@ export default {
     finishQuestion,
     askQuestion,
     resolveNodeModulePath,
+    openBrowser,
     IOS,
     ANDROID,
     ANDROID_TV,

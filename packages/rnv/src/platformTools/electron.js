@@ -31,7 +31,8 @@ import {
     getConfigProp,
     checkPortInUse,
     logInfo,
-    resolveNodeModulePath
+    resolveNodeModulePath,
+    openBrowser
 } from '../common';
 import { MACOS } from '../constants';
 import { buildWeb, runWeb, runWebDevServer } from './web';
@@ -39,6 +40,8 @@ import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync
 } from '../systemTools/fileutils';
+
+const isRunningOnWindows = process.platform === 'win32';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureElectronProject:${platform}`);
@@ -155,46 +158,45 @@ const exportElectron = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const runElectron = (c, platform, port) => new Promise((resolve, reject) => {
+const runElectron = async (c, platform, port) => {
     logTask(`runElectron:${platform}`);
 
-    const elc = resolveNodeModulePath(c, 'electron/cli.js');
-    const appFolder = getAppFolder(c, platform);
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const { hosted } = c.program;
+    const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
 
     if (bundleAssets) {
-        buildElectron(c, platform, bundleIsDev)
-            .then(v => _runElectronSimulator(c, platform))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await buildElectron(c, platform, bundleIsDev);
+        await _runElectronSimulator(c, platform);
     } else {
-        checkPortInUse(c, platform, port)
-            .then((isPortActive) => {
-                if (!isPortActive) {
-                    logInfo(
-                        `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
-                            port
-                        )} is not running. Starting it up for you...`
-                    );
-                    _runElectronSimulator(c, platform)
-                        .then(() => runElectronDevServer(c, platform, port))
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                } else {
-                    logInfo(
-                        `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
-                            port
-                        )} is already running. ReNativeWill use it!`
-                    );
-                    _runElectronSimulator(c, platform)
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                }
-            })
-            .catch(e => reject(e));
+        const isPortActive = await checkPortInUse(c, platform, port);
+        if (!isPortActive) {
+            logInfo(
+                `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
+                    port
+                )} is not running. Starting it up for you...`
+            );
+            if (!hosted) {
+                await _runElectronSimulator(c, platform);
+            } else {
+                openBrowser(`http://${ip}:${port}/`);
+            }
+            await runElectronDevServer(c, platform, port);
+        } else {
+            logInfo(
+                `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
+                    port
+                )} is already running. ReNativeWill use it!`
+            );
+            if (!hosted) {
+                await _runElectronSimulator(c, platform);
+            } else {
+                openBrowser(`http://${ip}:${port}/`);
+            }
+        }
     }
-});
+};
 
 const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);

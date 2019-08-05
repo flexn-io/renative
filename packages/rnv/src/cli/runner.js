@@ -16,6 +16,7 @@ import {
     configureIfRequired,
     cleanPlatformIfRequired,
     logInfo,
+    logWarning
 } from '../common';
 import {
     IOS,
@@ -241,6 +242,7 @@ const _runAppWithPlatform = async (c) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
+    const { hosted } = c.program;
 
     logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
@@ -251,6 +253,7 @@ const _runAppWithPlatform = async (c) => {
     switch (platform) {
     case IOS:
     case TVOS:
+        if (hosted) logWarning('This platform does not support hosted mode. Will be ignored.');
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
@@ -259,6 +262,7 @@ const _runAppWithPlatform = async (c) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
+        if (hosted) logWarning('This platform does not support hosted mode. Will be ignored.');
         if (!checkSdk(c, platform, logError)) {
             let sdkInstall;
             if (!c.program.ci) {
