@@ -1696,7 +1696,7 @@ rnv run -p webos
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/rnv_tizenmobile.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/rnv_tizenmobile.gif?raw=true" />
     </th>
   </tr>
 </table>
