@@ -6,6 +6,9 @@ jobs:
       language: node_js
       node_js: 10.15.3
       install: 
+       - java -version
+       - javac -version
+       - dpkg -l
        - npm run fix
        - npm i > /dev/null 2>&1
        - cd packages/rnv
@@ -13,9 +16,6 @@ jobs:
        - npm run fix
        - npm run build:dev
        - npm link
-       - java -version
-       - javac -version
-       - apt list --installed
       script: npm run test:setup
     - language: android
       sudo: required
