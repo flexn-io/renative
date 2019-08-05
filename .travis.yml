@@ -2,7 +2,6 @@
 
 jobs:
   include:
-    # commented out since it's failing because of travis (curl SSL read: error when downloading node)
     - stage: test
       language: node_js
       node_js: 10.15.3
