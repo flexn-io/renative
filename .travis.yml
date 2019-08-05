@@ -8,6 +8,7 @@ jobs:
       install: 
        - java -version
        - javac -version
+       - echo $PATH
        - dpkg -l
        - which java
        - which javac
