@@ -101,17 +101,21 @@
             }
         },
         "react-native-gesture-handler": {
-            "version": "hyochan/react-native-gesture-handler.git#package-names",
+            "version": "1.3.0",
             "ios": {
+                "podName": "RNGestureHandler",
+                "path": "node_modules/react-native-gesture-handler"
+            },
+            "tvos": {
                 "podName": "RNGestureHandler",
                 "path": "node_modules/react-native-gesture-handler"
             },
             "android": {
                 "path": "node_modules/react-native-gesture-handler/android",
-                "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
                 "mainActivity": {
                     "imports": [
-                        "com.swmansion.gesturehandler.RNGestureHandlerEnabledRootView"
+                        "com.swmansion.gesturehandler.react.RNGestureHandlerEnabledRootView"
                     ],
                     "methods": [
                         "  override fun createReactActivityDelegate(): ReactActivityDelegate {",
@@ -124,35 +128,11 @@
             },
             "androidtv": {
                 "path": "node_modules/react-native-gesture-handler/android",
-                "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
-                "mainActivity": {
-                    "imports": [
-                        "com.swmansion.gesturehandler.RNGestureHandlerEnabledRootView"
-                    ],
-                    "methods": [
-                        "  override fun createReactActivityDelegate(): ReactActivityDelegate {",
-                        "return object : ReactActivityDelegate(this, mainComponentName) {",
-                        "override fun createRootView():ReactRootView {",
-                        "  return RNGestureHandlerEnabledRootView(this@MainActivity)",
-                        "  } \n } \n}"
-                    ]
-                }
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             },
             "androidwear": {
                 "path": "node_modules/react-native-gesture-handler/android",
-                "package": "com.swmansion.gesturehandler.RNGestureHandlerPackage",
-                "mainActivity": {
-                    "imports": [
-                        "com.swmansion.gesturehandler.RNGestureHandlerEnabledRootView"
-                    ],
-                    "methods": [
-                        "  override fun createReactActivityDelegate(): ReactActivityDelegate {",
-                        "return object : ReactActivityDelegate(this, mainComponentName) {",
-                        "override fun createRootView():ReactRootView {",
-                        "  return RNGestureHandlerEnabledRootView(this@MainActivity)",
-                        "  } \n } \n}"
-                    ]
-                }
+                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             },
             "webpack": {
                 "modulePaths": true,
