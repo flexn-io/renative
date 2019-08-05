@@ -133,11 +133,14 @@ const _setupAppleCI = c => new Promise((resolve, reject) => {
     const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
     const cerArr = list.filter(v => v.endsWith('.cer'));
 
-    mobileprovisionArr.forEach((v) => {
-        copyFileSync(v, ppFolder);
-    });
-
-    copyFileSync(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/AppleWWDRCA.cer', ppFolder);
+    try {
+        mobileprovisionArr.forEach((v) => {
+            copyFileSync(v, ppFolder);
+        });
+        copyFileSync(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/AppleWWDRCA.cer', ppFolder);
+    } catch (e) {
+        logError(e);
+    }
 
     executeAsync('security', ['create-keychain', '-p', tempPass, kChain])
         .then(() => executeAsync('security', ['default-keychain', '-s', kChain]))
@@ -151,5 +154,8 @@ const _setupAppleCI = c => new Promise((resolve, reject) => {
             '-A'
         ]))))
         .then(() => resolve())
-        .catch(e => reject(e));
+        .catch((e) => {
+            logError(e);
+            resolve();
+        });
 });
