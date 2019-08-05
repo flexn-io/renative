@@ -5,7 +5,7 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
-import { logDebug, logError } from '../common';
+import { logDebug, logError, logWarning, logInfo } from '../common';
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -130,6 +130,7 @@ const removeDirs = dirPaths => new Promise((resolve, reject) => {
             if (deletedFolders >= allFolders) resolve();
         });
     }
+    if (allFolders === 0) resolve();
 });
 
 
@@ -161,7 +162,7 @@ const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
     }
 };
 
-const readObjectSync = (filePath) => {
+const readObjectSync = (filePath, c) => {
     if (!fs.existsSync(filePath)) {
         logError(`File at ${filePath} does not exist`);
         return null;
@@ -169,6 +170,12 @@ const readObjectSync = (filePath) => {
     let obj;
     try {
         obj = JSON.parse(fs.readFileSync(filePath));
+        if (c) {
+            obj = sanitizeDynamicRefs(c, obj);
+        }
+        if (obj._refs) {
+            obj = sanitizeDynamicProps(obj, obj._refs);
+        }
     } catch (e) {
         logError(`Parsing of ${chalk.white(filePath)} failed with ${e}`);
         return null;
@@ -186,16 +193,98 @@ const updateObjectSync = (filePath, updateObj) => {
     return output;
 };
 
+export const getRealPath = (c, p, key = 'undefined', original) => {
+    if (!p) {
+        logInfo(`Path ${chalk.white(key)} is not defined. using default: ${chalk.white(original)}`);
+        return original;
+    }
+    if (p.startsWith('./')) {
+        return path.join(c.paths.projectRootFolder, p);
+    }
+    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
+        .replace(/~/g, c.paths.homeFolder)
+        .replace(/USER_HOME/g, c.paths.homeFolder)
+        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
+};
+
+const _refToValue = (c, ref, key) => {
+    const val = ref.replace('$REF$:', '').split('$...');
+
+    const realPath = getRealPath(c, val[0], key);
+
+    if (realPath && realPath.includes('.json') && val.length === 2) {
+        if (fs.existsSync(realPath)) {
+            const obj = readObjectSync(realPath);
+
+            try {
+                const output = val[1].split('.').reduce((o, i) => o[i], obj);
+                return output;
+            } catch (e) {
+                logWarning(`_refToValue: ${e}`);
+            }
+        } else {
+            logWarning(`_refToValue: ${chalk.white(realPath)} does not exist!`);
+        }
+    }
+    return ref;
+};
+
 const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     const jointArray = destinationArray.concat(sourceArray);
     const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
     return uniqueArray;
 };
 
-const mergeObjects = (obj1, obj2) => {
+const sanitizeDynamicRefs = (c, obj) => {
+    if (!obj) return obj;
+    if (Array.isArray(obj)) {
+        obj.forEach((v) => {
+            sanitizeDynamicRefs(c, v);
+        });
+    }
+    Object.keys(obj).forEach((key) => {
+        const val = obj[key];
+        if (val) {
+            if (typeof val === 'string') {
+                if (val.startsWith('$REF$:')) {
+                    obj[key] = _refToValue(c, val, key);
+                }
+            } else {
+                sanitizeDynamicRefs(c, val);
+            }
+        }
+    });
+    return obj;
+};
+
+const sanitizeDynamicProps = (obj, props) => {
+    if (!obj) return obj;
+    if (Array.isArray(obj)) {
+        obj.forEach((v) => {
+            sanitizeDynamicProps(v, props);
+        });
+    }
+    Object.keys(obj).forEach((key) => {
+        let val = obj[key];
+        if (val) {
+            if (typeof val === 'string') {
+                Object.keys(props).forEach((pk) => {
+                    val = val.replace(`@${pk}@`, props[pk]);
+                    obj[key] = val;
+                });
+            } else {
+                sanitizeDynamicProps(val, props);
+            }
+        }
+    });
+    return obj;
+};
+
+const mergeObjects = (c, obj1, obj2) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
-    return merge(obj1, obj2, { arrayMerge });
+    const obj = merge(obj1, obj2, { arrayMerge });
+    return sanitizeDynamicRefs(c, obj);
 };
 
 const updateConfigFile = async (update, globalConfigPath) => {
@@ -231,6 +320,7 @@ export {
 };
 
 export default {
+    removeDirs,
     copyFileSync,
     copyFolderRecursiveSync,
     removeDir,

@@ -111,3 +111,16 @@ const _launchSimulator = (selectedDevice) => {
         // but we want it to only launch the simulator
     }
 };
+
+export const listAppleDevices = (c, platform) => new Promise((resolve) => {
+    logTask(`listAppleDevices:${platform}`);
+
+    const devicesArr = getAppleDevices(c, platform);
+    let devicesString = '\n';
+    devicesArr.forEach((v, i) => {
+        devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
+            v.isDevice ? chalk.red(' (device)') : ''
+        }\n`;
+    });
+    console.log(devicesString);
+});

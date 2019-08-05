@@ -100,6 +100,19 @@ const createApp = (c, componentMap) => {
                     tabStyle: {}
                 },
             });
+        } else if (shouldUse(root.menus.bottomMenu)) {
+            rootNav = createSideMenuNavigator(roots, {
+                tabBarComponent: componentMap[root.menus.bottomMenu.component],
+                tabBarOptions: {
+                    position: 'bottom',
+                    style: {
+                        height: root.menus.bottomMenu.options.menuHeight || 50
+                    }
+                },
+                navigationOptions: {
+                    tabStyle: {}
+                },
+            });
         }
     } else {
         // ROOT CONTENT HAS NO MENU

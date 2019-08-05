@@ -10,15 +10,11 @@ import {
 import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 
-const DEFAULT_TEMPLATES = [
-    'renative-template-hello-world',
-    'renative-template-blank',
-    // 'renative-template-kitchen-sink'
-];
+import { templates } from '../../renativeTemplates/templates.json';
 
 const listTemplates = c => new Promise((resolve, reject) => {
     logTask('listTemplates');
-    opts = generateOptions(DEFAULT_TEMPLATES);
+    opts = generateOptions(templates);
     console.log(opts.asString);
     resolve();
 });
@@ -145,14 +141,14 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     if (templateAppConfigFolder) c.defaultAppConfigId = templateAppConfigFolder;
 
     // Check src
-    logTask('configureProject:check src');
+    logTask('configureProject:check src', chalk.grey);
     if (!fs.existsSync(c.paths.projectSourceFolder)) {
         logWarning(`Looks like your src folder ${chalk.white(c.paths.projectSourceFolder)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.paths.projectTemplateFolder, 'src'), c.paths.projectSourceFolder);
     }
 
     // Check appConfigs
-    logTask('configureProject:check appConfigs');
+    logTask('configureProject:check appConfigs', chalk.grey);
     setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
     if (!fs.existsSync(c.paths.appConfigsFolder)) {
         logWarning(
@@ -193,7 +189,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     }
 
     // Check projectConfigs
-    logTask('configureProject:check projectConfigs');
+    logTask('configureProject:check projectConfigs', chalk.grey);
     if (!fs.existsSync(c.paths.projectConfigFolder)) {
         logWarning(
             `Looks like your projectConfig folder ${chalk.white(c.paths.projectConfigFolder)} is missing! Let's create one for you.`,
@@ -204,7 +200,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const getTemplateOptions = () => generateOptions(DEFAULT_TEMPLATES);
+const getTemplateOptions = () => generateOptions(templates);
 
 export {
     listTemplates, addTemplate, getTemplateOptions, applyTemplate,

@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import shell from 'shelljs';
+import chalk from 'chalk';
 
 import {
     isPlatformSupported,
@@ -24,6 +25,7 @@ import {
     ANDROID_WEAR,
     MACOS,
     WINDOWS,
+    TIZEN_MOBILE,
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
@@ -35,7 +37,7 @@ import {
     archiveXcodeProject,
     packageBundleForXcode,
     runAppleLog,
-    prepareXcodeProject,
+    configureXcodeProject,
 } from '../platformTools/apple';
 import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
 import { runTizen, buildTizenProject } from '../platformTools/tizen';
@@ -94,22 +96,22 @@ const run = (c) => {
     logTask('run');
 
     switch (c.command) {
+    case START:
+        return _startServer(c);
     case RUN:
         return _runApp(c);
-    case START:
-        return _start(c);
-    case EXPORT:
-        return _exportApp(c);
     case PACKAGE:
         return _packageApp(c);
     case BUILD:
         return _buildApp(c);
+    case EXPORT:
+        return _exportApp(c);
+    case DEPLOY:
+        return _deployApp(c);
     case LOG:
         return _log(c);
     case FIX:
         return _fix(c);
-    case DEPLOY:
-        return _deployApp(c);
     case DEBUG:
         return _debug(c);
         // case UPDATE:
@@ -134,11 +136,11 @@ const _fix = c => new Promise((resolve, reject) => {
     cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
 });
 
-const _start = c => new Promise((resolve, reject) => {
+const _startServer = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
 
-    logTask(`_start:${platform}:${port}`);
+    logTask(`_startServer:${platform}:${port}`);
 
     switch (platform) {
     case MACOS:
@@ -176,6 +178,7 @@ const _debug = c => executePipe(c, PIPES.START_BEFORE)
     .then(() => runWeinre())
     .then(() => executePipe(c, PIPES.START_AFTER));
 
+
 const _runApp = c => new Promise((resolve, reject) => {
     logTask(`_runApp:${c.platform}`);
 
@@ -186,13 +189,53 @@ const _runApp = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
+const _packageApp = c => new Promise((resolve, reject) => {
+    logTask(`_packageApp:${c.platform}`);
+
+    isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
+        .then(v => _packageAppWithPlatform(c))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _buildApp = c => new Promise((resolve, reject) => {
+    logTask(`_buildApp:${c.platform}`);
+
+    isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
+        .then(v => _buildAppWithPlatform(c))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _exportApp = c => new Promise((resolve, reject) => {
+    logTask(`_exportApp:${c.platform}`);
+
+    isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
+        .then(v => _exportAppWithPlatform(c))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _deployApp = c => new Promise((resolve, reject) => {
+    logTask(`_deployApp:${c.platform}`);
+
+    isPlatformSupported(c)
+        .then(v => isBuildSchemeSupported(c))
+        .then(v => _deployAppWithPlatform(c))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
 const _runAppWithPlatform = async (c) => {
     logTask(`_runAppWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
 
-    logTask(`_runAppWithPlatform:${platform}:${port}`);
+    logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
     const throwErr = (err) => {
         throw err;
@@ -204,7 +247,6 @@ const _runAppWithPlatform = async (c) => {
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => prepareXcodeProject(c, platform))
             .then(() => runXcodeProject(c, platform, target))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case ANDROID:
@@ -219,7 +261,6 @@ const _runAppWithPlatform = async (c) => {
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
         await configureAndroidProperties(c);
-        await configureGradleProject(c, platform);
         await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
         await executePipe(c, PIPES.RUN_AFTER);
         return;
@@ -237,6 +278,7 @@ const _runAppWithPlatform = async (c) => {
             .then(() => runWeb(c, platform, port))
             .then(() => executePipe(c, PIPES.RUN_AFTER));
     case TIZEN:
+    case TIZEN_MOBILE:
     case TIZEN_WATCH:
         if (!checkSdk(c, platform, logError)) {
             const setupInstance = PlatformSetup(c);
@@ -276,16 +318,6 @@ const _runAppWithPlatform = async (c) => {
     return logErrorPlatform(platform);
 };
 
-const _packageApp = c => new Promise((resolve, reject) => {
-    logTask(`_packageApp:${c.platform}`);
-
-    isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _packageAppWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
 const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_packageAppWithPlatform:${c.platform}`);
     const { platform } = c;
@@ -323,16 +355,6 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _exportApp = c => new Promise((resolve, reject) => {
-    logTask(`_exportApp:${c.platform}`);
-
-    isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _exportAppWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
 const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_exportAppWithPlatform:${c.platform}`);
     const { platform } = c;
@@ -340,11 +362,7 @@ const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         executePipe(c, PIPES.EXPORT_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => prepareXcodeProject(c, platform))
-            .then(() => packageBundleForXcode(c, platform))
-            .then(() => archiveXcodeProject(c, platform))
+            .then(() => (c.program.only ? Promise.resolve() : _buildAppWithPlatform(c, platform)))
             .then(() => exportXcodeProject(c, platform))
             .then(() => executePipe(c, PIPES.EXPORT_AFTER))
             .then(() => resolve())
@@ -367,16 +385,6 @@ const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _deployApp = c => new Promise((resolve, reject) => {
-    logTask(`_deployApp:${c.platform}`);
-
-    isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _deployAppWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
 const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_deployAppWithPlatform:${c.platform}`);
     const { platform } = c;
@@ -392,18 +400,14 @@ const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
         return;
     case IOS:
         executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(v => isPlatformSupported(c))
-            .then(v => isBuildSchemeSupported(c))
-            .then(v => _exportAppWithPlatform(c))
+            .then(v => (c.program.only ? Promise.resolve() : _exportAppWithPlatform(c)))
             .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case ANDROID:
         executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(v => isPlatformSupported(c))
-            .then(v => isBuildSchemeSupported(c))
-            .then(v => _buildAppWithPlatform(c))
+            .then(v => (c.program.only ? Promise.resolve() : _buildAppWithPlatform(c)))
             .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -411,16 +415,6 @@ const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
     }
 
     logErrorPlatform(platform, resolve);
-});
-
-const _buildApp = c => new Promise((resolve, reject) => {
-    logTask(`_buildApp:${c.platform}`);
-
-    isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _buildAppWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
 });
 
 const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
@@ -456,10 +450,7 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => prepareXcodeProject(c, platform))
-            .then(() => packageBundleForXcode(c, platform))
+            .then(() => (c.program.only ? Promise.resolve() : _packageAppWithPlatform(c, platform)))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
@@ -486,6 +477,7 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     case TIZEN:
+    case TIZEN_MOBILE:
     case TIZEN_WATCH:
         if (!checkSdk(c, platform, reject)) return;
 

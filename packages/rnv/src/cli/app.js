@@ -27,6 +27,7 @@ import {
     WEB,
     MACOS,
     WINDOWS,
+    TIZEN_MOBILE,
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
@@ -114,6 +115,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => (_isOK(c, p, [TIZEN]) ? configureTizenGlobal(c, TIZEN) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TIZEN]) ? configureTizenProject(c, TIZEN) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TIZEN_WATCH]) ? configureTizenProject(c, TIZEN_WATCH) : Promise.resolve()))
+        .then(() => (_isOK(c, p, [TIZEN_MOBILE]) ? configureTizenProject(c, TIZEN_MOBILE) : Promise.resolve()))
         .then(() => (_isOK(c, p, [WEBOS]) ? configureWebOSProject(c, WEBOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [WEB]) ? configureWebProject(c, WEB) : Promise.resolve()))
         .then(() => (_isOK(c, p, [MACOS]) ? configureElectronProject(c, MACOS) : Promise.resolve()))
@@ -436,7 +438,7 @@ const _copySharedPlatforms = c => new Promise((resolve) => {
 });
 
 const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
-    logTask('_runPlugins');
+    logTask(`_runPlugins:${pluginsPath}`, chalk.grey);
 
     if (!fs.existsSync(pluginsPath)) {
         logInfo(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
