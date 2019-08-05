@@ -4,6 +4,7 @@ import shell from 'shelljs';
 import inquirer from 'inquirer';
 import path from 'path';
 import chalk from 'chalk';
+import open from 'open';
 
 import {
     isPlatformSupported,
@@ -16,7 +17,7 @@ import {
     configureIfRequired,
     cleanPlatformIfRequired,
     logInfo,
-    logWarning
+    logWarning,
 } from '../common';
 import {
     IOS,
@@ -96,6 +97,8 @@ const PIPES = {
     DEPLOY_AFTER: 'deploy:after',
 };
 
+const isRunningOnWindows = process.platform === 'win32';
+
 // ##########################################
 // PUBLIC API
 // ##########################################
@@ -147,8 +150,14 @@ const _fix = c => new Promise((resolve, reject) => {
 const _startServer = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
+    const { hosted } = c.program;
 
     logTask(`_startServer:${platform}:${port}`);
+
+    if (hosted) {
+        const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+        open(`http://${ip}:${port}/`);
+    }
 
     switch (platform) {
     case MACOS:
@@ -169,7 +178,12 @@ const _startServer = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    default:
+        if (hosted) {
+            return logError('This platform does not support hosted mode', true);
+        }
     }
+
 
     if (c.program.reset) {
         shell.exec('node ./node_modules/react-native/local-cli/cli.js start --reset-cache');
@@ -250,10 +264,13 @@ const _runAppWithPlatform = async (c) => {
         throw err;
     };
 
+    if (hosted) {
+        return _startServer(c);
+    }
+
     switch (platform) {
     case IOS:
     case TVOS:
-        if (hosted) logWarning('This platform does not support hosted mode. Will be ignored.');
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
@@ -262,7 +279,6 @@ const _runAppWithPlatform = async (c) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        if (hosted) logWarning('This platform does not support hosted mode. Will be ignored.');
         if (!checkSdk(c, platform, logError)) {
             let sdkInstall;
             if (!c.program.ci) {

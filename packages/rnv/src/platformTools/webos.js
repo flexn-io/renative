@@ -67,7 +67,7 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const sourcePath = path.join(c.paths.appConfigFolder, 'assets', platform);
-    const destPath = path.join(getAppFolder(c, platform), 'RNVApp');
+    const destPath = path.join(getAppFolder(c, platform), 'public');
 
     copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
@@ -127,10 +127,10 @@ const runWebOS = async (c, platform, target) => {
 
     const { device } = c.program;
 
-    const tDir = path.join(getAppFolder(c, platform), 'RNVApp');
+    const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
     const tSim = c.program.target || 'emulator';
-    const configFilePath = path.join(getAppFolder(c, platform), 'RNVApp/appinfo.json');
+    const configFilePath = path.join(getAppFolder(c, platform), 'public/appinfo.json');
 
     const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
@@ -268,7 +268,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    const configFile = 'RNVApp/appinfo.json';
+    const configFile = 'public/appinfo.json';
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },

@@ -183,11 +183,6 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
     }
 });
 
-const openBrowser = (url) => {
-    const start = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
-    exec(`${start} ${url}`);
-};
-
 const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     logTask(`isBuildSchemeSupported:${c.platform}`);
 
@@ -1332,7 +1327,6 @@ export {
     finishQuestion,
     askQuestion,
     resolveNodeModulePath,
-    openBrowser,
     IOS,
     ANDROID,
     ANDROID_TV,
@@ -1409,7 +1403,6 @@ export default {
     finishQuestion,
     askQuestion,
     resolveNodeModulePath,
-    openBrowser,
     IOS,
     ANDROID,
     ANDROID_TV,

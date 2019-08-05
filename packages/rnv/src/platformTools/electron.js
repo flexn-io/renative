@@ -31,8 +31,7 @@ import {
     getConfigProp,
     checkPortInUse,
     logInfo,
-    resolveNodeModulePath,
-    openBrowser
+    resolveNodeModulePath
 } from '../common';
 import { MACOS } from '../constants';
 import { buildWeb, runWeb, runWebDevServer } from './web';
@@ -40,8 +39,6 @@ import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync
 } from '../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureElectronProject:${platform}`);
@@ -163,8 +160,6 @@ const runElectron = async (c, platform, port) => {
 
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
-    const { hosted } = c.program;
-    const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
 
     if (bundleAssets) {
         await buildElectron(c, platform, bundleIsDev);
@@ -177,23 +172,15 @@ const runElectron = async (c, platform, port) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            if (!hosted) {
-                await _runElectronSimulator(c, platform);
-            } else {
-                openBrowser(`http://${ip}:${port}/`);
-            }
+            await _runElectronSimulator(c, platform);
             await runElectronDevServer(c, platform, port);
         } else {
             logInfo(
                 `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
                     port
-                )} is already running. ReNativeWill use it!`
+                )} is already running. ReNative will use it!`
             );
-            if (!hosted) {
-                await _runElectronSimulator(c, platform);
-            } else {
-                openBrowser(`http://${ip}:${port}/`);
-            }
+            await _runElectronSimulator(c, platform);
         }
     }
 };
