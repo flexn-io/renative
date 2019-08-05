@@ -15,6 +15,7 @@ jobs:
        - npm link
        - java -version
        - javac -version
+       - apt list --installed
       script: npm run test:setup
     - language: android
       sudo: required
