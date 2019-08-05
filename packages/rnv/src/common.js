@@ -803,6 +803,9 @@ const configureApp = c => new Promise((resolve, reject) => {
                         update: true,
                         platform: c.program.platform,
                         scheme: c.program.scheme,
+                        provisioningStyle: c.program.provisioningStyle,
+                        codeSignIdentity: c.program.codeSignIdentity,
+                        provisionProfileSpecifier: c.program.provisionProfileSpecifier
                     };
                     appRunner(newCommand)
                         .then(() => resolve(c))
@@ -954,7 +957,10 @@ const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplate
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
-const _getValueOrMergedObject = (o1, o2, o3) => {
+const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
+    if (resultCli) {
+        return resultCli;
+    }
     if (o1) {
         if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
         const val = Object.assign(o3 || {}, o2 || {}, o1);
@@ -967,17 +973,24 @@ const _getValueOrMergedObject = (o1, o2, o3) => {
     return o3;
 };
 
+const CLI_PROPS = [
+    'provisioningStyle',
+    'codeSignIdentity',
+    'provisionProfileSpecifier'
+];
+
 const getConfigProp = (c, platform, key, defaultVal) => {
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
     let scheme;
     scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
     scheme = scheme || {};
+    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
     const resultScheme = scheme[key];
     const resultPlatforms = c.files.appConfigFile.platforms[platform][key];
     const resultCommon = c.files.appConfigFile.common[key];
 
-    const result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+    const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
     if (result === null || result === undefined) return defaultVal;
@@ -1056,6 +1069,9 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
         update: false,
         platform,
         scheme: c.program.scheme,
+        provisioningStyle: c.program.provisioningStyle,
+        codeSignIdentity: c.program.codeSignIdentity,
+        provisionProfileSpecifier: c.program.provisionProfileSpecifier
     };
 
     if (c.program.reset) {

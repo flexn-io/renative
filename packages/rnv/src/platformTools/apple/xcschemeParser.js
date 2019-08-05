@@ -26,9 +26,12 @@ import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from '../apple';
 
 export const parseXcscheme = (c, platform) => new Promise((resolve, reject) => {
-// XCSCHEME
-    const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
+    logTask(`parseXcscheme:${platform}`);
+    // XCSCHEME
+    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
+    const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
     const runScheme = getConfigProp(c, platform, 'runScheme');
+    const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);

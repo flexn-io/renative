@@ -36,6 +36,9 @@ program
     .option('--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect')
     .option('--ci', 'CI/CD flag so it wont ask questions')
     .option('--mono', 'Monochrome console output without chalk')
+    .option('--provisioningStyle <value>', 'Set provisioningStyle <Automatic | Manual>')
+    .option('--codeSignIdentity <value>', 'Set codeSignIdentity ie <iPhone Distribution>')
+    .option('--provisionProfileSpecifier <value>', 'Name of provisionProfile')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;
