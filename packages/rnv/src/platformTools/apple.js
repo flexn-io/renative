@@ -49,7 +49,7 @@ const checkIfCommandExists = command => new Promise((resolve, reject) => child_p
 }));
 
 const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
-    logTask(`runPod:${command}`);
+    logTask(`runPod:${command}:${rejectOnFail}`);
 
     if (!fs.existsSync(cwd)) {
         if (rejectOnFail) return reject(`Location ${cwd} does not exists!`);
@@ -510,9 +510,8 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .then(() => resolve())
         .catch((e) => {
             if (!c.program.update) {
-                throw e;
                 logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                runPod('update', getAppFolder(c, platform))
+                runPod('update', getAppFolder(c, platform), true)
                     .then(() => parseXcodeProject(c, platform))
                     .then(() => resolve())
                     .catch(err => reject(err));
