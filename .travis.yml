@@ -12,7 +12,9 @@ jobs:
        - npm i > /dev/null 2>&1
        - npm run fix
        - npm run build:dev
-       - npm link 
+       - npm link
+       - java -version
+       - javac -version
       script: npm run test:setup
     - language: android
       sudo: required
