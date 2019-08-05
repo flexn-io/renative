@@ -9,6 +9,8 @@ jobs:
        - java -version
        - javac -version
        - dpkg -l
+       - which java
+       - which javac
        - npm run fix
        - npm i > /dev/null 2>&1
        - cd packages/rnv
