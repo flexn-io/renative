@@ -236,7 +236,7 @@ const runWebOS = async (c, platform, target) => {
 const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildWebOSProject:${platform}`);
 
-    const tDir = path.join(getAppFolder(c, platform), 'public');
+    const tDir = path.join(getAppFolder(c, platform), 'RNVApp');
     const tOut = path.join(getAppFolder(c, platform), 'output');
 
     configureWebOSProject(c, platform)
