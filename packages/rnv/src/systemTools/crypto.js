@@ -152,12 +152,12 @@ const _setupAppleCI = c => new Promise((resolve, reject) => {
         'import',
         v,
         '-k',
-        tempPass,
+        kChain,
         '-A'
     ])))
         .then(() => resolve())
         .catch((e) => {
-            logError(e);
+            logWarning(e);
             resolve();
         });
 });
