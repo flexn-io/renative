@@ -137,22 +137,24 @@ const _setupAppleCI = c => new Promise((resolve, reject) => {
         mobileprovisionArr.forEach((v) => {
             copyFileSync(v, ppFolder);
         });
-        copyFileSync(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/AppleWWDRCA.cer', ppFolder);
+        copyFileSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/AppleWWDRCA.cer'), ppFolder);
     } catch (e) {
         logError(e);
     }
 
-    executeAsync('security', ['create-keychain', '-p', tempPass, kChain])
-        .then(() => executeAsync('security', ['default-keychain', '-s', kChain]))
-        .then(() => executeAsync('security', ['unlock-keychain', '-p', tempPass, kChain]))
-        .then(() => executeAsync('security', ['set-keychain-settings', '-t', '3600', '-l', kChainPath]))
-        .then(() => Promise.all(cerArr.map(v => executeAsync('security', [
-            'import',
-            v,
-            '-k',
-            tempPass,
-            '-A'
-        ]))))
+    // KEYCHAIN
+    // console.log('kChainPath', kChainPath);
+    // executeAsync('security', ['create-keychain', '-p', tempPass, kChain])
+    //     .then(() => executeAsync('security', ['default-keychain', '-s', kChain]))
+    //     .then(() => executeAsync('security', ['unlock-keychain', '-p', tempPass, kChain]))
+    //     .then(() => executeAsync('security', ['set-keychain-settings', '-t', '3600', '-l', kChainPath]))
+    Promise.all(cerArr.map(v => executeAsync('security', [
+        'import',
+        v,
+        '-k',
+        tempPass,
+        '-A'
+    ])))
         .then(() => resolve())
         .catch((e) => {
             logError(e);
