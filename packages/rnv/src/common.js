@@ -16,7 +16,7 @@ import { getMergedPlugin, parsePlugins } from './pluginTools';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo
+    logInitialize, logAppInfo, getCurrentCommand
 } from './systemTools/logger';
 import {
     IOS,
@@ -302,6 +302,17 @@ const startBuilder = c => new Promise((resolve, reject) => {
 
     try {
         c.files.projectPackage = JSON.parse(fs.readFileSync(c.paths.projectPackagePath).toString());
+
+        const rnvVersionRunner = c.files.rnvPackage.version;
+        const rnvVersionProject = c.files.projectPackage.devDependencies?.rnv;
+
+        if (rnvVersionRunner && rnvVersionProject) {
+            if (rnvVersionRunner !== rnvVersionProject) {
+                const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
+                logWarning(`You are running $rnv v${chalk.red(rnvVersionRunner)} against project built with $rnv v${chalk.red(rnvVersionProject)}.
+This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} .`);
+            }
+        }
     } catch (e) {
         // IGNORE
     }

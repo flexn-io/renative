@@ -1,4 +1,5 @@
 import _chalk from 'chalk';
+import { generateOptions } from '../common';
 
 const _chalkCols = {
     white: v => v,
@@ -43,7 +44,7 @@ export const logWelcome = () => {
     }
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
-    str += printIntoBox(`      ${_getCurrentCommand()}`);
+    str += printIntoBox(`      ${getCurrentCommand()}`);
     if (_c?.timeStart) str += printIntoBox(`      Start Time: ${_c.timeStart.toLocaleString()}`);
     str += printIntoBox('');
     str += printBoxEnd();
@@ -74,7 +75,7 @@ export const configureLogger = (c, process, command, subCommand, isInfoEnabled) 
         chalk = _chalkMono;
     }
     _updateDefaultColors();
-    RNV = _getCurrentCommand();
+    RNV = getCurrentCommand();
 };
 
 const _updateDefaultColors = () => {
@@ -89,7 +90,7 @@ export const logAndSave = (msg, skipLog) => {
 
 const PRIVATE_PARAMS = ['-k', '--key'];
 
-const _getCurrentCommand = () => {
+export const getCurrentCommand = (excludeDollar = false) => {
     const argArr = _c.process.argv.slice(2);
     let hideNext = false;
     const output = argArr.map((v) => {
@@ -103,7 +104,8 @@ const _getCurrentCommand = () => {
 
         return v;
     }).join(' ');
-    return `$ rnv ${output}`;
+    const dollar = excludeDollar ? '' : '$ ';
+    return `${dollar}rnv ${output}`;
 };
 
 export const logSummary = () => {
@@ -122,7 +124,7 @@ export const logSummary = () => {
         timeString = `| ${_c.timeEnd.toLocaleString()}`;
     }
 
-    let str = printBoxStart(`🚀  SUMMARY ${timeString}`, _getCurrentCommand());
+    let str = printBoxStart(`🚀  SUMMARY ${timeString}`, getCurrentCommand());
     if (_c) {
         if (_c.files.projectPackage) {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
@@ -134,7 +136,12 @@ export const logSummary = () => {
         if (_c.files.projectConfig) {
             const defaultProjectConfigs = _c.files.projectConfig.defaultProjectConfigs;
             if (defaultProjectConfigs.supportedPlatforms) {
-                str += printArrIntoBox(defaultProjectConfigs.supportedPlatforms, 'Supported Platfroms: ');
+                const plats = [];
+                generateOptions(_c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
+                    const isEjected = _c.paths.platformTemplatesFolders[obj].includes(_c.paths.rnvPlatformTemplatesFolder) ? '' : '(ejected)';
+                    plats.push(`${defaultVal}${isEjected}`);
+                });
+                str += printArrIntoBox(plats, 'Supported Platfroms: ');
             }
             if (defaultProjectConfigs.template) {
                 str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
