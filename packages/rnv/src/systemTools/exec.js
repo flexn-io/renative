@@ -48,7 +48,7 @@ const executeAsync = (
     args,
     opts = {
         cwd: process.cwd(),
-        stdio: 'inherit',
+        stdio: 'pipe',
         env,
     }
 ) => new Promise((resolve, reject) => {
@@ -65,14 +65,20 @@ const executeAsync = (
     command.stdout
             && command.stdout.on('data', (output) => {
                 const outputStr = output.toString();
-                console.log('data', output);
+                if (outputStr) stdout += outputStr;
+            });
+
+    /* eslint-disable-next-line no-unused-expressions */
+    command.stderr
+            && command.stderr.on('data', (output) => {
+                const outputStr = output.toString();
                 if (outputStr) stdout += outputStr;
             });
 
     command.on('close', (code) => {
         logDebug(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} exited with code ${code}`);
         if (code !== 0) {
-            reject(new Error(`process exited with code ${code}`));
+            reject(new Error(`process exited with code ${code}. ${stdout}`));
         } else {
             ended = true;
 

@@ -210,7 +210,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     const wds = resolveNodeModulePath(c, 'webpack-dev-server/bin/webpack-dev-server.js');
     logDebug('Running:', `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port}`);
     shell.exec(
-        `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`
+        `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port}`
     );
     resolve();
 });
