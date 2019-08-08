@@ -5,6 +5,7 @@ import inquirer from 'inquirer';
 import path from 'path';
 import chalk from 'chalk';
 import open from 'open';
+import ip from 'ip';
 
 import {
     isPlatformSupported,
@@ -17,7 +18,9 @@ import {
     configureIfRequired,
     cleanPlatformIfRequired,
     logInfo,
+    logDebug,
     logWarning,
+    writeCleanFile
 } from '../common';
 import {
     IOS,
@@ -66,6 +69,7 @@ import {
     buildAndroid,
     runAndroidLog,
 } from '../platformTools/android';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 
 const RUN = 'run';
 const LOG = 'log';
@@ -96,6 +100,15 @@ const PIPES = {
     DEPLOY_BEFORE: 'deploy:before',
     DEPLOY_AFTER: 'deploy:after',
 };
+
+const hostedSupportedPlatforms = [
+    TIZEN,
+    WEBOS,
+    MACOS,
+    WINDOWS,
+    TIZEN_MOBILE,
+    TIZEN_WATCH
+];
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -150,13 +163,13 @@ const _fix = c => new Promise((resolve, reject) => {
 const _startServer = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
-    const { hosted } = c.program;
+    const { hosted, device } = c.program;
 
     logTask(`_startServer:${platform}:${port}`);
 
-    if (hosted) {
-        const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
-        open(`http://${ip}:${port}/`);
+    if (hosted && !device) {
+        const hostedIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+        open(`http://${hostedIp}:${port}/`);
     }
 
     switch (platform) {
@@ -215,8 +228,8 @@ const _packageApp = c => new Promise((resolve, reject) => {
     logTask(`_packageApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _packageAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _packageAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -225,8 +238,8 @@ const _buildApp = c => new Promise((resolve, reject) => {
     logTask(`_buildApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _buildAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _buildAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -235,8 +248,8 @@ const _exportApp = c => new Promise((resolve, reject) => {
     logTask(`_exportApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _exportAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _exportAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -245,18 +258,37 @@ const _deployApp = c => new Promise((resolve, reject) => {
     logTask(`_deployApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _deployAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _deployAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
+
+const configureHostedIfRequired = async (c, platform) => {
+    const { hosted, device } = c.program;
+    if (hosted && device) {
+        logDebug('Running hosted build');
+        const { platformBuildsFolder, rnvRootFolder } = c.paths;
+        copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public'));
+        writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public', 'index.html'), [
+            { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.platformDefaults[platform].defaultPort}` },
+        ]);
+    }
+};
+
+const startHostedServerIfRequired = (c) => {
+    const { hosted, device } = c.program;
+    if (hosted && device) {
+        return _startServer(c);
+    }
+};
 
 const _runAppWithPlatform = async (c) => {
     logTask(`_runAppWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
-    const { hosted } = c.program;
+    const { hosted, device } = c.program;
 
     logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
@@ -265,7 +297,12 @@ const _runAppWithPlatform = async (c) => {
     };
 
     if (hosted) {
-        return _startServer(c);
+        if (hostedSupportedPlatforms.includes(platform) && !device) {
+            return _startServer(c);
+        }
+        if (!hostedSupportedPlatforms.includes(platform)) {
+            logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
+        }
     }
 
     switch (platform) {
@@ -334,8 +371,10 @@ const _runAppWithPlatform = async (c) => {
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
+            .then(() => configureHostedIfRequired(c, platform))
             .then(() => runTizen(c, platform, target))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
+            .then(() => startHostedServerIfRequired(c));
     case WEBOS:
         if (!checkSdk(c, platform, throwErr)) return;
 

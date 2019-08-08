@@ -169,6 +169,7 @@ const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.files.appConfigFile.platforms[platform];
+    const { hosted, device } = c.program;
 
     if (!platformConfig) {
         throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfigPath)}`);
@@ -178,9 +179,8 @@ const runTizen = async (c, platform, target) => {
     }
 
     const tDir = getAppFolder(c, platform);
-
-    const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
+    const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
     const gwt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile;
@@ -222,7 +222,7 @@ const runTizen = async (c, platform, target) => {
         let hasDevice = false;
 
         await configureTizenProject(c, platform);
-        await buildWeb(c, platform);
+        !hosted && await buildWeb(c, platform);
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
 

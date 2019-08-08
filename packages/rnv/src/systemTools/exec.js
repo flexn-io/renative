@@ -3,8 +3,9 @@ import path from 'path';
 import shell from 'shelljs';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
+import execa from 'execa';
 
-import { logDebug } from '../common';
+import { logDebug, logError } from '../common';
 
 const { spawn, exec, execSync } = require('child_process');
 
@@ -32,6 +33,8 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
     } else {
         toBeExecuted = command;
     }
+
+    logDebug('ExecCLI:', toBeExecuted);
 
     shell.exec(toBeExecuted, { silent: true, env: process.env, stdio: [process.stdin, 'pipe', 'pipe'] }, (error, stdout) => {
         if (error) {
@@ -143,6 +146,38 @@ const localExecutableSync = (commandName) => {
     }
 };
 
+function execSeparateShell(cmd) {
+    if (process.platform === 'darwin') {
+        try {
+            return execa.sync(
+                'open',
+                ['-a', process.env.TERM_PROGRAM, '--args', cmd],
+            );
+        } catch (error) {
+            return execa.sync('open', [cmd]);
+        }
+    }
+    if (process.platform === 'linux') {
+        try {
+            return execa.sync(process.env.TERM_PROGRAM, ['-e', `sh ${cmd}`], {
+                detached: true,
+            });
+        } catch (error) {
+            // By default, the child shell process will be attached to the parent
+            return execa.sync('sh', [cmd]);
+        }
+    }
+    if (isUsingWindows) {
+        return execa('cmd.exe', ['/C', cmd], {
+            detached: true,
+            stdio: 'ignore',
+        });
+    }
+    const error = `Cannot start the webpackDevServer. Unknown platform ${process.platform}`;
+    logError(error);
+    return Promise.reject(error);
+}
+
 const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
     fileNotExists(commandName, (isFile) => {
         if (!isFile) {
@@ -249,10 +284,11 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync };
+export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync, execSeparateShell };
 
 export default {
     executeAsync,
     execShellAsync,
     execCLI,
+    execSeparateShell
 };

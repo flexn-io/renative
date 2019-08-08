@@ -108,6 +108,7 @@
         "eslint-plugin-mocha": "5.2.0",
         "eslint-plugin-prettier": "3.0.1",
         "eslint-plugin-react": "7.10.0",
+        "execa": "^2.0.3",
         "extract-text-webpack-plugin": "3.0.2",
         "file-loader": "1.1.11",
         "ftp-deploy": "2.3.3",
