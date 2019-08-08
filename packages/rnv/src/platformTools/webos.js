@@ -125,7 +125,7 @@ const listWebOSTargets = async (c) => {
 const runWebOS = async (c, platform, target) => {
     logTask(`runWebOS:${platform}:${target}`);
 
-    const { device } = c.program;
+    const { device, hosted } = c.program;
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
@@ -138,7 +138,7 @@ const runWebOS = async (c, platform, target) => {
 
     // Start the fun
     await configureWebOSProject(c, platform);
-    await buildWeb(c, platform);
+    !hosted && await buildWeb(c, platform);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask);
 
     // List all devices
@@ -161,7 +161,7 @@ const runWebOS = async (c, platform, target) => {
             if (response.setupDevice) {
                 // Yes, I would like that
                 logInfo('Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n');
-                await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_SETUP_DEVICE]]);
+                await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_SETUP_DEVICE]], { stdio: 'inherit' });
 
                 const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
                 const dev = parseDevices(newDeviceResponse);
@@ -171,7 +171,7 @@ const runWebOS = async (c, platform, target) => {
                     const newDevice = actualDev[0];
                     // Oh boy, oh boy, I did it! I have a TV connected!
                     logInfo('Please enter the `Passphrase` from the TV\'s Developer Mode app');
-                    await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_NOVACOM], '--device', newDevice.name, '--getkey']);
+                    await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_NOVACOM], '--device', newDevice.name, '--getkey'], { stdio: 'inherit' });
                     await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`, logTask);
                     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`, logTask);
                 } else {

@@ -34,6 +34,4 @@ const conf = {
     },
 };
 
-console.log('config', JSON.stringify(conf, null, 3));
-
 module.exports = conf;

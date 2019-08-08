@@ -3,7 +3,6 @@ import path from 'path';
 import shell from 'shelljs';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
-import execa from 'execa';
 
 import { logDebug, logError } from '../common';
 
@@ -49,17 +48,19 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
 const executeAsync = (
     cmd,
     args,
-    opts = {
-        cwd: process.cwd(),
-        stdio: 'pipe',
-        env,
-    }
+    opts = {}
 ) => new Promise((resolve, reject) => {
     if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
 
+    const defaultOpts = {
+        // cwd: process.cwd(),
+        stdio: 'pipe',
+        env,
+    };
+
     logDebug(`executeAsync:${cmd} ${args ? args.join(' ') : ''}`);
 
-    const command = spawn(cmd, args, opts);
+    const command = spawn(cmd, args, { ...defaultOpts, ...opts });
 
     let stdout = '';
     let ended = false;
@@ -145,38 +146,6 @@ const localExecutableSync = (commandName) => {
         return false;
     }
 };
-
-function execSeparateShell(cmd) {
-    if (process.platform === 'darwin') {
-        try {
-            return execa.sync(
-                'open',
-                ['-a', process.env.TERM_PROGRAM, '--args', cmd],
-            );
-        } catch (error) {
-            return execa.sync('open', [cmd]);
-        }
-    }
-    if (process.platform === 'linux') {
-        try {
-            return execa.sync(process.env.TERM_PROGRAM, ['-e', `sh ${cmd}`], {
-                detached: true,
-            });
-        } catch (error) {
-            // By default, the child shell process will be attached to the parent
-            return execa.sync('sh', [cmd]);
-        }
-    }
-    if (isUsingWindows) {
-        return execa('cmd.exe', ['/C', cmd], {
-            detached: true,
-            stdio: 'ignore',
-        });
-    }
-    const error = `Cannot start the webpackDevServer. Unknown platform ${process.platform}`;
-    logError(error);
-    return Promise.reject(error);
-}
 
 const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
     fileNotExists(commandName, (isFile) => {
@@ -284,11 +253,10 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync, execSeparateShell };
+export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync };
 
 export default {
     executeAsync,
     execShellAsync,
     execCLI,
-    execSeparateShell
 };

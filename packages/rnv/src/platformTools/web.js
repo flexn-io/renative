@@ -179,7 +179,6 @@ const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Prom
 
 const runWebDevServer = (c, platform, port, async) => new Promise((resolve, reject) => {
     logTask(`runWebDevServer:${platform}`);
-    const { hosted } = c.program;
 
     const appFolder = getAppFolder(c, platform);
     const wpPublic = path.join(appFolder, 'public');

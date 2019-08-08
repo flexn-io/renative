@@ -381,8 +381,10 @@ const _runAppWithPlatform = async (c) => {
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
+            .then(() => configureHostedIfRequired(c, platform))
             .then(() => runWebOS(c, platform, target))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
+            .then(() => startHostedServerIfRequired(c));
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:
