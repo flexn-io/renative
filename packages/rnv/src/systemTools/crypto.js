@@ -48,7 +48,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
                 dest,
                 '-k',
                 key
-            ]))
+            ], { privateParams: ['-k'] }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 resolve();
@@ -86,7 +86,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
             destTemp,
             '-k',
             key
-        ])
+        ], { privateParams: ['-k'] })
             .then(() => {
                 tar.x(
                     {
