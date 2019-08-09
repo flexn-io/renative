@@ -884,7 +884,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             output: process.stdout,
         });
 
-        const configDirs = listAppConfigsFolders(c);
+        const configDirs = listAppConfigsFoldersSync(c);
 
 
         if (appConfigId !== '?') {

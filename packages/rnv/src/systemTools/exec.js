@@ -83,7 +83,7 @@ const executeAsync = (
     command.stdout
             && command.stdout.on('data', (output) => {
                 const outputStr = output.toString();
-                console.log('data', output);
+                console.log('data', outputStr);
                 if (outputStr) stdout += outputStr;
             });
 
@@ -106,7 +106,7 @@ const executeAsync = (
 
     const killChildProcess = () => {
         if (ended) return;
-        console.log(`Killing child process ${cmd} ${cleanArgs}`);
+        logDebug(`Killing child process ${cmd} ${cleanArgs}`);
         command.kill(1);
     };
 
