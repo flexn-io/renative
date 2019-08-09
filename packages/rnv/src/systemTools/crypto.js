@@ -53,6 +53,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
             ], { privateParams: ['-k'] }))
             .then(() => {
                 removeFilesSync([destTemp]);
+                fs.writeFileSync(`${dest}.timestamp`, (new Date()).getTime());
                 logSuccess(`Files succesfully encrypted into ${dest}`);
                 resolve();
             }).catch((e) => {
@@ -71,6 +72,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
 
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
+        const ts = `${source}.timestamp`;
         const destTemp = `${path.join(c.paths.globalConfigFolder, c.files.projectPackage.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
@@ -98,6 +100,9 @@ export const decrypt = c => new Promise((resolve, reject) => {
                     }
                 ).then(() => {
                     removeFilesSync([destTemp]);
+                    if (fs.existsSync(ts)) {
+                        copyFileSync(ts, path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, 'timestamp'));
+                    }
                     logSuccess(`Files succesfully extracted into ${c.paths.globalConfigFolder}`);
                     resolve();
                 })
