@@ -1041,6 +1041,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
         return;
     }
     PLATFORM_RUNS[platform] = true;
+    const { device } = c.program;
     // if (!fs.existsSync(getAppFolder(c, platform))) {
     //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
 
@@ -1051,6 +1052,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
         update: false,
         platform,
         scheme: c.program.scheme,
+        device
     };
 
     if (c.program.reset) {
