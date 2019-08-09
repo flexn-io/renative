@@ -106,8 +106,9 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     }
 
     // BUILD_TYPES
-    const debugBuildTypes = c.files.pluginConfig?.android?.gradle?.buildTypes?.debug ?? [];
-    const releaseBuildTypes = c.files.pluginConfig?.android?.gradle?.buildTypes?.release ?? [];
+    const pluginConfig = c.files.pluginConfig ?? {};
+    const debugBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.debug ?? [];
+    const releaseBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.release ?? [];
     c.pluginConfigAndroid.buildTypes = `
     debug {
         minifyEnabled false
