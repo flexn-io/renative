@@ -17,6 +17,11 @@ import { IOS, TVOS } from '../../constants';
 
 export const updateProfile = c => new Promise((resolve, reject) => {
     logTask('updateProfile', chalk.grey);
+
+    if (c.platform !== IOS && c.platform !== TVOS) {
+        reject(`updateProfile:platform ${c.platform} not supported`);
+        return;
+    }
     const {
         appId, platform, paths, files, program
     } = c;

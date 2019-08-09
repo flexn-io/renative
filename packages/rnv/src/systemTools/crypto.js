@@ -53,6 +53,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
             ], { privateParams: ['-k'] }))
             .then(() => {
                 removeFilesSync([destTemp]);
+                logSuccess(`Files succesfully encrypted into ${dest}`);
                 resolve();
             }).catch((e) => {
                 reject(e);
