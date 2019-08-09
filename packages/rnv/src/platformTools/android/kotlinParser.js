@@ -20,6 +20,7 @@ import {
     getAppTemplateFolder,
     getBuildFilePath,
     getEntryFile,
+    getGetJsBundleFile,
     logWarning,
     logDebug,
     getConfigProp,
@@ -36,6 +37,7 @@ export const parseMainApplicationSync = (c, platform) => {
     writeCleanFile(getBuildFilePath(c, platform, applicationPath), path.join(appFolder, applicationPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
+        { pattern: '{{GET_JS_BUNDLE_FILE}}', override: getGetJsBundleFile(c, platform) },
         { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginImports },
         { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
         { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.mainApplicationMethods },

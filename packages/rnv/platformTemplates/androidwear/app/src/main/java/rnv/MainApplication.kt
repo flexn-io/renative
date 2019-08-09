@@ -29,8 +29,8 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getJSMainModuleName(): String = "{{ENTRY_FILE}}"
 
-        //CRAPPY BUT Android Wear does not support webview required for connecting to packager
-        override fun getJSBundleFile(): String = "assets://{{ENTRY_FILE}}.bundle"
+        //See src/common.js for the actual code
+        override fun getJSBundleFile(): String? = {{GET_JS_BUNDLE_FILE}}
     }
 
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost
