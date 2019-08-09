@@ -2,9 +2,11 @@ import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
 import fs from 'fs';
-import { logWarning, logInfo, logError, logTask, logDebug, logSuccess } from '../common';
-import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync } from './fileutils';
+import { logWarning, logInfo, logError, logTask, logDebug, logSuccess, listAppConfigsFoldersSync } from '../common';
+import { IOS, TVOS } from '../constants';
+import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
 import { executeAsync } from './exec';
+import { updateProfile } from '../platformTools/apple/fastlane';
 
 const getEnvVar = (c) => {
     const p1 = c.paths.globalConfigFolder.split('/').pop().replace('.', '');
@@ -160,4 +162,54 @@ const _setupAppleCI = c => new Promise((resolve, reject) => {
             logWarning(e);
             resolve();
         });
+});
+
+
+export const updateProfiles = (c) => {
+    logTask('updateProfiles');
+    switch (c.platform) {
+    case IOS:
+    case TVOS:
+        const savedAppConfig = c.files.appConfigFile;
+        const scheme = c.program.scheme;
+        const appId = c.appId;
+        return _updateProfiles(c)
+            .then(() => {
+                c.files.appConfigFile = savedAppConfig;
+                c.appId = appId;
+                c.program.scheme = scheme;
+            });
+    }
+    return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
+};
+
+export const _updateProfiles = (c) => {
+    logTask('_updateProfiles', chalk.grey);
+    const acList = listAppConfigsFoldersSync(c);
+    const fullList = [];
+    acList.forEach((v) => {
+        const appConfigFile = readObjectSync(path.join(c.paths.appConfigsFolder, v, 'config.json'));
+
+        const buildSchemes = appConfigFile.platforms[c.platform]?.buildSchemes;
+
+        Object.keys(buildSchemes).forEach((scheme) => {
+            fullList.push({
+                appConfigFile,
+                appId: v,
+                scheme
+            });
+        });
+    });
+    // return Promise.resolve();
+    return fullList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
+};
+
+const _updateProfile = (c, v) => new Promise((resolve, reject) => {
+    logTask(`_updateProfile:${v}`, chalk.grey);
+    c.files.appConfigFile = v.appConfigFile;
+    c.program.scheme = v.scheme;
+    c.appId = v.appId;
+    updateProfile(c)
+        .then(() => resolve())
+        .catch(e => reject(e));
 });

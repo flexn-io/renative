@@ -862,6 +862,16 @@ const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 const IGNORE_FOLDERS = ['.git'];
 
+export const listAppConfigsFoldersSync = (c) => {
+    const configDirs = [];
+    fs.readdirSync(c.paths.appConfigsFolder).forEach((dir) => {
+        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.paths.appConfigsFolder, dir)).isDirectory()) {
+            configDirs.push(dir);
+        }
+    });
+    return configDirs;
+};
+
 const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
@@ -874,12 +884,8 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             output: process.stdout,
         });
 
-        const configDirs = [];
-        fs.readdirSync(c.paths.appConfigsFolder).forEach((dir) => {
-            if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.paths.appConfigsFolder, dir)).isDirectory()) {
-                configDirs.push(dir);
-            }
-        });
+        const configDirs = listAppConfigsFolders(c);
+
 
         if (appConfigId !== '?') {
             logWarning(
@@ -991,6 +997,10 @@ const CLI_PROPS = [
 ];
 
 const getConfigProp = (c, platform, key, defaultVal) => {
+    if (!c.files.appConfigFile) {
+        logError('getConfigProp: c.files.appConfigFile is undefined!');
+        return null;
+    }
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
     let scheme;
@@ -1387,6 +1397,7 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
+    listAppConfigsFoldersSync,
     getBuildFilePath,
     getBuildsFolder,
     configureEntryPoints,

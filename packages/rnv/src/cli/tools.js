@@ -24,7 +24,7 @@ import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanProjectModules } from '../systemTools/cleaner';
 import { logStatus } from '../systemTools/logger';
 import { fixPackageJson } from '../systemTools/doctor';
-import { encrypt, decrypt, setupCI } from '../systemTools/crypto';
+import { encrypt, decrypt, setupCI, updateProfiles } from '../systemTools/crypto';
 import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
@@ -46,6 +46,7 @@ const FIX_PACKAGE = 'fixPackage';
 const ENCRYPT = 'encrypt';
 const DECRYPT = 'decrypt';
 const SETUP_CI = 'setupCI';
+const UPDATE_PROFILES = 'updateProfiles';
 
 const PIPES = {
     FIX_BEFORE: 'fix:before',
@@ -100,6 +101,10 @@ const _crypto = c => new Promise((resolve, reject) => {
         return;
     case SETUP_CI:
         setupCI(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+    case UPDATE_PROFILES:
+        updateProfiles(c)
             .then(() => resolve())
             .catch(e => reject(e));
         return;
