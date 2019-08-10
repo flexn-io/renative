@@ -4,6 +4,7 @@ import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
 import ip from 'ip';
+import path from 'path';
 
 import {
     isPlatformSupported,
@@ -149,18 +150,17 @@ const _fix = c => new Promise((resolve, reject) => {
 const _isWebHostEnabled = (c, platform) => {
     const { hosted } = c.program;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    return (hosted || bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
+    return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
 };
 
 const _startServer = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
-    const { device } = c.program;
+    const { device, hosted } = c.program;
 
     logTask(`_startServer:${platform}:${port}`);
-    const isWebHostEnabled = _isWebHostEnabled(c, platform);
 
-    if (isWebHostEnabled && !device) {
+    if (_isWebHostEnabled(c, platform) && hosted) {
         const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         open(`http://${hostIp}:${port}/`);
     }
@@ -185,7 +185,7 @@ const _startServer = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     default:
-        if (isWebHostEnabled) {
+        if (hosted) {
             return logError('This platform does not support hosted mode', true);
         }
     }
@@ -259,8 +259,9 @@ const _deployApp = c => new Promise((resolve, reject) => {
 
 const configureHostedIfRequired = async (c, platform) => {
     const { device } = c.program;
-    if (_isWebHostEnabled(c, platform) && device) {
+    if (_isWebHostEnabled(c, platform)) {
         logDebug('Running hosted build');
+        console.log('DJKDDHDKJDHKDJHDKJDHKJ');
         const { platformBuildsFolder, rnvRootFolder } = c.paths;
         copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public'));
         writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public', 'index.html'), [
@@ -271,7 +272,7 @@ const configureHostedIfRequired = async (c, platform) => {
 
 const startHostedServerIfRequired = (c, platform) => {
     const { device } = c.program;
-    if (_isWebHostEnabled(c, platform) && device) {
+    if (_isWebHostEnabled(c, platform)) {
         return _startServer(c);
     }
 };
@@ -281,7 +282,7 @@ const _runAppWithPlatform = async (c) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
-    const { device } = c.program;
+    const { device, hosted } = c.program;
 
     logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
@@ -289,7 +290,7 @@ const _runAppWithPlatform = async (c) => {
         throw err;
     };
 
-    if (_isWebHostEnabled(c, platform) && !device) {
+    if (_isWebHostEnabled(c, platform) && hosted) {
         return _startServer(c);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }

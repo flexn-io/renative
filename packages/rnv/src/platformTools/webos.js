@@ -130,19 +130,20 @@ const runWebOS = async (c, platform, target) => {
 
     const { device, hosted } = c.program;
 
-    const isHosted = hosted || getConfigProp(c, platform, 'bundleAssets');
+    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
     const tSim = c.program.target || 'emulator';
     const configFilePath = path.join(getAppFolder(c, platform), 'public/appinfo.json');
 
+    logTask(`runWebOS:${platform}:${target}:${isHosted}`, chalk.grey);
+
     const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
     // Start the fun
-    await configureWebOSProject(c, platform);
     !isHosted && await buildWeb(c, platform);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask);
 
@@ -244,8 +245,7 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
 
-    configureWebOSProject(c, platform)
-        .then(() => buildWeb(c, platform))
+    buildWeb(c, platform)
         .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask))
         .then(() => {
             logSuccess(`Your IPK package is located in ${chalk.white(tOut)} .`);
