@@ -24,7 +24,7 @@ import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanProjectModules } from '../systemTools/cleaner';
 import { logStatus } from '../systemTools/logger';
 import { fixPackageJson } from '../systemTools/doctor';
-import { encrypt, decrypt, setupCI, updateProfiles } from '../systemTools/crypto';
+import { encrypt, decrypt, installProfiles, updateProfiles, installCerts } from '../systemTools/crypto';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { executePipe } from '../projectTools/buildHooks';
 import {
@@ -46,9 +46,10 @@ const CRYPTO = 'crypto';
 const FIX_PACKAGE = 'fixPackage';
 const ENCRYPT = 'encrypt';
 const DECRYPT = 'decrypt';
-const SETUP_CI = 'setupCI';
+const INSTALL_PROFILES = 'installProfiles';
 const UPDATE_PROFILES = 'updateProfiles';
 const UPDATE_PROFILE = 'updateProfile';
+const INSTALL_CERTS = 'installCerts';
 
 const PIPES = {
     FIX_BEFORE: 'fix:before',
@@ -101,16 +102,23 @@ const _crypto = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
-    case SETUP_CI:
-        setupCI(c)
+    case INSTALL_PROFILES:
+        installProfiles(c)
             .then(() => resolve())
             .catch(e => reject(e));
+        return;
     case UPDATE_PROFILES:
         updateProfiles(c)
             .then(() => resolve())
             .catch(e => reject(e));
+        return;
     case UPDATE_PROFILE:
         updateProfile(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case INSTALL_CERTS:
+        installCerts(c)
             .then(() => resolve())
             .catch(e => reject(e));
         return;

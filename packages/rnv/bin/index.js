@@ -37,6 +37,7 @@ program
     .option('--ci', 'CI/CD flag so it wont ask questions')
     .option('--mono', 'Monochrome console output without chalk')
     .option('--skipNotifications', 'Skip sending any integrated notifications')
+    .option('--keychain <value>', 'Name of the keychain')
     .option('--provisioningStyle <value>', 'Set provisioningStyle <Automatic | Manual>')
     .option('--codeSignIdentity <value>', 'Set codeSignIdentity ie <iPhone Distribution>')
     .option('--provisionProfileSpecifier <value>', 'Name of provisionProfile')

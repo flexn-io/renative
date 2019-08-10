@@ -116,20 +116,15 @@ export const decrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const setupCI = (c) => {
-    logTask('setupCI');
-    if (c.platform === 'ios') return _setupAppleCI(c);
+export const installProfiles = c => new Promise((resolve, reject) => {
+    logTask('installProfiles');
+    if (c.platform !== 'ios') {
+        logError(`installProfiles: platform ${c.platform} not supported`);
+        resolve();
+        return;
+    }
 
-    logError(`setupCI: platform ${c.platform} not supported`);
-    return Promise.resolve();
-};
-
-const _setupAppleCI = c => new Promise((resolve, reject) => {
-    logTask('_setupAppleCI');
     const ppFolder = path.join(c.paths.homeFolder, 'Library/MobileDevice/Provisioning Profiles');
-    const kChain = 'ios-build.keychain';
-    const kChainPath = path.join(c.paths.homeFolder, 'Library/Keychains', kChain);
-    const tempPass = '***********';
 
     if (!fs.existsSync(ppFolder)) {
         logWarning(`folder ${ppFolder} does not exist!`);
@@ -137,25 +132,33 @@ const _setupAppleCI = c => new Promise((resolve, reject) => {
     }
 
     const list = getFileListSync(c.paths.globalProjectFolder);
-    const cerPromises = [];
     const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
-    const cerArr = list.filter(v => v.endsWith('.cer'));
 
     try {
         mobileprovisionArr.forEach((v) => {
+            console.log(`installProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
-        copyFileSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/AppleWWDRCA.cer'), ppFolder);
     } catch (e) {
         logError(e);
     }
 
-    // KEYCHAIN
-    // console.log('kChainPath', kChainPath);
-    // executeAsync('security', ['create-keychain', '-p', tempPass, kChain])
-    //     .then(() => executeAsync('security', ['default-keychain', '-s', kChain]))
-    //     .then(() => executeAsync('security', ['unlock-keychain', '-p', tempPass, kChain]))
-    //     .then(() => executeAsync('security', ['set-keychain-settings', '-t', '3600', '-l', kChainPath]))
+    resolve();
+});
+
+export const installCerts = c => new Promise((resolve, reject) => {
+    logTask('installCerts');
+    if (c.platform !== 'ios') {
+        logError(`_installTempCerts: platform ${c.platform} not supported`);
+        resolve();
+        return;
+    }
+    const kChain = c.program.keychain || 'ios-build.keychain';
+    const kChainPath = path.join(c.paths.homeFolder, 'Library/Keychains', kChain);
+    const list = getFileListSync(c.paths.globalProjectFolder);
+    const cerPromises = [];
+    const cerArr = list.filter(v => v.endsWith('.cer'));
+
     Promise.all(cerArr.map(v => executeAsync('security', [
         'import',
         v,

@@ -383,8 +383,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
     const appFolderName = getAppFolderName(c, platform);
-
-    return executeAsync('react-native', [
+    const args = [
         'bundle',
         '--platform',
         'ios',
@@ -396,7 +395,13 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
         '--bundle-output',
         `${getAppFolder(c, platform)}/main.jsbundle`,
-    ]);
+    ];
+
+    if (c.program.info) {
+        args.push('--verbose');
+    }
+
+    return executeAsync('react-native', args);
 };
 
 export const getAppFolderName = (c, platform) => {
