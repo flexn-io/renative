@@ -25,6 +25,7 @@ import {
     getAppTemplateFolder,
     getEntryFile,
     copyBuildsFolder,
+    getConfigProp
 } from '../common';
 import {
     CLI_ANDROID_EMULATOR,
@@ -69,7 +70,7 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const sourcePath = path.join(c.paths.appConfigFolder, 'assets', platform);
-    const destPath = path.join(getAppFolder(c, platform), 'RNVApp');
+    const destPath = path.join(getAppFolder(c, platform), 'public');
 
     copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
@@ -127,20 +128,23 @@ const listWebOSTargets = async (c) => {
 const runWebOS = async (c, platform, target) => {
     logTask(`runWebOS:${platform}:${target}`);
 
-    const { device } = c.program;
+    const { device, hosted } = c.program;
 
-    const tDir = path.join(getAppFolder(c, platform), 'RNVApp');
+    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+
+    const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
     const tSim = c.program.target || 'emulator';
-    const configFilePath = path.join(getAppFolder(c, platform), 'RNVApp/appinfo.json');
+    const configFilePath = path.join(getAppFolder(c, platform), 'public/appinfo.json');
+
+    logTask(`runWebOS:${platform}:${target}:${isHosted}`, chalk.grey);
 
     const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
     // Start the fun
-    await configureWebOSProject(c, platform);
-    await buildWeb(c, platform);
+    !isHosted && await buildWeb(c, platform);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask);
 
     // List all devices
@@ -163,7 +167,7 @@ const runWebOS = async (c, platform, target) => {
             if (response.setupDevice) {
                 // Yes, I would like that
                 logInfo('Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n');
-                await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_SETUP_DEVICE]]);
+                await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_SETUP_DEVICE]], { stdio: 'inherit' });
 
                 const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
                 const dev = parseDevices(newDeviceResponse);
@@ -173,7 +177,7 @@ const runWebOS = async (c, platform, target) => {
                     const newDevice = actualDev[0];
                     // Oh boy, oh boy, I did it! I have a TV connected!
                     logInfo('Please enter the `Passphrase` from the TV\'s Developer Mode app');
-                    await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_NOVACOM], '--device', newDevice.name, '--getkey']);
+                    await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_NOVACOM], '--device', newDevice.name, '--getkey'], { stdio: 'inherit' });
                     await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`, logTask);
                     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`, logTask);
                 } else {
@@ -241,8 +245,7 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
 
-    configureWebOSProject(c, platform)
-        .then(() => buildWeb(c, platform))
+    buildWeb(c, platform)
         .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask))
         .then(() => {
             logSuccess(`Your IPK package is located in ${chalk.white(tOut)} .`);
@@ -270,7 +273,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    const configFile = 'RNVApp/appinfo.json';
+    const configFile = 'public/appinfo.json';
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },

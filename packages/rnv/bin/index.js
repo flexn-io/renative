@@ -41,6 +41,7 @@ program
     .option('--provisioningStyle <value>', 'Set provisioningStyle <Automatic | Manual>')
     .option('--codeSignIdentity <value>', 'Set codeSignIdentity ie <iPhone Distribution>')
     .option('--provisionProfileSpecifier <value>', 'Name of provisionProfile')
+    .option('--hosted', 'Run in a hosted environment (skip budleAssets)')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

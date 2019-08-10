@@ -3,6 +3,8 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
+import { exec } from 'child_process';
+
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
