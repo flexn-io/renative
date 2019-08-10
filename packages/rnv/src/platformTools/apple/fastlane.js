@@ -12,7 +12,7 @@ import {
     getConfigProp,
     logDebug
 } from '../../common';
-import { executeAsync } from '../../exec';
+import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
 
 export const updateProfile = c => new Promise((resolve, reject) => {
