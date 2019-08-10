@@ -349,9 +349,31 @@ Build app blazingly fast with built-in features:
 
 #### Development platforms
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-POC-orange.svg)
-![](https://img.shields.io/badge/Ubuntu-untested-lightgrey.svg)
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_osx.png?raw=true" width="100" height="100" />
+    </th>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_linux.jpeg?raw=true" width="100" height="100" />
+    </th>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_windows.png?raw=true" width="100" height="100" />
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    </th>
+    <th>
+      <img src="https://img.shields.io/badge/Ubuntu-beta-orange.svg" />
+    </th>
+    <th>
+      <img src="https://img.shields.io/badge/Windows-beta-orange.svg" />
+    </th>
+  </tr>
+</table>
+
 
 #### Requirements
 
@@ -1186,7 +1208,7 @@ rnv log -p ios -f com.myapp
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
 -   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
--   Windows 10 Pro or a better variant if you want to start the emulator on a Windows machine. Windows Home or Educational do not support Hyper-V and that's required for starting the Android emulators 
+-   Windows 10 Pro or a better variant if you want to start the emulator on a Windows machine. Windows Home or Educational do not support Hyper-V and that's required for starting the Android emulators
 
 #### Project Configuration
 
