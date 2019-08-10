@@ -39,7 +39,8 @@ const commands = {
     clean: Tools,
     tool: Tools,
     template: Template,
-    debug: Runner
+    debug: Runner,
+    crypto: Tools
 };
 
 const run = (cmd, subCmd, program, process) => {

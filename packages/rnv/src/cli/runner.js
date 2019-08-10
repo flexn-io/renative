@@ -59,7 +59,6 @@ import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
     runAndroid,
-    configureAndroidProperties,
     configureGradleProject,
     buildAndroid,
     runAndroidLog,
@@ -289,7 +288,6 @@ const _runAppWithPlatform = async (c) => {
         await executePipe(c, PIPES.RUN_BEFORE);
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
-        await configureAndroidProperties(c);
         await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
         await executePipe(c, PIPES.RUN_AFTER);
         return;
@@ -366,7 +364,6 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.PACKAGE_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform, target, platform === ANDROID_WEAR))
             .then(() => executePipe(c, PIPES.PACKAGE_AFTER))
@@ -451,7 +448,6 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.BUILD_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform))
             .then(() => buildAndroid(c, platform))
