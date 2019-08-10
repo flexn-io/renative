@@ -1569,6 +1569,18 @@ rnv target launch -p tizen -t T-samsung-5.0-x86
 rnv run -p tizen
 ```
 
+Run on Device
+
+```
+rnv run -p tizen -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizen --hosted
+```
+
 #### Advanced
 
 Clean and Re-build platform project
@@ -1639,6 +1651,18 @@ rnv target launch -p tizenwatch -t W-5.0-circle-x86
 rnv run -p tizenwatch
 ```
 
+Run on Device
+
+```
+rnv run -p tizenwatch -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizenwatch --hosted
+```
+
 #### Advanced
 
 Clean and Re-build platform project
@@ -1702,8 +1726,22 @@ usually located in something like:
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p webos
+```
+
+Run on Device
+
+```
+rnv run -p webos -d
+```
+
+Run in Browser
+
+```
+rnv run -p webos --hosted
 ```
 
 ---
@@ -1760,8 +1798,22 @@ rnv target launch -p tizenmobile -t M-5.0-x86
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p tizenmobile
+```
+
+Run on Device
+
+```
+rnv run -p tizenmobile -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizenmobile --hosted
 ```
 
 #### Advanced
@@ -1813,8 +1865,16 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p macos
+```
+
+Run in Browser
+
+```
+rnv run -p macos --hosted
 ```
 
 #### Deploy on Electron Simulator
@@ -1867,8 +1927,16 @@ rnv export -p macos -s release
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p windows
+```
+
+Run in Browser
+
+```
+rnv run -p windows --hosted
 ```
 
 ---
@@ -1969,10 +2037,23 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+Run on Simulator
 
 ```
 rnv run -p kaios
+```
+
+Run on Device
+
+```
+rnv run -p kaios -d
+```
+
+Run in Browser
+
+```
+rnv run -p kaios --hosted
 ```
 
 ---
@@ -2011,10 +2092,22 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+Run on Simulator
 
 ```
-rnv run -p firefoxos
+rnv run -p forefoxos
+```
+
+Run on Device
+
+```
+rnv run -p forefoxos -d
+```
+
+Run in Browser
+
+```
+rnv run -p forefoxos --hosted
 ```
 
 ---
@@ -2053,10 +2146,22 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+Run on Simulator
 
 ```
-rnv run -p firefoxtv
+rnv run -p forefoxtv
+```
+
+Run on Device
+
+```
+rnv run -p forefoxtv -d
+```
+
+Run in Browser
+
+```
+rnv run -p forefoxtv --hosted
 ```
 
 # CLI
