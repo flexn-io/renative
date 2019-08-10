@@ -23,6 +23,7 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     copyBuildsFolder,
+    getConfigProp,
 } from '../common';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
@@ -171,6 +172,8 @@ const runTizen = async (c, platform, target) => {
     const platformConfig = c.files.appConfigFile.platforms[platform];
     const { hosted, device } = c.program;
 
+    const isHosted = hosted || getConfigProp(c, platform, 'bundleAssets');
+
     if (!platformConfig) {
         throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfigPath)}`);
     }
@@ -222,7 +225,7 @@ const runTizen = async (c, platform, target) => {
         let hasDevice = false;
 
         await configureTizenProject(c, platform);
-        !hosted && await buildWeb(c, platform);
+        !isHosted && await buildWeb(c, platform);
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
 

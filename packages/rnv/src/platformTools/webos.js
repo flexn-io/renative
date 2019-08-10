@@ -25,6 +25,7 @@ import {
     getAppTemplateFolder,
     getEntryFile,
     copyBuildsFolder,
+    getConfigProp
 } from '../common';
 import {
     CLI_ANDROID_EMULATOR,
@@ -129,6 +130,8 @@ const runWebOS = async (c, platform, target) => {
 
     const { device, hosted } = c.program;
 
+    const isHosted = hosted || getConfigProp(c, platform, 'bundleAssets');
+
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
     const tSim = c.program.target || 'emulator';
@@ -140,7 +143,7 @@ const runWebOS = async (c, platform, target) => {
 
     // Start the fun
     await configureWebOSProject(c, platform);
-    !hosted && await buildWeb(c, platform);
+    !isHosted && await buildWeb(c, platform);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask);
 
     // List all devices

@@ -18,7 +18,8 @@ import {
     logInfo,
     logDebug,
     logWarning,
-    writeCleanFile
+    writeCleanFile,
+    getConfigProp
 } from '../common';
 import {
     IOS,
@@ -36,6 +37,7 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    WEB_HOSTED_PLATFORMS
 } from '../constants';
 import {
     runXcodeProject,
@@ -94,15 +96,6 @@ const PIPES = {
     DEPLOY_AFTER: 'deploy:after',
 };
 
-const hostedSupportedPlatforms = [
-    TIZEN,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH
-];
-
 const isRunningOnWindows = process.platform === 'win32';
 
 // ##########################################
@@ -153,16 +146,23 @@ const _fix = c => new Promise((resolve, reject) => {
     cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
 });
 
+const _isWebHostEnabled = (c, platform) => {
+    const { hosted } = c.program;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    return (hosted || bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
+};
+
 const _startServer = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
-    const { hosted, device } = c.program;
+    const { device } = c.program;
 
     logTask(`_startServer:${platform}:${port}`);
+    const isWebHostEnabled = _isWebHostEnabled(c, platform);
 
-    if (hosted && !device) {
-        const hostedIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
-        open(`http://${hostedIp}:${port}/`);
+    if (isWebHostEnabled && !device) {
+        const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+        open(`http://${hostIp}:${port}/`);
     }
 
     switch (platform) {
@@ -185,7 +185,7 @@ const _startServer = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     default:
-        if (hosted) {
+        if (isWebHostEnabled) {
             return logError('This platform does not support hosted mode', true);
         }
     }
@@ -258,8 +258,8 @@ const _deployApp = c => new Promise((resolve, reject) => {
 });
 
 const configureHostedIfRequired = async (c, platform) => {
-    const { hosted, device } = c.program;
-    if (hosted && device) {
+    const { device } = c.program;
+    if (_isWebHostEnabled(c, platform) && device) {
         logDebug('Running hosted build');
         const { platformBuildsFolder, rnvRootFolder } = c.paths;
         copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public'));
@@ -269,9 +269,9 @@ const configureHostedIfRequired = async (c, platform) => {
     }
 };
 
-const startHostedServerIfRequired = (c) => {
-    const { hosted, device } = c.program;
-    if (hosted && device) {
+const startHostedServerIfRequired = (c, platform) => {
+    const { device } = c.program;
+    if (_isWebHostEnabled(c, platform) && device) {
         return _startServer(c);
     }
 };
@@ -281,7 +281,7 @@ const _runAppWithPlatform = async (c) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
-    const { hosted, device } = c.program;
+    const { device } = c.program;
 
     logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
@@ -289,13 +289,9 @@ const _runAppWithPlatform = async (c) => {
         throw err;
     };
 
-    if (hosted) {
-        if (hostedSupportedPlatforms.includes(platform) && !device) {
-            return _startServer(c);
-        }
-        if (!hostedSupportedPlatforms.includes(platform)) {
-            logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
-        }
+    if (_isWebHostEnabled(c, platform) && !device) {
+        return _startServer(c);
+        // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
 
     switch (platform) {
@@ -347,7 +343,7 @@ const _runAppWithPlatform = async (c) => {
             .then(() => configureHostedIfRequired(c, platform))
             .then(() => runTizen(c, platform, target))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
-            .then(() => startHostedServerIfRequired(c));
+            .then(() => startHostedServerIfRequired(c, platform));
     case WEBOS:
         if (!checkSdk(c, platform, logError)) {
             const setupInstance = PlatformSetup(c);
@@ -360,7 +356,7 @@ const _runAppWithPlatform = async (c) => {
             .then(() => configureHostedIfRequired(c, platform))
             .then(() => runWebOS(c, platform, target))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
-            .then(() => startHostedServerIfRequired(c));
+            .then(() => startHostedServerIfRequired(c, platform));
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:

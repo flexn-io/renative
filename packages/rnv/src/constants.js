@@ -124,6 +124,15 @@ const PLATFORMS = {
     xbox360: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, useSharedConfig: true },
 };
 
+const WEB_HOSTED_PLATFORMS = [
+    TIZEN,
+    WEBOS,
+    MACOS,
+    WINDOWS,
+    TIZEN_MOBILE,
+    TIZEN_WATCH
+];
+
 
 // PLATFORM GROUP
 const PLATFORM_GROUP_SMARTTV = 'smarttv';
@@ -204,6 +213,7 @@ const PACKAGE_JSON_FILEDS = [
 
 export {
     PLATFORMS,
+    WEB_HOSTED_PLATFORMS,
     ANDROID,
     ANDROID_AUTO,
     ANDROID_TV,
@@ -289,6 +299,7 @@ export {
 
 export default {
     PLATFORMS,
+    WEB_HOSTED_PLATFORMS,
     ANDROID,
     ANDROID_AUTO,
     ANDROID_TV,

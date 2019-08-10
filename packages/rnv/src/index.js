@@ -106,7 +106,7 @@ ${chalk.bold.white('OPTIONS:')}
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
 '-D, --debug', 'enable remote debugger'
-'--hosted', 'Run in a hosted environment'
+'--hosted', 'Run in a hosted environment (skip bundleAssets)'
 '--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
 `);
 };
