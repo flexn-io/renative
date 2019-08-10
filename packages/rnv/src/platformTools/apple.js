@@ -49,7 +49,7 @@ const checkIfCommandExists = command => new Promise((resolve, reject) => child_p
 }));
 
 const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
-    logTask(`runPod:${command}`);
+    logTask(`runPod:${command}:${rejectOnFail}`);
 
     if (!fs.existsSync(cwd)) {
         if (rejectOnFail) return reject(`Location ${cwd} does not exists!`);
@@ -383,8 +383,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
     const appFolderName = getAppFolderName(c, platform);
-
-    return executeAsync('react-native', [
+    const args = [
         'bundle',
         '--platform',
         'ios',
@@ -396,7 +395,13 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
         '--bundle-output',
         `${getAppFolder(c, platform)}/main.jsbundle`,
-    ]);
+    ];
+
+    if (c.program.info) {
+        args.push('--verbose');
+    }
+
+    return executeAsync('react-native', args);
 };
 
 export const getAppFolderName = (c, platform) => {
@@ -497,6 +502,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     }
 
     // PARSERS
+    const forceUpdate = !fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
     copyAppleAssets(c, platform, appFolderName)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, ip, port))
@@ -505,14 +511,13 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .then(() => parsePodFile(c, platform))
         .then(() => parseEntitlementsPlist(c, platform))
         .then(() => parseInfoPlist(c, platform))
-        .then(() => runPod(c.program.update ? 'update' : 'install', getAppFolder(c, platform), true))
+        .then(() => runPod(forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true))
         .then(() => parseXcodeProject(c, platform))
         .then(() => resolve())
         .catch((e) => {
             if (!c.program.update) {
-                throw e;
                 logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                runPod('update', getAppFolder(c, platform))
+                runPod('update', getAppFolder(c, platform), true)
                     .then(() => parseXcodeProject(c, platform))
                     .then(() => resolve())
                     .catch(err => reject(err));

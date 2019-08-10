@@ -54,13 +54,33 @@ const executeAsync = (
 
     const defaultOpts = {
         // cwd: process.cwd(),
+        privateParams: [],
         stdio: 'pipe',
         env,
     };
 
-    logDebug(`executeAsync:${cmd} ${args ? args.join(' ') : ''}`);
+    const mergedOpts = { ...defaultOpts, ...opts };
 
-    const command = spawn(cmd, args, { ...defaultOpts, ...opts });
+    let cleanArgs = '';
+    let hideNext = false;
+    const pp = mergedOpts?.privateParams || [];
+    if (args) {
+        args.forEach((v) => {
+            if (hideNext) {
+                hideNext = false;
+                cleanArgs += ' ***********';
+            } else {
+                cleanArgs += ` ${v}`;
+            }
+            if (pp.includes(v)) {
+                hideNext = true;
+            }
+        });
+    }
+
+    logDebug(`executeAsync:${cmd} ${cleanArgs}`);
+
+    const command = spawn(cmd, args, mergedOpts);
 
     let stdout = '';
     let ended = false;
@@ -80,7 +100,7 @@ const executeAsync = (
             });
 
     command.on('close', (code) => {
-        logDebug(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} exited with code ${code}`);
+        logDebug(`Command ${cmd} ${cleanArgs} exited with code ${code}`);
         if (code !== 0) {
             reject(new Error(`process exited with code ${code}. ${stdout}`));
         } else {
@@ -92,13 +112,13 @@ const executeAsync = (
     });
 
     command.on('error', (error) => {
-        logDebug(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} errored with ${error}`);
+        logDebug(`Command ${cmd} ${cleanArgs} errored with ${error}`);
         reject(new Error(`process errored with ${error}`));
     });
 
     const killChildProcess = () => {
         if (ended) return;
-        console.log(`Killing child process ${cmd}${args ? ` ${args.join(' ')}` : ''}`);
+        logDebug(`Killing child process ${cmd} ${cleanArgs}`);
         command.kill(1);
     };
 

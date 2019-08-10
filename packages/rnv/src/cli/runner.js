@@ -1,8 +1,6 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import shell from 'shelljs';
-import inquirer from 'inquirer';
-import path from 'path';
 import chalk from 'chalk';
 import open from 'open';
 import ip from 'ip';
@@ -38,10 +36,6 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_SDKMANAGER
 } from '../constants';
 import {
     runXcodeProject,
@@ -64,7 +58,6 @@ import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
     runAndroid,
-    configureAndroidProperties,
     configureGradleProject,
     buildAndroid,
     runAndroidLog,
@@ -317,36 +310,13 @@ const _runAppWithPlatform = async (c) => {
     case ANDROID_TV:
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, logError)) {
-            let sdkInstall;
-            if (!c.program.ci) {
-                const response = await inquirer.prompt([{
-                    name: 'sdkInstall',
-                    type: 'confirm',
-                    message: 'Do you want to install the Android SDK?',
-                }]);
-                // eslint-disable-next-line prefer-destructuring
-                sdkInstall = response.sdkInstall;
-            }
-
-            const appendExeIfWindows = (process.platform === 'win32' ? 'emulator/emulator.exe' : '');
-
-            if (c.program.ci || sdkInstall) {
-                const setupInstance = PlatformSetup(c);
-                const newPath = await setupInstance.installAndroidSdk();
-                // @todo find a more elegant way to update this
-                c.files.globalConfig.sdks.ANDROID_SDK = newPath;
-                const { sdks: { ANDROID_SDK } } = c.files.globalConfig;
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator', appendExeIfWindows);
-                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb', appendExeIfWindows);
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager', appendExeIfWindows);
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager', appendExeIfWindows);
-            }
+            const setupInstance = PlatformSetup(c);
+            await setupInstance.askToInstallSDK('android');
         }
 
         await executePipe(c, PIPES.RUN_BEFORE);
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
-        await configureAndroidProperties(c);
         await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
         await executePipe(c, PIPES.RUN_AFTER);
         return;
@@ -366,7 +336,10 @@ const _runAppWithPlatform = async (c) => {
     case TIZEN:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
-        if (!checkSdk(c, platform, throwErr)) return;
+        if (!checkSdk(c, platform, logError)) {
+            const setupInstance = PlatformSetup(c);
+            await setupInstance.askToInstallSDK('tizen');
+        }
 
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
@@ -376,7 +349,10 @@ const _runAppWithPlatform = async (c) => {
             .then(() => executePipe(c, PIPES.RUN_AFTER))
             .then(() => startHostedServerIfRequired(c));
     case WEBOS:
-        if (!checkSdk(c, platform, throwErr)) return;
+        if (!checkSdk(c, platform, logError)) {
+            const setupInstance = PlatformSetup(c);
+            await setupInstance.askToInstallSDK('webos');
+        }
 
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
@@ -427,7 +403,6 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.PACKAGE_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform, target, platform === ANDROID_WEAR))
             .then(() => executePipe(c, PIPES.PACKAGE_AFTER))
@@ -512,7 +487,6 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.BUILD_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform))
             .then(() => buildAndroid(c, platform))

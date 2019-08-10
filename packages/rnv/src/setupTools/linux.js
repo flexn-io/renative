@@ -1,12 +1,21 @@
 import shell from 'shelljs';
+import path from 'path';
 
 import { commandExistsSync } from '../systemTools/exec';
-import { logInfo } from '../common';
+import { logInfo, logDebug } from '../common';
 import BasePlatformSetup from './base';
+import { updateConfigFile } from '../systemTools/fileutils';
+import setupConfig from './config';
+import {
+    CLI_ANDROID_ADB,
+    CLI_ANDROID_AVDMANAGER,
+    CLI_ANDROID_EMULATOR,
+    CLI_ANDROID_SDKMANAGER
+} from '../constants';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
-    constructor(globalConfigPath) {
-        super('linux', globalConfigPath);
+    constructor(c) {
+        super('linux', c);
     }
 
     async installSoftware(software) {
@@ -21,6 +30,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         if (!this.availableDownloader) {
             logInfo('Looks like you don\'t have wget or curl installed. We\'ll install wget for you');
             await this.installSoftware('wget');
+            this.availableDownloader = 'wget';
         }
 
         if (!commandExistsSync('unzip')) {
@@ -34,6 +44,21 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         }
 
         return true;
+    }
+
+    async postInstall(sdk) {
+        if (sdk === 'android') {
+            const { location } = setupConfig.android;
+            logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify({ androidSdk: location })}`);
+            await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
+            // @todo find a more elegant way to update this
+            this.c.files.globalConfig.sdks.ANDROID_SDK = location;
+            const { sdks: { ANDROID_SDK } } = this.c.files.globalConfig;
+            this.c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
+            this.c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');
+            this.c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager');
+            this.c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager');
+        }
     }
 }
 
