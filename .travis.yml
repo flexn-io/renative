@@ -33,7 +33,6 @@ jobs:
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm i > /dev/null 2>&1
-        - npm run fix
         - npm run build:dev
         - sudo npm link > /dev/null 2>&1
         - mkdir /home/travis/.rnv
