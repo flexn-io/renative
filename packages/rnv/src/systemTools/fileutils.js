@@ -312,14 +312,32 @@ const replaceHomeFolder = (p) => {
     return p.replace('~', process.env.HOME);
 };
 
+const getFileListSync = (dir) => {
+    let results = [];
+    const list = fs.readdirSync(dir);
+    list.forEach((file) => {
+        file = `${dir}/${file}`;
+        const stat = fs.statSync(file);
+        if (stat && stat.isDirectory()) {
+            /* Recurse into a subdirectory */
+            results = results.concat(getFileListSync(file));
+        } else {
+            /* Is a file */
+            results.push(file);
+        }
+    });
+    return results;
+};
+
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFilesSync, removeDirs,
     writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
-    updateConfigFile, removeDirsSync, replaceHomeFolder
+    updateConfigFile, removeDirsSync, replaceHomeFolder, getFileListSync
 };
 
 export default {
+    getFileListSync,
     removeDirs,
     copyFileSync,
     copyFolderRecursiveSync,

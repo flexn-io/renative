@@ -27,6 +27,7 @@ program
     .option('-l, --list', 'return List of items related to command')
     .option('-o, --only', 'run Only top command (Skip dependencies)')
     .option('-r, --reset', 'also perform Reset')
+    .option('-k, --key <value>', 'Pass the key/password')
     .option('-b, --blueprint', 'Blueprint for targets')
     .option('-H, --host <value>', 'custom Host ip')
     .option('-x, --exeMethod <value>', 'eXecutable method in buildHooks')
@@ -35,6 +36,11 @@ program
     .option('--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect')
     .option('--ci', 'CI/CD flag so it wont ask questions')
     .option('--mono', 'Monochrome console output without chalk')
+    .option('--skipNotifications', 'Skip sending any integrated notifications')
+    .option('--keychain <value>', 'Name of the keychain')
+    .option('--provisioningStyle <value>', 'Set provisioningStyle <Automatic | Manual>')
+    .option('--codeSignIdentity <value>', 'Set codeSignIdentity ie <iPhone Distribution>')
+    .option('--provisionProfileSpecifier <value>', 'Name of provisionProfile')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;
