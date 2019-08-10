@@ -27,7 +27,7 @@ const htmlTemp = (options) => {
         '<link rel="manifest" href="manifest.json" />',
         '<link rel="shortcut icon" href="favicon.ico" />',
         '<link rel="stylesheet" href="app.css" />',
-        '<script src="http://192.168.1.203:3000/target/target-script-min.js#anonymous"></script>'
+        '<script src="/target/target-script-min.js#anonymous"></script>'
     ];
 
     const titleTag = `<title>${title}</title>`;
