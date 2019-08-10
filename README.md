@@ -366,7 +366,7 @@ Build app blazingly fast with built-in features:
       <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
     </th>
     <th>
-      <img src="https://img.shields.io/badge/Ubuntu-beta-orange.svg" />
+      <img src="https://img.shields.io/badge/Linux-beta-orange.svg" />
     </th>
     <th>
       <img src="https://img.shields.io/badge/Windows-beta-orange.svg" />
@@ -1070,7 +1070,7 @@ This allows you to configure and build large number of flavoured builds with alm
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1190,7 +1190,7 @@ rnv log -p ios -f com.myapp
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1319,7 +1319,7 @@ rnv log -p android -f com.myapp
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1378,7 +1378,7 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1441,7 +1441,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1519,7 +1519,7 @@ rnv run -p web --port 9999
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1603,7 +1603,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1685,7 +1685,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1752,7 +1752,7 @@ rnv run -p webos --hosted
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1838,7 +1838,7 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1900,7 +1900,7 @@ rnv export -p macos -s release
 
 ![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1947,7 +1947,7 @@ rnv run -p windows --hosted
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2011,7 +2011,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2064,7 +2064,7 @@ rnv run -p kaios --hosted
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2118,7 +2118,7 @@ rnv run -p forefoxos --hosted
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
