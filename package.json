@@ -80,6 +80,7 @@
         "@react-navigation/core": "3.4.2",
         "@react-navigation/native": "3.5.0",
         "@react-navigation/web": "1.0.0-alpha.9",
+        "get-installed-path": "^4.0.8",
         "react": "16.8.6",
         "react-art": "16.8.6",
         "react-dom": "16.8.6",

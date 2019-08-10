@@ -611,28 +611,30 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
             }
         }
 
+        const isRunningOnWindows = process.platform === 'win32';
+
         // Check global SDKs
         const { sdks } = c.files.globalConfig;
         if (sdks) {
             if (sdks.ANDROID_SDK) {
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, 'emulator/emulator');
-                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, 'platform-tools/adb');
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/avdmanager');
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, `platform-tools/adb${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/avdmanager${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`);
             }
             if (sdks.TIZEN_SDK) {
-                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
-                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, `tools/emulator/bin/em-cli${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, `tools/ide/bin/tizen${isRunningOnWindows ? '.bat' : ''}`);
                 c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
             }
             if (sdks.WEBOS_SDK) {
-                c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
-                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
-                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
-                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
-                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-setup-device');
-                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-device-info');
-                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-novacom');
+                c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
             }
         } else {
             logWarning(`Your ${c.paths.globalConfigPath} is missing SDK configuration object`);
@@ -1393,6 +1395,7 @@ export {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
+    configureRnvGlobal
 };
 
 export default {
@@ -1468,4 +1471,5 @@ export default {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
+    configureRnvGlobal
 };

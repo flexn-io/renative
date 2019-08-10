@@ -128,28 +128,8 @@ const _runList = async (c) => {
     case ANDROID_TV:
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, logError)) {
-            let sdkInstall;
-            if (!c.program.ci) {
-                const response = await inquirer.prompt([{
-                    name: 'sdkInstall',
-                    type: 'confirm',
-                    message: 'Do you want to install the Android SDK?',
-                }]);
-                // eslint-disable-next-line prefer-destructuring
-                sdkInstall = response.sdkInstall;
-            }
-
-            if (c.program.ci || sdkInstall) {
-                const setupInstance = PlatformSetup(c);
-                const newPath = await setupInstance.installAndroidSdk();
-                // @todo find a more elegant way to update this
-                c.files.globalConfig.sdks.ANDROID_SDK = newPath;
-                const { sdks: { ANDROID_SDK } } = c.files.globalConfig;
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
-                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager');
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager');
-            }
+            const setupInstance = PlatformSetup(c);
+            await setupInstance.askToInstallSDK('android');
         }
         return listAndroidTargets(c, platform);
     case IOS:

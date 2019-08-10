@@ -9,7 +9,7 @@ import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI, commandExistsSync } from '../systemTools/exec';
+import { executeAsync, execCLI } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -23,25 +23,17 @@ import {
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER,
-    getAppVersion,
-    getAppTitle,
-    getAppVersionCode,
-    writeCleanFile,
-    getAppId,
     getAppTemplateFolder,
-    getEntryFile,
     logWarning,
     logDebug,
     getConfigProp,
     logInfo,
     getQuestion,
     logSuccess,
-    getBuildsFolder,
-    getBuildFilePath,
 } from '../common';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
-import { getMergedPlugin, parsePlugins } from '../pluginTools';
+import { parsePlugins } from '../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
 import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './android/kotlinParser';
 import {
@@ -53,6 +45,8 @@ import { parseValuesStringsSync, injectPluginXmlValuesSync } from './android/xml
 const readline = require('readline');
 
 const CHECK_INTEVAL = 5000;
+
+const isRunningOnWindows = process.platform === 'win32';
 
 const currentDeviceProps = {};
 
@@ -79,7 +73,13 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(logError);
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(err => {
+                                if (err.includes && err.includes('WHPX')) {
+                                    logWarning(err)
+                                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true)
+                                }
+                                logError(err);
+                            });
                             return Promise.resolve();
                         }
                         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
@@ -92,7 +92,13 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch(logError);
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch(err => {
+                if (err.includes && err.includes('WHPX')) {
+                    logWarning(err)
+                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true)
+                }
+                logError(err);
+            });
             return Promise.resolve();
         }
         return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`);
@@ -410,7 +416,8 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                child_process.execSync(`ps x | grep "avd ${line}" | grep -v grep`);
+                const findProcess = isRunningOnWindows ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`
+                child_process.execSync(findProcess);
                 logDebug('_parseDevicesResult 9 - excluding running emulator');
             } catch (e) {
                 if (avdDetails) {
@@ -459,11 +466,17 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
             if (v.toLowerCase() === 'y') {
                 switch (platform) {
                 case 'android':
-                    return _createEmulator(c, '28', 'google_apis', emuName);
+                    return _createEmulator(c, '28', 'google_apis', emuName)
+                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
+                        .then(resolve);
                 case 'androidtv':
-                    return _createEmulator(c, '28', 'android-tv', emuName);
+                    return _createEmulator(c, '28', 'android-tv', emuName)
+                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
+                        .then(resolve);
                 case 'androidwear':
-                    return _createEmulator(c, '28', 'android-wear', emuName);
+                    return _createEmulator(c, '28', 'android-wear', emuName)
+                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
+                        .then(resolve);
                 default:
                     return reject('Cannot find any active or created emulators');
                 }
@@ -477,11 +490,7 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
-        .then(() => execCLI(
-            null,
-            null,
-            `sh echo no | ${c.cli[CLI_ANDROID_AVDMANAGER]} create avd  -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86" `,
-        ))
+        .then(() => executeAsync(c.cli[CLI_ANDROID_AVDMANAGER],  ['create', 'avd', '-n', emuName, '-k', `system-images;android-${apiVersion};${emuPlatform};x86`]))
         .catch(e => logError(e, true));
 };
 
@@ -510,7 +519,13 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 
 
     const appFolder = getAppFolder(c, platform);
-    executeAsync('react-native', [
+    let reactNative = 'react-native';
+
+    if (isRunningOnWindows) {
+        reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
+    }
+
+    executeAsync(reactNative, [
         'bundle',
         '--platform',
         'android',
@@ -656,7 +671,7 @@ const _runGradle = async (c, platform) => {
 const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_checkForActiveEmulator:${platform}`);
     let attempts = 1;
-    const maxAttempts = process.platform === 'win32' ? 30 : 10;
+    const maxAttempts = isRunningOnWindows ? 20 : 10;
     let running = false;
     const poll = setInterval(() => {
         // Prevent the interval from running until enough promises return to make it stop or we get a result
@@ -736,7 +751,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
+        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
             `assemble${signingConfig}`,
             '-x',
             'bundleReleaseJsAndAssets',
@@ -776,7 +791,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(process.platform === 'win32' ? 'gradlew.bat' : './gradlew', [
+        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
             `assemble${signingConfig}`,
             '-x',
             'bundleReleaseJsAndAssets',
@@ -792,11 +807,19 @@ const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
 
     const appFolder = getAppFolder(c, platform);
 
+    const addNDK = c.files.globalConfig.sdks.ANDROID_NDK && !c.files.globalConfig.sdks.ANDROID_NDK.includes('<USER>')
+    const ndkString = `ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}`;
+    let sdkDir = c.files.globalConfig.sdks.ANDROID_SDK;
+
+    if (isRunningOnWindows) {
+        sdkDir = sdkDir.replace(/\\/g, '/');
+    }
+
     fs.writeFileSync(
         path.join(appFolder, 'local.properties'),
         `#Generated by ReNative (https://renative.org)
-ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}
-sdk.dir=${c.files.globalConfig.sdks.ANDROID_SDK}`,
+${addNDK ? ndkString : ''}
+sdk.dir=${sdkDir}`,
     );
 
     resolve();

@@ -1,8 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import shell from 'shelljs';
 import chalk from 'chalk';
-import { spawn, execSync } from 'child_process';
+import { spawn } from 'child_process';
 import { createPlatformBuild } from '../cli/platform';
 import { executeAsync, execShellAsync } from '../systemTools/exec';
 import {
@@ -39,6 +38,8 @@ import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync
 } from '../systemTools/fileutils';
+
+const isRunningOnWindows = process.platform === 'win32';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureElectronProject:${platform}`);
@@ -94,8 +95,9 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             path.join(appFolder, 'webpack.config.js')
         );
     } else {
+        const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://0.0.0.0:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
         ]);
         copyFileSync(
             path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
@@ -200,9 +202,8 @@ const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => 
     const appFolder = getAppFolder(c, platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
-    const child = spawn(elc, [appFolder], {
+    const child = spawn('node', [elc, appFolder], {
         detached: true,
-        shell: true,
         env: process.env,
         stdio: 'inherit',
     })
