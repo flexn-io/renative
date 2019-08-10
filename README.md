@@ -358,7 +358,7 @@ Build app blazingly fast with built-in features:
       <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_linux.jpeg?raw=true" width="100" height="100" />
     </th>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_windows.png?raw=true" width="100" height="100" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_win.png?raw=true" width="100" height="100" />
     </th>
   </tr>
   <tr>
