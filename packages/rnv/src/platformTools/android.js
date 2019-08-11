@@ -73,10 +73,10 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch(err => {
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch((err) => {
                                 if (err.includes && err.includes('WHPX')) {
-                                    logWarning(err)
-                                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true)
+                                    logWarning(err);
+                                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
                                 }
                                 logError(err);
                             });
@@ -92,10 +92,10 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch(err => {
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
-                    logWarning(err)
-                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true)
+                    logWarning(err);
+                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
                 }
                 logError(err);
             });
@@ -139,6 +139,9 @@ const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
     try {
         let devicesResult;
         let avdResult;
+
+        child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} kill-server`);
+        child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} start-server`);
 
         if (!skipDevices) {
             devicesResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} devices -l`).toString();
@@ -416,7 +419,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                const findProcess = isRunningOnWindows ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`
+                const findProcess = isRunningOnWindows ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`;
                 child_process.execSync(findProcess);
                 logDebug('_parseDevicesResult 9 - excluding running emulator');
             } catch (e) {
@@ -490,7 +493,7 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
-        .then(() => executeAsync(c.cli[CLI_ANDROID_AVDMANAGER],  ['create', 'avd', '-n', emuName, '-k', `system-images;android-${apiVersion};${emuPlatform};x86`]))
+        .then(() => executeAsync(c.cli[CLI_ANDROID_AVDMANAGER], ['create', 'avd', '-n', emuName, '-k', `system-images;android-${apiVersion};${emuPlatform};x86`]))
         .catch(e => logError(e, true));
 };
 
@@ -807,7 +810,7 @@ const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    const addNDK = c.files.globalConfig.sdks.ANDROID_NDK && !c.files.globalConfig.sdks.ANDROID_NDK.includes('<USER>')
+    const addNDK = c.files.globalConfig.sdks.ANDROID_NDK && !c.files.globalConfig.sdks.ANDROID_NDK.includes('<USER>');
     const ndkString = `ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}`;
     let sdkDir = c.files.globalConfig.sdks.ANDROID_SDK;
 
