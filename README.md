@@ -2212,26 +2212,45 @@ rnv run -p forefoxtv --hosted
 
 Deployed to https://www.npmjs.com/package/rnv
 
-Commands:
+### Commands
 
-```
-rnv                                 //Print help
-rnv --version                       //Print ReNative Version
-rnv run -p <PLATFORM>               //Run app on simulator/device/browser
-rnv target launch -p <PLATFORM>     //Start target (i.e. simulator/ emulator)
-rnv app configure                   //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
-rnv new                             //Create new app
-rnv platform eject                  //Eject platformTemplates into project
-rnv platform connect                //Use ReNative predefined templates
-```
+##### rnv
 
-#### Get Status
+`rnv` - Print help
 
-Get basic info about your current project
+`rnv --version` - Print ReNative Version
 
-```bash
-rnv status
-```
+##### rnv new
+
+`rnv new` - creates new ReNative project
+
+##### rnv start
+
+`rnv start -p <PLATFOM>` - start server / bundler for specific platform. (no `-p` defaults to metro bundler)
+
+##### rnv run
+
+`rnv run -p <PLATFOM>` - runs app specific platform
+
+##### rnv package
+
+`rnv package -p <PLATFOM>` - package JS for specific platform
+
+##### rnv build
+
+`rnv build -p <PLATFOM>` - build / compile app for specific platform
+
+##### rnv export
+
+`rnv export -p <PLATFOM>` - export / archive app for specific platform
+
+##### rnv deploy
+
+`rnv deploy -p <PLATFOM>` - deploy app for specific platform
+
+##### rnv status
+
+`rnv status` - prints out info about your project
 
 <table>
   <tr>
@@ -2241,13 +2260,9 @@ rnv status
   </tr>
 </table>
 
-#### Clean Project
+##### rnv clean
 
-This will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
-
-```bash
-rnv clean
-```
+`rnv clean` - will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
 
 <table>
   <tr>
@@ -2257,43 +2272,76 @@ rnv clean
   </tr>
 </table>
 
-#### Reset options
+##### rnv platform
+
+Manipulates platforms
+
+`rnv platform eject` - gives options which platforms to eject
+
+`rnv platform connect` - gives options which platforms to connect
+
+##### rnv plugin
+
+Plugin Management
+
+`rnv plugin list` - list all available / installed plugins
+
+`rnv plugin add` - list all available plugins to be installed
+
+##### rnv target
+
+Emulator / Simulator / Device Management
+
+`rnv target launch -p <PLATFORM>` - Start target (i.e. simulator/ emulator)
+
+##### rnv tools
+
+`rnv tools fixPackage` - fix + cleanup+ format your `package.json`
+
+### Options
+
+You can combine most of the above commands with following extra arguments you can combine together
+
+##### -r , --reset
 
 ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
 
-Reset Metro Bundler cache
+`rnv start -r` - Reset Metro Bundler cache
 
-```bash
-rnv start -r
-```
+`rnv run -p <PLATFORM> -r` - Reset specific platform of platformBuild project (fully recreate project based on provided template)
 
-Reset specific platform of platformBuild project (fully recreate project based on provided template)
+`rnv app configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
 
-```bash
-rnv run -p <PLATFORM> -r
-rnv app configure -p <PLATFORM> -r
-```
-
-Reset all platforms of platformBuild project (fully recreate projects based on provided template)
-
-```bash
-rnv app configure -r
-```
-
-#### Monochrome logs
+##### --mono
 
 If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
 This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
 
 Examples:
 
-```bash
-rnv status --mono
-rnv start --mono
-...
-```
+`rnv status --mono`
+`rnv start --mono`
 
-#### Ejecting Platforms
+##### -c , -appConfigID
+
+Allows you to immediately switch to specific app config
+
+`rnv run -p <PLATFORM> -c <APP_ID>` - configure APP_ID and run PLATFORM
+
+`rnv build -p <PLATFORM> -c <APP_ID>` - configure APP_ID and build PLATFORM
+
+##### -d , --device
+
+`rnv run -p <PLATFORM> -d` - Install/Run on connected device instead of simulator
+
+##### -i , --info
+
+Log verbose output
+
+`rnv run -p <PLATFORM> -i`
+
+
+### Ejecting Platforms
 
 By default, ReNative controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
 If however you need to customise them you can eject them directly into your project.
