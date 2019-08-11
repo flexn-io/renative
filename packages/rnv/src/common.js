@@ -1027,6 +1027,13 @@ const getConfigProp = (c, platform, key, defaultVal) => {
     return result;
 };
 
+const getJsBundleFileDefaults = {
+    android: 'super.getJSBundleFile()',
+    androidtv: 'super.getJSBundleFile()',
+    //CRAPPY BUT Android Wear does not support webview required for connecting to packager
+    androidwear: '"assets://index.androidwear.bundle"',
+};
+
 const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
 
 const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
@@ -1038,6 +1045,8 @@ const getAppAuthor = (c, platform) => c.files.appConfigFile.platforms[platform].
 const getAppLicense = (c, platform) => c.files.appConfigFile.platforms[platform].license || c.files.appConfigFile.common.license || c.files.projectPackage.license;
 
 const getEntryFile = (c, platform) => c.files.appConfigFile.platforms[platform].entryFile;
+
+const getGetJsBundleFile = (c, platform) => c.files.appConfigFile.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
 
 const getAppDescription = (c, platform) => c.files.appConfigFile.platforms[platform].description || c.files.appConfigFile.common.description || c.files.projectPackage.description;
 
@@ -1365,6 +1374,7 @@ export {
     writeCleanFile,
     copyBuildsFolder,
     getEntryFile,
+    getGetJsBundleFile,
     getAppConfigId,
     getAppDescription,
     getAppAuthor,
@@ -1443,6 +1453,7 @@ export default {
     getAppVersionCode,
     writeCleanFile,
     getEntryFile,
+    getGetJsBundleFile,
     getAppConfigId,
     getAppDescription,
     getAppAuthor,
