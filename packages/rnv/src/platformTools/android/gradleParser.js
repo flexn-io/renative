@@ -106,15 +106,20 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     }
 
     // BUILD_TYPES
+    const pluginConfig = c.files.pluginConfig ?? {};
+    const debugBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.debug ?? [];
+    const releaseBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.release ?? [];
     c.pluginConfigAndroid.buildTypes = `
     debug {
         minifyEnabled false
         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        ${debugBuildTypes.join('\n        ')}
     }
     release {
         minifyEnabled false
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         signingConfig signingConfigs.release
+        ${releaseBuildTypes.join('\n        ')}
     }`;
 
 
