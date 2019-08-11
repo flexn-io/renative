@@ -437,7 +437,7 @@ const runAppleLog = c => new Promise(() => {
 const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
     logTask(`configureXcodeProject:${platform}`);
     const { device } = c.program;
-    const ip = device ? getIP() : 'localhost';
+    const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
@@ -505,7 +505,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     const forceUpdate = !fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
     copyAppleAssets(c, platform, appFolderName)
         .then(() => copyBuildsFolder(c, platform))
-        .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, ip, port))
+        .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))
         .then(() => parseExportOptionsPlist(c, platform))
         .then(() => parseXcscheme(c, platform))
         .then(() => parsePodFile(c, platform))
