@@ -576,6 +576,7 @@ For appConfigs:
 ```json
 {
   "entryFile": "",
+  "getJsBundleFile": "",
   "universalApk": true,
   "multipleAPKs": false,
   "minSdkVersion": 21,
