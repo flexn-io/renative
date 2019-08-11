@@ -198,7 +198,7 @@ Contributing
 
 <br />
 
-[![build](https://travis-ci.org/pavjacko/renative.svg?branch=master)](https://travis-ci.org/pavjacko/renative)
+[![build](https://travis-ci.org/pavjacko/renative.svg?branch=develop)](https://travis-ci.org/pavjacko/renative)
 [![npm version](https://img.shields.io/npm/v/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![npm downloads](https://img.shields.io/npm/dm/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![All Contributors](https://img.shields.io/github/contributors/pavjacko/renative.svg)](#contributors)
