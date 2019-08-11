@@ -7,6 +7,8 @@ import merge from 'deepmerge';
 import chalk from 'chalk';
 import { logDebug, logError, logWarning, logInfo } from '../common';
 
+const isRunningOnWindows = process.platform === 'win32';
+
 const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);
     let targetFile = target;
@@ -292,17 +294,50 @@ const updateConfigFile = async (update, globalConfigPath) => {
         configContents.sdks.ANDROID_SDK = update.androidSdk;
     }
 
+    if (update.tizenSdk) {
+        configContents.sdks.TIZEN_SDK = update.tizenSdk;
+    }
+
+    if (update.webosSdk) {
+        configContents.sdks.WEBOS_SDK = update.webosSdk;
+    }
+
+    logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify(update, null, 3)}`);
+
     fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
+};
+
+const replaceHomeFolder = (p) => {
+    if (isRunningOnWindows) return p.replace('~', process.env.USERPROFILE);
+    return p.replace('~', process.env.HOME);
+};
+
+const getFileListSync = (dir) => {
+    let results = [];
+    const list = fs.readdirSync(dir);
+    list.forEach((file) => {
+        file = `${dir}/${file}`;
+        const stat = fs.statSync(file);
+        if (stat && stat.isDirectory()) {
+            /* Recurse into a subdirectory */
+            results = results.concat(getFileListSync(file));
+        } else {
+            /* Is a file */
+            results.push(file);
+        }
+    });
+    return results;
 };
 
 export {
     copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
     copyFolderContentsRecursiveSync, cleanFolder, removeFilesSync, removeDirs,
     writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
-    updateConfigFile, removeDirsSync
+    updateConfigFile, removeDirsSync, replaceHomeFolder, getFileListSync
 };
 
 export default {
+    getFileListSync,
     removeDirs,
     copyFileSync,
     copyFolderRecursiveSync,
@@ -318,5 +353,6 @@ export default {
     updateObjectSync,
     arrayMerge,
     mergeObjects,
-    updateConfigFile
+    updateConfigFile,
+    replaceHomeFolder
 };

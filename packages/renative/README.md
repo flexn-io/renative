@@ -349,9 +349,31 @@ Build app blazingly fast with built-in features:
 
 #### Development platforms
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-POC-orange.svg)
-![](https://img.shields.io/badge/Ubuntu-untested-lightgrey.svg)
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_osx.png?raw=true" width="100" height="100" />
+    </th>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_linux.jpeg?raw=true" width="100" height="100" />
+    </th>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_win.png?raw=true" width="100" height="100" />
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    </th>
+    <th>
+      <img src="https://img.shields.io/badge/Linux-beta-orange.svg" />
+    </th>
+    <th>
+      <img src="https://img.shields.io/badge/Windows-beta-orange.svg" />
+    </th>
+  </tr>
+</table>
+
 
 #### Requirements
 
@@ -1048,7 +1070,7 @@ This allows you to configure and build large number of flavoured builds with alm
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1168,7 +1190,7 @@ rnv log -p ios -f com.myapp
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1186,6 +1208,7 @@ rnv log -p ios -f com.myapp
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
 -   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
+-   Windows 10 Pro or a better variant if you want to start the emulator on a Windows machine. Windows Home or Educational do not support Hyper-V and that's required for starting the Android emulators
 
 #### Project Configuration
 
@@ -1296,7 +1319,7 @@ rnv log -p android -f com.myapp
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1355,7 +1378,7 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1418,7 +1441,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1496,7 +1519,7 @@ rnv run -p web --port 9999
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1546,6 +1569,18 @@ rnv target launch -p tizen -t T-samsung-5.0-x86
 rnv run -p tizen
 ```
 
+Run on Device
+
+```
+rnv run -p tizen -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizen --hosted
+```
+
 #### Advanced
 
 Clean and Re-build platform project
@@ -1568,7 +1603,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1616,6 +1651,18 @@ rnv target launch -p tizenwatch -t W-5.0-circle-x86
 rnv run -p tizenwatch
 ```
 
+Run on Device
+
+```
+rnv run -p tizenwatch -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizenwatch --hosted
+```
+
 #### Advanced
 
 Clean and Re-build platform project
@@ -1638,7 +1685,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1679,8 +1726,22 @@ usually located in something like:
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p webos
+```
+
+Run on Device
+
+```
+rnv run -p webos -d
+```
+
+Run in Browser
+
+```
+rnv run -p webos --hosted
 ```
 
 ---
@@ -1691,7 +1752,7 @@ rnv run -p webos
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1737,8 +1798,22 @@ rnv target launch -p tizenmobile -t M-5.0-x86
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p tizenmobile
+```
+
+Run on Device
+
+```
+rnv run -p tizenmobile -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizenmobile --hosted
 ```
 
 #### Advanced
@@ -1763,7 +1838,7 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1790,8 +1865,16 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p macos
+```
+
+Run in Browser
+
+```
+rnv run -p macos --hosted
 ```
 
 #### Deploy on Electron Simulator
@@ -1817,7 +1900,7 @@ rnv export -p macos -s release
 
 ![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1844,8 +1927,16 @@ rnv export -p macos -s release
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p windows
+```
+
+Run in Browser
+
+```
+rnv run -p windows --hosted
 ```
 
 ---
@@ -1856,7 +1947,7 @@ rnv run -p windows
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1920,7 +2011,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1946,10 +2037,23 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+Run on Simulator
 
 ```
 rnv run -p kaios
+```
+
+Run on Device
+
+```
+rnv run -p kaios -d
+```
+
+Run in Browser
+
+```
+rnv run -p kaios --hosted
 ```
 
 ---
@@ -1960,7 +2064,7 @@ rnv run -p kaios
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1988,10 +2092,22 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+Run on Simulator
 
 ```
-rnv run -p firefoxos
+rnv run -p forefoxos
+```
+
+Run on Device
+
+```
+rnv run -p forefoxos -d
+```
+
+Run in Browser
+
+```
+rnv run -p forefoxos --hosted
 ```
 
 ---
@@ -2002,7 +2118,7 @@ rnv run -p firefoxos
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2030,10 +2146,22 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+Run on Simulator
 
 ```
-rnv run -p firefoxtv
+rnv run -p forefoxtv
+```
+
+Run on Device
+
+```
+rnv run -p forefoxtv -d
+```
+
+Run in Browser
+
+```
+rnv run -p forefoxtv --hosted
 ```
 
 # CLI

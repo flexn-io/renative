@@ -36,7 +36,7 @@ import {
     RNV_PROJECT_CONFIG_NAME,
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
-import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
+import { configureGradleProject } from '../platformTools/android';
 import { configureTizenProject, configureTizenGlobal } from '../platformTools/tizen';
 import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
@@ -108,7 +108,6 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _copySharedPlatforms(c))
         .then(() => _runPlugins(c, c.paths.rnvPluginsFolder))
         .then(() => _runPlugins(c, c.paths.projectPluginsFolder))
-        .then(() => (_isOK(c, p, [ANDROID, ANDROID_TV, ANDROID_WEAR]) ? configureAndroidProperties(c) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))

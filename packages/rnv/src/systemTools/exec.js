@@ -4,7 +4,7 @@ import shell from 'shelljs';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
 
-import { logDebug } from '../common';
+import { logDebug, logError } from '../common';
 
 const { spawn, exec, execSync } = require('child_process');
 
@@ -33,6 +33,8 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
         toBeExecuted = command;
     }
 
+    logDebug('ExecCLI:', toBeExecuted);
+
     shell.exec(toBeExecuted, { silent: true, env: process.env, stdio: [process.stdin, 'pipe', 'pipe'] }, (error, stdout) => {
         if (error) {
             reject(`Command ${cli} failed: "${chalk.white(`${toBeExecuted}`)}". ${stdout.trim()}`);
@@ -46,17 +48,39 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
 const executeAsync = (
     cmd,
     args,
-    opts = {
-        cwd: process.cwd(),
-        stdio: 'inherit',
-        env,
-    }
+    opts = {}
 ) => new Promise((resolve, reject) => {
     if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
 
-    logDebug(`executeAsync:${cmd} ${args ? args.join(' ') : ''}`);
+    const defaultOpts = {
+        // cwd: process.cwd(),
+        privateParams: [],
+        stdio: 'pipe',
+        env,
+    };
 
-    const command = spawn(cmd, args, opts);
+    const mergedOpts = { ...defaultOpts, ...opts };
+
+    let cleanArgs = '';
+    let hideNext = false;
+    const pp = mergedOpts?.privateParams || [];
+    if (args) {
+        args.forEach((v) => {
+            if (hideNext) {
+                hideNext = false;
+                cleanArgs += ' ***********';
+            } else {
+                cleanArgs += ` ${v}`;
+            }
+            if (pp.includes(v)) {
+                hideNext = true;
+            }
+        });
+    }
+
+    logDebug(`executeAsync:${cmd} ${cleanArgs}`);
+
+    const command = spawn(cmd, args, mergedOpts);
 
     let stdout = '';
     let ended = false;
@@ -65,14 +89,20 @@ const executeAsync = (
     command.stdout
             && command.stdout.on('data', (output) => {
                 const outputStr = output.toString();
-                console.log('data', output);
+                if (outputStr) stdout += outputStr;
+            });
+
+    /* eslint-disable-next-line no-unused-expressions */
+    command.stderr
+            && command.stderr.on('data', (output) => {
+                const outputStr = output.toString();
                 if (outputStr) stdout += outputStr;
             });
 
     command.on('close', (code) => {
-        logDebug(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} exited with code ${code}`);
+        logDebug(`Command ${cmd} ${cleanArgs} exited with code ${code}`);
         if (code !== 0) {
-            reject(new Error(`process exited with code ${code}`));
+            reject(new Error(`process exited with code ${code}. ${stdout}`));
         } else {
             ended = true;
 
@@ -82,13 +112,13 @@ const executeAsync = (
     });
 
     command.on('error', (error) => {
-        logDebug(`Command ${cmd}${args ? ` ${args.join(' ')}` : ''} errored with ${error}`);
+        logDebug(`Command ${cmd} ${cleanArgs} errored with ${error}`);
         reject(new Error(`process errored with ${error}`));
     });
 
     const killChildProcess = () => {
         if (ended) return;
-        console.log(`Killing child process ${cmd}${args ? ` ${args.join(' ')}` : ''}`);
+        logDebug(`Killing child process ${cmd} ${cleanArgs}`);
         command.kill(1);
     };
 
