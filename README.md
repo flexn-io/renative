@@ -996,7 +996,7 @@ Folder Structure (Generated Project)
     └── src                         # Source files
 
 
-#### Override Mechanism
+### Override Mechanism
 
 ReNative support flexible override mechanism which allows you customise your project to great degree
 
@@ -1007,6 +1007,8 @@ ReNative support flexible override mechanism which allows you customise your pro
     </th>
   </tr>
 </table>
+
+#### Config Values Overrides
 
 `./appConfigs/APP_ID/config.json` RULES:
 
@@ -1038,10 +1040,10 @@ Example:
 
 Override Rules for json props:
 
-`Strings` => Replaced
-`Numbers` => Replaced
-`Arrays` => Replaced
-`Objects` => Merged by top level (not deep merge)
+- `Strings` => Replaced
+- `Numbers` => Replaced
+- `Arrays` => Replaced
+- `Objects` => Merged by top level (not deep merge)
 
 Example:
 https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L4
@@ -1049,7 +1051,43 @@ https://github.com/pavjacko/renative/blob/master/packages/renative-template-hell
 Will be overridden by:
 https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L59
 
-This allows you to configure and build large number of flavoured builds with almost no extra configuration
+#### File Overrides / Injectors
+
+Project Scoped Build Override
+
+`projectConfig/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+App Config Scoped Build Override
+
+`appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + Project Scoped Build Override
+
+`projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + App Config Scoped Build Override
+
+`appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Project Scoped Assets Override
+
+`projectConfig/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+
+App Config Scoped Build Override
+
+`appConfigs/[APP_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+
+Plugin + Project Scoped Build Override
+
+`projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+
+Plugin + App Config Scoped Build Override
+
+`appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+
+#### Flavoured Builds
+
+Combination of 2 features above allows you to configure and build large number of flavoured builds with almost no extra configuration
 
 <table>
   <tr>
