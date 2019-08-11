@@ -1007,12 +1007,17 @@ const getConfigProp = (c, platform, key, defaultVal) => {
     }
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
+    let resultPlatforms;
     let scheme;
-    scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+    if (p) {
+        scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+        resultPlatforms = c.files.appConfigFile.platforms[platform][key];
+    }
+
+
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
     const resultScheme = scheme[key];
-    const resultPlatforms = c.files.appConfigFile.platforms[platform][key];
     const resultCommon = c.files.appConfigFile.common[key];
 
     const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
@@ -1084,6 +1089,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
         return;
     }
     PLATFORM_RUNS[platform] = true;
+    const { device } = c.program;
     // if (!fs.existsSync(getAppFolder(c, platform))) {
     //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
 
@@ -1094,6 +1100,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
         update: false,
         platform,
         scheme: c.program.scheme,
+        device,
         provisioningStyle: c.program.provisioningStyle,
         codeSignIdentity: c.program.codeSignIdentity,
         provisionProfileSpecifier: c.program.provisionProfileSpecifier

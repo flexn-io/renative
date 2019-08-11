@@ -261,7 +261,6 @@ const configureHostedIfRequired = async (c, platform) => {
     const { device } = c.program;
     if (_isWebHostEnabled(c, platform)) {
         logDebug('Running hosted build');
-        console.log('DJKDDHDKJDHKDJHDKJDHKJ');
         const { platformBuildsFolder, rnvRootFolder } = c.paths;
         copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public'));
         writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public', 'index.html'), [
