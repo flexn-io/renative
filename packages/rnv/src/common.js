@@ -1007,12 +1007,17 @@ const getConfigProp = (c, platform, key, defaultVal) => {
     }
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
+    let resultPlatforms;
     let scheme;
-    scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+    if (p) {
+        scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+        resultPlatforms = c.files.appConfigFile.platforms[platform][key];
+    }
+
+
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
     const resultScheme = scheme[key];
-    const resultPlatforms = c.files.appConfigFile.platforms[platform][key];
     const resultCommon = c.files.appConfigFile.common[key];
 
     const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
