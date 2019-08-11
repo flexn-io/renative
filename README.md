@@ -355,10 +355,10 @@ Build app blazingly fast with built-in features:
       <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_osx.png?raw=true" width="100" height="100" />
     </th>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_linux.jpeg?raw=true" width="100" height="100" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_win.png?raw=true" width="100" height="100" />
     </th>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_win.png?raw=true" width="100" height="100" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_linux.jpeg?raw=true" width="100" height="100" />
     </th>
   </tr>
   <tr>
@@ -366,10 +366,10 @@ Build app blazingly fast with built-in features:
       <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
     </th>
     <th>
-      <img src="https://img.shields.io/badge/Linux-beta-orange.svg" />
+      <img src="https://img.shields.io/badge/Windows-beta-orange.svg" />
     </th>
     <th>
-      <img src="https://img.shields.io/badge/Windows-beta-orange.svg" />
+      <img src="https://img.shields.io/badge/Linux-beta-orange.svg" />
     </th>
   </tr>
 </table>
@@ -419,7 +419,7 @@ ReNative Supports standard community driven react-native plugins you can use to 
 
 Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
 
-`rnv plugin list`
+`$ rnv plugin list`
 
 you should get colorised overview similar to this:
 
@@ -433,13 +433,13 @@ you should get colorised overview similar to this:
 
 add new plugin to your project:
 
-`rnv plugin add`
+`$ rnv plugin add`
 
 and follow the command prompt steps
 
 Update your current plugins with latest ones from ReNative
 
-`rnv plugin update`
+`$ rnv plugin update`
 
 and follow the command prompt steps
 
@@ -696,7 +696,7 @@ Open the file and edit SDK paths of platforms you plan to use:
 }
 ```
 
-You can also edit your preferred emulator targets (allows you to run `rnv target launch -p <PLATFORM>` without `-p <TARGET>`)
+You can also edit your preferred emulator targets (allows you to run `$ rnv target launch -p <PLATFORM>` without `-p <TARGET>`)
 
 ```json
 {
@@ -763,11 +763,11 @@ Example:
 
 this will allow you to build 2 separate iOS apps with slightly different configurations:
 
-`rnv run -p ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
+`$ rnv run -p ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
 
 and
 
-`rnv run -p ios -s release`
+`$ rnv run -p ios -s release`
 
 #### Build Flavour Injectors
 
@@ -860,7 +860,7 @@ Sometimes you want to execute specific hook automatically before/after certain R
 
 To get list of available hook pipes run:
 
-`rnv hooks pipes`
+`$ rnv hooks pipes`
 
 You can connect your hook method to one of predefined pipes in your `./buildHooks/src/index.js`:
 
@@ -870,7 +870,7 @@ const pipes = {
 };
 ```
 
-Example code above will execute `hooks.hello()` before every time you run `rnv app configure` commands
+Example code above will execute `hooks.hello()` before every time you run `$ rnv app configure` commands
 
 #### Run Multiple Pipes on One Hook
 
@@ -1109,6 +1109,7 @@ Combination of 2 features above allows you to configure and build large number o
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1229,6 +1230,7 @@ rnv log -p ios -f com.myapp
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1358,6 +1360,7 @@ rnv log -p android -f com.myapp
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1417,6 +1420,7 @@ rnv run -p tvos -t "Apple TV 4K"
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1480,6 +1484,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1558,6 +1563,7 @@ rnv run -p web --port 9999
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1642,6 +1648,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1724,6 +1731,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1791,6 +1799,7 @@ rnv run -p webos --hosted
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1877,6 +1886,7 @@ rnv run -p tizenmobile -t M-5.0-x86
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1939,6 +1949,7 @@ rnv export -p macos -s release
 ![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1986,6 +1997,7 @@ rnv run -p windows --hosted
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -2021,7 +2033,7 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 rnv run -p androidwear
 ```
 
-NOTE: There is a bug in RN. for now you must NOT have running bundler (`rnv start`) in order for wear sim to work
+NOTE: There is a bug in RN. for now you must NOT have running bundler (`$ rnv start`) in order for wear sim to work
 
 #### Advanced
 
@@ -2050,6 +2062,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2103,6 +2116,7 @@ rnv run -p kaios --hosted
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2157,6 +2171,7 @@ rnv run -p forefoxos --hosted
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2216,41 +2231,41 @@ Deployed to https://www.npmjs.com/package/rnv
 
 ##### rnv
 
-`rnv` - Print help
+`$ rnv` - Print help
 
-`rnv --version` - Print ReNative Version
+`$ rnv --version` - Print ReNative Version
 
 ##### rnv new
 
-`rnv new` - creates new ReNative project
+`$ rnv new` - creates new ReNative project
 
 ##### rnv start
 
-`rnv start -p <PLATFOM>` - start server / bundler for specific platform. (no `-p` defaults to metro bundler)
+`$ rnv start -p <PLATFOM>` - start server / bundler for specific platform. (no `-p` defaults to metro bundler)
 
 ##### rnv run
 
-`rnv run -p <PLATFOM>` - runs app specific platform
+`$ rnv run -p <PLATFOM>` - runs app specific platform
 
 ##### rnv package
 
-`rnv package -p <PLATFOM>` - package JS for specific platform
+`$ rnv package -p <PLATFOM>` - package JS for specific platform
 
 ##### rnv build
 
-`rnv build -p <PLATFOM>` - build / compile app for specific platform
+`$ rnv build -p <PLATFOM>` - build / compile app for specific platform
 
 ##### rnv export
 
-`rnv export -p <PLATFOM>` - export / archive app for specific platform
+`$ rnv export -p <PLATFOM>` - export / archive app for specific platform
 
 ##### rnv deploy
 
-`rnv deploy -p <PLATFOM>` - deploy app for specific platform
+`$ rnv deploy -p <PLATFOM>` - deploy app for specific platform
 
 ##### rnv status
 
-`rnv status` - prints out info about your project
+`$ rnv status` - prints out info about your project
 
 <table>
   <tr>
@@ -2262,7 +2277,7 @@ Deployed to https://www.npmjs.com/package/rnv
 
 ##### rnv clean
 
-`rnv clean` - will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
+`$ rnv clean` - will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
 
 <table>
   <tr>
@@ -2276,27 +2291,27 @@ Deployed to https://www.npmjs.com/package/rnv
 
 Manipulates platforms
 
-`rnv platform eject` - gives options which platforms to eject
+`$ rnv platform eject` - gives options which platforms to eject
 
-`rnv platform connect` - gives options which platforms to connect
+`$ rnv platform connect` - gives options which platforms to connect
 
 ##### rnv plugin
 
 Plugin Management
 
-`rnv plugin list` - list all available / installed plugins
+`$ rnv plugin list` - list all available / installed plugins
 
-`rnv plugin add` - list all available plugins to be installed
+`$ rnv plugin add` - list all available plugins to be installed
 
 ##### rnv target
 
 Emulator / Simulator / Device Management
 
-`rnv target launch -p <PLATFORM>` - Start target (i.e. simulator/ emulator)
+`$ rnv target launch -p <PLATFORM>` - Start target (i.e. simulator/ emulator)
 
 ##### rnv tools
 
-`rnv tools fixPackage` - fix + cleanup+ format your `package.json`
+`$ rnv tools fixPackage` - fix + cleanup+ format your `package.json`
 
 ### Options
 
@@ -2306,39 +2321,69 @@ You can combine most of the above commands with following extra arguments you ca
 
 ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
 
-`rnv start -r` - Reset Metro Bundler cache
+`$ rnv start -r` - Reset Metro Bundler cache
 
-`rnv run -p <PLATFORM> -r` - Reset specific platform of platformBuild project (fully recreate project based on provided template)
+`$ rnv run -p <PLATFORM> -r` - Reset specific platform of platformBuild project (fully recreate project based on provided template)
 
-`rnv app configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
+`$ rnv app configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
 
 ##### --mono
 
-If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
+If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`$ rnv` command.
 This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
 
 Examples:
 
-`rnv status --mono`
-`rnv start --mono`
+`$ rnv status --mono`
+`$ rnv start --mono`
 
 ##### -c , -appConfigID
 
 Allows you to immediately switch to specific app config
 
-`rnv run -p <PLATFORM> -c <APP_ID>` - configure APP_ID and run PLATFORM
+`$ rnv run -p <PLATFORM> -c <APP_ID>` - configure APP_ID and run PLATFORM
 
-`rnv build -p <PLATFORM> -c <APP_ID>` - configure APP_ID and build PLATFORM
+`$ rnv build -p <PLATFORM> -c <APP_ID>` - configure APP_ID and build PLATFORM
 
 ##### -d , --device
 
-`rnv run -p <PLATFORM> -d` - Install/Run on connected device instead of simulator
+`$ rnv run -p <PLATFORM> -d` - Install/Run on connected device instead of simulator
+
+##### -s , --scheme
+
+You can pass down specific build scheme configured in `./appConfigs/APP_ID/config.json`
+
+`$ rnv run -p <PLATFORM>` - runs app with default scheme (`-s debug`)
+
+`$ rnv run -p <PLATFORM> -s myScheme` - runs app with `myScheme` build scheme
 
 ##### -i , --info
 
 Log verbose output
 
-`rnv run -p <PLATFORM> -i`
+`$ rnv run -p <PLATFORM> -i`
+
+##### -t , --target
+
+Allows you to specify known target name/id so CLI won't ask you to pick one
+
+`$ rnv run -p <PLATFORM> -t <TARGET_NAME>`
+
+##### --host
+
+Allows you to run some platforms directly in browser
+
+`$ rnv run -p <PLATFORM> --host`
+
+##### --only
+
+ususall ReNative runs in cascading dependency mode. that means that if for example your run `deploy` command, rnv runs all necessary commands (`configure`, `package`, `build`, `export`) before running `deploy` command itself
+
+sometimes you just want to run last command. `--only` esures only top level command is executed
+
+`$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME>` - run all dependant commands + deploy
+
+`$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME> --only` - run deploy only
 
 
 ### Ejecting Platforms
