@@ -52,7 +52,7 @@ const hooks = {
 };
 
 const pipes = {
-    'app:configure:before': hooks.hello,
+    'configure:before': hooks.hello,
 };
 
 const _updatePackageJson = (c, pPath, updateObj) => {

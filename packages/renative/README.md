@@ -575,7 +575,7 @@ rnv platform configure -c helloWorld
 Configure your multi-platform app based on `./appConfigs/helloWorld` configuration:
 
 ```bash
-rnv app configure -c helloWorld -u
+rnv configure -c helloWorld -u
 ```
 
 #### Android based config
@@ -746,7 +746,7 @@ with path to your release keystore file and its credentials.
 Then you can run the release app by:
 
 ```bash
-rnv app configure -p android
+rnv configure -p android
 rnv run -p android -s release
 ```
 
@@ -878,17 +878,17 @@ You can connect your hook method to one of predefined pipes in your `./buildHook
 
 ```js
 const pipes = {
-    'app:configure:before': hooks.hello,
+    'configure:before': hooks.hello,
 };
 ```
 
-Example code above will execute `hooks.hello()` before every time you run `$ rnv app configure` commands
+Example code above will execute `hooks.hello()` before every time you run `$ rnv configure` commands
 
 #### Run Multiple Pipes on One Hook
 
 ```js
 const pipes = {
-    'app:configure:before': [hooks.hello, hooks.someOtherHook],
+    'configure:before': [hooks.hello, hooks.someOtherHook],
 };
 ```
 
@@ -902,7 +902,7 @@ List of available pipe hooks:
 'package:before', 'package:after',
 'build:before', 'build:after',
 'deploy:before', 'deploy:after',
-'app:configure:before', 'app:configure:after',
+'configure:before', 'configure:after',
 'platform:configure:before', 'platform:configure:after'
 ```
 
@@ -2399,7 +2399,7 @@ ReNative Allows you to perform reset commands if you facing unforeseen problems 
 
 `$ rnv run -p <PLATFORM> -r` - Reset specific platform of platformBuild project (fully recreate project based on provided template)
 
-`$ rnv app configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
+`$ rnv configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
 
 ##### --mono
 

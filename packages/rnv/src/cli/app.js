@@ -53,8 +53,8 @@ const CREATE = 'create';
 const NEW = 'new';
 
 const PIPES = {
-    APP_CONFIGURE_BEFORE: 'app:configure:before',
-    APP_CONFIGURE_AFTER: 'app:configure:after',
+    APP_CONFIGURE_BEFORE: 'configure:before',
+    APP_CONFIGURE_AFTER: 'configure:after',
 };
 
 const highlight = chalk.green;
@@ -69,13 +69,15 @@ const run = (c) => {
     switch (c.command) {
     case NEW:
         return _runCreate(c);
+    case CONFIGURE:
+        return _runConfigure(c);
     }
 
     switch (c.subCommand) {
     case CONFIGURE:
+        logWarning(`$ ${chalk.red('$ rnv app configure')} is deprecated. Use ${chalk.green('$ rnv configure')} instead`);
         return _runConfigure(c);
-    case CREATE:
-        return _runCreate(c);
+
         // case SWITCH:
         //     return Promise.resolve();
         //     break;
@@ -306,12 +308,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 
     if (!fs.existsSync(c.paths.platformBuildsFolder)) {
         logWarning('Platforms not created yet. creating them for you...');
-
-        const newCommand = Object.assign({}, c);
-        newCommand.subCommand = 'configure';
-        newCommand.program = { appConfig: c.defaultAppConfigId, platform };
-
-        platformRunner(newCommand)
+        platformRunner(spawnCommand(c, {
+            command: 'configure',
+            program: { appConfig: c.defaultAppConfigId, platform }
+        }))
             .then(() => resolve())
             .catch(e => reject(e));
 
@@ -321,12 +321,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         const appFolder = getAppFolder(c, platform);
         if (!fs.existsSync(appFolder)) {
             logWarning(`Platform ${platform} not created yet. creating them for you...`);
-
-            const newCommand = Object.assign({}, c);
-            newCommand.subCommand = 'configure';
-            newCommand.program = { appConfig: c.defaultAppConfigId, platform };
-
-            platformRunner(newCommand)
+            platformRunner(spawnCommand(c, {
+                command: 'configure',
+                program: { appConfig: c.defaultAppConfigId, platform }
+            }))
                 .then(() => resolve())
                 .catch(e => reject(e));
 
@@ -343,11 +341,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         Object.keys(platforms).forEach((k) => {
             if (!fs.existsSync(k)) {
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
-
-                const newCommand = Object.assign({}, c);
-                newCommand.subCommand = 'configure';
-                newCommand.program = { appConfig: c.defaultAppConfigId, platform };
-                cmds.push(platformRunner(newCommand));
+                cmds.push(platformRunner(spawnCommand(c, {
+                    command: 'configure',
+                    program: { appConfig: c.defaultAppConfigId, platform }
+                })));
             }
         });
 

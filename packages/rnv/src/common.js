@@ -813,19 +813,13 @@ const configureApp = c => new Promise((resolve, reject) => {
             _getConfig(c, c.defaultAppConfigId)
                 .then(() => {
                     configureEntryPoints(c);
-
-                    const newCommand = Object.assign({}, c);
-                    newCommand.subCommand = 'configure';
-                    newCommand.program = {
-                        appConfig: c.defaultAppConfigId,
-                        update: true,
-                        platform: c.program.platform,
-                        scheme: c.program.scheme,
-                        provisioningStyle: c.program.provisioningStyle,
-                        codeSignIdentity: c.program.codeSignIdentity,
-                        provisionProfileSpecifier: c.program.provisionProfileSpecifier
-                    };
-                    appRunner(newCommand)
+                    appRunner(spawnCommand(c, {
+                        command: 'configure',
+                        program: {
+                            appConfig: c.defaultAppConfigId,
+                            update: true,
+                        }
+                    }))
                         .then(() => resolve(c))
                         .catch(e => reject(e));
                 })
@@ -845,6 +839,12 @@ const configureApp = c => new Promise((resolve, reject) => {
         }
     }
 });
+
+export const spawnCommand = (c, overrideParams) => {
+    const merge = require('deepmerge');
+    const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
+    return newCommand;
+};
 
 const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
@@ -1104,29 +1104,25 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     const { device } = c.program;
     // if (!fs.existsSync(getAppFolder(c, platform))) {
     //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
-
-    const newCommand = Object.assign({}, c);
-    newCommand.subCommand = 'configure';
-    newCommand.program = {
-        appConfig: c.id,
-        update: false,
-        platform,
-        scheme: c.program.scheme,
-        device,
-        provisioningStyle: c.program.provisioningStyle,
-        codeSignIdentity: c.program.codeSignIdentity,
-        provisionProfileSpecifier: c.program.provisionProfileSpecifier
-    };
+    const nc = spawnCommand(c, {
+        command: 'configure',
+        program: {
+            appConfig: c.id,
+            update: false,
+            platform,
+            device
+        }
+    });
 
     if (c.program.reset) {
         cleanPlatformBuild(c, platform)
             .then(() => createPlatformBuild(c, platform))
-            .then(() => appRunner(newCommand))
+            .then(() => appRunner(nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
         createPlatformBuild(c, platform)
-            .then(() => appRunner(newCommand))
+            .then(() => appRunner(nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     }

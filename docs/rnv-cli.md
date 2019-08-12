@@ -24,7 +24,7 @@ rnv target quit         //Terminate target (i.e. simulator/ emulator)
 rnv target list         //List of available targets (i.e. simulator/ emulator)
 
 //app.js
-rnv app configure       //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
+rnv configure       //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
 rnv app switch          //Switch app to new appConfig (only copy runtime)
 rnv app create          //Create new appConfig
 rnv app remove          //Remove selected appConfig
@@ -52,9 +52,9 @@ rnv setup
 
 rnv platform configure -c helloWorld
 
-rnv app configure -c helloWorld
+rnv configure -c helloWorld
 
-rnv app configure -c helloWorld -u
+rnv configure -c helloWorld -u
 
 rnv run -p ios -t "iPhone 6"
 rnv run -p tvos
