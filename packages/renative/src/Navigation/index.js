@@ -44,7 +44,7 @@ const createFilteredStackNavigator = (c, componentMap, rootRoute, rootScreen, ro
     return createStackNavigator(stacks);
 };
 
-const createApp = (c, componentMap) => {
+const createApp = (c, componentMap, navigatorProps = {}) => {
     const root = c.root;
     let rootNav;
     let stackNav;
@@ -160,6 +160,7 @@ const createApp = (c, componentMap) => {
                 }}
                 onNavigationStateChange={handleNavigationChange}
                 uriPrefix="/app"
+                {...navigatorProps}
             />
         </View>
     );
