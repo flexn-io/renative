@@ -2545,6 +2545,33 @@ If above does not help either you can raise new question/bug on repo https://git
 Provide at least `SUMMARY` box from your console
 
 
+#### Common Errors:
+
+ERROR:
+
+`linker command failed with exit code 1 (use -v to see invocation)`
+
+Make sure your Xcode version is `10.2` or newer
+
+
+ERRROR:
+
+`Description: Invalid runtime: com.apple.CoreSimulator.SimRuntime.iOS-.......`
+
+try to run
+
+```bash
+sudo killall -9 com.apple.CoreSimulator.CoreSimulatorService
+```
+
+ERRROR:
+
+`Could not create service of type ScriptPluginFactory using BuildScopeServices.createScriptPluginFactory()`
+
+Try killing all `gradle` processes and running the build again, that should help
+
+
+
 # Contributing
 
 ---
