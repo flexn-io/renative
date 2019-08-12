@@ -190,12 +190,18 @@ const _startServer = c => new Promise((resolve, reject) => {
         }
     }
 
-
+    let startCmd;
     if (c.program.reset) {
-        shell.exec('node ./node_modules/react-native/local-cli/cli.js start --reset-cache');
+        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start --reset-cache';
     } else {
-        shell.exec('node ./node_modules/react-native/local-cli/cli.js start');
+        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start';
     }
+
+    executePipe(c, PIPES.START_BEFORE)
+        .then(() => {
+            shell.exec(startCmd);
+        })
+        .catch(e => reject(e));
 });
 
 const runWeinre = () => {
