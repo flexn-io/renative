@@ -56,6 +56,7 @@ Contributing
   <a href="#cli"><b>CLI</b></a> &bull;
   <a href="#renative-cli">ReNative CLI</a> &bull;
   <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
+  <a href="#common-issues"><b>Common Issues</b></a> &bull;
   <a href="#runtime"><b>Runtime</b></a> &bull;
   <a href="#contributing"><b>Contributing</b></a> &bull;
   <a href="#discussions">Discussions</a> &bull;
@@ -331,6 +332,16 @@ open: http://0.0.0.0:8080/
 
 All app code is located in `./src` directory
 
+##### RNV + NPX
+
+⚠️
+
+It is recommended that after initial project setup you start using `npx rnv ...` prefix instead of `rnv ...`
+
+This ensures that every project uses correct version of `rnv` to avoid potential compatibility issues
+
+make sure you have npx installed globally via `npm install npx -g`
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_features.png?raw=true" width=50 height=50 />
@@ -347,7 +358,7 @@ Build app blazingly fast with built-in features:
 * Deployment Ready project
 * Generated projects can be opened and profiled in standard IDEs like Xcode, Android Studio, Tizen IDE etc  
 
-#### Development platforms
+#### Supported OS
 
 <table>
   <tr>
@@ -962,6 +973,7 @@ ReNative provides runtime SDK library to support multiplatform development
 import { Api } from 'renative'
 ```
 
+⚠️ NOTE: this library is under development!
 
 ---
 
@@ -1054,37 +1066,98 @@ https://github.com/pavjacko/renative/blob/master/packages/renative-template-hell
 
 #### File Overrides / Injectors
 
+Every time you run RNV command, ReNative checks following "special" folders and copies contents of those into designated target folders
+
+- `*/plugins/[PLUGIN_ID]`
+- `*/plugins/[PLUGIN_ID]/overrides` -> special override allows you to override files in plugin itslef! (located `./node_modules`)
+- `*/builds/[PLATFORM]`
+- `*/fonts`
+- `*/assets/runtime`
+- `*/assets/[PLATFORM]`
+
+You can utilise above folders in following places:
+
+- `./appConfigs/[APP_ID]`
+- `./projectConfig`
+- `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]`
+- `~/.rnv/[PROJECT-NAME]/projectConfig`
+
+Legend:
+
+- `[PLATFORM]` - specific platform key like `ios`, `andoid`, `web`, etc..
+- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `config.json` file
+- `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
+- `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
+- `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "globalConfigFolder": "~/.myCustomGlobalFolder" }` in `rn-config.json` of each project
+
+##### Platform Builds Overrides
+
 Project Scoped Build Override
 
-`projectConfig/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + Project Scoped Build Override
 
-`projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+##### Platform Assets Overrides
 
 Project Scoped Assets Override
 
-`projectConfig/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Project Scoped Assets Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + Project Scoped Build Override
 
-`projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
 
 #### Flavoured Builds
 
@@ -2434,6 +2507,43 @@ It's also best way to contribute back to RNV! :)
 rnv template apply
 => pick renative-template-hello-world
 ```
+
+# Common Issues
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/ic_issues.png?raw=true" width=50 height=50 />
+
+If you encounter unexpected error / issue it is always good to perform basic sanity steps:
+
+#### rnv status
+
+`rnv status`
+
+this should print out basic `SUMMARY` box with info about your project, env, and RNV version. check if everything seem correct.
+
+#### -r --reset
+
+`rnv start -r` -> restart your server / bundler and reset all cache
+
+`rnv run .... -r` -> recreate whole project before running app
+
+#### -i --info
+
+`rnv run .... -i` -> run ReNative with full verbose logs
+
+#### rnv clean
+
+If above does not help try to clean up your project
+
+`rnv clean && npm i`
+
+#### Raise Issue
+
+If above does not help either you can raise new question/bug on repo https://github.com/pavjacko/renative/issues
+
+Provide at least `SUMMARY` box from your console
+
 
 # Contributing
 

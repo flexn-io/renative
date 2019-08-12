@@ -2528,6 +2528,10 @@ this should print out basic `SUMMARY` box with info about your project, env, and
 
 `rnv run .... -r` -> recreate whole project before running app
 
+#### -i --info
+
+`rnv run .... -i` -> run ReNative with full verbose logs
+
 #### rnv clean
 
 If above does not help try to clean up your project
