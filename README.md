@@ -1054,37 +1054,81 @@ https://github.com/pavjacko/renative/blob/master/packages/renative-template-hell
 
 #### File Overrides / Injectors
 
+Legend:
+
+- `[PLATFORM]` - specific platform key like `ios`, `andoid`, `web`, etc..
+- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `config.json` file
+- `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
+- `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "globalConfigFolder": "~/.myCustomGlobalFolder" }` in `rn-config.json` of each project
+
+##### Platform Builds Overrides
+
 Project Scoped Build Override
 
-`projectConfig/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + Project Scoped Build Override
 
-`projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+##### Platform Assets Overrides
 
 Project Scoped Assets Override
 
-`projectConfig/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Project Scoped Assets Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + Project Scoped Build Override
 
-`projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + App Config Scoped Build Override
 
-`appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `platformAssets/runtime/*/*`
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
 
 #### Flavoured Builds
 
