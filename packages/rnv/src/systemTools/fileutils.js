@@ -86,7 +86,11 @@ const removeDir = (path, callback) => {
 };
 
 const mkdirSync = (dir) => {
-    shelljs.mkdir('-p', dir);
+    try {
+        shelljs.mkdir('-p', dir);
+    } catch (e) {
+        logWarning(`shelljs.mkdir failed for dir: ${dir} with error: ${e}`);
+    }
 };
 
 const cleanFolder = d => new Promise((resolve, reject) => {

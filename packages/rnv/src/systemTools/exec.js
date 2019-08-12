@@ -83,26 +83,35 @@ const executeAsync = (
     const command = spawn(cmd, args, mergedOpts);
 
     let stdout = '';
+    let stdoutErr = '';
     let ended = false;
+    const findError = new RegExp(/error|fatal|invalid/i);
 
     /* eslint-disable-next-line no-unused-expressions */
     command.stdout
             && command.stdout.on('data', (output) => {
                 const outputStr = output.toString();
-                if (outputStr) stdout += outputStr;
+                console.log(outputStr);
+                if (outputStr) {
+                    stdout += outputStr;
+
+                    if (findError.test(outputStr)) {
+                        stdoutErr += outputStr;
+                    }
+                }
             });
 
     /* eslint-disable-next-line no-unused-expressions */
     command.stderr
             && command.stderr.on('data', (output) => {
                 const outputStr = output.toString();
-                if (outputStr) stdout += outputStr;
+                if (outputStr) stdoutErr += outputStr;
             });
 
     command.on('close', (code) => {
         logDebug(`Command ${cmd} ${cleanArgs} exited with code ${code}`);
         if (code !== 0) {
-            reject(new Error(`process exited with code ${code}. ${stdout}`));
+            reject(new Error(`process exited with code ${code}. <ERROR> ${stdoutErr} </ERROR>`));
         } else {
             ended = true;
 

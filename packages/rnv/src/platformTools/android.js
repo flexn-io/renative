@@ -507,8 +507,13 @@ const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
     resolve();
 });
 
+// let _workerTimer;
+// const _workerLogger = () => {
+//     console.log(`PACKAGING ANDROID.... ${(new Date()).toLocaleString()}`);
+// };
+
 const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
-    logTask('packageAndroid');
+    logTask(`packageAndroid:${platform}`);
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.files.appConfigFile.platforms[platform];
@@ -528,6 +533,8 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
         reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
     }
 
+    console.log('ANDROID PACKAGE STARTING...');
+    // _workerTimer = setInterval(_workerLogger, 30000);
     executeAsync(reactNative, [
         'bundle',
         '--platform',
@@ -541,8 +548,16 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
         '--bundle-output',
         `${appFolder}/app/src/main/assets/${outputFile}.bundle`,
     ])
-        .then(() => resolve())
-        .catch(e => reject(e));
+        .then(() => {
+            // clearInterval(_workerTimer);
+            console.log('ANDROID PACKAGE FINISHED');
+            return resolve();
+        })
+        .catch((e) => {
+            // clearInterval(_workerTimer);
+            console.log('ANDROID PACKAGE FAILED');
+            return reject(e);
+        });
 });
 
 const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
