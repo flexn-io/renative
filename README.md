@@ -56,6 +56,7 @@ Contributing
   <a href="#cli"><b>CLI</b></a> &bull;
   <a href="#renative-cli">ReNative CLI</a> &bull;
   <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
+  <a href="#common-issues"><b>Common Issues</b></a> &bull;
   <a href="#runtime"><b>Runtime</b></a> &bull;
   <a href="#contributing"><b>Contributing</b></a> &bull;
   <a href="#discussions">Discussions</a> &bull;
@@ -331,6 +332,16 @@ open: http://0.0.0.0:8080/
 
 All app code is located in `./src` directory
 
+##### RNV + NPX
+
+⚠️
+
+It is recommended that after initial project setup you start using `npx rnv ...` prefix instead of `rnv ...`
+
+This ensures that every project uses correct version of `rnv` to avoid potential compatibility issues
+
+make sure you have npx installed globally via `npm install npx -g`
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_features.png?raw=true" width=50 height=50 />
@@ -347,7 +358,7 @@ Build app blazingly fast with built-in features:
 * Deployment Ready project
 * Generated projects can be opened and profiled in standard IDEs like Xcode, Android Studio, Tizen IDE etc  
 
-#### Development platforms
+#### Supported OS
 
 <table>
   <tr>
@@ -962,6 +973,7 @@ ReNative provides runtime SDK library to support multiplatform development
 import { Api } from 'renative'
 ```
 
+⚠️ NOTE: this library is under development!
 
 ---
 
@@ -2495,6 +2507,39 @@ It's also best way to contribute back to RNV! :)
 rnv template apply
 => pick renative-template-hello-world
 ```
+
+# Common Issues
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/ic_issues.png?raw=true" width=50 height=50 />
+
+If you encounter unexpected error / issue it is always good to perform basic sanity steps:
+
+#### rnv status
+
+`rnv status`
+
+this should print out basic `SUMMARY` box with info about your project, env, and RNV version. check if everything seem correct.
+
+#### -r --reset
+
+`rnv start -r` -> restart your server / bundler and reset all cache
+
+`rnv run .... -r` -> recreate whole project before running app
+
+#### rnv clean
+
+If above does not help try to clean up your project
+
+`rnv clean && npm i`
+
+#### Raise Issue
+
+If above does not help either you can raise new question/bug on repo https://github.com/pavjacko/renative/issues
+
+Provide at least `SUMMARY` box from your console
+
 
 # Contributing
 

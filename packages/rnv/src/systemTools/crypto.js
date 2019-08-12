@@ -131,7 +131,7 @@ export const installProfiles = c => new Promise((resolve, reject) => {
         mkdirSync(ppFolder);
     }
 
-    const list = getFileListSync(c.paths.globalProjectFolder);
+    const list = getFileListSync(c.paths.privateProjectFolder);
     const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
 
     try {
@@ -155,7 +155,7 @@ export const installCerts = c => new Promise((resolve, reject) => {
     }
     const kChain = c.program.keychain || 'ios-build.keychain';
     const kChainPath = path.join(c.paths.homeFolder, 'Library/Keychains', kChain);
-    const list = getFileListSync(c.paths.globalProjectFolder);
+    const list = getFileListSync(c.paths.privateProjectFolder);
     const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
 

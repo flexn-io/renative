@@ -171,6 +171,7 @@ const RNV_PROJECT_CONFIG_NAME = 'rnv-config.json';
 const RNV_PROJECT_CONFIG_LOCAL_NAME = 'rnv-config.local.json';
 const RNV_GLOBAL_CONFIG_NAME = 'config.json';
 const RNV_APP_CONFIG_NAME = 'config.json';
+const RNV_PRIVATE_APP_CONFIG_NAME = 'config.private.json';
 const RN_CLI_CONFIG_NAME = 'rn-cli.config.js';
 const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 const SAMPLE_APP_ID = 'helloWorld';
@@ -288,6 +289,7 @@ export {
     RNV_PROJECT_CONFIG_NAME,
     RNV_GLOBAL_CONFIG_NAME,
     RNV_APP_CONFIG_NAME,
+    RNV_PRIVATE_APP_CONFIG_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
@@ -374,6 +376,7 @@ export default {
     RNV_PROJECT_CONFIG_NAME,
     RNV_GLOBAL_CONFIG_NAME,
     RNV_APP_CONFIG_NAME,
+    RNV_PRIVATE_APP_CONFIG_NAME,
     RN_CLI_CONFIG_NAME,
     RN_BABEL_CONFIG_NAME,
     SAMPLE_APP_ID,

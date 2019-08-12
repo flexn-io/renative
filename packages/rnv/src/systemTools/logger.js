@@ -138,7 +138,11 @@ export const logSummary = () => {
             if (defaultProjectConfigs.supportedPlatforms) {
                 const plats = [];
                 generateOptions(_c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
-                    const isEjected = _c.paths.platformTemplatesFolders[obj].includes(_c.paths.rnvPlatformTemplatesFolder) ? '' : '(ejected)';
+                    let isEjected = '';
+                    if (_c.paths.platformTemplatesFolders) {
+                        isEjected = _c.paths.platformTemplatesFolders[obj].includes(_c.paths.rnvPlatformTemplatesFolder) ? '' : '(ejected)';
+                    }
+
                     plats.push(`${defaultVal}${isEjected}`);
                 });
                 str += printArrIntoBox(plats, 'Supported Platfroms: ');

@@ -61,6 +61,7 @@ import {
     RNV_PROJECT_CONFIG_NAME,
     RNV_GLOBAL_CONFIG_NAME,
     RNV_APP_CONFIG_NAME,
+    RNV_PRIVATE_APP_CONFIG_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
@@ -345,7 +346,9 @@ This might result in unexpected behaviour! It is recommended that you run your r
         c.paths.globalConfigFolder = getRealPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
         if (c.files.projectPackage) {
-            c.paths.globalProjectFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name);
+            c.paths.privateProjectFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name);
+            c.paths.privateProjectConfigFolder = path.join(c.paths.privateProjectFolder, 'projectConfig');
+            c.paths.privateAppConfigsFolder = path.join(c.paths.privateProjectFolder, 'appConfigs');
         }
         c.paths.appConfigsFolder = getRealPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
         c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
@@ -879,7 +882,7 @@ export const listAppConfigsFoldersSync = (c) => {
 const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
-    setAppConfig(c, path.join(c.paths.appConfigsFolder, appConfigId));
+    setAppConfig(c, appConfigId);
     c.appId = appConfigId;
 
     if (!fs.existsSync(c.paths.appConfigFolder)) {
@@ -911,7 +914,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                     if (configDirs[v]) {
                         c.defaultAppConfigId = configDirs[v];
                         c.appId = c.defaultAppConfigId;
-                        setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+                        setAppConfig(c, c.defaultAppConfigId);
                         _configureConfig(c)
                             .then(() => resolve())
                             .catch(e => reject(e));
@@ -929,7 +932,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 ),
                 (v) => {
                     c.defaultAppConfigId = SAMPLE_APP_ID;
-                    setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+                    setAppConfig(c, c.defaultAppConfigId);
                     copyFolderContentsRecursiveSync(
                         path.join(c.paths.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),
                         path.join(c.paths.appConfigFolder),
@@ -963,7 +966,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
                 const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile, { arrayMerge: _arrayMergeOverride });
                 c.files.appConfigFile = mergedAppConfigFile;
-                setAppConfig(c, parentAppConfigFolder);
+                setAppConfig(c, c.files.appConfigFile.extend);
             }
         }
         resolve();
@@ -1030,7 +1033,7 @@ const getConfigProp = (c, platform, key, defaultVal) => {
 const getJsBundleFileDefaults = {
     android: 'super.getJSBundleFile()',
     androidtv: 'super.getJSBundleFile()',
-    //CRAPPY BUT Android Wear does not support webview required for connecting to packager
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
     androidwear: '"assets://index.androidwear.bundle"',
 };
 
@@ -1153,23 +1156,40 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     logTask(`copyBuildsFolder:${platform}`);
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    // FOLDER MERGERS FROM APP CONFIG
     const destPath = path.join(getAppFolder(c, platform));
-    const sourcePath0 = getBuildsFolder(c, platform);
-    copyFolderContentsRecursiveSync(sourcePath0, destPath);
 
     // FOLDER MERGERS PROJECT CONFIG
     const sourcePath1 = getBuildsFolder(c, platform, c.paths.projectConfigFolder);
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
+    // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
+    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.privateProjectConfigFolder);
+    copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
+
+    // FOLDER MERGERS FROM APP CONFIG
+    const sourcePath0 = getBuildsFolder(c, platform, c.paths.appConfigFolder);
+    copyFolderContentsRecursiveSync(sourcePath0, destPath, c.paths.appConfigFolder);
+
+    // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
+    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.privateAppConfigFolder);
+    copyFolderContentsRecursiveSync(sourcePath0sec, destPath);
+
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
+        const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath3, destPath);
+
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
+        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.privateProjectConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath3sec, destPath);
+
         // FOLDER MERGES FROM APP CONFIG PLUGIN
         const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
-        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
-        copyFolderContentsRecursiveSync(sourcePath3, destPath);
+        // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
+        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.privateAppConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath2sec, destPath);
     });
 
     resolve();
@@ -1179,6 +1199,9 @@ const _getScheme = c => c.program.scheme || 'debug';
 
 const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfigFolder;
+    // if (!fs.existsSync(pp)) {
+    //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
+    // }
     const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
     if (fs.existsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
@@ -1190,8 +1213,10 @@ const getIP = () => {
 };
 
 const setAppConfig = (c, p) => {
-    c.paths.appConfigFolder = p;
-    c.paths.appConfigPath = path.join(p, RNV_APP_CONFIG_NAME);
+    c.paths.appConfigFolder = path.join(c.paths.appConfigsFolder, p);
+    c.paths.appConfigPath = path.join(c.paths.appConfigFolder, RNV_APP_CONFIG_NAME);
+    c.paths.privateAppConfigFolder = path.join(c.paths.privateAppConfigsFolder, p);
+    c.paths.privateAppConfigPath = path.join(c.paths.privateAppConfigFolder, RNV_PRIVATE_APP_CONFIG_NAME);
 };
 
 const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {

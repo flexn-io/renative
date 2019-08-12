@@ -511,20 +511,23 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .then(() => parsePodFile(c, platform))
         .then(() => parseEntitlementsPlist(c, platform))
         .then(() => parseInfoPlist(c, platform))
-        .then(() => runPod(forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true))
-        .then(() => parseXcodeProject(c, platform))
-        .then(() => resolve())
-        .catch((e) => {
-            if (!c.program.update) {
-                logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                runPod('update', getAppFolder(c, platform), true)
-                    .then(() => parseXcodeProject(c, platform))
-                    .then(() => resolve())
-                    .catch(err => reject(err));
-            } else {
-                reject(e);
-            }
-        });
+        .then(() => {
+            runPod(forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
+                .then(() => parseXcodeProject(c, platform))
+                .then(() => resolve())
+                .catch((e) => {
+                    if (!c.program.update) {
+                        logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
+                        runPod('update', getAppFolder(c, platform), true)
+                            .then(() => parseXcodeProject(c, platform))
+                            .then(() => resolve())
+                            .catch(err => reject(err));
+                    } else {
+                        reject(e);
+                    }
+                });
+        })
+        .catch(e => reject(e));
 });
 
 export {
