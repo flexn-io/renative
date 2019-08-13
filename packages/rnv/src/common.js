@@ -841,8 +841,29 @@ const configureApp = c => new Promise((resolve, reject) => {
 });
 
 export const spawnCommand = (c, overrideParams) => {
+    const newCommand = {};
+
+    Object.keys(c).forEach((k) => {
+        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
+            newCommand[k] = { ...c[k] };
+        } else {
+            newCommand[k] = c[k];
+        }
+    });
+
     const merge = require('deepmerge');
-    const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
+
+    Object.keys(overrideParams).forEach((k) => {
+        if (newCommand[k] && typeof overrideParams[k] === 'object') {
+            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
+        } else {
+            newCommand[k] = overrideParams[k];
+        }
+    });
+
+    // This causes stack overflow on Linux
+    // const merge = require('deepmerge');
+    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
     return newCommand;
 };
 

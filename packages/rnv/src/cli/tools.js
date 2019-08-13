@@ -79,7 +79,7 @@ const run = (c) => {
         return fixPackageJson(c);
     }
 
-    return Promise.reject(`Command ${c.command} ${c.subCommand} not supported`);
+    return Promise.reject(`cli:tools: Command ${c.command} ${c.subCommand} not supported`);
 };
 
 // ##########################################
@@ -124,7 +124,7 @@ const _crypto = c => new Promise((resolve, reject) => {
         return;
     }
 
-    reject(`Command ${c.command} ${c.subCommand} not supported`);
+    reject(`cli:tools: Command ${c.command} ${c.subCommand} not supported`);
 });
 
 const _status = c => new Promise((resolve, reject) => {

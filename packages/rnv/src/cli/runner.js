@@ -135,7 +135,7 @@ const run = (c) => {
         //     return Promise.resolve();
         //     break;
     default:
-        return Promise.reject(`Command ${c.command} not supported`);
+        return Promise.reject(`cli:runner: Command ${c.command} not supported`);
     }
 };
 

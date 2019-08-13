@@ -63,7 +63,7 @@ const run = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     default:
-        return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
+        return Promise.reject(`cli:target Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
     }
 });
 

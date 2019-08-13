@@ -85,7 +85,7 @@ const executeAsync = (
     let stdout = '';
     let stdoutErr = '';
     let ended = false;
-    const findError = new RegExp(/error|fatal|invalid/i);
+    const findError = new RegExp(/error |fatal |invalid /i);
 
     /* eslint-disable-next-line no-unused-expressions */
     command.stdout

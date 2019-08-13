@@ -92,7 +92,7 @@ const run = (c) => {
         //     return Promise.resolve();
         //     break;
     default:
-        return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
+        return Promise.reject(`cli:app: Sub-Command ${c.subCommand} not supported`);
     }
 };
 
