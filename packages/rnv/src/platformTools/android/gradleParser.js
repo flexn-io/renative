@@ -39,7 +39,8 @@ export const parseBuildGradleSync = (c, platform) => {
         { pattern: '{{BUILD_TOOLS_VERSION}}', override: c.pluginConfigAndroid.buildToolsVersion },
         { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleAllProjectsRepositories },
         { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptRepositories },
-        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies }
+        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies },
+        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDexOptions }
     ]);
 };
 
@@ -310,7 +311,17 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (buildscriptDeps) {
         for (k in buildscriptDeps) {
             if (buildscriptDeps[k] === true) {
-                c.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}`;
+                c.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}\n`;
+            }
+        }
+    }
+
+    const buildscriptDexOptions = buildGradle?.dexOptions;
+    if (buildscriptDexOptions) {
+        for (k in buildscriptDexOptions) {
+            if (buildscriptDexOptions[k] === true) {
+                c.pluginConfigAndroid.buildGradleBuildScriptDexOptions += `${k}\n`;
+
             }
         }
     }

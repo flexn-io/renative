@@ -2569,6 +2569,11 @@ and then
 Try killing all `gradle` processes and running the build again, that should help
 
 
+⚠️`> Execution of compression failed.`
+
+https://github.com/pavjacko/renative/issues/183
+
+
 
 # Contributing
 

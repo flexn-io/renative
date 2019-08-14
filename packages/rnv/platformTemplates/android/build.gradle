@@ -27,6 +27,10 @@ allprojects {
     }
 }
 
+dexOptions {
+    {{PLUGIN_INJECT_DEXOPTIONS}}
+}
+
 ext {
     compileSdkVersion = {{COMPILE_SDK_VERSION}}
     supportLibVersion = '{{SUPPORT_LIB_VERSION}}'
