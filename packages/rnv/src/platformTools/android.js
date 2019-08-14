@@ -893,7 +893,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         manifestApplication: '',
         buildGradleAllProjectsRepositories: '',
         buildGradleBuildScriptRepositories: '',
-        buildGradleBuildScriptDexOptions: '',
+        buildGradleBuildScriptDependencies: '',
         buildGradleBuildScriptDexOptions: '',
         appBuildGradleSigningConfigs: '',
         appBuildGradleImplementations: '',
