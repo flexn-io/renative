@@ -14,6 +14,7 @@ import {
     generateOptions,
     logWelcome,
     logInfo,
+    spawnCommand,
     SUPPORTED_PLATFORMS,
 } from '../common';
 import {
@@ -309,7 +310,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
     if (!fs.existsSync(c.paths.platformBuildsFolder)) {
         logWarning('Platforms not created yet. creating them for you...');
         platformRunner(spawnCommand(c, {
-            command: 'configure',
+            subCommand: 'configure',
             program: { appConfig: c.defaultAppConfigId, platform }
         }))
             .then(() => resolve())
@@ -322,7 +323,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         if (!fs.existsSync(appFolder)) {
             logWarning(`Platform ${platform} not created yet. creating them for you...`);
             platformRunner(spawnCommand(c, {
-                command: 'configure',
+                subCommand: 'configure',
                 program: { appConfig: c.defaultAppConfigId, platform }
             }))
                 .then(() => resolve())
@@ -342,7 +343,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
             if (!fs.existsSync(k)) {
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
                 cmds.push(platformRunner(spawnCommand(c, {
-                    command: 'configure',
+                    subCommand: 'configure',
                     program: { appConfig: c.defaultAppConfigId, platform }
                 })));
             }

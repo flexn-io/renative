@@ -70,7 +70,7 @@ const run = (c) => {
 
 
     default:
-        return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
+        return Promise.reject(`platform:${c.command} Sub-Command ${c.subCommand} not supported`);
     }
 };
 
