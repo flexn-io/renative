@@ -81,7 +81,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     // SOURCES
     c.pluginConfigiOS.podfileSources = '';
-    const podfileSources = c.files.pluginConfig?.ios?.podfileSources;
+    const podfileSources = c.files.pluginConfig?.ios?.Podfile?.sources;
     if (podfileSources && podfileSources.length) {
         podfileSources.forEach((v) => {
             c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
