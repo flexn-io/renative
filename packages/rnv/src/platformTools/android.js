@@ -609,6 +609,9 @@ const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
 
 const _runGradle = async (c, platform) => {
     logTask(`_runGradle:${platform}`);
+    const outputAab = getConfigProp(c, platform, 'aab', false);
+    // shortcircuit devices logic since aabs can't be installed on a device
+    if (outputAab) return _runGradleApp(c, platform, {});
 
     const { target } = c.program;
 
@@ -763,6 +766,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
     const appFolder = getAppFolder(c, platform);
     const bundleId = getConfigProp(c, platform, 'id');
+    const outputAab = getConfigProp(c, platform, 'aab', false);
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
     const { arch, name } = device;
 
@@ -770,11 +774,16 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
 
     _checkSigningCerts(c)
         .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
-            `assemble${signingConfig}`,
+            `${outputAab ? 'bundle' : 'assemble'}${signingConfig}`,
             '-x',
             'bundleReleaseJsAndAssets',
         ]))
         .then(() => {
+            if (outputAab) {
+                const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
+                logInfo(`App built. Path ${aabPath}`);
+                return Promise.resolve();
+            }
             let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
             if (!fs.existsSync(apkPath)) {
                 apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
@@ -784,10 +793,10 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
             logInfo(`Installing ${apkPath} on ${name}`);
             return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
         })
-        .then(() => ((device.isDevice && platform !== ANDROID_WEAR)
+        .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
             ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081'])
             : Promise.resolve()))
-        .then(() => executeAsync(c.cli[CLI_ANDROID_ADB], [
+        .then(() => !outputAab && executeAsync(c.cli[CLI_ANDROID_ADB], [
             '-s',
             device.udid,
             'shell',
