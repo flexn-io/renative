@@ -61,6 +61,7 @@ const executeAsync = (
 
     const mergedOpts = { ...defaultOpts, ...opts };
 
+    let timeout;
     let cleanArgs = '';
     let hideNext = false;
     const pp = mergedOpts?.privateParams || [];
@@ -91,7 +92,6 @@ const executeAsync = (
     command.stdout
             && command.stdout.on('data', (output) => {
                 const outputStr = output.toString();
-                console.log(outputStr);
                 if (outputStr) {
                     stdout += outputStr;
 
@@ -109,27 +109,34 @@ const executeAsync = (
             });
 
     command.on('close', (code) => {
+        if (timeout) clearTimeout(timeout);
         logDebug(`Command ${cmd} ${cleanArgs} exited with code ${code}`);
         if (code !== 0) {
             reject(new Error(`process exited with code ${code}. <ERROR> ${stdoutErr} </ERROR>`));
         } else {
             ended = true;
 
-            logDebug('Execute Command:', command);
+            logDebug('Execute Command:', stdout);
             resolve(stdout);
         }
     });
 
     command.on('error', (error) => {
+        if (timeout) clearTimeout(timeout);
         logDebug(`Command ${cmd} ${cleanArgs} errored with ${error}`);
         reject(new Error(`process errored with ${error}`));
     });
 
     const killChildProcess = () => {
+        if (timeout) clearTimeout(timeout);
         if (ended) return;
         logDebug(`Killing child process ${cmd} ${cleanArgs}`);
         command.kill(1);
     };
+
+    if (opts.timeout) {
+        timeout = setTimeout(killChildProcess, opts.timeout);
+    }
 
     process.on('exit', killChildProcess);
     process.on('SIGINT', killChildProcess);
@@ -282,10 +289,13 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync };
+const openCommand = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
+
+export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync, openCommand };
 
 export default {
     executeAsync,
     execShellAsync,
     execCLI,
+    openCommand
 };

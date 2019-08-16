@@ -5,7 +5,7 @@ import { exec } from 'child_process';
 import inquirer from 'inquirer';
 import fs from 'fs';
 
-import { commandExistsSync, executeAsync } from '../systemTools/exec';
+import { commandExistsSync, executeAsync, openCommand } from '../systemTools/exec';
 import { logInfo, logDebug } from '../common';
 import { replaceHomeFolder } from '../systemTools/fileutils';
 import BasePlatformSetup from './base';
@@ -119,8 +119,7 @@ class LinuxPlatformSetup extends BasePlatformSetup {
     async installWebosSdk() {
         const { downloadLink } = setupConfig.webos;
         logInfo(`Opening ${downloadLink}. Please download and install the SDK then continue after it finished installing. Make sure you also install the CLI and Emulator components`);
-        const start = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
-        exec(`${start} ${downloadLink}`);
+        exec(`${openCommand} ${downloadLink}`);
         const res = await inquirer.prompt({
             type: 'input',
             name: 'sdkPath',
