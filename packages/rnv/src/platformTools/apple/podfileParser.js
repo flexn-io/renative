@@ -52,7 +52,8 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
         }
 
         if (pluginPlat.Podfile) {
-            const injectLines = pluginPlat.Podfile.injectLines;
+            const { injectLines } = pluginPlat.Podfile;
+            // INJECT LINES
             if (injectLines) {
                 injectLines.forEach((v) => {
                     c.pluginConfigiOS.podfileInject += `${v}\n`;
@@ -62,7 +63,8 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
     });
 
     // SUBSPECS
-    const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
+    const reactCore = c.files.pluginConfig
+        ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
     if (reactCore) {
         if (reactCore.ios.reactSubSpecs) {
             reactCore.ios.reactSubSpecs.forEach((v) => {
@@ -77,11 +79,21 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
     const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
 
+    // SOURCES
+    c.pluginConfigiOS.podfileSources = '';
+    const podfileSources = c.files.pluginConfig?.ios?.podfileSources;
+    if (podfileSources && podfileSources.length) {
+        podfileSources.forEach((v) => {
+            c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+        });
+    }
+
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
+        { pattern: '{{PLUGIN_PODFILE_SOURCES}}', override: c.pluginConfigiOS.podfileSources },
     ]);
     resolve();
 });
