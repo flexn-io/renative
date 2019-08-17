@@ -29,9 +29,40 @@ App configs are ReNative compliant app configuration folders which follow prescr
         ├── renative.json
         └── renative.private.json                        
 
+## Merges
+
+Following is the order of merges of various renative configs (if present) producing final `platformAssets/renative.json` config file.
+
+`ROOT_RNV/renative.json`</br>
+⬇️
+`./renative.json`</br>
+⬇️
+`./renative.private.json`</br>
+⬇️
+`./renative.local.json`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/renative.json`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/renative.private.json`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/renative.local.json`</br>
+⬇️
+`./appConfigs/[APP_ID]/renative.json`</br>
+⬇️
+`./appConfigs/[APP_ID]/renative.private.json`</br>
+⬇️
+`./appConfigs/[APP_ID]/renative.local.json`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.json`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.private.json`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.local.json`</br>
+⬇️
+`platformAssets/renative.json`
 
 
-# Renative Config Spec
+## Config Spec
 
 Applies for:
 
@@ -72,7 +103,7 @@ CONFIG_ROOT
 }
 ```
 
-# Common Props
+### Common Props
 
 PLUGIN_PROPS
 
@@ -168,10 +199,10 @@ DEFAULTS_PROPS
 
 
 
-# Platform Specific Props
+### Platform Specific Props
 
 
-## iOS Props
+#### iOS Props
 
 IOS_COMMON_PROPS
 
@@ -206,7 +237,7 @@ IOS_CONFIG_PROPS
 }
 ```
 
-## Android Props
+#### Android Props
 
 ANDROID_COMMON_PROPS
 
@@ -237,7 +268,7 @@ ANDROID_CONFIG_PROPS
 }
 ```
 
-## Tizen Props
+#### Tizen Props
 
 TIZEN_COMMON_PROPS
 
