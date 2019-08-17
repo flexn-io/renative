@@ -3,6 +3,12 @@
 
 App configs are ReNative compliant app configuration folders which follow prescribed structure
 
+Applies for:
+
+- `renative.json` - standard config (commited to git)
+- `renative.private.json` - config containing sensitive values (ignored from git)
+- `renative.local.json` - config containing local values (ignored from git)
+
 ## Structure
 
 `DEV_PATH_X`
@@ -33,7 +39,12 @@ App configs are ReNative compliant app configuration folders which follow prescr
 
 Following is the order of merges of various renative configs (if present) producing final `platformAssets/renative.json` config file.
 
-
+`~/.rnv/renative.json`</br>
+⬇️
+`~/.rnv/renative.private.json`</br>
+⬇️
+`~/.rnv/renative.local.json`</br>
+⬇️
 `./renative.json`</br>
 ⬇️
 `./renative.private.json`</br>
@@ -57,21 +68,20 @@ Following is the order of merges of various renative configs (if present) produc
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.private.json`</br>
 ⬇️
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.local.json`</br>
-`platformAssets/renative.json`
+
+- `./platformBuilds/renative.build.json`
+
+- `./platformAssets/renative.runtime.json` - (subset of renative)
 
 
 ## Config Spec
-
-Applies for:
-
-`renative.json`, `renative.private.json`, `renative.local.json`
-
 
 CONFIG_ROOT
 
 ```json
 {
   "env": {},
+  "definitions": {},
   "isWrapper": true,
   "paths": {
     ...PATH_PROPS
@@ -97,7 +107,8 @@ CONFIG_ROOT
       ...[PLATFORM]_COMMON_PROPS
       ...BUILD_SCHEME_PROPS
     }
-  }
+  },
+  "runtime": {}
 }
 ```
 
@@ -294,7 +305,6 @@ TIZEN_CONFIG_PROPS
 
 ## Config Values Overrides
 
-`./appConfigs/APP_ID/config.json` RULES:
 
 There are 3 levels of override entry objects for your props to fine-tune your app config:
 
@@ -334,3 +344,13 @@ https://github.com/pavjacko/renative/blob/feat/188-config-v2/packages/renative-t
 
 Will be overridden by:
 https://github.com/pavjacko/renative/blob/feat/188-config-v2/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L59
+
+
+Output config will be decorated with few extra props to help with debugging:
+
+```
+{
+  "_timestamp": "",
+  "_mergeSources": []
+}
+```
