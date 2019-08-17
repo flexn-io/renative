@@ -88,12 +88,17 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
         });
     }
 
+    // DEPLOYMENT TARGET
+    const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '10.0');
+    c.pluginConfigiOS.deploymentTarget = deploymentTarget;
+
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
         { pattern: '{{PLUGIN_PODFILE_SOURCES}}', override: c.pluginConfigiOS.podfileSources },
+        { pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}', override: c.pluginConfigiOS.deploymentTarget }
     ]);
     resolve();
 });

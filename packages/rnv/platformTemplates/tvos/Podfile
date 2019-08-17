@@ -1,5 +1,5 @@
 {{PLUGIN_PODFILE_SOURCES}}
-platform :tvos, '10.0'
+platform :tvos, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 use_frameworks!
 {{PLUGIN_WARNINGS}}
 
