@@ -5,7 +5,8 @@ App configs are ReNative compliant app configuration folders which follow prescr
 
 ## Structure
 
-DEV_PATH_X
+`DEV_PATH_X`
+
     .
     └── ProjectX
         ├── appConfigs                 
@@ -17,7 +18,8 @@ DEV_PATH_X
         ├── renative.json
         └── renative.local.json
 
-~/.rnv
+`~/.rnv`
+
     .
     └── ProjectX
         ├── appConfigs                 
