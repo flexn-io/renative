@@ -1,0 +1,111 @@
+{
+    "env": {
+        "SOME_ENV_VAR": "xxxx"
+    },
+    "isWrapper": true,
+    "paths": {
+        "globalConfigFolder": "~/.rnv",
+        "appConfigsFolder": "./appConfigs",
+        "platformTemplatesFolder": "RNV_HOME/platformTemplates",
+        "entryFolder": "./",
+        "platformAssetsFolder": "./platformAssets",
+        "platformBuildsFolder": "./platformBuilds",
+        "projectPlugins": "./projectConfig/plugins",
+        "projectConfigFolder": "./projectConfig"
+    },
+    "defaults": {
+        "ports": {
+            "ios": "9091"
+        },
+        "template": "renative-template-hello-world",
+        "supportedPlatforms": [
+            "ios",
+            "android",
+            "androidtv",
+            "androidwear",
+            "web",
+            "tizen",
+            "tvos",
+            "webos",
+            "macos",
+            "windows",
+            "tizenwatch",
+            "tizenmobile",
+            "kaios",
+            "firefoxos",
+            "firefoxtv"
+        ],
+        "schemes": {
+            "run": "debug",
+            "build": "release",
+            "export": "release"
+        }
+    },
+    "plugins": {
+
+    },
+    "permissions": {
+        "ios": {
+
+        },
+        "android": {
+
+        }
+    },
+    "common": {
+
+    },
+    "platforms": {
+        "ios": {
+            "id": "",
+            "title": "",
+            "description": "",
+            "author": {
+                "name": "",
+                "email": "",
+                "url": ""
+            },
+            "license": "",
+            "runScheme": "",
+            "bundleAssets": false,
+            "entryFile": "",
+            "scheme": "",
+            "teamID": "",
+            "deploymentTarget": "",
+            "provisioningStyle": "",
+            "backgroundColor": "",
+            "systemCapabilities": {},
+            "entitlements": {},
+            "includedPermissions": [],
+            "excludedPermissions": [],
+            "includedFonts": [],
+            "buildSchemes": {},
+            "extra": {}
+        },
+        "android": {
+            "id": "",
+            "title": "",
+            "entryFile": "",
+            "universalApk": false,
+            "multipleAPKs": false,
+            "minSdkVersion": 21,
+            "backgroundColor": "",
+            "permissions": [],
+            "signingConfig": "Release",
+            "multipleAPKs": true,
+            "bundleAssets": true,
+            "bundleIsDev": true,
+            "includedPlugins": [],
+            "excludedPlugins": [],
+            "includedPermissions": [],
+            "excludedPermissions": [],
+            "includedFonts": [],
+            "excludedFonts": [],
+            "buildSchemes": {},
+            "extra": {}
+        }
+    },
+    "extra": {
+
+    }
+}
