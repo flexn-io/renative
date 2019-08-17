@@ -590,6 +590,7 @@ For appConfigs:
   "getJsBundleFile": "",
   "universalApk": true,
   "multipleAPKs": false,
+  "aab": false,
   "minSdkVersion": 21,
   "backgroundColor": "",
   "id": "",
