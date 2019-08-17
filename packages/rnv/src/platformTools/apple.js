@@ -463,7 +463,8 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
             userNotificationCenter: {
                 willPresent: []
             }
-        }
+        },
+        podfileSources: [],
     };
 
     // FONTS

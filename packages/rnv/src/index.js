@@ -25,6 +25,7 @@ const commands = {
     app: App,
     new: App,
     configure: App,
+    switch: App,
     link: Linker,
     platform: Platform,
     run: Runner,

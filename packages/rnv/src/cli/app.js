@@ -50,12 +50,15 @@ import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 
 const CONFIGURE = 'configure';
+const SWITCH = 'switch';
 const CREATE = 'create';
 const NEW = 'new';
 
 const PIPES = {
     APP_CONFIGURE_BEFORE: 'configure:before',
     APP_CONFIGURE_AFTER: 'configure:after',
+    APP_SWITCH_BEFORE: 'switch:before',
+    APP_SWITCH_AFTER: 'switch:after',
 };
 
 const highlight = chalk.green;
@@ -72,6 +75,8 @@ const run = (c) => {
         return _runCreate(c);
     case CONFIGURE:
         return _runConfigure(c);
+    case SWITCH:
+        return _runSwitch(c);
     }
 
     switch (c.subCommand) {
@@ -128,6 +133,19 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
         .then(() => executePipe(c, PIPES.APP_CONFIGURE_AFTER))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _runSwitch = c => new Promise((resolve, reject) => {
+    const p = c.program.platform || 'all';
+    logTask(`_runSwitch:${p}`);
+
+    executePipe(c, PIPES.APP_SWITCH_AFTER)
+
+        .then(() => copyRuntimeAssets(c))
+        .then(() => _copySharedPlatforms(c))
+        .then(() => executePipe(c, PIPES.APP_SWITCH_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));
 });

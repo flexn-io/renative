@@ -33,6 +33,14 @@ import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
 
+    let dexOptions = '';
+
+    if (c.pluginConfigAndroid.buildGradleBuildScriptDexOptions) {
+        dexOptions = `dexOptions() {
+            ${c.pluginConfigAndroid.buildGradleBuildScriptDexOptions}
+        }`
+    }
+
     writeCleanFile(getBuildFilePath(c, platform, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
         { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
         { pattern: '{{SUPPORT_LIB_VERSION}}', override: c.pluginConfigAndroid.supportLibVersion },
@@ -40,7 +48,7 @@ export const parseBuildGradleSync = (c, platform) => {
         { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleAllProjectsRepositories },
         { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptRepositories },
         { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies },
-        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDexOptions }
+        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions }
     ]);
 };
 
@@ -321,7 +329,6 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         for (k in buildscriptDexOptions) {
             if (buildscriptDexOptions[k] === true) {
                 c.pluginConfigAndroid.buildGradleBuildScriptDexOptions += `${k}\n`;
-
             }
         }
     }
