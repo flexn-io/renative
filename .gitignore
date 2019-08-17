@@ -63,3 +63,5 @@ rnv-config.local.json
 /projectConfig
 /src
 /index.*.js
+renative.local.json
+renative.private.json

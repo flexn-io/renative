@@ -32,9 +32,12 @@ Override rules:
 
 - https://github.com/pavjacko/renative/tree/develop#config-values-overrides
 
+
+## Config Spec
+
 EXTRA_PROPS
 
-```
+```json
 {
   ...ANY_VALUES
 }
@@ -42,15 +45,53 @@ EXTRA_PROPS
 
 PLUGIN_PROPS
 
-```
+```json
 {
-
+  "version": "",
+  "no-npm": false,
+  "ios": {
+    ...IOS_PLUGIN_PROPS
+    ...IOS_COMMON_PROPS
+  },
+  "android": {
+    ...ANDROID_PLUGIN_PROPS
+    ...ANDROID_COMMON_PROPS
+  },
+  "tizen": {
+    ...TIZEN_PLUGIN_PROPS
+    ...TIZEN_COMMON_PROPS
+  },
+  "webpack": {
+    "modulePaths": false,
+    "moduleAliases": {}
+  }
 }
 ```
 
-IOS_PROPS
+IOS_COMMON_PROPS
 
+```json
+{
+  "appDelegateImports": [],
+  "appDelegateMethods": {},
+  "plist": {}
+}
 ```
+
+IOS_PLUGIN_PROPS
+
+```json
+{
+  "reactSubSpecs": [],
+  "appDelegateMethods": {},
+  "podName": "",
+  "path": ""
+}
+```
+
+IOS_CONFIG_PROPS
+
+```json
 {
   "teamID": "",
   "deploymentTarget": "",
@@ -60,9 +101,27 @@ IOS_PROPS
 }
 ```
 
-ANDROID_PROPS
+ANDROID_COMMON_PROPS
 
+```json
+{
+  "gradle.properties": {},
+  "AndroidManifest": {}
+}
 ```
+
+ANDROID_PLUGIN_PROPS
+
+```json
+{
+  "gradle.properties": {},
+  "AndroidManifest": {}
+}
+```
+
+ANDROID_CONFIG_PROPS
+
+```json
 {
   "universalApk": false,
   "multipleAPKs": false,
@@ -73,7 +132,7 @@ ANDROID_PROPS
 
 COMMON_PROPS
 
-```
+```json
 {
   "id": "",
   "title": "",
@@ -102,16 +161,16 @@ COMMON_PROPS
 
 BUILD_SCHEMES
 
-```
+```json
 {
   "ios": {
     ...COMMON_PROPS
-    ...IOS_PROPS
+    ...IOS_COMMON_PROPS
     ...EXTRA_PROPS
   },
   "android": {
     ...COMMON_PROPS
-    ...ANDROID_PROPS
+    ...ANDROID_COMMON_PROPS
     ...EXTRA_PROPS
   },
 }
@@ -119,23 +178,23 @@ BUILD_SCHEMES
 
 PATH_PROPS
 
-```
+```json
 {
-    "globalConfigFolder": "~/.rnv",
-    "appConfigsFolder": "./appConfigs",
-    "platformTemplatesFolder": "RNV_HOME/platformTemplates",
+    "globalConfigFolder": "",
+    "appConfigsFolder": "",
+    "platformTemplatesFolder": "",
     "entryFolder": "./",
-    "platformAssetsFolder": "./platformAssets",
-    "platformBuildsFolder": "./platformBuilds",
-    "projectPlugins": "./projectConfig/plugins",
-    "projectConfigFolder": "./projectConfig"
+    "platformAssetsFolder": "",
+    "platformBuildsFolder": "",
+    "projectPlugins": "",
+    "projectConfigFolder": ""
 }
 ```
 
 
 ROOT_CONFIG
 
-```
+```json
 {
   "env": {},
   "isWrapper": true,
@@ -146,10 +205,11 @@ ROOT_CONFIG
     "ports": {},
     "template": "",
     "supportedPlatforms": [],
-    "schemes": {}
+    "schemes": {},
+    "targets": {}
   },
   "plugins": {
-    [PLUGIN_ID]: {
+    "[PLUGIN_KEY]": {
       ...PLUGIN_PROPS
     }
   },
@@ -159,23 +219,25 @@ ROOT_CONFIG
   },
   "common": {
     ...COMMON_PROPS
-    buildSchemes: {
+    ...EXTRA_PROPS
+    "buildSchemes": {
       ...BUILD_SCHEMES
     },
-    ...EXTRA_PROPS
   },
   "platforms": {
     "ios": {
       ...COMMON_PROPS
-      ...IOS_PROPS
-      buildSchemes: {
+      ...EXTRA_PROPS
+      ...IOS_COMMON_PROPS
+      "buildSchemes": {
         ...BUILD_SCHEMES
       }
     },
     "android": {
       ...COMMON_PROPS
-      ...ANDROID_PROPS
-      buildSchemes: {
+      ...EXTRA_PROPS
+      ...ANDROID_COMMON_PROPS
+      "buildSchemes": {
         ...BUILD_SCHEMES
       }
     }

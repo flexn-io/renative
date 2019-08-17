@@ -39,6 +39,9 @@
             "run": "debug",
             "build": "release",
             "export": "release"
+        },
+        "targets": {
+          
         }
     },
     "plugins": {
