@@ -630,6 +630,7 @@ For appConfigs:
   "permissions": [],
   "bundleAssets": true,
   "bundleIsDev": true,
+  "deploymentTarget": "",
   "teamID": "",
   "scheme": "",
   "permissions": ["*"],
