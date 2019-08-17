@@ -33,40 +33,11 @@ Override rules:
 - https://github.com/pavjacko/renative/tree/develop#config-values-overrides
 
 
-## Config Spec
 
-EXTRA_PROPS
+# Platform Specific Props
 
-```json
-{
-  ...ANY_VALUES
-}
-```
 
-PLUGIN_PROPS
-
-```json
-{
-  "version": "",
-  "no-npm": false,
-  "ios": {
-    ...IOS_PLUGIN_PROPS
-    ...IOS_COMMON_PROPS
-  },
-  "android": {
-    ...ANDROID_PLUGIN_PROPS
-    ...ANDROID_COMMON_PROPS
-  },
-  "tizen": {
-    ...TIZEN_PLUGIN_PROPS
-    ...TIZEN_COMMON_PROPS
-  },
-  "webpack": {
-    "modulePaths": false,
-    "moduleAliases": {}
-  }
-}
-```
+## iOS Props
 
 IOS_COMMON_PROPS
 
@@ -101,6 +72,8 @@ IOS_CONFIG_PROPS
 }
 ```
 
+## Android Props
+
 ANDROID_COMMON_PROPS
 
 ```json
@@ -127,6 +100,51 @@ ANDROID_CONFIG_PROPS
   "multipleAPKs": false,
   "minSdkVersion": 21,
   "signingConfig": ""
+}
+```
+
+## Tizen Props
+
+TIZEN_COMMON_PROPS
+
+```json
+{
+
+}
+```
+
+TIZEN_PLUGIN_PROPS
+
+```json
+{
+
+}
+```
+
+TIZEN_CONFIG_PROPS
+
+```json
+{
+
+}
+```
+
+# Common Props
+
+PLUGIN_PROPS
+
+```json
+{
+  "version": "",
+  "no-npm": false,
+  "[PLATFORM]": {
+    ...[PLATFORM]_PLUGIN_PROPS
+    ...[PLATFORM]_COMMON_PROPS
+  },
+  "webpack": {
+    "modulePaths": false,
+    "moduleAliases": {}
+  }
 }
 ```
 
@@ -159,20 +177,18 @@ COMMON_PROPS
 }
 ```
 
-BUILD_SCHEMES
+BUILD_SCHEME_PROPS
 
 ```json
 {
-  "ios": {
-    ...COMMON_PROPS
-    ...IOS_COMMON_PROPS
-    ...EXTRA_PROPS
-  },
-  "android": {
-    ...COMMON_PROPS
-    ...ANDROID_COMMON_PROPS
-    ...EXTRA_PROPS
-  },
+  "buildSchemes": {
+    "[BUILD_SHEME_KEY]": {
+      "[PLATFORM]": {
+        ...COMMON_PROPS
+        ...[PLATFORM]_COMMON_PROPS
+      }
+    }
+  }
 }
 ```
 
@@ -183,7 +199,7 @@ PATH_PROPS
     "globalConfigFolder": "",
     "appConfigsFolder": "",
     "platformTemplatesFolder": "",
-    "entryFolder": "./",
+    "entryFolder": "",
     "platformAssetsFolder": "",
     "platformBuildsFolder": "",
     "projectPlugins": "",
@@ -191,8 +207,24 @@ PATH_PROPS
 }
 ```
 
+DEFAULTS_PROPS
 
-ROOT_CONFIG
+```json
+{
+  "ports": {
+    "[PLATFORM]": 1111
+  },
+  "template": "",
+  "supportedPlatforms": ["[PLATFORM]"],
+  "schemes": {},
+  "targets": {
+    "[PLATFORM]": ""
+  }
+}
+```
+
+# Renative Config Spec
+
 
 ```json
 {
@@ -202,11 +234,7 @@ ROOT_CONFIG
     ...PATH_PROPS
   },
   "defaults": {
-    "ports": {},
-    "template": "",
-    "supportedPlatforms": [],
-    "schemes": {},
-    "targets": {}
+    ...DEFAULTS_PROPS
   },
   "plugins": {
     "[PLUGIN_KEY]": {
@@ -214,35 +242,19 @@ ROOT_CONFIG
     }
   },
   "permissions": {
-    "ios": {},
-    "android": {}
+    "[PLATFORM]": {}
   },
   "common": {
     ...COMMON_PROPS
-    ...EXTRA_PROPS
-    "buildSchemes": {
-      ...BUILD_SCHEMES
-    },
+    ...BUILD_SCHEME_PROPS
   },
   "platforms": {
-    "ios": {
+    "[PLATFORM]": {
       ...COMMON_PROPS
-      ...EXTRA_PROPS
-      ...IOS_COMMON_PROPS
-      "buildSchemes": {
-        ...BUILD_SCHEMES
-      }
-    },
-    "android": {
-      ...COMMON_PROPS
-      ...EXTRA_PROPS
-      ...ANDROID_COMMON_PROPS
-      "buildSchemes": {
-        ...BUILD_SCHEMES
-      }
+      ...[PLATFORM]_COMMON_PROPS
+      ...BUILD_SCHEME_PROPS
     }
-  },
-  ...EXTRA_PROPS
+  }
 }
 ```
 
