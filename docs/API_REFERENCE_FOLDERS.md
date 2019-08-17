@@ -5,38 +5,36 @@ App configs are ReNative compliant app configuration folders which follow prescr
 
 ## Structure
 
-DEV_PATH_X
     .
-    └── ProjectX
-        ├── appConfigs                 
-        │   └── AppX              
-        │       ├── renative.json
-        │       └── renative.local.json             
-        ├── platformAssets              
-        │   └── renative.json
-        ├── renative.json
-        └── renative.local.json
+    └── clientX
+        ├── assets
+        │   ├── ios
+        │   ├── android
+        │   └── web
+        ├── plugins
+        │   └── some-plugin
+        │       └── builds
+        │            ├── android@release
+        │            │   └── fileToBeInjectedInReleaseMode.txt
+        │            └── android@debug
+        │                └── fileToBeInjectedInDebugMode.txt
+        ├── builds
+        │   ├── android@release
+        │   │   └── fileToBeInjectedInReleaseMode.txt
+        │   └── android@debug
+        │       └── fileToBeInjectedInDebugMode.txt
+        └── config.json
 
-~/.rnv
-    .
-    └── ProjectX
-        ├── appConfigs                 
-        │   └── AppX              
-        │       ├── renative.json
-        │       └── renative.private.json             
-        ├── renative.json
-        └── renative.private.json                        
 
+## Config.json       
+
+Override rules:
+
+- https://github.com/pavjacko/renative/tree/develop#config-values-overrides
 
 
 # Renative Config Spec
 
-Applies for:
-
-`renative.json`, `renative.private.json`, `renative.local.json`
-
-
-CONFIG_ROOT
 
 ```json
 {
@@ -260,3 +258,30 @@ TIZEN_CONFIG_PROPS
 
 }
 ```
+
+
+
+
+
+## Files / Assets
+
+Override Rules:
+
+- https://github.com/pavjacko/renative/tree/develop#platform-builds-overrides
+- https://github.com/pavjacko/renative/tree/develop#platform-assets-overrides
+
+
+#### ✅ What to add to appConfig
+
+- icon assets
+- splash screens
+- runtime configs
+
+#### ❌ What NOT to add to appConfig
+
+- passwords
+- production keys
+- keystores, p12
+- googleservice-info.json
+- fabric keys
+- any other sensitive data
