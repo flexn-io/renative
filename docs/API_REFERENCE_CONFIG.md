@@ -33,8 +33,7 @@ App configs are ReNative compliant app configuration folders which follow prescr
 
 Following is the order of merges of various renative configs (if present) producing final `platformAssets/renative.json` config file.
 
-`ROOT_RNV/renative.json`</br>
-⬇️
+
 `./renative.json`</br>
 ⬇️
 `./renative.private.json`</br>
@@ -58,7 +57,6 @@ Following is the order of merges of various renative configs (if present) produc
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.private.json`</br>
 ⬇️
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.local.json`</br>
-⬇️
 `platformAssets/renative.json`
 
 
