@@ -291,3 +291,46 @@ TIZEN_CONFIG_PROPS
 
 }
 ```
+
+## Config Values Overrides
+
+`./appConfigs/APP_ID/config.json` RULES:
+
+There are 3 levels of override entry objects for your props to fine-tune your app config:
+
+1) `.common` //Applies for all platforms + all schemes
+2) `.platforms.YOUR_PLATFORM` //Applies specific platforms + all schemes
+3) `.platforms.YOUR_PLATFORM.buildSchemes.YOUR_SCHEME` //Applies for specific platform + specific scheme
+
+Example:
+
+```json
+{
+  "common": {
+    "MY_PROP": "Value1"
+  },
+  "platforms": {
+    "ios": {
+      "MY_PROP": "Value2 overrides Value1",
+      "buildSchemes": {
+        "debug": {
+          "MY_PROP": "Value3 overrides Value 2"
+        }
+      }
+    }
+  }
+}
+```
+
+Override Rules for json props:
+
+- `Strings` => Replaced
+- `Numbers` => Replaced
+- `Arrays` => Replaced
+- `Objects` => Merged by top level (not deep merge)
+
+Example:
+https://github.com/pavjacko/renative/blob/feat/188-config-v2/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L4
+
+Will be overridden by:
+https://github.com/pavjacko/renative/blob/feat/188-config-v2/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L59
