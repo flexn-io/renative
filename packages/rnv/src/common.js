@@ -69,7 +69,7 @@ import {
     PLATFORMS
 } from './constants';
 import { executeAsync } from './systemTools/exec';
-import { parseRenativeConfigsSync, createRnvConfig } from './configTools/configParser';
+import { parseRenativeConfigsSync, createRnvConfig, setAppConfig } from './configTools/configParser';
 
 const SUPPORTED_PLATFORMS = [
     IOS,
@@ -234,7 +234,7 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
-    c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnvPluginTemplatesConfigPath)).toString());
+    c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.pluginTemplates.config)).toString());
 
     if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
         resolve(c);
@@ -297,7 +297,7 @@ const gatherInfo = c => new Promise((resolve, reject) => {
         }
         if (fs.existsSync(c.paths.runtimeConfigPath)) {
             c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.runtimeConfigPath).toString());
-            c.appId = c.files.appConfigFile.id;
+            c.runtime.appId = c.files.appConfigFile.id;
         } else {
             console.log('Missing runtimeConfigPath', c.paths.runtimeConfigPath);
         }
@@ -330,7 +330,7 @@ const configureProject = c => new Promise((resolve, reject) => {
         logWarning(
             `Looks like your rn-cli config file ${chalk.white(c.paths.project.rnCliConfig)} is missing! Let's create one for you.`,
         );
-        copyFileSync(path.join(c.paths.rnvProjectTemplateFolder, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
+        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
     }
 
     // Check babel-config
@@ -540,7 +540,7 @@ const configureEntryPoints = (c) => {
     for (const k in p) {
         plat = p[k];
         const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
-        const backupSource = path.join(c.paths.rnvProjectTemplateFolder, 'entry', `${plat.entryFile}.js`);
+        const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
         const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
         if (!fs.existsSync(dest)) {
             if (!plat.entryFile) {
@@ -657,9 +657,9 @@ const configurePlugins = c => new Promise((resolve, reject) => {
 const configureApp = c => new Promise((resolve, reject) => {
     logTask('configureApp');
 
-    if (c.appId) {
+    if (c.runtime.appId) {
         // App ID specified
-        _getConfig(c, c.appId)
+        _getConfig(c, c.runtime.appId)
             .then(() => {
                 configureEntryPoints(c);
                 resolve(c);
@@ -768,7 +768,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
     setAppConfig(c, appConfigId);
-    c.appId = appConfigId;
+    c.runtime.appId = appConfigId;
 
     if (!fs.existsSync(c.paths.appConfigFolder)) {
         const readline = require('readline').createInterface({
@@ -798,7 +798,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 (v) => {
                     if (configDirs[v]) {
                         c.defaultAppConfigId = configDirs[v];
-                        c.appId = c.defaultAppConfigId;
+                        c.runtime.appId = c.defaultAppConfigId;
                         setAppConfig(c, c.defaultAppConfigId);
                         _configureConfig(c)
                             .then(() => resolve())
@@ -838,7 +838,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 const _configureConfig = c => new Promise((resolve, reject) => {
-    logTask(`_configureConfig:${c.appId}`);
+    logTask(`_configureConfig:${c.runtime.appId}`);
     c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
 
     // EXTEND CONFIG
@@ -860,7 +860,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
     }
 });
 
-const getAppFolder = (c, platform) => path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
+const getAppFolder = (c, platform) => path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
 
 const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
 
@@ -969,7 +969,7 @@ const isPlatformActive = (c, platform, resolve) => {
         return false;
     }
     if (!c.files.appConfigFile.platforms[platform]) {
-        console.log(`Platform ${platform} not configured for ${c.appId}. skipping.`);
+        console.log(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
         if (resolve) resolve();
         return false;
     }
@@ -1091,13 +1091,6 @@ const getBuildsFolder = (c, platform, customPath) => {
 const getIP = () => {
     const ip = require('ip');
     return ip.address();
-};
-
-const setAppConfig = (c, p) => {
-    c.paths.appConfigFolder = path.join(c.paths.project.appConfigsDir, p);
-    c.paths.appConfigPath = path.join(c.paths.appConfigFolder, RNV_APP_CONFIG_NAME);
-    c.paths.privateAppConfigFolder = path.join(c.paths.privateAppConfigsFolder, p);
-    c.paths.privateAppConfigPath = path.join(c.paths.privateAppConfigFolder, RNV_PRIVATE_APP_CONFIG_NAME);
 };
 
 const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {

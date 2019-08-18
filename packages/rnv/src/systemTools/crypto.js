@@ -181,11 +181,11 @@ export const updateProfiles = (c) => {
     case TVOS:
         const savedAppConfig = c.files.appConfigFile;
         const scheme = c.program.scheme;
-        const appId = c.appId;
+        const appId = c.runtime.appId;
         return _updateProfiles(c)
             .then(() => {
                 c.files.appConfigFile = savedAppConfig;
-                c.appId = appId;
+                c.runtime.appId = appId;
                 c.program.scheme = scheme;
             });
     }
@@ -217,7 +217,7 @@ const _updateProfile = (c, v) => new Promise((resolve, reject) => {
     logTask(`_updateProfile:${v}`, chalk.grey);
     c.files.appConfigFile = v.appConfigFile;
     c.program.scheme = v.scheme;
-    c.appId = v.appId;
+    c.runtime.appId = v.appId;
     updateProfile(c)
         .then(() => resolve())
         .catch(e => reject(e));

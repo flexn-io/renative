@@ -115,7 +115,7 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
     c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
 
     const targetConfigPromise = new Promise((resolve, reject) => {
-        c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
+        c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
         askQuestion('Folder on the ftp to upload the project (default is \'/\')')
             .then((v) => {
                 finishQuestion();

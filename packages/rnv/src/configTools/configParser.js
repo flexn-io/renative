@@ -66,7 +66,10 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 
         },
         paths: {
-            rnv: {},
+            rnv: {
+                pluginTemplates: {},
+                platformTemplates: {}
+            },
             project: {},
             app: {},
             private: {}
@@ -84,15 +87,16 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.command = cmd;
     c.subCommand = subCmd;
     c.platformDefaults = PLATFORMS;
-    c.appId = program.appConfigID;
+    c.runtime.appId = program.appConfigID;
+
     c.paths.rnv.dir = path.join(__dirname, '../..');
-    c.paths.rnvPlatformTemplatesFolder = path.join(c.paths.rnv.dir, 'platformTemplates');
-    c.paths.rnvPluginTemplatesFolder = path.join(c.paths.rnv.dir, 'pluginTemplates');
-    c.paths.rnvPluginTemplatesConfigPath = path.join(c.paths.rnvPluginTemplatesFolder, 'plugins.json');
-    c.paths.rnvPackagePath = path.join(c.paths.rnv.dir, 'package.json');
-    c.paths.rnvPluginsFolder = path.join(c.paths.rnv.dir, 'plugins');
-    c.paths.rnvProjectTemplateFolder = path.join(c.paths.rnv.dir, 'projectTemplate');
-    c.files.rnvPackage = JSON.parse(fs.readFileSync(c.paths.rnvPackagePath).toString());
+    c.paths.rnv.platformTemplates.dir = path.join(c.paths.rnv.dir, 'platformTemplates');
+    c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
+    c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.dir, 'plugins.json');
+    c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
+    c.paths.rnv.plugins.dir = path.join(c.paths.rnv.dir, 'plugins');
+    c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'projectTemplate');
+    c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
 
     return c;
 };
@@ -127,13 +131,13 @@ export const parseRenativeConfigsSync = (c) => {
     try {
         c.files.project.package = JSON.parse(fs.readFileSync(c.paths.project.package).toString());
 
-        const rnvVersionRunner = c.files.rnvPackage.version;
-        const rnvVersionProject = c.files.project.package.devDependencies?.rnv;
+        c.runtime.rnvVersionRunner = c.files.rnv.package.version;
+        c.runtime.rnvVersionProject = c.files.project.package.devDependencies?.rnv;
 
-        if (rnvVersionRunner && rnvVersionProject) {
-            if (rnvVersionRunner !== rnvVersionProject) {
+        if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
+            if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
                 const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
-                logWarning(`You are running $rnv v${chalk.red(rnvVersionRunner)} against project built with $rnv v${chalk.red(rnvVersionProject)}.
+                logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with $rnv v${chalk.red(c.runtime.rnvVersionProject)}.
 This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} .`);
             }
         }
@@ -200,6 +204,13 @@ This might result in unexpected behaviour! It is recommended that you run your r
         c.paths.permissionsConfigPath = path.join(c.paths.project.projectConfig.dir, 'permissions.json');
         c.paths.fontsConfigFolder = path.join(c.paths.project.projectConfig.dir, 'fonts');
     }
+};
+
+export const setAppConfig = (c, p) => {
+    c.paths.appConfigFolder = path.join(c.paths.project.appConfigsDir, p);
+    c.paths.appConfigPath = path.join(c.paths.appConfigFolder, RNV_APP_CONFIG_NAME);
+    c.paths.privateAppConfigFolder = path.join(c.paths.privateAppConfigsFolder, p);
+    c.paths.privateAppConfigPath = path.join(c.paths.privateAppConfigFolder, RNV_PRIVATE_APP_CONFIG_NAME);
 };
 
 const _generatePlatformTemplatePaths = (c) => {

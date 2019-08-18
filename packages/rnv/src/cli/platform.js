@@ -110,7 +110,7 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 
 
             const ptfn = 'platformTemplates';
-            const rptf = c.paths.rnvPlatformTemplatesFolder;
+            const rptf = c.paths.rnv.platformTemplates.dir;
             const prf = c.paths.project.dir;
 
             const WEB_BASED_PLATFORMS = [];
@@ -143,7 +143,7 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 
 const _genPlatOptions = (c) => {
     const opts = generateOptions(c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
-        const isEjected = c.paths.platformTemplatesFolders[obj].includes(c.paths.rnvPlatformTemplatesFolder) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
+        const isEjected = c.paths.platformTemplatesFolders[obj].includes(c.paths.rnv.platformTemplates.dir) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
         return `-[${chalk.white(i + 1)}] ${chalk.white(defaultVal)} - ${isEjected} \n`;
     });
     return opts;
@@ -168,7 +168,7 @@ const _runConnectPlatforms = c => new Promise((resolve) => {
                 writeObjectSync(c.paths.project.config, c.files.projectConfig);
             });
             logSuccess(
-                `${chalk.white(opts.selectedOptions.join(','))} now using ReNative platformTemplates located in ${chalk.white(c.paths.rnvPlatformTemplatesFolder)} now!`
+                `${chalk.white(opts.selectedOptions.join(','))} now using ReNative platformTemplates located in ${chalk.white(c.paths.rnv.platformTemplates.dir)} now!`
             );
             resolve();
         });
@@ -205,13 +205,13 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
         for (const k in c.files.appConfigFile.platforms) {
             if (isPlatformSupportedSync(k)) {
                 const ptPath = path.join(c.paths.platformTemplatesFolders[k], `${k}`);
-                const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${k}`);
+                const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${k}`);
                 copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
             }
         }
     } else if (isPlatformSupportedSync(platform)) {
         const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
-        const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
+        const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
     } else {
         logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.paths.appConfigPath)}`);
@@ -230,12 +230,12 @@ const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     if (platform === 'all') {
         for (const k in c.files.appConfigFile.platforms) {
             if (isPlatformSupportedSync(k)) {
-                const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${k}`);
+                const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));
             }
         }
     } else if (isPlatformSupportedSync(platform)) {
-        const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
+        const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
         cleanTasks.push(cleanFolder(pPath));
     }
 
@@ -254,7 +254,7 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
 
     if (!isPlatformSupportedSync(platform, null, reject)) return;
 
-    const pPath = path.join(c.paths.platformBuildsFolder, `${c.appId}_${platform}`);
+    const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
     const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
     copyFolderContentsRecursiveSync(ptPath, pPath, false, [path.join(ptPath, '_privateConfig')]);
 

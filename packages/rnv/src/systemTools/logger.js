@@ -39,7 +39,7 @@ export const logWelcome = () => {
 `);
 
     if (_c?.files?.rnvPackage?.version) {
-        _c.rnvVersion = _c.files.rnvPackage.version;
+        _c.rnvVersion = _c.files.rnv.package.version;
         str += printIntoBox(`      Version: ${chalk.green(_c.rnvVersion)}`, 1);
     }
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
@@ -143,7 +143,7 @@ export const logSummary = () => {
                 generateOptions(_c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
                     if (_c.paths.platformTemplatesFolders) {
-                        isEjected = _c.paths.platformTemplatesFolders[obj].includes(_c.paths.rnvPlatformTemplatesFolder) ? '' : '(ejected)';
+                        isEjected = _c.paths.platformTemplatesFolders[obj].includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
                     }
 
                     plats.push(`${defaultVal}${isEjected}`);
@@ -303,7 +303,7 @@ export const logStatus = () => {
     // // str += printIntoBox('SHlelelele euheu ehhh');
     // // console.log('SSKJJSKL', _c);
     // if (_c) {
-    //     if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+    //     if (_c.runtime.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.runtime.appId)}`, 1);
     //     if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
     //     if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
     // }

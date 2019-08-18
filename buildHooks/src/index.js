@@ -11,7 +11,7 @@ const hooks = {
     }),
     convertPlugins: c => new Promise((resolve, reject) => {
         for (const k in c.files.pluginTemplatesConfig.plugins) {
-            const pf = path.join(c.paths.rnvPluginTemplatesFolder, k);
+            const pf = path.join(c.paths.rnv.pluginTemplates.dir, k);
             const fp = path.join(pf, 'renative-plugin.json');
 
             if (fs.existsSync(pf)) {
@@ -36,7 +36,7 @@ const hooks = {
         _updatePackageJson(c, path.join(pkgFolder, 'renative-template-blank/package.json'), v);
         _updatePackageJson(c, path.join(pkgFolder, 'renative/package.json'), v);
         FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
-        FileUtils.updateObjectSync(c.paths.rnvPluginTemplatesConfigPath, {
+        FileUtils.updateObjectSync(c.paths.rnv.pluginTemplates.config, {
             plugins: {
                 renative: {
                     version: c.files.project.package.version

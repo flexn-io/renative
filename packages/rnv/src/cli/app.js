@@ -114,7 +114,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _checkAndCreatePlatforms(c, c.program.platform))
         .then(() => copyRuntimeAssets(c))
         .then(() => _copySharedPlatforms(c))
-        .then(() => _runPlugins(c, c.paths.rnvPluginsFolder))
+        .then(() => _runPlugins(c, c.paths.rnv.plugins.dir))
         .then(() => _runPlugins(c, c.paths.project.projectConfig.pluginsDir))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
@@ -279,7 +279,7 @@ const checkAndCreateProjectPackage = (c, data) => {
             renative: 'latest',
         };
         pkgJson.devDependencies = {
-            rnv: c.files.rnvPackage.version,
+            rnv: c.files.rnv.package.version,
         };
         pkgJson.devDependencies[data.optionTemplates.selectedOption] = 'latest';
 
@@ -314,7 +314,7 @@ const checkAndCreateProjectConfig = (c, data) => {
             defaultAppId: appID.toLowerCase()
         };
 
-        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvProjectTemplateFolder, 'rnv-config.json')));
+        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.projectTemplate.dir, 'rnv-config.json')));
 
         obj.defaultProjectConfigs = defaultProjectConfigs;
 

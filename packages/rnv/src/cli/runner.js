@@ -268,8 +268,8 @@ const configureHostedIfRequired = async (c, platform) => {
     if (_isWebHostEnabled(c, platform)) {
         logDebug('Running hosted build');
         const { platformBuildsFolder, rnvRootFolder } = c.paths;
-        copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public'));
-        writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public', 'index.html'), [
+        copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.runtime.appId}_${platform}`, 'public'));
+        writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.platformDefaults[platform].defaultPort}` },
         ]);
     }
