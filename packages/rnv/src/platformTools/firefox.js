@@ -45,7 +45,7 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
 
     if (!c.files.globalConfig.sdks.KAIOS_SDK) {
         reject(
-            `${KAIOS_SDK} is not configured in your ${c.paths.globalConfigPath} file. Make sure you add location to your Kaiosrt App path similar to: ${chalk.white.bold(
+            `${KAIOS_SDK} is not configured in your ${c.paths.private.config} file. Make sure you add location to your Kaiosrt App path similar to: ${chalk.white.bold(
                 '"KAIOS_SDK": "/Applications/Kaiosrt.app"'
             )}`
         );

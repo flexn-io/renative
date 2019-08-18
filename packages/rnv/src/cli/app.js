@@ -115,7 +115,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => copyRuntimeAssets(c))
         .then(() => _copySharedPlatforms(c))
         .then(() => _runPlugins(c, c.paths.rnvPluginsFolder))
-        .then(() => _runPlugins(c, c.paths.projectPluginsFolder))
+        .then(() => _runPlugins(c, c.paths.project.projectConfig.pluginsDir))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
@@ -196,12 +196,12 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     const base = path.resolve('.');
 
-    c.paths.projectRootFolder = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
-    c.paths.projectPackagePath = path.join(c.paths.projectRootFolder, 'package.json');
+    c.paths.project.dir = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
+    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
-    mkdirSync(c.paths.projectRootFolder);
+    mkdirSync(c.paths.project.dir);
 
     checkAndCreateProjectPackage(c, data);
 
@@ -268,7 +268,7 @@ const checkAndCreateProjectPackage = (c, data) => {
         packageName, appTitle, appID, supportedPlatforms,
     } = data;
 
-    if (!fs.existsSync(c.paths.projectPackagePath)) {
+    if (!fs.existsSync(c.paths.project.package)) {
         logInfo("Looks like your package.json is missing. Let's create one for you!");
 
         const pkgJson = {};
@@ -285,17 +285,17 @@ const checkAndCreateProjectPackage = (c, data) => {
 
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
 
-        fs.writeFileSync(c.paths.projectPackagePath, pkgJsonStringClean);
+        fs.writeFileSync(c.paths.project.package, pkgJsonStringClean);
     }
 };
 
 const checkAndCreateGitignore = (c) => {
     logTask('checkAndCreateGitignore');
-    const ignrPath = path.join(c.paths.projectRootFolder, '.gitignore');
+    const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fs.existsSync(ignrPath)) {
         logInfo("Looks like your .gitignore is missing. Let's create one for you!");
 
-        copyFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles/gitignore-template'), ignrPath);
+        copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles/gitignore-template'), ignrPath);
     }
 };
 
@@ -318,7 +318,7 @@ const checkAndCreateProjectConfig = (c, data) => {
 
         obj.defaultProjectConfigs = defaultProjectConfigs;
 
-        writeObjectSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), obj);
+        writeObjectSync(path.join(c.paths.project.dir, RNV_PROJECT_CONFIG_NAME), obj);
     }
 };
 
@@ -401,7 +401,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
-                                const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                                 if (fs.existsSync(fontSource)) {
                                     // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                                     // mkdirSync(fontFolder);
@@ -424,7 +424,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     fontsObj += '];';
     fs.writeFileSync(path.join(c.paths.platformAssetsFolder, 'runtime', 'fonts.js'), fontsObj);
-    const supportFiles = path.resolve(c.paths.rnvRootFolder, 'supportFiles');
+    const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
     copyFileSync(
         path.resolve(supportFiles, 'fontManager.js'),
         path.resolve(c.paths.platformAssetsFolder, 'runtime', 'fontManager.js'),
@@ -463,12 +463,12 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
 
     fs.readdirSync(pluginsPath).forEach((dir) => {
         const source = path.resolve(pluginsPath, dir, 'overrides');
-        const dest = path.resolve(c.paths.projectRootFolder, 'node_modules', dir);
+        const dest = path.resolve(c.paths.project.dir, 'node_modules', dir);
 
         if (fs.existsSync(source)) {
             copyFolderContentsRecursiveSync(source, dest, false);
             // fs.readdirSync(pp).forEach((dir) => {
-            //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.projectRootFolder, 'node_modules', dir));
+            //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
             // });
         } else {
             logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping override action`);

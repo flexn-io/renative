@@ -129,9 +129,9 @@ export const logSummary = () => {
 
     let str = printBoxStart(`🚀  SUMMARY ${timeString}`, getCurrentCommand());
     if (_c) {
-        if (_c.files.projectPackage) {
-            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
-            str += printIntoBox(`Project Version: ${_highlightColor(_c.files.projectPackage.version)}`, 1);
+        if (_c.files.project.package) {
+            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
+            str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
         if (_c.files.appConfigFile) {
             str += printIntoBox(`App Config: ${_highlightColor(_c.files.appConfigFile.id)}`, 1);

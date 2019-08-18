@@ -9,8 +9,8 @@ import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 
 const getEnvVar = (c) => {
-    const p1 = c.paths.globalConfigFolder.split('/').pop().replace('.', '');
-    const p2 = c.files.projectPackage.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
+    const p1 = c.paths.private.dir.split('/').pop().replace('.', '');
+    const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
     logDebug('encrypt looking for env var:', envVar);
     return envVar;
@@ -19,12 +19,12 @@ const getEnvVar = (c) => {
 export const encrypt = c => new Promise((resolve, reject) => {
     logTask('encrypt');
 
-    const source = `./${c.files.projectPackage.name}`;
+    const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.projectConfig?.crypto?.encrypt?.dest;
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
-        const destTemp = `${path.join(c.paths.globalConfigFolder, c.files.projectPackage.name.replace('/', '-'))}.tgz`;
+        const destTemp = `${path.join(c.paths.private.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
 
         const envVar = getEnvVar(c);
         const key = c.program.key || c.process.env[envVar];
@@ -36,7 +36,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
             {
                 gzip: true,
                 file: destTemp,
-                cwd: c.paths.globalConfigFolder
+                cwd: c.paths.private.dir
             },
             [source]
         )
@@ -73,7 +73,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
-        const destTemp = `${path.join(c.paths.globalConfigFolder, c.files.projectPackage.name.replace('/', '-'))}.tgz`;
+        const destTemp = `${path.join(c.paths.private.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
         const key = c.program.key || c.process.env[envVar];
@@ -96,14 +96,14 @@ export const decrypt = c => new Promise((resolve, reject) => {
                 tar.x(
                     {
                         file: destTemp,
-                        cwd: c.paths.globalConfigFolder
+                        cwd: c.paths.private.dir
                     }
                 ).then(() => {
                     removeFilesSync([destTemp]);
                     if (fs.existsSync(ts)) {
-                        copyFileSync(ts, path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, 'timestamp'));
+                        copyFileSync(ts, path.join(c.paths.private.dir, c.files.project.package.name, 'timestamp'));
                     }
-                    logSuccess(`Files succesfully extracted into ${c.paths.globalConfigFolder}`);
+                    logSuccess(`Files succesfully extracted into ${c.paths.private.dir}`);
                     resolve();
                 })
                     .catch(e => reject(e));
@@ -124,7 +124,7 @@ export const installProfiles = c => new Promise((resolve, reject) => {
         return;
     }
 
-    const ppFolder = path.join(c.paths.homeFolder, 'Library/MobileDevice/Provisioning Profiles');
+    const ppFolder = path.join(c.paths.home.dir, 'Library/MobileDevice/Provisioning Profiles');
 
     if (!fs.existsSync(ppFolder)) {
         logWarning(`folder ${ppFolder} does not exist!`);
@@ -154,7 +154,7 @@ export const installCerts = c => new Promise((resolve, reject) => {
         return;
     }
     const kChain = c.program.keychain || 'ios-build.keychain';
-    const kChainPath = path.join(c.paths.homeFolder, 'Library/Keychains', kChain);
+    const kChainPath = path.join(c.paths.home.dir, 'Library/Keychains', kChain);
     const list = getFileListSync(c.paths.privateProjectFolder);
     const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
@@ -197,7 +197,7 @@ export const _updateProfiles = (c) => {
     const acList = listAppConfigsFoldersSync(c);
     const fullList = [];
     acList.forEach((v) => {
-        const appConfigFile = readObjectSync(path.join(c.paths.appConfigsFolder, v, 'config.json'));
+        const appConfigFile = readObjectSync(path.join(c.paths.project.appConfigsDir, v, 'config.json'));
 
         const buildSchemes = appConfigFile.platforms[c.platform]?.buildSchemes;
 

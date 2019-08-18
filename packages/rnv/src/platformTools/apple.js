@@ -475,7 +475,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
                     const key = font.split('.')[0];
                     const { includedFonts } = c.files.appConfigFile.common;
                     if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                        const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                        const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                         if (fs.existsSync(fontSource)) {
                             const fontFolder = path.join(appFolder, 'fonts');
                             mkdirSync(fontFolder);

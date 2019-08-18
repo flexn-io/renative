@@ -335,7 +335,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
 };
 
 const _fixAndroidLegacy = (c, modulePath) => {
-    const buildGradle = path.join(c.paths.projectRootFolder, modulePath, 'build.gradle');
+    const buildGradle = path.join(c.paths.project.dir, modulePath, 'build.gradle');
 
     if (fs.existsSync(buildGradle)) {
         logDebug('FIX:', buildGradle);
@@ -351,12 +351,12 @@ const _fixAndroidLegacy = (c, modulePath) => {
 };
 
 const _getPrivateConfig = (c, platform) => {
-    let privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
+    let privateConfigFolder = path.join(c.paths.private.dir, c.files.project.package.name, c.files.appConfigFile.id);
     if (!fs.existsSync(privateConfigFolder)) {
-        privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, 'appConfigs', c.files.appConfigFile.id);
+        privateConfigFolder = path.join(c.paths.private.dir, c.files.project.package.name, 'appConfigs', c.files.appConfigFile.id);
     }
     const appConfigSPP = c.files.appConfigFile.platforms[platform] ? c.files.appConfigFile.platforms[platform].signingPropertiesPath : null;
-    const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.globalConfigFolder) : null;
+    const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.private.dir) : null;
     const privateConfigPath = appConfigSPPClean || path.join(privateConfigFolder, 'config.private.json');
     c.paths.privateConfigPath = privateConfigPath;
     c.paths.privateConfigDir = privateConfigPath.replace('/config.private.json', '');

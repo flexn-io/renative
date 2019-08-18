@@ -25,8 +25,8 @@ const run = (c) => {
 // ##########################################
 
 const _link = c => new Promise((resolve) => {
-    if (fs.existsSync(c.paths.projectNpmLinkPolyfillPath)) {
-        const l = JSON.parse(fs.readFileSync(c.paths.projectNpmLinkPolyfillPath).toString());
+    if (fs.existsSync(c.paths.project.npmLinkPolyfill)) {
+        const l = JSON.parse(fs.readFileSync(c.paths.project.npmLinkPolyfill).toString());
         Object.keys(l).forEach((key) => {
             // console.log('COPY', key, l[key]);
             const source = path.resolve(l[key]);
@@ -39,7 +39,7 @@ const _link = c => new Promise((resolve) => {
             }
         });
     } else {
-        logWarning(`${c.paths.projectNpmLinkPolyfillPath} file not found. nothing to link!`);
+        logWarning(`${c.paths.project.npmLinkPolyfill} file not found. nothing to link!`);
         resolve();
     }
 });

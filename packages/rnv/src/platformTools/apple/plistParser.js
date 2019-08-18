@@ -52,7 +52,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, rej
     // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
     if (!pluginsEntitlementsObj) {
-        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/entitlements.json'));
+        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/entitlements.json'));
     }
 
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
@@ -68,7 +68,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/info.plist.json'));
+    let plistObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/info.plist.json'));
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     // FONTS

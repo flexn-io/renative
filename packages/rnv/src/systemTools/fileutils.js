@@ -203,12 +203,12 @@ export const getRealPath = (c, p, key = 'undefined', original) => {
         return original;
     }
     if (p.startsWith('./')) {
-        return path.join(c.paths.projectRootFolder, p);
+        return path.join(c.paths.project.dir, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnvRootFolder)
-        .replace(/~/g, c.paths.homeFolder)
-        .replace(/USER_HOME/g, c.paths.homeFolder)
-        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
+    return p.replace(/RNV_HOME/g, c.paths.rnv.dir)
+        .replace(/~/g, c.paths.home.dir)
+        .replace(/USER_HOME/g, c.paths.home.dir)
+        .replace(/PROJECT_HOME/g, c.paths.project.dir);
 };
 
 const _refToValue = (c, ref, key) => {

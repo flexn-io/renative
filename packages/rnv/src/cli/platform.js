@@ -111,7 +111,7 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 
             const ptfn = 'platformTemplates';
             const rptf = c.paths.rnvPlatformTemplatesFolder;
-            const prf = c.paths.projectRootFolder;
+            const prf = c.paths.project.dir;
 
             const WEB_BASED_PLATFORMS = [];
             let copyShared = false;

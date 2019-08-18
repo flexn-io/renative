@@ -14,7 +14,7 @@ import { DEPLOY_TARGET_FTP } from './webTools';
 const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_deployToFtp:${platform}`);
     let promise;
-    const envPath = path.resolve(c.paths.projectRootFolder, '.env');
+    const envPath = path.resolve(c.paths.project.dir, '.env');
     if (!fs.existsSync(envPath)) {
         logInfo('.env file does not exist. Creating one for you');
         promise = _createEnvFtpConfig(envPath);

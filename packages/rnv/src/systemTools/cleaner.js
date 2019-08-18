@@ -8,10 +8,10 @@ const cleanProjectModules = c => new Promise((resolve, reject) => {
     logTask('cleanProjectModules');
     const pathsToRemove = [
         c.paths.projectNodeModulesFolder,
-        path.join(c.paths.projectRootFolder, 'package-lock.json')
+        path.join(c.paths.project.dir, 'package-lock.json')
     ];
     let msg = chalk.red('./node_modules\n./package-lock.json\n');
-    const packagesFolder = path.join(c.paths.projectRootFolder, 'packages');
+    const packagesFolder = path.join(c.paths.project.dir, 'packages');
     if (fs.existsSync(packagesFolder)) {
         fs.readdirSync(packagesFolder).forEach((dir) => {
             if (dir === '.DS_Store') {

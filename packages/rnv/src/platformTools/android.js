@@ -929,7 +929,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
-                                const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                                 if (fs.existsSync(fontSource)) {
                                     const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                                     mkdirSync(fontFolder);

@@ -48,10 +48,10 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     if (!fs.existsSync(c.paths.templateFolder)) {
         logWarning(`Your ${chalk.white(c.paths.templateFolder)} template is not installed. ReNative will install it for you`);
 
-        if (c.files.projectPackage.devDependencies) {
-            if (!c.files.projectPackage.devDependencies[templateName]) {
-                c.files.projectPackage.devDependencies[templateName] = 'latest';
-                writeObjectSync(c.paths.projectPackagePath, c.files.projectPackage);
+        if (c.files.project.package.devDependencies) {
+            if (!c.files.project.package.devDependencies[templateName]) {
+                c.files.project.package.devDependencies[templateName] = 'latest';
+                writeObjectSync(c.paths.project.package, c.files.project.package);
             }
         }
 
@@ -85,12 +85,12 @@ const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject
         }
 
         const dirsToRemove = [
-            path.join(c.paths.projectConfigFolder),
-            path.join(c.paths.projectSourceFolder),
-            path.join(c.paths.appConfigsFolder)
+            path.join(c.paths.project.projectConfig.dir),
+            path.join(c.paths.project.srcDir),
+            path.join(c.paths.project.appConfigsDir)
         ];
 
-        const filesToRemove = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms.map(p => path.join(c.paths.projectRootFolder, `index.${p}.js`));
+        const filesToRemove = c.files.projectConfig.defaultProjectConfigs.supportedPlatforms.map(p => path.join(c.paths.project.dir, `index.${p}.js`));
 
         removeDirsSync(dirsToRemove);
         // TODO: NOT SERVED FROM TEMPLATE YET
@@ -142,32 +142,32 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
     // Check src
     logTask('configureProject:check src', chalk.grey);
-    if (!fs.existsSync(c.paths.projectSourceFolder)) {
-        logWarning(`Looks like your src folder ${chalk.white(c.paths.projectSourceFolder)} is missing! Let's create one for you.`);
-        copyFolderContentsRecursiveSync(path.join(c.paths.projectTemplateFolder, 'src'), c.paths.projectSourceFolder);
+    if (!fs.existsSync(c.paths.project.srcDir)) {
+        logWarning(`Looks like your src folder ${chalk.white(c.paths.project.srcDir)} is missing! Let's create one for you.`);
+        copyFolderContentsRecursiveSync(path.join(c.paths.projectTemplateFolder, 'src'), c.paths.project.srcDir);
     }
 
     // Check appConfigs
     logTask('configureProject:check appConfigs', chalk.grey);
     setAppConfig(c, c.defaultAppConfigId);
-    if (!fs.existsSync(c.paths.appConfigsFolder)) {
+    if (!fs.existsSync(c.paths.project.appConfigsDir)) {
         logWarning(
             `Looks like your appConfig folder ${chalk.white(
-                c.paths.appConfigsFolder,
+                c.paths.project.appConfigsDir,
             )} is missing! Let's create sample config for you.`,
         );
 
 
         // TODO: GET CORRECT PROJECT TEMPLATE
-        copyFolderContentsRecursiveSync(templateAppConfigsFolder, c.paths.appConfigsFolder);
+        copyFolderContentsRecursiveSync(templateAppConfigsFolder, c.paths.project.appConfigsDir);
 
 
         // Update App Title to match package.json
         try {
             const appConfig = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
 
-            appConfig.common.title = c.files.projectConfig.defaultProjectConfigs.defaultTitle || c.files.projectPackage.title;
-            appConfig.common.id = c.files.projectConfig.defaultProjectConfigs.defaultAppId || c.files.projectPackage.defaultAppId;
+            appConfig.common.title = c.files.projectConfig.defaultProjectConfigs.defaultTitle || c.files.project.package.title;
+            appConfig.common.id = c.files.projectConfig.defaultProjectConfigs.defaultAppId || c.files.project.package.defaultAppId;
             appConfig.id = c.files.projectConfig.defaultProjectConfigs.defaultAppConfigId || c.defaultAppConfigId;
             appConfig.platforms.ios.teamID = '';
             appConfig.platforms.tvos.teamID = '';
@@ -190,11 +190,11 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
     // Check projectConfigs
     logTask('configureProject:check projectConfigs', chalk.grey);
-    if (!fs.existsSync(c.paths.projectConfigFolder)) {
+    if (!fs.existsSync(c.paths.project.projectConfig.dir)) {
         logWarning(
-            `Looks like your projectConfig folder ${chalk.white(c.paths.projectConfigFolder)} is missing! Let's create one for you.`,
+            `Looks like your projectConfig folder ${chalk.white(c.paths.project.projectConfig.dir)} is missing! Let's create one for you.`,
         );
-        copyFolderContentsRecursiveSync(templateProjectConfigFolder, c.paths.projectConfigFolder);
+        copyFolderContentsRecursiveSync(templateProjectConfigFolder, c.paths.project.projectConfig.dir);
     }
 
     resolve();

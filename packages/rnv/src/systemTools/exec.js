@@ -23,7 +23,7 @@ const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, re
         if (!fs.existsSync(p)) {
             reject(
                 `Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
-                    c.paths.globalConfigPath
+                    c.paths.private.config
                 )} file if you SDK path is correct`
             );
             return;

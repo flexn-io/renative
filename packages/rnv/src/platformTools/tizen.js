@@ -32,7 +32,7 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(c.paths.globalConfigFolder, 'tizen_author.p12');
+    const tizenAuthorCert = path.join(c.paths.private.dir, 'tizen_author.p12');
     if (fs.existsSync(tizenAuthorCert)) {
         console.log('tizen_author.p12 file exists!');
         resolve();
@@ -68,7 +68,7 @@ const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
 const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.globalConfigFolder} -a rnv -f tizen_author -p 1234`)
+    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.private.dir} -a rnv -f tizen_author -p 1234`)
         .then(() => addDevelopTizenCertificate(c))
         .then(() => resolve())
         .catch((e) => {
@@ -80,7 +80,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
 const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.globalConfigFolder, 'tizen_author.p12')} -p 1234`)
+    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.private.dir, 'tizen_author.p12')} -p 1234`)
         .then(() => resolve())
         .catch((e) => {
             logError(e);
@@ -215,7 +215,7 @@ const runTizen = async (c, platform, target) => {
                     return continueLaunching();
                 } catch (err) {
                     logDebug(err);
-                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME}`);
+                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.private.dir}/${RNV_GLOBAL_CONFIG_NAME}`);
                 }
             }
         }
