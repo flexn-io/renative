@@ -295,7 +295,7 @@ const checkAndCreateGitignore = (c) => {
     if (!fs.existsSync(ignrPath)) {
         logInfo("Looks like your .gitignore is missing. Let's create one for you!");
 
-        copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles/gitignore-template'), ignrPath);
+        copyFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles/gitignore-template'), ignrPath);
     }
 };
 
@@ -305,7 +305,7 @@ const checkAndCreateProjectConfig = (c, data) => {
         packageName, appTitle, appID, supportedPlatforms,
     } = data;
     // Check Project Config
-    if (!fs.existsSync(c.paths.projectConfigPath)) {
+    if (!fs.existsSync(c.paths.project.config)) {
         logInfo(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
 
         const defaultProjectConfigs = {
@@ -424,7 +424,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     fontsObj += '];';
     fs.writeFileSync(path.join(c.paths.platformAssetsFolder, 'runtime', 'fonts.js'), fontsObj);
-    const supportFiles = path.resolve(c.paths.rnvHomeFolder, 'supportFiles');
+    const supportFiles = path.resolve(c.paths.rnvRootFolder, 'supportFiles');
     copyFileSync(
         path.resolve(supportFiles, 'fontManager.js'),
         path.resolve(c.paths.platformAssetsFolder, 'runtime', 'fontManager.js'),

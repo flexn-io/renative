@@ -923,7 +923,7 @@ c.files.projectConfig;
 c.files.rnvPackage;
 //PATHS
 c.paths.rnvRootFolder;
-c.paths.rnvHomeFolder;
+c.paths.rnvRootFolder;
 c.paths.rnvPlatformTemplatesFolder;
 c.paths.rnvPluginTemplatesFolder;
 c.paths.rnvPluginTemplatesConfigPath;
@@ -939,7 +939,7 @@ c.paths.projectNpmLinkPolyfillPath;
 c.paths.homeFolder;
 c.paths.globalConfigFolder;
 c.paths.globalConfigPath;
-c.paths.projectConfigPath;
+c.paths.project.config;
 c.paths.projectConfigLocalPath;
 c.paths.projectPackagePath;
 c.paths.rnCliConfigPath;

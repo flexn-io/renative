@@ -31,7 +31,7 @@ const addTemplate = c => new Promise((resolve, reject) => {
 const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     logTask('checkIfTemplateInstalled');
     if (!c.files.projectConfig.defaultProjectConfigs) {
-        logWarning(`Your ${chalk.white(c.paths.projectConfigPath)} does not contain ${chalk.white('defaultProjectConfigs')} object. ReNative will skip template generation`);
+        logWarning(`Your ${chalk.white(c.paths.project.config)} does not contain ${chalk.white('defaultProjectConfigs')} object. ReNative will skip template generation`);
         resolve();
         return;
     }
@@ -39,9 +39,9 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     let templateName = c.files.projectConfig.defaultProjectConfigs.template;
     if (!templateName) {
         templateName = 'renative-template-hello-world';
-        logWarning(`You're missing template name in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will add default ${chalk.white(templateName)} for you`);
+        logWarning(`You're missing template name in your ${chalk.white(c.paths.project.config)}. ReNative will add default ${chalk.white(templateName)} for you`);
         c.files.projectConfig.defaultProjectConfigs.template = templateName;
-        fs.writeFileSync(c.paths.projectConfigPath, JSON.stringify(c.files.projectConfig, null, 2));
+        fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.projectConfig, null, 2));
     }
 
     c.paths.templateFolder = path.join(c.paths.projectNodeModulesFolder, templateName);

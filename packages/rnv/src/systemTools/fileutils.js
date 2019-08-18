@@ -205,7 +205,7 @@ export const getRealPath = (c, p, key = 'undefined', original) => {
     if (p.startsWith('./')) {
         return path.join(c.paths.projectRootFolder, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
+    return p.replace(/RNV_HOME/g, c.paths.rnvRootFolder)
         .replace(/~/g, c.paths.homeFolder)
         .replace(/USER_HOME/g, c.paths.homeFolder)
         .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);

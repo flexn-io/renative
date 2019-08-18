@@ -19,7 +19,7 @@ List of available config props injected into hooks methods:
 
 ```
 .rnvRootFolder
-.rnvHomeFolder
+.rnvRootFolder
 .rnvPlatformTemplatesFolder
 .rnvPluginTemplatesFolder
 .rnvPluginTemplatesConfigPath

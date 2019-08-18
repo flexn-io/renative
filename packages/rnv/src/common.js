@@ -125,9 +125,6 @@ const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
 
 const highlight = chalk.green;
 
-const base = path.resolve('.');
-const homedir = require('os').homedir();
-
 const SDK_PLATFORMS = {};
 SDK_PLATFORMS[ANDROID] = ANDROID_SDK;
 SDK_PLATFORMS[ANDROID_TV] = ANDROID_SDK;
@@ -225,30 +222,6 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     }
 });
 
-const _generatePlatformTemplatePaths = (c) => {
-    const pt = c.files.projectConfig.platformTemplatesFolders || {};
-    const originalPath = c.files.projectConfig.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
-    const result = {};
-    SUPPORTED_PLATFORMS.forEach((v) => {
-        if (!pt[v]) {
-            result[v] = getRealPath(
-                c,
-                originalPath,
-                'platformTemplatesFolder',
-                originalPath,
-            );
-        } else {
-            result[v] = getRealPath(
-                c,
-                pt[v],
-                'platformTemplatesFolder',
-                originalPath,
-            );
-        }
-    });
-    return result;
-};
-
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
 
@@ -270,83 +243,6 @@ const startBuilder = c => new Promise((resolve, reject) => {
 
     parseRenativeConfigsSync(c);
 
-
-    try {
-        c.files.projectPackage = JSON.parse(fs.readFileSync(c.paths.projectPackagePath).toString());
-
-        const rnvVersionRunner = c.files.rnvPackage.version;
-        const rnvVersionProject = c.files.projectPackage.devDependencies?.rnv;
-
-        if (rnvVersionRunner && rnvVersionProject) {
-            if (rnvVersionRunner !== rnvVersionProject) {
-                const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
-                logWarning(`You are running $rnv v${chalk.red(rnvVersionRunner)} against project built with $rnv v${chalk.red(rnvVersionProject)}.
-This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} .`);
-            }
-        }
-    } catch (e) {
-        // IGNORE
-    }
-
-    const hasProjectConfigInCurrentDir = fs.existsSync(c.paths.projectConfigPath);
-
-    if (hasProjectConfigInCurrentDir) {
-        c.files.projectConfig = JSON.parse(fs.readFileSync(c.paths.projectConfigPath).toString());
-        if (c.files.projectConfig.defaultPorts) {
-            for (const pk in c.files.projectConfig.defaultPorts) {
-                c.platformDefaults[pk].defaultPort = c.files.projectConfig.defaultPorts[pk];
-            }
-        }
-        if (!c.files.projectConfig.defaultProjectConfigs) {
-            logWarning(`You're missing ${chalk.white('defaultProjectConfigs')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
-            c.files.projectConfig.defaultProjectConfigs = {};
-        }
-        if (!c.files.projectConfig.defaultProjectConfigs.supportedPlatforms) {
-            if (c.files.projectPackage.supportedPlatforms) {
-                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = c.files.projectPackage.supportedPlatforms;
-            } else {
-                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = SUPPORTED_PLATFORMS;
-            }
-
-            logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.projectConfigPath)}. ReNative will generate temporary one`);
-        }
-        c.isWrapper = c.files.projectConfig.isWrapper;
-        c.paths.globalConfigFolder = getRealPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
-        c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
-        if (c.files.projectPackage) {
-            c.paths.privateProjectFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name);
-            c.paths.privateProjectConfigFolder = path.join(c.paths.privateProjectFolder, 'projectConfig');
-            c.paths.privateAppConfigsFolder = path.join(c.paths.privateProjectFolder, 'appConfigs');
-        }
-        c.paths.appConfigsFolder = getRealPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
-        c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
-        c.paths.platformAssetsFolder = getRealPath(
-            c,
-            c.files.projectConfig.platformAssetsFolder,
-            'platformAssetsFolder',
-            c.paths.platformAssetsFolder,
-        );
-        c.paths.platformBuildsFolder = getRealPath(
-            c,
-            c.files.projectConfig.platformBuildsFolder,
-            'platformBuildsFolder',
-            c.paths.platformBuildsFolder,
-        );
-        c.paths.projectPluginsFolder = getRealPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.projectPluginsFolder);
-        c.paths.projectNodeModulesFolder = path.join(c.paths.projectRootFolder, 'node_modules');
-        c.paths.rnvNodeModulesFolder = path.join(c.paths.rnvRootFolder, 'node_modules');
-        c.paths.runtimeConfigPath = path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME);
-        c.paths.projectConfigFolder = getRealPath(
-            c,
-            c.files.projectConfig.projectConfigFolder,
-            'projectConfigFolder',
-            c.paths.projectConfigFolder,
-        );
-        c.paths.pluginConfigPath = path.join(c.paths.projectConfigFolder, 'plugins.json');
-        c.paths.permissionsConfigPath = path.join(c.paths.projectConfigFolder, 'permissions.json');
-        c.paths.fontsConfigFolder = path.join(c.paths.projectConfigFolder, 'fonts');
-    }
-
     if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage') {
         configureRnvGlobal(c)
             .then(() => resolve(c))
@@ -354,10 +250,10 @@ This might result in unexpected behaviour! It is recommended that you run your r
         return;
     }
 
-    if (!hasProjectConfigInCurrentDir) {
+    if (!c.runtime.hasProjectConfigInCurrentDir) {
         reject(
             `Looks like this directory is not ReNative project. Project config ${chalk.white(
-                c.paths.projectConfigPath,
+                c.paths.project.config,
             )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
         );
     }
@@ -405,10 +301,10 @@ const gatherInfo = c => new Promise((resolve, reject) => {
         } else {
             console.log('Missing runtimeConfigPath', c.paths.runtimeConfigPath);
         }
-        if (fs.existsSync(c.paths.projectConfigPath)) {
-            c.files.projectConfig = JSON.parse(fs.readFileSync(c.paths.projectConfigPath).toString());
+        if (fs.existsSync(c.paths.project.config)) {
+            c.files.projectConfig = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
         } else {
-            console.log('Missing projectConfigPath', c.paths.projectConfigPath);
+            console.log('Missing projectConfigPath', c.paths.project.config);
         }
         // console.log('SJKHHJS', c.files);
     } catch (e) {
@@ -556,7 +452,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
         console.log(`${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} file exists!`);
     } else {
         console.log(`${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
-        copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'global-config-template.json'), c.paths.globalConfigPath);
+        copyFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles', 'global-config-template.json'), c.paths.globalConfigPath);
         console.log(
             `Don\'t forget to Edit: ${
                 c.paths.globalConfigFolder
@@ -620,7 +516,7 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
                 `Looks like you\'re missing defaultTargets in your config ${chalk.white(c.paths.globalConfigPath)}. Let's add them!`,
             );
             const defaultConfig = JSON.parse(
-                fs.readFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles', 'global-config-template.json')).toString(),
+                fs.readFileSync(path.join(c.paths.rnvRootFolder, 'supportFiles', 'global-config-template.json')).toString(),
             );
             const newConfig = { ...c.files.globalConfig, defaultTargets: defaultConfig.defaultTargets };
             fs.writeFileSync(c.paths.globalConfigPath, JSON.stringify(newConfig, null, 2));

@@ -53,7 +53,7 @@ export const logWelcome = () => {
     console.log(str);
 };
 
-let _messages;
+let _messages = [];
 let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
@@ -61,6 +61,7 @@ let _c;
 let _isMono = false;
 let _defaultColor;
 let _highlightColor;
+
 
 export const configureLogger = (c, process, command, subCommand, isInfoEnabled) => {
     _messages = [];
@@ -82,6 +83,7 @@ const _updateDefaultColors = () => {
     _defaultColor = chalk.gray;
     _highlightColor = chalk.green;
 };
+_updateDefaultColors();
 
 export const logAndSave = (msg, skipLog) => {
     if (_messages && !_messages.includes(msg)) _messages.push(msg);
@@ -91,6 +93,7 @@ export const logAndSave = (msg, skipLog) => {
 const PRIVATE_PARAMS = ['-k', '--key'];
 
 export const getCurrentCommand = (excludeDollar = false) => {
+    if (!_c) return '_c is undefined';
     const argArr = _c.process.argv.slice(2);
     let hideNext = false;
     const output = argArr.map((v) => {
