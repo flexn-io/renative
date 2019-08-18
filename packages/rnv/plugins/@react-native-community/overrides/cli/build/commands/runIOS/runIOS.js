@@ -233,7 +233,6 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
         '--id',
         selectedDevice.udid,
         '--justlaunch',
-        '-r'
     ];
 
     _logger.default.info(`installing and launching your app on ${selectedDevice.name}... `);
