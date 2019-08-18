@@ -770,6 +770,8 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     setAppConfig(c, appConfigId);
     c.runtime.appId = appConfigId;
 
+    console.log('ADDADADA', c.paths.appConfig.dir);
+
     if (!fs.existsSync(c.paths.appConfig.dir)) {
         const readline = require('readline').createInterface({
             input: process.stdin,

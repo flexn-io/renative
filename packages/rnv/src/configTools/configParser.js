@@ -1,5 +1,7 @@
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
+import merge from 'deepmerge';
 import {
     IOS,
     ANDROID,
@@ -53,6 +55,11 @@ import {
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
     getRealPath
 } from '../systemTools/fileutils';
+import {
+    logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
+    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
+    logInitialize, logAppInfo, getCurrentCommand
+} from '../systemTools/logger';
 import { SUPPORTED_PLATFORMS } from '../common';
 
 
@@ -66,9 +73,15 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 
         },
         paths: {
+            buildHooks: {
+                dist: {}
+            },
+            home: {},
             rnv: {
                 pluginTemplates: {},
-                platformTemplates: {}
+                platformTemplates: {},
+                plugins: {},
+                projectTemplate: {}
             },
             global: {
 
@@ -91,7 +104,12 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
             }
         },
         files: {
-            rnv: {},
+            rnv: {
+                pluginTemplates: {},
+                platformTemplates: {},
+                plugins: {},
+                projectTemplate: {}
+            },
             global: {},
             project: {
                 projectConfig: {},
@@ -166,19 +184,21 @@ const _loadFile = (fileObj, pathObj, key) => {
     }
 };
 
-const _loadConfigFiles = (fileObj, pathObj) => {
+const _loadConfigFiles = (c, fileObj, pathObj) => {
     let result = false;
     if (_loadFile(fileObj, pathObj, 'config')) result = true;
     if (_loadFile(fileObj, pathObj, 'configLocal')) result = true;
     if (_loadFile(fileObj, pathObj, 'configPrivate')) result = true;
+
+    _generateBuildConfig(c);
     return result;
 };
 
 export const parseRenativeConfigsSync = (c) => {
     c.platform = c.program.platform;
     c.paths.home.dir = homedir;
+    c.paths.RNV_GLOBAL_DIR = path.join(c.paths.home.dir, '.rnv');
 
-    _generateConfigPaths(c.paths.global, path.join(homedir, '.rnv'));
     _generateConfigPaths(c.paths.project, base);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
@@ -200,28 +220,29 @@ export const parseRenativeConfigsSync = (c) => {
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
     c.paths.project.assets.config = path.join(c.paths.project.assets.dir, 'renative.runtime.json');
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
+    c.paths.project.builds.config = path.join(c.paths.project.builds.dir, 'renative.build.json');
 
     // LOAD ./PACKAGE.JSON
     if (!_loadFile(c.files.project, c.paths.project, 'package')) return;
-
-    c.paths.private.project.dir = path.join(c.paths.private.dir, c.files.project.package.name);
-    c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
-    c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
-
     _versionCheck(c);
 
     // LOAD ./RENATIVE.*.JSON
-    if (!_loadConfigFiles(c.files.project, c.paths.project)) return;
-    _loadConfigFiles(c.files.private.project, c.paths.private.project);
+    if (!_loadConfigFiles(c, c.files.project, c.paths.project)) return;
 
-    c.paths.project.appConfigsDir = getRealPath(c, c.files.project.config.paths.appConfigsDir, 'appConfigsDir', c.paths.project.appConfigsDir);
-    c.runtime.isWrapper = c.files.project.config.isWrapper;
+    // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
+    _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig.paths?.private?.dir) || c.paths.RNV_GLOBAL_DIR);
+    _generateConfigPaths(c.paths.private.project, path.join(c.paths.private.dir, c.files.project.package.name));
+    _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
 
-    _generateBuildConfig();
+
+    c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
+    c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
+    c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.paths?.appConfigsDir, 'appConfigsDir', c.paths.project.appConfigsDir);
+    c.runtime.isWrapper = c.buildConfig.isWrapper;
 
 
     // LOAD ./appConfigs/[APP_ID]/RENATIVE.*.JSON
-
+    // console.log('SJKHSHS', c.buildConfig);
 
     // if (!c.files.project.config.defaultProjectConfigs.supportedPlatforms) {
     //     if (c.files.project.package.supportedPlatforms) {
@@ -258,17 +279,21 @@ export const parseRenativeConfigsSync = (c) => {
 };
 
 export const setAppConfig = (c, appId) => {
+    logTask(`setAppConfig:${appId}`);
+
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
-    _loadConfigFiles(c.files.appConfig, c.paths.appConfig);
+    _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig);
 
     _generateConfigPaths(c.paths.private.appConfig, path.join(c.paths.private.project.appConfigsDir, appId));
-    _loadConfigFiles(c.files.private.appConfig, c.paths.private.appConfig);
+    _loadConfigFiles(c, c.files.private.appConfig, c.paths.private.appConfig);
 
-    _generateBuildConfig();
+    _generateBuildConfig(c);
 };
 
-const _generateBuildConfig = () => {
-    console.log('GENERATING MERGED FILESSSSSS');
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
+
+const _generateBuildConfig = (c) => {
+    logTask('_generateBuildConfig');
 
     const mergeOrder = [
         c.paths.project.config,
@@ -284,10 +309,42 @@ const _generateBuildConfig = () => {
         c.paths.private.appConfig.configPrivate,
         c.paths.private.appConfig.configLocal
     ];
+    const cleanPaths = mergeOrder.filter(v => v);
+    const existsPaths = cleanPaths.filter(v => fs.existsSync(v));
 
-    mergeOrder.forEach((v, i) => {
-        console.log('SAAAAA', i, v);
-    });
+    const mergeFiles = [
+        {
+            _meta: {
+                generated: (new Date()).getTime(),
+                mergedConfigs: existsPaths
+            }
+        },
+        c.files.project.config,
+        c.files.project.configPrivate,
+        c.files.project.configLocal,
+        c.files.private.project.config,
+        c.files.private.project.configPrivate,
+        c.files.private.project.configLocal,
+        c.files.appConfig.config,
+        c.files.appConfig.configPrivate,
+        c.files.appConfig.configLocal,
+        c.files.private.appConfig.config,
+        c.files.private.appConfig.configPrivate,
+        c.files.private.appConfig.configLocal
+    ];
+
+
+    const existsFiles = mergeFiles.filter(v => v);
+
+    logTask(`_generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
+
+    const out = merge.all(existsFiles, { arrayMerge: _arrayMergeOverride });
+    // mergeOrder.forEach((v, i) => {
+    //     console.log('SAAAAA', i, v);
+    // });
+    // console.log('AAAAAAAAAAA', out);
+    c.buildConfig = out;
+    writeObjectSync(c.paths.project.builds.config, c.buildConfig);
 };
 
 const _generatePlatformTemplatePaths = (c) => {
