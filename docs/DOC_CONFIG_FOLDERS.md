@@ -46,6 +46,12 @@ Following is the order of merges of various folders (if present) contributing to
 ⬇️
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
+`./platformBuilds`
+
+
+Following is the order of merges of various folders (if present) contributing to final `platformAssets/*/**`.
+
+⬇️
 `./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `~/.rnv/[PROJECT-NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
@@ -62,10 +68,17 @@ Following is the order of merges of various folders (if present) contributing to
 ⬇️
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`./platformBuilds` & `./platformAssets`
+`./platformAssets`
+
 
 ## Special Folders
 
+- `platformBuilds` - TODO
+- `platformAssets` - TODO
+- `appConfigs` - TODO
+- `projectConfig` - TODO
+- `buildHooks` - TODO
+- `src` - TODO
 - `builds` - TODO
 - `plugins` - TODO
 - `fonts` - TODO
