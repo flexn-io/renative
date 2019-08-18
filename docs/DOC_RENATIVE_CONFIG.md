@@ -8,28 +8,29 @@ Applies for:
 - `renative.json` - standard config (commited to git)
 - `renative.private.json` - config containing sensitive values (ignored from git)
 - `renative.local.json` - config containing local values (ignored from git)
+- `renative.build.json` - final merged config located in `./platformBuilds/renative.build.json`
 
 ## Structure
 
 `DEV_PATH_X`
 
     .
-    └── ProjectX
+    └── [PROJECT_NAME]
         ├── appConfigs                 
-        │   └── AppX              
+        │   └── [APP_ID]              
         │       ├── renative.json
         │       └── renative.local.json             
-        ├── platformAssets              
-        │   └── renative.json
+        ├── platformBuilds              
+        │   └── renative.build.json
         ├── renative.json
         └── renative.local.json
 
 `~/.rnv`
 
     .
-    └── ProjectX
+    └── [PROJECT_NAME]
         ├── appConfigs                 
-        │   └── AppX              
+        │   └── [APP_ID]              
         │       ├── renative.json
         │       └── renative.private.json             
         ├── renative.json
@@ -125,6 +126,7 @@ PLUGIN_PROPS
 {
   "version": "",
   "no-npm": false,
+  "enabled": true,
   "[PLATFORM]": {
     ...[PLATFORM]_PLUGIN_PROPS
     ...[PLATFORM]_COMMON_PROPS
@@ -238,6 +240,7 @@ IOS_COMMON_PROPS
   "appDelegateImports": [],
   "appDelegateMethods": {},
   "plist": {},
+  "xcodeproj": {},
   "appDelegateApplicationMethods": {
     "didFinishLaunchingWithOptions": [],
     "open": [],
@@ -273,18 +276,8 @@ IOS_CONFIG_PROPS
   "scheme": "",
   "entitlements": {},
   "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
+    "phone": [],
+    "tab": []
   },
 }
 ```
@@ -296,7 +289,10 @@ ANDROID_COMMON_PROPS
 ```json
 {
   "gradle.properties": {},
-  "AndroidManifest": {}
+  "AndroidManifest": {},
+  "BuildGradle": {},
+  "AppBuildGradle": {},
+  "implementation": "",
 }
 ```
 
@@ -304,10 +300,8 @@ ANDROID_PLUGIN_PROPS
 
 ```json
 {
-  "gradle.properties": {},
-  "AndroidManifest": {},
-  "BuildGradle": {},
-  "AppBuildGradle": {}
+  "path": "",
+  "package": ""
 }
 ```
 
@@ -349,6 +343,7 @@ WEB_CONFIG_PROPS
 
 ```json
 {
+  "environment": "",
   "webpackConfig": {
     "devServerHost": "",
     "customScripts": []
@@ -379,7 +374,9 @@ TIZEN_CONFIG_PROPS
 
 ```json
 {
-
+  "appName": "",
+  "package": "",
+  "certificateProfile": ""
 }
 ```
 
