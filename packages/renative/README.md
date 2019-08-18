@@ -958,9 +958,9 @@ c.paths.rnv.nodeModulesDir;
 c.paths.project.nodeModulesDir;
 c.paths.project.assets.config;
 c.paths.project.projectConfig.dir;
-c.paths.pluginConfigPath;
-c.paths.permissionsConfigPath;
-c.paths.fontsConfigFolder;
+c.paths.project.projectConfig.plugins;
+c.paths.project.projectConfig.permissions;
+c.paths.project.projectConfig.fontsDir;
 ```
 
 ---

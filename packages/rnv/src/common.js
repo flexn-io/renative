@@ -250,7 +250,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         return;
     }
 
-    if (!c.runtime.hasProjectConfigInCurrentDir) {
+    if (!c.paths.project.configExists) {
         reject(
             `Looks like this directory is not ReNative project. Project config ${chalk.white(
                 c.paths.project.config,
@@ -559,14 +559,14 @@ const configureEntryPoints = (c) => {
 const configurePlugins = c => new Promise((resolve, reject) => {
     // Check plugins
     logTask('configureProject:check plugins', chalk.grey);
-    if (fs.existsSync(c.paths.pluginConfigPath)) {
-        c.files.pluginConfig = readObjectSync(c.paths.pluginConfigPath, c);
+    if (fs.existsSync(c.paths.project.projectConfig.plugins)) {
+        c.files.pluginConfig = readObjectSync(c.paths.project.projectConfig.plugins, c);
     } else {
         logWarning(
-            `Looks like your plugin config is missing from ${chalk.white(c.paths.pluginConfigPath)}. let's create one for you!`,
+            `Looks like your plugin config is missing from ${chalk.white(c.paths.project.projectConfig.plugins)}. let's create one for you!`,
         );
         c.files.pluginConfig = { plugins: {} };
-        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+        fs.writeFileSync(c.paths.project.projectConfig.plugins, JSON.stringify(c.files.pluginConfig, null, 2));
     }
 
     if (!c.files.project.package.dependencies) {
@@ -582,7 +582,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
         if (!plugin) {
             logWarning(`Plugin with name ${
                 chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
-                chalk.white(c.paths.pluginConfigPath)}`);
+                chalk.white(c.paths.project.projectConfig.plugins)}`);
         } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
                 if (k === 'renative' && c.runtime.isWrapper) {
@@ -591,7 +591,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
                     logWarning(
                         `Version mismatch of dependency ${chalk.white(k)} between:
   ${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
-  ${chalk.white(c.paths.pluginConfigPath)}: v(${chalk.green(plugin.version)}).
+  ${chalk.white(c.paths.project.projectConfig.plugins)}: v(${chalk.green(plugin.version)}).
   package.json will be overriden`
                     );
                     hasPackageChanged = true;
@@ -638,17 +638,17 @@ const configurePlugins = c => new Promise((resolve, reject) => {
 
     // Check permissions
     logTask('configureProject:check permissions', chalk.grey);
-    if (fs.existsSync(c.paths.permissionsConfigPath)) {
-        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
+    if (fs.existsSync(c.paths.project.projectConfig.permissions)) {
+        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.project.projectConfig.permissions).toString());
     } else {
         const newPath = path.join(c.paths.rnv.dir, 'projectConfig/permissions.json');
         logWarning(
             `Looks like your permission config is missing from ${chalk.white(
-                c.paths.permissionsConfigPath,
+                c.paths.project.projectConfig.permissions,
             )}. ReNative Default ${chalk.white(newPath)} will be used instead`,
         );
-        c.paths.permissionsConfigPath = newPath;
-        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.permissionsConfigPath).toString());
+        c.paths.project.projectConfig.permissions = newPath;
+        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.project.projectConfig.permissions).toString());
     }
 
     resolve();

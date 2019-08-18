@@ -393,8 +393,8 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
             reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
             return;
         }
-        if (fs.existsSync(c.paths.fontsConfigFolder)) {
-            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
                     const { includedFonts } = c.files.appConfigFile.common;

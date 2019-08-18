@@ -2,6 +2,7 @@
     "env": {
         "SOME_ENV_VAR": "xxxx"
     },
+    "globalProfile": "rnv",
     "isWrapper": true,
     "paths": {
         "globalConfigFolder": "~/.rnv",
@@ -41,7 +42,7 @@
             "export": "release"
         },
         "targets": {
-          
+
         }
     },
     "plugins": {

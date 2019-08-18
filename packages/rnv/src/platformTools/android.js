@@ -921,8 +921,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     // FONTS
     if (c.files.appConfigFile) {
-        if (fs.existsSync(c.paths.fontsConfigFolder)) {
-            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
                     const { includedFonts } = c.files.appConfigFile.common;

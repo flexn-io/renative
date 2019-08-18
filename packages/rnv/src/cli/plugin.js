@@ -137,7 +137,7 @@ const _runAdd = c => new Promise((resolve) => {
             _checkAndAddDependantPlugins(c, selectedPlugins[key]);
         });
 
-        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+        fs.writeFileSync(c.paths.project.projectConfig.plugins, JSON.stringify(c.files.pluginConfig, null, 2));
 
         logSuccess('Plugins installed successfully!');
 
@@ -172,7 +172,7 @@ const _runUpdate = c => new Promise((resolve) => {
                 c.files.pluginConfig.plugins[key] = o.json[key];
             });
 
-            fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+            fs.writeFileSync(c.paths.project.projectConfig.plugins, JSON.stringify(c.files.pluginConfig, null, 2));
 
             logSuccess('Plugins updated successfully!');
 

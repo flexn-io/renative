@@ -85,6 +85,7 @@ CONFIG_ROOT
 {
   "env": {},
   "definitions": {},
+  "profiles": {},
   "isWrapper": true,
   "sdks": {
     ...SDK_PROPS
@@ -163,7 +164,8 @@ COMMON_PROPS
   "excludedPermissions": [],
   "includedFonts": [],
   "excludedFonts": [],
-  "backgroundColor": ""
+  "backgroundColor": "",
+  "port": 1111
 }
 ```
 
@@ -214,9 +216,6 @@ DEFAULTS_PROPS
 
 ```json
 {
-  "ports": {
-    "[PLATFORM]": 1111
-  },
   "template": "",
   "supportedPlatforms": ["[PLATFORM]"],
   "schemes": {},
