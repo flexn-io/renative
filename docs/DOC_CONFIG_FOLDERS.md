@@ -24,13 +24,52 @@ applies for both public and private `./..` and `~./rnv/[PROJECT_NAME]/..`
                     ├── fonts
                     └── builds
 
+
+## Merges
+
+Following is the order of merges of various folders (if present) contributing to final `platformBuilds/*/**`.
+
+⬇️
+`./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`./appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`./projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`./appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`./projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+⬇️
+`./platformBuilds` & `./platformAssets`
+
 ## Special Folders
 
 - `builds` - TODO
 - `plugins` - TODO
 - `fonts` - TODO
 - `assets` - TODO
-
 
 #### File Overrides / Injectors
 
@@ -150,13 +189,13 @@ Override Rules:
 - https://github.com/pavjacko/renative/tree/develop#platform-assets-overrides
 
 
-#### ✅ What to add to appConfig
+#### ✅ What to add to `./appConfigs/*/**`
 
 - icon assets
 - splash screens
 - runtime configs
 
-#### ❌ What NOT to add to appConfig
+#### ❌ What NOT to add to `./appConfigs/*/**`
 
 - passwords
 - production keys
@@ -164,3 +203,7 @@ Override Rules:
 - googleservice-info.json
 - fabric keys
 - any other sensitive data
+
+those should be added to private project mirror:
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/*/**`

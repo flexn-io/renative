@@ -69,9 +69,11 @@ Following is the order of merges of various renative configs (if present) produc
 ⬇️
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.local.json`</br>
 
+
+
 - `./platformBuilds/renative.build.json`
 
-- `./platformAssets/renative.runtime.json` - (subset of renative)
+- `./platformAssets/renative.runtime.json` - (subset of renative config available at runtime and packaged with final app)
 
 
 ## Config Spec
