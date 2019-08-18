@@ -919,7 +919,7 @@ c.subCommand;
 c.runtime.appId;
 c.platform;
 //FILES
-c.files.projectConfig;
+c.files.project.config;
 c.files.rnv.package;
 //PATHS
 c.paths.rnv.dir;
@@ -950,13 +950,13 @@ c.paths.private.dir;
 c.paths.private.config;
 c.paths.project.appConfigsDir;
 c.paths.entryFolder;
-c.paths.platformTemplatesFolders;
-c.paths.platformAssetsFolder;
+c.paths.project.platformTemplatesDirs;
+c.paths.project.assets.dir;
 c.paths.platformBuildsFolder;
 c.paths.project.projectConfig.pluginsDir;
-c.paths.rnvNodeModulesFolder;
-c.paths.projectNodeModulesFolder;
-c.paths.runtimeConfigPath;
+c.paths.rnv.nodeModulesDir;
+c.paths.project.nodeModulesDir;
+c.paths.project.assets.config;
 c.paths.project.projectConfig.dir;
 c.paths.pluginConfigPath;
 c.paths.permissionsConfigPath;

@@ -105,7 +105,7 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_createDeployConfig:${platform}`);
 
     const configFilePath = path.resolve(
-        c.files.projectConfig.appConfigsFolder,
+        c.files.project.config.appConfigsFolder,
         c.defaultAppConfigId,
         RNV_APP_CONFIG_NAME
     );

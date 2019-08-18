@@ -58,7 +58,7 @@ const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyTizenAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const sourcePath = path.join(c.paths.appConfigFolder, 'assets', platform);
+    const sourcePath = path.join(c.paths.appConfig.dir, 'assets', platform);
     const destPath = path.join(getAppFolder(c, platform));
 
     copyFolderContentsRecursiveSync(sourcePath, destPath);
@@ -175,10 +175,10 @@ const runTizen = async (c, platform, target) => {
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
     if (!platformConfig) {
-        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
     if (!platformConfig.appName) {
-        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
 
     const tDir = getAppFolder(c, platform);

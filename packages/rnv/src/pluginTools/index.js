@@ -47,7 +47,7 @@ const parsePlugins = (c, platform, pluginCallback) => {
                 }
             });
         } else {
-            logWarning(`You haven't included any ${chalk.white('{ common: { includedPlugins: [] }}')} in your ${chalk.white(c.paths.appConfigPath)}. Your app might not work correctly`);
+            logWarning(`You haven't included any ${chalk.white('{ common: { includedPlugins: [] }}')} in your ${chalk.white(c.paths.appConfig.config)}. Your app might not work correctly`);
         }
     }
 };

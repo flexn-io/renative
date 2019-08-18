@@ -5,63 +5,64 @@ List of available config props injected into hooks methods:
 ## `c` Object
 
 ```
-.program
-.process
-.command
-.subCommand
-.appId
-.platform
-.paths
-.files
+{
+  program: {},
+  process: {},
+  command: {},
+  subCommand: {},
+  paths: {},
+  files: {}
+}
+
 ```
 
 ## `c.paths` Object
 
 ```
-.rnvRootFolder
-.rnvRootFolder
-.rnvPlatformTemplatesFolder
-.rnvPluginTemplatesFolder
-.rnvPluginTemplatesConfigPath
-.rnvPackagePath
-.rnvPluginsFolder
-.projectRootFolder
-.buildHooksFolder
-.buildHooksDistFolder
-.buildHooksIndexPath
-.buildHooksDistIndexPath
-.projectSourceFolder
-.projectNpmLinkPolyfillPath
-.homeFolder
-.globalConfigFolder
-.globalConfigPath
-.projectConfigPath
-.projectConfigLocalPath
-.projectPackagePath
-.rnCliConfigPath
-.babelConfigPath
-.projectConfigFolder
-.projectPluginsFolder
-.globalConfigFolder
-.globalConfigPath
-.appConfigsFolder
-.entryFolder
-.platformTemplatesFolders
-.platformAssetsFolder
-.platformBuildsFolder
-.projectPluginsFolder
-.rnvNodeModulesFolder
-.projectNodeModulesFolder
-.runtimeConfigPath
-.projectConfigFolder
-.pluginConfigPath
-.permissionsConfigPath
-.fontsConfigFolder
+{
+  rnv: {
+      pluginTemplates: {},
+      platformTemplates: {}
+  },
+  project: {
+      projectConfig: {},
+      builds: {},
+      assets: {},
+      platformTemplates: {}
+  },
+  appConfig: {},
+  private: {
+      project: {
+          projectConfig: {},
+          builds: {},
+          assets: {},
+          platformTemplates: {}
+      },
+      appConfig: {}
+  }
+}
 ```
 
 ## `c.files` Object
 
 ```
-.projectConfig
-.rnvPackage
+{
+  rnv: {},
+  project: {
+      projectConfig: {},
+      builds: {},
+      assets: {},
+      platformTemplates: {}
+  },
+  appConfig: {},
+  private: {
+      project: {
+          projectConfig: {},
+          builds: {},
+          assets: {},
+          platformTemplates: {}
+      },
+      appConfig: {}
+  }
+}
 ```

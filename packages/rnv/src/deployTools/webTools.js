@@ -49,7 +49,7 @@ const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) =>
             .then((selectedDeployTarget) => {
                 finishQuestion();
                 const configFilePath = path.resolve(
-                    c.files.projectConfig.appConfigsFolder,
+                    c.files.project.config.appConfigsFolder,
                     c.defaultAppConfigId,
                     RNV_APP_CONFIG_NAME
                 );

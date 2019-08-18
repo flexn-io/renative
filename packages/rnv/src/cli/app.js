@@ -353,7 +353,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         const { platforms } = c.files.appConfigFile;
         const cmds = [];
         if (!platforms) {
-            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
+            reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
             return;
         }
 
@@ -378,19 +378,19 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 
 const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('copyRuntimeAssets');
-    const aPath = path.join(c.paths.platformAssetsFolder, 'runtime');
-    const cPath = path.join(c.paths.appConfigFolder, 'assets/runtime');
+    const aPath = path.join(c.paths.project.assets.dir, 'runtime');
+    const cPath = path.join(c.paths.appConfig.dir, 'assets/runtime');
     copyFolderContentsRecursiveSync(cPath, aPath);
 
-    // copyFileSync(c.paths.appConfigPath, path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME));
-    fs.writeFileSync(path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME), JSON.stringify(c.files.appConfigFile, null, 2));
+    // copyFileSync(c.paths.appConfig.config, path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME));
+    fs.writeFileSync(path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME), JSON.stringify(c.files.appConfigFile, null, 2));
 
     // FONTS
     let fontsObj = 'export default [';
 
     if (c.files.appConfigFile) {
         if (!c.files.appConfigFile.common) {
-            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
+            reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
             return;
         }
         if (fs.existsSync(c.paths.fontsConfigFolder)) {
@@ -423,15 +423,15 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     }
 
     fontsObj += '];';
-    fs.writeFileSync(path.join(c.paths.platformAssetsFolder, 'runtime', 'fonts.js'), fontsObj);
+    fs.writeFileSync(path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js'), fontsObj);
     const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
     copyFileSync(
         path.resolve(supportFiles, 'fontManager.js'),
-        path.resolve(c.paths.platformAssetsFolder, 'runtime', 'fontManager.js'),
+        path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.js'),
     );
     copyFileSync(
         path.resolve(supportFiles, 'fontManager.web.js'),
-        path.resolve(c.paths.platformAssetsFolder, 'runtime', 'fontManager.web.js'),
+        path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.web.js'),
     );
 
     resolve();
@@ -441,10 +441,10 @@ const _copySharedPlatforms = c => new Promise((resolve) => {
     logTask(`_copySharedPlatform:${c.platform}`);
 
     if (c.platform) {
-        mkdirSync(path.resolve(c.paths.platformTemplatesFolders[c.platform], '_shared'));
+        mkdirSync(path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'));
 
         copyFolderContentsRecursiveSync(
-            path.resolve(c.paths.platformTemplatesFolders[c.platform], '_shared'),
+            path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'),
             path.resolve(c.paths.platformBuildsFolder, '_shared'),
         );
     }

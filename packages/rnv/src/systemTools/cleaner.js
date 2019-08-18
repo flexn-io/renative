@@ -7,7 +7,7 @@ import { logTask, askQuestion, finishQuestion } from '../common';
 const cleanProjectModules = c => new Promise((resolve, reject) => {
     logTask('cleanProjectModules');
     const pathsToRemove = [
-        c.paths.projectNodeModulesFolder,
+        c.paths.project.nodeModulesDir,
         path.join(c.paths.project.dir, 'package-lock.json')
     ];
     let msg = chalk.red('./node_modules\n./package-lock.json\n');

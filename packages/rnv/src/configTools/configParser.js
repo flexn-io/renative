@@ -70,15 +70,41 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                 pluginTemplates: {},
                 platformTemplates: {}
             },
-            project: {},
-            app: {},
-            private: {}
+            project: {
+                projectConfig: {},
+                builds: {},
+                assets: {},
+                platformTemplates: {}
+            },
+            appConfig: {},
+            private: {
+                project: {
+                    projectConfig: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {}
+                },
+                appConfig: {}
+            }
         },
         files: {
             rnv: {},
-            project: {},
-            app: {},
-            private: {}
+            project: {
+                projectConfig: {},
+                builds: {},
+                assets: {},
+                platformTemplates: {}
+            },
+            appConfig: {},
+            private: {
+                project: {
+                    projectConfig: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {}
+                },
+                appConfig: {}
+            }
         }
     };
 
@@ -149,54 +175,54 @@ This might result in unexpected behaviour! It is recommended that you run your r
     c.runtime.hasProjectConfigInCurrentDir = fs.existsSync(c.paths.project.config);
 
     if (c.runtime.hasProjectConfigInCurrentDir) {
-        c.files.projectConfig = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
-        if (c.files.projectConfig.defaultPorts) {
-            for (const pk in c.files.projectConfig.defaultPorts) {
-                c.platformDefaults[pk].defaultPort = c.files.projectConfig.defaultPorts[pk];
+        c.files.project.config = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
+        if (c.files.project.config.defaultPorts) {
+            for (const pk in c.files.project.config.defaultPorts) {
+                c.platformDefaults[pk].defaultPort = c.files.project.config.defaultPorts[pk];
             }
         }
-        if (!c.files.projectConfig.defaultProjectConfigs) {
+        if (!c.files.project.config.defaultProjectConfigs) {
             logWarning(`You're missing ${chalk.white('defaultProjectConfigs')} in your ${chalk.white(c.paths.project.config)}. ReNative will generate temporary one`);
-            c.files.projectConfig.defaultProjectConfigs = {};
+            c.files.project.config.defaultProjectConfigs = {};
         }
-        if (!c.files.projectConfig.defaultProjectConfigs.supportedPlatforms) {
+        if (!c.files.project.config.defaultProjectConfigs.supportedPlatforms) {
             if (c.files.project.package.supportedPlatforms) {
-                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = c.files.project.package.supportedPlatforms;
+                c.files.project.config.defaultProjectConfigs.supportedPlatforms = c.files.project.package.supportedPlatforms;
             } else {
-                c.files.projectConfig.defaultProjectConfigs.supportedPlatforms = SUPPORTED_PLATFORMS;
+                c.files.project.config.defaultProjectConfigs.supportedPlatforms = SUPPORTED_PLATFORMS;
             }
 
             logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.project.config)}. ReNative will generate temporary one`);
         }
-        c.isWrapper = c.files.projectConfig.isWrapper;
-        c.paths.private.dir = getRealPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.private.dir);
+        c.runtime.isWrapper = c.files.project.config.isWrapper;
+        c.paths.private.dir = getRealPath(c, c.files.project.config.globalConfigFolder, 'globalConfigFolder', c.paths.private.dir);
         c.paths.private.config = path.join(c.paths.private.dir, RNV_GLOBAL_CONFIG_NAME);
         if (c.files.project.package) {
-            c.paths.privateProjectFolder = path.join(c.paths.private.dir, c.files.project.package.name);
-            c.paths.privateProjectConfigFolder = path.join(c.paths.privateProjectFolder, 'projectConfig');
-            c.paths.privateAppConfigsFolder = path.join(c.paths.privateProjectFolder, 'appConfigs');
+            c.paths.private.project.dir = path.join(c.paths.private.dir, c.files.project.package.name);
+            c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
+            c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
         }
-        c.paths.project.appConfigsDir = getRealPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.project.appConfigsDir);
-        c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
-        c.paths.platformAssetsFolder = getRealPath(
+        c.paths.project.appConfigsDir = getRealPath(c, c.files.project.config.appConfigsFolder, 'appConfigsFolder', c.paths.project.appConfigsDir);
+        c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
+        c.paths.project.assets.dir = getRealPath(
             c,
-            c.files.projectConfig.platformAssetsFolder,
+            c.files.project.config.platformAssetsFolder,
             'platformAssetsFolder',
-            c.paths.platformAssetsFolder,
+            c.paths.project.assets.dir,
         );
         c.paths.platformBuildsFolder = getRealPath(
             c,
-            c.files.projectConfig.platformBuildsFolder,
+            c.files.project.config.platformBuildsFolder,
             'platformBuildsFolder',
             c.paths.platformBuildsFolder,
         );
-        c.paths.project.projectConfig.pluginsDir = getRealPath(c, c.files.projectConfig.projectPlugins, 'projectPlugins', c.paths.project.projectConfig.pluginsDir);
-        c.paths.projectNodeModulesFolder = path.join(c.paths.project.dir, 'node_modules');
-        c.paths.rnvNodeModulesFolder = path.join(c.paths.rnv.dir, 'node_modules');
-        c.paths.runtimeConfigPath = path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME);
+        c.paths.project.projectConfig.pluginsDir = getRealPath(c, c.files.project.config.projectPlugins, 'projectPlugins', c.paths.project.projectConfig.pluginsDir);
+        c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
+        c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
+        c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME);
         c.paths.project.projectConfig.dir = getRealPath(
             c,
-            c.files.projectConfig.projectConfigFolder,
+            c.files.project.config.projectConfigFolder,
             'projectConfigFolder',
             c.paths.project.projectConfig.dir,
         );
@@ -207,15 +233,15 @@ This might result in unexpected behaviour! It is recommended that you run your r
 };
 
 export const setAppConfig = (c, p) => {
-    c.paths.appConfigFolder = path.join(c.paths.project.appConfigsDir, p);
-    c.paths.appConfigPath = path.join(c.paths.appConfigFolder, RNV_APP_CONFIG_NAME);
-    c.paths.privateAppConfigFolder = path.join(c.paths.privateAppConfigsFolder, p);
-    c.paths.privateAppConfigPath = path.join(c.paths.privateAppConfigFolder, RNV_PRIVATE_APP_CONFIG_NAME);
+    c.paths.appConfig.dir = path.join(c.paths.project.appConfigsDir, p);
+    c.paths.appConfig.config = path.join(c.paths.appConfig.dir, RNV_APP_CONFIG_NAME);
+    c.paths.private.appConfig.dir = path.join(c.paths.private.project.appConfigsDir, p);
+    c.paths.private.appConfig.config = path.join(c.paths.private.appConfig.dir, RNV_PRIVATE_APP_CONFIG_NAME);
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    const pt = c.files.projectConfig.platformTemplatesFolders || {};
-    const originalPath = c.files.projectConfig.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
+    const pt = c.files.project.config.platformTemplatesFolders || {};
+    const originalPath = c.files.project.config.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {

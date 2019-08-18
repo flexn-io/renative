@@ -127,14 +127,14 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
                     copyFolderContentsRecursiveSync(path.join(rptf, '_shared'), path.join(prf, ptfn, '_shared'));
                 }
 
-                c.files.projectConfig.platformTemplatesFolders = c.files.projectConfig.platformTemplatesFolders || {};
-                c.files.projectConfig.platformTemplatesFolders[v] = `./${ptfn}`;
+                c.files.project.config.platformTemplatesFolders = c.files.project.config.platformTemplatesFolders || {};
+                c.files.project.config.platformTemplatesFolders[v] = `./${ptfn}`;
 
-                writeObjectSync(c.paths.project.config, c.files.projectConfig);
+                writeObjectSync(c.paths.project.config, c.files.project.config);
             });
             logSuccess(
                 `${chalk.white(opts.selectedOptions.join(','))} platform templates are located in ${chalk.white(
-                    c.files.projectConfig.platformTemplatesFolders[opts.selectedOptions[0]]
+                    c.files.project.config.platformTemplatesFolders[opts.selectedOptions[0]]
                 )} now. You can edit them directly!`
             );
             resolve();
@@ -142,8 +142,8 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 });
 
 const _genPlatOptions = (c) => {
-    const opts = generateOptions(c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
-        const isEjected = c.paths.platformTemplatesFolders[obj].includes(c.paths.rnv.platformTemplates.dir) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
+    const opts = generateOptions(c.files.project.config.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
+        const isEjected = c.paths.project.platformTemplatesDirs[obj].includes(c.paths.rnv.platformTemplates.dir) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
         return `-[${chalk.white(i + 1)}] ${chalk.white(defaultVal)} - ${isEjected} \n`;
     });
     return opts;
@@ -161,11 +161,11 @@ const _runConnectPlatforms = c => new Promise((resolve) => {
             opts.selectedOptions.forEach((v) => {
                 const ptfn = 'platformTemplates';
 
-                if (!c.files.projectConfig.platformTemplatesFolders) c.files.projectConfig.platformTemplatesFolders = {};
+                if (!c.files.project.config.platformTemplatesFolders) c.files.project.config.platformTemplatesFolders = {};
 
-                c.files.projectConfig.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
+                c.files.project.config.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
 
-                writeObjectSync(c.paths.project.config, c.files.projectConfig);
+                writeObjectSync(c.paths.project.config, c.files.project.config);
             });
             logSuccess(
                 `${chalk.white(opts.selectedOptions.join(','))} now using ReNative platformTemplates located in ${chalk.white(c.paths.rnv.platformTemplates.dir)} now!`
@@ -193,7 +193,7 @@ const _removePlatform = (platform, program, process) => new Promise((resolve, re
 const _runCleanPlaformAssets = c => new Promise((resolve, reject) => {
     logTask('_runCleanPlaformAssets');
 
-    cleanFolder(c.paths.platformAssetsFolder).then(() => {
+    cleanFolder(c.paths.project.assets.dir).then(() => {
         resolve();
     });
 });
@@ -204,17 +204,17 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     if (platform === 'all') {
         for (const k in c.files.appConfigFile.platforms) {
             if (isPlatformSupportedSync(k)) {
-                const ptPath = path.join(c.paths.platformTemplatesFolders[k], `${k}`);
+                const ptPath = path.join(c.paths.project.platformTemplatesDirs[k], `${k}`);
                 const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${k}`);
                 copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
             }
         }
     } else if (isPlatformSupportedSync(platform)) {
-        const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
+        const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
         const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
     } else {
-        logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.paths.appConfigPath)}`);
+        logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.paths.appConfig.config)}`);
     }
 
     Promise.all(copyPlatformTasks).then((values) => {
@@ -255,7 +255,7 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     if (!isPlatformSupportedSync(platform, null, reject)) return;
 
     const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
-    const ptPath = path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
+    const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
     copyFolderContentsRecursiveSync(ptPath, pPath, false, [path.join(ptPath, '_privateConfig')]);
 
     resolve();

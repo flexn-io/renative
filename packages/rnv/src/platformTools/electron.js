@@ -130,7 +130,7 @@ const copyElectronAssets = (c, platform) => new Promise((resolve) => {
             .catch(e => reject(e));
     } else {
         const destPath = path.join(getAppFolder(c, platform), 'resources');
-        const sourcePath = path.join(c.paths.appConfigFolder, `assets/${platform}/resources`);
+        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources`);
         copyFolderContentsRecursiveSync(sourcePath, destPath);
         resolve();
     }
@@ -221,7 +221,7 @@ const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject
 const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_generateICNS:${platform}`);
 
-    const source = path.join(c.paths.appConfigFolder, `assets/${platform}/AppIcon.iconset`);
+    const source = path.join(c.paths.appConfig.dir, `assets/${platform}/AppIcon.iconset`);
 
     const dest = path.join(getAppFolder(c, platform), 'resources/icon.icns');
 

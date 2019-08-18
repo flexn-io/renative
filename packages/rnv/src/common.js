@@ -295,14 +295,14 @@ const gatherInfo = c => new Promise((resolve, reject) => {
         } else {
             console.log('Missing appConfigPath', c.paths.project.package);
         }
-        if (fs.existsSync(c.paths.runtimeConfigPath)) {
-            c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.runtimeConfigPath).toString());
+        if (fs.existsSync(c.paths.project.assets.config)) {
+            c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.project.assets.config).toString());
             c.runtime.appId = c.files.appConfigFile.id;
         } else {
-            console.log('Missing runtimeConfigPath', c.paths.runtimeConfigPath);
+            console.log('Missing runtimeConfigPath', c.paths.project.assets.config);
         }
         if (fs.existsSync(c.paths.project.config)) {
-            c.files.projectConfig = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
+            c.files.project.config = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
         } else {
             console.log('Missing projectConfigPath', c.paths.project.config);
         }
@@ -355,28 +355,28 @@ const configureProject = c => new Promise((resolve, reject) => {
     logTask('configureProject:check rnv-config.local', chalk.grey);
     if (fs.existsSync(c.paths.project.configLocal)) {
         logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will use it as preference for appConfig path!`);
-        c.files.projectConfigLocal = JSON.parse(fs.readFileSync(c.paths.project.configLocal).toString());
-        if (c.files.projectConfigLocal.appConfigsPath) {
-            if (!fs.existsSync(c.files.projectConfigLocal.appConfigsPath)) {
+        c.files.project.configLocal = JSON.parse(fs.readFileSync(c.paths.project.configLocal).toString());
+        if (c.files.project.configLocal.appConfigsPath) {
+            if (!fs.existsSync(c.files.project.configLocal.appConfigsPath)) {
                 logWarning(
                     `Looks like your custom local appConfig is pointing to ${chalk.white(
-                        c.files.projectConfigLocal.appConfigsPath,
+                        c.files.project.configLocal.appConfigsPath,
                     )} which doesn't exist! Make sure you create one in that location`,
                 );
             } else {
                 logInfo(
                     `Found custom appConfing location pointing to ${chalk.white(
-                        c.files.projectConfigLocal.appConfigsPath,
+                        c.files.project.configLocal.appConfigsPath,
                     )}. ReNativewill now swith to that location!`,
                 );
-                c.paths.project.appConfigsDir = c.files.projectConfigLocal.appConfigsPath;
+                c.paths.project.appConfigsDir = c.files.project.configLocal.appConfigsPath;
             }
         } else {
             logInfo(
                 `Your local config file ${chalk.white(c.paths.project.configLocal)} is missing ${chalk.white('{ appConfigsPath: "" }')} field. ${chalk.white(c.paths.project.appConfigsDir)} will be used instead`,
             );
         }
-        // c.defaultAppConfigId = c.files.projectConfigLocal.defaultAppConfigId;
+        // c.defaultAppConfigId = c.files.project.configLocal.defaultAppConfigId;
     }
 
     resolve();
@@ -386,10 +386,10 @@ const configureProject = c => new Promise((resolve, reject) => {
 const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules
-    if (!fs.existsSync(c.paths.projectNodeModulesFolder) || c._requiresNpmInstall) {
-        if (!fs.existsSync(c.paths.projectNodeModulesFolder)) {
+    if (!fs.existsSync(c.paths.project.nodeModulesDir) || c._requiresNpmInstall) {
+        if (!fs.existsSync(c.paths.project.nodeModulesDir)) {
             logWarning(
-                `Looks like your node_modules folder ${chalk.white(c.paths.projectNodeModulesFolder)} is missing! Let's run ${chalk.white(
+                `Looks like your node_modules folder ${chalk.white(c.paths.project.nodeModulesDir)} is missing! Let's run ${chalk.white(
                     'npm install',
                 )} first!`,
             );
@@ -426,14 +426,14 @@ const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) =>
 });
 
 const cleanNodeModules = c => new Promise((resolve, reject) => {
-    logTask(`cleanNodeModules:${c.paths.projectNodeModulesFolder}`);
+    logTask(`cleanNodeModules:${c.paths.project.nodeModulesDir}`);
     removeDirs([
-        path.join(c.paths.projectNodeModulesFolder, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.projectNodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.projectNodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnvNodeModulesFolder, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.rnvNodeModulesFolder, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnvNodeModulesFolder, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+        path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
     ]).then(() => resolve()).catch(e => reject(e));
 });
 
@@ -544,7 +544,7 @@ const configureEntryPoints = (c) => {
         const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
         if (!fs.existsSync(dest)) {
             if (!plat.entryFile) {
-                logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfigPath)}.`);
+                logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
             } else if (!fs.existsSync(source)) {
                 logWarning(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
                 copyFileSync(backupSource, dest);
@@ -585,7 +585,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
                 chalk.white(c.paths.pluginConfigPath)}`);
         } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
-                if (k === 'renative' && c.isWrapper) {
+                if (k === 'renative' && c.runtime.isWrapper) {
                     logWarning('You\'re in ReNative wrapper mode. plugin renative will stay as local dep!');
                 } else {
                     logWarning(
@@ -667,10 +667,10 @@ const configureApp = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
     } else {
         // Use latest app from platformAssets
-        if (!fs.existsSync(c.paths.runtimeConfigPath)) {
+        if (!fs.existsSync(c.paths.project.assets.config)) {
             logWarning(
                 `Seems like you're missing ${
-                    c.paths.runtimeConfigPath
+                    c.paths.project.assets.config
                 } file. But don't worry. ReNative got you covered. Let's configure it for you!`,
             );
 
@@ -690,7 +690,7 @@ const configureApp = c => new Promise((resolve, reject) => {
                 .catch(e => reject(e));
         } else {
             try {
-                const assetConfig = JSON.parse(fs.readFileSync(c.paths.runtimeConfigPath).toString());
+                const assetConfig = JSON.parse(fs.readFileSync(c.paths.project.assets.config).toString());
                 _getConfig(c, assetConfig.id)
                     .then(() => {
                         configureEntryPoints(c);
@@ -770,7 +770,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     setAppConfig(c, appConfigId);
     c.runtime.appId = appConfigId;
 
-    if (!fs.existsSync(c.paths.appConfigFolder)) {
+    if (!fs.existsSync(c.paths.appConfig.dir)) {
         const readline = require('readline').createInterface({
             input: process.stdin,
             output: process.stdout,
@@ -820,7 +820,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                     setAppConfig(c, c.defaultAppConfigId);
                     copyFolderContentsRecursiveSync(
                         path.join(c.paths.rnv.dir, 'appConfigs', c.defaultAppConfigId),
-                        path.join(c.paths.appConfigFolder),
+                        path.join(c.paths.appConfig.dir),
                     );
                     _configureConfig(c)
                         .then(() => resolve())
@@ -839,7 +839,7 @@ const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sou
 
 const _configureConfig = c => new Promise((resolve, reject) => {
     logTask(`_configureConfig:${c.runtime.appId}`);
-    c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.appConfigPath).toString());
+    c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.appConfig.config).toString());
 
     // EXTEND CONFIG
     const merge = require('deepmerge');
@@ -862,7 +862,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
 
 const getAppFolder = (c, platform) => path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
 
-const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplatesFolders[platform], `${platform}`);
+const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
@@ -964,7 +964,7 @@ const logErrorPlatform = (platform, resolve) => {
 
 const isPlatformActive = (c, platform, resolve) => {
     if (!c.files.appConfigFile || !c.files.appConfigFile.platforms) {
-        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfigPath)} location.`);
+        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
         if (resolve) resolve();
         return false;
     }
@@ -1044,15 +1044,15 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.privateProjectConfigFolder);
+    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.private.project.projectConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
 
     // FOLDER MERGERS FROM APP CONFIG
-    const sourcePath0 = getBuildsFolder(c, platform, c.paths.appConfigFolder);
-    copyFolderContentsRecursiveSync(sourcePath0, destPath, c.paths.appConfigFolder);
+    const sourcePath0 = getBuildsFolder(c, platform, c.paths.appConfig.dir);
+    copyFolderContentsRecursiveSync(sourcePath0, destPath, c.paths.appConfig.dir);
 
     // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
-    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.privateAppConfigFolder);
+    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.private.appConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath0sec, destPath);
 
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
@@ -1061,15 +1061,15 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
         copyFolderContentsRecursiveSync(sourcePath3, destPath);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
-        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.privateProjectConfigFolder, `plugins/${key}`));
+        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.private.project.projectConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
-        const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
+        const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
-        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.privateAppConfigFolder, `plugins/${key}`));
+        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.private.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath);
     });
 
@@ -1079,7 +1079,7 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
 const _getScheme = c => c.program.scheme || 'debug';
 
 const getBuildsFolder = (c, platform, customPath) => {
-    const pp = customPath || c.paths.appConfigFolder;
+    const pp = customPath || c.paths.appConfig.dir;
     // if (!fs.existsSync(pp)) {
     //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
     // }
@@ -1219,9 +1219,9 @@ const finishQuestion = () => new Promise((resolve, reject) => {
 });
 
 const resolveNodeModulePath = (c, filePath) => {
-    let pth = path.join(c.paths.rnvNodeModulesFolder, filePath);
+    let pth = path.join(c.paths.rnv.nodeModulesDir, filePath);
     if (!fs.existsSync(pth)) {
-        pth = path.join(c.paths.projectNodeModulesFolder, filePath);
+        pth = path.join(c.paths.project.nodeModulesDir, filePath);
     }
     return pth;
 };

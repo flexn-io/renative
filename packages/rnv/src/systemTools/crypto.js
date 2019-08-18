@@ -20,7 +20,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
     logTask('encrypt');
 
     const source = `./${c.files.project.package.name}`;
-    const destRaw = c.files.projectConfig?.crypto?.encrypt?.dest;
+    const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
@@ -68,7 +68,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
 export const decrypt = c => new Promise((resolve, reject) => {
     logTask('encrypt');
 
-    const sourceRaw = c.files.projectConfig?.crypto?.decrypt?.source;
+    const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
 
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
@@ -131,7 +131,7 @@ export const installProfiles = c => new Promise((resolve, reject) => {
         mkdirSync(ppFolder);
     }
 
-    const list = getFileListSync(c.paths.privateProjectFolder);
+    const list = getFileListSync(c.paths.private.project.dir);
     const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
 
     try {
@@ -155,7 +155,7 @@ export const installCerts = c => new Promise((resolve, reject) => {
     }
     const kChain = c.program.keychain || 'ios-build.keychain';
     const kChainPath = path.join(c.paths.home.dir, 'Library/Keychains', kChain);
-    const list = getFileListSync(c.paths.privateProjectFolder);
+    const list = getFileListSync(c.paths.private.project.dir);
     const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
 

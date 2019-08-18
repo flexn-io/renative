@@ -175,7 +175,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
 
 const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
     // if (delay) {
-    //         const process = fork(path.join(c.paths.rnvNodeModulesFolder, 'open', 'index.js'));
+    //         const process = fork(path.join(c.paths.rnv.nodeModulesDir, 'open', 'index.js'));
     //         process.send(`http://0.0.0.0:${port}`);
     // } else {
     //     open(`http://0.0.0.0:${port}`);
