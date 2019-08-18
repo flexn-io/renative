@@ -744,13 +744,8 @@ List of available pipe hooks:
 
 ## Runtime
 
-ReNative provides runtime SDK library to support multiplatform development
 
-```js
-import { Api } from 'renative'
-```
-
-⚠️ NOTE: this library is under development!
+https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/DOC_RENATIVE_RUNTIME.md
 
 ---
 

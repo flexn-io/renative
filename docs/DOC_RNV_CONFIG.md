@@ -1,4 +1,4 @@
-# API Reference for Runtime Config (c)
+# API Reference for RNV Config (c)
 
 List of available config props injected into hooks methods:
 
