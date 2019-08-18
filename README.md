@@ -564,6 +564,7 @@ Plugin Spec:
   }
 }
 ```
+https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/DOC_RENATIVE_CONFIG.md
 
 
 Re-Generate platform projects (for helloWorld app config platforms):
@@ -578,179 +579,6 @@ Configure your multi-platform app based on `./appConfigs/helloWorld` configurati
 rnv configure -c helloWorld -u
 ```
 
-#### Android based config
-
-Applies for `android`, `androidtv`, `androidwear`
-
-For appConfigs:
-
-```json
-{
-  "entryFile": "",
-  "getJsBundleFile": "",
-  "universalApk": true,
-  "multipleAPKs": false,
-  "aab": false,
-  "minSdkVersion": 21,
-  "backgroundColor": "",
-  "id": "",
-  "signingConfig": "",
-  "bundleAssets": false,
-  "permissions": [],
-  "bundleAssets": true,
-  "bundleIsDev": true,
-  "buildSchemes": {}
-}
-```
-
-For plugins:
-
-```json
-{
-    "package": "",
-    "path": "",
-    "AndroidManifest": {},
-    "BuildGradle": {},
-    "AppBuildGradle": {}
-}
-```
-
-#### Apple based config
-
-Applies for `ios`, `tvos`
-
-For appConfigs:
-
-```json
-{
-  "entryFile": "",
-  "backgroundColor": "",
-  "id": "",
-  "bundleAssets": false,
-  "permissions": [],
-  "bundleAssets": true,
-  "bundleIsDev": true,
-  "deploymentTarget": "",
-  "teamID": "",
-  "scheme": "",
-  "permissions": ["*"],
-  "orientationSupport": {
-    "phone": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ],
-    "tab": [
-      "UIInterfaceOrientationPortrait",
-      "UIInterfaceOrientationPortraitUpsideDown",
-      "UIInterfaceOrientationLandscapeLeft",
-      "UIInterfaceOrientationLandscapeRight"
-    ]
-  },
-  "provisioningStyle": "",
-  "systemCapabilities": {},
-  "entitlements": {},
-  "buildSchemes": {}
-}
-```
-
-For plugins:
-
-```json
-{
-    "podName": "",
-    "path": "",
-    "appDelegateApplicationMethods": {
-      "didFinishLaunchingWithOptions": [],
-      "open": [],
-      "supportedInterfaceOrientationsFor": [],
-      "didReceiveRemoteNotification": [],
-      "didFailToRegisterForRemoteNotificationsWithError": [],
-      "didReceive": [],
-      "didRegister": [],
-      "didRegisterForRemoteNotificationsWithDeviceToken": [],
-    }
-}
-```
-
-#### Web based config
-
-Applies for `web`
-
-```json
-{
-  "id": "",
-  "entryFile": "",
-  "title": "",
-  "webpackConfig": {
-    "devServerHost": "",
-    "customScripts": []
-  },
-  "buildSchemes": {}
-}
-```
-
-#### Global Configurations
-
-`rnv` will create config folder at this location: `~/.rnv/config.json`
-
-Open the file and edit SDK paths of platforms you plan to use:
-
-```json
-{
-    "sdks": {
-        "ANDROID_SDK": "/Users/<USER>/Library/Android/sdk",
-        "ANDROID_NDK": "/Users/<USER>/Library/Android/sdk/ndk-bundle",
-        "IOS_SDK": "No need. Just install Xcode",
-        "TIZEN_SDK": "/Users/<USER>/tizen-studio",
-        "WEBOS_SDK": "/Users/<USER>/Library/webOS_TV_SDK",
-        "KAIOS_SDK": "/Applications/Kaiosrt.app"
-    }
-}
-```
-
-You can also edit your preferred emulator targets (allows you to run `$ rnv target launch -p <PLATFORM>` without `-p <TARGET>`)
-
-```json
-{
-    "defaultTargets": {
-        "android": "Nexus_5X_API_26",
-        "androidtv": "Android_TV_720p_API_22",
-        "androidwear": "Android_Wear_Round_API_28",
-        "ios": "iPhone 6",
-        "tvos": "Apple TV 4K",
-        "tizen": "T-samsung-5.0-x86",
-        "tizenwatch": "W-5.0-circle-x86",
-        "webos": "emulator"
-    }
-}
-```
-
-
-
-#### App Signing
-
-For Android release signing, ReNative creates `~/GLOBAL_RNV/PROJECT_NAME/APP_CONFIG_ID/config.private.json` file
-with path to your release keystore file and its credentials.
-
-```
-{
-  "android": {
-    "storeFile": "./release.keystore",
-    "storePassword": "************",
-    "keyAlias": "************",
-    "keyPassword": "************"
-  }
-}
-```
-
-Then you can run the release app by:
-
-```bash
-rnv configure -p android
-rnv run -p android -s release
-```
 
 #### Build Flavours
 
@@ -908,60 +736,7 @@ List of available pipe hooks:
 'platform:configure:before', 'platform:configure:after'
 ```
 
-List of available config props injected into hooks methods:
 
-```js
-//ROOT
-c.program;
-c.process;
-c.command;
-c.subCommand;
-c.appId;
-c.platform;
-//FILES
-c.files.projectConfig;
-c.files.rnvPackage;
-//PATHS
-c.paths.rnvRootFolder;
-c.paths.rnvHomeFolder;
-c.paths.rnvPlatformTemplatesFolder;
-c.paths.rnvPluginTemplatesFolder;
-c.paths.rnvPluginTemplatesConfigPath;
-c.paths.rnvPackagePath;
-c.paths.rnvPluginsFolder;
-c.paths.projectRootFolder;
-c.paths.buildHooksFolder;
-c.paths.buildHooksDistFolder;
-c.paths.buildHooksIndexPath;
-c.paths.buildHooksDistIndexPath;
-c.paths.projectSourceFolder;
-c.paths.projectNpmLinkPolyfillPath;
-c.paths.homeFolder;
-c.paths.globalConfigFolder;
-c.paths.globalConfigPath;
-c.paths.projectConfigPath;
-c.paths.projectConfigLocalPath;
-c.paths.projectPackagePath;
-c.paths.rnCliConfigPath;
-c.paths.babelConfigPath;
-c.paths.projectConfigFolder;
-c.paths.projectPluginsFolder;
-c.paths.globalConfigFolder;
-c.paths.globalConfigPath;
-c.paths.appConfigsFolder;
-c.paths.entryFolder;
-c.paths.platformTemplatesFolders;
-c.paths.platformAssetsFolder;
-c.paths.platformBuildsFolder;
-c.paths.projectPluginsFolder;
-c.paths.rnvNodeModulesFolder;
-c.paths.projectNodeModulesFolder;
-c.paths.runtimeConfigPath;
-c.paths.projectConfigFolder;
-c.paths.pluginConfigPath;
-c.paths.permissionsConfigPath;
-c.paths.fontsConfigFolder;
-```
 
 ---
 
@@ -1000,15 +775,14 @@ Folder Structure (Generated Project)
     │   └── helloWorld              # Example application flavour
     │       ├── assets              # Platform assets injected to `./platformAssets`
     │       ├── builds              # Platform files injected to `./platformBuilds`
-    │       └── config.json         # Application flavour config
+    │       └── renative.json       # Application flavour config
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
     ├── projectConfig               # Project configuration files/assets
     │   ├── fonts                   # Folder for all custom fonts
-    │   ├── fonts.json              # Fonts configuration
-    │   ├── permissions.json        # Permissions configuration
-    │   └── plugins.json            # React Native Plugins configuration
-    └── src                         # Source files
+    │   └── builds                  # Fonts configuration
+    ├── src                         # Source files
+    └── renative.json           # React Native Plugins configuration
 
 
 ### Override Mechanism

@@ -5,32 +5,31 @@ App configs are ReNative compliant app configuration folders which follow prescr
 
 ## Structure
 
+applies for both public and private `./..` and `~./rnv/[PROJECT_NAME]/..`
+
+
     .
-    └── clientX
-        ├── assets
-        │   ├── ios
-        │   ├── android
-        │   └── web
-        ├── plugins
-        │   └── some-plugin
-        │       └── builds
-        │            ├── android@release
-        │            │   └── fileToBeInjectedInReleaseMode.txt
-        │            └── android@debug
-        │                └── fileToBeInjectedInDebugMode.txt
-        ├── builds
-        │   ├── android@release
-        │   │   └── fileToBeInjectedInReleaseMode.txt
-        │   └── android@debug
-        │       └── fileToBeInjectedInDebugMode.txt
-        └── config.json
+    ├── projectConfig               
+    │   ├── fonts                   
+    │   ├── plugins                 
+    │   └── builds                  
+    └── appConfigs
+        └── [APP_ID]
+            ├── assets
+            │   └── [PLATFORM]
+            ├── fonts   
+            ├── builds
+            └── plugins
+                └── [PLUGIN_KEY]
+                    ├── fonts
+                    └── builds
 
+## Special Folders
 
-## Config.json       
-
-Override rules:
-
-- https://github.com/pavjacko/renative/tree/develop#config-values-overrides
+- `builds` - TODO
+- `plugins` - TODO
+- `fonts` - TODO
+- `assets` - TODO
 
 
 #### File Overrides / Injectors

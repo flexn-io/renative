@@ -1,4 +1,4 @@
-# API Reference for Config
+# API Reference for ReNative Config
 
 
 App configs are ReNative compliant app configuration folders which follow prescribed structure
@@ -83,6 +83,9 @@ CONFIG_ROOT
   "env": {},
   "definitions": {},
   "isWrapper": true,
+  "sdks": {
+    ...SDK_PROPS
+  },
   "paths": {
     ...PATH_PROPS
   },
@@ -190,6 +193,19 @@ PATH_PROPS
 }
 ```
 
+SDK_PROPS
+
+```json
+{
+    "ANDROID_SDK": "",
+    "ANDROID_NDK": "",
+    "IOS_SDK": "",
+    "TIZEN_SDK": "",
+    "WEBOS_SDK": "",
+    "KAIOS_SDK": ""
+}
+```
+
 DEFAULTS_PROPS
 
 ```json
@@ -219,7 +235,17 @@ IOS_COMMON_PROPS
 {
   "appDelegateImports": [],
   "appDelegateMethods": {},
-  "plist": {}
+  "plist": {},
+  "appDelegateApplicationMethods": {
+    "didFinishLaunchingWithOptions": [],
+    "open": [],
+    "supportedInterfaceOrientationsFor": [],
+    "didReceiveRemoteNotification": [],
+    "didFailToRegisterForRemoteNotificationsWithError": [],
+    "didReceive": [],
+    "didRegister": [],
+    "didRegisterForRemoteNotificationsWithDeviceToken": []
+  }
 }
 ```
 
@@ -242,7 +268,22 @@ IOS_CONFIG_PROPS
   "deploymentTarget": "",
   "provisioningStyle": "",
   "systemCapabilities": {},
-  "entitlements": {}
+  "scheme": "",
+  "entitlements": {},
+  "orientationSupport": {
+    "phone": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ],
+    "tab": [
+      "UIInterfaceOrientationPortrait",
+      "UIInterfaceOrientationPortraitUpsideDown",
+      "UIInterfaceOrientationLandscapeLeft",
+      "UIInterfaceOrientationLandscapeRight"
+    ]
+  },
 }
 ```
 
@@ -262,7 +303,9 @@ ANDROID_PLUGIN_PROPS
 ```json
 {
   "gradle.properties": {},
-  "AndroidManifest": {}
+  "AndroidManifest": {},
+  "BuildGradle": {},
+  "AppBuildGradle": {}
 }
 ```
 
@@ -273,9 +316,44 @@ ANDROID_CONFIG_PROPS
   "universalApk": false,
   "multipleAPKs": false,
   "minSdkVersion": 21,
-  "signingConfig": ""
+  "signingConfig": "",
+  "aab": false,
+  "storeFile": "",
+  "storePassword": "",
+  "keyAlias": "",
+  "keyPassword": ""
 }
 ```
+
+#### Web Props
+
+WEB_COMMON_PROPS
+
+```json
+{
+
+}
+```
+
+WEB_PLUGIN_PROPS
+
+```json
+{
+
+}
+```
+
+WEB_CONFIG_PROPS
+
+```json
+{
+  "webpackConfig": {
+    "devServerHost": "",
+    "customScripts": []
+  }
+}
+```
+
 
 #### Tizen Props
 
