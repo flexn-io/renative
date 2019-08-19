@@ -62,7 +62,10 @@ import {
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
 import { getQuestion } from '../systemTools/prompt';
-import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from '../cli/app';
+import {
+    copyRuntimeAssets, checkAndCreateProjectPackage,
+    checkAndCreateGitignore, copySharedPlatforms
+} from './projectParser';
 
 
 const base = path.resolve('.');
@@ -208,7 +211,6 @@ export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
 
     // Parse Project Config
     checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
-    c.files.project.package = JSON.parse(fs.readFileSync(c.paths.project.package).toString());
 
     // Check gitignore
     checkAndCreateGitignore(c);
@@ -229,43 +231,6 @@ export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
             `Looks like your babel config file ${chalk.white(c.paths.project.babelConfig)} is missing! Let's create one for you.`,
         );
         copyFileSync(path.join(c.paths.rnv.dir, RN_BABEL_CONFIG_NAME), c.paths.project.babelConfig);
-    }
-
-    // Check entry
-    // TODO: RN bundle command fails if entry files are not at root
-    // logTask('configureProject:check entry');
-    // if (!fs.existsSync(c.paths.entryFolder)) {
-    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
-    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryFolder);
-    // }
-
-
-    // Check rnv-config.local
-    logTask('configureProject:check rnv-config.local', chalk.grey);
-    if (fs.existsSync(c.paths.project.configLocal)) {
-        logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will use it as preference for appConfig path!`);
-        c.files.project.configLocal = JSON.parse(fs.readFileSync(c.paths.project.configLocal).toString());
-        if (c.files.project.configLocal.appConfigsPath) {
-            if (!fs.existsSync(c.files.project.configLocal.appConfigsPath)) {
-                logWarning(
-                    `Looks like your custom local appConfig is pointing to ${chalk.white(
-                        c.files.project.configLocal.appConfigsPath,
-                    )} which doesn't exist! Make sure you create one in that location`,
-                );
-            } else {
-                logInfo(
-                    `Found custom appConfing location pointing to ${chalk.white(
-                        c.files.project.configLocal.appConfigsPath,
-                    )}. ReNativewill now swith to that location!`,
-                );
-                c.paths.project.appConfigsDir = c.files.project.configLocal.appConfigsPath;
-            }
-        } else {
-            logInfo(
-                `Your local config file ${chalk.white(c.paths.project.configLocal)} is missing ${chalk.white('{ appConfigsPath: "" }')} field. ${chalk.white(c.paths.project.appConfigsDir)} will be used instead`,
-            );
-        }
-        // c.defaultAppConfigId = c.files.project.configLocal.defaultAppConfigId;
     }
 
     resolve();
@@ -294,10 +259,9 @@ This might result in unexpected behaviour! It is recommended that you run your r
 const _loadFile = (fileObj, pathObj, key) => {
     if (!fs.existsSync(pathObj[key])) {
         pathObj[`${key}Exists`] = false;
+        logWarning(`_loadFile: Path ${pathObj[key]} does not exists!`);
         return false;
     }
-    logWarning(`_loadFile: Path ${pathObj[key]} does not exists!`);
-
     try {
         fileObj[key] = JSON.parse(fs.readFileSync(pathObj[key]).toString());
         pathObj[`${key}Exists`] = true;

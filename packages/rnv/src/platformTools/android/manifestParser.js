@@ -147,7 +147,7 @@ export const parseAndroidManifestSync = (c, platform) => {
         baseManifestFile.package = getAppId(c, platform);
 
         // projectConfig/plugins.json PLUGIN CONFIG ROOT OVERRIDES
-        const pluginConfigAndroid = c.buildConfig?.android?.AndroidManifest;
+        const pluginConfigAndroid = c.buildConfig?.platforms?.[platform]?.AndroidManifest;
         if (pluginConfigAndroid) {
             const applicationExt = _findChildNode('application', '.MainApplication', pluginConfigAndroid);
             _mergeNodeParameters(application, applicationExt);
@@ -169,7 +169,7 @@ export const parseAndroidManifestSync = (c, platform) => {
         // appConfig PERMISSIONS OVERRIDES
         let prms = '';
         const { permissions } = c.buildConfig.platforms[platform];
-        const configPermissions = c.files.permissionsConfig?.permissions;
+        const configPermissions = c.buildConfig?.permissions;
 
         if (permissions && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';

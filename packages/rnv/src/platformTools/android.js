@@ -16,7 +16,7 @@ import {
     CLI_ANDROID_ADB,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER
-} from '../common';
+} from '../constants';
 import {
     logTask,
     logError,

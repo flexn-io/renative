@@ -46,54 +46,63 @@
         }
     },
     "plugins": {
-      "renative": {
-          "version": "file:./packages/renative",
-          "webpack": {
-              "modulePaths": [],
-              "moduleAliases": {
-                  "renative": {
-                      "projectPath": "packages/renative"
-                  }
-              }
-          }
-      },
-      "react": "source:rnv",
-      "react-art": "source:rnv",
-      "react-dom": "source:rnv",
-      "react-native": "source:rnv",
-      "react-native-web": "source:rnv",
-      "react-native-web-image-loader": "source:rnv",
-      "react-native-gesture-handler": "source:rnv",
-      "react-navigation": "source:rnv",
-      "react-navigation-tabs": "source:rnv",
-      "react-native-reanimated": "source:rnv",
-      "react-native-vector-icons": "source:rnv"
+        "renative": {
+            "version": "file:./packages/renative",
+            "webpack": {
+                "modulePaths": [],
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "packages/renative"
+                    }
+                }
+            }
+        },
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv",
+        "react-native-web-image-loader": "source:rnv",
+        "react-native-gesture-handler": "source:rnv",
+        "react-navigation": "source:rnv",
+        "react-navigation-tabs": "source:rnv",
+        "react-native-reanimated": "source:rnv",
+        "react-native-vector-icons": "source:rnv"
     },
     "platforms": {
-      "android": {
-          "gradle.properties": {
-              "android.useDeprecatedNdk": true
-          },
-          "BuildGradle": {
-              "dexOptions": {
-                  "javaMaxHeapSize": "'4g'"
-              }
-          }
-      }
+        "android": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "BuildGradle": {
+                "dexOptions": {
+                    "javaMaxHeapSize": "'4g'"
+                }
+            },
+            "AndroidManifest": {
+                "children": [{
+                    "tag": "application",
+                    "android:name": ".MainApplication",
+                    "android:allowBackup": true,
+                    "android:largeHeap": true,
+                    "android:usesCleartextTraffic": true,
+                    "tools:targetApi": 28
+                }]
+            }
+        }
     },
     "permissions": {
-      "permissions": {
-          "ios": {},
-          "android": {
-              "INTERNET": {
-                  "key": "android.permission.INTERNET",
-                  "security": "normal"
-              },
-              "SYSTEM_ALERT_WINDOW": {
-                  "key": "android.permission.SYSTEM_ALERT_WINDOW",
-                  "security": "signature"
-              }
-          }
-      }
+        "ios": {},
+        "android": {
+            "INTERNET": {
+                "key": "android.permission.INTERNET",
+                "security": "normal"
+            },
+            "SYSTEM_ALERT_WINDOW": {
+                "key": "android.permission.SYSTEM_ALERT_WINDOW",
+                "security": "signature"
+            }
+        }
     }
+
 }
