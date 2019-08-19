@@ -2,7 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
 import { removeDirs } from './fileutils';
-import { logTask, askQuestion, finishQuestion } from '../common';
+import { logTask } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from './prompt';
 
 const cleanProjectModules = c => new Promise((resolve, reject) => {
     logTask('cleanProjectModules');

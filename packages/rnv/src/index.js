@@ -114,7 +114,7 @@ ${chalk.bold.white('OPTIONS:')}
 
 export {
     Constants, Runner, App, Platform, Target, Common, Exec, FileUtils,
-    PlatformTools, Doctor, PluginTools, SetupTools, Logger
+    PlatformTools, Doctor, PluginTools, SetupTools, Logger,
     run
 };
 

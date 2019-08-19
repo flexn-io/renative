@@ -8,11 +8,9 @@ import {
     getConfig,
     logTask,
     getQuestion,
-    logSuccess,
-    askQuestion,
-    finishQuestion,
-    generateOptions,
+    logSuccess
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
 import { PLATFORMS } from '../constants';

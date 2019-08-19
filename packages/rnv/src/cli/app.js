@@ -9,14 +9,11 @@ import {
     getAppFolder,
     isPlatformActive,
     logWarning,
-    askQuestion,
-    finishQuestion,
-    generateOptions,
     logWelcome,
     logInfo,
-    spawnCommand,
-    SUPPORTED_PLATFORMS,
+    spawnCommand
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import {
     IOS,
     ANDROID,
@@ -35,6 +32,7 @@ import {
     FIREFOX_TV,
     RNV_APP_CONFIG_NAME,
     RNV_PROJECT_CONFIG_NAME,
+    SUPPORTED_PLATFORMS
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject } from '../platformTools/android';

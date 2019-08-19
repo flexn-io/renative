@@ -3,14 +3,12 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import readline from 'readline';
+import { SUPPORTED_PLATFORMS } from '../constants';
 import {
     logTask,
-    SUPPORTED_PLATFORMS,
-    getQuestion,
-    askQuestion,
-    finishQuestion,
     logSuccess,
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { executePipe } from '../projectTools/buildHooks';
 
 const LIST = 'list';

@@ -4,14 +4,12 @@ import fs from 'fs';
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
 import {
-    askQuestion,
-    finishQuestion,
     logTask,
     logComplete,
     logError,
-    logInfo,
-    generateOptions
+    logInfo
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { RNV_APP_CONFIG_NAME } from '../constants';
 
 const DEPLOY_TARGET_FTP = 'ftp';

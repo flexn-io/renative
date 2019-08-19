@@ -4,10 +4,9 @@ import fs from 'fs';
 import { executeAsync } from '../systemTools/exec';
 import {
     logInfo,
-    getAppFolder,
-    askQuestion,
-    finishQuestion,
+    getAppFolder
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     require('dotenv').config();

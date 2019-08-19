@@ -2,12 +2,11 @@ import path from 'path';
 import fs from 'fs';
 import {
     logInfo,
-    askQuestion,
-    finishQuestion,
     logComplete,
     logError,
     logTask,
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { RNV_APP_CONFIG_NAME } from '../constants';
 import { DEPLOY_TARGET_FTP } from './webTools';
 

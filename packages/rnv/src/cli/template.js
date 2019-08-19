@@ -18,10 +18,9 @@ import {
     isSdkInstalled,
     logWarning,
     configureIfRequired,
-    cleanPlatformIfRequired,
-    askQuestion,
-    finishQuestion
+    cleanPlatformIfRequired
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { executePipe } from '../projectTools/buildHooks';
