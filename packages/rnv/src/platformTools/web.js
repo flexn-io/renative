@@ -35,8 +35,6 @@ const _generateWebpackConfigs = (c) => {
     let moduleAliasesString = '';
     const moduleAliases = {};
 
-    console.log('AFAFAFAF', c.buildConfig.plugins);
-
     for (const key in plugins) {
         const plugin = getMergedPlugin(c, key, plugins);
         if (!plugin) {
@@ -90,9 +88,6 @@ const _generateWebpackConfigs = (c) => {
 
     const extendJs = `
     module.exports = ${JSON.stringify(obj, null, 2)}`;
-
-
-    console.log('EXTENDDDDDD', extendJs);
 
     fs.writeFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };

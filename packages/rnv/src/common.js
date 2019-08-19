@@ -21,19 +21,11 @@ import {
     logInitialize, logAppInfo, getCurrentCommand
 } from './systemTools/logger';
 import {
-    IOS,
     ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
     WEB,
     TIZEN,
     TVOS,
     WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    TIZEN_MOBILE,
-    KAIOS,
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER,
@@ -46,94 +38,20 @@ import {
     CLI_WEBOS_ARES_INSTALL,
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
-    FORM_FACTOR_MOBILE,
-    FORM_FACTOR_DESKTOP,
-    FORM_FACTOR_WATCH,
-    FORM_FACTOR_TV,
     ANDROID_SDK,
     CLI_WEBOS_ARES_SETUP_DEVICE,
     CLI_WEBOS_ARES_DEVICE_INFO,
     TIZEN_SDK,
     WEBOS_SDK,
-    KAIOS_SDK,
-    FIREFOX_OS,
-    FIREFOX_TV,
-    RNV_PROJECT_CONFIG_NAME,
     RNV_GLOBAL_CONFIG_NAME,
-    RNV_APP_CONFIG_NAME,
-    RNV_PRIVATE_APP_CONFIG_NAME,
-    RN_CLI_CONFIG_NAME,
-    SAMPLE_APP_ID,
-    RN_BABEL_CONFIG_NAME,
-    RNV_PROJECT_CONFIG_LOCAL_NAME,
-    PLATFORMS
+    PLATFORMS,
+    SDK_PLATFORMS,
+    SUPPORTED_PLATFORMS
 } from './constants';
 import { executeAsync } from './systemTools/exec';
-import { parseRenativeConfigsSync, createRnvConfig, updateConfig, gatherInfo } from './configTools/configParser';
-
-const SUPPORTED_PLATFORMS = [
-    IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TIZEN_MOBILE,
-    TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
-];
-const SUPPORTED_PLATFORMS_MAC = [
-    IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN_MOBILE,
-    TIZEN,
-    TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
-];
-const SUPPORTED_PLATFORMS_WIN = [
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TVOS,
-    TIZEN_MOBILE,
-    WEBOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
-];
-
-const SUPPORTED_PLATFORMS_LINUX = [ANDROID, ANDROID_TV, ANDROID_WEAR];
+import { parseRenativeConfigsSync, createRnvConfig, updateConfig, gatherInfo, fixRenativeConfigsSync } from './configTools/configParser';
 
 const highlight = chalk.green;
-
-const SDK_PLATFORMS = {};
-SDK_PLATFORMS[ANDROID] = ANDROID_SDK;
-SDK_PLATFORMS[ANDROID_TV] = ANDROID_SDK;
-SDK_PLATFORMS[ANDROID_WEAR] = ANDROID_SDK;
-SDK_PLATFORMS[TIZEN] = TIZEN_SDK;
-SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
-SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
-SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
-SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
 
 const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto'];
 
@@ -274,87 +192,16 @@ const startBuilder = c => new Promise((resolve, reject) => {
 
     configureRnvGlobal(c)
         .then(() => checkIfTemplateInstalled(c))
-        .then(() => configureProject(c))
+        .then(() => fixRenativeConfigsSync(c))
         .then(() => configureNodeModules(c))
         .then(() => applyTemplate(c))
         .then(() => configurePlugins(c))
         .then(() => configureNodeModules(c))
-    // .then(() => configureTizenGlobal(c))
-    // .then(() => configureAndroidGlobal(c))
         .then(() => configureApp(c))
         .then(() => logAppInfo(c))
         .then(() => resolve(c))
         .catch(e => reject(e));
 });
-
-const configureProject = c => new Promise((resolve, reject) => {
-    logTask('configureProject');
-
-    // Parse Project Config
-    checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
-    c.files.project.package = JSON.parse(fs.readFileSync(c.paths.project.package).toString());
-
-    // Check gitignore
-    checkAndCreateGitignore(c);
-
-    // Check rn-cli-config
-    logTask('configureProject:check rn-cli', chalk.grey);
-    if (!fs.existsSync(c.paths.project.rnCliConfig)) {
-        logWarning(
-            `Looks like your rn-cli config file ${chalk.white(c.paths.project.rnCliConfig)} is missing! Let's create one for you.`,
-        );
-        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
-    }
-
-    // Check babel-config
-    logTask('configureProject:check babel config', chalk.grey);
-    if (!fs.existsSync(c.paths.project.babelConfig)) {
-        logWarning(
-            `Looks like your babel config file ${chalk.white(c.paths.project.babelConfig)} is missing! Let's create one for you.`,
-        );
-        copyFileSync(path.join(c.paths.rnv.dir, RN_BABEL_CONFIG_NAME), c.paths.project.babelConfig);
-    }
-
-    // Check entry
-    // TODO: RN bundle command fails if entry files are not at root
-    // logTask('configureProject:check entry');
-    // if (!fs.existsSync(c.paths.entryFolder)) {
-    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
-    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryFolder);
-    // }
-
-
-    // Check rnv-config.local
-    logTask('configureProject:check rnv-config.local', chalk.grey);
-    if (fs.existsSync(c.paths.project.configLocal)) {
-        logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will use it as preference for appConfig path!`);
-        c.files.project.configLocal = JSON.parse(fs.readFileSync(c.paths.project.configLocal).toString());
-        if (c.files.project.configLocal.appConfigsPath) {
-            if (!fs.existsSync(c.files.project.configLocal.appConfigsPath)) {
-                logWarning(
-                    `Looks like your custom local appConfig is pointing to ${chalk.white(
-                        c.files.project.configLocal.appConfigsPath,
-                    )} which doesn't exist! Make sure you create one in that location`,
-                );
-            } else {
-                logInfo(
-                    `Found custom appConfing location pointing to ${chalk.white(
-                        c.files.project.configLocal.appConfigsPath,
-                    )}. ReNativewill now swith to that location!`,
-                );
-                c.paths.project.appConfigsDir = c.files.project.configLocal.appConfigsPath;
-            }
-        } else {
-            logInfo(
-                `Your local config file ${chalk.white(c.paths.project.configLocal)} is missing ${chalk.white('{ appConfigsPath: "" }')} field. ${chalk.white(c.paths.project.appConfigsDir)} will be used instead`,
-            );
-        }
-        // c.defaultAppConfigId = c.files.project.configLocal.defaultAppConfigId;
-    }
-
-    resolve();
-});
-
 
 const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
@@ -1079,7 +926,6 @@ const getBuildFilePath = (c, platform, filePath) => {
 };
 
 export {
-    SUPPORTED_PLATFORMS,
     getBuildFilePath,
     configureEntryPoints,
     getBuildsFolder,
@@ -1126,37 +972,10 @@ export {
     finishQuestion,
     askQuestion,
     resolveNodeModulePath,
-    IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_SDB_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
-    FORM_FACTOR_MOBILE,
-    FORM_FACTOR_DESKTOP,
-    FORM_FACTOR_WATCH,
-    FORM_FACTOR_TV,
     configureRnvGlobal
 };
 
 export default {
-    SUPPORTED_PLATFORMS,
     getBuildFilePath,
     getBuildsFolder,
     configureEntryPoints,
@@ -1203,29 +1022,5 @@ export default {
     finishQuestion,
     askQuestion,
     resolveNodeModulePath,
-    IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TIZEN_MOBILE,
-    TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
-    FORM_FACTOR_MOBILE,
-    FORM_FACTOR_DESKTOP,
-    FORM_FACTOR_WATCH,
-    FORM_FACTOR_TV,
     configureRnvGlobal
 };

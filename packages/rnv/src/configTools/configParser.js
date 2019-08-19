@@ -201,6 +201,74 @@ export const parseRenativeConfigsSync = (c) => {
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
 };
 
+export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
+    logTask('fixRenativeConfigsSync');
+
+    // Parse Project Config
+    checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
+    c.files.project.package = JSON.parse(fs.readFileSync(c.paths.project.package).toString());
+
+    // Check gitignore
+    checkAndCreateGitignore(c);
+
+    // Check rn-cli-config
+    logTask('configureProject:check rn-cli', chalk.grey);
+    if (!fs.existsSync(c.paths.project.rnCliConfig)) {
+        logWarning(
+            `Looks like your rn-cli config file ${chalk.white(c.paths.project.rnCliConfig)} is missing! Let's create one for you.`,
+        );
+        copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
+    }
+
+    // Check babel-config
+    logTask('configureProject:check babel config', chalk.grey);
+    if (!fs.existsSync(c.paths.project.babelConfig)) {
+        logWarning(
+            `Looks like your babel config file ${chalk.white(c.paths.project.babelConfig)} is missing! Let's create one for you.`,
+        );
+        copyFileSync(path.join(c.paths.rnv.dir, RN_BABEL_CONFIG_NAME), c.paths.project.babelConfig);
+    }
+
+    // Check entry
+    // TODO: RN bundle command fails if entry files are not at root
+    // logTask('configureProject:check entry');
+    // if (!fs.existsSync(c.paths.entryFolder)) {
+    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
+    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryFolder);
+    // }
+
+
+    // Check rnv-config.local
+    logTask('configureProject:check rnv-config.local', chalk.grey);
+    if (fs.existsSync(c.paths.project.configLocal)) {
+        logInfo(`Found ${RNV_PROJECT_CONFIG_LOCAL_NAME} file in your project. will use it as preference for appConfig path!`);
+        c.files.project.configLocal = JSON.parse(fs.readFileSync(c.paths.project.configLocal).toString());
+        if (c.files.project.configLocal.appConfigsPath) {
+            if (!fs.existsSync(c.files.project.configLocal.appConfigsPath)) {
+                logWarning(
+                    `Looks like your custom local appConfig is pointing to ${chalk.white(
+                        c.files.project.configLocal.appConfigsPath,
+                    )} which doesn't exist! Make sure you create one in that location`,
+                );
+            } else {
+                logInfo(
+                    `Found custom appConfing location pointing to ${chalk.white(
+                        c.files.project.configLocal.appConfigsPath,
+                    )}. ReNativewill now swith to that location!`,
+                );
+                c.paths.project.appConfigsDir = c.files.project.configLocal.appConfigsPath;
+            }
+        } else {
+            logInfo(
+                `Your local config file ${chalk.white(c.paths.project.configLocal)} is missing ${chalk.white('{ appConfigsPath: "" }')} field. ${chalk.white(c.paths.project.appConfigsDir)} will be used instead`,
+            );
+        }
+        // c.defaultAppConfigId = c.files.project.configLocal.defaultAppConfigId;
+    }
+
+    resolve();
+});
+
 const _generateConfigPaths = (pathObj, dir) => {
     pathObj.dir = dir;
     pathObj.config = path.join(dir, 'renative.json');
