@@ -72,12 +72,8 @@ const buildHooks = c => new Promise((resolve, reject) => {
             resolve();
             return;
         }
-        const babel = resolveNodeModulePath(c, isRunningOnWindows ? '.bin/babel.cmd' : '@babel/cli/bin/babel.js');
-        const params = ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'];
-        // if (isRunningOnWindows) {
-        //     babel = `cmd node ${babel}`
-        // }
-        executeAsync('babel', params)
+
+        executeAsync(`babel --no-babelrc ${c.paths.buildHooksFolder} -d ${c.paths.buildHooksDistFolder} --presets=@babel/env`)
             .then(() => {
                 const h = require(c.paths.buildHooksDistIndexPath);
                 c.buildHooks = h.hooks;
@@ -86,8 +82,6 @@ const buildHooks = c => new Promise((resolve, reject) => {
                 resolve();
             })
             .catch((e) => {
-                logError(`With Command: ${chalk.white(`${babel} ${params.join(' ')}`)}`);
-                console.log(e);
                 resolve();
             });
     } else {

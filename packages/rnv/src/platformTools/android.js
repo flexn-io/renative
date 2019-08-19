@@ -73,7 +73,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${selectedDevice.name}"`]).catch((err) => {
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch((err) => {
                                 if (err.includes && err.includes('WHPX')) {
                                     logWarning(err);
                                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -82,7 +82,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                             });
                             return Promise.resolve();
                         }
-                        return execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${selectedDevice.name}"`]);
+                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
                     }
                     logError(`Wrong choice ${v}! Ingoring`);
                 });
@@ -92,7 +92,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${actualTarget}"`]).catch((err) => {
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -101,7 +101,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
             });
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${actualTarget}"`]);
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`);
     }
     return Promise.reject('No simulator -t target name specified!');
 };
@@ -140,14 +140,14 @@ const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false)
         let devicesResult;
         let avdResult;
 
-        await execCLI(c, CLI_ANDROID_ADB, ['kill-server']);
-        await execCLI(c, CLI_ANDROID_ADB, ['start-server']);
+        await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
+        await execCLI(c, CLI_ANDROID_ADB, 'start-server');
 
         if (!skipDevices) {
-            devicesResult = await execCLI(c, CLI_ANDROID_ADB, ['devices', '-l']);
+            devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l');
         }
         if (!skipAvds) {
-            avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, ['-list-avds']);
+            avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, '-list-avds');
         }
         return _parseDevicesResult(devicesResult.stdout, avdResult.stdout, deviceOnly, c);
     } catch (e) {
@@ -490,7 +490,7 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
-    return execCLI(c, CLI_ANDROID_SDKMANAGER, [`"system-images;android-${apiVersion};${emuPlatform};x86"`])
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
         .then(() => executeAsync(c.cli[CLI_ANDROID_AVDMANAGER], ['create', 'avd', '-n', emuName, '-k', `system-images;android-${apiVersion};${emuPlatform};x86`]))
         .catch(e => logError(e, true));
 };
@@ -771,11 +771,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
-            `${outputAab ? 'bundle' : 'assemble'}${signingConfig}`,
-            '-x',
-            'bundleReleaseJsAndAssets',
-        ]))
+        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', `${outputAab ? 'bundle' : 'assemble'}${signingConfig} -x bundleReleaseJsAndAssets`))
         .then(() => {
             if (outputAab) {
                 const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
@@ -789,7 +785,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
                 apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
             }
             logInfo(`Installing ${apkPath} on ${name}`);
-            return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
+            return executeAsync(c.cli[CLI_ANDROID_ADB], `-s ${device.udid} install -r -d -f apkPath`);
         })
         .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
             ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081'])

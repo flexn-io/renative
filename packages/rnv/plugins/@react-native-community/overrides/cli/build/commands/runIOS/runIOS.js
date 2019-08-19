@@ -47,7 +47,7 @@ const _logger = _interopRequireDefault(require('../../tools/logger'));
 
 const _commandExistsSync = require('rnv/dist/systemTools/exec').commandExistsSync;
 
-const _shell = require('shelljs');
+const _shell = require('execa');
 
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
@@ -260,7 +260,7 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
 
     function doInstall() {
         console.log('Running ios-deploy', iosDeployInstallArgs.join(' '));
-        const iosDeployOutput = _shell.exec(`ios-deploy ${iosDeployInstallArgs.join(' ')}`);
+        const iosDeployOutput = _shell('ios-deploy', iosDeployInstallArgs);
 
         if (iosDeployOutput.stderr) {
             _logger.default.error(

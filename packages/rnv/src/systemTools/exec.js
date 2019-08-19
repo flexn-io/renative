@@ -49,32 +49,32 @@ env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
 //     });
 // });
 
-const _execute = (command, args, opts = {}) => {
+const _execute = (command, opts = {}) => {
     const defaultOpts = {
         stdio: 'pipe',
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
+        all: true
     };
     const mergedOpts = { ...defaultOpts, ...opts };
-    let cleanArgs = args;
+    let cleanCommand = command;
 
-    if (!Array.isArray(args)) cleanArgs = args.split(' ');
+    if (Array.isArray(command)) cleanCommand = command.join(' ');
 
-    const spinner = ora(`Executing: ${command} ${args.join(' ')}`).start();
-    return execa(command, cleanArgs, mergedOpts).then((res) => {
+    const spinner = ora(`Executing: ${cleanCommand}`).start();
+    return execa.command(cleanCommand, mergedOpts).then((res) => {
         spinner.succeed();
-        logDebug(res);
+        logDebug(res.all);
         return res;
     }).catch((err) => {
         spinner.fail(err.stdout || err.stderr || err.message);
-        logDebug(err);
-        return Promise.reject(err);
+        logDebug(err.all);
+        return Promise.reject(err.stdout || err.stderr || err.message);
     });
 };
 
 const execCLI = (c, cli, command) => {
     const p = c.cli[cli];
-    logDebug('execCLI:', `${p} ${command}`);
 
     if (!fs.existsSync(p)) {
         return Promise.reject(`Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
@@ -82,17 +82,15 @@ const execCLI = (c, cli, command) => {
         )} file if you SDK path is correct`);
     }
 
-    return _execute(p, command, { shell: true });
+    return _execute(`${p} ${command}`, { shell: true });
 };
 
 const executeAsync = (cmd, args, opts) => {
-    if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
-
-    logDebug(`executeAsync:${cmd} ${args}`);
-    return _execute(cmd, args, opts);
+    if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
+    return _execute(cmd, opts);
 };
 
-const executeTelnet = (port, command) => new Promise((resolve, reject) => {
+const executeTelnet = (port, command) => new Promise((resolve) => {
     const nc2 = new NClient();
     logDebug(`execTelnet: ${port} ${command}`);
 
