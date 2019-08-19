@@ -213,6 +213,8 @@ const _loadFile = (fileObj, pathObj, key) => {
         pathObj[`${key}Exists`] = false;
         return false;
     }
+    logWarning(`Path ${pathObj[key]} does not exists!`);
+
     try {
         fileObj[key] = JSON.parse(fs.readFileSync(pathObj[key]).toString());
         pathObj[`${key}Exists`] = true;
@@ -240,9 +242,11 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
         result = true;
     }
 
+    console.log('AAASSSSSS', extend, extendDir);
     if (extend && extendDir) {
-        pathObj.configBase = path.join(extendDir, extend);
+        pathObj.configBase = path.join(extendDir, extend, 'renative.json');
         _loadFile(fileObj, pathObj, 'configBase');
+        console.log('WTFFF', fileObj);
     }
 
     _generateBuildConfig(c);
@@ -309,10 +313,10 @@ export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
-    _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigs);
+    _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
 
     _generateConfigPaths(c.paths.private.appConfig, path.join(c.paths.private.project.appConfigsDir, appId));
-    _loadConfigFiles(c, c.files.private.appConfig, c.paths.private.appConfig, c.paths.private.project.appConfigs);
+    _loadConfigFiles(c, c.files.private.appConfig, c.paths.private.appConfig, c.paths.private.project.appConfigsDir);
 
     _generateBuildConfig(c);
 };
@@ -353,10 +357,10 @@ const _generateBuildConfig = (c) => {
         c.files.project.config,
         c.files.project.configPrivate,
         c.files.project.configLocal,
-        c.files.private.project.configBase,
         c.files.private.project.config,
         c.files.private.project.configPrivate,
         c.files.private.project.configLocal,
+        c.files.appConfig.configBase,
         c.files.appConfig.config,
         c.files.appConfig.configPrivate,
         c.files.appConfig.configLocal,
