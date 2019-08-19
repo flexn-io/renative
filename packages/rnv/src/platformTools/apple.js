@@ -24,11 +24,11 @@ import {
     copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../common';
+import { getQuestion } from '../systemTools/prompt';
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';

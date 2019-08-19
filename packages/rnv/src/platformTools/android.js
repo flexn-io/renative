@@ -28,10 +28,9 @@ import {
     logDebug,
     getConfigProp,
     logInfo,
-    getQuestion,
     logSuccess,
 } from '../common';
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
+import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
 import { parsePlugins } from '../pluginTools';

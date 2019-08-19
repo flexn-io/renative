@@ -10,6 +10,7 @@ import {
     isPlatformActive,
     logDebug
 } from '../../common';
+import { getQuestion } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';
 
 export const getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {

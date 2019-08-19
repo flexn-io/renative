@@ -61,7 +61,7 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { getQuestion } from '../common';
+import { getQuestion } from '../systemTools/prompt';
 import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from '../cli/app';
 
 

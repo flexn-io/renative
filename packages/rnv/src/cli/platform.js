@@ -7,10 +7,9 @@ import {
     isPlatformSupportedSync,
     getConfig,
     logTask,
-    getQuestion,
     logSuccess
 } from '../common';
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
+import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
 import { PLATFORMS } from '../constants';

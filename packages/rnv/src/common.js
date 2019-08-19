@@ -37,8 +37,6 @@ import {
 } from './configTools/configParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 
-const highlight = chalk.green;
-
 const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto'];
 
 
@@ -441,8 +439,6 @@ const checkSdk = (c, platform, reject) => {
     return true;
 };
 
-const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
-
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
@@ -757,7 +753,6 @@ export {
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    getQuestion,
     logSuccess,
     getConfigProp,
     getIP,
@@ -807,7 +802,6 @@ export default {
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    getQuestion,
     logSuccess,
     getConfigProp,
     getIP,

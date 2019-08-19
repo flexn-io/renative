@@ -1,3 +1,7 @@
+import chalk from 'chalk';
+
+const highlight = chalk.green;
+
 export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
     let asString = '';
     const valuesAsObject = {};
@@ -96,6 +100,8 @@ export const askQuestion = (question, obj, key) => new Promise((resolve, reject)
         resolve(v === '' ? null : v);
     });
 });
+
+export const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 export const finishQuestion = () => new Promise((resolve, reject) => {
     _currentQuestion.close();
