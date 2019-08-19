@@ -133,8 +133,8 @@ export const logSummary = () => {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
             str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
-        if (_c.files.appConfigFile) {
-            str += printIntoBox(`App Config: ${_highlightColor(_c.files.appConfigFile.id)}`, 1);
+        if (_c.buildConfig) {
+            str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig.id)}`, 1);
         }
         if (_c.files.project.config) {
             const defaultProjectConfigs = _c.files.project.config.defaultProjectConfigs;
@@ -237,7 +237,7 @@ export const logInitialize = () => {
 };
 
 export const logAppInfo = c => new Promise((resolve, reject) => {
-    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.files.appConfigFile.id)}\n${LINE2}`));
+    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.buildConfig.id)}\n${LINE2}`));
 
     resolve();
 });

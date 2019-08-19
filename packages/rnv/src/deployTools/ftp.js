@@ -51,11 +51,11 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
                 password: process.env.RNV_DEPLOY_WEB_FTP_PASSWORD, // optional, prompted if none given
                 host: process.env.RNV_DEPLOY_WEB_FTP_SERVER,
                 port: process.env.RNV_DEPLOY_WEB_FTP_PORT || 21,
-                localRoot: c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot,
-                remoteRoot: c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].remoteRoot || '/',
-                include: c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].include || ['*', '**/*'], // this would upload everything except dot files
-                exclude: c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude || [], // e.g. exclude sourcemaps - ** exclude: [] if nothing to exclude **
-                deleteRemote: c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude.deleteRemote || false, // delete ALL existing files at destination before uploading, if true
+                localRoot: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot,
+                remoteRoot: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].remoteRoot || '/',
+                include: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].include || ['*', '**/*'], // this would upload everything except dot files
+                exclude: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude || [], // e.g. exclude sourcemaps - ** exclude: [] if nothing to exclude **
+                deleteRemote: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude.deleteRemote || false, // delete ALL existing files at destination before uploading, if true
                 forcePasv: true // Passive mode is forced (EPSV command is not sent)
             };
             return config;
@@ -110,39 +110,39 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
         RNV_APP_CONFIG_NAME
     );
 
-    c.files.appConfigFile.platforms[platform].deploy = c.files.appConfigFile.platforms[platform].deploy || {};
-    c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP] = {};
-    c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
+    c.buildConfig.platforms[platform].deploy = c.buildConfig.platforms[platform].deploy || {};
+    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP] = {};
+    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
 
     const targetConfigPromise = new Promise((resolve, reject) => {
-        c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
+        c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
         askQuestion('Folder on the ftp to upload the project (default is \'/\')')
             .then((v) => {
                 finishQuestion();
-                c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].remoteRoot = v || '/';
+                c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].remoteRoot = v || '/';
             })
             .then(() => askQuestion('Delete all contents of that folder when deploying versions y/N (default is \'N\')?')
                 .then((v) => {
                     finishQuestion();
-                    c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].deleteRemote = ['yes', 'Y', 'y'].indexOf(v) > -1;
+                    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].deleteRemote = ['yes', 'Y', 'y'].indexOf(v) > -1;
                 }))
             .then(() => askQuestion('Included files pattern, comma separated (default \'*\',\'**/*\' = all except dot files)')
                 .then((v) => {
                     finishQuestion();
-                    c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].include = v ? v.split(',') : ['*', '**/*'];
+                    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].include = v ? v.split(',') : ['*', '**/*'];
                 }))
             .then(() => {
-                c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = [];
+                c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = [];
                 return askQuestion('Excluded files pattern, comma separated (default [])')
                     .then((v) => {
                         finishQuestion();
-                        c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = v ? v.split(',') : [];
+                        c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = v ? v.split(',') : [];
                     });
             })
             .then(() => askQuestion('Exclude sourcemaps? y/N (default = N)')
                 .then((v) => {
                     finishQuestion();
-                    c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = c.files.appConfigFile.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude.concat(['yes', 'Y', 'y'].indexOf(v) > -1 ? ['**/*.map'] : []);
+                    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude.concat(['yes', 'Y', 'y'].indexOf(v) > -1 ? ['**/*.map'] : []);
                 }))
             .then(resolve);
     });
@@ -152,7 +152,7 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
             logInfo(`Setting your appconfig for ${platform} to include deploy type: ${DEPLOY_TARGET_FTP}
                     on ${configFilePath}
                 `);
-            fs.writeFileSync(configFilePath, JSON.stringify(c.files.appConfigFile, null, 2));
+            fs.writeFileSync(configFilePath, JSON.stringify(c.buildConfig, null, 2));
             resolve();
         })
         .catch(reject);
@@ -160,7 +160,7 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
 
 const deployToFtp = (c, platform) => new Promise((resolve, reject) => {
     logTask(`checkDeployConfigTarget:${platform}`);
-    const targetConfig = c.files.appConfigFile.platforms[platform];
+    const targetConfig = c.buildConfig.platforms[platform];
     if (targetConfig && targetConfig.deploy[DEPLOY_TARGET_FTP] && targetConfig.deploy[DEPLOY_TARGET_FTP].type) {
         _deployToFtp(c, platform).then(resolve).catch(reject);
     } else {

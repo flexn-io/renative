@@ -516,7 +516,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const { entryFile } = c.files.appConfigFile.platforms[platform];
+    const { entryFile } = c.buildConfig.platforms[platform];
     // TODO Android PROD Crashes if not using this hardcoded one
     let outputFile;
     if (platform === ANDROID_WEAR) {
@@ -920,12 +920,12 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(0, c.pluginConfigAndroid.pluginPackages.length - 2);
 
     // FONTS
-    if (c.files.appConfigFile) {
+    if (c.buildConfig) {
         if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
             fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
+                    const { includedFonts } = c.buildConfig.common;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {

@@ -317,7 +317,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     _workerTimer = setInterval(_archiveLogger, 30000);
 
-    if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
+    if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync('xcodebuild', p))
             .then(() => {
@@ -392,7 +392,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         '--assets-dest',
         `platformBuilds/${c.runtime.appId}_${platform}`,
         '--entry-file',
-        `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
+        `${c.buildConfig.platforms[platform].entryFile}.js`,
         '--bundle-output',
         `${getAppFolder(c, platform)}/main.jsbundle`,
     ];
@@ -468,12 +468,12 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     };
 
     // FONTS
-    if (c.files.appConfigFile) {
+    if (c.buildConfig) {
         if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
             fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
+                    const { includedFonts } = c.buildConfig.common;
                     if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                         const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                         if (fs.existsSync(fontSource)) {

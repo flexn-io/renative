@@ -180,12 +180,12 @@ export const updateProfiles = (c) => {
     switch (c.platform) {
     case IOS:
     case TVOS:
-        const savedAppConfig = c.files.appConfigFile;
+        const savedAppConfig = c.buildConfig;
         const scheme = c.program.scheme;
         const appId = c.runtime.appId;
         return _updateProfiles(c)
             .then(() => {
-                c.files.appConfigFile = savedAppConfig;
+                c.buildConfig = savedAppConfig;
                 c.runtime.appId = appId;
                 c.program.scheme = scheme;
             });
@@ -216,7 +216,7 @@ export const _updateProfiles = (c) => {
 
 const _updateProfile = (c, v) => new Promise((resolve, reject) => {
     logTask(`_updateProfile:${v}`, chalk.grey);
-    c.files.appConfigFile = v.appConfigFile;
+    c.buildConfig = v.appConfigFile;
     c.program.scheme = v.scheme;
     c.runtime.appId = v.appId;
     updateProfile(c)

@@ -350,7 +350,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
             return;
         }
     } else {
-        const { platforms } = c.files.appConfigFile;
+        const { platforms } = c.buildConfig;
         const cmds = [];
         if (!platforms) {
             reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
@@ -383,13 +383,13 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     copyFolderContentsRecursiveSync(cPath, aPath);
 
     // copyFileSync(c.paths.appConfig.config, path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME));
-    fs.writeFileSync(path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME), JSON.stringify(c.files.appConfigFile, null, 2));
+    fs.writeFileSync(path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME), JSON.stringify(c.buildConfig, null, 2));
 
     // FONTS
     let fontsObj = 'export default [';
 
-    if (c.files.appConfigFile) {
-        if (!c.files.appConfigFile.common) {
+    if (c.buildConfig) {
+        if (!c.buildConfig.common) {
             reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
             return;
         }
@@ -397,7 +397,7 @@ const copyRuntimeAssets = c => new Promise((resolve, reject) => {
             fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
+                    const { includedFonts } = c.buildConfig.common;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {

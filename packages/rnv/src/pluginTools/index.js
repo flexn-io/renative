@@ -26,7 +26,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 const parsePlugins = (c, platform, pluginCallback) => {
     logTask(`parsePlugins:${platform}`);
 
-    if (c.files.appConfigFile && c.files.pluginConfig) {
+    if (c.buildConfig && c.files.pluginConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {

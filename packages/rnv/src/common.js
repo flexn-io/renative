@@ -162,7 +162,7 @@ const isPlatformSupportedSync = (platform, resolve, reject) => {
 const isPlatformSupported = c => new Promise((resolve, reject) => {
     logTask(`isPlatformSupported:${c.platform}`);
     if (!c.platform || c.platform === '?') {
-        let platformsAsObj = c.files.appConfigFile ? c.files.appConfigFile.platforms : c.supportedPlatforms;
+        let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
         if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
         const opts = generateOptions(platformsAsObj);
 
@@ -189,11 +189,11 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
 
     const { scheme } = c.program;
 
-    if (!c.files.appConfigFile.platforms[c.platform]) {
-        c.files.appConfigFile.platforms[c.platform] = {};
+    if (!c.buildConfig.platforms[c.platform]) {
+        c.buildConfig.platforms[c.platform] = {};
     }
 
-    const { buildSchemes } = c.files.appConfigFile.platforms[c.platform];
+    const { buildSchemes } = c.buildConfig.platforms[c.platform];
 
 
     if (!buildSchemes) {
@@ -509,7 +509,7 @@ const configureEntryPoints = (c) => {
     //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryFolder);
     // }
     let plat;
-    const p = c.files.appConfigFile.platforms;
+    const p = c.buildConfig.platforms;
     for (const k in p) {
         plat = p[k];
         const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
@@ -731,7 +731,7 @@ const getAppFolder = (c, platform) => path.join(c.paths.platformBuildsFolder, `$
 
 const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
-const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
+const getAppConfigId = (c, platform) => c.buildConfig.id;
 
 const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
     if (resultCli) {
@@ -756,24 +756,24 @@ const CLI_PROPS = [
 ];
 
 const getConfigProp = (c, platform, key, defaultVal) => {
-    if (!c.files.appConfigFile) {
-        logError('getConfigProp: c.files.appConfigFile is undefined!');
+    if (!c.buildConfig) {
+        logError('getConfigProp: c.buildConfig is undefined!');
         return null;
     }
-    const p = c.files.appConfigFile.platforms[platform];
+    const p = c.buildConfig.platforms[platform];
     const ps = _getScheme(c);
     let resultPlatforms;
     let scheme;
     if (p) {
         scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
-        resultPlatforms = c.files.appConfigFile.platforms[platform][key];
+        resultPlatforms = c.buildConfig.platforms[platform][key];
     }
 
 
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
     const resultScheme = scheme[key];
-    const resultCommon = c.files.appConfigFile.common[key];
+    const resultCommon = c.buildConfig.common[key];
 
     const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
@@ -793,24 +793,24 @@ const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
 
 const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-const getAppVersion = (c, platform) => c.files.appConfigFile.platforms[platform].version || c.files.appConfigFile.common.verion || c.files.project.package.version;
+const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.verion || c.files.project.package.version;
 
-const getAppAuthor = (c, platform) => c.files.appConfigFile.platforms[platform].author || c.files.appConfigFile.common.author || c.files.project.package.author;
+const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
 
-const getAppLicense = (c, platform) => c.files.appConfigFile.platforms[platform].license || c.files.appConfigFile.common.license || c.files.project.package.license;
+const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].license || c.buildConfig.common.license || c.files.project.package.license;
 
-const getEntryFile = (c, platform) => c.files.appConfigFile.platforms[platform].entryFile;
+const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
 
-const getGetJsBundleFile = (c, platform) => c.files.appConfigFile.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
+const getGetJsBundleFile = (c, platform) => c.buildConfig.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
 
-const getAppDescription = (c, platform) => c.files.appConfigFile.platforms[platform].description || c.files.appConfigFile.common.description || c.files.project.package.description;
+const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
 
 const getAppVersionCode = (c, platform) => {
-    if (c.files.appConfigFile.platforms[platform].versionCode) {
-        return c.files.appConfigFile.platforms[platform].versionCode;
+    if (c.buildConfig.platforms[platform].versionCode) {
+        return c.buildConfig.platforms[platform].versionCode;
     }
-    if (c.files.appConfigFile.common.verionCode) {
-        return c.files.appConfigFile.common.verionCode;
+    if (c.buildConfig.common.verionCode) {
+        return c.buildConfig.common.verionCode;
     }
     const version = getAppVersion(c, platform);
 
@@ -830,12 +830,12 @@ const logErrorPlatform = (platform, resolve) => {
 };
 
 const isPlatformActive = (c, platform, resolve) => {
-    if (!c.files.appConfigFile || !c.files.appConfigFile.platforms) {
+    if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
         if (resolve) resolve();
         return false;
     }
-    if (!c.files.appConfigFile.platforms[platform]) {
+    if (!c.buildConfig.platforms[platform]) {
         console.log(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
         if (resolve) resolve();
         return false;

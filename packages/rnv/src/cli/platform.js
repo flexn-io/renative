@@ -202,7 +202,7 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_runCopyPlatforms:${platform}`);
     const copyPlatformTasks = [];
     if (platform === 'all') {
-        for (const k in c.files.appConfigFile.platforms) {
+        for (const k in c.buildConfig.platforms) {
             if (isPlatformSupportedSync(k)) {
                 const ptPath = path.join(c.paths.project.platformTemplatesDirs[k], `${k}`);
                 const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${k}`);
@@ -228,7 +228,7 @@ const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     const cleanTasks = [];
 
     if (platform === 'all') {
-        for (const k in c.files.appConfigFile.platforms) {
+        for (const k in c.buildConfig.platforms) {
             if (isPlatformSupportedSync(k)) {
                 const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));

@@ -37,7 +37,7 @@ const _runDeployment = (c, platform, deployType) => new Promise((resolve, reject
 const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) => {
     const argv = require('minimist')(c.process.argv.slice(2));
     const deployType = argv.t;
-    const targetConfig = c.files.appConfigFile.platforms[platform];
+    const targetConfig = c.buildConfig.platforms[platform];
 
     if (deployType || (targetConfig && targetConfig.deploy && targetConfig.deploy.type)) {
         _runDeployment(c, platform, deployType || targetConfig.deploy.type)

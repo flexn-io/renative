@@ -169,7 +169,7 @@ const composeDevicesString = devices => devices.map(device => ({ key: device.id,
 const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
-    const platformConfig = c.files.appConfigFile.platforms[platform];
+    const platformConfig = c.buildConfig.platforms[platform];
     const { hosted, device } = c.program;
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
@@ -312,7 +312,7 @@ const runTizen = async (c, platform, target) => {
 const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildTizenProject:${platform}`);
 
-    const platformConfig = c.files.appConfigFile.platforms[platform];
+    const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);
 
     const tOut = path.join(tDir, 'output');
@@ -349,7 +349,7 @@ const configureProject = (c, platform) => new Promise((resolve) => {
     const appFolder = getAppFolder(c, platform);
 
     const configFile = 'config.xml';
-    const p = c.files.appConfigFile.platforms[platform];
+    const p = c.buildConfig.platforms[platform];
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
         { pattern: '{{PACKAGE}}', override: p.package },
         { pattern: '{{ID}}', override: p.id },

@@ -64,7 +64,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
+    const { permissions, orientationSupport, urlScheme, plistExtra } = c.buildConfig.platforms[platform];
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST

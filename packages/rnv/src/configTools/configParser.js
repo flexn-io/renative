@@ -416,19 +416,19 @@ const _generatePlatformTemplatePaths = (c) => {
 
 // const _configureConfig = c => new Promise((resolve, reject) => {
 //     logTask(`_configureConfig:${c.runtime.appId}`);
-//     c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.appConfig.config).toString());
+//     c.buildConfig = JSON.parse(fs.readFileSync(c.paths.appConfig.config).toString());
 //
 //     // EXTEND CONFIG
 //     const merge = require('deepmerge');
 //     try {
-//         if (c.files.appConfigFile.extend) {
-//             const parentAppConfigFolder = path.join(c.paths.project.appConfigsDir, c.files.appConfigFile.extend);
+//         if (c.buildConfig.extend) {
+//             const parentAppConfigFolder = path.join(c.paths.project.appConfigsDir, c.buildConfig.extend);
 //             if (fs.existsSync(parentAppConfigFolder)) {
 //                 const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
 //                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
-//                 const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile, { arrayMerge: _arrayMergeOverride });
-//                 c.files.appConfigFile = mergedAppConfigFile;
-//                 setAppConfig(c, c.files.appConfigFile.extend);
+//                 const mergedAppConfigFile = merge(parentAppConfigFile, c.buildConfig, { arrayMerge: _arrayMergeOverride });
+//                 c.buildConfig = mergedAppConfigFile;
+//                 setAppConfig(c, c.buildConfig.extend);
 //             }
 //         }
 //         resolve();
@@ -534,8 +534,8 @@ export const gatherInfo = c => new Promise((resolve, reject) => {
             console.log('Missing appConfigPath', c.paths.project.package);
         }
         if (fs.existsSync(c.paths.project.builds.config)) {
-            c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.project.builds.config).toString());
-            c.runtime.appId = c.files.appConfigFile.id;
+            c.buildConfig = JSON.parse(fs.readFileSync(c.paths.project.builds.config).toString());
+            c.runtime.appId = c.buildConfig.id;
         } else {
             console.log('Missing runtimeConfigPath', c.paths.project.builds.config);
         }

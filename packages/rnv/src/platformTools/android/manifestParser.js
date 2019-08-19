@@ -168,7 +168,7 @@ export const parseAndroidManifestSync = (c, platform) => {
 
         // appConfig PERMISSIONS OVERRIDES
         let prms = '';
-        const { permissions } = c.files.appConfigFile.platforms[platform];
+        const { permissions } = c.buildConfig.platforms[platform];
         const configPermissions = c.files.permissionsConfig?.permissions;
 
         if (permissions && configPermissions) {
