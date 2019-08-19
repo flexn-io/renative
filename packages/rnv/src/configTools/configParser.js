@@ -207,11 +207,11 @@ const _extraUpdates = () => {
     // LOAD ./appConfigs/[APP_ID]/RENATIVE.*.JSON
     // console.log('SJKHSHS', c.buildConfig);
 
-    // if (!c.files.project.config.defaultProjectConfigs.supportedPlatforms) {
+    // if (!c.buildConfig.defaults.supportedPlatforms) {
     //     if (c.files.project.package.supportedPlatforms) {
-    //         c.files.project.config.defaultProjectConfigs.supportedPlatforms = c.files.project.package.supportedPlatforms;
+    //         c.buildConfig.defaults.supportedPlatforms = c.files.project.package.supportedPlatforms;
     //     } else {
-    //         c.files.project.config.defaultProjectConfigs.supportedPlatforms = SUPPORTED_PLATFORMS;
+    //         c.buildConfig.defaults.supportedPlatforms = SUPPORTED_PLATFORMS;
     //     }
     //
     //     logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.project.config)}. ReNative will generate temporary one`);
@@ -223,19 +223,19 @@ const _extraUpdates = () => {
     //     c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
     //     c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
     // }
-    // c.paths.project.appConfigsDir = getRealPath(c, c.files.project.config.appConfigsFolder, 'appConfigsFolder', c.paths.project.appConfigsDir);
+    // c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.appConfigsFolder, 'appConfigsFolder', c.paths.project.appConfigsDir);
     //
     // c.paths.project.assets.dir = getRealPath(
     //     c,
-    //     c.files.project.config.platformAssetsFolder,
+    //     c.buildConfig.platformAssetsFolder,
     //     'platformAssetsFolder',
     //     c.paths.project.assets.dir,
     // );
 
-    // c.paths.project.projectConfig.pluginsDir = getRealPath(c, c.files.project.config.projectPlugins, 'projectPlugins', c.paths.project.projectConfig.pluginsDir);
+    // c.paths.project.projectConfig.pluginsDir = getRealPath(c, c.buildConfig.projectPlugins, 'projectPlugins', c.paths.project.projectConfig.pluginsDir);
     // c.paths.project.projectConfig.dir = getRealPath(
     //     c,
-    //     c.files.project.config.projectConfigFolder,
+    //     c.buildConfig.projectConfigFolder,
     //     'projectConfigFolder',
     //     c.paths.project.projectConfig.dir,
     // );
@@ -385,8 +385,8 @@ const _generateBuildConfig = (c) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    const pt = c.files.project.config.platformTemplatesFolders || {};
-    const originalPath = c.files.project.config.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
+    const pt = c.buildConfig.platformTemplatesFolders || {};
+    const originalPath = c.buildConfig.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {

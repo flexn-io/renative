@@ -316,7 +316,7 @@ const checkAndCreateProjectConfig = (c, data) => {
 
         const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.projectTemplate.dir, 'rnv-config.json')));
 
-        obj.defaultProjectConfigs = defaultProjectConfigs;
+        obj.defaults = defaultProjectConfigs;
 
         writeObjectSync(path.join(c.paths.project.dir, RNV_PROJECT_CONFIG_NAME), obj);
     }

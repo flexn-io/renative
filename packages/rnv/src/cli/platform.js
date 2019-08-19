@@ -127,14 +127,14 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
                     copyFolderContentsRecursiveSync(path.join(rptf, '_shared'), path.join(prf, ptfn, '_shared'));
                 }
 
-                c.files.project.config.platformTemplatesFolders = c.files.project.config.platformTemplatesFolders || {};
-                c.files.project.config.platformTemplatesFolders[v] = `./${ptfn}`;
+                c.buildConfig.platformTemplatesFolders = c.buildConfig.platformTemplatesFolders || {};
+                c.buildConfig.platformTemplatesFolders[v] = `./${ptfn}`;
 
                 writeObjectSync(c.paths.project.config, c.files.project.config);
             });
             logSuccess(
                 `${chalk.white(opts.selectedOptions.join(','))} platform templates are located in ${chalk.white(
-                    c.files.project.config.platformTemplatesFolders[opts.selectedOptions[0]]
+                    c.buildConfig.platformTemplatesFolders[opts.selectedOptions[0]]
                 )} now. You can edit them directly!`
             );
             resolve();
@@ -142,7 +142,7 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
 });
 
 const _genPlatOptions = (c) => {
-    const opts = generateOptions(c.files.project.config.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
+    const opts = generateOptions(c.buildConfig.defaults.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
         const isEjected = c.paths.project.platformTemplatesDirs[obj].includes(c.paths.rnv.platformTemplates.dir) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
         return `-[${chalk.white(i + 1)}] ${chalk.white(defaultVal)} - ${isEjected} \n`;
     });
@@ -161,9 +161,9 @@ const _runConnectPlatforms = c => new Promise((resolve) => {
             opts.selectedOptions.forEach((v) => {
                 const ptfn = 'platformTemplates';
 
-                if (!c.files.project.config.platformTemplatesFolders) c.files.project.config.platformTemplatesFolders = {};
+                if (!c.buildConfig.platformTemplatesFolders) c.buildConfig.platformTemplatesFolders = {};
 
-                c.files.project.config.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
+                c.buildConfig.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
 
                 writeObjectSync(c.paths.project.config, c.files.project.config);
             });

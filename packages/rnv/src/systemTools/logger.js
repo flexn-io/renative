@@ -137,10 +137,10 @@ export const logSummary = () => {
             str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig.id)}`, 1);
         }
         if (_c.files.project.config) {
-            const defaultProjectConfigs = _c.files.project.config?.defaultProjectConfigs;
+            const defaultProjectConfigs = _c.files.project.config?.defaults;
             if (defaultProjectConfigs?.supportedPlatforms) {
                 const plats = [];
-                generateOptions(_c.files.project.config.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
+                generateOptions(_c.buildConfig.defaults.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
                     if (_c.paths.project.platformTemplatesDirs) {
                         isEjected = _c.paths.project.platformTemplatesDirs[obj].includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
