@@ -115,7 +115,7 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     }
 
     // BUILD_TYPES
-    const pluginConfig = c.files.pluginConfig ?? {};
+    const pluginConfig = c.buildConfig ?? {};
     const debugBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.debug ?? [];
     const releaseBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.release ?? [];
     c.pluginConfigAndroid.buildTypes = `
@@ -224,7 +224,7 @@ export const parseGradlePropertiesSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
-    const pluginConfigAndroid = c.files.pluginConfig?.android || {};
+    const pluginConfigAndroid = c.buildConfig?.android || {};
 
     const gradleProps = pluginConfigAndroid['gradle.properties'];
     if (gradleProps) {

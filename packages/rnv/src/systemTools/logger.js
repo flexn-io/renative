@@ -137,8 +137,8 @@ export const logSummary = () => {
             str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig.id)}`, 1);
         }
         if (_c.files.project.config) {
-            const defaultProjectConfigs = _c.files.project.config.defaultProjectConfigs;
-            if (defaultProjectConfigs.supportedPlatforms) {
+            const defaultProjectConfigs = _c.files.project.config?.defaultProjectConfigs;
+            if (defaultProjectConfigs?.supportedPlatforms) {
                 const plats = [];
                 generateOptions(_c.files.project.config.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
@@ -150,7 +150,7 @@ export const logSummary = () => {
                 });
                 str += printArrIntoBox(plats, 'Supported Platfroms: ');
             }
-            if (defaultProjectConfigs.template) {
+            if (defaultProjectConfigs?.template) {
                 str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
             }
         }

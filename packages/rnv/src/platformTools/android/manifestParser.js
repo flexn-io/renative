@@ -147,7 +147,7 @@ export const parseAndroidManifestSync = (c, platform) => {
         baseManifestFile.package = getAppId(c, platform);
 
         // projectConfig/plugins.json PLUGIN CONFIG ROOT OVERRIDES
-        const pluginConfigAndroid = c.files.pluginConfig?.android?.AndroidManifest;
+        const pluginConfigAndroid = c.buildConfig?.android?.AndroidManifest;
         if (pluginConfigAndroid) {
             const applicationExt = _findChildNode('application', '.MainApplication', pluginConfigAndroid);
             _mergeNodeParameters(application, applicationExt);

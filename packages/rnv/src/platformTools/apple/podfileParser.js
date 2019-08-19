@@ -63,8 +63,8 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
     });
 
     // SUBSPECS
-    const reactCore = c.files.pluginConfig
-        ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
+    const reactCore = c.buildConfig
+        ? c.buildConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
     if (reactCore) {
         if (reactCore.ios.reactSubSpecs) {
             reactCore.ios.reactSubSpecs.forEach((v) => {
@@ -81,7 +81,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     // SOURCES
     c.pluginConfigiOS.podfileSources = '';
-    const podfileSources = c.files.pluginConfig?.ios?.Podfile?.sources;
+    const podfileSources = c.buildConfig?.ios?.Podfile?.sources;
     if (podfileSources && podfileSources.length) {
         podfileSources.forEach((v) => {
             c.pluginConfigiOS.podfileSources += `source '${v}'\n`;

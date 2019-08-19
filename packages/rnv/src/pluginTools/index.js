@@ -26,11 +26,11 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 const parsePlugins = (c, platform, pluginCallback) => {
     logTask(`parsePlugins:${platform}`);
 
-    if (c.buildConfig && c.files.pluginConfig) {
+    if (c.buildConfig && c.buildConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
-            const { plugins } = c.files.pluginConfig;
+            const { plugins } = c.buildConfig;
             Object.keys(plugins).forEach((key) => {
                 if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {
                     const plugin = getMergedPlugin(c, key, plugins);

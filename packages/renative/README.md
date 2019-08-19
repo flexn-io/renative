@@ -952,14 +952,12 @@ c.paths.project.appConfigsDir;
 c.paths.entryFolder;
 c.paths.project.platformTemplatesDirs;
 c.paths.project.assets.dir;
-c.paths.platformBuildsFolder;
+c.paths.project.builds.dir;
 c.paths.project.projectConfig.pluginsDir;
 c.paths.rnv.nodeModulesDir;
 c.paths.project.nodeModulesDir;
 c.paths.project.assets.config;
 c.paths.project.projectConfig.dir;
-c.paths.project.projectConfig.plugins;
-c.paths.project.projectConfig.permissions;
 c.paths.project.projectConfig.fontsDir;
 ```
 

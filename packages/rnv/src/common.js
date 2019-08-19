@@ -530,32 +530,20 @@ const configureEntryPoints = (c) => {
 };
 
 const configurePlugins = c => new Promise((resolve, reject) => {
-    // Check plugins
-    logTask('configureProject:check plugins', chalk.grey);
-    if (fs.existsSync(c.paths.project.projectConfig.plugins)) {
-        c.files.pluginConfig = readObjectSync(c.paths.project.projectConfig.plugins, c);
-    } else {
-        logWarning(
-            `Looks like your plugin config is missing from ${chalk.white(c.paths.project.projectConfig.plugins)}. let's create one for you!`,
-        );
-        c.files.pluginConfig = { plugins: {} };
-        fs.writeFileSync(c.paths.project.projectConfig.plugins, JSON.stringify(c.files.pluginConfig, null, 2));
-    }
-
     if (!c.files.project.package.dependencies) {
         c.files.project.package.dependencies = {};
     }
 
     let hasPackageChanged = false;
-    for (const k in c.files.pluginConfig.plugins) {
+    for (const k in c.buildConfig.plugins) {
         const dependencies = c.files.project.package.dependencies;
         const devDependencies = c.files.project.package.devDependencies;
-        const plugin = getMergedPlugin(c, k, c.files.pluginConfig.plugins);
+        const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
         if (!plugin) {
             logWarning(`Plugin with name ${
                 chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
-                chalk.white(c.paths.project.projectConfig.plugins)}`);
+                chalk.white(c.paths.project.builds.config)}`);
         } else if (dependencies && dependencies[k]) {
             if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
                 if (k === 'renative' && c.runtime.isWrapper) {
@@ -564,7 +552,7 @@ const configurePlugins = c => new Promise((resolve, reject) => {
                     logWarning(
                         `Version mismatch of dependency ${chalk.white(k)} between:
   ${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
-  ${chalk.white(c.paths.project.projectConfig.plugins)}: v(${chalk.green(plugin.version)}).
+  ${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(plugin.version)}).
   package.json will be overriden`
                     );
                     hasPackageChanged = true;
@@ -607,21 +595,6 @@ const configurePlugins = c => new Promise((resolve, reject) => {
     if (hasPackageChanged) {
         writeObjectSync(c.paths.project.package, c.files.project.package);
         c._requiresNpmInstall = true;
-    }
-
-    // Check permissions
-    logTask('configureProject:check permissions', chalk.grey);
-    if (fs.existsSync(c.paths.project.projectConfig.permissions)) {
-        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.project.projectConfig.permissions).toString());
-    } else {
-        const newPath = path.join(c.paths.rnv.dir, 'projectConfig/permissions.json');
-        logWarning(
-            `Looks like your permission config is missing from ${chalk.white(
-                c.paths.project.projectConfig.permissions,
-            )}. ReNative Default ${chalk.white(newPath)} will be used instead`,
-        );
-        c.paths.project.projectConfig.permissions = newPath;
-        c.files.permissionsConfig = JSON.parse(fs.readFileSync(c.paths.project.projectConfig.permissions).toString());
     }
 
     resolve();
@@ -727,7 +700,7 @@ const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
-const getAppFolder = (c, platform) => path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
+const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
 const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 

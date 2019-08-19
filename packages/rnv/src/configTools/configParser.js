@@ -150,6 +150,59 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     return c;
 };
 
+export const parseRenativeConfigsSync = (c) => {
+    c.platform = c.program.platform;
+    c.paths.home.dir = homedir;
+    c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
+
+    _generateConfigPaths(c.paths.project, base);
+
+    c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
+    c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');
+    c.paths.buildHooks.index = path.join(c.paths.buildHooks.dir, 'index.js');
+    c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
+    c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
+    c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
+    c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
+    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
+    c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
+    c.paths.project.npmLinkPolyfill = path.join(c.paths.project.dir, 'npm_link_polyfill.json');
+    c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'projectConfig');
+    c.paths.project.projectConfig.pluginsDir = path.join(c.paths.project.projectConfig.dir, 'plugins');
+    c.paths.project.projectConfig.fontsDir = path.join(c.paths.project.projectConfig.dir, 'fonts');
+    c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
+    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, 'renative.runtime.json');
+    c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
+    c.paths.project.builds.config = path.join(c.paths.project.builds.dir, 'renative.build.json');
+
+    // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
+    if (!_loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
+    c.runtime.appId = c.runtime.appId || c.files.project?.builds?.config?.id;
+
+    // LOAD ./PACKAGE.JSON
+    if (!_loadFile(c.files.project, c.paths.project, 'package')) return;
+    _versionCheck(c);
+
+    // LOAD ./RENATIVE.*.JSON
+    if (!_loadConfigFiles(c, c.files.project, c.paths.project)) return;
+
+    // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
+    _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig.paths?.private?.dir) || c.paths.GLOBAL_RNV_DIR);
+    _generateConfigPaths(c.paths.private.project, path.join(c.paths.private.dir, c.files.project.package.name));
+    _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
+
+
+    c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
+    c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
+    c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.paths?.appConfigsDir, 'appConfigsDir', c.paths.project.appConfigsDir);
+    c.runtime.isWrapper = c.buildConfig.isWrapper;
+
+    c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
+
+    _extraUpdates();
+};
+
 const _extraUpdates = () => {
     // LOAD ./appConfigs/[APP_ID]/RENATIVE.*.JSON
     // console.log('SJKHSHS', c.buildConfig);
@@ -171,7 +224,7 @@ const _extraUpdates = () => {
     //     c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
     // }
     // c.paths.project.appConfigsDir = getRealPath(c, c.files.project.config.appConfigsFolder, 'appConfigsFolder', c.paths.project.appConfigsDir);
-    // c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
+    //
     // c.paths.project.assets.dir = getRealPath(
     //     c,
     //     c.files.project.config.platformAssetsFolder,
@@ -242,75 +295,20 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
         result = true;
     }
 
-    console.log('AAASSSSSS', extend, extendDir);
     if (extend && extendDir) {
         pathObj.configBase = path.join(extendDir, extend, 'renative.json');
         _loadFile(fileObj, pathObj, 'configBase');
-        console.log('WTFFF', fileObj);
     }
 
     _generateBuildConfig(c);
     return result;
 };
 
-export const parseRenativeConfigsSync = (c) => {
-    c.platform = c.program.platform;
-    c.paths.home.dir = homedir;
-    c.paths.RNV_GLOBAL_DIR = path.join(c.paths.home.dir, '.rnv');
-
-    _generateConfigPaths(c.paths.project, base);
-
-    c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
-    c.paths.buildHooks.dist.dir = path.join(c.paths.project.dir, 'buildHooks/dist');
-    c.paths.buildHooks.index = path.join(c.paths.buildHooks.dir, 'index.js');
-    c.paths.buildHooks.dist.index = path.join(c.paths.buildHooks.dist.dir, 'index.js');
-    c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
-    c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
-    c.paths.project.appConfigsDir = path.join(c.paths.project.dir, 'appConfigs');
-    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
-    c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
-    c.paths.project.npmLinkPolyfill = path.join(c.paths.project.dir, 'npm_link_polyfill.json');
-    c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'projectConfig');
-    c.paths.project.projectConfig.pluginsDir = path.join(c.paths.project.projectConfig.dir, 'plugins');
-    c.paths.project.projectConfig.fontsDir = path.join(c.paths.project.projectConfig.dir, 'fonts');
-    c.paths.project.projectConfig.plugins = path.join(c.paths.project.projectConfig.dir, 'plugins.json');
-    c.paths.project.projectConfig.permissions = path.join(c.paths.project.projectConfig.dir, 'permissions.json');
-    c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
-    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, 'renative.runtime.json');
-    c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
-    c.paths.project.builds.config = path.join(c.paths.project.builds.dir, 'renative.build.json');
-
-    // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
-    if (!_loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
-    console.log('AAAAAALLLLLLLL', c.files.project.builds.config);
-    c.runtime.appId = c.files.project.builds.config.id;
-
-    // LOAD ./PACKAGE.JSON
-    if (!_loadFile(c.files.project, c.paths.project, 'package')) return;
-    _versionCheck(c);
-
-    // LOAD ./RENATIVE.*.JSON
-    if (!_loadConfigFiles(c, c.files.project, c.paths.project)) return;
-
-    // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
-    _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig.paths?.private?.dir) || c.paths.RNV_GLOBAL_DIR);
-    _generateConfigPaths(c.paths.private.project, path.join(c.paths.private.dir, c.files.project.package.name));
-    _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
-
-
-    c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
-    c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
-    c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.paths?.appConfigsDir, 'appConfigsDir', c.paths.project.appConfigsDir);
-    c.runtime.isWrapper = c.buildConfig.isWrapper;
-
-    console.log('AASSSSSSSSSSSSSSSSS');
-
-    _extraUpdates();
-};
 
 export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
+
+    if (!appId) return;
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
     _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
@@ -377,19 +375,11 @@ const _generateBuildConfig = (c) => {
         }
     }];
 
-
-    const existsFiles = mergeFiles.filter((v, i) => {
-        console.log('SSSSS', i, v !== undefined);
-        return v;
-    });
+    const existsFiles = mergeFiles.filter((v, i) => v);
 
     logTask(`_generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
 
     const out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
-    // mergeOrder.forEach((v, i) => {
-    //     console.log('SAAAAA', i, v);
-    // });
-    // console.log('AAAAAAAAAAA', out);
     c.buildConfig = out;
     writeObjectSync(c.paths.project.builds.config, c.buildConfig);
 };
@@ -418,33 +408,10 @@ const _generatePlatformTemplatePaths = (c) => {
     return result;
 };
 
-// const _configureConfig = c => new Promise((resolve, reject) => {
-//     logTask(`_configureConfig:${c.runtime.appId}`);
-//     c.buildConfig = JSON.parse(fs.readFileSync(c.paths.appConfig.config).toString());
-//
-//     // EXTEND CONFIG
-//     const merge = require('deepmerge');
-//     try {
-//         if (c.buildConfig.extend) {
-//             const parentAppConfigFolder = path.join(c.paths.project.appConfigsDir, c.buildConfig.extend);
-//             if (fs.existsSync(parentAppConfigFolder)) {
-//                 const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
-//                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
-//                 const mergedAppConfigFile = merge(parentAppConfigFile, c.buildConfig, { arrayMerge: _arrayMergeOverride });
-//                 c.buildConfig = mergedAppConfigFile;
-//                 setAppConfig(c, c.buildConfig.extend);
-//             }
-//         }
-//         resolve();
-//     } catch (e) {
-//         reject(e);
-//     }
-// });
-
 export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`updateConfig:${appConfigId}`);
 
-    // setAppConfig(c, appConfigId);
+    setAppConfig(c, appConfigId);
     c.runtime.appId = appConfigId;
 
     console.log('ADDADADA', c.runtime.appId, c.paths.appConfig.dir);
@@ -480,9 +447,6 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
                         c.runtime.appId = c.defaultAppConfigId;
                         setAppConfig(c, c.defaultAppConfigId);
                         resolve();
-                        // _configureConfig(c)
-                        //     .then(() => resolve())
-                        //     .catch(e => reject(e));
                     } else {
                         reject('Wrong option!');
                     }
@@ -503,17 +467,11 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
                         path.join(c.paths.appConfig.dir),
                     );
                     resolve();
-                    // _configureConfig(c)
-                    //     .then(() => resolve())
-                    //     .catch(e => reject(e));
                 },
             );
         }
     } else {
         resolve();
-        // _configureConfig(c)
-        //     .then(() => resolve())
-        //     .catch(e => reject(e));
     }
 });
 
@@ -548,7 +506,6 @@ export const gatherInfo = c => new Promise((resolve, reject) => {
         } else {
             console.log('Missing projectConfigPath', c.paths.project.config);
         }
-        // console.log('SJKHHJS', c.files);
     } catch (e) {
         reject(e);
     }

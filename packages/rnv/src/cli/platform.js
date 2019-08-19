@@ -205,13 +205,13 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
         for (const k in c.buildConfig.platforms) {
             if (isPlatformSupportedSync(k)) {
                 const ptPath = path.join(c.paths.project.platformTemplatesDirs[k], `${k}`);
-                const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${k}`);
+                const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
             }
         }
     } else if (isPlatformSupportedSync(platform)) {
         const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-        const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
+        const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
     } else {
         logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.paths.appConfig.config)}`);
@@ -230,12 +230,12 @@ const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     if (platform === 'all') {
         for (const k in c.buildConfig.platforms) {
             if (isPlatformSupportedSync(k)) {
-                const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${k}`);
+                const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));
             }
         }
     } else if (isPlatformSupportedSync(platform)) {
-        const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
+        const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
         cleanTasks.push(cleanFolder(pPath));
     }
 
@@ -254,7 +254,7 @@ const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
 
     if (!isPlatformSupportedSync(platform, null, reject)) return;
 
-    const pPath = path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
+    const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
     copyFolderContentsRecursiveSync(ptPath, pPath, false, [path.join(ptPath, '_privateConfig')]);
 

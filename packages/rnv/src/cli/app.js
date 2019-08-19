@@ -325,7 +325,7 @@ const checkAndCreateProjectConfig = (c, data) => {
 const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_checkAndCreatePlatforms:${platform}`);
 
-    if (!fs.existsSync(c.paths.platformBuildsFolder)) {
+    if (!fs.existsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');
         platformRunner(spawnCommand(c, {
             subCommand: 'configure',
@@ -445,7 +445,7 @@ const _copySharedPlatforms = c => new Promise((resolve) => {
 
         copyFolderContentsRecursiveSync(
             path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'),
-            path.resolve(c.paths.platformBuildsFolder, '_shared'),
+            path.resolve(c.paths.project.builds.dir, '_shared'),
         );
     }
 

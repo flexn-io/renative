@@ -67,10 +67,10 @@ const _applyLocalRenative = c => new Promise((resolve, reject) => {
         return;
     }
 
-    if (c.files.pluginConfig.plugins.renative) {
-        c.files.pluginConfig.plugins.renative = getLocalRenativePlugin();
+    if (c.buildConfig.plugins.renative) {
+        c.buildConfig.plugins.renative = getLocalRenativePlugin();
     }
-    writeObjectSync(c.paths.project.projectConfig.plugins, c.files.pluginConfig);
+    writeObjectSync(c.paths.project.config, c.buildConfig);
     resolve();
 });
 

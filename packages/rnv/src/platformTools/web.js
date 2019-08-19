@@ -30,7 +30,7 @@ const _generateWebpackConfigs = (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const templateFolder = getAppTemplateFolder(c, c.platform);
 
-    const plugins = c.files.pluginConfig.plugins;
+    const plugins = c.buildConfig.plugins;
     let modulePaths = [];
     let moduleAliasesString = '';
     const moduleAliases = {};
