@@ -69,7 +69,7 @@ import {
     PLATFORMS
 } from './constants';
 import { executeAsync } from './systemTools/exec';
-import { parseRenativeConfigsSync, createRnvConfig, setAppConfig } from './configTools/configParser';
+import { parseRenativeConfigsSync, createRnvConfig, updateConfig } from './configTools/configParser';
 
 const SUPPORTED_PLATFORMS = [
     IOS,
@@ -655,11 +655,11 @@ const configurePlugins = c => new Promise((resolve, reject) => {
 });
 
 const configureApp = c => new Promise((resolve, reject) => {
-    logTask('configureApp');
+    logTask(`configureApp:${c.runtime.appId}`);
 
     if (c.runtime.appId) {
         // App ID specified
-        _getConfig(c, c.runtime.appId)
+        updateConfig(c, c.runtime.appId)
             .then(() => {
                 configureEntryPoints(c);
                 resolve(c);
@@ -667,14 +667,14 @@ const configureApp = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
     } else {
         // Use latest app from platformAssets
-        if (!fs.existsSync(c.paths.project.assets.config)) {
+        if (!fs.existsSync(c.paths.project.builds.config)) {
             logWarning(
                 `Seems like you're missing ${
-                    c.paths.project.assets.config
+                    c.paths.project.builds.config
                 } file. But don't worry. ReNative got you covered. Let's configure it for you!`,
             );
 
-            _getConfig(c, c.defaultAppConfigId)
+            updateConfig(c, c.defaultAppConfigId)
                 .then(() => {
                     configureEntryPoints(c);
                     appRunner(spawnCommand(c, {
@@ -690,8 +690,8 @@ const configureApp = c => new Promise((resolve, reject) => {
                 .catch(e => reject(e));
         } else {
             try {
-                const assetConfig = JSON.parse(fs.readFileSync(c.paths.project.assets.config).toString());
-                _getConfig(c, assetConfig.id)
+                const assetConfig = JSON.parse(fs.readFileSync(c.paths.project.builds.config).toString());
+                updateConfig(c, assetConfig.id)
                     .then(() => {
                         configureEntryPoints(c);
                         resolve(c);
@@ -752,115 +752,7 @@ const checkSdk = (c, platform, reject) => {
 
 const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
-const IGNORE_FOLDERS = ['.git'];
-
-export const listAppConfigsFoldersSync = (c) => {
-    const configDirs = [];
-    fs.readdirSync(c.paths.project.appConfigsDir).forEach((dir) => {
-        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.paths.project.appConfigsDir, dir)).isDirectory()) {
-            configDirs.push(dir);
-        }
-    });
-    return configDirs;
-};
-
-const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
-    logTask(`_getConfig:${appConfigId}`);
-
-    setAppConfig(c, appConfigId);
-    c.runtime.appId = appConfigId;
-
-    console.log('ADDADADA', c.paths.appConfig.dir);
-
-    if (!fs.existsSync(c.paths.appConfig.dir)) {
-        const readline = require('readline').createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-
-        const configDirs = listAppConfigsFoldersSync(c);
-
-
-        if (appConfigId !== '?') {
-            logWarning(
-                `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
-                    c.paths.project.appConfigsDir,
-                )} !`,
-            );
-        }
-
-        if (configDirs.length) {
-            let opts = '';
-            configDirs.forEach((v, i) => {
-                opts += `(${chalk.white(i)}) ${chalk.white(v)}\n`;
-            });
-
-            readline.question(
-                getQuestion(`ReNative found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`),
-                (v) => {
-                    if (configDirs[v]) {
-                        c.defaultAppConfigId = configDirs[v];
-                        c.runtime.appId = c.defaultAppConfigId;
-                        setAppConfig(c, c.defaultAppConfigId);
-                        _configureConfig(c)
-                            .then(() => resolve())
-                            .catch(e => reject(e));
-                    } else {
-                        reject('Wrong option!');
-                    }
-                },
-            );
-        } else {
-            readline.question(
-                getQuestion(
-                    `Do you want ReNative to create new sample appConfig (${chalk.white(
-                        appConfigId,
-                    )}) for you? (y) to confirm`,
-                ),
-                (v) => {
-                    c.defaultAppConfigId = SAMPLE_APP_ID;
-                    setAppConfig(c, c.defaultAppConfigId);
-                    copyFolderContentsRecursiveSync(
-                        path.join(c.paths.rnv.dir, 'appConfigs', c.defaultAppConfigId),
-                        path.join(c.paths.appConfig.dir),
-                    );
-                    _configureConfig(c)
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                },
-            );
-        }
-    } else {
-        _configureConfig(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-    }
-});
-
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
-
-const _configureConfig = c => new Promise((resolve, reject) => {
-    logTask(`_configureConfig:${c.runtime.appId}`);
-    c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.appConfig.config).toString());
-
-    // EXTEND CONFIG
-    const merge = require('deepmerge');
-    try {
-        if (c.files.appConfigFile.extend) {
-            const parentAppConfigFolder = path.join(c.paths.project.appConfigsDir, c.files.appConfigFile.extend);
-            if (fs.existsSync(parentAppConfigFolder)) {
-                const parentAppConfigPath = path.join(parentAppConfigFolder, RNV_APP_CONFIG_NAME);
-                const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
-                const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile, { arrayMerge: _arrayMergeOverride });
-                c.files.appConfigFile = mergedAppConfigFile;
-                setAppConfig(c, c.files.appConfigFile.extend);
-            }
-        }
-        resolve();
-    } catch (e) {
-        reject(e);
-    }
-});
 
 const getAppFolder = (c, platform) => path.join(c.paths.platformBuildsFolder, `${c.runtime.appId}_${platform}`);
 
@@ -1245,7 +1137,6 @@ export {
     getBuildFilePath,
     configureEntryPoints,
     getBuildsFolder,
-    setAppConfig,
     generateOptions,
     logWelcome,
     isPlatformSupported,
@@ -1320,11 +1211,9 @@ export {
 
 export default {
     SUPPORTED_PLATFORMS,
-    listAppConfigsFoldersSync,
     getBuildFilePath,
     getBuildsFolder,
     configureEntryPoints,
-    setAppConfig,
     generateOptions,
     logWelcome,
     copyBuildsFolder,

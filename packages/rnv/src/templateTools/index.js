@@ -7,8 +7,9 @@ import {
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
     removeFilesSync
 } from '../systemTools/fileutils';
-import { logError, generateOptions, logWarning, logTask, setAppConfig, configureEntryPoints } from '../common';
+import { logError, generateOptions, logWarning, logTask, configureEntryPoints } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
+import { setAppConfig } from '../configTools/configParser';
 
 import { templates } from '../../renativeTemplates/templates.json';
 
