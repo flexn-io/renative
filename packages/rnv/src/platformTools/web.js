@@ -24,7 +24,7 @@ import { getMergedPlugin } from '../pluginTools';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
 
-const isRunningOnWindows = process.platform === 'win32'
+const isRunningOnWindows = process.platform === 'win32';
 
 const _generateWebpackConfigs = (c) => {
     const appFolder = getAppFolder(c, c.platform);
@@ -34,6 +34,8 @@ const _generateWebpackConfigs = (c) => {
     let modulePaths = [];
     let moduleAliasesString = '';
     const moduleAliases = {};
+
+    console.log('AFAFAFAF', c.buildConfig.plugins);
 
     for (const key in plugins) {
         const plugin = getMergedPlugin(c, key, plugins);
@@ -89,6 +91,9 @@ const _generateWebpackConfigs = (c) => {
     const extendJs = `
     module.exports = ${JSON.stringify(obj, null, 2)}`;
 
+
+    console.log('EXTENDDDDDD', extendJs);
+
     fs.writeFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
@@ -142,9 +147,9 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     let devServerHost = extendConfig.devServerHost || '0.0.0.0';
 
-    
+
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
-        devServerHost = '127.0.0.1'
+        devServerHost = '127.0.0.1';
     }
 
     checkPortInUse(c, platform, port)

@@ -199,46 +199,6 @@ export const parseRenativeConfigsSync = (c) => {
     c.runtime.isWrapper = c.buildConfig.isWrapper;
 
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
-
-    _extraUpdates();
-};
-
-const _extraUpdates = () => {
-    // LOAD ./appConfigs/[APP_ID]/RENATIVE.*.JSON
-    // console.log('SJKHSHS', c.buildConfig);
-
-    // if (!c.buildConfig.defaults.supportedPlatforms) {
-    //     if (c.files.project.package.supportedPlatforms) {
-    //         c.buildConfig.defaults.supportedPlatforms = c.files.project.package.supportedPlatforms;
-    //     } else {
-    //         c.buildConfig.defaults.supportedPlatforms = SUPPORTED_PLATFORMS;
-    //     }
-    //
-    //     logWarning(`You're missing ${chalk.white('supportedPlatforms')} in your ${chalk.white(c.paths.project.config)}. ReNative will generate temporary one`);
-    // }
-
-
-    // if (c.files.project.package) {
-    //     c.paths.private.project.dir = path.join(c.paths.private.dir, c.files.project.package.name);
-    //     c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
-    //     c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
-    // }
-    // c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.appConfigsFolder, 'appConfigsFolder', c.paths.project.appConfigsDir);
-    //
-    // c.paths.project.assets.dir = getRealPath(
-    //     c,
-    //     c.buildConfig.platformAssetsFolder,
-    //     'platformAssetsFolder',
-    //     c.paths.project.assets.dir,
-    // );
-
-    // c.paths.project.projectConfig.pluginsDir = getRealPath(c, c.buildConfig.projectPlugins, 'projectPlugins', c.paths.project.projectConfig.pluginsDir);
-    // c.paths.project.projectConfig.dir = getRealPath(
-    //     c,
-    //     c.buildConfig.projectConfigFolder,
-    //     'projectConfigFolder',
-    //     c.paths.project.projectConfig.dir,
-    // );
 };
 
 const _generateConfigPaths = (pathObj, dir) => {
@@ -266,13 +226,14 @@ const _loadFile = (fileObj, pathObj, key) => {
         pathObj[`${key}Exists`] = false;
         return false;
     }
-    logWarning(`Path ${pathObj[key]} does not exists!`);
+    logWarning(`_loadFile: Path ${pathObj[key]} does not exists!`);
 
     try {
         fileObj[key] = JSON.parse(fs.readFileSync(pathObj[key]).toString());
         pathObj[`${key}Exists`] = true;
         return true;
     } catch (e) {
+        logError(`_loadFile: ${pathObj[key]} :: ${e}`);
         return false;
     }
 };
@@ -344,9 +305,10 @@ const _generateBuildConfig = (c) => {
     const existsPaths = cleanPaths.filter((v) => {
         const exists = fs.existsSync(v);
         if (exists) {
-            console.log(chalk.green(v));
+            console.log(`Merged: ${v}`);
+            // console.log(chalk.green(v));
         } else {
-            console.log(chalk.red(v));
+            // console.log(chalk.red(v));
         }
         return exists;
     });

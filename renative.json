@@ -46,70 +46,54 @@
         }
     },
     "plugins": {
-
-    },
-    "permissions": {
-        "ios": {
-
-        },
-        "android": {
-
-        }
-    },
-    "common": {
-
+      "renative": {
+          "version": "file:./packages/renative",
+          "webpack": {
+              "modulePaths": [],
+              "moduleAliases": {
+                  "renative": {
+                      "projectPath": "packages/renative"
+                  }
+              }
+          }
+      },
+      "react": "source:rnv",
+      "react-art": "source:rnv",
+      "react-dom": "source:rnv",
+      "react-native": "source:rnv",
+      "react-native-web": "source:rnv",
+      "react-native-web-image-loader": "source:rnv",
+      "react-native-gesture-handler": "source:rnv",
+      "react-navigation": "source:rnv",
+      "react-navigation-tabs": "source:rnv",
+      "react-native-reanimated": "source:rnv",
+      "react-native-vector-icons": "source:rnv"
     },
     "platforms": {
-        "ios": {
-            "id": "",
-            "title": "",
-            "description": "",
-            "author": {
-                "name": "",
-                "email": "",
-                "url": ""
-            },
-            "license": "",
-            "runScheme": "",
-            "bundleAssets": false,
-            "entryFile": "",
-            "scheme": "",
-            "teamID": "",
-            "deploymentTarget": "",
-            "provisioningStyle": "",
-            "backgroundColor": "",
-            "systemCapabilities": {},
-            "entitlements": {},
-            "includedPermissions": [],
-            "excludedPermissions": [],
-            "includedFonts": [],
-            "buildSchemes": {},
-            "extra": {}
-        },
-        "android": {
-            "id": "",
-            "title": "",
-            "entryFile": "",
-            "universalApk": false,
-            "multipleAPKs": false,
-            "minSdkVersion": 21,
-            "backgroundColor": "",
-            "permissions": [],
-            "signingConfig": "Release",
-            "multipleAPKs": true,
-            "bundleAssets": true,
-            "bundleIsDev": true,
-            "includedPlugins": [],
-            "excludedPlugins": [],
-            "includedPermissions": [],
-            "excludedPermissions": [],
-            "includedFonts": [],
-            "excludedFonts": [],
-            "buildSchemes": {},
-            "extra": {}
-        }
+      "android": {
+          "gradle.properties": {
+              "android.useDeprecatedNdk": true
+          },
+          "BuildGradle": {
+              "dexOptions": {
+                  "javaMaxHeapSize": "'4g'"
+              }
+          }
+      }
     },
-    "extra": {
-
+    "permissions": {
+      "permissions": {
+          "ios": {},
+          "android": {
+              "INTERNET": {
+                  "key": "android.permission.INTERNET",
+                  "security": "normal"
+              },
+              "SYSTEM_ALERT_WINDOW": {
+                  "key": "android.permission.SYSTEM_ALERT_WINDOW",
+                  "security": "signature"
+              }
+          }
+      }
     }
 }
