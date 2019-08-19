@@ -9,7 +9,7 @@ import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI } from '../systemTools/exec';
+import { executeAsync, execCLI, executeTelnet } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -73,7 +73,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch((err) => {
+                            execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${selectedDevice.name}"`]).catch((err) => {
                                 if (err.includes && err.includes('WHPX')) {
                                     logWarning(err);
                                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -82,7 +82,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                             });
                             return Promise.resolve();
                         }
-                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
+                        return execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${selectedDevice.name}"`]);
                     }
                     logError(`Wrong choice ${v}! Ingoring`);
                 });
@@ -92,7 +92,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch((err) => {
+            execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${actualTarget}"`]).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -101,7 +101,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
             });
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`);
+        return execCLI(c, CLI_ANDROID_EMULATOR, ['-avd', `"${actualTarget}"`]);
     }
     return Promise.reject('No simulator -t target name specified!');
 };
@@ -134,24 +134,22 @@ const _getDeviceString = (device, i) => {
     return `-[${i + 1}] ${deviceString}\n`;
 };
 
-const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
+const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask(`_listAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`);
     try {
         let devicesResult;
         let avdResult;
 
-        child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} kill-server`);
-        child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} start-server`);
+        await execCLI(c, CLI_ANDROID_ADB, ['kill-server']);
+        await execCLI(c, CLI_ANDROID_ADB, ['start-server']);
 
         if (!skipDevices) {
-            devicesResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} devices -l`).toString();
-            logDebug(`${c.cli[CLI_ANDROID_ADB]} devices -l`, devicesResult);
+            devicesResult = await execCLI(c, CLI_ANDROID_ADB, ['devices', '-l']);
         }
         if (!skipAvds) {
-            avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
-            logDebug(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`, avdResult);
+            avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, ['-list-avds']);
         }
-        return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
+        return _parseDevicesResult(devicesResult.stdout, avdResult.stdout, deviceOnly, c);
     } catch (e) {
         return Promise.reject(e);
     }
@@ -347,7 +345,7 @@ const getEmulatorName = async (words) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
 
-    const emulatorReply = await execCLI(null, null, `echo "avd name" | npx nc localhost ${port}`);
+    const emulatorReply = await executeTelnet(port, 'avd name');
     const emulatorReplyArray = emulatorReply.split('OK');
     const emulatorName = emulatorReplyArray[emulatorReplyArray.length - 2].trim();
     return emulatorName;
@@ -492,7 +490,7 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
-    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, [`"system-images;android-${apiVersion};${emuPlatform};x86"`])
         .then(() => executeAsync(c.cli[CLI_ANDROID_AVDMANAGER], ['create', 'avd', '-n', emuName, '-k', `system-images;android-${apiVersion};${emuPlatform};x86`]))
         .catch(e => logError(e, true));
 };

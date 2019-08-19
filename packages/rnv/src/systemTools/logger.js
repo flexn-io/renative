@@ -203,6 +203,8 @@ export const logDebug = (...args) => {
     if (_isInfoEnabled) console.log.apply(null, args);
 };
 
+export const isInfoEnabled = () => _isInfoEnabled;
+
 export const logComplete = (isEnd = false) => {
     console.log(chalk.bold.white(`\n ${RNV} - Done! 🚀`));
     if (isEnd) logEnd(0);

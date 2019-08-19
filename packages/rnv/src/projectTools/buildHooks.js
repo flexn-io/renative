@@ -72,12 +72,12 @@ const buildHooks = c => new Promise((resolve, reject) => {
             resolve();
             return;
         }
-        let babel = resolveNodeModulePath(c, isRunningOnWindows ? '.bin/babel.cmd' : '@babel/cli/bin/babel.js');
+        const babel = resolveNodeModulePath(c, isRunningOnWindows ? '.bin/babel.cmd' : '@babel/cli/bin/babel.js');
         const params = ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'];
         // if (isRunningOnWindows) {
         //     babel = `cmd node ${babel}`
         // }
-        executeAsync(babel, params)
+        executeAsync('babel', params)
             .then(() => {
                 const h = require(c.paths.buildHooksDistIndexPath);
                 c.buildHooks = h.hooks;

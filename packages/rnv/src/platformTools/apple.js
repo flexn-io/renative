@@ -60,7 +60,6 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         .then(() => executeAsync('pod', [command], {
             cwd,
             evn: process.env,
-            stdio: 'inherit',
         })
             .then(() => resolve())
             .catch((e) => {
@@ -401,7 +400,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync('react-native', args);
+    return executeAsync('react-native', args).catch(console.log);
 };
 
 export const getAppFolderName = (c, platform) => {
