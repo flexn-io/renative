@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import Common, { initializeBuilder, startBuilder } from './common';
-import { logComplete, logError, logWelcome, logInfo, configureLogger, logInitialize } from './systemTools/logger';
+import Logger, { logComplete, logError, logWelcome, logInfo, configureLogger, logInitialize } from './systemTools/logger';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
 import App from './cli/app';
@@ -114,7 +114,7 @@ ${chalk.bold.white('OPTIONS:')}
 
 export {
     Constants, Runner, App, Platform, Target, Common, Exec, FileUtils,
-    PlatformTools, Doctor, PluginTools, SetupTools,
+    PlatformTools, Doctor, PluginTools, SetupTools, Logger
     run
 };
 
