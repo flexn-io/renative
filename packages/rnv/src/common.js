@@ -69,7 +69,7 @@ import {
     PLATFORMS
 } from './constants';
 import { executeAsync } from './systemTools/exec';
-import { parseRenativeConfigsSync, createRnvConfig, updateConfig } from './configTools/configParser';
+import { parseRenativeConfigsSync, createRnvConfig, updateConfig, gatherInfo } from './configTools/configParser';
 
 const SUPPORTED_PLATFORMS = [
     IOS,
@@ -285,33 +285,6 @@ const startBuilder = c => new Promise((resolve, reject) => {
         .then(() => logAppInfo(c))
         .then(() => resolve(c))
         .catch(e => reject(e));
-});
-
-const gatherInfo = c => new Promise((resolve, reject) => {
-    logTask('gatherInfo');
-    try {
-        if (fs.existsSync(c.paths.project.package)) {
-            c.files.project.package = JSON.parse(fs.readFileSync(c.paths.project.package).toString());
-        } else {
-            console.log('Missing appConfigPath', c.paths.project.package);
-        }
-        if (fs.existsSync(c.paths.project.assets.config)) {
-            c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.project.assets.config).toString());
-            c.runtime.appId = c.files.appConfigFile.id;
-        } else {
-            console.log('Missing runtimeConfigPath', c.paths.project.assets.config);
-        }
-        if (fs.existsSync(c.paths.project.config)) {
-            c.files.project.config = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
-        } else {
-            console.log('Missing projectConfigPath', c.paths.project.config);
-        }
-        // console.log('SJKHHJS', c.files);
-    } catch (e) {
-        reject(e);
-    }
-
-    resolve();
 });
 
 const configureProject = c => new Promise((resolve, reject) => {

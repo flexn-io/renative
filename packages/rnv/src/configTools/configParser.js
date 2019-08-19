@@ -524,3 +524,30 @@ export const listAppConfigsFoldersSync = (c) => {
     });
     return configDirs;
 };
+
+export const gatherInfo = c => new Promise((resolve, reject) => {
+    logTask('gatherInfo');
+    try {
+        if (fs.existsSync(c.paths.project.package)) {
+            c.files.project.package = JSON.parse(fs.readFileSync(c.paths.project.package).toString());
+        } else {
+            console.log('Missing appConfigPath', c.paths.project.package);
+        }
+        if (fs.existsSync(c.paths.project.builds.config)) {
+            c.files.appConfigFile = JSON.parse(fs.readFileSync(c.paths.project.builds.config).toString());
+            c.runtime.appId = c.files.appConfigFile.id;
+        } else {
+            console.log('Missing runtimeConfigPath', c.paths.project.builds.config);
+        }
+        if (fs.existsSync(c.paths.project.config)) {
+            c.files.project.config = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
+        } else {
+            console.log('Missing projectConfigPath', c.paths.project.config);
+        }
+        // console.log('SJKHHJS', c.files);
+    } catch (e) {
+        reject(e);
+    }
+
+    resolve();
+});
