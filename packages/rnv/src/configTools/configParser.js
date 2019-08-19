@@ -48,7 +48,8 @@ import {
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
     RNV_PROJECT_CONFIG_LOCAL_NAME,
-    PLATFORMS
+    PLATFORMS,
+    SUPPORTED_PLATFORMS
 } from '../constants';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
@@ -60,7 +61,8 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { SUPPORTED_PLATFORMS, getQuestion } from '../common';
+import { getQuestion } from '../common';
+import appRunner, { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore } from '../cli/app';
 
 
 const base = path.resolve('.');
@@ -538,6 +540,95 @@ export const gatherInfo = c => new Promise((resolve, reject) => {
         }
     } catch (e) {
         reject(e);
+    }
+
+    resolve();
+});
+
+export const configureRnvGlobal = c => new Promise((resolve, reject) => {
+    logTask('configureRnvGlobal');
+    // Check globalConfigFolder
+    if (fs.existsSync(c.paths.private.dir)) {
+        console.log(`${c.paths.private.dir} folder exists!`);
+    } else {
+        console.log(`${c.paths.private.dir} folder missing! Creating one for you...`);
+        mkdirSync(c.paths.private.dir);
+    }
+
+    // Check globalConfig
+    if (fs.existsSync(c.paths.private.config)) {
+        console.log(`${c.paths.private.dir}/${RNV_GLOBAL_CONFIG_NAME} file exists!`);
+    } else {
+        console.log(`${c.paths.private.dir}/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
+        copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.private.config);
+        console.log(
+            `Don\'t forget to Edit: ${
+                c.paths.private.dir
+            }/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
+        );
+    }
+
+    if (fs.existsSync(c.paths.private.config)) {
+        c.files.globalConfig = JSON.parse(fs.readFileSync(c.paths.private.config).toString());
+
+        if (c.files.globalConfig.appConfigsPath) {
+            if (!fs.existsSync(c.files.globalConfig.appConfigsPath)) {
+                logWarning(
+                    `Looks like your custom global appConfig is pointing to ${chalk.white(
+                        c.files.globalConfig.appConfigsPath,
+                    )} which doesn't exist! Make sure you create one in that location`,
+                );
+            } else {
+                logInfo(
+                    `Found custom appConfing location pointing to ${chalk.white(
+                        c.files.globalConfig.appConfigsPath,
+                    )}. ReNativewill now swith to that location!`,
+                );
+                c.paths.project.appConfigsDir = c.files.globalConfig.appConfigsPath;
+            }
+        }
+
+        const isRunningOnWindows = process.platform === 'win32';
+
+        // Check global SDKs
+        const { sdks } = c.files.globalConfig;
+        if (sdks) {
+            if (sdks.ANDROID_SDK) {
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, `platform-tools/adb${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/avdmanager${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`);
+            }
+            if (sdks.TIZEN_SDK) {
+                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, `tools/emulator/bin/em-cli${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, `tools/ide/bin/tizen${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
+            }
+            if (sdks.WEBOS_SDK) {
+                c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
+            }
+        } else {
+            logWarning(`Your ${c.paths.private.config} is missing SDK configuration object`);
+        }
+
+
+        // Check config sanity
+        if (c.files.globalConfig.defaultTargets === undefined) {
+            logWarning(
+                `Looks like you\'re missing defaultTargets in your config ${chalk.white(c.paths.private.config)}. Let's add them!`,
+            );
+            const defaultConfig = JSON.parse(
+                fs.readFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json')).toString(),
+            );
+            const newConfig = { ...c.files.globalConfig, defaultTargets: defaultConfig.defaultTargets };
+            fs.writeFileSync(c.paths.private.config, JSON.stringify(newConfig, null, 2));
+        }
     }
 
     resolve();
