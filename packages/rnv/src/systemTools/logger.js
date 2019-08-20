@@ -41,6 +41,10 @@ export const logWelcome = () => {
     if (_c?.files?.rnvPackage?.version) {
         _c.rnvVersion = _c.files.rnv.package.version;
         str += printIntoBox(`      Version: ${chalk.green(_c.rnvVersion)}`, 1);
+        if (_c.rnvVersion.includes('alpha')) {
+            str += printIntoBox(`      ${chalk.yellow('WARNING: this is a prerelease version. use "npm install rnv" for stable one.')}`, 1);
+            str += '\n';
+        }
     }
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
