@@ -2,7 +2,6 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import child_process from 'child_process';
 import inquirer from 'inquirer';
 import net from 'net';
 
@@ -14,7 +13,6 @@ import {
     getAppFolder,
     isPlatformActive,
     logWarning,
-    logInfo,
     logDebug,
     logSuccess,
     CLI_TIZEN_EMULATOR,
@@ -27,6 +25,8 @@ import {
 } from '../common';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
+
+const CHECK_INTEVAL = 2000;
 
 const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
@@ -91,11 +91,11 @@ const addDevelopTizenCertificate = c => new Promise((resolve) => {
 const getDeviceID = async (c, target) => {
     const { device } = c.program;
     if (device) {
-        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`, logTask);
+        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
         if (connectResponse.includes('failed to connect to remote target')) throw new Error(connectResponse);
     }
 
-    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices', logTask);
+    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     if (devicesList.includes(target)) {
         const lines = devicesList.trim().split(/\r?\n/);
         const devices = lines.filter(line => line.includes(target));
@@ -110,39 +110,42 @@ const getDeviceID = async (c, target) => {
     throw `No device matching ${target} could be found.`;
 };
 
-const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
+const waitForEmulatorToBeReady = async (c, emulator) => {
     let attempts = 0;
     const maxAttempts = 10;
-    const poll = setInterval(() => {
-        try {
-            const devicesList = child_process.execSync(`${c.cli[CLI_SDB_TIZEN]} devices`).toString();
-            const lines = devicesList.trim().split(/\r?\n/);
-            const devices = lines.filter(line => line.includes(emulator) && line.includes('device'));
-            if (devices.length > 0) {
-                clearInterval(poll);
-                logDebug('waitForEmulatorToBeReady - boot complete');
-                resolve(true);
-            } else {
-                attempts++;
-                console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-                if (attempts === maxAttempts) {
-                    clearInterval(poll);
-                    throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                }
-            }
-        } catch (e) {
-            console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-            attempts++;
-            if (attempts > maxAttempts) {
-                clearInterval(poll);
-                throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-            }
-        }
-    }, 2000);
-});
+
+    return new Promise((resolve) => {
+        const interval = setInterval(() => {
+            execCLI(c, CLI_SDB_TIZEN, 'devices', { silent: true, timeout: 10000 })
+                .then((devicesList) => {
+                    const lines = devicesList.trim().split(/\r?\n/);
+                    const devices = lines.filter(line => line.includes(emulator) && line.includes('device'));
+                    if (devices.length > 0) {
+                        clearInterval(interval);
+                        logDebug('waitForEmulatorToBeReady - boot complete');
+                        resolve(true);
+                    } else {
+                        attempts++;
+                        console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
+                        if (attempts === maxAttempts) {
+                            clearInterval(interval);
+                            throw new Error('Can\'t connect to the running emulator. Try restarting it.');
+                        }
+                    }
+                }).catch(() => {
+                    console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        throw new Error('Can\'t connect to the running emulator. Try restarting it.');
+                    }
+                });
+        }, CHECK_INTEVAL);
+    });
+};
 
 const getRunningDevices = async (c) => {
-    const devicesList = child_process.execSync(`${c.cli[CLI_SDB_TIZEN]} devices`).toString();
+    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList.trim().split(/\r?\n/);
     const devices = [];
 
@@ -208,7 +211,7 @@ const runTizen = async (c, platform, target) => {
             } catch (e) {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
-                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`, logTask);
+                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
                     await launchTizenSimulator(c, defaultTarget);
                     deviceID = defaultTarget;
                     await waitForEmulatorToBeReady(c, defaultTarget);
@@ -225,11 +228,11 @@ const runTizen = async (c, platform, target) => {
         let hasDevice = false;
 
         !isHosted && await buildWeb(c, platform);
-        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
-        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
+        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
+        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         try {
-            await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask);
+            await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`);
             hasDevice = true;
         } catch (e) {
             if (e && e.includes && e.includes('No device matching')) {
@@ -238,7 +241,7 @@ const runTizen = async (c, platform, target) => {
             }
         }
         try {
-            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask);
+            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`);
             hasDevice = true;
         } catch (err) {
             logError(err);
@@ -253,10 +256,10 @@ const runTizen = async (c, platform, target) => {
         }
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
-            await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask);
+            await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`);
         } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
-            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`, logTask);
+            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`);
         }
         return true;
     };
@@ -320,8 +323,8 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     const certProfile = platformConfig.certificateProfile;
 
     buildWeb(c, platform)
-        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
+        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`))
         .then(() => {
             logSuccess(`Your GWT package is located in ${chalk.white(tOut)} .`);
             return resolve();
