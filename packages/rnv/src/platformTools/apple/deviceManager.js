@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import readline from 'readline';
 import child_process from 'child_process';
 import {
     logTask,
@@ -67,7 +68,7 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimul
     return devices;
 };
 
-const launchAppleSimulator = (c, platform, target) => new Promise((resolve) => {
+export const launchAppleSimulator = (c, platform, target) => new Promise((resolve) => {
     logTask(`launchAppleSimulator:${platform}:${target}`);
 
     const devicesArr = getAppleDevices(c, platform, true);
