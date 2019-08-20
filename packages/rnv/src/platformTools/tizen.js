@@ -22,6 +22,7 @@ import {
     getAppTemplateFolder,
     copyBuildsFolder,
     getConfigProp,
+    waitForEmulator
 } from '../common';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
@@ -110,40 +111,6 @@ const getDeviceID = async (c, target) => {
     throw `No device matching ${target} could be found.`;
 };
 
-const waitForEmulatorToBeReady = async (c, emulator) => {
-    let attempts = 0;
-    const maxAttempts = 10;
-
-    return new Promise((resolve) => {
-        const interval = setInterval(() => {
-            execCLI(c, CLI_SDB_TIZEN, 'devices', { silent: true, timeout: 10000 })
-                .then((devicesList) => {
-                    const lines = devicesList.trim().split(/\r?\n/);
-                    const devices = lines.filter(line => line.includes(emulator) && line.includes('device'));
-                    if (devices.length > 0) {
-                        clearInterval(interval);
-                        logDebug('waitForEmulatorToBeReady - boot complete');
-                        resolve(true);
-                    } else {
-                        attempts++;
-                        console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-                        if (attempts === maxAttempts) {
-                            clearInterval(interval);
-                            throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                        }
-                    }
-                }).catch(() => {
-                    console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
-};
-
 const getRunningDevices = async (c) => {
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList.trim().split(/\r?\n/);
@@ -166,6 +133,12 @@ const getRunningDevices = async (c) => {
 
     return devices;
 };
+
+const waitForEmulatorToBeReady = (c, target) => waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
+    const lines = res.trim().split(/\r?\n/);
+    const devices = lines.filter(line => line.includes(target) && line.includes('device'));
+    return devices.length > 0;
+});
 
 const composeDevicesString = devices => devices.map(device => ({ key: device.id, name: device.name, value: device.id }));
 

@@ -30,6 +30,7 @@ import {
     logInfo,
     getQuestion,
     logSuccess,
+    waitForEmulator,
 } from '../common';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
@@ -546,36 +547,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
         });
 });
 
-const waitForEmulatorToBeReady = (c, emulator) => {
-    let attempts = 0;
-    const maxAttempts = 10;
-
-    return new Promise((resolve) => {
-        const interval = setInterval(() => {
-            execCLI(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`)
-                .then((res) => {
-                    if (res.includes('stopped')) {
-                        clearInterval(interval);
-                        logDebug('waitForEmulatorToBeReady - boot complete');
-                        resolve(emulator);
-                    } else {
-                        attempts++;
-                        console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-                        if (attempts === maxAttempts) {
-                            clearInterval(interval);
-                            throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                        }
-                    }
-                }).catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
-};
+const waitForEmulatorToBeReady = (c, emulator) => waitForEmulator(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, res => res.includes('stopped'));
 
 const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runAndroid:${platform}:${target}`);

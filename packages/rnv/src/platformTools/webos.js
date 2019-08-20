@@ -9,7 +9,6 @@ import {
     logTask,
     getAppFolder,
     isPlatformActive,
-    logWarning,
     logInfo,
     logSuccess,
     getAppVersion,
@@ -18,7 +17,8 @@ import {
     getAppId,
     getAppTemplateFolder,
     copyBuildsFolder,
-    getConfigProp
+    getConfigProp,
+    waitForEmulator
 } from '../common';
 import {
     CLI_WEBOS_ARES_PACKAGE,
@@ -98,35 +98,12 @@ const listWebOSTargets = async (c) => {
 };
 
 const waitForEmulatorToBeReady = async (c) => {
-    let attempts = 0;
-    const maxAttempts = 10;
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
     const emulator = devices.filter(d => !d.isDevice)[0];
     if (!emulator) throw new Error('No WebOS emulator configured');
 
-    return new Promise((resolve) => {
-        const interval = setInterval(() => {
-            execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, { silent: true, timeout: 10000 })
-                .then((res) => {
-                    if (res.includes('modelName')) {
-                        clearInterval(interval);
-                        return resolve();
-                    }
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                    }
-                }).catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
+    return waitForEmulator(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, res => res.includes('modelName'));
 };
 
 const runWebOS = async (c, platform, target) => {
@@ -172,7 +149,7 @@ const runWebOS = async (c, platform, target) => {
             if (response.setupDevice) {
                 // Yes, I would like that
                 logInfo('Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n');
-                await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { stdio: 'inherit', shell: true });
+                await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { stdio: 'inherit', silent: true });
 
                 const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
                 const dev = await parseDevices(c, newDeviceResponse);

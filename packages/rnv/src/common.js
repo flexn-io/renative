@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
-import { exec } from 'child_process';
+import ora from 'ora';
 
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
@@ -68,7 +68,7 @@ import {
     RNV_PROJECT_CONFIG_LOCAL_NAME,
     PLATFORMS
 } from './constants';
-import { executeAsync } from './systemTools/exec';
+import { executeAsync, execCLI } from './systemTools/exec';
 
 const SUPPORTED_PLATFORMS = [
     IOS,
@@ -540,7 +540,7 @@ const configureNodeModules = c => new Promise((resolve, reject) => {
 
 const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
     logTask('_npmInstall');
-    executeAsync('npm', ['install'])
+    executeAsync('npm install')
         .then(() => {
             resolve();
         })
@@ -898,6 +898,39 @@ export const listAppConfigsFoldersSync = (c) => {
         }
     });
     return configDirs;
+};
+
+const waitForEmulator = async (c, cli, command, callback) => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    const spinner = ora('Waiting for emulator to boot...').start();
+
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            execCLI(c, cli, command, { silent: true, timeout: 10000 })
+                .then((resp) => {
+                    if (callback(resp)) {
+                        clearInterval(interval);
+                        spinner.succeed();
+                        return resolve(true);
+                    }
+                    attempts++;
+                    if (attempts === maxAttempts) {
+                        clearInterval(interval);
+                        spinner.fail('Can\'t connect to the running emulator. Try restarting it.');
+                        return reject('Can\'t connect to the running emulator. Try restarting it.');
+                    }
+                }).catch(() => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        spinner.fail('Can\'t connect to the running emulator. Try restarting it.');
+                        return reject('Can\'t connect to the running emulator. Try restarting it.');
+                    }
+                });
+        }, CHECK_INTEVAL);
+    });
 };
 
 const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
@@ -1456,7 +1489,8 @@ export {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
-    configureRnvGlobal
+    configureRnvGlobal,
+    waitForEmulator
 };
 
 export default {
@@ -1533,5 +1567,6 @@ export default {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
-    configureRnvGlobal
+    configureRnvGlobal,
+    waitForEmulator
 };
