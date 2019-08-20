@@ -40,14 +40,14 @@ import {
     KAIOS_SDK,
     FIREFOX_OS,
     FIREFOX_TV,
-    RNV_PROJECT_CONFIG_NAME,
-    RNV_GLOBAL_CONFIG_NAME,
-    RNV_APP_CONFIG_NAME,
-    RNV_PRIVATE_APP_CONFIG_NAME,
+    RENATIVE_CONFIG_NAME,
+    RENATIVE_CONFIG_PRIVATE_NAME,
+    RENATIVE_CONFIG_LOCAL_NAME,
+    RENATIVE_CONFIG_BUILD_NAME,
+    RENATIVE_CONFIG_RUNTIME_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
-    RNV_PROJECT_CONFIG_LOCAL_NAME,
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
@@ -177,9 +177,9 @@ export const parseRenativeConfigsSync = (c) => {
     c.paths.project.projectConfig.pluginsDir = path.join(c.paths.project.projectConfig.dir, 'plugins');
     c.paths.project.projectConfig.fontsDir = path.join(c.paths.project.projectConfig.dir, 'fonts');
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
-    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, 'renative.runtime.json');
+    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_RUNTIME_NAME);
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
-    c.paths.project.builds.config = path.join(c.paths.project.builds.dir, 'renative.build.json');
+    c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
     if (!_loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
@@ -238,9 +238,9 @@ export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
 
 const _generateConfigPaths = (pathObj, dir) => {
     pathObj.dir = dir;
-    pathObj.config = path.join(dir, 'renative.json');
-    pathObj.configLocal = path.join(dir, 'renative.local.json');
-    pathObj.configPrivate = path.join(dir, 'renative.private.json');
+    pathObj.config = path.join(dir, RENATIVE_CONFIG_NAME);
+    pathObj.configLocal = path.join(dir, RENATIVE_CONFIG_LOCAL_NAME);
+    pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
 };
 
 const _versionCheck = (c) => {
@@ -377,7 +377,9 @@ const _generateBuildConfig = (c) => {
 
     const out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
     c.buildConfig = out;
-    writeObjectSync(c.paths.project.builds.config, c.buildConfig);
+    if (fs.existsSync(c.paths.project.builds.dir)) {
+        writeObjectSync(c.paths.project.builds.config, c.buildConfig);
+    }
 };
 
 const _generatePlatformTemplatePaths = (c) => {
@@ -521,14 +523,14 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
     // Check globalConfig
     if (fs.existsSync(c.paths.private.config)) {
-        console.log(`${c.paths.private.dir}/${RNV_GLOBAL_CONFIG_NAME} file exists!`);
+        console.log(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
     } else {
-        console.log(`${c.paths.private.dir}/${RNV_GLOBAL_CONFIG_NAME} file missing! Creating one for you...`);
+        console.log(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
         copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.private.config);
         console.log(
             `Don\'t forget to Edit: ${
                 c.paths.private.dir
-            }/${RNV_GLOBAL_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
+            }/${RENATIVE_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
         );
     }
 

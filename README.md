@@ -9,7 +9,7 @@
   <img src="https://img.shields.io/badge/Platforms_Supported-15-blue.svg" />
   <img src="https://img.shields.io/badge/React_Native-0.59.5-blue.svg" />
   <img src="https://img.shields.io/badge/React-16.8.6-blue.svg" />
-  <img src="https://img.shields.io/badge/Plugins-45-red.svg" />
+  <img src="https://img.shields.io/badge/Plugins-78-red.svg" />
   </p>
 </p>
 

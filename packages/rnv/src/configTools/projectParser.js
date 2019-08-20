@@ -40,14 +40,13 @@ import {
     KAIOS_SDK,
     FIREFOX_OS,
     FIREFOX_TV,
-    RNV_PROJECT_CONFIG_NAME,
-    RNV_GLOBAL_CONFIG_NAME,
-    RNV_APP_CONFIG_NAME,
-    RNV_PRIVATE_APP_CONFIG_NAME,
+    RENATIVE_CONFIG_NAME,
+    RENATIVE_CONFIG_PRIVATE_NAME,
+    RENATIVE_CONFIG_LOCAL_NAME,
+    RENATIVE_CONFIG_TEMPLATE_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
-    RNV_PROJECT_CONFIG_LOCAL_NAME,
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
@@ -98,7 +97,7 @@ export const checkAndCreateProjectConfig = (c, data) => {
     } = data;
     // Check Project Config
     if (!fs.existsSync(c.paths.project.config)) {
-        logInfo(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
+        logInfo(`You're missing ${RENATIVE_CONFIG_NAME} file in your root project! Let's create one!`);
 
         const defaultProjectConfigs = {
             supportedPlatforms: data.optionPlatforms.selectedOptions,
@@ -106,11 +105,11 @@ export const checkAndCreateProjectConfig = (c, data) => {
             defaultAppId: appID.toLowerCase()
         };
 
-        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.projectTemplate.dir, 'rnv-config.json')));
+        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.projectTemplate.dir, RENATIVE_CONFIG_TEMPLATE_NAME)));
 
         obj.defaults = defaultProjectConfigs;
 
-        writeObjectSync(path.join(c.paths.project.dir, RNV_PROJECT_CONFIG_NAME), obj);
+        writeObjectSync(path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME), obj);
     }
 };
 
@@ -130,8 +129,8 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     const cPath = path.join(c.paths.appConfig.dir, 'assets/runtime');
     copyFolderContentsRecursiveSync(cPath, aPath);
 
-    // copyFileSync(c.paths.appConfig.config, path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME));
-    fs.writeFileSync(path.join(c.paths.project.assets.dir, RNV_APP_CONFIG_NAME), JSON.stringify(c.buildConfig, null, 2));
+    // copyFileSync(c.paths.appConfig.config, path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME));
+    fs.writeFileSync(path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME), JSON.stringify(c.buildConfig, null, 2));
 
     // FONTS
     let fontsObj = 'export default [';

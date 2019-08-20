@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
+import { RENATIVE_CONFIG_NAME } from '../constants';
 import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
@@ -112,7 +113,7 @@ const applyTemplate = c => new Promise((resolve, reject) => {
     const currentTemplate = c.buildConfig.defaults.template;
 
     if (!c.buildConfig.defaults) {
-        reject('Your rnv-config.json is missing defaultProjectConfigs object');
+        reject(`Your ${RENATIVE_CONFIG_NAME} is missing defaultProjectConfigs object`);
         return;
     }
 

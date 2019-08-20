@@ -7,7 +7,7 @@ import {
     logTask,
 } from '../common';
 import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
-import { RNV_APP_CONFIG_NAME } from '../constants';
+import { RENATIVE_CONFIG_NAME } from '../constants';
 import { DEPLOY_TARGET_FTP } from './webTools';
 
 const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
@@ -106,7 +106,7 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
     const configFilePath = path.resolve(
         c.buildConfig.appConfigsFolder,
         c.defaultAppConfigId,
-        RNV_APP_CONFIG_NAME
+        RENATIVE_CONFIG_NAME
     );
 
     c.buildConfig.platforms[platform].deploy = c.buildConfig.platforms[platform].deploy || {};

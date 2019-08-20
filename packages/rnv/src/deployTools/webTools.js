@@ -10,7 +10,7 @@ import {
     logInfo
 } from '../common';
 import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
-import { RNV_APP_CONFIG_NAME } from '../constants';
+import { RENATIVE_CONFIG_NAME } from '../constants';
 
 const DEPLOY_TARGET_FTP = 'ftp';
 const DEPLOY_TARGET_NOW = 'now';
@@ -49,7 +49,7 @@ const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) =>
                 const configFilePath = path.resolve(
                     c.buildConfig.appConfigsFolder,
                     c.defaultAppConfigId,
-                    RNV_APP_CONFIG_NAME
+                    RENATIVE_CONFIG_NAME
                 );
                 logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(configFilePath)}`);
                 _runDeployment(c, platform, selectedDeployTarget).then(resolve).catch(reject);

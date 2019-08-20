@@ -30,8 +30,7 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    RNV_APP_CONFIG_NAME,
-    RNV_PROJECT_CONFIG_NAME,
+    RENATIVE_CONFIG_NAME,
     SUPPORTED_PLATFORMS
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
@@ -46,7 +45,10 @@ import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSy
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
-import { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore, copySharedPlatforms } from '../configTools/projectParser';
+import {
+    copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore,
+    copySharedPlatforms, checkAndCreateProjectConfig
+} from '../configTools/projectParser';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';

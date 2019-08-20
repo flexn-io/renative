@@ -7,7 +7,7 @@ import inquirer from 'inquirer';
 import net from 'net';
 
 import { execCLI } from '../systemTools/exec';
-import { RNV_GLOBAL_CONFIG_NAME } from '../constants';
+import { RENATIVE_CONFIG_NAME } from '../constants';
 import {
     logTask,
     logError,
@@ -215,7 +215,7 @@ const runTizen = async (c, platform, target) => {
                     return continueLaunching();
                 } catch (err) {
                     logDebug(err);
-                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.private.dir}/${RNV_GLOBAL_CONFIG_NAME}`);
+                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.private.dir}/${RENATIVE_CONFIG_NAME}`);
                 }
             }
         }
