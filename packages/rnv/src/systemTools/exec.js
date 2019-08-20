@@ -61,19 +61,22 @@ const _execute = (command, opts = {}) => {
 
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
+    logDebug(`_execute: ${cleanCommand}`);
     const spinner = ora(`Executing: ${cleanCommand}`).start();
     return execa.command(cleanCommand, mergedOpts).then((res) => {
         spinner.succeed();
         logDebug(res.all);
-        return res;
+        logDebug(res);
+        return res.stdout;
     }).catch((err) => {
         spinner.fail(err.stdout || err.stderr || err.message);
         logDebug(err.all);
+        logDebug(err);
         return Promise.reject(err.stdout || err.stderr || err.message);
     });
 };
 
-const execCLI = (c, cli, command) => {
+const execCLI = (c, cli, command, opts) => {
     const p = c.cli[cli];
 
     if (!fs.existsSync(p)) {
@@ -82,10 +85,10 @@ const execCLI = (c, cli, command) => {
         )} file if you SDK path is correct`);
     }
 
-    return _execute(`${p} ${command}`, { shell: true });
+    return _execute(`${p} ${command}`, { ...opts, shell: true });
 };
 
-const executeAsync = (cmd, args, opts) => {
+const executeAsync = (cmd, opts) => {
     if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
     return _execute(cmd, opts);
 };
@@ -94,14 +97,18 @@ const executeTelnet = (port, command) => new Promise((resolve) => {
     const nc2 = new NClient();
     logDebug(`execTelnet: ${port} ${command}`);
 
+    let output = '';
+
     nc2.addr('127.0.0.1')
         .port(parseInt(port, 10))
         .connect()
         .send(`${command}\n`);
     nc2.on('data', (data) => {
-        const buffer = Buffer.from(data);
-        return resolve(buffer.toString());
+        const resp = Buffer.from(data).toString();
+        output += resp;
+        if (output.includes('OK')) nc2.close();
     });
+    nc2.on('close', () => resolve(output));
 });
 
 // const executeAsync2 = (

@@ -4,7 +4,6 @@ import fs from 'fs';
 import chalk from 'chalk';
 import semver from 'semver';
 import inquirer from 'inquirer';
-import childProcess from 'child_process';
 import { executeAsync, execCLI, openCommand } from '../systemTools/exec';
 import {
     logTask,
@@ -35,24 +34,17 @@ import { buildWeb } from './web';
 const isRunningOnWindows = process.platform === 'win32';
 const CHECK_INTEVAL = 5000;
 
-const launchWebOSimulator = c => new Promise((resolve, reject) => {
+const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
     const ePath = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
 
     if (!fs.existsSync(ePath)) {
-        reject(`Can't find emulator at path: ${ePath}`);
-        return;
+        return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
 
-    childProcess.exec(`${openCommand} ${ePath}`, (err, stdout, stderr) => {
-        if (err) {
-            reject(err);
-            return;
-        }
-        resolve();
-    });
-});
+    return executeAsync(`${openCommand} ${ePath}`);
+};
 
 const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyWebOSAssets');
@@ -71,7 +63,7 @@ const parseDevices = (c, devicesResponse) => {
         const [name, device, connection, profile] = line.split(' ').map(word => word.trim()).filter(word => word !== '');
         let deviceInfo = '';
         try {
-            deviceInfo = await executeAsync(c.cli[CLI_WEBOS_ARES_DEVICE_INFO], ['-d', name], { silent: true, timeout: 10000 });
+            deviceInfo = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${name}`, { silent: true, timeout: 10000 });
         } catch (e) {
             deviceInfo = e.message;
         }
@@ -89,8 +81,8 @@ const parseDevices = (c, devicesResponse) => {
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
     // try {
-    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`, logTask);
-    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`, logTask);
+    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
     // } catch (e) {
     //     if (e && e.toString().includes(CLI_WEBOS_ARES_INSTALL)) {
     //         logWarning(
@@ -132,7 +124,7 @@ const waitForEmulatorToBeReady = async (c) => {
 
     return new Promise((resolve) => {
         const interval = setInterval(() => {
-            executeAsync(c.cli[CLI_WEBOS_ARES_DEVICE_INFO], ['-d', emulator.name], { silent: true, timeout: 10000 })
+            execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${emulator.name}`, { silent: true, timeout: 10000 })
                 .then((res) => {
                     if (res.includes('modelName')) {
                         clearInterval(interval);
@@ -174,7 +166,7 @@ const runWebOS = async (c, platform, target) => {
 
     // Start the fun
     !isHosted && await buildWeb(c, platform);
-    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask);
+    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
     // List all devices
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
@@ -197,7 +189,7 @@ const runWebOS = async (c, platform, target) => {
             if (response.setupDevice) {
                 // Yes, I would like that
                 logInfo('Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n');
-                await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_SETUP_DEVICE]], { stdio: 'inherit' });
+                await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { stdio: 'inherit', shell: true });
 
                 const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
                 const dev = await parseDevices(c, newDeviceResponse);
@@ -207,9 +199,9 @@ const runWebOS = async (c, platform, target) => {
                     const newDevice = actualDev[0];
                     // Oh boy, oh boy, I did it! I have a TV connected!
                     logInfo('Please enter the `Passphrase` from the TV\'s Developer Mode app');
-                    await executeAsync('bash', [c.cli[CLI_WEBOS_ARES_NOVACOM], '--device', newDevice.name, '--getkey'], { stdio: 'inherit' });
-                    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`, logTask);
-                    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`, logTask);
+                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit' });
+                    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`);
+                    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`);
                 } else {
                     // Yes, I said I would but I didn't
                     // @todo handle user not setting up the device
@@ -217,8 +209,8 @@ const runWebOS = async (c, platform, target) => {
             }
         } else if (actualDevices.length === 1) {
             const tv = actualDevices[0];
-            await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${tv.name} ${appPath}`, logTask);
-            await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${tv.name} ${tId}`, logTask);
+            await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${tv.name} ${appPath}`);
+            await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${tv.name} ${tId}`);
         }
     } else if (!c.program.target) {
         // No target specified
@@ -256,7 +248,7 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
     const tOut = path.join(getAppFolder(c, platform), 'output');
 
     buildWeb(c, platform)
-        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, logTask))
+        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`))
         .then(() => {
             logSuccess(`Your IPK package is located in ${chalk.white(tOut)} .`);
             return resolve();

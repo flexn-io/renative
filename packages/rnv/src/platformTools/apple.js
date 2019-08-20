@@ -57,7 +57,7 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         return resolve();
     }
     return checkIfCommandExists('pod')
-        .then(() => executeAsync('pod', [command], {
+        .then(() => executeAsync(`pod ${command}`, {
             cwd,
             evn: process.env,
         })
@@ -164,30 +164,9 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
             const run = (selectedDevice) => {
                 logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
                 if (selectedDevice.udid) {
-                    p = [
-                        'run-ios',
-                        '--project-path',
-                        appPath,
-                        '--device',
-                        '--udid',
-                        selectedDevice.udid,
-                        '--scheme',
-                        scheme,
-                        '--configuration',
-                        runScheme,
-                    ];
+                    p = `run-ios --project-path ${appPath} --device --udid ${selectedDevice.udid} --scheme ${scheme} --configuration ${runScheme}`;
                 } else {
-                    p = [
-                        'run-ios',
-                        '--project-path',
-                        appPath,
-                        '--device',
-                        selectedDevice.name,
-                        '--scheme',
-                        scheme,
-                        '--configuration',
-                        runScheme,
-                    ];
+                    p = `run-ios --project-path ${appPath} --device ${selectedDevice.name} --scheme ${scheme} --configuration ${runScheme}`;
                 }
 
                 logDebug(`RN params: ${p}`);
@@ -195,11 +174,11 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
                     packageBundleForXcode(c, platform, bundleIsDev)
-                        .then(v => executeAsync('react-native', p))
+                        .then(v => executeAsync(`react-native ${p}`))
                         .then(() => resolve())
                         .catch(e => reject(e));
                 } else {
-                    executeAsync('react-native', p)
+                    executeAsync(`react-native ${p}`)
                         .then(() => resolve())
                         .catch(e => reject(e));
                 }
@@ -242,21 +221,20 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     } else if (device) {
         p = ['run-ios', '--project-path', appPath, '--device', device, '--scheme', scheme, '--configuration', runScheme];
     } else {
-        p = ['run-ios', '--project-path', appPath, '--simulator', target, '--scheme', scheme, '--configuration', runScheme];
+        p = ['run-ios', '--project-path', appPath, '--simulator', target.replace(/(\s+)/g, '\\$1'), '--scheme', scheme, '--configuration', runScheme];
     }
 
-    logDebug('running', p);
     if (p) {
         const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
         if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
             packageBundleForXcode(c, platform, bundleIsDev)
-                .then(v => executeAsync('react-native', p))
+                .then(() => executeAsync(`react-native ${p.join(' ')}`))
                 .then(() => resolve())
                 .catch(e => reject(e));
         } else {
-            executeAsync('react-native', p)
+            executeAsync(`react-native ${p.join(' ')}`)
                 .then(() => resolve())
                 .catch(e => reject(e));
         }
@@ -308,17 +286,13 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     if (ignoreLogs) p.push('-quiet');
     // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
-
-    logDebug('running', p);
-
     logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
-
 
     _workerTimer = setInterval(_archiveLogger, 30000);
 
     if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
-            .then(() => executeAsync('xcodebuild', p))
+            .then(() => executeAsync(`xcodebuild ${p.join(' ')}`))
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
                 clearInterval(_workerTimer);
@@ -329,7 +303,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 reject(e);
             });
     } else {
-        executeAsync('xcodebuild', p)
+        executeAsync(`xcodebuild ${p.join(' ')}`)
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
                 clearInterval(_workerTimer);
@@ -371,7 +345,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
 
-    executeAsync('xcodebuild', p)
+    executeAsync(`xcodebuild ${p.join(' ')}`)
         .then(() => {
             logSuccess(`Your IPA is located in ${chalk.white(exportPath)} .`);
             resolve();
@@ -381,7 +355,6 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
-    const appFolderName = getAppFolderName(c, platform);
     const args = [
         'bundle',
         '--platform',
@@ -400,7 +373,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync('react-native', args).catch(console.log);
+    return executeAsync(`react-native ${args.join(' ')}`);
 };
 
 export const getAppFolderName = (c, platform) => {
