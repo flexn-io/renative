@@ -1,17 +1,4 @@
 {
-  "android": {
-      "gradle.properties": {
-          "android.useDeprecatedNdk": true
-      },
-      "AndroidManifest": {
-          "children": [{
-              "tag": "application",
-              "android:name": ".MainApplication",
-              "android:usesCleartextTraffic": true,
-              "tools:targetApi": 28
-          }]
-      }
-  },
   "plugins": {
       "renative": "source:rnv",
       "react": "source:rnv",
@@ -25,6 +12,21 @@
       "react-navigation-tabs": "source:rnv",
       "react-native-reanimated": "source:rnv",
       "react-native-vector-icons": "source:rnv"
+  },
+  "platforms": {
+    "android": {
+        "gradle.properties": {
+            "android.useDeprecatedNdk": true
+        },
+        "AndroidManifest": {
+            "children": [{
+                "tag": "application",
+                "android:name": ".MainApplication",
+                "android:usesCleartextTraffic": true,
+                "tools:targetApi": 28
+            }]
+        }
+    }
   },
   "permissions": {
       "ios": {},

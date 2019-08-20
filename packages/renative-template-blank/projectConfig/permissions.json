@@ -1,0 +1,15 @@
+{
+  "permissions": {
+      "ios": {},
+      "android": {
+          "INTERNET": {
+              "key": "android.permission.INTERNET",
+              "security": "normal"
+          },
+          "SYSTEM_ALERT_WINDOW": {
+              "key": "android.permission.SYSTEM_ALERT_WINDOW",
+              "security": "signature"
+          }
+      }
+  }
+}

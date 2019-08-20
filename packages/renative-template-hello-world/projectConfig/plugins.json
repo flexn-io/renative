@@ -1,0 +1,29 @@
+{
+  "android": {
+      "gradle.properties": {
+          "android.useDeprecatedNdk": true
+      },
+      "AndroidManifest": {
+          "children": [{
+              "tag": "application",
+              "android:name": ".MainApplication",
+              "android:usesCleartextTraffic": true,
+              "tools:targetApi": 28
+          }]
+      }
+  },
+  "plugins": {
+      "renative": "source:rnv",
+      "react": "source:rnv",
+      "react-art": "source:rnv",
+      "react-dom": "source:rnv",
+      "react-native": "source:rnv",
+      "react-native-web": "source:rnv",
+      "react-native-web-image-loader": "source:rnv",
+      "react-native-gesture-handler": "source:rnv",
+      "react-navigation": "source:rnv",
+      "react-navigation-tabs": "source:rnv",
+      "react-native-reanimated": "source:rnv",
+      "react-native-vector-icons": "source:rnv"
+  }
+}
