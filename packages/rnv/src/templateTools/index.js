@@ -21,7 +21,7 @@ const listTemplates = c => new Promise((resolve, reject) => {
 
 const addTemplate = c => new Promise((resolve, reject) => {
     logTask('addTemplate');
-    executeAsync('npm', ['install', 'renative-template-hello-world', '--save-dev'])
+    executeAsync('npm install renative-template-hello-world --save-dev')
         .then(() => {
             resolve();
         })

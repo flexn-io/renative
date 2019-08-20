@@ -26,6 +26,7 @@ module.exports = {
         'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['el', 'ref', 'event'] }],
         'no-plusplus': 'off',
         'no-shadow': ['error', { builtinGlobals: false, hoist: 'functions', allow: ['describe'] }],
+        'no-unused-expressions': ['error', { 'allowShortCircuit': true }],
         'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
         'react/jsx-indent': ['error', 4],
         'react/jsx-indent-props': ['error', 4],

@@ -40,17 +40,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync('openssl', [
-                'enc',
-                '-aes-256-cbc',
-                '-salt',
-                '-in',
-                destTemp,
-                '-out',
-                dest,
-                '-k',
-                key
-            ], { privateParams: ['-k'] }))
+            .then(() => executeAsync(`openssl enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 fs.writeFileSync(`${dest}.timestamp`, (new Date()).getTime());
@@ -81,17 +71,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
             reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
             return;
         }
-        executeAsync('openssl', [
-            'enc',
-            '-aes-256-cbc',
-            '-d',
-            '-in',
-            source,
-            '-out',
-            destTemp,
-            '-k',
-            key
-        ], { privateParams: ['-k'] })
+        executeAsync(`openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] })
             .then(() => {
                 tar.x(
                     {
@@ -111,7 +91,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
                 reject(e);
             });
     } else {
-        logWarning(`You don\'t have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
+        logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         resolve();
     }
 });
@@ -159,13 +139,7 @@ export const installCerts = c => new Promise((resolve, reject) => {
     const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
 
-    Promise.all(cerArr.map(v => executeAsync('security', [
-        'import',
-        v,
-        '-k',
-        kChain,
-        '-A'
-    ])))
+    Promise.all(cerArr.map(v => executeAsync(`security import ${v} -k ${kChain} -A`)))
         .then(() => resolve())
         .catch((e) => {
             logWarning(e);

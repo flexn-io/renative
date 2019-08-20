@@ -241,7 +241,7 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
         dest
     ];
     try {
-        executeAsync('iconutil', p);
+        executeAsync(`iconutil ${p.join(' ')}`);
         resolve();
     } catch (e) {
         reject(e);

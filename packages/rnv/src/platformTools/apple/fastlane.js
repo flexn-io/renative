@@ -55,7 +55,7 @@ export const updateProfile = c => new Promise((resolve, reject) => {
         args.push(`--${provisioning}`);
     }
 
-    executeAsync('fastlane', args)
+    executeAsync(`fastlane ${args.join(' ')}`)
         .then(() => {
             logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
 

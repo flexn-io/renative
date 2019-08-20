@@ -6,48 +6,15 @@ import chalk from 'chalk';
 import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
+import util from 'util';
 
 import { logDebug } from '../common';
-import { isInfoEnabled } from './logger';
 
 const { exec, execSync } = require('child_process');
 
 const SEPARATOR = process.platform === 'win32' ? ';' : ':';
 const env = Object.assign({}, process.env);
 env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
-
-// const execCLI2 = (c, cli, command, log = console.log) => new Promise((resolve, reject) => {
-//     log(`execCLI:${cli}:${command}`);
-
-//     let toBeExecuted;
-
-//     if (c && cli) {
-//         const p = c.cli[cli];
-
-//         if (!fs.existsSync(p)) {
-//             reject(
-//                 `Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
-//                     c.paths.globalConfigPath
-//                 )} file if you SDK path is correct`
-//             );
-//             return;
-//         }
-//         toBeExecuted = `${p} ${command}`;
-//     } else {
-//         toBeExecuted = command;
-//     }
-
-//     logDebug('ExecCLI:', toBeExecuted);
-
-//     shell.exec(toBeExecuted, { silent: true, env: process.env, stdio: [process.stdin, 'pipe', 'pipe'] }, (error, stdout) => {
-//         if (error) {
-//             reject(`Command ${cli} failed: "${chalk.white(`${toBeExecuted}`)}". ${stdout.trim()}`);
-//             return;
-//         }
-
-//         resolve(stdout.trim());
-//     });
-// });
 
 const _execute = (command, opts = {}) => {
     const defaultOpts = {
@@ -61,8 +28,14 @@ const _execute = (command, opts = {}) => {
 
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
-    logDebug(`_execute: ${cleanCommand}`);
-    const spinner = !mergedOpts.silent && ora(`Executing: ${cleanCommand}`).start();
+    let logMessage = cleanCommand;
+    if (mergedOpts.privateParams) {
+        logMessage = util.format(command, ['*******']);
+        cleanCommand = util.format(command, ...mergedOpts.privateParams);
+    }
+
+    logDebug(`_execute: ${logMessage}`);
+    const spinner = !mergedOpts.silent && ora(`Executing: ${logMessage}`).start();
     return execa.command(cleanCommand, mergedOpts).then((res) => {
         !mergedOpts.silent && spinner.succeed();
         logDebug(res.all);
@@ -110,104 +83,6 @@ const executeTelnet = (port, command) => new Promise((resolve) => {
     });
     nc2.on('close', () => resolve(output));
 });
-
-// const executeAsync2 = (
-//     cmd,
-//     args,
-//     opts = {}
-// ) => new Promise((resolve, reject) => {
-//     if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
-
-//     const defaultOpts = {
-//         // cwd: process.cwd(),
-//         privateParams: [],
-//         stdio: 'pipe',
-//         env,
-//         shell: true,
-//     };
-
-//     const mergedOpts = { ...defaultOpts, ...opts };
-
-//     let timeout;
-//     let cleanArgs = '';
-//     let hideNext = false;
-//     const pp = mergedOpts?.privateParams || [];
-//     if (args) {
-//         args.forEach((v) => {
-//             if (hideNext) {
-//                 hideNext = false;
-//                 cleanArgs += ' ***********';
-//             } else {
-//                 cleanArgs += ` ${v}`;
-//             }
-//             if (pp.includes(v)) {
-//                 hideNext = true;
-//             }
-//         });
-//     }
-
-//     logDebug(`executeAsync:${cmd} ${cleanArgs}`);
-
-//     const command = spawn(cmd, args, mergedOpts);
-
-//     let stdout = '';
-//     let stdoutErr = '';
-//     let ended = false;
-//     const findError = new RegExp(/error |fatal |invalid /i);
-
-//     /* eslint-disable-next-line no-unused-expressions */
-//     command.stdout
-//             && command.stdout.on('data', (output) => {
-//                 const outputStr = output.toString();
-//                 if (outputStr) {
-//                     stdout += outputStr;
-
-//                     if (findError.test(outputStr)) {
-//                         stdoutErr += outputStr;
-//                     }
-//                 }
-//             });
-
-//     /* eslint-disable-next-line no-unused-expressions */
-//     command.stderr
-//             && command.stderr.on('data', (output) => {
-//                 const outputStr = output.toString();
-//                 if (outputStr) stdoutErr += outputStr;
-//             });
-
-//     command.on('close', (code) => {
-//         if (timeout) clearTimeout(timeout);
-//         logDebug(`Command ${cmd} ${cleanArgs} exited with code ${code}`);
-//         if (code !== 0) {
-//             reject(new Error(`process exited with code ${code}. <ERROR> ${stdoutErr} </ERROR>`));
-//         } else {
-//             ended = true;
-
-//             logDebug('Execute Command:', stdout);
-//             resolve(stdout);
-//         }
-//     });
-
-//     command.on('error', (error) => {
-//         if (timeout) clearTimeout(timeout);
-//         logDebug(`Command ${cmd} ${cleanArgs} errored with ${error}`);
-//         reject(new Error(`process errored with ${error}`));
-//     });
-
-//     const killChildProcess = () => {
-//         if (timeout) clearTimeout(timeout);
-//         if (ended) return;
-//         logDebug(`Killing child process ${cmd} ${cleanArgs}`);
-//         command.kill(1);
-//     };
-
-//     if (opts.timeout) {
-//         timeout = setTimeout(killChildProcess, opts.timeout);
-//     }
-
-//     process.on('exit', killChildProcess);
-//     process.on('SIGINT', killChildProcess);
-// });
 
 function execShellAsync(command) {
     logDebug('Exec:', command);
