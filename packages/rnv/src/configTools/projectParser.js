@@ -199,3 +199,33 @@ export const copySharedPlatforms = c => new Promise((resolve) => {
 
     resolve();
 });
+
+export const configureEntryPoints = (c) => {
+    logTask('configureEntryPoints');
+    // Check entry
+    // TODO: RN bundle command fails if entry files are not at root
+    // logTask('configureProject:check entry');
+    // if (!fs.existsSync(c.paths.entryFolder)) {
+    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
+    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryFolder);
+    // }
+    let plat;
+    const p = c.buildConfig.platforms;
+    for (const k in p) {
+        plat = p[k];
+        const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
+        const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
+        const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
+        if (!fs.existsSync(dest)) {
+            if (!plat.entryFile) {
+                logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
+            } else if (!fs.existsSync(source)) {
+                logWarning(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                copyFileSync(backupSource, dest);
+            } else {
+                logWarning(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                copyFileSync(source, dest);
+            }
+        }
+    }
+};

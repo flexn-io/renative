@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import { mergeObjects } from '../systemTools/fileutils';
-import { logTask, logWarning, getConfigProp } from '../common';
+import { logTask, logWarning, logError, getConfigProp } from '../common';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
@@ -30,22 +30,26 @@ const parsePlugins = (c, platform, pluginCallback) => {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
-            const { plugins } = c.buildConfig;
-            Object.keys(plugins).forEach((key) => {
-                if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {
-                    const plugin = getMergedPlugin(c, key, plugins);
-                    if (plugin) {
-                        const pluginPlat = plugin[platform];
-                        if (pluginPlat) {
-                            if (plugin['no-active'] !== true && plugin.enabled !== false && pluginPlat.enabled !== false) {
-                                if (pluginCallback) pluginCallback(plugin, pluginPlat, key);
-                            } else {
-                                logWarning(`Plugin ${key} is marked disabled. skipping.`);
+            const plugins = c.buildConfig.plugins;
+            if (plugins) {
+                Object.keys(plugins).forEach((key) => {
+                    if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {
+                        const plugin = getMergedPlugin(c, key, plugins);
+                        if (plugin) {
+                            const pluginPlat = plugin[platform];
+                            if (pluginPlat) {
+                                if (plugin['no-active'] !== true && plugin.enabled !== false && pluginPlat.enabled !== false) {
+                                    if (pluginCallback) pluginCallback(plugin, pluginPlat, key);
+                                } else {
+                                    logWarning(`Plugin ${key} is marked disabled. skipping.`);
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
+            } else {
+                logError(`You have no plugins defined in ${chalk.white(c.paths.project.builds.config)}`);
+            }
         } else {
             logWarning(`You haven't included any ${chalk.white('{ common: { includedPlugins: [] }}')} in your ${chalk.white(c.paths.appConfig.config)}. Your app might not work correctly`);
         }
