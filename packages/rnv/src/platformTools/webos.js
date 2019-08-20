@@ -46,7 +46,7 @@ const launchWebOSimulator = (c) => {
     return executeAsync(`${openCommand} ${ePath}`);
 };
 
-const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
+const copyWebOSAssets = (c, platform) => new Promise((resolve) => {
     logTask('copyWebOSAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -58,14 +58,14 @@ const copyWebOSAssets = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const parseDevices = (c, devicesResponse) => {
-    const linesArray = devicesResponse.split('\n').slice(2).map(line => line.trim());
+    const linesArray = devicesResponse.split('\n').slice(2).map(line => line.trim()).filter(line => line !== '');
     return Promise.all(linesArray.map(async (line) => {
         const [name, device, connection, profile] = line.split(' ').map(word => word.trim()).filter(word => word !== '');
         let deviceInfo = '';
         try {
             deviceInfo = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, `-d ${name}`, { silent: true, timeout: 10000 });
         } catch (e) {
-            deviceInfo = e.message;
+            deviceInfo = e;
         }
 
         return {
@@ -80,25 +80,8 @@ const parseDevices = (c, devicesResponse) => {
 };
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
-    // try {
     await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
-    // } catch (e) {
-    //     if (e && e.toString().includes(CLI_WEBOS_ARES_INSTALL)) {
-    //         logWarning(
-    //             `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
-    //                 'rnv target launch -p webos -t emulator'
-    //             )}"`
-    //         );
-
-    //         await launchWebOSimulator(c, target);
-    //         logInfo(
-    //             `Once simulator is ready run: "${chalk.white.bold('rnv run -p webos -t emulator')}" again`
-    //         );
-    //     } else {
-    //         throw e;
-    //     }
-    // }
 };
 
 const buildDeviceChoices = devices => devices.map(device => ({

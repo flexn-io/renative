@@ -62,14 +62,14 @@ const _execute = (command, opts = {}) => {
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
     logDebug(`_execute: ${cleanCommand}`);
-    const spinner = ora(`Executing: ${cleanCommand}`).start();
+    const spinner = !mergedOpts.silent && ora(`Executing: ${cleanCommand}`).start();
     return execa.command(cleanCommand, mergedOpts).then((res) => {
-        spinner.succeed();
+        !mergedOpts.silent && spinner.succeed();
         logDebug(res.all);
         logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        spinner.fail(err.stdout || err.stderr || err.message);
+        !mergedOpts.silent && spinner.fail(err.stdout || err.stderr || err.message);
         logDebug(err.all);
         logDebug(err);
         return Promise.reject(err.stdout || err.stderr || err.message);
