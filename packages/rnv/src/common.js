@@ -35,7 +35,7 @@ import {
     parseRenativeConfigsSync, createRnvConfig, updateConfig, gatherInfo,
     fixRenativeConfigsSync, configureRnvGlobal
 } from './configTools/configParser';
-import { configureEntryPoints, configureNodeModules, copyBuildsFolder } from './configTools/projectParser';
+import { configureEntryPoints, configureNodeModules, copyBuildsFolder } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 
 const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto'];

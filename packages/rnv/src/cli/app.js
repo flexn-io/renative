@@ -48,7 +48,7 @@ import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../sy
 import {
     copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore,
     copySharedPlatforms, checkAndCreateProjectConfig
-} from '../configTools/projectParser';
+} from '../projectTools/projectParser';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';

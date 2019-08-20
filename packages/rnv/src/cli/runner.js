@@ -58,7 +58,7 @@ import {
 } from '../platformTools/electron';
 import PlatformSetup from '../setupTools';
 import { executePipe } from '../projectTools/buildHooks';
-import { cleanNodeModules } from '../configTools/projectParser';
+import { cleanNodeModules } from '../projectTools/projectParser';
 import {
     packageAndroid,
     runAndroid,
