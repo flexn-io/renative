@@ -275,6 +275,18 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     resolve();
 });
 
+export const cleanNodeModules = c => new Promise((resolve, reject) => {
+    logTask(`cleanNodeModules:${c.paths.project.nodeModulesDir}`);
+    removeDirs([
+        path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+    ]).then(() => resolve()).catch(e => reject(e));
+});
+
 export const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules

@@ -14,7 +14,7 @@ import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
-import { getMergedPlugin, parsePlugins } from './pluginTools';
+import { getMergedPlugin, configurePlugins } from './pluginTools';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -40,6 +40,68 @@ import { askQuestion, generateOptions, finishQuestion } from './systemTools/prom
 
 const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto'];
 
+const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+    const c = createRnvConfig(program, process, cmd, subCmd);
+
+    configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
+    logInitialize();
+
+    resolve(c);
+});
+
+const startBuilder = c => new Promise((resolve, reject) => {
+    logTask('initializeBuilder');
+
+    c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.pluginTemplates.config)).toString());
+
+    if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
+        resolve(c);
+        return;
+    }
+
+    parseRenativeConfigsSync(c);
+
+    if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage') {
+        configureRnvGlobal(c)
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
+
+    if (!c.paths.project.configExists) {
+        reject(
+            `Looks like this directory is not ReNative project. Project config ${chalk.white(
+                c.paths.project.config,
+            )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
+        );
+    }
+
+    if (c.command === 'platform') {
+        configureRnvGlobal(c)
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
+
+    if (NO_OP_COMMANDS.includes(c.command)) {
+        gatherInfo(c)
+            .then(() => resolve(c))
+            .catch(e => reject(c));
+        return;
+    }
+
+    configureRnvGlobal(c)
+        .then(() => checkIfTemplateInstalled(c))
+        .then(() => fixRenativeConfigsSync(c))
+        .then(() => configureNodeModules(c))
+        .then(() => applyTemplate(c))
+        .then(() => configurePlugins(c))
+        .then(() => configureNodeModules(c))
+        .then(() => configureApp(c))
+        .then(() => logAppInfo(c))
+        .then(() => resolve(c))
+        .catch(e => reject(e));
+});
 
 const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -123,152 +185,6 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     } else {
         resolve(scheme);
     }
-});
-
-const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
-    const c = createRnvConfig(program, process, cmd, subCmd);
-
-    configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
-    logInitialize();
-
-    resolve(c);
-});
-
-const startBuilder = c => new Promise((resolve, reject) => {
-    logTask('initializeBuilder');
-
-    c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.pluginTemplates.config)).toString());
-
-    if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
-        resolve(c);
-        return;
-    }
-
-    parseRenativeConfigsSync(c);
-
-    if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage') {
-        configureRnvGlobal(c)
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
-    }
-
-    if (!c.paths.project.configExists) {
-        reject(
-            `Looks like this directory is not ReNative project. Project config ${chalk.white(
-                c.paths.project.config,
-            )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
-        );
-    }
-
-    if (c.command === 'platform') {
-        configureRnvGlobal(c)
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
-    }
-
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        gatherInfo(c)
-            .then(() => resolve(c))
-            .catch(e => reject(c));
-        return;
-    }
-
-    configureRnvGlobal(c)
-        .then(() => checkIfTemplateInstalled(c))
-        .then(() => fixRenativeConfigsSync(c))
-        .then(() => configureNodeModules(c))
-        .then(() => applyTemplate(c))
-        .then(() => configurePlugins(c))
-        .then(() => configureNodeModules(c))
-        .then(() => configureApp(c))
-        .then(() => logAppInfo(c))
-        .then(() => resolve(c))
-        .catch(e => reject(e));
-});
-
-const cleanNodeModules = c => new Promise((resolve, reject) => {
-    logTask(`cleanNodeModules:${c.paths.project.nodeModulesDir}`);
-    removeDirs([
-        path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-    ]).then(() => resolve()).catch(e => reject(e));
-});
-
-const configurePlugins = c => new Promise((resolve, reject) => {
-    if (!c.files.project.package.dependencies) {
-        c.files.project.package.dependencies = {};
-    }
-
-    let hasPackageChanged = false;
-    for (const k in c.buildConfig.plugins) {
-        const dependencies = c.files.project.package.dependencies;
-        const devDependencies = c.files.project.package.devDependencies;
-        const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
-
-        if (!plugin) {
-            logWarning(`Plugin with name ${
-                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
-                chalk.white(c.paths.project.builds.config)}`);
-        } else if (dependencies && dependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
-                if (k === 'renative' && c.runtime.isWrapper) {
-                    logWarning('You\'re in ReNative wrapper mode. plugin renative will stay as local dep!');
-                } else {
-                    logWarning(
-                        `Version mismatch of dependency ${chalk.white(k)} between:
-  ${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
-  ${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(plugin.version)}).
-  package.json will be overriden`
-                    );
-                    hasPackageChanged = true;
-                    dependencies[k] = plugin.version;
-                }
-            }
-        } else if (devDependencies && devDependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependencies[k] !== plugin.version) {
-                logWarning(
-                    `Version mismatch of devDependency ${chalk.white(k)} between package.json: v(${chalk.red(
-                        devDependencies[k],
-                    )}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`,
-                );
-                hasPackageChanged = true;
-                devDependencies[k] = plugin.version;
-            }
-        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
-            // Dependency does not exists
-            logWarning(
-                `Missing dependency ${chalk.white(k)} v(${chalk.red(
-                    plugin.version,
-                )}) in package.json. package.json will be overriden`,
-            );
-
-            hasPackageChanged = true;
-            dependencies[k] = plugin.version;
-        }
-
-        if (plugin && plugin.npm) {
-            for (const npmKey in plugin.npm) {
-                const npmDep = plugin.npm[npmKey];
-                if (dependencies[npmKey] !== npmDep) {
-                    logWarning(`Plugin ${chalk.white(k)} requires npm dependency ${chalk.white(npmKey)} .Adding missing npm dependency to you package.json`);
-                    dependencies[npmKey] = npmDep;
-                    hasPackageChanged = true;
-                }
-            }
-        }
-    }
-    if (hasPackageChanged) {
-        writeObjectSync(c.paths.project.package, c.files.project.package);
-        c._requiresNpmInstall = true;
-    }
-
-    resolve();
 });
 
 const configureApp = c => new Promise((resolve, reject) => {
@@ -607,7 +523,6 @@ export {
     generateOptions,
     logWelcome,
     isPlatformSupported,
-    cleanNodeModules,
     isBuildSchemeSupported,
     isPlatformSupportedSync,
     getAppFolder,
@@ -656,7 +571,6 @@ export default {
     generateOptions,
     logWelcome,
     copyBuildsFolder,
-    cleanNodeModules,
     isPlatformSupported,
     isBuildSchemeSupported,
     isPlatformSupportedSync,

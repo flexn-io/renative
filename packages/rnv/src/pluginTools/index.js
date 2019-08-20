@@ -23,6 +23,78 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     return plugin;
 };
 
+
+export const configurePlugins = c => new Promise((resolve, reject) => {
+    if (!c.files.project.package.dependencies) {
+        c.files.project.package.dependencies = {};
+    }
+
+    let hasPackageChanged = false;
+    for (const k in c.buildConfig.plugins) {
+        const dependencies = c.files.project.package.dependencies;
+        const devDependencies = c.files.project.package.devDependencies;
+        const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
+
+        if (!plugin) {
+            logWarning(`Plugin with name ${
+                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
+                chalk.white(c.paths.project.builds.config)}`);
+        } else if (dependencies && dependencies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
+                if (k === 'renative' && c.runtime.isWrapper) {
+                    logWarning('You\'re in ReNative wrapper mode. plugin renative will stay as local dep!');
+                } else {
+                    logWarning(
+                        `Version mismatch of dependency ${chalk.white(k)} between:
+  ${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
+  ${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(plugin.version)}).
+  package.json will be overriden`
+                    );
+                    hasPackageChanged = true;
+                    dependencies[k] = plugin.version;
+                }
+            }
+        } else if (devDependencies && devDependencies[k]) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependencies[k] !== plugin.version) {
+                logWarning(
+                    `Version mismatch of devDependency ${chalk.white(k)} between package.json: v(${chalk.red(
+                        devDependencies[k],
+                    )}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`,
+                );
+                hasPackageChanged = true;
+                devDependencies[k] = plugin.version;
+            }
+        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+            // Dependency does not exists
+            logWarning(
+                `Missing dependency ${chalk.white(k)} v(${chalk.red(
+                    plugin.version,
+                )}) in package.json. package.json will be overriden`,
+            );
+
+            hasPackageChanged = true;
+            dependencies[k] = plugin.version;
+        }
+
+        if (plugin && plugin.npm) {
+            for (const npmKey in plugin.npm) {
+                const npmDep = plugin.npm[npmKey];
+                if (dependencies[npmKey] !== npmDep) {
+                    logWarning(`Plugin ${chalk.white(k)} requires npm dependency ${chalk.white(npmKey)} .Adding missing npm dependency to you package.json`);
+                    dependencies[npmKey] = npmDep;
+                    hasPackageChanged = true;
+                }
+            }
+        }
+    }
+    if (hasPackageChanged) {
+        writeObjectSync(c.paths.project.package, c.files.project.package);
+        c._requiresNpmInstall = true;
+    }
+
+    resolve();
+});
+
 const parsePlugins = (c, platform, pluginCallback) => {
     logTask(`parsePlugins:${platform}`);
 
