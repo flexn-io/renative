@@ -50,6 +50,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
+import { isPlatformActive, getAppFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
@@ -61,6 +62,7 @@ import {
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
 import { getQuestion } from '../systemTools/prompt';
+import { getMergedPlugin, parsePlugins } from '../pluginTools';
 
 
 export const checkAndCreateProjectPackage = (c, data) => {
@@ -105,7 +107,7 @@ export const checkAndCreateProjectConfig = (c, data) => {
             defaultAppId: appID.toLowerCase()
         };
 
-        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.projectTemplate.dir, RENATIVE_CONFIG_TEMPLATE_NAME)));
+        const obj = readObjectSync(path.join(c.paths.rnv.projectTemplate.dir, RENATIVE_CONFIG_TEMPLATE_NAME));
 
         obj.defaults = defaultProjectConfigs;
 
@@ -229,3 +231,88 @@ export const configureEntryPoints = (c) => {
         }
     }
 };
+
+export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`copyBuildsFolder:${platform}`);
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    const destPath = path.join(getAppFolder(c, platform));
+
+    // FOLDER MERGERS PROJECT CONFIG
+    const sourcePath1 = getBuildsFolder(c, platform, c.paths.project.projectConfig.dir);
+    copyFolderContentsRecursiveSync(sourcePath1, destPath);
+
+    // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
+    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.private.project.projectConfig.dir);
+    copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
+
+    // FOLDER MERGERS FROM APP CONFIG
+    const sourcePath0 = getBuildsFolder(c, platform, c.paths.appConfig.dir);
+    copyFolderContentsRecursiveSync(sourcePath0, destPath, c.paths.appConfig.dir);
+
+    // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
+    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.private.appConfig.dir);
+    copyFolderContentsRecursiveSync(sourcePath0sec, destPath);
+
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
+        const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.project.projectConfig.dir, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath3, destPath);
+
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
+        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.private.project.projectConfig.dir, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath3sec, destPath);
+
+        // FOLDER MERGES FROM APP CONFIG PLUGIN
+        const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath2, destPath);
+
+        // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
+        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.private.appConfig.dir, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath2sec, destPath);
+    });
+
+    resolve();
+});
+
+export const configureNodeModules = c => new Promise((resolve, reject) => {
+    logTask('configureNodeModules');
+    // Check node_modules
+    if (!fs.existsSync(c.paths.project.nodeModulesDir) || c._requiresNpmInstall) {
+        if (!fs.existsSync(c.paths.project.nodeModulesDir)) {
+            logWarning(
+                `Looks like your node_modules folder ${chalk.white(c.paths.project.nodeModulesDir)} is missing! Let's run ${chalk.white(
+                    'npm install',
+                )} first!`,
+            );
+        } else {
+            logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
+        }
+        _npmInstall(c).then(() => resolve()).catch(e => reject(e));
+    } else {
+        resolve();
+    }
+});
+
+const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
+    logTask('_npmInstall');
+    executeAsync('npm', ['install'])
+        .then(() => {
+            resolve();
+        })
+        .catch((e) => {
+            if (failOnError) {
+                logError(e);
+                resolve();
+            } else {
+                logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
+                cleanNodeModules(c)
+                    .then(() => _npmInstall(c, true))
+                    .then(() => resolve())
+                    .catch((e) => {
+                        logError(e);
+                        resolve();
+                    });
+            }
+        });
+});
