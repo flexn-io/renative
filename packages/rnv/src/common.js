@@ -93,7 +93,7 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
         return false;
     }
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        if (reject) reject(chalk.red(`Platform ${platform} is not supported`));
+        if (reject) reject(chalk.red(`Platform ${platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))} .`));
         return false;
     }
     if (resolve) resolve();
@@ -119,7 +119,7 @@ export const isPlatformSupported = c => new Promise((resolve, reject) => {
                 .catch(e => reject(e));
         });
     } else if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
-        reject(chalk.red(`Platform ${c.platform} is not supported`));
+        reject(chalk.red(`Platform ${c.platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))}`));
     } else {
         resolve();
     }

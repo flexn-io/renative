@@ -282,7 +282,7 @@ This might result in unexpected behaviour! It is recommended that you run your r
 export const loadFile = (fileObj, pathObj, key) => {
     if (!fs.existsSync(pathObj[key])) {
         pathObj[`${key}Exists`] = false;
-        logWarning(`loadFile: Path ${pathObj[key]} does not exists!`);
+        logDebug(`WARNING: loadFile: Path ${pathObj[key]} does not exists!`);
         return false;
     }
     pathObj[`${key}Exists`] = true;
