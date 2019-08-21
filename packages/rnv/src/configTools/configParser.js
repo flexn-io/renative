@@ -553,13 +553,19 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
     if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
         console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file exists!`);
     } else {
-        console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
-        copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.GLOBAL_RNV_CONFIG);
-        console.log(
-            `Don\'t forget to Edit: ${
-                c.paths.GLOBAL_RNV_DIR
-            }/${RENATIVE_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
-        );
+        const oldGlobalConfigPath = path.join(c.paths.GLOBAL_RNV_DIR, 'config.json');
+        if (fs.existsSync(oldGlobalConfigPath)) {
+            logWarning('Found old version of your config. will copy it to new renative.json config');
+            copyFileSync(oldGlobalConfigPath, c.paths.GLOBAL_RNV_CONFIG);
+        } else {
+            console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
+            copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.GLOBAL_RNV_CONFIG);
+            console.log(
+                `Don\'t forget to Edit: ${
+                    c.paths.GLOBAL_RNV_DIR
+                }/${RENATIVE_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
+            );
+        }
     }
 
     if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
