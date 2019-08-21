@@ -265,19 +265,17 @@ const _deployApp = c => new Promise((resolve, reject) => {
 });
 
 const configureHostedIfRequired = async (c, platform) => {
-    const { device } = c.program;
     if (_isWebHostEnabled(c, platform)) {
         logDebug('Running hosted build');
-        const { platformBuildsFolder, rnvRootFolder } = c.paths;
-        copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.runtime.appId}_${platform}`, 'public'));
-        writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
+        const { project, rnv } = c.paths;
+        copyFolderContentsRecursiveSync(path.join(rnv.dir, 'supportFiles', 'appShell'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public'));
+        writeCleanFile(path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.platformDefaults[platform].defaultPort}` },
         ]);
     }
 };
 
 const startHostedServerIfRequired = (c, platform) => {
-    const { device } = c.program;
     if (_isWebHostEnabled(c, platform)) {
         return _startServer(c);
     }

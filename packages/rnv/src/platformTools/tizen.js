@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import net from 'net';
 
 import { execCLI } from '../systemTools/exec';
-import { RENATIVE_CONFIG_NAME } from '../constants';
+import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../constants';
 import {
     logTask,
     logError,
@@ -15,9 +15,6 @@ import {
     logWarning,
     logDebug,
     logSuccess,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_SDB_TIZEN,
     writeCleanFile,
     getAppTemplateFolder,
     copyBuildsFolder,

@@ -12,12 +12,6 @@ import inquirer from 'inquirer';
 import { executeAsync, execCLI, executeTelnet } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER
-} from '../constants';
-import {
     logTask,
     logError,
     getAppFolder,
@@ -33,7 +27,7 @@ import {
 } from '../common';
 import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
+import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../constants';
 import { parsePlugins } from '../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
 import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './android/kotlinParser';
