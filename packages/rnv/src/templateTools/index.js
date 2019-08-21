@@ -9,8 +9,10 @@ import {
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
     removeFilesSync, mergeObjects
 } from '../systemTools/fileutils';
-import { logError, logInfo, generateOptions, logWarning, logTask, configureEntryPoints } from '../common';
+import { logError, logInfo, logWarning, logTask } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
+import { generateOptions } from '../systemTools/prompt';
+import { configureEntryPoints } from '../projectTools/projectParser';
 import { setAppConfig } from '../configTools/configParser';
 
 import { templates } from '../../renativeTemplates/templates.json';
