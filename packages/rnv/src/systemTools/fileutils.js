@@ -101,12 +101,20 @@ const cleanFolder = d => new Promise((resolve, reject) => {
     });
 });
 
-const removeFilesSync = filePaths => new Promise((resolve, reject) => {
+const removeFilesSync = (filePaths) => {
     logDebug('removeFilesSync', filePaths);
     filePaths.forEach((filePath) => {
-        fs.unlinkSync(filePath);
+        try {
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            } else {
+                logDebug(`Path ${filePath} does not exist`);
+            }
+        } catch (e) {
+            logError(e);
+        }
     });
-});
+};
 
 const removeDirsSync = (dirPaths) => {
     logDebug('removeDirsSync', dirPaths);
