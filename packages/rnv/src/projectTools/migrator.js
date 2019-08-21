@@ -12,6 +12,7 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
 
     const paths = {
         project: prjDir,
+        globalConfig: path.join(c.paths.GLOBAL_RNV_DIR, 'config.json'),
         config: path.join(prjDir, 'rnv-config.json'),
         package: path.join(prjDir, 'package.json'),
         plugins: path.join(prjDir, 'projectConfig/plugins.json'),
@@ -42,8 +43,25 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
     }
 });
 
+const PATH_PROPS = [
+    'globalConfigFolder',
+    'appConfigsFolder',
+    'platformTemplatesFolder',
+    'entryFolder',
+    'platformAssetsFolder',
+    'platformBuildsFolder',
+    'projectPlugins',
+    'projectConfigFolder',
+];
+
 const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
-    logWarning('MIGRATION FEATURE NOT IMPLEMENTED YET!');
+    logTask('MIGRATION STARTED');
+
+    if (!fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
+        if (fs.existsSync(paths.globalConfig)) {
+            copyFileSync(paths.globalConfig, c.paths.GLOBAL_RNV_CONFIG);
+        }
+    }
 
     const files = {
         config: readObjectSync(paths.config),
@@ -54,22 +72,26 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
 
     console.log('paths to migrate:', paths);
 
-    let newConfig = {};
+    const newConfig = {};
 
     if (files.package) {
         newConfig.projectName = files.package.name;
     }
 
     if (files.config) {
-        newConfig = mergeObjects(newConfig, files.config);
-
         newConfig.defaults = {};
 
         if (files.defaultProjectConfigs) {
             newConfig.defaults = mergeObjects(newConfig.defaults, files.defaultProjectConfigs);
         }
-
         newConfig.currentTemplate = newConfig.defaults.template || 'renative-template-hello-world';
+
+        newConfig.paths = {};
+        PATH_PROPS.forEach((v) => {
+            if (files.config[v]) {
+                newConfig.paths[v] = files.config[v];
+            }
+        });
 
         if (files.defaultPorts) {
             newConfig.defaults.ports = files.defaultPorts;
