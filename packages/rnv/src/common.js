@@ -54,7 +54,8 @@ export const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
     if (NO_OP_COMMANDS.includes(c.command)) {
-        gatherInfo(c)
+        configureRnvGlobal(c)
+            .then(() => gatherInfo(c))
             .then(() => resolve(c))
             .catch(e => reject(c));
         return;
