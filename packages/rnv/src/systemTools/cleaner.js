@@ -5,7 +5,7 @@ import { removeDirs } from './fileutils';
 import { logTask } from '../common';
 import { askQuestion, generateOptions, finishQuestion } from './prompt';
 
-const cleanProjectModules = c => new Promise((resolve, reject) => {
+const cleanProjectModules = (c, skipQuestion = false) => new Promise((resolve, reject) => {
     logTask('cleanProjectModules');
     const pathsToRemove = [
         c.paths.project.nodeModulesDir,
@@ -27,13 +27,17 @@ const cleanProjectModules = c => new Promise((resolve, reject) => {
     }
 
 
-    askQuestion(`Following files/folders will be removed:\n\n${msg}\npress (ENTER) to confirm`)
-        .then(() => {
-            finishQuestion();
-            removeDirs(pathsToRemove).then(() => resolve())
-                .catch(e => reject(e));
-        })
-        .catch(e => reject(e));
+    if (skipQuestion) {
+        removeDirs(pathsToRemove).then(() => resolve()).catch(e => reject(e));
+    } else {
+        askQuestion(`Following files/folders will be removed:\n\n${msg}\npress (ENTER) to confirm`)
+            .then(() => {
+                finishQuestion();
+                removeDirs(pathsToRemove).then(() => resolve())
+                    .catch(e => reject(e));
+            })
+            .catch(e => reject(e));
+    }
 });
 
 export { cleanProjectModules };

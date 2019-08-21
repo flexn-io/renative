@@ -116,8 +116,9 @@ const applyTemplate = c => new Promise((resolve, reject) => {
 const _applyTemplate = c => new Promise((resolve, reject) => {
     logTask(`_applyTemplate:${c.paths.projectTemplateFolder}`);
 
+    const templateConfigPath = path.join(c.paths.projectTemplateFolder, RENATIVE_CONFIG_TEMPLATE_NAME);
 
-    if (!fs.existsSync(c.paths.projectTemplateFolder)) {
+    if (!fs.existsSync(templateConfigPath)) {
         logWarning(`Template ${chalk.white(c.buildConfig.defaults.template)} does not exist in your ${chalk.white(c.paths.projectTemplateFolder)}. skipping`);
         resolve();
         return;
@@ -126,7 +127,6 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     const templateAppConfigsFolder = path.join(c.paths.projectTemplateFolder, 'appConfigs');
     const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
     const templateProjectConfigFolder = path.join(c.paths.projectTemplateFolder, 'projectConfig');
-    const templateConfigPath = path.join(c.paths.projectTemplateFolder, RENATIVE_CONFIG_TEMPLATE_NAME);
     const currentTemplate = c.files.project.config.defaults.template;
     const templateConfig = JSON.parse(fs.readFileSync(templateConfigPath).toString());
 

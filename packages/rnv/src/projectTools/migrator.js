@@ -5,6 +5,8 @@ import { askQuestion, generateOptions, finishQuestion } from '../systemTools/pro
 import { logWarning, logTask, logDebug, logSuccess } from '../systemTools/logger';
 import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
+import { cleanProjectModules } from '../systemTools/cleaner';
+import { configureNodeModules } from './projectParser';
 
 export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
     const prjDir = c.paths.project.dir;
@@ -30,7 +32,10 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
         askQuestion('Your project has been created with previous version of ReNative. Do you want to migrate it to new format? Backing up project is recommended! To Proceed type: (y)')
             .then((v) => {
                 if (v === 'y') {
+                    c.program.reset = true;
                     _migrateProject(c, paths)
+                        .then(cleanProjectModules(c))
+                        .then(() => configureNodeModules(c))
                         .then(() => resolve())
                         .catch(e => reject(e));
                     return;
@@ -70,7 +75,7 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
         permissions: readObjectSync(paths.permissions)
     };
 
-    console.log('paths to migrate:', paths);
+    logDebug(`paths to migrate: \n ${paths}`);
 
     const newConfig = {};
 
