@@ -2,7 +2,7 @@
     "env": {
         "SOME_ENV_VAR": "xxxx"
     },
-    "name": "renative",
+    "projectName": "renative",
     "globalProfile": "rnv",
     "isWrapper": true,
     "paths": {

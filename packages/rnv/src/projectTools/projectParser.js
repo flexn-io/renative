@@ -73,7 +73,7 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     if (!fs.existsSync(c.paths.project.package)) {
         logInfo(`Looks like your ${c.paths.project.package} is missing. Let's create one for you!`);
 
-        const packageName = c.files.project.config.defaults?.package?.name || c.paths.project.dir.split('/').pop();
+        const packageName = c.files.project.config.projectName || c.paths.project.dir.split('/').pop();
         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
         const templateName = c.files.project.config.defaults?.template || 'renative-template-hello-world';
         const rnvVersion = c.files.rnv.package.version;

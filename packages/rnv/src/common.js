@@ -37,6 +37,7 @@ import {
 } from './configTools/configParser';
 import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndCreateProjectPackage } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
+import { checkAndMigrateConfigs } from './configTools/configMigrator';
 
 export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto', 'log', 'new', 'target', 'platform'];
 
@@ -60,6 +61,7 @@ export const startBuilder = c => new Promise((resolve, reject) => {
     }
 
     parseRenativeConfigs(c)
+        .then(() => checkAndMigrateConfigs(c))
         .then(() => checkIsRenativeProject(c))
         .then(() => checkAndCreateProjectPackage(c))
         .then(() => configureRnvGlobal(c))

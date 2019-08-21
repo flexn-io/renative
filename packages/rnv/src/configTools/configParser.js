@@ -199,7 +199,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
     // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
     _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig.paths?.private?.dir) || c.paths.GLOBAL_RNV_DIR);
-    _generateConfigPaths(c.paths.private.project, path.join(c.paths.GLOBAL_RNV_DIR, c.files.project.config.name));
+    _generateConfigPaths(c.paths.private.project, path.join(c.paths.GLOBAL_RNV_DIR, c.files.project.config.projectName));
     _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
 
 
@@ -224,34 +224,6 @@ export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
 
     return resolve();
 });
-
-
-// export const _checkAndCreateProjectConfig = (c) => {
-//     logTask('checkAndCreateProjectConfig');
-//
-//     // Check Project Config
-//     if (!fs.existsSync(c.paths.project.config)) {
-//         logInfo(`You're missing ${RENATIVE_CONFIG_NAME} file in your root project! Let's create one!`);
-//
-//         const packageName = c.files.project.config.defaults?.package?.name || c.paths.project.dir.split('/').pop();
-//         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
-//         const templateName = c.files.project.config.defaults?.template || 'renative-template-hello-world';
-//
-//         const defaultProjectConfigs = {
-//             supportedPlatforms: data.optionPlatforms.selectedOptions,
-//             template: data.optionTemplates.selectedOption,
-//             defaultAppId: appID.toLowerCase()
-//         };
-//
-//         const obj = readObjectSync(path.join(c.paths.rnv.projectTemplate.dir, RENATIVE_CONFIG_TEMPLATE_NAME));
-//
-//         obj.defaults = defaultProjectConfigs;
-//
-//         writeObjectSync(path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME), obj);
-//     }
-//
-//     _loadConfigFiles(c, c.files.project, c.paths.project);
-// };
 
 export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
     logTask('fixRenativeConfigsSync');
