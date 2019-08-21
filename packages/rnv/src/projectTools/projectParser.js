@@ -56,6 +56,7 @@ import {
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
     getRealPath
 } from '../systemTools/fileutils';
+import { executeAsync } from '../systemTools/exec';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -75,45 +76,23 @@ export const checkAndCreateProjectPackage = (c) => {
         const packageName = c.files.project.config.defaults?.package?.name || c.paths.project.dir.split('/').pop();
         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
         const templateName = c.files.project.config.defaults?.template || 'renative-template-hello-world';
+        const rnvVersion = c.files.rnv.package.version;
 
         const pkgJson = {};
         pkgJson.name = packageName;
         pkgJson.version = version;
         pkgJson.dependencies = {
-            renative: 'latest',
+            renative: rnvVersion,
         };
         pkgJson.devDependencies = {
-            rnv: c.files.rnv.package.version,
+            rnv: rnvVersion,
         };
-        pkgJson.devDependencies[templateName] = 'latest';
+        pkgJson.devDependencies[templateName] = rnvVersion;
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
         fs.writeFileSync(c.paths.project.package, pkgJsonStringClean);
     }
 
     loadFile(c.files.project, c.paths.project, 'package');
-};
-
-export const checkAndCreateProjectConfig = (c, data) => {
-    logTask('checkAndCreateProjectConfig');
-    const {
-        packageName, appTitle, appID, supportedPlatforms,
-    } = data;
-    // Check Project Config
-    if (!fs.existsSync(c.paths.project.config)) {
-        logInfo(`You're missing ${RENATIVE_CONFIG_NAME} file in your root project! Let's create one!`);
-
-        const defaultProjectConfigs = {
-            supportedPlatforms: data.optionPlatforms.selectedOptions,
-            template: data.optionTemplates.selectedOption,
-            defaultAppId: appID.toLowerCase()
-        };
-
-        const obj = readObjectSync(path.join(c.paths.rnv.projectTemplate.dir, RENATIVE_CONFIG_TEMPLATE_NAME));
-
-        obj.defaults = defaultProjectConfigs;
-
-        writeObjectSync(path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME), obj);
-    }
 };
 
 export const checkAndCreateGitignore = (c) => {
@@ -133,7 +112,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     copyFolderContentsRecursiveSync(cPath, aPath);
 
     // copyFileSync(c.paths.appConfig.config, path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME));
-    fs.writeFileSync(path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME), JSON.stringify(c.buildConfig, null, 2));
+    // fs.writeFileSync(path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME), JSON.stringify(c.buildConfig, null, 2));
 
     // FONTS
     let fontsObj = 'export default [';
@@ -223,10 +202,10 @@ export const configureEntryPoints = (c) => {
             if (!plat.entryFile) {
                 logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
             } else if (!fs.existsSync(source)) {
-                logWarning(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
                 copyFileSync(backupSource, dest);
             } else {
-                logWarning(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
                 copyFileSync(source, dest);
             }
         }

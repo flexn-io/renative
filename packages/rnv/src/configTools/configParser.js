@@ -63,7 +63,7 @@ import {
 } from '../systemTools/logger';
 import { getQuestion } from '../systemTools/prompt';
 import {
-    copyRuntimeAssets, checkAndCreateProjectPackage,
+    copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateProjectConfig,
     checkAndCreateGitignore, copySharedPlatforms
 } from '../projectTools/projectParser';
 
@@ -154,10 +154,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'projectTemplate');
     c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
 
-    return c;
-};
-
-export const parseRenativeConfigsSync = (c) => {
     c.platform = c.program.platform;
     c.paths.home.dir = homedir;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
@@ -184,6 +180,16 @@ export const parseRenativeConfigsSync = (c) => {
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
+    c.runtime.appId = c.runtime.appId;
+
+    _generateConfigPaths(c.paths.private, c.paths.GLOBAL_RNV_DIR);
+
+    c.files.rnv.pluginTemplates.config = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.pluginTemplates.config)).toString());
+
+    return c;
+};
+
+export const parseRenativeConfigsSync = (c) => {
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
     if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
     c.runtime.appId = c.runtime.appId || c.files.project?.builds?.config?.id;
@@ -191,13 +197,9 @@ export const parseRenativeConfigsSync = (c) => {
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
 
-    // LOAD ./PACKAGE.JSON
-    checkAndCreateProjectPackage(c);
-    _versionCheck(c);
-
     // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
     _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig.paths?.private?.dir) || c.paths.GLOBAL_RNV_DIR);
-    _generateConfigPaths(c.paths.private.project, path.join(c.paths.GLOBAL_RNV_DIR, c.files.project.package.name));
+    _generateConfigPaths(c.paths.private.project, path.join(c.paths.GLOBAL_RNV_DIR, c.files.project.config.name));
     _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
 
 
@@ -208,6 +210,34 @@ export const parseRenativeConfigsSync = (c) => {
 
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
 };
+
+
+// export const _checkAndCreateProjectConfig = (c) => {
+//     logTask('checkAndCreateProjectConfig');
+//
+//     // Check Project Config
+//     if (!fs.existsSync(c.paths.project.config)) {
+//         logInfo(`You're missing ${RENATIVE_CONFIG_NAME} file in your root project! Let's create one!`);
+//
+//         const packageName = c.files.project.config.defaults?.package?.name || c.paths.project.dir.split('/').pop();
+//         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
+//         const templateName = c.files.project.config.defaults?.template || 'renative-template-hello-world';
+//
+//         const defaultProjectConfigs = {
+//             supportedPlatforms: data.optionPlatforms.selectedOptions,
+//             template: data.optionTemplates.selectedOption,
+//             defaultAppId: appID.toLowerCase()
+//         };
+//
+//         const obj = readObjectSync(path.join(c.paths.rnv.projectTemplate.dir, RENATIVE_CONFIG_TEMPLATE_NAME));
+//
+//         obj.defaults = defaultProjectConfigs;
+//
+//         writeObjectSync(path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME), obj);
+//     }
+//
+//     _loadConfigFiles(c, c.files.project, c.paths.project);
+// };
 
 export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
     logTask('fixRenativeConfigsSync');
@@ -221,7 +251,7 @@ export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
     // Check rn-cli-config
     logTask('configureProject:check rn-cli', chalk.grey);
     if (!fs.existsSync(c.paths.project.rnCliConfig)) {
-        logWarning(
+        logInfo(
             `Looks like your rn-cli config file ${chalk.white(c.paths.project.rnCliConfig)} is missing! Let's create one for you.`,
         );
         copyFileSync(path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME), c.paths.project.rnCliConfig);
@@ -230,7 +260,7 @@ export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
     // Check babel-config
     logTask('configureProject:check babel config', chalk.grey);
     if (!fs.existsSync(c.paths.project.babelConfig)) {
-        logWarning(
+        logInfo(
             `Looks like your babel config file ${chalk.white(c.paths.project.babelConfig)} is missing! Let's create one for you.`,
         );
         copyFileSync(path.join(c.paths.rnv.dir, RN_BABEL_CONFIG_NAME), c.paths.project.babelConfig);
@@ -384,6 +414,14 @@ const _generateBuildConfig = (c) => {
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
     }
+
+    c.assetConfig = {
+        common: c.buildConfig.common
+    };
+
+    if (fs.existsSync(c.paths.project.assets.dir)) {
+        writeObjectSync(c.paths.project.assets.config, c.assetConfig);
+    }
 };
 
 const _generatePlatformTemplatePaths = (c) => {
@@ -415,8 +453,6 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
 
     setAppConfig(c, appConfigId);
     c.runtime.appId = appConfigId;
-
-    console.log('ADDADADA', c.runtime.appId, c.paths.appConfig.dir);
 
     if (!fs.existsSync(c.paths.appConfig.dir)) {
         const readline = require('readline').createInterface({

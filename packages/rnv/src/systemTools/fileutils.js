@@ -239,6 +239,8 @@ const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     return uniqueArray;
 };
 
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
+
 const sanitizeDynamicRefs = (c, obj) => {
     if (!obj) return obj;
     if (Array.isArray(obj)) {
@@ -284,11 +286,11 @@ const sanitizeDynamicProps = (obj, props) => {
     return obj;
 };
 
-const mergeObjects = (c, obj1, obj2) => {
+const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
-    const obj = merge(obj1, obj2, { arrayMerge });
-    return sanitizeDynamicRefs(c, obj);
+    const obj = merge(obj1, obj2, { arrayMerge: replaceArrays ? _arrayMergeOverride : arrayMerge });
+    return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
 };
 
 const updateConfigFile = async (update, globalConfigPath) => {

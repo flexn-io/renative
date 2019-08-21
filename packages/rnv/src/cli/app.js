@@ -206,9 +206,9 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     // checkAndCreateProjectPackage(c, data);
 
-    checkAndCreateGitignore(c);
+    // checkAndCreateGitignore(c);
 
-    checkAndCreateProjectConfig(c, data);
+    // checkAndCreateProjectConfig(c, data);
 
     logSuccess(
         `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(

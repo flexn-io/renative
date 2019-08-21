@@ -1,10 +1,10 @@
 import chalk from 'chalk';
-import { mergeObjects } from '../systemTools/fileutils';
+import { mergeObjects, writeObjectSync } from '../systemTools/fileutils';
 import { logTask, logWarning, logError, getConfigProp } from '../common';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
-    const origPlugin = c.files.pluginTemplatesConfig.plugins[key];
+    const origPlugin = c.files.rnv.pluginTemplates.config.plugins[key];
     if (typeof plugin === 'string' || plugin instanceof String) {
         if (plugin === 'source:rnv') {
             return origPlugin;

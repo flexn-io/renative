@@ -1,14 +1,15 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import { RENATIVE_CONFIG_NAME } from '../constants';
+import merge from 'deepmerge';
+import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
-    removeFilesSync
+    removeFilesSync, mergeObjects
 } from '../systemTools/fileutils';
-import { logError, generateOptions, logWarning, logTask, configureEntryPoints } from '../common';
+import { logError, logInfo, generateOptions, logWarning, logTask, configureEntryPoints } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { setAppConfig } from '../configTools/configParser';
 
@@ -139,13 +140,16 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     const templateAppConfigsFolder = path.join(c.paths.projectTemplateFolder, 'appConfigs');
     const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
     const templateProjectConfigFolder = path.join(c.paths.projectTemplateFolder, 'projectConfig');
+    const templateConfigPath = path.join(c.paths.projectTemplateFolder, RENATIVE_CONFIG_TEMPLATE_NAME);
+    const currentTemplate = c.files.project.config.defaults.template;
+    const templateConfig = JSON.parse(fs.readFileSync(templateConfigPath).toString());
 
     if (templateAppConfigFolder) c.defaultAppConfigId = templateAppConfigFolder;
 
     // Check src
     logTask('configureProject:check src', chalk.grey);
     if (!fs.existsSync(c.paths.project.srcDir)) {
-        logWarning(`Looks like your src folder ${chalk.white(c.paths.project.srcDir)} is missing! Let's create one for you.`);
+        logInfo(`Looks like your src folder ${chalk.white(c.paths.project.srcDir)} is missing! Let's create one for you.`);
         copyFolderContentsRecursiveSync(path.join(c.paths.projectTemplateFolder, 'src'), c.paths.project.srcDir);
     }
 
@@ -153,7 +157,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     logTask('configureProject:check appConfigs', chalk.grey);
     setAppConfig(c, c.defaultAppConfigId);
     if (!fs.existsSync(c.paths.project.appConfigsDir)) {
-        logWarning(
+        logInfo(
             `Looks like your appConfig folder ${chalk.white(
                 c.paths.project.appConfigsDir,
             )} is missing! Let's create sample config for you.`,
@@ -193,10 +197,21 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     // Check projectConfigs
     logTask('configureProject:check projectConfigs', chalk.grey);
     if (!fs.existsSync(c.paths.project.projectConfig.dir)) {
-        logWarning(
+        logInfo(
             `Looks like your projectConfig folder ${chalk.white(c.paths.project.projectConfig.dir)} is missing! Let's create one for you.`,
         );
         copyFolderContentsRecursiveSync(templateProjectConfigFolder, c.paths.project.projectConfig.dir);
+    }
+
+    // renative.json
+    logTask('configureProject:check renative.json', chalk.grey);
+    if (!c.files.project.config.template) {
+        logWarning(
+            `Looks like your ${c.paths.project.config} need to be updated with ${templateConfigPath}`,
+        );
+        c.files.project.config = mergeObjects(c, c.files.project.config, templateConfig, false, true);
+        c.files.project.config.currentTemplate = currentTemplate;
+        writeObjectSync(c.paths.project.config, c.files.project.config);
     }
 
     resolve();

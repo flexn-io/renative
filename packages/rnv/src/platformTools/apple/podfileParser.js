@@ -63,7 +63,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     // SUBSPECS
     const reactCore = c.buildConfig
-        ? c.buildConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
+        ? c.buildConfig.reactCore : c.files.rnv.pluginTemplates.config.reactCore;
     if (reactCore) {
         if (reactCore.ios.reactSubSpecs) {
             reactCore.ios.reactSubSpecs.forEach((v) => {

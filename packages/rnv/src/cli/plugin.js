@@ -62,7 +62,7 @@ const _runList = c => new Promise((resolve) => {
 });
 
 const _getPluginList = (c, isUpdate = false) => {
-    const { plugins } = c.files.pluginTemplatesConfig;
+    const { plugins } = c.files.rnv.pluginTemplates.config;
     const output = {
         asString: '',
         plugins: [],
@@ -144,7 +144,7 @@ const _runAdd = c => new Promise((resolve) => {
 });
 
 const _checkAndAddDependantPlugins = (c, plugin) => {
-    const templatePlugins = c.files.pluginTemplatesConfig.plugins;
+    const templatePlugins = c.files.rnv.pluginTemplates.config.plugins;
     if (plugin.dependsOn) {
         plugin.dependsOn.forEach((v) => {
             if (templatePlugins[v]) {

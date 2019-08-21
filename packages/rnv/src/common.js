@@ -35,7 +35,7 @@ import {
     parseRenativeConfigsSync, createRnvConfig, updateConfig, gatherInfo,
     fixRenativeConfigsSync, configureRnvGlobal
 } from './configTools/configParser';
-import { configureEntryPoints, configureNodeModules, copyBuildsFolder } from './projectTools/projectParser';
+import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndCreateProjectPackage } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 
 const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto', 'log'];
@@ -52,37 +52,45 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
 const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
-    c.files.pluginTemplatesConfig = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.pluginTemplates.config)).toString());
-
     if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
         resolve(c);
         return;
     }
 
+    // reLoad build config (for app id)
+    // reLoad project config (for template)
     parseRenativeConfigsSync(c);
 
-    if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage' || c.command === 'platform') {
-        configureRnvGlobal(c)
-            .then(() => gatherInfo(c))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
-    }
+    // // LOAD ./PACKAGE.JSON (for npm package for template)
+    checkAndCreateProjectPackage(c);
+    // _versionCheck(c);
 
-    if (!c.paths.project.configExists) {
-        reject(
-            `Looks like this directory is not ReNative project. Project config ${chalk.white(
-                c.paths.project.config,
-            )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
-        );
-    }
+    // reLoad node_modules (for template code)
+    // merge template config with project config
 
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        gatherInfo(c)
-            .then(() => resolve(c))
-            .catch(e => reject(c));
-        return;
-    }
+
+    // if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage' || c.command === 'platform') {
+    //     configureRnvGlobal(c)
+    //         .then(() => gatherInfo(c))
+    //         .then(() => resolve(c))
+    //         .catch(e => reject(e));
+    //     return;
+    // }
+    //
+    // if (!c.paths.project.configExists) {
+    //     reject(
+    //         `Looks like this directory is not ReNative project. Project config ${chalk.white(
+    //             c.paths.project.config,
+    //         )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
+    //     );
+    // }
+    //
+    // if (NO_OP_COMMANDS.includes(c.command)) {
+    //     gatherInfo(c)
+    //         .then(() => resolve(c))
+    //         .catch(e => reject(c));
+    //     return;
+    // }
 
     configureRnvGlobal(c)
         .then(() => checkIfTemplateInstalled(c))
@@ -195,7 +203,7 @@ const configureApp = c => new Promise((resolve, reject) => {
     } else {
         // Use latest app from platformAssets
         if (!fs.existsSync(c.paths.project.builds.config)) {
-            logWarning(
+            logInfo(
                 `Seems like you're missing ${
                     c.paths.project.builds.config
                 } file. But don't worry. ReNative got you covered. Let's configure it for you!`,
