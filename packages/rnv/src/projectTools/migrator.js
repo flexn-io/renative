@@ -59,6 +59,7 @@ const PATH_PROPS = [
     'projectConfigFolder',
 ];
 
+
 const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
     logTask('MIGRATION STARTED');
 
@@ -86,8 +87,8 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
     if (files.config) {
         newConfig.defaults = {};
 
-        if (files.defaultProjectConfigs) {
-            newConfig.defaults = mergeObjects(newConfig.defaults, files.defaultProjectConfigs);
+        if (files.config.defaultProjectConfigs) {
+            newConfig.defaults = mergeObjects(newConfig.defaults, files.config.defaultProjectConfigs);
         }
         newConfig.currentTemplate = newConfig.defaults.template || 'renative-template-hello-world';
 
@@ -98,12 +99,13 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
             }
         });
 
-        if (files.defaultPorts) {
-            newConfig.defaults.ports = files.defaultPorts;
+        if (files.config.defaultPorts) {
+            newConfig.defaults.ports = files.config.defaultPorts;
         }
 
-        delete files.defaultProjectConfigs;
-        delete files.defaultPorts;
+        if (files.config.crypto) {
+            newConfig.crypto = files.config.crypto;
+        }
     }
 
     if (!newConfig.platforms) newConfig.platforms = {};
