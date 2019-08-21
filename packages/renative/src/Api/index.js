@@ -10,9 +10,9 @@ export default {
             const nav = getNavigation();
             nav.dispatch(DrawerActions.openDrawer());
         },
-        navigate: (route) => {
+        navigate: (route, params = undefined) => {
             const nav = getNavigation();
-            nav.navigate(route);
+            nav.navigate(route, params);
         },
         pop: () => {
             const nav = getNavigation();

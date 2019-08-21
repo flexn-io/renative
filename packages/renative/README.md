@@ -56,6 +56,7 @@ Contributing
   <a href="#cli"><b>CLI</b></a> &bull;
   <a href="#renative-cli">ReNative CLI</a> &bull;
   <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
+  <a href="#common-issues"><b>Common Issues</b></a> &bull;
   <a href="#runtime"><b>Runtime</b></a> &bull;
   <a href="#contributing"><b>Contributing</b></a> &bull;
   <a href="#discussions">Discussions</a> &bull;
@@ -198,7 +199,7 @@ Contributing
 
 <br />
 
-[![build](https://travis-ci.org/pavjacko/renative.svg?branch=master)](https://travis-ci.org/pavjacko/renative)
+[![build](https://travis-ci.org/pavjacko/renative.svg?branch=develop)](https://travis-ci.org/pavjacko/renative)
 [![npm version](https://img.shields.io/npm/v/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![npm downloads](https://img.shields.io/npm/dm/renative.svg?style=flat-square)](https://www.npmjs.com/package/renative)
 [![All Contributors](https://img.shields.io/github/contributors/pavjacko/renative.svg)](#contributors)
@@ -331,6 +332,16 @@ open: http://0.0.0.0:8080/
 
 All app code is located in `./src` directory
 
+##### RNV + NPX
+
+⚠️
+
+It is recommended that after initial project setup you start using `npx rnv ...` prefix instead of `rnv ...`
+
+This ensures that every project uses correct version of `rnv` to avoid potential compatibility issues
+
+make sure you have npx installed globally via `npm install npx -g`
+
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/master/docs/ic_features.png?raw=true" width=50 height=50 />
@@ -347,11 +358,33 @@ Build app blazingly fast with built-in features:
 * Deployment Ready project
 * Generated projects can be opened and profiled in standard IDEs like Xcode, Android Studio, Tizen IDE etc  
 
-#### Development platforms
+#### Supported OS
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-POC-orange.svg)
-![](https://img.shields.io/badge/Ubuntu-untested-lightgrey.svg)
+<table>
+  <tr>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_osx.png?raw=true" width="100" height="100" />
+    </th>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_win.png?raw=true" width="100" height="100" />
+    </th>
+    <th>
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/os_linux.jpeg?raw=true" width="100" height="100" />
+    </th>
+  </tr>
+  <tr>
+    <th>
+      <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    </th>
+    <th>
+      <img src="https://img.shields.io/badge/Windows-beta-orange.svg" />
+    </th>
+    <th>
+      <img src="https://img.shields.io/badge/Linux-beta-orange.svg" />
+    </th>
+  </tr>
+</table>
+
 
 #### Requirements
 
@@ -397,7 +430,7 @@ ReNative Supports standard community driven react-native plugins you can use to 
 
 Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
 
-`rnv plugin list`
+`$ rnv plugin list`
 
 you should get colorised overview similar to this:
 
@@ -411,13 +444,13 @@ you should get colorised overview similar to this:
 
 add new plugin to your project:
 
-`rnv plugin add`
+`$ rnv plugin add`
 
 and follow the command prompt steps
 
 Update your current plugins with latest ones from ReNative
 
-`rnv plugin update`
+`$ rnv plugin update`
 
 and follow the command prompt steps
 
@@ -542,7 +575,7 @@ rnv platform configure -c helloWorld
 Configure your multi-platform app based on `./appConfigs/helloWorld` configuration:
 
 ```bash
-rnv app configure -c helloWorld -u
+rnv configure -c helloWorld -u
 ```
 
 #### Android based config
@@ -554,8 +587,10 @@ For appConfigs:
 ```json
 {
   "entryFile": "",
+  "getJsBundleFile": "",
   "universalApk": true,
   "multipleAPKs": false,
+  "aab": false,
   "minSdkVersion": 21,
   "backgroundColor": "",
   "id": "",
@@ -595,6 +630,7 @@ For appConfigs:
   "permissions": [],
   "bundleAssets": true,
   "bundleIsDev": true,
+  "deploymentTarget": "",
   "teamID": "",
   "scheme": "",
   "permissions": ["*"],
@@ -674,7 +710,7 @@ Open the file and edit SDK paths of platforms you plan to use:
 }
 ```
 
-You can also edit your preferred emulator targets (allows you to run `rnv target launch -p <PLATFORM>` without `-p <TARGET>`)
+You can also edit your preferred emulator targets (allows you to run `$ rnv target launch -p <PLATFORM>` without `-p <TARGET>`)
 
 ```json
 {
@@ -712,7 +748,7 @@ with path to your release keystore file and its credentials.
 Then you can run the release app by:
 
 ```bash
-rnv app configure -p android
+rnv configure -p android
 rnv run -p android -s release
 ```
 
@@ -741,11 +777,11 @@ Example:
 
 this will allow you to build 2 separate iOS apps with slightly different configurations:
 
-`rnv run -p ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
+`$ rnv run -p ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
 
 and
 
-`rnv run -p ios -s release`
+`$ rnv run -p ios -s release`
 
 #### Build Flavour Injectors
 
@@ -838,23 +874,23 @@ Sometimes you want to execute specific hook automatically before/after certain R
 
 To get list of available hook pipes run:
 
-`rnv hooks pipes`
+`$ rnv hooks pipes`
 
 You can connect your hook method to one of predefined pipes in your `./buildHooks/src/index.js`:
 
 ```js
 const pipes = {
-    'app:configure:before': hooks.hello,
+    'configure:before': hooks.hello,
 };
 ```
 
-Example code above will execute `hooks.hello()` before every time you run `rnv app configure` commands
+Example code above will execute `hooks.hello()` before every time you run `$ rnv configure` commands
 
 #### Run Multiple Pipes on One Hook
 
 ```js
 const pipes = {
-    'app:configure:before': [hooks.hello, hooks.someOtherHook],
+    'configure:before': [hooks.hello, hooks.someOtherHook],
 };
 ```
 
@@ -868,7 +904,7 @@ List of available pipe hooks:
 'package:before', 'package:after',
 'build:before', 'build:after',
 'deploy:before', 'deploy:after',
-'app:configure:before', 'app:configure:after',
+'configure:before', 'configure:after',
 'platform:configure:before', 'platform:configure:after'
 ```
 
@@ -939,6 +975,7 @@ ReNative provides runtime SDK library to support multiplatform development
 import { Api } from 'renative'
 ```
 
+⚠️ NOTE: this library is under development!
 
 ---
 
@@ -974,7 +1011,7 @@ Folder Structure (Generated Project)
     └── src                         # Source files
 
 
-#### Override Mechanism
+### Override Mechanism
 
 ReNative support flexible override mechanism which allows you customise your project to great degree
 
@@ -985,6 +1022,8 @@ ReNative support flexible override mechanism which allows you customise your pro
     </th>
   </tr>
 </table>
+
+#### Config Values Overrides
 
 `./appConfigs/APP_ID/config.json` RULES:
 
@@ -1016,10 +1055,10 @@ Example:
 
 Override Rules for json props:
 
-`Strings` => Replaced
-`Numbers` => Replaced
-`Arrays` => Replaced
-`Objects` => Merged by top level (not deep merge)
+- `Strings` => Replaced
+- `Numbers` => Replaced
+- `Arrays` => Replaced
+- `Objects` => Merged by top level (not deep merge)
 
 Example:
 https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L4
@@ -1027,7 +1066,104 @@ https://github.com/pavjacko/renative/blob/master/packages/renative-template-hell
 Will be overridden by:
 https://github.com/pavjacko/renative/blob/master/packages/renative-template-hello-world/appConfigs/helloWorld/config.json#L59
 
-This allows you to configure and build large number of flavoured builds with almost no extra configuration
+#### File Overrides / Injectors
+
+Every time you run RNV command, ReNative checks following "special" folders and copies contents of those into designated target folders
+
+- `*/plugins/[PLUGIN_ID]`
+- `*/plugins/[PLUGIN_ID]/overrides` -> special override allows you to override files in plugin itslef! (located `./node_modules`)
+- `*/builds/[PLATFORM]`
+- `*/fonts`
+- `*/assets/runtime`
+- `*/assets/[PLATFORM]`
+
+You can utilise above folders in following places:
+
+- `./appConfigs/[APP_ID]`
+- `./projectConfig`
+- `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]`
+- `~/.rnv/[PROJECT-NAME]/projectConfig`
+
+Legend:
+
+- `[PLATFORM]` - specific platform key like `ios`, `andoid`, `web`, etc..
+- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `config.json` file
+- `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
+- `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
+- `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "globalConfigFolder": "~/.myCustomGlobalFolder" }` in `rn-config.json` of each project
+
+##### Platform Builds Overrides
+
+Project Scoped Build Override
+
+`./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+App Config Scoped Build Override
+
+`./appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + Project Scoped Build Override
+
+`./projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + App Config Scoped Build Override
+
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+Plugin + App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+
+##### Platform Assets Overrides
+
+Project Scoped Assets Override
+
+`./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Project Scoped Assets Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+App Config Scoped Build Override
+
+`./appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + Project Scoped Build Override
+
+`./projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + Project Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + App Config Scoped Build Override
+
+`./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+Plugin + App Config Scoped Build Override (Private Content)
+
+`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+
+
+#### Flavoured Builds
+
+Combination of 2 features above allows you to configure and build large number of flavoured builds with almost no extra configuration
 
 <table>
   <tr>
@@ -1048,7 +1184,8 @@ This allows you to configure and build large number of flavoured builds with alm
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1168,7 +1305,8 @@ rnv log -p ios -f com.myapp
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1186,6 +1324,7 @@ rnv log -p ios -f com.myapp
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
 -   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
+-   Windows 10 Pro or a better variant if you want to start the emulator on a Windows machine. Windows Home or Educational do not support Hyper-V and that's required for starting the Android emulators
 
 #### Project Configuration
 
@@ -1296,7 +1435,8 @@ rnv log -p android -f com.myapp
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1355,7 +1495,8 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1418,7 +1559,8 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1496,7 +1638,8 @@ rnv run -p web --port 9999
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1546,6 +1689,18 @@ rnv target launch -p tizen -t T-samsung-5.0-x86
 rnv run -p tizen
 ```
 
+Run on Device
+
+```
+rnv run -p tizen -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizen --hosted
+```
+
 #### Advanced
 
 Clean and Re-build platform project
@@ -1568,7 +1723,8 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1616,6 +1772,18 @@ rnv target launch -p tizenwatch -t W-5.0-circle-x86
 rnv run -p tizenwatch
 ```
 
+Run on Device
+
+```
+rnv run -p tizenwatch -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizenwatch --hosted
+```
+
 #### Advanced
 
 Clean and Re-build platform project
@@ -1638,7 +1806,8 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1679,8 +1848,22 @@ usually located in something like:
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p webos
+```
+
+Run on Device
+
+```
+rnv run -p webos -d
+```
+
+Run in Browser
+
+```
+rnv run -p webos --hosted
 ```
 
 ---
@@ -1691,7 +1874,8 @@ rnv run -p webos
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1737,8 +1921,22 @@ rnv target launch -p tizenmobile -t M-5.0-x86
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p tizenmobile
+```
+
+Run on Device
+
+```
+rnv run -p tizenmobile -d
+```
+
+Run in Browser
+
+```
+rnv run -p tizenmobile --hosted
 ```
 
 #### Advanced
@@ -1763,7 +1961,8 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1790,8 +1989,16 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p macos
+```
+
+Run in Browser
+
+```
+rnv run -p macos --hosted
 ```
 
 #### Deploy on Electron Simulator
@@ -1817,7 +2024,8 @@ rnv export -p macos -s release
 
 ![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1844,8 +2052,16 @@ rnv export -p macos -s release
 
 #### Run
 
+Run on Simulator
+
 ```
 rnv run -p windows
+```
+
+Run in Browser
+
+```
+rnv run -p windows --hosted
 ```
 
 ---
@@ -1856,7 +2072,8 @@ rnv run -p windows
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
 
 <table>
   <tr>
@@ -1892,7 +2109,7 @@ NOTE: make sure you have 1 android wear device connected or 1 wear emulator runn
 rnv run -p androidwear
 ```
 
-NOTE: There is a bug in RN. for now you must NOT have running bundler (`rnv start`) in order for wear sim to work
+NOTE: There is a bug in RN. for now you must NOT have running bundler (`$ rnv start`) in order for wear sim to work
 
 #### Advanced
 
@@ -1920,7 +2137,8 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1946,10 +2164,23 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+
+Run on Simulator
 
 ```
 rnv run -p kaios
+```
+
+Run on Device
+
+```
+rnv run -p kaios -d
+```
+
+Run in Browser
+
+```
+rnv run -p kaios --hosted
 ```
 
 ---
@@ -1960,7 +2191,8 @@ rnv run -p kaios
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -1988,10 +2220,22 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+Run on Simulator
 
 ```
-rnv run -p firefoxos
+rnv run -p forefoxos
+```
+
+Run on Device
+
+```
+rnv run -p forefoxos -d
+```
+
+Run in Browser
+
+```
+rnv run -p forefoxos --hosted
 ```
 
 ---
@@ -2002,7 +2246,8 @@ rnv run -p firefoxos
 
 ![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
 ![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Ubuntu-yes-brightgreen.svg)
+![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
+![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
 
 <table>
   <tr>
@@ -2030,10 +2275,22 @@ After installation you can launch it via Applications:
 
 #### Run
 
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+Run on Simulator
 
 ```
-rnv run -p firefoxtv
+rnv run -p forefoxtv
+```
+
+Run on Device
+
+```
+rnv run -p forefoxtv -d
+```
+
+Run in Browser
+
+```
+rnv run -p forefoxtv --hosted
 ```
 
 # CLI
@@ -2046,26 +2303,45 @@ rnv run -p firefoxtv
 
 Deployed to https://www.npmjs.com/package/rnv
 
-Commands:
+### Commands
 
-```
-rnv                                 //Print help
-rnv --version                       //Print ReNative Version
-rnv run -p <PLATFORM>               //Run app on simulator/device/browser
-rnv target launch -p <PLATFORM>     //Start target (i.e. simulator/ emulator)
-rnv app configure                   //Configure app based on selected appConfig (copy runtime, initialise, copy assets, versions)
-rnv new                             //Create new app
-rnv platform eject                  //Eject platformTemplates into project
-rnv platform connect                //Use ReNative predefined templates
-```
+##### rnv
 
-#### Get Status
+`$ rnv` - Print help
 
-Get basic info about your current project
+`$ rnv --version` - Print ReNative Version
 
-```bash
-rnv status
-```
+##### rnv new
+
+`$ rnv new` - creates new ReNative project
+
+##### rnv start
+
+`$ rnv start -p <PLATFOM>` - start server / bundler for specific platform. (no `-p` defaults to metro bundler)
+
+##### rnv run
+
+`$ rnv run -p <PLATFOM>` - runs app specific platform
+
+##### rnv package
+
+`$ rnv package -p <PLATFOM>` - package JS for specific platform
+
+##### rnv build
+
+`$ rnv build -p <PLATFOM>` - build / compile app for specific platform
+
+##### rnv export
+
+`$ rnv export -p <PLATFOM>` - export / archive app for specific platform
+
+##### rnv deploy
+
+`$ rnv deploy -p <PLATFOM>` - deploy app for specific platform
+
+##### rnv status
+
+`$ rnv status` - prints out info about your project
 
 <table>
   <tr>
@@ -2075,13 +2351,9 @@ rnv status
   </tr>
 </table>
 
-#### Clean Project
+##### rnv clean
 
-This will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
-
-```bash
-rnv clean
-```
+`$ rnv clean` - will delete all `node-modules` and `package-lock.json` files. you will be asked to confirm this action
 
 <table>
   <tr>
@@ -2091,43 +2363,106 @@ rnv clean
   </tr>
 </table>
 
-#### Reset options
+##### rnv platform
+
+Manipulates platforms
+
+`$ rnv platform eject` - gives options which platforms to eject
+
+`$ rnv platform connect` - gives options which platforms to connect
+
+##### rnv plugin
+
+Plugin Management
+
+`$ rnv plugin list` - list all available / installed plugins
+
+`$ rnv plugin add` - list all available plugins to be installed
+
+##### rnv target
+
+Emulator / Simulator / Device Management
+
+`$ rnv target launch -p <PLATFORM>` - Start target (i.e. simulator/ emulator)
+
+##### rnv tools
+
+`$ rnv tools fixPackage` - fix + cleanup+ format your `package.json`
+
+### Options
+
+You can combine most of the above commands with following extra arguments you can combine together
+
+##### -r , --reset
 
 ReNative Allows you to perform reset commands if you facing unforeseen problems or migrating ReNative versions
 
-Reset Metro Bundler cache
+`$ rnv start -r` - Reset Metro Bundler cache
 
-```bash
-rnv start -r
-```
+`$ rnv run -p <PLATFORM> -r` - Reset specific platform of platformBuild project (fully recreate project based on provided template)
 
-Reset specific platform of platformBuild project (fully recreate project based on provided template)
+`$ rnv configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
 
-```bash
-rnv run -p <PLATFORM> -r
-rnv app configure -p <PLATFORM> -r
-```
+##### --mono
 
-Reset all platforms of platformBuild project (fully recreate projects based on provided template)
-
-```bash
-rnv app configure -r
-```
-
-#### Monochrome logs
-
-If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`rnv` command.
+If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`$ rnv` command.
 This is particularly useful for CI where logs are usually stripped from colors by CI logger and producing visual artefacts
 
 Examples:
 
-```bash
-rnv status --mono
-rnv start --mono
-...
-```
+`$ rnv status --mono`
+`$ rnv start --mono`
 
-#### Ejecting Platforms
+##### -c , -appConfigID
+
+Allows you to immediately switch to specific app config
+
+`$ rnv run -p <PLATFORM> -c <APP_ID>` - configure APP_ID and run PLATFORM
+
+`$ rnv build -p <PLATFORM> -c <APP_ID>` - configure APP_ID and build PLATFORM
+
+##### -d , --device
+
+`$ rnv run -p <PLATFORM> -d` - Install/Run on connected device instead of simulator
+
+##### -s , --scheme
+
+You can pass down specific build scheme configured in `./appConfigs/APP_ID/config.json`
+
+`$ rnv run -p <PLATFORM>` - runs app with default scheme (`-s debug`)
+
+`$ rnv run -p <PLATFORM> -s myScheme` - runs app with `myScheme` build scheme
+
+##### -i , --info
+
+Log verbose output
+
+`$ rnv run -p <PLATFORM> -i`
+
+##### -t , --target
+
+Allows you to specify known target name/id so CLI won't ask you to pick one
+
+`$ rnv run -p <PLATFORM> -t <TARGET_NAME>`
+
+##### --host
+
+Allows you to run some platforms directly in browser
+
+`$ rnv run -p <PLATFORM> --host`
+
+##### --only
+
+ususall ReNative runs in cascading dependency mode. that means that if for example your run `deploy` command, rnv runs all necessary commands (`configure`, `package`, `build`, `export`) before running `deploy` command itself
+
+sometimes you just want to run last command. `--only` esures only top level command is executed
+
+`$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME>` - run all dependant commands + deploy
+
+`$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME> --only` - run deploy only
+
+
+### Ejecting Platforms
 
 By default, ReNative controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
 If however you need to customise them you can eject them directly into your project.
@@ -2174,6 +2509,73 @@ It's also best way to contribute back to RNV! :)
 rnv template apply
 => pick renative-template-hello-world
 ```
+
+# Common Issues
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/ic_issues.png?raw=true" width=50 height=50 />
+
+If you encounter unexpected error / issue it is always good to perform basic sanity steps:
+
+#### rnv status
+
+`rnv status`
+
+this should print out basic `SUMMARY` box with info about your project, env, and RNV version. check if everything seem correct.
+
+#### -r --reset
+
+`rnv start -r` -> restart your server / bundler and reset all cache
+
+`rnv run .... -r` -> recreate whole project before running app
+
+#### -i --info
+
+`rnv run .... -i` -> run ReNative with full verbose logs
+
+#### rnv clean
+
+If above does not help try to clean up your project
+
+`rnv clean && npm i`
+
+#### Raise Issue
+
+If above does not help either you can raise new question/bug on repo https://github.com/pavjacko/renative/issues
+
+Provide at least `SUMMARY` box from your console
+
+
+#### Common Errors:
+
+
+⚠️`linker command failed with exit code 1 (use -v to see invocation)`
+
+Make sure your Xcode version is `10.2` or newer
+
+
+⚠️`Description: Invalid runtime: com.apple.CoreSimulator.SimRuntime.iOS-.......`
+
+try to run
+
+```bash
+sudo killall -9 com.apple.CoreSimulator.CoreSimulatorService
+```
+and then
+
+`rnv run ...`
+
+⚠️`Could not create service of type ScriptPluginFactory using BuildScopeServices.createScriptPluginFactory()`
+
+Try killing all `gradle` processes and running the build again, that should help
+
+
+⚠️`> Execution of compression failed.`
+
+https://github.com/pavjacko/renative/issues/183
+
+
 
 # Contributing
 

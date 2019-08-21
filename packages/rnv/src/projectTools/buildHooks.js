@@ -15,6 +15,8 @@ import { PIPES as PLUGIN_PIPES } from '../cli/plugin';
 import { PIPES as TARGET_PIPES } from '../cli/target';
 import { PIPES as APP_PIPES } from '../cli/app';
 
+const isRunningOnWindows = process.platform === 'win32';
+
 const PIPES = { ...RUNNER_PIPES, ...PLATFORM_PIPES, ...PLUGIN_PIPES, ...TARGET_PIPES, ...APP_PIPES };
 
 // ##########################################
@@ -70,8 +72,11 @@ const buildHooks = c => new Promise((resolve, reject) => {
             resolve();
             return;
         }
-        const babel = resolveNodeModulePath(c, '@babel/cli/bin/babel.js');
+        let babel = resolveNodeModulePath(c, isRunningOnWindows ? '.bin/babel.cmd' : '@babel/cli/bin/babel.js');
         const params = ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'];
+        // if (isRunningOnWindows) {
+        //     babel = `cmd node ${babel}`
+        // }
         executeAsync(babel, params)
             .then(() => {
                 const h = require(c.paths.buildHooksDistIndexPath);

@@ -33,13 +33,22 @@ import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
 
+    let dexOptions = '';
+
+    if (c.pluginConfigAndroid.buildGradleBuildScriptDexOptions) {
+        dexOptions = `dexOptions() {
+            ${c.pluginConfigAndroid.buildGradleBuildScriptDexOptions}
+        }`
+    }
+
     writeCleanFile(getBuildFilePath(c, platform, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
         { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
         { pattern: '{{SUPPORT_LIB_VERSION}}', override: c.pluginConfigAndroid.supportLibVersion },
         { pattern: '{{BUILD_TOOLS_VERSION}}', override: c.pluginConfigAndroid.buildToolsVersion },
         { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleAllProjectsRepositories },
         { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptRepositories },
-        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies }
+        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies },
+        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions }
     ]);
 };
 
@@ -106,15 +115,20 @@ keyPassword=${c.files.privateConfig[platform].keyPassword}`);
     }
 
     // BUILD_TYPES
+    const pluginConfig = c.files.pluginConfig ?? {};
+    const debugBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.debug ?? [];
+    const releaseBuildTypes = pluginConfig[platform]?.gradle?.buildTypes?.release ?? [];
     c.pluginConfigAndroid.buildTypes = `
     debug {
         minifyEnabled false
         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        ${debugBuildTypes.join('\n        ')}
     }
     release {
         minifyEnabled false
         proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         signingConfig signingConfigs.release
+        ${releaseBuildTypes.join('\n        ')}
     }`;
 
 
@@ -305,7 +319,16 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (buildscriptDeps) {
         for (k in buildscriptDeps) {
             if (buildscriptDeps[k] === true) {
-                c.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}`;
+                c.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}\n`;
+            }
+        }
+    }
+
+    const buildscriptDexOptions = buildGradle?.dexOptions;
+    if (buildscriptDexOptions) {
+        for (k in buildscriptDexOptions) {
+            if (buildscriptDexOptions[k] === true) {
+                c.pluginConfigAndroid.buildGradleBuildScriptDexOptions += `${k}\n`;
             }
         }
     }
@@ -328,7 +351,10 @@ const _fixAndroidLegacy = (c, modulePath) => {
 };
 
 const _getPrivateConfig = (c, platform) => {
-    const privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
+    let privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, c.files.appConfigFile.id);
+    if (!fs.existsSync(privateConfigFolder)) {
+        privateConfigFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name, 'appConfigs', c.files.appConfigFile.id);
+    }
     const appConfigSPP = c.files.appConfigFile.platforms[platform] ? c.files.appConfigFile.platforms[platform].signingPropertiesPath : null;
     const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.globalConfigFolder) : null;
     const privateConfigPath = appConfigSPPClean || path.join(privateConfigFolder, 'config.private.json');

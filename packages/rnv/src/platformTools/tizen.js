@@ -23,6 +23,7 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     copyBuildsFolder,
+    getConfigProp,
 } from '../common';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
@@ -169,6 +170,9 @@ const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.files.appConfigFile.platforms[platform];
+    const { hosted, device } = c.program;
+
+    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
     if (!platformConfig) {
         throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfigPath)}`);
@@ -178,9 +182,8 @@ const runTizen = async (c, platform, target) => {
     }
 
     const tDir = getAppFolder(c, platform);
-
-    const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
+    const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
     const gwt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile;
@@ -221,8 +224,7 @@ const runTizen = async (c, platform, target) => {
     const continueLaunching = async () => {
         let hasDevice = false;
 
-        await configureTizenProject(c, platform);
-        await buildWeb(c, platform);
+        !isHosted && await buildWeb(c, platform);
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
 
@@ -317,8 +319,7 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     const tBuild = path.join(tDir, 'build');
     const certProfile = platformConfig.certificateProfile;
 
-    configureTizenProject(c, platform)
-        .then(() => buildWeb(c, platform))
+    buildWeb(c, platform)
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
         .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
         .then(() => {

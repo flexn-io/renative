@@ -45,7 +45,7 @@ const run = (c) => {
         executePipe(c, PIPES.PLUGIN_UPDATE_BEFORE);
         return _runUpdate(c).then(() => executePipe(c, PIPES.PLUGIN_UPDATE_AFTER));
     default:
-        return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
+        return Promise.reject(`cli:plugin: Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
     }
 };
 

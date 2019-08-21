@@ -1,9 +1,10 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import shell from 'shelljs';
-import inquirer from 'inquirer';
-import path from 'path';
 import chalk from 'chalk';
+import open from 'open';
+import ip from 'ip';
+import path from 'path';
 
 import {
     isPlatformSupported,
@@ -16,6 +17,10 @@ import {
     configureIfRequired,
     cleanPlatformIfRequired,
     logInfo,
+    logDebug,
+    logWarning,
+    writeCleanFile,
+    getConfigProp
 } from '../common';
 import {
     IOS,
@@ -33,10 +38,7 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_SDKMANAGER
+    WEB_HOSTED_PLATFORMS
 } from '../constants';
 import {
     runXcodeProject,
@@ -59,11 +61,11 @@ import { executePipe } from '../projectTools/buildHooks';
 import {
     packageAndroid,
     runAndroid,
-    configureAndroidProperties,
     configureGradleProject,
     buildAndroid,
     runAndroidLog,
 } from '../platformTools/android';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 
 const RUN = 'run';
 const LOG = 'log';
@@ -94,6 +96,8 @@ const PIPES = {
     DEPLOY_BEFORE: 'deploy:before',
     DEPLOY_AFTER: 'deploy:after',
 };
+
+const isRunningOnWindows = process.platform === 'win32';
 
 // ##########################################
 // PUBLIC API
@@ -131,7 +135,7 @@ const run = (c) => {
         //     return Promise.resolve();
         //     break;
     default:
-        return Promise.reject(`Command ${c.command} not supported`);
+        return Promise.reject(`cli:runner: Command ${c.command} not supported`);
     }
 };
 
@@ -143,11 +147,23 @@ const _fix = c => new Promise((resolve, reject) => {
     cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
 });
 
+const _isWebHostEnabled = (c, platform) => {
+    const { hosted } = c.program;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
+};
+
 const _startServer = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
+    const { device, hosted } = c.program;
 
     logTask(`_startServer:${platform}:${port}`);
+
+    if (_isWebHostEnabled(c, platform) && hosted) {
+        const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+        open(`http://${hostIp}:${port}/`);
+    }
 
     switch (platform) {
     case MACOS:
@@ -168,13 +184,24 @@ const _startServer = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
         return;
+    default:
+        if (hosted) {
+            return logError('This platform does not support hosted mode', true);
+        }
     }
 
+    let startCmd;
     if (c.program.reset) {
-        shell.exec('node ./node_modules/react-native/local-cli/cli.js start --reset-cache');
+        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start --reset-cache';
     } else {
-        shell.exec('node ./node_modules/react-native/local-cli/cli.js start');
+        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start';
     }
+
+    executePipe(c, PIPES.START_BEFORE)
+        .then(() => {
+            shell.exec(startCmd);
+        })
+        .catch(e => reject(e));
 });
 
 const runWeinre = () => {
@@ -200,8 +227,8 @@ const _packageApp = c => new Promise((resolve, reject) => {
     logTask(`_packageApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _packageAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _packageAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -210,8 +237,8 @@ const _buildApp = c => new Promise((resolve, reject) => {
     logTask(`_buildApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _buildAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _buildAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -220,8 +247,8 @@ const _exportApp = c => new Promise((resolve, reject) => {
     logTask(`_exportApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _exportAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _exportAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -230,23 +257,48 @@ const _deployApp = c => new Promise((resolve, reject) => {
     logTask(`_deployApp:${c.platform}`);
 
     isPlatformSupported(c)
-        .then(v => isBuildSchemeSupported(c))
-        .then(v => _deployAppWithPlatform(c))
+        .then(() => isBuildSchemeSupported(c))
+        .then(() => _deployAppWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
+
+const configureHostedIfRequired = async (c, platform) => {
+    const { device } = c.program;
+    if (_isWebHostEnabled(c, platform)) {
+        logDebug('Running hosted build');
+        const { platformBuildsFolder, rnvRootFolder } = c.paths;
+        copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public'));
+        writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public', 'index.html'), [
+            { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.platformDefaults[platform].defaultPort}` },
+        ]);
+    }
+};
+
+const startHostedServerIfRequired = (c, platform) => {
+    const { device } = c.program;
+    if (_isWebHostEnabled(c, platform)) {
+        return _startServer(c);
+    }
+};
 
 const _runAppWithPlatform = async (c) => {
     logTask(`_runAppWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
+    const { device, hosted } = c.program;
 
     logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
     const throwErr = (err) => {
         throw err;
     };
+
+    if (_isWebHostEnabled(c, platform) && hosted) {
+        return _startServer(c);
+        // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
+    }
 
     switch (platform) {
     case IOS:
@@ -260,36 +312,13 @@ const _runAppWithPlatform = async (c) => {
     case ANDROID_TV:
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, logError)) {
-            let sdkInstall;
-            if (!c.program.ci) {
-                const response = await inquirer.prompt([{
-                    name: 'sdkInstall',
-                    type: 'confirm',
-                    message: 'Do you want to install the Android SDK?',
-                }]);
-                // eslint-disable-next-line prefer-destructuring
-                sdkInstall = response.sdkInstall;
-            }
-
-            const appendExeIfWindows = (process.platform === 'win32' ? 'emulator/emulator.exe' : '');
-
-            if (c.program.ci || sdkInstall) {
-                const setupInstance = PlatformSetup(c);
-                const newPath = await setupInstance.installAndroidSdk();
-                // @todo find a more elegant way to update this
-                c.files.globalConfig.sdks.ANDROID_SDK = newPath;
-                const { sdks: { ANDROID_SDK } } = c.files.globalConfig;
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator', appendExeIfWindows);
-                c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb', appendExeIfWindows);
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager', appendExeIfWindows);
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager', appendExeIfWindows);
-            }
+            const setupInstance = PlatformSetup(c);
+            await setupInstance.askToInstallSDK('android');
         }
 
         await executePipe(c, PIPES.RUN_BEFORE);
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
-        await configureAndroidProperties(c);
         await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
         await executePipe(c, PIPES.RUN_AFTER);
         return;
@@ -309,21 +338,31 @@ const _runAppWithPlatform = async (c) => {
     case TIZEN:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
-        if (!checkSdk(c, platform, throwErr)) return;
+        if (!checkSdk(c, platform, logError)) {
+            const setupInstance = PlatformSetup(c);
+            await setupInstance.askToInstallSDK('tizen');
+        }
 
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
+            .then(() => configureHostedIfRequired(c, platform))
             .then(() => runTizen(c, platform, target))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
+            .then(() => startHostedServerIfRequired(c, platform));
     case WEBOS:
-        if (!checkSdk(c, platform, throwErr)) return;
+        if (!checkSdk(c, platform, logError)) {
+            const setupInstance = PlatformSetup(c);
+            await setupInstance.askToInstallSDK('webos');
+        }
 
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
+            .then(() => configureHostedIfRequired(c, platform))
             .then(() => runWebOS(c, platform, target))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+            .then(() => executePipe(c, PIPES.RUN_AFTER))
+            .then(() => startHostedServerIfRequired(c, platform));
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:
@@ -366,7 +405,6 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.PACKAGE_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform, target, platform === ANDROID_WEAR))
             .then(() => executePipe(c, PIPES.PACKAGE_AFTER))
@@ -451,7 +489,6 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
         executePipe(c, PIPES.BUILD_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureAndroidProperties(c))
             .then(() => configureGradleProject(c, platform))
             .then(() => packageAndroid(c, platform))
             .then(() => buildAndroid(c, platform))

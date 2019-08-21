@@ -54,7 +54,7 @@ const run = (c) => {
         return _templateApply(c);
 
     default:
-        return Promise.reject(`Command ${c.command} not supported`);
+        return Promise.reject(`cli:template Command ${c.command} not supported`);
     }
 };
 

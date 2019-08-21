@@ -29,6 +29,8 @@ class MainApplication : Application(), ReactApplication {
         }
 
         override fun getJSMainModuleName(): String = "{{ENTRY_FILE}}"
+
+        override fun getJSBundleFile(): String? = {{GET_JS_BUNDLE_FILE}}
     }
 
 {{PLUGIN_METHODS}}

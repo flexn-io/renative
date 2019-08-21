@@ -44,7 +44,7 @@ const createFilteredStackNavigator = (c, componentMap, rootRoute, rootScreen, ro
     return createStackNavigator(stacks);
 };
 
-const createApp = (c, componentMap) => {
+const createApp = (c, componentMap, navigatorProps = {}) => {
     const root = c.root;
     let rootNav;
     let stackNav;
@@ -130,22 +130,19 @@ const createApp = (c, componentMap) => {
             }
         });
     } else {
-        rootWrapper = createSwitchNavigator(roots);
         const screensArr = [];
         for (const rk in root.screens) {
             screensArr.push(componentMap[root.screens[rk].screen]);
         }
         return (
-            <View style={{ flex: 1, backgroundColor: '#222222' }}>
-                <ScrollView>
-                    {
-                        screensArr.map((v) => {
-                            const Screen = v;
-                            return <Screen />;
-                        })
-                    }
-                </ScrollView>
-            </View>
+            <ScrollView style={{ flex: 1 }}>
+                {
+                    screensArr.map((v) => {
+                        const Screen = v;
+                        return <Screen />;
+                    })
+                }
+            </ScrollView>
         );
     }
 
@@ -153,15 +150,14 @@ const createApp = (c, componentMap) => {
     const Navigator = createAppContainer(rootWrapper);
 
     return (
-        <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '#222222' }}>
-            <Navigator
-                ref={(nav) => {
-                    _currentNavigation = nav._navigation;
-                }}
-                onNavigationStateChange={handleNavigationChange}
-                uriPrefix="/app"
-            />
-        </View>
+        <Navigator
+            ref={(nav) => {
+                _currentNavigation = nav._navigation;
+            }}
+            onNavigationStateChange={handleNavigationChange}
+            uriPrefix="/app"
+            {...navigatorProps}
+        />
     );
 };
 

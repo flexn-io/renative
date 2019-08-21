@@ -1,8 +1,7 @@
 import path from 'path';
 import fs from 'fs';
-import shell from 'shelljs';
 import chalk from 'chalk';
-import { spawn, execSync } from 'child_process';
+import { spawn } from 'child_process';
 import { createPlatformBuild } from '../cli/platform';
 import { executeAsync, execShellAsync } from '../systemTools/exec';
 import {
@@ -39,6 +38,8 @@ import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync
 } from '../systemTools/fileutils';
+
+const isRunningOnWindows = process.platform === 'win32';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureElectronProject:${platform}`);
@@ -94,8 +95,9 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             path.join(appFolder, 'webpack.config.js')
         );
     } else {
+        const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://0.0.0.0:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
         ]);
         copyFileSync(
             path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
@@ -155,54 +157,42 @@ const exportElectron = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const runElectron = (c, platform, port) => new Promise((resolve, reject) => {
+const runElectron = async (c, platform, port) => {
     logTask(`runElectron:${platform}`);
 
-    const elc = resolveNodeModulePath(c, 'electron/cli.js');
-    const appFolder = getAppFolder(c, platform);
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     if (bundleAssets) {
-        buildElectron(c, platform, bundleIsDev)
-            .then(v => _runElectronSimulator(c, platform))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await buildElectron(c, platform, bundleIsDev);
+        await _runElectronSimulator(c, platform);
     } else {
-        checkPortInUse(c, platform, port)
-            .then((isPortActive) => {
-                if (!isPortActive) {
-                    logInfo(
-                        `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
-                            port
-                        )} is not running. Starting it up for you...`
-                    );
-                    _runElectronSimulator(c, platform)
-                        .then(() => runElectronDevServer(c, platform, port))
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                } else {
-                    logInfo(
-                        `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
-                            port
-                        )} is already running. ReNativeWill use it!`
-                    );
-                    _runElectronSimulator(c, platform)
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                }
-            })
-            .catch(e => reject(e));
+        const isPortActive = await checkPortInUse(c, platform, port);
+        if (!isPortActive) {
+            logInfo(
+                `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
+                    port
+                )} is not running. Starting it up for you...`
+            );
+            await _runElectronSimulator(c, platform);
+            await runElectronDevServer(c, platform, port);
+        } else {
+            logInfo(
+                `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
+                    port
+                )} is already running. ReNative will use it!`
+            );
+            await _runElectronSimulator(c, platform);
+        }
     }
-});
+};
 
 const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
     const appFolder = getAppFolder(c, platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
-    const child = spawn(elc, [appFolder], {
+    const child = spawn('node', [elc, appFolder], {
         detached: true,
-        shell: true,
         env: process.env,
         stdio: 'inherit',
     })

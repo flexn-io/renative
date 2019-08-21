@@ -14,6 +14,7 @@ import {
     generateOptions,
     logWelcome,
     logInfo,
+    spawnCommand,
     SUPPORTED_PLATFORMS,
 } from '../common';
 import {
@@ -36,7 +37,7 @@ import {
     RNV_PROJECT_CONFIG_NAME,
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
-import { configureGradleProject, configureAndroidProperties } from '../platformTools/android';
+import { configureGradleProject } from '../platformTools/android';
 import { configureTizenProject, configureTizenGlobal } from '../platformTools/tizen';
 import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
@@ -49,12 +50,15 @@ import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 
 const CONFIGURE = 'configure';
+const SWITCH = 'switch';
 const CREATE = 'create';
 const NEW = 'new';
 
 const PIPES = {
-    APP_CONFIGURE_BEFORE: 'app:configure:before',
-    APP_CONFIGURE_AFTER: 'app:configure:after',
+    APP_CONFIGURE_BEFORE: 'configure:before',
+    APP_CONFIGURE_AFTER: 'configure:after',
+    APP_SWITCH_BEFORE: 'switch:before',
+    APP_SWITCH_AFTER: 'switch:after',
 };
 
 const highlight = chalk.green;
@@ -69,13 +73,17 @@ const run = (c) => {
     switch (c.command) {
     case NEW:
         return _runCreate(c);
+    case CONFIGURE:
+        return _runConfigure(c);
+    case SWITCH:
+        return _runSwitch(c);
     }
 
     switch (c.subCommand) {
     case CONFIGURE:
+        logWarning(`$ ${chalk.red('$ rnv app configure')} is deprecated. Use ${chalk.green('$ rnv configure')} instead`);
         return _runConfigure(c);
-    case CREATE:
-        return _runCreate(c);
+
         // case SWITCH:
         //     return Promise.resolve();
         //     break;
@@ -90,7 +98,7 @@ const run = (c) => {
         //     return Promise.resolve();
         //     break;
     default:
-        return Promise.reject(`Sub-Command ${c.subCommand} not supported`);
+        return Promise.reject(`cli:app: Sub-Command ${c.subCommand} not supported`);
     }
 };
 
@@ -108,7 +116,6 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _copySharedPlatforms(c))
         .then(() => _runPlugins(c, c.paths.rnvPluginsFolder))
         .then(() => _runPlugins(c, c.paths.projectPluginsFolder))
-        .then(() => (_isOK(c, p, [ANDROID, ANDROID_TV, ANDROID_WEAR]) ? configureAndroidProperties(c) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
@@ -126,6 +133,19 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
         .then(() => executePipe(c, PIPES.APP_CONFIGURE_AFTER))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+const _runSwitch = c => new Promise((resolve, reject) => {
+    const p = c.program.platform || 'all';
+    logTask(`_runSwitch:${p}`);
+
+    executePipe(c, PIPES.APP_SWITCH_AFTER)
+
+        .then(() => copyRuntimeAssets(c))
+        .then(() => _copySharedPlatforms(c))
+        .then(() => executePipe(c, PIPES.APP_SWITCH_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -307,12 +327,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 
     if (!fs.existsSync(c.paths.platformBuildsFolder)) {
         logWarning('Platforms not created yet. creating them for you...');
-
-        const newCommand = Object.assign({}, c);
-        newCommand.subCommand = 'configure';
-        newCommand.program = { appConfig: c.defaultAppConfigId, platform };
-
-        platformRunner(newCommand)
+        platformRunner(spawnCommand(c, {
+            subCommand: 'configure',
+            program: { appConfig: c.defaultAppConfigId, platform }
+        }))
             .then(() => resolve())
             .catch(e => reject(e));
 
@@ -322,12 +340,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         const appFolder = getAppFolder(c, platform);
         if (!fs.existsSync(appFolder)) {
             logWarning(`Platform ${platform} not created yet. creating them for you...`);
-
-            const newCommand = Object.assign({}, c);
-            newCommand.subCommand = 'configure';
-            newCommand.program = { appConfig: c.defaultAppConfigId, platform };
-
-            platformRunner(newCommand)
+            platformRunner(spawnCommand(c, {
+                subCommand: 'configure',
+                program: { appConfig: c.defaultAppConfigId, platform }
+            }))
                 .then(() => resolve())
                 .catch(e => reject(e));
 
@@ -344,11 +360,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         Object.keys(platforms).forEach((k) => {
             if (!fs.existsSync(k)) {
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
-
-                const newCommand = Object.assign({}, c);
-                newCommand.subCommand = 'configure';
-                newCommand.program = { appConfig: c.defaultAppConfigId, platform };
-                cmds.push(platformRunner(newCommand));
+                cmds.push(platformRunner(spawnCommand(c, {
+                    subCommand: 'configure',
+                    program: { appConfig: c.defaultAppConfigId, platform }
+                })));
             }
         });
 

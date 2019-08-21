@@ -16,7 +16,7 @@ const run = (c) => {
     case LINK:
         return _link(c);
     default:
-        return Promise.reject(`Command ${c.command} not supported`);
+        return Promise.reject(`cli:linker: Command ${c.command} not supported`);
     }
 };
 

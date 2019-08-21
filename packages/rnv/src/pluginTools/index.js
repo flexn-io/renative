@@ -35,7 +35,7 @@ const parsePlugins = (c, platform, pluginCallback) => {
                 if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {
                     const plugin = getMergedPlugin(c, key, plugins);
                     if (plugin) {
-                        const pluginPlat = plugin[c.platform];
+                        const pluginPlat = plugin[platform];
                         if (pluginPlat) {
                             if (plugin['no-active'] !== true && plugin.enabled !== false && pluginPlat.enabled !== false) {
                                 if (pluginCallback) pluginCallback(plugin, pluginPlat, key);

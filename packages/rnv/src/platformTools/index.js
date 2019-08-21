@@ -6,7 +6,6 @@ import {
     listAndroidTargets,
     packageAndroid,
     runAndroid,
-    configureAndroidProperties,
     runAndroidLog
 } from './android';
 import {
@@ -46,7 +45,6 @@ export default {
     listAndroidTargets,
     packageAndroid,
     runAndroid,
-    configureAndroidProperties,
     runAndroidLog,
     // APPLE
     runPod,

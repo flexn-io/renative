@@ -3,6 +3,8 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
+import { exec } from 'child_process';
+
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
@@ -16,7 +18,7 @@ import { getMergedPlugin, parsePlugins } from './pluginTools';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo
+    logInitialize, logAppInfo, getCurrentCommand
 } from './systemTools/logger';
 import {
     IOS,
@@ -59,6 +61,7 @@ import {
     RNV_PROJECT_CONFIG_NAME,
     RNV_GLOBAL_CONFIG_NAME,
     RNV_APP_CONFIG_NAME,
+    RNV_PRIVATE_APP_CONFIG_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
@@ -133,6 +136,8 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
+
+const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto'];
 
 
 const isPlatformSupportedSync = (platform, resolve, reject) => {
@@ -300,6 +305,17 @@ const startBuilder = c => new Promise((resolve, reject) => {
 
     try {
         c.files.projectPackage = JSON.parse(fs.readFileSync(c.paths.projectPackagePath).toString());
+
+        const rnvVersionRunner = c.files.rnvPackage.version;
+        const rnvVersionProject = c.files.projectPackage.devDependencies?.rnv;
+
+        if (rnvVersionRunner && rnvVersionProject) {
+            if (rnvVersionRunner !== rnvVersionProject) {
+                const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
+                logWarning(`You are running $rnv v${chalk.red(rnvVersionRunner)} against project built with $rnv v${chalk.red(rnvVersionProject)}.
+This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} .`);
+            }
+        }
     } catch (e) {
         // IGNORE
     }
@@ -329,6 +345,11 @@ const startBuilder = c => new Promise((resolve, reject) => {
         c.isWrapper = c.files.projectConfig.isWrapper;
         c.paths.globalConfigFolder = getRealPath(c, c.files.projectConfig.globalConfigFolder, 'globalConfigFolder', c.paths.globalConfigFolder);
         c.paths.globalConfigPath = path.join(c.paths.globalConfigFolder, RNV_GLOBAL_CONFIG_NAME);
+        if (c.files.projectPackage) {
+            c.paths.privateProjectFolder = path.join(c.paths.globalConfigFolder, c.files.projectPackage.name);
+            c.paths.privateProjectConfigFolder = path.join(c.paths.privateProjectFolder, 'projectConfig');
+            c.paths.privateAppConfigsFolder = path.join(c.paths.privateProjectFolder, 'appConfigs');
+        }
         c.paths.appConfigsFolder = getRealPath(c, c.files.projectConfig.appConfigsFolder, 'appConfigsFolder', c.paths.appConfigsFolder);
         c.paths.platformTemplatesFolders = _generatePlatformTemplatePaths(c);
         c.paths.platformAssetsFolder = getRealPath(
@@ -380,7 +401,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         return;
     }
 
-    if (c.command === 'fix' || c.command === 'clean' || c.command === 'tool' || c.command === 'status') {
+    if (NO_OP_COMMANDS.includes(c.command)) {
         gatherInfo(c)
             .then(() => resolve(c))
             .catch(e => reject(c));
@@ -487,8 +508,8 @@ const configureProject = c => new Promise((resolve, reject) => {
                 c.paths.appConfigsFolder = c.files.projectConfigLocal.appConfigsPath;
             }
         } else {
-            logWarning(
-                `Your local config file ${chalk.white(c.paths.projectConfigLocalPath)} is missing ${chalk.white('{ appConfigsPath: "" }')} field!`,
+            logInfo(
+                `Your local config file ${chalk.white(c.paths.projectConfigLocalPath)} is missing ${chalk.white('{ appConfigsPath: "" }')} field. ${chalk.white(c.paths.appConfigsFolder)} will be used instead`,
             );
         }
         // c.defaultAppConfigId = c.files.projectConfigLocal.defaultAppConfigId;
@@ -595,28 +616,30 @@ const configureRnvGlobal = c => new Promise((resolve, reject) => {
             }
         }
 
+        const isRunningOnWindows = process.platform === 'win32';
+
         // Check global SDKs
         const { sdks } = c.files.globalConfig;
         if (sdks) {
             if (sdks.ANDROID_SDK) {
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, 'emulator/emulator');
-                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, 'platform-tools/adb');
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/avdmanager');
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, 'tools/bin/sdkmanager');
+                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, `platform-tools/adb${isRunningOnWindows ? '.exe' : ''}`);
+                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/avdmanager${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`);
             }
             if (sdks.TIZEN_SDK) {
-                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, 'tools/emulator/bin/em-cli');
-                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/ide/bin/tizen');
+                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, `tools/emulator/bin/em-cli${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, `tools/ide/bin/tizen${isRunningOnWindows ? '.bat' : ''}`);
                 c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
             }
             if (sdks.WEBOS_SDK) {
-                c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares');
-                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-package');
-                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-install');
-                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-launch');
-                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-setup-device');
-                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-device-info');
-                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, 'CLI/bin/ares-novacom');
+                c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
             }
         } else {
             logWarning(`Your ${c.paths.globalConfigPath} is missing SDK configuration object`);
@@ -790,16 +813,13 @@ const configureApp = c => new Promise((resolve, reject) => {
             _getConfig(c, c.defaultAppConfigId)
                 .then(() => {
                     configureEntryPoints(c);
-
-                    const newCommand = Object.assign({}, c);
-                    newCommand.subCommand = 'configure';
-                    newCommand.program = {
-                        appConfig: c.defaultAppConfigId,
-                        update: true,
-                        platform: c.program.platform,
-                        scheme: c.program.scheme,
-                    };
-                    appRunner(newCommand)
+                    appRunner(spawnCommand(c, {
+                        command: 'configure',
+                        program: {
+                            appConfig: c.defaultAppConfigId,
+                            update: true,
+                        }
+                    }))
                         .then(() => resolve(c))
                         .catch(e => reject(e));
                 })
@@ -819,6 +839,33 @@ const configureApp = c => new Promise((resolve, reject) => {
         }
     }
 });
+
+export const spawnCommand = (c, overrideParams) => {
+    const newCommand = {};
+
+    Object.keys(c).forEach((k) => {
+        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
+            newCommand[k] = { ...c[k] };
+        } else {
+            newCommand[k] = c[k];
+        }
+    });
+
+    const merge = require('deepmerge');
+
+    Object.keys(overrideParams).forEach((k) => {
+        if (newCommand[k] && typeof overrideParams[k] === 'object') {
+            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
+        } else {
+            newCommand[k] = overrideParams[k];
+        }
+    });
+
+    // This causes stack overflow on Linux
+    // const merge = require('deepmerge');
+    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
+    return newCommand;
+};
 
 const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
@@ -843,10 +890,20 @@ const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 const IGNORE_FOLDERS = ['.git'];
 
+export const listAppConfigsFoldersSync = (c) => {
+    const configDirs = [];
+    fs.readdirSync(c.paths.appConfigsFolder).forEach((dir) => {
+        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.paths.appConfigsFolder, dir)).isDirectory()) {
+            configDirs.push(dir);
+        }
+    });
+    return configDirs;
+};
+
 const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`_getConfig:${appConfigId}`);
 
-    setAppConfig(c, path.join(c.paths.appConfigsFolder, appConfigId));
+    setAppConfig(c, appConfigId);
     c.appId = appConfigId;
 
     if (!fs.existsSync(c.paths.appConfigFolder)) {
@@ -855,12 +912,8 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
             output: process.stdout,
         });
 
-        const configDirs = [];
-        fs.readdirSync(c.paths.appConfigsFolder).forEach((dir) => {
-            if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.paths.appConfigsFolder, dir)).isDirectory()) {
-                configDirs.push(dir);
-            }
-        });
+        const configDirs = listAppConfigsFoldersSync(c);
+
 
         if (appConfigId !== '?') {
             logWarning(
@@ -882,7 +935,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                     if (configDirs[v]) {
                         c.defaultAppConfigId = configDirs[v];
                         c.appId = c.defaultAppConfigId;
-                        setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+                        setAppConfig(c, c.defaultAppConfigId);
                         _configureConfig(c)
                             .then(() => resolve())
                             .catch(e => reject(e));
@@ -900,7 +953,7 @@ const _getConfig = (c, appConfigId) => new Promise((resolve, reject) => {
                 ),
                 (v) => {
                     c.defaultAppConfigId = SAMPLE_APP_ID;
-                    setAppConfig(c, path.join(c.paths.appConfigsFolder, c.defaultAppConfigId));
+                    setAppConfig(c, c.defaultAppConfigId);
                     copyFolderContentsRecursiveSync(
                         path.join(c.paths.rnvRootFolder, 'appConfigs', c.defaultAppConfigId),
                         path.join(c.paths.appConfigFolder),
@@ -934,7 +987,7 @@ const _configureConfig = c => new Promise((resolve, reject) => {
                 const parentAppConfigFile = JSON.parse(fs.readFileSync(parentAppConfigPath).toString());
                 const mergedAppConfigFile = merge(parentAppConfigFile, c.files.appConfigFile, { arrayMerge: _arrayMergeOverride });
                 c.files.appConfigFile = mergedAppConfigFile;
-                setAppConfig(c, parentAppConfigFolder);
+                setAppConfig(c, c.files.appConfigFile.extend);
             }
         }
         resolve();
@@ -949,7 +1002,10 @@ const getAppTemplateFolder = (c, platform) => path.join(c.paths.platformTemplate
 
 const getAppConfigId = (c, platform) => c.files.appConfigFile.id;
 
-const _getValueOrMergedObject = (o1, o2, o3) => {
+const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
+    if (resultCli) {
+        return resultCli;
+    }
     if (o1) {
         if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
         const val = Object.assign(o3 || {}, o2 || {}, o1);
@@ -962,21 +1018,44 @@ const _getValueOrMergedObject = (o1, o2, o3) => {
     return o3;
 };
 
+const CLI_PROPS = [
+    'provisioningStyle',
+    'codeSignIdentity',
+    'provisionProfileSpecifier'
+];
+
 const getConfigProp = (c, platform, key, defaultVal) => {
+    if (!c.files.appConfigFile) {
+        logError('getConfigProp: c.files.appConfigFile is undefined!');
+        return null;
+    }
     const p = c.files.appConfigFile.platforms[platform];
     const ps = _getScheme(c);
+    let resultPlatforms;
     let scheme;
-    scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+    if (p) {
+        scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+        resultPlatforms = c.files.appConfigFile.platforms[platform][key];
+    }
+
+
     scheme = scheme || {};
+    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
     const resultScheme = scheme[key];
-    const resultPlatforms = c.files.appConfigFile.platforms[platform][key];
     const resultCommon = c.files.appConfigFile.common[key];
 
-    const result = _getValueOrMergedObject(resultScheme, resultPlatforms, resultCommon);
+    const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
     if (result === null || result === undefined) return defaultVal;
     return result;
+};
+
+const getJsBundleFileDefaults = {
+    android: 'super.getJSBundleFile()',
+    androidtv: 'super.getJSBundleFile()',
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
+    androidwear: '"assets://index.androidwear.bundle"',
 };
 
 const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
@@ -990,6 +1069,8 @@ const getAppAuthor = (c, platform) => c.files.appConfigFile.platforms[platform].
 const getAppLicense = (c, platform) => c.files.appConfigFile.platforms[platform].license || c.files.appConfigFile.common.license || c.files.projectPackage.license;
 
 const getEntryFile = (c, platform) => c.files.appConfigFile.platforms[platform].entryFile;
+
+const getGetJsBundleFile = (c, platform) => c.files.appConfigFile.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
 
 const getAppDescription = (c, platform) => c.files.appConfigFile.platforms[platform].description || c.files.appConfigFile.common.description || c.files.projectPackage.description;
 
@@ -1041,27 +1122,28 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
         return;
     }
     PLATFORM_RUNS[platform] = true;
+    const { device } = c.program;
     // if (!fs.existsSync(getAppFolder(c, platform))) {
     //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
-
-    const newCommand = Object.assign({}, c);
-    newCommand.subCommand = 'configure';
-    newCommand.program = {
-        appConfig: c.id,
-        update: false,
-        platform,
-        scheme: c.program.scheme,
-    };
+    const nc = spawnCommand(c, {
+        command: 'configure',
+        program: {
+            appConfig: c.id,
+            update: false,
+            platform,
+            device
+        }
+    });
 
     if (c.program.reset) {
         cleanPlatformBuild(c, platform)
             .then(() => createPlatformBuild(c, platform))
-            .then(() => appRunner(newCommand))
+            .then(() => appRunner(nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
         createPlatformBuild(c, platform)
-            .then(() => appRunner(newCommand))
+            .then(() => appRunner(nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     }
@@ -1091,23 +1173,40 @@ const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     logTask(`copyBuildsFolder:${platform}`);
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    // FOLDER MERGERS FROM APP CONFIG
     const destPath = path.join(getAppFolder(c, platform));
-    const sourcePath0 = getBuildsFolder(c, platform);
-    copyFolderContentsRecursiveSync(sourcePath0, destPath);
 
     // FOLDER MERGERS PROJECT CONFIG
     const sourcePath1 = getBuildsFolder(c, platform, c.paths.projectConfigFolder);
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
+    // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
+    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.privateProjectConfigFolder);
+    copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
+
+    // FOLDER MERGERS FROM APP CONFIG
+    const sourcePath0 = getBuildsFolder(c, platform, c.paths.appConfigFolder);
+    copyFolderContentsRecursiveSync(sourcePath0, destPath, c.paths.appConfigFolder);
+
+    // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
+    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.privateAppConfigFolder);
+    copyFolderContentsRecursiveSync(sourcePath0sec, destPath);
+
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
+        const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath3, destPath);
+
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
+        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.privateProjectConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath3sec, destPath);
+
         // FOLDER MERGES FROM APP CONFIG PLUGIN
         const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfigFolder, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
-        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.projectConfigFolder, `plugins/${key}`));
-        copyFolderContentsRecursiveSync(sourcePath3, destPath);
+        // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
+        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.privateAppConfigFolder, `plugins/${key}`));
+        copyFolderContentsRecursiveSync(sourcePath2sec, destPath);
     });
 
     resolve();
@@ -1117,6 +1216,9 @@ const _getScheme = c => c.program.scheme || 'debug';
 
 const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfigFolder;
+    // if (!fs.existsSync(pp)) {
+    //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
+    // }
     const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
     if (fs.existsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
@@ -1128,8 +1230,10 @@ const getIP = () => {
 };
 
 const setAppConfig = (c, p) => {
-    c.paths.appConfigFolder = p;
-    c.paths.appConfigPath = path.join(p, RNV_APP_CONFIG_NAME);
+    c.paths.appConfigFolder = path.join(c.paths.appConfigsFolder, p);
+    c.paths.appConfigPath = path.join(c.paths.appConfigFolder, RNV_APP_CONFIG_NAME);
+    c.paths.privateAppConfigFolder = path.join(c.paths.privateAppConfigsFolder, p);
+    c.paths.privateAppConfigPath = path.join(c.paths.privateAppConfigFolder, RNV_PRIVATE_APP_CONFIG_NAME);
 };
 
 const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
@@ -1312,6 +1416,7 @@ export {
     writeCleanFile,
     copyBuildsFolder,
     getEntryFile,
+    getGetJsBundleFile,
     getAppConfigId,
     getAppDescription,
     getAppAuthor,
@@ -1351,10 +1456,12 @@ export {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
+    configureRnvGlobal
 };
 
 export default {
     SUPPORTED_PLATFORMS,
+    listAppConfigsFoldersSync,
     getBuildFilePath,
     getBuildsFolder,
     configureEntryPoints,
@@ -1388,6 +1495,7 @@ export default {
     getAppVersionCode,
     writeCleanFile,
     getEntryFile,
+    getGetJsBundleFile,
     getAppConfigId,
     getAppDescription,
     getAppAuthor,
@@ -1425,4 +1533,5 @@ export default {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
+    configureRnvGlobal
 };

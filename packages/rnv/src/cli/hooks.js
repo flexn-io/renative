@@ -21,7 +21,7 @@ const run = (c) => {
     case PIPES:
         return listPipes(c);
     default:
-        return Promise.reject(`Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
+        return Promise.reject(`cli:hooks: Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
     }
 };
 

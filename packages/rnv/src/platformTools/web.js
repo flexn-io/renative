@@ -7,41 +7,24 @@ import open from 'open';
 import ip from 'ip';
 import { execShellAsync } from '../systemTools/exec';
 import {
-    isPlatformSupportedSync,
-    getConfig,
     logTask,
-    logComplete,
-    logError,
     getAppFolder,
     isPlatformActive,
-    checkSdk,
-    logWarning,
-    configureIfRequired,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
     copyBuildsFolder,
     getAppTemplateFolder,
     checkPortInUse,
     logInfo,
-    askQuestion,
-    finishQuestion,
     resolveNodeModulePath,
     getConfigProp,
-    logSuccess
+    logSuccess,
+    logDebug,
 } from '../common';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { copyFileSync } from '../systemTools/fileutils';
 import { getMergedPlugin } from '../pluginTools';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
-import { RNV_APP_CONFIG_NAME } from '../constants';
 
-const { fork } = require('child_process');
+const isRunningOnWindows = process.platform === 'win32'
 
 const _generateWebpackConfigs = (c) => {
     const appFolder = getAppFolder(c, c.platform);
@@ -86,8 +69,6 @@ const _generateWebpackConfigs = (c) => {
             }
         }
     }
-
-    const modulePathsString = modulePaths.length ? `'${modulePaths.join("','")}'` : '';
 
     const env = getConfigProp(c, c.platform, 'environment');
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
@@ -137,7 +118,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`configureWebOSProject:${platform}`);
+    logTask(`configureWebProject:${platform}`);
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
@@ -159,7 +140,12 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    const devServerHost = extendConfig.devServerHost || '0.0.0.0';
+    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
+
+    
+    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+        devServerHost = '127.0.0.1'
+    }
 
     checkPortInUse(c, platform, port)
         .then((isPortActive) => {
@@ -198,19 +184,19 @@ const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Prom
     resolve();
 });
 
-const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
+const runWebDevServer = (c, platform, port, async) => new Promise((resolve, reject) => {
     logTask(`runWebDevServer:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const wpConfig = path.join(appFolder, 'webpack.config.js');
     const wpPublic = path.join(appFolder, 'public');
+    const wpConfig = path.join(appFolder, 'webpack.config.js');
 
     _generateWebpackConfigs(c);
     const wds = resolveNodeModulePath(c, 'webpack-dev-server/bin/webpack-dev-server.js');
+    const command = `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
+    logDebug('Running:', command);
 
-    shell.exec(
-        `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port}`
-    );
+    shell.exec(command, { async });
     resolve();
 });
 

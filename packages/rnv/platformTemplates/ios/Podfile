@@ -1,4 +1,5 @@
-platform :ios, '10.0'
+{{PLUGIN_PODFILE_SOURCES}}
+platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
 use_frameworks!
 {{PLUGIN_WARNINGS}}
 

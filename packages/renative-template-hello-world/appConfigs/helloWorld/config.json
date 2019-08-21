@@ -173,7 +173,16 @@
             "id": "NkVRhWHJST.RNVanillaTV",
             "entryFile": "index.tizen",
             "backgroundColor": "black",
-            "certificateProfile": "RNVanillaCert"
+            "certificateProfile": "RNVanillaCert",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
         },
         "tizenwatch": {
             "appName": "RNVanillaWatch",
@@ -181,7 +190,16 @@
             "id": "cHIP2fIRQZ.RNVanillaWatch",
             "entryFile": "index.tizenwatch",
             "backgroundColor": "black",
-            "certificateProfile": "RNVanillaCert"
+            "certificateProfile": "RNVanillaCert",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
         },
         "tizenmobile": {
             "appName": "RNVanillaMobile",
@@ -189,7 +207,16 @@
             "id": "PauodvCU2r.RNVanillaMobile",
             "entryFile": "index.tizenmobile",
             "backgroundColor": "black",
-            "certificateProfile": "RNVanillaCert"
+            "certificateProfile": "RNVanillaCert",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
         },
         "web": {
             "entryFile": "index.web",
@@ -213,11 +240,29 @@
         },
         "webos": {
             "entryFile": "index.webos",
-            "backgroundColor": "black"
+            "backgroundColor": "black",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
         },
         "windows": {
             "entryFile": "index.windows",
-            "backgroundColor": "black"
+            "backgroundColor": "black",
+            "buildSchemes": {
+                "debug": {
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
         },
         "kaios": {
             "entryFile": "index.kaios",
