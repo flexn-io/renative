@@ -143,7 +143,7 @@ const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const { hosted, device } = c.program;
+    const { hosted } = c.program;
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
@@ -203,7 +203,7 @@ const runTizen = async (c, platform, target) => {
 
         try {
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
-            await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`);
+            await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
             hasDevice = true;
         } catch (e) {
             if (e && e.includes && e.includes('No device matching')) {
