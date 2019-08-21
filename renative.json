@@ -2,6 +2,7 @@
     "env": {
         "SOME_ENV_VAR": "xxxx"
     },
+    "name": "renative",
     "globalProfile": "rnv",
     "isWrapper": true,
     "paths": {
@@ -103,6 +104,6 @@
                 "security": "signature"
             }
         }
-    }
-
+    },
+    "currentTemplate": "renative-template-hello-world"
 }

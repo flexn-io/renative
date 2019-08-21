@@ -64,15 +64,16 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
 });
 
 const _applyLocalRenative = c => new Promise((resolve, reject) => {
+    logTask(`_applyLocalRenative:${c.runtime.isWrapper}`);
     if (!c.runtime.isWrapper) {
         resolve();
         return;
     }
 
-    if (c.buildConfig.plugins.renative) {
-        c.buildConfig.plugins.renative = getLocalRenativePlugin();
+    if (c.files.project.config.plugins.renative) {
+        c.files.project.config.plugins.renative = getLocalRenativePlugin();
     }
-    writeObjectSync(c.paths.project.config, c.buildConfig);
+    writeObjectSync(c.paths.project.config, c.files.project.config);
     resolve();
 });
 
