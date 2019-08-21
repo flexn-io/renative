@@ -39,12 +39,17 @@ const _execute = (command, opts = {}) => {
     return execa.command(cleanCommand, mergedOpts).then((res) => {
         !mergedOpts.silent && spinner.succeed();
         logDebug(res.all);
-        logDebug(res);
+        // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        !mergedOpts.silent && spinner.fail(err.stdout || err.stderr || err.message);
+        const { silent, ignoreErrors } = mergedOpts;
+        if (!silent && !ignoreErrors) spinner.fail(err.stdout || err.stderr || err.message);
         logDebug(err.all);
-        logDebug(err);
+        // logDebug(err);
+        if (ignoreErrors) {
+            spinner.succeed();
+            return true;
+        }
         return Promise.reject(err.stdout || err.stderr || err.message);
     });
 };
