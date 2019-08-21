@@ -65,11 +65,13 @@ import { getQuestion } from '../systemTools/prompt';
 import {
     copyRuntimeAssets, checkAndCreateProjectPackage,
     checkAndCreateGitignore, copySharedPlatforms
-} from './projectParser';
+} from '../projectTools/projectParser';
 
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
+
+const IGNORE_FOLDERS = ['.git'];
 
 export const createRnvConfig = (program, process, cmd, subCmd) => {
     const c = {
@@ -159,6 +161,7 @@ export const parseRenativeConfigsSync = (c) => {
     c.platform = c.program.platform;
     c.paths.home.dir = homedir;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
+    c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
 
     _generateConfigPaths(c.paths.project, base);
 
@@ -182,19 +185,19 @@ export const parseRenativeConfigsSync = (c) => {
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
-    if (!_loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
+    if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
     c.runtime.appId = c.runtime.appId || c.files.project?.builds?.config?.id;
 
-    // LOAD ./PACKAGE.JSON
-    if (!_loadFile(c.files.project, c.paths.project, 'package')) return;
-    _versionCheck(c);
-
     // LOAD ./RENATIVE.*.JSON
-    if (!_loadConfigFiles(c, c.files.project, c.paths.project)) return;
+    _loadConfigFiles(c, c.files.project, c.paths.project);
+
+    // LOAD ./PACKAGE.JSON
+    checkAndCreateProjectPackage(c);
+    _versionCheck(c);
 
     // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
     _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig.paths?.private?.dir) || c.paths.GLOBAL_RNV_DIR);
-    _generateConfigPaths(c.paths.private.project, path.join(c.paths.private.dir, c.files.project.package.name));
+    _generateConfigPaths(c.paths.private.project, path.join(c.paths.GLOBAL_RNV_DIR, c.files.project.package.name));
     _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
 
 
@@ -210,7 +213,7 @@ export const fixRenativeConfigsSync = c => new Promise((resolve, reject) => {
     logTask('fixRenativeConfigsSync');
 
     // Parse Project Config
-    checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
+    // checkAndCreateProjectPackage(c, 'renative-app', 'ReNative App');
 
     // Check gitignore
     checkAndCreateGitignore(c);
@@ -244,9 +247,9 @@ const _generateConfigPaths = (pathObj, dir) => {
 };
 
 const _versionCheck = (c) => {
-    c.runtime.rnvVersionRunner = c.files.rnv.package.version;
-    c.runtime.rnvVersionProject = c.files.project.package.devDependencies?.rnv;
-
+    logTask('_versionCheck');
+    c.runtime.rnvVersionProject = c.files.rnv?.package?.version;
+    c.runtime.rnvVersionRunner = c.files.project?.package?.devDependencies?.rnv;
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
             const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
@@ -256,18 +259,19 @@ This might result in unexpected behaviour! It is recommended that you run your r
     }
 };
 
-const _loadFile = (fileObj, pathObj, key) => {
+export const loadFile = (fileObj, pathObj, key) => {
     if (!fs.existsSync(pathObj[key])) {
         pathObj[`${key}Exists`] = false;
-        logWarning(`_loadFile: Path ${pathObj[key]} does not exists!`);
+        logWarning(`loadFile: Path ${pathObj[key]} does not exists!`);
         return false;
     }
+    pathObj[`${key}Exists`] = true;
     try {
         fileObj[key] = JSON.parse(fs.readFileSync(pathObj[key]).toString());
         pathObj[`${key}Exists`] = true;
         return true;
     } catch (e) {
-        logError(`_loadFile: ${pathObj[key]} :: ${e}`);
+        logError(`loadFile: ${pathObj[key]} :: ${e}`);
         return false;
     }
 };
@@ -275,24 +279,24 @@ const _loadFile = (fileObj, pathObj, key) => {
 const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
     let result = false;
     let extend;
-    if (_loadFile(fileObj, pathObj, 'config')) {
+    if (loadFile(fileObj, pathObj, 'config')) {
         extend = fileObj.config.extend || extend;
         result = true;
     }
 
-    if (_loadFile(fileObj, pathObj, 'configLocal')) {
+    if (loadFile(fileObj, pathObj, 'configLocal')) {
         extend = fileObj.configLocal.extend || extend;
         result = true;
     }
 
-    if (_loadFile(fileObj, pathObj, 'configPrivate')) {
+    if (loadFile(fileObj, pathObj, 'configPrivate')) {
         extend = fileObj.configPrivate.extend || extend;
         result = true;
     }
 
     if (extend && extendDir) {
         pathObj.configBase = path.join(extendDir, extend, 'renative.json');
-        _loadFile(fileObj, pathObj, 'configBase');
+        loadFile(fileObj, pathObj, 'configBase');
     }
 
     _generateBuildConfig(c);
@@ -473,8 +477,6 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
     }
 });
 
-const IGNORE_FOLDERS = ['.git'];
-
 export const listAppConfigsFoldersSync = (c) => {
     const configDirs = [];
     fs.readdirSync(c.paths.project.appConfigsDir).forEach((dir) => {
@@ -514,50 +516,50 @@ export const gatherInfo = c => new Promise((resolve, reject) => {
 export const configureRnvGlobal = c => new Promise((resolve, reject) => {
     logTask('configureRnvGlobal');
     // Check globalConfigFolder
-    if (fs.existsSync(c.paths.private.dir)) {
-        console.log(`${c.paths.private.dir} folder exists!`);
+    if (fs.existsSync(c.paths.GLOBAL_RNV_DIR)) {
+        console.log(`${c.paths.GLOBAL_RNV_DIR} folder exists!`);
     } else {
-        console.log(`${c.paths.private.dir} folder missing! Creating one for you...`);
-        mkdirSync(c.paths.private.dir);
+        console.log(`${c.paths.GLOBAL_RNV_DIR} folder missing! Creating one for you...`);
+        mkdirSync(c.paths.GLOBAL_RNV_DIR);
     }
 
     // Check globalConfig
-    if (fs.existsSync(c.paths.private.config)) {
-        console.log(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
+    if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
+        console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file exists!`);
     } else {
-        console.log(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
-        copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.private.config);
+        console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
+        copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.GLOBAL_RNV_CONFIG);
         console.log(
             `Don\'t forget to Edit: ${
-                c.paths.private.dir
+                c.paths.GLOBAL_RNV_DIR
             }/${RENATIVE_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
         );
     }
 
-    if (fs.existsSync(c.paths.private.config)) {
-        c.files.globalConfig = JSON.parse(fs.readFileSync(c.paths.private.config).toString());
+    if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
+        c.files.GLOBAL_RNV_CONFIG = JSON.parse(fs.readFileSync(c.paths.GLOBAL_RNV_CONFIG).toString());
 
-        if (c.files.globalConfig.appConfigsPath) {
-            if (!fs.existsSync(c.files.globalConfig.appConfigsPath)) {
+        if (c.files.GLOBAL_RNV_CONFIG.appConfigsPath) {
+            if (!fs.existsSync(c.files.GLOBAL_RNV_CONFIG.appConfigsPath)) {
                 logWarning(
                     `Looks like your custom global appConfig is pointing to ${chalk.white(
-                        c.files.globalConfig.appConfigsPath,
+                        c.files.GLOBAL_RNV_CONFIG.appConfigsPath,
                     )} which doesn't exist! Make sure you create one in that location`,
                 );
             } else {
                 logInfo(
                     `Found custom appConfing location pointing to ${chalk.white(
-                        c.files.globalConfig.appConfigsPath,
+                        c.files.GLOBAL_RNV_CONFIG.appConfigsPath,
                     )}. ReNativewill now swith to that location!`,
                 );
-                c.paths.project.appConfigsDir = c.files.globalConfig.appConfigsPath;
+                c.paths.project.appConfigsDir = c.files.GLOBAL_RNV_CONFIG.appConfigsPath;
             }
         }
 
         const isRunningOnWindows = process.platform === 'win32';
 
         // Check global SDKs
-        const { sdks } = c.files.globalConfig;
+        const { sdks } = c.files.GLOBAL_RNV_CONFIG;
         if (sdks) {
             if (sdks.ANDROID_SDK) {
                 c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
@@ -571,29 +573,29 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
                 c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
             }
             if (sdks.WEBOS_SDK) {
-                c.cli[CLI_WEBOS_ARES] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.globalConfig.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES] = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
             }
         } else {
-            logWarning(`Your ${c.paths.private.config} is missing SDK configuration object`);
+            logWarning(`Your ${c.paths.GLOBAL_RNV_CONFIG} is missing SDK configuration object`);
         }
 
 
         // Check config sanity
-        if (c.files.globalConfig.defaultTargets === undefined) {
+        if (c.files.GLOBAL_RNV_CONFIG.defaultTargets === undefined) {
             logWarning(
-                `Looks like you\'re missing defaultTargets in your config ${chalk.white(c.paths.private.config)}. Let's add them!`,
+                `Looks like you\'re missing defaultTargets in your config ${chalk.white(c.paths.GLOBAL_RNV_CONFIG)}. Let's add them!`,
             );
             const defaultConfig = JSON.parse(
                 fs.readFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json')).toString(),
             );
-            const newConfig = { ...c.files.globalConfig, defaultTargets: defaultConfig.defaultTargets };
-            fs.writeFileSync(c.paths.private.config, JSON.stringify(newConfig, null, 2));
+            const newConfig = { ...c.files.GLOBAL_RNV_CONFIG, defaultTargets: defaultConfig.defaultTargets };
+            fs.writeFileSync(c.paths.GLOBAL_RNV_CONFIG, JSON.stringify(newConfig, null, 2));
         }
     }
 

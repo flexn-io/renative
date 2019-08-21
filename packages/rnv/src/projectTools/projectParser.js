@@ -63,33 +63,34 @@ import {
 } from '../systemTools/logger';
 import { getQuestion } from '../systemTools/prompt';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
+import { loadFile } from '../configTools/configParser';
 
 
-export const checkAndCreateProjectPackage = (c, data) => {
-    logTask(`checkAndCreateProjectPackage:${data.packageName}`);
-    const {
-        packageName, appTitle, appID, supportedPlatforms,
-    } = data;
+export const checkAndCreateProjectPackage = (c) => {
+    logTask('checkAndCreateProjectPackage');
 
     if (!fs.existsSync(c.paths.project.package)) {
-        logInfo("Looks like your package.json is missing. Let's create one for you!");
+        logInfo(`Looks like your ${c.paths.project.package} is missing. Let's create one for you!`);
+
+        const packageName = c.files.project.config.defaults?.package?.name || c.paths.project.dir.split('/').pop();
+        const version = c.files.project.config.defaults?.package?.version || '0.1.0';
+        const templateName = c.files.project.config.defaults?.template || 'renative-template-hello-world';
 
         const pkgJson = {};
         pkgJson.name = packageName;
-        pkgJson.title = appTitle;
-        pkgJson.version = data.version;
+        pkgJson.version = version;
         pkgJson.dependencies = {
             renative: 'latest',
         };
         pkgJson.devDependencies = {
             rnv: c.files.rnv.package.version,
         };
-        pkgJson.devDependencies[data.optionTemplates.selectedOption] = 'latest';
-
+        pkgJson.devDependencies[templateName] = 'latest';
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
-
         fs.writeFileSync(c.paths.project.package, pkgJsonStringClean);
     }
+
+    loadFile(c.files.project, c.paths.project, 'package');
 };
 
 export const checkAndCreateProjectConfig = (c, data) => {

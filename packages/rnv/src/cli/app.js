@@ -204,7 +204,7 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     mkdirSync(c.paths.project.dir);
 
-    checkAndCreateProjectPackage(c, data);
+    // checkAndCreateProjectPackage(c, data);
 
     checkAndCreateGitignore(c);
 

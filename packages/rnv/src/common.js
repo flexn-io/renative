@@ -38,7 +38,7 @@ import {
 import { configureEntryPoints, configureNodeModules, copyBuildsFolder } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 
-const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto'];
+const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto', 'log'];
 
 const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -61,8 +61,9 @@ const startBuilder = c => new Promise((resolve, reject) => {
 
     parseRenativeConfigsSync(c);
 
-    if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage') {
+    if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage' || c.command === 'platform') {
         configureRnvGlobal(c)
+            .then(() => gatherInfo(c))
             .then(() => resolve(c))
             .catch(e => reject(e));
         return;
@@ -74,13 +75,6 @@ const startBuilder = c => new Promise((resolve, reject) => {
                 c.paths.project.config,
             )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
         );
-    }
-
-    if (c.command === 'platform') {
-        configureRnvGlobal(c)
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
     }
 
     if (NO_OP_COMMANDS.includes(c.command)) {
@@ -267,9 +261,9 @@ export const spawnCommand = (c, overrideParams) => {
 const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
-    if (c.files.globalConfig) {
+    if (c.files.GLOBAL_RNV_CONFIG) {
         const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(c.files.globalConfig.sdks[sdkPlatform]);
+        if (sdkPlatform) return fs.existsSync(c.files.GLOBAL_RNV_CONFIG.sdks[sdkPlatform]);
     }
 
     return false;

@@ -458,7 +458,7 @@ const _getDeviceProp = (arr, prop) => {
 
 const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask('_askForNewEmulator');
-    const emuName = c.files.globalConfig.defaultTargets[platform];
+    const emuName = c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
     const readlineInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -834,9 +834,9 @@ const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    const addNDK = c.files.globalConfig.sdks.ANDROID_NDK && !c.files.globalConfig.sdks.ANDROID_NDK.includes('<USER>');
-    const ndkString = `ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}`;
-    let sdkDir = c.files.globalConfig.sdks.ANDROID_SDK;
+    const addNDK = c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK && !c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK.includes('<USER>');
+    const ndkString = `ndk.dir=${c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK}`;
+    let sdkDir = c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_SDK;
 
     if (isRunningOnWindows) {
         sdkDir = sdkDir.replace(/\\/g, '/');
