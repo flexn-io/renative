@@ -34,7 +34,7 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
                 if (v === 'y') {
                     c.program.reset = true;
                     _migrateProject(c, paths)
-                        .then(cleanProjectModules(c))
+                        .then(() => cleanProjectModules(c))
                         .then(() => configureNodeModules(c))
                         .then(() => resolve())
                         .catch(e => reject(e));
