@@ -49,7 +49,7 @@ const _execute = (command, opts = {}) => {
     });
 };
 
-const execCLI = (c, cli, command, opts) => {
+const execCLI = (c, cli, command, opts = {}) => {
     const p = c.cli[cli];
 
     if (!fs.existsSync(p)) {
