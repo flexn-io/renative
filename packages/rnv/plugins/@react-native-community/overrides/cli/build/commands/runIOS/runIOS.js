@@ -47,7 +47,7 @@ const _logger = _interopRequireDefault(require('../../tools/logger'));
 
 const _commandExistsSync = require('rnv/dist/systemTools/exec').commandExistsSync;
 
-const _shell = require('execa');
+const _shell = require('shelljs');
 
 function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : { default: obj };
@@ -239,7 +239,7 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
 
     // check if brew is used and if it is, if python@2 is installed, which will cause issues with lldb
     if (_commandExistsSync('brew')) {
-        const installed = _shell.exec('brew list');
+        const installed = _shell.exec('brew list').stdout;
         if (installed && installed.includes('python@2')) {
             console.log('You have Python@2 installed with Brew. Unlinking it since it will cause problems with LLDB');
             _shell.exec('brew unlink python@2');
@@ -260,7 +260,7 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
 
     function doInstall() {
         console.log('Running ios-deploy', iosDeployInstallArgs.join(' '));
-        const iosDeployOutput = _shell('ios-deploy', iosDeployInstallArgs);
+        const iosDeployOutput = _shell.exec(`ios-deploy ${iosDeployInstallArgs.join(' ')}`);
 
         if (iosDeployOutput.stderr) {
             _logger.default.error(
