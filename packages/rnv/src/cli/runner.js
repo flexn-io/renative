@@ -178,6 +178,8 @@ const _startServer = c => new Promise((resolve, reject) => {
     case WEB:
     case TIZEN:
     case WEBOS:
+    case TIZEN_MOBILE:
+    case TIZEN_WATCH:
         executePipe(c, PIPES.START_BEFORE)
             .then(() => configureIfRequired(c, platform))
             .then(() => runWebDevServer(c, platform, port))

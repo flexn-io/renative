@@ -202,7 +202,8 @@ const runTizen = async (c, platform, target) => {
         await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         try {
-            await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`);
+            const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
+            await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`);
             hasDevice = true;
         } catch (e) {
             if (e && e.includes && e.includes('No device matching')) {
