@@ -47,7 +47,7 @@ function launchTizenSimulator(c, name) {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name) {
-        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`);
+        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, { detached: true });
     }
     return Promise.reject('No simulator -t target name specified!');
 }

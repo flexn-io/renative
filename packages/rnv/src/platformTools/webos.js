@@ -43,7 +43,7 @@ const launchWebOSimulator = (c) => {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
 
-    return executeAsync(`${openCommand} ${ePath}`);
+    return executeAsync(`${openCommand} ${ePath}`, { detached: true });
 };
 
 const copyWebOSAssets = (c, platform) => new Promise((resolve) => {
