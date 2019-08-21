@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.26.0-alpha1",
+            "version": "0.26.0-alpha2",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
