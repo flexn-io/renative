@@ -128,7 +128,7 @@ Allows you to immediately switch to specific app config
 
 ##### -s , --scheme
 
-You can pass down specific build scheme configured in `./appConfigs/APP_ID/config.json`
+You can pass down specific build scheme configured in `./appConfigs/APP_ID/renative.json`
 
 `$ rnv run -p <PLATFORM>` - runs app with default scheme (`-s debug`)
 

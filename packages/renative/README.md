@@ -545,7 +545,7 @@ Plugin Spec:
 
 `./appConfigs` offers powerful configuration system which allows you to configure various flavours in your projects.
 
-`./appConfigs/APP_ID/config.json` spec:
+`./appConfigs/APP_ID/renative.json` spec:
 
 ```json
 {
@@ -843,9 +843,9 @@ IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
 
 1. Have ios device connected on the same network as your dev machine
 2. Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
-3. Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+3. Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
 ```
 rnv start
@@ -985,7 +985,7 @@ rnv run -p android -d
 #### Deploy on Device
 
 This will run production version on your device (not connected to metro bundler)
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
 ```
 rnv start
@@ -1623,7 +1623,7 @@ rnv run -p macos --hosted
 #### Deploy on Electron Simulator
 
 This will run production version on your simulator (not connected to devserver)
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/config.json`
+You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
 ```
 rnv run -p macos -s release
