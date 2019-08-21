@@ -1,5 +1,5 @@
 import _chalk from 'chalk';
-import { generateOptions } from '../common';
+import { generateOptions } from './prompt';
 
 const _chalkCols = {
     white: v => v,

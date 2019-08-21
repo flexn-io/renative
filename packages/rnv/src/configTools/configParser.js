@@ -189,7 +189,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     return c;
 };
 
-export const parseRenativeConfigsSync = (c) => {
+export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
     if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
     c.runtime.appId = c.runtime.appId || c.files.project?.builds?.config?.id;
@@ -209,7 +209,21 @@ export const parseRenativeConfigsSync = (c) => {
     c.runtime.isWrapper = c.buildConfig.isWrapper;
 
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
-};
+
+    resolve();
+});
+
+export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
+    if (!c.paths.project.configExists) {
+        return reject(
+            `Looks like this directory is not ReNative project. Project config ${chalk.white(
+                c.paths.project.config,
+            )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
+        );
+    }
+
+    return resolve();
+});
 
 
 // export const _checkAndCreateProjectConfig = (c) => {

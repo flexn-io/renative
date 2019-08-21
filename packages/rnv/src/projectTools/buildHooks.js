@@ -4,8 +4,9 @@ import fs from 'fs';
 import child_process from 'child_process';
 import {
     isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
-    getAppFolder, logWarning, generateOptions, resolveNodeModulePath
+    getAppFolder, logWarning, resolveNodeModulePath
 } from '../common';
+import { generateOptions } from '../systemTools/prompt';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { executeAsync, execShellAsync, execCLI } from '../systemTools/exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
@@ -72,7 +73,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
             resolve();
             return;
         }
-        let babel = resolveNodeModulePath(c, isRunningOnWindows ? '.bin/babel.cmd' : '@babel/cli/bin/babel.js');
+        const babel = resolveNodeModulePath(c, isRunningOnWindows ? '.bin/babel.cmd' : '@babel/cli/bin/babel.js');
         const params = ['--no-babelrc', c.paths.buildHooks.dir, '-d', c.paths.buildHooks.dist.dir, '--presets=@babel/env'];
         // if (isRunningOnWindows) {
         //     babel = `cmd node ${babel}`

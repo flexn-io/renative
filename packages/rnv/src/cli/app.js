@@ -204,12 +204,6 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     mkdirSync(c.paths.project.dir);
 
-    // checkAndCreateProjectPackage(c, data);
-
-    // checkAndCreateGitignore(c);
-
-    // checkAndCreateProjectConfig(c, data);
-
     logSuccess(
         `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
             'rnv run -p web',

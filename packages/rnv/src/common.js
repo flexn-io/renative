@@ -32,15 +32,15 @@ import {
 } from './constants';
 import { executeAsync } from './systemTools/exec';
 import {
-    parseRenativeConfigsSync, createRnvConfig, updateConfig, gatherInfo,
-    fixRenativeConfigsSync, configureRnvGlobal
+    parseRenativeConfigs, createRnvConfig, updateConfig, gatherInfo,
+    fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
 import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndCreateProjectPackage } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 
-const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto', 'log'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto', 'log', 'new', 'target', 'platform'];
 
-const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
 
     configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
@@ -49,50 +49,20 @@ const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolv
     resolve(c);
 });
 
-const startBuilder = c => new Promise((resolve, reject) => {
+export const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
-    if ((c.command === 'app' && c.subCommand === 'create') || c.command === 'new') {
-        resolve(c);
+    if (NO_OP_COMMANDS.includes(c.command)) {
+        gatherInfo(c)
+            .then(() => resolve(c))
+            .catch(e => reject(c));
         return;
     }
 
-    // reLoad build config (for app id)
-    // reLoad project config (for template)
-    parseRenativeConfigsSync(c);
-
-    // // LOAD ./PACKAGE.JSON (for npm package for template)
-    checkAndCreateProjectPackage(c);
-    // _versionCheck(c);
-
-    // reLoad node_modules (for template code)
-    // merge template config with project config
-
-
-    // if (c.command === 'target' || c.command === 'log' || c.subCommand === 'fixPackage' || c.command === 'platform') {
-    //     configureRnvGlobal(c)
-    //         .then(() => gatherInfo(c))
-    //         .then(() => resolve(c))
-    //         .catch(e => reject(e));
-    //     return;
-    // }
-    //
-    // if (!c.paths.project.configExists) {
-    //     reject(
-    //         `Looks like this directory is not ReNative project. Project config ${chalk.white(
-    //             c.paths.project.config,
-    //         )} is missing!. You can create new project with ${chalk.white('rnv new')}`,
-    //     );
-    // }
-    //
-    // if (NO_OP_COMMANDS.includes(c.command)) {
-    //     gatherInfo(c)
-    //         .then(() => resolve(c))
-    //         .catch(e => reject(c));
-    //     return;
-    // }
-
-    configureRnvGlobal(c)
+    parseRenativeConfigs(c)
+        .then(() => checkIsRenativeProject(c))
+        .then(() => checkAndCreateProjectPackage(c))
+        .then(() => configureRnvGlobal(c))
         .then(() => checkIfTemplateInstalled(c))
         .then(() => fixRenativeConfigsSync(c))
         .then(() => configureNodeModules(c))
@@ -105,7 +75,7 @@ const startBuilder = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const isPlatformSupportedSync = (platform, resolve, reject) => {
+export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
         if (reject) {
             reject(
@@ -126,7 +96,7 @@ const isPlatformSupportedSync = (platform, resolve, reject) => {
     return true;
 };
 
-const isPlatformSupported = c => new Promise((resolve, reject) => {
+export const isPlatformSupported = c => new Promise((resolve, reject) => {
     logTask(`isPlatformSupported:${c.platform}`);
     if (!c.platform || c.platform === '?') {
         let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
@@ -151,7 +121,7 @@ const isPlatformSupported = c => new Promise((resolve, reject) => {
     }
 });
 
-const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
+export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     logTask(`isBuildSchemeSupported:${c.platform}`);
 
     const { scheme } = c.program;
@@ -189,7 +159,7 @@ const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     }
 });
 
-const configureApp = c => new Promise((resolve, reject) => {
+export const configureApp = c => new Promise((resolve, reject) => {
     logTask(`configureApp:${c.runtime.appId}`);
 
     if (c.runtime.appId) {
@@ -266,7 +236,7 @@ export const spawnCommand = (c, overrideParams) => {
     return newCommand;
 };
 
-const isSdkInstalled = (c, platform) => {
+export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
     if (c.files.GLOBAL_RNV_CONFIG) {
@@ -277,7 +247,7 @@ const isSdkInstalled = (c, platform) => {
     return false;
 };
 
-const checkSdk = (c, platform, reject) => {
+export const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
         reject && reject(`${platform} requires SDK to be installed. check your ${c.paths.private.config} file if you SDK path is correct`);
         return false;
@@ -287,11 +257,11 @@ const checkSdk = (c, platform, reject) => {
 
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
-const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
-const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
-const getAppConfigId = (c, platform) => c.buildConfig.id;
+export const getAppConfigId = (c, platform) => c.buildConfig.id;
 
 const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
     if (resultCli) {
@@ -309,13 +279,13 @@ const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
     return o3;
 };
 
-const CLI_PROPS = [
+export const CLI_PROPS = [
     'provisioningStyle',
     'codeSignIdentity',
     'provisionProfileSpecifier'
 ];
 
-const getConfigProp = (c, platform, key, defaultVal) => {
+export const getConfigProp = (c, platform, key, defaultVal) => {
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return null;
@@ -342,30 +312,30 @@ const getConfigProp = (c, platform, key, defaultVal) => {
     return result;
 };
 
-const getJsBundleFileDefaults = {
+export const getJsBundleFileDefaults = {
     android: 'super.getJSBundleFile()',
     androidtv: 'super.getJSBundleFile()',
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager
     androidwear: '"assets://index.androidwear.bundle"',
 };
 
-const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
+export const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
 
-const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
+export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.verion || c.files.project.package.version;
+export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.verion || c.files.project.package.version;
 
-const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
+export const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
 
-const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].license || c.buildConfig.common.license || c.files.project.package.license;
+export const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].license || c.buildConfig.common.license || c.files.project.package.license;
 
-const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
+export const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
 
-const getGetJsBundleFile = (c, platform) => c.buildConfig.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
+export const getGetJsBundleFile = (c, platform) => c.buildConfig.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
 
-const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
+export const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
 
-const getAppVersionCode = (c, platform) => {
+export const getAppVersionCode = (c, platform) => {
     if (c.buildConfig.platforms[platform].versionCode) {
         return c.buildConfig.platforms[platform].versionCode;
     }
@@ -384,12 +354,12 @@ const getAppVersionCode = (c, platform) => {
     return Number(vc).toString();
 };
 
-const logErrorPlatform = (platform, resolve) => {
+export const logErrorPlatform = (platform, resolve) => {
     logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
     resolve && resolve();
 };
 
-const isPlatformActive = (c, platform, resolve) => {
+export const isPlatformActive = (c, platform, resolve) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
         if (resolve) resolve();
@@ -403,9 +373,9 @@ const isPlatformActive = (c, platform, resolve) => {
     return true;
 };
 
-const PLATFORM_RUNS = {};
+export const PLATFORM_RUNS = {};
 
-const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
+export const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_configureIfRequired:${platform}`);
 
     if (PLATFORM_RUNS[platform]) {
@@ -440,7 +410,7 @@ const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
     }
 });
 
-const writeCleanFile = (source, destination, overrides) => {
+export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)
     if (!fs.existsSync(source)) {
         logError(`Cannot write file. source path doesn't exists: ${source}`);
@@ -462,7 +432,7 @@ const writeCleanFile = (source, destination, overrides) => {
 
 const _getScheme = c => c.program.scheme || 'debug';
 
-const getBuildsFolder = (c, platform, customPath) => {
+export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fs.existsSync(pp)) {
     //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
@@ -472,12 +442,12 @@ const getBuildsFolder = (c, platform, customPath) => {
     return path.join(pp, `builds/${platform}`);
 };
 
-const getIP = () => {
+export const getIP = () => {
     const ip = require('ip');
     return ip.address();
 };
 
-const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
+export const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
     if (c.program.reset) {
         logInfo(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
         cleanPlatformBuild(c, platform)
@@ -488,7 +458,7 @@ const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) =
     }
 });
 
-const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
+export const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     detectPort(port, (err, availablePort) => {
         if (err) {
             reject(err);
@@ -498,7 +468,7 @@ const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     });
 });
 
-const resolveNodeModulePath = (c, filePath) => {
+export const resolveNodeModulePath = (c, filePath) => {
     let pth = path.join(c.paths.rnv.nodeModulesDir, filePath);
     if (!fs.existsSync(pth)) {
         pth = path.join(c.paths.project.nodeModulesDir, filePath);
@@ -506,7 +476,7 @@ const resolveNodeModulePath = (c, filePath) => {
     return pth;
 };
 
-const getBuildFilePath = (c, platform, filePath) => {
+export const getBuildFilePath = (c, platform, filePath) => {
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
     // P2 => projectConfigs + @buildSchemes
@@ -518,59 +488,22 @@ const getBuildFilePath = (c, platform, filePath) => {
     return sp;
 };
 
+// TODO: remove this
 export {
-    getBuildFilePath,
-    configureEntryPoints,
-    getBuildsFolder,
-    generateOptions,
-    logWelcome,
-    isPlatformSupported,
-    isBuildSchemeSupported,
-    isPlatformSupportedSync,
-    getAppFolder,
-    getAppTemplateFolder,
-    logTask,
-    logComplete,
-    logError,
-    initializeBuilder,
-    startBuilder,
-    logDebug,
     logInfo,
-    logErrorPlatform,
-    isPlatformActive,
-    isSdkInstalled,
-    checkSdk,
+    logDebug,
+    logError,
+    logTask,
     logEnd,
     logWarning,
-    configureIfRequired,
-    getAppId,
-    getAppTitle,
-    getAppVersion,
-    getAppVersionCode,
-    writeCleanFile,
-    copyBuildsFolder,
-    getEntryFile,
-    getGetJsBundleFile,
-    getAppConfigId,
-    getAppDescription,
-    getAppAuthor,
-    getAppLicense,
     logSuccess,
-    getConfigProp,
-    getIP,
-    cleanPlatformIfRequired,
-    checkPortInUse,
-    finishQuestion,
-    askQuestion,
-    resolveNodeModulePath,
-    configureRnvGlobal
+    copyBuildsFolder
 };
 
 export default {
     getBuildFilePath,
     getBuildsFolder,
     configureEntryPoints,
-    generateOptions,
     logWelcome,
     copyBuildsFolder,
     isPlatformSupported,
@@ -608,8 +541,6 @@ export default {
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
-    finishQuestion,
-    askQuestion,
     resolveNodeModulePath,
     configureRnvGlobal
 };

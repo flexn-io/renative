@@ -67,7 +67,7 @@ import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 
 
-export const checkAndCreateProjectPackage = (c) => {
+export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     logTask('checkAndCreateProjectPackage');
 
     if (!fs.existsSync(c.paths.project.package)) {
@@ -93,7 +93,9 @@ export const checkAndCreateProjectPackage = (c) => {
     }
 
     loadFile(c.files.project, c.paths.project, 'package');
-};
+
+    resolve();
+});
 
 export const checkAndCreateGitignore = (c) => {
     logTask('checkAndCreateGitignore');
