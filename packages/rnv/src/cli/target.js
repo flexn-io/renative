@@ -74,7 +74,7 @@ const run = c => new Promise((resolve, reject) => {
 const _runLaunch = c => new Promise((resolve, reject) => {
     logTask('_runLaunch');
     const { platform, program } = c;
-    const target = program.target || c.files.globalConfig.defaultTargets[platform];
+    const target = program.target || c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
 
     switch (platform) {
     case ANDROID:

@@ -24,11 +24,11 @@ import {
     copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../common';
+import { getQuestion } from '../systemTools/prompt';
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
@@ -81,7 +81,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     const tId = getConfigProp(c, platform, 'teamID');
 
     const iosPath = path.join(getAppFolder(c, platform), appFolderName);
-    const sPath = path.join(c.paths.appConfigFolder, `assets/${platform}`);
+    const sPath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
     copyFolderContentsRecursiveSync(sPath, iosPath);
 
     // ASSETS
@@ -122,7 +122,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     if (!scheme) {
         reject(
             `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
-                c.paths.appConfigPath,
+                c.paths.appConfig.config,
             )}! Check example config for more info:  ${chalk.blue(
                 'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/config.json',
             )} `,
@@ -290,7 +290,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     _workerTimer = setInterval(_archiveLogger, 30000);
 
-    if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
+    if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync(`xcodebuild ${p.join(' ')}`))
             .then(() => {
@@ -362,9 +362,9 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.appId}_${platform}`,
+        `platformBuilds/${c.runtime.appId}_${platform}`,
         '--entry-file',
-        `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
+        `${c.buildConfig.platforms[platform].entryFile}.js`,
         '--bundle-output',
         `${getAppFolder(c, platform)}/main.jsbundle`,
     ];
@@ -440,14 +440,14 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     };
 
     // FONTS
-    if (c.files.appConfigFile) {
-        if (fs.existsSync(c.paths.fontsConfigFolder)) {
-            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+    if (c.buildConfig) {
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
+                    const { includedFonts } = c.buildConfig.common;
                     if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                        const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                        const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                         if (fs.existsSync(fontSource)) {
                             const fontFolder = path.join(appFolder, 'fonts');
                             mkdirSync(fontFolder);
@@ -469,7 +469,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     if (device && (!tId || tId === '')) {
         logError(
             `Looks like you're missing teamID in your ${chalk.white(
-                c.paths.appConfigPath,
+                c.paths.appConfig.config,
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
         );
     }

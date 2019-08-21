@@ -42,7 +42,7 @@ export const updateProfile = c => new Promise((resolve, reject) => {
         '--team_id',
         teamID,
         '--output_path',
-        `${paths.globalConfigFolder}/${files.projectPackage.name}/appConfigs/${appId}/certs`,
+        `${paths.private.dir}/${files.project.package.name}/appConfigs/${appId}/certs`,
         '--force'
     ];
     if (process.env.APPLE_DEVELOPER_USERNAME) {

@@ -58,6 +58,7 @@ import {
 } from '../platformTools/electron';
 import PlatformSetup from '../setupTools';
 import { executePipe } from '../projectTools/buildHooks';
+import { cleanNodeModules } from '../projectTools/projectParser';
 import {
     packageAndroid,
     runAndroid,
@@ -268,8 +269,8 @@ const configureHostedIfRequired = async (c, platform) => {
     if (_isWebHostEnabled(c, platform)) {
         logDebug('Running hosted build');
         const { platformBuildsFolder, rnvRootFolder } = c.paths;
-        copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public'));
-        writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.appId}_${platform}`, 'public', 'index.html'), [
+        copyFolderContentsRecursiveSync(path.join(rnvRootFolder, 'supportFiles', 'appShell'), path.join(platformBuildsFolder, `${c.runtime.appId}_${platform}`, 'public'));
+        writeCleanFile(path.join(rnvRootFolder, 'supportFiles', 'appShell', 'index.html'), path.join(platformBuildsFolder, `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.platformDefaults[platform].defaultPort}` },
         ]);
     }
@@ -286,7 +287,7 @@ const _runAppWithPlatform = async (c) => {
     logTask(`_runAppWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
-    const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
+    const target = c.program.target || c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
     const { device, hosted } = c.program;
 
     logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
@@ -384,7 +385,7 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_packageAppWithPlatform:${c.platform}`);
     const { platform } = c;
 
-    const target = c.program.target || c.files.globalConfig.defaultTargets[platform];
+    const target = c.program.target || c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
 
     switch (platform) {
     case IOS:
@@ -592,7 +593,7 @@ const _log = c => new Promise((resolve, reject) => {
 const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve, reject) => {
     logTask(`_runAndroid:${platform}`);
 
-    if (c.files.appConfigFile.platforms[platform].runScheme === 'Release' || forcePackage) {
+    if (c.buildConfig.platforms[platform].runScheme === 'Release' || forcePackage) {
         packageAndroid(c, platform).then(() => {
             runAndroid(c, platform, target)
                 .then(() => resolve())

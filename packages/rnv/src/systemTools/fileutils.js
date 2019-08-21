@@ -203,12 +203,12 @@ export const getRealPath = (c, p, key = 'undefined', original) => {
         return original;
     }
     if (p.startsWith('./')) {
-        return path.join(c.paths.projectRootFolder, p);
+        return path.join(c.paths.project.dir, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
-        .replace(/~/g, c.paths.homeFolder)
-        .replace(/USER_HOME/g, c.paths.homeFolder)
-        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
+    return p.replace(/RNV_HOME/g, c.paths.rnv.dir)
+        .replace(/~/g, c.paths.home.dir)
+        .replace(/USER_HOME/g, c.paths.home.dir)
+        .replace(/PROJECT_HOME/g, c.paths.project.dir);
 };
 
 const _refToValue = (c, ref, key) => {
@@ -238,6 +238,8 @@ const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
     return uniqueArray;
 };
+
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 const sanitizeDynamicRefs = (c, obj) => {
     if (!obj) return obj;
@@ -284,11 +286,11 @@ const sanitizeDynamicProps = (obj, props) => {
     return obj;
 };
 
-const mergeObjects = (c, obj1, obj2) => {
+const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
-    const obj = merge(obj1, obj2, { arrayMerge });
-    return sanitizeDynamicRefs(c, obj);
+    const obj = merge(obj1, obj2, { arrayMerge: replaceArrays ? _arrayMergeOverride : arrayMerge });
+    return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
 };
 
 const updateConfigFile = async (update, globalConfigPath) => {

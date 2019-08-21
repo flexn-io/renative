@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import net from 'net';
 
 import { execCLI } from '../systemTools/exec';
-import { RNV_GLOBAL_CONFIG_NAME } from '../constants';
+import { RENATIVE_CONFIG_NAME } from '../constants';
 import {
     logTask,
     logError,
@@ -33,7 +33,7 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(c.paths.globalConfigFolder, 'tizen_author.p12');
+    const tizenAuthorCert = path.join(c.paths.private.dir, 'tizen_author.p12');
     if (fs.existsSync(tizenAuthorCert)) {
         console.log('tizen_author.p12 file exists!');
         resolve();
@@ -59,7 +59,7 @@ const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyTizenAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const sourcePath = path.join(c.paths.appConfigFolder, 'assets', platform);
+    const sourcePath = path.join(c.paths.appConfig.dir, 'assets', platform);
     const destPath = path.join(getAppFolder(c, platform));
 
     copyFolderContentsRecursiveSync(sourcePath, destPath);
@@ -69,7 +69,7 @@ const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
 const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.globalConfigFolder} -a rnv -f tizen_author -p 1234`)
+    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.private.dir} -a rnv -f tizen_author -p 1234`)
         .then(() => addDevelopTizenCertificate(c))
         .then(() => resolve())
         .catch((e) => {
@@ -81,7 +81,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
 const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.globalConfigFolder, 'tizen_author.p12')} -p 1234`)
+    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.private.dir, 'tizen_author.p12')} -p 1234`)
         .then(() => resolve())
         .catch((e) => {
             logError(e);
@@ -145,16 +145,16 @@ const composeDevicesString = devices => devices.map(device => ({ key: device.id,
 const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
-    const platformConfig = c.files.appConfigFile.platforms[platform];
+    const platformConfig = c.buildConfig.platforms[platform];
     const { hosted, device } = c.program;
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
     if (!platformConfig) {
-        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
     if (!platformConfig.appName) {
-        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
 
     const tDir = getAppFolder(c, platform);
@@ -175,7 +175,7 @@ const runTizen = async (c, platform, target) => {
         }]);
 
         if (startEmulator) {
-            const defaultTarget = c.files.globalConfig.defaultTargets[platform];
+            const defaultTarget = c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;
@@ -191,7 +191,7 @@ const runTizen = async (c, platform, target) => {
                     return continueLaunching();
                 } catch (err) {
                     logDebug(err);
-                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME}`);
+                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.private.dir}/${RENATIVE_CONFIG_NAME}`);
                 }
             }
         }
@@ -288,7 +288,7 @@ const runTizen = async (c, platform, target) => {
 const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildTizenProject:${platform}`);
 
-    const platformConfig = c.files.appConfigFile.platforms[platform];
+    const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);
 
     const tOut = path.join(tDir, 'output');
@@ -325,7 +325,7 @@ const configureProject = (c, platform) => new Promise((resolve) => {
     const appFolder = getAppFolder(c, platform);
 
     const configFile = 'config.xml';
-    const p = c.files.appConfigFile.platforms[platform];
+    const p = c.buildConfig.platforms[platform];
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
         { pattern: '{{PACKAGE}}', override: p.package },
         { pattern: '{{ID}}', override: p.id },

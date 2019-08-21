@@ -18,7 +18,6 @@ import {
     copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
@@ -52,7 +51,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, rej
     // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
     if (!pluginsEntitlementsObj) {
-        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/entitlements.json'));
+        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/entitlements.json'));
     }
 
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
@@ -64,11 +63,11 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
+    const { permissions, orientationSupport, urlScheme, plistExtra } = c.buildConfig.platforms[platform];
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/info.plist.json'));
+    let plistObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/info.plist.json'));
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     // FONTS
@@ -79,18 +78,18 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     const pluginPermissions = '';
     if (permissions) {
         if (permissions.length && permissions[0] === '*') {
-            if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
-                const pc = c.files.permissionsConfig.permissions[plat];
+            if (c.buildConfig) {
+                const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
+                const pc = c.buildConfig.permissions[plat];
                 for (const v in pc) {
                     plistObj[pc[v].key] = pc[v].desc;
                 }
             }
         } else {
             permissions.forEach((v) => {
-                if (c.files.permissionsConfig) {
-                    const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
-                    const pc = c.files.permissionsConfig.permissions[plat];
+                if (c.buildConfig) {
+                    const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
+                    const pc = c.buildConfig.permissions[plat];
                     if (pc[v]) {
                         plistObj[pc[v].key] = pc[v].desc;
                     }

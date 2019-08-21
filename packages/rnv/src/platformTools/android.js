@@ -12,26 +12,26 @@ import inquirer from 'inquirer';
 import { executeAsync, execCLI, executeTelnet } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
+    CLI_ANDROID_EMULATOR,
+    CLI_ANDROID_ADB,
+    CLI_ANDROID_AVDMANAGER,
+    CLI_ANDROID_SDKMANAGER
+} from '../constants';
+import {
     logTask,
     logError,
     getAppFolder,
     isPlatformActive,
     copyBuildsFolder,
-    askQuestion,
-    finishQuestion,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
     getAppTemplateFolder,
     logWarning,
     logDebug,
     getConfigProp,
     logInfo,
-    getQuestion,
     logSuccess,
     waitForEmulator,
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
 import { parsePlugins } from '../pluginTools';
@@ -457,7 +457,7 @@ const _getDeviceProp = (arr, prop) => {
 
 const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask('_askForNewEmulator');
-    const emuName = c.files.globalConfig.defaultTargets[platform];
+    const emuName = c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
     const readlineInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -501,7 +501,7 @@ const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const destPath = path.join(getAppFolder(c, platform), 'app/src/main/res');
-    const sourcePath = path.join(c.paths.appConfigFolder, `assets/${platform}/res`);
+    const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}/res`);
     copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
 });
@@ -515,7 +515,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const { entryFile } = c.files.appConfigFile.platforms[platform];
+    const { entryFile } = c.buildConfig.platforms[platform];
     // TODO Android PROD Crashes if not using this hardcoded one
     let outputFile;
     if (platform === ANDROID_WEAR) {
@@ -778,9 +778,9 @@ const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    const addNDK = c.files.globalConfig.sdks.ANDROID_NDK && !c.files.globalConfig.sdks.ANDROID_NDK.includes('<USER>');
-    const ndkString = `ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}`;
-    let sdkDir = c.files.globalConfig.sdks.ANDROID_SDK;
+    const addNDK = c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK && !c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK.includes('<USER>');
+    const ndkString = `ndk.dir=${c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK}`;
+    let sdkDir = c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_SDK;
 
     if (isRunningOnWindows) {
         sdkDir = sdkDir.replace(/\\/g, '/');
@@ -864,16 +864,16 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(0, c.pluginConfigAndroid.pluginPackages.length - 2);
 
     // FONTS
-    if (c.files.appConfigFile) {
-        if (fs.existsSync(c.paths.fontsConfigFolder)) {
-            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+    if (c.buildConfig) {
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
+                    const { includedFonts } = c.buildConfig.common;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
-                                const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                                 if (fs.existsSync(fontSource)) {
                                     const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                                     mkdirSync(fontFolder);

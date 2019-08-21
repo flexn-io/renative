@@ -1,5 +1,5 @@
 import _chalk from 'chalk';
-import { generateOptions } from '../common';
+import { generateOptions } from './prompt';
 
 const _chalkCols = {
     white: v => v,
@@ -39,8 +39,12 @@ export const logWelcome = () => {
 `);
 
     if (_c?.files?.rnvPackage?.version) {
-        _c.rnvVersion = _c.files.rnvPackage.version;
+        _c.rnvVersion = _c.files.rnv.package.version;
         str += printIntoBox(`      Version: ${chalk.green(_c.rnvVersion)}`, 1);
+        if (_c.rnvVersion.includes('alpha')) {
+            str += printIntoBox(`      ${chalk.yellow('WARNING: this is a prerelease version. use "npm install rnv" for stable one.')}`, 1);
+            str += '\n';
+        }
     }
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
@@ -53,7 +57,7 @@ export const logWelcome = () => {
     console.log(str);
 };
 
-let _messages;
+let _messages = [];
 let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
@@ -61,6 +65,7 @@ let _c;
 let _isMono = false;
 let _defaultColor;
 let _highlightColor;
+
 
 export const configureLogger = (c, process, command, subCommand, isInfoEnabled) => {
     _messages = [];
@@ -82,6 +87,7 @@ const _updateDefaultColors = () => {
     _defaultColor = chalk.gray;
     _highlightColor = chalk.green;
 };
+_updateDefaultColors();
 
 export const logAndSave = (msg, skipLog) => {
     if (_messages && !_messages.includes(msg)) _messages.push(msg);
@@ -91,6 +97,7 @@ export const logAndSave = (msg, skipLog) => {
 const PRIVATE_PARAMS = ['-k', '--key'];
 
 export const getCurrentCommand = (excludeDollar = false) => {
+    if (!_c) return '_c is undefined';
     const argArr = _c.process.argv.slice(2);
     let hideNext = false;
     const output = argArr.map((v) => {
@@ -126,28 +133,28 @@ export const logSummary = () => {
 
     let str = printBoxStart(`🚀  SUMMARY ${timeString}`, getCurrentCommand());
     if (_c) {
-        if (_c.files.projectPackage) {
-            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
-            str += printIntoBox(`Project Version: ${_highlightColor(_c.files.projectPackage.version)}`, 1);
+        if (_c.files.project.package) {
+            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
+            str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
-        if (_c.files.appConfigFile) {
-            str += printIntoBox(`App Config: ${_highlightColor(_c.files.appConfigFile.id)}`, 1);
+        if (_c.buildConfig) {
+            str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig.id)}`, 1);
         }
-        if (_c.files.projectConfig) {
-            const defaultProjectConfigs = _c.files.projectConfig.defaultProjectConfigs;
-            if (defaultProjectConfigs.supportedPlatforms) {
+        if (_c.files.project.config) {
+            const defaultProjectConfigs = _c.files.project.config?.defaults;
+            if (defaultProjectConfigs?.supportedPlatforms) {
                 const plats = [];
-                generateOptions(_c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
+                generateOptions(_c.buildConfig.defaults.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
-                    if (_c.paths.platformTemplatesFolders) {
-                        isEjected = _c.paths.platformTemplatesFolders[obj].includes(_c.paths.rnvPlatformTemplatesFolder) ? '' : '(ejected)';
+                    if (_c.paths.project.platformTemplatesDirs) {
+                        isEjected = _c.paths.project.platformTemplatesDirs[obj].includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
                     }
 
                     plats.push(`${defaultVal}${isEjected}`);
                 });
                 str += printArrIntoBox(plats, 'Supported Platfroms: ');
             }
-            if (defaultProjectConfigs.template) {
+            if (defaultProjectConfigs?.template) {
                 str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
             }
         }
@@ -236,7 +243,7 @@ export const logInitialize = () => {
 };
 
 export const logAppInfo = c => new Promise((resolve, reject) => {
-    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.files.appConfigFile.id)}\n${LINE2}`));
+    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.buildConfig.id)}\n${LINE2}`));
 
     resolve();
 });
@@ -302,7 +309,7 @@ export const logStatus = () => {
     // // str += printIntoBox('SHlelelele euheu ehhh');
     // // console.log('SSKJJSKL', _c);
     // if (_c) {
-    //     if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
+    //     if (_c.runtime.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.runtime.appId)}`, 1);
     //     if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
     //     if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
     // }

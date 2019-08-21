@@ -17,7 +17,6 @@ import {
     copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
@@ -38,7 +37,7 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
 
     const entryFile = getEntryFile(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
-    const { backgroundColor } = c.files.appConfigFile.platforms[platform];
+    const { backgroundColor } = c.buildConfig.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);

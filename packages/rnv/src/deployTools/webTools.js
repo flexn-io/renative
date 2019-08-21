@@ -4,15 +4,13 @@ import fs from 'fs';
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
 import {
-    askQuestion,
-    finishQuestion,
     logTask,
     logComplete,
     logError,
-    logInfo,
-    generateOptions
+    logInfo
 } from '../common';
-import { RNV_APP_CONFIG_NAME } from '../constants';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
+import { RENATIVE_CONFIG_NAME } from '../constants';
 
 const DEPLOY_TARGET_FTP = 'ftp';
 const DEPLOY_TARGET_NOW = 'now';
@@ -37,7 +35,7 @@ const _runDeployment = (c, platform, deployType) => new Promise((resolve, reject
 const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) => {
     const argv = require('minimist')(c.process.argv.slice(2));
     const deployType = argv.t;
-    const targetConfig = c.files.appConfigFile.platforms[platform];
+    const targetConfig = c.buildConfig.platforms[platform];
 
     if (deployType || (targetConfig && targetConfig.deploy && targetConfig.deploy.type)) {
         _runDeployment(c, platform, deployType || targetConfig.deploy.type)
@@ -49,9 +47,9 @@ const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) =>
             .then((selectedDeployTarget) => {
                 finishQuestion();
                 const configFilePath = path.resolve(
-                    c.files.projectConfig.appConfigsFolder,
+                    c.buildConfig.appConfigsFolder,
                     c.defaultAppConfigId,
-                    RNV_APP_CONFIG_NAME
+                    RENATIVE_CONFIG_NAME
                 );
                 logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(configFilePath)}`);
                 _runDeployment(c, platform, selectedDeployTarget).then(resolve).catch(reject);

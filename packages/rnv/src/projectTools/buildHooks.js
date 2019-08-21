@@ -4,8 +4,9 @@ import fs from 'fs';
 import child_process from 'child_process';
 import {
     isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
-    getAppFolder, logWarning, generateOptions, resolveNodeModulePath
+    getAppFolder, logWarning, resolveNodeModulePath
 } from '../common';
+import { generateOptions } from '../systemTools/prompt';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { executeAsync, execShellAsync, execCLI } from '../systemTools/exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
@@ -67,15 +68,15 @@ const executePipe = (c, key) => new Promise((resolve, reject) => {
 
 const buildHooks = c => new Promise((resolve, reject) => {
     logTask('buildHooks');
-    if (fs.existsSync(c.paths.buildHooksIndexPath)) {
+    if (fs.existsSync(c.paths.buildHooks.index)) {
         if (c.isBuildHooksReady) {
             resolve();
             return;
         }
 
-        executeAsync(`babel --no-babelrc ${c.paths.buildHooksFolder} -d ${c.paths.buildHooksDistFolder} --presets=@babel/env`)
+        executeAsync(`babel --no-babelrc ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`)
             .then(() => {
-                const h = require(c.paths.buildHooksDistIndexPath);
+                const h = require(c.paths.buildHooks.dist.index);
                 c.buildHooks = h.hooks;
                 c.buildPipes = h.pipes;
                 c.isBuildHooksReady = true;
@@ -85,7 +86,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
                 resolve();
             });
     } else {
-        // logWarning(`Your buildHook ${chalk.white(c.paths.buildHooksIndexPath)} is missing!. Skipping operation`);
+        // logWarning(`Your buildHook ${chalk.white(c.paths.buildHooks.index)} is missing!. Skipping operation`);
         resolve();
     }
 });
