@@ -63,21 +63,6 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _applyLocalRenative = c => new Promise((resolve, reject) => {
-    logTask(`_applyLocalRenative:${c.runtime.isWrapper}`);
-    if (!c.runtime.isWrapper) {
-        resolve();
-        return;
-    }
-
-    if (c.files.project.config.plugins.renative) {
-        c.files.project.config.plugins.renative = getLocalRenativePlugin();
-    }
-    writeObjectSync(c.paths.project.config, c.files.project.config);
-    resolve();
-});
-
-
 const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
     logTask(`applyLocalTemplate:${selectedTemplate}`);
     const currentTemplate = c.buildConfig.defaults.template;
@@ -104,7 +89,6 @@ const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject
 
         _applyTemplate(c)
             .then(() => configureEntryPoints(c))
-            .then(() => _applyLocalRenative(c))
             .then(() => resolve())
             .catch(e => reject(e));
     }
@@ -123,7 +107,6 @@ const applyTemplate = c => new Promise((resolve, reject) => {
 
     _applyTemplate(c)
         // .then(() => configureEntryPoints(c)) // NOT READY YET
-        // .then(() => _applyLocalRenative(c)) //NOT READY YET
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -206,14 +189,22 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
     // renative.json
     logTask('configureProject:check renative.json', chalk.grey);
-    if (!c.files.project.config.template) {
-        logWarning(
-            `Looks like your ${c.paths.project.config} need to be updated with ${templateConfigPath}`,
-        );
-        c.files.project.config = mergeObjects(c, c.files.project.config, templateConfig, false, true);
-        c.files.project.config.currentTemplate = currentTemplate;
-        writeObjectSync(c.paths.project.config, c.files.project.config);
+    if (!c.runtime.isWrapper) {
+        if (!c.files.project.config.currentTemplate) {
+            logWarning(
+                `Looks like your ${c.paths.project.config} need to be updated with ${templateConfigPath}`,
+            );
+            c.files.project.config = mergeObjects(c, c.files.project.config, templateConfig, false, true);
+            c.files.project.config.currentTemplate = currentTemplate;
+            writeObjectSync(c.paths.project.config, c.files.project.config);
+        }
+    } else {
+        if (templateConfig.plugins.renative) {
+            templateConfig.plugins.renative = getLocalRenativePlugin();
+        }
+        writeObjectSync(c.paths.project.configLocal, templateConfig);
     }
+
 
     resolve();
 });
