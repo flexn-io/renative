@@ -238,7 +238,7 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
 │   │   └── default          # Example application flavour                     │
 │   │       ├── assets       # Platform assets injected to ./platformAssets    │
 │   │       ├── builds       # Platform files injected to ./platformBuilds     │
-│   │       └── config.json  # Application flavour config                      │
+│   │       └── renative.json  # Application flavour config                      │
 │   ├── platformAssets       # Generated cross-platform assets                 │
 │   ├── platformBuilds       # Generated platform app projects                 │
 │   ├── projectConfigs       # Project configuration files/assets              │
@@ -247,7 +247,7 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
 │   │   └── plugins.json     # Multi-platform Plugins configuration            │
 │   ├── src                  # Source files                                    │
 │   ├── index.*.js           # Entry files                                     │
-│   └── rnv-config.json      # ReNative project configuration                  │
+│   └── renative.json      # ReNative project configuration                  │
 `);
     str += printIntoBox('');
     str += printBoxEnd();

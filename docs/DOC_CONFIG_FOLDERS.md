@@ -105,7 +105,7 @@ You can utilise above folders in following places:
 Legend:
 
 - `[PLATFORM]` - specific platform key like `ios`, `andoid`, `web`, etc..
-- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `config.json` file
+- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
 - `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
 - `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "paths": { "globalConfigFolder": "~/.myCustomGlobalFolder" } }` in `renative.json` of each project

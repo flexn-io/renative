@@ -124,7 +124,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
             `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
                 c.paths.appConfig.config,
             )}! Check example config for more info:  ${chalk.blue(
-                'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/config.json',
+                'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/renative.json',
             )} `,
         );
         return;

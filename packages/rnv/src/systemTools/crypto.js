@@ -172,7 +172,7 @@ export const _updateProfiles = (c) => {
     const acList = listAppConfigsFoldersSync(c);
     const fullList = [];
     acList.forEach((v) => {
-        const appConfigFile = readObjectSync(path.join(c.paths.project.appConfigsDir, v, 'config.json'));
+        const appConfigFile = readObjectSync(path.join(c.paths.project.appConfigsDir, v, 'renative.json'));
 
         const buildSchemes = appConfigFile.platforms[c.platform]?.buildSchemes;
 

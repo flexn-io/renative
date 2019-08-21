@@ -36,7 +36,7 @@ jobs:
         - npm run build:dev
         - sudo npm link > /dev/null 2>&1
         - mkdir /home/travis/.rnv
-        - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/config.json
+        - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/renative.json
         - yes | sdkmanager "emulator"
       script: npm run test
     - language: node_js

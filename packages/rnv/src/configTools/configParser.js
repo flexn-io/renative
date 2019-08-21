@@ -194,8 +194,12 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
     c.runtime.appId = c.runtime.appId || c.files.project?.builds?.config?.id;
 
+    // LOAD ~/.rnv/RENATIVE.*.JSON
+    _generateConfigPaths(c.paths.private, c.paths.GLOBAL_RNV_DIR);
+
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
+    if (!c.files.project.config) return resolve();
 
     // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
     _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig.paths?.private?.dir) || c.paths.GLOBAL_RNV_DIR);
@@ -549,13 +553,19 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
     if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
         console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file exists!`);
     } else {
-        console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
-        copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.GLOBAL_RNV_CONFIG);
-        console.log(
-            `Don\'t forget to Edit: ${
-                c.paths.GLOBAL_RNV_DIR
-            }/${RENATIVE_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
-        );
+        const oldGlobalConfigPath = path.join(c.paths.GLOBAL_RNV_DIR, 'config.json');
+        if (fs.existsSync(oldGlobalConfigPath)) {
+            logWarning('Found old version of your config. will copy it to new renative.json config');
+            copyFileSync(oldGlobalConfigPath, c.paths.GLOBAL_RNV_CONFIG);
+        } else {
+            console.log(`${c.paths.GLOBAL_RNV_DIR}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
+            copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.GLOBAL_RNV_CONFIG);
+            console.log(
+                `Don\'t forget to Edit: ${
+                    c.paths.GLOBAL_RNV_DIR
+                }/${RENATIVE_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
+            );
+        }
     }
 
     if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
