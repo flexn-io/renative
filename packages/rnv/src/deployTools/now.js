@@ -4,17 +4,16 @@ import fs from 'fs';
 import { executeAsync } from '../systemTools/exec';
 import {
     logInfo,
-    getAppFolder,
-    askQuestion,
-    finishQuestion,
+    getAppFolder
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     require('dotenv').config();
     const defaultBuildFolder = path.join(getAppFolder(c, 'web'), 'public');
     const params = [defaultBuildFolder, '-A', nowConfigPath];
     if (process.env.NOW_TOKEN) params.push('-t', process.env.NOW_TOKEN);
-    executeAsync('now', params)
+    executeAsync(`now ${params.join(' ')}`)
         .then(() => resolve())
         .catch(error => reject(error));
 });
@@ -49,8 +48,8 @@ const _createConfigFiles = (configFilePath, envConfigPath, nowParamsExists = fal
 });
 
 const deployToNow = c => new Promise((resolve, reject) => {
-    const nowConfigPath = path.resolve(c.paths.projectRootFolder, 'now.json');
-    const envConfigPath = path.resolve(c.paths.projectRootFolder, '.env');
+    const nowConfigPath = path.resolve(c.paths.project.dir, 'now.json');
+    const envConfigPath = path.resolve(c.paths.project.dir, '.env');
 
     let envContent;
     try {

@@ -9,7 +9,7 @@ import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI } from '../systemTools/exec';
+import { executeAsync, execCLI, executeTelnet } from '../systemTools/exec';
 import { createPlatformBuild } from '../cli/platform';
 import {
     logTask,
@@ -17,22 +17,17 @@ import {
     getAppFolder,
     isPlatformActive,
     copyBuildsFolder,
-    askQuestion,
-    finishQuestion,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
     getAppTemplateFolder,
     logWarning,
     logDebug,
     getConfigProp,
     logInfo,
-    getQuestion,
     logSuccess,
+    waitForEmulator,
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV } from '../constants';
+import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../constants';
 import { parsePlugins } from '../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
 import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './android/kotlinParser';
@@ -73,7 +68,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`).catch((err) => {
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { detached: true }).catch((err) => {
                                 if (err.includes && err.includes('WHPX')) {
                                     logWarning(err);
                                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -134,22 +129,20 @@ const _getDeviceString = (device, i) => {
     return `-[${i + 1}] ${deviceString}\n`;
 };
 
-const _listAndroidTargets = (c, skipDevices, skipAvds, deviceOnly = false) => {
+const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask(`_listAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`);
     try {
         let devicesResult;
         let avdResult;
 
-        child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} kill-server`);
-        child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} start-server`);
+        await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
+        await execCLI(c, CLI_ANDROID_ADB, 'start-server');
 
         if (!skipDevices) {
-            devicesResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} devices -l`).toString();
-            logDebug(`${c.cli[CLI_ANDROID_ADB]} devices -l`, devicesResult);
+            devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l');
         }
         if (!skipAvds) {
-            avdResult = child_process.execSync(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`).toString();
-            logDebug(`${c.cli[CLI_ANDROID_EMULATOR]} -list-avds`, avdResult);
+            avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, '-list-avds');
         }
         return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
     } catch (e) {
@@ -170,13 +163,13 @@ const isSquareishDevice = (width, height) => {
     return false;
 };
 
-const getRunningDeviceProp = (c, udid, prop) => {
+const getRunningDeviceProp = async (c, udid, prop) => {
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
         if (!prop) return currentDeviceProps[udid];
         return currentDeviceProps[udid][prop];
     }
-    const rawProps = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${udid} shell getprop`).toString().trim();
+    const rawProps = await execCLI(c, CLI_ANDROID_ADB, `-s ${udid} shell getprop`);
     const reg = /\[.+\]: \[.*\n?[^\[]*\]/gm;
     const lines = rawProps.match(reg);
 
@@ -192,12 +185,12 @@ const getRunningDeviceProp = (c, udid, prop) => {
     return getRunningDeviceProp(c, udid, prop);
 };
 
-const decideIfTVRunning = (c, device) => {
+const decideIfTVRunning = async (c, device) => {
     const { udid, model, product } = device;
-    const mod = getRunningDeviceProp(c, udid, 'ro.product.model');
-    const name = getRunningDeviceProp(c, udid, 'ro.product.name');
-    const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
-    const description = getRunningDeviceProp(c, udid, 'ro.build.description');
+    const mod = await getRunningDeviceProp(c, udid, 'ro.product.model');
+    const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
+    const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
+    const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
 
     let isTV = false;
     [mod, name, flavor, description, model, product].forEach((string) => {
@@ -209,13 +202,13 @@ const decideIfTVRunning = (c, device) => {
     return isTV;
 };
 
-const decideIfWearRunning = (c, device) => {
+const decideIfWearRunning = async (c, device) => {
     const { udid, model, product } = device;
-    const fingerprint = getRunningDeviceProp(c, udid, 'ro.vendor.build.fingerprint');
-    const name = getRunningDeviceProp(c, udid, 'ro.product.vendor.name');
-    const mod = getRunningDeviceProp(c, udid, 'ro.product.vendor.model');
-    const flavor = getRunningDeviceProp(c, udid, 'ro.build.flavor');
-    const description = getRunningDeviceProp(c, udid, 'ro.build.description');
+    const fingerprint = await getRunningDeviceProp(c, udid, 'ro.vendor.build.fingerprint');
+    const name = await getRunningDeviceProp(c, udid, 'ro.product.vendor.name');
+    const mod = await getRunningDeviceProp(c, udid, 'ro.product.vendor.model');
+    const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
+    const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
 
     let isWear = false;
     [fingerprint, name, mod, flavor, description, model, product].forEach((string) => {
@@ -227,9 +220,9 @@ const decideIfWearRunning = (c, device) => {
 const getDeviceType = async (device, c) => {
     logDebug('getDeviceType - in', { device });
     if (device.udid !== 'unknown') {
-        const screenSizeResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm size`).toString();
-        const screenDensityResult = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${device.udid} shell wm density`).toString();
-        const arch = getRunningDeviceProp(c, device.udid, 'ro.product.cpu.abi');
+        const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
+        const screenDensityResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
+        const arch = await getRunningDeviceProp(c, device.udid, 'ro.product.cpu.abi');
         let screenProps;
 
         if (screenSizeResult) {
@@ -242,7 +235,7 @@ const getDeviceType = async (device, c) => {
             screenProps = { ...screenProps, density: parseInt(density, 10) };
         }
 
-        device.isTV = decideIfTVRunning(c, device);
+        device.isTV = await decideIfTVRunning(c, device);
 
         if (screenSizeResult && screenDensityResult) {
             const { width, height, density } = screenProps;
@@ -250,7 +243,7 @@ const getDeviceType = async (device, c) => {
             const diagonalInches = calculateDeviceDiagonal(width, height, density);
             screenProps = { ...screenProps, diagonalInches };
             device.isTablet = !device.isTV && diagonalInches > IS_TABLET_ABOVE_INCH && diagonalInches <= 15;
-            device.isWear = decideIfWearRunning(c, device);
+            device.isWear = await decideIfWearRunning(c, device);
         }
 
         device.isPhone = !device.isTablet && !device.isWear && !device.isTV;
@@ -347,14 +340,14 @@ const getEmulatorName = async (words) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
 
-    const emulatorReply = await execCLI(null, null, `echo "avd name" | npx nc localhost ${port}`);
+    const emulatorReply = await executeTelnet(port, 'avd name');
     const emulatorReplyArray = emulatorReply.split('OK');
     const emulatorName = emulatorReplyArray[emulatorReplyArray.length - 2].trim();
     return emulatorName;
 };
 
 const connectToWifiDevice = async (c, ip) => {
-    const deviceResponse = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} connect ${ip}:5555`).toString();
+    const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, `connect ${ip}:5555`);
     if (deviceResponse.includes('connected')) return true;
     logError(`Failed to connect to ${ip}:5555`);
     return false;
@@ -458,7 +451,7 @@ const _getDeviceProp = (arr, prop) => {
 
 const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask('_askForNewEmulator');
-    const emuName = c.files.globalConfig.defaultTargets[platform];
+    const emuName = c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
     const readlineInterface = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -493,7 +486,7 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
-        .then(() => executeAsync(c.cli[CLI_ANDROID_AVDMANAGER], ['create', 'avd', '-n', emuName, '-k', `system-images;android-${apiVersion};${emuPlatform};x86`]))
+        .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k system-images;android-${apiVersion};${emuPlatform};x86`))
         .catch(e => logError(e, true));
 };
 
@@ -502,7 +495,7 @@ const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const destPath = path.join(getAppFolder(c, platform), 'app/src/main/res');
-    const sourcePath = path.join(c.paths.appConfigFolder, `assets/${platform}/res`);
+    const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}/res`);
     copyFolderContentsRecursiveSync(sourcePath, destPath);
     resolve();
 });
@@ -516,7 +509,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const { entryFile } = c.files.appConfigFile.platforms[platform];
+    const { entryFile } = c.buildConfig.platforms[platform];
     // TODO Android PROD Crashes if not using this hardcoded one
     let outputFile;
     if (platform === ANDROID_WEAR) {
@@ -535,19 +528,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 
     console.log('ANDROID PACKAGE STARTING...');
     // _workerTimer = setInterval(_workerLogger, 30000);
-    executeAsync(reactNative, [
-        'bundle',
-        '--platform',
-        'android',
-        '--dev',
-        'false',
-        '--assets-dest',
-        `${appFolder}/app/src/main/res`,
-        '--entry-file',
-        `${entryFile}.js`,
-        '--bundle-output',
-        `${appFolder}/app/src/main/assets/${outputFile}.bundle`,
-    ])
+    executeAsync(`${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
         .then(() => {
             // clearInterval(_workerTimer);
             console.log('ANDROID PACKAGE FINISHED');
@@ -560,34 +541,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
         });
 });
 
-const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
-    let attempts = 0;
-    const maxAttempts = 10;
-    const poll = setInterval(() => {
-        try {
-            const isBooting = child_process.execSync(`${c.cli[CLI_ANDROID_ADB]} -s ${emulator} shell getprop init.svc.bootanim`).toString();
-            if (isBooting.includes('stopped')) {
-                clearInterval(poll);
-                logDebug('waitForEmulatorToBeReady - boot complete');
-                resolve(emulator);
-            } else {
-                attempts++;
-                console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-                if (attempts === maxAttempts) {
-                    clearInterval(poll);
-                    throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                }
-            }
-        } catch (e) {
-            console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-            attempts++;
-            if (attempts > maxAttempts) {
-                clearInterval(poll);
-                throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-            }
-        }
-    }, CHECK_INTEVAL);
-});
+const waitForEmulatorToBeReady = (c, emulator) => waitForEmulator(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, res => res.includes('stopped'));
 
 const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
     logTask(`runAndroid:${platform}:${target}`);
@@ -773,11 +727,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
-            `${outputAab ? 'bundle' : 'assemble'}${signingConfig}`,
-            '-x',
-            'bundleReleaseJsAndAssets',
-        ]))
+        .then(() => executeAsync(`${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig} -x bundleReleaseJsAndAssets`))
         .then(() => {
             if (outputAab) {
                 const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
@@ -791,20 +741,12 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
                 apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
             }
             logInfo(`Installing ${apkPath} on ${name}`);
-            return executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'install', '-r', '-d', '-f', apkPath]);
+            return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
         })
         .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
-            ? executeAsync(c.cli[CLI_ANDROID_ADB], ['-s', device.udid, 'reverse', 'tcp:8081', 'tcp:8081'])
+            ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8081`)
             : Promise.resolve()))
-        .then(() => !outputAab && executeAsync(c.cli[CLI_ANDROID_ADB], [
-            '-s',
-            device.udid,
-            'shell',
-            'am',
-            'start',
-            '-n',
-            `${bundleId}/.MainActivity`,
-        ]))
+        .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -818,11 +760,7 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(isRunningOnWindows ? 'gradlew.bat' : './gradlew', [
-            `assemble${signingConfig}`,
-            '-x',
-            'bundleReleaseJsAndAssets',
-        ]))
+        .then(() => executeAsync(`${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`))
         .then(() => {
             logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`))} .`);
             resolve();
@@ -834,9 +772,9 @@ const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    const addNDK = c.files.globalConfig.sdks.ANDROID_NDK && !c.files.globalConfig.sdks.ANDROID_NDK.includes('<USER>');
-    const ndkString = `ndk.dir=${c.files.globalConfig.sdks.ANDROID_NDK}`;
-    let sdkDir = c.files.globalConfig.sdks.ANDROID_SDK;
+    const addNDK = c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK && !c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK.includes('<USER>');
+    const ndkString = `ndk.dir=${c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_NDK}`;
+    let sdkDir = c.files.GLOBAL_RNV_CONFIG.sdks.ANDROID_SDK;
 
     if (isRunningOnWindows) {
         sdkDir = sdkDir.replace(/\\/g, '/');
@@ -920,16 +858,16 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(0, c.pluginConfigAndroid.pluginPackages.length - 2);
 
     // FONTS
-    if (c.files.appConfigFile) {
-        if (fs.existsSync(c.paths.fontsConfigFolder)) {
-            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+    if (c.buildConfig) {
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
+                    const { includedFonts } = c.buildConfig.common;
                     if (includedFonts) {
                         if (includedFonts.includes('*') || includedFonts.includes(key)) {
                             if (font) {
-                                const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                                 if (fs.existsSync(fontSource)) {
                                     const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                                     mkdirSync(fontFolder);

@@ -24,11 +24,11 @@ import {
     copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../common';
+import { getQuestion } from '../systemTools/prompt';
 import { IOS, TVOS } from '../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
@@ -57,10 +57,9 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         return resolve();
     }
     return checkIfCommandExists('pod')
-        .then(() => executeAsync('pod', [command], {
+        .then(() => executeAsync(`pod ${command}`, {
             cwd,
             evn: process.env,
-            stdio: 'inherit',
         })
             .then(() => resolve())
             .catch((e) => {
@@ -82,8 +81,17 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     const tId = getConfigProp(c, platform, 'teamID');
 
     const iosPath = path.join(getAppFolder(c, platform), appFolderName);
-    const sPath = path.join(c.paths.appConfigFolder, `assets/${platform}`);
-    copyFolderContentsRecursiveSync(sPath, iosPath);
+    let sPath;
+
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            sPath = path.join(v, `assets/${platform}`);
+            copyFolderContentsRecursiveSync(sPath, iosPath);
+        });
+    } else {
+        sPath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
+        copyFolderContentsRecursiveSync(sPath, iosPath);
+    }
 
     // ASSETS
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
@@ -123,9 +131,9 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     if (!scheme) {
         reject(
             `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
-                c.paths.appConfigPath,
+                c.paths.appConfig.config,
             )}! Check example config for more info:  ${chalk.blue(
-                'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/config.json',
+                'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/renative.json',
             )} `,
         );
         return;
@@ -165,30 +173,9 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
             const run = (selectedDevice) => {
                 logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
                 if (selectedDevice.udid) {
-                    p = [
-                        'run-ios',
-                        '--project-path',
-                        appPath,
-                        '--device',
-                        '--udid',
-                        selectedDevice.udid,
-                        '--scheme',
-                        scheme,
-                        '--configuration',
-                        runScheme,
-                    ];
+                    p = `run-ios --project-path ${appPath} --device --udid ${selectedDevice.udid} --scheme ${scheme} --configuration ${runScheme}`;
                 } else {
-                    p = [
-                        'run-ios',
-                        '--project-path',
-                        appPath,
-                        '--device',
-                        selectedDevice.name,
-                        '--scheme',
-                        scheme,
-                        '--configuration',
-                        runScheme,
-                    ];
+                    p = `run-ios --project-path ${appPath} --device ${selectedDevice.name} --scheme ${scheme} --configuration ${runScheme}`;
                 }
 
                 logDebug(`RN params: ${p}`);
@@ -196,11 +183,11 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
                     packageBundleForXcode(c, platform, bundleIsDev)
-                        .then(v => executeAsync('react-native', p))
+                        .then(v => executeAsync(`react-native ${p}`))
                         .then(() => resolve())
                         .catch(e => reject(e));
                 } else {
-                    executeAsync('react-native', p)
+                    executeAsync(`react-native ${p}`)
                         .then(() => resolve())
                         .catch(e => reject(e));
                 }
@@ -243,21 +230,20 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     } else if (device) {
         p = ['run-ios', '--project-path', appPath, '--device', device, '--scheme', scheme, '--configuration', runScheme];
     } else {
-        p = ['run-ios', '--project-path', appPath, '--simulator', target, '--scheme', scheme, '--configuration', runScheme];
+        p = ['run-ios', '--project-path', appPath, '--simulator', target.replace(/(\s+)/g, '\\$1'), '--scheme', scheme, '--configuration', runScheme];
     }
 
-    logDebug('running', p);
     if (p) {
         const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
         if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
             packageBundleForXcode(c, platform, bundleIsDev)
-                .then(v => executeAsync('react-native', p))
+                .then(() => executeAsync(`react-native ${p.join(' ')}`))
                 .then(() => resolve())
                 .catch(e => reject(e));
         } else {
-            executeAsync('react-native', p)
+            executeAsync(`react-native ${p.join(' ')}`)
                 .then(() => resolve())
                 .catch(e => reject(e));
         }
@@ -309,17 +295,13 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     if (ignoreLogs) p.push('-quiet');
     // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
 
-
-    logDebug('running', p);
-
     logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
-
 
     _workerTimer = setInterval(_archiveLogger, 30000);
 
-    if (c.files.appConfigFile.platforms[platform].runScheme === 'Release') {
+    if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
-            .then(() => executeAsync('xcodebuild', p))
+            .then(() => executeAsync(`xcodebuild ${p.join(' ')}`))
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
                 clearInterval(_workerTimer);
@@ -330,7 +312,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 reject(e);
             });
     } else {
-        executeAsync('xcodebuild', p)
+        executeAsync(`xcodebuild ${p.join(' ')}`)
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
                 clearInterval(_workerTimer);
@@ -372,7 +354,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
 
-    executeAsync('xcodebuild', p)
+    executeAsync(`xcodebuild ${p.join(' ')}`)
         .then(() => {
             logSuccess(`Your IPA is located in ${chalk.white(exportPath)} .`);
             resolve();
@@ -382,7 +364,6 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
-    const appFolderName = getAppFolderName(c, platform);
     const args = [
         'bundle',
         '--platform',
@@ -390,9 +371,9 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.appId}_${platform}`,
+        `platformBuilds/${c.runtime.appId}_${platform}`,
         '--entry-file',
-        `${c.files.appConfigFile.platforms[platform].entryFile}.js`,
+        `${c.buildConfig.platforms[platform].entryFile}.js`,
         '--bundle-output',
         `${getAppFolder(c, platform)}/main.jsbundle`,
     ];
@@ -401,7 +382,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync('react-native', args);
+    return executeAsync(`react-native ${args.join(' ')}`);
 };
 
 export const getAppFolderName = (c, platform) => {
@@ -468,14 +449,14 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     };
 
     // FONTS
-    if (c.files.appConfigFile) {
-        if (fs.existsSync(c.paths.fontsConfigFolder)) {
-            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
+    if (c.buildConfig) {
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
                 if (font.includes('.ttf') || font.includes('.otf')) {
                     const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
+                    const { includedFonts } = c.buildConfig.common;
                     if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                        const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
+                        const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
                         if (fs.existsSync(fontSource)) {
                             const fontFolder = path.join(appFolder, 'fonts');
                             mkdirSync(fontFolder);
@@ -497,7 +478,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     if (device && (!tId || tId === '')) {
         logError(
             `Looks like you're missing teamID in your ${chalk.white(
-                c.paths.appConfigPath,
+                c.paths.appConfig.config,
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`,
         );
     }

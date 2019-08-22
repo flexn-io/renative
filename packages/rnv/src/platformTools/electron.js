@@ -3,7 +3,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { spawn } from 'child_process';
 import { createPlatformBuild } from '../cli/platform';
-import { executeAsync, execShellAsync } from '../systemTools/exec';
+import { executeAsync } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -130,7 +130,7 @@ const copyElectronAssets = (c, platform) => new Promise((resolve) => {
             .catch(e => reject(e));
     } else {
         const destPath = path.join(getAppFolder(c, platform), 'resources');
-        const sourcePath = path.join(c.paths.appConfigFolder, `assets/${platform}/resources`);
+        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources`);
         copyFolderContentsRecursiveSync(sourcePath, destPath);
         resolve();
     }
@@ -149,7 +149,7 @@ const exportElectron = (c, platform) => new Promise((resolve, reject) => {
     logTask(`exportElectron:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    execShellAsync(`npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
+    executeAsync(`npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
         .then(() => {
             logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
             resolve();
@@ -221,7 +221,7 @@ const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject
 const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_generateICNS:${platform}`);
 
-    const source = path.join(c.paths.appConfigFolder, `assets/${platform}/AppIcon.iconset`);
+    const source = path.join(c.paths.appConfig.dir, `assets/${platform}/AppIcon.iconset`);
 
     const dest = path.join(getAppFolder(c, platform), 'resources/icon.icns');
 
@@ -241,7 +241,7 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
         dest
     ];
     try {
-        executeAsync('iconutil', p);
+        executeAsync(`iconutil ${p.join(' ')}`);
         resolve();
     } catch (e) {
         reject(e);

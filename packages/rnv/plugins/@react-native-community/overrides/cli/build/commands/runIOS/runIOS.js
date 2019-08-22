@@ -239,7 +239,7 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
 
     // check if brew is used and if it is, if python@2 is installed, which will cause issues with lldb
     if (_commandExistsSync('brew')) {
-        const installed = _shell.exec('brew list');
+        const installed = _shell.exec('brew list').stdout;
         if (installed && installed.includes('python@2')) {
             console.log('You have Python@2 installed with Brew. Unlinking it since it will cause problems with LLDB');
             _shell.exec('brew unlink python@2');

@@ -17,7 +17,6 @@ import {
     copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
@@ -38,7 +37,7 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
 
     const entryFile = getEntryFile(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
-    const { backgroundColor } = c.files.appConfigFile.platforms[platform];
+    const { backgroundColor } = c.buildConfig.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
@@ -62,7 +61,7 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         if (UI_COLORS.includes(backgroundColor)) {
             pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
         } else {
-            logWarning(`Your choosen color in config.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
+            logWarning(`Your choosen color in renative.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
         }
     }
 

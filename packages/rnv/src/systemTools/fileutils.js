@@ -5,6 +5,7 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
+import ncp from 'ncp';
 import { logDebug, logError, logWarning, logInfo } from '../common';
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -74,6 +75,21 @@ const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skip
     }
 };
 
+export const copyFolderContentsRecursive = (source, target, convertSvg = true, skipPaths) => new Promise((resolve, reject) => {
+    logDebug('copyFolderContentsRecursive', source, target, skipPaths);
+    if (!fs.existsSync(source)) return;
+    const targetFolder = path.resolve(target);
+    if (!fs.existsSync(targetFolder)) {
+        mkdirSync(targetFolder);
+    }
+    ncp(source, targetFolder, (err) => {
+        if (err) {
+            return reject(err);
+        }
+        return resolve();
+    });
+});
+
 const saveAsJs = (source, dest) => {
     Svg2Js.createSync({
         source,
@@ -101,12 +117,20 @@ const cleanFolder = d => new Promise((resolve, reject) => {
     });
 });
 
-const removeFilesSync = filePaths => new Promise((resolve, reject) => {
+const removeFilesSync = (filePaths) => {
     logDebug('removeFilesSync', filePaths);
     filePaths.forEach((filePath) => {
-        fs.unlinkSync(filePath);
+        try {
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            } else {
+                logDebug(`Path ${filePath} does not exist`);
+            }
+        } catch (e) {
+            logError(e);
+        }
     });
-});
+};
 
 const removeDirsSync = (dirPaths) => {
     logDebug('removeDirsSync', dirPaths);
@@ -203,12 +227,12 @@ export const getRealPath = (c, p, key = 'undefined', original) => {
         return original;
     }
     if (p.startsWith('./')) {
-        return path.join(c.paths.projectRootFolder, p);
+        return path.join(c.paths.project.dir, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnvHomeFolder)
-        .replace(/~/g, c.paths.homeFolder)
-        .replace(/USER_HOME/g, c.paths.homeFolder)
-        .replace(/PROJECT_HOME/g, c.paths.projectRootFolder);
+    return p.replace(/RNV_HOME/g, c.paths.rnv.dir)
+        .replace(/~/g, c.paths.home.dir)
+        .replace(/USER_HOME/g, c.paths.home.dir)
+        .replace(/PROJECT_HOME/g, c.paths.project.dir);
 };
 
 const _refToValue = (c, ref, key) => {
@@ -238,6 +262,8 @@ const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
     return uniqueArray;
 };
+
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 const sanitizeDynamicRefs = (c, obj) => {
     if (!obj) return obj;
@@ -284,11 +310,11 @@ const sanitizeDynamicProps = (obj, props) => {
     return obj;
 };
 
-const mergeObjects = (c, obj1, obj2) => {
+const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
-    const obj = merge(obj1, obj2, { arrayMerge });
-    return sanitizeDynamicRefs(c, obj);
+    const obj = merge(obj1, obj2, { arrayMerge: replaceArrays ? _arrayMergeOverride : arrayMerge });
+    return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
 };
 
 const updateConfigFile = async (update, globalConfigPath) => {
@@ -350,6 +376,7 @@ export default {
     removeFilesSync,
     saveAsJs,
     mkdirSync,
+    copyFolderContentsRecursive,
     copyFolderContentsRecursiveSync,
     cleanFolder,
     writeObjectSync,

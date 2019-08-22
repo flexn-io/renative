@@ -3,14 +3,12 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import readline from 'readline';
+import { SUPPORTED_PLATFORMS } from '../constants';
 import {
     logTask,
-    SUPPORTED_PLATFORMS,
-    getQuestion,
-    askQuestion,
-    finishQuestion,
     logSuccess,
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { executePipe } from '../projectTools/buildHooks';
 
 const LIST = 'list';
@@ -64,7 +62,7 @@ const _runList = c => new Promise((resolve) => {
 });
 
 const _getPluginList = (c, isUpdate = false) => {
-    const { plugins } = c.files.pluginTemplatesConfig;
+    const { plugins } = c.files.rnv.pluginTemplates.config;
     const output = {
         asString: '',
         plugins: [],
@@ -81,7 +79,7 @@ const _getPluginList = (c, isUpdate = false) => {
             if (p[v]) platforms += `${v}, `;
         });
         if (platforms.length) platforms = platforms.slice(0, platforms.length - 2);
-        const installedPlugin = c.files.pluginConfig && c.files.pluginConfig.plugins && c.files.pluginConfig.plugins[k];
+        const installedPlugin = c.buildConfig && c.buildConfig.plugins && c.buildConfig.plugins[k];
         const installedString = installedPlugin ? chalk.red('installed') : chalk.green('not installed');
         if (isUpdate && installedPlugin) {
             output.plugins.push(k);
@@ -132,12 +130,12 @@ const _runAdd = c => new Promise((resolve) => {
         console.log(msg);
 
         Object.keys(selectedPlugins).forEach((key) => {
-            c.files.pluginConfig.plugins[key] = 'source:rnv';
-            // c.files.pluginConfig.plugins[key] = selectedPlugins[key];
+            c.buildConfig.plugins[key] = 'source:rnv';
+            // c.buildConfig.plugins[key] = selectedPlugins[key];
             _checkAndAddDependantPlugins(c, selectedPlugins[key]);
         });
 
-        fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+        fs.writeFileSync(c.paths.project.config, JSON.stringify(c.buildConfig, null, 2));
 
         logSuccess('Plugins installed successfully!');
 
@@ -146,12 +144,12 @@ const _runAdd = c => new Promise((resolve) => {
 });
 
 const _checkAndAddDependantPlugins = (c, plugin) => {
-    const templatePlugins = c.files.pluginTemplatesConfig.plugins;
+    const templatePlugins = c.files.rnv.pluginTemplates.config.plugins;
     if (plugin.dependsOn) {
         plugin.dependsOn.forEach((v) => {
             if (templatePlugins[v]) {
                 console.log(`Added dependant plugin ${v}`);
-                c.files.pluginConfig.plugins[v] = templatePlugins[v];
+                c.buildConfig.plugins[v] = templatePlugins[v];
             }
         });
     }
@@ -167,12 +165,12 @@ const _runUpdate = c => new Promise((resolve) => {
     askQuestion('Above installed plugins will be updated with RNV. press (y) to confirm')
         .then((v) => {
             finishQuestion();
-            const { plugins } = c.files.pluginConfig;
+            const { plugins } = c.buildConfig;
             Object.keys(plugins).forEach((key) => {
-                c.files.pluginConfig.plugins[key] = o.json[key];
+                c.buildConfig.plugins[key] = o.json[key];
             });
 
-            fs.writeFileSync(c.paths.pluginConfigPath, JSON.stringify(c.files.pluginConfig, null, 2));
+            fs.writeFileSync(c.paths.project.config, JSON.stringify(c.buildConfig, null, 2));
 
             logSuccess('Plugins updated successfully!');
 

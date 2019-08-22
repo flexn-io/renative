@@ -3,7 +3,6 @@ import fs from 'fs';
 import shell from 'shelljs';
 import {
     isPlatformSupported,
-    cleanNodeModules,
     isBuildSchemeSupported,
     isPlatformSupportedSync,
     getConfig,
@@ -27,6 +26,7 @@ import { fixPackageJson } from '../systemTools/doctor';
 import { encrypt, decrypt, installProfiles, updateProfiles, installCerts } from '../systemTools/crypto';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { executePipe } from '../projectTools/buildHooks';
+import { cleanNodeModules } from '../projectTools/projectParser';
 import {
     packageAndroid,
     runAndroid,

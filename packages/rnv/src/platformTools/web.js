@@ -5,7 +5,7 @@ import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
 import ip from 'ip';
-import { execShellAsync } from '../systemTools/exec';
+import { executeAsync } from '../systemTools/exec';
 import {
     logTask,
     getAppFolder,
@@ -24,13 +24,13 @@ import { getMergedPlugin } from '../pluginTools';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
 
 
-const isRunningOnWindows = process.platform === 'win32'
+const isRunningOnWindows = process.platform === 'win32';
 
 const _generateWebpackConfigs = (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const templateFolder = getAppTemplateFolder(c, c.platform);
 
-    const plugins = c.files.pluginConfig.plugins;
+    const plugins = c.buildConfig.plugins;
     let modulePaths = [];
     let moduleAliasesString = '';
     const moduleAliases = {};
@@ -109,7 +109,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    execShellAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.appId}_${platform}/webpack.config.js`)
+    executeAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
         .then(() => {
             logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'public'))} .`);
             resolve();
@@ -142,9 +142,9 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     let devServerHost = extendConfig.devServerHost || '0.0.0.0';
 
-    
+
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
-        devServerHost = '127.0.0.1'
+        devServerHost = '127.0.0.1';
     }
 
     checkPortInUse(c, platform, port)
@@ -175,7 +175,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
 
 const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
     // if (delay) {
-    //         const process = fork(path.join(c.paths.rnvNodeModulesFolder, 'open', 'index.js'));
+    //         const process = fork(path.join(c.paths.rnv.nodeModulesDir, 'open', 'index.js'));
     //         process.send(`http://0.0.0.0:${port}`);
     // } else {
     //     open(`http://0.0.0.0:${port}`);

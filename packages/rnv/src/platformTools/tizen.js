@@ -2,37 +2,35 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import child_process from 'child_process';
 import inquirer from 'inquirer';
 import net from 'net';
 
 import { execCLI } from '../systemTools/exec';
-import { RNV_GLOBAL_CONFIG_NAME } from '../constants';
+import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../constants';
 import {
     logTask,
     logError,
     getAppFolder,
     isPlatformActive,
     logWarning,
-    logInfo,
     logDebug,
     logSuccess,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_SDB_TIZEN,
     writeCleanFile,
     getAppTemplateFolder,
     copyBuildsFolder,
     getConfigProp,
+    waitForEmulator
 } from '../common';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
+
+const CHECK_INTEVAL = 2000;
 
 const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(c.paths.globalConfigFolder, 'tizen_author.p12');
+    const tizenAuthorCert = path.join(c.paths.private.dir, 'tizen_author.p12');
     if (fs.existsSync(tizenAuthorCert)) {
         console.log('tizen_author.p12 file exists!');
         resolve();
@@ -49,7 +47,7 @@ function launchTizenSimulator(c, name) {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name) {
-        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`);
+        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, { detached: true });
     }
     return Promise.reject('No simulator -t target name specified!');
 }
@@ -58,7 +56,7 @@ const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
     logTask('copyTizenAssets');
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    const sourcePath = path.join(c.paths.appConfigFolder, 'assets', platform);
+    const sourcePath = path.join(c.paths.appConfig.dir, 'assets', platform);
     const destPath = path.join(getAppFolder(c, platform));
 
     copyFolderContentsRecursiveSync(sourcePath, destPath);
@@ -68,7 +66,7 @@ const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
 const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.globalConfigFolder} -a rnv -f tizen_author -p 1234`)
+    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.private.dir} -a rnv -f tizen_author -p 1234`)
         .then(() => addDevelopTizenCertificate(c))
         .then(() => resolve())
         .catch((e) => {
@@ -80,7 +78,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
 const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
 
-    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.globalConfigFolder, 'tizen_author.p12')} -p 1234`)
+    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.private.dir, 'tizen_author.p12')} -p 1234`)
         .then(() => resolve())
         .catch((e) => {
             logError(e);
@@ -91,11 +89,11 @@ const addDevelopTizenCertificate = c => new Promise((resolve) => {
 const getDeviceID = async (c, target) => {
     const { device } = c.program;
     if (device) {
-        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`, logTask);
+        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
         if (connectResponse.includes('failed to connect to remote target')) throw new Error(connectResponse);
     }
 
-    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices', logTask);
+    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     if (devicesList.includes(target)) {
         const lines = devicesList.trim().split(/\r?\n/);
         const devices = lines.filter(line => line.includes(target));
@@ -110,39 +108,8 @@ const getDeviceID = async (c, target) => {
     throw `No device matching ${target} could be found.`;
 };
 
-const waitForEmulatorToBeReady = (c, emulator) => new Promise((resolve) => {
-    let attempts = 0;
-    const maxAttempts = 10;
-    const poll = setInterval(() => {
-        try {
-            const devicesList = child_process.execSync(`${c.cli[CLI_SDB_TIZEN]} devices`).toString();
-            const lines = devicesList.trim().split(/\r?\n/);
-            const devices = lines.filter(line => line.includes(emulator) && line.includes('device'));
-            if (devices.length > 0) {
-                clearInterval(poll);
-                logDebug('waitForEmulatorToBeReady - boot complete');
-                resolve(true);
-            } else {
-                attempts++;
-                console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-                if (attempts === maxAttempts) {
-                    clearInterval(poll);
-                    throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-                }
-            }
-        } catch (e) {
-            console.log(`Checking if emulator has booted up: attempt ${attempts}/${maxAttempts}`);
-            attempts++;
-            if (attempts > maxAttempts) {
-                clearInterval(poll);
-                throw new Error('Can\'t connect to the running emulator. Try restarting it.');
-            }
-        }
-    }, 2000);
-});
-
 const getRunningDevices = async (c) => {
-    const devicesList = child_process.execSync(`${c.cli[CLI_SDB_TIZEN]} devices`).toString();
+    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList.trim().split(/\r?\n/);
     const devices = [];
 
@@ -164,21 +131,27 @@ const getRunningDevices = async (c) => {
     return devices;
 };
 
+const waitForEmulatorToBeReady = (c, target) => waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
+    const lines = res.trim().split(/\r?\n/);
+    const devices = lines.filter(line => line.includes(target) && line.includes('device'));
+    return devices.length > 0;
+});
+
 const composeDevicesString = devices => devices.map(device => ({ key: device.id, name: device.name, value: device.id }));
 
 const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
-    const platformConfig = c.files.appConfigFile.platforms[platform];
-    const { hosted, device } = c.program;
+    const platformConfig = c.buildConfig.platforms[platform];
+    const { hosted } = c.program;
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
     if (!platformConfig) {
-        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
     if (!platformConfig.appName) {
-        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfigPath)}`);
+        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
 
     const tDir = getAppFolder(c, platform);
@@ -199,7 +172,7 @@ const runTizen = async (c, platform, target) => {
         }]);
 
         if (startEmulator) {
-            const defaultTarget = c.files.globalConfig.defaultTargets[platform];
+            const defaultTarget = c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;
@@ -208,14 +181,14 @@ const runTizen = async (c, platform, target) => {
             } catch (e) {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
-                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`, logTask);
+                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
                     await launchTizenSimulator(c, defaultTarget);
                     deviceID = defaultTarget;
                     await waitForEmulatorToBeReady(c, defaultTarget);
                     return continueLaunching();
                 } catch (err) {
                     logDebug(err);
-                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.globalConfigFolder}/${RNV_GLOBAL_CONFIG_NAME}`);
+                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.private.dir}/${RENATIVE_CONFIG_NAME}`);
                 }
             }
         }
@@ -225,11 +198,12 @@ const runTizen = async (c, platform, target) => {
         let hasDevice = false;
 
         !isHosted && await buildWeb(c, platform);
-        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask);
-        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask);
+        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
+        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         try {
-            await execCLI(c, CLI_TIZEN, `uninstall -p ${tId} -t ${deviceID}`, logTask);
+            const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
+            await execCLI(c, CLI_TIZEN, `uninstall -p ${packageID} -t ${deviceID}`, { ignoreErrors: true });
             hasDevice = true;
         } catch (e) {
             if (e && e.includes && e.includes('No device matching')) {
@@ -238,7 +212,7 @@ const runTizen = async (c, platform, target) => {
             }
         }
         try {
-            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, logTask);
+            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`);
             hasDevice = true;
         } catch (err) {
             logError(err);
@@ -253,10 +227,10 @@ const runTizen = async (c, platform, target) => {
         }
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
-            await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, logTask);
+            await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`);
         } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
-            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`, logTask);
+            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`);
         }
         return true;
     };
@@ -312,7 +286,7 @@ const runTizen = async (c, platform, target) => {
 const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildTizenProject:${platform}`);
 
-    const platformConfig = c.files.appConfigFile.platforms[platform];
+    const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);
 
     const tOut = path.join(tDir, 'output');
@@ -320,8 +294,8 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     const certProfile = platformConfig.certificateProfile;
 
     buildWeb(c, platform)
-        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, logTask))
-        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, logTask))
+        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
+        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`))
         .then(() => {
             logSuccess(`Your GWT package is located in ${chalk.white(tOut)} .`);
             return resolve();
@@ -349,7 +323,7 @@ const configureProject = (c, platform) => new Promise((resolve) => {
     const appFolder = getAppFolder(c, platform);
 
     const configFile = 'config.xml';
-    const p = c.files.appConfigFile.platforms[platform];
+    const p = c.buildConfig.platforms[platform];
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
         { pattern: '{{PACKAGE}}', override: p.package },
         { pattern: '{{ID}}', override: p.id },

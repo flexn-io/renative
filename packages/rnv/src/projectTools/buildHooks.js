@@ -4,10 +4,11 @@ import fs from 'fs';
 import child_process from 'child_process';
 import {
     isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
-    getAppFolder, logWarning, generateOptions, resolveNodeModulePath
+    getAppFolder, logWarning, resolveNodeModulePath
 } from '../common';
+import { generateOptions } from '../systemTools/prompt';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
-import { executeAsync, execShellAsync, execCLI } from '../systemTools/exec';
+import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
 import { PIPES as RUNNER_PIPES } from '../cli/runner';
 import { PIPES as PLATFORM_PIPES } from '../cli/platform';
@@ -67,31 +68,25 @@ const executePipe = (c, key) => new Promise((resolve, reject) => {
 
 const buildHooks = c => new Promise((resolve, reject) => {
     logTask('buildHooks');
-    if (fs.existsSync(c.paths.buildHooksIndexPath)) {
+    if (fs.existsSync(c.paths.buildHooks.index)) {
         if (c.isBuildHooksReady) {
             resolve();
             return;
         }
-        let babel = resolveNodeModulePath(c, isRunningOnWindows ? '.bin/babel.cmd' : '@babel/cli/bin/babel.js');
-        const params = ['--no-babelrc', c.paths.buildHooksFolder, '-d', c.paths.buildHooksDistFolder, '--presets=@babel/env'];
-        // if (isRunningOnWindows) {
-        //     babel = `cmd node ${babel}`
-        // }
-        executeAsync(babel, params)
+
+        executeAsync(`babel --no-babelrc ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`)
             .then(() => {
-                const h = require(c.paths.buildHooksDistIndexPath);
+                const h = require(c.paths.buildHooks.dist.index);
                 c.buildHooks = h.hooks;
                 c.buildPipes = h.pipes;
                 c.isBuildHooksReady = true;
                 resolve();
             })
             .catch((e) => {
-                logError(`With Command: ${chalk.white(`${babel} ${params.join(' ')}`)}`);
-                console.log(e);
                 resolve();
             });
     } else {
-        // logWarning(`Your buildHook ${chalk.white(c.paths.buildHooksIndexPath)} is missing!. Skipping operation`);
+        // logWarning(`Your buildHook ${chalk.white(c.paths.buildHooks.index)} is missing!. Skipping operation`);
         resolve();
     }
 });

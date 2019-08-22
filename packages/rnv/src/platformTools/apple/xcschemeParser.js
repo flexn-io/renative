@@ -17,7 +17,6 @@ import {
     copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder

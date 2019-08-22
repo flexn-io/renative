@@ -9,14 +9,11 @@ import {
     getAppFolder,
     isPlatformActive,
     logWarning,
-    askQuestion,
-    finishQuestion,
-    generateOptions,
     logWelcome,
     logInfo,
-    spawnCommand,
-    SUPPORTED_PLATFORMS,
+    spawnCommand
 } from '../common';
+import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import {
     IOS,
     ANDROID,
@@ -33,8 +30,8 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    RNV_APP_CONFIG_NAME,
-    RNV_PROJECT_CONFIG_NAME,
+    RENATIVE_CONFIG_NAME,
+    SUPPORTED_PLATFORMS
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject } from '../platformTools/android';
@@ -48,6 +45,11 @@ import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSy
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
+import {
+    copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore,
+    copySharedPlatforms, checkAndCreateProjectConfig
+} from '../projectTools/projectParser';
+import { generateRuntimeConfig } from '../configTools/configParser';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';
@@ -113,9 +115,10 @@ const _runConfigure = c => new Promise((resolve, reject) => {
     executePipe(c, PIPES.APP_CONFIGURE_BEFORE)
         .then(() => _checkAndCreatePlatforms(c, c.program.platform))
         .then(() => copyRuntimeAssets(c))
-        .then(() => _copySharedPlatforms(c))
-        .then(() => _runPlugins(c, c.paths.rnvPluginsFolder))
-        .then(() => _runPlugins(c, c.paths.projectPluginsFolder))
+        .then(() => copySharedPlatforms(c))
+        .then(() => generateRuntimeConfig(c))
+        .then(() => _runPlugins(c, c.paths.rnv.plugins.dir))
+        .then(() => _runPlugins(c, c.paths.project.projectConfig.pluginsDir))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
@@ -144,7 +147,8 @@ const _runSwitch = c => new Promise((resolve, reject) => {
     executePipe(c, PIPES.APP_SWITCH_AFTER)
 
         .then(() => copyRuntimeAssets(c))
-        .then(() => _copySharedPlatforms(c))
+        .then(() => copySharedPlatforms(c))
+        .then(() => generateRuntimeConfig(c))
         .then(() => executePipe(c, PIPES.APP_SWITCH_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -196,18 +200,34 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     const base = path.resolve('.');
 
-    c.paths.projectRootFolder = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
-    c.paths.projectPackagePath = path.join(c.paths.projectRootFolder, 'package.json');
+    c.paths.project.dir = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
+    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
-    mkdirSync(c.paths.projectRootFolder);
+    mkdirSync(c.paths.project.dir);
 
-    checkAndCreateProjectPackage(c, data);
+    const config = {
+        projectName: data.projectName,
+        paths: {
+            globalConfigFolder: '~/.rnv',
+            appConfigsFolder: './appConfigs',
+            platformTemplatesFolder: 'RNV_HOME/platformTemplates',
+            entryFolder: './',
+            platformAssetsFolder: './platformAssets',
+            platformBuildsFolder: './platformBuilds',
+            projectConfigFolder: './projectConfig'
+        },
+        defaults: {
+            title: data.appTitle,
+            id: data.appID,
+            template: data.defaultTemplate,
+            supportedPlatforms: data.optionPlatforms.valuesAsArray
+        }
+    };
 
-    checkAndCreateGitignore(c);
-
-    checkAndCreateProjectConfig(c, data);
+    writeObjectSync(c.paths.project.config, config);
 
     logSuccess(
         `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
@@ -239,20 +259,20 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
     str += printIntoBox(data.projectName);
-    str += chalk.gray(`│   ├── appConfigs           # Application flavour configuration files/assets  │
-│   │   └── default          # Example application flavour                     │
-│   │       ├── assets       # Platform assets injected to ./platformAssets    │
-│   │       ├── builds       # Platform files injected to ./platformBuilds     │
-│   │       └── config.json  # Application flavour config                      │
-│   ├── platformAssets       # Generated cross-platform assets                 │
-│   ├── platformBuilds       # Generated platform app projects                 │
-│   ├── projectConfigs       # Project configuration files/assets              │
-│   │   ├── fonts            # Folder for all custom fonts                     │
-│   │   ├── permissions.json # Permissions configuration                       │
-│   │   └── plugins.json     # Multi-platform Plugins configuration            │
-│   ├── src                  # Source files                                    │
-│   ├── index.*.js           # Entry files                                     │
-│   └── rnv-config.json      # ReNative project configuration                  │
+    str += chalk.gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
+│   │   └── [APP_ID]          # Example application flavour                    │
+│   │       ├── assets        # Platform assets injected to ./platformAssets   │
+│   │       ├── builds        # Platform files injected to ./platformBuilds    │
+│   │       └── renative.json # Application flavour config                     │
+│   ├── platformAssets        # Generated cross-platform assets                │
+│   ├── platformBuilds        # Generated platform app projects                │
+│   ├── projectConfigs        # Project configuration files/assets             │
+│   │   ├── fonts             # Folder for all custom fonts                    │
+│   │   ├── builds            # platformBuilds/* injections                    │
+│   │   └── plugins           # Multi-platform plugins injections              │
+│   ├── src                   # Source code files                              │
+│   ├── index.*.js            # Entry files                                    │
+│   └── renative.json         # ReNative project configuration                 │
 `);
     str += printIntoBox('');
     str += printBoxEnd();
@@ -262,74 +282,14 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const checkAndCreateProjectPackage = (c, data) => {
-    logTask(`checkAndCreateProjectPackage:${data.packageName}`);
-    const {
-        packageName, appTitle, appID, supportedPlatforms,
-    } = data;
-
-    if (!fs.existsSync(c.paths.projectPackagePath)) {
-        logInfo("Looks like your package.json is missing. Let's create one for you!");
-
-        const pkgJson = {};
-        pkgJson.name = packageName;
-        pkgJson.title = appTitle;
-        pkgJson.version = data.version;
-        pkgJson.dependencies = {
-            renative: 'latest',
-        };
-        pkgJson.devDependencies = {
-            rnv: c.files.rnvPackage.version,
-        };
-        pkgJson.devDependencies[data.optionTemplates.selectedOption] = 'latest';
-
-        const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
-
-        fs.writeFileSync(c.paths.projectPackagePath, pkgJsonStringClean);
-    }
-};
-
-const checkAndCreateGitignore = (c) => {
-    logTask('checkAndCreateGitignore');
-    const ignrPath = path.join(c.paths.projectRootFolder, '.gitignore');
-    if (!fs.existsSync(ignrPath)) {
-        logInfo("Looks like your .gitignore is missing. Let's create one for you!");
-
-        copyFileSync(path.join(c.paths.rnvHomeFolder, 'supportFiles/gitignore-template'), ignrPath);
-    }
-};
-
-const checkAndCreateProjectConfig = (c, data) => {
-    logTask('checkAndCreateProjectConfig');
-    const {
-        packageName, appTitle, appID, supportedPlatforms,
-    } = data;
-    // Check Project Config
-    if (!fs.existsSync(c.paths.projectConfigPath)) {
-        logInfo(`You're missing ${RNV_PROJECT_CONFIG_NAME} file in your root project! Let's create one!`);
-
-        const defaultProjectConfigs = {
-            supportedPlatforms: data.optionPlatforms.selectedOptions,
-            template: data.optionTemplates.selectedOption,
-            defaultAppId: appID.toLowerCase()
-        };
-
-        const obj = JSON.parse(fs.readFileSync(path.join(c.paths.rnvProjectTemplateFolder, 'rnv-config.json')));
-
-        obj.defaultProjectConfigs = defaultProjectConfigs;
-
-        writeObjectSync(path.join(c.paths.projectRootFolder, RNV_PROJECT_CONFIG_NAME), obj);
-    }
-};
-
 const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_checkAndCreatePlatforms:${platform}`);
 
-    if (!fs.existsSync(c.paths.platformBuildsFolder)) {
+    if (!fs.existsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');
         platformRunner(spawnCommand(c, {
             subCommand: 'configure',
-            program: { appConfig: c.defaultAppConfigId, platform }
+            program: { appConfig: c.runtime.appId, platform }
         }))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -342,7 +302,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
             logWarning(`Platform ${platform} not created yet. creating them for you...`);
             platformRunner(spawnCommand(c, {
                 subCommand: 'configure',
-                program: { appConfig: c.defaultAppConfigId, platform }
+                program: { appConfig: c.runtime.appId, platform }
             }))
                 .then(() => resolve())
                 .catch(e => reject(e));
@@ -350,10 +310,10 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
             return;
         }
     } else {
-        const { platforms } = c.files.appConfigFile;
+        const { platforms } = c.buildConfig;
         const cmds = [];
         if (!platforms) {
-            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
+            reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
             return;
         }
 
@@ -362,7 +322,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
                 cmds.push(platformRunner(spawnCommand(c, {
                     subCommand: 'configure',
-                    program: { appConfig: c.defaultAppConfigId, platform }
+                    program: { appConfig: c.runtime.appId, platform }
                 })));
             }
         });
@@ -373,82 +333,6 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 
         return;
     }
-    resolve();
-});
-
-const copyRuntimeAssets = c => new Promise((resolve, reject) => {
-    logTask('copyRuntimeAssets');
-    const aPath = path.join(c.paths.platformAssetsFolder, 'runtime');
-    const cPath = path.join(c.paths.appConfigFolder, 'assets/runtime');
-    copyFolderContentsRecursiveSync(cPath, aPath);
-
-    // copyFileSync(c.paths.appConfigPath, path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME));
-    fs.writeFileSync(path.join(c.paths.platformAssetsFolder, RNV_APP_CONFIG_NAME), JSON.stringify(c.files.appConfigFile, null, 2));
-
-    // FONTS
-    let fontsObj = 'export default [';
-
-    if (c.files.appConfigFile) {
-        if (!c.files.appConfigFile.common) {
-            reject(`Your ${chalk.white(c.paths.appConfigPath)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
-            return;
-        }
-        if (fs.existsSync(c.paths.fontsConfigFolder)) {
-            fs.readdirSync(c.paths.fontsConfigFolder).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.files.appConfigFile.common;
-                    if (includedFonts) {
-                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                            if (font) {
-                                const fontSource = path.join(c.paths.projectConfigFolder, 'fonts', font);
-                                if (fs.existsSync(fontSource)) {
-                                    // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-                                    // mkdirSync(fontFolder);
-                                    // const fontDest = path.join(fontFolder, font);
-                                    // copyFileSync(fontSource, fontDest);
-                                    fontsObj += `{
-                                            fontFamily: '${key}',
-                                            file: require('../../projectConfig/fonts/${font}'),
-                                        },`;
-                                } else {
-                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    fontsObj += '];';
-    fs.writeFileSync(path.join(c.paths.platformAssetsFolder, 'runtime', 'fonts.js'), fontsObj);
-    const supportFiles = path.resolve(c.paths.rnvHomeFolder, 'supportFiles');
-    copyFileSync(
-        path.resolve(supportFiles, 'fontManager.js'),
-        path.resolve(c.paths.platformAssetsFolder, 'runtime', 'fontManager.js'),
-    );
-    copyFileSync(
-        path.resolve(supportFiles, 'fontManager.web.js'),
-        path.resolve(c.paths.platformAssetsFolder, 'runtime', 'fontManager.web.js'),
-    );
-
-    resolve();
-});
-
-const _copySharedPlatforms = c => new Promise((resolve) => {
-    logTask(`_copySharedPlatform:${c.platform}`);
-
-    if (c.platform) {
-        mkdirSync(path.resolve(c.paths.platformTemplatesFolders[c.platform], '_shared'));
-
-        copyFolderContentsRecursiveSync(
-            path.resolve(c.paths.platformTemplatesFolders[c.platform], '_shared'),
-            path.resolve(c.paths.platformBuildsFolder, '_shared'),
-        );
-    }
-
     resolve();
 });
 
@@ -463,12 +347,12 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
 
     fs.readdirSync(pluginsPath).forEach((dir) => {
         const source = path.resolve(pluginsPath, dir, 'overrides');
-        const dest = path.resolve(c.paths.projectRootFolder, 'node_modules', dir);
+        const dest = path.resolve(c.paths.project.dir, 'node_modules', dir);
 
         if (fs.existsSync(source)) {
             copyFolderContentsRecursiveSync(source, dest, false);
             // fs.readdirSync(pp).forEach((dir) => {
-            //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.projectRootFolder, 'node_modules', dir));
+            //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
             // });
         } else {
             logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping override action`);
@@ -478,6 +362,6 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     resolve();
 });
 
-export { copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore, PIPES };
+export { PIPES };
 
 export default run;

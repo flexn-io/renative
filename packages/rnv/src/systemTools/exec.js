@@ -1,153 +1,135 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import shell from 'shelljs';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
+import execa from 'execa';
+import ora from 'ora';
+import NClient from 'netcat/client';
+import util from 'util';
 
-import { logDebug, logError } from '../common';
+import { logDebug } from '../common';
 
-const { spawn, exec, execSync } = require('child_process');
+const { exec, execSync } = require('child_process');
 
-const SEPARATOR = process.platform === 'win32' ? ';' : ':';
-const env = Object.assign({}, process.env);
-env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
-
-const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, reject) => {
-    log(`execCLI:${cli}:${command}`);
-
-    let toBeExecuted;
-
-    if (c && cli) {
-        const p = c.cli[cli];
-
-        if (!fs.existsSync(p)) {
-            reject(
-                `Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
-                    c.paths.globalConfigPath
-                )} file if you SDK path is correct`
-            );
-            return;
-        }
-        toBeExecuted = `${p} ${command}`;
-    } else {
-        toBeExecuted = command;
-    }
-
-    logDebug('ExecCLI:', toBeExecuted);
-
-    shell.exec(toBeExecuted, { silent: true, env: process.env, stdio: [process.stdin, 'pipe', 'pipe'] }, (error, stdout) => {
-        if (error) {
-            reject(`Command ${cli} failed: "${chalk.white(`${toBeExecuted}`)}". ${stdout.trim()}`);
-            return;
-        }
-
-        resolve(stdout.trim());
-    });
-});
-
-const executeAsync = (
-    cmd,
-    args,
-    opts = {}
-) => new Promise((resolve, reject) => {
-    if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
-
+/**
+ *
+ * Also accepts the Node's child_process exec/spawn options
+ *
+ * @typedef {Object} Opts
+ * @property {Object} privateParams - private params that will be masked in the logs
+ * @property {Boolean} silent - don't print anything
+ * @property {Boolean} ignoreErrors - will print the loader but it will finish with a
+ * checkmark regardless of the outcome. Also, it never throws a catch.
+ *
+ * Execute commands
+ *
+ * @param {String} command - command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
+const _execute = (command, opts = {}) => {
     const defaultOpts = {
-        // cwd: process.cwd(),
-        privateParams: [],
         stdio: 'pipe',
-        env,
+        localDir: path.resolve('./node_modules/.bin'),
+        preferLocal: true,
+        all: true
     };
-
     const mergedOpts = { ...defaultOpts, ...opts };
+    let cleanCommand = command;
 
-    let timeout;
-    let cleanArgs = '';
-    let hideNext = false;
-    const pp = mergedOpts?.privateParams || [];
-    if (args) {
-        args.forEach((v) => {
-            if (hideNext) {
-                hideNext = false;
-                cleanArgs += ' ***********';
-            } else {
-                cleanArgs += ` ${v}`;
-            }
-            if (pp.includes(v)) {
-                hideNext = true;
-            }
-        });
+    if (Array.isArray(command)) cleanCommand = command.join(' ');
+
+    let logMessage = cleanCommand;
+    if (mergedOpts.privateParams) {
+        logMessage = util.format(command, ['*******']);
+        cleanCommand = util.format(command, ...mergedOpts.privateParams);
     }
 
-    logDebug(`executeAsync:${cmd} ${cleanArgs}`);
-
-    const command = spawn(cmd, args, mergedOpts);
-
-    let stdout = '';
-    let stdoutErr = '';
-    let ended = false;
-    const findError = new RegExp(/error |fatal |invalid /i);
-
-    /* eslint-disable-next-line no-unused-expressions */
-    command.stdout
-            && command.stdout.on('data', (output) => {
-                const outputStr = output.toString();
-                if (outputStr) {
-                    stdout += outputStr;
-
-                    if (findError.test(outputStr)) {
-                        stdoutErr += outputStr;
-                    }
-                }
-            });
-
-    /* eslint-disable-next-line no-unused-expressions */
-    command.stderr
-            && command.stderr.on('data', (output) => {
-                const outputStr = output.toString();
-                if (outputStr) stdoutErr += outputStr;
-            });
-
-    command.on('close', (code) => {
-        if (timeout) clearTimeout(timeout);
-        logDebug(`Command ${cmd} ${cleanArgs} exited with code ${code}`);
-        if (code !== 0) {
-            reject(new Error(`process exited with code ${code}. <ERROR> ${stdoutErr} </ERROR>`));
-        } else {
-            ended = true;
-
-            logDebug('Execute Command:', stdout);
-            resolve(stdout);
+    logDebug(`_execute: ${logMessage}`);
+    const spinner = !mergedOpts.silent && ora(`Executing: ${logMessage}`).start();
+    return execa.command(cleanCommand, mergedOpts).then((res) => {
+        !mergedOpts.silent && spinner.succeed();
+        logDebug(res.all);
+        // logDebug(res);
+        return res.stdout;
+    }).catch((err) => {
+        const { silent, ignoreErrors } = mergedOpts;
+        if (!silent && !ignoreErrors) spinner.fail(err.stderr || err.message);
+        logDebug(err.all);
+        // logDebug(err);
+        if (ignoreErrors) {
+            spinner.succeed();
+            return true;
         }
+        return Promise.reject(err.stderr || err.message);
     });
+};
 
-    command.on('error', (error) => {
-        if (timeout) clearTimeout(timeout);
-        logDebug(`Command ${cmd} ${cleanArgs} errored with ${error}`);
-        reject(new Error(`process errored with ${error}`));
-    });
+/**
+ *
+ * Execute CLI command
+ *
+ * @param {Object} c - the trusty old c object
+ * @param {String} cli - the cli to be executed
+ * @param {String} command - the command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
+const execCLI = (c, cli, command, opts = {}) => {
+    const p = c.cli[cli];
 
-    const killChildProcess = () => {
-        if (timeout) clearTimeout(timeout);
-        if (ended) return;
-        logDebug(`Killing child process ${cmd} ${cleanArgs}`);
-        command.kill(1);
-    };
-
-    if (opts.timeout) {
-        timeout = setTimeout(killChildProcess, opts.timeout);
+    if (!fs.existsSync(p)) {
+        logDebug('execCLI error', cli, command);
+        return Promise.reject(`Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
+            c.paths.globalConfigPath
+        )} file if you SDK path is correct`);
     }
 
-    process.on('exit', killChildProcess);
-    process.on('SIGINT', killChildProcess);
-});
+    return _execute(`${p} ${command}`, { ...opts, shell: true });
+};
 
-function execShellAsync(command) {
-    logDebug('Exec:', command);
-    return new Promise((resolve) => {
-        shell.exec(command, resolve);
+/**
+ *
+ * Execute a plain command
+ *
+ * @param {String} command - the command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
+const executeAsync = (cmd, opts) => {
+    if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
+    return _execute(cmd, opts);
+};
+
+/**
+ *
+ * Connect to a local telnet server and execute a command
+ *
+ * @param {Number|String} port - where do you want me to connect to?
+ * @param {String} command - the command to be executed once I'm connected
+ * @returns {Promise}
+ *
+ */
+const executeTelnet = (port, command) => new Promise((resolve) => {
+    const nc2 = new NClient();
+    logDebug(`execTelnet: ${port} ${command}`);
+
+    let output = '';
+
+    nc2.addr('127.0.0.1')
+        .port(parseInt(port, 10))
+        .connect()
+        .send(`${command}\n`);
+    nc2.on('data', (data) => {
+        const resp = Buffer.from(data).toString();
+        output += resp;
+        if (output.includes('OK')) nc2.close();
     });
-}
+    nc2.on('close', () => resolve(output));
+});
 
 const isUsingWindows = process.platform === 'win32';
 
@@ -291,11 +273,11 @@ const commandExistsSync = (commandName) => {
 
 const openCommand = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
 
-export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync, openCommand };
+export { executeAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
 
 export default {
     executeAsync,
-    execShellAsync,
     execCLI,
-    openCommand
+    openCommand,
+    executeTelnet
 };
