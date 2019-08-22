@@ -190,6 +190,9 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
     if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
 
+    // LOAD ./package.json
+    loadFile(c.files.project, c.paths.project, 'package');
+
     // LOAD ~/.rnv/RENATIVE.*.JSON
     _generateConfigPaths(c.paths.private, c.paths.GLOBAL_RNV_DIR);
 

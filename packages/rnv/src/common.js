@@ -39,7 +39,8 @@ import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndC
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto', 'log', 'new', 'target', 'platform'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto'];
+export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -54,6 +55,7 @@ export const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
     if (NO_OP_COMMANDS.includes(c.command)) {
+        console.log('POOOOO');
         parseRenativeConfigs(c)
             .then(() => configureRnvGlobal(c))
             .then(() => resolve(c))
@@ -485,7 +487,7 @@ const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-const parseErrorMessage = text => {
+const parseErrorMessage = (text) => {
     const errors = [];
     const toSearch = /(exception|error|fatal)/i;
     const maxErrorLenght = 100;
@@ -499,10 +501,10 @@ const parseErrorMessage = text => {
         errors.push(extractedError); // save the error
         const newString = usefulString.substring(100); // dump everything we processed and continue
         return extractError(newString);
-    }
+    };
 
-    return extractError(text)
-}
+    return extractError(text);
+};
 
 // TODO: remove this
 export {

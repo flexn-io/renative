@@ -189,7 +189,7 @@ export const _updateProfiles = (c) => {
 };
 
 const _updateProfile = (c, v) => new Promise((resolve, reject) => {
-    logTask(`_updateProfile:${v}`, chalk.grey);
+    logTask(`_updateProfile:${v?.appId}`, chalk.grey);
     c.buildConfig = v.appConfigFile;
     c.program.scheme = v.scheme;
     c.runtime.appId = v.appId;

@@ -22,11 +22,10 @@ export const updateProfile = c => new Promise((resolve, reject) => {
         reject(`updateProfile:platform ${c.platform} not supported`);
         return;
     }
-    const {
-        appId, platform, paths, files, program
-    } = c;
+    const { platform } = c;
 
-    const { scheme } = program;
+    const appId = c.runtime.appId;
+    const { scheme } = c.program;
     const id = getConfigProp(c, platform, 'id');
     const teamID = getConfigProp(c, platform, 'teamID');
     const pMethod = getConfigProp(c, platform, 'exportOptions')?.method;
@@ -42,7 +41,7 @@ export const updateProfile = c => new Promise((resolve, reject) => {
         '--team_id',
         teamID,
         '--output_path',
-        `${paths.private.dir}/${files.project.package.name}/appConfigs/${appId}/certs`,
+        `${c.paths.private.dir}/${c.files.project.package.name}/appConfigs/${appId}/certs`,
         '--force'
     ];
     if (process.env.APPLE_DEVELOPER_USERNAME) {
