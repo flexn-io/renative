@@ -13,7 +13,7 @@ import { logError, logInfo, logWarning, logTask } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints } from '../projectTools/projectParser';
-import { setAppConfig } from '../configTools/configParser';
+import { setAppConfig, listAppConfigsFoldersSync } from '../configTools/configParser';
 
 import { templates } from '../../renativeTemplates/templates.json';
 
@@ -147,22 +147,24 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
             )} is missing! Let's create sample config for you.`,
         );
 
-
         // TODO: GET CORRECT PROJECT TEMPLATE
         copyFolderContentsRecursiveSync(templateAppConfigsFolder, c.paths.project.appConfigsDir);
 
+        const appConfigIds = listAppConfigsFoldersSync(c);
 
         // Update App Title to match package.json
         try {
-            const appConfig = JSON.parse(fs.readFileSync(c.paths.appConfig.config).toString());
+            appConfigIds.forEach((v) => {
+                const appConfig = JSON.parse(fs.readFileSync(path.join(c.paths.project.appConfigsDir, v)).toString());
+                if (appConfig.common?.title) {
+                    appConfig.common.title = c.files.project?.defaults?.title;
+                }
+                if (appConfig.common?.id) {
+                    appConfig.common.id = c.files.project?.defaults?.id;
+                }
+            });
 
-            appConfig.common.title = c.buildConfig.defaults.defaultTitle || c.files.project.package.title;
-            appConfig.common.id = c.buildConfig.defaults.defaultAppId || c.files.project.package.defaultAppId;
-            appConfig.id = c.buildConfig.defaults.defaultAppConfigId || templateAppConfigFolder;
-            appConfig.platforms.ios.teamID = '';
-            appConfig.platforms.tvos.teamID = '';
-
-            const supPlats = c.buildConfig.defaults.supportedPlatforms;
+            const supPlats = c.files.project?.defaults?.supportedPlatforms;
 
             if (supPlats) {
                 for (const pk in appConfig.platforms) {

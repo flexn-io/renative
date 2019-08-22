@@ -199,10 +199,33 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     c.paths.project.dir = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
     mkdirSync(c.paths.project.dir);
+
+    const config = {
+        projectName: data.projectName,
+        paths: {
+            globalConfigFolder: '~/.rnv',
+            appConfigsFolder: './appConfigs',
+            platformTemplatesFolder: 'RNV_HOME/platformTemplates',
+            entryFolder: './',
+            platformAssetsFolder: './platformAssets',
+            platformBuildsFolder: './platformBuilds',
+            projectPlugins: './projectConfig/plugins',
+            projectConfigFolder: './projectConfig'
+        },
+        defaults: {
+            title: data.appTitle,
+            id: data.appID,
+            template: data.defaultTemplate,
+            supportedPlatforms: data.optionPlatforms.valuesAsArray
+        }
+    };
+
+    writeObjectSync(c.paths.project.config, config);
 
     logSuccess(
         `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
@@ -234,20 +257,20 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
     str += printIntoBox(data.projectName);
-    str += chalk.gray(`│   ├── appConfigs           # Application flavour configuration files/assets  │
-│   │   └── default          # Example application flavour                     │
-│   │       ├── assets       # Platform assets injected to ./platformAssets    │
-│   │       ├── builds       # Platform files injected to ./platformBuilds     │
-│   │       └── renative.json  # Application flavour config                      │
-│   ├── platformAssets       # Generated cross-platform assets                 │
-│   ├── platformBuilds       # Generated platform app projects                 │
-│   ├── projectConfigs       # Project configuration files/assets              │
-│   │   ├── fonts            # Folder for all custom fonts                     │
-│   │   ├── permissions.json # Permissions configuration                       │
-│   │   └── plugins.json     # Multi-platform Plugins configuration            │
-│   ├── src                  # Source files                                    │
-│   ├── index.*.js           # Entry files                                     │
-│   └── renative.json      # ReNative project configuration                  │
+    str += chalk.gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
+│   │   └── [APP_ID]          # Example application flavour                    │
+│   │       ├── assets        # Platform assets injected to ./platformAssets   │
+│   │       ├── builds        # Platform files injected to ./platformBuilds    │
+│   │       └── renative.json # Application flavour config                     │
+│   ├── platformAssets        # Generated cross-platform assets                │
+│   ├── platformBuilds        # Generated platform app projects                │
+│   ├── projectConfigs        # Project configuration files/assets             │
+│   │   ├── fonts             # Folder for all custom fonts                    │
+│   │   ├── builds            # platformBuilds/* injections                    │
+│   │   └── plugins           # Multi-platform plugins injections              │
+│   ├── src                   # Source code files                              │
+│   ├── index.*.js            # Entry files                                    │
+│   └── renative.json         # ReNative project configuration                 │
 `);
     str += printIntoBox('');
     str += printBoxEnd();
