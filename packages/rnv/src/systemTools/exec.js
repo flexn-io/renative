@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import shell from 'shelljs';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
 import execa from 'execa';
@@ -12,10 +11,23 @@ import { logDebug } from '../common';
 
 const { exec, execSync } = require('child_process');
 
-const SEPARATOR = process.platform === 'win32' ? ';' : ':';
-const env = Object.assign({}, process.env);
-env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
-
+/**
+ *
+ * Also accepts the Node's child_process exec/spawn options
+ *
+ * @typedef {Object} Opts
+ * @property {Object} privateParams - private params that will be masked in the logs
+ * @property {Boolean} silent - don't print anything
+ * @property {Boolean} ignoreErrors - will print the loader but it will finish with a
+ * checkmark regardless of the outcome. Also, it never throws a catch.
+ *
+ * Execute commands
+ *
+ * @param {String} command - command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
 const _execute = (command, opts = {}) => {
     const defaultOpts = {
         stdio: 'pipe',
@@ -54,6 +66,17 @@ const _execute = (command, opts = {}) => {
     });
 };
 
+/**
+ *
+ * Execute CLI command
+ *
+ * @param {Object} c - the trusty old c object
+ * @param {String} cli - the cli to be executed
+ * @param {String} command - the command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
 const execCLI = (c, cli, command, opts = {}) => {
     const p = c.cli[cli];
 
@@ -67,11 +90,29 @@ const execCLI = (c, cli, command, opts = {}) => {
     return _execute(`${p} ${command}`, { ...opts, shell: true });
 };
 
+/**
+ *
+ * Execute a plain command
+ *
+ * @param {String} command - the command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
 const executeAsync = (cmd, opts) => {
     if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
     return _execute(cmd, opts);
 };
 
+/**
+ *
+ * Connect to a local telnet server and execute a command
+ *
+ * @param {Number|String} port - where do you want me to connect to?
+ * @param {String} command - the command to be executed once I'm connected
+ * @returns {Promise}
+ *
+ */
 const executeTelnet = (port, command) => new Promise((resolve) => {
     const nc2 = new NClient();
     logDebug(`execTelnet: ${port} ${command}`);
@@ -89,13 +130,6 @@ const executeTelnet = (port, command) => new Promise((resolve) => {
     });
     nc2.on('close', () => resolve(output));
 });
-
-function execShellAsync(command) {
-    logDebug('Exec:', command);
-    return new Promise((resolve) => {
-        shell.exec(command, resolve);
-    });
-}
 
 const isUsingWindows = process.platform === 'win32';
 
@@ -239,11 +273,10 @@ const commandExistsSync = (commandName) => {
 
 const openCommand = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
 
-export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
+export { executeAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
 
 export default {
     executeAsync,
-    execShellAsync,
     execCLI,
     openCommand,
     executeTelnet

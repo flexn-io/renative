@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execShellAsync, execCLI } from '../systemTools/exec';
+import { execCLI } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,

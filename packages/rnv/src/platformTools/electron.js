@@ -3,7 +3,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { spawn } from 'child_process';
 import { createPlatformBuild } from '../cli/platform';
-import { executeAsync, execShellAsync } from '../systemTools/exec';
+import { executeAsync } from '../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -149,7 +149,7 @@ const exportElectron = (c, platform) => new Promise((resolve, reject) => {
     logTask(`exportElectron:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    execShellAsync(`npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
+    executeAsync(`npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
         .then(() => {
             logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
             resolve();

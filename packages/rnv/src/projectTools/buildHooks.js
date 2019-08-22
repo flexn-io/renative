@@ -8,7 +8,7 @@ import {
 } from '../common';
 import { generateOptions } from '../systemTools/prompt';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
-import { executeAsync, execShellAsync, execCLI } from '../systemTools/exec';
+import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
 import { PIPES as RUNNER_PIPES } from '../cli/runner';
 import { PIPES as PLATFORM_PIPES } from '../cli/platform';
