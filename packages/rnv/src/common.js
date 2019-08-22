@@ -485,6 +485,25 @@ const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
+const parseErrorMessage = text => {
+    const errors = [];
+    const toSearch = /(exception|error|fatal)/i;
+    const maxErrorLenght = 100;
+
+    const extractError = (t) => {
+        const errorFound = t.search(toSearch);
+        if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
+        const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
+        let extractedError = usefulString.substring(0, maxErrorLenght);
+        if (extractedError.length === maxErrorLenght) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
+        errors.push(extractedError); // save the error
+        const newString = usefulString.substring(100); // dump everything we processed and continue
+        return extractError(newString);
+    }
+
+    return extractError(text)
+}
+
 // TODO: remove this
 export {
     logInfo,
@@ -495,7 +514,8 @@ export {
     logWarning,
     logSuccess,
     copyBuildsFolder,
-    waitForEmulator
+    waitForEmulator,
+    parseErrorMessage
 };
 
 export default {
@@ -541,5 +561,6 @@ export default {
     checkPortInUse,
     resolveNodeModulePath,
     configureRnvGlobal,
-    waitForEmulator
+    waitForEmulator,
+    parseErrorMessage
 };
