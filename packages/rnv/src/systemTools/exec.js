@@ -7,7 +7,7 @@ import ora from 'ora';
 import NClient from 'netcat/client';
 import util from 'util';
 
-import { logDebug } from '../common';
+import { logDebug, parseErrorMessage } from '../common';
 
 const { exec, execSync } = require('child_process');
 
@@ -55,14 +55,14 @@ const _execute = (command, opts = {}) => {
         return res.stdout;
     }).catch((err) => {
         const { silent, ignoreErrors } = mergedOpts;
-        if (!silent && !ignoreErrors) spinner.fail(err.stderr || err.message);
+        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         // logDebug(err);
         if (ignoreErrors) {
             spinner.succeed();
             return true;
         }
-        return Promise.reject(err.stderr || err.message);
+        return Promise.reject(parseErrorMessage(err.all) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
 
