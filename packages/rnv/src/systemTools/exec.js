@@ -43,14 +43,14 @@ const _execute = (command, opts = {}) => {
         return res.stdout;
     }).catch((err) => {
         const { silent, ignoreErrors } = mergedOpts;
-        if (!silent && !ignoreErrors) spinner.fail(err.stdout || err.stderr || err.message);
+        if (!silent && !ignoreErrors) spinner.fail(err.stderr || err.message);
         logDebug(err.all);
         // logDebug(err);
         if (ignoreErrors) {
             spinner.succeed();
             return true;
         }
-        return Promise.reject(err.stdout || err.stderr || err.message);
+        return Promise.reject(err.stderr || err.message);
     });
 };
 
