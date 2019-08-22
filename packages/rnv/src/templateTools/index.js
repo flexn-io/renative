@@ -141,7 +141,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
     // Check appConfigs
     logTask('configureProject:check appConfigs', chalk.grey);
-    setAppConfig(c, c.defaultAppConfigId);
+    //
     if (!fs.existsSync(c.paths.project.appConfigsDir)) {
         logInfo(
             `Looks like your appConfig folder ${chalk.white(
@@ -173,6 +173,8 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
                     }
                 }
             }
+
+            setAppConfig(c, appConfig.id);
 
             fs.writeFileSync(c.paths.appConfig.config, JSON.stringify(appConfig, null, 2));
         } catch (e) {

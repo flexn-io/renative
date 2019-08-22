@@ -165,53 +165,53 @@ export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
 export const configureApp = c => new Promise((resolve, reject) => {
     logTask(`configureApp:${c.runtime.appId}`);
 
-    c.runtime.appId = c.program.appConfigID || c.files.project?.builds?.config?.id;
+    updateConfig(c, c.runtime.appId)
+        .then(() => {
+            configureEntryPoints(c);
+            resolve(c);
+        })
+        .catch(e => reject(e));
 
-    if (c.runtime.appId) {
-        // App ID specified
-        updateConfig(c, c.runtime.appId)
-            .then(() => {
-                configureEntryPoints(c);
-                resolve(c);
-            })
-            .catch(e => reject(e));
-    } else {
-        // Use latest app from platformAssets
-        if (!fs.existsSync(c.paths.project.builds.config)) {
-            logInfo(
-                `Seems like you're missing ${
-                    c.paths.project.builds.config
-                } file. But don't worry. ReNative got you covered. Let's configure it for you!`,
-            );
-
-            updateConfig(c, c.defaultAppConfigId)
-                .then(() => {
-                    configureEntryPoints(c);
-                    appRunner(spawnCommand(c, {
-                        command: 'configure',
-                        program: {
-                            appConfig: c.defaultAppConfigId,
-                            update: true,
-                        }
-                    }))
-                        .then(() => resolve(c))
-                        .catch(e => reject(e));
-                })
-                .catch(e => reject(e));
-        } else {
-            try {
-                const assetConfig = JSON.parse(fs.readFileSync(c.paths.project.builds.config).toString());
-                updateConfig(c, assetConfig.id)
-                    .then(() => {
-                        configureEntryPoints(c);
-                        resolve(c);
-                    })
-                    .catch(e => reject(e));
-            } catch (e) {
-                reject(e);
-            }
-        }
-    }
+    // if (c.runtime.appId) {
+    //     // App ID specified
+    //
+    // } else {
+    //     // Use latest app from platformAssets
+    //     if (!fs.existsSync(c.buildConfig)) {
+    //         logInfo(
+    //             `Seems like you're missing ${
+    //                 c.paths.project.builds.config
+    //             } file. But don't worry. ReNative got you covered. Let's configure it for you!`,
+    //         );
+    //
+    //         updateConfig(c, c.defaultAppConfigId)
+    //             .then(() => {
+    //                 configureEntryPoints(c);
+    //                 appRunner(spawnCommand(c, {
+    //                     command: 'configure',
+    //                     program: {
+    //                         appConfig: c.defaultAppConfigId,
+    //                         update: true,
+    //                     }
+    //                 }))
+    //                     .then(() => resolve(c))
+    //                     .catch(e => reject(e));
+    //             })
+    //             .catch(e => reject(e));
+    //     } else {
+    //         try {
+    //             const assetConfig = JSON.parse(fs.readFileSync(c.paths.project.builds.config).toString());
+    //             updateConfig(c, assetConfig.id)
+    //                 .then(() => {
+    //                     configureEntryPoints(c);
+    //                     resolve(c);
+    //                 })
+    //                 .catch(e => reject(e));
+    //         } catch (e) {
+    //             reject(e);
+    //         }
+    //     }
+    // }
 });
 
 export const spawnCommand = (c, overrideParams) => {

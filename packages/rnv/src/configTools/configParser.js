@@ -196,6 +196,8 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
+    c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+    console.log('AGAGAGAGA', c.runtime.appId);
     if (!c.files.project.config) return resolve();
 
     // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
@@ -330,6 +332,7 @@ export const setAppConfig = (c, appId) => {
 
     if (!appId) return;
 
+    c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
@@ -339,6 +342,7 @@ export const setAppConfig = (c, appId) => {
     _loadConfigFiles(c, c.files.private.appConfig, c.paths.private.appConfig, c.paths.private.project.appConfigsDir);
 
     _generateBuildConfig(c);
+    _generateLocalConfig(c);
 };
 
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
@@ -424,6 +428,14 @@ const _generateBuildConfig = (c) => {
     if (fs.existsSync(c.paths.project.assets.dir)) {
         writeObjectSync(c.paths.project.assets.config, c.assetConfig);
     }
+};
+
+const _generateLocalConfig = (c) => {
+    const configLocal = c.files.project.configLocal || {};
+    configLocal._meta = configLocal._meta || {};
+    configLocal._meta.currentAppConfigId = c.runtime.appId;
+    c.files.project.configLocal = configLocal;
+    writeObjectSync(c.paths.project.configLocal, configLocal);
 };
 
 const _generatePlatformTemplatePaths = (c) => {
