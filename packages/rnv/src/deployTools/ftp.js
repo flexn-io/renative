@@ -103,45 +103,40 @@ const _createEnvFtpConfig = (configFilePath, previousContent = '') => new Promis
 const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_createDeployConfig:${platform}`);
 
-    const configFilePath = path.resolve(
-        c.buildConfig.appConfigsFolder,
-        c.defaultAppConfigId,
-        RENATIVE_CONFIG_NAME
-    );
+    const deploy = c.buildConfig.platforms[platform].deploy || {};
 
-    c.buildConfig.platforms[platform].deploy = c.buildConfig.platforms[platform].deploy || {};
-    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP] = {};
-    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
+    deploy[DEPLOY_TARGET_FTP] = {};
+    deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
 
     const targetConfigPromise = new Promise((resolve, reject) => {
-        c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+        deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
         askQuestion('Folder on the ftp to upload the project (default is \'/\')')
             .then((v) => {
                 finishQuestion();
-                c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].remoteRoot = v || '/';
+                deploy[DEPLOY_TARGET_FTP].remoteRoot = v || '/';
             })
             .then(() => askQuestion('Delete all contents of that folder when deploying versions y/N (default is \'N\')?')
                 .then((v) => {
                     finishQuestion();
-                    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].deleteRemote = ['yes', 'Y', 'y'].indexOf(v) > -1;
+                    deploy[DEPLOY_TARGET_FTP].deleteRemote = ['yes', 'Y', 'y'].indexOf(v) > -1;
                 }))
             .then(() => askQuestion('Included files pattern, comma separated (default \'*\',\'**/*\' = all except dot files)')
                 .then((v) => {
                     finishQuestion();
-                    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].include = v ? v.split(',') : ['*', '**/*'];
+                    deploy[DEPLOY_TARGET_FTP].include = v ? v.split(',') : ['*', '**/*'];
                 }))
             .then(() => {
-                c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = [];
+                deploy[DEPLOY_TARGET_FTP].exclude = [];
                 return askQuestion('Excluded files pattern, comma separated (default [])')
                     .then((v) => {
                         finishQuestion();
-                        c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = v ? v.split(',') : [];
+                        deploy[DEPLOY_TARGET_FTP].exclude = v ? v.split(',') : [];
                     });
             })
             .then(() => askQuestion('Exclude sourcemaps? y/N (default = N)')
                 .then((v) => {
                     finishQuestion();
-                    c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude = c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude.concat(['yes', 'Y', 'y'].indexOf(v) > -1 ? ['**/*.map'] : []);
+                    deploy[DEPLOY_TARGET_FTP].exclude = deploy[DEPLOY_TARGET_FTP].exclude.concat(['yes', 'Y', 'y'].indexOf(v) > -1 ? ['**/*.map'] : []);
                 }))
             .then(resolve);
     });
@@ -149,9 +144,12 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
     targetConfigPromise
         .then(() => {
             logInfo(`Setting your appconfig for ${platform} to include deploy type: ${DEPLOY_TARGET_FTP}
-                    on ${configFilePath}
+                    on ${c.paths.appConfig.config}
                 `);
-            fs.writeFileSync(configFilePath, JSON.stringify(c.buildConfig, null, 2));
+
+            // TODO: Review this (where to put what props renative.*.json)
+            c.files.appConfig.config.platforms[platform].deploy = deploy;
+            writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
             resolve();
         })
         .catch(reject);

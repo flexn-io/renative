@@ -264,7 +264,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         logWarning('Platforms not created yet. creating them for you...');
         platformRunner(spawnCommand(c, {
             subCommand: 'configure',
-            program: { appConfig: c.defaultAppConfigId, platform }
+            program: { appConfig: c.runtime.appId, platform }
         }))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -277,7 +277,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
             logWarning(`Platform ${platform} not created yet. creating them for you...`);
             platformRunner(spawnCommand(c, {
                 subCommand: 'configure',
-                program: { appConfig: c.defaultAppConfigId, platform }
+                program: { appConfig: c.runtime.appId, platform }
             }))
                 .then(() => resolve())
                 .catch(e => reject(e));
@@ -297,7 +297,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
                 cmds.push(platformRunner(spawnCommand(c, {
                     subCommand: 'configure',
-                    program: { appConfig: c.defaultAppConfigId, platform }
+                    program: { appConfig: c.runtime.appId, platform }
                 })));
             }
         });

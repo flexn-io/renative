@@ -494,8 +494,7 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
                 getQuestion(`ReNative found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`),
                 (v) => {
                     if (configDirs[v]) {
-                        c.defaultAppConfigId = configDirs[v];
-                        setAppConfig(c, c.defaultAppConfigId);
+                        setAppConfig(c, configDirs[v]);
                         resolve();
                     } else {
                         reject('Wrong option!');
@@ -510,10 +509,9 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
                     )}) for you? (y) to confirm`,
                 ),
                 (v) => {
-                    c.defaultAppConfigId = SAMPLE_APP_ID;
-                    setAppConfig(c, c.defaultAppConfigId);
+                    setAppConfig(c, SAMPLE_APP_ID);
                     copyFolderContentsRecursiveSync(
-                        path.join(c.paths.rnv.dir, 'appConfigs', c.defaultAppConfigId),
+                        path.join(c.paths.rnv.dir, 'appConfigs', SAMPLE_APP_ID),
                         path.join(c.paths.appConfig.dir),
                     );
                     resolve();

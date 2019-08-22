@@ -130,8 +130,6 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     const currentTemplate = c.files.project.config.defaults.template;
     const templateConfig = JSON.parse(fs.readFileSync(templateConfigPath).toString());
 
-    if (templateAppConfigFolder) c.defaultAppConfigId = templateAppConfigFolder;
-
     // Check src
     logTask('configureProject:check src', chalk.grey);
     if (!fs.existsSync(c.paths.project.srcDir)) {
@@ -160,7 +158,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
             appConfig.common.title = c.buildConfig.defaults.defaultTitle || c.files.project.package.title;
             appConfig.common.id = c.buildConfig.defaults.defaultAppId || c.files.project.package.defaultAppId;
-            appConfig.id = c.buildConfig.defaults.defaultAppConfigId || c.defaultAppConfigId;
+            appConfig.id = c.buildConfig.defaults.defaultAppConfigId || templateAppConfigFolder;
             appConfig.platforms.ios.teamID = '';
             appConfig.platforms.tvos.teamID = '';
 

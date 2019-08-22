@@ -46,12 +46,7 @@ const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) =>
             .then(v => opts.pick(v))
             .then((selectedDeployTarget) => {
                 finishQuestion();
-                const configFilePath = path.resolve(
-                    c.buildConfig.appConfigsFolder,
-                    c.defaultAppConfigId,
-                    RENATIVE_CONFIG_NAME
-                );
-                logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(configFilePath)}`);
+                logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(c.paths.appConfig.config)}`);
                 _runDeployment(c, platform, selectedDeployTarget).then(resolve).catch(reject);
             })
             .catch(e => reject(e));
