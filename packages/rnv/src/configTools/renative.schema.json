@@ -66,10 +66,6 @@
             "type": "string",
             "description": "TODO"
         },
-        "projectPlugins": {
-            "type": "string",
-            "description": "TODO"
-        },
         "projectConfigFolder": {
             "type": "string",
             "description": "TODO"

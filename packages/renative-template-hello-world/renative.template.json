@@ -26,6 +26,19 @@
                 "tools:targetApi": 28
             }]
         }
+    },
+    "androidtv": {
+        "gradle.properties": {
+            "android.useDeprecatedNdk": true
+        },
+        "AndroidManifest": {
+            "children": [{
+                "tag": "application",
+                "android:name": ".MainApplication",
+                "android:usesCleartextTraffic": true,
+                "tools:targetApi": 28
+            }]
+        }
     }
   },
   "permissions": {

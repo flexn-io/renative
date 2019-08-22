@@ -12,7 +12,6 @@
         "entryFolder": "./",
         "platformAssetsFolder": "./platformAssets",
         "platformBuildsFolder": "./platformBuilds",
-        "projectPlugins": "./projectConfig/plugins",
         "projectConfigFolder": "./projectConfig"
     },
     "defaults": {

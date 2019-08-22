@@ -7,13 +7,13 @@ import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
-    removeFilesSync, mergeObjects
+    removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
 import { logError, logInfo, logWarning, logTask } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints } from '../projectTools/projectParser';
-import { setAppConfig } from '../configTools/configParser';
+import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig } from '../configTools/configParser';
 
 import { templates } from '../../renativeTemplates/templates.json';
 
@@ -147,22 +147,24 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
             )} is missing! Let's create sample config for you.`,
         );
 
-
         // TODO: GET CORRECT PROJECT TEMPLATE
         copyFolderContentsRecursiveSync(templateAppConfigsFolder, c.paths.project.appConfigsDir);
 
+        const appConfigIds = listAppConfigsFoldersSync(c);
 
         // Update App Title to match package.json
         try {
-            const appConfig = JSON.parse(fs.readFileSync(c.paths.appConfig.config).toString());
+            appConfigIds.forEach((v) => {
+                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
+                const appConfig = readObjectSync(appConfigPath);
+                appConfig.common = appConfig.common || {};
+                appConfig.common.title = c.files.project.config?.defaults?.title;
+                appConfig.common.id = c.files.project.config?.defaults?.id;
 
-            appConfig.common.title = c.buildConfig.defaults.defaultTitle || c.files.project.package.title;
-            appConfig.common.id = c.buildConfig.defaults.defaultAppId || c.files.project.package.defaultAppId;
-            appConfig.id = c.buildConfig.defaults.defaultAppConfigId || templateAppConfigFolder;
-            appConfig.platforms.ios.teamID = '';
-            appConfig.platforms.tvos.teamID = '';
+                writeObjectSync(appConfigPath, appConfig);
+            });
 
-            const supPlats = c.buildConfig.defaults.supportedPlatforms;
+            const supPlats = c.files.project?.defaults?.supportedPlatforms;
 
             if (supPlats) {
                 for (const pk in appConfig.platforms) {
@@ -171,10 +173,6 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
                     }
                 }
             }
-
-            setAppConfig(c, appConfig.id);
-
-            fs.writeFileSync(c.paths.appConfig.config, JSON.stringify(appConfig, null, 2));
         } catch (e) {
             logError(e);
         }
@@ -207,6 +205,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
         writeObjectSync(c.paths.project.configLocal, templateConfig);
     }
 
+    setAppConfig(c, c.runtime.appId);
 
     resolve();
 });
