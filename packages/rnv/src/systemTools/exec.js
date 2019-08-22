@@ -55,14 +55,14 @@ const _execute = (command, opts = {}) => {
         return res.stdout;
     }).catch((err) => {
         const { silent, ignoreErrors } = mergedOpts;
-        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all));
+        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         // logDebug(err);
         if (ignoreErrors) {
             spinner.succeed();
             return true;
         }
-        return Promise.reject(parseErrorMessage(err.all));
+        return Promise.reject(parseErrorMessage(err.all) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
 
