@@ -7,7 +7,7 @@ import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
-    removeFilesSync, mergeObjects
+    removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
 import { logError, logInfo, logWarning, logTask } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
@@ -155,13 +155,15 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
         // Update App Title to match package.json
         try {
             appConfigIds.forEach((v) => {
-                const appConfig = JSON.parse(fs.readFileSync(path.join(c.paths.project.appConfigsDir, v)).toString());
+                const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
+                const appConfig = readObjectSync(appConfigPath);
                 if (appConfig.common?.title) {
                     appConfig.common.title = c.files.project?.defaults?.title;
                 }
                 if (appConfig.common?.id) {
                     appConfig.common.id = c.files.project?.defaults?.id;
                 }
+                writeObjectSync(appConfigPath, appConfig);
             });
 
             const supPlats = c.files.project?.defaults?.supportedPlatforms;
@@ -173,10 +175,6 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
                     }
                 }
             }
-
-            setAppConfig(c, appConfig.id);
-
-            fs.writeFileSync(c.paths.appConfig.config, JSON.stringify(appConfig, null, 2));
         } catch (e) {
             logError(e);
         }

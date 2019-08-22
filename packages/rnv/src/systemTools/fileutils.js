@@ -5,6 +5,7 @@ import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
+import ncp from 'ncp';
 import { logDebug, logError, logWarning, logInfo } from '../common';
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -73,6 +74,21 @@ const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skip
         });
     }
 };
+
+export const copyFolderContentsRecursive = (source, target, convertSvg = true, skipPaths) => new Promise((resolve, reject) => {
+    logDebug('copyFolderContentsRecursive', source, target, skipPaths);
+    if (!fs.existsSync(source)) return;
+    const targetFolder = path.resolve(target);
+    if (!fs.existsSync(targetFolder)) {
+        mkdirSync(targetFolder);
+    }
+    ncp(source, targetFolder, (err) => {
+        if (err) {
+            return reject(err);
+        }
+        return resolve();
+    });
+});
 
 const saveAsJs = (source, dest) => {
     Svg2Js.createSync({
@@ -360,6 +376,7 @@ export default {
     removeFilesSync,
     saveAsJs,
     mkdirSync,
+    copyFolderContentsRecursive,
     copyFolderContentsRecursiveSync,
     cleanFolder,
     writeObjectSync,

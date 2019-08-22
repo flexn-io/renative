@@ -199,7 +199,6 @@ PATH_PROPS
     "entryFolder": "",
     "platformAssetsFolder": "",
     "platformBuildsFolder": "",
-    "projectPlugins": "",
     "projectConfigFolder": ""
 }
 ```

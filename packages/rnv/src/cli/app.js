@@ -214,7 +214,6 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
             entryFolder: './',
             platformAssetsFolder: './platformAssets',
             platformBuildsFolder: './platformBuilds',
-            projectPlugins: './projectConfig/plugins',
             projectConfigFolder: './projectConfig'
         },
         defaults: {
