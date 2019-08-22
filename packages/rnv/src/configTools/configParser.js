@@ -330,7 +330,6 @@ export const setAppConfig = (c, appId) => {
 
     if (!appId) return;
 
-    c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
@@ -523,32 +522,6 @@ export const listAppConfigsFoldersSync = (c) => {
     });
     return configDirs;
 };
-
-export const gatherInfo = c => new Promise((resolve, reject) => {
-    logTask('gatherInfo');
-    try {
-        if (fs.existsSync(c.paths.project.package)) {
-            c.files.project.package = JSON.parse(fs.readFileSync(c.paths.project.package).toString());
-        } else {
-            console.log('Missing appConfigPath', c.paths.project.package);
-        }
-        if (fs.existsSync(c.paths.project.builds.config)) {
-            c.buildConfig = JSON.parse(fs.readFileSync(c.paths.project.builds.config).toString());
-            c.runtime.appId = c.buildConfig.id;
-        } else {
-            console.log('Missing runtimeConfigPath', c.paths.project.builds.config);
-        }
-        if (fs.existsSync(c.paths.project.config)) {
-            c.files.project.config = JSON.parse(fs.readFileSync(c.paths.project.config).toString());
-        } else {
-            console.log('Missing projectConfigPath', c.paths.project.config);
-        }
-    } catch (e) {
-        reject(e);
-    }
-
-    resolve();
-});
 
 export const configureRnvGlobal = c => new Promise((resolve, reject) => {
     logTask('configureRnvGlobal');

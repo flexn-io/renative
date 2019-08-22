@@ -56,7 +56,6 @@ export const startBuilder = c => new Promise((resolve, reject) => {
     if (NO_OP_COMMANDS.includes(c.command)) {
         parseRenativeConfigs(c)
             .then(() => configureRnvGlobal(c))
-            .then(() => gatherInfo(c))
             .then(() => resolve(c))
             .catch(e => reject(c));
         return;
