@@ -21,16 +21,46 @@ List of available config props injected into hooks methods:
 ```
 {
   rnv: {
-      pluginTemplates: {},
-      platformTemplates: {}
+      dir: '',
+      nodeModulesDir: '',
+      platformTemplates: {
+          dir: ''
+      },
+      pluginTemplates: {
+          dir: '',
+          config: ''
+      },
+      package: '',
+      plugins: {
+          dir: ''
+      }
+      projectTemplate: {
+          dir: ''
+      }
   },
   project: {
-      projectConfig: {},
-      builds: {},
-      assets: {},
-      platformTemplates: {}
+      projectConfig: {
+          dir: '',
+          buildsDir: '',
+          fontsDir: '',
+          pluginsDir: ''
+      },
+      builds: {
+          dir: '',
+          config: ''
+      },
+      assets: {
+          dir: '',
+          config: ''
+      },
+      platformTemplates: {
+          dir: ''
+      }
   },
-  appConfig: {},
+  appConfig: {
+      dir: '',
+      config: ''
+  },
   private: {
       project: {
           projectConfig: {},
@@ -38,7 +68,10 @@ List of available config props injected into hooks methods:
           assets: {},
           platformTemplates: {}
       },
-      appConfig: {}
+      appConfig: {
+          dir: '',
+          config: ''
+      }
   }
 }
 ```
