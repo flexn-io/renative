@@ -54,7 +54,7 @@ import {
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
-    getRealPath
+    getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps
 } from '../systemTools/fileutils';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
@@ -416,7 +416,9 @@ export const generateBuildConfig = (c) => {
     logTask(`generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
 
     const out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
-    c.buildConfig = out;
+
+    c.buildConfig = sanitizeDynamicRefs(c, out);
+    c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
     }

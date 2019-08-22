@@ -8,9 +8,9 @@ import chalk from 'chalk';
 import ncp from 'ncp';
 import { logDebug, logError, logWarning, logInfo } from '../common';
 
-const isRunningOnWindows = process.platform === 'win32';
+export const isRunningOnWindows = process.platform === 'win32';
 
-const copyFileSync = (source, target) => {
+export const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source, target);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
@@ -24,7 +24,7 @@ const copyFileSync = (source, target) => {
     fs.writeFileSync(targetFile, fs.readFileSync(source));
 };
 
-const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
+export const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
     logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
 
@@ -52,7 +52,7 @@ const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) =
     }
 };
 
-const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
+export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
     if (!fs.existsSync(source)) return;
     let files = [];
@@ -90,18 +90,18 @@ export const copyFolderContentsRecursive = (source, target, convertSvg = true, s
     });
 });
 
-const saveAsJs = (source, dest) => {
+export const saveAsJs = (source, dest) => {
     Svg2Js.createSync({
         source,
         destination: dest,
     });
 };
 
-const removeDir = (path, callback) => {
+export const removeDir = (path, callback) => {
     rimraf(path, callback);
 };
 
-const mkdirSync = (dir) => {
+export const mkdirSync = (dir) => {
     try {
         shelljs.mkdir('-p', dir);
     } catch (e) {
@@ -109,7 +109,7 @@ const mkdirSync = (dir) => {
     }
 };
 
-const cleanFolder = d => new Promise((resolve, reject) => {
+export const cleanFolder = d => new Promise((resolve, reject) => {
     logDebug('cleanFolder', d);
     removeDir(d, () => {
         mkdirSync(d);
@@ -117,7 +117,7 @@ const cleanFolder = d => new Promise((resolve, reject) => {
     });
 });
 
-const removeFilesSync = (filePaths) => {
+export const removeFilesSync = (filePaths) => {
     logDebug('removeFilesSync', filePaths);
     filePaths.forEach((filePath) => {
         try {
@@ -132,7 +132,7 @@ const removeFilesSync = (filePaths) => {
     });
 };
 
-const removeDirsSync = (dirPaths) => {
+export const removeDirsSync = (dirPaths) => {
     logDebug('removeDirsSync', dirPaths);
 
     for (let i = 0; i < dirPaths.length; i++) {
@@ -145,7 +145,7 @@ const removeDirsSync = (dirPaths) => {
 };
 
 
-const removeDirs = dirPaths => new Promise((resolve, reject) => {
+export const removeDirs = dirPaths => new Promise((resolve, reject) => {
     logDebug('removeDirs', dirPaths);
     const allFolders = dirPaths.length;
     let deletedFolders = 0;
@@ -162,7 +162,7 @@ const removeDirs = dirPaths => new Promise((resolve, reject) => {
 });
 
 
-const removeDirSync = (dir, rmSelf) => {
+export const removeDirSync = (dir, rmSelf) => {
     let files;
     rmSelf = (rmSelf === undefined) ? true : rmSelf;
     dir += '/';
@@ -182,7 +182,7 @@ const removeDirSync = (dir, rmSelf) => {
     }
 };
 
-const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
+export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
     if (addNewLine) {
         fs.writeFileSync(filePath, `${JSON.stringify(obj, null, spaces || 4)}\n`);
     } else {
@@ -190,7 +190,7 @@ const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
     }
 };
 
-const readObjectSync = (filePath, c) => {
+export const readObjectSync = (filePath, c) => {
     if (!fs.existsSync(filePath)) {
         logError(`File at ${filePath} does not exist`);
         return null;
@@ -211,7 +211,7 @@ const readObjectSync = (filePath, c) => {
     return obj;
 };
 
-const updateObjectSync = (filePath, updateObj) => {
+export const updateObjectSync = (filePath, updateObj) => {
     let output;
     const obj = readObjectSync(filePath);
     if (obj) {
@@ -257,7 +257,7 @@ const _refToValue = (c, ref, key) => {
     return ref;
 };
 
-const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
+export const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
     const jointArray = destinationArray.concat(sourceArray);
     const uniqueArray = jointArray.filter((item, index) => jointArray.indexOf(item) === index);
     return uniqueArray;
@@ -265,7 +265,7 @@ const arrayMerge = (destinationArray, sourceArray, mergeOptions) => {
 
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
-const sanitizeDynamicRefs = (c, obj) => {
+export const sanitizeDynamicRefs = (c, obj) => {
     if (!obj) return obj;
     if (Array.isArray(obj)) {
         obj.forEach((v) => {
@@ -287,11 +287,18 @@ const sanitizeDynamicRefs = (c, obj) => {
     return obj;
 };
 
-const sanitizeDynamicProps = (obj, props) => {
-    if (!obj) return obj;
+export const sanitizeDynamicProps = (obj, props) => {
+    if (!obj || !props) return obj;
     if (Array.isArray(obj)) {
         obj.forEach((v) => {
-            sanitizeDynamicProps(v, props);
+            if (typeof val === 'string') {
+                Object.keys(props).forEach((pk) => {
+                    val = val.replace(`@${pk}@`, props[pk]);
+                    obj[key] = val;
+                });
+            } else {
+                sanitizeDynamicProps(v, props);
+            }
         });
     }
     Object.keys(obj).forEach((key) => {
@@ -310,14 +317,14 @@ const sanitizeDynamicProps = (obj, props) => {
     return obj;
 };
 
-const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
+export const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
     if (!obj1) return obj2;
     const obj = merge(obj1, obj2, { arrayMerge: replaceArrays ? _arrayMergeOverride : arrayMerge });
     return dynamicRefs ? sanitizeDynamicRefs(c, obj) : obj;
 };
 
-const updateConfigFile = async (update, globalConfigPath) => {
+export const updateConfigFile = async (update, globalConfigPath) => {
     const configContents = JSON.parse(fs.readFileSync(globalConfigPath));
 
     if (update.androidSdk) {
@@ -337,12 +344,12 @@ const updateConfigFile = async (update, globalConfigPath) => {
     fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
 
-const replaceHomeFolder = (p) => {
+export const replaceHomeFolder = (p) => {
     if (isRunningOnWindows) return p.replace('~', process.env.USERPROFILE);
     return p.replace('~', process.env.HOME);
 };
 
-const getFileListSync = (dir) => {
+export const getFileListSync = (dir) => {
     let results = [];
     const list = fs.readdirSync(dir);
     list.forEach((file) => {
@@ -359,14 +366,8 @@ const getFileListSync = (dir) => {
     return results;
 };
 
-export {
-    copyFileSync, copyFolderRecursiveSync, removeDir, saveAsJs, mkdirSync,
-    copyFolderContentsRecursiveSync, cleanFolder, removeFilesSync, removeDirs,
-    writeObjectSync, readObjectSync, updateObjectSync, arrayMerge, mergeObjects,
-    updateConfigFile, removeDirsSync, replaceHomeFolder, getFileListSync
-};
-
 export default {
+    sanitizeDynamicRefs,
     getFileListSync,
     removeDirs,
     copyFileSync,

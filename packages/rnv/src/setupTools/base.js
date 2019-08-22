@@ -10,10 +10,10 @@ import setupConfig from './config';
 
 class BasePlatformSetup {
     constructor(os, c) {
-        const { paths: { private } } = c;
+        const { paths } = c;
         this.os = os;
         this.c = c;
-        this.globalConfigPath = private.config;
+        this.globalConfigPath = paths.private.config;
         this.availableDownloader = null;
         this.androidSdkLocation = replaceHomeFolder('~/Android');
         this.sdksToInstall = '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';
