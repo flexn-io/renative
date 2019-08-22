@@ -13,7 +13,7 @@ import { logError, logInfo, logWarning, logTask } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints } from '../projectTools/projectParser';
-import { setAppConfig, listAppConfigsFoldersSync } from '../configTools/configParser';
+import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig } from '../configTools/configParser';
 
 import { templates } from '../../renativeTemplates/templates.json';
 
@@ -157,12 +157,10 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
             appConfigIds.forEach((v) => {
                 const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
                 const appConfig = readObjectSync(appConfigPath);
-                if (appConfig.common?.title) {
-                    appConfig.common.title = c.files.project?.defaults?.title;
-                }
-                if (appConfig.common?.id) {
-                    appConfig.common.id = c.files.project?.defaults?.id;
-                }
+                appConfig.common = appConfig.common || {};
+                appConfig.common.title = c.files.project.config?.defaults?.title;
+                appConfig.common.id = c.files.project.config?.defaults?.id;
+
                 writeObjectSync(appConfigPath, appConfig);
             });
 
@@ -207,6 +205,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
         writeObjectSync(c.paths.project.configLocal, templateConfig);
     }
 
+    setAppConfig(c, c.runtime.appId);
 
     resolve();
 });

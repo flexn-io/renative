@@ -49,6 +49,7 @@ import {
     copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore,
     copySharedPlatforms, checkAndCreateProjectConfig
 } from '../projectTools/projectParser';
+import { generateRuntimeConfig } from '../configTools/configParser';
 
 const CONFIGURE = 'configure';
 const SWITCH = 'switch';
@@ -115,6 +116,7 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .then(() => _checkAndCreatePlatforms(c, c.program.platform))
         .then(() => copyRuntimeAssets(c))
         .then(() => copySharedPlatforms(c))
+        .then(() => generateRuntimeConfig(c))
         .then(() => _runPlugins(c, c.paths.rnv.plugins.dir))
         .then(() => _runPlugins(c, c.paths.project.projectConfig.pluginsDir))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
@@ -146,6 +148,7 @@ const _runSwitch = c => new Promise((resolve, reject) => {
 
         .then(() => copyRuntimeAssets(c))
         .then(() => copySharedPlatforms(c))
+        .then(() => generateRuntimeConfig(c))
         .then(() => executePipe(c, PIPES.APP_SWITCH_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));

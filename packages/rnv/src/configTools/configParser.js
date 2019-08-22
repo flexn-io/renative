@@ -67,7 +67,6 @@ import {
     checkAndCreateGitignore, copySharedPlatforms
 } from '../projectTools/projectParser';
 
-
 const base = path.resolve('.');
 const homedir = require('os').homedir();
 
@@ -321,7 +320,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
         loadFile(fileObj, pathObj, 'configBase');
     }
 
-    _generateBuildConfig(c);
+    generateBuildConfig(c);
     return result;
 };
 
@@ -340,14 +339,14 @@ export const setAppConfig = (c, appId) => {
     _generateConfigPaths(c.paths.private.appConfig, path.join(c.paths.private.project.appConfigsDir, appId));
     _loadConfigFiles(c, c.files.private.appConfig, c.paths.private.appConfig, c.paths.private.project.appConfigsDir);
 
-    _generateBuildConfig(c);
+    generateBuildConfig(c);
     _generateLocalConfig(c);
 };
 
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
-const _generateBuildConfig = (c) => {
-    logTask('_generateBuildConfig');
+export const generateBuildConfig = (c) => {
+    logTask('generateBuildConfig');
 
     const mergeOrder = [
         c.paths.project.config,
@@ -412,14 +411,17 @@ const _generateBuildConfig = (c) => {
 
     const existsFiles = mergeFiles.filter((v, i) => v);
 
-    logTask(`_generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
+    logTask(`generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
 
     const out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
     c.buildConfig = out;
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
     }
+};
 
+export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
+    logTask('generateRuntimeConfig');
     c.assetConfig = {
         common: c.buildConfig.common
     };
@@ -427,9 +429,11 @@ const _generateBuildConfig = (c) => {
     if (fs.existsSync(c.paths.project.assets.dir)) {
         writeObjectSync(c.paths.project.assets.config, c.assetConfig);
     }
-};
+    resolve();
+});
 
 const _generateLocalConfig = (c) => {
+    logTask(`_generateLocalConfig:${c.paths.project.configLocal}`);
     const configLocal = c.files.project.configLocal || {};
     configLocal._meta = configLocal._meta || {};
     configLocal._meta.currentAppConfigId = c.runtime.appId;
