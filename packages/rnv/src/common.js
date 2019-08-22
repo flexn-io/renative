@@ -166,6 +166,8 @@ export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
 export const configureApp = c => new Promise((resolve, reject) => {
     logTask(`configureApp:${c.runtime.appId}`);
 
+    c.runtime.appId = c.program.appConfigID || c.files.project?.builds?.config?.id;
+
     if (c.runtime.appId) {
         // App ID specified
         updateConfig(c, c.runtime.appId)

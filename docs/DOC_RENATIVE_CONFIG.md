@@ -61,6 +61,8 @@ Following is the order of merges of various renative configs (if present) produc
 ⬇️
 `~/.rnv/[PROJECT-NAME]/renative.local.json`</br>
 ⬇️
+`./appConfigs/[APP_ID_BASE]/renative.json`</br>
+⬇️
 `./appConfigs/[APP_ID]/renative.json`</br>
 ⬇️
 `./appConfigs/[APP_ID]/renative.private.json`</br>

@@ -30,6 +30,8 @@ applies for both public and private `./..` and `~./rnv/[PROJECT_NAME]/..`
 Following is the order of merges of various folders (if present) contributing to final `platformBuilds/*/**`.
 
 ⬇️
+`[RNV_ROOT]/platformTemplates/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
 `./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>

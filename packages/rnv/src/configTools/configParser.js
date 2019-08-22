@@ -142,7 +142,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.command = cmd;
     c.subCommand = subCmd;
     c.platformDefaults = PLATFORMS;
-    c.runtime.appId = program.appConfigID;
 
     c.paths.rnv.dir = path.join(__dirname, '../..');
     c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
@@ -155,6 +154,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
 
     c.platform = c.program.platform;
+    c.runtime.platform = c.platform;
     c.paths.home.dir = homedir;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
     c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
@@ -180,8 +180,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
-    c.runtime.appId = c.runtime.appId;
-
     _generateConfigPaths(c.paths.private, c.paths.GLOBAL_RNV_DIR);
 
     c.files.rnv.pluginTemplates.config = JSON.parse(fs.readFileSync(path.join(c.paths.rnv.pluginTemplates.config)).toString());
@@ -192,7 +190,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
     if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
-    c.runtime.appId = c.runtime.appId || c.files.project?.builds?.config?.id;
 
     // LOAD ~/.rnv/RENATIVE.*.JSON
     _generateConfigPaths(c.paths.private, c.paths.GLOBAL_RNV_DIR);
@@ -298,24 +295,28 @@ export const loadFile = (fileObj, pathObj, key) => {
 
 const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
     let result = false;
-    let extend;
+    let extendAppId;
     if (loadFile(fileObj, pathObj, 'config')) {
-        extend = fileObj.config.extend || extend;
+        extendAppId = fileObj.config.extend || extendAppId;
         result = true;
     }
 
     if (loadFile(fileObj, pathObj, 'configLocal')) {
-        extend = fileObj.configLocal.extend || extend;
+        extendAppId = fileObj.configLocal.extend || extendAppId;
         result = true;
     }
 
     if (loadFile(fileObj, pathObj, 'configPrivate')) {
-        extend = fileObj.configPrivate.extend || extend;
+        extendAppId = fileObj.configPrivate.extend || extendAppId;
         result = true;
     }
 
-    if (extend && extendDir) {
-        pathObj.configBase = path.join(extendDir, extend, 'renative.json');
+    if (extendAppId && extendDir) {
+        pathObj.configBase = path.join(extendDir, extendAppId, 'renative.json');
+        pathObj.dirs = [
+            path.join(extendDir, extendAppId),
+            pathObj.dir
+        ];
         loadFile(fileObj, pathObj, 'configBase');
     }
 
@@ -328,6 +329,9 @@ export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
     if (!appId) return;
+
+    c.runtime.appId = appId;
+    c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
     _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
@@ -388,6 +392,15 @@ const _generateBuildConfig = (c) => {
         c.files.private.appConfig.configLocal
     ];
 
+    // builds, fonts, plugins
+
+    const mergeFolders = [
+        // platform templates
+        // c.paths.project.projectConfigs.builds.dir,
+        // c.paths.project.projectConfigs.builds.dir,
+        // c.paths.project.projectConfigs.builds.dir
+    ];
+
     const meta = [{
         _meta: {
             generated: (new Date()).getTime(),
@@ -442,7 +455,6 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
     logTask(`updateConfig:${appConfigId}`);
 
     setAppConfig(c, appConfigId);
-    c.runtime.appId = appConfigId;
 
     if (!fs.existsSync(c.paths.appConfig.dir)) {
         const readline = require('readline').createInterface({
@@ -472,7 +484,6 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
                 (v) => {
                     if (configDirs[v]) {
                         c.defaultAppConfigId = configDirs[v];
-                        c.runtime.appId = c.defaultAppConfigId;
                         setAppConfig(c, c.defaultAppConfigId);
                         resolve();
                     } else {

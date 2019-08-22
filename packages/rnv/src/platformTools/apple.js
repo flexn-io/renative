@@ -81,8 +81,17 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     const tId = getConfigProp(c, platform, 'teamID');
 
     const iosPath = path.join(getAppFolder(c, platform), appFolderName);
-    const sPath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
-    copyFolderContentsRecursiveSync(sPath, iosPath);
+    let sPath;
+
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            sPath = path.join(v, `assets/${platform}`);
+            copyFolderContentsRecursiveSync(sPath, iosPath);
+        });
+    } else {
+        sPath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
+        copyFolderContentsRecursiveSync(sPath, iosPath);
+    }
 
     // ASSETS
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
