@@ -427,7 +427,8 @@ export const generateBuildConfig = (c) => {
 export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
     logTask('generateRuntimeConfig');
     c.assetConfig = {
-        common: c.buildConfig.common
+        common: c.buildConfig.common,
+        runtime: c.buildConfig.runtime
     };
 
     if (fs.existsSync(c.paths.project.assets.dir)) {
