@@ -205,9 +205,9 @@ export const spawnCommand = (c, overrideParams) => {
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
-    if (c.files.GLOBAL_RNV_CONFIG) {
+    if (c.files.private.config) {
         const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(c.files.GLOBAL_RNV_CONFIG.sdks[sdkPlatform]);
+        if (sdkPlatform) return fs.existsSync(c.files.private.config.sdks[sdkPlatform]);
     }
 
     return false;

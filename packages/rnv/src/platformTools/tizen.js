@@ -191,7 +191,7 @@ const runTizen = async (c, platform, target) => {
         }]);
 
         if (startEmulator) {
-            const defaultTarget = c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
+            const defaultTarget = c.files.private.config.defaultTargets[platform];
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;

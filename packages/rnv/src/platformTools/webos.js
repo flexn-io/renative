@@ -37,7 +37,7 @@ const CHECK_INTEVAL = 5000;
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
-    const ePath = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
+    const ePath = path.join(c.files.private.config.sdks.WEBOS_SDK, `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
 
     if (!fs.existsSync(ePath)) {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
