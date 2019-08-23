@@ -4,6 +4,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import net from 'net';
+import parser from 'xml2json';
 
 import { execCLI } from '../systemTools/exec';
 import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../constants';
@@ -25,6 +26,13 @@ import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
 
 const CHECK_INTEVAL = 2000;
+
+const formatXMLObject = (obj) => {
+    return { ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
+        acc[cur.name] = cur.$t;
+        return acc;
+    }, {})} 
+}
 
 const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
@@ -113,26 +121,35 @@ const getDeviceID = async (c, target) => {
 };
 
 const getRunningDevices = async (c) => {
-    const { maxErrorLength } = c.program;
-
+    const { platform, maxErrorLength } = c.program;
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices', { maxErrorLength });
-    const lines = devicesList.trim().split(/\r?\n/);
+    const lines = devicesList.trim().split(/\r?\n/).filter(line => !line.includes('List of devices'));
     const devices = [];
 
-    if (lines.length > 1) { // skipping header
-        lines.forEach((line) => {
-            if (!line.includes('List of devices')) {
-                const words = line.replace(/\t/g, '').split('    ');
-                if (words.length >= 3) {
+    await Promise.all(lines.map(async (line) => {
+        const words = line.replace(/\t/g, '').split('    ');
+            if (words.length >= 3) {
+                const name = words[0].trim();
+                const deviceInfoXML = await execCLI(c, CLI_SDB_TIZEN, `-s ${name} shell cat /etc/config/model-config.xml`, { ignoreErrors: true });
+
+                let deviceInfo, deviceType;
+
+                if (deviceInfoXML !== true) {
+                    // for some reason the tv does not connect through sdb
+                    deviceInfo = formatXMLObject(parser.toJson(deviceInfoXML, { object: true, reversible: false }));
+                    deviceType = deviceInfo['tizen.org/feature/profile'];
+                }
+
+                if ((platform === 'tizenmobile' && deviceType === 'mobile') || (platform === 'tizenwatch' && deviceType === 'wearable') || (platform === 'tizen' && !deviceType)) {
                     devices.push({
-                        name: words[0].trim(),
+                        name,
                         type: words[1].trim(),
-                        id: words[2].trim()
+                        id: words[2].trim(),
+                        deviceType,
                     });
                 }
             }
-        });
-    }
+    }));
 
     return devices;
 };
@@ -178,7 +195,7 @@ const runTizen = async (c, platform, target) => {
         }]);
 
         if (startEmulator) {
-            const defaultTarget = c.files.GLOBAL_RNV_CONFIG.defaultTargets[platform];
+            const defaultTarget = c.files.private.config.defaultTargets[platform];
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;

@@ -39,7 +39,8 @@ import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndC
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'crypto', 'log', 'new', 'target', 'platform'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto'];
+export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -54,6 +55,7 @@ export const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
     if (NO_OP_COMMANDS.includes(c.command)) {
+        console.log('POOOOO');
         parseRenativeConfigs(c)
             .then(() => configureRnvGlobal(c))
             .then(() => resolve(c))
@@ -203,9 +205,9 @@ export const spawnCommand = (c, overrideParams) => {
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
-    if (c.files.GLOBAL_RNV_CONFIG) {
+    if (c.files.private.config) {
         const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(c.files.GLOBAL_RNV_CONFIG.sdks[sdkPlatform]);
+        if (sdkPlatform) return fs.existsSync(c.files.private.config.sdks[sdkPlatform]);
     }
 
     return false;

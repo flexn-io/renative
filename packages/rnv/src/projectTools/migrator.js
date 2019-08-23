@@ -62,9 +62,9 @@ const PATH_PROPS = [
 const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
     logTask('MIGRATION STARTED');
 
-    if (!fs.existsSync(c.paths.GLOBAL_RNV_CONFIG)) {
+    if (!fs.existsSync(c.paths.private.config)) {
         if (fs.existsSync(paths.globalConfig)) {
-            copyFileSync(paths.globalConfig, c.paths.GLOBAL_RNV_CONFIG);
+            copyFileSync(paths.globalConfig, c.paths.private.config);
         }
     }
 
