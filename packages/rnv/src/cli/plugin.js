@@ -8,7 +8,7 @@ import {
     logTask,
     logSuccess,
 } from '../common';
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
+import { askQuestion, generateOptions, getQuestion, finishQuestion } from '../systemTools/prompt';
 import { executePipe } from '../projectTools/buildHooks';
 
 const LIST = 'list';
