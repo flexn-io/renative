@@ -55,6 +55,7 @@ const composeDevicesString = (devices, returnArray) => {
 
 const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
+    const { maxErrorLength } = c.program;
 
     if (target === '?' || target === undefined || target === '') {
         return _listAndroidTargets(c, true, false, false)
@@ -68,7 +69,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
                         if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { detached: true }).catch((err) => {
+                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { detached: true, maxErrorLength }).catch((err) => {
                                 if (err.includes && err.includes('WHPX')) {
                                     logWarning(err);
                                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -77,7 +78,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                             });
                             return Promise.resolve();
                         }
-                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
+                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { maxErrorLength });
                     }
                     logError(`Wrong choice ${v}! Ingoring`);
                 });
@@ -87,7 +88,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch((err) => {
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, { maxErrorLength }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -96,7 +97,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
             });
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`);
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, { maxErrorLength });
     }
     return Promise.reject('No simulator -t target name specified!');
 };
@@ -131,18 +132,20 @@ const _getDeviceString = (device, i) => {
 
 const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask(`_listAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`);
+    const { maxErrorLength } = c.program;
+
     try {
         let devicesResult;
         let avdResult;
 
-        await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
-        await execCLI(c, CLI_ANDROID_ADB, 'start-server');
+        await execCLI(c, CLI_ANDROID_ADB, 'kill-server', { maxErrorLength });
+        await execCLI(c, CLI_ANDROID_ADB, 'start-server', { maxErrorLength });
 
         if (!skipDevices) {
-            devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l');
+            devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l', { maxErrorLength });
         }
         if (!skipAvds) {
-            avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, '-list-avds');
+            avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, '-list-avds', { maxErrorLength });
         }
         return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
     } catch (e) {
@@ -164,12 +167,13 @@ const isSquareishDevice = (width, height) => {
 };
 
 const getRunningDeviceProp = async (c, udid, prop) => {
+    const { maxErrorLength } = c.program;
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
         if (!prop) return currentDeviceProps[udid];
         return currentDeviceProps[udid][prop];
     }
-    const rawProps = await execCLI(c, CLI_ANDROID_ADB, `-s ${udid} shell getprop`);
+    const rawProps = await execCLI(c, CLI_ANDROID_ADB, `-s ${udid} shell getprop`, { maxErrorLength });
     const reg = /\[.+\]: \[.*\n?[^\[]*\]/gm;
     const lines = rawProps.match(reg);
 
@@ -219,9 +223,11 @@ const decideIfWearRunning = async (c, device) => {
 
 const getDeviceType = async (device, c) => {
     logDebug('getDeviceType - in', { device });
+    const { maxErrorLength } = c.program;
+
     if (device.udid !== 'unknown') {
-        const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
-        const screenDensityResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
+        const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`, { maxErrorLength });
+        const screenDensityResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`, { maxErrorLength });
         const arch = await getRunningDeviceProp(c, device.udid, 'ro.product.cpu.abi');
         let screenProps;
 
@@ -347,7 +353,9 @@ const getEmulatorName = async (words) => {
 };
 
 const connectToWifiDevice = async (c, ip) => {
-    const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, `connect ${ip}:5555`);
+    const { maxErrorLength } = c.program;
+
+    const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, `connect ${ip}:5555`, { maxErrorLength });
     if (deviceResponse.includes('connected')) return true;
     logError(`Failed to connect to ${ip}:5555`);
     return false;
@@ -485,8 +493,10 @@ const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
-    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
-        .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k system-images;android-${apiVersion};${emuPlatform};x86`))
+    const { maxErrorLength } = c.program;
+
+    return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`, { maxErrorLength })
+        .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k system-images;android-${apiVersion};${emuPlatform};x86`, { maxErrorLength }))
         .catch(e => logError(e, true));
 };
 
@@ -521,6 +531,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 
     const appFolder = getAppFolder(c, platform);
     let reactNative = 'react-native';
+    const { maxErrorLength } = c.program;
 
     if (isRunningOnWindows) {
         reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
@@ -528,7 +539,7 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
 
     console.log('ANDROID PACKAGE STARTING...');
     // _workerTimer = setInterval(_workerLogger, 30000);
-    executeAsync(`${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
+    executeAsync(`${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`, { maxErrorLength })
         .then(() => {
             // clearInterval(_workerTimer);
             console.log('ANDROID PACKAGE FINISHED');
@@ -723,11 +734,12 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
     const { arch, name } = device;
+    const { maxErrorLength } = c.program;
 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(`${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig} -x bundleReleaseJsAndAssets`))
+        .then(() => executeAsync(`${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig} -x bundleReleaseJsAndAssets`), { maxErrorLength })
         .then(() => {
             if (outputAab) {
                 const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
@@ -741,12 +753,12 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
                 apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
             }
             logInfo(`Installing ${apkPath} on ${name}`);
-            return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+            return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`, { maxErrorLength });
         })
         .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
-            ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8081`)
+            ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8081`, { maxErrorLength })
             : Promise.resolve()))
-        .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`))
+        .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`, { maxErrorLength }))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -756,11 +768,12 @@ const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
 
     const appFolder = getAppFolder(c, platform);
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
+    const { maxErrorLength } = c.program;
 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(`${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`))
+        .then(() => executeAsync(`${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`), { maxErrorLength })
         .then(() => {
             logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`))} .`);
             resolve();

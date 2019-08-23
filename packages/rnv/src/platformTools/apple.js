@@ -48,8 +48,9 @@ const checkIfCommandExists = command => new Promise((resolve, reject) => child_p
     return resolve();
 }));
 
-const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
+const runPod = (c, command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
     logTask(`runPod:${command}:${rejectOnFail}`);
+    const { maxErrorLength } = c.program;
 
     if (!fs.existsSync(cwd)) {
         if (rejectOnFail) return reject(`Location ${cwd} does not exists!`);
@@ -60,6 +61,7 @@ const runPod = (command, cwd, rejectOnFail = false) => new Promise((resolve, rej
         .then(() => executeAsync(`pod ${command}`, {
             cwd,
             evn: process.env,
+            maxErrorLength
         })
             .then(() => resolve())
             .catch((e) => {
@@ -121,7 +123,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     logTask(`_runXcodeProject:${platform}:${target}`);
 
     const appPath = getAppFolder(c, platform);
-    const { device } = c.program;
+    const { device, maxErrorLength } = c.program;
     const scheme = getConfigProp(c, platform, 'scheme');
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
@@ -183,11 +185,11 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
                     packageBundleForXcode(c, platform, bundleIsDev)
-                        .then(v => executeAsync(`react-native ${p}`))
+                        .then(v => executeAsync(`react-native ${p}`, { maxErrorLength }))
                         .then(() => resolve())
                         .catch(e => reject(e));
                 } else {
-                    executeAsync(`react-native ${p}`)
+                    executeAsync(`react-native ${p}`, { maxErrorLength })
                         .then(() => resolve())
                         .catch(e => reject(e));
                 }
@@ -239,11 +241,11 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
 
         if (bundleAssets) {
             packageBundleForXcode(c, platform, bundleIsDev)
-                .then(() => executeAsync(`react-native ${p.join(' ')}`))
+                .then(() => executeAsync(`react-native ${p.join(' ')}`, { maxErrorLength }))
                 .then(() => resolve())
                 .catch(e => reject(e));
         } else {
-            executeAsync(`react-native ${p.join(' ')}`)
+            executeAsync(`react-native ${p.join(' ')}`, { maxErrorLength })
                 .then(() => resolve())
                 .catch(e => reject(e));
         }
@@ -261,13 +263,8 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     if (!sdk) {
         sdk = platform === IOS ? 'iphoneos' : 'tvos';
     }
-    // else if (sdk === 'iphonesimulator') {
-    //     sdk += ' ONLY_ACTIVE_ARCH=NO';
-    // }
     const sdkArr = [sdk];
-    // if (sdk === 'iphonesimulator') {
-    //     sdkArr.push('ONLY_ACTIVE_ARCH=NO');
-    // }
+    const { maxErrorLength } = c.program;
 
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
@@ -301,7 +298,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         packageBundleForXcode(c, platform, bundleIsDev)
-            .then(() => executeAsync(`xcodebuild ${p.join(' ')}`))
+            .then(() => executeAsync(`xcodebuild ${p.join(' ')}`, { maxErrorLength }))
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
                 clearInterval(_workerTimer);
@@ -312,7 +309,7 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 reject(e);
             });
     } else {
-        executeAsync(`xcodebuild ${p.join(' ')}`)
+        executeAsync(`xcodebuild ${p.join(' ')}`, { maxErrorLength })
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
                 clearInterval(_workerTimer);
@@ -335,6 +332,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
+    const { maxErrorLength } = c.program;
 
     const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
@@ -354,7 +352,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
 
-    executeAsync(`xcodebuild ${p.join(' ')}`)
+    executeAsync(`xcodebuild ${p.join(' ')}`, { maxErrorLength })
         .then(() => {
             logSuccess(`Your IPA is located in ${chalk.white(exportPath)} .`);
             resolve();
@@ -364,6 +362,7 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
+    const { maxErrorLength } = c.program;
     const args = [
         'bundle',
         '--platform',
@@ -382,7 +381,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync(`react-native ${args.join(' ')}`);
+    return executeAsync(`react-native ${args.join(' ')}`, { maxErrorLength });
 };
 
 export const getAppFolderName = (c, platform) => {
@@ -494,13 +493,13 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .then(() => parseEntitlementsPlist(c, platform))
         .then(() => parseInfoPlist(c, platform))
         .then(() => {
-            runPod(forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
+            runPod(c, forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
                 .then(() => parseXcodeProject(c, platform))
                 .then(() => resolve())
                 .catch((e) => {
                     if (!c.program.update) {
                         logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                        runPod('update', getAppFolder(c, platform), true)
+                        runPod(c, 'update', getAppFolder(c, platform), true)
                             .then(() => parseXcodeProject(c, platform))
                             .then(() => resolve())
                             .catch(err => reject(err));

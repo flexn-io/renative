@@ -55,14 +55,14 @@ const _execute = (command, opts = {}) => {
         return res.stdout;
     }).catch((err) => {
         const { silent, ignoreErrors } = mergedOpts;
-        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, mergedOpts.maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         // logDebug(err);
         if (ignoreErrors) {
             spinner.succeed();
             return true;
         }
-        return Promise.reject(parseErrorMessage(err.all) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        return Promise.reject(parseErrorMessage(err.all, mergedOpts.maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
 
@@ -79,6 +79,7 @@ const _execute = (command, opts = {}) => {
  */
 const execCLI = (c, cli, command, opts = {}) => {
     const p = c.cli[cli];
+    const { maxErrorLength } = c.program;
 
     if (!fs.existsSync(p)) {
         logDebug('execCLI error', cli, command);
@@ -87,7 +88,7 @@ const execCLI = (c, cli, command, opts = {}) => {
         )} file if you SDK path is correct`);
     }
 
-    return _execute(`${p} ${command}`, { ...opts, shell: true });
+    return _execute(`${p} ${command}`, { ...opts, shell: true, maxErrorLength });
 };
 
 /**

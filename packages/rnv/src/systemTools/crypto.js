@@ -22,6 +22,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
 
     const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+    const { maxErrorLength } = c.program;
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
@@ -41,7 +42,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync(`openssl enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
+            .then(() => executeAsync(`openssl enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key], maxErrorLength }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 fs.writeFileSync(`${dest}.timestamp`, (new Date()).getTime());
@@ -60,6 +61,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
     logTask('encrypt');
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
+    const { maxErrorLength } = c.program;
 
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
@@ -72,7 +74,7 @@ export const decrypt = c => new Promise((resolve, reject) => {
             reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
             return;
         }
-        executeAsync(`openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] })
+        executeAsync(`openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key], maxErrorLength })
             .then(() => {
                 tar.x(
                     {
@@ -129,6 +131,8 @@ export const installProfiles = c => new Promise((resolve, reject) => {
 
 export const installCerts = c => new Promise((resolve, reject) => {
     logTask('installCerts');
+    const { maxErrorLength } = c.program;
+
     if (c.platform !== 'ios') {
         logError(`_installTempCerts: platform ${c.platform} not supported`);
         resolve();
@@ -140,7 +144,7 @@ export const installCerts = c => new Promise((resolve, reject) => {
     const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
 
-    Promise.all(cerArr.map(v => executeAsync(`security import ${v} -k ${kChain} -A`)))
+    Promise.all(cerArr.map(v => executeAsync(`security import ${v} -k ${kChain} -A`, { maxErrorLength })))
         .then(() => resolve())
         .catch((e) => {
             logWarning(e);

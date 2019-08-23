@@ -19,14 +19,16 @@ import { templates } from '../../renativeTemplates/templates.json';
 
 const listTemplates = c => new Promise((resolve, reject) => {
     logTask('listTemplates');
-    opts = generateOptions(templates);
+    const opts = generateOptions(templates);
     console.log(opts.asString);
     resolve();
 });
 
 const addTemplate = c => new Promise((resolve, reject) => {
     logTask('addTemplate');
-    executeAsync('npm install renative-template-hello-world --save-dev')
+    const { maxErrorLength } = c.program;
+
+    executeAsync('npm install renative-template-hello-world --save-dev', { maxErrorLength })
         .then(() => {
             resolve();
         })

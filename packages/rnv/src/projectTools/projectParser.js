@@ -290,7 +290,9 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
 
 const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
     logTask('_npmInstall');
-    executeAsync('npm install')
+    const { maxErrorLength } = c.program;
+
+    executeAsync('npm install', { maxErrorLength })
         .then(() => {
             resolve();
         })

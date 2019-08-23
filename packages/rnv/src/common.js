@@ -458,11 +458,12 @@ const waitForEmulator = async (c, cli, command, callback) => {
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
+    const { maxErrorLength } = c.program;
     const spinner = ora('Waiting for emulator to boot...').start();
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            execCLI(c, cli, command, { silent: true, timeout: 10000 })
+            execCLI(c, cli, command, { silent: true, timeout: 10000, maxErrorLength })
                 .then((resp) => {
                     if (callback(resp)) {
                         clearInterval(interval);
@@ -487,17 +488,16 @@ const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-const parseErrorMessage = (text) => {
+const parseErrorMessage = (text, maxErrorLength = 200) => {
     const errors = [];
-    const toSearch = /(exception|error|fatal)/i;
-    const maxErrorLenght = 100;
+    const toSearch = /(exception|error|fatal|\[!])/i;
 
     const extractError = (t) => {
         const errorFound = t.search(toSearch);
         if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
         const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
-        let extractedError = usefulString.substring(0, maxErrorLenght);
-        if (extractedError.length === maxErrorLenght) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
+        let extractedError = usefulString.substring(0, maxErrorLength);
+        if (extractedError.length === maxErrorLength) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
         errors.push(extractedError); // save the error
         const newString = usefulString.substring(100); // dump everything we processed and continue
         return extractError(newString);

@@ -13,7 +13,8 @@ const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) =
     const defaultBuildFolder = path.join(getAppFolder(c, 'web'), 'public');
     const params = [defaultBuildFolder, '-A', nowConfigPath];
     if (process.env.NOW_TOKEN) params.push('-t', process.env.NOW_TOKEN);
-    executeAsync(`now ${params.join(' ')}`)
+    const { maxErrorLength } = c.program;
+    executeAsync(`now ${params.join(' ')}`, { maxErrorLength })
         .then(() => resolve())
         .catch(error => reject(error));
 });
