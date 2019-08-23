@@ -93,7 +93,7 @@ const _generateWebpackConfigs = (c) => {
 };
 
 const buildWeb = (c, platform) => new Promise((resolve, reject) => {
-    const { debug, debugIp } = c.program;
+    const { debug, debugIp, maxErrorLength } = c.program;
     logTask(`buildWeb:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -109,7 +109,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    executeAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
+    executeAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`, { maxErrorLength })
         .then(() => {
             logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'public'))} .`);
             resolve();

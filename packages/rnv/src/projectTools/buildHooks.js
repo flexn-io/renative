@@ -68,13 +68,15 @@ const executePipe = (c, key) => new Promise((resolve, reject) => {
 
 const buildHooks = c => new Promise((resolve, reject) => {
     logTask('buildHooks');
+    const { maxErrorLength } = c.program;
+
     if (fs.existsSync(c.paths.buildHooks.index)) {
         if (c.isBuildHooksReady) {
             resolve();
             return;
         }
 
-        executeAsync(`babel --no-babelrc ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`)
+        executeAsync(`babel --no-babelrc ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, { maxErrorLength })
             .then(() => {
                 const h = require(c.paths.buildHooks.dist.index);
                 c.buildHooks = h.hooks;

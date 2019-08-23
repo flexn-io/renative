@@ -25,6 +25,7 @@ export const updateProfile = c => new Promise((resolve, reject) => {
     const {
         appId, platform, paths, files, program
     } = c;
+    const { maxErrorLength } = program;
 
     const { scheme } = program;
     const id = getConfigProp(c, platform, 'id');
@@ -55,7 +56,7 @@ export const updateProfile = c => new Promise((resolve, reject) => {
         args.push(`--${provisioning}`);
     }
 
-    executeAsync(`fastlane ${args.join(' ')}`)
+    executeAsync(`fastlane ${args.join(' ')}`, { maxErrorLength })
         .then(() => {
             logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
 

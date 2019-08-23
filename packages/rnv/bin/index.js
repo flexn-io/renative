@@ -42,6 +42,7 @@ program
     .option('--codeSignIdentity <value>', 'Set codeSignIdentity ie <iPhone Distribution>')
     .option('--provisionProfileSpecifier <value>', 'Name of provisionProfile')
     .option('--hosted', 'Run in a hosted environment (skip budleAssets)')
+    .option('--maxErrorLength <number>', 'Specify how many characters each error should display. Default 200')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

@@ -36,6 +36,7 @@ const CHECK_INTEVAL = 5000;
 
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
+    const { maxErrorLength } = c.program;
 
     const ePath = path.join(c.files.GLOBAL_RNV_CONFIG.sdks.WEBOS_SDK, `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
 
@@ -43,7 +44,7 @@ const launchWebOSimulator = (c) => {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
 
-    return executeAsync(`${openCommand} ${ePath}`, { detached: true });
+    return executeAsync(`${openCommand} ${ePath}`, { detached: true, maxErrorLength });
 };
 
 const copyWebOSAssets = (c, platform) => new Promise((resolve) => {
@@ -80,8 +81,10 @@ const parseDevices = (c, devicesResponse) => {
 };
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
-    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
-    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
+    const { maxErrorLength } = c.program;
+
+    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`, { maxErrorLength });
+    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`, { maxErrorLength });
 };
 
 const buildDeviceChoices = devices => devices.map(device => ({
@@ -89,7 +92,8 @@ const buildDeviceChoices = devices => devices.map(device => ({
 }));
 
 const listWebOSTargets = async (c) => {
-    const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
+    const { maxErrorLength } = c.program;
+    const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D', { maxErrorLength });
     const devices = await parseDevices(c, devicesResponse);
 
     const deviceArray = devices.map((device, i) => `-[${i + 1}] ${device.name} | ${device.device}`);
@@ -98,7 +102,8 @@ const listWebOSTargets = async (c) => {
 };
 
 const waitForEmulatorToBeReady = async (c) => {
-    const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
+    const { maxErrorLength } = c.program;
+    const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D', { maxErrorLength });
     const devices = await parseDevices(c, devicesResponse);
     const emulator = devices.filter(d => !d.isDevice)[0];
     if (!emulator) throw new Error('No WebOS emulator configured');
@@ -109,7 +114,7 @@ const waitForEmulatorToBeReady = async (c) => {
 const runWebOS = async (c, platform, target) => {
     logTask(`runWebOS:${platform}:${target}`);
 
-    const { device, hosted } = c.program;
+    const { device, hosted, maxErrorLength } = c.program;
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
@@ -126,10 +131,10 @@ const runWebOS = async (c, platform, target) => {
 
     // Start the fun
     !isHosted && await buildWeb(c, platform);
-    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
+    await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, { maxErrorLength });
 
     // List all devices
-    const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
+    const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D', { maxErrorLength });
     const devices = await parseDevices(c, devicesResponse);
     const activeDevices = devices.filter(d => d.active);
 
@@ -151,7 +156,7 @@ const runWebOS = async (c, platform, target) => {
                 logInfo('Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n');
                 await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { stdio: 'inherit', silent: true });
 
-                const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
+                const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D', { maxErrorLength });
                 const dev = await parseDevices(c, newDeviceResponse);
                 const actualDev = dev.filter(d => d.isDevice);
 
@@ -159,9 +164,9 @@ const runWebOS = async (c, platform, target) => {
                     const newDevice = actualDev[0];
                     // Oh boy, oh boy, I did it! I have a TV connected!
                     logInfo('Please enter the `Passphrase` from the TV\'s Developer Mode app');
-                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit' });
-                    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`);
-                    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`);
+                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit', maxErrorLength });
+                    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`, { maxErrorLength });
+                    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`, { maxErrorLength });
                 } else {
                     // Yes, I said I would but I didn't
                     // @todo handle user not setting up the device
@@ -169,8 +174,8 @@ const runWebOS = async (c, platform, target) => {
             }
         } else if (actualDevices.length === 1) {
             const tv = actualDevices[0];
-            await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${tv.name} ${appPath}`);
-            await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${tv.name} ${tId}`);
+            await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${tv.name} ${appPath}`, { maxErrorLength });
+            await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${tv.name} ${tId}`, { maxErrorLength });
         }
     } else if (!c.program.target) {
         // No target specified
@@ -206,9 +211,10 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
+    const { maxErrorLength } = c.program;
 
     buildWeb(c, platform)
-        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`))
+        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`, { maxErrorLength }))
         .then(() => {
             logSuccess(`Your IPK package is located in ${chalk.white(tOut)} .`);
             return resolve();
