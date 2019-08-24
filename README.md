@@ -219,54 +219,6 @@ Contributing
 
 ---
 
-<!-- - [ReNative CLI](#rnv-cli)
-- [Developing ReNative Locally](#developing-rnv-locally)
-- [Discussions](#discussions)
-- [Contributors](#contributors)
-- [Backers](#backers)
-- [Sponsors](#sponsors)
-- [Community](#community)
-- [Stats](#stats)
-- [LICENSE](#license) -->
-
-<!-- <p align="center">
-  <a href="#ios">iOS</a> &bull;
-  <a href="/selectorAndroid/">Android</a> &bull;
-  <a href="/selectorWeb/">tvOS</a> &bull;
-  <a href="/clientiOS/">Android TV</a> &bull;
-</p> -->
-
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-
-<!--
-- [🚀 Quick Start](#-quick-start)
-- [Features](#-features)
-- [Advanced Configuration](#-advanced-configuration)
-- [Architecture](#architecture)
-- [iOS](#ios)
-- [Android](#android)
-- [tvOS](#tvos)
-- [Android TV](#android-tv)
-- [Web](#web)
-- [Tizen TV](#tizen-tv)
-- [Tizen Watch](#tizen-watch)
-- [LG webOS](#lg-webos)
-- [macOS](#macos)
-- [Windows](#windows)
-- [Android Wear](#android-wear)
-- [KaiOS](#kaios)
-- [ReNative CLI](#rnv-cli)
-- [Developing ReNative Locally](#developing-rnv-locally)
-- [Discussions](#discussions)
-- [Contributors](#contributors)
-- [Backers](#backers)
-- [Sponsors](#sponsors)
-- [Community](#community)
-- [Stats](#stats)
-- [LICENSE](#license) -->
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 🚀 Quick Start
 
@@ -462,8 +414,6 @@ TODO
 [Documentation for ReNative Build Hooks](docs/DOC_RENATIVE_RUNTIME.md)
 
 
-
-
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_cli.png?raw=true" width=50 height=50 />
@@ -475,7 +425,6 @@ TODO
 [Documentation for RNV CLI](docs/DOC_RNV_CLI.md)
 
 
-
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_arch.png?raw=true" width=50 height=50 />
@@ -484,45 +433,17 @@ TODO
 
 Build Process
 
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch1.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-Folder Structure (Generated Project)
-
-    .
-    ├── appConfigs                  # Application flavour configuration files/assets
-    │   └── helloWorld              # Example application flavour
-    │       ├── assets              # Platform assets injected to `./platformAssets`
-    │       ├── builds              # Platform files injected to `./platformBuilds`
-    │       └── renative.json       # Application flavour config
-    ├── platformAssets              # Generated cross-platform assets
-    ├── platformBuilds              # Generated platform app projects
-    ├── projectConfig               # Project configuration files/assets
-    │   ├── fonts                   # Folder for all custom fonts
-    │   └── builds                  # Fonts configuration
-    ├── src                         # Source files
-    └── renative.json           # React Native Plugins configuration
-
-
-### Override Mechanism
-
-ReNative support flexible override mechanism which allows you customise your project to great degree
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch2.png?raw=true" />
-    </th>
-  </tr>
-</table>
+[Documentation for ReNative Architecture](docs/DOC_ARCHITECTURE.md)
 
 
 # Platforms
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_android.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_web.png?raw=true" width=200 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
 
 ---
 
@@ -1766,7 +1687,7 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ## Sponsors
 
-<a href="https://www.24i.com"><img src="https://github.com/pavjacko/renative/blob/develop/docs/images/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
+<a href="https://www.24i.com"><img src="https://github.com/pavjacko/renative/blob/develop/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
 
 ---
 
