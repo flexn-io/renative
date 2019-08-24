@@ -24,7 +24,6 @@ import { configureElectronProject, runElectron, buildElectron, runElectronDevSer
 import { launchKaiOSSimulator, configureKaiOSProject, runFirefoxProject, buildFirefoxProject } from './firefox';
 import {
     launchTizenSimulator,
-    copyTizenAssets,
     configureTizenProject,
     createDevelopTizenCertificate,
     addDevelopTizenCertificate,
@@ -69,7 +68,6 @@ export default {
     buildFirefoxProject,
     // TIZEN
     launchTizenSimulator,
-    copyTizenAssets,
     configureTizenProject,
     createDevelopTizenCertificate,
     addDevelopTizenCertificate,

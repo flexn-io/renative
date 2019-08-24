@@ -86,6 +86,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
             rnv: {
                 pluginTemplates: {},
                 platformTemplates: {},
+                platformTemplate: {},
                 plugins: {},
                 projectTemplate: {}
             },
@@ -395,14 +396,23 @@ export const generateBuildConfig = (c) => {
         c.files.private.appConfig.configLocal
     ];
 
-    // builds, fonts, plugins
-
     const mergeFolders = [
         // platform templates
-        // c.paths.project.projectConfigs.builds.dir,
-        // c.paths.project.projectConfigs.builds.dir,
-        // c.paths.project.projectConfigs.builds.dir
+        c.paths.rnv.platformTemplate.dir,
+        c.paths.project.projectConfig.buildsDir,
+        c.paths.private.project.projectConfig.buildsDir,
+        // ...c.paths.project.appConfigs.dirs,
+        c.paths.appConfig.buildsDir,
+        c.paths.private.appConfig.buildsDir
+        // PROJECT PLUGINS?
+        // PROJECT ASSETS?
+        // PROJECT FONTS?
+        // APP CONFIG PLUGINS?
+        // APP CONFIG ASSETS?
+        // APP CONFIG FONTS?
     ];
+
+    console.log('mergeFolders:', mergeFolders);
 
     const meta = [{
         _meta: {

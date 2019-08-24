@@ -220,6 +220,9 @@ const ASSET_PATH_ALIASES = {
     androidwear: 'app/src/main',
     ios: 'assets',
     tvos: 'assets',
+    tizen: '',
+    tizenmobile: '',
+    tizenwatch: ''
 };
 
 export const copyAssetsFolder = (c, platform) => new Promise((resolve, reject) => {

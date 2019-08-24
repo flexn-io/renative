@@ -18,21 +18,21 @@ import {
     logSuccess,
     writeCleanFile,
     getAppTemplateFolder,
-    copyBuildsFolder,
     getConfigProp,
     waitForEmulator
 } from '../common';
+import { copyAssetsFolder, copyBuildsFolder } from '../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { buildWeb } from './web';
 
 const CHECK_INTEVAL = 2000;
 
-const formatXMLObject = (obj) => {
-    return { ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
+const formatXMLObject = obj => ({
+    ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
         acc[cur.name] = cur.$t;
         return acc;
-    }, {})} 
-}
+    }, {})
+});
 
 const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
@@ -60,17 +60,6 @@ function launchTizenSimulator(c, name) {
     }
     return Promise.reject('No simulator -t target name specified!');
 }
-
-const copyTizenAssets = (c, platform) => new Promise((resolve, reject) => {
-    logTask('copyTizenAssets');
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    const sourcePath = path.join(c.paths.appConfig.dir, 'assets', platform);
-    const destPath = path.join(getAppFolder(c, platform));
-
-    copyFolderContentsRecursiveSync(sourcePath, destPath);
-    resolve();
-});
 
 const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
@@ -128,27 +117,28 @@ const getRunningDevices = async (c) => {
 
     await Promise.all(lines.map(async (line) => {
         const words = line.replace(/\t/g, '').split('    ');
-            if (words.length >= 3) {
-                const name = words[0].trim();
-                const deviceInfoXML = await execCLI(c, CLI_SDB_TIZEN, `-s ${name} shell cat /etc/config/model-config.xml`, { ignoreErrors: true });
+        if (words.length >= 3) {
+            const name = words[0].trim();
+            const deviceInfoXML = await execCLI(c, CLI_SDB_TIZEN, `-s ${name} shell cat /etc/config/model-config.xml`, { ignoreErrors: true });
 
-                let deviceInfo, deviceType;
+            let deviceInfo,
+                deviceType;
 
-                if (deviceInfoXML !== true) {
-                    // for some reason the tv does not connect through sdb
-                    deviceInfo = formatXMLObject(parser.toJson(deviceInfoXML, { object: true, reversible: false }));
-                    deviceType = deviceInfo['tizen.org/feature/profile'];
-                }
-
-                if ((platform === 'tizenmobile' && deviceType === 'mobile') || (platform === 'tizenwatch' && deviceType === 'wearable') || (platform === 'tizen' && !deviceType)) {
-                    devices.push({
-                        name,
-                        type: words[1].trim(),
-                        id: words[2].trim(),
-                        deviceType,
-                    });
-                }
+            if (deviceInfoXML !== true) {
+                // for some reason the tv does not connect through sdb
+                deviceInfo = formatXMLObject(parser.toJson(deviceInfoXML, { object: true, reversible: false }));
+                deviceType = deviceInfo['tizen.org/feature/profile'];
             }
+
+            if ((platform === 'tizenmobile' && deviceType === 'mobile') || (platform === 'tizenwatch' && deviceType === 'wearable') || (platform === 'tizen' && !deviceType)) {
+                devices.push({
+                    name,
+                    type: words[1].trim(),
+                    id: words[2].trim(),
+                    deviceType,
+                });
+            }
+        }
     }));
 
     return devices;
@@ -332,9 +322,7 @@ const configureTizenProject = (c, platform) => new Promise((resolve, reject) => 
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    // configureIfRequired(c, platform)
-    //     .then(() => copyTizenAssets(c, platform))
-    copyTizenAssets(c, platform)
+    copyAssetsFolder(c, platform)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
@@ -359,7 +347,6 @@ const configureProject = (c, platform) => new Promise((resolve) => {
 
 export {
     launchTizenSimulator,
-    copyTizenAssets,
     configureTizenProject,
     createDevelopTizenCertificate,
     addDevelopTizenCertificate,
