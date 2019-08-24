@@ -56,7 +56,7 @@ Contributing
   <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
   <a href="#common-issues"><b>Common Issues</b></a> &bull;
   <a href="#runtime"><b>Runtime</b></a> &bull;
-  <a href="#contributing"><b>Contributing</b></a> &bull;
+  <!-- <a href="#contributing"><b>Contributing</b></a> &bull; -->
   <a href="#discussions">Discussions</a> &bull;
   <a href="#contributors">Contributors</a> &bull;
   <a href="#backers">Backers</a> &bull;
@@ -462,120 +462,9 @@ More in-depth explanation how ReNative internals work
 
 ## iOS
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
+`rnv run -p ios`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_ios.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest swift based Xcode project
--   Cocoapods Workspace ready
--   Swift 4.1 Support
-
-#### Requirements
-
--   [CocoaPods](https://cocoapods.org) `1.5.3` or newer
--   [Xcode](https://developer.apple.com/xcode/) for iOS development
-
-#### Project Configuration
-
-| Feature           | Version |
-| ----------------- | :-----: |
-| Swift             |  `4.1`  |
-| Deployment Target | `11.4`  |
-
-#### Run on Simulator
-
-```
-rnv start
-rnv run -p ios
-```
-
-#### Run on Device
-
-IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
-
-1. Have ios device connected on the same network as your dev machine
-2. Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
-3. Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
-
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
-
-```
-rnv start
-rnv run -p ios -d
-```
-
-#### Deploy on Device
-
-This will run production version on your device (not connected to metro bundler)
-Same prerequisite as above applies here
-
-```
-rnv start
-rnv run -p ios -s release -d
-```
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p ios -r
-```
-
-Launch app with specific iOS simulator
-
-```
-rnv run -p ios -t "iPhone 6 Plus"
-```
-
-Launch app with specific iOS simulator (let ReNative to give you the list of available options):
-
-```
-rnv run -p ios -t ?
-```
-
-Launch specific emulator :
-
-```
-rnv target launch -p ios -t "iPhone 8"
-```
-
-Launch specific emulator (let ReNative to give you the list of available options):
-
-```
-rnv target launch -p ios -t ?
-```
-
-Get list of all available devices
-
-```
-rnv target list -p ios
-```
-
-Get device/simulator logs
-
-```
-rnv log -p ios
-```
-
-Get device/simulator logs with filter
-
-```
-rnv log -p ios -f com.myapp
-```
-
-#### App Config
-
-<a href="#apple-based-config">see: Apple based config</a>
+[Documentation for iOS Platform](docs/DOC_PLAT_IOS.md)
 
 ---
 
@@ -583,129 +472,9 @@ rnv log -p ios -f com.myapp
 
 ## Android
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
+`rnv run -p android`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest Android project
--   Kotlin Support
--   Support for Gradle 4.9
-
-#### Requirements
-
--   [Android Studio](https://developer.android.com/studio/index.html) for Android development
--   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
--   Windows 10 Pro or a better variant if you want to start the emulator on a Windows machine. Windows Home or Educational do not support Hyper-V and that's required for starting the Android emulators
-
-#### Project Configuration
-
-| Feature        | Version  |
-| -------------- | :------: |
-| Gradle         | `4.10.1` |
-| Android Gradle | `3.3.1`  |
-| Kotlin         | `1.3.20` |
-| Target SDK     |   `27`   |
-
-#### Emulators
-
-You can create variety of emulators via Android Studio IDE
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/android1.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Run on Simulator
-
-NOTE: make sure you have 1 android device connected or 1 emulator running
-
-```
-rnv start
-rnv run -p android
-```
-
-#### Run on Device
-
-```
-rnv start
-rnv run -p android -d
-```
-
-#### Deploy on Device
-
-This will run production version on your device (not connected to metro bundler)
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
-
-```
-rnv start
-rnv run -p android -s release -d
-```
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p android -r
-```
-
-Launch specific android emulator:
-
-```
-rnv target launch -p android -t Nexus_5X_API_26
-```
-
-Launch app with specific iOS simulator (let ReNative to give you the list of available options):
-
-```
-rnv run -p android -t ?
-```
-
-Launch specific emulator :
-
-```
-rnv target launch -p android -t Nexus_5X_API_26
-```
-
-Launch specific emulator (let ReNative to give you the list of available options):
-
-```
-rnv target launch -p android -t ?
-```
-
-Get list of all available devices
-
-```
-rnv target list -p android
-```
-
-Get device/simulator logs
-
-```
-rnv log -p android
-```
-
-Get device/simulator logs with filter
-
-```
-rnv log -p android -f com.myapp
-```
-
-#### App Config
-
-<a href="#android-based-config">see: Android based config</a>
+[Documentation for Android Platform](docs/DOC_PLAT_ANDROID.md)
 
 ---
 
@@ -713,59 +482,9 @@ rnv log -p android -f com.myapp
 
 ## tvOS
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
+`rnv run -p tvos`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tvos.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest swift based Xcode project
--   Cocoapods Workspace ready
--   Swift 4.1 Support
-
-#### Requirements
-
--   [CocoaPods](https://cocoapods.org) `1.5.3` or newer
--   [Xcode](https://developer.apple.com/xcode/) for iOS development
-
-#### Project Configuration
-
-| Feature           | Version |
-| ----------------- | :-----: |
-| Swift             |  `4.1`  |
-| Deployment Target | `11.4`  |
-
-#### Run
-
-```
-rnv start
-rnv run -p tvos
-```
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p tvos -r
-```
-
-Launch with specific tvOS simulator
-
-```
-rnv run -p tvos -t "Apple TV 4K"
-```
-
-#### App Config
-
-<a href="#apple-based-config">see: Apple based config</a>
+[Documentation for tvOS Platform](docs/DOC_PLAT_TVOS.md)
 
 ---
 
@@ -773,63 +492,9 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ## Android TV
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
+`rnv run -p androidtv`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android-tv.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest Android project
--   Kotlin Support
--   Support for Gradle 4.9
-
-#### Requirements
-
--   [Android Studio](https://developer.android.com/studio/index.html) for Android development
--   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
-
-#### Project Configuration
-
-| Feature        | Version  |
-| -------------- | :------: |
-| Gradle         | `4.10.1` |
-| Android Gradle | `3.3.1`  |
-| Kotlin         | `1.3.20` |
-| Target SDK     |   `27`   |
-
-#### Run
-
-NOTE: make sure you have 1 android device connected or 1 emulator running
-
-```
-rnv start
-rnv run -p androidtv
-```
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p androidtv -r
-```
-
-Launch specific emulator:
-
-```
-rnv target launch -p androidtv -t Android_TV_720p_API_22
-```
-
-#### App Config
-
-<a href="#android-based-config">see: Android based config</a>
+[Documentation for Android TV Platform](docs/DOC_PLAT_ANDROID_TV.md)
 
 ---
 
@@ -837,78 +502,9 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ## Web
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p web`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_web.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Supports Chrome, Safari, Firefox, IE10+
-
-#### Requirements
-
--   no extra requirements required
-
-#### Project Configuration
-
-| Feature          | Version  |
-| ---------------- | :------: |
-| Webpack          | `3.11.0` |
-| react-native-web | `0.9.1`  |
-| Babel Core       | `7.1.2`  |
-
-#### Run
-
-```
-rnv run -p web
-```
-
-RNV will run local server and attempt to open browser URL: http://0.0.0.0:8080/
-
-If you only want to run server:
-
-```
-rnv start -p web
-```
-
-#### Build
-
-```
-rnv build -p web
-```
-
-your deployable web app folder will be located in `./platformBuilds/<APP_ID>_web/public`
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p web -r
-```
-
-Run with verbose logging:
-
-```
-rnv run -p web --info
-```
-
-Run app on custom port `9999`:
-
-```
-rnv run -p web --port 9999
-```
-
-#### App Config
-
-<a href="##web-based-config">see: Web based config</a>
+[Documentation for Web Platform](docs/DOC_PLAT_WEB.md)
 
 ---
 
@@ -916,84 +512,9 @@ rnv run -p web --port 9999
 
 ## Tizen TV
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p tizen`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizen.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest Tizen project
--   Support for Tizen 5.0, 4.0, 3.0
-
-#### Requirements
-
--   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
--   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
--   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
-
-#### Project Configuration
-
-| Feature          | Version |
-| ---------------- | :-----: |
-| Tizen Studio     |  `2.5`  |
-| Tizen SDK        |  `5.0`  |
-| react-native-web | `0.9.9` |
-| Babel Core       | `7.1.2` |
-
-#### Emulator
-
-Make sure you have at least 1 TV VM setup
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizen4.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-```
-rnv target launch -p tizen -t T-samsung-5.0-x86
-```
-
-#### Run
-
-```
-rnv run -p tizen
-```
-
-Run on Device
-
-```
-rnv run -p tizen -d
-```
-
-Run in Browser
-
-```
-rnv run -p tizen --hosted
-```
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p tizen -r
-```
-
-Launch with specific Tizen simulator:
-
-```
-rnv run -p tizen -t T-samsung-5.0-x86
-```
+[Documentation for Tizen TV Platform](docs/DOC_PLAT_TIZEN.md)
 
 ---
 
@@ -1001,82 +522,9 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ## Tizen Watch
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p tizenwatch`
 
-<table>
-  <tr>
-    <th>
-      <img width=200 src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenwatch.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest Tizen project
--   Support for Tizen 5.0
-
-#### Requirements
-
--   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
-
-#### Project Configuration
-
-| Feature          | Version |
-| ---------------- | :-----: |
-| Tizen Studio     |  `2.5`  |
-| Tizen SDK        |  `5.0`  |
-| react-native-web | `0.9.9` |
-| Babel Core       | `7.1.2` |
-
-#### Emulator
-
-Make sure you have at least 1 TV VM setup
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizenwatch1.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-```
-rnv target launch -p tizenwatch -t W-5.0-circle-x86
-```
-
-#### Run
-
-```
-rnv run -p tizenwatch
-```
-
-Run on Device
-
-```
-rnv run -p tizenwatch -d
-```
-
-Run in Browser
-
-```
-rnv run -p tizenwatch --hosted
-```
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p tizenwatch -r
-```
-
-Launch with specific Tizen Watch simulator:
-
-```
-rnv run -p tizenwatch -t W-5.0-circle-x86
-```
+[Documentation for Tizen Watch Platform](docs/DOC_PLAT_TIZEN_WATCH.md)
 
 ---
 
@@ -1084,67 +532,9 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ## LG webOS
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p webos`
 
-<table>
-  <tr>
-    <th>
-      <img width=600 src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_webos.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest LG webOS Project
-
-#### Requirements
-
--   [LG Emulator](http://webostv.developer.lge.com/sdk/tools/emulator/introduction-emulator/) v3.0.0
-
-#### Project Configuration
-
-| Feature          | Version |
-| ---------------- | :-----: |
-| react-native-web | `0.9.9` |
-| Babel Core       | `7.1.2` |
-
-#### Emulator
-
--   launch webOS emulator via CLI
-
-```bash
-rnv target launch -p webos -t emulator
-```
-
--   launch webOS emulator Manually
-
-usually located in something like:
-
-```
-<USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
-```
-
-#### Run
-
-Run on Simulator
-
-```
-rnv run -p webos
-```
-
-Run on Device
-
-```
-rnv run -p webos -d
-```
-
-Run in Browser
-
-```
-rnv run -p webos --hosted
-```
+[Documentation for LG WebOS Platform](docs/DOC_PLAT_WEBOS.md)
 
 ---
 
@@ -1152,86 +542,9 @@ rnv run -p webos --hosted
 
 ## Tizen Mobile
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p tizenmobile`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenmobile.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest Tizen project
--   Support for Tizen 5.0, 4.0, 3.0
-
-#### Requirements
-
--   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
--   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
--   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
-
-#### Project Configuration
-
-| Feature          | Version |
-| ---------------- | :-----: |
-| Tizen Studio     |  `2.5`  |
-| Tizen SDK        |  `5.0`  |
-| react-native-web | `0.9.9` |
-| Babel Core       | `7.1.2` |
-
-#### Emulator
-
-Make sure you have at least 1 TV VM setup
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizen_mobile1.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-```
-rnv target launch -p tizenmobile -t M-5.0-x86
-```
-
-#### Run
-
-Run on Simulator
-
-```
-rnv run -p tizenmobile
-```
-
-Run on Device
-
-```
-rnv run -p tizenmobile -d
-```
-
-Run in Browser
-
-```
-rnv run -p tizenmobile --hosted
-```
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p tizenmobile -r
-```
-
-Launch with specific Tizen simulator:
-
-```
-rnv run -p tizenmobile -t M-5.0-x86
-```
+[Documentation for Tizen Mobile Platform](docs/DOC_PLAT_TIZEN_MOBILE.md)
 
 ---
 
@@ -1239,62 +552,9 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 ## macOS
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p macos`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_macos.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   support for OSX/macOS
--   Based on Electron
-
-#### Requirements
-
--   n/a
-
-#### Project Configuration
-
-| Feature          |  Version  |
-| ---------------- | :-------: |
-| electron         |  `2.0.0`  |
-| react-native-web |  `0.9.9`  |
-| electron-builder | `20.28.2` |
-
-#### Run
-
-Run on Simulator
-
-```
-rnv run -p macos
-```
-
-Run in Browser
-
-```
-rnv run -p macos --hosted
-```
-
-#### Deploy on Electron Simulator
-
-This will run production version on your simulator (not connected to devserver)
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
-
-```
-rnv run -p macos -s release
-```
-
-#### Export
-
-```
-rnv export -p macos -s release
-```
+[Documentation for macOS Platform](docs/DOC_PLAT_MACOS.md)
 
 ---
 
@@ -1302,47 +562,9 @@ rnv export -p macos -s release
 
 ## Windows
 
-![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p windows`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_windows.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   support for Windows 10+
--   Based on Electron
-
-#### Requirements
-
--   Windows dev environment
-
-#### Project Configuration
-
-| Feature          |  Version  |
-| ---------------- | :-------: |
-| electron         |  `2.0.0`  |
-| react-native-web |  `0.9.1`  |
-| electron-builder | `20.28.2` |
-
-#### Run
-
-Run on Simulator
-
-```
-rnv run -p windows
-```
-
-Run in Browser
-
-```
-rnv run -p windows --hosted
-```
+[Documentation for Windows Platform](docs/DOC_PLAT_WINDOWS.md)
 
 ---
 
@@ -1350,64 +572,9 @@ rnv run -p windows --hosted
 
 ## Android Wear
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
+`rnv run -p androidwear`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_androidwear.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
--   Latest Android project
--   Kotlin Support
--   Support for Gradle 4.9
-
-#### Requirements
-
--   [Android Studio](https://developer.android.com/studio/index.html) for Android development
--   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
-
-#### Project Configuration
-
-| Feature        | Version  |
-| -------------- | :------: |
-| Gradle         | `4.10.1` |
-| Android Gradle | `3.3.1`  |
-| Kotlin         | `1.3.20` |
-| Target SDK     |   `27`   |
-
-#### Run
-
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
-
-```
-rnv run -p androidwear
-```
-
-NOTE: There is a bug in RN. for now you must NOT have running bundler (`$ rnv start`) in order for wear sim to work
-
-#### Advanced
-
-Clean and Re-build platform project
-
-```
-rnv run -p androidwear -r
-```
-
-Launch specific emulator:
-
-```
-rnv target launch -p androidwear -t Android_Wear_Round_API_28
-```
-
-#### App Config
-
-<a href="#android-based-config">see: Android based config</a>
+[Documentation for Android Wear Platform](docs/DOC_PLAT_ANDROID_WEAR.md)
 
 ---
 
@@ -1415,53 +582,9 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ## KaiOS
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p kaios`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_kaios.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Requirements
-
--   [KaiOSrt](https://developer.kaiostech.com/simulator) for emulator
-
-After installation you can launch it via Applications:
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/kaios1.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Run
-
-
-Run on Simulator
-
-```
-rnv run -p kaios
-```
-
-Run on Device
-
-```
-rnv run -p kaios -d
-```
-
-Run in Browser
-
-```
-rnv run -p kaios --hosted
-```
+[Documentation for KaiOS Platform](docs/DOC_PLAT_KAIOS.md)
 
 ---
 
@@ -1469,54 +592,9 @@ rnv run -p kaios --hosted
 
 ## FirefoxOS
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p firefoxos`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxos.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Requirements
-
--   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
-
-After installation you can launch it via Applications:
-
-`Tools -> Web Developer -> WebIDE`
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/firefoxos.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Run
-
-Run on Simulator
-
-```
-rnv run -p forefoxos
-```
-
-Run on Device
-
-```
-rnv run -p forefoxos -d
-```
-
-Run in Browser
-
-```
-rnv run -p forefoxos --hosted
-```
+[Documentation for Firefox OS Platform](docs/DOC_PLAT_FIREFOX_OS.md)
 
 ---
 
@@ -1524,57 +602,9 @@ rnv run -p forefoxos --hosted
 
 ## FirefoxTV
 
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
+`rnv run -p firefoxtv`
 
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxtv.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Requirements
-
--   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator
-
-After installation you can launch it via Applications:
-
-`Tools -> Web Developer -> WebIDE`
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/firefoxos.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-#### Run
-
-Run on Simulator
-
-```
-rnv run -p forefoxtv
-```
-
-Run on Device
-
-```
-rnv run -p forefoxtv -d
-```
-
-Run in Browser
-
-```
-rnv run -p forefoxtv --hosted
-```
-
-
-
+[Documentation for Firefox TV Platform](docs/DOC_PLAT_FIREFOX_TV.md)
 
 ---
 
@@ -1668,9 +698,6 @@ Try killing all `gradle` processes and running the build again, that should help
 
 https://github.com/pavjacko/renative/issues/183
 
-
-
-# Contributing
 
 ---
 
