@@ -5,7 +5,7 @@ import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
 import ip from 'ip';
-import { executeAsync } from '../systemTools/exec';
+import { executeAsync } from '../../systemTools/exec';
 import {
     logTask,
     getAppFolder,
@@ -17,11 +17,11 @@ import {
     getConfigProp,
     logSuccess,
     logDebug,
-} from '../common';
-import { copyBuildsFolder } from '../projectTools/projectParser';
-import { copyFileSync } from '../systemTools/fileutils';
-import { getMergedPlugin } from '../pluginTools';
-import { selectWebToolAndDeploy } from '../deployTools/webTools';
+} from '../../common';
+import { copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyFileSync } from '../../systemTools/fileutils';
+import { getMergedPlugin } from '../../pluginTools';
+import { selectWebToolAndDeploy } from '../../deployTools/webTools';
 
 
 const isRunningOnWindows = process.platform === 'win32';

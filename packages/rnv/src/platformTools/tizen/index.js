@@ -6,8 +6,8 @@ import inquirer from 'inquirer';
 import net from 'net';
 import parser from 'xml2json';
 
-import { execCLI } from '../systemTools/exec';
-import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../constants';
+import { execCLI } from '../../systemTools/exec';
+import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../../constants';
 import {
     logTask,
     logError,
@@ -20,10 +20,10 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator
-} from '../common';
-import { copyAssetsFolder, copyBuildsFolder } from '../projectTools/projectParser';
-import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
-import { buildWeb } from './web';
+} from '../../common';
+import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyFolderContentsRecursiveSync } from '../../systemTools/fileutils';
+import { buildWeb } from '../web';
 
 const CHECK_INTEVAL = 2000;
 

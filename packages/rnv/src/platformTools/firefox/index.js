@@ -1,7 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execCLI } from '../systemTools/exec';
+import { execCLI } from '../../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -23,8 +23,8 @@ import {
     getAppAuthor,
     getAppLicense,
     getConfigProp,
-} from '../common';
-import { copyBuildsFolder, copyAssetsFolder } from '../projectTools/projectParser';
+} from '../../common';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_ADB,
@@ -36,9 +36,9 @@ import {
     CLI_WEBOS_ARES_INSTALL,
     CLI_WEBOS_ARES_LAUNCH,
     KAIOS_SDK,
-} from '../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { buildWeb } from './web';
+} from '../../constants';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../../systemTools/fileutils';
+import { buildWeb } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
     logTask('launchKaiOSSimulator');

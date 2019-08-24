@@ -4,7 +4,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import semver from 'semver';
 import inquirer from 'inquirer';
-import { executeAsync, execCLI, openCommand } from '../systemTools/exec';
+import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
 import {
     logTask,
     getAppFolder,
@@ -18,8 +18,8 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator
-} from '../common';
-import { copyBuildsFolder, copyAssetsFolder } from '../projectTools/projectParser';
+} from '../../common';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBOS_ARES_INSTALL,
@@ -27,9 +27,9 @@ import {
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE
-} from '../constants';
-import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
-import { buildWeb } from './web';
+} from '../../constants';
+import { copyFolderContentsRecursiveSync } from '../../systemTools/fileutils';
+import { buildWeb } from '../web';
 
 const isRunningOnWindows = process.platform === 'win32';
 const CHECK_INTEVAL = 5000;

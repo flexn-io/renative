@@ -2,8 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import { spawn } from 'child_process';
-import { createPlatformBuild } from '../cli/platform';
-import { executeAsync } from '../systemTools/exec';
+import { createPlatformBuild } from '../../cli/platform';
+import { executeAsync } from '../../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -30,14 +30,14 @@ import {
     checkPortInUse,
     logInfo,
     resolveNodeModulePath
-} from '../common';
-import { copyBuildsFolder, copyAssetsFolder } from '../projectTools/projectParser';
-import { MACOS } from '../constants';
-import { buildWeb, runWeb, runWebDevServer } from './web';
+} from '../../common';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
+import { MACOS } from '../../constants';
+import { buildWeb, runWeb, runWebDevServer } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync
-} from '../systemTools/fileutils';
+} from '../../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
 
