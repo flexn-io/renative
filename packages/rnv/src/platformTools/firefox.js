@@ -22,9 +22,9 @@ import {
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    copyBuildsFolder,
     getConfigProp,
 } from '../common';
+import { copyBuildsFolder, copyAssetsFolder } from '../projectTools/projectParser';
 import {
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_ADB,
@@ -69,25 +69,12 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
     });
 });
 
-const copyKaiOSAssets = (c, platform) => new Promise((resolve, reject) => {
-    logTask('copyKaiOSAssets');
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    const sourcePath = path.join(c.paths.appConfig.dir, 'assets', platform);
-    const destPath = path.join(getAppFolder(c, platform));
-
-    copyFolderContentsRecursiveSync(sourcePath, destPath);
-    resolve();
-});
-
 const configureKaiOSProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('configureKaiOSProject');
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    // configureIfRequired(c, platform)
-    //     .then(() => copyKaiOSAssets(c, platform))
-    copyKaiOSAssets(c, platform)
+    copyAssetsFolder(c, platform)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
