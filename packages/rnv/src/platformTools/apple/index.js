@@ -4,10 +4,10 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import child_process from 'child_process';
-import { executeAsync } from '../systemTools/exec';
-import { isObject } from '../systemTools/objectUtils';
-import { createPlatformBuild } from '../cli/platform';
-import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './apple/deviceManager';
+import { executeAsync } from '../../systemTools/exec';
+import { isObject } from '../../systemTools/objectUtils';
+import { createPlatformBuild } from '../../cli/platform';
+import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
     logTask,
     logError,
@@ -27,20 +27,20 @@ import {
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
-} from '../common';
-import { getQuestion } from '../systemTools/prompt';
-import { copyAssetsFolder } from '../projectTools/projectParser';
-import { IOS, TVOS } from '../constants';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../pluginTools';
+} from '../../common';
+import { getQuestion } from '../../systemTools/prompt';
+import { copyAssetsFolder } from '../../projectTools/projectParser';
+import { IOS, TVOS } from '../../constants';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import {
     saveObjToPlistSync, objToPlist, parseExportOptionsPlist,
     parseInfoPlist, parseEntitlementsPlist
-} from './apple/plistParser';
-import { parseXcscheme } from './apple/xcschemeParser';
-import { parsePodFile } from './apple/podfileParser';
-import { parseXcodeProject } from './apple/xcodeParser';
-import { parseAppDelegate } from './apple/swiftParser';
+} from './plistParser';
+import { parseXcscheme } from './xcschemeParser';
+import { parsePodFile } from './podfileParser';
+import { parseXcodeProject } from './xcodeParser';
+import { parseAppDelegate } from './swiftParser';
 
 const readline = require('readline');
 
