@@ -331,14 +331,14 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
         } else {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
-        _npmInstall(c).then(() => resolve()).catch(e => reject(e));
+        npmInstall(c).then(() => resolve()).catch(e => reject(e));
     } else {
         resolve();
     }
 });
 
-const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
-    logTask('_npmInstall');
+export const npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
+    logTask('npmInstall');
     const { maxErrorLength } = c.program;
 
     executeAsync('npm install', { maxErrorLength })
@@ -352,7 +352,7 @@ const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) =>
             } else {
                 logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
                 cleanNodeModules(c)
-                    .then(() => _npmInstall(c, true))
+                    .then(() => npmInstall(c, true))
                     .then(() => resolve())
                     .catch((e) => {
                         logError(e);

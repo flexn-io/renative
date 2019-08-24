@@ -25,6 +25,8 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
 
 export const configurePlugins = c => new Promise((resolve, reject) => {
+    logTask('configurePlugins');
+
     if (!c.files.project.package.dependencies) {
         c.files.project.package.dependencies = {};
     }
@@ -87,6 +89,8 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
             }
         }
     }
+
+    logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
     if (hasPackageChanged) {
         writeObjectSync(c.paths.project.package, c.files.project.package);
         c._requiresNpmInstall = true;

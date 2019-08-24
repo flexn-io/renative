@@ -12,7 +12,7 @@ import {
 import { logError, logInfo, logWarning, logTask } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
-import { configureEntryPoints } from '../projectTools/projectParser';
+import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
 import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig } from '../configTools/configParser';
 
 import { templates } from '../../renativeTemplates/templates.json';
@@ -57,11 +57,13 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
 
         if (c.files.project.package.devDependencies) {
             if (!c.files.project.package.devDependencies[templateName]) {
-                c.files.project.package.devDependencies[templateName] = 'latest';
+                c.files.project.package.devDependencies[templateName] = c.runtime.rnvVersionRunner;
                 writeObjectSync(c.paths.project.package, c.files.project.package);
             }
         }
 
+        // npmInstall(c).then(() => resolve()).catch(e => reject(e));
+        // return;
         c._requiresNpmInstall = true;
     }
     resolve();
@@ -196,9 +198,9 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
             logWarning(
                 `Looks like your ${c.paths.project.config} need to be updated with ${templateConfigPath}`,
             );
-            c.files.project.config = mergeObjects(c, c.files.project.config, templateConfig, false, true);
+            const mergedObj = mergeObjects(c, c.files.project.config, templateConfig, false, true);
             c.files.project.config.currentTemplate = currentTemplate;
-            writeObjectSync(c.paths.project.config, c.files.project.config);
+            writeObjectSync(c.paths.project.config, mergedObj);
         }
     } else {
         if (templateConfig.plugins.renative) {
