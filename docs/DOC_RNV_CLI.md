@@ -1,5 +1,9 @@
 # Documentation for RNV CLI
 
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_cli.png?raw=true" width=50 height=50 />
+
 ## ReNative CLI
 
 Deployed to https://www.npmjs.com/package/rnv
@@ -68,9 +72,18 @@ Deployed to https://www.npmjs.com/package/rnv
 
 Manipulates platforms
 
+By default, ReNative controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
+If however you need to customise them you can eject them directly into your project.
+
 `$ rnv platform eject` - gives options which platforms to eject
 
+your projects will be build using `./platformTemplates/[PLATFOM]/*` from this point
+
+If you want to revert back to using ReNative templates simply run
+
 `$ rnv platform connect` - gives options which platforms to connect
+
+your projects will be build using `./node_modules/rnv/platformTemplates/[PLATFOM]/*` from this point
 
 ##### rnv plugin
 

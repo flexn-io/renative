@@ -1,7 +1,9 @@
-# Documentation for Files & Folders
+# Documentation for Folder Configurations
 
+---
 
-App configs are ReNative compliant app configuration folders which follow prescribed structure
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
+
 
 ## Structure
 
@@ -181,9 +183,34 @@ Plugin + App Config Scoped Build Override (Private Content)
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 
+#### Build Flavour Injectors
+
+Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
+
+you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
+
+    .
+    ├── appConfigs
+        └── helloWorld
+            ├── assets
+            ├── plugins
+            │   └── some-plugin
+            │       └── builds
+            │            ├── android@release
+            │            │   └── fileToBeInjectedInReleaseMode.txt
+            │            └── android@debug
+            │                └── fileToBeInjectedInDebugMode.txt
+            └── builds
+                ├── android@release
+                │   └── fileToBeInjectedInReleaseMode.txt
+                └── android@debug
+                    └── fileToBeInjectedInDebugMode.txt
+
+
+
 #### Flavoured Builds
 
-Combination of 2 features above allows you to configure and build large number of flavoured builds with almost no extra configuration
+Combination of features above allows you to configure and build large number of flavoured builds with almost no extra configuration
 
 <table>
   <tr>
@@ -192,8 +219,6 @@ Combination of 2 features above allows you to configure and build large number o
     </th>
   </tr>
 </table>
-
-
 
 
 ## Files / Assets
