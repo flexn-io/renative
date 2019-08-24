@@ -168,27 +168,29 @@ export const parseAndroidManifestSync = (c, platform) => {
 
         // appConfig PERMISSIONS OVERRIDES
         let prms = '';
-        const { permissions } = c.buildConfig.platforms[platform];
         const configPermissions = c.buildConfig?.permissions;
 
-        if (permissions && configPermissions) {
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
+        if (includedPermissions && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
-            if (permissions[0] === '*') {
+            if (includedPermissions[0] === '*') {
                 for (const k in pc) {
                     prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
+                    const key = pc[k].key || k;
                     baseManifestFile.children.push({
                         tag: 'uses-permission',
-                        'android:name': pc[k].key
+                        'android:name': key
                     });
                 }
             } else {
-                permissions.forEach((v) => {
+                includedPermissions.forEach((v) => {
                     if (pc[v]) {
                         prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
+                        const key = pc[v].key || k;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
-                            'android:name': pc[v].key
+                            'android:name': key
                         });
                     }
                 });

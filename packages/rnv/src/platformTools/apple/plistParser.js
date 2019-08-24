@@ -63,7 +63,8 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.buildConfig.platforms[platform];
+    const plat = c.buildConfig.platforms[platform];
+    const { orientationSupport, urlScheme, plistExtra } = plat;
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
@@ -76,23 +77,20 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     }
     // PERMISSIONS
     const pluginPermissions = '';
-    if (permissions) {
-        if (permissions.length && permissions[0] === '*') {
-            if (c.buildConfig) {
-                const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
-                const pc = c.buildConfig.permissions[plat];
-                for (const v in pc) {
-                    plistObj[pc[v].key] = pc[v].desc;
-                }
+    const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
+    if (includedPermissions) {
+        const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
+        const pc = c.buildConfig.permissions[plat];
+        if (includedPermissions.length && includedPermissions[0] === '*') {
+            for (const v in pc) {
+                const key = pc[v].key || v;
+                plistObj[key] = pc[v].desc;
             }
         } else {
-            permissions.forEach((v) => {
-                if (c.buildConfig) {
-                    const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
-                    const pc = c.buildConfig.permissions[plat];
-                    if (pc[v]) {
-                        plistObj[pc[v].key] = pc[v].desc;
-                    }
+            includedPermissions.forEach((v) => {
+                if (pc[v]) {
+                    const key = pc[v].key || v;
+                    plistObj[key] = pc[v].desc;
                 }
             });
         }
