@@ -2,7 +2,7 @@
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_templates.png?raw=true" width=50 height=50 />
 
 ## Templates / Starters
 

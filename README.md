@@ -44,17 +44,15 @@ Contributing
 <p align="center">
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
-  <a href="#platforms"><b>Platforms</b></a> &bull;
+  <!-- <a href="#platforms"><b>Platforms</b></a> &bull; -->
   <a href="#templates--starters"><b>Templates</b></a> &bull;
   <a href="#plugins"><b>Plugins</b></a> &bull;
   <a href="#integrations">Integrations</a> &bull;
-  <a href="#configurations"><b>Configurations</b></a> &bull;
-  <a href="#architecture">Architecture</a> &bull;
-  <a href="#project-config">Project Config</a> &bull;
-  <a href="#app-configs">App Configs</a> &bull;
+  <a href="#json-configurations">JSON Configurations</a> &bull;
+  <a href="#folder-configurations">Folder Configurations</a> &bull;
   <a href="#build-hooks">Build Hooks</a> &bull;
   <a href="#cli"><b>CLI</b></a> &bull;
-  <a href="#renative-cli">ReNative CLI</a> &bull;
+  <a href="#architecture">Architecture</a> &bull;
   <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
   <a href="#common-issues"><b>Common Issues</b></a> &bull;
   <a href="#runtime"><b>Runtime</b></a> &bull;
@@ -351,13 +349,13 @@ Build app blazingly fast with built-in features:
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_templates.png?raw=true" width=50 height=50 />
 
 ## Templates / Starters
 
-Too lazy to build your idea from scratch? use one of the predefined templates to get you started in no time.
+Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.
 
-[Documentation for ReNative Config JSON](docs/DOC_TEMPLATES.md)
+[Documentation for ReNative Templates and Starters](docs/DOC_TEMPLATES.md)
 
 
 ---
@@ -379,7 +377,7 @@ ReNative Supports standard community driven react-native plugins you can use to 
 
 Tire of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running
 
-[Documentation for ReNative Config JSON](docs/DOC_RENATIVE_CONFIG.md)
+[Documentation for ReNative JSON Config](docs/DOC_RENATIVE_CONFIG.md)
 
 
 ---
@@ -411,7 +409,7 @@ Sometimes you need to extend CLI functionality with custom build scripts. ReNati
 
 ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms
 
-[Documentation for ReNative Build Hooks](docs/DOC_RENATIVE_RUNTIME.md)
+[Documentation for ReNative Runtime](docs/DOC_RENATIVE_RUNTIME.md)
 
 
 ---
@@ -431,15 +429,15 @@ One CLI to do it all. `rnv` is your entry point and control centre to building m
 
 ## Architecture
 
-Build Process
+More in-depth explanation how ReNative internals work
 
 [Documentation for ReNative Architecture](docs/DOC_ARCHITECTURE.md)
 
-
+<!--
 # Platforms
 
 <p>
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
+
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_android.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_web.png?raw=true" width=200 height=50 />
@@ -449,10 +447,14 @@ Build Process
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_macos.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_windows.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
 </p>
+ -->
+
+
 
 ---
 
