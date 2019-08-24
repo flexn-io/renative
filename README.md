@@ -355,7 +355,7 @@ Build app blazingly fast with built-in features:
 
 ## Templates / Starters
 
-TODO
+Too lazy to build your idea from scratch? use one of the predefined templates to get you started in no time.
 
 [Documentation for ReNative Config JSON](docs/DOC_TEMPLATES.md)
 
@@ -377,7 +377,7 @@ ReNative Supports standard community driven react-native plugins you can use to 
 
 ## JSON Configurations
 
-TODO
+Tire of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running
 
 [Documentation for ReNative Config JSON](docs/DOC_RENATIVE_CONFIG.md)
 
@@ -388,7 +388,7 @@ TODO
 
 ## Folder Configurations
 
-TODO
+ReNative offers flexible and scalable folder override & injection features to create numerous flavours, A/B features, dynamic plugin switches and more
 
 [Documentation for ReNative Folder Configurations](docs/DOC_CONFIG_FOLDERS.md)
 
@@ -409,7 +409,7 @@ Sometimes you need to extend CLI functionality with custom build scripts. ReNati
 
 ## Runtime
 
-TODO
+ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms
 
 [Documentation for ReNative Build Hooks](docs/DOC_RENATIVE_RUNTIME.md)
 
@@ -420,7 +420,7 @@ TODO
 
 ## CLI
 
-TODO
+One CLI to do it all. `rnv` is your entry point and control centre to building multi-platfom apps with just a few commands to learn
 
 [Documentation for RNV CLI](docs/DOC_RNV_CLI.md)
 
@@ -438,12 +438,21 @@ Build Process
 
 # Platforms
 
+<p>
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_android.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_web.png?raw=true" width=200 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_webos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_macos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_windows.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
+</p>
 
 ---
 
