@@ -27,7 +27,7 @@ import {
     logSuccess,
     getBuildsFolder,
 } from '../../common';
-import { copyBuildsFolder } '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser'
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 

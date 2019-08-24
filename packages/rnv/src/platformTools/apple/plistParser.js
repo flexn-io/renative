@@ -21,7 +21,7 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
-import { copyBuildsFolder } '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser'
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from '../apple';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
