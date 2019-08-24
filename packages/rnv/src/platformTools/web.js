@@ -10,7 +10,6 @@ import {
     logTask,
     getAppFolder,
     isPlatformActive,
-    copyBuildsFolder,
     getAppTemplateFolder,
     checkPortInUse,
     logInfo,
@@ -19,6 +18,7 @@ import {
     logSuccess,
     logDebug,
 } from '../common';
+import { copyBuildsFolder } from '../projectTools/projectParser';
 import { copyFileSync } from '../systemTools/fileutils';
 import { getMergedPlugin } from '../pluginTools';
 import { selectWebToolAndDeploy } from '../deployTools/webTools';
@@ -122,8 +122,6 @@ const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    // configureIfRequired(c, platform)
-    //     .then(() => configureProject(c, platform))
     copyBuildsFolder(c, platform)
         .then(() => configureProject(c, platform))
         .then(() => resolve())

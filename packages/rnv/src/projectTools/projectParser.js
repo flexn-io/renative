@@ -222,7 +222,8 @@ const ASSET_PATH_ALIASES = {
     tvos: 'assets',
     tizen: '',
     tizenmobile: '',
-    tizenwatch: ''
+    tizenwatch: '',
+    webos: 'public'
 };
 
 export const copyAssetsFolder = (c, platform) => new Promise((resolve, reject) => {

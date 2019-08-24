@@ -32,7 +32,7 @@ import {
     configureTizenGlobal,
 } from './tizen';
 import { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb } from './web';
-import { launchWebOSimulator, copyWebOSAssets, configureWebOSProject, runWebOS, buildWebOSProject } from './webos';
+import { launchWebOSimulator, configureWebOSProject, runWebOS, buildWebOSProject } from './webos';
 
 
 export default {
@@ -82,7 +82,6 @@ export default {
     deployWeb,
     // WEBOS
     launchWebOSimulator,
-    copyWebOSAssets,
     configureWebOSProject,
     runWebOS,
     buildWebOSProject
