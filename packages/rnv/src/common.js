@@ -462,7 +462,7 @@ export const getBuildFilePath = (c, platform, filePath) => {
     return sp;
 };
 
-const waitForEmulator = async (c, cli, command, callback) => {
+export const waitForEmulator = async (c, cli, command, callback) => {
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
@@ -496,7 +496,7 @@ const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-const parseErrorMessage = (text, maxErrorLength = 200) => {
+export const parseErrorMessage = (text, maxErrorLength = 200) => {
     const errors = [];
     const toSearch = /(exception|error|fatal|\[!])/i;
 
@@ -523,8 +523,6 @@ export {
     logEnd,
     logWarning,
     logSuccess,
-    waitForEmulator,
-    parseErrorMessage
 };
 
 export default {
