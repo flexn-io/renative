@@ -27,6 +27,7 @@ import {
 } from '../common';
 import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
+import { copyAssetsFolder } from '../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../constants';
 import { parsePlugins } from '../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
@@ -500,16 +501,6 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
         .catch(e => logError(e, true));
 };
 
-const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
-    logTask('copyAndroidAssets');
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    const destPath = path.join(getAppFolder(c, platform), 'app/src/main/res');
-    const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}/res`);
-    copyFolderContentsRecursiveSync(sourcePath, destPath);
-    resolve();
-});
-
 // let _workerTimer;
 // const _workerLogger = () => {
 //     console.log(`PACKAGING ANDROID.... ${(new Date()).toLocaleString()}`);
@@ -809,7 +800,7 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
     if (!isPlatformActive(c, platform, resolve)) return;
 
 
-    copyAndroidAssets(c, platform)
+    copyAssetsFolder(c, platform)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => configureAndroidProperties(c, platform))
         .then(() => configureProject(c, platform))
@@ -930,7 +921,6 @@ const runAndroidLog = c => new Promise(() => {
 });
 
 export {
-    copyAndroidAssets,
     configureGradleProject,
     launchAndroidSimulator,
     buildAndroid,

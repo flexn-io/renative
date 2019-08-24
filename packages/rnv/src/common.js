@@ -24,6 +24,7 @@ import {
     ANDROID,
     WEB,
     TIZEN,
+    IOS,
     TVOS,
     WEBOS,
     PLATFORMS,
@@ -224,6 +225,13 @@ export const checkSdk = (c, platform, reject) => {
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+
+export const getAppSubFolder = (c, platform) => {
+    let subFolder = '';
+    if (platform === IOS) subFolder = 'RNVApp';
+    else if (platform === TVOS) subFolder = 'RNVAppTVOS';
+    return path.join(getAppFolder(c, platform), subFolder);
+};
 
 export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 

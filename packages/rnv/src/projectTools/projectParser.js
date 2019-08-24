@@ -50,7 +50,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
-import { isPlatformActive, getAppFolder, getBuildsFolder } from '../common';
+import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
@@ -214,6 +214,35 @@ export const configureEntryPoints = (c) => {
     }
 };
 
+const ASSET_PATH_ALIASES = {
+    android: 'app/src/main',
+    androidtv: 'app/src/main',
+    androidwear: 'app/src/main',
+    ios: 'assets',
+    tvos: 'assets',
+};
+
+export const copyAssetsFolder = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`copyAssetsFolder:${platform}`);
+
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    const destPath = path.join(getAppSubFolder(c, platform), ASSET_PATH_ALIASES[platform]);
+
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourcePath = path.join(v, `assets/${platform}`);
+            copyFolderContentsRecursiveSync(sourcePath, destPath);
+        });
+    } else {
+        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
+        copyFolderContentsRecursiveSync(sourcePath, destPath);
+    }
+
+    resolve();
+});
+
 export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     logTask(`copyBuildsFolder:${platform}`);
     if (!isPlatformActive(c, platform, resolve)) return;
@@ -228,9 +257,15 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     const sourcePath1sec = getBuildsFolder(c, platform, c.paths.private.project.projectConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
 
-    // FOLDER MERGERS FROM APP CONFIG
-    const sourcePath0 = getBuildsFolder(c, platform, c.paths.appConfig.dir);
-    copyFolderContentsRecursiveSync(sourcePath0, destPath, c.paths.appConfig.dir);
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourceV = getBuildsFolder(c, platform, v);
+            copyFolderContentsRecursiveSync(sourceV, destPath, c.paths.appConfig.dir);
+        });
+    } else {
+        copyFolderContentsRecursiveSync(getBuildsFolder(c, platform, c.paths.appConfig.dir), destPath, c.paths.appConfig.dir);
+    }
 
     // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
     const sourcePath0sec = getBuildsFolder(c, platform, c.paths.private.appConfig.dir);
