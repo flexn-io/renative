@@ -15,13 +15,13 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     getAppId,
-    copyBuildsFolder,
     getConfigProp,
     getIP,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { copyBuildsFolder } '../../projectTools/projectParser'
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from '../apple';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';

@@ -21,7 +21,6 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     getAppId,
-    copyBuildsFolder,
     getConfigProp,
     getIP,
     getBuildFilePath,
@@ -29,7 +28,7 @@ import {
     getBuildsFolder
 } from '../../common';
 import { getQuestion } from '../../systemTools/prompt';
-import { copyAssetsFolder } from '../../projectTools/projectParser';
+import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { IOS, TVOS } from '../../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';

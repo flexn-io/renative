@@ -523,7 +523,6 @@ export {
     logEnd,
     logWarning,
     logSuccess,
-    copyBuildsFolder,
     waitForEmulator,
     parseErrorMessage
 };
@@ -533,7 +532,6 @@ export default {
     getBuildsFolder,
     configureEntryPoints,
     logWelcome,
-    copyBuildsFolder,
     isPlatformSupported,
     isBuildSchemeSupported,
     isPlatformSupportedSync,

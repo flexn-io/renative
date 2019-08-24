@@ -16,7 +16,6 @@ import {
     logError,
     getAppFolder,
     isPlatformActive,
-    copyBuildsFolder,
     getAppTemplateFolder,
     logWarning,
     logDebug,
@@ -27,7 +26,7 @@ import {
 } from '../../common';
 import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../../systemTools/prompt';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../../systemTools/fileutils';
-import { copyAssetsFolder } from '../../projectTools/projectParser';
+import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
