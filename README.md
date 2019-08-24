@@ -44,19 +44,19 @@ Contributing
 <p align="center">
   <a href="#-quick-start">Quick Start</a> &bull;
   <a href="#features">Features</a> &bull;
-  <!-- <a href="#platforms"><b>Platforms</b></a> &bull; -->
-  <a href="#templates--starters"><b>Templates</b></a> &bull;
-  <a href="#plugins"><b>Plugins</b></a> &bull;
+  <!-- <a href="#platforms">Platforms</a> &bull; -->
+  <a href="#templates--starters">Templates</a> &bull;
+  <a href="#plugins">Plugins</a> &bull;
   <a href="#integrations">Integrations</a> &bull;
   <a href="#json-configurations">JSON Configurations</a> &bull;
   <a href="#folder-configurations">Folder Configurations</a> &bull;
   <a href="#build-hooks">Build Hooks</a> &bull;
-  <a href="#cli"><b>CLI</b></a> &bull;
+  <a href="#cli">CLI</a> &bull;
   <a href="#architecture">Architecture</a> &bull;
-  <a href="#developing-renative-locally">Developing ReNative Locally</a> &bull;
-  <a href="#common-issues"><b>Common Issues</b></a> &bull;
-  <a href="#runtime"><b>Runtime</b></a> &bull;
-  <!-- <a href="#contributing"><b>Contributing</b></a> &bull; -->
+  <a href="#developing-renative">Developing ReNative</a> &bull;
+  <a href="#common-issues">Common Issues</a> &bull;
+  <a href="#runtime">Runtime</a> &bull;
+  <!-- <a href="#contributing">Contributing</a> &bull; -->
   <a href="#discussions">Discussions</a> &bull;
   <a href="#contributors">Contributors</a> &bull;
   <a href="#backers">Backers</a> &bull;
@@ -211,86 +211,21 @@ Contributing
 
 > The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Firefox OS` and `Firefox TV` platforms
 
--   Ideal starting point for advanced multi-platform projects.
--   Uses latest vanilla native project templates including Xcode with Swift and Android with Kotlin support
--   Includes bleeding edge dependencies configured to work with each other
 
 ---
 
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_quickstart.png?raw=true" width=50 height=50 />
 
-## 🚀 Quick Start
+## Quick Start
 
-##### 1) Install ReNative CLI (rnv)
 
 ```bash
 $ npm install rnv -g
-```
 
-##### 2) Create new app:
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/cli_app_create1.gif?raw=true" />
-    </th>
-  </tr>
-</table>
-
-```bash
 $ rnv new
 ```
 
-Follow steps in the terminal
-
-##### 3) Create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
-
-<table>
-  <tr>
-    <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/terminal.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-**TAB 1:**
-
-Start the bundler
-
-```bash
-$ rnv start
-```
-
-**TAB 2:**
-
-Run your first `ios` app
-
-```bash
-$ rnv run -p ios
-```
-
-**TAB 3:**
-
-Run your first `web` app
-
-```bash
-$ rnv run -p web
-```
-
-open: http://0.0.0.0:8080/
-
-🎉 `Congratulations! You're now multi-platform developer!` 🎉
-
-All app code is located in `./src` directory
-
-##### RNV + NPX
-
-⚠️
-
-It is recommended that after initial project setup you start using `npx rnv ...` prefix instead of `rnv ...`
-
-This ensures that every project uses correct version of `rnv` to avoid potential compatibility issues
-
-make sure you have npx installed globally via `npm install npx -g`
+[Get Started (with more in-depth info)](docs/DOC_GET_STARTED.md)
 
 ---
 
@@ -298,54 +233,16 @@ make sure you have npx installed globally via `npm install npx -g`
 
 ## Features
 
-Build app blazingly fast with built-in features:
-
-* Standard react-native community plugins
-* React-Navigation Support
-* Embedded 0 configuration custom font support
-* SVG Icon Support
-* Hot-reload development / debugging
-* Deployment Ready project
-* Generated projects can be opened and profiled in standard IDEs like Xcode, Android Studio, Tizen IDE etc  
-
-#### Supported OS
-
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_osx.png?raw=true" width="100" height="100" />
-    </th>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_win.png?raw=true" width="100" height="100" />
-    </th>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_linux.jpeg?raw=true" width="100" height="100" />
-    </th>
-  </tr>
-  <tr>
-    <th>
-      <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
-    </th>
-    <th>
-      <img src="https://img.shields.io/badge/Windows-beta-orange.svg" />
-    </th>
-    <th>
-      <img src="https://img.shields.io/badge/Linux-beta-orange.svg" />
-    </th>
-  </tr>
-</table>
+- Learn
+- Write
+- Build
+- Integrate
+- Debug
+- Test
+- Deploy
 
 
-#### Requirements
-
--   [Node](https://nodejs.org) `10.13.0` or newer
--   [NPM](https://npmjs.com/) `6.4.1` or newer
--   [Android Studio](https://developer.android.com/studio) (if you want to develop for Android)
--   [Xcode](https://developer.apple.com/xcode/) (if you want to develop for iOS/tvOS)
--   [Tizen Studio](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) (if you want to develop for Tizen)
--   [WebOS SDK](http://webostv.developer.lge.com/sdk/installation/) (if you want to develop for WebOS)
--   [KaiOS SDK](https://developer.kaiostech.com) (if you want to develop for KaiOS)
-
+[Explore ReNative Features](docs/DOC_FEATURES.md)
 
 ---
 
@@ -364,9 +261,19 @@ Too lazy to build your idea from scratch? use one of the predefined & community 
 
 ## Plugins
 
-ReNative Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
+ReNative supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
 [Documentation for ReNative Plugins](docs/DOC_PLUGINS.md)
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_integrations.png?raw=true" width=50 height=50 />
+
+## Integrations
+
+ReNative supports integration for various services and deployment infrastructures for your apps
+
+[Documentation for ReNative Integrations](docs/DOC_INTEGRATIONS.md)
 
 
 ---
@@ -610,94 +517,21 @@ More in-depth explanation how ReNative internals work
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_construction.png?raw=true" width=50 height=50 />
 
-## Developing ReNative Locally
+## Developing ReNative
 
 If you need full control over whole ReNative build you can clone and develop it locally
 
-```
-1) clone git@github.com:pavjacko/renative.git
-2) cd renative
-3) npm i
-4) npm run watch
-5) npm run link
-```
+[Documentation for Developing ReNative](docs/DOC_DEVELOP.md)
 
-
-At this point your global `$ rnv` command is linked directly into project above.
-
-It's also best way to contribute back to RNV! :)
-
-
-```
-rnv template apply
-=> pick renative-template-hello-world
-```
-
-# Common Issues
+## Common Issues
 
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_issues.png?raw=true" width=50 height=50 />
 
-If you encounter unexpected error / issue it is always good to perform basic sanity steps:
+If you face unexpected issues always good to check if there is a quick solution for it
 
-#### rnv status
-
-`rnv status`
-
-this should print out basic `SUMMARY` box with info about your project, env, and RNV version. check if everything seem correct.
-
-#### -r --reset
-
-`rnv start -r` -> restart your server / bundler and reset all cache
-
-`rnv run .... -r` -> recreate whole project before running app
-
-#### -i --info
-
-`rnv run .... -i` -> run ReNative with full verbose logs
-
-#### rnv clean
-
-If above does not help try to clean up your project
-
-`rnv clean && npm i`
-
-#### Raise Issue
-
-If above does not help either you can raise new question/bug on repo https://github.com/pavjacko/renative/issues
-
-Provide at least `SUMMARY` box from your console
-
-
-#### Common Errors:
-
-
-⚠️`linker command failed with exit code 1 (use -v to see invocation)`
-
-Make sure your Xcode version is `10.2` or newer
-
-
-⚠️`Description: Invalid runtime: com.apple.CoreSimulator.SimRuntime.iOS-.......`
-
-try to run
-
-```bash
-sudo killall -9 com.apple.CoreSimulator.CoreSimulatorService
-```
-and then
-
-`rnv run ...`
-
-⚠️`Could not create service of type ScriptPluginFactory using BuildScopeServices.createScriptPluginFactory()`
-
-Try killing all `gradle` processes and running the build again, that should help
-
-
-⚠️`> Execution of compression failed.`
-
-https://github.com/pavjacko/renative/issues/183
-
+[List of common problems and how to solve them](docs/DOC_COMMON_ISSUES.md)
 
 ---
 
