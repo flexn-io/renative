@@ -1,4 +1,4 @@
-# API Reference for RNV CLI
+# Documentation for RNV CLI
 
 ## ReNative CLI
 
@@ -47,7 +47,7 @@ Deployed to https://www.npmjs.com/package/rnv
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/info.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/info.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -59,7 +59,7 @@ Deployed to https://www.npmjs.com/package/rnv
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/clean.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/clean.png?raw=true" />
     </th>
   </tr>
 </table>

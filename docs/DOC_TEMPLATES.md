@@ -1,3 +1,3 @@
-# API Reference for ReNative Templates
+# Documentation for ReNative Templates
 
 TODO

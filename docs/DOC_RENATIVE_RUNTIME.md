@@ -1,4 +1,4 @@
-# API Reference for ReNative Runtime
+# Documentation for ReNative Runtime
 
 ReNative provides runtime SDK library to support multiplatform development
 

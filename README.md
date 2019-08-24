@@ -1,7 +1,7 @@
 <p align='center'>
     <br />
     <br />
-  <p align='center'><img width="300" height="321" src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/logo-512.png?raw=true" /></p>
+  <p align='center'><img width="300" height="321" src="https://github.com/pavjacko/renative/blob/develop/docs/images/logo-512.png?raw=true" /></p>
   <br />
   <br />
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
@@ -78,106 +78,106 @@ Contributing
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_ios.png?raw=true" width=20 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=20 height=20 />
       </br>
       <a href="#ios">iOS</a>
     </th><th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tvos.png?raw=true" width=36 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tvos.png?raw=true" width=36 height=20 />
       </br>
       <a href="#tvos">tvOS</a>
     </th><th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_androidtv.png?raw=true" width=20 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=20 height=20 />
       </br>
       <a href="#android-tv">Android TV</a>
     </th><th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_macos.png?raw=true" width=20 height=20 />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_macos.png?raw=true" width=20 height=20 />
       </br>
       <a href="#macos">macOS</a>
     </th>
   </tr>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_ios.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_ios.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tvos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tvos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_android-tv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android-tv.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_macos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_macos.gif?raw=true" />
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_android.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_android.png?raw=true" width=20 height=20 />
     </br>
     <a href="#android">Android</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_web.png?raw=true" width=80 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_web.png?raw=true" width=80 height=20 />
     </br>
     <a href="#web">Web</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tizen.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-tv">Tizen TV</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_webos.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_webos.png?raw=true" width=20 height=20 />
     </br>
     <a href="#lg-webos">LG webOS</a>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_android.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_web.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_web.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tizen.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizen.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_webos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_webos.gif?raw=true" />
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_firefoxos.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxos.png?raw=true" width=20 height=20 />
     </br>
     <a href="#firefoxos">FirefoxOS</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_windows.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_windows.png?raw=true" width=20 height=20 />
     </br>
     <a href="#windows">Windows</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_firefoxtv.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxtv.png?raw=true" width=20 height=20 />
     </br>
     <a href="#firefoxtv">Firefox TV</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_kaios.png?raw=true" width=55 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_kaios.png?raw=true" width=55 height=20 />
     </br>
     <a href="#kaios">KaiOS</a>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_firefoxos.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxos.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_windows.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_windows.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_firefoxtv.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxtv.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_kaios.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_kaios.gif?raw=true" />
     </th>
   </tr>
 
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tizen.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-mobile">Tizen Mobile</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tizenwatch.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizenwatch.png?raw=true" width=20 height=20 />
     </br>
     <a href="#tizen-watch">Tizen Watch</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_androidwear.png?raw=true" width=20 height=20 />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidwear.png?raw=true" width=20 height=20 />
     </br>
     <a href="#android-wear">Android Wear</a>
     </th><th>
@@ -186,11 +186,11 @@ Contributing
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tizenmobile.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenmobile.gif?raw=true" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_androidwear.gif?raw=true" width="150" height="150" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
     ...
     </th>
@@ -281,7 +281,7 @@ $ npm install rnv -g
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/cli_app_create1.gif?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/cli_app_create1.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -297,7 +297,7 @@ Follow steps in the terminal
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/terminal.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/terminal.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -344,7 +344,7 @@ make sure you have npx installed globally via `npm install npx -g`
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_features.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_features.png?raw=true" width=50 height=50 />
 
 ## Features
 
@@ -363,13 +363,13 @@ Build app blazingly fast with built-in features:
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/os_osx.png?raw=true" width="100" height="100" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_osx.png?raw=true" width="100" height="100" />
     </th>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/os_win.png?raw=true" width="100" height="100" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_win.png?raw=true" width="100" height="100" />
     </th>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/os_linux.jpeg?raw=true" width="100" height="100" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_linux.jpeg?raw=true" width="100" height="100" />
     </th>
   </tr>
   <tr>
@@ -399,357 +399,86 @@ Build app blazingly fast with built-in features:
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
 
 ## Templates / Starters
 
-#### Built-in
+TODO
 
-Hello World:
-
-https://www.npmjs.com/package/renative-template-hello-world
-
-Blank:
-
-https://www.npmjs.com/package/renative-template-blank
-
-#### Community
-
-Chat App:
-
-https://www.npmjs.com/package/@reactseals/renative-template-chat
+[Documentation for ReNative Config JSON](docs/DOC_TEMPLATES.md)
 
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_plugins.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_plugins.png?raw=true" width=50 height=50 />
 
 ## Plugins
 
 ReNative Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
-Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
-
-`$ rnv plugin list`
-
-you should get colorised overview similar to this:
-
-<table>
-  <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/cli_plugins.png?raw=true" />
-    </th>
-  </tr>
-</table>
-
-add new plugin to your project:
-
-`$ rnv plugin add`
-
-and follow the command prompt steps
-
-Update your current plugins with latest ones from ReNative
-
-`$ rnv plugin update`
-
-and follow the command prompt steps
-
-#### Custom Plugin Support
-
-You can configure multiple React Native plugins without need to update project blueprints.
-default location of plugin configs is `./projectConfig/plugins.json`
-
-Example:
-
-```json
-{
-    "plugins": {
-      "renative": "source:rnv",
-      "react": "source:rnv",
-      "react-art": "source:rnv",
-      "react-dom": "source:rnv",
-      "react-native": "source:rnv",
-      "react-native-web": "source:rnv",
-      "react-native-web-image-loader": "source:rnv",
-      "react-native-gesture-handler": "source:rnv",
-      "react-navigation": "source:rnv",
-      "react-navigation-tabs": "source:rnv",
-      "react-native-reanimated": "source:rnv",
-      "react-native-vector-icons": "source:rnv"
-    }
-}
-```
-
-You can also customise default plugin configuration:
-
-```json
-{
-    "plugins": {
-        "react-native-gesture-handler": {
-            "version": "0.1.0",
-            "ios": {
-                "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
-            },
-            "android": {
-                "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
-                "path": "node_modules/react-native-gesture-handler/android"
-            }
-        }
-    }
-}
-```
-
-Plugin Spec:
-
-```json
-{
-  "pugin-name": {
-      "version": "",
-      "enabled": true,
-      "ios": {},
-      "android": {},
-      "webpack": {
-          "modulePaths": [],
-          "moduleAliases": []
-      }
-  }
-}
-```
-
-
-# Configurations
-
----
-
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
-
-## Project Config
-
-`./projectConfig` folder is used to configure your project properties which can be used in appConfigs / buildFlavours
-
-
-    .
-    ├── projectConfig               # Project configuration files/assets
-        ├── fonts                   # Folder for all custom fonts
-        ├── fonts.json              # Fonts configuration
-        ├── permissions.json        # Permissions configuration
-        └── plugins.json            # React Native Plugins configuration
+[Documentation for ReNative Plugins](docs/DOC_PLUGINS.md)
 
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
 
-## App Configs
+## JSON Configurations
 
-`./appConfigs` offers powerful configuration system which allows you to configure various flavours in your projects.
+TODO
 
-`./appConfigs/APP_ID/renative.json` spec:
+[Documentation for ReNative Config JSON](docs/DOC_RENATIVE_CONFIG.md)
 
-```json
-{
-  "id": "APP_ID",
-  "common": {
-    "title": "",
-    "description": "",
-    "author": {
-      "name": ""
-    },
-    "includedPlugins": ["*"],
-    "includedFonts": ["*"]
-  },
-  "platforms": {
-
-  }
-}
-```
-https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/DOC_RENATIVE_CONFIG.md
-
-
-Re-Generate platform projects (for helloWorld app config platforms):
-
-```bash
-rnv platform configure -c helloWorld
-```
-
-Configure your multi-platform app based on `./appConfigs/helloWorld` configuration:
-
-```bash
-rnv configure -c helloWorld -u
-```
-
-
-#### Build Flavours
-
-You can configure different app ID, Title etc. with buildScheme field in you appConfig file.
-
-Example:
-
-```
-"buildSchemes": {
-  "debug": {
-    "id": "renative.helloworld.debug",
-    "runScheme": "Debug",
-    "bundleAssets": false,
-    "bundleIsDev": true
-  },
-  "release": {
-    "id": "renative.helloworld.release",
-    "runScheme": "Release",
-    "bundleAssets": true,
-    "bundleIsDev": false
-  }
-}
-```
-
-this will allow you to build 2 separate iOS apps with slightly different configurations:
-
-`$ rnv run -p ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
-
-and
-
-`$ rnv run -p ios -s release`
-
-#### Build Flavour Injectors
-
-Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
-
-you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
-
-    .
-    ├── appConfigs
-        └── helloWorld
-            ├── assets
-            ├── plugins
-            │   └── some-plugin
-            │       └── builds
-            │            ├── android@release
-            │            │   └── fileToBeInjectedInReleaseMode.txt
-            │            └── android@debug
-            │                └── fileToBeInjectedInDebugMode.txt
-            └── builds
-                ├── android@release
-                │   └── fileToBeInjectedInReleaseMode.txt
-                └── android@debug
-                    └── fileToBeInjectedInDebugMode.txt
-
-
-#### Custom appConfig Location per Project
-
-For decoupled project you might need to point to custom appConfig location per project. because that location might be different for each developer you can create `rnv-config.local.json` in your project root (git ignored by default) which points to your local appConfig folder.
-
-Contents of the file should follow this format:
-
-```json
-{
-    "appConfigsPath": "/Users/<USER>/my-local-app-config-folder"
-}
-```
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_hooks.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
+
+## Folder Configurations
+
+TODO
+
+[Documentation for ReNative Folder Configurations](docs/DOC_CONFIG_FOLDERS.md)
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_hooks.png?raw=true" width=50 height=50 />
 
 ## Build Hooks
 
 Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.
 
-create file: `./buildHooks/src/index.js` with this script (NOTE: every top-level method must return Promise):
-
-```js
-import chalk from 'chalk';
-
-const hooks = {
-    hello: c =>
-        new Promise((resolve, reject) => {
-            console.log(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
-            resolve();
-        }),
-};
-
-const pipes = {};
-
-export { pipes, hooks };
-```
-
-then simply run:
-
-```
-rnv hooks run -x hello
-```
-
-ReNative will transpile and execute it in real time!
-
-`index.js` is required entry point but you can create more complex scripts with multiple files/imports.
-
-every top-level method gets invoked with ReNative `config` object containing all necessary build information
-
-#### Using RNV in Build Hooks
-
-You can utilize RNV CLI functionality inside of build hooks by simply importing rnv packages:
-
-```js
-import {
-    Constants, Runner, App, Platform, Target, Common, Exec,
-    PlatformTools, Doctor, PluginTools, SetupTools, FileUtils
-} from 'rnv'
-```
-
-#### Build Pipes
-
-Sometimes you want to execute specific hook automatically before/after certain ReNative build phase.
-
-To get list of available hook pipes run:
-
-`$ rnv hooks pipes`
-
-You can connect your hook method to one of predefined pipes in your `./buildHooks/src/index.js`:
-
-```js
-const pipes = {
-    'configure:before': hooks.hello,
-};
-```
-
-Example code above will execute `hooks.hello()` before every time you run `$ rnv configure` commands
-
-#### Run Multiple Pipes on One Hook
-
-```js
-const pipes = {
-    'configure:before': [hooks.hello, hooks.someOtherHook],
-};
-```
-
-List of available pipe hooks:
-
-```
-'run:before', 'run:after',
-'log:before', 'log:after',
-'start:before', 'start:after',
-'package:before', 'package:after',
-'package:before', 'package:after',
-'build:before', 'build:after',
-'deploy:before', 'deploy:after',
-'configure:before', 'configure:after',
-'platform:configure:before', 'platform:configure:after'
-```
-
+[Documentation for ReNative Build Hooks](docs/DOC_BUILD_HOOKS.md)
 
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_runtime.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_runtime.png?raw=true" width=50 height=50 />
 
 ## Runtime
 
+TODO
 
-https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/DOC_RENATIVE_RUNTIME.md
+[Documentation for ReNative Build Hooks](docs/DOC_RENATIVE_RUNTIME.md)
+
+
+
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_cli.png?raw=true" width=50 height=50 />
+
+## CLI
+
+TODO
+
+[Documentation for RNV CLI](docs/DOC_RNV_CLI.md)
+
+
+
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_arch.png?raw=true" width=50 height=50 />
 
 ## Architecture
 
@@ -758,7 +487,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_arch1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -787,7 +516,7 @@ ReNative support flexible override mechanism which allows you customise your pro
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_arch2.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch2.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -797,7 +526,7 @@ ReNative support flexible override mechanism which allows you customise your pro
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_ios.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
 
 ## iOS
 
@@ -809,7 +538,7 @@ ReNative support flexible override mechanism which allows you customise your pro
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_ios.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_ios.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -918,7 +647,7 @@ rnv log -p ios -f com.myapp
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_android.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_android.png?raw=true" width=50 height=50 />
 
 ## Android
 
@@ -930,7 +659,7 @@ rnv log -p ios -f com.myapp
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_android.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -961,7 +690,7 @@ You can create variety of emulators via Android Studio IDE
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/android1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/android1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1048,7 +777,7 @@ rnv log -p android -f com.myapp
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tvos.png?raw=true" width=90 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tvos.png?raw=true" width=90 height=50 />
 
 ## tvOS
 
@@ -1060,7 +789,7 @@ rnv log -p android -f com.myapp
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tvos.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tvos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1108,7 +837,7 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
 
 ## Android TV
 
@@ -1120,7 +849,7 @@ rnv run -p tvos -t "Apple TV 4K"
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_android-tv.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android-tv.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1172,7 +901,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_web.png?raw=true" width=200 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_web.png?raw=true" width=200 height=50 />
 
 ## Web
 
@@ -1184,7 +913,7 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_web.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_web.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1251,7 +980,7 @@ rnv run -p web --port 9999
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
 
 ## Tizen TV
 
@@ -1263,7 +992,7 @@ rnv run -p web --port 9999
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tizen.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizen.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1293,7 +1022,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/tizen4.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizen4.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1336,7 +1065,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
 
 ## Tizen Watch
 
@@ -1348,7 +1077,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 <table>
   <tr>
     <th>
-      <img width=200 src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tizenwatch.gif?raw=true" />
+      <img width=200 src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenwatch.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1376,7 +1105,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/tizenwatch1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizenwatch1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1419,7 +1148,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_webos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_webos.png?raw=true" width=50 height=50 />
 
 ## LG webOS
 
@@ -1431,7 +1160,7 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 <table>
   <tr>
     <th>
-      <img width=600 src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_webos.gif?raw=true" />
+      <img width=600 src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_webos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1487,7 +1216,7 @@ rnv run -p webos --hosted
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
 
 ## Tizen Mobile
 
@@ -1499,7 +1228,7 @@ rnv run -p webos --hosted
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_tizenmobile.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenmobile.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1529,7 +1258,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/tizen_mobile1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizen_mobile1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1574,7 +1303,7 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_macos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_macos.png?raw=true" width=50 height=50 />
 
 ## macOS
 
@@ -1586,7 +1315,7 @@ rnv run -p tizenmobile -t M-5.0-x86
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_macos.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_macos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1637,7 +1366,7 @@ rnv export -p macos -s release
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_windows.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_windows.png?raw=true" width=50 height=50 />
 
 ## Windows
 
@@ -1649,7 +1378,7 @@ rnv export -p macos -s release
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_windows.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_windows.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1685,7 +1414,7 @@ rnv run -p windows --hosted
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
 
 ## Android Wear
 
@@ -1697,7 +1426,7 @@ rnv run -p windows --hosted
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_androidwear.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_androidwear.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1750,7 +1479,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_kaios.png?raw=true" width=140 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_kaios.png?raw=true" width=140 height=50 />
 
 ## KaiOS
 
@@ -1762,7 +1491,7 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_kaios.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_kaios.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1776,7 +1505,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/kaios1.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/kaios1.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1804,7 +1533,7 @@ rnv run -p kaios --hosted
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
 
 ## FirefoxOS
 
@@ -1816,7 +1545,7 @@ rnv run -p kaios --hosted
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_firefoxos.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxos.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1832,7 +1561,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/firefoxos.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/firefoxos.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1859,7 +1588,7 @@ rnv run -p forefoxos --hosted
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
 
 ## FirefoxTV
 
@@ -1871,7 +1600,7 @@ rnv run -p forefoxos --hosted
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_firefoxtv.gif?raw=true" />
+      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxtv.gif?raw=true" />
     </th>
   </tr>
 </table>
@@ -1887,7 +1616,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/firefoxos.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/firefoxos.png?raw=true" />
     </th>
   </tr>
 </table>
@@ -1912,38 +1641,12 @@ Run in Browser
 rnv run -p forefoxtv --hosted
 ```
 
-# CLI
-
----
-
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_cli.png?raw=true" width=50 height=50 />
-
-TODO
-
-### Ejecting Platforms
-
-By default, ReNative controls platformTemplates for you. Advantage is that you don't need to maintain them and will get all the updates automatically.
-If however you need to customise them you can eject them directly into your project.
-
-```bash
-rnv platform eject
-```
-
-your projects will be build using `./platformTemplates` from this point
-
-If you want to revert back to using ReNative templates simply run
-
-```bash
-rnv platform connect
-```
-
-your projects will be build using `./node_modules/renative/rnv-cli/platformTemplates` from this point
 
 
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_construction.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_construction.png?raw=true" width=50 height=50 />
 
 ## Developing ReNative Locally
 
@@ -1972,7 +1675,7 @@ rnv template apply
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_issues.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_issues.png?raw=true" width=50 height=50 />
 
 If you encounter unexpected error / issue it is always good to perform basic sanity steps:
 
@@ -2039,7 +1742,7 @@ https://github.com/pavjacko/renative/issues/183
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_chat.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_chat.png?raw=true" width=50 height=50 />
 
 ## Discussions
 
@@ -2047,7 +1750,7 @@ https://spectrum.chat/renative
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_contributor.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_contributor.png?raw=true" width=50 height=50 />
 
 ## Contributors
 
@@ -2063,11 +1766,11 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ## Sponsors
 
-<a href="https://www.24i.com"><img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
+<a href="https://www.24i.com"><img src="https://github.com/pavjacko/renative/blob/develop/docs/images/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/ic_community.png?raw=true" width=50 height=50 />
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_community.png?raw=true" width=50 height=50 />
 
 ## Community
 

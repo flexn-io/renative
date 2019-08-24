@@ -1,4 +1,4 @@
-# API Reference for Files & Folders
+# Documentation for Files & Folders
 
 
 App configs are ReNative compliant app configuration folders which follow prescribed structure
@@ -188,7 +188,7 @@ Combination of 2 features above allows you to configure and build large number o
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_arch3.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch3.png?raw=true" />
     </th>
   </tr>
 </table>
