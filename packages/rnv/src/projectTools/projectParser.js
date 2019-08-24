@@ -229,10 +229,17 @@ const ASSET_PATH_ALIASES = {
     firefoxos: ''
 };
 
-export const copyAssetsFolder = (c, platform) => new Promise((resolve, reject) => {
+export const copyAssetsFolder = (c, platform, customFn) => new Promise((resolve, reject) => {
     logTask(`copyAssetsFolder:${platform}`);
 
     if (!isPlatformActive(c, platform, resolve)) return;
+
+    if (customFn) {
+        customFn(c, platform)
+            .then(v => resolve())
+            .catch(e => reject(e));
+        return;
+    }
 
     const destPath = path.join(getAppSubFolder(c, platform), ASSET_PATH_ALIASES[platform]);
 
