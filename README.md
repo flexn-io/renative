@@ -519,15 +519,16 @@ More in-depth explanation how ReNative internals work
 
 ## Developing ReNative
 
-If you need full control over whole ReNative build you can clone and develop it locally
+If you need full control over whole ReNative build or want to contribute, you can clone and develop ReNative locally
 
 [Documentation for Developing ReNative](docs/DOC_DEVELOP.md)
 
-## Common Issues
 
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_issues.png?raw=true" width=50 height=50 />
+
+## Common Issues
 
 If you face unexpected issues always good to check if there is a quick solution for it
 
