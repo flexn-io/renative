@@ -1,6 +1,35 @@
-# 0.21.6 (Drunk Thanos)
+# Changelog
 
-==============================================
+## [v0.26.0]
+
+- new config system
+
+BREAKING CHANGES:
+
+
+
+## [v0.25.0 ]
+
+TODO
+
+
+## [v0.21.7]
+
+-   Give options of available platforms
+
+```bash
+rnv run -p ?
+rnv run
+```
+
+## Bug Fixes
+
+-   fix infinite `_listAndroidTargets`
+
+
+
+## [v0.21.6]
+
 
 ### Optional Platforms Support
 
@@ -42,7 +71,7 @@ rnv app create
 rnv run -p android
 ```
 
-## Bug Fixes
+### Bug Fixes
 
 -   Android TV theme error
 -   Added eslint detox
