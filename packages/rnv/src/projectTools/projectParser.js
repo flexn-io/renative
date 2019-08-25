@@ -154,6 +154,9 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     }
 
     fontsObj += '];';
+    if (fs.existsSync(c.paths.project.assets.runtimeDir)) {
+        mkdirSync(c.paths.project.assets.runtimeDir);
+    }
     fs.writeFileSync(path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js'), fontsObj);
     const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
     copyFileSync(
@@ -218,8 +221,8 @@ const ASSET_PATH_ALIASES = {
     android: 'app/src/main',
     androidtv: 'app/src/main',
     androidwear: 'app/src/main',
-    ios: 'assets',
-    tvos: 'assets',
+    ios: '',
+    tvos: '',
     tizen: '',
     tizenmobile: '',
     tizenwatch: '',
@@ -335,6 +338,15 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
     } else {
         resolve();
     }
+});
+
+export const cleanPlaformAssets = c => new Promise((resolve, reject) => {
+    logTask('cleanPlaformAssets');
+
+    cleanFolder(c.paths.project.assets.dir).then(() => {
+        mkdirSync(c.paths.project.assets.runtimeDir);
+        resolve();
+    });
 });
 
 export const npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {

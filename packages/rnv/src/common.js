@@ -36,7 +36,7 @@ import {
     parseRenativeConfigs, createRnvConfig, updateConfig, gatherInfo,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
-import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndCreateProjectPackage } from './projectTools/projectParser';
+import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
@@ -371,6 +371,7 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
 
     if (c.program.reset) {
         cleanPlatformBuild(c, platform)
+            .then(() => cleanPlaformAssets(c))
             .then(() => createPlatformBuild(c, platform))
             .then(() => appRunner(nc))
             .then(() => resolve(c))

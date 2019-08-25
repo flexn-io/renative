@@ -12,6 +12,7 @@ import {
 import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
+import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS } from '../constants';
 
 const CONFIGURE = 'configure';
@@ -88,7 +89,7 @@ const _runCreatePlatforms = c => new Promise((resolve, reject) => {
 
     executePipe(c, PIPES.PLATFORM_CONFIGURE_BEFORE)
         .then(() => cleanPlatformBuild(c, p))
-        .then(() => _runCleanPlaformAssets(c))
+        .then(() => cleanPlaformAssets(c))
         .then(() => _runCopyPlatforms(c, p))
         .then(() => executePipe(c, PIPES.PLATFORM_CONFIGURE_AFTER))
         .then(() => resolve())
@@ -185,14 +186,6 @@ const _removePlatform = (platform, program, process) => new Promise((resolve, re
     if (!isPlatformSupportedSync(platform, resolve)) return;
     console.log('REMOVE_PLATFORM: ', platform);
     resolve();
-});
-
-const _runCleanPlaformAssets = c => new Promise((resolve, reject) => {
-    logTask('_runCleanPlaformAssets');
-
-    cleanFolder(c.paths.project.assets.dir).then(() => {
-        resolve();
-    });
 });
 
 const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
