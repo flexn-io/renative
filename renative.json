@@ -18,7 +18,6 @@
         "ports": {
             "ios": "9091"
         },
-        "template": "renative-template-hello-world",
         "supportedPlatforms": [
             "ios",
             "android",
@@ -44,6 +43,31 @@
         "targets": {
 
         }
+    },
+    "templates": {
+      "renative-template-hello-world": {
+        "version": "file:./packages/renative-template-hello-world",
+        "webpack": {
+            "moduleAliases": {
+                "renative": {
+                    "projectPath": "packages/renative-template-hello-world"
+                }
+            }
+        }
+      },
+      "renative-template-blank": {
+        "version": "file:./packages/renative-template-blank",
+        "webpack": {
+            "moduleAliases": {
+                "renative": {
+                    "projectPath": "packages/renative-template-blank"
+                }
+            }
+        }
+      },
+      "@reactseals/renative-template-chat": {
+        "version": "latest",
+      }
     },
     "currentTemplate": "renative-template-hello-world"
 }

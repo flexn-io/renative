@@ -21,9 +21,9 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
-import { getAppFolderName } from '../apple';
+import { getAppFolderName } from './index';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
 
 
@@ -70,6 +70,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     // PLIST
     let plistObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/info.plist.json'));
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
+    console.log('AKGAJHAGJHAGAJH', plistObj.CFBundleDisplayName);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     // FONTS
     if (c.pluginConfigiOS.embeddedFonts.length) {

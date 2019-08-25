@@ -37,35 +37,41 @@ const addTemplate = c => new Promise((resolve, reject) => {
 
 const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     logTask('checkIfTemplateInstalled');
-    if (!c.buildConfig.defaults) {
-        logWarning(`Your ${chalk.white(c.paths.project.config)} does not contain ${chalk.white('defaultProjectConfigs')} object. ReNative will skip template generation`);
+    if (!c.buildConfig.templates) {
+        logWarning(`Your ${chalk.white(c.paths.project.config)} does not contain ${chalk.white('templates')} object. ReNative will skip template generation`);
         resolve();
         return;
     }
 
-    let templateName = c.buildConfig.defaults.template;
-    if (!templateName) {
-        templateName = 'renative-template-hello-world';
-        logWarning(`You're missing template name in your ${chalk.white(c.paths.project.config)}. ReNative will add default ${chalk.white(templateName)} for you`);
-        c.buildConfig.defaults.template = templateName;
-        fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
-    }
+    // let templateName = c.buildConfig.currentTemplate;
+    // if (!templateName) {
+    //     templateName = 'renative-template-hello-world';
+    //     logWarning(`You're missing template name in your ${chalk.white(c.paths.project.config)}. ReNative will add default ${chalk.white(templateName)} for you`);
+    //     c.buildConfig.defaults.template = templateName;
+    //     fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
+    // }
 
-    c.paths.templateFolder = path.join(c.paths.project.nodeModulesDir, templateName);
-    if (!fs.existsSync(c.paths.templateFolder)) {
-        logWarning(`Your ${chalk.white(c.paths.templateFolder)} template is not installed. ReNative will install it for you`);
-
-        if (c.files.project.package.devDependencies) {
-            if (!c.files.project.package.devDependencies[templateName]) {
-                c.files.project.package.devDependencies[templateName] = c.runtime.rnvVersionRunner;
-                writeObjectSync(c.paths.project.package, c.files.project.package);
-            }
+    for (const k in c.buildConfig.templates) {
+        let t = k;
+        if (k.version && k.version.startsWith('file:')) {
+            t = `../${k.version.replace('file:', '')}`;
         }
+        const templateFolder = path.join(c.paths.project.nodeModulesDir, k);
+        if (!fs.existsSync(templateFolder)) {
+            logWarning(`Your ${chalk.white(templateFolder)} template is not installed. ReNative will install it for you`);
 
-        // npmInstall(c).then(() => resolve()).catch(e => reject(e));
-        // return;
-        c._requiresNpmInstall = true;
+            if (c.files.project.package.devDependencies) {
+                c.files.project.package.devDependencies[k] = k.version;
+            }
+
+            // npmInstall(c).then(() => resolve()).catch(e => reject(e));
+            // return;
+            c._requiresNpmInstall = true;
+        }
     }
+    writeObjectSync(c.paths.project.package, c.files.project.package);
+
+
     resolve();
 });
 
