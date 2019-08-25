@@ -292,7 +292,11 @@ export const getJsBundleFileDefaults = {
     androidwear: '"assets://index.androidwear.bundle"',
 };
 
-export const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
+export const getAppId = (c, platform) => {
+    const id = getConfigProp(c, platform, 'id');
+    const idSuffix = getConfigProp(c, platform, 'idSuffix');
+    return idSuffix ? `${id}${idSuffix}` : id;
+};
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 

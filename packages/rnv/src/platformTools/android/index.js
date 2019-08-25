@@ -23,6 +23,7 @@ import {
     logInfo,
     logSuccess,
     waitForEmulator,
+    getAppId
 } from '../../common';
 import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../../systemTools/prompt';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../../systemTools/fileutils';
@@ -720,7 +721,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
     const appFolder = getAppFolder(c, platform);
-    const bundleId = getConfigProp(c, platform, 'id');
+    const bundleId = getAppId(c, platform);
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
     const { arch, name } = device;

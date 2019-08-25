@@ -161,7 +161,7 @@ export const updateProfiles = (c) => {
         const appId = c.runtime.appId;
         return _updateProfiles(c)
             .then(() => {
-                setAppConfig(c, currentAppId);
+                setAppConfig(c, appId);
             });
     }
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
