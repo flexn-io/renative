@@ -26,3 +26,7 @@ It's also best way to contribute back to RNV! :)
 rnv template apply
 => pick renative-template-hello-world
 ```
+
+## RNV C Object
+
+[Documentation for RNV Runtime Config](docs/DOC_RNV_CONFIG.md)

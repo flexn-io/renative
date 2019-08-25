@@ -16,7 +16,11 @@
     },
     "defaults": {
         "ports": {
-            "ios": "9091"
+            "ios": "9081",
+            "android": "9081",
+            "androidtv": "9081",
+            "tvos": "9081",
+            "web": "9080"
         },
         "supportedPlatforms": [
             "ios",

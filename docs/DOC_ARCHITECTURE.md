@@ -1,6 +1,5 @@
 # Documentation for ReNative Architecture
 
-
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_arch.png?raw=true" width=50 height=50 />

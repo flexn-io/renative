@@ -1,6 +1,5 @@
 # Documentation for Android Wear Platform
 
-
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />

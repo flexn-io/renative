@@ -1,5 +1,10 @@
 # Documentation for ReNative Config
 
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
+
+## JSON Configurations
 
 App configs are ReNative compliant app configuration folders which follow prescribed structure
 

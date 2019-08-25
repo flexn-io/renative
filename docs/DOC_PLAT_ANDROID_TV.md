@@ -1,6 +1,5 @@
 # Documentation for Android TV Platform
 
-
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />

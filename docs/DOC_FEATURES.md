@@ -1,5 +1,10 @@
 # ReNative Features
 
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_features.png?raw=true" width=50 height=50 />
+
+## Overview
 
 Build app blazingly fast with built-in features:
 
