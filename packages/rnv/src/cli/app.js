@@ -238,6 +238,7 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
             },
             templates,
             currentTemplate: data.defaultTemplate,
+            isNew: true
         };
 
         writeObjectSync(c.paths.project.config, config);

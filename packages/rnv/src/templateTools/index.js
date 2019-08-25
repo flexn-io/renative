@@ -10,7 +10,7 @@ import {
 } from '../systemTools/fileutils';
 import { logError, logInfo, logWarning, logTask } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
-import { generateOptions } from '../systemTools/prompt';
+import { generateOptions, askQuestion, finishQuestion } from '../systemTools/prompt';
 import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
 import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig } from '../configTools/configParser';
 
@@ -44,7 +44,7 @@ export const addTemplate = (c, opts) => new Promise((resolve, reject) => {
         };
     }
 
-    writeObjectSync(c.paths.project.config, c.files.project.config);
+    _writeObjectSync(c, c.paths.project.config, c.files.project.config);
 
 
     resolve();
@@ -75,14 +75,55 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
             c.files.project.package.devDependencies[k] = obj.version;
         }
     }
-    writeObjectSync(c.paths.project.package, c.files.project.package);
+    _writeObjectSync(c, c.paths.project.package, c.files.project.package);
 
     resolve();
 });
 
-export const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
-    logTask(`applyLocalTemplate:${selectedTemplate}`);
-    const currentTemplate = c.buildConfig.currentTemplate;
+export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    logTask('applyTemplate');
+
+    if (!c.buildConfig.currentTemplate) {
+        logWarning('You don\'t have any current template selected');
+        const opts = getInstalledTemplateOptions(c);
+
+        askQuestion(`Pick which template to apply: \n${opts.asString}`)
+            .then(v => opts.pick(v))
+            .then((v) => {
+                finishQuestion();
+                c.buildConfig.currentTemplate = opts.selectedOption;
+                c.files.project.config.currentTemplate = opts.selectedOption;
+                _writeObjectSync(c, c.paths.project.config, c.files.project.config);
+                return Promise.resolve();
+            })
+            .then(() => _preApplyTemplate(c, selectedTemplate))
+            .then(() => resolve())
+            .catch(e => reject(e));
+    } else {
+        _preApplyTemplate(c, selectedTemplate)
+            .then(() => resolve())
+            .catch(e => reject(e));
+    }
+});
+
+const _preApplyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    logTask(`_preApplyTemplate:${selectedTemplate}`);
+    c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
+
+    if (c.runtime.isWrapper) {
+        _applyLocalTemplate(c, selectedTemplate)
+            .then(() => resolve())
+            .catch(e => reject(e));
+    } else {
+        _applyTemplate(c, selectedTemplate)
+            .then(() => resolve())
+            .catch(e => reject(e));
+    }
+});
+
+const _applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    logTask(`_applyLocalTemplate:${selectedTemplate}`);
+    const currentTemplate = selectedTemplate || c.buildConfig.currentTemplate;
     if (selectedTemplate) {
         logTask(`applyTemplate:${selectedTemplate}`);
         // LOCAL TEMPLATE
@@ -104,26 +145,18 @@ export const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve,
 
         c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, selectedTemplate);
 
-        _applyTemplate(c)
+        _applyTemplate(c, selectedTemplate)
             .then(() => configureEntryPoints(c))
             .then(() => resolve())
             .catch(e => reject(e));
+
+        return resolve();
     }
+    return resolve();
 });
 
-export const applyTemplate = c => new Promise((resolve, reject) => {
-    logTask('applyTemplate');
-
-    c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
-
-    _applyTemplate(c)
-        // .then(() => configureEntryPoints(c)) // NOT READY YET
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
-const _applyTemplate = c => new Promise((resolve, reject) => {
-    logTask(`_applyTemplate:${c.paths.projectTemplateFolder}`);
+const _applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+    logTask(`_applyTemplate:${selectedTemplate}:${c.paths.projectTemplateFolder}`);
 
     const templateConfigPath = path.join(c.paths.projectTemplateFolder, RENATIVE_CONFIG_TEMPLATE_NAME);
 
@@ -136,8 +169,12 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     const templateAppConfigsFolder = path.join(c.paths.projectTemplateFolder, 'appConfigs');
     const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
     const templateProjectConfigFolder = path.join(c.paths.projectTemplateFolder, 'projectConfig');
-    const currentTemplate = c.files.project.config.currentTemplate;
-    const templateConfig = JSON.parse(fs.readFileSync(templateConfigPath).toString());
+    let currentTemplate = c.files.project.config.currentTemplate;
+    if (!currentTemplate) {
+        currentTemplate = Object.keys(c.files.project.config.templates)[0];
+        c.runtime.requiresForcedTemplateApply = true;
+    }
+    const templateConfig = readObjectSync(templateConfigPath);
 
     // Check src
     logTask('configureProject:check src', chalk.grey);
@@ -172,7 +209,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
                     appConfig.common.id = c.files.project.config?.defaults?.id;
                 }
 
-                writeObjectSync(appConfigPath, appConfig);
+                _writeObjectSync(c, appConfigPath, appConfig);
             });
 
             const supPlats = c.files.project?.defaults?.supportedPlatforms;
@@ -201,25 +238,33 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     // renative.json
     logTask('configureProject:check renative.json', chalk.grey);
     if (!c.runtime.isWrapper) {
-        if (!c.files.project.config.currentTemplate) {
+        if (selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config.isNew) {
             logWarning(
                 `Looks like your ${c.paths.project.config} need to be updated with ${templateConfigPath}`,
             );
             const mergedObj = mergeObjects(c, c.files.project.config, templateConfig, false, true);
-            c.files.project.config.currentTemplate = currentTemplate;
-            writeObjectSync(c.paths.project.config, mergedObj);
+            mergedObj.currentTemplate = currentTemplate;
+            mergedObj.isNew = null;
+            delete mergedObj.isNew;
+            c.files.project.config = mergedObj;
+            _writeObjectSync(c, c.paths.project.config, mergedObj);
         }
     } else {
         if (templateConfig.plugins.renative) {
             templateConfig.plugins.renative = getLocalRenativePlugin();
         }
-        writeObjectSync(c.paths.project.configLocal, templateConfig);
+        _writeObjectSync(c, c.paths.project.configLocal, templateConfig);
     }
 
     setAppConfig(c, c.runtime.appId);
 
     resolve();
 });
+
+const _writeObjectSync = (c, p, s) => {
+    writeObjectSync(p, s);
+    generateBuildConfig(c);
+};
 
 export const getTemplateOptions = c => generateOptions(templates, false, null, (i, obj, mapping, defaultVal) => {
     const exists = c.buildConfig.templates?.[defaultVal];
