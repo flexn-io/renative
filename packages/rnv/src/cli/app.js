@@ -172,7 +172,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
         defaultAppTitle: 'Hello Renative'
     };
     data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
-    data.optionTemplates = getTemplateOptions();
+    data.optionTemplates = getTemplateOptions(c);
 
     // logWelcome();
 

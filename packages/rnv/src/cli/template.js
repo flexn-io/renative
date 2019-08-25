@@ -25,7 +25,7 @@ import { IOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { executePipe } from '../projectTools/buildHooks';
 import appRunner, { copyRuntimeAssets } from './app';
-import { listTemplates, addTemplate, getTemplateOptions, applyLocalTemplate } from '../templateTools';
+import { listTemplates, addTemplate, getTemplateOptions, getInstalledTemplateOptions, applyLocalTemplate } from '../templateTools';
 
 const LIST = 'list';
 const ADD = 'add';
@@ -71,7 +71,11 @@ const _templateList = c => new Promise((resolve, reject) => {
 const _templateAdd = c => new Promise((resolve, reject) => {
     logTask('_templateAdd');
 
-    addTemplate()
+    const opts = getTemplateOptions(c);
+
+    askQuestion(`Pick which template to install : \n${opts.asString}`)
+        .then(v => opts.pick(v))
+        .then(() => addTemplate())
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -84,7 +88,7 @@ const _templateApply = c => new Promise((resolve, reject) => {
             .then(() => resolve())
             .catch(e => reject(e));
     } else {
-        const opts = getTemplateOptions();
+        const opts = getInstalledTemplateOptions(c);
 
         askQuestion(`Pick which template to apply ${chalk.yellow('(NOTE: your project content will be overriden!)')}: \n${opts.asString}`)
             .then(v => opts.pick(v))

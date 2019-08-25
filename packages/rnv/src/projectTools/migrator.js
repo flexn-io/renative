@@ -91,6 +91,16 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
         }
         newConfig.currentTemplate = newConfig.defaults.template || 'renative-template-hello-world';
 
+        newConfig.templates = {};
+
+        if (newConfig.defaults.template) {
+            newConfig.templates[newConfig.defaults.template] = {
+                version: c.files.rnv.package.version
+            };
+        }
+
+        delete newConfig.defaults.template;
+
         newConfig.paths = {};
         PATH_PROPS.forEach((v) => {
             if (files.config[v]) {

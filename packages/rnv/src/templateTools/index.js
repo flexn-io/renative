@@ -17,14 +17,23 @@ import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig } from '..
 
 import { templates } from '../../renativeTemplates/templates.json';
 
-const listTemplates = c => new Promise((resolve, reject) => {
+
+// let templateName = c.buildConfig.currentTemplate;
+// if (!templateName) {
+//     templateName = 'renative-template-hello-world';
+//     logWarning(`You're missing template name in your ${chalk.white(c.paths.project.config)}. ReNative will add default ${chalk.white(templateName)} for you`);
+//     c.buildConfig.defaults.template = templateName;
+//     fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
+// }
+
+export const listTemplates = c => new Promise((resolve, reject) => {
     logTask('listTemplates');
     const opts = generateOptions(templates);
     console.log(opts.asString);
     resolve();
 });
 
-const addTemplate = c => new Promise((resolve, reject) => {
+export const addTemplate = c => new Promise((resolve, reject) => {
     logTask('addTemplate');
     const { maxErrorLength } = c.program;
 
@@ -35,7 +44,7 @@ const addTemplate = c => new Promise((resolve, reject) => {
         .catch(error => logError(error));
 });
 
-const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
+export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     logTask('checkIfTemplateInstalled');
     if (!c.buildConfig.templates) {
         logWarning(`Your ${chalk.white(c.paths.project.config)} does not contain ${chalk.white('templates')} object. ReNative will skip template generation`);
@@ -43,41 +52,31 @@ const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
         return;
     }
 
-    // let templateName = c.buildConfig.currentTemplate;
-    // if (!templateName) {
-    //     templateName = 'renative-template-hello-world';
-    //     logWarning(`You're missing template name in your ${chalk.white(c.paths.project.config)}. ReNative will add default ${chalk.white(templateName)} for you`);
-    //     c.buildConfig.defaults.template = templateName;
-    //     fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
-    // }
-
     for (const k in c.buildConfig.templates) {
         let t = k;
+        const obj = c.buildConfig.templates[k];
         if (k.version && k.version.startsWith('file:')) {
             t = `../${k.version.replace('file:', '')}`;
         }
         const templateFolder = path.join(c.paths.project.nodeModulesDir, k);
         if (!fs.existsSync(templateFolder)) {
             logWarning(`Your ${chalk.white(templateFolder)} template is not installed. ReNative will install it for you`);
-
-            if (c.files.project.package.devDependencies) {
-                c.files.project.package.devDependencies[k] = k.version;
-            }
-
             // npmInstall(c).then(() => resolve()).catch(e => reject(e));
             // return;
             c._requiresNpmInstall = true;
         }
+        if (c.files.project.package.devDependencies) {
+            c.files.project.package.devDependencies[k] = obj.version;
+        }
     }
     writeObjectSync(c.paths.project.package, c.files.project.package);
-
 
     resolve();
 });
 
-const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+export const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
     logTask(`applyLocalTemplate:${selectedTemplate}`);
-    const currentTemplate = c.buildConfig.defaults.template;
+    const currentTemplate = c.buildConfig.currentTemplate;
     if (selectedTemplate) {
         logTask(`applyTemplate:${selectedTemplate}`);
         // LOCAL TEMPLATE
@@ -106,16 +105,10 @@ const applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject
     }
 });
 
-const applyTemplate = c => new Promise((resolve, reject) => {
+export const applyTemplate = c => new Promise((resolve, reject) => {
     logTask('applyTemplate');
-    const currentTemplate = c.buildConfig.defaults.template;
 
-    if (!c.buildConfig.defaults) {
-        reject(`Your ${RENATIVE_CONFIG_NAME} is missing defaultProjectConfigs object`);
-        return;
-    }
-
-    c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, c.buildConfig.defaults.template);
+    c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
 
     _applyTemplate(c)
         // .then(() => configureEntryPoints(c)) // NOT READY YET
@@ -129,7 +122,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     const templateConfigPath = path.join(c.paths.projectTemplateFolder, RENATIVE_CONFIG_TEMPLATE_NAME);
 
     if (!fs.existsSync(templateConfigPath)) {
-        logWarning(`Template ${chalk.white(c.buildConfig.defaults.template)} does not exist in your ${chalk.white(c.paths.projectTemplateFolder)}. skipping`);
+        logWarning(`Template file ${chalk.white(templateConfigPath)} does not exist. check your ${chalk.white(c.paths.projectTemplateFolder)}. skipping`);
         resolve();
         return;
     }
@@ -137,7 +130,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     const templateAppConfigsFolder = path.join(c.paths.projectTemplateFolder, 'appConfigs');
     const templateAppConfigFolder = fs.readdirSync(templateAppConfigsFolder)[0];
     const templateProjectConfigFolder = path.join(c.paths.projectTemplateFolder, 'projectConfig');
-    const currentTemplate = c.files.project.config.defaults.template;
+    const currentTemplate = c.files.project.config.currentTemplate;
     const templateConfig = JSON.parse(fs.readFileSync(templateConfigPath).toString());
 
     // Check src
@@ -220,9 +213,16 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const getTemplateOptions = () => generateOptions(templates);
+export const getTemplateOptions = c => generateOptions(templates, false, null, (i, obj, mapping, defaultVal) => {
+    const exists = c.buildConfig.templates?.[defaultVal];
+    const installed = exists ? chalk.red(' (installed)') : '';
+    return `-[${chalk.green(i + 1)}] ${chalk.green(defaultVal)}${installed} \n`;
+});
 
-export {
-    listTemplates, addTemplate, getTemplateOptions, applyTemplate,
-    applyLocalTemplate, checkIfTemplateInstalled
+export const getInstalledTemplateOptions = (c) => {
+    if (c.buildConfig.templates) {
+        return generateOptions(c.buildConfig.templates);
+    }
+    logError('You don\'t have any local templates installed');
+    return [];
 };

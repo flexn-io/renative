@@ -97,7 +97,9 @@
     "devDependencies": {
         "concurrently": "4.1.1",
         "lerna": "3.16.4",
-        "rnv": "file:./packages/rnv"
+        "rnv": "file:./packages/rnv",
+        "renative-template-hello-world": "file:./packages/renative-template-hello-world",
+        "renative-template-blank": "file:./packages/renative-template-blank"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

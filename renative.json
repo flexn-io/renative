@@ -64,9 +64,6 @@
                 }
             }
         }
-      },
-      "@reactseals/renative-template-chat": {
-        "version": "0.2.0"
       }
     },
     "currentTemplate": "renative-template-hello-world"
