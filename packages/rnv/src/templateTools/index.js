@@ -33,15 +33,22 @@ export const listTemplates = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const addTemplate = c => new Promise((resolve, reject) => {
+export const addTemplate = (c, opts) => new Promise((resolve, reject) => {
     logTask('addTemplate');
     const { maxErrorLength } = c.program;
 
-    executeAsync('npm install renative-template-hello-world --save-dev', { maxErrorLength })
-        .then(() => {
-            resolve();
-        })
-        .catch(error => logError(error));
+    c.files.project.config.templates = c.files.project.config.templates || {};
+
+    if (!c.files.project.config.templates[opts.selectedOption]) {
+        c.files.project.config.templates[opts.selectedOption] = {
+            version: 'latest'
+        };
+    }
+
+    writeObjectSync(c.paths.project.config, c.files.project.config);
+
+
+    resolve();
 });
 
 export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
@@ -161,8 +168,10 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
                 const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
                 const appConfig = readObjectSync(appConfigPath);
                 appConfig.common = appConfig.common || {};
-                appConfig.common.title = c.files.project.config?.defaults?.title;
-                appConfig.common.id = c.files.project.config?.defaults?.id;
+                if (!c.runtime.isWrapper) {
+                    appConfig.common.title = c.files.project.config?.defaults?.title;
+                    appConfig.common.id = c.files.project.config?.defaults?.id;
+                }
 
                 writeObjectSync(appConfigPath, appConfig);
             });

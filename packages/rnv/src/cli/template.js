@@ -75,7 +75,7 @@ const _templateAdd = c => new Promise((resolve, reject) => {
 
     askQuestion(`Pick which template to install : \n${opts.asString}`)
         .then(v => opts.pick(v))
-        .then(() => addTemplate())
+        .then(() => addTemplate(c, opts))
         .then(() => resolve())
         .catch(e => reject(e));
 });
