@@ -49,13 +49,13 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
 });
 
 const PATH_PROPS = [
-    'globalConfigFolder',
-    'appConfigsFolder',
-    'platformTemplatesFolder',
-    'entryFolder',
-    'platformAssetsFolder',
-    'platformBuildsFolder',
-    'projectConfigFolder',
+    { oldKey: 'globalConfigFolder', newKey: 'globalConfigDir' },
+    { oldKey: 'appConfigsFolder', newKey: 'appConfigsDir' },
+    { oldKey: 'platformTemplatesFolder', newKey: 'platformTemplatesDir' },
+    { oldKey: 'entryFolder', newKey: 'entryDir' },
+    { oldKey: 'platformAssetsFolder', newKey: 'platformAssetsDir' },
+    { oldKey: 'platformBuildsFolder', newKey: 'platformBuildsDir' },
+    { oldKey: 'projectConfigFolder', newKey: 'projectConfigDir' },
 ];
 
 
@@ -103,10 +103,12 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
 
         newConfig.paths = {};
         PATH_PROPS.forEach((v) => {
-            if (files.config[v]) {
-                newConfig.paths[v] = files.config[v];
+            if (files.config[v.oldKey]) {
+                newConfig.paths[v.newKey] = files.config[v.oldKey];
             }
         });
+        newConfig.paths.appConfigDirs = [newConfig.paths.appConfigDir];
+        delete newConfig.paths.appConfigDir;
 
         if (files.config.defaultPorts) {
             newConfig.defaults.ports = files.config.defaultPorts;

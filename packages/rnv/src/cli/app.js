@@ -223,13 +223,13 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
         const config = {
             projectName: data.projectName,
             paths: {
-                globalConfigFolder: '~/.rnv',
-                appConfigsFolder: './appConfigs',
-                platformTemplatesFolder: 'RNV_HOME/platformTemplates',
-                entryFolder: './',
-                platformAssetsFolder: './platformAssets',
-                platformBuildsFolder: './platformBuilds',
-                projectConfigFolder: './projectConfig'
+                globalConfigDir: '~/.rnv',
+                appConfigsDir: './appConfigs',
+                platformTemplatesDir: 'RNV_HOME/platformTemplates',
+                entryDir: './',
+                platformAssetsDir: './platformAssets',
+                platformBuildsDir: './platformBuilds',
+                projectConfigDir: './projectConfig'
             },
             defaults: {
                 title: data.appTitle,

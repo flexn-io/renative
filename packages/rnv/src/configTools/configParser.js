@@ -200,7 +200,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     if (!c.files.project.config) return resolve();
 
     // LOAD ~/.rnv/RENATIVE.*.JSON
-    _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig?.paths?.globalConfigFolder) || c.paths.GLOBAL_RNV_DIR);
+    _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig?.paths?.globalConfigDir) || c.paths.GLOBAL_RNV_DIR);
     _loadConfigFiles(c, c.files.private, c.paths.private);
 
     // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
@@ -210,7 +210,9 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
     c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
     c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
-    c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.paths?.appConfigsDir, 'appConfigsDir', c.paths.project.appConfigsDir);
+
+    _findAndSwitchAppConfigDir(c);
+
     c.runtime.isWrapper = c.buildConfig.isWrapper;
 
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
@@ -337,6 +339,8 @@ export const setAppConfig = (c, appId) => {
     c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
 
+    _findAndSwitchAppConfigDir(c, appId);
+
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
     _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
 
@@ -345,6 +349,21 @@ export const setAppConfig = (c, appId) => {
 
     generateBuildConfig(c);
     _generateLocalConfig(c);
+};
+
+const _findAndSwitchAppConfigDir = (c, appId) => {
+    logTask(`_findAndSwitchAppConfigDir:${appId}`);
+
+    c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.paths?.appConfigsDir, 'appConfigsDir', c.paths.project.appConfigsDir);
+    if (c.buildConfig.paths?.appConfigsDirs && appId) {
+        c.buildConfig.paths.appConfigsDirs.forEach((v) => {
+            const altPath = path.join(v, appId);
+            if (fs.existsSync(altPath)) {
+                logInfo(`Found config in following location: ${altPath}. Will use it`);
+                c.paths.project.appConfigsDir = v;
+            }
+        });
+    }
 };
 
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
@@ -458,22 +477,22 @@ const _generateLocalConfig = (c) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    const pt = c.buildConfig.platformTemplatesFolders || {};
-    const originalPath = c.buildConfig.platformTemplatesFolder || 'RNV_HOME/platformTemplates';
+    const pt = c.buildConfig.platformTemplatesDirs || {};
+    const originalPath = c.buildConfig.platformTemplatesDir || 'RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {
             result[v] = getRealPath(
                 c,
                 originalPath,
-                'platformTemplatesFolder',
+                'platformTemplatesDir',
                 originalPath,
             );
         } else {
             result[v] = getRealPath(
                 c,
                 pt[v],
-                'platformTemplatesFolder',
+                'platformTemplatesDir',
                 originalPath,
             );
         }
@@ -561,7 +580,7 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
 const _configureRnvGlobal = c => new Promise((resolve, reject) => {
     logTask('configureRnvGlobal');
-    // Check globalConfigFolder
+    // Check globalConfigDir
     if (fs.existsSync(c.paths.private.dir)) {
         console.log(`${c.paths.private.dir} folder exists!`);
     } else {

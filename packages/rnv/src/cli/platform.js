@@ -125,14 +125,14 @@ const _runEjectPlatforms = c => new Promise((resolve) => {
                     copyFolderContentsRecursiveSync(path.join(rptf, '_shared'), path.join(prf, ptfn, '_shared'));
                 }
 
-                c.buildConfig.platformTemplatesFolders = c.buildConfig.platformTemplatesFolders || {};
-                c.buildConfig.platformTemplatesFolders[v] = `./${ptfn}`;
+                c.buildConfig.platformTemplatesDirs = c.buildConfig.platformTemplatesDirs || {};
+                c.buildConfig.platformTemplatesDirs[v] = `./${ptfn}`;
 
                 writeObjectSync(c.paths.project.config, c.files.project.config);
             });
             logSuccess(
                 `${chalk.white(opts.selectedOptions.join(','))} platform templates are located in ${chalk.white(
-                    c.buildConfig.platformTemplatesFolders[opts.selectedOptions[0]]
+                    c.buildConfig.platformTemplatesDirs[opts.selectedOptions[0]]
                 )} now. You can edit them directly!`
             );
             resolve();
@@ -159,9 +159,9 @@ const _runConnectPlatforms = c => new Promise((resolve) => {
             opts.selectedOptions.forEach((v) => {
                 const ptfn = 'platformTemplates';
 
-                if (!c.buildConfig.platformTemplatesFolders) c.buildConfig.platformTemplatesFolders = {};
+                if (!c.buildConfig.platformTemplatesDirs) c.buildConfig.platformTemplatesDirs = {};
 
-                c.buildConfig.platformTemplatesFolders[v] = `RNV_HOME/${ptfn}`;
+                c.buildConfig.platformTemplatesDirs[v] = `RNV_HOME/${ptfn}`;
 
                 writeObjectSync(c.paths.project.config, c.files.project.config);
             });

@@ -356,7 +356,7 @@ const _getPrivateConfig = (c, platform) => {
         privateConfigFolder = path.join(c.paths.private.dir, c.files.project.package.name, 'appConfigs', c.buildConfig.id);
     }
     const appConfigSPP = c.buildConfig.platforms[platform] ? c.buildConfig.platforms[platform].signingPropertiesPath : null;
-    const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigFolder}', c.paths.private.dir) : null;
+    const appConfigSPPClean = appConfigSPP ? appConfigSPP.replace('{globalConfigDir}', c.paths.private.dir) : null;
     const privateConfigPath = appConfigSPPClean || path.join(privateConfigFolder, 'config.private.json');
     c.paths.privateConfigPath = privateConfigPath;
     c.paths.privateConfigDir = privateConfigPath.replace('/config.private.json', '');

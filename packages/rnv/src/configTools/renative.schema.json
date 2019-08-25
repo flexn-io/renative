@@ -39,26 +39,26 @@
     "title": "Renative Config",
     "type": "object",
     "properties": {
-        "globalConfigFolder": {
+        "globalConfigDir": {
             "type": "string",
             "description": "Path to global config folder"
         },
-        "platformTemplatesFolders": {
+        "platformTemplatesDirs": {
             "type": "object",
             "description": "Object with keys per each platform template path",
             "properties": {
 
             }
         },
-        "entryFolder": {
+        "entryDir": {
             "type": "string",
             "description": "TODO"
         },
-        "platformAssetsFolder": {
+        "platformAssetsDir": {
             "type": "string",
             "description": "TODO"
         },
-        "platformBuildsFolder": {
+        "platformBuildsDir": {
             "type": "string",
             "description": "TODO"
         },
@@ -66,11 +66,11 @@
             "type": "string",
             "description": "TODO"
         },
-        "projectConfigFolder": {
+        "projectConfigDir": {
             "type": "string",
             "description": "TODO"
         },
-        "platformTemplatesFolders": {
+        "platformTemplatesDirs": {
             "type": "object",
             "description": "TODO",
             "properties": {

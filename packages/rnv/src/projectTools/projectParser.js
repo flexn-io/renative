@@ -199,9 +199,9 @@ export const configureEntryPoints = (c) => {
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logTask('configureProject:check entry');
-    // if (!fs.existsSync(c.paths.entryFolder)) {
-    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
-    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryFolder);
+    // if (!fs.existsSync(c.paths.entryDir)) {
+    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
+    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryDir);
     // }
     let plat;
     const p = c.buildConfig.platforms;
