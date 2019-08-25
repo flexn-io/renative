@@ -14,9 +14,12 @@ import {
 } from '../../common';
 import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
+import { setAppConfig } from '../../configTools/configParser';
 
-export const updateProfile = c => new Promise((resolve, reject) => {
-    logTask('updateProfile', chalk.grey);
+export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) => {
+    logTask(`updateProfile:${appConfigId}`, chalk.grey);
+
+    if (appConfigId) setAppConfig(c, appConfigId);
 
     if (c.platform !== IOS && c.platform !== TVOS) {
         reject(`updateProfile:platform ${c.platform} not supported`);
