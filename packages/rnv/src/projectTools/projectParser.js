@@ -109,12 +109,19 @@ export const checkAndCreateGitignore = (c) => {
 
 export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('copyRuntimeAssets');
-    const aPath = path.join(c.paths.project.assets.dir, 'runtime');
-    const cPath = path.join(c.paths.appConfig.dir, 'assets/runtime');
-    copyFolderContentsRecursiveSync(cPath, aPath);
 
-    // copyFileSync(c.paths.appConfig.config, path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME));
-    // fs.writeFileSync(path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME), JSON.stringify(c.buildConfig, null, 2));
+    const destPath = path.join(c.paths.project.assets.dir, 'runtime');
+
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourcePath = path.join(v, 'assets/runtime');
+            copyFolderContentsRecursiveSync(sourcePath, destPath);
+        });
+    } else {
+        const sourcePath = path.join(c.paths.appConfig.dir, 'assets/runtime');
+        copyFolderContentsRecursiveSync(sourcePath, destPath);
+    }
 
     // FONTS
     let fontsObj = 'export default [';
