@@ -42,6 +42,7 @@ import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
+import { executeAsync } from '../systemTools/exec';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
@@ -195,6 +196,7 @@ const _runCreate = c => new Promise((resolve, reject) => {
 });
 
 const _generateProject = (c, data) => new Promise((resolve, reject) => {
+    logTask('_generateProject');
     finishQuestion();
     // data.defaultAppConfigId = `${data.projectName}Example`;
 
@@ -208,34 +210,46 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     mkdirSync(c.paths.project.dir);
 
-    const config = {
-        projectName: data.projectName,
-        paths: {
-            globalConfigFolder: '~/.rnv',
-            appConfigsFolder: './appConfigs',
-            platformTemplatesFolder: 'RNV_HOME/platformTemplates',
-            entryFolder: './',
-            platformAssetsFolder: './platformAssets',
-            platformBuildsFolder: './platformBuilds',
-            projectConfigFolder: './projectConfig'
-        },
-        defaults: {
-            title: data.appTitle,
-            id: data.appID,
-            template: data.defaultTemplate,
-            supportedPlatforms: data.optionPlatforms.valuesAsArray
-        }
-    };
+    const templates = {};
 
-    writeObjectSync(c.paths.project.config, config);
 
-    logSuccess(
-        `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
-            'rnv run -p web',
-        )} to see magic happen!`,
-    );
+    executeAsync(`npm show ${data.defaultTemplate} version`).then((v) => {
+        logTask(`_generateProject:${data.defaultTemplate}:${v}`, chalk.grey);
 
-    resolve();
+        templates[data.defaultTemplate] = {
+            version: v
+        };
+
+        const config = {
+            projectName: data.projectName,
+            paths: {
+                globalConfigFolder: '~/.rnv',
+                appConfigsFolder: './appConfigs',
+                platformTemplatesFolder: 'RNV_HOME/platformTemplates',
+                entryFolder: './',
+                platformAssetsFolder: './platformAssets',
+                platformBuildsFolder: './platformBuilds',
+                projectConfigFolder: './projectConfig'
+            },
+            defaults: {
+                title: data.appTitle,
+                id: data.appID,
+                supportedPlatforms: data.optionPlatforms.valuesAsArray
+            },
+            templates,
+            currentTemplate: data.defaultTemplate,
+        };
+
+        writeObjectSync(c.paths.project.config, config);
+
+        logSuccess(
+            `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
+                'rnv run -p web',
+            )} to see magic happen!`,
+        );
+
+        resolve();
+    }).catch(e => reject(e));
 });
 
 const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {

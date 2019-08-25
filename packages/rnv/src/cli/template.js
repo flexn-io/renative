@@ -63,7 +63,7 @@ const run = (c) => {
 
 const _templateList = c => new Promise((resolve, reject) => {
     logTask('_templateList');
-    listTemplates()
+    listTemplates(c)
         .then(() => resolve())
         .catch(e => reject(e));
 });

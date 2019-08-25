@@ -3,7 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import merge from 'deepmerge';
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
-import { executeAsync } from '../systemTools/exec';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
@@ -28,7 +27,7 @@ import { templates } from '../../renativeTemplates/templates.json';
 
 export const listTemplates = c => new Promise((resolve, reject) => {
     logTask('listTemplates');
-    const opts = generateOptions(templates);
+    const opts = getTemplateOptions(c);
     console.log(opts.asString);
     resolve();
 });
