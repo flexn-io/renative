@@ -1,0 +1,1 @@
+this is example if injecting appConfig file into platformBuilds project!

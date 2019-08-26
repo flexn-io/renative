@@ -95,6 +95,7 @@
         "renative": "file:./packages/renative"
     },
     "devDependencies": {
+        "app-icon": "^0.13.0",
         "concurrently": "4.1.1",
         "lerna": "latest",
         "renative-template-blank": "file:./packages/renative-template-blank",

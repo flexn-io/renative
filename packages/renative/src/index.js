@@ -1,6 +1,7 @@
 import Icon from './Icon';
 import Button from './Button';
 import Api from './Api';
+import History from './History';
 import { createNavigator, createNavigatorView, createApp } from './Navigation';
 import { createSideMenuNavigator, SideMenu, createTabNavigator } from './Navigation/menuNavigator';
 import registerServiceWorker from './registerServiceWorker';
@@ -55,6 +56,7 @@ export {
     Icon,
     Button,
     Api,
+    History,
     createNavigator,
     createNavigatorView,
     createApp,
