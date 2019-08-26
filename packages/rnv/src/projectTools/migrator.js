@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
+import chalk from 'chalk';
 
 import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
-import { logWarning, logTask, logDebug, logSuccess } from '../systemTools/logger';
+import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTools/logger';
 import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
 import { cleanProjectModules } from '../systemTools/cleaner';
@@ -16,6 +17,9 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
     const paths = {
         project: prjDir,
         globalConfig: path.join(c.paths.GLOBAL_RNV_DIR, 'config.json'),
+        // privateProjectConfig: path.join(c.paths.private.project.dir, 'config.json'),
+        // privateProjectConfig2: path.join(c.paths.private.project.dir, 'config.private.json'),
+        // privateProjectConfigNew: path.join(c.paths.private.project.dir, 'renative.private.json'),
         config: path.join(prjDir, 'rnv-config.json'),
         configNew: path.join(prjDir, 'renative.json'),
         package: path.join(prjDir, 'package.json'),
@@ -36,6 +40,7 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
                 if (v === 'y') {
                     c.program.reset = true;
                     _migrateProject(c, paths)
+                        .then(() => _migrateProjectSoft(c, paths))
                         .then(() => cleanProjectModules(c))
                         .then(() => configureNodeModules(c))
                         .then(() => resolve())
@@ -46,7 +51,7 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
             })
             .catch(e => reject(e));
     } else {
-        return _migrateProjectSoft(c, paths).then(() => resolve()).catch(e => reject(e));
+        _migrateProjectSoft(c, paths).then(() => resolve()).catch(e => reject(e));
     }
 });
 
@@ -62,23 +67,43 @@ const PATH_PROPS = [
 
 const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
     logTask('_migrateProjectSoft');
-    const files = {
-        configNew: readObjectSync(paths.configNew)
-    };
 
-    if (files.configNew?.paths) {
-        PATH_PROPS.forEach((v) => {
-            if (files.configNew.paths[v.oldKey]) {
-                logWarning(`You use old key ${chalk.white(v.oldKey)} instead of new one: ${chalk.white(v.newKey)}. ReNative will try to fix it for you!`);
-                files.configNew.paths[v.newKey] = files.configNew.paths[v.oldKey];
-            }
-        });
+    try {
+        let requiresSave = false;
+        const files = {
+            configNew: readObjectSync(paths.configNew),
+            // privateProjectConfig: readObjectSync(paths.privateProjectConfig),
+        };
+
+        if (files.configNew?.paths) {
+            PATH_PROPS.forEach((v) => {
+                if (files.configNew.paths[v.oldKey]) {
+                    logWarning(`You use old key ${chalk.white(v.oldKey)} instead of new one: ${chalk.white(v.newKey)}. ReNative will try to fix it for you!`);
+                    files.configNew.paths[v.newKey] = files.configNew.paths[v.oldKey];
+                    delete files.configNew.paths[v.oldKey];
+                    requiresSave = true;
+                }
+            });
+        }
+        if (requiresSave) writeObjectSync(paths.configNew, files.configNew);
+
+        // _migrateFile(paths.privateProjectConfig, paths.privateProjectConfigNew);
+        // _migrateFile(paths.privateProjectConfig2, paths.privateProjectConfigNew);
+    } catch (e) {
+        logError(`Migration not successfull. ${e}`);
     }
-    writeFileSync(paths.configNew, files.configNew);
 
     resolve();
 });
 
+const _migrateFile = (oldPath, newPath) => {
+    if (!fs.existsSync(newPath)) {
+        if (fs.existsSync(oldPath)) {
+            logWarning(`Found old app config at ${chalk.white(oldPath)}. will copy to ${chalk.white(newPath)}`);
+        }
+        copyFileSync(oldPath, newPath);
+    }
+};
 
 const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
     logTask('MIGRATION STARTED');

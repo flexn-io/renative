@@ -326,6 +326,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
         loadFile(fileObj, pathObj, 'configBase');
     }
 
+
     generateBuildConfig(c);
     return result;
 };

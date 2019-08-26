@@ -501,7 +501,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const parseErrorMessage = (text, maxErrorLength = 200) => {
+export const parseErrorMessage = (text, maxErrorLength = 400) => {
     const errors = [];
     const toSearch = /(exception|error|fatal|\[!])/i;
 
