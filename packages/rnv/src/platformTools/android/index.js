@@ -685,26 +685,26 @@ const _checkSigningCerts = c => new Promise((resolve, reject) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
 
-    if (signingConfig === 'Release' && !c.files.privateConfig) {
-        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.privateConfigPath)} yet.`);
+    if (signingConfig === 'Release' && !c.files.private.appConfig.configPrivate) {
+        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.private.appConfig.dir)} yet.`);
         askQuestion('Do you want to configure it now? (y)')
             .then((v) => {
                 const sc = {};
                 if (v === 'y') {
-                    askQuestion(`Paste asolute or relative path to ${chalk.white(c.paths.privateConfigDir)} of your existing ${chalk.white('release.keystore')} file.`, sc, 'storeFile')
+                    askQuestion(`Paste asolute or relative path to ${chalk.white(c.paths.private.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file.`, sc, 'storeFile')
                         .then(() => askQuestion('storePassword', sc, 'storePassword'))
                         .then(() => askQuestion('keyAlias', sc, 'keyAlias'))
                         .then(() => askQuestion('keyPassword', sc, 'keyPassword'))
                         .then(() => {
                             finishQuestion();
-                            if (c.paths.privateConfigDir) {
-                                mkdirSync(c.paths.privateConfigDir);
-                                c.files.privateConfig = {
+                            if (c.paths.private.appConfig.dir) {
+                                mkdirSync(c.paths.private.appConfig.dir);
+                                c.files.private.appConfig.configPrivate = {
                                     android: sc
                                 };
                             }
-                            fs.writeFileSync(c.paths.privateConfigPath, JSON.stringify(c.files.privateConfig, null, 2));
-                            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.privateConfigPath)}.`);
+                            fs.writeFileSync(c.paths.private.appConfig.dir, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
+                            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.private.appConfig.dir)}.`);
                             resolve();
                         });
                 } else {
