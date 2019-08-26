@@ -9,6 +9,7 @@ import { cleanProjectModules } from '../systemTools/cleaner';
 import { configureNodeModules } from './projectParser';
 
 export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
+    logTask('checkAndMigrateProject');
     const prjDir = c.paths.project.dir;
 
 
@@ -16,6 +17,7 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
         project: prjDir,
         globalConfig: path.join(c.paths.GLOBAL_RNV_DIR, 'config.json'),
         config: path.join(prjDir, 'rnv-config.json'),
+        configNew: path.join(prjDir, 'renative.json'),
         package: path.join(prjDir, 'package.json'),
         plugins: path.join(prjDir, 'projectConfig/plugins.json'),
         permissions: path.join(prjDir, 'projectConfig/permissions.json'),
@@ -44,7 +46,7 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
             })
             .catch(e => reject(e));
     } else {
-        return resolve();
+        return _migrateProjectSoft(c, paths).then(() => resolve()).catch(e => reject(e));
     }
 });
 
@@ -57,6 +59,25 @@ const PATH_PROPS = [
     { oldKey: 'platformBuildsFolder', newKey: 'platformBuildsDir' },
     { oldKey: 'projectConfigFolder', newKey: 'projectConfigDir' },
 ];
+
+const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
+    logTask('_migrateProjectSoft');
+    const files = {
+        configNew: readObjectSync(paths.configNew)
+    };
+
+    if (files.configNew?.paths) {
+        PATH_PROPS.forEach((v) => {
+            if (files.configNew.paths[v.oldKey]) {
+                logWarning(`You use old key ${chalk.white(v.oldKey)} instead of new one: ${chalk.white(v.newKey)}. ReNative will try to fix it for you!`);
+                files.configNew.paths[v.newKey] = files.configNew.paths[v.oldKey];
+            }
+        });
+    }
+    writeFileSync(paths.configNew, files.configNew);
+
+    resolve();
+});
 
 
 const _migrateProject = (c, paths) => new Promise((resolve, reject) => {

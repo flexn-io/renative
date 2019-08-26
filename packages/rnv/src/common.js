@@ -56,7 +56,8 @@ export const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
     if (NO_OP_COMMANDS.includes(c.command)) {
-        parseRenativeConfigs(c)
+        checkAndMigrateProject(c)
+            .then(() => parseRenativeConfigs(c))
             .then(() => configureRnvGlobal(c))
             .then(() => resolve(c))
             .catch(e => reject(c));
