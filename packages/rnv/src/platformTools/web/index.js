@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import shell from 'shelljs';
 import chalk from 'chalk';
 import open from 'open';
 import ip from 'ip';
@@ -16,7 +15,6 @@ import {
     resolveNodeModulePath,
     getConfigProp,
     logSuccess,
-    logDebug,
 } from '../../common';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
@@ -182,20 +180,17 @@ const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Prom
     resolve();
 });
 
-const runWebDevServer = (c, platform, port, async) => new Promise((resolve, reject) => {
+const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWebDevServer:${platform}`);
+    const { maxErrorLength } = c.program;
 
     const appFolder = getAppFolder(c, platform);
     const wpPublic = path.join(appFolder, 'public');
     const wpConfig = path.join(appFolder, 'webpack.config.js');
 
     _generateWebpackConfigs(c);
-    const wds = resolveNodeModulePath(c, 'webpack-dev-server/bin/webpack-dev-server.js');
-    const command = `node ${wds} -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
-    logDebug('Running:', command);
-
-    shell.exec(command, { async });
-    resolve();
+    const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
+    return executeAsync(command, { maxErrorLength, stdio: 'inherit', silent: true });
 });
 
 const deployWeb = (c, platform) => new Promise((resolve, reject) => {

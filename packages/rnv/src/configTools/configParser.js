@@ -2,20 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import merge from 'deepmerge';
+import inquirer from 'inquirer';
 import {
-    IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    TIZEN_MOBILE,
-    KAIOS,
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_AVDMANAGER,
     CLI_ANDROID_SDKMANAGER,
@@ -28,18 +16,8 @@ import {
     CLI_WEBOS_ARES_INSTALL,
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
-    FORM_FACTOR_MOBILE,
-    FORM_FACTOR_DESKTOP,
-    FORM_FACTOR_WATCH,
-    FORM_FACTOR_TV,
-    ANDROID_SDK,
     CLI_WEBOS_ARES_SETUP_DEVICE,
     CLI_WEBOS_ARES_DEVICE_INFO,
-    TIZEN_SDK,
-    WEBOS_SDK,
-    KAIOS_SDK,
-    FIREFOX_OS,
-    FIREFOX_TV,
     RENATIVE_CONFIG_NAME,
     RENATIVE_CONFIG_PRIVATE_NAME,
     RENATIVE_CONFIG_LOCAL_NAME,
@@ -481,17 +459,12 @@ const _generatePlatformTemplatePaths = (c) => {
     return result;
 };
 
-export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) => {
+export const updateConfig = async (c, appConfigId) => {
     logTask(`updateConfig:${appConfigId}`);
 
     setAppConfig(c, appConfigId);
 
     if (!fs.existsSync(c.paths.appConfig.dir)) {
-        const readline = require('readline').createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-
         const configDirs = listAppConfigsFoldersSync(c);
 
 
@@ -504,43 +477,37 @@ export const updateConfig = (c, appConfigId) => new Promise((resolve, reject) =>
         }
 
         if (configDirs.length) {
-            let opts = '';
-            configDirs.forEach((v, i) => {
-                opts += `(${chalk.white(i)}) ${chalk.white(v)}\n`;
+            const { conf } = await inquirer.prompt({
+                name: 'conf',
+                type: 'list',
+                message: 'ReNative found existing appConfigs. Which one would you like to pick?',
+                choices: configDirs
             });
 
-            readline.question(
-                getQuestion(`ReNative found existing appConfigs. which one would you like to pick (pick number)?:\n${opts}`),
-                (v) => {
-                    if (configDirs[v]) {
-                        setAppConfig(c, configDirs[v]);
-                        resolve();
-                    } else {
-                        reject('Wrong option!');
-                    }
-                },
-            );
-        } else {
-            readline.question(
-                getQuestion(
-                    `Do you want ReNative to create new sample appConfig (${chalk.white(
-                        appConfigId,
-                    )}) for you? (y) to confirm`,
-                ),
-                (v) => {
-                    setAppConfig(c, SAMPLE_APP_ID);
-                    copyFolderContentsRecursiveSync(
-                        path.join(c.paths.rnv.dir, 'appConfigs', SAMPLE_APP_ID),
-                        path.join(c.paths.appConfig.dir),
-                    );
-                    resolve();
-                },
-            );
+            if (conf) {
+                setAppConfig(c, conf);
+                return true;
+            }
         }
-    } else {
-        resolve();
+        const { conf } = await inquirer.prompt({
+            name: 'conf',
+            type: 'confirm',
+            message: `Do you want ReNative to create new sample appConfig (${chalk.white(
+                appConfigId,
+            )}) for you?`,
+        });
+
+        if (conf) {
+            setAppConfig(c, SAMPLE_APP_ID);
+            copyFolderContentsRecursiveSync(
+                path.join(c.paths.rnv.dir, 'appConfigs', SAMPLE_APP_ID),
+                path.join(c.paths.appConfig.dir),
+            );
+            return true;
+        }
     }
-});
+    return true;
+};
 
 export const listAppConfigsFoldersSync = (c) => {
     const configDirs = [];

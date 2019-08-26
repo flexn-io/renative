@@ -36,7 +36,7 @@ import {
     parseRenativeConfigs, createRnvConfig, updateConfig, gatherInfo,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
-import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
+import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
