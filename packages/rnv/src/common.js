@@ -505,7 +505,7 @@ export const parseErrorMessage = (text, maxErrorLength = 200) => {
     const toSearch = /(exception|error|fatal|\[!])/i;
 
     const extractError = (t) => {
-        const errorFound = t.search(toSearch);
+        const errorFound = t ? t.search(toSearch) : -1;
         if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
         const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
         let extractedError = usefulString.substring(0, maxErrorLength);
