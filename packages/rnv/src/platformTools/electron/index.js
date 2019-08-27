@@ -2,8 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import { spawn } from 'child_process';
-import { createPlatformBuild } from '../cli/platform';
-import { executeAsync } from '../systemTools/exec';
+import { createPlatformBuild } from '../../cli/platform';
+import { executeAsync } from '../../systemTools/exec';
 import {
     isPlatformSupportedSync,
     getConfig,
@@ -26,27 +26,25 @@ import {
     getAppLicense,
     logWarning,
     logSuccess,
-    copyBuildsFolder,
     getConfigProp,
     checkPortInUse,
     logInfo,
     resolveNodeModulePath
-} from '../common';
-import { MACOS } from '../constants';
-import { buildWeb, runWeb, runWebDevServer } from './web';
+} from '../../common';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
+import { MACOS } from '../../constants';
+import { buildWeb, runWeb, runWebDevServer } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync
-} from '../systemTools/fileutils';
+} from '../../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
 
 const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureElectronProject:${platform}`);
 
-    // configureIfRequired(c, platform)
-    //     .then(() => configureProject(c, platform))
-    copyElectronAssets(c, platform)
+    copyAssetsFolder(c, platform, platform === MACOS ? _generateICNS : null)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
@@ -117,23 +115,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
 
     resolve();
-});
-
-const copyElectronAssets = (c, platform) => new Promise((resolve) => {
-    logTask(`copyElectronAssets:${platform}`);
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-
-    if (platform === MACOS) {
-        _generateICNS(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        const destPath = path.join(getAppFolder(c, platform), 'resources');
-        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}/resources`);
-        copyFolderContentsRecursiveSync(sourcePath, destPath);
-        resolve();
-    }
 });
 
 const buildElectron = (c, platform) => new Promise((resolve, reject) => {

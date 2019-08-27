@@ -38,12 +38,12 @@ export const logWelcome = () => {
 │                                                                              │
 `);
 
-    if (_c?.files?.rnvPackage?.version) {
+    if (_c?.files?.rnv?.package?.version) {
         _c.rnvVersion = _c.files.rnv.package.version;
         str += printIntoBox(`      Version: ${chalk.green(_c.rnvVersion)}`, 1);
         if (_c.rnvVersion.includes('alpha')) {
-            str += printIntoBox(`      ${chalk.yellow('WARNING: this is a prerelease version. use "npm install rnv" for stable one.')}`, 1);
-            str += '\n';
+            str += printIntoBox(`      ${chalk.yellow('WARNING: this is a prerelease version.')}`, 1);
+            str += printIntoBox(`      ${chalk.yellow('Use "npm install rnv" for stable one.')}`, 1);
         }
     }
     str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
@@ -195,7 +195,8 @@ export const setCurrentJob = (job) => {
 
 export const logTask = (task, customChalk) => {
     const ch = customChalk || chalk.green;
-    console.log(ch(`${RNV} - ${task} - Starting!`));
+    const postMsg = customChalk ? '' : ' - Starting!';
+    console.log(ch(`${RNV} - ${task}${postMsg}`));
 };
 
 export const logWarning = (msg) => {
@@ -299,7 +300,7 @@ export const printArrIntoBox = (arr, prefix = '') => {
 export const printBoxStart = (str, str2) => {
     let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
-    output += printIntoBox(str2);
+    output += printIntoBox(str2 || '');
     output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
     return output;
 };

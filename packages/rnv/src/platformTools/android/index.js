@@ -9,14 +9,13 @@ import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI, executeTelnet } from '../systemTools/exec';
-import { createPlatformBuild } from '../cli/platform';
+import { executeAsync, execCLI, executeTelnet } from '../../systemTools/exec';
+import { createPlatformBuild } from '../../cli/platform';
 import {
     logTask,
     logError,
     getAppFolder,
     isPlatformActive,
-    copyBuildsFolder,
     getAppTemplateFolder,
     logWarning,
     logDebug,
@@ -24,18 +23,20 @@ import {
     logInfo,
     logSuccess,
     waitForEmulator,
-} from '../common';
-import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../systemTools/prompt';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
-import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../constants';
-import { parsePlugins } from '../pluginTools';
-import { parseAndroidManifestSync, injectPluginManifestSync } from './android/manifestParser';
-import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './android/kotlinParser';
+    getAppId
+} from '../../common';
+import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../../systemTools/prompt';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../../systemTools/fileutils';
+import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
+import { parsePlugins } from '../../pluginTools';
+import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
+import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './kotlinParser';
 import {
     parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
     parseGradlePropertiesSync, injectPluginGradleSync
-} from './android/gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './android/xmlValuesParser';
+} from './gradleParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
 
 const readline = require('readline');
 
@@ -102,14 +103,16 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     return Promise.reject('No simulator -t target name specified!');
 };
 
-const listAndroidTargets = (c) => {
+const listAndroidTargets = async (c) => {
     logTask('listAndroidTargets');
     const { program: { device } } = c;
-    return _listAndroidTargets(c, false, device, device).then(list => composeDevicesString(list)).then((devices) => {
-        console.log(devices);
-        if (devices.trim() === '') console.log('No devices found');
-        return devices;
-    });
+
+    await resetAdb(c);
+    const list = await _listAndroidTargets(c, false, device, device);
+    const devices = await composeDevicesString(list);
+    console.log(devices);
+    if (devices.trim() === '') console.log('No devices found');
+    return devices;
 };
 
 const _getDeviceString = (device, i) => {
@@ -130,6 +133,12 @@ const _getDeviceString = (device, i) => {
     return `-[${i + 1}] ${deviceString}\n`;
 };
 
+const resetAdb = async (c) => {
+    const { maxErrorLength } = c.program;
+    await execCLI(c, CLI_ANDROID_ADB, 'kill-server', { maxErrorLength });
+    await execCLI(c, CLI_ANDROID_ADB, 'start-server', { maxErrorLength });
+};
+
 const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask(`_listAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`);
     const { maxErrorLength } = c.program;
@@ -137,9 +146,6 @@ const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false)
     try {
         let devicesResult;
         let avdResult;
-
-        await execCLI(c, CLI_ANDROID_ADB, 'kill-server', { maxErrorLength });
-        await execCLI(c, CLI_ANDROID_ADB, 'start-server', { maxErrorLength });
 
         if (!skipDevices) {
             devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l', { maxErrorLength });
@@ -195,6 +201,10 @@ const decideIfTVRunning = async (c, device) => {
     const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
     const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
     const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
+    const hdmi = await getRunningDeviceProp(c, udid, 'init.svc.hdmi');
+    const modelGroup = await getRunningDeviceProp(c, udid, 'ro.nrdp.modelgroup');
+    const configuration = await getRunningDeviceProp(c, udid, 'ro.build.configuration');
+    const cecEnabled = await getRunningDeviceProp(c, udid, 'persist.sys.cec.enabled');
 
     let isTV = false;
     [mod, name, flavor, description, model, product].forEach((string) => {
@@ -202,6 +212,10 @@ const decideIfTVRunning = async (c, device) => {
     });
 
     if (model.includes('SHIELD')) isTV = true;
+    if (hdmi) isTV = true;
+    if (modelGroup && modelGroup.toLowerCase().includes('firetv')) isTV = true;
+    if (configuration === 'tv') isTV = true;
+    if (cecEnabled) isTV = true;
 
     return isTV;
 };
@@ -364,6 +378,7 @@ const connectToWifiDevice = async (c, ip) => {
 const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices = [];
+    const { skipTargetCheck } = c.program;
 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
@@ -443,6 +458,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         .then(devicesArray => devicesArray.filter((device) => {
             // filter devices based on selected platform
             const { platform } = c;
+            if (skipTargetCheck) return true; // return everything if skipTargetCheck is used
             const matches = (platform === ANDROID && device.isTablet) || (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', { device, matches, platform });
             return matches;
@@ -499,16 +515,6 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
         .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k system-images;android-${apiVersion};${emuPlatform};x86`, { maxErrorLength }))
         .catch(e => logError(e, true));
 };
-
-const copyAndroidAssets = (c, platform) => new Promise((resolve) => {
-    logTask('copyAndroidAssets');
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    const destPath = path.join(getAppFolder(c, platform), 'app/src/main/res');
-    const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}/res`);
-    copyFolderContentsRecursiveSync(sourcePath, destPath);
-    resolve();
-});
 
 // let _workerTimer;
 // const _workerLogger = () => {
@@ -579,6 +585,8 @@ const _runGradle = async (c, platform) => {
     if (outputAab) return _runGradleApp(c, platform, {});
 
     const { target } = c.program;
+
+    await resetAdb(c);
 
     if (target && net.isIP(target)) {
         await connectToWifiDevice(c, target);
@@ -694,26 +702,26 @@ const _checkSigningCerts = c => new Promise((resolve, reject) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
 
-    if (signingConfig === 'Release' && !c.files.privateConfig) {
-        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.privateConfigPath)} yet.`);
+    if (signingConfig === 'Release' && !c.files.private.appConfig.configPrivate) {
+        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.private.appConfig.dir)} yet.`);
         askQuestion('Do you want to configure it now? (y)')
             .then((v) => {
                 const sc = {};
                 if (v === 'y') {
-                    askQuestion(`Paste asolute or relative path to ${chalk.white(c.paths.privateConfigDir)} of your existing ${chalk.white('release.keystore')} file.`, sc, 'storeFile')
+                    askQuestion(`Paste asolute or relative path to ${chalk.white(c.paths.private.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file.`, sc, 'storeFile')
                         .then(() => askQuestion('storePassword', sc, 'storePassword'))
                         .then(() => askQuestion('keyAlias', sc, 'keyAlias'))
                         .then(() => askQuestion('keyPassword', sc, 'keyPassword'))
                         .then(() => {
                             finishQuestion();
-                            if (c.paths.privateConfigDir) {
-                                mkdirSync(c.paths.privateConfigDir);
-                                c.files.privateConfig = {
+                            if (c.paths.private.appConfig.dir) {
+                                mkdirSync(c.paths.private.appConfig.dir);
+                                c.files.private.appConfig.configPrivate = {
                                     android: sc
                                 };
                             }
-                            fs.writeFileSync(c.paths.privateConfigPath, JSON.stringify(c.files.privateConfig, null, 2));
-                            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.privateConfigPath)}.`);
+                            fs.writeFileSync(c.paths.private.appConfig.dir, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
+                            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.private.appConfig.dir)}.`);
                             resolve();
                         });
                 } else {
@@ -730,7 +738,7 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
     const appFolder = getAppFolder(c, platform);
-    const bundleId = getConfigProp(c, platform, 'id');
+    const bundleId = getAppId(c, platform);
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
     const { arch, name } = device;
@@ -809,7 +817,7 @@ const configureGradleProject = (c, platform) => new Promise((resolve, reject) =>
     if (!isPlatformActive(c, platform, resolve)) return;
 
 
-    copyAndroidAssets(c, platform)
+    copyAssetsFolder(c, platform)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => configureAndroidProperties(c, platform))
         .then(() => configureProject(c, platform))
@@ -930,7 +938,6 @@ const runAndroidLog = c => new Promise(() => {
 });
 
 export {
-    copyAndroidAssets,
     configureGradleProject,
     launchAndroidSimulator,
     buildAndroid,

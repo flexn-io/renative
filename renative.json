@@ -6,19 +6,22 @@
     "globalProfile": "rnv",
     "isWrapper": true,
     "paths": {
-        "globalConfigFolder": "~/.rnv",
-        "appConfigsFolder": "./appConfigs",
-        "platformTemplatesFolder": "RNV_HOME/platformTemplates",
-        "entryFolder": "./",
-        "platformAssetsFolder": "./platformAssets",
-        "platformBuildsFolder": "./platformBuilds",
-        "projectConfigFolder": "./projectConfig"
+        "globalConfigDir": "~/.rnv",
+        "appConfigsDir": "./appConfigs",
+        "platformTemplatesDir": "RNV_HOME/platformTemplates",
+        "entryDir": "./",
+        "platformAssetsDir": "./platformAssets",
+        "platformBuildsDir": "./platformBuilds",
+        "projectConfigDir": "./projectConfig"
     },
     "defaults": {
         "ports": {
-            "ios": "9091"
+            "ios": "9081",
+            "android": "9081",
+            "androidtv": "9081",
+            "tvos": "9081",
+            "web": "9080"
         },
-        "template": "renative-template-hello-world",
         "supportedPlatforms": [
             "ios",
             "android",
@@ -45,64 +48,27 @@
 
         }
     },
-    "plugins": {
-        "renative": {
-            "version": "file:./packages/renative",
-            "webpack": {
-                "modulePaths": [],
-                "moduleAliases": {
-                    "renative": {
-                        "projectPath": "packages/renative"
-                    }
+    "templates": {
+      "renative-template-hello-world": {
+        "version": "file:./packages/renative-template-hello-world",
+        "webpack": {
+            "moduleAliases": {
+                "renative": {
+                    "projectPath": "packages/renative-template-hello-world"
                 }
             }
-        },
-        "react": "source:rnv",
-        "react-art": "source:rnv",
-        "react-dom": "source:rnv",
-        "react-native": "source:rnv",
-        "react-native-web": "source:rnv",
-        "react-native-web-image-loader": "source:rnv",
-        "react-native-gesture-handler": "source:rnv",
-        "react-navigation": "source:rnv",
-        "react-navigation-tabs": "source:rnv",
-        "react-native-reanimated": "source:rnv",
-        "react-native-vector-icons": "source:rnv"
-    },
-    "platforms": {
-        "android": {
-            "gradle.properties": {
-                "android.useDeprecatedNdk": true
-            },
-            "BuildGradle": {
-                "dexOptions": {
-                    "javaMaxHeapSize": "'4g'"
+        }
+      },
+      "renative-template-blank": {
+        "version": "file:./packages/renative-template-blank",
+        "webpack": {
+            "moduleAliases": {
+                "renative": {
+                    "projectPath": "packages/renative-template-blank"
                 }
-            },
-            "AndroidManifest": {
-                "children": [{
-                    "tag": "application",
-                    "android:name": ".MainApplication",
-                    "android:allowBackup": true,
-                    "android:largeHeap": true,
-                    "android:usesCleartextTraffic": true,
-                    "tools:targetApi": 28
-                }]
             }
         }
-    },
-    "permissions": {
-        "ios": {},
-        "android": {
-            "INTERNET": {
-                "key": "android.permission.INTERNET",
-                "security": "normal"
-            },
-            "SYSTEM_ALERT_WINDOW": {
-                "key": "android.permission.SYSTEM_ALERT_WINDOW",
-                "security": "signature"
-            }
-        }
+      }
     },
     "currentTemplate": "renative-template-hello-world"
 }

@@ -1,3 +1,32 @@
-# API Reference for ReNative Templates
+# Documentation for ReNative Templates
 
-TODO
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_templates.png?raw=true" width=50 height=50 />
+
+## Templates / Starters
+
+#### Built-in
+
+Hello World:
+
+https://www.npmjs.com/package/renative-template-hello-world
+
+Blank:
+
+https://www.npmjs.com/package/renative-template-blank
+
+#### Community
+
+Chat App:
+
+https://www.npmjs.com/package/@reactseals/renative-template-chat
+
+
+## CLI
+
+`rnv template list` - list available and installed templated in your project
+
+`rnv template add` - add template to your project
+
+`rnv template apply` - apply one of the installed templates to your project

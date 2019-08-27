@@ -104,6 +104,6 @@ export const askQuestion = (question, obj, key) => new Promise((resolve, reject)
 export const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
 
 export const finishQuestion = () => new Promise((resolve, reject) => {
-    _currentQuestion.close();
+    _currentQuestion && _currentQuestion.close();
     _currentQuestion = null;
 });

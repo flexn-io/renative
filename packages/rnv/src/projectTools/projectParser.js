@@ -50,7 +50,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
-import { isPlatformActive, getAppFolder, getBuildsFolder } from '../common';
+import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
@@ -109,12 +109,19 @@ export const checkAndCreateGitignore = (c) => {
 
 export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     logTask('copyRuntimeAssets');
-    const aPath = path.join(c.paths.project.assets.dir, 'runtime');
-    const cPath = path.join(c.paths.appConfig.dir, 'assets/runtime');
-    copyFolderContentsRecursiveSync(cPath, aPath);
 
-    // copyFileSync(c.paths.appConfig.config, path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME));
-    // fs.writeFileSync(path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_NAME), JSON.stringify(c.buildConfig, null, 2));
+    const destPath = path.join(c.paths.project.assets.dir, 'runtime');
+
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourcePath = path.join(v, 'assets/runtime');
+            copyFolderContentsRecursiveSync(sourcePath, destPath);
+        });
+    } else {
+        const sourcePath = path.join(c.paths.appConfig.dir, 'assets/runtime');
+        copyFolderContentsRecursiveSync(sourcePath, destPath);
+    }
 
     // FONTS
     let fontsObj = 'export default [';
@@ -154,6 +161,9 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     }
 
     fontsObj += '];';
+    if (fs.existsSync(c.paths.project.assets.runtimeDir)) {
+        mkdirSync(c.paths.project.assets.runtimeDir);
+    }
     fs.writeFileSync(path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js'), fontsObj);
     const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
     copyFileSync(
@@ -189,30 +199,78 @@ export const configureEntryPoints = (c) => {
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logTask('configureProject:check entry');
-    // if (!fs.existsSync(c.paths.entryFolder)) {
-    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryFolder)} is missing! Let's create one for you.`);
-    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryFolder);
+    // if (!fs.existsSync(c.paths.entryDir)) {
+    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
+    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryDir);
     // }
     let plat;
     const p = c.buildConfig.platforms;
+    const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;
     for (const k in p) {
-        plat = p[k];
-        const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
-        const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
-        const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
-        if (!fs.existsSync(dest)) {
-            if (!plat.entryFile) {
-                logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
-            } else if (!fs.existsSync(source)) {
-                logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
-                copyFileSync(backupSource, dest);
-            } else {
-                logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
-                copyFileSync(source, dest);
+        if (supportedPlatforms && supportedPlatforms.includes(k) || !supportedPlatforms) {
+            plat = p[k];
+            const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
+            const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
+            const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
+            if (!fs.existsSync(dest)) {
+                if (!plat.entryFile) {
+                    logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
+                } else if (!fs.existsSync(source)) {
+                    logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                    copyFileSync(backupSource, dest);
+                } else {
+                    logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                    copyFileSync(source, dest);
+                }
             }
+        } else {
+            logWarning(`Extra platform ${chalk.white(k)} will be ignored because it's not configured in your ${chalk.white('./renative.json: { defaults.supportedPlatforms }')} object.`);
         }
     }
 };
+
+const ASSET_PATH_ALIASES = {
+    android: 'app/src/main',
+    androidtv: 'app/src/main',
+    androidwear: 'app/src/main',
+    ios: '',
+    tvos: '',
+    tizen: '',
+    tizenmobile: '',
+    tizenwatch: '',
+    webos: 'public',
+    kaios: '',
+    firefoxtv: '',
+    firefoxos: ''
+};
+
+export const copyAssetsFolder = (c, platform, customFn) => new Promise((resolve, reject) => {
+    logTask(`copyAssetsFolder:${platform}`);
+
+    if (!isPlatformActive(c, platform, resolve)) return;
+
+    if (customFn) {
+        customFn(c, platform)
+            .then(v => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    const destPath = path.join(getAppSubFolder(c, platform), ASSET_PATH_ALIASES[platform]);
+
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourcePath = path.join(v, `assets/${platform}`);
+            copyFolderContentsRecursiveSync(sourcePath, destPath);
+        });
+    } else {
+        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
+        copyFolderContentsRecursiveSync(sourcePath, destPath);
+    }
+
+    resolve();
+});
 
 export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     logTask(`copyBuildsFolder:${platform}`);
@@ -228,9 +286,15 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     const sourcePath1sec = getBuildsFolder(c, platform, c.paths.private.project.projectConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
 
-    // FOLDER MERGERS FROM APP CONFIG
-    const sourcePath0 = getBuildsFolder(c, platform, c.paths.appConfig.dir);
-    copyFolderContentsRecursiveSync(sourcePath0, destPath, c.paths.appConfig.dir);
+    // FOLDER MERGERS FROM APP CONFIG + EXTEND
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const sourceV = getBuildsFolder(c, platform, v);
+            copyFolderContentsRecursiveSync(sourceV, destPath, c.paths.appConfig.dir);
+        });
+    } else {
+        copyFolderContentsRecursiveSync(getBuildsFolder(c, platform, c.paths.appConfig.dir), destPath, c.paths.appConfig.dir);
+    }
 
     // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
     const sourcePath0sec = getBuildsFolder(c, platform, c.paths.private.appConfig.dir);
@@ -282,14 +346,23 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
         } else {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
-        _npmInstall(c).then(() => resolve()).catch(e => reject(e));
+        npmInstall(c).then(() => resolve()).catch(e => reject(e));
     } else {
         resolve();
     }
 });
 
-const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
-    logTask('_npmInstall');
+export const cleanPlaformAssets = c => new Promise((resolve, reject) => {
+    logTask('cleanPlaformAssets');
+
+    cleanFolder(c.paths.project.assets.dir).then(() => {
+        mkdirSync(c.paths.project.assets.runtimeDir);
+        resolve();
+    });
+});
+
+export const npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
+    logTask('npmInstall');
     const { maxErrorLength } = c.program;
 
     executeAsync('npm install', { maxErrorLength })
@@ -303,7 +376,7 @@ const _npmInstall = (c, failOnError = false) => new Promise((resolve, reject) =>
             } else {
                 logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
                 cleanNodeModules(c)
-                    .then(() => _npmInstall(c, true))
+                    .then(() => npmInstall(c, true))
                     .then(() => resolve())
                     .catch((e) => {
                         logError(e);

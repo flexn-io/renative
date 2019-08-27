@@ -4,10 +4,10 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import child_process from 'child_process';
-import { executeAsync } from '../systemTools/exec';
-import { isObject } from '../systemTools/objectUtils';
-import { createPlatformBuild } from '../cli/platform';
-import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './apple/deviceManager';
+import { executeAsync } from '../../systemTools/exec';
+import { isObject } from '../../systemTools/objectUtils';
+import { createPlatformBuild } from '../../cli/platform';
+import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
     logTask,
     logError,
@@ -21,25 +21,25 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     getAppId,
-    copyBuildsFolder,
     getConfigProp,
     getIP,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
-} from '../common';
-import { getQuestion } from '../systemTools/prompt';
-import { IOS, TVOS } from '../constants';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../pluginTools';
+} from '../../common';
+import { getQuestion } from '../../systemTools/prompt';
+import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { IOS, TVOS } from '../../constants';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import {
     saveObjToPlistSync, objToPlist, parseExportOptionsPlist,
     parseInfoPlist, parseEntitlementsPlist
-} from './apple/plistParser';
-import { parseXcscheme } from './apple/xcschemeParser';
-import { parsePodFile } from './apple/podfileParser';
-import { parseXcodeProject } from './apple/xcodeParser';
-import { parseAppDelegate } from './apple/swiftParser';
+} from './plistParser';
+import { parseXcscheme } from './xcschemeParser';
+import { parsePodFile } from './podfileParser';
+import { parseXcodeProject } from './xcodeParser';
+import { parseAppDelegate } from './swiftParser';
 
 const readline = require('readline');
 
@@ -80,20 +80,6 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const appFolder = getAppFolder(c, platform);
-    const tId = getConfigProp(c, platform, 'teamID');
-
-    const iosPath = path.join(getAppFolder(c, platform), appFolderName);
-    let sPath;
-
-    if (c.paths.appConfig.dirs) {
-        c.paths.appConfig.dirs.forEach((v) => {
-            sPath = path.join(v, `assets/${platform}`);
-            copyFolderContentsRecursiveSync(sPath, iosPath);
-        });
-    } else {
-        sPath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
-        copyFolderContentsRecursiveSync(sPath, iosPath);
-    }
 
     // ASSETS
     fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
@@ -484,7 +470,8 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
 
     // PARSERS
     const forceUpdate = !fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
-    copyAppleAssets(c, platform, appFolderName)
+    copyAssetsFolder(c, platform)
+        .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => copyBuildsFolder(c, platform))
         .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))
         .then(() => parseExportOptionsPlist(c, platform))

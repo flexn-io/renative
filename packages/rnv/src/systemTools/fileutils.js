@@ -190,22 +190,28 @@ export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
     }
 };
 
-export const readObjectSync = (filePath, c) => {
+export const readObjectSync = (filePath, sanitize = false, c) => {
+    if (!filePath) {
+        logWarning('readObjectSync: filePath is undefined');
+        return null;
+    }
     if (!fs.existsSync(filePath)) {
-        logError(`File at ${filePath} does not exist`);
+        logWarning(`readObjectSync: File at ${filePath} does not exist`);
         return null;
     }
     let obj;
     try {
         obj = JSON.parse(fs.readFileSync(filePath));
-        if (c) {
-            obj = sanitizeDynamicRefs(c, obj);
-        }
-        if (obj._refs) {
-            obj = sanitizeDynamicProps(obj, obj._refs);
+        if (sanitize) {
+            if (c) {
+                obj = sanitizeDynamicRefs(c, obj);
+            }
+            if (obj._refs) {
+                obj = sanitizeDynamicProps(obj, obj._refs);
+            }
         }
     } catch (e) {
-        logError(`Parsing of ${chalk.white(filePath)} failed with ${e}`);
+        logWarning(`readObjectSync: Parsing of ${chalk.white(filePath)} failed with ${e}`);
         return null;
     }
     return obj;

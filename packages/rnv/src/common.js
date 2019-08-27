@@ -24,6 +24,7 @@ import {
     ANDROID,
     WEB,
     TIZEN,
+    IOS,
     TVOS,
     WEBOS,
     PLATFORMS,
@@ -35,7 +36,7 @@ import {
     parseRenativeConfigs, createRnvConfig, updateConfig, gatherInfo,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
-import { configureEntryPoints, configureNodeModules, copyBuildsFolder, checkAndCreateProjectPackage } from './projectTools/projectParser';
+import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
 import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
@@ -55,8 +56,8 @@ export const startBuilder = c => new Promise((resolve, reject) => {
     logTask('initializeBuilder');
 
     if (NO_OP_COMMANDS.includes(c.command)) {
-        console.log('POOOOO');
-        parseRenativeConfigs(c)
+        checkAndMigrateProject(c)
+            .then(() => parseRenativeConfigs(c))
             .then(() => configureRnvGlobal(c))
             .then(() => resolve(c))
             .catch(e => reject(c));
@@ -215,7 +216,7 @@ export const isSdkInstalled = (c, platform) => {
 
 export const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        reject && reject(`${platform} requires SDK to be installed. check your ${c.paths.private.config} file if you SDK path is correct`);
+        reject && reject(`${platform} requires SDK to be installed. check your ${chalk.white(c.paths.private.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.private.config?.sdks?.ANDROID_SDK)}`);
         return false;
     }
     return true;
@@ -224,6 +225,13 @@ export const checkSdk = (c, platform, reject) => {
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+
+export const getAppSubFolder = (c, platform) => {
+    let subFolder = '';
+    if (platform === IOS) subFolder = 'RNVApp';
+    else if (platform === TVOS) subFolder = 'RNVAppTVOS';
+    return path.join(getAppFolder(c, platform), subFolder);
+};
 
 export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
@@ -285,7 +293,11 @@ export const getJsBundleFileDefaults = {
     androidwear: '"assets://index.androidwear.bundle"',
 };
 
-export const getAppId = (c, platform) => getConfigProp(c, platform, 'id');
+export const getAppId = (c, platform) => {
+    const id = getConfigProp(c, platform, 'id');
+    const idSuffix = getConfigProp(c, platform, 'idSuffix');
+    return idSuffix ? `${id}${idSuffix}` : id;
+};
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
@@ -364,6 +376,7 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
 
     if (c.program.reset) {
         cleanPlatformBuild(c, platform)
+            .then(() => cleanPlaformAssets(c))
             .then(() => createPlatformBuild(c, platform))
             .then(() => appRunner(nc))
             .then(() => resolve(c))
@@ -454,7 +467,7 @@ export const getBuildFilePath = (c, platform, filePath) => {
     return sp;
 };
 
-const waitForEmulator = async (c, cli, command, callback) => {
+export const waitForEmulator = async (c, cli, command, callback) => {
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
@@ -488,12 +501,12 @@ const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-const parseErrorMessage = (text, maxErrorLength = 200) => {
+export const parseErrorMessage = (text, maxErrorLength = 400) => {
     const errors = [];
     const toSearch = /(exception|error|fatal|\[!])/i;
 
     const extractError = (t) => {
-        const errorFound = t.search(toSearch);
+        const errorFound = t ? t.search(toSearch) : -1;
         if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
         const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
         let extractedError = usefulString.substring(0, maxErrorLength);
@@ -515,9 +528,6 @@ export {
     logEnd,
     logWarning,
     logSuccess,
-    copyBuildsFolder,
-    waitForEmulator,
-    parseErrorMessage
 };
 
 export default {
@@ -525,7 +535,6 @@ export default {
     getBuildsFolder,
     configureEntryPoints,
     logWelcome,
-    copyBuildsFolder,
     isPlatformSupported,
     isBuildSchemeSupported,
     isPlatformSupportedSync,

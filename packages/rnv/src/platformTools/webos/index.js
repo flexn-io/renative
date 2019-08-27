@@ -4,7 +4,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import semver from 'semver';
 import inquirer from 'inquirer';
-import { executeAsync, execCLI, openCommand } from '../systemTools/exec';
+import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
 import {
     logTask,
     getAppFolder,
@@ -16,10 +16,10 @@ import {
     writeCleanFile,
     getAppId,
     getAppTemplateFolder,
-    copyBuildsFolder,
     getConfigProp,
     waitForEmulator
-} from '../common';
+} from '../../common';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
     CLI_WEBOS_ARES_PACKAGE,
     CLI_WEBOS_ARES_INSTALL,
@@ -27,9 +27,9 @@ import {
     CLI_WEBOS_ARES_LAUNCH,
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE
-} from '../constants';
-import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
-import { buildWeb } from './web';
+} from '../../constants';
+import { copyFolderContentsRecursiveSync } from '../../systemTools/fileutils';
+import { buildWeb } from '../web';
 
 const isRunningOnWindows = process.platform === 'win32';
 const CHECK_INTEVAL = 5000;
@@ -46,17 +46,6 @@ const launchWebOSimulator = (c) => {
 
     return executeAsync(`${openCommand} ${ePath}`, { detached: true, maxErrorLength });
 };
-
-const copyWebOSAssets = (c, platform) => new Promise((resolve) => {
-    logTask('copyWebOSAssets');
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    const sourcePath = path.join(c.paths.appConfig.dir, 'assets', platform);
-    const destPath = path.join(getAppFolder(c, platform), 'public');
-
-    copyFolderContentsRecursiveSync(sourcePath, destPath);
-    resolve();
-});
 
 const parseDevices = (c, devicesResponse) => {
     const linesArray = devicesResponse.split('\n').slice(2).map(line => line.trim()).filter(line => line !== '');
@@ -227,9 +216,7 @@ const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => 
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
-    // configureIfRequired(c, platform)
-    //     .then(() => copyWebOSAssets(c, platform))
-    copyWebOSAssets(c, platform)
+    copyAssetsFolder(c, platform)
         .then(() => copyBuildsFolder(c, platform))
         .then(() => configureProject(c, platform))
         .then(() => resolve())
@@ -251,4 +238,4 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-export { launchWebOSimulator, copyWebOSAssets, configureWebOSProject, runWebOS, buildWebOSProject, listWebOSTargets };
+export { launchWebOSimulator, configureWebOSProject, runWebOS, buildWebOSProject, listWebOSTargets };

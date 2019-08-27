@@ -2,7 +2,7 @@
     "id": "helloWorld",
     "common": {
         "id": "renative.helloworld",
-        "title": "ReNative",
+        "title": "ReNative V1",
         "description": "Cross-platform application project based on ReNative",
         "author": {
             "name": "Pavel Jacko",

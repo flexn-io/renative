@@ -3,17 +3,18 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import inquirer from 'inquirer';
+import semver from 'semver';
 import {
     logTask,
     logSuccess,
     getAppFolder,
     isPlatformActive,
     logWarning,
-    logWelcome,
     logInfo,
     spawnCommand
 } from '../common';
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
+import { generateOptions } from '../systemTools/prompt';
 import {
     IOS,
     ANDROID,
@@ -41,14 +42,12 @@ import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
+import { executeAsync } from '../systemTools/exec';
 import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
-import {
-    copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateGitignore,
-    copySharedPlatforms, checkAndCreateProjectConfig
-} from '../projectTools/projectParser';
+import { copyRuntimeAssets, copySharedPlatforms } from '../projectTools/projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 
 const CONFIGURE = 'configure';
@@ -162,41 +161,95 @@ const _isOK = (c, p, list) => {
     return result;
 };
 
-const _runCreate = c => new Promise((resolve, reject) => {
+const _runCreate = async (c) => {
     logTask('_runCreate');
+    const { args } = c.program;
 
-    const data = {
+    let data = {
         defaultVersion: '0.1.0',
         defaultTemplate: 'renative-template-hello-world',
         defaultProjectName: 'helloRenative',
         defaultAppTitle: 'Hello Renative'
     };
     data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
-    data.optionTemplates = getTemplateOptions();
+    data.optionTemplates = getTemplateOptions(c);
 
     // logWelcome();
+    let inputProjectName;
 
-    askQuestion("What's your project Name? (no spaces, folder based on ID will be created in this directory)", data, 'inputProjectName')
-        .then(() => askQuestion(`What's your project Title? (press ENTER to use default: ${highlight(data.defaultAppTitle)})`, data, 'inputAppTitle'))
-        .then(() => { data.appID = `com.mycompany.${data.inputProjectName.replace(/\s+/g, '').toLowerCase()}`; })
-        .then(() => askQuestion(`What's your App ID? (press ENTER to use default: ${highlight(data.appID)})`, data, 'inputAppID'))
-        .then(() => askQuestion(`What's your Version? (press ENTER to use default: ${highlight(data.defaultVersion)})`, data, 'inputVersion'))
-        .then(() => askQuestion(`What template to use? (press ENTER to use default: ${highlight(data.defaultTemplate)})\n${data.optionTemplates.asString})`,
-            data, 'inputTemplate'))
-        .then(() => data.optionTemplates.pick(data.inputTemplate, data.defaultTemplate))
-        .then(() => askQuestion(`What platforms would you like to use? (Add numbers separated by comma or leave blank for all)\n${
-            data.optionPlatforms.asString}`, data, 'inputSupportedPlatforms'))
-        .then(() => data.optionPlatforms.pick(data.inputSupportedPlatforms))
-        .then(() => _prepareProjectOverview(c, data))
-        .then(() => askQuestion(`Is All Correct? (press ENTER for yes)\n${data.confirmString}`))
-        .then(() => _generateProject(c, data))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    if (args[1] && args[1] !== '') {
+        inputProjectName = args[1];
+    } else {
+        const inputProjectNameObj = await inquirer.prompt({
+            name: 'inputProjectName',
+            type: 'input',
+            validate: value => !!value,
+            message: "What's your project Name? (no spaces, folder based on ID will be created in this directory)"
+        });
+        inputProjectName = inputProjectNameObj.inputProjectName;
+    }
 
-const _generateProject = (c, data) => new Promise((resolve, reject) => {
-    finishQuestion();
-    // data.defaultAppConfigId = `${data.projectName}Example`;
+    const {
+        inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms
+    } = await inquirer.prompt([{
+        name: 'inputAppTitle',
+        type: 'input',
+        default: data.defaultAppTitle,
+        validate: val => !!val || 'Please enter a title',
+        message: 'What\'s your project Title?'
+    }, {
+        name: 'inputAppID',
+        type: 'input',
+        default: () => {
+            data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
+            return data.appID;
+        },
+        validate: id => !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/) || 'Please enter a valid appID (com.test.app)',
+        message: 'What\'s your App ID?'
+    }, {
+        name: 'inputVersion',
+        type: 'input',
+        default: data.defaultVersion,
+        validate: v => !!semver.valid(semver.coerce(v)) || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+        message: 'What\'s your Version?'
+    }, {
+        name: 'inputTemplate',
+        type: 'list',
+        message: 'What template to use?',
+        default: data.defaultTemplate,
+        choices: data.optionTemplates.keysAsArray
+    }, {
+        name: 'inputSupportedPlatforms',
+        type: 'checkbox',
+        pageSize: 20,
+        message: 'What platforms would you like to use?',
+        validate: val => !!val.length || 'Please select at least a platform',
+        default: data.optionPlatforms.keysAsArray,
+        choices: data.optionPlatforms.keysAsArray
+    }]);
+
+
+    data = {
+        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms
+    };
+
+    data.optionTemplates.selectedOption = inputTemplate;
+    data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
+    _prepareProjectOverview(c, data);
+
+    const { confirm } = await inquirer.prompt({
+        type: 'confirm',
+        name: 'confirm',
+        message: `\n${data.confirmString}\nIs all this correct?`
+    });
+
+    if (confirm) {
+        await _generateProject(c, data);
+    }
+};
+
+const _generateProject = (c, data) => {
+    logTask('_generateProject');
 
     const base = path.resolve('.');
 
@@ -208,37 +261,48 @@ const _generateProject = (c, data) => new Promise((resolve, reject) => {
 
     mkdirSync(c.paths.project.dir);
 
-    const config = {
-        projectName: data.projectName,
-        paths: {
-            globalConfigFolder: '~/.rnv',
-            appConfigsFolder: './appConfigs',
-            platformTemplatesFolder: 'RNV_HOME/platformTemplates',
-            entryFolder: './',
-            platformAssetsFolder: './platformAssets',
-            platformBuildsFolder: './platformBuilds',
-            projectConfigFolder: './projectConfig'
-        },
-        defaults: {
-            title: data.appTitle,
-            id: data.appID,
-            template: data.defaultTemplate,
-            supportedPlatforms: data.optionPlatforms.valuesAsArray
-        }
-    };
+    const templates = {};
 
-    writeObjectSync(c.paths.project.config, config);
 
-    logSuccess(
-        `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
-            'rnv run -p web',
-        )} to see magic happen!`,
-    );
+    return executeAsync(`npm show ${data.optionTemplates.selectedOption} version`).then((v) => {
+        logTask(`_generateProject:${data.optionTemplates.selectedOption}:${v}`, chalk.grey);
 
-    resolve();
-});
+        templates[data.optionTemplates.selectedOption] = {
+            version: v
+        };
 
-const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
+        const config = {
+            projectName: data.projectName,
+            paths: {
+                globalConfigDir: '~/.rnv',
+                appConfigsDir: './appConfigs',
+                platformTemplatesDir: 'RNV_HOME/platformTemplates',
+                entryDir: './',
+                platformAssetsDir: './platformAssets',
+                platformBuildsDir: './platformBuilds',
+                projectConfigDir: './projectConfig'
+            },
+            defaults: {
+                title: data.appTitle,
+                id: data.appID,
+                supportedPlatforms: data.optionPlatforms.selectedOptions
+            },
+            templates,
+            currentTemplate: data.optionTemplates.selectedOption,
+            isNew: true
+        };
+
+        writeObjectSync(c.paths.project.config, config);
+
+        logSuccess(
+            `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
+                'rnv run -p web',
+            )} to see magic happen!`,
+        );
+    });
+};
+
+const _prepareProjectOverview = (c, data) => {
     data.projectName = data.inputProjectName;
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
@@ -279,8 +343,7 @@ const _prepareProjectOverview = (c, data) => new Promise((resolve, reject) => {
     str += '\n';
 
     data.confirmString = str;
-    resolve();
-});
+};
 
 const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_checkAndCreatePlatforms:${platform}`);

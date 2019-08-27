@@ -1,5 +1,10 @@
-# API Reference for ReNative Config
+# Documentation for ReNative Config
 
+---
+
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
+
+## JSON Configurations
 
 App configs are ReNative compliant app configuration folders which follow prescribed structure
 
@@ -193,13 +198,14 @@ PATH_PROPS
 
 ```json
 {
-    "globalConfigFolder": "",
-    "appConfigsFolder": "",
-    "platformTemplatesFolder": "",
-    "entryFolder": "",
-    "platformAssetsFolder": "",
-    "platformBuildsFolder": "",
-    "projectConfigFolder": ""
+    "globalConfigDir": "",
+    "appConfigsDir": "",
+    "appConfigsDirs": "",
+    "platformTemplatesDir": "",
+    "entryDir": "",
+    "platformAssetsDir": "",
+    "platformBuildsDir": "",
+    "projectConfigDir": ""
 }
 ```
 
@@ -420,10 +426,10 @@ Override Rules for json props:
 - `Objects` => Merged by top level (not deep merge)
 
 Example:
-https://github.com/pavjacko/renative/blob/feat/188-config-v2/packages/renative-template-hello-world/appConfigs/helloWorld/renative.json#L4
+https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloWorld/renative.json#L4
 
 Will be overridden by:
-https://github.com/pavjacko/renative/blob/feat/188-config-v2/packages/renative-template-hello-world/appConfigs/helloWorld/renative.json#L59
+https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloWorld/renative.json#L59
 
 
 Output config will be decorated with few extra props to help with debugging:
@@ -434,3 +440,35 @@ Output config will be decorated with few extra props to help with debugging:
   "_mergeSources": []
 }
 ```
+
+
+#### Build Flavours
+
+You can configure different app ID, Title etc. with buildScheme field in you appConfig file.
+
+Example:
+
+```
+"buildSchemes": {
+  "debug": {
+    "id": "renative.helloworld.debug",
+    "runScheme": "Debug",
+    "bundleAssets": false,
+    "bundleIsDev": true
+  },
+  "release": {
+    "id": "renative.helloworld.release",
+    "runScheme": "Release",
+    "bundleAssets": true,
+    "bundleIsDev": false
+  }
+}
+```
+
+this will allow you to build 2 separate iOS apps with slightly different configurations:
+
+`$ rnv run -p ios -s debug` (`-s debug` is DEFAULT option so you don't have to add it every time)
+
+and
+
+`$ rnv run -p ios -s release`

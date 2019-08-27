@@ -1,7 +1,9 @@
-# API Reference for Files & Folders
+# Documentation for Folder Configurations
 
+---
 
-App configs are ReNative compliant app configuration folders which follow prescribed structure
+<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
+
 
 ## Structure
 
@@ -110,7 +112,7 @@ Legend:
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
 - `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
-- `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "paths": { "globalConfigFolder": "~/.myCustomGlobalFolder" } }` in `renative.json` of each project
+- `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "paths": { "globalConfigDir": "~/.myCustomGlobalFolder" } }` in `renative.json` of each project
 
 ##### Platform Builds Overrides
 
@@ -181,19 +183,42 @@ Plugin + App Config Scoped Build Override (Private Content)
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 
+#### Build Flavour Injectors
+
+Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
+
+you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
+
+    .
+    ├── appConfigs
+        └── helloWorld
+            ├── assets
+            ├── plugins
+            │   └── some-plugin
+            │       └── builds
+            │            ├── android@release
+            │            │   └── fileToBeInjectedInReleaseMode.txt
+            │            └── android@debug
+            │                └── fileToBeInjectedInDebugMode.txt
+            └── builds
+                ├── android@release
+                │   └── fileToBeInjectedInReleaseMode.txt
+                └── android@debug
+                    └── fileToBeInjectedInDebugMode.txt
+
+
+
 #### Flavoured Builds
 
-Combination of 2 features above allows you to configure and build large number of flavoured builds with almost no extra configuration
+Combination of features above allows you to configure and build large number of flavoured builds with almost no extra configuration
 
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/feat/188-config-v2/docs/images/rnv_arch3.png?raw=true" />
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch3.png?raw=true" />
     </th>
   </tr>
 </table>
-
-
 
 
 ## Files / Assets

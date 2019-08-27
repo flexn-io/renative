@@ -10,6 +10,7 @@ import {
 } from '../common';
 import { askQuestion, generateOptions, getQuestion, finishQuestion } from '../systemTools/prompt';
 import { executePipe } from '../projectTools/buildHooks';
+import { writeObjectSync } from '../systemTools/fileutils';
 
 const LIST = 'list';
 const ADD = 'add';
@@ -130,12 +131,14 @@ const _runAdd = c => new Promise((resolve) => {
         console.log(msg);
 
         Object.keys(selectedPlugins).forEach((key) => {
-            c.buildConfig.plugins[key] = 'source:rnv';
+            // c.buildConfig.plugins[key] = 'source:rnv';
+            c.files.project.config.plugins[key] = 'source:rnv';
+
             // c.buildConfig.plugins[key] = selectedPlugins[key];
             _checkAndAddDependantPlugins(c, selectedPlugins[key]);
         });
 
-        fs.writeFileSync(c.paths.project.config, JSON.stringify(c.buildConfig, null, 2));
+        writeObjectSync(c.paths.project.config, c.files.project.config);
 
         logSuccess('Plugins installed successfully!');
 
@@ -167,10 +170,11 @@ const _runUpdate = c => new Promise((resolve) => {
             finishQuestion();
             const { plugins } = c.buildConfig;
             Object.keys(plugins).forEach((key) => {
-                c.buildConfig.plugins[key] = o.json[key];
+                // c.buildConfig.plugins[key] = o.json[key];
+                c.files.project.config.plugins[key] = o.json[key];
             });
 
-            fs.writeFileSync(c.paths.project.config, JSON.stringify(c.buildConfig, null, 2));
+            writeObjectSync(c.paths.project.config, c.files.project.config);
 
             logSuccess('Plugins updated successfully!');
 

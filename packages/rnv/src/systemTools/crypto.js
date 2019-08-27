@@ -3,8 +3,8 @@ import tar from 'tar';
 import chalk from 'chalk';
 import fs from 'fs';
 import { logWarning, logInfo, logError, logTask, logDebug, logSuccess } from '../common';
-import { listAppConfigsFoldersSync } from '../configTools/configParser';
-import { IOS, TVOS } from '../constants';
+import { listAppConfigsFoldersSync, generateBuildConfig, setAppConfig } from '../configTools/configParser';
+import { IOS, TVOS, RENATIVE_CONFIG_NAME } from '../constants';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
@@ -158,14 +158,10 @@ export const updateProfiles = (c) => {
     switch (c.platform) {
     case IOS:
     case TVOS:
-        const savedAppConfig = c.buildConfig;
-        const scheme = c.program.scheme;
         const appId = c.runtime.appId;
         return _updateProfiles(c)
             .then(() => {
-                c.buildConfig = savedAppConfig;
-                c.runtime.appId = appId;
-                c.program.scheme = scheme;
+                setAppConfig(c, appId);
             });
     }
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
@@ -175,29 +171,14 @@ export const _updateProfiles = (c) => {
     logTask('_updateProfiles', chalk.grey);
     const acList = listAppConfigsFoldersSync(c);
     const fullList = [];
-    acList.forEach((v) => {
-        const appConfigFile = readObjectSync(path.join(c.paths.project.appConfigsDir, v, 'renative.json'));
+    const currentAppId = c.runtime.appId;
 
-        const buildSchemes = appConfigFile.platforms[c.platform]?.buildSchemes;
-
-        Object.keys(buildSchemes).forEach((scheme) => {
-            fullList.push({
-                appConfigFile,
-                appId: v,
-                scheme
-            });
-        });
-    });
-    // return Promise.resolve();
-    return fullList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
+    return acList.reduce((previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)), Promise.resolve());
 };
 
 const _updateProfile = (c, v) => new Promise((resolve, reject) => {
-    logTask(`_updateProfile:${v?.appId}`, chalk.grey);
-    c.buildConfig = v.appConfigFile;
-    c.program.scheme = v.scheme;
-    c.runtime.appId = v.appId;
-    updateProfile(c)
+    logTask(`_updateProfile:${v}`, chalk.grey);
+    updateProfile(c, v)
         .then(() => resolve())
         .catch(e => reject(e));
 });
