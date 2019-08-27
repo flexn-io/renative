@@ -205,21 +205,26 @@ export const configureEntryPoints = (c) => {
     // }
     let plat;
     const p = c.buildConfig.platforms;
+    const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;
     for (const k in p) {
-        plat = p[k];
-        const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
-        const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
-        const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
-        if (!fs.existsSync(dest)) {
-            if (!plat.entryFile) {
-                logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
-            } else if (!fs.existsSync(source)) {
-                logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
-                copyFileSync(backupSource, dest);
-            } else {
-                logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
-                copyFileSync(source, dest);
+        if (supportedPlatforms && supportedPlatforms.includes(k) || !supportedPlatforms) {
+            plat = p[k];
+            const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
+            const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
+            const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
+            if (!fs.existsSync(dest)) {
+                if (!plat.entryFile) {
+                    logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
+                } else if (!fs.existsSync(source)) {
+                    logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                    copyFileSync(backupSource, dest);
+                } else {
+                    logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                    copyFileSync(source, dest);
+                }
             }
+        } else {
+            logWarning(`Extra platform ${chalk.white(k)} will be ignored because it's not configured in your ${chalk.white('./renative.json: { defaults.supportedPlatforms }')} object.`);
         }
     }
 };
