@@ -272,7 +272,7 @@ export const loadFile = (fileObj, pathObj, key) => {
         pathObj[`${key}Exists`] = true;
         return true;
     } catch (e) {
-        logError(`loadFile: ${pathObj[key]} :: ${e}`);
+        logError(`loadFile: ${pathObj[key]} :: ${e}`, true); // crash if there's an error in the config file
         return false;
     }
 };
