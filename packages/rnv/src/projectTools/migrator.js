@@ -112,6 +112,14 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
             requiresSave = true;
         }
 
+        if (fs.existsSync(paths.permissions)) {
+            logWarning(`Found legacy object ${chalk.red(paths.permissions)}. this should be migrated to ${chalk.green('./renative.json')}`);
+        }
+
+        if (fs.existsSync(paths.plugins)) {
+            logWarning(`Found legacy object ${chalk.red(paths.plugins)}. this should be migrated to ${chalk.green('./renative.json')}`);
+        }
+
         if (requiresSave) writeObjectSync(paths.configNew, files.configNew);
 
         // _migrateFile(paths.privateProjectConfig, paths.privateProjectConfigNew);
