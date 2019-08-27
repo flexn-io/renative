@@ -43,6 +43,7 @@ program
     .option('--provisionProfileSpecifier <value>', 'Name of provisionProfile')
     .option('--hosted', 'Run in a hosted environment (skip budleAssets)')
     .option('--maxErrorLength <number>', 'Specify how many characters each error should display. Default 200')
+    .option('--skipTargetCheck', 'Skip Android target check, just display the raw adb devices to choose from')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

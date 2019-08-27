@@ -374,6 +374,7 @@ const connectToWifiDevice = async (c, ip) => {
 const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices = [];
+    const { skipTargetCheck } = c.program;
 
     if (devicesString) {
         const lines = devicesString.trim().split(/\r?\n/);
@@ -453,6 +454,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
         .then(devicesArray => devicesArray.filter((device) => {
             // filter devices based on selected platform
             const { platform } = c;
+            if (skipTargetCheck) return true; // return everything if skipTargetCheck is used
             const matches = (platform === ANDROID && device.isTablet) || (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', { device, matches, platform });
             return matches;
