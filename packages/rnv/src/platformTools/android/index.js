@@ -103,14 +103,16 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     return Promise.reject('No simulator -t target name specified!');
 };
 
-const listAndroidTargets = (c) => {
+const listAndroidTargets = async (c) => {
     logTask('listAndroidTargets');
     const { program: { device } } = c;
-    return _listAndroidTargets(c, false, device, device).then(list => composeDevicesString(list)).then((devices) => {
-        console.log(devices);
-        if (devices.trim() === '') console.log('No devices found');
-        return devices;
-    });
+
+    await resetAdb(c);
+    const list = await _listAndroidTargets(c, false, device, device);
+    const devices = await composeDevicesString(list);
+    console.log(devices);
+    if (devices.trim() === '') console.log('No devices found');
+    return devices;
 };
 
 const _getDeviceString = (device, i) => {
@@ -131,6 +133,12 @@ const _getDeviceString = (device, i) => {
     return `-[${i + 1}] ${deviceString}\n`;
 };
 
+const resetAdb = async (c) => {
+    const { maxErrorLength } = c.program;
+    await execCLI(c, CLI_ANDROID_ADB, 'kill-server', { maxErrorLength });
+    await execCLI(c, CLI_ANDROID_ADB, 'start-server', { maxErrorLength });
+};
+
 const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask(`_listAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`);
     const { maxErrorLength } = c.program;
@@ -138,9 +146,6 @@ const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false)
     try {
         let devicesResult;
         let avdResult;
-
-        await execCLI(c, CLI_ANDROID_ADB, 'kill-server', { maxErrorLength });
-        await execCLI(c, CLI_ANDROID_ADB, 'start-server', { maxErrorLength });
 
         if (!skipDevices) {
             devicesResult = await execCLI(c, CLI_ANDROID_ADB, 'devices -l', { maxErrorLength });
@@ -196,6 +201,8 @@ const decideIfTVRunning = async (c, device) => {
     const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
     const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
     const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
+    const hdmi = await getRunningDeviceProp(c, udid, 'init.svc.hdmi');
+    const modelGroup = await getRunningDeviceProp(c, udid, 'ro.nrdp.modelgroup');
 
     let isTV = false;
     [mod, name, flavor, description, model, product].forEach((string) => {
@@ -203,6 +210,8 @@ const decideIfTVRunning = async (c, device) => {
     });
 
     if (model.includes('SHIELD')) isTV = true;
+    if (hdmi) isTV = true;
+    if (modelGroup && modelGroup.toLowerCase().includes('firetv')) isTV = true;
 
     return isTV;
 };
@@ -570,6 +579,8 @@ const _runGradle = async (c, platform) => {
     if (outputAab) return _runGradleApp(c, platform, {});
 
     const { target } = c.program;
+
+    await resetAdb(c);
 
     if (target && net.isIP(target)) {
         await connectToWifiDevice(c, target);
