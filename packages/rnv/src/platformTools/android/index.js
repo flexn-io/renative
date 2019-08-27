@@ -203,6 +203,8 @@ const decideIfTVRunning = async (c, device) => {
     const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
     const hdmi = await getRunningDeviceProp(c, udid, 'init.svc.hdmi');
     const modelGroup = await getRunningDeviceProp(c, udid, 'ro.nrdp.modelgroup');
+    const configuration = await getRunningDeviceProp(c, udid, 'ro.build.configuration');
+    const cecEnabled = await getRunningDeviceProp(c, udid, 'persist.sys.cec.enabled');
 
     let isTV = false;
     [mod, name, flavor, description, model, product].forEach((string) => {
@@ -212,6 +214,8 @@ const decideIfTVRunning = async (c, device) => {
     if (model.includes('SHIELD')) isTV = true;
     if (hdmi) isTV = true;
     if (modelGroup && modelGroup.toLowerCase().includes('firetv')) isTV = true;
+    if (configuration === 'tv') isTV = true;
+    if (cecEnabled) isTV = true;
 
     return isTV;
 };
