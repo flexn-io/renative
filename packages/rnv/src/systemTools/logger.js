@@ -300,7 +300,7 @@ export const printArrIntoBox = (arr, prefix = '') => {
 export const printBoxStart = (str, str2) => {
     let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
-    output += printIntoBox(str2);
+    output += printIntoBox(str2 || '');
     output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
     return output;
 };
