@@ -370,7 +370,7 @@ export const generateBuildConfig = (c) => {
     const existsPaths = cleanPaths.filter((v) => {
         const exists = fs.existsSync(v);
         if (exists) {
-            console.log(`Merged: ${v}`);
+            logDebug(`Merged: ${v}`);
             // console.log(chalk.green(v));
         } else {
             // console.log(chalk.red(v));
@@ -411,7 +411,7 @@ export const generateBuildConfig = (c) => {
         // APP CONFIG FONTS?
     ];
 
-    console.log('mergeFolders:', mergeFolders);
+    logDebug('mergeFolders:', mergeFolders);
 
     const meta = [{
         _meta: {
@@ -550,7 +550,7 @@ const _configureRnvGlobal = c => new Promise((resolve, reject) => {
     logTask('configureRnvGlobal');
     // Check globalConfigDir
     if (fs.existsSync(c.paths.private.dir)) {
-        console.log(`${c.paths.private.dir} folder exists!`);
+        logDebug(`${c.paths.private.dir} folder exists!`);
     } else {
         console.log(`${c.paths.private.dir} folder missing! Creating one for you...`);
         mkdirSync(c.paths.private.dir);
@@ -558,7 +558,7 @@ const _configureRnvGlobal = c => new Promise((resolve, reject) => {
 
     // Check globalConfig
     if (fs.existsSync(c.paths.private.config)) {
-        console.log(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
+        logDebug(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
     } else {
         const oldGlobalConfigPath = path.join(c.paths.private.dir, 'config.json');
         if (fs.existsSync(oldGlobalConfigPath)) {
