@@ -180,12 +180,13 @@ const _runCreate = async (c) => {
     if (args[1] && args[1] !== '') {
         inputProjectName = args[1];
     } else {
-        inputProjectName = await inquirer.prompt({
+        const inputProjectNameObj = await inquirer.prompt({
             name: 'inputProjectName',
             type: 'input',
             validate: value => !!value,
             message: "What's your project Name? (no spaces, folder based on ID will be created in this directory)"
         });
+        inputProjectName = inputProjectNameObj.inputProjectName;
     }
 
     const {
@@ -220,6 +221,7 @@ const _runCreate = async (c) => {
     }, {
         name: 'inputSupportedPlatforms',
         type: 'checkbox',
+        pageSize: 20,
         message: 'What platforms would you like to use?',
         validate: val => !!val.length || 'Please select at least a platform',
         default: data.optionPlatforms.keysAsArray,
