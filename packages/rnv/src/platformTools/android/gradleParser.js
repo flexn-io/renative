@@ -26,7 +26,7 @@ import {
     logSuccess,
     getBuildsFolder,
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
@@ -38,7 +38,7 @@ export const parseBuildGradleSync = (c, platform) => {
     if (c.pluginConfigAndroid.buildGradleBuildScriptDexOptions) {
         dexOptions = `dexOptions() {
             ${c.pluginConfigAndroid.buildGradleBuildScriptDexOptions}
-        }`
+        }`;
     }
 
     writeCleanFile(getBuildFilePath(c, platform, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
@@ -224,13 +224,13 @@ export const parseGradlePropertiesSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
-    const pluginConfigAndroid = c.buildConfig?.android || {};
+    const pluginConfigAndroid = c.buildConfig?.platforms?.android || {};
 
     const gradleProps = pluginConfigAndroid['gradle.properties'];
     if (gradleProps) {
-        for (const key in gradleProps) {
+        Object.keys(gradleProps).forEach((key) => {
             pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
-        }
+        });
     }
     const gradleProperties = 'gradle.properties';
     writeCleanFile(getBuildFilePath(c, platform, gradleProperties), path.join(appFolder, gradleProperties), [
