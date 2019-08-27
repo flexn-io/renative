@@ -224,7 +224,7 @@ export const parseGradlePropertiesSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     // GRADLE.PROPERTIES
     let pluginGradleProperties = '';
-    const pluginConfigAndroid = c.buildConfig?.android || {};
+    const pluginConfigAndroid = c.buildConfig?.platforms?.android || {};
 
     const gradleProps = pluginConfigAndroid['gradle.properties'];
     if (gradleProps) {

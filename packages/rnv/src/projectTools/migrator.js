@@ -85,6 +85,33 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
                 }
             });
         }
+
+        if (files.configNew?.android) {
+            logWarning('Found legacy object "android" at root. ReNative will try to fix it for you!');
+            files.configNew.platforms = files.configNew.platforms || {};
+
+            files.configNew.platforms.android = mergeObjects(files.configNew.platforms.android || {}, files.configNew.android);
+            if (files.configNew.platforms.androidtv) {
+                files.configNew.platforms.androidtv = mergeObjects(files.configNew.platforms.androidtv || {}, files.configNew.android);
+            }
+            if (files.configNew.platforms.androidwear) {
+                files.configNew.platforms.androidwear = mergeObjects(files.configNew.platforms.androidwear || {}, files.configNew.android);
+            }
+            delete files.configNew.android;
+            requiresSave = true;
+        }
+
+        if (files.configNew?.ios) {
+            logWarning('Found legacy object "ios" at root. ReNative will try to fix it for you!');
+            files.configNew.platforms = files.configNew.platforms || {};
+            files.configNew.platforms.ios = mergeObjects(files.configNew.platforms.ios || {}, files.configNew.ios);
+            if (files.configNew.platforms.tvos) {
+                files.configNew.platforms.tvos = mergeObjects(files.configNew.platforms.tvos || {}, files.configNew.ios);
+            }
+            delete files.configNew.ios;
+            requiresSave = true;
+        }
+
         if (requiresSave) writeObjectSync(paths.configNew, files.configNew);
 
         // _migrateFile(paths.privateProjectConfig, paths.privateProjectConfigNew);
