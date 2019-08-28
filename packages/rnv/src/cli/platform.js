@@ -118,7 +118,7 @@ const _runEjectPlatforms = async (c) => {
         let copyShared = false;
 
         ejectedPlatforms.forEach((platform) => {
-            if (PLATFORMS[platform].usesSharedConfig) {
+            if (PLATFORMS[platform].requiresSharedConfig) {
                 copyShared = true;
             }
 
