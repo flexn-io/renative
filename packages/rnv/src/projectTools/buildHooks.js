@@ -85,6 +85,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
                 resolve();
             })
             .catch((e) => {
+                logWarning(`BUILD_HOOK Failed with error: ${e}`);
                 resolve();
             });
     } else {
