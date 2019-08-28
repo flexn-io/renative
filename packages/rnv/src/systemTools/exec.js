@@ -42,7 +42,7 @@ const _execute = (command, opts = {}) => {
 
     let logMessage = cleanCommand;
     if (mergedOpts.privateParams) {
-        logMessage = util.format(command, ['*******']);
+        logMessage = util.format(command, Array.from(mergedOpts.privateParams, () => '*******'));
         cleanCommand = util.format(command, ...mergedOpts.privateParams);
     }
 
