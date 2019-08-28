@@ -41,9 +41,10 @@ const _execute = (command, opts = {}) => {
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
     let logMessage = cleanCommand;
-    if (mergedOpts.privateParams) {
-        logMessage = util.format(command, ['*******']);
-        cleanCommand = util.format(command, ...mergedOpts.privateParams);
+    const { privateParams } = mergedOpts;
+    if (privateParams && Array.isArray(privateParams)) {
+        logMessage = util.format(command, Array.from(privateParams, () => '*******'));
+        cleanCommand = util.format(command, ...privateParams);
     }
 
     logDebug(`_execute: ${logMessage}`);
