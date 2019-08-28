@@ -191,6 +191,7 @@ export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
 };
 
 export const readObjectSync = (filePath, sanitize = false, c) => {
+    logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
         logWarning('readObjectSync: filePath is undefined');
         return null;
@@ -203,6 +204,7 @@ export const readObjectSync = (filePath, sanitize = false, c) => {
     try {
         obj = JSON.parse(fs.readFileSync(filePath));
         if (sanitize) {
+            logDebug(`readObjectSync: will sanitize file at: ${filePath}`);
             if (c) {
                 obj = sanitizeDynamicRefs(c, obj);
             }
