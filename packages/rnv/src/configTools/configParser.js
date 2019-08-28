@@ -166,34 +166,39 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 };
 
 export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
-    // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
-    if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
+    try {
+        // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
+        if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
 
-    // LOAD ./package.json
-    loadFile(c.files.project, c.paths.project, 'package');
+        // LOAD ./package.json
+        loadFile(c.files.project, c.paths.project, 'package');
 
-    // LOAD ./RENATIVE.*.JSON
-    _loadConfigFiles(c, c.files.project, c.paths.project);
-    c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
-    if (!c.files.project.config) return resolve();
+        // LOAD ./RENATIVE.*.JSON
+        _loadConfigFiles(c, c.files.project, c.paths.project);
+        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        if (!c.files.project.config) return resolve();
 
-    // LOAD ~/.rnv/RENATIVE.*.JSON
-    _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig?.paths?.globalConfigDir) || c.paths.GLOBAL_RNV_DIR);
-    _loadConfigFiles(c, c.files.private, c.paths.private);
+        // LOAD ~/.rnv/RENATIVE.*.JSON
+        _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig?.paths?.globalConfigDir) || c.paths.GLOBAL_RNV_DIR);
+        _loadConfigFiles(c, c.files.private, c.paths.private);
 
-    // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
-    _generateConfigPaths(c.paths.private.project, path.join(c.paths.private.dir, c.files.project.config.projectName));
-    _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
+        // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
+        _generateConfigPaths(c.paths.private.project, path.join(c.paths.private.dir, c.files.project.config.projectName));
+        _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
 
 
-    c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
-    c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
+        c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
+        c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
 
-    _findAndSwitchAppConfigDir(c);
+        _findAndSwitchAppConfigDir(c);
 
-    c.runtime.isWrapper = c.buildConfig.isWrapper;
+        c.runtime.isWrapper = c.buildConfig.isWrapper;
 
-    c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
+        c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
+    } catch (e) {
+        reject(e);
+        return;
+    }
 
     resolve();
 });
@@ -424,7 +429,7 @@ export const generateBuildConfig = (c) => {
 
     logTask(`generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
 
-    const out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
+    let out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
     out = merge({}, out);
     logDebug(`generateBuildConfig: will sanitize file at: ${c.paths.project.builds.config}`);
     c.buildConfig = sanitizeDynamicRefs(c, out);

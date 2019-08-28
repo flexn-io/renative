@@ -187,6 +187,8 @@ const _runConnectPlatforms = async (c) => {
             pathsToRemove.push(path.join(c.paths.project.platformTemplatesDirs[platform], platform));
         });
 
+        // TODO: Remove shared folders as well
+
         await removeDirs(pathsToRemove);
     }
 
