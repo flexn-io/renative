@@ -20,7 +20,7 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
@@ -80,7 +80,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     // SOURCES
     c.pluginConfigiOS.podfileSources = '';
-    const podfileSources = c.buildConfig?.ios?.Podfile?.sources;
+    const podfileSources = c.buildConfig?.platforms?.ios?.Podfile?.sources;
     if (podfileSources && podfileSources.length) {
         podfileSources.forEach((v) => {
             c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
