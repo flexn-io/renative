@@ -65,7 +65,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
     const { maxErrorLength } = c.program;
 
-    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.private.dir} -a rnv -f tizen_author -p 1234`, { maxErrorLength })
+    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.private.dir} -a rnv -f tizen_author -p 1234`)
         .then(() => addDevelopTizenCertificate(c))
         .then(() => resolve())
         .catch((e) => {
@@ -78,7 +78,7 @@ const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
     const { maxErrorLength } = c.program;
 
-    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.private.dir, 'tizen_author.p12')} -p 1234`, { maxErrorLength })
+    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.private.dir, 'tizen_author.p12')} -p 1234`)
         .then(() => resolve())
         .catch((e) => {
             logError(e);
@@ -90,11 +90,11 @@ const getDeviceID = async (c, target) => {
     const { device, maxErrorLength } = c.program;
 
     if (device) {
-        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`, { maxErrorLength });
+        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
         if (connectResponse.includes('failed to connect to remote target')) throw new Error(connectResponse);
     }
 
-    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices', { maxErrorLength });
+    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     if (devicesList.includes(target)) {
         const lines = devicesList.trim().split(/\r?\n/);
         const devices = lines.filter(line => line.includes(target));
@@ -111,7 +111,7 @@ const getDeviceID = async (c, target) => {
 
 const getRunningDevices = async (c) => {
     const { platform, maxErrorLength } = c.program;
-    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices', { maxErrorLength });
+    const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList.trim().split(/\r?\n/).filter(line => !line.includes('List of devices'));
     const devices = [];
 
@@ -194,7 +194,7 @@ const runTizen = async (c, platform, target) => {
             } catch (e) {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
                 try {
-                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`, { maxErrorLength });
+                    await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
                     await launchTizenSimulator(c, defaultTarget);
                     deviceID = defaultTarget;
                     await waitForEmulatorToBeReady(c, defaultTarget);
@@ -212,8 +212,8 @@ const runTizen = async (c, platform, target) => {
         const { maxErrorLength } = c.program;
 
         !isHosted && await buildWeb(c, platform);
-        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, { maxErrorLength });
-        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, { maxErrorLength });
+        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
+        await execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`);
 
         try {
             const packageID = platform === 'tizenwatch' || platform === 'tizenmobile' ? tId.split('.')[0] : tId;
@@ -226,7 +226,7 @@ const runTizen = async (c, platform, target) => {
             }
         }
         try {
-            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`, { maxErrorLength });
+            await execCLI(c, CLI_TIZEN, `install -- ${tOut} -n ${gwt} -t ${deviceID}`);
             hasDevice = true;
         } catch (err) {
             logError(err);
@@ -241,10 +241,10 @@ const runTizen = async (c, platform, target) => {
         }
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
-            await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`, { maxErrorLength });
+            await execCLI(c, CLI_TIZEN, `run -p ${tId} -t ${deviceID}`);
         } else if ((platform === 'tizenwatch' || platform === 'tizenmobile') && hasDevice) {
             const packageID = tId.split('.');
-            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`, { maxErrorLength });
+            await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`);
         }
         return true;
     };
@@ -308,8 +308,8 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     const certProfile = platformConfig.certificateProfile;
 
     buildWeb(c, platform)
-        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`, { maxErrorLength }))
-        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`, { maxErrorLength }))
+        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
+        .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`))
         .then(() => {
             logSuccess(`Your GWT package is located in ${chalk.white(tOut)} .`);
             return resolve();

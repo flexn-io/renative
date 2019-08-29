@@ -36,7 +36,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
     const { platform } = c;
 
     const { appId } = c.runtime;
-    const { scheme, maxErrorLength } = c.program;
+    const { scheme } = c.program;
     const id = getAppId(c, platform);
     const teamID = getConfigProp(c, platform, 'teamID');
     const pMethod = getConfigProp(c, platform, 'exportOptions')?.method;
@@ -65,7 +65,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         args.push(`--${provisioning}`);
     }
 
-    executeAsync(`fastlane ${args.join(' ')}`, { maxErrorLength })
+    executeAsync(c, `fastlane ${args.join(' ')}`)
         .then(() => {
             logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
 
