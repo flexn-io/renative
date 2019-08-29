@@ -96,17 +96,3 @@ Plugin Spec:
   }
 }
 ```
-
-Podfile source inject:
-
-```json
-{
-  "platforms": {
-    "ios": {
-      "Podfile": {
-        "sources": ["https://github.com/CocoaPods/Specs.git"]
-      },
-    }
-  }
-}
-```

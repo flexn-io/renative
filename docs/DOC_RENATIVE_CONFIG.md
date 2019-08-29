@@ -244,10 +244,14 @@ DEFAULTS_PROPS
 
 IOS_COMMON_PROPS
 
+
 ```json
 {
   "appDelegateImports": [],
   "appDelegateMethods": {},
+  "Podfile": {
+    "sources": []
+  },
   "plist": {},
   "xcodeproj": {},
   "appDelegateApplicationMethods": {
