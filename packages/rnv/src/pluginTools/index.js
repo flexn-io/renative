@@ -33,8 +33,8 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
 
     let hasPackageChanged = false;
     for (const k in c.buildConfig.plugins) {
-        const dependencies = c.files.project.package.dependencies;
-        const devDependencies = c.files.project.package.devDependencies;
+        const { dependencies } = c.files.project.package;
+        const { devDependencies } = c.files.project.package;
         const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
         if (!plugin) {
@@ -106,7 +106,7 @@ const parsePlugins = (c, platform, pluginCallback) => {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
-            const plugins = c.buildConfig.plugins;
+            const { plugins } = c.buildConfig;
             if (plugins) {
                 Object.keys(plugins).forEach((key) => {
                     if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {

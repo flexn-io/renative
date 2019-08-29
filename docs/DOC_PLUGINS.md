@@ -84,7 +84,7 @@ Plugin Spec:
 
 ```json
 {
-  "pugin-name": {
+  "plugin-name": {
       "version": "",
       "enabled": true,
       "ios": {},
@@ -93,6 +93,20 @@ Plugin Spec:
           "modulePaths": [],
           "moduleAliases": []
       }
+  }
+}
+```
+
+Podfile source inject:
+
+```json
+{
+  "platforms": {
+    "ios": {
+      "Podfile": {
+        "sources": ["https://github.com/CocoaPods/Specs.git"]
+      },
+    }
   }
 }
 ```
