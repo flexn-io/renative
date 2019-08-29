@@ -67,10 +67,10 @@ const PATH_PROPS = [
 
 const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
     logTask('_migrateProjectSoft');
-
+    let files;
     try {
         let requiresSave = false;
-        const files = {
+        files = {
             configNew: readObjectSync(paths.configNew),
             // privateProjectConfig: readObjectSync(paths.privateProjectConfig),
         };

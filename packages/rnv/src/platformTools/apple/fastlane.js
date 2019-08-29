@@ -20,6 +20,13 @@ import { setAppConfig } from '../../configTools/configParser';
 export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) => {
     logTask(`updateProfile:${appConfigId}`, chalk.grey);
 
+    // TODO: run trough all schemes
+    // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes
+    // const currScheme = c.program.scheme
+    // for(k in schemes) {
+    //   c.program.scheme = k
+    // }
+
     if (appConfigId) setAppConfig(c, appConfigId);
 
     if (c.platform !== IOS && c.platform !== TVOS) {
