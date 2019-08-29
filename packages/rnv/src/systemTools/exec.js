@@ -28,14 +28,17 @@ const { exec, execSync } = require('child_process');
  * @returns {Promise}
  *
  */
-const _execute = (command, opts = {}) => {
+const _execute = (c, command, opts = {}) => {
     const defaultOpts = {
         stdio: 'pipe',
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
-        all: true
+        all: true,
+        maxErrorLength: c.program.maxErrorLength,
+        mono: c.program.mono,
     };
     const mergedOpts = { ...defaultOpts, ...opts };
+
     let cleanCommand = command;
 
     if (Array.isArray(command)) cleanCommand = command.join(' ');
@@ -48,22 +51,22 @@ const _execute = (command, opts = {}) => {
     }
 
     logDebug(`_execute: ${logMessage}`);
-    const spinner = !mergedOpts.silent && ora(`Executing: ${logMessage}`).start();
+    const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
+    const spinner = !silent && ora({ text: `Executing: ${logMessage}`, spinner: mono ? 'bouncingBar' : 'dots' }).start();
     return execa.command(cleanCommand, mergedOpts).then((res) => {
         !mergedOpts.silent && spinner.succeed();
         logDebug(res.all);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        const { silent, ignoreErrors } = mergedOpts;
-        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, mergedOpts.maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         // logDebug(err);
         if (ignoreErrors) {
             spinner.succeed();
             return true;
         }
-        return Promise.reject(parseErrorMessage(err.all, mergedOpts.maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        return Promise.reject(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
 
@@ -89,7 +92,7 @@ const execCLI = (c, cli, command, opts = {}) => {
         )} file if you SDK path is correct`);
     }
 
-    return _execute(`${p} ${command}`, { ...opts, shell: true, maxErrorLength });
+    return _execute(c, `${p} ${command}`, { ...opts, shell: true, maxErrorLength });
 };
 
 /**
@@ -101,9 +104,9 @@ const execCLI = (c, cli, command, opts = {}) => {
  * @returns {Promise}
  *
  */
-const executeAsync = (cmd, opts) => {
+const executeAsync = (c, cmd, opts) => {
     if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
-    return _execute(cmd, opts);
+    return _execute(c, cmd, opts);
 };
 
 /**

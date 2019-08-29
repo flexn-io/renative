@@ -264,7 +264,7 @@ const _generateProject = (c, data) => {
     const templates = {};
 
 
-    return executeAsync(`npm show ${data.optionTemplates.selectedOption} version`).then((v) => {
+    return executeAsync(c, `npm show ${data.optionTemplates.selectedOption} version`).then((v) => {
         logTask(`_generateProject:${data.optionTemplates.selectedOption}:${v}`, chalk.grey);
 
         templates[data.optionTemplates.selectedOption] = {

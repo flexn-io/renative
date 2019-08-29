@@ -363,9 +363,8 @@ export const cleanPlaformAssets = c => new Promise((resolve, reject) => {
 
 export const npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
     logTask('npmInstall');
-    const { maxErrorLength } = c.program;
 
-    executeAsync('npm install', { maxErrorLength })
+    executeAsync(c, 'npm install')
         .then(() => {
             resolve();
         })
