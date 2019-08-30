@@ -83,7 +83,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
 export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
     logTask('applyTemplate');
 
-    if (!c.buildConfig.currentTemplate || c.program.reset) {
+    if (!c.buildConfig.currentTemplate || (c.program.reset && c.command === 'template' && c.subCommand === 'apply')) {
         logWarning('You don\'t have any current template selected');
         const opts = getInstalledTemplateOptions(c);
 
