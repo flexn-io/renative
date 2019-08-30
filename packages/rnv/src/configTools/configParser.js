@@ -39,7 +39,7 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { getQuestion } from '../systemTools/prompt';
+import { getQuestion, askQuestion, finishQuestion } from '../systemTools/prompt';
 import {
     copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateProjectConfig,
     checkAndCreateGitignore, copySharedPlatforms
@@ -173,6 +173,8 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
         // LOAD ./package.json
         loadFile(c.files.project, c.paths.project, 'package');
 
+        versionCheck(c);
+
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
         c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
@@ -252,18 +254,27 @@ const _generateConfigPaths = (pathObj, dir) => {
     pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
 };
 
-const _versionCheck = (c) => {
-    logTask('_versionCheck');
-    c.runtime.rnvVersionProject = c.files.rnv?.package?.version;
-    c.runtime.rnvVersionRunner = c.files.project?.package?.devDependencies?.rnv;
+export const versionCheck = c => new Promise((resolve, reject) => {
+    logTask('versionCheck');
+    c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
+    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
+    logTask(`versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`, chalk.grey);
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
             const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
-            logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with $rnv v${chalk.red(c.runtime.rnvVersionProject)}.
-This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} .`);
+            logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . \n`);
+
+            askQuestion('Do you want to proceed anyway? (y/n)')
+                .then((v) => {
+                    if (v === 'y') {
+                        resolve();
+                    } else {
+                        reject('Action cancelled');
+                    }
+                }).catch(e => reject(e));
         }
     }
-};
+});
 
 export const loadFile = (fileObj, pathObj, key) => {
     if (!fs.existsSync(pathObj[key])) {
