@@ -318,7 +318,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
 export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
-    if (!appId) return;
+    if (!appId || appId === '?') return;
 
     c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
@@ -507,7 +507,8 @@ export const updateConfig = async (c, appConfigId) => {
                 name: 'conf',
                 type: 'list',
                 message: 'ReNative found existing appConfigs. Which one would you like to pick?',
-                choices: configDirs
+                choices: configDirs,
+                pageSize: 50
             });
 
             if (conf) {
@@ -537,12 +538,23 @@ export const updateConfig = async (c, appConfigId) => {
 
 export const listAppConfigsFoldersSync = (c) => {
     const configDirs = [];
-    fs.readdirSync(c.paths.project.appConfigsDir).forEach((dir) => {
-        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.paths.project.appConfigsDir, dir)).isDirectory()) {
+    if (c.buildConfig?.paths?.appConfigsDirs) {
+        c.buildConfig.paths.appConfigsDirs.forEach((v) => {
+            _listAppConfigsFoldersSync(v, configDirs);
+        });
+    } else {
+        _listAppConfigsFoldersSync(c.paths.project.appConfigsDir, configDirs);
+    }
+
+    return configDirs;
+};
+
+const _listAppConfigsFoldersSync = (dirPath, configDirs) => {
+    fs.readdirSync(dirPath).forEach((dir) => {
+        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(dirPath, dir)).isDirectory()) {
             configDirs.push(dir);
         }
     });
-    return configDirs;
 };
 
 export const configureRnvGlobal = c => new Promise((resolve, reject) => {
