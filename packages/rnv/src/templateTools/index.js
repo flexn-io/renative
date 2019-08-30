@@ -196,7 +196,7 @@ const _applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) =>
         // TODO: GET CORRECT PROJECT TEMPLATE
         copyFolderContentsRecursiveSync(templateAppConfigsFolder, c.paths.project.appConfigsDir);
 
-        const appConfigIds = listAppConfigsFoldersSync(c);
+        const appConfigIds = listAppConfigsFoldersSync(c, true);
 
         // Update App Title to match package.json
         try {

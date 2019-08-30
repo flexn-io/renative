@@ -513,7 +513,7 @@ export const updateConfig = async (c, appConfigId) => {
     setAppConfig(c, appConfigId);
 
     if (!fs.existsSync(c.paths.appConfig.dir)) {
-        const configDirs = listAppConfigsFoldersSync(c);
+        const configDirs = listAppConfigsFoldersSync(c, true);
 
 
         if (appConfigId !== '?') {
@@ -558,23 +558,39 @@ export const updateConfig = async (c, appConfigId) => {
     return true;
 };
 
-export const listAppConfigsFoldersSync = (c) => {
+export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
+    logTask(`listAppConfigsFoldersSync:${ignoreHiddenConfigs}`);
     const configDirs = [];
     if (c.buildConfig?.paths?.appConfigsDirs) {
         c.buildConfig.paths.appConfigsDirs.forEach((v) => {
-            _listAppConfigsFoldersSync(v, configDirs);
+            _listAppConfigsFoldersSync(v, configDirs, ignoreHiddenConfigs);
         });
     } else {
-        _listAppConfigsFoldersSync(c.paths.project.appConfigsDir, configDirs);
+        _listAppConfigsFoldersSync(c.paths.project.appConfigsDir, configDirs, ignoreHiddenConfigs);
     }
 
     return configDirs;
 };
 
-const _listAppConfigsFoldersSync = (dirPath, configDirs) => {
+const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) => {
     fs.readdirSync(dirPath).forEach((dir) => {
-        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(dirPath, dir)).isDirectory()) {
-            configDirs.push(dir);
+        const appConfigDir = path.join(dirPath, dir);
+        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(appConfigDir).isDirectory()) {
+            if (ignoreHiddenConfigs) {
+                const appConfig = path.join(appConfigDir, RENATIVE_CONFIG_NAME);
+                if (fs.existsSync(appConfig)) {
+                    try {
+                        const config = readObjectSync(appConfig);
+                        if (config?.hidden !== true) {
+                            configDirs.push(dir);
+                        }
+                    } catch (e) {
+                        logWarning(`_listAppConfigsFoldersSync: ${e}`);
+                    }
+                }
+            } else {
+                configDirs.push(dir);
+            }
         }
     });
 };

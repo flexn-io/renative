@@ -167,7 +167,7 @@ export const updateProfiles = (c) => {
 
 export const _updateProfiles = (c) => {
     logTask('_updateProfiles', chalk.grey);
-    const acList = listAppConfigsFoldersSync(c);
+    const acList = listAppConfigsFoldersSync(c, true);
     const fullList = [];
     const currentAppId = c.runtime.appId;
 

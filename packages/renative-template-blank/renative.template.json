@@ -1,17 +1,4 @@
 {
-  "android": {
-      "gradle.properties": {
-          "android.useDeprecatedNdk": true
-      },
-      "AndroidManifest": {
-          "children": [{
-              "tag": "application",
-              "android:name": ".MainApplication",
-              "android:usesCleartextTraffic": true,
-              "tools:targetApi": 28
-          }]
-      }
-  },
   "plugins": {
       "renative": "source:rnv",
       "react": "source:rnv",
@@ -38,5 +25,46 @@
               "security": "signature"
           }
       }
+  },
+  "platforms": {
+    "android": {
+        "gradle.properties": {
+            "android.useDeprecatedNdk": true
+        },
+        "AndroidManifest": {
+            "children": [{
+                "tag": "application",
+                "android:name": ".MainApplication",
+                "android:usesCleartextTraffic": true,
+                "tools:targetApi": 28
+            }]
+        }
+    },
+    "androidtv": {
+        "gradle.properties": {
+            "android.useDeprecatedNdk": true
+        },
+        "AndroidManifest": {
+            "children": [{
+                "tag": "application",
+                "android:name": ".MainApplication",
+                "android:usesCleartextTraffic": true,
+                "tools:targetApi": 28
+            }]
+        }
+    },
+    "androidwear": {
+        "gradle.properties": {
+            "android.useDeprecatedNdk": true
+        },
+        "AndroidManifest": {
+            "children": [{
+                "tag": "application",
+                "android:name": ".MainApplication",
+                "android:usesCleartextTraffic": true,
+                "tools:targetApi": 28
+            }]
+        }
+    },
   }
 }
