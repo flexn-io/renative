@@ -83,7 +83,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
 export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
     logTask('applyTemplate');
 
-    if (!c.buildConfig.currentTemplate) {
+    if (!c.buildConfig.currentTemplate || c.program.reset) {
         logWarning('You don\'t have any current template selected');
         const opts = getInstalledTemplateOptions(c);
 
@@ -203,13 +203,15 @@ const _applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) =>
             appConfigIds.forEach((v) => {
                 const appConfigPath = path.join(c.paths.project.appConfigsDir, v, RENATIVE_CONFIG_NAME);
                 const appConfig = readObjectSync(appConfigPath);
-                appConfig.common = appConfig.common || {};
-                if (!c.runtime.isWrapper) {
-                    appConfig.common.title = c.files.project.config?.defaults?.title;
-                    appConfig.common.id = c.files.project.config?.defaults?.id;
-                }
+                if (appConfig) {
+                    appConfig.common = appConfig.common || {};
+                    if (!c.runtime.isWrapper) {
+                        appConfig.common.title = c.files.project.config?.defaults?.title;
+                        appConfig.common.id = c.files.project.config?.defaults?.id;
+                    }
 
-                _writeObjectSync(c, appConfigPath, appConfig);
+                    _writeObjectSync(c, appConfigPath, appConfig);
+                }
             });
 
             const supPlats = c.files.project?.defaults?.supportedPlatforms;

@@ -1,6 +1,6 @@
 {
     "id": "base",
-    "hidden": "true"
+    "hidden": true,
     "common": {
         "author": {
             "name": "Pavel Jacko",

@@ -573,6 +573,7 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
 };
 
 const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) => {
+    if (!fs.existsSync(dirPath)) return;
     fs.readdirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);
         if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(appConfigDir).isDirectory()) {
