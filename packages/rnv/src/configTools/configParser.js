@@ -173,8 +173,6 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
         // LOAD ./package.json
         loadFile(c.files.project, c.paths.project, 'package');
 
-        versionCheck(c);
-
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
         c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
@@ -256,13 +254,18 @@ const _generateConfigPaths = (pathObj, dir) => {
 
 export const versionCheck = c => new Promise((resolve, reject) => {
     logTask('versionCheck');
+
+    if (c.runtime.isWrapper) {
+        resolve();
+        return;
+    }
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
     c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
     logTask(`versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`, chalk.grey);
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
             const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
-            logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . \n`);
+            logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json \n`);
 
             askQuestion('Do you want to proceed anyway? (y/n)')
                 .then((v) => {
@@ -271,8 +274,16 @@ export const versionCheck = c => new Promise((resolve, reject) => {
                     } else {
                         reject('Action cancelled');
                     }
-                }).catch(e => reject(e));
+                    finishQuestion();
+                }).catch((e) => {
+                    reject(e);
+                    finishQuestion();
+                });
+        } else {
+            resolve();
         }
+    } else {
+        resolve();
     }
 });
 
