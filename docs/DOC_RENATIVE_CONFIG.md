@@ -94,6 +94,8 @@ CONFIG_ROOT
 ```json
 {
   "env": {},
+  "hidden": false,
+  "disabled": false,
   "definitions": {},
   "profiles": {},
   "isWrapper": true,
