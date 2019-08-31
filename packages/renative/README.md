@@ -181,7 +181,7 @@ Contributing
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_xbox.png?raw=true" width=20 height=20 />
     </br>
-    <a href="#android-wear">Xbox</a>
+    <a href="#xbox">Xbox</a>
     </th>
   </tr>
   <tr>
