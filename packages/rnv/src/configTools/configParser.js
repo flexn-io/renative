@@ -77,6 +77,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                 assets: {},
                 platformTemplates: {}
             },
+            template: {},
             appConfig: {},
             private: {
                 project: {
