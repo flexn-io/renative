@@ -81,7 +81,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
 });
 
 export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
-    logTask('applyTemplate');
+    logTask(`applyTemplate:${c.buildConfig.currentTemplate}=>${selectedTemplate}:`);
 
     if (!c.buildConfig.currentTemplate || (c.program.reset && c.command === 'template' && c.subCommand === 'apply')) {
         logWarning('You don\'t have any current template selected');
@@ -96,67 +96,36 @@ export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reje
                 _writeObjectSync(c, c.paths.project.config, c.files.project.config);
                 return Promise.resolve();
             })
-            .then(() => _preApplyTemplate(c, selectedTemplate))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        _preApplyTemplate(c, selectedTemplate)
-            .then(() => resolve())
-            .catch(e => reject(e));
-    }
-});
-
-const _preApplyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
-    logTask(`_preApplyTemplate:${selectedTemplate}`);
-    c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
-
-    if (c.runtime.isWrapper) {
-        _applyLocalTemplate(c, selectedTemplate)
+            .then(() => _applyTemplate(c, selectedTemplate))
+            .then(() => _configureEntryPoints(c))
             .then(() => resolve())
             .catch(e => reject(e));
     } else {
         _applyTemplate(c, selectedTemplate)
+            .then(() => _configureEntryPoints(c))
             .then(() => resolve())
             .catch(e => reject(e));
     }
 });
 
-const _applyLocalTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
-    logTask(`_applyLocalTemplate:${selectedTemplate}`);
-    const currentTemplate = selectedTemplate || c.buildConfig.currentTemplate;
-    if (selectedTemplate) {
-        logTask(`applyTemplate:${selectedTemplate}`);
-        // LOCAL TEMPLATE
-        if (currentTemplate !== selectedTemplate) {
-            logWarning(`Current template ${chalk.red(currentTemplate)} will be overriden by ${chalk.green(selectedTemplate)}`);
-        }
+const _cleanProjectTemplateSync = (c) => {
+    const dirsToRemove = [
+        path.join(c.paths.project.projectConfig.dir),
+        path.join(c.paths.project.srcDir),
+        path.join(c.paths.project.appConfigsDir)
+    ];
 
-        const dirsToRemove = [
-            path.join(c.paths.project.projectConfig.dir),
-            path.join(c.paths.project.srcDir),
-            path.join(c.paths.project.appConfigsDir)
-        ];
+    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map(p => path.join(c.paths.project.dir, `index.${p}.js`));
 
-        const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map(p => path.join(c.paths.project.dir, `index.${p}.js`));
-
-        removeDirsSync(dirsToRemove);
-        // TODO: NOT SERVED FROM TEMPLATE YET
-        removeFilesSync(filesToRemove);
-
-        c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, selectedTemplate);
-
-        _applyTemplate(c, selectedTemplate)
-            .then(() => configureEntryPoints(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
-
-        return resolve();
-    }
-    return resolve();
-});
+    removeDirsSync(dirsToRemove);
+    // TODO: NOT SERVED FROM TEMPLATE YET
+    removeFilesSync(filesToRemove);
+};
 
 const _applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
     logTask(`_applyTemplate:${selectedTemplate}:${c.paths.projectTemplateFolder}`);
+
+    c.paths.projectTemplateFolder = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
 
     const templateConfigPath = path.join(c.paths.projectTemplateFolder, RENATIVE_CONFIG_TEMPLATE_NAME);
 
@@ -164,6 +133,10 @@ const _applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) =>
         logWarning(`Template file ${chalk.white(templateConfigPath)} does not exist. check your ${chalk.white(c.paths.projectTemplateFolder)}. skipping`);
         resolve();
         return;
+    }
+
+    if (selectedTemplate) {
+        _cleanProjectTemplateSync(c);
     }
 
     const templateAppConfigsFolder = path.join(c.paths.projectTemplateFolder, 'appConfigs');
@@ -262,6 +235,41 @@ const _applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) =>
 
     resolve();
 });
+
+const _configureEntryPoints = (c) => {
+    logTask('configureEntryPoints');
+    // Check entry
+    // TODO: RN bundle command fails if entry files are not at root
+    // logTask('configureProject:check entry');
+    // if (!fs.existsSync(c.paths.entryDir)) {
+    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
+    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryDir);
+    // }
+    let plat;
+    const p = c.buildConfig.platforms;
+    const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;
+    for (const k in p) {
+        if (supportedPlatforms && supportedPlatforms.includes(k) || !supportedPlatforms) {
+            plat = p[k];
+            const source = path.join(c.paths.projectTemplateFolder, `${plat.entryFile}.js`);
+            const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
+            const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
+            if (!fs.existsSync(dest)) {
+                if (!plat.entryFile) {
+                    logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
+                } else if (!fs.existsSync(source)) {
+                    logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                    copyFileSync(backupSource, dest);
+                } else {
+                    logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                    copyFileSync(source, dest);
+                }
+            }
+        } else {
+            logWarning(`Extra platform ${chalk.white(k)} will be ignored because it's not configured in your ${chalk.white('./renative.json: { defaults.supportedPlatforms }')} object.`);
+        }
+    }
+};
 
 const _writeObjectSync = (c, p, s) => {
     writeObjectSync(p, s);
