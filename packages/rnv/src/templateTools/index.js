@@ -8,11 +8,11 @@ import {
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
     removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
-import { logError, logInfo, logWarning, logTask } from '../common';
+import { logError, logInfo, logWarning, logTask, logDebug } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions, askQuestion, finishQuestion } from '../systemTools/prompt';
 import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
-import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig } from '../configTools/configParser';
+import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig } from '../configTools/configParser';
 
 import { templates } from '../../renativeTemplates/templates.json';
 
@@ -118,6 +118,7 @@ export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reje
 });
 
 const _cleanProjectTemplateSync = (c) => {
+    logTask('_cleanProjectTemplateSync');
     const dirsToRemove = [
         path.join(c.paths.project.projectConfig.dir),
         path.join(c.paths.project.srcDir),
@@ -165,6 +166,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
 
     setAppConfig(c, c.runtime.appId);
+    generateLocalConfig(c, !!c.runtime.selectedTemplate);
 
     resolve();
 });
@@ -274,7 +276,13 @@ const _configureEntryPoints = c => new Promise((resolve, reject) => {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
     //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryDir);
     // }
+
     try {
+        if (!fs.existsSync(c.paths.appConfig.config)) {
+            logWarning(`ERROR: c.paths.appConfig.config: ${c.paths.appConfig.config} does not exist`);
+            resolve();
+            return;
+        }
         let plat;
         const p = c.buildConfig.platforms;
         const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;

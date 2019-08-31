@@ -355,7 +355,7 @@ export const setAppConfig = (c, appId) => {
 
     _loadConfigFiles(c, c.files.private.appConfig, c.paths.private.appConfig, c.paths.private.project.appConfigsDir);
     generateBuildConfig(c);
-    _generateLocalConfig(c);
+    generateLocalConfig(c);
 };
 
 const _findAndSwitchAppConfigDir = (c, appId) => {
@@ -475,11 +475,15 @@ export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _generateLocalConfig = (c) => {
-    logTask(`_generateLocalConfig:${c.paths.project.configLocal}`);
+export const generateLocalConfig = (c, resetAppId) => {
+    logTask(`generateLocalConfig:${resetAppId}:${c.paths.project.configLocal}`);
     const configLocal = c.files.project.configLocal || {};
     configLocal._meta = configLocal._meta || {};
-    configLocal._meta.currentAppConfigId = c.runtime.appId;
+    if (resetAppId) {
+        delete configLocal._meta.currentAppConfigId;
+    } else {
+        configLocal._meta.currentAppConfigId = c.runtime.appId;
+    }
     c.files.project.configLocal = configLocal;
     writeObjectSync(c.paths.project.configLocal, configLocal);
 };
@@ -516,8 +520,11 @@ export const updateConfig = async (c, appConfigId) => {
     if (!fs.existsSync(c.paths.appConfig.dir)) {
         const configDirs = listAppConfigsFoldersSync(c, true);
 
-
-        if (appConfigId !== '?') {
+        if (!appConfigId) {
+            logWarning(
+                'It seems you don\'t have any appConfig active',
+            );
+        } else if (appConfigId !== '?') {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,
