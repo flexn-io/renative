@@ -1,9 +1,36 @@
 /* your custom css */
 
+.wrapper {
+  max-width: 900px;
+}
+
+/* .navigationSlider {
+    height: 44px;
+} */
+
+.projectLogo {
+  justify-content: center;
+}
+
+.homeContainer {
+    background-color: #282c34
+}
+
+.fixedHeaderContainer {
+  background-color: #20232a;
+  min-height: 60px;
+  padding: 13px 0;
+}
+
+.projectTitle {
+    color: #FFFFFF;
+
+  }
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 
 @media only screen and (min-width: 1024px) {
+
 }
 
 @media only screen and (max-width: 1023px) {
