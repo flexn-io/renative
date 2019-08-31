@@ -44,31 +44,29 @@
             "build": "release",
             "export": "release"
         },
-        "targets": {
-
-        }
+        "targets": {}
     },
     "templates": {
-      "renative-template-hello-world": {
-        "version": "file:./packages/renative-template-hello-world",
-        "webpack": {
-            "moduleAliases": {
-                "renative": {
-                    "projectPath": "packages/renative-template-hello-world"
+        "renative-template-hello-world": {
+            "version": "file:./packages/renative-template-hello-world",
+            "webpack": {
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "packages/renative-template-hello-world"
+                    }
+                }
+            }
+        },
+        "renative-template-blank": {
+            "version": "file:./packages/renative-template-blank",
+            "webpack": {
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "packages/renative-template-blank"
+                    }
                 }
             }
         }
-      },
-      "renative-template-blank": {
-        "version": "file:./packages/renative-template-blank",
-        "webpack": {
-            "moduleAliases": {
-                "renative": {
-                    "projectPath": "packages/renative-template-blank"
-                }
-            }
-        }
-      }
     },
     "currentTemplate": "renative-template-hello-world"
 }

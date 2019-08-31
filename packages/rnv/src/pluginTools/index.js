@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 import { mergeObjects, writeObjectSync } from '../systemTools/fileutils';
 import { logTask, logWarning, logError, getConfigProp } from '../common';
+import { askQuestion, finishQuestion } from '../systemTools/prompt';
+import { versionCheck } from '../configTools/configParser';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
@@ -32,9 +34,10 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
     }
 
     let hasPackageChanged = false;
+
     for (const k in c.buildConfig.plugins) {
-        const dependencies = c.files.project.package.dependencies;
-        const devDependencies = c.files.project.package.devDependencies;
+        const { dependencies } = c.files.project.package;
+        const { devDependencies } = c.files.project.package;
         const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
         if (!plugin) {
@@ -52,6 +55,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
   ${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(plugin.version)}).
   package.json will be overriden`
                     );
+
                     hasPackageChanged = true;
                     dependencies[k] = plugin.version;
                 }
@@ -91,12 +95,14 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
     }
 
     logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
-    if (hasPackageChanged) {
-        writeObjectSync(c.paths.project.package, c.files.project.package);
-        c._requiresNpmInstall = true;
-    }
-
-    resolve();
+    versionCheck(c)
+        .then(() => {
+            if (hasPackageChanged) {
+                writeObjectSync(c.paths.project.package, c.files.project.package);
+                c._requiresNpmInstall = true;
+            }
+            resolve();
+        }).catch(e => reject(e));
 });
 
 const parsePlugins = (c, platform, pluginCallback) => {
@@ -106,7 +112,7 @@ const parsePlugins = (c, platform, pluginCallback) => {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
-            const plugins = c.buildConfig.plugins;
+            const { plugins } = c.buildConfig;
             if (plugins) {
                 Object.keys(plugins).forEach((key) => {
                     if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {

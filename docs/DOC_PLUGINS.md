@@ -84,7 +84,7 @@ Plugin Spec:
 
 ```json
 {
-  "pugin-name": {
+  "plugin-name": {
       "version": "",
       "enabled": true,
       "ios": {},

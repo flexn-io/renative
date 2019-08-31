@@ -1,9 +1,7 @@
 {
-    "id": "helloWorld",
+    "id": "base",
+    "hidden": true,
     "common": {
-        "id": "renative.helloworld",
-        "title": "ReNative V1",
-        "description": "Cross-platform application project based on ReNative",
         "author": {
             "name": "Pavel Jacko",
             "email": "Pavel Jacko <i@pavjacko.com>",
@@ -56,7 +54,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -77,7 +74,6 @@
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -98,7 +94,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -119,7 +114,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -140,7 +134,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -156,7 +149,6 @@
             "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "bundleAssets": false,
                     "environment": "development"
                 },
@@ -169,8 +161,6 @@
         },
         "tizen": {
             "appName": "RNVanillaTV",
-            "package": "NkVRhWHJST",
-            "id": "NkVRhWHJST.RNVanillaTV",
             "entryFile": "index.tizen",
             "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert",
@@ -186,8 +176,6 @@
         },
         "tizenwatch": {
             "appName": "RNVanillaWatch",
-            "package": "cHIP2fIRQZ",
-            "id": "cHIP2fIRQZ.RNVanillaWatch",
             "entryFile": "index.tizenwatch",
             "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert",
@@ -203,8 +191,6 @@
         },
         "tizenmobile": {
             "appName": "RNVanillaMobile",
-            "package": "PauodvCU2r",
-            "id": "PauodvCU2r.RNVanillaMobile",
             "entryFile": "index.tizenmobile",
             "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert",
@@ -227,7 +213,6 @@
             },
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "bundleAssets": false,
                     "environment": "development"
                 },
@@ -269,7 +254,6 @@
             "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -283,7 +267,6 @@
             "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -297,7 +280,6 @@
             "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug",
                     "bundleAssets": false
                 },
                 "release": {

@@ -94,6 +94,8 @@ CONFIG_ROOT
 ```json
 {
   "env": {},
+  "hidden": false,
+  "disabled": false,
   "definitions": {},
   "profiles": {},
   "isWrapper": true,
@@ -244,10 +246,14 @@ DEFAULTS_PROPS
 
 IOS_COMMON_PROPS
 
+
 ```json
 {
   "appDelegateImports": [],
   "appDelegateMethods": {},
+  "Podfile": {
+    "sources": []
+  },
   "plist": {},
   "xcodeproj": {},
   "appDelegateApplicationMethods": {

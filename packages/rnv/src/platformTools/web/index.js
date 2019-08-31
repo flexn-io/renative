@@ -28,7 +28,7 @@ const _generateWebpackConfigs = (c) => {
     const appFolder = getAppFolder(c, c.platform);
     const templateFolder = getAppTemplateFolder(c, c.platform);
 
-    const plugins = c.buildConfig.plugins;
+    const { plugins } = c.buildConfig;
     let modulePaths = [];
     let moduleAliasesString = '';
     const moduleAliases = {};
@@ -107,7 +107,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    executeAsync(`npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`, { maxErrorLength })
+    executeAsync(c, `npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
         .then(() => {
             logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'public'))} .`);
             resolve();
@@ -182,7 +182,6 @@ const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Prom
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWebDevServer:${platform}`);
-    const { maxErrorLength } = c.program;
 
     const appFolder = getAppFolder(c, platform);
     const wpPublic = path.join(appFolder, 'public');
@@ -190,7 +189,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
 
     _generateWebpackConfigs(c);
     const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
-    return executeAsync(command, { maxErrorLength, stdio: 'inherit', silent: true });
+    return executeAsync(c, command, { stdio: 'inherit', silent: true });
 });
 
 const deployWeb = (c, platform) => new Promise((resolve, reject) => {

@@ -179,7 +179,9 @@ Contributing
     </br>
     <a href="#android-wear">Android Wear</a>
     </th><th>
-    ...
+    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_xbox.png?raw=true" width=20 height=20 />
+    </br>
+    <a href="#android-wear">Xbox</a>
     </th>
   </tr>
   <tr>
@@ -190,7 +192,7 @@ Contributing
     </th><th>
     <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_androidwear.gif?raw=true" width="150" height="150" />
     </th><th>
-    ...
+    coming soon
     </th>
   </tr>
 </table>

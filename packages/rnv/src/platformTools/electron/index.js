@@ -131,7 +131,7 @@ const exportElectron = (c, platform) => new Promise((resolve, reject) => {
     const { maxErrorLength } = c.program;
 
     const appFolder = getAppFolder(c, platform);
-    executeAsync(`npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`, { maxErrorLength })
+    executeAsync(c, `npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
         .then(() => {
             logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
             resolve();
@@ -224,7 +224,7 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
         dest
     ];
     try {
-        executeAsync(`iconutil ${p.join(' ')}`, { maxErrorLength });
+        executeAsync(c, `iconutil ${p.join(' ')}`);
         resolve();
     } catch (e) {
         reject(e);

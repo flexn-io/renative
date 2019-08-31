@@ -39,7 +39,7 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { getQuestion } from '../systemTools/prompt';
+import { getQuestion, askQuestion, finishQuestion } from '../systemTools/prompt';
 import {
     copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateProjectConfig,
     checkAndCreateGitignore, copySharedPlatforms
@@ -252,18 +252,40 @@ const _generateConfigPaths = (pathObj, dir) => {
     pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
 };
 
-const _versionCheck = (c) => {
-    logTask('_versionCheck');
-    c.runtime.rnvVersionProject = c.files.rnv?.package?.version;
-    c.runtime.rnvVersionRunner = c.files.project?.package?.devDependencies?.rnv;
+export const versionCheck = c => new Promise((resolve, reject) => {
+    logTask('versionCheck');
+
+    if (c.runtime.isWrapper) {
+        resolve();
+        return;
+    }
+    c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
+    c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
+    logTask(`versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`, chalk.grey);
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
             const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
-            logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with $rnv v${chalk.red(c.runtime.rnvVersionProject)}.
-This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} .`);
+            logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json \n`);
+
+            askQuestion('Do you want to proceed anyway? (y/n)')
+                .then((v) => {
+                    if (v === 'y') {
+                        resolve();
+                    } else {
+                        reject('Action cancelled');
+                    }
+                    finishQuestion();
+                }).catch((e) => {
+                    reject(e);
+                    finishQuestion();
+                });
+        } else {
+            resolve();
         }
+    } else {
+        resolve();
     }
-};
+});
 
 export const loadFile = (fileObj, pathObj, key) => {
     if (!fs.existsSync(pathObj[key])) {
@@ -318,7 +340,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
 export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
-    if (!appId) return;
+    if (!appId || appId === '?') return;
 
     c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
@@ -491,7 +513,7 @@ export const updateConfig = async (c, appConfigId) => {
     setAppConfig(c, appConfigId);
 
     if (!fs.existsSync(c.paths.appConfig.dir)) {
-        const configDirs = listAppConfigsFoldersSync(c);
+        const configDirs = listAppConfigsFoldersSync(c, true);
 
 
         if (appConfigId !== '?') {
@@ -507,7 +529,8 @@ export const updateConfig = async (c, appConfigId) => {
                 name: 'conf',
                 type: 'list',
                 message: 'ReNative found existing appConfigs. Which one would you like to pick?',
-                choices: configDirs
+                choices: configDirs,
+                pageSize: 50
             });
 
             if (conf) {
@@ -535,14 +558,42 @@ export const updateConfig = async (c, appConfigId) => {
     return true;
 };
 
-export const listAppConfigsFoldersSync = (c) => {
+export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
+    logTask(`listAppConfigsFoldersSync:${ignoreHiddenConfigs}`);
     const configDirs = [];
-    fs.readdirSync(c.paths.project.appConfigsDir).forEach((dir) => {
-        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(path.join(c.paths.project.appConfigsDir, dir)).isDirectory()) {
-            configDirs.push(dir);
+    if (c.buildConfig?.paths?.appConfigsDirs) {
+        c.buildConfig.paths.appConfigsDirs.forEach((v) => {
+            _listAppConfigsFoldersSync(v, configDirs, ignoreHiddenConfigs);
+        });
+    } else {
+        _listAppConfigsFoldersSync(c.paths.project.appConfigsDir, configDirs, ignoreHiddenConfigs);
+    }
+
+    return configDirs;
+};
+
+const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) => {
+    if (!fs.existsSync(dirPath)) return;
+    fs.readdirSync(dirPath).forEach((dir) => {
+        const appConfigDir = path.join(dirPath, dir);
+        if (!IGNORE_FOLDERS.includes(dir) && fs.lstatSync(appConfigDir).isDirectory()) {
+            if (ignoreHiddenConfigs) {
+                const appConfig = path.join(appConfigDir, RENATIVE_CONFIG_NAME);
+                if (fs.existsSync(appConfig)) {
+                    try {
+                        const config = readObjectSync(appConfig);
+                        if (config?.hidden !== true) {
+                            configDirs.push(dir);
+                        }
+                    } catch (e) {
+                        logWarning(`_listAppConfigsFoldersSync: ${e}`);
+                    }
+                }
+            } else {
+                configDirs.push(dir);
+            }
         }
     });
-    return configDirs;
 };
 
 export const configureRnvGlobal = c => new Promise((resolve, reject) => {
