@@ -5,6 +5,35 @@ These commands must work IN ReNative REPO and STANDALONE apps
 ## Commands PRIORITY 1
 
 ```
+rnv status
+rnv new
+rnv run
+rnv log
+rnv build
+rnv package
+rnv export
+rnv deploy
+rnv platform
+rnv plugin
+rnv template
+rnv target
+rnv tool
+rnv crypto
+rnv hook
+rnv clean
+```
+
+TBC
+
+```
+rnv profile
+rnv debug
+rnv intgeration
+rnv doctor
+```
+
+
+```
 rnv new
 rnv run
 rnv run -p android
@@ -21,6 +50,8 @@ rnv target list -p android
 rnv platform eject
 rnv target list
 ```
+
+
 
 ## Android
 
