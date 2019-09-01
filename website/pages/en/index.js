@@ -97,6 +97,10 @@ class Index extends React.Component {
         const { config: siteConfig, language = '' } = this.props;
         const { baseUrl } = siteConfig;
 
+        const Beta = props => (
+            <img src={`${baseUrl}img/beta.png`} className="beta" />
+        );
+
         const Block = props => (
             <Container
                 padding={['bottom', 'top']}
@@ -199,17 +203,15 @@ These are features of this project
             </Container>
         );
 
-        const TryOut = () => (
+        const Templates = () => (
             <Block id="try">
                 {[
                     {
                         content:
-              'To make your landing page more attractive, use illustrations! Check out '
-              + '[**unDraw**](https://undraw.co/) which provides you with customizable illustrations which are free to use. '
-              + 'The illustrations you see on this page are from unDraw.',
+              'Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.',
                         image: `${baseUrl}img/undraw_code_review.svg`,
                         imageAlign: 'left',
-                        title: 'Wonderful SVG Illustrations',
+                        title: 'Templates',
                     },
                 ]}
             </Block>
@@ -229,19 +231,91 @@ These are features of this project
             </Block>
         );
 
-        const LearnHow = () => (
+        const Plugins = () => (
             <Block background="light">
                 {[
                     {
                         content:
-              'Each new Docusaurus project has **randomly-generated** theme colors.',
+              'ReNative supports standard community driven react-native plugins you can use to enhance the functionality of your apps:',
                         image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
                         imageAlign: 'right',
-                        title: 'Randomly Generated Theme Colors',
+                        title: 'Plugins',
                     },
                 ]}
             </Block>
         );
+
+        const Integrations = () => (
+            <Block background="light">
+                {[
+                    {
+                        content:
+              'ReNative supports integration for various services and deployment infrastructures for your apps',
+                        image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
+                        imageAlign: 'right',
+                        title: 'Integrations',
+                    },
+                ]}
+            </Block>
+        );
+
+        const Configurations = () => (
+            <Block id="try">
+                {[
+                    {
+                        content:
+              'Tired of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running',
+                        image: `${baseUrl}img/undraw_code_review.svg`,
+                        imageAlign: 'left',
+                        title: 'Configurations',
+                    }
+                ]}
+            </Block>
+        );
+
+        const BuildHooks = () => (
+            <Block background="light">
+                {[
+                    {
+                        content:
+              'Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.',
+                        image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
+                        imageAlign: 'right',
+                        title: 'Build Hooks',
+                    },
+                ]}
+            </Block>
+        );
+
+        const Runtime = () => (
+            <Block id="try">
+                {[
+                    {
+                        content:
+              'ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms',
+                        image: `${baseUrl}img/undraw_code_review.svg`,
+                        imageAlign: 'left',
+                        title: 'Runtime',
+                    },
+                ]}
+            </Block>
+        );
+
+
+        const CLI = () => (
+            <Block background="light">
+                {[
+                    {
+                        content:
+              'One CLI to do it all. rnv is your entry point and control centre to building multi-platfom apps with just a few commands to learn',
+                        image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
+                        imageAlign: 'right',
+                        title: 'CLI',
+                    },
+                ]}
+            </Block>
+        );
+
 
         const Features = () => (
             <Block layout="fourColumn">
@@ -303,16 +377,21 @@ Users
 
         return (
             <div>
+
                 <HomeSplash siteConfig={siteConfig} language={language} />
                 <div className="mainContainer">
                     <Platforms />
-                    <Features />
-                    <FeatureCallout />
-                    <LearnHow />
-                    <TryOut />
+                    <Plugins />
+                    <Templates />
+                    <Integrations />
+                    <Configurations />
+                    <BuildHooks />
+                    <Runtime />
+                    <CLI />
                     <Description />
                     <Showcase />
                 </div>
+                <Beta />
             </div>
         );
     }

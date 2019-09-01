@@ -42,7 +42,9 @@ const siteConfig = {
         { doc: 'doc4', label: 'API' },
         { page: 'help', label: 'Help' },
         { blog: true, label: 'Blog' },
-        { url: 'https://github.com/pavjacko/renative', label: 'Github' },
+        { search: true },
+        { languages: true },
+        { href: 'https://github.com/pavjacko/renative', label: 'Github' },
     ],
 
     // If you have users set above, you add it here:

@@ -68,6 +68,12 @@
     transition: background 0.3s, color 0.3s;
 }
 
+.beta {
+  position: absolute;
+  top: 60px;
+  right: 0px;
+}
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 
