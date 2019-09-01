@@ -1,6 +1,9 @@
-# Documentation for RNV CLI
-
 ---
+id: cli
+title: ReNative CLI
+sidebar_label: CLI
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_cli.png?raw=true" width=50 height=50 />
 

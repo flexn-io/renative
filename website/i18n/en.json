@@ -14,14 +14,16 @@
       "DOC_ARCHITECTURE": {
         "title": "DOC_ARCHITECTURE"
       },
-      "DOC_BUILD_HOOKS": {
-        "title": "DOC_BUILD_HOOKS"
+      "build_hooks": {
+        "title": "Build Hooks",
+        "sidebar_label": "Build Hooks"
       },
       "DOC_COMMON_ISSUES": {
         "title": "DOC_COMMON_ISSUES"
       },
-      "DOC_CONFIG_FOLDERS": {
-        "title": "DOC_CONFIG_FOLDERS"
+      "config_folders": {
+        "title": "Config Folders",
+        "sidebar_label": "Config Folders"
       },
       "DOC_DEVELOP": {
         "title": "DOC_DEVELOP"
@@ -29,8 +31,9 @@
       "DOC_FEATURES": {
         "title": "DOC_FEATURES"
       },
-      "DOC_GET_STARTED": {
-        "title": "DOC_GET_STARTED"
+      "installation": {
+        "title": "Installation",
+        "sidebar_label": "Installation"
       },
       "DOC_INTEGRATIONS": {
         "title": "Integrations",
@@ -100,25 +103,30 @@
         "title": "Documentation for Windows Platform",
         "sidebar_label": "Windows"
       },
-      "DOC_PLUGINS": {
-        "title": "DOC_PLUGINS"
+      "plugins": {
+        "title": "Plugins",
+        "sidebar_label": "Plugins"
       },
-      "DOC_RENATIVE_CONFIG": {
-        "title": "DOC_RENATIVE_CONFIG"
+      "config": {
+        "title": "Config Files",
+        "sidebar_label": "Config Files"
       },
-      "DOC_RENATIVE_RUNTIME": {
-        "title": "DOC_RENATIVE_RUNTIME"
+      "runtime": {
+        "title": "ReNative Runtime",
+        "sidebar_label": "Runtime"
       },
-      "DOC_RNV_CLI": {
-        "title": "DOC_RNV_CLI"
+      "cli": {
+        "title": "ReNative CLI",
+        "sidebar_label": "CLI"
       },
-      "DOC_RNV_CONFIG": {
-        "title": "DOC_RNV_CONFIG"
+      "rnv_config": {
+        "title": "RNV Config Object",
+        "sidebar_label": "RNV Config"
       },
       "DOC_SANITY": {
         "title": "DOC_SANITY"
       },
-      "DOC_TEMPLATES": {
+      "templates": {
         "title": "Templates",
         "sidebar_label": "Templates"
       },
@@ -147,14 +155,9 @@
       "Github": "Github"
     },
     "categories": {
+      "GettingStarted": "GettingStarted",
       "Platforms": "Platforms",
-      "Plugins": "Plugins",
-      "Templates": "Templates",
-      "Integrations": "Integrations",
-      "Configurations": "Configurations",
-      "BuildHooks": "BuildHooks",
-      "Runtime": "Runtime",
-      "CLI": "CLI",
+      "Guides": "Guides",
       "First Category": "First Category"
     }
   },

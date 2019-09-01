@@ -1,3 +1,9 @@
+---
+id: config
+title: Config Files
+sidebar_label: Config Files
+---
+
 # Documentation for ReNative Config
 
 ---

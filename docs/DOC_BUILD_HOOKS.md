@@ -1,3 +1,10 @@
+---
+id: build_hooks
+title: Build Hooks
+sidebar_label: Build Hooks
+---
+
+
 # Documentation for ReNative Build Hooks
 
 ---

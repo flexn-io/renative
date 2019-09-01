@@ -1,3 +1,10 @@
+---
+id: installation
+title: Installation
+sidebar_label: Installation
+---
+
+
 # Getting Started with ReNative
 
 ---

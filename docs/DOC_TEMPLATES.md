@@ -1,5 +1,5 @@
 ---
-id: DOC_TEMPLATES
+id: templates
 title: Templates
 sidebar_label: Templates
 ---

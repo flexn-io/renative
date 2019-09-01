@@ -1,3 +1,9 @@
+---
+id: config_folders
+title: Config Folders
+sidebar_label: Config Folders
+---
+
 # Documentation for Folder Configurations
 
 ---
