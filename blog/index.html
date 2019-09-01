@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Blog · ReNative</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="Build universal cross-platform apps with react native"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Blog · ReNative"/><meta property="og:type" content="website"/><meta property="og:url" content="https://pavjacko.github.io/renative/"/><meta property="og:description" content="Build universal cross-platform apps with react native"/><meta property="og:image" content="https://pavjacko.github.io/renative/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://pavjacko.github.io/renative/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/renative/img/favicon.ico"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/renative/js/scrollSpy.js"></script><link rel="stylesheet" href="/renative/css/main.css"/><script src="/renative/js/codetabs.js"></script></head><body class="blog"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/renative/"><img class="logo" src="/renative/img/logo.png" alt="ReNative"/><h2 class="headerTitleWithLogo">ReNative</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/renative/docs/installation" target="_self">Docs</a></li><li class=""><a href="https://twitter.com/renative" target="_self">Twitter</a></li><li class=""><a href="https://github.com/pavjacko/renative" target="_self">Github</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Recent Posts</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Recent Posts</h3><ul class=""><li class="navListItem"><a class="navItem" href="/renative/blog/2017/10/24/new-version-1.0.0">New Version 1.0.0</a></li><li class="navListItem"><a class="navItem" href="/renative/blog/2017/09/26/adding-rss">Adding RSS Support</a></li><li class="navListItem"><a class="navItem" href="/renative/blog/2017/09/25/testing-rss">Adding RSS Support - RSS Truncation Test</a></li><li class="navListItem"><a class="navItem" href="/renative/blog/2017/04/10/blog-post-two">New Blog Post</a></li><li class="navListItem"><a class="navItem" href="/renative/blog/2016/03/11/blog-post">Blog Title</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer postContainer blogContainer"><div class="wrapper"><div class="posts"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/renative/blog/2017/10/24/new-version-1.0.0">New Version 1.0.0</a></h1><p class="post-meta">October 24, 2017</p><div class="authorBlock"><p class="post-authorName"><a href="http://twitter.com/pavjacko" target="_blank" rel="noreferrer noopener">Pavel Jacko</a></p></div></header><article class="post-content"><div><span><p>This blog post will test file name parsing issues when periods are present.</p>
+</span></div></article></div><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/renative/blog/2017/09/26/adding-rss">Adding RSS Support</a></h1><p class="post-meta">September 26, 2017</p><div class="authorBlock"><p class="post-authorName"><a href="http://twitter.com/pavjacko" target="_blank" rel="noreferrer noopener">Pavel Jacko</a></p><div class="authorPhoto"><a href="http://twitter.com/pavjacko" target="_blank" rel="noreferrer noopener"><img src="https://secure.gravatar.com/avatar/932ba953eb8774808e5118d99f828855?size=50" alt="Pavel Jacko"/></a></div></div></header><article class="post-content"><div><span><p>This is a test post.</p>
+<p>A whole bunch of other information.</p>
+</span></div></article></div><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/renative/blog/2017/09/25/testing-rss">Adding RSS Support - RSS Truncation Test</a></h1><p class="post-meta">September 25, 2017</p><div class="authorBlock"><p class="post-authorName"><a href="http://twitter.com/pavjacko" target="_blank" rel="noreferrer noopener">Pavel Jacko</a></p></div></header><article class="post-content"><div><span><p>1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890</p>
+<p>This should be truncated.</p>
+</span></div><div class="read-more"><a class="button" href="/renative/blog/2017/09/25/testing-rss">Read More</a></div></article></div><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/renative/blog/2017/04/10/blog-post-two">New Blog Post</a></h1><p class="post-meta">April 10, 2017</p><div class="authorBlock"><p class="post-authorName"><a href="http://twitter.com/" target="_blank" rel="noreferrer noopener">Blog Author</a></p></div></header><article class="post-content"><div><span><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
+</span></div><div class="read-more"><a class="button" href="/renative/blog/2017/04/10/blog-post-two">Read More</a></div></article></div><div class="post"><header class="postHeader"><h1 class="postHeaderTitle"><a href="/renative/blog/2016/03/11/blog-post">Blog Title</a></h1><p class="post-meta">March 11, 2016</p><div class="authorBlock"><p class="post-authorName"><a href="http://twitter.com/" target="_blank" rel="noreferrer noopener">Blog Author</a></p></div></header><article class="post-content"><div><span><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus elementum massa eget nulla aliquet sagittis. Proin odio tortor, vulputate ut odio in, ultrices ultricies augue. Cras ornare ultrices lorem malesuada iaculis. Etiam sit amet libero tempor, pulvinar mauris sed, sollicitudin sapien.</p>
+</span></div><div class="read-more"><a class="button" href="/renative/blog/2016/03/11/blog-post">Read More</a></div></article></div><div class="docs-prevnext"></div></div></div></div></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/renative/" class="nav-home"><img src="/renative/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/renative/docs/en/installation">Getting Started</a><a href="/renative/docs/en/platforms_overview">Platforms</a><a href="/renative/docs/en/plugins">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/renative/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script></body></html>
