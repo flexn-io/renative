@@ -3,7 +3,7 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "Universal Development Platform powered by React Native",
+    "tagline": "Build universal cross-platform apps with react native",
     "docs": {
       "CHANGELOG": {
         "title": "CHANGELOG"
@@ -18,24 +18,27 @@
         "title": "Build Hooks",
         "sidebar_label": "Build Hooks"
       },
-      "DOC_COMMON_ISSUES": {
-        "title": "DOC_COMMON_ISSUES"
+      "common_issues": {
+        "title": "Common Issues",
+        "sidebar_label": "Common Issues"
       },
       "config_folders": {
         "title": "Config Folders",
         "sidebar_label": "Config Folders"
       },
-      "DOC_DEVELOP": {
-        "title": "DOC_DEVELOP"
+      "develop": {
+        "title": "Develop ReNative",
+        "sidebar_label": "Develop ReNative"
       },
-      "DOC_FEATURES": {
-        "title": "DOC_FEATURES"
+      "features": {
+        "title": "Features",
+        "sidebar_label": "Features"
       },
       "installation": {
         "title": "Installation",
         "sidebar_label": "Installation"
       },
-      "DOC_INTEGRATIONS": {
+      "integrations": {
         "title": "Integrations",
         "sidebar_label": "Integrations"
       },
@@ -44,63 +47,63 @@
         "sidebar_label": "Overview"
       },
       "androidtv": {
-        "title": "Documentation for Android TV Platform",
+        "title": "Android TV Platform",
         "sidebar_label": "Android TV"
       },
       "androidwear": {
-        "title": "Documentation for Android Wear Platform",
-        "sidebar_label": "Android Weaer"
+        "title": "Android Wear Platform",
+        "sidebar_label": "Android Wear"
       },
       "android": {
-        "title": "Documentation for Android Platform",
+        "title": "Android Platform",
         "sidebar_label": "Android"
       },
       "firefoxos": {
-        "title": "Documentation for Firefox OS Platform",
+        "title": "Firefox OS Platform",
         "sidebar_label": "Firefox OS"
       },
       "firefoxtv": {
-        "title": "Documentation for Firefox TV Platform",
+        "title": "Firefox TV Platform",
         "sidebar_label": "Firefox TV"
       },
       "ios": {
-        "title": "Documentation for iOS Platform",
+        "title": "iOS Platform",
         "sidebar_label": "iOS"
       },
       "kaios": {
-        "title": "Documentation for KaiOS Platform",
+        "title": "KaiOS Platform",
         "sidebar_label": "KaiOS"
       },
       "macos": {
-        "title": "Documentation for macOS Platform",
+        "title": "macOS Platform",
         "sidebar_label": "macOS"
       },
       "tizenmobile": {
-        "title": "Documentation for Tizen Mobile Platform",
+        "title": "Tizen Mobile Platform",
         "sidebar_label": "Tizen Mobile"
       },
       "tizenwatch": {
-        "title": "Documentation for Tizen Watch Platform",
+        "title": "Tizen Watch Platform",
         "sidebar_label": "Tizen Watch"
       },
       "tizen": {
-        "title": "Documentation for Tizen TV Platform",
+        "title": "Tizen TV Platform",
         "sidebar_label": "Tizen TV"
       },
       "tvos": {
-        "title": "Documentation for tvOS Platform",
+        "title": "tvOS Platform",
         "sidebar_label": "tvOS"
       },
       "web": {
-        "title": "Documentation for Web Platform",
+        "title": "Web Platform",
         "sidebar_label": "Web"
       },
       "webos": {
-        "title": "Documentation for LG WebOS Platform",
+        "title": "LG WebOS Platform",
         "sidebar_label": "LG WebOS"
       },
       "windows": {
-        "title": "Documentation for Windows Platform",
+        "title": "Windows Platform",
         "sidebar_label": "Windows"
       },
       "plugins": {

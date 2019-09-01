@@ -1,6 +1,6 @@
 ---
 id: firefoxtv
-title: Documentation for Firefox TV Platform
+title: Firefox TV Platform
 sidebar_label: Firefox TV
 ---
 

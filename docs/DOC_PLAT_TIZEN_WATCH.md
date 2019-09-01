@@ -1,6 +1,6 @@
 ---
 id: tizenwatch
-title: Documentation for Tizen Watch Platform
+title: Tizen Watch Platform
 sidebar_label: Tizen Watch
 ---
 

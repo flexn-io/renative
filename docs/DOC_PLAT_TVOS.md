@@ -1,6 +1,6 @@
 ---
 id: tvos
-title: Documentation for tvOS Platform
+title: tvOS Platform
 sidebar_label: tvOS
 ---
 

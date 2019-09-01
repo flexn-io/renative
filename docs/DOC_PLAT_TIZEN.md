@@ -1,6 +1,6 @@
 ---
 id: tizen
-title: Documentation for Tizen TV Platform
+title: Tizen TV Platform
 sidebar_label: Tizen TV
 ---
 

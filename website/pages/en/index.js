@@ -76,14 +76,8 @@ ReNative
                     <ProjectTitle siteConfig={siteConfig} img_src={`${baseUrl}img/logo_large.png`} />
 
                     <PromoSection>
-                        <Button href="#try" className="buttonDark">
+                        <Button href={docUrl('installation.html')} className="buttonDark">
 Try It Out
-                        </Button>
-                        <Button href={docUrl('doc1.html')} className="buttonDark">
-Example Link
-                        </Button>
-                        <Button href={docUrl('doc2.html')} className="buttonDark">
-Example Link 2
                         </Button>
                     </PromoSection>
                 </div>
@@ -131,9 +125,9 @@ These are features of this project
 
         const PlatformItem = props => (
             <div>
-                <div className="platformItemText">
+                <a className="platformItemText" href={`${baseUrl}docs/${props.url}`}>
                     {props.title}
-                </div>
+                </a>
                 <img src={`${baseUrl}img/rnv_${props.url}.gif`} className="platformItem" />
             </div>
         );
@@ -171,7 +165,7 @@ These are features of this project
                 {[
                     {
                         content:
-              `[Target all platforms with single React Native framework](${baseUrl}docs/installation)`,
+              `[Target all platforms with single React Native framework](${baseUrl}docs/platforms_overview)`,
                         image: `${baseUrl}img/undraw_react_y7wq.svg`,
                         imageAlign: 'left',
                         title: 'React Native on Steroids',
@@ -241,7 +235,7 @@ These are features of this project
                 {[
                     {
                         content:
-              'Tired of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running',
+                        `[Tired of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running](${baseUrl}docs/config)`,
                         image: `${baseUrl}img/undraw_preferences_uuo2.svg`,
                         imageAlign: 'left',
                         title: 'Configurations',
@@ -255,7 +249,7 @@ These are features of this project
                 {[
                     {
                         content:
-              'Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.',
+              `[Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you](${baseUrl}docs/bbuild_hooks)`,
                         image: `${baseUrl}img/undraw_convert_2gjv.svg`,
                         imageAlign: 'right',
                         title: 'Build Hooks',

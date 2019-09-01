@@ -4,9 +4,6 @@ title: Config Files
 sidebar_label: Config Files
 ---
 
-# Documentation for ReNative Config
-
----
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
 

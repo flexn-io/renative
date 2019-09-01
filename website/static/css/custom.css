@@ -51,6 +51,7 @@ background-color: #282c34
   justify-content: center;
   font-weight: 600;
   text-align: center;
+  display: block;
 }
 
 .projectTitle {
@@ -102,6 +103,11 @@ a:hover {
 }
 
 @media only screen and (max-width: 1023px) {
+  .beta {
+    position: absolute;
+    top: 100px;
+    right: 0px;
+  }
 }
 
 @media only screen and (min-width: 1400px) {

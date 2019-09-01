@@ -4,9 +4,6 @@ title: Templates
 sidebar_label: Templates
 ---
 
-# Documentation for ReNative Templates
-
----
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_templates.png?raw=true" width=50 height=50 />
 

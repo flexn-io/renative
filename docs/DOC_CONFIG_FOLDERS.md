@@ -4,9 +4,6 @@ title: Config Folders
 sidebar_label: Config Folders
 ---
 
-# Documentation for Folder Configurations
-
----
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
 

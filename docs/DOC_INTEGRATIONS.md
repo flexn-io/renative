@@ -1,5 +1,5 @@
 ---
-id: DOC_INTEGRATIONS
+id: integrations
 title: Integrations
 sidebar_label: Integrations
 ---

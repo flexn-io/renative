@@ -1,7 +1,7 @@
 ---
 id: androidwear
-title: Documentation for Android Wear Platform
-sidebar_label: Android Weaer
+title: Android Wear Platform
+sidebar_label: Android Wear
 ---
 
 

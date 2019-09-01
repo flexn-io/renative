@@ -1,6 +1,6 @@
 ---
 id: windows
-title: Documentation for Windows Platform
+title: Windows Platform
 sidebar_label: Windows
 ---
 

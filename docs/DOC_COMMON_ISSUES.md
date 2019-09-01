@@ -1,6 +1,9 @@
-# Documentation for Common Issues
-
 ---
+id: common_issues
+title: Common Issues
+sidebar_label: Common Issues
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_issues.png?raw=true" width=50 height=50 />
 

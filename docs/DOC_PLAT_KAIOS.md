@@ -1,6 +1,6 @@
 ---
 id: kaios
-title: Documentation for KaiOS Platform
+title: KaiOS Platform
 sidebar_label: KaiOS
 ---
 

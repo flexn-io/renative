@@ -5,8 +5,6 @@ sidebar_label: RNV Config
 ---
 
 
-# Documentation for RNV Config (c)
-
 List of available config props injected into hooks methods:
 
 ## `c` Object

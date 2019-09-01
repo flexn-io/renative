@@ -1,6 +1,6 @@
 ---
 id: macos
-title: Documentation for macOS Platform
+title: macOS Platform
 sidebar_label: macOS
 ---
 

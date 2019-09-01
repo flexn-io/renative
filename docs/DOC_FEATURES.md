@@ -1,5 +1,7 @@
-# ReNative Features
-
+---
+id: features
+title: Features
+sidebar_label: Features
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_features.png?raw=true" width=50 height=50 />

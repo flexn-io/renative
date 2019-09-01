@@ -1,6 +1,6 @@
 ---
 id: tizenmobile
-title: Documentation for Tizen Mobile Platform
+title: Tizen Mobile Platform
 sidebar_label: Tizen Mobile
 ---
 

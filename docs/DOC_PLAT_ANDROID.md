@@ -1,6 +1,6 @@
 ---
 id: android
-title: Documentation for Android Platform
+title: Android Platform
 sidebar_label: Android
 ---
 

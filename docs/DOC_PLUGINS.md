@@ -4,9 +4,6 @@ title: Plugins
 sidebar_label: Plugins
 ---
 
-# Documentation for ReNative Plugins
-
----
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_plugins.png?raw=true" width=50 height=50 />
 

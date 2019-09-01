@@ -1,6 +1,6 @@
 ---
 id: webos
-title: Documentation for LG WebOS Platform
+title: LG WebOS Platform
 sidebar_label: LG WebOS
 ---
 

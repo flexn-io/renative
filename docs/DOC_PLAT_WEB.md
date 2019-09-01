@@ -1,6 +1,6 @@
 ---
 id: web
-title: Documentation for Web Platform
+title: Web Platform
 sidebar_label: Web
 ---
 

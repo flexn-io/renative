@@ -1,6 +1,6 @@
 ---
 id: firefoxos
-title: Documentation for Firefox OS Platform
+title: Firefox OS Platform
 sidebar_label: Firefox OS
 ---
 
