@@ -227,7 +227,7 @@ $ npm install rnv -g
 $ rnv new
 ```
 
-[Get Started (with more in-depth info)](docs/DOC_GET_STARTED.md)
+[Get Started (with more in-depth info)](https://renative.org/docs/installation)
 
 ---
 
@@ -244,7 +244,7 @@ $ rnv new
 - Deploy
 
 
-[Explore ReNative Features](docs/DOC_FEATURES.md)
+[Explore ReNative Features](https://renative.org/docs/features)
 
 ---
 
@@ -254,7 +254,7 @@ $ rnv new
 
 Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.
 
-[Documentation for ReNative Templates and Starters](docs/DOC_TEMPLATES.md)
+[Documentation for ReNative Templates and Starters](https://renative.org/docs/templates)
 
 
 ---
@@ -265,7 +265,7 @@ Too lazy to build your idea from scratch? use one of the predefined & community 
 
 ReNative supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
-[Documentation for ReNative Plugins](docs/DOC_PLUGINS.md)
+[Documentation for ReNative Plugins](https://renative.org/docs/plugins)
 
 ---
 
@@ -275,7 +275,7 @@ ReNative supports standard community driven react-native plugins you can use to 
 
 ReNative supports integration for various services and deployment infrastructures for your apps
 
-[Documentation for ReNative Integrations](docs/DOC_INTEGRATIONS.md)
+[Documentation for ReNative Integrations](https://renative.org/docs/integrations)
 
 
 ---
@@ -286,7 +286,7 @@ ReNative supports integration for various services and deployment infrastructure
 
 Tire of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running
 
-[Documentation for ReNative JSON Config](docs/DOC_RENATIVE_CONFIG.md)
+[Documentation for ReNative JSON Config](https://renative.org/docs/config)
 
 
 ---
@@ -297,7 +297,7 @@ Tire of setting up and managing countless of various projects? you can go as sim
 
 ReNative offers flexible and scalable folder override & injection features to create numerous flavours, A/B features, dynamic plugin switches and more
 
-[Documentation for ReNative Folder Configurations](docs/DOC_CONFIG_FOLDERS.md)
+[Documentation for ReNative Folder Configurations](https://renative.org/docs/config_folders)
 
 ---
 
@@ -307,7 +307,7 @@ ReNative offers flexible and scalable folder override & injection features to cr
 
 Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.
 
-[Documentation for ReNative Build Hooks](docs/DOC_BUILD_HOOKS.md)
+[Documentation for ReNative Build Hooks](https://renative.org/docs/build_hooks)
 
 
 ---
@@ -318,7 +318,7 @@ Sometimes you need to extend CLI functionality with custom build scripts. ReNati
 
 ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms
 
-[Documentation for ReNative Runtime](docs/DOC_RENATIVE_RUNTIME.md)
+[Documentation for ReNative Runtime](https://renative.org/docs/runtime)
 
 
 ---
@@ -329,7 +329,7 @@ ReNative runtime is an NPM dependency used abstract away some of the complexitie
 
 One CLI to do it all. `rnv` is your entry point and control centre to building multi-platfom apps with just a few commands to learn
 
-[Documentation for RNV CLI](docs/DOC_RNV_CLI.md)
+[Documentation for RNV CLI](https://renative.org/docs/cli)
 
 
 ---
@@ -340,7 +340,7 @@ One CLI to do it all. `rnv` is your entry point and control centre to building m
 
 More in-depth explanation how ReNative internals work
 
-[Documentation for ReNative Architecture](docs/DOC_ARCHITECTURE.md)
+[Documentation for ReNative Architecture](https://renative.org/docs/platforms_overview)
 
 <!--
 # Platforms
@@ -373,7 +373,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p ios`
 
-[Documentation for iOS Platform](docs/DOC_PLAT_IOS.md)
+[Documentation for iOS Platform](https://renative.org/docs/ios)
 
 ---
 
@@ -383,7 +383,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p android`
 
-[Documentation for Android Platform](docs/DOC_PLAT_ANDROID.md)
+[Documentation for Android Platform](https://renative.org/docs/android)
 
 ---
 
@@ -393,7 +393,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tvos`
 
-[Documentation for tvOS Platform](docs/DOC_PLAT_TVOS.md)
+[Documentation for tvOS Platform](https://renative.org/docs/tvos)
 
 ---
 
@@ -403,7 +403,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p androidtv`
 
-[Documentation for Android TV Platform](docs/DOC_PLAT_ANDROID_TV.md)
+[Documentation for Android TV Platform](https://renative.org/docs/androidtv)
 
 ---
 
@@ -413,7 +413,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p web`
 
-[Documentation for Web Platform](docs/DOC_PLAT_WEB.md)
+[Documentation for Web Platform](https://renative.org/docs/web)
 
 ---
 
@@ -423,7 +423,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tizen`
 
-[Documentation for Tizen TV Platform](docs/DOC_PLAT_TIZEN.md)
+[Documentation for Tizen TV Platform](https://renative.org/docs/tizen)
 
 ---
 
@@ -433,7 +433,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tizenwatch`
 
-[Documentation for Tizen Watch Platform](docs/DOC_PLAT_TIZEN_WATCH.md)
+[Documentation for Tizen Watch Platform](https://renative.org/docs/tizenwatch)
 
 ---
 
@@ -443,7 +443,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p webos`
 
-[Documentation for LG WebOS Platform](docs/DOC_PLAT_WEBOS.md)
+[Documentation for LG WebOS Platform](https://renative.org/docs/webos)
 
 ---
 
@@ -453,7 +453,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tizenmobile`
 
-[Documentation for Tizen Mobile Platform](docs/DOC_PLAT_TIZEN_MOBILE.md)
+[Documentation for Tizen Mobile Platform](https://renative.org/docs/tizenmobile)
 
 ---
 
@@ -463,7 +463,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p macos`
 
-[Documentation for macOS Platform](docs/DOC_PLAT_MACOS.md)
+[Documentation for macOS Platform](https://renative.org/docs/macos)
 
 ---
 
@@ -473,7 +473,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p windows`
 
-[Documentation for Windows Platform](docs/DOC_PLAT_WINDOWS.md)
+[Documentation for Windows Platform](https://renative.org/docs/windows)
 
 ---
 
@@ -483,7 +483,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p androidwear`
 
-[Documentation for Android Wear Platform](docs/DOC_PLAT_ANDROID_WEAR.md)
+[Documentation for Android Wear Platform](https://renative.org/docs/androidwear)
 
 ---
 
@@ -493,7 +493,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p kaios`
 
-[Documentation for KaiOS Platform](docs/DOC_PLAT_KAIOS.md)
+[Documentation for KaiOS Platform](https://renative.org/docs/kaios)
 
 ---
 
@@ -503,7 +503,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p firefoxos`
 
-[Documentation for Firefox OS Platform](docs/DOC_PLAT_FIREFOX_OS.md)
+[Documentation for Firefox OS Platform](https://renative.org/docs/firefoxos)
 
 ---
 
@@ -513,7 +513,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p firefoxtv`
 
-[Documentation for Firefox TV Platform](docs/DOC_PLAT_FIREFOX_TV.md)
+[Documentation for Firefox TV Platform](https://renative.org/docs/firefoxtv)
 
 ---
 
@@ -523,7 +523,7 @@ More in-depth explanation how ReNative internals work
 
 If you need full control over whole ReNative build or want to contribute, you can clone and develop ReNative locally
 
-[Documentation for Developing ReNative](docs/DOC_DEVELOP.md)
+[Documentation for Developing ReNative](https://renative.org/docs/develop)
 
 
 ---
@@ -534,7 +534,7 @@ If you need full control over whole ReNative build or want to contribute, you ca
 
 If you face unexpected issues always good to check if there is a quick solution for it
 
-[List of common problems and how to solve them](docs/DOC_COMMON_ISSUES.md)
+[List of common problems and how to solve them](https://renative.org/docs/common_issues)
 
 ---
 
