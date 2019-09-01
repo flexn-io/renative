@@ -33,14 +33,17 @@ class HomeSplash extends React.Component {
 
         const Logo = props => (
             <div className="projectLogo">
-                <img src={props.img_src} alt="Project Logo" />
+                <img src={props.img_src} alt="Project Logo" className="logoImage" />
             </div>
         );
 
         const ProjectTitle = props => (
 
             <div className="projectTitle">
-                <img src={props.img_src} alt="Project Logo" />
+
+                <h1 className="headerTitle">
+ReNative
+                </h1>
                 <small>
                     {siteConfig.tagline}
                 </small>
@@ -59,7 +62,7 @@ class HomeSplash extends React.Component {
 
         const Button = props => (
             <div className="pluginWrapper buttonWrapper">
-                <a className="button" href={props.href} target={props.target}>
+                <a className={props.className || 'button'} href={props.href} target={props.target}>
                     {props.children}
                 </a>
             </div>
@@ -70,16 +73,16 @@ class HomeSplash extends React.Component {
 
                 <div className="inner">
 
-                    <ProjectTitle siteConfig={siteConfig} img_src={`${baseUrl}img/logo_large_dark.png`} />
+                    <ProjectTitle siteConfig={siteConfig} img_src={`${baseUrl}img/logo_large.png`} />
 
                     <PromoSection>
-                        <Button href="#try">
+                        <Button href="#try" className="buttonDark">
 Try It Out
                         </Button>
-                        <Button href={docUrl('doc1.html')}>
+                        <Button href={docUrl('doc1.html')} className="buttonDark">
 Example Link
                         </Button>
-                        <Button href={docUrl('doc2.html')}>
+                        <Button href={docUrl('doc2.html')} className="buttonDark">
 Example Link 2
                         </Button>
                     </PromoSection>
@@ -120,6 +123,80 @@ Feature Callout
 These are features of this project
                 </MarkdownBlock>
             </div>
+        );
+
+        // const Platforms = () => (
+        //     <Block layout="fourColumn">
+        //         {[
+        //             {
+        //                 content: '',
+        //                 image: `${baseUrl}img/rnv_ios.gif`,
+        //                 imageAlign: 'top',
+        //                 title: '',
+        //             },
+        //             {
+        //                 content: '',
+        //                 image: `${baseUrl}img/rnv_android.gif`,
+        //                 imageAlign: 'top',
+        //                 title: '',
+        //             },
+        //             {
+        //                 content: '',
+        //                 image: `${baseUrl}img/rnv_web.gif`,
+        //                 imageAlign: 'top',
+        //                 title: '',
+        //             },
+        //             {
+        //                 content: '',
+        //                 image: `${baseUrl}img/rnv_tvos.gif`,
+        //                 imageAlign: 'top',
+        //                 title: '',
+        //             },
+        //             {
+        //                 content: 'The content of my second feature',
+        //                 image: `${baseUrl}img/undraw_operating_system.svg`,
+        //                 imageAlign: 'top',
+        //                 title: 'Tizen',
+        //             },
+        //         ]}
+        //     </Block>
+        // );
+
+        const PlatformItem = props => (
+            <div>
+                <div className="platformItemText">
+                    {props.title}
+                </div>
+                <img src={`${baseUrl}img/rnv_${props.url}.gif`} className="platformItem" />
+            </div>
+        );
+
+        const platformsData = [
+            { title: 'iOS', url: 'ios' },
+            { title: 'tvOS', url: 'tvos' },
+            { title: 'Android TV', url: 'androidtv' },
+            { title: 'Android', url: 'android' },
+            { title: 'Web', url: 'web' },
+            { title: 'LG WebOS', url: 'webos' },
+            { title: 'Tizen Mobile', url: 'tizenmobile' },
+            { title: 'Windows', url: 'windows' },
+            { title: 'Firefox TV', url: 'firefoxtv' },
+            { title: 'KaiOS', url: 'kaios' },
+            { title: 'Firefox OS', url: 'firefoxos' },
+            { title: 'Tizen Watch', url: 'tizenwatch' },
+            { title: 'Android Wear', url: 'androidwear' }
+        ];
+
+        const Platforms = props => (
+            <Container
+                padding={['bottom', 'top']}
+                id={props.id}
+                background={props.background}
+            >
+                <div className="platformsWrapper">
+                    {platformsData.map(v => <PlatformItem {...v} />)}
+                </div>
+            </Container>
         );
 
         const TryOut = () => (
@@ -228,6 +305,7 @@ Users
             <div>
                 <HomeSplash siteConfig={siteConfig} language={language} />
                 <div className="mainContainer">
+                    <Platforms />
                     <Features />
                     <FeatureCallout />
                     <LearnHow />

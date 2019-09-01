@@ -3,8 +3,104 @@
   "localized-strings": {
     "next": "Next",
     "previous": "Previous",
-    "tagline": "A website for testing",
+    "tagline": "Universal Development Platform powered by React Native",
     "docs": {
+      "CHANGELOG": {
+        "title": "CHANGELOG"
+      },
+      "CONTRIBUTING": {
+        "title": "CONTRIBUTING"
+      },
+      "DOC_ARCHITECTURE": {
+        "title": "DOC_ARCHITECTURE"
+      },
+      "DOC_BUILD_HOOKS": {
+        "title": "DOC_BUILD_HOOKS"
+      },
+      "DOC_COMMON_ISSUES": {
+        "title": "DOC_COMMON_ISSUES"
+      },
+      "DOC_CONFIG_FOLDERS": {
+        "title": "DOC_CONFIG_FOLDERS"
+      },
+      "DOC_DEVELOP": {
+        "title": "DOC_DEVELOP"
+      },
+      "DOC_FEATURES": {
+        "title": "DOC_FEATURES"
+      },
+      "DOC_GET_STARTED": {
+        "title": "DOC_GET_STARTED"
+      },
+      "DOC_INTEGRATIONS": {
+        "title": "DOC_INTEGRATIONS"
+      },
+      "DOC_PLAT_ANDROID_TV": {
+        "title": "DOC_PLAT_ANDROID_TV"
+      },
+      "DOC_PLAT_ANDROID_WEAR": {
+        "title": "DOC_PLAT_ANDROID_WEAR"
+      },
+      "DOC_PLAT_ANDROID": {
+        "title": "DOC_PLAT_ANDROID"
+      },
+      "DOC_PLAT_FIREFOX_OS": {
+        "title": "DOC_PLAT_FIREFOX_OS"
+      },
+      "DOC_PLAT_FIREFOX_TV": {
+        "title": "DOC_PLAT_FIREFOX_TV"
+      },
+      "DOC_PLAT_IOS": {
+        "title": "DOC_PLAT_IOS"
+      },
+      "DOC_PLAT_KAIOS": {
+        "title": "DOC_PLAT_KAIOS"
+      },
+      "DOC_PLAT_MACOS": {
+        "title": "DOC_PLAT_MACOS"
+      },
+      "DOC_PLAT_TIZEN_MOBILE": {
+        "title": "DOC_PLAT_TIZEN_MOBILE"
+      },
+      "DOC_PLAT_TIZEN_WATCH": {
+        "title": "DOC_PLAT_TIZEN_WATCH"
+      },
+      "DOC_PLAT_TIZEN": {
+        "title": "DOC_PLAT_TIZEN"
+      },
+      "DOC_PLAT_TVOS": {
+        "title": "DOC_PLAT_TVOS"
+      },
+      "DOC_PLAT_WEB": {
+        "title": "DOC_PLAT_WEB"
+      },
+      "DOC_PLAT_WEBOS": {
+        "title": "DOC_PLAT_WEBOS"
+      },
+      "DOC_PLAT_WINDOWS": {
+        "title": "DOC_PLAT_WINDOWS"
+      },
+      "DOC_PLUGINS": {
+        "title": "DOC_PLUGINS"
+      },
+      "DOC_RENATIVE_CONFIG": {
+        "title": "DOC_RENATIVE_CONFIG"
+      },
+      "DOC_RENATIVE_RUNTIME": {
+        "title": "DOC_RENATIVE_RUNTIME"
+      },
+      "DOC_RNV_CLI": {
+        "title": "DOC_RNV_CLI"
+      },
+      "DOC_RNV_CONFIG": {
+        "title": "DOC_RNV_CONFIG"
+      },
+      "DOC_SANITY": {
+        "title": "DOC_SANITY"
+      },
+      "DOC_TEMPLATES": {
+        "title": "DOC_TEMPLATES"
+      },
       "doc1": {
         "title": "Latin-ish",
         "sidebar_label": "Example Page"
@@ -26,7 +122,8 @@
       "Docs": "Docs",
       "API": "API",
       "Help": "Help",
-      "Blog": "Blog"
+      "Blog": "Blog",
+      "Github": "Github"
     },
     "categories": {
       "Docusaurus": "Docusaurus",
