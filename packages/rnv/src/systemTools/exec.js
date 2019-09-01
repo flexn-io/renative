@@ -64,7 +64,13 @@ const _execute = (c, command, opts = {}) => {
         }, intervalTimer);
     }
 
-    return execa.command(cleanCommand, mergedOpts).then((res) => {
+    const child = execa.command(cleanCommand, mergedOpts);
+
+    if (c.program.info) {
+        child.stdout.pipe(process.stdout);
+    }
+
+    return child.then((res) => {
         !silent && !mono && spinner.succeed();
         logDebug(res.all);
         interval && clearInterval(interval);
