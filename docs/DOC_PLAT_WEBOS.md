@@ -1,6 +1,7 @@
-# Documentation for LG WebOS Platform
-
-
+---
+id: webos
+title: Documentation for LG WebOS Platform
+sidebar_label: LG WebOS
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_webos.png?raw=true" width=50 height=50 />

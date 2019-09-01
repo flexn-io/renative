@@ -137,7 +137,6 @@ headerLinks: [
 ---
 author: Frank Li
 authorURL: https://twitter.com/foobarbaz
-authorFBID: 503283835
 title: New Blog Post
 ---
 

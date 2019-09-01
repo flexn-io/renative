@@ -1,3 +1,9 @@
+---
+id: DOC_TEMPLATES
+title: Templates
+sidebar_label: Templates
+---
+
 # Documentation for ReNative Templates
 
 ---

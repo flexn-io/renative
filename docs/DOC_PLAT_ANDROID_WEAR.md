@@ -1,6 +1,9 @@
-# Documentation for Android Wear Platform
-
 ---
+id: androidwear
+title: Documentation for Android Wear Platform
+sidebar_label: Android Weaer
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
 

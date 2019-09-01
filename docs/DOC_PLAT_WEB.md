@@ -1,6 +1,7 @@
-# Documentation for Web Platform
-
-
+---
+id: web
+title: Documentation for Web Platform
+sidebar_label: Web
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_web.png?raw=true" width=200 height=50 />

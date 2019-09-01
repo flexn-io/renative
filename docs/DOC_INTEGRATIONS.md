@@ -1,3 +1,9 @@
+---
+id: DOC_INTEGRATIONS
+title: Integrations
+sidebar_label: Integrations
+---
+
 # Documentation for ReNative Integrations
 
 ---

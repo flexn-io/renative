@@ -1,8 +1,8 @@
 ---
 title: Adding RSS Support
-author: Eric Nakagawa
-authorURL: http://twitter.com/ericnakagawa
-authorFBID: 661277173
+author: Pavel Jacko
+authorURL: http://twitter.com/pavjacko
+authorImageURL: https://secure.gravatar.com/avatar/932ba953eb8774808e5118d99f828855?size=50
 ---
 
 This is a test post.

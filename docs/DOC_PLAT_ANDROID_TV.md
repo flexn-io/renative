@@ -1,6 +1,9 @@
-# Documentation for Android TV Platform
-
 ---
+id: androidtv
+title: Documentation for Android TV Platform
+sidebar_label: Android TV
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
 

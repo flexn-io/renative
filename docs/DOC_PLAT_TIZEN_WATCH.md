@@ -1,6 +1,7 @@
-# Documentation for Tizen Watch Platform
-
-
+---
+id: tizenwatch
+title: Documentation for Tizen Watch Platform
+sidebar_label: Tizen Watch
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />

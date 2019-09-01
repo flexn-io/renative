@@ -1,6 +1,9 @@
-# Documentation for Android Platform
-
 ---
+id: android
+title: Documentation for Android Platform
+sidebar_label: Android
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_android.png?raw=true" width=50 height=50 />
 

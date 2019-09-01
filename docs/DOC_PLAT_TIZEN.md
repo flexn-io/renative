@@ -1,6 +1,7 @@
-# Documentation for Tizen TV Platform
-
-
+---
+id: tizen
+title: Documentation for Tizen TV Platform
+sidebar_label: Tizen TV
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />

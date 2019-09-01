@@ -1,6 +1,7 @@
-# Documentation for Tizen Mobile Platform
-
-
+---
+id: tizenmobile
+title: Documentation for Tizen Mobile Platform
+sidebar_label: Tizen Mobile
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />

@@ -1,6 +1,9 @@
-# Documentation for iOS Platform
-
 ---
+id: ios
+title: Documentation for iOS Platform
+sidebar_label: iOS
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
 

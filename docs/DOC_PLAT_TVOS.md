@@ -1,6 +1,7 @@
-# Documentation for tvOS Platform
-
-
+---
+id: tvos
+title: Documentation for tvOS Platform
+sidebar_label: tvOS
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tvos.png?raw=true" width=90 height=50 />

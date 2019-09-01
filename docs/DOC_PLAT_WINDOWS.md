@@ -1,6 +1,7 @@
-# Documentation for Windows Platform
-
-
+---
+id: windows
+title: Documentation for Windows Platform
+sidebar_label: Windows
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_windows.png?raw=true" width=50 height=50 />

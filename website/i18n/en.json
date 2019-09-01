@@ -33,52 +33,72 @@
         "title": "DOC_GET_STARTED"
       },
       "DOC_INTEGRATIONS": {
-        "title": "DOC_INTEGRATIONS"
+        "title": "Integrations",
+        "sidebar_label": "Integrations"
       },
-      "DOC_PLAT_ANDROID_TV": {
-        "title": "DOC_PLAT_ANDROID_TV"
+      "platforms_overview": {
+        "title": "Overview",
+        "sidebar_label": "Overview"
       },
-      "DOC_PLAT_ANDROID_WEAR": {
-        "title": "DOC_PLAT_ANDROID_WEAR"
+      "androidtv": {
+        "title": "Documentation for Android TV Platform",
+        "sidebar_label": "Android TV"
       },
-      "DOC_PLAT_ANDROID": {
-        "title": "DOC_PLAT_ANDROID"
+      "androidwear": {
+        "title": "Documentation for Android Wear Platform",
+        "sidebar_label": "Android Weaer"
       },
-      "DOC_PLAT_FIREFOX_OS": {
-        "title": "DOC_PLAT_FIREFOX_OS"
+      "android": {
+        "title": "Documentation for Android Platform",
+        "sidebar_label": "Android"
       },
-      "DOC_PLAT_FIREFOX_TV": {
-        "title": "DOC_PLAT_FIREFOX_TV"
+      "firefoxos": {
+        "title": "Documentation for Firefox OS Platform",
+        "sidebar_label": "Firefox OS"
       },
-      "DOC_PLAT_IOS": {
-        "title": "DOC_PLAT_IOS"
+      "firefoxtv": {
+        "title": "Documentation for Firefox TV Platform",
+        "sidebar_label": "Firefox TV"
       },
-      "DOC_PLAT_KAIOS": {
-        "title": "DOC_PLAT_KAIOS"
+      "ios": {
+        "title": "Documentation for iOS Platform",
+        "sidebar_label": "iOS"
       },
-      "DOC_PLAT_MACOS": {
-        "title": "DOC_PLAT_MACOS"
+      "kaios": {
+        "title": "Documentation for KaiOS Platform",
+        "sidebar_label": "KaiOS"
       },
-      "DOC_PLAT_TIZEN_MOBILE": {
-        "title": "DOC_PLAT_TIZEN_MOBILE"
+      "macos": {
+        "title": "Documentation for macOS Platform",
+        "sidebar_label": "macOS"
       },
-      "DOC_PLAT_TIZEN_WATCH": {
-        "title": "DOC_PLAT_TIZEN_WATCH"
+      "tizenmobile": {
+        "title": "Documentation for Tizen Mobile Platform",
+        "sidebar_label": "Tizen Mobile"
       },
-      "DOC_PLAT_TIZEN": {
-        "title": "DOC_PLAT_TIZEN"
+      "tizenwatch": {
+        "title": "Documentation for Tizen Watch Platform",
+        "sidebar_label": "Tizen Watch"
       },
-      "DOC_PLAT_TVOS": {
-        "title": "DOC_PLAT_TVOS"
+      "tizen": {
+        "title": "Documentation for Tizen TV Platform",
+        "sidebar_label": "Tizen TV"
       },
-      "DOC_PLAT_WEB": {
-        "title": "DOC_PLAT_WEB"
+      "tvos": {
+        "title": "Documentation for tvOS Platform",
+        "sidebar_label": "tvOS"
       },
-      "DOC_PLAT_WEBOS": {
-        "title": "DOC_PLAT_WEBOS"
+      "web": {
+        "title": "Documentation for Web Platform",
+        "sidebar_label": "Web"
       },
-      "DOC_PLAT_WINDOWS": {
-        "title": "DOC_PLAT_WINDOWS"
+      "webos": {
+        "title": "Documentation for LG WebOS Platform",
+        "sidebar_label": "LG WebOS"
+      },
+      "windows": {
+        "title": "Documentation for Windows Platform",
+        "sidebar_label": "Windows"
       },
       "DOC_PLUGINS": {
         "title": "DOC_PLUGINS"
@@ -99,7 +119,8 @@
         "title": "DOC_SANITY"
       },
       "DOC_TEMPLATES": {
-        "title": "DOC_TEMPLATES"
+        "title": "Templates",
+        "sidebar_label": "Templates"
       },
       "doc1": {
         "title": "Latin-ish",
@@ -126,9 +147,15 @@
       "Github": "Github"
     },
     "categories": {
-      "Docusaurus": "Docusaurus",
-      "First Category": "First Category",
-      "Second Category": "Second Category"
+      "Platforms": "Platforms",
+      "Plugins": "Plugins",
+      "Templates": "Templates",
+      "Integrations": "Integrations",
+      "Configurations": "Configurations",
+      "BuildHooks": "BuildHooks",
+      "Runtime": "Runtime",
+      "CLI": "CLI",
+      "First Category": "First Category"
     }
   },
   "pages-strings": {

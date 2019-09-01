@@ -1,7 +1,9 @@
-# Documentation for KaiOS Platform
-
-
 ---
+id: kaios
+title: Documentation for KaiOS Platform
+sidebar_label: KaiOS
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_kaios.png?raw=true" width=140 height=50 />
 

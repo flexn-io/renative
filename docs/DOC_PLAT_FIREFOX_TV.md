@@ -1,7 +1,9 @@
-# Documentation for Firefox TV Platform
-
-
 ---
+id: firefoxtv
+title: Documentation for Firefox TV Platform
+sidebar_label: Firefox TV
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
 

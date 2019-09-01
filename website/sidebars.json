@@ -1,8 +1,13 @@
 {
   "docs": {
-    "Docusaurus": ["doc1"],
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
+    "Platforms": ["platforms_overview", "android", "androidtv", "androidwear", "firefoxos", "firefoxtv", "ios", "kaios", "macos", "tizen", "tizenmobile", "tizenwatch", "tvos", "web", "webos", "windows"],
+    "Plugins": ["DOC_PLUGINS"],
+    "Templates": ["DOC_TEMPLATES"],
+    "Integrations": ["DOC_INTEGRATIONS"],
+    "Configurations": ["DOC_CONFIG_FOLDERS"],
+    "BuildHooks": ["DOC_BUILD_HOOKS"],
+    "Runtime": ["DOC_RENATIVE_RUNTIME"],
+    "CLI": ["doc3"]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]
