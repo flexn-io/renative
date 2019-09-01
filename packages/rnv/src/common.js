@@ -75,7 +75,7 @@ export const startBuilder = c => new Promise((resolve, reject) => {
         .then(() => applyTemplate(c))
         .then(() => configurePlugins(c))
         .then(() => configureNodeModules(c))
-        .then(() => configureApp(c))
+        .then(() => updateConfig(c, c.runtime.appId))
         .then(() => logAppInfo(c))
         .then(() => resolve(c))
         .catch(e => reject(e));
@@ -163,17 +163,6 @@ export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
     } else {
         resolve(scheme);
     }
-});
-
-export const configureApp = c => new Promise((resolve, reject) => {
-    logTask(`configureApp:${c.runtime.appId}`);
-
-    updateConfig(c, c.runtime.appId)
-        .then(() => {
-            configureEntryPoints(c);
-            resolve(c);
-        })
-        .catch(e => reject(e));
 });
 
 export const spawnCommand = (c, overrideParams) => {

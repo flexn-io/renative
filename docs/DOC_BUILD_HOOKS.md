@@ -1,6 +1,9 @@
-# Documentation for ReNative Build Hooks
-
 ---
+id: build_hooks
+title: Build Hooks
+sidebar_label: Build Hooks
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_hooks.png?raw=true" width=50 height=50 />
 

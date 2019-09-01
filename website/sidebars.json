@@ -1,0 +1,10 @@
+{
+  "docs": {
+    "GettingStarted": ["installation", "features"],
+    "Platforms": ["platforms_overview", "android", "androidtv", "androidwear", "firefoxos", "firefoxtv", "ios", "kaios", "macos", "tizen", "tizenmobile", "tizenwatch", "tvos", "web", "webos", "windows"],
+    "Guides": ["plugins", "templates", "integrations", "config", "rnv_config", "config_folders", "build_hooks", "runtime", "cli", "common_issues", "develop"]
+  },
+  "docs-other": {
+    "First Category": ["doc4", "doc5"]
+  }
+}

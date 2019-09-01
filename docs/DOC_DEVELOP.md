@@ -1,5 +1,7 @@
-# Documentation for Developing ReNative
-
+---
+id: develop
+title: Develop ReNative
+sidebar_label: Develop ReNative
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_construction.png?raw=true" width=50 height=50 />

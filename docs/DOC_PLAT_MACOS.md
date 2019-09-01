@@ -1,6 +1,7 @@
-# Documentation for macOS Platform
-
-
+---
+id: macos
+title: macOS Platform
+sidebar_label: macOS
 ---
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_macos.png?raw=true" width=50 height=50 />

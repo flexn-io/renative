@@ -40,6 +40,9 @@ const _execute = (c, command, opts = {}) => {
     const mergedOpts = { ...defaultOpts, ...opts };
 
     let cleanCommand = command;
+    let interval;
+    const intervalTimer = 30000; // 30s
+    let timer = intervalTimer;
 
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
@@ -52,17 +55,27 @@ const _execute = (c, command, opts = {}) => {
 
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
-    const spinner = !silent && ora({ text: `Executing: ${logMessage}`, spinner: mono ? 'bouncingBar' : 'dots' }).start();
+    const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
+
+    if (mono) {
+        interval = setInterval(() => {
+            console.log(`Executing: ${logMessage} - ${timer / 1000}s`);
+            timer += intervalTimer;
+        }, intervalTimer);
+    }
+
     return execa.command(cleanCommand, mergedOpts).then((res) => {
-        !mergedOpts.silent && spinner.succeed();
+        !silent && !mono && spinner.succeed();
         logDebug(res.all);
+        interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        if (!silent && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        if (!silent && !mono && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
+        interval && clearInterval(interval);
         // logDebug(err);
-        if (ignoreErrors) {
+        if (ignoreErrors && !silent && !mono) {
             spinner.succeed();
             return true;
         }

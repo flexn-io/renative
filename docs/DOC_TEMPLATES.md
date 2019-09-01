@@ -1,6 +1,9 @@
-# Documentation for ReNative Templates
-
 ---
+id: templates
+title: Templates
+sidebar_label: Templates
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_templates.png?raw=true" width=50 height=50 />
 

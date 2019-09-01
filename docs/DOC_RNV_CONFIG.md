@@ -1,4 +1,9 @@
-# Documentation for RNV Config (c)
+---
+id: rnv_config
+title: RNV Config Object
+sidebar_label: RNV Config
+---
+
 
 List of available config props injected into hooks methods:
 

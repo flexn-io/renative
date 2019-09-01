@@ -1,6 +1,9 @@
-# Documentation for ReNative Runtime
-
 ---
+id: runtime
+title: ReNative Runtime
+sidebar_label: Runtime
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_runtime.png?raw=true" width=50 height=50 />
 
