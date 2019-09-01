@@ -711,7 +711,7 @@ const _checkSigningCerts = c => new Promise((resolve, reject) => {
                                     android: sc
                                 };
                             }
-                            fs.writeFileSync(c.paths.private.appConfig.dir, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
+                            fs.writeFileSync(c.paths.private.appConfig.configPrivate, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
                             logSuccess(`Successfully created private config file at ${chalk.white(c.paths.private.appConfig.dir)}.`);
                             resolve();
                         });
