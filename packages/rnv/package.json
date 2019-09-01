@@ -67,6 +67,7 @@
         "prepare": "npm run build",
         "prepublishOnly": "npm run build",
         "test": "jest -c jest.config.unit.js",
+        "test:integration": "jest -c jest.config.integration.js",
         "test:ios": "jest -c jest.config.ios.js",
         "test:local": "./scripts/test.sh",
         "test:setup": "jest -c jest.config.setup.js",
