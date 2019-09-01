@@ -6,7 +6,7 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
 import ncp from 'ncp';
-import { logDebug, logError, logWarning, logInfo } from '../common';
+import { logDebug, logError, logWarning, logInfo } from './logger';
 
 export const isRunningOnWindows = process.platform === 'win32';
 
