@@ -24,10 +24,11 @@ const siteConfig = {
     title: 'ReNative', // Title for your website.
     tagline: 'Build universal cross-platform apps with react native',
     url: 'https://renative.org', // Your website URL
-    baseUrl: '/renative/', // Base URL for your project */
+    baseUrl: '/', // Base URL for your project */
     // For github.io type URLs, you would set the url and baseUrl like:
     //   url: 'https://facebook.github.io',
     //   baseUrl: '/test-site/',
+    cname: 'renative.org',
 
     // Used for publishing and more
     projectName: 'renative',
