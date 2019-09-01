@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
     title: 'ReNative', // Title for your website.
-    tagline: 'Universal Development Platform powered by React Native',
+    tagline: 'Build universal cross-platform apps with react native',
     url: 'https://renative.org', // Your website URL
     baseUrl: '/', // Base URL for your project */
     // For github.io type URLs, you would set the url and baseUrl like:
@@ -41,6 +41,7 @@ const siteConfig = {
         // { doc: 'doc4', label: 'API' },
         // { page: 'help', label: 'Help' },
         // { blog: true, label: 'Blog' },
+        { href: 'https://twitter.com/renative', label: 'Twitter' },
         { href: 'https://github.com/pavjacko/renative', label: 'Github' },
     ],
 
@@ -73,8 +74,8 @@ const siteConfig = {
   */
 
     // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
-    copyright: `Copyright © ${new Date().getFullYear()} Your Name or Your Company Name`,
-
+    // copyright: `Copyright © ${new Date().getFullYear()} Your Name or Your Company Name`,
+    twitterUsername: 'renative',
     highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
         theme: 'default',

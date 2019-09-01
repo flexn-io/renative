@@ -64,14 +64,15 @@ Project Chat
                         >
               Twitter
                         </a>
+                        <a href={`${this.props.config.baseUrl}help`}>
+              Contributors
+                        </a>
                     </div>
                     <div>
                         <h5>
 More
                         </h5>
-                        <a href={`${this.props.config.baseUrl}blog`}>
-Blog
-                        </a>
+
                         <a href="https://github.com/pavjacko/renative">
 GitHub
                         </a>

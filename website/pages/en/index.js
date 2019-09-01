@@ -166,13 +166,27 @@ These are features of this project
             </Container>
         );
 
+        const ReactNative = () => (
+            <Block id="reactNative" background="dark">
+                {[
+                    {
+                        content:
+              `[Target all platforms with single React Native framework](${baseUrl}docs/installation)`,
+                        image: `${baseUrl}img/undraw_react_y7wq.svg`,
+                        imageAlign: 'left',
+                        title: 'React Native on Steroids',
+                    },
+                ]}
+            </Block>
+        );
+
         const Templates = () => (
             <Block id="try">
                 {[
                     {
                         content:
-              'Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.',
-                        image: `${baseUrl}img/undraw_code_review.svg`,
+              `[Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.](${baseUrl}docs/templates)`,
+                        image: `${baseUrl}img/undraw_online_page_cq94.svg`,
                         imageAlign: 'left',
                         title: 'Templates',
                     },
@@ -199,8 +213,8 @@ These are features of this project
                 {[
                     {
                         content:
-              'ReNative supports standard community driven react-native plugins you can use to enhance the functionality of your apps:',
-                        image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
+              `[ReNative supports standard community driven react-native plugins you can use to enhance the functionality of your apps](${baseUrl}docs/plugins)`,
+                        image: `${baseUrl}img/undraw_product_teardown_elol.svg`,
                         imageAlign: 'right',
                         title: 'Plugins',
                     },
@@ -213,8 +227,8 @@ These are features of this project
                 {[
                     {
                         content:
-              'ReNative supports integration for various services and deployment infrastructures for your apps',
-                        image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
+              `[ReNative supports integration for various services and deployment infrastructures for your apps](${baseUrl}docs/integrations)`,
+                        image: `${baseUrl}img/undraw_mobile_marketing_iqbr.svg`,
                         imageAlign: 'right',
                         title: 'Integrations',
                     },
@@ -228,7 +242,7 @@ These are features of this project
                     {
                         content:
               'Tired of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running',
-                        image: `${baseUrl}img/undraw_code_review.svg`,
+                        image: `${baseUrl}img/undraw_preferences_uuo2.svg`,
                         imageAlign: 'left',
                         title: 'Configurations',
                     }
@@ -242,7 +256,7 @@ These are features of this project
                     {
                         content:
               'Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.',
-                        image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
+                        image: `${baseUrl}img/undraw_convert_2gjv.svg`,
                         imageAlign: 'right',
                         title: 'Build Hooks',
                     },
@@ -255,8 +269,8 @@ These are features of this project
                 {[
                     {
                         content:
-              'ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms',
-                        image: `${baseUrl}img/undraw_code_review.svg`,
+              `[ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms](${baseUrl}docs/runtime)`,
+                        image: `${baseUrl}img/undraw_web_devices_ad58.svg`,
                         imageAlign: 'left',
                         title: 'Runtime',
                     },
@@ -270,10 +284,11 @@ These are features of this project
                 {[
                     {
                         content:
-              'One CLI to do it all. rnv is your entry point and control centre to building multi-platfom apps with just a few commands to learn',
-                        image: `${baseUrl}img/undraw_youtube_tutorial.svg`,
+              `[One CLI to do it all. rnv is your entry point and control centre to building multi-platfom apps with just a few commands to learn](${baseUrl}docs/cli)`,
+                        image: `${baseUrl}img/rnv_cli.gif`,
                         imageAlign: 'right',
                         title: 'CLI',
+
                     },
                 ]}
             </Block>
@@ -344,6 +359,7 @@ Users
                 <HomeSplash siteConfig={siteConfig} language={language} />
                 <div className="mainContainer">
                     <Platforms />
+                    <ReactNative />
                     <Plugins />
                     <Templates />
                     <Integrations />
@@ -351,8 +367,7 @@ Users
                     <BuildHooks />
                     <Runtime />
                     <CLI />
-                    <Description />
-                    <Showcase />
+
                 </div>
                 <Beta />
             </div>

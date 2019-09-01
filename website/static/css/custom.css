@@ -8,6 +8,14 @@
     height: 44px;
 } */
 
+.darkBackground {
+background-color: #282c34
+}
+
+.darkBackground a {
+    color: #FFFFFF;
+}
+
 .projectLogo {
   justify-content: center;
 }
@@ -54,6 +62,10 @@
   width: 200px;
 }
 
+.imageAlignSide .blockImage {
+    max-width: 300px;
+}
+
 .buttonDark {
     border: 1px solid #FFFFFF;
     border-radius: 3px;
@@ -66,6 +78,14 @@
     text-decoration: none !important;
     text-transform: uppercase;
     transition: background 0.3s, color 0.3s;
+}
+
+.buttonDark:hover {
+    color: #FB8E62;
+}
+
+a:hover {
+  color: #FB8E62;
 }
 
 .beta {
