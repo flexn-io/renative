@@ -129,43 +129,6 @@ These are features of this project
             </div>
         );
 
-        // const Platforms = () => (
-        //     <Block layout="fourColumn">
-        //         {[
-        //             {
-        //                 content: '',
-        //                 image: `${baseUrl}img/rnv_ios.gif`,
-        //                 imageAlign: 'top',
-        //                 title: '',
-        //             },
-        //             {
-        //                 content: '',
-        //                 image: `${baseUrl}img/rnv_android.gif`,
-        //                 imageAlign: 'top',
-        //                 title: '',
-        //             },
-        //             {
-        //                 content: '',
-        //                 image: `${baseUrl}img/rnv_web.gif`,
-        //                 imageAlign: 'top',
-        //                 title: '',
-        //             },
-        //             {
-        //                 content: '',
-        //                 image: `${baseUrl}img/rnv_tvos.gif`,
-        //                 imageAlign: 'top',
-        //                 title: '',
-        //             },
-        //             {
-        //                 content: 'The content of my second feature',
-        //                 image: `${baseUrl}img/undraw_operating_system.svg`,
-        //                 imageAlign: 'top',
-        //                 title: 'Tizen',
-        //             },
-        //         ]}
-        //     </Block>
-        // );
-
         const PlatformItem = props => (
             <div>
                 <div className="platformItemText">

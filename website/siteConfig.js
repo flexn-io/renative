@@ -23,25 +23,24 @@ const users = [
 const siteConfig = {
     title: 'ReNative', // Title for your website.
     tagline: 'Universal Development Platform powered by React Native',
-    url: 'https://your-docusaurus-test-site.com', // Your website URL
+    url: 'https://renative.org', // Your website URL
     baseUrl: '/', // Base URL for your project */
     // For github.io type URLs, you would set the url and baseUrl like:
     //   url: 'https://facebook.github.io',
     //   baseUrl: '/test-site/',
 
     // Used for publishing and more
-    projectName: 'test-site',
-    organizationName: 'facebook',
+    projectName: 'renative',
     // For top-level user or org sites, the organization is still the same.
     // e.g., for the https://JoelMarcey.github.io site, it would be set like...
-    //   organizationName: 'JoelMarcey'
+    organizationName: 'pavjacko',
 
     // For no header links in the top nav bar -> headerLinks: [],
     headerLinks: [
-        { doc: 'platforms_overview', label: 'Docs' },
-        { doc: 'doc4', label: 'API' },
-        { page: 'help', label: 'Help' },
-        { blog: true, label: 'Blog' },
+        { doc: 'installation', label: 'Docs' },
+        // { doc: 'doc4', label: 'API' },
+        // { page: 'help', label: 'Help' },
+        // { blog: true, label: 'Blog' },
         { href: 'https://github.com/pavjacko/renative', label: 'Github' },
     ],
 
@@ -105,7 +104,7 @@ const siteConfig = {
 
     // You may provide arbitrary config keys to be used as needed by your
     // template. For example, if you need your repo's URL...
-    //   repoUrl: 'https://github.com/facebook/test-site',
+    repoUrl: 'https://github.com/pavjacko/renative',
 };
 
 module.exports = siteConfig;
