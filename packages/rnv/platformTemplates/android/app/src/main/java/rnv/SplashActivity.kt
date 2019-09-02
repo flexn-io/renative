@@ -3,7 +3,7 @@ package {{APPLICATION_ID}}
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
+{{PLUGIN_SPLASH_ACTIVITY_IMPORTS}}
 
 class SplashActivity : AppCompatActivity() {
 
