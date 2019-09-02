@@ -490,7 +490,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = async (port, callback) => {
+export const waitForWebpack = (port) => {
     logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;
@@ -506,7 +506,6 @@ export const waitForWebpack = async (port, callback) => {
                     if (isReady) {
                         clearInterval(interval);
                         spinner.succeed();
-                        callback && callback();
                         return resolve(true);
                     }
                 }
