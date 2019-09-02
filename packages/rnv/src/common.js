@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
 import ora from 'ora';
+import ip from 'ip';
 
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
@@ -410,10 +411,7 @@ export const getBuildsFolder = (c, platform, customPath) => {
     return path.join(pp, `builds/${platform}`);
 };
 
-export const getIP = () => {
-    const ip = require('ip');
-    return ip.address();
-};
+export const getIP = () => ip.address();
 
 export const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
     if (c.program.reset) {
