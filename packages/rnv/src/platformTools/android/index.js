@@ -516,11 +516,6 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
         .catch(e => logError(e, true));
 };
 
-// let _workerTimer;
-// const _workerLogger = () => {
-//     console.log(`PACKAGING ANDROID.... ${(new Date()).toLocaleString()}`);
-// };
-
 const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
 
@@ -543,15 +538,12 @@ const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     }
 
     console.log('ANDROID PACKAGE STARTING...');
-    // _workerTimer = setInterval(_workerLogger, 30000);
     executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
         .then(() => {
-            // clearInterval(_workerTimer);
             console.log('ANDROID PACKAGE FINISHED');
             return resolve();
         })
         .catch((e) => {
-            // clearInterval(_workerTimer);
             console.log('ANDROID PACKAGE FAILED');
             return reject(e);
         });
@@ -719,7 +711,7 @@ const _checkSigningCerts = c => new Promise((resolve, reject) => {
                                     android: sc
                                 };
                             }
-                            fs.writeFileSync(c.paths.private.appConfig.dir, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
+                            fs.writeFileSync(c.paths.private.appConfig.configPrivate, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
                             logSuccess(`Successfully created private config file at ${chalk.white(c.paths.private.appConfig.dir)}.`);
                             resolve();
                         });

@@ -1,6 +1,9 @@
-# Getting Started with ReNative
-
 ---
+id: installation
+title: Installation
+sidebar_label: Installation
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_quickstart.png?raw=true" width=50 height=50 />
 

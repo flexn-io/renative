@@ -66,3 +66,6 @@ rnv-config.local.json
 /projectConfig
 /src
 /index.*.js
+
+# Testing
+/packages/**/coverage

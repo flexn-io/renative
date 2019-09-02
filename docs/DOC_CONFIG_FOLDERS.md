@@ -1,6 +1,9 @@
-# Documentation for Folder Configurations
-
 ---
+id: config_folders
+title: Config Folders
+sidebar_label: Config Folders
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
 

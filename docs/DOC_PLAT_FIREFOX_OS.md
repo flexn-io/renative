@@ -1,7 +1,9 @@
-# Documentation for Firefox OS Platform
-
-
 ---
+id: firefoxos
+title: Firefox OS Platform
+sidebar_label: Firefox OS
+---
+
 
 <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
 

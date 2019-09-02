@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.26.0-rc15",
+    "version": "0.26.2",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -70,9 +70,11 @@
         "publish:renative": "cd packages/renative && npm publish",
         "publish:rnv": "cd packages/rnv && npm publish",
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
+        "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages",
         "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && npm run watch",
         "test": "rnv template apply --template renative-template-hello-world && npm run test:rnv && npm run test:run",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
+        "test:rnv:unit": "cd ./packages/rnv && npm run test",
         "test:run": "rnv run -p androidwear -t Android_Wear_Round_API_28 && concurrently \"rnv start\" \"rnv run -p tizen -t T-samsung-5.0-x86\" \"rnv run -p tizenwatch -t W-5.0-circle-x86\" \"rnv run -p tizenmobile -t M-5.0-x86\" \"rnv run -p ios -t 'iPhone 6'\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p androidtv -t Android_TV_1080p_API_22\" \"rnv run -p macos\" \"rnv run -p web\" \"rnv run -p tvos\" \"rnv run -p webos -t emulator\"",
         "watch": "cd ./packages/rnv && npm run watch"
     },
@@ -114,6 +116,7 @@
         "preset": "react-native",
         "transform": {
             "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-        }
+        },
+        "collectCoverage": true
     }
 }
