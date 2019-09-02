@@ -5,11 +5,13 @@ import path from 'path';
 import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
+import axios from 'axios';
 
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
-    getRealPath
+    getRealPath,
+    isRunningOnWindows
 } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
 import appRunner from './cli/app';
@@ -484,6 +486,40 @@ export const waitForEmulator = async (c, cli, command, callback) => {
                         return reject('Can\'t connect to the running emulator. Try restarting it.');
                     }
                 });
+        }, CHECK_INTEVAL);
+    });
+};
+
+export const waitForWebpack = async (port, callback) => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    const spinner = ora('Waiting for webpack to finish...').start();
+    const localIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            axios.get(`http://${localIp}:${port}`).then((res) => {
+                if (res.status === 200) {
+                    clearInterval(interval);
+                    spinner.succeed();
+                    callback && callback();
+                    return resolve(true);
+                }
+                attempts++;
+                if (attempts === maxAttempts) {
+                    clearInterval(interval);
+                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    return reject('Can\'t connect to webpack. Try restarting it.');
+                }
+            }).catch(() => {
+                attempts++;
+                if (attempts > maxAttempts) {
+                    clearInterval(interval);
+                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    return reject('Can\'t connect to webpack. Try restarting it.');
+                }
+            });
         }, CHECK_INTEVAL);
     });
 };

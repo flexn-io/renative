@@ -29,7 +29,8 @@ import {
     getConfigProp,
     checkPortInUse,
     logInfo,
-    resolveNodeModulePath
+    resolveNodeModulePath,
+    waitForWebpack
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS } from '../../constants';
@@ -156,7 +157,8 @@ const runElectron = async (c, platform, port) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            await _runElectronSimulator(c, platform);
+            waitForWebpack(port, () => _runElectronSimulator(c, platform));
+            // await _runElectronSimulator(c, platform);
             await runElectronDevServer(c, platform, port);
         } else {
             logInfo(
