@@ -15,6 +15,7 @@ import {
     resolveNodeModulePath,
     getConfigProp,
     logSuccess,
+    waitForWebpack
 } from '../../common';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
@@ -176,7 +177,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Prom
     // } else {
     //     open(`http://0.0.0.0:${port}`);
     // }
-    open(`http://${devServerHost}:${port}`);
+    waitForWebpack(port, () => open(`http://${devServerHost}:${port}/`));
     resolve();
 });
 
