@@ -491,6 +491,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
 };
 
 export const waitForWebpack = async (port, callback) => {
+    logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
@@ -501,10 +502,13 @@ export const waitForWebpack = async (port, callback) => {
         const interval = setInterval(() => {
             axios.get(`http://${localIp}:${port}`).then((res) => {
                 if (res.status === 200) {
-                    clearInterval(interval);
-                    spinner.succeed();
-                    callback && callback();
-                    return resolve(true);
+                    const isReady = res.data.toString().includes('<!DOCTYPE html>');
+                    if (isReady) {
+                        clearInterval(interval);
+                        spinner.succeed();
+                        callback && callback();
+                        return resolve(true);
+                    }
                 }
                 attempts++;
                 if (attempts === maxAttempts) {

@@ -172,6 +172,7 @@ const runElectron = async (c, platform, port) => {
 };
 
 const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runElectronSimulator:${platform}`);
     const appFolder = getAppFolder(c, platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
