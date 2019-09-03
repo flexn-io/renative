@@ -23,11 +23,11 @@ sidebar_label: Windows
 -   support for Windows 10+
 -   Based on Electron
 
-#### Requirements
+## Requirements
 
 -   Windows dev environment
 
-#### Project Configuration
+## Project Configuration
 
 | Feature          |  Version  |
 | ---------------- | :-------: |
@@ -35,7 +35,7 @@ sidebar_label: Windows
 | react-native-web |  `0.9.1`  |
 | electron-builder | `20.28.2` |
 
-#### Run
+## Run
 
 Run on Simulator
 
