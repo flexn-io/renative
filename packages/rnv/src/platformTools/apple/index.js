@@ -41,8 +41,6 @@ import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
 
-const readline = require('readline');
-
 const checkIfCommandExists = command => new Promise((resolve, reject) => child_process.exec(`command -v ${command} 2>/dev/null`, (error) => {
     if (error) return reject(new Error(`${command} not installed`));
     return resolve();
@@ -196,10 +194,6 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
             });
 
-            const readlineInterface = readline.createInterface({
-                input: process.stdin,
-                output: process.stdout,
-            });
             readlineInterface.question(getQuestion(`${devicesString}\nType number of the device you want to launch`), (v) => {
                 const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                 if (selectedDevice) {

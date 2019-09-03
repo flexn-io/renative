@@ -38,8 +38,6 @@ import {
 } from './gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
 
-const readline = require('readline');
-
 const CHECK_INTEVAL = 5000;
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -57,34 +55,6 @@ const composeDevicesString = (devices, returnArray) => {
 const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}`);
     const { maxErrorLength } = c.program;
-
-    if (target === '?' || target === undefined || target === '') {
-        return _listAndroidTargets(c, true, false, false)
-            .then((devicesArr) => {
-                const devicesString = composeDevicesString(devicesArr);
-                const readlineInterface = readline.createInterface({
-                    input: process.stdin,
-                    output: process.stdout,
-                });
-                readlineInterface.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), (v) => {
-                    const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-                    if (selectedDevice) {
-                        if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { detached: true, maxErrorLength }).catch((err) => {
-                                if (err.includes && err.includes('WHPX')) {
-                                    logWarning(err);
-                                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
-                                }
-                                logError(err);
-                            });
-                            return Promise.resolve();
-                        }
-                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
-                    }
-                    logError(`Wrong choice ${v}! Ingoring`);
-                });
-            });
-    }
 
     if (target) {
         const actualTarget = target.name || target;
@@ -473,39 +443,33 @@ const _getDeviceProp = (arr, prop) => {
     return '';
 };
 
-const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
+const _askForNewEmulator = async (c, platform) => {
     logTask('_askForNewEmulator');
     const emuName = c.files.private.config.defaultTargets[platform];
-    const readlineInterface = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
+
+    const { confirm } = await inquirer.prompt({
+        name: 'confirm',
+        type: 'confirm',
+        message: `Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you?`
     });
-    readlineInterface.question(
-        getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`),
-        (v) => {
-            if (v.toLowerCase() === 'y') {
-                switch (platform) {
-                case 'android':
-                    return _createEmulator(c, '28', 'google_apis', emuName)
-                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
-                        .then(resolve);
-                case 'androidtv':
-                    return _createEmulator(c, '28', 'android-tv', emuName)
-                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
-                        .then(resolve);
-                case 'androidwear':
-                    return _createEmulator(c, '28', 'android-wear', emuName)
-                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
-                        .then(resolve);
-                default:
-                    return reject('Cannot find any active or created emulators');
-                }
-            } else {
-                reject('Cannot find any active or created emulators');
-            }
-        },
-    );
-});
+
+    if (confirm) {
+        switch (platform) {
+        case 'android':
+            return _createEmulator(c, '28', 'google_apis', emuName)
+                .then(() => launchAndroidSimulator(c, platform, emuName, true));
+        case 'androidtv':
+            return _createEmulator(c, '28', 'android-tv', emuName)
+                .then(() => launchAndroidSimulator(c, platform, emuName, true));
+        case 'androidwear':
+            return _createEmulator(c, '28', 'android-wear', emuName)
+                .then(() => launchAndroidSimulator(c, platform, emuName, true));
+        default:
+            return Promise.reject('Cannot find any active or created emulators');
+        }
+    }
+    return Promise.reject('Action canceled!');
+};
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');

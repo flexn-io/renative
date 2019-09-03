@@ -1,14 +1,14 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle
 import chalk from 'chalk';
-import fs from 'fs';
-import readline from 'readline';
+import inquirer from 'inquirer';
+import ora from 'ora';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import {
     logTask,
     logSuccess,
 } from '../common';
-import { askQuestion, generateOptions, getQuestion, finishQuestion } from '../systemTools/prompt';
+import { askQuestion, getQuestion, finishQuestion } from '../systemTools/prompt';
 import { executePipe } from '../projectTools/buildHooks';
 import { writeObjectSync } from '../systemTools/fileutils';
 
@@ -66,6 +66,7 @@ const _getPluginList = (c, isUpdate = false) => {
     const { plugins } = c.files.rnv.pluginTemplates.config;
     const output = {
         asString: '',
+        asArray: [],
         plugins: [],
         json: plugins,
     };
@@ -91,10 +92,12 @@ const _getPluginList = (c, isUpdate = false) => {
                 versionString = `(${chalk.green(installedPlugin.version)})`;
             }
             output.asString += `-[${i}] ${chalk.white(k)} ${versionString}\n`;
+            output.asArray.push({ name: `${k} ${versionString}`, value: k });
             i++;
         } else if (!isUpdate) {
             output.plugins.push(k);
             output.asString += `-[${i}] ${chalk.white(k)} (${chalk.blue(p.version)}) [${platforms}] - ${installedString}\n`;
+            output.asArray.push({ name: `${k} (${chalk.blue(p.version)}) [${platforms}] - ${installedString}`, value: k });
             i++;
         }
     });
@@ -102,33 +105,28 @@ const _getPluginList = (c, isUpdate = false) => {
     return output;
 };
 
-const _runAdd = c => new Promise((resolve) => {
+const _runAdd = async (c) => {
     logTask('_runAdd');
 
     const o = _getPluginList(c);
 
-    console.log(o.asString);
-
-    const readlineInterface = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
+    const { plugins } = await inquirer.prompt({
+        name: 'plugins',
+        type: 'checkbox',
+        message: 'Select the plugins you want to add',
+        choices: o.asArray
     });
 
-    readlineInterface.question(getQuestion('Type plugin numbers you want to add (comma separated)'), (v) => {
-        const choices = v.split(',');
+    const installMessage = [];
 
+    if (plugins.length) {
         const selectedPlugins = {};
-        let msg = 'Installing: \n';
-
-        choices.forEach((choice) => {
-            const i = parseInt(choice, 10) - 1;
-            const key = o.plugins[i];
-            if (key) {
-                selectedPlugins[key] = o.json[key];
-                msg += `- ${chalk.white(key)} v(${chalk.green(o.json[key].version)})\n`;
-            }
+        plugins.forEach((plugin) => {
+            selectedPlugins[plugin] = o.json[plugin];
+            installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.json[plugin].version)})`);
         });
-        console.log(msg);
+
+        const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
 
         Object.keys(selectedPlugins).forEach((key) => {
             // c.buildConfig.plugins[key] = 'source:rnv';
@@ -139,12 +137,10 @@ const _runAdd = c => new Promise((resolve) => {
         });
 
         writeObjectSync(c.paths.project.config, c.files.project.config);
-
+        spinner.succeed('All plugins installed!');
         logSuccess('Plugins installed successfully!');
-
-        resolve();
-    });
-});
+    }
+};
 
 const _checkAndAddDependantPlugins = (c, plugin) => {
     const templatePlugins = c.files.rnv.pluginTemplates.config.plugins;
@@ -158,29 +154,31 @@ const _checkAndAddDependantPlugins = (c, plugin) => {
     }
 };
 
-const _runUpdate = c => new Promise((resolve) => {
+const _runUpdate = async (c) => {
     logTask('_runUpdate');
 
     const o = _getPluginList(c, true);
 
     console.log(o.asString);
 
-    askQuestion('Above installed plugins will be updated with RNV. press (y) to confirm')
-        .then((v) => {
-            finishQuestion();
-            const { plugins } = c.buildConfig;
-            Object.keys(plugins).forEach((key) => {
-                // c.buildConfig.plugins[key] = o.json[key];
-                c.files.project.config.plugins[key] = o.json[key];
-            });
+    const { confirm } = await inquirer.prompt({
+        name: 'confirm',
+        type: 'confirm',
+        message: 'Above installed plugins will be updated with RNV',
+    });
 
-            writeObjectSync(c.paths.project.config, c.files.project.config);
-
-            logSuccess('Plugins updated successfully!');
-
-            resolve();
+    if (confirm) {
+        const { plugins } = c.buildConfig;
+        Object.keys(plugins).forEach((key) => {
+            // c.buildConfig.plugins[key] = o.json[key];
+            c.files.project.config.plugins[key] = o.json[key];
         });
-});
+
+        writeObjectSync(c.paths.project.config, c.files.project.config);
+
+        logSuccess('Plugins updated successfully!');
+    }
+};
 
 export { PIPES };
 
