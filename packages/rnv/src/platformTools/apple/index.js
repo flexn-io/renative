@@ -194,6 +194,20 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
             });
 
+            //     const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+
+            // const { sim } = await inquirer.prompt({
+            //     name: 'sim',
+            //     message: 'Select the simulator you want to launch',
+            //     type: 'list',
+            //     choices: devices
+            // });
+
+            // if (sim) {
+            //     run(sim);
+            //     return sim.name;
+            // }
+
             readlineInterface.question(getQuestion(`${devicesString}\nType number of the device you want to launch`), (v) => {
                 const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                 if (selectedDevice) {
