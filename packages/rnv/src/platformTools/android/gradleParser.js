@@ -190,6 +190,14 @@ keyPassword=${c.files.private.appConfig.configPrivate[platform].keyPassword}`);
     sourceCompatibility 1.8
     targetCompatibility 1.8`;
 
+    // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
+    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX');
+    if (enableAndroidX === true) {
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.appcompat:appcompat:$version"\n';
+    } else {
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'com.android.support:appcompat-v7:27.0.2\'\n';
+    }
+
 
     writeCleanFile(getBuildFilePath(c, platform, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
         { pattern: '{{PLUGIN_APPLY}}', override: c.pluginConfigAndroid.applyPlugin },
