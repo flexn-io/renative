@@ -5,34 +5,33 @@ sidebar_label: Android
 ---
 
 
-<img src="https://renative.org/img/ic_android.png" width=50 height=50 />
-
-## Android
-
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-n/a-lightgrey.svg)
-
 <table>
   <tr>
-    <th>
-      <img src="https://renative.org/img/rnv_android.gif" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Linux-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/HostMode-n/a-lightgrey.svg" />
+  </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_android.gif" height="250"/>
+
+## Overview
+
 
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
 
-#### Requirements
+## Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
 -   [Android SDK](https://developer.android.com/sdk/) `23.0.1` or newer for Android development
 -   Windows 10 Pro or a better variant if you want to start the emulator on a Windows machine. Windows Home or Educational do not support Hyper-V and that's required for starting the Android emulators
 
-#### Project Configuration
+## Project Configuration
 
 | Feature        | Version  |
 | -------------- | :------: |
@@ -41,7 +40,7 @@ sidebar_label: Android
 | Kotlin         | `1.3.20` |
 | Target SDK     |   `27`   |
 
-#### Emulators
+## Emulators
 
 You can create variety of emulators via Android Studio IDE
 
@@ -53,7 +52,7 @@ You can create variety of emulators via Android Studio IDE
   </tr>
 </table>
 
-#### Android X support
+## Android X support
 
 Requires:
 
@@ -85,7 +84,7 @@ Requires:
 }
 ```
 
-#### Run on Simulator
+## Run on Simulator
 
 NOTE: make sure you have 1 android device connected or 1 emulator running
 
@@ -94,14 +93,14 @@ rnv start
 rnv run -p android
 ```
 
-#### Run on Device
+## Run on Device
 
 ```
 rnv start
 rnv run -p android -d
 ```
 
-#### Deploy on Device
+## Deploy on Device
 
 This will run production version on your device (not connected to metro bundler)
 You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
@@ -111,7 +110,7 @@ rnv start
 rnv run -p android -s release -d
 ```
 
-#### Advanced
+## Advanced
 
 Clean and Re-build platform project
 
@@ -161,6 +160,6 @@ Get device/simulator logs with filter
 rnv log -p android -f com.myapp
 ```
 
-#### App Config
+## App Config
 
 <a href="#android-based-config">see: Android based config</a>

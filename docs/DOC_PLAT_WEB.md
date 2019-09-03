@@ -4,30 +4,29 @@ title: Web Platform
 sidebar_label: Web
 ---
 
-<img src="https://renative.org/img/ic_web.png" width=200 height=50 />
-
-## Web
-
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img src="https://renative.org/img/rnv_web.gif" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Linux-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
+  </td>
   </tr>
 </table>
 
+<img src="https://renative.org/img/rnv_web.gif" height="250"/>
+
+
+## Overview
+
 -   Supports Chrome, Safari, Firefox, IE10+
 
-#### Requirements
+## Requirements
 
 -   no extra requirements required
 
-#### Project Configuration
+## Project Configuration
 
 | Feature          | Version  |
 | ---------------- | :------: |
@@ -35,7 +34,7 @@ sidebar_label: Web
 | react-native-web | `0.9.1`  |
 | Babel Core       | `7.1.2`  |
 
-#### Run
+## Run
 
 ```
 rnv run -p web
@@ -49,7 +48,7 @@ If you only want to run server:
 rnv start -p web
 ```
 
-#### Build
+## Build
 
 ```
 rnv build -p web
@@ -57,7 +56,7 @@ rnv build -p web
 
 your deployable web app folder will be located in `./platformBuilds/<APP_ID>_web/public`
 
-#### Advanced
+## Advanced
 
 Clean and Re-build platform project
 
@@ -77,6 +76,6 @@ Run app on custom port `9999`:
 rnv run -p web --port 9999
 ```
 
-#### App Config
+## App Config
 
 <a href="##web-based-config">see: Web based config</a>

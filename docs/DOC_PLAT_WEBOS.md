@@ -4,37 +4,36 @@ title: LG WebOS Platform
 sidebar_label: LG WebOS
 ---
 
-<img src="https://renative.org/img/ic_webos.png" width=50 height=50 />
-
-## LG webOS
-
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img width=600 src="https://renative.org/img/rnv_webos.gif" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Linux-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
+  </td>
   </tr>
 </table>
 
+<img src="https://renative.org/img/rnv_webos.gif" height="250"/>
+
+
+## Overview
+
 -   Latest LG webOS Project
 
-#### Requirements
+## Requirements
 
 -   [LG Emulator](http://webostv.developer.lge.com/sdk/tools/emulator/introduction-emulator/) v3.0.0
 
-#### Project Configuration
+## Project Configuration
 
 | Feature          | Version |
 | ---------------- | :-----: |
 | react-native-web | `0.9.9` |
 | Babel Core       | `7.1.2` |
 
-#### Emulator
+## Emulator
 
 -   launch webOS emulator via CLI
 
@@ -50,7 +49,7 @@ usually located in something like:
 <USER_PATH>/Library/webOS_TV_SDK/Emulator/v4.0.0/LG_webOS_TV_Emulator_RCU.app
 ```
 
-#### Run
+## Run
 
 Run on Simulator
 

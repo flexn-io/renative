@@ -5,22 +5,18 @@ sidebar_label: Firefox TV
 ---
 
 
-<img src="https://renative.org/img/ic_firefoxtv.png" width=50 height=50 />
-
-## FirefoxTV
-
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img src="https://renative.org/img/rnv_firefoxtv.gif" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Linux-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
+  </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_firefoxtv.gif" height="250"/>
 
 #### Requirements
 

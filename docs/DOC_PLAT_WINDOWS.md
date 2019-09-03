@@ -4,22 +4,21 @@ title: Windows Platform
 sidebar_label: Windows
 ---
 
-<img src="https://renative.org/img/ic_windows.png" width=50 height=50 />
-
-## Windows
-
-![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img src="https://renative.org/img/rnv_windows.gif" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Windows-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Linux-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
+  </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_windows.gif" height="250"/>
+
+
+## Overview
 
 -   support for Windows 10+
 -   Based on Electron

@@ -4,33 +4,32 @@ title: Tizen Mobile Platform
 sidebar_label: Tizen Mobile
 ---
 
-<img src="https://renative.org/img/ic_tizen.png" width=50 height=50 />
-
-## Tizen Mobile
-
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img src="https://renative.org/img/rnv_tizenmobile.gif" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Linux-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
+  </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_tizenmobile.gif" height="250"/>
+
+
+## Overview
 
 -   Latest Tizen project
 -   Support for Tizen 5.0, 4.0, 3.0
 
-#### Requirements
+## Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
 -   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
 -   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 
-#### Project Configuration
+## Project Configuration
 
 | Feature          | Version |
 | ---------------- | :-----: |
@@ -39,7 +38,7 @@ sidebar_label: Tizen Mobile
 | react-native-web | `0.9.9` |
 | Babel Core       | `7.1.2` |
 
-#### Emulator
+## Emulator
 
 Make sure you have at least 1 TV VM setup
 
@@ -55,7 +54,7 @@ Make sure you have at least 1 TV VM setup
 rnv target launch -p tizenmobile -t M-5.0-x86
 ```
 
-#### Run
+## Run
 
 Run on Simulator
 
@@ -75,7 +74,7 @@ Run in Browser
 rnv run -p tizenmobile --hosted
 ```
 
-#### Advanced
+## Advanced
 
 Clean and Re-build platform project
 
