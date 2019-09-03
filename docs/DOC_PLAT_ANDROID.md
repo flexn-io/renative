@@ -86,8 +86,6 @@ Requires:
 
 ## Run on Simulator
 
-NOTE: make sure you have 1 android device connected or 1 emulator running
-
 ```
 rnv start
 rnv run -p android

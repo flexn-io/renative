@@ -7,7 +7,7 @@ sidebar_label: Installation
 
 <img src="https://renative.org/img/ic_quickstart.png" width=50 height=50 />
 
-#### Requirements
+## Requirements
 
 -   [Node](https://nodejs.org) `10.13.0` or newer
 -   [NPM](https://npmjs.com/) `6.4.1` or newer
@@ -19,13 +19,13 @@ sidebar_label: Installation
 
 
 
-##### 1) Install ReNative CLI (rnv)
+## Install ReNative CLI (rnv)
 
 ```bash
 $ npm install rnv -g
 ```
 
-##### 2) Create new app:
+## Create new app
 
 <table>
   <tr>
@@ -41,7 +41,7 @@ $ rnv new
 
 Follow steps in the terminal
 
-##### 3) Create 3 separate terminal tabs/windows. use one to keep bundler running and other one for build commands
+## Run first app
 
 <table>
   <tr>
