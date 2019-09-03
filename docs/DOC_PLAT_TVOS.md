@@ -4,7 +4,7 @@ title: tvOS Platform
 sidebar_label: tvOS
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tvos.png?raw=true" width=90 height=50 />
+<img src="https://renative.org/img/ic_tvos.png" width=90 height=50 />
 
 ## tvOS
 
@@ -16,7 +16,7 @@ sidebar_label: tvOS
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tvos.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_tvos.gif" />
     </th>
   </tr>
 </table>

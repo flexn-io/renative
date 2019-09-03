@@ -4,7 +4,7 @@ title: Tizen TV Platform
 sidebar_label: Tizen TV
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_tizen.png" width=50 height=50 />
 
 ## Tizen TV
 
@@ -16,7 +16,7 @@ sidebar_label: Tizen TV
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizen.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_tizen.gif" />
     </th>
   </tr>
 </table>
@@ -46,7 +46,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizen4.png?raw=true" />
+    <img src="https://renative.org/img/tizen4.png" />
     </th>
   </tr>
 </table>

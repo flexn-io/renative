@@ -8,7 +8,7 @@ sidebar_label: Integrations
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_integrations.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_integrations.png" width=50 height=50 />
 
 ## Integrations
 

@@ -4,7 +4,7 @@ title: LG WebOS Platform
 sidebar_label: LG WebOS
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_webos.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_webos.png" width=50 height=50 />
 
 ## LG webOS
 
@@ -16,7 +16,7 @@ sidebar_label: LG WebOS
 <table>
   <tr>
     <th>
-      <img width=600 src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_webos.gif?raw=true" />
+      <img width=600 src="https://renative.org/img/rnv_webos.gif" />
     </th>
   </tr>
 </table>

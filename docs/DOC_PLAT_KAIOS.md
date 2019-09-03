@@ -5,7 +5,7 @@ sidebar_label: KaiOS
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_kaios.png?raw=true" width=140 height=50 />
+<img src="https://renative.org/img/ic_kaios.png" width=140 height=50 />
 
 ## KaiOS
 
@@ -17,7 +17,7 @@ sidebar_label: KaiOS
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_kaios.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_kaios.gif" />
     </th>
   </tr>
 </table>
@@ -31,7 +31,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/kaios1.png?raw=true" />
+    <img src="https://renative.org/img/kaios1.png" />
     </th>
   </tr>
 </table>

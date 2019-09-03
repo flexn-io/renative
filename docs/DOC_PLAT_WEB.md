@@ -4,7 +4,7 @@ title: Web Platform
 sidebar_label: Web
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_web.png?raw=true" width=200 height=50 />
+<img src="https://renative.org/img/ic_web.png" width=200 height=50 />
 
 ## Web
 
@@ -16,7 +16,7 @@ sidebar_label: Web
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_web.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_web.gif" />
     </th>
   </tr>
 </table>

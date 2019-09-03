@@ -5,12 +5,12 @@ sidebar_label: iOS
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_ios.png" width=50 height=50 />
 
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_ios.gif?raw=true" height="200"/>
+      <img src="https://renative.org/img/rnv_ios.gif" height="200"/>
     </th>
   <td>
   <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />

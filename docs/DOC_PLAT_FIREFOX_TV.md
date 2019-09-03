@@ -5,7 +5,7 @@ sidebar_label: Firefox TV
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_firefoxtv.png" width=50 height=50 />
 
 ## FirefoxTV
 
@@ -17,7 +17,7 @@ sidebar_label: Firefox TV
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxtv.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_firefoxtv.gif" />
     </th>
   </tr>
 </table>
@@ -33,7 +33,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/firefoxos.png?raw=true" />
+    <img src="https://renative.org/img/firefoxos.png" />
     </th>
   </tr>
 </table>

@@ -4,7 +4,7 @@ title: Tizen Watch Platform
 sidebar_label: Tizen Watch
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_tizenwatch.png" width=50 height=50 />
 
 ## Tizen Watch
 
@@ -16,7 +16,7 @@ sidebar_label: Tizen Watch
 <table>
   <tr>
     <th>
-      <img width=200 src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenwatch.gif?raw=true" />
+      <img width=200 src="https://renative.org/img/rnv_tizenwatch.gif" />
     </th>
   </tr>
 </table>
@@ -44,7 +44,7 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizenwatch1.png?raw=true" />
+    <img src="https://renative.org/img/tizenwatch1.png" />
     </th>
   </tr>
 </table>

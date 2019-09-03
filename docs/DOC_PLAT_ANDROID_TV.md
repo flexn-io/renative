@@ -4,12 +4,12 @@ title: Android TV Platform
 sidebar_label: Android TV
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_androidtv.png" width=50 height=50 />
 
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android-tv.gif?raw=true" height="200"/>
+      <img src="https://renative.org/img/rnv_android-tv.gif" height="200"/>
     </th>
   <td>
   <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />

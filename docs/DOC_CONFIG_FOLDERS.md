@@ -5,7 +5,7 @@ sidebar_label: Config Folders
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_appconfigs.png" width=50 height=50 />
 
 
 ## Structure
@@ -218,7 +218,7 @@ Combination of features above allows you to configure and build large number of 
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch3.png?raw=true" />
+    <img src="https://renative.org/img/rnv_arch3.png" />
     </th>
   </tr>
 </table>

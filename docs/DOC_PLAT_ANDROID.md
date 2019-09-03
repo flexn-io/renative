@@ -5,7 +5,7 @@ sidebar_label: Android
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_android.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_android.png" width=50 height=50 />
 
 ## Android
 
@@ -17,7 +17,7 @@ sidebar_label: Android
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_android.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_android.gif" />
     </th>
   </tr>
 </table>
@@ -48,10 +48,42 @@ You can create variety of emulators via Android Studio IDE
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/android1.png?raw=true" />
+    <img src="https://renative.org/img/android1.png" />
     </th>
   </tr>
 </table>
+
+#### Android X support
+
+Requires:
+
+0) Install Jetifier:
+
+`npm i -S -E jetifier`
+
+1) renative.json
+
+```
+"platforms": {
+    "android": {
+      "enableAndroidX": true,
+      "gradle.properties": {
+         "android.useDeprecatedNdk": true,
+         "android.enableJetifier": true,
+         "android.useAndroidX": true
+      }
+   }
+}
+```
+
+
+2) package.json
+
+```
+"scripts" : {
+  "postinstall": "jetify"
+}
+```
 
 #### Run on Simulator
 

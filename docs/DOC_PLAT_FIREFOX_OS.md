@@ -5,7 +5,7 @@ sidebar_label: Firefox OS
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_firefoxos.png" width=50 height=50 />
 
 ## FirefoxOS
 
@@ -17,7 +17,7 @@ sidebar_label: Firefox OS
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_firefoxos.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_firefoxos.gif" />
     </th>
   </tr>
 </table>
@@ -33,7 +33,7 @@ After installation you can launch it via Applications:
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/firefoxos.png?raw=true" />
+    <img src="https://renative.org/img/firefoxos.png" />
     </th>
   </tr>
 </table>

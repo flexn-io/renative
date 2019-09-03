@@ -4,7 +4,7 @@ title: Windows Platform
 sidebar_label: Windows
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_windows.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_windows.png" width=50 height=50 />
 
 ## Windows
 
@@ -16,7 +16,7 @@ sidebar_label: Windows
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_windows.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_windows.gif" />
     </th>
   </tr>
 </table>

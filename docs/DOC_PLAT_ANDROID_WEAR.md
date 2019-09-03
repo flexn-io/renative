@@ -5,7 +5,7 @@ sidebar_label: Android Wear
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_androidwear.png" width=50 height=50 />
 
 ## Android Wear
 
@@ -17,7 +17,7 @@ sidebar_label: Android Wear
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_androidwear.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_androidwear.gif" />
     </th>
   </tr>
 </table>

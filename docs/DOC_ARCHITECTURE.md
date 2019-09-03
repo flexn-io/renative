@@ -2,7 +2,7 @@
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_arch.png" width=50 height=50 />
 
 ## Architecture
 
@@ -11,7 +11,7 @@ Build Process
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch1.png?raw=true" />
+    <img src="https://renative.org/img/rnv_arch1.png" />
     </th>
   </tr>
 </table>
@@ -40,7 +40,7 @@ ReNative support flexible override mechanism which allows you customise your pro
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch2.png?raw=true" />
+    <img src="https://renative.org/img/rnv_arch2.png" />
     </th>
   </tr>
 </table>
