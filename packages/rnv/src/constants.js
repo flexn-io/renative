@@ -125,6 +125,7 @@ export const PLATFORMS = {
 };
 
 export const WEB_HOSTED_PLATFORMS = [
+    WEB,
     TIZEN,
     WEBOS,
     MACOS,
