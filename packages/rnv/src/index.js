@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import Common, { initializeBuilder, startBuilder } from './common';
 import Logger, { logComplete, logError, logWelcome, logInfo, configureLogger, logInitialize } from './systemTools/logger';
+import CLI from './cli';
 import Runner from './cli/runner';
 import Tools from './cli/tools';
 import App from './cli/app';
@@ -41,7 +42,8 @@ const commands = {
     tool: Tools,
     template: Template,
     debug: Runner,
-    crypto: Tools
+    crypto: Tools,
+    workspace: CLI
 };
 
 const run = (cmd, subCmd, program, process) => {
