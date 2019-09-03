@@ -20,7 +20,8 @@ import {
     logDebug,
     logWarning,
     writeCleanFile,
-    getConfigProp
+    getConfigProp,
+    waitForWebpack
 } from '../common';
 import {
     IOS,
@@ -157,13 +158,15 @@ const _isWebHostEnabled = (c, platform) => {
 const _startServer = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
-    const { device, hosted } = c.program;
+    const { hosted } = c.program;
 
     logTask(`_startServer:${platform}:${port}`);
 
     if (_isWebHostEnabled(c, platform) && hosted) {
         const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
-        open(`http://${hostIp}:${port}/`);
+        waitForWebpack(port)
+            .then(() => open(`http://${hostIp}:${port}/`))
+            .catch(logError);
     }
 
     switch (platform) {
