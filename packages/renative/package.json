@@ -1,6 +1,6 @@
 {
     "name": "renative",
-    "version": "0.26.3",
+    "version": "0.26.5",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -59,7 +59,7 @@
     "scripts": {},
     "devDependencies": {
         "babel-eslint": "8.2.6",
-        "eslint": "4.19.1",
+        "eslint": "6.2.2",
         "eslint-config-airbnb": "17.0.0",
         "eslint-import-resolver-webpack": "0.10.1",
         "eslint-plugin-detox": "1.0.0",

@@ -5,7 +5,7 @@ sidebar_label: Build Hooks
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_hooks.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_hooks.png" width=50 height=50 />
 
 ## Build Hooks
 

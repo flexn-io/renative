@@ -5,7 +5,7 @@ sidebar_label: Plugins
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_plugins.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_plugins.png" width=50 height=50 />
 
 ## Plugins
 
@@ -20,7 +20,7 @@ you should get colorised overview similar to this:
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/cli_plugins.png?raw=true" />
+      <img src="https://renative.org/img/cli_plugins.png" />
     </th>
   </tr>
 </table>

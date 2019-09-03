@@ -5,7 +5,7 @@ sidebar_label: Installation
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_quickstart.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_quickstart.png" width=50 height=50 />
 
 #### Requirements
 
@@ -30,7 +30,7 @@ $ npm install rnv -g
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/cli_app_create1.gif?raw=true" />
+    <img src="https://renative.org/img/cli_app_create1.gif" />
     </th>
   </tr>
 </table>
@@ -46,7 +46,7 @@ Follow steps in the terminal
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/terminal.png?raw=true" />
+    <img src="https://renative.org/img/terminal.png" />
     </th>
   </tr>
 </table>

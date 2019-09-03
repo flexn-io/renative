@@ -48,6 +48,7 @@ import {
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
+    WEB_HOSTED_PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
@@ -250,6 +251,12 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
     const sourcePath1sec = getBuildsFolder(c, platform, c.paths.private.project.projectConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
+
+    if (WEB_HOSTED_PLATFORMS.includes(platform)) {
+        // FOLDER MERGERS _SHARED
+        const sourcePathShared = path.join(c.paths.project.projectConfig.dir, 'builds/_shared');
+        copyFolderContentsRecursiveSync(sourcePathShared, path.join(c.paths.project.builds.dir, '_shared'));
+    }
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {

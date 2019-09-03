@@ -5,7 +5,7 @@ sidebar_label: Config Files
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_configuration.png" width=50 height=50 />
 
 ## JSON Configurations
 
