@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-runtime
+id: version-0.26-runtime
 title: ReNative Runtime
 sidebar_label: Runtime
 original_id: runtime

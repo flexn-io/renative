@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-web
+id: version-0.26-web
 title: Web Platform
 sidebar_label: Web
 original_id: web

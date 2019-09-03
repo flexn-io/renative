@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-firefoxtv
+id: version-0.26-firefoxtv
 title: Firefox TV Platform
 sidebar_label: Firefox TV
 original_id: firefoxtv

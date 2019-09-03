@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-plugins
+id: version-0.26-plugins
 title: Plugins
 sidebar_label: Plugins
 original_id: plugins

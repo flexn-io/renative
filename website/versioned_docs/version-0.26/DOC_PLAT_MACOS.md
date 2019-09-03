@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-macos
+id: version-0.26-macos
 title: macOS Platform
 sidebar_label: macOS
 original_id: macos

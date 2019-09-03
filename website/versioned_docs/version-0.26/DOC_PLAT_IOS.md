@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-ios
+id: version-0.26-ios
 title: iOS Platform
 sidebar_label: iOS
 original_id: ios

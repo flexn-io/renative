@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-platforms_overview
+id: version-0.26-platforms_overview
 title: Overview
 sidebar_label: Overview
 original_id: platforms_overview

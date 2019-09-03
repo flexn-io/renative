@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-android
+id: version-0.26-android
 title: Android Platform
 sidebar_label: Android
 original_id: android

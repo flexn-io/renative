@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-integrations
+id: version-0.26-integrations
 title: Integrations
 sidebar_label: Integrations
 original_id: integrations

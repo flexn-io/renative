@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-cli
+id: version-0.26-cli
 title: ReNative CLI
 sidebar_label: CLI
 original_id: cli

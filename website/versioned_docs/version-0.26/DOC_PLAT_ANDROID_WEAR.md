@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-androidwear
+id: version-0.26-androidwear
 title: Android Wear Platform
 sidebar_label: Android Wear
 original_id: androidwear

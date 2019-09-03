@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-tvos
+id: version-0.26-tvos
 title: tvOS Platform
 sidebar_label: tvOS
 original_id: tvos

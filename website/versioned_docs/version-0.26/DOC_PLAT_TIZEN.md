@@ -1,8 +1,8 @@
 ---
-id: version-0.26.0-tizenmobile
-title: Tizen Mobile Platform
-sidebar_label: Tizen Mobile
-original_id: tizenmobile
+id: version-0.26-tizen
+title: Tizen TV Platform
+sidebar_label: Tizen TV
+original_id: tizen
 ---
 
 <table>
@@ -16,7 +16,7 @@ original_id: tizenmobile
   </tr>
 </table>
 
-<img src="https://renative.org/img/rnv_tizenmobile.gif" height="250"/>
+<img src="https://renative.org/img/rnv_tizen.gif" height="250"/>
 
 
 ## Overview
@@ -46,33 +46,31 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://renative.org/img/tizen_mobile1.png" />
+    <img src="https://renative.org/img/tizen4.png" />
     </th>
   </tr>
 </table>
 
 ```
-rnv target launch -p tizenmobile -t M-5.0-x86
+rnv target launch -p tizen -t T-samsung-5.0-x86
 ```
 
 ## Run
 
-Run on Simulator
-
 ```
-rnv run -p tizenmobile
+rnv run -p tizen
 ```
 
 Run on Device
 
 ```
-rnv run -p tizenmobile -d
+rnv run -p tizen -d
 ```
 
 Run in Browser
 
 ```
-rnv run -p tizenmobile --hosted
+rnv run -p tizen --hosted
 ```
 
 ## Advanced
@@ -80,11 +78,11 @@ rnv run -p tizenmobile --hosted
 Clean and Re-build platform project
 
 ```
-rnv run -p tizenmobile -r
+rnv run -p tizen -r
 ```
 
 Launch with specific Tizen simulator:
 
 ```
-rnv run -p tizenmobile -t M-5.0-x86
+rnv run -p tizen -t T-samsung-5.0-x86
 ```

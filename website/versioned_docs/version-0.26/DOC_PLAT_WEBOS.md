@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-webos
+id: version-0.26-webos
 title: LG WebOS Platform
 sidebar_label: LG WebOS
 original_id: webos

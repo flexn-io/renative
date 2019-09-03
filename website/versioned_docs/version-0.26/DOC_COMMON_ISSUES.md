@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-common_issues
+id: version-0.26-common_issues
 title: Common Issues
 sidebar_label: Common Issues
 original_id: common_issues

@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-kaios
+id: version-0.26-kaios
 title: KaiOS Platform
 sidebar_label: KaiOS
 original_id: kaios

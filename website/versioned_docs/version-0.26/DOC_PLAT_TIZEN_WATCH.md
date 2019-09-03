@@ -1,8 +1,8 @@
 ---
-id: version-0.26.0-tizen
-title: Tizen TV Platform
-sidebar_label: Tizen TV
-original_id: tizen
+id: version-0.26-tizenwatch
+title: Tizen Watch Platform
+sidebar_label: Tizen Watch
+original_id: tizenwatch
 ---
 
 <table>
@@ -16,19 +16,17 @@ original_id: tizen
   </tr>
 </table>
 
-<img src="https://renative.org/img/rnv_tizen.gif" height="250"/>
+<img src="https://renative.org/img/rnv_tizenwatch.gif" height="250"/>
 
 
 ## Overview
 
 -   Latest Tizen project
--   Support for Tizen 5.0, 4.0, 3.0
+-   Support for Tizen 5.0
 
 ## Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
--   Make sure your CPU supports virtualization. Otherwise Tizen emulator might not start.
--   If you are deploying to a TV, follow this guide to set your TV in developer mode [Link](https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device)
 
 ## Project Configuration
 
@@ -46,31 +44,31 @@ Make sure you have at least 1 TV VM setup
 <table>
   <tr>
     <th>
-    <img src="https://renative.org/img/tizen4.png" />
+    <img src="https://renative.org/img/tizenwatch1.png" />
     </th>
   </tr>
 </table>
 
 ```
-rnv target launch -p tizen -t T-samsung-5.0-x86
+rnv target launch -p tizenwatch -t W-5.0-circle-x86
 ```
 
 ## Run
 
 ```
-rnv run -p tizen
+rnv run -p tizenwatch
 ```
 
 Run on Device
 
 ```
-rnv run -p tizen -d
+rnv run -p tizenwatch -d
 ```
 
 Run in Browser
 
 ```
-rnv run -p tizen --hosted
+rnv run -p tizenwatch --hosted
 ```
 
 ## Advanced
@@ -78,11 +76,11 @@ rnv run -p tizen --hosted
 Clean and Re-build platform project
 
 ```
-rnv run -p tizen -r
+rnv run -p tizenwatch -r
 ```
 
-Launch with specific Tizen simulator:
+Launch with specific Tizen Watch simulator:
 
 ```
-rnv run -p tizen -t T-samsung-5.0-x86
+rnv run -p tizenwatch -t W-5.0-circle-x86
 ```

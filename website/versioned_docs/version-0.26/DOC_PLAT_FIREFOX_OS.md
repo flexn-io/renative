@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-firefoxos
+id: version-0.26-firefoxos
 title: Firefox OS Platform
 sidebar_label: Firefox OS
 original_id: firefoxos

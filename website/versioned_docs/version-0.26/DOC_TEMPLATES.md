@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-templates
+id: version-0.26-templates
 title: Templates
 sidebar_label: Templates
 original_id: templates

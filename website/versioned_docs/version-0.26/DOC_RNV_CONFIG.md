@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-rnv_config
+id: version-0.26-rnv_config
 title: RNV Config Object
 sidebar_label: RNV Config
 original_id: rnv_config

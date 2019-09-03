@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-windows
+id: version-0.26-windows
 title: Windows Platform
 sidebar_label: Windows
 original_id: windows

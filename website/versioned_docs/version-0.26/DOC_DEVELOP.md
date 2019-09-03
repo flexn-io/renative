@@ -1,5 +1,5 @@
 ---
-id: version-0.26.0-develop
+id: version-0.26-develop
 title: Develop ReNative
 sidebar_label: Develop ReNative
 original_id: develop
