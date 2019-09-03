@@ -117,7 +117,6 @@
         "get-installed-path": "4.0.8",
         "html-webpack-harddisk-plugin": "0.2.0",
         "html-webpack-plugin": "3.2.0",
-        "husky": "1.2.0",
         "icon-toolkit": "0.0.9",
         "inquirer": "6.3.1",
         "ip": "1.1.5",
@@ -172,10 +171,5 @@
         "collectCoverage": true
     },
     "title": "ReNative CLI",
-    "codename": "Iron Ladybird",
-    "husky": {
-        "hooks": {
-            "pre-commit": "pretty-quick --staged"
-        }
-    }
+    "codename": "Iron Ladybird"
 }
