@@ -135,7 +135,6 @@
         "ora": "3.4.0",
         "prettier": "1.17.1",
         "pretty-quick": "1.11.0",
-        "prompt-confirm": "2.0.4",
         "react-native": "0.59.5",
         "rimraf": "2.6.2",
         "schedule": "0.4.0",

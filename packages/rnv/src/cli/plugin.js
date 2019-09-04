@@ -8,7 +8,6 @@ import {
     logTask,
     logSuccess,
 } from '../common';
-import { askQuestion, getQuestion, finishQuestion } from '../systemTools/prompt';
 import { executePipe } from '../projectTools/buildHooks';
 import { writeObjectSync } from '../systemTools/fileutils';
 
