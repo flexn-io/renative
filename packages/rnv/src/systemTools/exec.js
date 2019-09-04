@@ -66,11 +66,13 @@ const _execute = (c, command, opts = {}) => {
 
     const child = execa.command(cleanCommand, mergedOpts);
 
+    const MAX_OUTPUT_LENGTH = 200;
+
     const printLastLine = (buffer) => {
         const text = Buffer.from(buffer).toString().trim();
         const lastLine = text.split('\n').pop();
-
-        spinner.text = lastLine;
+        spinner.text = lastLine.substring(0, MAX_OUTPUT_LENGTH);
+        if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...';
     };
 
     if (c.program.info) {
