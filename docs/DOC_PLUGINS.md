@@ -37,7 +37,7 @@ Update your current plugins with latest ones from ReNative
 
 and follow the command prompt steps
 
-#### Custom Plugin Support
+## Custom Plugin Support
 
 You can configure multiple React Native plugins without need to update project blueprints.
 default location of plugin configs is `./projectConfig/plugins.json`

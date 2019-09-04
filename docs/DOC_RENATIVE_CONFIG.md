@@ -134,7 +134,63 @@ CONFIG_ROOT
 }
 ```
 
-### Common Props
+#### env
+
+TODO
+
+#### hidden
+
+TODO
+
+#### disabled
+
+TODO
+
+#### definitions
+
+TODO
+
+#### profiles
+
+TODO
+
+#### isWrapper
+
+TODO
+
+#### sdks
+
+TODO
+
+#### paths
+
+TODO
+
+#### defaults
+
+TODO
+
+#### plugins
+
+TODO
+
+#### permissions
+
+TODO
+
+#### common
+
+TODO
+
+#### platforms
+
+TODO
+
+#### runtime
+
+
+
+## Common Props
 
 PLUGIN_PROPS
 
@@ -242,10 +298,12 @@ DEFAULTS_PROPS
 
 
 
-### Platform Specific Props
+## Platform Specific Props
+
+Following props are only accepted per specific platform
 
 
-#### iOS Props
+## iOS Props
 
 IOS_COMMON_PROPS
 
@@ -300,7 +358,7 @@ IOS_CONFIG_PROPS
 }
 ```
 
-#### Android Props
+## Android Props
 
 ANDROID_COMMON_PROPS
 
@@ -339,7 +397,7 @@ ANDROID_CONFIG_PROPS
 }
 ```
 
-#### Web Props
+## Web Props
 
 WEB_COMMON_PROPS
 
@@ -370,7 +428,7 @@ WEB_CONFIG_PROPS
 ```
 
 
-#### Tizen Props
+## Tizen Props
 
 TIZEN_COMMON_PROPS
 
@@ -451,7 +509,7 @@ Output config will be decorated with few extra props to help with debugging:
 ```
 
 
-#### Build Flavours
+## Build Flavours
 
 You can configure different app ID, Title etc. with buildScheme field in you appConfig file.
 

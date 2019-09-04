@@ -11,8 +11,9 @@
       "CONTRIBUTING": {
         "title": "CONTRIBUTING"
       },
-      "DOC_ARCHITECTURE": {
-        "title": "DOC_ARCHITECTURE"
+      "architecture": {
+        "title": "Architecture",
+        "sidebar_label": "Architecture"
       },
       "build_hooks": {
         "title": "Build Hooks",

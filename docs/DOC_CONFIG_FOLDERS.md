@@ -93,7 +93,7 @@ Following is the order of merges of various folders (if present) contributing to
 - `fonts` - TODO
 - `assets` - TODO
 
-#### File Overrides / Injectors
+## File Overrides / Injectors
 
 Every time you run RNV command, ReNative checks following "special" folders and copies contents of those into designated target folders
 
@@ -153,7 +153,7 @@ Plugin + App Config Scoped Build Override (Private Content)
 
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
-##### Platform Assets Overrides
+## Platform Assets Overrides
 
 Project Scoped Assets Override
 
@@ -188,7 +188,7 @@ Plugin + App Config Scoped Build Override (Private Content)
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 
-#### Build Flavour Injectors
+## Build Flavour Injectors
 
 Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
 
@@ -213,7 +213,7 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
 
 
-#### Flavoured Builds
+## Flavoured Builds
 
 Combination of features above allows you to configure and build large number of flavoured builds with almost no extra configuration
 

@@ -118,6 +118,39 @@ Get device/simulator logs with filter
 rnv log -p ios -f com.myapp
 ```
 
-## App Config
+## App Store Releases
 
-<a href="#apple-based-config">see: Apple based config</a>
+`renative.json` scheme snippet for automatic signing releases
+
+```json
+{
+  "platforms": {
+    "ios": {
+      "buildSchemes": {
+        "appstore": {
+            "teamID": "YOUR_APPLE_TEAM_ID",
+            "runScheme": "Release",
+            "ignoreWarnings": true,
+            "ignoreLogs": true,
+            "bundleAssets": true,
+            "bundleIsDev": false,
+            "exportOptions": {
+                "method": "app-store",
+                "uploadBitcode": true,
+                "compileBitcode": false,
+                "uploadSymbols": true,
+                "signingStyle": "automatic",
+                "signingCertificate": "iPhone Distribution"
+            }
+        }
+      }
+    }
+  }
+}
+```
+
+Create IPA:
+
+```
+rnv export -p ios -s appstore
+```
