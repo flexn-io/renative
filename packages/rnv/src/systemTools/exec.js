@@ -34,8 +34,8 @@ const _execute = (c, command, opts = {}) => {
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
         all: true,
-        maxErrorLength: c.program.maxErrorLength,
-        mono: c.program.mono,
+        maxErrorLength: c.program?.maxErrorLength,
+        mono: c.program?.mono,
     };
     const mergedOpts = { ...defaultOpts, ...opts };
 
@@ -73,7 +73,7 @@ const _execute = (c, command, opts = {}) => {
         spinner.text = lastLine;
     };
 
-    if (c.program.info) {
+    if (c.program?.info) {
         child.stdout.pipe(process.stdout);
     } else {
         child.stdout.on('data', printLastLine);
@@ -113,7 +113,6 @@ const _execute = (c, command, opts = {}) => {
  */
 const execCLI = (c, cli, command, opts = {}) => {
     const p = c.cli[cli];
-    const { maxErrorLength } = c.program;
 
     if (!fs.existsSync(p)) {
         logDebug('execCLI error', cli, command);
@@ -122,7 +121,7 @@ const execCLI = (c, cli, command, opts = {}) => {
         )} file if you SDK path is correct`);
     }
 
-    return _execute(c, `${p} ${command}`, { ...opts, shell: true, maxErrorLength });
+    return _execute(c, `${p} ${command}`, { ...opts, shell: true });
 };
 
 /**
