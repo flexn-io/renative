@@ -66,17 +66,27 @@ const _execute = (c, command, opts = {}) => {
 
     const child = execa.command(cleanCommand, mergedOpts);
 
+    const printLastLine = (buffer) => {
+        const text = Buffer.from(buffer).toString().trim();
+        const lastLine = text.split('\n').pop();
+
+        spinner.text = lastLine;
+    };
+
     if (c.program.info) {
         child.stdout.pipe(process.stdout);
+    } else {
+        child.stdout.on('data', printLastLine);
     }
 
     return child.then((res) => {
+        child.stdout.off('data', printLastLine);
         !silent && !mono && spinner.succeed();
-        logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
+        child.stdout.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);
