@@ -82,6 +82,7 @@ const _execute = (c, command, opts = {}) => {
     return child.then((res) => {
         child.stdout.off('data', printLastLine);
         !silent && !mono && spinner.succeed();
+        logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;

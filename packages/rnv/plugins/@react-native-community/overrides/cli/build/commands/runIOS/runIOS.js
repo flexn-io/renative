@@ -253,13 +253,20 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
         });
     }
 
+
     console.log('Running ios-deploy', iosDeployInstallArgs.join(' '));
     const iosDeployOutput = _shell.exec(`npx ios-deploy ${iosDeployInstallArgs.join(' ')}`);
 
     if (iosDeployOutput.stderr) {
-        _logger.default.error(
-            '** INSTALLATION FAILED **\nMake sure you have ios-deploy installed globally.\n(e.g "npm install -g ios-deploy")'
-        );
+        if (iosDeployOutput.stderr.includes('Unable to mount developer disk image')) {
+            _logger.default.error(
+                '** WARNING **\nApp was installed but couldn\'t be launched because the device is locked.'
+            );
+        } else {
+            _logger.default.error(
+                '** INSTALLATION FAILED **\nMake sure you have ios-deploy installed globally.\n(e.g "npm install -g ios-deploy")'
+            );
+        }
     } else {
         _logger.default.info('** INSTALLATION SUCCEEDED **');
     }
