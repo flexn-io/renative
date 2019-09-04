@@ -81,7 +81,7 @@ const _execute = (c, command, opts = {}) => {
 
     return child.then((res) => {
         child.stdout.off('data', printLastLine);
-        !silent && !mono && spinner.succeed();
+        !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
         logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
@@ -93,7 +93,7 @@ const _execute = (c, command, opts = {}) => {
         interval && clearInterval(interval);
         // logDebug(err);
         if (ignoreErrors && !silent && !mono) {
-            spinner.succeed();
+            spinner.succeed(`Executing: ${logMessage}`);
             return true;
         }
         return Promise.reject(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
