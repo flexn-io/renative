@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import { mergeObjects, writeObjectSync } from '../systemTools/fileutils';
 import { logTask, logWarning, logError, getConfigProp } from '../common';
-import { askQuestion, finishQuestion } from '../systemTools/prompt';
 import { versionCheck } from '../configTools/configParser';
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
