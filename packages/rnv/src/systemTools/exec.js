@@ -77,19 +77,19 @@ const _execute = (c, command, opts = {}) => {
 
     if (c.program?.info) {
         child.stdout.pipe(process.stdout);
-    } else {
+    } else if (spinner) {
         child.stdout.on('data', printLastLine);
     }
 
     return child.then((res) => {
-        child.stdout.off('data', printLastLine);
+        spinner && child.stdout.off('data', printLastLine);
         !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
         logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        child.stdout.off('data', printLastLine);
+        spinner && child.stdout.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);
