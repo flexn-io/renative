@@ -27,7 +27,7 @@ import {
     logSuccess,
     getBuildsFolder,
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
@@ -59,8 +59,19 @@ export const parseMainActivitySync = (c, platform) => {
 export const parseSplashActivitySync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const splashPath = 'app/src/main/java/rnv/SplashActivity.kt';
+
+
+    // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
+    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX');
+    if (enableAndroidX === true) {
+        c.pluginConfigAndroid.pluginSplashActivityImports += 'import androidx.appcompat.app.AppCompatActivity\n';
+    } else {
+        c.pluginConfigAndroid.pluginSplashActivityImports += 'import android.support.v7.app.AppCompatActivity\n';
+    }
+
     writeCleanFile(getBuildFilePath(c, platform, splashPath), path.join(appFolder, splashPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{PLUGIN_SPLASH_ACTIVITY_IMPORTS}}', override: c.pluginConfigAndroid.pluginSplashActivityImports }
     ]);
 };
 
@@ -82,7 +93,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         c.pluginConfigAndroid.pluginActivityMethods += `${plugin.activityMethods.join('\n    ')}`;
     }
 
-    const mainActivity = plugin.mainActivity;
+    const { mainActivity } = plugin;
     if (mainActivity) {
         if (mainActivity.createMethods instanceof Array) {
             c.pluginConfigAndroid.pluginActivityCreateMethods += '\n';

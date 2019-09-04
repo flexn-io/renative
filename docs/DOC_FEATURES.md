@@ -4,7 +4,7 @@ title: Features
 sidebar_label: Features
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_features.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_features.png" width=50 height=50 />
 
 ## Overview
 
@@ -23,13 +23,13 @@ Build app blazingly fast with built-in features:
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_osx.png?raw=true" width="100" height="100" />
+      <img src="https://renative.org/img/os_osx.png" width="100" height="100" />
     </th>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_win.png?raw=true" width="100" height="100" />
+      <img src="https://renative.org/img/os_win.png" width="100" height="100" />
     </th>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/os_linux.jpeg?raw=true" width="100" height="100" />
+      <img src="https://renative.org/img/os_linux.jpeg" width="100" height="100" />
     </th>
   </tr>
   <tr>

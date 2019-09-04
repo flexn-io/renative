@@ -56,11 +56,11 @@ pharetra tempor risus ultrices sit amet. Nulla eu ipsum turpis.
 
 describe('Testing common functions', () => {
     it('should return correct error', async () => {
-        expect(parseErrorMessage(testError)).toEqual(errorResult);
+        expect(parseErrorMessage(testError, 400)).toEqual(errorResult);
     });
 
     it('should return no error', () => {
-        expect(parseErrorMessage(test)).toEqual(false);
+        expect(parseErrorMessage(test, 400)).toEqual(false);
     });
 
     it('should return 10 character error length', () => {

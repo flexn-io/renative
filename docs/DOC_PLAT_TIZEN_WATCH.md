@@ -4,31 +4,30 @@ title: Tizen Watch Platform
 sidebar_label: Tizen Watch
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
-
-## Tizen Watch
-
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-yes-brightgreen.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img width=200 src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_tizenwatch.gif?raw=true" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Linux-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
+  </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_tizenwatch.gif" height="250"/>
+
+
+## Overview
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
 
-#### Requirements
+## Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
 
-#### Project Configuration
+## Project Configuration
 
 | Feature          | Version |
 | ---------------- | :-----: |
@@ -37,14 +36,14 @@ sidebar_label: Tizen Watch
 | react-native-web | `0.9.9` |
 | Babel Core       | `7.1.2` |
 
-#### Emulator
+## Emulator
 
 Make sure you have at least 1 TV VM setup
 
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/tizenwatch1.png?raw=true" />
+    <img src="https://renative.org/img/tizenwatch1.png" />
     </th>
   </tr>
 </table>
@@ -53,7 +52,7 @@ Make sure you have at least 1 TV VM setup
 rnv target launch -p tizenwatch -t W-5.0-circle-x86
 ```
 
-#### Run
+## Run
 
 ```
 rnv run -p tizenwatch
@@ -71,7 +70,7 @@ Run in Browser
 rnv run -p tizenwatch --hosted
 ```
 
-#### Advanced
+## Advanced
 
 Clean and Re-build platform project
 

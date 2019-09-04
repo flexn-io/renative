@@ -5,7 +5,7 @@ sidebar_label: Plugins
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_plugins.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_plugins.png" width=50 height=50 />
 
 ## Plugins
 
@@ -20,7 +20,7 @@ you should get colorised overview similar to this:
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/cli_plugins.png?raw=true" />
+      <img src="https://renative.org/img/cli_plugins.png" />
     </th>
   </tr>
 </table>
@@ -37,7 +37,7 @@ Update your current plugins with latest ones from ReNative
 
 and follow the command prompt steps
 
-#### Custom Plugin Support
+## Custom Plugin Support
 
 You can configure multiple React Native plugins without need to update project blueprints.
 default location of plugin configs is `./projectConfig/plugins.json`

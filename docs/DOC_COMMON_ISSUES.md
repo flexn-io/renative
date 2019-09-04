@@ -5,7 +5,7 @@ sidebar_label: Common Issues
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_issues.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_issues.png" width=50 height=50 />
 
 If you encounter unexpected error / issue it is always good to perform basic sanity steps:
 

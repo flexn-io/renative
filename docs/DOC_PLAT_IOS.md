@@ -4,47 +4,46 @@ title: iOS Platform
 sidebar_label: iOS
 ---
 
-
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_ios.png?raw=true" width=50 height=50 />
-
 <table>
   <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_ios.gif?raw=true" height="200"/>
-    </th>
   <td>
-  <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
-  <img src="https://img.shields.io/badge/Windows-n/a-lightgrey.svg" />
-  <img src="https://img.shields.io/badge/Linux-n/a-lightgrey.svg" />
-  <img src="https://img.shields.io/badge/HostMode-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Linux-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/HostMode-n/a-lightgrey.svg" />
   </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_ios.gif" height="250"/>
+
+## Overview
+
 
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
 
-#### Requirements
+## Requirements
 
 -   [CocoaPods](https://cocoapods.org) `1.5.3` or newer
 -   [Xcode](https://developer.apple.com/xcode/) for iOS development
 
-#### Project Configuration
+## Project Configuration
 
 | Feature           | Version |
 | ----------------- | :-----: |
 | Swift             |  `4.1`  |
 | Deployment Target | `11.4`  |
 
-#### Run on Simulator
+## Run on Simulator
 
 ```
 rnv start
 rnv run -p ios
 ```
 
-#### Run on Device
+## Run on Device
 
 IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
 
@@ -59,7 +58,7 @@ rnv start
 rnv run -p ios -d
 ```
 
-#### Deploy on Device
+## Deploy on Device
 
 This will run production version on your device (not connected to metro bundler)
 Same prerequisite as above applies here
@@ -69,7 +68,7 @@ rnv start
 rnv run -p ios -s release -d
 ```
 
-#### Advanced
+## Advanced
 
 Clean and Re-build platform project
 
@@ -119,6 +118,39 @@ Get device/simulator logs with filter
 rnv log -p ios -f com.myapp
 ```
 
-#### App Config
+## App Store Releases
 
-<a href="#apple-based-config">see: Apple based config</a>
+`renative.json` scheme snippet for automatic signing releases
+
+```json
+{
+  "platforms": {
+    "ios": {
+      "buildSchemes": {
+        "appstore": {
+            "teamID": "YOUR_APPLE_TEAM_ID",
+            "runScheme": "Release",
+            "ignoreWarnings": true,
+            "ignoreLogs": true,
+            "bundleAssets": true,
+            "bundleIsDev": false,
+            "exportOptions": {
+                "method": "app-store",
+                "uploadBitcode": true,
+                "compileBitcode": false,
+                "uploadSymbols": true,
+                "signingStyle": "automatic",
+                "signingCertificate": "iPhone Distribution"
+            }
+        }
+      }
+    }
+  }
+}
+```
+
+Create IPA:
+
+```
+rnv export -p ios -s appstore
+```

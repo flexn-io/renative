@@ -811,6 +811,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         applyPlugin: '',
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
+        pluginSplashActivityImports: '',
         manifestApplication: '',
         buildGradleAllProjectsRepositories: '',
         buildGradleBuildScriptRepositories: '',

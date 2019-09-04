@@ -64,7 +64,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
     const plat = c.buildConfig.platforms[platform];
-    const { orientationSupport, urlScheme, plistExtra } = plat;
+    const { orientationSupport, urlScheme } = plat;
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
@@ -108,22 +108,26 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
             plistObj['UISupportedInterfaceOrientations~ipad'] = ['UIInterfaceOrientationPortrait'];
         }
     }
-    // URL_SCHEMES
+    // URL_SCHEMES (LEGACY)
     if (urlScheme) {
+        logWarning('urlScheme is DEPRECATED. use "plist:{ CFBundleURLTypes: []}" object instead');
         plistObj.CFBundleURLTypes.push({
             CFBundleTypeRole: 'Editor',
             CFBundleURLName: urlScheme,
             CFBundleURLSchemes: [urlScheme]
         });
     }
-    // PLIST EXTRAS
-    if (plistExtra) {
-        plistObj = mergeObjects(c, plistObj, plistExtra);
+
+    // PLIST
+    const plist = getConfigProp(c, platform, 'plist');
+    if (plist) {
+        plistObj = mergeObjects(c, plistObj, plist, true, true);
     }
+
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.plist) {
-            plistObj = mergeObjects(c, plistObj, pluginPlat.plist);
+            plistObj = mergeObjects(c, plistObj, pluginPlat.plist, true, true);
         }
     });
     saveObjToPlistSync(plistPath, plistObj);

@@ -4,7 +4,7 @@ title: Develop ReNative
 sidebar_label: Develop ReNative
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_construction.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_construction.png" width=50 height=50 />
 
 ## Developing ReNative Locally
 

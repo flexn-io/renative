@@ -35,20 +35,20 @@ rnv new
 
 iOS:
 
-<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/ios.png?raw=true" width="300px" />
+<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/ios.png" width="300px" />
 
 Web:
 
-<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/web.png?raw=true" width="600px" />
+<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/web.png" width="600px" />
 
 Android Wear:
 
-<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/androidwear.png?raw=true" width="280px" />
+<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/androidwear.png" width="280px" />
 
 macOS:
 
-<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/macos.png?raw=true" width="600px" />
+<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/macos.png" width="600px" />
 
 tvOS:
 
-<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/tvos.png?raw=true" width="600px" />
+<img src="https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/docs/tvos.png" width="600px" />

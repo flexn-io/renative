@@ -5,7 +5,7 @@ sidebar_label: CLI
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_cli.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
 ## ReNative CLI
 
@@ -54,7 +54,7 @@ Deployed to https://www.npmjs.com/package/rnv
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/info.png?raw=true" />
+    <img src="https://renative.org/img/info.png" />
     </th>
   </tr>
 </table>
@@ -66,7 +66,7 @@ Deployed to https://www.npmjs.com/package/rnv
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/clean.png?raw=true" />
+    <img src="https://renative.org/img/clean.png" />
     </th>
   </tr>
 </table>
