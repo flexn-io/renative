@@ -29,7 +29,7 @@ import {
 } from '../../common';
 import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../../systemTools/prompt';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
-import { IOS, TVOS } from '../../constants';
+import { IOS, TVOS, MACOS } from '../../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import {
@@ -260,11 +260,14 @@ const _checkLockAndExec = (c, p) => new Promise((resolve, reject) => {
 const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`archiveXcodeProject:${platform}`);
 
+
     const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
-        sdk = platform === IOS ? 'iphoneos' : 'tvos';
+        if (platform === IOS) sdk = 'iphoneos';
+        if (platform === TVOS) sdk = 'appletvos';
+        if (platform === MACOS) sdk = 'macosx';
     }
     const sdkArr = [sdk];
     const { maxErrorLength } = c.program;

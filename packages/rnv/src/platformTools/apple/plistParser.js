@@ -11,6 +11,7 @@ import {
     logDebug,
     getAppVersion,
     getAppTitle,
+    getAppVersionCode,
     getEntryFile,
     writeCleanFile,
     getAppTemplateFolder,
@@ -68,9 +69,10 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/info.plist.json'));
+    let plistObj = readObjectSync(path.join(c.paths.rnv.dir, `src/platformTools/apple/supportFiles/info.plist.${platform}.json`));
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
+    plistObj.CFBundleVersion = getAppVersionCode(c, platform);
     // FONTS
     if (c.pluginConfigiOS.embeddedFonts.length) {
         plistObj.UIAppFonts = c.pluginConfigiOS.embeddedFonts;

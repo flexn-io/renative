@@ -18,9 +18,6 @@
     "UIBackgroundModes": [
         "remote-notification"
     ],
-    "UIRequiredDeviceCapabilities": [
-        "armv7"
-    ],
     "UIRequiresFullScreen": true,
     "UISupportedInterfaceOrientations": [
         "UIInterfaceOrientationPortrait"
