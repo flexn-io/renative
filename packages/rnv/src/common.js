@@ -293,7 +293,7 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.verion || c.files.project.package.version;
+export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.version || c.files.project.package.version;
 
 export const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
 
@@ -309,8 +309,8 @@ export const getAppVersionCode = (c, platform) => {
     if (c.buildConfig.platforms[platform].versionCode) {
         return c.buildConfig.platforms[platform].versionCode;
     }
-    if (c.buildConfig.common.verionCode) {
-        return c.buildConfig.common.verionCode;
+    if (c.buildConfig.common.versionCode) {
+        return c.buildConfig.common.versionCode;
     }
     const version = getAppVersion(c, platform);
 

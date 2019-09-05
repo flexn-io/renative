@@ -47,15 +47,48 @@ rnv run -p ios
 
 IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
 
-1. Have ios device connected on the same network as your dev machine
-2. Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
-3. Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+`renative.json` scheme snippet for ad-hoc build (capable to run on device) with Automatic Signing
 
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+```json
+{
+  "platforms": {
+    "ios": {
+      "buildSchemes": {
+        "ad-hoc": {
+            "teamID": "YOUR_APPLE_TEAM_ID",
+            "provisioningStyle": "Automatic",
+            "runScheme": "Release",
+            "bundleAssets": true,
+            "bundleIsDev": false
+        }
+      }
+    }
+  }
+}
+```
+
+`renative.json` scheme snippet for ad-hoc build (capable to run on device) with Manual Signing
+
+```json
+{
+  "platforms": {
+    "ios": {
+      "buildSchemes": {
+        "ad-hoc": {
+            "teamID": "YOUR_APPLE_TEAM_ID",
+            "provisioningStyle": "Manual",
+            "codeSignIdentity": "iPhone Developer",
+            "provisionProfileSpecifier": "YOUR_PROVISIONING_PROFILE_NAME"
+        }
+      }
+    }
+  }
+}
+```
 
 ```
 rnv start
-rnv run -p ios -d
+rnv run -p ios -s ad-hoc -d
 ```
 
 ## Deploy on Device
@@ -130,8 +163,6 @@ rnv log -p ios -f com.myapp
         "appstore": {
             "teamID": "YOUR_APPLE_TEAM_ID",
             "runScheme": "Release",
-            "ignoreWarnings": true,
-            "ignoreLogs": true,
             "bundleAssets": true,
             "bundleIsDev": false,
             "exportOptions": {
@@ -141,6 +172,38 @@ rnv log -p ios -f com.myapp
                 "uploadSymbols": true,
                 "signingStyle": "automatic",
                 "signingCertificate": "iPhone Distribution"
+            }
+        }
+      }
+    }
+  }
+}
+```
+
+`renative.json` scheme snippet for manual signing releases
+
+```json
+{
+  "platforms": {
+    "ios": {
+      "buildSchemes": {
+        "appstore": {
+            "teamID": "YOUR_APPLE_TEAM_ID",
+            "runScheme": "Release",
+            "bundleAssets": true,
+            "provisioningStyle": "Manual",
+            "codeSignIdentity": "iPhone Distribution",
+            "provisionProfileSpecifier": "YOUR_PROVISIONING_PROFILE_NAME",
+            "exportOptions": {
+                "method": "app-store",
+                "uploadBitcode": true,
+                "compileBitcode": false,
+                "uploadSymbols": true,
+                "signingStyle": "manual",
+                "signingCertificate": "iPhone Distribution",
+                "provisioningProfiles": {
+                  "YOUR_BUNDLE_ID": "YOUR_PROVISIONING_PROFILE_NAME"
+                }
             }
         }
       }
