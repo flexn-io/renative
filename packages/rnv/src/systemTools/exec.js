@@ -90,7 +90,7 @@ const _execute = (c, command, opts = {}) => {
         return res.stdout;
     }).catch((err) => {
         spinner && child.stdout.off('data', printLastLine);
-        if (!silent && !mono && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);
         // logDebug(err);
