@@ -129,7 +129,6 @@
         "ncp": "2.0.0",
         "netcat": "1.4.0",
         "nodemon": "1.18.10",
-        "now": "15.3.0",
         "open": "6.2.0",
         "ora": "3.4.0",
         "prettier": "1.17.1",
@@ -156,6 +155,7 @@
     "devDependencies": {},
     "peerDependencies": {},
     "optionalDependencies": {
+        "now": "15.3.0",
         "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
     },
     "engines": {
