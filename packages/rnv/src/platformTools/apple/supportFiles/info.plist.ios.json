@@ -8,7 +8,7 @@
     "CFBundlePackageType": "APPL",
     "CFBundleShortVersionString": "{{PLUGIN_VERSION_STRING}}",
     "CFBundleURLTypes": [],
-    "CFBundleVersion": "1700",
+    "CFBundleVersion": "1",
     "LSApplicationQueriesSchemes": [],
     "LSRequiresIPhoneOS": true,
     "NSAppTransportSecurity": {

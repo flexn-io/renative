@@ -7,32 +7,9 @@
     "CFBundleName": "$(PRODUCT_NAME)",
     "CFBundlePackageType": "APPL",
     "CFBundleShortVersionString": "{{PLUGIN_VERSION_STRING}}",
-    "CFBundleURLTypes": [
-        {
-            "CFBundleTypeRole": "Editor",
-            "CFBundleURLSchemes": [
-                "{{FB_URL_SCHEMES}}"
-            ]
-        },
-        {
-            "CFBundleTypeRole": "Editor",
-            "CFBundleURLName": "scannerapp",
-            "CFBundleURLSchemes": [
-                "appgyverrn"
-            ]
-        }
-    ],
+    "CFBundleURLTypes": [],
     "CFBundleVersion": "1",
-    "Fabric": {
-        "APIKey": "{{FABRIC_KEY}}",
-        "Kits": [{
-            "KitInfo": {},
-            "KitName": "Crashlytics"
-        }]
-    },
-    "FacebookAppID": "{{FB_KEY}}",
-    "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
-    "LSApplicationQueriesSchemes": ["{{FB_URL_SCHEMES}}"],
+    "LSApplicationQueriesSchemes": [],
     "LSRequiresIPhoneOS": true,
     "NSAppTransportSecurity": {
         "NSAllowsArbitraryLoads": true
@@ -40,9 +17,6 @@
     "UIAppFonts": [],
     "UIBackgroundModes": [
         "remote-notification"
-    ],
-    "UIRequiredDeviceCapabilities": [
-        "armv7"
     ],
     "UIRequiresFullScreen": true,
     "UISupportedInterfaceOrientations": [

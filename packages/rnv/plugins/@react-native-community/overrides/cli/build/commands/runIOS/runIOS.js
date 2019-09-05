@@ -246,40 +246,30 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
         }
     }
 
-    if (!_commandExistsSync('pip')) {
-        console.log('Installing pip...');
-        _child_process().default.spawnSync('sudo', ['easy_install', 'pip'], {
+    if (!_commandExistsSync('easy_install')) {
+        console.log('Installing six...');
+        _child_process().default.spawnSync('easy_install', ['-U', 'six'], {
             encoding: 'utf8',
         });
     }
 
-    // check if six is installed
-    const pipPackagesOutput = _child_process().default.spawnSync('pip', ['freeze'], {
-        encoding: 'utf8',
-    });
 
-    function doInstall() {
-        console.log('Running ios-deploy', iosDeployInstallArgs.join(' '));
-        const iosDeployOutput = _shell.exec(`ios-deploy ${iosDeployInstallArgs.join(' ')}`);
+    console.log('Running ios-deploy', iosDeployInstallArgs.join(' '));
+    const iosDeployOutput = _shell.exec(`npx ios-deploy ${iosDeployInstallArgs.join(' ')}`);
 
-        if (iosDeployOutput.stderr) {
+    if (iosDeployOutput.stderr) {
+        if (iosDeployOutput.stderr.includes('Unable to mount developer disk image')) {
+            _logger.default.error(
+                '** WARNING **\nApp was installed but couldn\'t be launched because the device is locked.'
+            );
+            throw new Error('ERROR:DEVICE_LOCKED');
+        } else {
             _logger.default.error(
                 '** INSTALLATION FAILED **\nMake sure you have ios-deploy installed globally.\n(e.g "npm install -g ios-deploy")'
             );
-        } else {
-            _logger.default.info('** INSTALLATION SUCCEEDED **');
         }
-    }
-
-    if (pipPackagesOutput.stdout && pipPackagesOutput.stdout.includes('six==')) {
-        console.log('Six Python package already installed');
-        doInstall();
     } else {
-        console.log('Installing six Python package');
-        _child_process().default.spawnSync('pip', ['install', 'six'], {
-            encoding: 'utf8',
-        });
-        doInstall();
+        _logger.default.info('** INSTALLATION SUCCEEDED **');
     }
 }
 
