@@ -34,8 +34,8 @@ const _execute = (c, command, opts = {}) => {
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
         all: true,
-        maxErrorLength: c.program.maxErrorLength,
-        mono: c.program.mono,
+        maxErrorLength: c.program?.maxErrorLength,
+        mono: c.program?.mono,
     };
     const mergedOpts = { ...defaultOpts, ...opts };
 
@@ -66,23 +66,36 @@ const _execute = (c, command, opts = {}) => {
 
     const child = execa.command(cleanCommand, mergedOpts);
 
-    if (c.program.info) {
+    const MAX_OUTPUT_LENGTH = 200;
+
+    const printLastLine = (buffer) => {
+        const text = Buffer.from(buffer).toString().trim();
+        const lastLine = text.split('\n').pop();
+        spinner.text = lastLine.substring(0, MAX_OUTPUT_LENGTH);
+        if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...';
+    };
+
+    if (c.program?.info) {
         child.stdout.pipe(process.stdout);
+    } else if (spinner) {
+        child.stdout.on('data', printLastLine);
     }
 
     return child.then((res) => {
-        !silent && !mono && spinner.succeed();
+        spinner && child.stdout.off('data', printLastLine);
+        !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
         logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
+        spinner && child.stdout.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);
         // logDebug(err);
         if (ignoreErrors && !silent && !mono) {
-            spinner.succeed();
+            spinner.succeed(`Executing: ${logMessage}`);
             return true;
         }
         return Promise.reject(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
@@ -102,7 +115,6 @@ const _execute = (c, command, opts = {}) => {
  */
 const execCLI = (c, cli, command, opts = {}) => {
     const p = c.cli[cli];
-    const { maxErrorLength } = c.program;
 
     if (!fs.existsSync(p)) {
         logDebug('execCLI error', cli, command);
@@ -111,7 +123,7 @@ const execCLI = (c, cli, command, opts = {}) => {
         )} file if you SDK path is correct`);
     }
 
-    return _execute(c, `${p} ${command}`, { ...opts, shell: true, maxErrorLength });
+    return _execute(c, `${p} ${command}`, { ...opts, shell: true });
 };
 
 /**
