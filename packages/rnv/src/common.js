@@ -63,7 +63,7 @@ export const startBuilder = c => new Promise((resolve, reject) => {
             .then(() => parseRenativeConfigs(c))
             .then(() => configureRnvGlobal(c))
             .then(() => resolve(c))
-            .catch(e => reject(c));
+            .catch(e => reject(e));
         return;
     }
 

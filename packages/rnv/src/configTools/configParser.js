@@ -170,6 +170,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 };
 
 export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
+    logTask('parseRenativeConfigs');
     try {
         // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
         if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
@@ -212,13 +213,13 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
 const _getPrivateDirPath = (c) => {
     const wss = c.files.configWorkspaces;
-    const ws = c.files.c.buildConfig?.workspace;
+    const ws = c.files.buildConfig?.workspace;
     let dirPath;
     if (wss && ws) {
         dirPath = wss[ws];
     }
     if (!dirPath) {
-        return c.files.c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
+        return c.files.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
     }
     return dirPath;
 };
