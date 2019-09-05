@@ -23,6 +23,7 @@ import {
     RENATIVE_CONFIG_LOCAL_NAME,
     RENATIVE_CONFIG_BUILD_NAME,
     RENATIVE_CONFIG_RUNTIME_NAME,
+    RENATIVE_CONFIG_WORKSPACES_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
@@ -127,7 +128,8 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
     c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.dir, 'plugins.json');
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
-    c.paths.rnv.plugins.dir = path.join(c.paths.rnv.dir, 'plugins');
+    c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
+
     c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'projectTemplate');
     c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
 
@@ -136,6 +138,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.home.dir = homedir;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
     c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
+    c.paths.GLOBAL_RNV_CONFIG_WORKSPACES = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
 
     _generateConfigPaths(c.paths.project, base);
 
@@ -179,8 +182,11 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
         c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
         if (!c.files.project.config) return resolve();
 
+        // LOAD WORKSPACES
+        _loadWorkspacesSync(c);
+
         // LOAD ~/.rnv/RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.private, getRealPath(c, c.buildConfig?.paths?.globalConfigDir) || c.paths.GLOBAL_RNV_DIR);
+        _generateConfigPaths(c.paths.private, getRealPath(c, _getPrivateDirPath(c)));
         _loadConfigFiles(c, c.files.private, c.paths.private);
 
         // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
@@ -203,6 +209,19 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
     resolve();
 });
+
+const _getPrivateDirPath = (c) => {
+    const wss = c.files.configWorkspaces;
+    const ws = c.files.c.buildConfig?.workspace;
+    let dirPath;
+    if (wss && ws) {
+        dirPath = wss[ws];
+    }
+    if (!dirPath) {
+        return c.files.c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
+    }
+    return dirPath;
+};
 
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
     if (!c.paths.project.configExists) {
@@ -605,16 +624,29 @@ const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) =>
     });
 };
 
-export const configureRnvGlobal = c => new Promise((resolve, reject) => {
-    _configureRnvGlobal(c)
-        .then(() => _configureRnvGlobal(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+const _loadWorkspacesSync = (c) => {
+    // CHECK WORKSPACES
+    if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG_WORKSPACES)) {
+        logDebug(`${c.paths.GLOBAL_RNV_CONFIG_WORKSPACES} file exists!`);
+        c.files.configWorkspaces = readObjectSync(c.paths.GLOBAL_RNV_CONFIG_WORKSPACES);
+    } else {
+        logWarning(`Cannot find ${c.paths.GLOBAL_RNV_CONFIG_WORKSPACES}. creating one..`);
+        c.files.configWorkspaces = {
+            workspaces: {
+                rnv: {
+                    path: c.paths.private.dir
+                }
+            }
+        };
+        writeObjectSync(c.paths.GLOBAL_RNV_CONFIG_WORKSPACES, c.files.configWorkspaces);
+    }
+};
 
-const _configureRnvGlobal = c => new Promise((resolve, reject) => {
+export const configureRnvGlobal = c => new Promise((resolve, reject) => {
     logTask('configureRnvGlobal');
-    // Check globalConfigDir
+
+
+    // Check globalConfig Dir
     if (fs.existsSync(c.paths.private.dir)) {
         logDebug(`${c.paths.private.dir} folder exists!`);
     } else {

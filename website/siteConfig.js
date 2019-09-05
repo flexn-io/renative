@@ -59,6 +59,11 @@ const siteConfig = {
         primaryColor: '#20232a',
         secondaryColor: '#20232a',
     },
+    algolia: {
+        apiKey: 'my-api-key',
+        indexName: 'my-index-name',
+        algoliaOptions: {} // Optional, if provided by Algolia
+    },
 
     /* Custom fonts for website */
     /*

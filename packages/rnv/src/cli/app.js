@@ -273,8 +273,8 @@ const _generateProject = (c, data) => {
 
         const config = {
             projectName: data.projectName,
+            workspace: 'rnv',
             paths: {
-                globalConfigDir: '~/.rnv',
                 appConfigsDir: './appConfigs',
                 platformTemplatesDir: 'RNV_HOME/platformTemplates',
                 entryDir: './',

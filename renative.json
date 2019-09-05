@@ -3,10 +3,9 @@
         "SOME_ENV_VAR": "xxxx"
     },
     "projectName": "renative",
-    "globalProfile": "rnv",
+    "workspace": "rnv",
     "isWrapper": true,
     "paths": {
-        "globalConfigDir": "~/.rnv",
         "appConfigsDir": "./appConfigs",
         "platformTemplatesDir": "RNV_HOME/platformTemplates",
         "entryDir": "./",
