@@ -1,30 +1,10 @@
-import path from 'path';
-import fs from 'fs';
-import shell from 'shelljs';
 import chalk from 'chalk';
+import inquirer from 'inquirer';
+
 import {
-    isPlatformSupported,
-    cleanNodeModules,
-    isBuildSchemeSupported,
-    isPlatformSupportedSync,
-    getConfig,
     logTask,
-    logComplete,
-    checkSdk,
-    logError,
-    getAppFolder,
-    logDebug,
-    logErrorPlatform,
-    isSdkInstalled,
-    logWarning,
-    configureIfRequired,
-    cleanPlatformIfRequired
 } from '../common';
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
-import { IOS } from '../constants';
-import { executeAsync, execCLI } from '../systemTools/exec';
-import { executePipe } from '../projectTools/buildHooks';
-import appRunner, { copyRuntimeAssets } from './app';
+import { finishQuestion } from '../systemTools/prompt';
 import { listTemplates, addTemplate, getTemplateOptions, getInstalledTemplateOptions, applyTemplate } from '../templateTools';
 
 const LIST = 'list';
@@ -68,39 +48,38 @@ const _templateList = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _templateAdd = c => new Promise((resolve, reject) => {
+const _templateAdd = async (c) => {
     logTask('_templateAdd');
 
     const opts = getTemplateOptions(c);
 
-    askQuestion(`Pick which template to install : \n${opts.asString}`)
-        .then(v => opts.pick(v))
-        .then(() => addTemplate(c, opts))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    const { template } = await inquirer.prompt({
+        type: 'list',
+        message: 'Pick which template to install',
+        name: 'template',
+        choices: opts.keysAsArray
+    });
 
-const _templateApply = c => new Promise((resolve, reject) => {
+    addTemplate(c, template);
+};
+
+const _templateApply = async (c) => {
     logTask(`_templateApply:${c.program.template}`);
 
     if (c.program.template) {
-        applyTemplate(c, c.program.template)
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        const opts = getInstalledTemplateOptions(c);
-
-        askQuestion(`Pick which template to apply ${chalk.yellow('(NOTE: your project content will be overriden!)')}: \n${opts.asString}`)
-            .then(v => opts.pick(v))
-            .then((v) => {
-                finishQuestion();
-                return Promise.resolve();
-            })
-            .then(() => applyTemplate(c, opts.selectedOption))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        return applyTemplate(c, c.program.template);
     }
-});
+    const opts = getInstalledTemplateOptions(c);
+
+    const { template } = await inquirer.prompt({
+        type: 'list',
+        message: 'Pick which template to install',
+        name: 'template',
+        choices: opts.keysAsArray
+    });
+
+    applyTemplate(c, template);
+};
 
 export { PIPES };
 

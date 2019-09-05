@@ -1,6 +1,8 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
+import inquirer from 'inquirer';
+
 import { executeAsync } from '../systemTools/exec';
 import {
     logInfo,
@@ -18,10 +20,39 @@ const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) =
         .catch(error => reject(error));
 });
 
-const _createConfigFiles = (configFilePath, envConfigPath, nowParamsExists = false, envContent = '') => new Promise((resolve, reject) => {
+const _createConfigFiles = async (configFilePath, envConfigPath, nowParamsExists = false, envContent = '') => {
     if (!fs.existsSync(configFilePath)) {
         const content = { public: true, version: 2 };
         logInfo(`${chalk.white('now.json')} file does not exist. Creating one for you`);
+
+        const { name } = await inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: 'What is your project name?'
+        }, {
+            type: 'input',
+            name: 'token',
+            message: 'Do you have now token? If no leave empty and you will be asked to create one'
+        }]);
+
+        content.name = name;
+
+        if (!nowParamsExists) {
+            const { token } = await inquirer.prompt({
+                type: 'input',
+                name: 'token',
+                message: 'Do you have now token? If no leave empty and you will be asked to create one'
+            });
+            if (v) {
+                envContent += `NOW_TOKEN=${v}\n`;
+                fs.writeFileSync(envConfigPath, envContent);
+            }
+            fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
+            resolve();
+            return;
+        }
+        fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
+
         askQuestion('What is your project name?')
             .then((v) => {
                 finishQuestion();
@@ -45,7 +76,7 @@ const _createConfigFiles = (configFilePath, envConfigPath, nowParamsExists = fal
         return;
     }
     resolve();
-});
+};
 
 const deployToNow = c => new Promise((resolve, reject) => {
     const nowConfigPath = path.resolve(c.paths.project.dir, 'now.json');

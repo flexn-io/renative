@@ -32,23 +32,19 @@ export const listTemplates = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const addTemplate = (c, opts) => new Promise((resolve, reject) => {
+export const addTemplate = (c, template) => {
     logTask('addTemplate');
-    const { maxErrorLength } = c.program;
 
     c.files.project.config.templates = c.files.project.config.templates || {};
 
-    if (!c.files.project.config.templates[opts.selectedOption]) {
-        c.files.project.config.templates[opts.selectedOption] = {
+    if (!c.files.project.config.templates[template]) {
+        c.files.project.config.templates[template] = {
             version: 'latest'
         };
     }
 
     _writeObjectSync(c, c.paths.project.config, c.files.project.config);
-
-
-    resolve();
-});
+};
 
 export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     logTask('checkIfTemplateInstalled');

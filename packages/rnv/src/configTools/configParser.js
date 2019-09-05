@@ -39,7 +39,6 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { getQuestion, askQuestion, finishQuestion } from '../systemTools/prompt';
 import {
     copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateProjectConfig,
     checkAndCreateGitignore, copySharedPlatforms
