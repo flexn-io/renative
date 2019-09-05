@@ -27,7 +27,7 @@ import {
     logSuccess,
     getBuildsFolder
 } from '../../common';
-import { getQuestion } from '../../systemTools/prompt';
+import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../../systemTools/prompt';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { IOS, TVOS } from '../../constants';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
@@ -169,11 +169,14 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
                     packageBundleForXcode(c, platform, bundleIsDev)
-                        .then(v => executeAsync(c, `react-native ${p}`))
+                        .then((v) => {
+                            finishQuestion();
+                            return _checkLockAndExec(c, p);
+                        })
                         .then(() => resolve())
                         .catch(e => reject(e));
                 } else {
-                    executeAsync(c, `react-native ${p}`)
+                    _checkLockAndExec(c, p)
                         .then(() => resolve())
                         .catch(e => reject(e));
                 }
@@ -229,13 +232,29 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 .then(() => resolve())
                 .catch(e => reject(e));
         } else {
-            executeAsync(c, `react-native ${p.join(' ')}`)
+            _checkLockAndExec(c, p.join(' '))
                 .then(() => resolve())
                 .catch(e => reject(e));
         }
     } else {
         reject('Missing options for react-native command!');
     }
+});
+
+const _checkLockAndExec = (c, p) => new Promise((resolve, reject) => {
+    executeAsync(c, `react-native ${p}`)
+        .then(() => resolve())
+        .catch((e) => {
+            const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
+            if (isDeviceLocked) {
+                askQuestion('Unlock your device and press ENTER')
+                    .then(v => executeAsync(c, `react-native ${p}`))
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+            } else {
+                reject(e);
+            }
+        });
 });
 
 const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {

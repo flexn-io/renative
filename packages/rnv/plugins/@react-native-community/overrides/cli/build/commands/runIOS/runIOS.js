@@ -262,6 +262,7 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, configuration, 
             _logger.default.error(
                 '** WARNING **\nApp was installed but couldn\'t be launched because the device is locked.'
             );
+            throw new Error('ERROR:DEVICE_LOCKED');
         } else {
             _logger.default.error(
                 '** INSTALLATION FAILED **\nMake sure you have ios-deploy installed globally.\n(e.g "npm install -g ios-deploy")'
