@@ -7,12 +7,12 @@ jobs:
       language: node_js
       node_js: 10.15.3
       install:
-       - rm -rf ./node_modules && rm -rf ./package-lock.json
-       - npm i > /dev/null 2>&1
-       - cd packages/rnv
-       - npm i > /dev/null 2>&1
-       - npm run build:dev
-       - npm link
+        - rm -rf ./node_modules && rm -rf ./package-lock.json
+        - npm i > /dev/null 2>&1
+        - cd packages/rnv
+        - npm i > /dev/null 2>&1
+        - npm run build:dev
+        - npm link
       script: npm run test:setup
     - language: android
       sudo: required
@@ -27,7 +27,7 @@ jobs:
           - android-28
           - sys-img-x86-android-28
       before_install:
-        - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+        - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
         - sudo apt-get install -y nodejs
         - rm -rf ./node_modules && rm -rf ./package-lock.json
         - npm i > /dev/null 2>&1
@@ -51,7 +51,6 @@ jobs:
         - npm run build:dev
         - npm link
       script: npm run test:ios
-
 
 stages:
   - test
