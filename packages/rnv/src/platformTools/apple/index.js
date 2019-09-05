@@ -4,6 +4,8 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import child_process from 'child_process';
+import inquirer from 'inquirer';
+
 import { executeAsync } from '../../systemTools/exec';
 import { isObject } from '../../systemTools/objectUtils';
 import { createPlatformBuild } from '../../cli/platform';
@@ -169,10 +171,7 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
                     packageBundleForXcode(c, platform, bundleIsDev)
-                        .then((v) => {
-                            finishQuestion();
-                            return _checkLockAndExec(c, p);
-                        })
+                        .then(() => _checkLockAndExec(c, p))
                         .then(() => resolve())
                         .catch(e => reject(e));
                 } else {
@@ -241,21 +240,15 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     }
 });
 
-const _checkLockAndExec = (c, p) => new Promise((resolve, reject) => {
-    executeAsync(c, `react-native ${p}`)
-        .then(() => resolve())
-        .catch((e) => {
-            const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
-            if (isDeviceLocked) {
-                askQuestion('Unlock your device and press ENTER')
-                    .then(v => executeAsync(c, `react-native ${p}`))
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-            } else {
-                reject(e);
-            }
-        });
-});
+const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
+    .catch((e) => {
+        const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
+        if (isDeviceLocked) {
+            return inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' })
+                .then(() => executeAsync(c, `react-native ${p}`));
+        }
+        return Promise.reject(e);
+    });
 
 const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`archiveXcodeProject:${platform}`);
