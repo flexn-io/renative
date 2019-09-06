@@ -237,10 +237,12 @@ const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
         const val = Object.assign(o3 || {}, o2 || {}, o1);
         return val;
     }
+    if (o1 === null) return null;
     if (o2) {
         if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
         return Object.assign(o3 || {}, o2);
     }
+    if (o2 === null) return null;
     return o3;
 };
 
@@ -292,7 +294,7 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.verion || c.files.project.package.version;
+export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.version || c.files.project.package.version;
 
 export const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
 
@@ -308,8 +310,8 @@ export const getAppVersionCode = (c, platform) => {
     if (c.buildConfig.platforms[platform].versionCode) {
         return c.buildConfig.platforms[platform].versionCode;
     }
-    if (c.buildConfig.common.verionCode) {
-        return c.buildConfig.common.verionCode;
+    if (c.buildConfig.common.versionCode) {
+        return c.buildConfig.common.versionCode;
     }
     const version = getAppVersion(c, platform);
 

@@ -5,6 +5,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
+
 import { executeAsync } from '../../systemTools/exec';
 import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
@@ -19,8 +20,8 @@ import {
     logSuccess,
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
-import { IOS } from '../../constants';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
+import { IOS, TVOS, MACOS } from '../../constants';
 import {
     parseExportOptionsPlist,
     parseInfoPlist, parseEntitlementsPlist
@@ -148,9 +149,9 @@ const _runXcodeProject = async (c, platform, target) => {
 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
-                    return packageBundleForXcode(c, platform, bundleIsDev).then(() => executeAsync(c, `react-native ${p}`));
+                    return packageBundleForXcode(c, platform, bundleIsDev).then(() => _checkLockAndExec(c, p));
                 }
-                return executeAsync(c, `react-native ${p}`);
+                return _checkLockAndExec(c, p);
             };
 
             if (c.program.target) {
@@ -189,19 +190,32 @@ const _runXcodeProject = async (c, platform, target) => {
         if (bundleAssets) {
             return packageBundleForXcode(c, platform, bundleIsDev).then(() => executeAsync(c, `react-native ${p.join(' ')}`));
         }
-        return executeAsync(c, `react-native ${p.join(' ')}`);
+        return _checkLockAndExec(c, p.join(' '));
     }
     return Promise.reject('Missing options for react-native command!');
 };
 
+const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
+    .catch((e) => {
+        const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
+        if (isDeviceLocked) {
+            return inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' })
+                .then(() => executeAsync(c, `react-native ${p}`));
+        }
+        return Promise.reject(e);
+    });
+
 const archiveXcodeProject = (c, platform) => {
     logTask(`archiveXcodeProject:${platform}`);
+
 
     const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
     let sdk = getConfigProp(c, platform, 'sdk');
     if (!sdk) {
-        sdk = platform === IOS ? 'iphoneos' : 'tvos';
+        if (platform === IOS) sdk = 'iphoneos';
+        if (platform === TVOS) sdk = 'appletvos';
+        if (platform === MACOS) sdk = 'macosx';
     }
     const sdkArr = [sdk];
 
