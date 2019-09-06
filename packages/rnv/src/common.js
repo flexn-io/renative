@@ -238,10 +238,12 @@ const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
         const val = Object.assign(o3 || {}, o2 || {}, o1);
         return val;
     }
+    if (o1 === null) return null;
     if (o2) {
         if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
         return Object.assign(o3 || {}, o2);
     }
+    if (o2 === null) return null;
     return o3;
 };
 

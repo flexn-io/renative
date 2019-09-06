@@ -55,7 +55,7 @@ const composeDevicesString = (devices, returnArray) => {
 };
 
 const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
-    logTask(`launchAndroidSimulator:${platform}:${target}`);
+    logTask(`launchAndroidSimulator:${platform}:${target}:${isIndependentThread}`);
     const { maxErrorLength } = c.program;
 
     if (target === '?' || target === undefined || target === '') {
@@ -69,17 +69,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
                 readlineInterface.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), (v) => {
                     const selectedDevice = devicesArr[parseInt(v, 10) - 1];
                     if (selectedDevice) {
-                        if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { detached: true, maxErrorLength }).catch((err) => {
-                                if (err.includes && err.includes('WHPX')) {
-                                    logWarning(err);
-                                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
-                                }
-                                logError(err);
-                            });
-                            return Promise.resolve();
-                        }
-                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
+                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { detached: isIndependentThread });
                     }
                     logError(`Wrong choice ${v}! Ingoring`);
                 });
@@ -89,7 +79,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch((err) => {
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, { detached: isIndependentThread }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -98,7 +88,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
             });
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`);
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, { detached: isIndependentThread });
     }
     return Promise.reject('No simulator -t target name specified!');
 };
