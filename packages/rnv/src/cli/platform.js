@@ -8,7 +8,7 @@ import {
     logTask,
     logSuccess
 } from '../common';
-import { generateOptions, finishQuestion } from '../systemTools/prompt';
+import { generateOptions } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync, removeDirs } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
 import { cleanPlaformAssets } from '../projectTools/projectParser';

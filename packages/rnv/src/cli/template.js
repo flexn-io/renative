@@ -1,10 +1,8 @@
-import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import {
     logTask,
 } from '../common';
-import { finishQuestion } from '../systemTools/prompt';
 import { listTemplates, addTemplate, getTemplateOptions, getInstalledTemplateOptions, applyTemplate } from '../templateTools';
 
 const LIST = 'list';

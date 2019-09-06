@@ -63,7 +63,6 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { getQuestion } from '../systemTools/prompt';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 

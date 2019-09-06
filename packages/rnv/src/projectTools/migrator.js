@@ -3,7 +3,6 @@ import path from 'path';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTools/logger';
 import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';

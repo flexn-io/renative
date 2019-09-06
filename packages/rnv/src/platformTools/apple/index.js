@@ -18,7 +18,6 @@ import {
     getIP,
     logSuccess,
 } from '../../common';
-import { getQuestion } from '../../systemTools/prompt';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { IOS } from '../../constants';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
