@@ -17,45 +17,14 @@ const getEnvVar = (c) => {
     return envVar;
 };
 
-export const rnvCrypto = c => new Promise((resolve, reject) => {
-    switch (c.subCommand) {
-    case ENCRYPT:
-        encrypt(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    case DECRYPT:
-        decrypt(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    case INSTALL_PROFILES:
-        installProfiles(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    case UPDATE_PROFILES:
-        updateProfiles(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    case UPDATE_PROFILE:
-        updateProfile(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    case INSTALL_CERTS:
-        installCerts(c)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    }
-
-    reject(`cli:tools: Command ${c.command} ${c.subCommand} not supported`);
+export const rnvCryptoUpdateProfile = c => new Promise((resolve, reject) => {
+    updateProfile(c)
+        .then(() => resolve())
+        .catch(e => reject(e));
 });
 
-export const encrypt = c => new Promise((resolve, reject) => {
-    logTask('encrypt');
+export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoEncrypt');
 
     const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
@@ -93,8 +62,8 @@ export const encrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const decrypt = c => new Promise((resolve, reject) => {
-    logTask('encrypt');
+export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoDecrypt');
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
 
@@ -134,10 +103,10 @@ export const decrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const installProfiles = c => new Promise((resolve, reject) => {
-    logTask('installProfiles');
+export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoInstallProfiles');
     if (c.platform !== 'ios') {
-        logError(`installProfiles: platform ${c.platform} not supported`);
+        logError(`rnvCryptoInstallProfiles: platform ${c.platform} not supported`);
         resolve();
         return;
     }
@@ -154,7 +123,7 @@ export const installProfiles = c => new Promise((resolve, reject) => {
 
     try {
         mobileprovisionArr.forEach((v) => {
-            console.log(`installProfiles: Installing: ${v}`);
+            console.log(`rnvCryptoInstallProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
     } catch (e) {
@@ -164,8 +133,8 @@ export const installProfiles = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const installCerts = c => new Promise((resolve, reject) => {
-    logTask('installCerts');
+export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoInstallCerts');
     const { maxErrorLength } = c.program;
 
     if (c.platform !== 'ios') {
@@ -188,8 +157,8 @@ export const installCerts = c => new Promise((resolve, reject) => {
 });
 
 
-export const updateProfiles = (c) => {
-    logTask('updateProfiles');
+export const rnvCryptoUpdateProfiles = (c) => {
+    logTask('rnvCryptoUpdateProfiles');
     switch (c.platform) {
     case IOS:
     case TVOS:
@@ -202,7 +171,7 @@ export const updateProfiles = (c) => {
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };
 
-export const _updateProfiles = (c) => {
+const _updateProfiles = (c) => {
     logTask('_updateProfiles', chalk.grey);
     const acList = listAppConfigsFoldersSync(c, true);
     const fullList = [];

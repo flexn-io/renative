@@ -30,13 +30,40 @@ describe('Testing rnv platform', () => {
     itShouldResolve('platform configure');
 });
 
+describe('Testing rnv template', () => {
+    itShouldResolve('template help');
+    itShouldResolve('template add');
+    itShouldResolve('template list');
+    itShouldResolve('template apply');
+});
+
 describe('Testing rnv new', () => {
-    itShouldResolve('run help');
     itShouldResolve('new');
 });
 
 describe('Testing rnv run', () => {
+    itShouldResolve('run help');
     itShouldResolve('run -p ios');
+});
+
+describe('Testing rnv build', () => {
+    itShouldResolve('build help');
+    itShouldResolve('build -p ios');
+});
+
+describe('Testing rnv package', () => {
+    itShouldResolve('package help');
+    itShouldResolve('package -p ios');
+});
+
+describe('Testing rnv deploy', () => {
+    itShouldResolve('deploy help');
+    itShouldResolve('deploy -p ios');
+});
+
+describe('Testing rnv export', () => {
+    itShouldResolve('export help');
+    itShouldResolve('export -p ios');
 });
 
 describe('Testing rnv workspace', () => {
@@ -45,6 +72,7 @@ describe('Testing rnv workspace', () => {
 });
 
 describe('Testing rnv clean', () => {
+    itShouldResolve('clean help');
     itShouldResolve('clean');
 });
 
@@ -52,6 +80,23 @@ describe('Testing rnv crypto', () => {
     itShouldResolve('crypto help');
     itShouldResolve('crypto encrypt');
     itShouldResolve('crypto decrypt');
+    itShouldResolve('crypto installCerts');
+    itShouldResolve('crypto installProfiles');
+    itShouldResolve('crypto installProfile');
+    itShouldResolve('crypto updateProfile');
+    itShouldResolve('crypto updateProfiles');
+});
+
+describe('Testing rnv hooks', () => {
+    itShouldResolve('hooks help');
+    itShouldResolve('hooks run');
+    itShouldResolve('hooks list');
+    itShouldResolve('hooks pipes');
+});
+
+describe('Testing rnv status', () => {
+    itShouldResolve('status help');
+    itShouldResolve('status');
 });
 
 

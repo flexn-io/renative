@@ -9,7 +9,7 @@ import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink } from '../plugin
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
-import { rnvCrypto } from '../systemTools/crypto';
+import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
 import { rnvClean } from '../systemTools/cleaner';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy } from '../platformTools/runner';
 
@@ -142,10 +142,28 @@ const COMMANDS = {
             }
         }
     },
-
     crypto: {
         desc: 'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
-        fn: rnvCrypto
+        subCommands: {
+            encrypt: {
+                fn: rnvCryptoEncrypt
+            },
+            decrypt: {
+                fn: rnvCryptoDecrypt
+            },
+            installCerts: {
+                fn: rnvCryptoInstallCerts
+            },
+            updateProfile: {
+                fn: rnvCryptoUpdateProfile
+            },
+            updateProfiles: {
+                fn: rnvCryptoUpdateProfiles
+            },
+            installProfiles: {
+                fn: rnvCryptoInstallProfiles
+            }
+        }
     },
     workspace: {
         subCommands: {
