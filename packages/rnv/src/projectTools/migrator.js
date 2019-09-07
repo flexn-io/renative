@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTools/logger';
 import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
-import { cleanProjectModules } from '../systemTools/cleaner';
+import { rnvClean } from '../systemTools/cleaner';
 import { configureNodeModules } from './projectParser';
 
 export const checkAndMigrateProject = async (c) => {
@@ -45,7 +45,7 @@ export const checkAndMigrateProject = async (c) => {
             c.program.reset = true;
             return _migrateProject(c, paths)
                 .then(() => _migrateProjectSoft(c, paths))
-                .then(() => cleanProjectModules(c))
+                .then(() => rnvClean(c))
                 .then(() => configureNodeModules(c));
         }
     } else {

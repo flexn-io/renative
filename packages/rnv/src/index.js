@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import Common, { initializeBuilder, startBuilder } from './common';
 import Logger, { logComplete, logError, logWelcome, logInfo, configureLogger, logInitialize } from './systemTools/logger';
-import CLI, { logHelp } from './cli';
+import CLI, { rnvHelp } from './cli';
 import Constants from './constants';
 import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
@@ -22,7 +22,7 @@ const run = (cmd, subCmd, program, process) => {
 const checkWelcome = c => new Promise((resolve, reject) => {
     if ((!c.command && !c.subCommand) || c.command === 'help') {
         logWelcome();
-        logHelp();
+        rnvHelp();
         logComplete(true);
     } else {
         resolve(c);

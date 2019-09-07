@@ -14,15 +14,15 @@ import { executePipe } from '../projectTools/buildHooks';
 import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS } from '../constants';
 
-export const platformList = c => new Promise((resolve, reject) => {
+export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
     console.log(`\n${opts.asString}`);
     resolve();
 });
 
-export const platformConfigure = async (c) => {
+export const rnvPlatformConfigure = async (c) => {
     c.runtime.platform = c.program.platform || 'all';
-    logTask(`platformConfigure:${c.runtime.platform}`);
+    logTask(`rnvPlatformConfigure:${c.runtime.platform}`);
 
     await isPlatformSupported(c);
     await cleanPlatformBuild(c, c.runtime.platform);
@@ -35,8 +35,8 @@ const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.
     return { name: `${platform} - ${isConnected ? chalk.green('(connected)') : chalk.yellow('(ejected)')}`, value: platform, isConnected };
 });
 
-export const platformEject = async (c) => {
-    logTask('platformEject');
+export const rnvPlatformEject = async (c) => {
+    logTask('rnvPlatformEject');
 
     const { ejectedPlatforms } = await inquirer.prompt({
         name: 'ejectedPlatforms',
@@ -85,8 +85,8 @@ const _genPlatOptions = (c) => {
     return opts;
 };
 
-export const platformConnect = async (c) => {
-    logTask('platformConnect');
+export const rnvPlatformConnect = async (c) => {
+    logTask('rnvPlatformConnect');
 
     const { connectedPlatforms } = await inquirer.prompt({
         name: 'connectedPlatforms',

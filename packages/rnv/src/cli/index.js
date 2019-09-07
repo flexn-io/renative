@@ -1,22 +1,22 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { logWarning, logTask, logStatus, logEnd, logToSummary } from '../systemTools/logger';
-import { listWorkspaces } from '../projectTools/workspace';
+import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from '../systemTools/logger';
+import { rnvWorkspaceList } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
-import { templateAdd, templateApply, templateList } from '../templateTools';
-import { targetCreate, targetLaunch, targetList } from '../platformTools/target';
-import { pluginAdd, pluginList, pluginUpdate, rnvLink } from '../pluginTools';
-import { platformEject, platformList, platformConnect, platformConfigure } from '../platformTools';
-import { executePipe, listHooks, executeHook, listPipes } from '../projectTools/buildHooks';
+import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList } from '../templateTools';
+import { targetCreate, rnvTargetLaunch, rnTargetList } from '../platformTools/target';
+import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink } from '../pluginTools';
+import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
+import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCrypto } from '../systemTools/crypto';
-import { cleanProjectModules } from '../systemTools/cleaner';
+import { rnvClean } from '../systemTools/cleaner';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy } from '../platformTools/runner';
 
 
 const COMMANDS = {
     start: {
-        fn: listWorkspaces
+        fn: rnvWorkspaceList
     },
     run: {
         desc: 'Run your app on target device or emulator',
@@ -48,7 +48,7 @@ const COMMANDS = {
         params: ['mono', 'ci']
     },
     help: {
-        fn: logHelp
+        fn: rnvHelp
     },
     configure: {
         desc: 'Configures app config',
@@ -68,16 +68,16 @@ const COMMANDS = {
         desc: 'Manages native platform projects',
         subCommands: {
             eject: {
-                fn: platformEject
+                fn: rnvPlatformEject
             },
             list: {
-                fn: platformList
+                fn: rnvPlatformList
             },
             connect: {
-                fn: platformConnect
+                fn: rnvPlatformConnect
             },
             configure: {
-                fn: platformConfigure
+                fn: rnvPlatformConfigure
             }
         }
     },
@@ -85,10 +85,10 @@ const COMMANDS = {
         desc: 'Manages simulators and emulators',
         subCommands: {
             launch: {
-                fn: targetLaunch
+                fn: rnvTargetLaunch
             },
             list: {
-                fn: targetList
+                fn: rnTargetList
             }
         }
     },
@@ -96,13 +96,13 @@ const COMMANDS = {
         desc: 'Manages all plugins',
         subCommands: {
             add: {
-                fn: pluginAdd
+                fn: rnvPluginAdd
             },
             list: {
-                fn: pluginList
+                fn: rnvPluginList
             },
             update: {
-                fn: pluginUpdate
+                fn: rnvPluginUpdate
             }
         }
     },
@@ -110,35 +110,35 @@ const COMMANDS = {
         desc: 'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
         subCommands: {
             run: {
-                fn: executeHook
+                fn: rnvHooksRun
             },
             list: {
-                fn: listHooks
+                fn: rnvHooksList
             },
             pipes: {
-                fn: listPipes
+                fn: rnvHooksPipes
             }
         }
     },
     status: {
         desc: 'Prints out summary of your project',
-        fn: logStatus
+        fn: rnvStatus
     },
     clean: {
         desc: 'Automatically removes all node_modules and lock in your project and its dependencies',
-        fn: cleanProjectModules
+        fn: rnvClean
     },
     template: {
         desc: 'Manages rnv and project templates',
         subCommands: {
             add: {
-                fn: templateAdd
+                fn: rnvTemplateAdd
             },
             list: {
-                fn: templateList
+                fn: rnvTemplateList
             },
             apply: {
-                fn: templateApply
+                fn: rnvTemplateApply
             }
         }
     },
@@ -150,7 +150,7 @@ const COMMANDS = {
     workspace: {
         subCommands: {
             list: {
-                fn: listWorkspaces
+                fn: rnvWorkspaceList
             }
         }
     }
@@ -250,7 +250,7 @@ const _handleUnknownCommand = async (c) => {
 };
 
 
-export const logHelp = () => {
+export const rnvHelp = () => {
     let cmdsString = '';
     for (const key in COMMANDS) {
         cmdsString += `${key}, `;

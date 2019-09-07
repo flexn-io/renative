@@ -12,7 +12,7 @@ import {
 } from '../systemTools/logger';
 import { executePipe } from '../projectTools/buildHooks';
 
-export const pluginList = c => new Promise((resolve) => {
+export const rnvPluginList = c => new Promise((resolve) => {
     logTask('_runList');
 
     const o = _getPluginList(c);
@@ -78,8 +78,8 @@ const _getPluginList = (c, isUpdate = false) => {
     return output;
 };
 
-export const pluginAdd = async (c) => {
-    logTask('pluginAdd');
+export const rnvPluginAdd = async (c) => {
+    logTask('rnvPluginAdd');
 
     const o = _getPluginList(c);
 
@@ -128,8 +128,8 @@ const _checkAndAddDependantPlugins = (c, plugin) => {
     }
 };
 
-export const pluginUpdate = async (c) => {
-    logTask('pluginUpdate');
+export const rnvPluginUpdate = async (c) => {
+    logTask('rnvPluginUpdate');
 
     const o = _getPluginList(c, true);
 

@@ -6,8 +6,8 @@ import {
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
 
-export const listWorkspaces = c => new Promise((resolve, reject) => {
-    logTask('listWorkspaces');
+export const rnvWorkspaceList = c => new Promise((resolve, reject) => {
+    logTask('rnvWorkspaceList');
     resolve();
 });
 

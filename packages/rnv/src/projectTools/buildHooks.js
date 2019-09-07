@@ -17,8 +17,8 @@ const isRunningOnWindows = process.platform === 'win32';
 // PUBLIC API
 // ##########################################
 
-const executeHook = c => new Promise((resolve, reject) => {
-    logTask('executeHook');
+const rnvHooksRun = c => new Promise((resolve, reject) => {
+    logTask('rnvHooksRun');
 
     buildHooks(c)
         .then(() => {
@@ -86,8 +86,8 @@ const buildHooks = c => new Promise((resolve, reject) => {
     }
 });
 
-const listHooks = c => new Promise((resolve, reject) => {
-    logTask('listHooks');
+const rnvHooksList = c => new Promise((resolve, reject) => {
+    logTask('rnvHooksList');
 
     buildHooks(c)
         .then(() => {
@@ -108,8 +108,8 @@ const listHooks = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const listPipes = c => new Promise((resolve, reject) => {
-    logTask('listPipes');
+const rnvHooksPipes = c => new Promise((resolve, reject) => {
+    logTask('rnvHooksPipes');
 
     buildHooks(c)
         .then(() => {
@@ -118,4 +118,4 @@ const listPipes = c => new Promise((resolve, reject) => {
         }).catch(e => reject(e));
 });
 
-export { buildHooks, listHooks, executeHook, executePipe, listPipes };
+export { buildHooks, rnvHooksList, rnvHooksRun, executePipe, rnvHooksPipes };

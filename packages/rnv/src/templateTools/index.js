@@ -317,15 +317,15 @@ export const getInstalledTemplateOptions = (c) => {
 };
 
 
-export const templateList = c => new Promise((resolve, reject) => {
-    logTask('templateList');
+export const rnvTemplateList = c => new Promise((resolve, reject) => {
+    logTask('rnvTemplateList');
     const opts = getTemplateOptions(c);
     logToSummary(opts.asString);
     resolve();
 });
 
-export const templateAdd = async (c) => {
-    logTask('templateAdd');
+export const rnvTemplateAdd = async (c) => {
+    logTask('rnvTemplateAdd');
 
     const opts = getTemplateOptions(c);
 
@@ -339,8 +339,8 @@ export const templateAdd = async (c) => {
     addTemplate(c, template);
 };
 
-export const templateApply = async (c) => {
-    logTask(`templateApply:${c.program.template}`);
+export const rnvTemplateApply = async (c) => {
+    logTask(`rnvTemplateApply:${c.program.template}`);
 
     if (c.program.template) {
         return applyTemplate(c, c.program.template);

@@ -14,7 +14,7 @@ import { launchAndroidSimulator, listAndroidTargets } from './android';
 import { listAppleDevices, launchAppleSimulator } from './apple';
 import { launchKaiOSSimulator } from './firefox';
 
-export const targetLaunch = async (c) => {
+export const rnvTargetLaunch = async (c) => {
     logTask('_runLaunch');
 
     await isPlatformSupported(c);
@@ -60,8 +60,8 @@ export const targetLaunch = async (c) => {
     }
 };
 
-export const targetList = async (c) => {
-    logTask('targetList');
+export const rnTargetList = async (c) => {
+    logTask('rnTargetList');
 
     await isPlatformSupported(c);
 
