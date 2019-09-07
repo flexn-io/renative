@@ -8,11 +8,11 @@ import {
 } from '../common';
 import PlatformSetup from '../setupTools';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_EMULATOR, CLI_ANDROID_SDKMANAGER } from '../constants';
-import { launchTizenSimulator } from '../platformTools/tizen';
-import { launchWebOSimulator, listWebOSTargets } from '../platformTools/webos';
-import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/android';
-import { listAppleDevices, launchAppleSimulator } from '../platformTools/apple';
-import { launchKaiOSSimulator } from '../platformTools/firefox';
+import { launchTizenSimulator } from './tizen';
+import { launchWebOSimulator, listWebOSTargets } from './webos';
+import { launchAndroidSimulator, listAndroidTargets } from './android';
+import { listAppleDevices, launchAppleSimulator } from './apple';
+import { launchKaiOSSimulator } from './firefox';
 
 export const targetLaunch = async (c) => {
     logTask('_runLaunch');
@@ -66,7 +66,8 @@ export const targetList = async (c) => {
     await isPlatformSupported(c);
 
     const { platform } = c;
-    if (!isPlatformSupportedSync(platform)) return;
+
+    await isPlatformSupported(c);
 
     const throwError = (err) => {
         throw err;

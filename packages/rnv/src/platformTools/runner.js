@@ -158,79 +158,66 @@ export const rnvDebug = c => executePipe(c, PIPES.START_BEFORE)
     .then(() => executePipe(c, PIPES.START_AFTER));
 
 
-export const rnvRun = c => new Promise((resolve, reject) => {
+export const rnvRun = async (c) => {
     logTask(`rnvRun:${c.platform}`);
 
-    isPlatformSupported(c)
-        .then(() => isBuildSchemeSupported(c))
-        .then(() => _rnvRunWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await _rnvRunWithPlatform(c);
+};
 
-export const rnvPackage = c => new Promise((resolve, reject) => {
+export const rnvPackage = async (c) => {
     logTask(`rnvPackage:${c.platform}`);
 
-    isPlatformSupported(c)
-        .then(() => isBuildSchemeSupported(c))
-        .then(() => _rnvPackageWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await _rnvPackageWithPlatform(c);
+};
 
-export const rnvBuild = c => new Promise((resolve, reject) => {
+export const rnvBuild = async (c) => {
     logTask(`rnvBuild:${c.platform}`);
 
-    isPlatformSupported(c)
-        .then(() => isBuildSchemeSupported(c))
-        .then(() => _rnvBuildWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await _rnvBuildWithPlatform(c);
+};
 
-export const rnvExport = c => new Promise((resolve, reject) => {
+export const rnvExport = async (c) => {
     logTask(`rnvExport:${c.platform}`);
 
-    isPlatformSupported(c)
-        .then(() => isBuildSchemeSupported(c))
-        .then(() => _rnvExportWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await _rnvExportWithPlatform(c);
+};
 
-export const rnvDeploy = c => new Promise((resolve, reject) => {
+export const rnvDeploy = async (c) => {
     logTask(`rnvDeploy:${c.platform}`);
 
-    isPlatformSupported(c)
-        .then(() => isBuildSchemeSupported(c))
-        .then(() => _rnvDeployWithPlatform(c))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await _rnvDeployWithPlatform(c);
+};
 
-const rnvLog = c => new Promise((resolve, reject) => {
+const rnvLog = async (c) => {
     logTask('rnvLog');
     const { platform } = c;
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
+
+    await isPlatformSupported(c);
 
     switch (platform) {
     case IOS:
     case TVOS:
-        runAppleLog(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await runAppleLog(c, platform);
         return;
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        runAndroidLog(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await runAndroidLog(c, platform);
         return;
     }
 
     logErrorPlatform(platform, resolve);
-});
+};
 
 // ##########################################
 // PRIVATE

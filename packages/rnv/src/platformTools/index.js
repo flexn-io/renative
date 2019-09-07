@@ -20,18 +20,15 @@ export const platformList = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const platformConfigure = c => new Promise((resolve, reject) => {
-    const p = c.program.platform || 'all';
-    logTask(`platformConfigure:${p}`);
+export const platformConfigure = async (c) => {
+    c.runtime.platform = c.program.platform || 'all';
+    logTask(`platformConfigure:${c.runtime.platform}`);
 
-    executePipe(c, PIPES.PLATFORM_CONFIGURE_BEFORE)
-        .then(() => cleanPlatformBuild(c, p))
-        .then(() => cleanPlaformAssets(c))
-        .then(() => _runCopyPlatforms(c, p))
-        .then(() => executePipe(c, PIPES.PLATFORM_CONFIGURE_AFTER))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await isPlatformSupported(c);
+    await cleanPlatformBuild(c, c.runtime.platform);
+    await cleanPlaformAssets(c, c.runtime.platform);
+    await _runCopyPlatforms(c, c.runtime.platform);
+};
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
     const isConnected = c.paths.project.platformTemplatesDirs[platform].includes(c.paths.rnv.platformTemplates.dir);
