@@ -7,7 +7,7 @@ import { templateAdd, templateApply, templateList } from '../templateTools';
 import { targetCreate, targetLaunch, targetList } from '../platformTools/target';
 import { pluginAdd, pluginList, pluginUpdate } from '../pluginTools';
 import { platformEject, platformList, platformConnect, platformConfigure } from '../platformTools';
-import { executePipe } from '../projectTools/buildHooks';
+import { executePipe, listHooks, executeHook, listPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 
 
@@ -83,7 +83,20 @@ const COMMANDS = {
         }
     },
     log: {},
-    hooks: {},
+    hooks: {
+        desc: 'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
+        subCommands: {
+            run: {
+                fn: executeHook
+            },
+            list: {
+                fn: listHooks
+            },
+            pipes: {
+                fn: listPipes
+            }
+        }
+    },
     status: {},
     fix: {},
     clean: {},
