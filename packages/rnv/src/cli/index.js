@@ -3,6 +3,7 @@ import inquirer from 'inquirer';
 import { logWarning, logTask } from '../systemTools/logger';
 import { listWorkspaces } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
+import { templateAdd, templateApply, templateList } from '../templateTools';
 
 
 const COMMANDS = {
@@ -35,7 +36,20 @@ const COMMANDS = {
     fix: {},
     clean: {},
     tool: {},
-    template: {},
+    template: {
+        desc: 'Manages rnv and project templates',
+        subCommands: {
+            add: {
+                fn: templateAdd
+            },
+            list: {
+                fn: templateList
+            },
+            apply: {
+                fn: templateApply
+            }
+        }
+    },
     debug: {},
     crypto: {},
     workspace: {
@@ -79,11 +93,25 @@ const run = (c) => {
 };
 
 const _execCommandHep = async (c, cmd) => {
-    const opts = (cmd.params || []).reduce((t, v) => `${t}--${v}\n`, '');
+    let opts = '';
+    let subCommands = '';
+
+    if (cmd.subCommands) {
+        subCommands = '\nSub Commands: \n';
+        subCommands += Object.keys(cmd.subCommands).join(', ');
+        subCommands += '\n';
+    }
+
+    if (cmd.params) {
+        opts = 'Options:\n';
+        opts += (cmd.params || []).reduce((t, v) => `${t}--${v}\n`, '');
+    }
+
     console.log(`
 Command: ${c.command}
-Description: ${cmd.desc}
-Options:
+
+Description: ${cmd.desc}. More info at https://renative.org/docs/rnv-${c.command}
+${subCommands}
 ${opts}
 `);
     return Promise.resolve();

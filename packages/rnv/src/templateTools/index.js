@@ -321,3 +321,44 @@ export const getInstalledTemplateOptions = (c) => {
     logError('You don\'t have any local templates installed');
     return [];
 };
+
+
+export const templateList = c => new Promise((resolve, reject) => {
+    logTask('templateList');
+    listTemplates(c)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+export const templateAdd = async (c) => {
+    logTask('templateAdd');
+
+    const opts = getTemplateOptions(c);
+
+    const { template } = await inquirer.prompt({
+        type: 'list',
+        message: 'Pick which template to install',
+        name: 'template',
+        choices: opts.keysAsArray
+    });
+
+    addTemplate(c, template);
+};
+
+export const templateApply = async (c) => {
+    logTask(`templateApply:${c.program.template}`);
+
+    if (c.program.template) {
+        return applyTemplate(c, c.program.template);
+    }
+    const opts = getInstalledTemplateOptions(c);
+
+    const { template } = await inquirer.prompt({
+        type: 'list',
+        message: 'Pick which template to install',
+        name: 'template',
+        choices: opts.keysAsArray
+    });
+
+    applyTemplate(c, template);
+};
