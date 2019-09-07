@@ -10,17 +10,20 @@ const itShouldReject = (cmd, reject) => {
 };
 
 describe('Testing rnv target', () => {
+    itShouldResolve('target help');
     itShouldReject('target list -p android', 'Platform unsupported for automated SDK setup');
     itShouldResolve('target launch -p android -t emu');
 });
 
 describe('Testing rnv plugin', () => {
+    itShouldResolve('plugin help');
     itShouldResolve('plugin list -p android');
     itShouldResolve('plugin add');
     itShouldResolve('plugin update');
 });
 
 describe('Testing rnv platform', () => {
+    itShouldResolve('platform help');
     itShouldResolve('platform list');
     itShouldResolve('platform eject');
     itShouldResolve('platform connect');
@@ -28,11 +31,27 @@ describe('Testing rnv platform', () => {
 });
 
 describe('Testing rnv new', () => {
+    itShouldResolve('run help');
     itShouldResolve('new');
 });
 
 describe('Testing rnv run', () => {
     itShouldResolve('run -p ios');
+});
+
+describe('Testing rnv workspace', () => {
+    itShouldResolve('workspace help');
+    itShouldResolve('workspace list');
+});
+
+describe('Testing rnv clean', () => {
+    itShouldResolve('clean');
+});
+
+describe('Testing rnv crypto', () => {
+    itShouldResolve('crypto help');
+    itShouldResolve('crypto encrypt');
+    itShouldResolve('crypto decrypt');
 });
 
 
