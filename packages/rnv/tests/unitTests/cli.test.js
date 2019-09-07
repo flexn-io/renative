@@ -53,6 +53,8 @@ describe('Testing rnv run', () => {
     itShouldResolve('run -p webos');
     itShouldResolve('run -p web');
     itShouldResolve('run -p macos');
+    itShouldResolve('run -p firefoxtv');
+    itShouldResolve('run -p firefoxos');
 });
 
 describe('Testing rnv build', () => {
@@ -67,6 +69,8 @@ describe('Testing rnv build', () => {
     itShouldResolve('build -p webos');
     itShouldResolve('build -p web');
     itShouldResolve('build -p macos');
+    itShouldResolve('build -p firefoxtv');
+    itShouldResolve('build -p firefoxos');
 });
 
 describe('Testing rnv package', () => {
@@ -150,7 +154,9 @@ const getConfig = (s) => {
 
     c.buildConfig = {
         defaults: {
-            supportedPlatforms: ['ios', 'android', 'tizen', 'web', 'macos', 'webos']
+            supportedPlatforms: ['ios', 'android', 'tizen', 'web', 'macos',
+                'webos', 'tizenphone', 'tizenwatch', 'androidtv', 'androidwear',
+                'firefoxtv', 'firefoxos']
         },
         defaultTargets: {},
         common: {}
