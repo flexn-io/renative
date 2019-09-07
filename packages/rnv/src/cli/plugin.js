@@ -37,11 +37,13 @@ const run = (c) => {
             .then(() => _runList(c))
             .then(() => executePipe(c, PIPES.PLUGIN_LIST_AFTER));
     case ADD:
-        executePipe(c, PIPES.PLUGIN_ADD_BEFORE);
-        return _runAdd(c).then(() => executePipe(c, PIPES.PLUGIN_ADD_AFTER));
+        return executePipe(c, PIPES.PLUGIN_ADD_BEFORE)
+            .then(() => _runAdd(c))
+            .then(() => executePipe(c, PIPES.PLUGIN_ADD_AFTER));
     case UPDATE:
-        executePipe(c, PIPES.PLUGIN_UPDATE_BEFORE);
-        return _runUpdate(c).then(() => executePipe(c, PIPES.PLUGIN_UPDATE_AFTER));
+        return executePipe(c, PIPES.PLUGIN_UPDATE_BEFORE)
+            .then(() => _runUpdate(c))
+            .then(() => executePipe(c, PIPES.PLUGIN_UPDATE_AFTER));
     default:
         return Promise.reject(`cli:plugin: Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
     }
@@ -97,8 +99,20 @@ const _getPluginList = (c, isUpdate = false) => {
             output.plugins.push(k);
             output.asString += `-[${i}] ${chalk.white(k)} (${chalk.blue(p.version)}) [${platforms}] - ${installedString}\n`;
             output.asArray.push({ name: `${k} (${chalk.blue(p.version)}) [${platforms}] - ${installedString}`, value: k });
+
             i++;
         }
+        output.asArray.sort((a, b) => {
+            const aStr = a.name.toLowerCase();
+            const bStr = b.name.toLowerCase();
+            let com = 0;
+            if (aStr > bStr) {
+                com = 1;
+            } else if (aStr < bStr) {
+                com = -1;
+            }
+            return com;
+        });
     });
 
     return output;
@@ -111,9 +125,10 @@ const _runAdd = async (c) => {
 
     const { plugins } = await inquirer.prompt({
         name: 'plugins',
-        type: 'checkbox',
+        type: 'rawlist',
         message: 'Select the plugins you want to add',
-        choices: o.asArray
+        choices: o.asArray,
+        pageSize: 100
     });
 
     const installMessage = [];
