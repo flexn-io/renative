@@ -18,7 +18,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
 
     if (origPlugin) {
-        const mergedPlugin = mergeObjects(c, origPlugin, plugin);
+        const mergedPlugin = mergeObjects(c, origPlugin, plugin, true, true);
         return mergedPlugin;
     }
 
@@ -108,7 +108,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
 const parsePlugins = (c, platform, pluginCallback) => {
     logTask(`parsePlugins:${platform}`);
 
-    if (c.buildConfig && c.buildConfig) {
+    if (c.buildConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
         if (includedPlugins) {
