@@ -42,15 +42,6 @@ const COMMANDS = {
         desc: 'Attach logger to device or emulator and print out logs',
         fn: rnvLog
     },
-    // fix: {
-    //
-    // },
-    // debug: {
-    //
-    // },
-    // tool: {
-    //
-    // },
     new: {
         fn: createNewProject,
         desc: 'Creates new project',

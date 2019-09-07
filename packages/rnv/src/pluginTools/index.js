@@ -8,7 +8,7 @@ import { versionCheck } from '../configTools/configParser';
 import { SUPPORTED_PLATFORMS } from '../constants';
 import {
     logSuccess,
-    logTask, logWarning, logError
+    logTask, logWarning, logError, logToSummary
 } from '../systemTools/logger';
 import { executePipe } from '../projectTools/buildHooks';
 
@@ -17,7 +17,8 @@ export const pluginList = c => new Promise((resolve) => {
 
     const o = _getPluginList(c);
 
-    console.log(o.asString);
+    // console.log(o.asString);
+    logToSummary(o.asString);
 
     resolve();
 });

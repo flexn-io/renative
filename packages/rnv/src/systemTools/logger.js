@@ -115,6 +115,10 @@ export const getCurrentCommand = (excludeDollar = false) => {
     return `${dollar}rnv ${output}`;
 };
 
+export const logToSummary = (v) => {
+    _messages.push(`\n${v}`);
+};
+
 export const logSummary = () => {
     let logContent = printIntoBox('All good as 🦄 ');
     if (_messages && _messages.length) {
@@ -235,6 +239,7 @@ export const logEnd = (code) => {
     logSummary();
     if (_currentProcess) _currentProcess.exit(code);
 };
+
 
 export const logInitialize = () => {
     logWelcome();

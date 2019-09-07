@@ -9,7 +9,7 @@ import {
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
     removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
-import { logError, logInfo, logWarning, logTask, logDebug } from '../common';
+import { logToSummary, logError, logInfo, logWarning, logTask, logDebug } from '../systemTools/logger';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
@@ -26,12 +26,6 @@ import { templates } from '../../renativeTemplates/templates.json';
 //     fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
 // }
 
-export const listTemplates = c => new Promise((resolve, reject) => {
-    logTask('listTemplates');
-    const opts = getTemplateOptions(c);
-    console.log(opts.asString);
-    resolve();
-});
 
 export const addTemplate = (c, template) => {
     logTask('addTemplate');
@@ -325,9 +319,9 @@ export const getInstalledTemplateOptions = (c) => {
 
 export const templateList = c => new Promise((resolve, reject) => {
     logTask('templateList');
-    listTemplates(c)
-        .then(() => resolve())
-        .catch(e => reject(e));
+    const opts = getTemplateOptions(c);
+    logToSummary(opts.asString);
+    resolve();
 });
 
 export const templateAdd = async (c) => {
