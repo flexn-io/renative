@@ -11,15 +11,46 @@ import { executePipe, listHooks, executeHook, listPipes } from '../projectTools/
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCrypto } from '../systemTools/crypto';
 import { cleanProjectModules } from '../systemTools/cleaner';
+import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy } from '../platformTools/runner';
 
 
 const COMMANDS = {
     start: {
         fn: listWorkspaces
     },
-    build: {},
-    export: {},
-    app: {},
+    run: {
+        desc: 'Run your app on target device or emulator',
+        fn: rnvRun
+    },
+    package: {
+        desc: 'Package JS Code',
+        fn: rnvPackage
+    },
+    deploy: {
+        desc: 'Deploy whole app via preconfigured or custom integration',
+        fn: rnvDeploy
+    },
+    build: {
+        desc: 'Build your app',
+        fn: rnvBuild
+    },
+    export: {
+        desc: 'Export your app (ios only)',
+        fn: rnvExport
+    },
+    log: {
+        desc: 'Attach logger to device or emulator and print out logs',
+        fn: rnvLog
+    },
+    // fix: {
+    //
+    // },
+    // debug: {
+    //
+    // },
+    // tool: {
+    //
+    // },
     new: {
         fn: createNewProject,
         desc: 'Creates new project',
@@ -59,9 +90,6 @@ const COMMANDS = {
             }
         }
     },
-    run: {},
-    package: {},
-    deploy: {},
     target: {
         desc: 'Manages simulators and emulators',
         subCommands: {
@@ -87,7 +115,6 @@ const COMMANDS = {
             }
         }
     },
-    log: {},
     hooks: {
         desc: 'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
         subCommands: {
@@ -106,12 +133,10 @@ const COMMANDS = {
         desc: 'Prints out summary of your project',
         fn: logStatus
     },
-    fix: {},
     clean: {
         desc: 'Automatically removes all node_modules and lock in your project and its dependencies',
         fn: cleanProjectModules
     },
-    tool: {},
     template: {
         desc: 'Manages rnv and project templates',
         subCommands: {
@@ -126,7 +151,7 @@ const COMMANDS = {
             }
         }
     },
-    debug: {},
+
     crypto: {
         desc: 'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
         fn: rnvCrypto

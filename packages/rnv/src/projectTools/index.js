@@ -55,8 +55,7 @@ export const rnvConfigure = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
     logTask(`rnvConfigure:${p}`);
 
-    executePipe(c, PIPES.APP_CONFIGURE_BEFORE)
-        .then(() => _checkAndCreatePlatforms(c, c.program.platform))
+    _checkAndCreatePlatforms(c, c.program.platform)
         .then(() => copyRuntimeAssets(c))
         .then(() => copySharedPlatforms(c))
         .then(() => generateRuntimeConfig(c))
@@ -78,7 +77,6 @@ export const rnvConfigure = c => new Promise((resolve, reject) => {
         .then(() => (_isOK(c, p, [FIREFOX_TV]) ? configureKaiOSProject(c, FIREFOX_TV) : Promise.resolve()))
         .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
         .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
-        .then(() => executePipe(c, PIPES.APP_CONFIGURE_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));
 });
@@ -87,12 +85,10 @@ export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
     logTask(`rnvSwitch:${p}`);
 
-    executePipe(c, PIPES.APP_SWITCH_AFTER)
 
-        .then(() => copyRuntimeAssets(c))
+    copyRuntimeAssets(c)
         .then(() => copySharedPlatforms(c))
         .then(() => generateRuntimeConfig(c))
-        .then(() => executePipe(c, PIPES.APP_SWITCH_AFTER))
         .then(() => resolve())
         .catch(e => reject(e));
 });

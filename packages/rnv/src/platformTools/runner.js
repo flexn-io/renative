@@ -48,15 +48,15 @@ import {
     packageBundleForXcode,
     runAppleLog,
     configureXcodeProject,
-} from '../platformTools/apple';
-import { buildWeb, runWeb, runWebDevServer, deployWeb } from '../platformTools/web';
-import { runTizen, buildTizenProject } from '../platformTools/tizen';
-import { runWebOS, buildWebOSProject } from '../platformTools/webos';
-import { runFirefoxProject, buildFirefoxProject } from '../platformTools/firefox';
+} from './apple';
+import { buildWeb, runWeb, runWebDevServer, deployWeb } from './web';
+import { runTizen, buildTizenProject } from './tizen';
+import { runWebOS, buildWebOSProject } from './webos';
+import { runFirefoxProject, buildFirefoxProject } from './firefox';
 import {
     runElectron,
     buildElectron, runElectronDevServer, configureElectronProject, exportElectron
-} from '../platformTools/electron';
+} from './electron';
 import PlatformSetup from '../setupTools';
 import { executePipe } from '../projectTools/buildHooks';
 import { cleanNodeModules } from '../projectTools/projectParser';
@@ -66,21 +66,11 @@ import {
     configureGradleProject,
     buildAndroid,
     runAndroidLog,
-} from '../platformTools/android';
+} from './android';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../systemTools/fileutils';
 
-const RUN = 'run';
-const LOG = 'log';
-const START = 'start';
-const PACKAGE = 'package';
-const BUILD = 'build';
-const DEPLOY = 'deploy';
-const EXPORT = 'export';
-const TEST = 'test';
-const DOC = 'doc';
-const UNINSTALL = 'uninstall';
-const FIX = 'fix';
-const DEBUG = 'debug';
+const isRunningOnWindows = process.platform === 'win32';
+
 
 const PIPES = {
     RUN_BEFORE: 'run:before',
@@ -99,68 +89,17 @@ const PIPES = {
     DEPLOY_AFTER: 'deploy:after',
 };
 
-const isRunningOnWindows = process.platform === 'win32';
-
 // ##########################################
 // PUBLIC API
 // ##########################################
 
-const run = (c) => {
-    logTask('run');
 
-    switch (c.command) {
-    case START:
-        return _startServer(c);
-    case RUN:
-        return _runApp(c);
-    case PACKAGE:
-        return _packageApp(c);
-    case BUILD:
-        return _buildApp(c);
-    case EXPORT:
-        return _exportApp(c);
-    case DEPLOY:
-        return _deployApp(c);
-    case LOG:
-        return _log(c);
-    case FIX:
-        return _fix(c);
-    case DEBUG:
-        return _debug(c);
-        // case UPDATE:
-        //     return Promise.resolve();
-        //     break;
-        // case TEST:
-        //     return Promise.resolve();
-        //     break;
-        // case DOC:
-        //     return Promise.resolve();
-        //     break;
-    default:
-        return Promise.reject(`cli:runner: Command ${c.command} not supported`);
-    }
-};
-
-// ##########################################
-// PRIVATE
-// ##########################################
-
-const _fix = c => new Promise((resolve, reject) => {
-    cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
-});
-
-const _isWebHostEnabled = (c, platform) => {
-    const { hosted } = c.program;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
-};
-
-const _startServer = c => new Promise((resolve, reject) => {
+export const rnvStart = c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
     const { hosted } = c.program;
 
-    logTask(`_startServer:${platform}:${port}`);
+    logTask(`rnvStart:${platform}:${port}`);
 
     if (_isWebHostEnabled(c, platform) && hosted) {
         const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
@@ -214,62 +153,101 @@ const runWeinre = () => {
     shell.exec('npx weinre --boundHost -all-');
 };
 
-const _debug = c => executePipe(c, PIPES.START_BEFORE)
+export const rnvDebug = c => executePipe(c, PIPES.START_BEFORE)
     .then(() => runWeinre())
     .then(() => executePipe(c, PIPES.START_AFTER));
 
 
-const _runApp = c => new Promise((resolve, reject) => {
-    logTask(`_runApp:${c.platform}`);
+export const rnvRun = c => new Promise((resolve, reject) => {
+    logTask(`rnvRun:${c.platform}`);
 
     isPlatformSupported(c)
         .then(() => isBuildSchemeSupported(c))
-        .then(() => _runAppWithPlatform(c))
+        .then(() => _rnvRunWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _packageApp = c => new Promise((resolve, reject) => {
-    logTask(`_packageApp:${c.platform}`);
+export const rnvPackage = c => new Promise((resolve, reject) => {
+    logTask(`rnvPackage:${c.platform}`);
 
     isPlatformSupported(c)
         .then(() => isBuildSchemeSupported(c))
-        .then(() => _packageAppWithPlatform(c))
+        .then(() => _rnvPackageWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _buildApp = c => new Promise((resolve, reject) => {
-    logTask(`_buildApp:${c.platform}`);
+export const rnvBuild = c => new Promise((resolve, reject) => {
+    logTask(`rnvBuild:${c.platform}`);
 
     isPlatformSupported(c)
         .then(() => isBuildSchemeSupported(c))
-        .then(() => _buildAppWithPlatform(c))
+        .then(() => _rnvBuildWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _exportApp = c => new Promise((resolve, reject) => {
-    logTask(`_exportApp:${c.platform}`);
+export const rnvExport = c => new Promise((resolve, reject) => {
+    logTask(`rnvExport:${c.platform}`);
 
     isPlatformSupported(c)
         .then(() => isBuildSchemeSupported(c))
-        .then(() => _exportAppWithPlatform(c))
+        .then(() => _rnvExportWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const _deployApp = c => new Promise((resolve, reject) => {
-    logTask(`_deployApp:${c.platform}`);
+export const rnvDeploy = c => new Promise((resolve, reject) => {
+    logTask(`rnvDeploy:${c.platform}`);
 
     isPlatformSupported(c)
         .then(() => isBuildSchemeSupported(c))
-        .then(() => _deployAppWithPlatform(c))
+        .then(() => _rnvDeployWithPlatform(c))
         .then(() => resolve())
         .catch(e => reject(e));
 });
 
-const configureHostedIfRequired = async (c, platform) => {
+const rnvLog = c => new Promise((resolve, reject) => {
+    logTask('rnvLog');
+    const { platform } = c;
+    if (!isPlatformSupportedSync(platform, null, reject)) return;
+
+    switch (platform) {
+    case IOS:
+    case TVOS:
+        runAppleLog(c, platform)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        runAndroidLog(c, platform)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    logErrorPlatform(platform, resolve);
+});
+
+// ##########################################
+// PRIVATE
+// ##########################################
+
+const _fix = c => new Promise((resolve, reject) => {
+    cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
+});
+
+const _isWebHostEnabled = (c, platform) => {
+    const { hosted } = c.program;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
+};
+
+
+const _configureHostedIfRequired = async (c, platform) => {
     if (_isWebHostEnabled(c, platform)) {
         logDebug('Running hosted build');
         const { project, rnv } = c.paths;
@@ -280,27 +258,27 @@ const configureHostedIfRequired = async (c, platform) => {
     }
 };
 
-const startHostedServerIfRequired = (c, platform) => {
+const _startHostedServerIfRequired = (c, platform) => {
     if (_isWebHostEnabled(c, platform)) {
-        return _startServer(c);
+        return rnvStart(c);
     }
 };
 
-const _runAppWithPlatform = async (c) => {
-    logTask(`_runAppWithPlatform:${c.platform}`);
+const _rnvRunWithPlatform = async (c) => {
+    logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
     const target = c.program.target || c.files.private.config.defaultTargets[platform];
     const { device, hosted } = c.program;
 
-    logTask(`_runAppWithPlatform:${platform}:${port}:${target}`, chalk.grey);
+    logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}`, chalk.grey);
 
     const throwErr = (err) => {
         throw err;
     };
 
     if (_isWebHostEnabled(c, platform) && hosted) {
-        return _startServer(c);
+        return rnvStart(c);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
 
@@ -350,10 +328,10 @@ const _runAppWithPlatform = async (c) => {
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureHostedIfRequired(c, platform))
+            .then(() => _configureHostedIfRequired(c, platform))
             .then(() => runTizen(c, platform, target))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
-            .then(() => startHostedServerIfRequired(c, platform));
+            .then(() => _startHostedServerIfRequired(c, platform));
     case WEBOS:
         if (!checkSdk(c, platform, logError)) {
             const setupInstance = PlatformSetup(c);
@@ -363,10 +341,10 @@ const _runAppWithPlatform = async (c) => {
         return executePipe(c, PIPES.RUN_BEFORE)
             .then(() => cleanPlatformIfRequired(c, platform))
             .then(() => configureIfRequired(c, platform))
-            .then(() => configureHostedIfRequired(c, platform))
+            .then(() => _configureHostedIfRequired(c, platform))
             .then(() => runWebOS(c, platform, target))
             .then(() => executePipe(c, PIPES.RUN_AFTER))
-            .then(() => startHostedServerIfRequired(c, platform));
+            .then(() => _startHostedServerIfRequired(c, platform));
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:
@@ -384,8 +362,8 @@ const _runAppWithPlatform = async (c) => {
     return logErrorPlatform(platform);
 };
 
-const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
-    logTask(`_packageAppWithPlatform:${c.platform}`);
+const _rnvPackageWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_rnvPackageWithPlatform:${c.platform}`);
     const { platform } = c;
 
     const target = c.program.target || c.files.private.config.defaultTargets[platform];
@@ -420,14 +398,14 @@ const _packageAppWithPlatform = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
-    logTask(`_exportAppWithPlatform:${c.platform}`);
+const _rnvExportWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_rnvExportWithPlatform:${c.platform}`);
     const { platform } = c;
     switch (platform) {
     case IOS:
     case TVOS:
         executePipe(c, PIPES.EXPORT_BEFORE)
-            .then(() => (c.program.only ? Promise.resolve() : _buildAppWithPlatform(c, platform)))
+            .then(() => (c.program.only ? Promise.resolve() : _rnvBuildWithPlatform(c, platform)))
             .then(() => exportXcodeProject(c, platform))
             .then(() => executePipe(c, PIPES.EXPORT_AFTER))
             .then(() => resolve())
@@ -450,14 +428,14 @@ const _exportAppWithPlatform = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
-    logTask(`_deployAppWithPlatform:${c.platform}`);
+const _rnvDeployWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_rnvDeployWithPlatform:${c.platform}`);
     const { platform } = c;
 
     switch (platform) {
     case WEB:
         executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(() => (c.program.only ? Promise.resolve() : _buildApp(c)))
+            .then(() => (c.program.only ? Promise.resolve() : rnvBuild(c)))
             .then(() => deployWeb(c, platform))
             .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
             .then(() => resolve())
@@ -465,14 +443,14 @@ const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
         return;
     case IOS:
         executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(v => (c.program.only ? Promise.resolve() : _exportAppWithPlatform(c)))
+            .then(v => (c.program.only ? Promise.resolve() : _rnvExportWithPlatform(c)))
             .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
     case ANDROID:
         executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(v => (c.program.only ? Promise.resolve() : _buildAppWithPlatform(c)))
+            .then(v => (c.program.only ? Promise.resolve() : _rnvBuildWithPlatform(c)))
             .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
@@ -482,8 +460,8 @@ const _deployAppWithPlatform = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
-    logTask(`_buildAppWithPlatform:${c.platform}`);
+const _rnvBuildWithPlatform = c => new Promise((resolve, reject) => {
+    logTask(`_rnvBuildWithPlatform:${c.platform}`);
     const { platform } = c;
 
     switch (platform) {
@@ -514,7 +492,7 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
     case IOS:
     case TVOS:
         executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => (c.program.only ? Promise.resolve() : _packageAppWithPlatform(c, platform)))
+            .then(() => (c.program.only ? Promise.resolve() : _rnvPackageWithPlatform(c, platform)))
             .then(() => archiveXcodeProject(c, platform))
             .then(() => executePipe(c, PIPES.BUILD_AFTER))
             .then(() => resolve())
@@ -569,29 +547,6 @@ const _buildAppWithPlatform = c => new Promise((resolve, reject) => {
     logErrorPlatform(platform, resolve);
 });
 
-const _log = c => new Promise((resolve, reject) => {
-    logTask('_log');
-    const { platform } = c;
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
-
-    switch (platform) {
-    case IOS:
-    case TVOS:
-        runAppleLog(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    case ANDROID:
-    case ANDROID_TV:
-    case ANDROID_WEAR:
-        runAndroidLog(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    }
-
-    logErrorPlatform(platform, resolve);
-});
 
 const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve, reject) => {
     logTask(`_runAndroid:${platform}`);
@@ -608,7 +563,3 @@ const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve,
             .catch(e => reject(e));
     }
 });
-
-export { PIPES };
-
-export default run;

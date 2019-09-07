@@ -88,7 +88,7 @@ const _genPlatOptions = (c) => {
     return opts;
 };
 
-const platformConnect = async (c) => {
+export const platformConnect = async (c) => {
     logTask('platformConnect');
 
     const { connectedPlatforms } = await inquirer.prompt({
@@ -159,7 +159,7 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     });
 });
 
-const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
+export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     logTask(`cleanPlatformBuild:${platform}`);
 
     const cleanTasks = [];
@@ -181,7 +181,7 @@ const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     });
 });
 
-const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
+export const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     logTask(`createPlatformBuild:${platform}`);
 
     if (!isPlatformSupportedSync(platform, null, reject)) return;
