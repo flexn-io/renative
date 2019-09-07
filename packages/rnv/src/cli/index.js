@@ -5,7 +5,7 @@ import { listWorkspaces } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { templateAdd, templateApply, templateList } from '../templateTools';
 import { targetCreate, targetLaunch, targetList } from '../platformTools/target';
-import { pluginAdd, pluginList, pluginUpdate } from '../pluginTools';
+import { pluginAdd, pluginList, pluginUpdate, rnvLink } from '../pluginTools';
 import { platformEject, platformList, platformConnect, platformConfigure } from '../platformTools';
 import { executePipe, listHooks, executeHook, listPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
@@ -38,7 +38,10 @@ const COMMANDS = {
         fn: rnvSwitch,
         params: ['appConfigID', 'mono', 'ci']
     },
-    link: {},
+    link: {
+        desc: 'Local dependency linking of your project',
+        fn: rnvLink
+    },
     platform: {
         desc: 'Manages native platform projects',
         subCommands: {
