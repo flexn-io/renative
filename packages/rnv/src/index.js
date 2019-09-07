@@ -15,6 +15,7 @@ const run = (cmd, subCmd, program, process) => {
         .then(c => checkWelcome(c))
         .then(c => startBuilder(c))
         .then(v => CLI(v))
+        .then(() => logComplete(true))
         .catch(e => logError(e, true));
 };
 
@@ -22,6 +23,7 @@ const checkWelcome = c => new Promise((resolve, reject) => {
     if ((!c.command && !c.subCommand) || c.command === 'help') {
         logWelcome();
         logHelp();
+        logComplete(true);
     } else {
         resolve(c);
     }

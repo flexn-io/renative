@@ -186,8 +186,6 @@ const run = async (c) => {
     } else {
         await _handleUnknownCommand(c);
     }
-
-    logEnd();
 };
 
 // ##########################################
@@ -258,7 +256,7 @@ export const logHelp = () => {
         cmdsString += `${key}, `;
     }
 
-    console.log(`
+    logToSummary(`
 ${chalk.bold.white('COMMANDS:')}
 
 ${cmdsString}

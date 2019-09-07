@@ -108,11 +108,11 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
 
 export const isPlatformSupported = async (c) => {
     logTask(`isPlatformSupported:${c.platform}`);
-    if (!c.platform || c.platform === '?') {
-        let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
-        if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
-        const opts = generateOptions(platformsAsObj);
+    let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
+    if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
+    const opts = generateOptions(platformsAsObj);
 
+    if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
         const { platform } = await inquirer.prompt({
             name: 'platform',
             type: 'list',
@@ -123,10 +123,6 @@ export const isPlatformSupported = async (c) => {
         c.platform = platform;
         c.program.platform = platform;
         return platform;
-    }
-
-    if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
-        return Promise.reject(chalk.red(`Platform ${c.platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))}`));
     }
 };
 
@@ -347,7 +343,7 @@ export const isPlatformActive = (c, platform, resolve) => {
 export const PLATFORM_RUNS = {};
 
 export const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_configureIfRequired:${platform}`);
+    logTask(`configureIfRequired:${platform}`);
 
     if (PLATFORM_RUNS[platform]) {
         resolve();
