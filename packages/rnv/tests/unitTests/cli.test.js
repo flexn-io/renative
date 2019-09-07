@@ -1,34 +1,90 @@
 import { createRnvConfig, generateBuildConfig } from '../../src/configTools/configParser';
 import cli from '../../src/cli';
 
-describe('Testing target functions', () => {
-    it('target list should throw correct error', async () => {
-        const c = createRnvConfig({ platform: 'android' }, { process: true }, 'target', 'list');
-        generateBuildConfig(c);
-        await expect(cli(c)).rejects.toThrow('Platform unsupported for automated SDK setup');
-    });
+const itShouldResolve = (cmd) => {
+    it(`${cmd} should resolve`, () => shouldResolve(cmd));
+};
 
-    it('target launch should resolve', async () => {
-        const c = createRnvConfig({ platform: 'android', target: 'emu' }, { process: true }, 'target', 'launch');
-        generateBuildConfig(c);
-        await expect(cli(c)).resolves;
-        // return runTarget(c).catch(err => expect(err).toMatch('Location of your cli'));
-    });
+const itShouldReject = (cmd, reject) => {
+    it(`${cmd} should reject`, () => shouldReject(cmd, reject));
+};
+
+describe('Testing rnv target', () => {
+    itShouldReject('target list -p android', 'Platform unsupported for automated SDK setup');
+    itShouldResolve('target launch -p android -t emu');
 });
 
-describe('Testing plugin functions', () => {
-    it('plugin list should resolve', async () => {
-        const c = createRnvConfig({ platform: 'android' }, { process: true }, 'plugin', 'list');
-        generateBuildConfig(c);
-        await expect(cli(c)).resolves;
-    });
+describe('Testing rnv plugin', () => {
+    itShouldResolve('plugin list -p android');
+    itShouldResolve('plugin add');
+    itShouldResolve('plugin update');
 });
 
-describe('Testing platform functions', () => {
-    it('platform list should resolve', async () => {
-        const c = createRnvConfig({ platform: 'android' }, { process: true }, 'plugin', 'list');
-        generateBuildConfig(c);
-        c.buildConfig = { defaults: { supportedPlatforms: ['ios', 'android'] }, common: {} };
-        await expect(cli(c)).resolves;
-    });
+describe('Testing rnv platform', () => {
+    itShouldResolve('platform list');
+    itShouldResolve('platform eject');
+    itShouldResolve('platform connect');
+    itShouldResolve('platform configure');
 });
+
+describe('Testing rnv new', () => {
+    itShouldResolve('new');
+});
+
+describe('Testing rnv run', () => {
+    itShouldResolve('run -p ios');
+});
+
+
+// ###############################################
+// HELPERS
+// ###############################################
+
+const shouldReject = async (cmd, reject) => {
+    await expect(cli(getConfig(cmd))).rejects.toThrow(reject);
+};
+
+
+const shouldResolve = async (cmd) => {
+    await expect(cli(getConfig(cmd))).resolves;
+};
+
+const getConfig = (s) => {
+    const argArray = s.split(' ');
+
+    const cmd = argArray.shift();
+    let subCmd;
+
+    if (argArray[0]) {
+        if (!argArray[0].startsWith('-')) {
+            subCmd = argArray.shift();
+        }
+    }
+
+    const c = createRnvConfig({
+        command: cmd,
+        subCommand: subCmd
+    }, { process: true }, cmd, subCmd);
+
+    c.buildConfig = {
+        defaults: {
+            supportedPlatforms: ['ios', 'android']
+        },
+        defaultTargets: {},
+        common: {}
+    };
+
+    argArray.forEach((v, i) => {
+        switch (v) {
+        case '-p':
+            c.platform = argArray[i + 1];
+            break;
+        case '-t':
+            c.target = argArray[i + 1];
+            break;
+        }
+    });
+
+    generateBuildConfig(c);
+    return c;
+};
