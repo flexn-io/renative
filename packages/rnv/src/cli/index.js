@@ -8,6 +8,7 @@ import { targetCreate, targetLaunch, targetList } from '../platformTools/target'
 import { pluginAdd, pluginList, pluginUpdate } from '../pluginTools';
 import { platformEject, platformList, platformConnect, platformConfigure } from '../platformTools';
 import { executePipe } from '../projectTools/buildHooks';
+import { rnvConfigure, rnvSwitch } from '../projectTools';
 
 
 const COMMANDS = {
@@ -25,8 +26,16 @@ const COMMANDS = {
     help: {
         fn: logHelp
     },
-    configure: {},
-    switch: {},
+    configure: {
+        desc: 'Configures app config',
+        fn: rnvConfigure,
+        params: ['appConfigID', 'mono', 'ci']
+    },
+    switch: {
+        desc: 'Switches to app confing without rebuilding',
+        fn: rnvSwitch,
+        params: ['appConfigID', 'mono', 'ci']
+    },
     link: {},
     platform: {
         desc: 'Manages native platform projects',

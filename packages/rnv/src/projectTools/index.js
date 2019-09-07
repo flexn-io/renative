@@ -44,73 +44,16 @@ import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
 import { copyFolderContentsRecursiveSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
-import CLI from '.';
-import { executePipe } from '../projectTools/buildHooks';
+import CLI from '../cli';
+import { executePipe } from './buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
-import { copyRuntimeAssets, copySharedPlatforms } from '../projectTools/projectParser';
-import { getWorkspaceOptions } from '../projectTools/workspace';
+import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
+import { getWorkspaceOptions } from './workspace';
 import { generateRuntimeConfig } from '../configTools/configParser';
 
-const CONFIGURE = 'configure';
-const SWITCH = 'switch';
-const CREATE = 'create';
-const NEW = 'new';
-
-const PIPES = {
-    APP_CONFIGURE_BEFORE: 'configure:before',
-    APP_CONFIGURE_AFTER: 'configure:after',
-    APP_SWITCH_BEFORE: 'switch:before',
-    APP_SWITCH_AFTER: 'switch:after',
-};
-
-const highlight = chalk.green;
-
-// ##########################################
-// PUBLIC API
-// ##########################################
-
-const run = (c) => {
-    logTask('run');
-
-    switch (c.command) {
-    case NEW:
-        return _runCreate(c);
-    case CONFIGURE:
-        return _runConfigure(c);
-    case SWITCH:
-        return _runSwitch(c);
-    }
-
-    switch (c.subCommand) {
-    case CONFIGURE:
-        logWarning(`$ ${chalk.red('$ rnv app configure')} is deprecated. Use ${chalk.green('$ rnv configure')} instead`);
-        return _runConfigure(c);
-
-        // case SWITCH:
-        //     return Promise.resolve();
-        //     break;
-        //
-        // case REMOVE:
-        //     return Promise.resolve();
-        //     break;
-        // case LIST:
-        //     return Promise.resolve();
-        //     break;
-        // case INFO:
-        //     return Promise.resolve();
-        //     break;
-    default:
-        return Promise.reject(`cli:app: Sub-Command ${c.subCommand} not supported`);
-    }
-};
-
-// ##########################################
-//  PRIVATE
-// ##########################################
-
-const _runConfigure = c => new Promise((resolve, reject) => {
+export const rnvConfigure = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
-    logTask(`_runConfigure:${p}`);
+    logTask(`rnvConfigure:${p}`);
 
     executePipe(c, PIPES.APP_CONFIGURE_BEFORE)
         .then(() => _checkAndCreatePlatforms(c, c.program.platform))
@@ -140,9 +83,9 @@ const _runConfigure = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _runSwitch = c => new Promise((resolve, reject) => {
+export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
-    logTask(`_runSwitch:${p}`);
+    logTask(`rnvSwitch:${p}`);
 
     executePipe(c, PIPES.APP_SWITCH_AFTER)
 
@@ -242,7 +185,3 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
 
     resolve();
 });
-
-export { PIPES };
-
-export default run;

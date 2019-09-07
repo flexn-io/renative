@@ -15,7 +15,7 @@ import {
     isRunningOnWindows
 } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
-import appRunner from './cli/app';
+import CLI from './cli';
 import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
 import { getMergedPlugin, configurePlugins } from './pluginTools';
@@ -371,12 +371,12 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
         cleanPlatformBuild(c, platform)
             .then(() => cleanPlaformAssets(c))
             .then(() => createPlatformBuild(c, platform))
-            .then(() => appRunner(nc))
+            .then(() => CLI(nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
         createPlatformBuild(c, platform)
-            .then(() => appRunner(nc))
+            .then(() => CLI(nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     }
