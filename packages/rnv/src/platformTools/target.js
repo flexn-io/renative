@@ -14,65 +14,11 @@ import { launchAndroidSimulator, listAndroidTargets } from '../platformTools/and
 import { listAppleDevices, launchAppleSimulator } from '../platformTools/apple';
 import { launchKaiOSSimulator } from '../platformTools/firefox';
 
-const CREATE = 'create';
-const REMOVE = 'remove';
-const LAUNCH = 'launch';
-const QUIT = 'quit';
-const LIST = 'list';
-
-const PIPES = {
-    TARGET_CREATE_BEFORE: 'target:create:before',
-    TARGET_CREATE_AFTER: 'target:create:after',
-    TARGET_REMOVE_BEFORE: 'target:remove:before',
-    TARGET_REMOVE_AFTER: 'target:remove:after',
-    TARGET_LAUNCH_BEFORE: 'target:launch:before',
-    TARGET_LAUNCH_AFTER: 'target:launch:after',
-    TARGET_QUIT_BEFORE: 'target:quit:before',
-    TARGET_QUIT_AFTER: 'target:quit:after',
-    TARGET_LIST_BEFORE: 'target:list:before',
-    TARGET_LIST_AFTER: 'target:list:after',
-};
-
-// ##########################################
-// PUBLIC API
-// ##########################################
-
-const run = c => new Promise((resolve, reject) => {
-    logTask('run');
-
-    switch (c.subCommand) {
-    // case CREATE:
-    //     return Promise.resolve();
-    //     break;
-    // case REMOVE:
-    //     return Promise.resolve();
-    //     break;
-    case LAUNCH:
-        isPlatformSupported(c)
-            .then(() => _runLaunch(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-        // case QUIT:
-        //     return Promise.resolve();
-        //     break;
-    case LIST:
-        isPlatformSupported(c)
-            .then(() => _runList(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
-        return;
-    default:
-        return Promise.reject(`cli:target Sub-Command ${chalk.white.bold(c.subCommand)} not supported!`);
-    }
-});
-
-// ##########################################
-// PRIVATE
-// ##########################################
-
-const _runLaunch = c => new Promise((resolve, reject) => {
+export const targetLaunch = async (c) => {
     logTask('_runLaunch');
+
+    await isPlatformSupported(c);
+
     const { platform, program } = c;
     const target = program.target || c.files.private.config.defaultTargets[platform];
 
@@ -106,16 +52,19 @@ const _runLaunch = c => new Promise((resolve, reject) => {
             .catch(e => reject(e));
         return;
     default:
-        reject(
+        return Promise.reject(
             `"target launch" command does not support ${chalk.white.bold(
                 platform
             )} platform yet. You will have to launch the emulator manually. Working on it!`
         );
     }
-});
+};
 
-const _runList = async (c) => {
-    logTask('_runLaunch');
+export const targetList = async (c) => {
+    logTask('targetList');
+
+    await isPlatformSupported(c);
+
     const { platform } = c;
     if (!isPlatformSupportedSync(platform)) return;
 
@@ -142,7 +91,3 @@ const _runList = async (c) => {
         throw `"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`;
     }
 };
-
-export { PIPES };
-
-export default run;

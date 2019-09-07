@@ -4,7 +4,7 @@ import { logWarning, logTask } from '../systemTools/logger';
 import { listWorkspaces } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { templateAdd, templateApply, templateList } from '../templateTools';
-
+import { targetCreate, targetLaunch, targetList } from '../platformTools/target';
 
 const COMMANDS = {
     start: {
@@ -28,7 +28,17 @@ const COMMANDS = {
     run: {},
     package: {},
     deploy: {},
-    target: {},
+    target: {
+        desc: 'Manages simulators and emulators',
+        subCommands: {
+            launch: {
+                fn: targetLaunch
+            },
+            list: {
+                fn: targetList
+            }
+        }
+    },
     plugin: {},
     log: {},
     hooks: {},
@@ -92,6 +102,10 @@ const run = (c) => {
     return _handleUnknownCommand(c);
 };
 
+// ##########################################
+// PRIVATE API
+// ##########################################
+
 const _execCommandHep = async (c, cmd) => {
     let opts = '';
     let subCommands = '';
@@ -110,23 +124,33 @@ const _execCommandHep = async (c, cmd) => {
     console.log(`
 Command: ${c.command}
 
-Description: ${cmd.desc}. More info at https://renative.org/docs/rnv-${c.command}
+Description: ${cmd.desc}.
 ${subCommands}
 ${opts}
+More info at ${chalk.blue(`https://renative.org/docs/rnv-${c.command}`)}
 `);
     return Promise.resolve();
 };
 
 const _handleUnknownSubCommand = async (c) => {
     logTask('_handleUnknownSubCommand');
-    // TODO GIVE OPTIONS INSTEAD OF REJECT
-    return Promise.reject(`cli: Command ${chalk.white.bold(c.command)} does not support method ${chalk.white.bold(c.subCommand)}!`);
+    logWarning(`cli: Command ${chalk.white.bold(c.command)} does not support method ${chalk.white.bold(c.subCommand)}!`);
+
+    const cmds = COMMANDS[c.command]?.subCommands;
+
+    const { subCommand } = await inquirer.prompt({
+        type: 'list',
+        name: 'subCommand',
+        message: 'Pick a subCommand',
+        choices: Object.keys(cmds)
+    });
+
+    c.subCommand = subCommand;
+    return run(c);
 };
 
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
-    // TODO GIVE OPTIONS INSTEAD OF REJECT
-    // return Promise.reject(`cli: Command ${chalk.white.bold(c.command)} not supported!`);
     logWarning(`cli: Command ${chalk.white.bold(c.command)} not supported!`);
     const { command } = await inquirer.prompt({
         type: 'list',
