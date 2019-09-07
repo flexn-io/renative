@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.26.7",
+    "version": "0.26.9",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -82,6 +82,7 @@
         "@react-navigation/core": "3.4.2",
         "@react-navigation/native": "3.5.0",
         "@react-navigation/web": "1.0.0-alpha.9",
+        "husky": "3.0.5",
         "react": "16.8.6",
         "react-art": "16.8.6",
         "react-dom": "16.8.6",
@@ -118,5 +119,10 @@
             "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
         },
         "collectCoverage": true
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged && npm run test:rnv:unit"
+        }
     }
 }

@@ -6,6 +6,7 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
+import inquirer from 'inquirer';
 
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
@@ -40,7 +41,7 @@ import {
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
 import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
-import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
+import { generateOptions } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
 export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto'];
@@ -105,32 +106,31 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
     return true;
 };
 
-export const isPlatformSupported = c => new Promise((resolve, reject) => {
+export const isPlatformSupported = async (c) => {
     logTask(`isPlatformSupported:${c.platform}`);
     if (!c.platform || c.platform === '?') {
         let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
         if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
         const opts = generateOptions(platformsAsObj);
 
-        askQuestion(`Pick one of available platforms (number or text):\n${opts.asString}`).then((v) => {
-            finishQuestion();
-
-            opts.pick(v)
-                .then((selectedPlatform) => {
-                    c.platform = selectedPlatform;
-                    c.program.platform = selectedPlatform;
-                    resolve(selectedPlatform);
-                })
-                .catch(e => reject(e));
+        const { platform } = await inquirer.prompt({
+            name: 'platform',
+            type: 'list',
+            message: 'Pick one of available platforms',
+            choices: opts.keysAsArray
         });
-    } else if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
-        reject(chalk.red(`Platform ${c.platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))}`));
-    } else {
-        resolve();
-    }
-});
 
-export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
+        c.platform = platform;
+        c.program.platform = platform;
+        return platform;
+    }
+
+    if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
+        return Promise.reject(chalk.red(`Platform ${c.platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))}`));
+    }
+};
+
+export const isBuildSchemeSupported = async (c) => {
     logTask(`isBuildSchemeSupported:${c.platform}`);
 
     const { scheme } = c.program;
@@ -144,7 +144,6 @@ export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
 
     if (!buildSchemes) {
         logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
-        resolve();
         return;
     }
 
@@ -155,18 +154,18 @@ export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
         }
         const opts = generateOptions(buildSchemes);
 
-        askQuestion(`Pick one of available buildSchemes (number or text):\n${opts.asString}`).then((v) => {
-            finishQuestion();
-            opts.pick(v)
-                .then((selectedScheme) => {
-                    c.program.scheme = selectedScheme;
-                    resolve(selectedScheme);
-                }).catch(e => reject(e));
+        const { selectedScheme } = await inquirer.prompt({
+            name: 'selectedScheme',
+            type: 'list',
+            message: 'Pick one of available buildSchemes',
+            choices: opts.keysAsArray
         });
-    } else {
-        resolve(scheme);
+
+        c.program.scheme = selectedScheme;
+        return selectedScheme;
     }
-});
+    return scheme;
+};
 
 export const spawnCommand = (c, overrideParams) => {
     const newCommand = {};
@@ -238,10 +237,12 @@ const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
         const val = Object.assign(o3 || {}, o2 || {}, o1);
         return val;
     }
+    if (o1 === null) return null;
     if (o2) {
         if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
         return Object.assign(o3 || {}, o2);
     }
+    if (o2 === null) return null;
     return o3;
 };
 
@@ -293,7 +294,7 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.verion || c.files.project.package.version;
+export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.version || c.files.project.package.version;
 
 export const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
 
@@ -309,8 +310,8 @@ export const getAppVersionCode = (c, platform) => {
     if (c.buildConfig.platforms[platform].versionCode) {
         return c.buildConfig.platforms[platform].versionCode;
     }
-    if (c.buildConfig.common.verionCode) {
-        return c.buildConfig.common.verionCode;
+    if (c.buildConfig.common.versionCode) {
+        return c.buildConfig.common.versionCode;
     }
     const version = getAppVersion(c, platform);
 

@@ -121,7 +121,7 @@
       },
       "cli": {
         "title": "ReNative CLI",
-        "sidebar_label": "CLI"
+        "sidebar_label": "Overview"
       },
       "rnv_config": {
         "title": "RNV Config Object",
@@ -133,6 +133,62 @@
       "templates": {
         "title": "Templates",
         "sidebar_label": "Templates"
+      },
+      "rnv-build": {
+        "title": "rnv build",
+        "sidebar_label": "build"
+      },
+      "rnv-crypto": {
+        "title": "rnv crypto",
+        "sidebar_label": "crypto"
+      },
+      "rnv-deploy": {
+        "title": "rnv deploy",
+        "sidebar_label": "deploy"
+      },
+      "rnv-export": {
+        "title": "rnv export",
+        "sidebar_label": "export"
+      },
+      "rnv-log": {
+        "title": "rnv log",
+        "sidebar_label": "log"
+      },
+      "rnv-new": {
+        "title": "rnv new",
+        "sidebar_label": "new"
+      },
+      "rnv-package": {
+        "title": "rnv package",
+        "sidebar_label": "package"
+      },
+      "rnv-platform": {
+        "title": "rnv platform",
+        "sidebar_label": "platform"
+      },
+      "rnv-plugin": {
+        "title": "rnv plugin",
+        "sidebar_label": "plugin"
+      },
+      "rnv-run": {
+        "title": "rnv run",
+        "sidebar_label": "run"
+      },
+      "rnv-start": {
+        "title": "rnv start",
+        "sidebar_label": "start"
+      },
+      "rnv-status": {
+        "title": "rnv status",
+        "sidebar_label": "status"
+      },
+      "rnv-target": {
+        "title": "rnv target",
+        "sidebar_label": "target"
+      },
+      "rnv-template": {
+        "title": "rnv template",
+        "sidebar_label": "template"
       },
       "version-0.26/version-0.26-build_hooks": {
         "title": "Build Hooks",
@@ -259,12 +315,7 @@
     "categories": {
       "GettingStarted": "GettingStarted",
       "Platforms": "Platforms",
-      "Guides": "Guides"
+      "Guides": "Guides",
+      "CLI": "CLI"
     }
-  },
-  "pages-strings": {
-    "Help Translate|recruit community translators for your project": "Help Translate",
-    "Edit this Doc|recruitment message asking to edit the doc source": "Edit",
-    "Translate this Doc|recruitment message asking to translate the docs": "Translate"
   }
-}

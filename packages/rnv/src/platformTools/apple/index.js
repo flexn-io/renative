@@ -7,8 +7,6 @@ import child_process from 'child_process';
 import inquirer from 'inquirer';
 
 import { executeAsync } from '../../systemTools/exec';
-import { isObject } from '../../systemTools/objectUtils';
-import { createPlatformBuild } from '../../cli/platform';
 import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
     logTask,
@@ -17,33 +15,21 @@ import {
     getAppFolder,
     isPlatformActive,
     logDebug,
-    getAppVersion,
-    getAppTitle,
-    getEntryFile,
-    writeCleanFile,
-    getAppTemplateFolder,
-    getAppId,
     getConfigProp,
     getIP,
-    getBuildFilePath,
     logSuccess,
-    getBuildsFolder
 } from '../../common';
-import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../../systemTools/prompt';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
 import { IOS, TVOS, MACOS } from '../../constants';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import {
-    saveObjToPlistSync, objToPlist, parseExportOptionsPlist,
+    parseExportOptionsPlist,
     parseInfoPlist, parseEntitlementsPlist
 } from './plistParser';
 import { parseXcscheme } from './xcschemeParser';
 import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
-
-const readline = require('readline');
 
 const checkIfCommandExists = command => new Promise((resolve, reject) => child_process.exec(`command -v ${command} 2>/dev/null`, (error) => {
     if (error) return reject(new Error(`${command} not installed`));
@@ -89,27 +75,21 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     resolve();
 });
 
-const runXcodeProject = (c, platform, target) => new Promise((resolve, reject) => {
+const runXcodeProject = (c, platform, target) => {
     logTask(`runXcodeProject:${platform}:${target}`);
 
     if (target === '?') {
-        launchAppleSimulator(c, platform, target).then((newTarget) => {
-            _runXcodeProject(c, platform, newTarget)
-                .then(() => resolve())
-                .catch(e => reject(e));
-        });
+        launchAppleSimulator(c, platform, target).then(newTarget => _runXcodeProject(c, platform, newTarget));
     } else {
-        _runXcodeProject(c, platform, target)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        return _runXcodeProject(c, platform, target);
     }
-});
+};
 
-const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) => {
+const _runXcodeProject = async (c, platform, target) => {
     logTask(`_runXcodeProject:${platform}:${target}`);
 
     const appPath = getAppFolder(c, platform);
-    const { device, maxErrorLength } = c.program;
+    const { device } = c.program;
     const scheme = getConfigProp(c, platform, 'scheme');
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
@@ -117,14 +97,13 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
     let p;
 
     if (!scheme) {
-        reject(
+        return Promise.reject(
             `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
                 c.paths.appConfig.config,
             )}! Check example config for more info:  ${chalk.blue(
                 'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/renative.json',
             )} `,
         );
-        return;
     }
 
     if (device === true) {
@@ -170,50 +149,33 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
-                    packageBundleForXcode(c, platform, bundleIsDev)
-                        .then(() => _checkLockAndExec(c, p))
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                } else {
-                    _checkLockAndExec(c, p)
-                        .then(() => resolve())
-                        .catch(e => reject(e));
+                    return packageBundleForXcode(c, platform, bundleIsDev).then(() => _checkLockAndExec(c, p));
                 }
+                return _checkLockAndExec(c, p);
             };
 
             if (c.program.target) {
                 const selectedDevice = devicesArr.find(d => d.name === c.program.target);
                 if (selectedDevice) {
-                    run(selectedDevice);
-                } else {
-                    reject(`Could not find device ${c.program.target}`);
+                    return run(selectedDevice);
                 }
-                return;
+                return Promise.reject(`Could not find device ${c.program.target}`);
             }
 
-            let devicesString = '\n';
-            devicesArr.forEach((v, i) => {
-                devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
-                    v.udid,
-                )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
+            const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+
+            const { sim } = await inquirer.prompt({
+                name: 'sim',
+                message: 'Select the device you want to launch on',
+                type: 'list',
+                choices: devices
             });
 
-            const readlineInterface = readline.createInterface({
-                input: process.stdin,
-                output: process.stdout,
-            });
-            readlineInterface.question(getQuestion(`${devicesString}\nType number of the device you want to launch`), (v) => {
-                const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-                if (selectedDevice) {
-                    run(selectedDevice);
-                } else {
-                    reject(`Wrong choice ${v}! Ingoring`);
-                }
-            });
-            return;
+            if (sim) {
+                return run(sim);
+            }
         } else {
-            reject(`No ${platform} devices connected!`);
-            return;
+            return Promise.reject(`No ${platform} devices connected!`);
         }
     } else if (device) {
         p = ['run-ios', '--project-path', appPath, '--device', device, '--scheme', scheme, '--configuration', runScheme];
@@ -226,19 +188,12 @@ const _runXcodeProject = (c, platform, target) => new Promise((resolve, reject) 
         if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
-            packageBundleForXcode(c, platform, bundleIsDev)
-                .then(() => executeAsync(c, `react-native ${p.join(' ')}`))
-                .then(() => resolve())
-                .catch(e => reject(e));
-        } else {
-            _checkLockAndExec(c, p.join(' '))
-                .then(() => resolve())
-                .catch(e => reject(e));
+            return packageBundleForXcode(c, platform, bundleIsDev).then(() => executeAsync(c, `react-native ${p.join(' ')}`));
         }
-    } else {
-        reject('Missing options for react-native command!');
+        return _checkLockAndExec(c, p.join(' '));
     }
-});
+    return Promise.reject('Missing options for react-native command!');
+};
 
 const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
     .catch((e) => {
@@ -250,7 +205,7 @@ const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
         return Promise.reject(e);
     });
 
-const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
+const archiveXcodeProject = (c, platform) => {
     logTask(`archiveXcodeProject:${platform}`);
 
 
@@ -263,7 +218,6 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
         if (platform === MACOS) sdk = 'macosx';
     }
     const sdkArr = [sdk];
-    const { maxErrorLength } = c.program;
 
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
@@ -294,33 +248,23 @@ const archiveXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
 
     if (c.buildConfig.platforms[platform].runScheme === 'Release') {
-        packageBundleForXcode(c, platform, bundleIsDev)
+        return packageBundleForXcode(c, platform, bundleIsDev)
             .then(() => executeAsync(c, `xcodebuild ${p.join(' ')}`))
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
-                resolve();
-            })
-            .catch((e) => {
-                reject(e);
-            });
-    } else {
-        executeAsync(c, `xcodebuild ${p.join(' ')}`)
-            .then(() => {
-                logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
-                resolve();
-            })
-            .catch((e) => {
-                reject(e);
             });
     }
-});
+    return executeAsync(c, `xcodebuild ${p.join(' ')}`)
+        .then(() => {
+            logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
+        });
+};
 
-const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
+const exportXcodeProject = (c, platform) => {
     logTask(`exportXcodeProject:${platform}`);
 
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
-    const { maxErrorLength } = c.program;
 
     const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
@@ -340,13 +284,11 @@ const exportXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
     logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
 
-    executeAsync(c, `xcodebuild ${p.join(' ')}`)
+    return executeAsync(c, `xcodebuild ${p.join(' ')}`)
         .then(() => {
             logSuccess(`Your IPA is located in ${chalk.white(exportPath)} .`);
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+        });
+};
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);

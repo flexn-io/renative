@@ -1,7 +1,7 @@
 ---
 id: cli
 title: ReNative CLI
-sidebar_label: CLI
+sidebar_label: Overview
 ---
 
 

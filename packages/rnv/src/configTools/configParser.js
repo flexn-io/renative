@@ -40,7 +40,6 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { getQuestion, askQuestion, finishQuestion } from '../systemTools/prompt';
 import {
     copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateProjectConfig,
     checkAndCreateGitignore, copySharedPlatforms
@@ -273,12 +272,11 @@ const _generateConfigPaths = (pathObj, dir) => {
     pathObj.configPrivate = path.join(dir, RENATIVE_CONFIG_PRIVATE_NAME);
 };
 
-export const versionCheck = c => new Promise((resolve, reject) => {
+export const versionCheck = async (c) => {
     logTask('versionCheck');
 
     if (c.runtime.isWrapper) {
-        resolve();
-        return;
+        return true;
     }
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
     c.runtime.rnvVersionProject = c.files.project?.package?.devDependencies?.rnv;
@@ -286,28 +284,17 @@ export const versionCheck = c => new Promise((resolve, reject) => {
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
             const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
-            logWarning(`You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json
-\nIf you see this error while running rnv with npx, you need some beer, then chill, then run: npm i\n`);
 
-            askQuestion('Do you want to proceed anyway? (y/n)')
-                .then((v) => {
-                    if (v === 'y') {
-                        resolve();
-                    } else {
-                        reject('Action cancelled');
-                    }
-                    finishQuestion();
-                }).catch((e) => {
-                    reject(e);
-                    finishQuestion();
-                });
-        } else {
-            resolve();
+            const { confirm } = await inquirer.prompt({
+                message: `You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json`,
+                type: 'confirm',
+                name: 'confirm',
+            });
+
+            if (!confirm) return Promise.reject('Action canceled');
         }
-    } else {
-        resolve();
     }
-});
+};
 
 export const loadFile = (fileObj, pathObj, key) => {
     if (!fs.existsSync(pathObj[key])) {

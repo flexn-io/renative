@@ -25,8 +25,7 @@ import {
     waitForEmulator,
     getAppId
 } from '../../common';
-import { askQuestion, generateOptions, finishQuestion, getQuestion } from '../../systemTools/prompt';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync } from '../../systemTools/fileutils';
+import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
@@ -37,8 +36,6 @@ import {
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
-
-const readline = require('readline');
 
 const CHECK_INTEVAL = 5000;
 
@@ -55,41 +52,12 @@ const composeDevicesString = (devices, returnArray) => {
 };
 
 const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
-    logTask(`launchAndroidSimulator:${platform}:${target}`);
-    const { maxErrorLength } = c.program;
-
-    if (target === '?' || target === undefined || target === '') {
-        return _listAndroidTargets(c, true, false, false)
-            .then((devicesArr) => {
-                const devicesString = composeDevicesString(devicesArr);
-                const readlineInterface = readline.createInterface({
-                    input: process.stdin,
-                    output: process.stdout,
-                });
-                readlineInterface.question(getQuestion(`${devicesString}\nType number of the emulator you want to launch`), (v) => {
-                    const selectedDevice = devicesArr[parseInt(v, 10) - 1];
-                    if (selectedDevice) {
-                        if (isIndependentThread) {
-                            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`, { detached: true, maxErrorLength }).catch((err) => {
-                                if (err.includes && err.includes('WHPX')) {
-                                    logWarning(err);
-                                    return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
-                                }
-                                logError(err);
-                            });
-                            return Promise.resolve();
-                        }
-                        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${selectedDevice.name}"`);
-                    }
-                    logError(`Wrong choice ${v}! Ingoring`);
-                });
-            });
-    }
+    logTask(`launchAndroidSimulator:${platform}:${target}:${isIndependentThread}`);
 
     if (target) {
         const actualTarget = target.name || target;
         if (isIndependentThread) {
-            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`).catch((err) => {
+            execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, { detached: isIndependentThread }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     return logError('It seems you do not have the Windows Hypervisor Platform virtualization enabled. Enter windows features in the Windows search box and select Turn Windows features on or off in the search results. In the Windows Features dialog, enable both Hyper-V and Windows Hypervisor Platform.', true);
@@ -98,7 +66,7 @@ const launchAndroidSimulator = (c, platform, target, isIndependentThread = false
             });
             return Promise.resolve();
         }
-        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`);
+        return execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, { detached: isIndependentThread });
     }
     return Promise.reject('No simulator -t target name specified!');
 };
@@ -134,14 +102,12 @@ const _getDeviceString = (device, i) => {
 };
 
 const resetAdb = async (c) => {
-    const { maxErrorLength } = c.program;
     await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
     await execCLI(c, CLI_ANDROID_ADB, 'start-server');
 };
 
 const _listAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
     logTask(`_listAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`);
-    const { maxErrorLength } = c.program;
 
     try {
         let devicesResult;
@@ -173,7 +139,6 @@ const isSquareishDevice = (width, height) => {
 };
 
 const getRunningDeviceProp = async (c, udid, prop) => {
-    const { maxErrorLength } = c.program;
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
         if (!prop) return currentDeviceProps[udid];
@@ -237,7 +202,6 @@ const decideIfWearRunning = async (c, device) => {
 
 const getDeviceType = async (device, c) => {
     logDebug('getDeviceType - in', { device });
-    const { maxErrorLength } = c.program;
 
     if (device.udid !== 'unknown') {
         const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
@@ -367,8 +331,6 @@ const getEmulatorName = async (words) => {
 };
 
 const connectToWifiDevice = async (c, ip) => {
-    const { maxErrorLength } = c.program;
-
     const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, `connect ${ip}:5555`);
     if (deviceResponse.includes('connected')) return true;
     logError(`Failed to connect to ${ip}:5555`);
@@ -473,39 +435,33 @@ const _getDeviceProp = (arr, prop) => {
     return '';
 };
 
-const _askForNewEmulator = (c, platform) => new Promise((resolve, reject) => {
+const _askForNewEmulator = async (c, platform) => {
     logTask('_askForNewEmulator');
     const emuName = c.files.private.config.defaultTargets[platform];
-    const readlineInterface = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
+
+    const { confirm } = await inquirer.prompt({
+        name: 'confirm',
+        type: 'confirm',
+        message: `Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you?`
     });
-    readlineInterface.question(
-        getQuestion(`Do you want ReNative to create new Emulator (${chalk.white(emuName)}) for you? (y) to confirm`),
-        (v) => {
-            if (v.toLowerCase() === 'y') {
-                switch (platform) {
-                case 'android':
-                    return _createEmulator(c, '28', 'google_apis', emuName)
-                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
-                        .then(resolve);
-                case 'androidtv':
-                    return _createEmulator(c, '28', 'android-tv', emuName)
-                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
-                        .then(resolve);
-                case 'androidwear':
-                    return _createEmulator(c, '28', 'android-wear', emuName)
-                        .then(() => launchAndroidSimulator(c, platform, emuName, true))
-                        .then(resolve);
-                default:
-                    return reject('Cannot find any active or created emulators');
-                }
-            } else {
-                reject('Cannot find any active or created emulators');
-            }
-        },
-    );
-});
+
+    if (confirm) {
+        switch (platform) {
+        case 'android':
+            return _createEmulator(c, '28', 'google_apis', emuName)
+                .then(() => launchAndroidSimulator(c, platform, emuName, true));
+        case 'androidtv':
+            return _createEmulator(c, '28', 'android-tv', emuName)
+                .then(() => launchAndroidSimulator(c, platform, emuName, true));
+        case 'androidwear':
+            return _createEmulator(c, '28', 'android-wear', emuName)
+                .then(() => launchAndroidSimulator(c, platform, emuName, true));
+        default:
+            return Promise.reject('Cannot find any active or created emulators');
+        }
+    }
+    return Promise.reject('Action canceled!');
+};
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
@@ -689,40 +645,56 @@ const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) =
     }, CHECK_INTEVAL);
 });
 
-const _checkSigningCerts = c => new Promise((resolve, reject) => {
+const _checkSigningCerts = async (c) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
 
     if (signingConfig === 'Release' && !c.files.private.appConfig.configPrivate) {
         logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.private.appConfig.dir)} yet.`);
-        askQuestion('Do you want to configure it now? (y)')
-            .then((v) => {
-                const sc = {};
-                if (v === 'y') {
-                    askQuestion(`Paste asolute or relative path to ${chalk.white(c.paths.private.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file.`, sc, 'storeFile')
-                        .then(() => askQuestion('storePassword', sc, 'storePassword'))
-                        .then(() => askQuestion('keyAlias', sc, 'keyAlias'))
-                        .then(() => askQuestion('keyPassword', sc, 'keyPassword'))
-                        .then(() => {
-                            finishQuestion();
-                            if (c.paths.private.appConfig.dir) {
-                                mkdirSync(c.paths.private.appConfig.dir);
-                                c.files.private.appConfig.configPrivate = {
-                                    android: sc
-                                };
-                            }
-                            fs.writeFileSync(c.paths.private.appConfig.configPrivate, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
-                            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.private.appConfig.dir)}.`);
-                            resolve();
-                        });
-                } else {
-                    reject(`You selected ${v}. Can't proceed`);
+
+        const { confirm } = await inquirer.prompt({
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Do you want to configure it now?'
+        });
+
+        if (confirm) {
+            const { storeFile, storePassword, keyAlias, keyPassword } = await inquirer.prompt([
+                {
+                    type: 'input',
+                    name: 'storeFile',
+                    message: `Paste asolute or relative path to ${chalk.white(c.paths.private.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
+                },
+                {
+                    type: 'password',
+                    name: 'storePassword',
+                    message: 'storePassword',
+                },
+                {
+                    type: 'input',
+                    name: 'keyAlias',
+                    message: 'keyAlias',
+                },
+                {
+                    type: 'password',
+                    name: 'keyPassword',
+                    message: 'keyPassword',
                 }
-            }).catch(e => reject(e));
-    } else {
-        resolve();
+            ]);
+
+            if (c.paths.private.appConfig.dir) {
+                mkdirSync(c.paths.private.appConfig.dir);
+                c.files.private.appConfig.configPrivate = {
+                    android: { storeFile, storePassword, keyAlias, keyPassword }
+                };
+            }
+            fs.writeFileSync(c.paths.private.appConfig.configPrivate, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
+            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.private.appConfig.dir)}.`);
+        } else {
+            return Promise.reject('You selected no. Can\'t proceed');
+        }
     }
-});
+};
 
 const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => {
     logTask(`_runGradleApp:${platform}`);

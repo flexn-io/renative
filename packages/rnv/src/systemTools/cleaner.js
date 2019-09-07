@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { removeDirs } from './fileutils';
-import { logTask } from '../common';
-import { askQuestion, generateOptions, finishQuestion } from './prompt';
+import inquirer from 'inquirer';
 
-const cleanProjectModules = (c, skipQuestion = false) => new Promise((resolve, reject) => {
+import { removeDirs } from './fileutils';
+import { logTask } from './logger';
+
+const cleanProjectModules = async (c, skipQuestion = false) => {
     logTask('cleanProjectModules');
     const pathsToRemove = [
         c.paths.project.nodeModulesDir,
@@ -28,16 +29,16 @@ const cleanProjectModules = (c, skipQuestion = false) => new Promise((resolve, r
 
 
     if (skipQuestion) {
-        removeDirs(pathsToRemove).then(() => resolve()).catch(e => reject(e));
-    } else {
-        askQuestion(`Following files/folders will be removed:\n\n${msg}\npress (ENTER) to confirm`)
-            .then(() => {
-                finishQuestion();
-                removeDirs(pathsToRemove).then(() => resolve())
-                    .catch(e => reject(e));
-            })
-            .catch(e => reject(e));
+        return removeDirs(pathsToRemove);
     }
-});
+
+    const { confirm } = await inquirer.prompt({
+        name: 'confirm',
+        type: 'confirm',
+        message: `Are you sure you want to remove these files/folders? \n${msg}`,
+    });
+
+    if (confirm) return removeDirs(pathsToRemove);
+};
 
 export { cleanProjectModules };

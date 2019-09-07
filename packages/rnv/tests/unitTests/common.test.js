@@ -55,11 +55,6 @@ pharetra tempor risus ultrices sit amet. Nulla eu ipsum turpis.
 `;
 
 describe('Testing common functions', () => {
-    // beforeAll(() => {
-    //     c = createRnvConfig({ program: true }, { process: true }, { cmd: true }, { subCmd: true });
-    //     generateBuildConfig(c);
-    // });
-
     it('should return correct error', async () => {
         expect(parseErrorMessage(testError, 400)).toEqual(errorResult);
     });
