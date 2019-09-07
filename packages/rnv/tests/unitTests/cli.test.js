@@ -44,11 +44,29 @@ describe('Testing rnv new', () => {
 describe('Testing rnv run', () => {
     itShouldResolve('run help');
     itShouldResolve('run -p ios');
+    itShouldResolve('run -p android');
+    itShouldResolve('run -p androidwear');
+    itShouldResolve('run -p androidtv');
+    itShouldResolve('run -p tizen');
+    itShouldResolve('run -p tizenphone');
+    itShouldResolve('run -p tizenwatch');
+    itShouldResolve('run -p webos');
+    itShouldResolve('run -p web');
+    itShouldResolve('run -p macos');
 });
 
 describe('Testing rnv build', () => {
     itShouldResolve('build help');
     itShouldResolve('build -p ios');
+    itShouldResolve('build -p android');
+    itShouldResolve('build -p androidwear');
+    itShouldResolve('build -p androidtv');
+    itShouldResolve('build -p tizen');
+    itShouldResolve('build -p tizenphone');
+    itShouldResolve('build -p tizenwatch');
+    itShouldResolve('build -p webos');
+    itShouldResolve('build -p web');
+    itShouldResolve('build -p macos');
 });
 
 describe('Testing rnv package', () => {
@@ -132,7 +150,7 @@ const getConfig = (s) => {
 
     c.buildConfig = {
         defaults: {
-            supportedPlatforms: ['ios', 'android']
+            supportedPlatforms: ['ios', 'android', 'tizen', 'web', 'macos', 'webos']
         },
         defaultTargets: {},
         common: {}
