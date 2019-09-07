@@ -19,54 +19,11 @@ import PlatformTools from './platformTools';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 
-const commands = {
-    start: Runner,
-    build: Runner,
-    export: Runner,
-    app: App,
-    new: App,
-    configure: App,
-    switch: App,
-    link: Linker,
-    platform: Platform,
-    run: Runner,
-    package: Runner,
-    deploy: Runner,
-    target: Target,
-    plugin: Plugin,
-    log: Runner,
-    hooks: Hooks,
-    status: Tools,
-    fix: Tools,
-    clean: Tools,
-    tool: Tools,
-    template: Template,
-    debug: Runner,
-    crypto: Tools,
-    workspace: CLI
-};
-
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
         .then(c => checkWelcome(c))
         .then(c => startBuilder(c))
-        .then((v) => {
-            if (commands[cmd]) {
-                commands[cmd](v)
-                    .then(() => {
-                        if (program.debug) logInfo('You started a debug build. Make sure you have the debugger started or start it with `rnv debug`');
-                        logComplete(true);
-                    })
-                    .catch(e => logError(e, true));
-            } else if (program.help) {
-                // program.help();
-                logError(`Command ${chalk.white(cmd)} is not supported by ReNative CLI. Here is some help:`);
-                logHelp();
-                logComplete(true);
-            } else {
-                logError(`Command ${chalk.white(cmd)} is not supported by ReNative CLI. run ${chalk.white('rnv')} for help`, true);
-            }
-        })
+        .then(v => CLI(v))
         .catch(e => logError(e, true));
 };
 
