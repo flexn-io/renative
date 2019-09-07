@@ -49,9 +49,7 @@
         "renative": {
             "version": "0.26.9",
             "webpack": {
-                "modulePaths": [
-                    "node_modules/renative"
-                ],
+                "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
                     "renative": {
                         "projectPath": "node_modules/renative"
@@ -62,9 +60,7 @@
         "RCTPushNotification": {
             "no-npm": true,
             "ios": {
-                "reactSubSpecs": [
-                    "RCTPushNotification"
-                ],
+                "reactSubSpecs": ["RCTPushNotification"],
                 "appDelegateMethods": {
                     "application": {
                         "didReceiveRemoteNotification": [
@@ -94,9 +90,7 @@
         "RCTLinkingIOS": {
             "no-npm": true,
             "ios": {
-                "reactSubSpecs": [
-                    "RCTLinkingIOS"
-                ],
+                "reactSubSpecs": ["RCTLinkingIOS"],
                 "appDelegateMethods": {
                     "application": {
                         "open": [
@@ -267,9 +261,7 @@
             "version": "0.8.0",
             "ios": {
                 "podName": "react-native-fbsdk",
-                "appDelegateImports": [
-                    "FBSDKCoreKit"
-                ],
+                "appDelegateImports": ["FBSDKCoreKit"],
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
@@ -288,21 +280,15 @@
             },
             "tvos": {
                 "podName": "react-native-fbsdk",
-                "appDelegateImports": [
-                    "FBSDKCoreKit"
-                ]
+                "appDelegateImports": ["FBSDKCoreKit"]
             },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": [
-                    "mCallbackManager"
-                ],
+                "packageParams": ["mCallbackManager"],
                 "implementations": [
                     "'com.facebook.android:facebook-android-sdk:4.22.1'"
                 ],
-                "imports": [
-                    "com.facebook.CallbackManager"
-                ],
+                "imports": ["com.facebook.CallbackManager"],
                 "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
                 "mainActivity": {
                     "imports": [
@@ -320,15 +306,11 @@
             },
             "androidtv": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": [
-                    "mCallbackManager"
-                ],
+                "packageParams": ["mCallbackManager"],
                 "implementations": [
                     "'com.facebook.android:facebook-android-sdk:4.22.1'"
                 ],
-                "imports": [
-                    "com.facebook.CallbackManager"
-                ],
+                "imports": ["com.facebook.CallbackManager"],
                 "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
                 "mainActivity": {
                     "imports": [
@@ -527,9 +509,7 @@
                     "react-native-svg": "svgs"
                 }
             },
-            "dependsOn": [
-                "svgs"
-            ]
+            "dependsOn": ["svgs"]
         },
         "react-native-vector-icons": {
             "version": "6.4.2",
@@ -698,9 +678,7 @@
             "version": "1.1.5",
             "ios": {
                 "podName": "react-native-orientation-locker",
-                "appDelegateImports": [
-                    "react_native_orientation_locker"
-                ],
+                "appDelegateImports": ["react_native_orientation_locker"],
                 "appDelegateMethods": {
                     "application": {
                         "supportedInterfaceOrientationsFor": [
@@ -712,9 +690,7 @@
             "android": {
                 "package": "org.wonday.orientation.OrientationPackage",
                 "mainActivity": {
-                    "imports": [
-                        "android.content.res.Configuration"
-                    ],
+                    "imports": ["android.content.res.Configuration"],
                     "methods": [
                         "override fun onConfigurationChanged(newConfig:Configuration) {",
                         "  super.onConfigurationChanged(newConfig)",
@@ -775,9 +751,7 @@
             "MAPS_API_KEY": "define_your_own_api_key",
             "ios": {
                 "podName": "GoogleMaps",
-                "appDelegateImports": [
-                    "GoogleMaps"
-                ],
+                "appDelegateImports": ["GoogleMaps"],
                 "version": "2.5.0",
                 "appDelegateMethods": {
                     "application": {
@@ -789,9 +763,7 @@
             },
             "tvos": {
                 "podName": "GoogleMaps",
-                "appDelegateImports": [
-                    "GoogleMaps"
-                ],
+                "appDelegateImports": ["GoogleMaps"],
                 "version": "2.5.0"
             }
         },
@@ -799,9 +771,7 @@
             "no-npm": true,
             "ios": {
                 "podName": "Crashlytics",
-                "appDelegateImports": [
-                    "Crashlytics"
-                ],
+                "appDelegateImports": ["Crashlytics"],
                 "version": "3.13.4"
             },
             "android": {
@@ -823,9 +793,7 @@
             "no-npm": true,
             "ios": {
                 "podName": "Fabric",
-                "appDelegateImports": [
-                    "Fabric"
-                ],
+                "appDelegateImports": ["Fabric"],
                 "version": "1.10.2",
                 "appDelegateMethods": {
                     "application": {
@@ -874,14 +842,10 @@
                 },
                 "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
                 "app/build.gradle": {
-                    "apply": [
-                        "plugin: 'io.fabric'"
-                    ]
+                    "apply": ["plugin: 'io.fabric'"]
                 },
                 "mainActivity": {
-                    "imports": [
-                        "io.fabric.sdk.android.Fabric"
-                    ]
+                    "imports": ["io.fabric.sdk.android.Fabric"]
                 }
             },
             "androidtv": {
@@ -897,9 +861,7 @@
                 },
                 "skipImplementation": true,
                 "app/build.gradle": {
-                    "apply": [
-                        "plugin: 'io.fabric'"
-                    ]
+                    "apply": ["plugin: 'io.fabric'"]
                 }
             }
         },
@@ -916,9 +878,7 @@
                     "Firebase/RemoteConfig', '~> 6.3.0",
                     "Firebase/Storage', '~> 6.3.0"
                 ],
-                "appDelegateImports": [
-                    "Firebase"
-                ],
+                "appDelegateImports": ["Firebase"],
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
@@ -1009,9 +969,7 @@
                 "podName": "RNFirebase",
                 "path": "node_modules/react-native-firebase/ios",
                 "xcodeproj": {
-                    "resourceFiles": [
-                        "RNVApp/GoogleService-Info.plist"
-                    ]
+                    "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
                 },
                 "Podfile": {
                     "injectLines": [
@@ -1044,9 +1002,7 @@
                     }
                 },
                 "app/build.gradle": {
-                    "apply": [
-                        "plugin: 'com.google.gms.google-services'"
-                    ]
+                    "apply": ["plugin: 'com.google.gms.google-services'"]
                 },
                 "AndroidManifest": {
                     "children": [
@@ -1149,9 +1105,7 @@
                     }
                 },
                 "app/build.gradle": {
-                    "apply": [
-                        "plugin: 'com.google.gms.google-services'"
-                    ]
+                    "apply": ["plugin: 'com.google.gms.google-services'"]
                 }
             }
         },
@@ -1174,9 +1128,7 @@
         },
         "native-base": {
             "version": "2.12.1",
-            "dependsOn": [
-                "react-native-vector-icons"
-            ]
+            "dependsOn": ["react-native-vector-icons"]
         },
         "@react-native-community/async-storage": {
             "version": "1.4.1",

@@ -1,7 +1,8 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import merge from 'deepmerge';
+import inquirer from 'inquirer';
+
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
@@ -10,7 +11,7 @@ import {
 } from '../systemTools/fileutils';
 import { logError, logInfo, logWarning, logTask, logDebug } from '../common';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
-import { generateOptions, askQuestion, finishQuestion } from '../systemTools/prompt';
+import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
 import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig } from '../configTools/configParser';
 
@@ -32,23 +33,19 @@ export const listTemplates = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const addTemplate = (c, opts) => new Promise((resolve, reject) => {
+export const addTemplate = (c, template) => {
     logTask('addTemplate');
-    const { maxErrorLength } = c.program;
 
     c.files.project.config.templates = c.files.project.config.templates || {};
 
-    if (!c.files.project.config.templates[opts.selectedOption]) {
-        c.files.project.config.templates[opts.selectedOption] = {
+    if (!c.files.project.config.templates[template]) {
+        c.files.project.config.templates[template] = {
             version: 'latest'
         };
     }
 
     _writeObjectSync(c, c.paths.project.config, c.files.project.config);
-
-
-    resolve();
-});
+};
 
 export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     logTask('checkIfTemplateInstalled');
@@ -80,7 +77,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+export const applyTemplate = async (c, selectedTemplate) => {
     logTask(`applyTemplate:${c.buildConfig.currentTemplate}=>${selectedTemplate}:`);
     c.runtime.selectedTemplate = selectedTemplate;
 
@@ -88,34 +85,25 @@ export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reje
         logWarning('You don\'t have any current template selected');
         const opts = getInstalledTemplateOptions(c);
 
-        askQuestion(`Pick which template to apply: \n${opts.asString}`)
-            .then(v => opts.pick(v))
-            .then((v) => {
-                finishQuestion();
-                c.buildConfig.currentTemplate = opts.selectedOption;
-                c.files.project.config.currentTemplate = opts.selectedOption;
-                _writeObjectSync(c, c.paths.project.config, c.files.project.config);
-                return Promise.resolve();
-            })
-            .then(() => _applyTemplate(c))
-            .then(() => _configureSrc(c))
-            .then(() => _configureAppConfigs(c))
-            .then(() => _configureProjectConfig(c))
-            .then(() => _configureRenativeConfig(c))
-            .then(() => _configureEntryPoints(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        _applyTemplate(c)
-            .then(() => _configureSrc(c))
-            .then(() => _configureAppConfigs(c))
-            .then(() => _configureProjectConfig(c))
-            .then(() => _configureRenativeConfig(c))
-            .then(() => _configureEntryPoints(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        const { template } = await inquirer.prompt({
+            type: 'list',
+            name: 'template',
+            message: 'Pick which template to apply',
+            choices: opts.keysAsArray
+        });
+
+        c.buildConfig.currentTemplate = template;
+        c.files.project.config.currentTemplate = template;
+        _writeObjectSync(c, c.paths.project.config, c.files.project.config);
     }
-});
+
+    await _applyTemplate(c);
+    await _configureSrc(c);
+    await _configureAppConfigs(c);
+    await _configureProjectConfig(c);
+    await _configureRenativeConfig(c);
+    await _configureEntryPoints(c);
+};
 
 const _cleanProjectTemplateSync = (c) => {
     logTask('_cleanProjectTemplateSync');
