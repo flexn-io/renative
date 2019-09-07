@@ -48,6 +48,7 @@ import platformRunner from './platform';
 import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 import { copyRuntimeAssets, copySharedPlatforms } from '../projectTools/projectParser';
+import { getWorkspaceOptions } from '../projectTools/workspace';
 import { generateRuntimeConfig } from '../configTools/configParser';
 
 const CONFIGURE = 'configure';
@@ -173,6 +174,7 @@ const _runCreate = async (c) => {
     };
     data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
     data.optionTemplates = getTemplateOptions(c);
+    data.optionWorkspaces = getWorkspaceOptions(c);
 
     // logWelcome();
     let inputProjectName;
@@ -212,6 +214,12 @@ const _runCreate = async (c) => {
         default: data.defaultVersion,
         validate: v => !!semver.valid(semver.coerce(v)) || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
         message: 'What\'s your Version?'
+    // }, {
+    //     name: 'inputWorkspace',
+    //     type: 'list',
+    //     message: 'What workspace to use?',
+    //     default: data.defaultWorkspace,
+    //     choices: data.optionWorkspaces.keysAsArray
     }, {
         name: 'inputTemplate',
         type: 'list',
