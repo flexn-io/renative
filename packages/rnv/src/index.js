@@ -21,7 +21,6 @@ const run = (cmd, subCmd, program, process) => {
 const checkWelcome = c => new Promise((resolve, reject) => {
     if ((!c.command && !c.subCommand) || c.command === 'help') {
         logWelcome();
-
         logHelp();
     } else {
         resolve(c);

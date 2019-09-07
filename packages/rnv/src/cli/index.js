@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { logWarning, logTask } from '../systemTools/logger';
+import { logWarning, logTask, logStatus, logEnd } from '../systemTools/logger';
 import { listWorkspaces } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { templateAdd, templateApply, templateList } from '../templateTools';
@@ -9,6 +9,8 @@ import { pluginAdd, pluginList, pluginUpdate } from '../pluginTools';
 import { platformEject, platformList, platformConnect, platformConfigure } from '../platformTools';
 import { executePipe, listHooks, executeHook, listPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
+import { rnvCrypto } from '../systemTools/crypto';
+import { cleanProjectModules } from '../systemTools/cleaner';
 
 
 const COMMANDS = {
@@ -97,9 +99,15 @@ const COMMANDS = {
             }
         }
     },
-    status: {},
+    status: {
+        desc: 'Prints out summary of your project',
+        fn: logStatus
+    },
     fix: {},
-    clean: {},
+    clean: {
+        desc: 'Automatically removes all node_modules and lock in your project and its dependencies',
+        fn: cleanProjectModules
+    },
     tool: {},
     template: {
         desc: 'Manages rnv and project templates',
@@ -116,7 +124,10 @@ const COMMANDS = {
         }
     },
     debug: {},
-    crypto: {},
+    crypto: {
+        desc: 'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
+        fn: rnvCrypto
+    },
     workspace: {
         subCommands: {
             list: {
@@ -131,7 +142,7 @@ const COMMANDS = {
 // PUBLIC API
 // ##########################################
 
-const run = (c) => {
+const run = async (c) => {
     logTask('cli');
 
     const cmd = COMMANDS[c.command];
@@ -141,20 +152,23 @@ const run = (c) => {
 
     if (cmd) {
         if (c.subCommand === 'help') {
-            return _execCommandHep(c, cmd);
-        }
-        if (cmdFn) {
+            await _execCommandHep(c, cmd);
+        } else if (cmdFn) {
             if (subCmdFn) {
-                return subCmdFn(c);
+                await subCmdFn(c);
+            } else {
+                await cmdFn(c);
             }
-            return cmdFn(c);
+        } else if (subCmdFn) {
+            await subCmdFn(c);
+        } else {
+            await _handleUnknownSubCommand(c);
         }
-        if (subCmdFn) {
-            return subCmdFn(c);
-        }
-        return _handleUnknownSubCommand(c);
+    } else {
+        await _handleUnknownCommand(c);
     }
-    return _handleUnknownCommand(c);
+
+    logEnd();
 };
 
 // ##########################################

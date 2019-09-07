@@ -305,20 +305,6 @@ export const printBoxStart = (str, str2) => {
     return output;
 };
 
-export const logStatus = () => {
-    // let str = printBoxStart('🚀  STATUS');
-    // // str += printIntoBox('SHlelelele euheu ehhh');
-    // // console.log('SSKJJSKL', _c);
-    // if (_c) {
-    //     if (_c.runtime.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.runtime.appId)}`, 1);
-    //     if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
-    //     if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
-    // }
-    //
-    // str += printIntoBox('');
-    // str += printBoxEnd();
-
-    // console.log(str);
-};
+export const logStatus = async () => Promise.resolve();
 
 export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');

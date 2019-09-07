@@ -17,6 +17,43 @@ const getEnvVar = (c) => {
     return envVar;
 };
 
+export const rnvCrypto = c => new Promise((resolve, reject) => {
+    switch (c.subCommand) {
+    case ENCRYPT:
+        encrypt(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case DECRYPT:
+        decrypt(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case INSTALL_PROFILES:
+        installProfiles(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case UPDATE_PROFILES:
+        updateProfiles(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case UPDATE_PROFILE:
+        updateProfile(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    case INSTALL_CERTS:
+        installCerts(c)
+            .then(() => resolve())
+            .catch(e => reject(e));
+        return;
+    }
+
+    reject(`cli:tools: Command ${c.command} ${c.subCommand} not supported`);
+});
+
 export const encrypt = c => new Promise((resolve, reject) => {
     logTask('encrypt');
 
@@ -156,7 +193,7 @@ export const updateProfiles = (c) => {
     switch (c.platform) {
     case IOS:
     case TVOS:
-        const appId = c.runtime.appId;
+        const { appId } = c.runtime;
         return _updateProfiles(c)
             .then(() => {
                 setAppConfig(c, appId);
