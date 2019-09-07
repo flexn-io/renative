@@ -1,5 +1,6 @@
 import chalk from 'chalk';
-import { logTask } from '../common';
+import inquirer from 'inquirer';
+import { logWarning, logTask } from '../systemTools/logger';
 import { listWorkspaces } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 
@@ -12,7 +13,12 @@ const COMMANDS = {
     export: {},
     app: {},
     new: {
-        fn: createNewProject
+        fn: createNewProject,
+        desc: 'Creates new project',
+        params: ['mono', 'ci']
+    },
+    help: {
+        fn: logHelp
     },
     configure: {},
     switch: {},
@@ -51,9 +57,13 @@ const run = (c) => {
 
     const cmd = COMMANDS[c.command];
     const cmdFn = cmd?.fn;
-    const subCmdFn = cmd?.subCommands?.[c.subCommand]?.fn;
+    const subCmd = cmd?.subCommands?.[c.subCommand];
+    const subCmdFn = subCmd?.fn;
 
     if (cmd) {
+        if (c.subCommand === 'help') {
+            return _execCommandHep(c, cmd);
+        }
         if (cmdFn) {
             if (subCmdFn) {
                 return subCmdFn(c);
@@ -68,6 +78,17 @@ const run = (c) => {
     return _handleUnknownCommand(c);
 };
 
+const _execCommandHep = async (c, cmd) => {
+    const opts = (cmd.params || []).reduce((t, v) => `${t}--${v}\n`, '');
+    console.log(`
+Command: ${c.command}
+Description: ${cmd.desc}
+Options:
+${opts}
+`);
+    return Promise.resolve();
+};
+
 const _handleUnknownSubCommand = async (c) => {
     logTask('_handleUnknownSubCommand');
     // TODO GIVE OPTIONS INSTEAD OF REJECT
@@ -77,23 +98,54 @@ const _handleUnknownSubCommand = async (c) => {
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
     // TODO GIVE OPTIONS INSTEAD OF REJECT
-    return Promise.reject(`cli: Command ${chalk.white.bold(c.command)} not supported!`);
+    // return Promise.reject(`cli: Command ${chalk.white.bold(c.command)} not supported!`);
+    logWarning(`cli: Command ${chalk.white.bold(c.command)} not supported!`);
+    const { command } = await inquirer.prompt({
+        type: 'list',
+        name: 'command',
+        message: 'Pick a command',
+        choices: Object.keys(COMMANDS)
+    });
+
+    c.command = command;
+    return run(c);
 };
 
 
-// else if (program.help) {
-//     // program.help();
-//     logError(`Command ${chalk.white(cmd)} is not supported by ReNative CLI. Here is some help:`);
-//     logHelp();
-//     logComplete(true);
-// } else {
-//     logError(`Command ${chalk.white(cmd)} is not supported by ReNative CLI. run ${chalk.white('rnv')} for help`, true);
-// }
+export const logHelp = () => {
+    let cmdsString = '';
+    for (const key in COMMANDS) {
+        cmdsString += `${key}, `;
+    }
 
-// .then(() => {
-//     if (program.debug) logInfo('You started a debug build. Make sure you have the debugger started or start it with `rnv debug`');
-//     logComplete(true);
-// })
+    console.log(`
+${chalk.bold.white('COMMANDS:')}
+
+${cmdsString}
+
+${chalk.bold.white('OPTIONS:')}
+
+'-i, --info', 'Show full debug info'
+'-u, --update', 'Force update dependencies (iOS only)'
+'-p, --platform <value>', 'Select specific platform' // <ios|android|web|...>
+'-c, --appConfigID <value>', 'Select specific appConfigID' // <ios|android|web|...>
+'-t, --target <value>', 'Select specific simulator' // <.....>
+'-d, --device [value]', 'Select connected device'
+'-s, --scheme <value>', 'Select build scheme' // <Debug | Release>
+'-f, --filter <value>', 'Filter Value'
+'-l, --list', 'Return list of items related to command' // <alpha|beta|prod>
+'-r, --reset', 'Also perform reset'
+'-b, --blueprint', 'Blueprint for targets'
+'-h, --host <value>', 'Custom Host IP'
+'-x, --exeMethod <value>', 'Executable method in buildHooks'
+'-P, --port <value>', 'Custom Port'
+'-H, --help', 'Help'
+'-D, --debug', 'enable remote debugger'
+'--hosted', 'Run in a hosted environment (skip bundleAssets)'
+'--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
+`);
+};
+
 
 // ##########################################
 // PRIVATE

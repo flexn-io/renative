@@ -241,3 +241,8 @@ const _prepareProjectOverview = (c, data) => {
 
     data.confirmString = str;
 };
+
+export const projectGeneratorHelp = async (c) => {
+    console.log(`Creates new project:
+YSSYYSYSYSY`);
+};
