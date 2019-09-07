@@ -6,6 +6,9 @@ import { createNewProject } from '../projectTools/projectGenerator';
 import { templateAdd, templateApply, templateList } from '../templateTools';
 import { targetCreate, targetLaunch, targetList } from '../platformTools/target';
 import { pluginAdd, pluginList, pluginUpdate } from '../pluginTools';
+import { platformEject, platformList, platformConnect, platformConfigure } from '../platformTools';
+import { executePipe } from '../projectTools/buildHooks';
+
 
 const COMMANDS = {
     start: {
@@ -25,7 +28,23 @@ const COMMANDS = {
     configure: {},
     switch: {},
     link: {},
-    platform: {},
+    platform: {
+        desc: 'Manages native platform projects',
+        subCommands: {
+            eject: {
+                fn: platformEject
+            },
+            list: {
+                fn: platformList
+            },
+            connect: {
+                fn: platformConnect
+            },
+            configure: {
+                fn: platformConfigure
+            }
+        }
+    },
     run: {},
     package: {},
     deploy: {},

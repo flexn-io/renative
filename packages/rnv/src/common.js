@@ -14,7 +14,7 @@ import {
     getRealPath,
     isRunningOnWindows
 } from './systemTools/fileutils';
-import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
+import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import appRunner from './cli/app';
 import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';

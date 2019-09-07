@@ -10,7 +10,7 @@ import child_process from 'child_process';
 import inquirer from 'inquirer';
 
 import { executeAsync, execCLI, executeTelnet } from '../../systemTools/exec';
-import { createPlatformBuild } from '../../cli/platform';
+import { createPlatformBuild } from '..';
 import {
     logTask,
     logError,

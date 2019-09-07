@@ -1,5 +1,4 @@
 import { createRnvConfig, generateBuildConfig } from '../../src/configTools/configParser';
-import runPlatform from '../../src/cli/platform';
 import run from '../../src/cli/runner';
 import cli from '../../src/cli';
 

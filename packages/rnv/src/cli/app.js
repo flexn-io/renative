@@ -44,7 +44,7 @@ import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
 import { copyFolderContentsRecursiveSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
-import platformRunner from './platform';
+import CLI from '.';
 import { executePipe } from '../projectTools/buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 import { copyRuntimeAssets, copySharedPlatforms } from '../projectTools/projectParser';
@@ -168,7 +168,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
 
     if (!fs.existsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');
-        platformRunner(spawnCommand(c, {
+        CLI(spawnCommand(c, {
             subCommand: 'configure',
             program: { appConfig: c.runtime.appId, platform }
         }))
@@ -181,7 +181,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         const appFolder = getAppFolder(c, platform);
         if (!fs.existsSync(appFolder)) {
             logWarning(`Platform ${platform} not created yet. creating them for you...`);
-            platformRunner(spawnCommand(c, {
+            CLI(spawnCommand(c, {
                 subCommand: 'configure',
                 program: { appConfig: c.runtime.appId, platform }
             }))
@@ -201,7 +201,7 @@ const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) 
         Object.keys(platforms).forEach((k) => {
             if (!fs.existsSync(k)) {
                 logWarning(`Platform ${k} not created yet. creating one for you...`);
-                cmds.push(platformRunner(spawnCommand(c, {
+                cmds.push(CLI(spawnCommand(c, {
                     subCommand: 'configure',
                     program: { appConfig: c.runtime.appId, platform }
                 })));
