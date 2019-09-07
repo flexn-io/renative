@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { logWarning, logTask, logStatus, logEnd } from '../systemTools/logger';
+import { logWarning, logTask, logStatus, logEnd, logToSummary } from '../systemTools/logger';
 import { listWorkspaces } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { templateAdd, templateApply, templateList } from '../templateTools';
@@ -209,7 +209,7 @@ const _execCommandHep = async (c, cmd) => {
         opts += (cmd.params || []).reduce((t, v) => `${t}--${v}\n`, '');
     }
 
-    console.log(`
+    logToSummary(`
 Command: ${c.command}
 
 Description: ${cmd.desc}.
