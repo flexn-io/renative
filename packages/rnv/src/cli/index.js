@@ -5,6 +5,7 @@ import { listWorkspaces } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { templateAdd, templateApply, templateList } from '../templateTools';
 import { targetCreate, targetLaunch, targetList } from '../platformTools/target';
+import { pluginAdd, pluginList, pluginUpdate } from '../pluginTools';
 
 const COMMANDS = {
     start: {
@@ -39,7 +40,20 @@ const COMMANDS = {
             }
         }
     },
-    plugin: {},
+    plugin: {
+        desc: 'Manages all plugins',
+        subCommands: {
+            add: {
+                fn: pluginAdd
+            },
+            list: {
+                fn: pluginList
+            },
+            update: {
+                fn: pluginUpdate
+            }
+        }
+    },
     log: {},
     hooks: {},
     status: {},

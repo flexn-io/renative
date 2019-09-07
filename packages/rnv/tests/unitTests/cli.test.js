@@ -1,5 +1,4 @@
 import { createRnvConfig, generateBuildConfig } from '../../src/configTools/configParser';
-import runPlugin from '../../src/cli/plugin';
 import runPlatform from '../../src/cli/platform';
 import run from '../../src/cli/runner';
 import cli from '../../src/cli';
@@ -23,7 +22,7 @@ describe('Testing plugin functions', () => {
     it('plugin list should resolve', async () => {
         const c = createRnvConfig({ platform: 'android' }, { process: true }, 'plugin', 'list');
         generateBuildConfig(c);
-        await expect(runPlugin(c)).resolves;
+        await expect(cli(c)).resolves;
     });
 });
 
@@ -32,6 +31,6 @@ describe('Testing platform functions', () => {
         const c = createRnvConfig({ platform: 'android' }, { process: true }, 'plugin', 'list');
         generateBuildConfig(c);
         c.buildConfig = { defaults: { supportedPlatforms: ['ios', 'android'] }, common: {} };
-        await expect(runPlatform(c)).resolves;
+        await expect(cli(c)).resolves;
     });
 });
