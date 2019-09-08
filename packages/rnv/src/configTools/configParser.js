@@ -179,10 +179,14 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     logTask('parseRenativeConfigs');
     try {
         // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
-        if (!loadFile(c.files.project.builds, c.paths.project.builds, 'config'));
+        loadFile(c.files.project.builds, c.paths.project.builds, 'config');
 
         // LOAD ./package.json
         loadFile(c.files.project, c.paths.project, 'package');
+
+        // LOAD ./RENATIVE.*.JSON
+        _loadConfigFiles(c, c.files.project, c.paths.project);
+        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
         _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
@@ -194,9 +198,6 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
         // LOAD PLUGIN TEMPLATES
         loadPluginTemplates(c);
 
-        // LOAD ./RENATIVE.*.JSON
-        _loadConfigFiles(c, c.files.project, c.paths.project);
-        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
         if (!c.files.project.config) return resolve();
 
         // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
@@ -205,7 +206,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
 
         c.paths.workspace.project.projectConfig.dir = path.join(c.paths.workspace.project.dir, 'projectConfig');
-        c.paths.workspace.project.appConfigsDir = path.join(c.paths.workspace.project.dir, 'appConfigs');
+
 
         _findAndSwitchAppConfigDir(c);
 
@@ -223,13 +224,14 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
 const _getWorkspaceDirPath = (c) => {
     const wss = c.files.configWorkspaces;
-    const ws = c.runtime.selectedWorkspace || c.files.buildConfig?.workspace;
+    const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
+
     let dirPath;
     if (wss?.workspaces && ws) {
         dirPath = wss.workspaces[ws]?.path;
     }
     if (!dirPath) {
-        return c.files.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
+        return c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
     }
     return dirPath;
 };
@@ -369,6 +371,9 @@ export const setAppConfig = (c, appId) => {
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
     _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
+
+    const workspaceAppConfigsDir = getRealPath(c, c.buildConfig.workspaceAppConfigsDir);
+    c.paths.workspace.project.appConfigsDir = workspaceAppConfigsDir || path.join(c.paths.workspace.project.dir, 'appConfigs');
 
     _generateConfigPaths(c.paths.workspace.appConfig, path.join(c.paths.workspace.project.appConfigsDir, appId));
 
@@ -515,7 +520,7 @@ export const generateLocalConfig = (c, resetAppId) => {
 
 const _generatePlatformTemplatePaths = (c) => {
     const pt = c.buildConfig.platformTemplatesDirs || {};
-    const originalPath = c.buildConfig.platformTemplatesDir || 'RNV_HOME/platformTemplates';
+    const originalPath = c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {

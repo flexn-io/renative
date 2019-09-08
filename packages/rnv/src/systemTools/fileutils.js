@@ -237,10 +237,12 @@ export const getRealPath = (c, p, key = 'undefined', original) => {
     if (p.startsWith('./')) {
         return path.join(c.paths.project.dir, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnv.dir)
+    const output = p.replace(/\$RNV_HOME/g, c.paths.rnv.dir)
         .replace(/~/g, c.paths.home.dir)
-        .replace(/USER_HOME/g, c.paths.home.dir)
-        .replace(/PROJECT_HOME/g, c.paths.project.dir);
+        .replace(/\$USER_HOME/g, c.paths.home.dir)
+        .replace(/\$PROJECT_HOME/g, c.paths.project.dir)
+        .replace(/\$WORKSPACE_HOME/g, c.paths.workspace.dir);
+    return output;
 };
 
 const _refToValue = (c, ref, key) => {
