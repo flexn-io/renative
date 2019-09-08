@@ -1,5 +1,5 @@
 {
-    "docs": {
+    "docs-sidebar": {
         "GettingStarted": ["installation", "features", "architecture"],
         "Platforms": [
             "platforms_overview",
@@ -32,8 +32,10 @@
             "runtime",
             "common_issues",
             "develop"
-        ],
-        "RNV API Reference": [
+        ]
+    },
+    "api-sidebar": {
+        "CLI": [
             "rnv-new",
             "rnv-start",
             "rnv-run",

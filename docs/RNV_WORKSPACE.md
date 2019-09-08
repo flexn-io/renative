@@ -6,8 +6,15 @@ sidebar_label: workspace
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## workspace
 
-## add
+Run workspace command with options
+
+```bash
+rnv workspace
+```
+
+### add
 
 Creates new workspace
 
@@ -15,8 +22,16 @@ Creates new workspace
 rnv workspace add
 ```
 
+### list
 
-## update
+Lists all available workspaces
+
+```bash
+rnv workspace list
+```
+
+
+### update
 
 Updates workspace (if connected to remote)
 
@@ -24,7 +39,7 @@ Updates workspace (if connected to remote)
 rnv workspace update
 ```
 
-## connect
+### connect
 
 Connects workspace to remote
 
