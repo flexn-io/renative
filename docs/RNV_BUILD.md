@@ -6,4 +6,18 @@ sidebar_label: build
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-TODO
+## build
+
+Get interactive options for build
+
+```bash
+rnv build
+```
+
+### help
+
+Display build help
+
+```bash
+rnv build help
+```

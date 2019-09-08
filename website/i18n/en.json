@@ -198,6 +198,10 @@
                 "title": "rnv workspace",
                 "sidebar_label": "workspace"
             },
+            "rnv": {
+                "title": "rnv",
+                "sidebar_label": "rnv"
+            },
             "version-0.26/version-0.26-build_hooks": {
                 "title": "Build Hooks",
                 "sidebar_label": "Build Hooks"
@@ -314,9 +318,9 @@
                 "title": "Templates",
                 "sidebar_label": "Templates"
             },
-            "version-0.26/version-0.26-rnv-new": {
-                "title": "rnv new",
-                "sidebar_label": "new"
+            "version-0.26/version-0.26-rnv": {
+                "title": "rnv",
+                "sidebar_label": "rnv"
             }
         },
         "links": {

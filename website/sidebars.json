@@ -36,6 +36,7 @@
     },
     "api-sidebar": {
         "CLI": [
+            "rnv",
             "rnv-new",
             "rnv-start",
             "rnv-run",
@@ -43,13 +44,15 @@
             "rnv-build",
             "rnv-export",
             "rnv-deploy",
-            "rnv-status",
             "rnv-log",
+            "rnv-status",
+            "rnv-crypto",
             "rnv-platform",
             "rnv-plugin",
             "rnv-template",
             "rnv-target",
-            "rnv-workspace"
+            "rnv-workspace",
+            "rnv-clean"
         ]
     }
 }
