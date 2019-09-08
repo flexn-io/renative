@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 
-const highlight = chalk.green;
+const highlight = chalk.grey.bold;
 
 export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
     let asString = '';
@@ -59,4 +59,4 @@ const _sort = (a, b) => {
     return com;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${highlight(i + 1)}] ${highlight(mapping ? '' : defaultVal)} \n`;
+const _generateOptionString = (i, obj, mapping, defaultVal) => ` [${highlight(i + 1)}]> ${highlight(mapping ? '' : defaultVal)} \n`;

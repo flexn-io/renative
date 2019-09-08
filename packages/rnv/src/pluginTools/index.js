@@ -18,13 +18,13 @@ export const rnvPluginList = c => new Promise((resolve) => {
     const o = _getPluginList(c);
 
     // console.log(o.asString);
-    logToSummary(o.asString);
+    logToSummary(`Plugins:\n\n${o.asString}`);
 
     resolve();
 });
 
 const _getPluginList = (c, isUpdate = false) => {
-    const { plugins } = c.files.rnv.pluginTemplates.config;
+    const plugins = c.files.rnv.pluginTemplates.config?.pluginTemplates;
     const output = {
         asString: '',
         asArray: [],
@@ -43,22 +43,22 @@ const _getPluginList = (c, isUpdate = false) => {
         });
         if (platforms.length) platforms = platforms.slice(0, platforms.length - 2);
         const installedPlugin = c.buildConfig && c.buildConfig.plugins && c.buildConfig.plugins[k];
-        const installedString = installedPlugin ? chalk.red('installed') : chalk.green('not installed');
+        const installedString = installedPlugin ? chalk.yellow('installed') : chalk.green('not installed');
         if (isUpdate && installedPlugin) {
             output.plugins.push(k);
             let versionString;
             if (installedPlugin.version !== p.version) {
-                versionString = `(${chalk.red(installedPlugin.version)}) => (${chalk.green(p.version)})`;
+                versionString = `(${chalk.yellow(installedPlugin.version)}) => (${chalk.green(p.version)})`;
             } else {
                 versionString = `(${chalk.green(installedPlugin.version)})`;
             }
-            output.asString += `-[${i}] ${chalk.white(k)} ${versionString}\n`;
+            output.asString += ` [${i}]> ${chalk.bold(k)} ${versionString}\n`;
             output.asArray.push({ name: `${k} ${versionString}`, value: k });
             i++;
         } else if (!isUpdate) {
             output.plugins.push(k);
-            output.asString += `-[${i}] ${chalk.white(k)} (${chalk.blue(p.version)}) [${platforms}] - ${installedString}\n`;
-            output.asArray.push({ name: `${k} (${chalk.blue(p.version)}) [${platforms}] - ${installedString}`, value: k });
+            output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}\n`;
+            output.asArray.push({ name: `${k} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}`, value: k });
 
             i++;
         }

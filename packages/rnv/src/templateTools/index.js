@@ -318,7 +318,7 @@ export const getInstalledTemplateOptions = (c) => {
 export const rnvTemplateList = c => new Promise((resolve, reject) => {
     logTask('rnvTemplateList');
     const opts = getTemplateOptions(c);
-    logToSummary(opts.asString);
+    logToSummary(`Templates:\n\n${opts.asString}`);
     resolve();
 });
 

@@ -3,9 +3,10 @@ import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
 import {
-    isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
-    getAppFolder, logWarning, resolveNodeModulePath
+    isPlatformSupportedSync, getConfig,
+    getAppFolder, resolveNodeModulePath
 } from '../common';
+import { logToSummary, logTask, logComplete, logError, logWarning } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
@@ -93,13 +94,13 @@ const rnvHooksList = c => new Promise((resolve, reject) => {
         .then(() => {
             if (c.buildHooks) {
                 const hookOpts = generateOptions(c.buildHooks);
-                let hooksAsString = `\n${chalk.blue('Hooks:')}\n${hookOpts.asString}`;
+                let hooksAsString = `\n${'Hooks:'}\n${hookOpts.asString}`;
 
                 if (c.buildPipes) {
                     const pipeOpts = generateOptions(c.buildPipes);
-                    hooksAsString += `\n${chalk.blue('Pipes:')}\n${pipeOpts.asString}`;
+                    hooksAsString += `\n${'Pipes:'}\n${pipeOpts.asString}`;
                 }
-                console.log(hooksAsString);
+                logToSummary(hooksAsString);
                 resolve();
             } else {
                 reject('Your buildHooks object is empty!');

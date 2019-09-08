@@ -15,7 +15,7 @@ import { PLATFORMS } from '../constants';
 
 export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
-    logToSummary(`\n${opts.asString}`);
+    logToSummary(`Platforms:\n\n${opts.asString}`);
     resolve();
 });
 
