@@ -121,7 +121,7 @@
             },
             "cli": {
                 "title": "ReNative CLI",
-                "sidebar_label": "Overview"
+                "sidebar_label": "ReNative CLI"
             },
             "rnv_config": {
                 "title": "RNV Config Object",
@@ -324,7 +324,7 @@
             "GettingStarted": "GettingStarted",
             "Platforms": "Platforms",
             "Guides": "Guides",
-            "CLI": "CLI"
+            "RNV API Reference": "RNV API Reference"
         }
     },
     "pages-strings": {

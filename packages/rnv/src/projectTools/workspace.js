@@ -6,10 +6,21 @@ import {
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
 
-export const rnvWorkspaceList = c => new Promise((resolve, reject) => {
+export const rnvWorkspaceList = async (c) => {
     logTask('rnvWorkspaceList');
-    resolve();
-});
+};
+
+export const rnvWorkspaceAdd = async (c) => {
+    logTask('rnvWorkspaceAdd');
+};
+
+export const rnvWorkspaceConnect = async (c) => {
+    logTask('rnvWorkspaceConnect');
+};
+
+export const rnvWorkspaceUpdate = async (c) => {
+    logTask('rnvWorkspaceUpdate');
+};
 
 
 export const getWorkspaceOptions = c => generateOptions(c.files.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => `-[${chalk.green(i + 1)}] ${chalk.green(defaultVal)}\n`);

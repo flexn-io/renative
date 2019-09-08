@@ -20,6 +20,7 @@
             "windows"
         ],
         "Guides": [
+            "cli",
             "plugins",
             "templates",
             "integrations",
@@ -32,8 +33,7 @@
             "common_issues",
             "develop"
         ],
-        "CLI": [
-            "cli",
+        "RNV API Reference": [
             "rnv-new",
             "rnv-start",
             "rnv-run",

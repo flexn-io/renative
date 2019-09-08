@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from '../systemTools/logger';
-import { rnvWorkspaceList } from '../projectTools/workspace';
+import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpdate } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList } from '../templateTools';
 import { targetCreate, rnvTargetLaunch, rnTargetList } from '../platformTools/target';
@@ -166,9 +166,19 @@ const COMMANDS = {
         }
     },
     workspace: {
+        desc: 'Manages global workspaces for ReNative projects',
         subCommands: {
+            add: {
+                fn: rnvWorkspaceAdd
+            },
+            connect: {
+                fn: rnvWorkspaceConnect
+            },
             list: {
                 fn: rnvWorkspaceList
+            },
+            update: {
+                fn: rnvWorkspaceUpdate
             }
         }
     }
