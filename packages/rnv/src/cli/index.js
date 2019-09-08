@@ -202,12 +202,18 @@ const run = async (c) => {
             await _execCommandHep(c, cmd);
         } else if (cmdFn) {
             if (subCmdFn) {
+                await executePipe(c, `${c.command}:${c.subCommand}:before`);
                 await subCmdFn(c);
+                await executePipe(c, `${c.command}:${c.subCommand}:after`);
             } else {
+                await executePipe(c, `${c.command}:before`);
                 await cmdFn(c);
+                await executePipe(c, `${c.command}:after`);
             }
         } else if (subCmdFn) {
+            await executePipe(c, `${c.command}:${c.subCommand}:before`);
             await subCmdFn(c);
+            await executePipe(c, `${c.command}:${c.subCommand}:before`);
         } else {
             await _handleUnknownSubCommand(c);
         }
