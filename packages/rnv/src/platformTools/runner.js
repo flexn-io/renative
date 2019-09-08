@@ -85,14 +85,15 @@ export const rnvStart = async (c) => {
     switch (platform) {
     case MACOS:
     case WINDOWS:
-        return runElectronDevServer(c, platform, port);
+        await runElectronDevServer(c, platform, port);
     case WEB:
     case TIZEN:
     case WEBOS:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
         await configureIfRequired(c, platform);
-        return runWebDevServer(c, platform, port);
+        await runWebDevServer(c, platform, port);
+        return;
     default:
         if (hosted) {
             return logError('This platform does not support hosted mode', true);
@@ -106,7 +107,7 @@ export const rnvStart = async (c) => {
         startCmd = 'node ./node_modules/react-native/local-cli/cli.js start';
     }
 
-    return executeAsync(c, startCmd);
+    await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
 };
 
 const runWeinre = c => executeAsync(c, 'npx weinre --boundHost -all-');
