@@ -39,8 +39,10 @@ const CHECK_INTEVAL = 5000;
 
 const currentDeviceProps = {};
 
+const isRunningOnWindows = process.platform === 'win32';
 
-const composeDevicesString = (devices, returnArray) => {
+
+export const composeDevicesString = (devices, returnArray) => {
     logTask(`composeDevicesString:${devices ? devices.length : null}`);
     const devicesArray = [];
     devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, !returnArray ? i : null)));
@@ -48,7 +50,7 @@ const composeDevicesString = (devices, returnArray) => {
     return `\n${devicesArray.join('')}`;
 };
 
-const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
+export const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}:${isIndependentThread}`);
 
     if (target) {
@@ -471,8 +473,8 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
 
 const waitForEmulatorToBeReady = (c, emulator) => waitForEmulator(c, CLI_ANDROID_ADB, `-s ${emulator} shell getprop init.svc.bootanim`, res => res.includes('stopped'));
 
-const _checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_checkForActiveEmulator:${platform}`);
+export const checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`checkForActiveEmulator:${platform}`);
     let attempts = 1;
     const maxAttempts = isRunningOnWindows ? 20 : 10;
     let running = false;

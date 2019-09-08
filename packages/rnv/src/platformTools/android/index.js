@@ -34,7 +34,7 @@ import {
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
-import { resetAdb, getAndroidTargets } from './deviceManager';
+import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator } from './deviceManager';
 
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -128,7 +128,7 @@ const _runGradle = async (c, platform) => {
             }]);
             if (response.chosenEmulator) {
                 await launchAndroidSimulator(c, platform, response.chosenEmulator, true);
-                const devices = await _checkForActiveEmulator(c, platform);
+                const devices = await checkForActiveEmulator(c, platform);
                 await _runGradleApp(c, platform, devices);
             }
         } else if (activeDevices.length > 1) {
@@ -146,7 +146,7 @@ const _runGradle = async (c, platform) => {
             }
         } else {
             await _askForNewEmulator(c, platform);
-            const devices = await _checkForActiveEmulator(c, platform);
+            const devices = await checkForActiveEmulator(c, platform);
             await _runGradleApp(c, platform, devices);
         }
     };
@@ -159,7 +159,7 @@ const _runGradle = async (c, platform) => {
                 await _runGradleApp(c, platform, foundDevice);
             } else {
                 await launchAndroidSimulator(c, platform, foundDevice, true);
-                const device = await _checkForActiveEmulator(c, platform);
+                const device = await checkForActiveEmulator(c, platform);
                 await _runGradleApp(c, platform, device);
             }
         } else {
