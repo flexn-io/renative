@@ -10,7 +10,7 @@ import PlatformSetup from '../setupTools';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_EMULATOR, CLI_ANDROID_SDKMANAGER } from '../constants';
 import { launchTizenSimulator } from './tizen';
 import { launchWebOSimulator, listWebOSTargets } from './webos';
-import { launchAndroidSimulator, listAndroidTargets } from './android';
+import { listAndroidTargets, launchAndroidSimulator } from './android/deviceManager';
 import { listAppleDevices, launchAppleSimulator } from './apple';
 import { launchKaiOSSimulator } from './firefox';
 
