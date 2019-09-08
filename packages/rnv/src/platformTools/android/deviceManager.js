@@ -434,8 +434,8 @@ const _getDeviceProp = (arr, prop) => {
     return '';
 };
 
-const _askForNewEmulator = async (c, platform) => {
-    logTask('_askForNewEmulator');
+export const askForNewEmulator = async (c, platform) => {
+    logTask('askForNewEmulator');
     const emuName = c.files.workspace.config.defaultTargets[platform];
 
     const { confirm } = await inquirer.prompt({

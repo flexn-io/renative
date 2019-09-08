@@ -34,7 +34,7 @@ import {
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
-import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator } from './deviceManager';
+import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator } from './deviceManager';
 
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -74,23 +74,17 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 });
 
 
-export const runAndroid = (c, platform, target) => new Promise((resolve, reject) => {
+export const runAndroid = async (c, platform, target) => {
     logTask(`runAndroid:${platform}:${target}`);
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
 
     if (bundleAssets) {
-        packageAndroid(c, platform, bundleIsDev)
-            .then(() => _runGradle(c, platform))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        _runGradle(c, platform)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await packageAndroid(c, platform, bundleIsDev);
     }
-});
+    await _runGradle(c, platform);
+};
 
 const _runGradle = async (c, platform) => {
     logTask(`_runGradle:${platform}`);
@@ -112,6 +106,7 @@ const _runGradle = async (c, platform) => {
     } catch (e) {
         return Promise.reject(e);
     }
+
     const activeDevices = devicesAndEmulators.filter(d => d.isActive);
     const inactiveDevices = devicesAndEmulators.filter(d => !d.isActive);
 
@@ -145,7 +140,7 @@ const _runGradle = async (c, platform) => {
                 await _runGradleApp(c, platform, dev);
             }
         } else {
-            await _askForNewEmulator(c, platform);
+            await askForNewEmulator(c, platform);
             const devices = await checkForActiveEmulator(c, platform);
             await _runGradleApp(c, platform, devices);
         }
