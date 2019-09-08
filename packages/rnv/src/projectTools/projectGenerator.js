@@ -48,7 +48,7 @@ import { executePipe } from './buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { getWorkspaceOptions } from './workspace';
-import { generateRuntimeConfig } from '../configTools/configParser';
+import { generateRuntimeConfig, loadProjectTemplates } from '../configTools/configParser';
 
 const highlight = chalk.green;
 
@@ -64,7 +64,7 @@ export const createNewProject = async (c) => {
         defaultWorkspace: 'rnv'
     };
     data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
-    data.optionTemplates = getTemplateOptions(c);
+    data.optionTemplates = {};
     data.optionWorkspaces = getWorkspaceOptions(c);
 
     // logWelcome();
@@ -83,7 +83,7 @@ export const createNewProject = async (c) => {
     }
 
     const {
-        inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace
+        inputAppTitle, inputAppID, inputVersion, inputWorkspace
     } = await inquirer.prompt([{
         name: 'inputAppTitle',
         type: 'input',
@@ -111,7 +111,14 @@ export const createNewProject = async (c) => {
         message: 'What workspace to use?',
         default: data.defaultWorkspace,
         choices: data.optionWorkspaces.keysAsArray
-    }, {
+    }]);
+
+    loadProjectTemplates(c);
+    data.optionTemplates = getTemplateOptions(c);
+
+    const {
+        inputTemplate, inputSupportedPlatforms
+    } = await inquirer.prompt([{
         name: 'inputTemplate',
         type: 'list',
         message: 'What template to use?',

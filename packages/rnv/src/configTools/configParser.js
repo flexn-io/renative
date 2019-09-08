@@ -173,7 +173,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     _loadWorkspacesSync(c);
 
     // LOAD PROJECT TEMPLATES
-    _loadProjectTemplates(c);
+    loadProjectTemplates(c);
 
     // LOAD PLUGIN TEMPLATES
     _loadPluginTemplates(c);
@@ -623,9 +623,9 @@ const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) =>
     });
 };
 
-const _loadProjectTemplates = (c) => {
+export const loadProjectTemplates = (c) => {
     c.files.rnv.projectTemplates.config = readObjectSync(c.paths.rnv.projectTemplates.config);
-    c.runtime.configProjectTemplates = mergeObjects(c, {}, c.files.rnv.pluginTemplates.config, true, true);
+    c.runtime.configProjectTemplates = mergeObjects(c, {}, c.files.rnv.projectTemplates.config, true, true);
 };
 
 const _loadPluginTemplates = (c) => {
