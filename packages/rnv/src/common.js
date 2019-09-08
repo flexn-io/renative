@@ -193,9 +193,9 @@ export const spawnCommand = (c, overrideParams) => {
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
-    if (c.files.private.config) {
+    if (c.files.workspace.config) {
         const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(c.files.private.config.sdks[sdkPlatform]);
+        if (sdkPlatform) return fs.existsSync(c.files.workspace.config.sdks[sdkPlatform]);
     }
 
     return false;
@@ -203,7 +203,7 @@ export const isSdkInstalled = (c, platform) => {
 
 export const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        reject && reject(`${platform} requires SDK to be installed. check your ${chalk.white(c.paths.private.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.private.config?.sdks?.ANDROID_SDK)}`);
+        reject && reject(`${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.workspace.config?.sdks?.ANDROID_SDK)}`);
         return false;
     }
     return true;

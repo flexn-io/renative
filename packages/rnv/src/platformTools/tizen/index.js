@@ -38,7 +38,7 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(c.paths.private.dir, 'tizen_author.p12');
+    const tizenAuthorCert = path.join(c.paths.workspace.dir, 'tizen_author.p12');
     if (fs.existsSync(tizenAuthorCert)) {
         console.log('tizen_author.p12 file exists!');
         resolve();
@@ -65,7 +65,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
     const { maxErrorLength } = c.program;
 
-    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.private.dir} -a rnv -f tizen_author -p 1234`)
+    execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.workspace.dir} -a rnv -f tizen_author -p 1234`)
         .then(() => addDevelopTizenCertificate(c))
         .then(() => resolve())
         .catch((e) => {
@@ -78,7 +78,7 @@ const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
     const { maxErrorLength } = c.program;
 
-    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.private.dir, 'tizen_author.p12')} -p 1234`)
+    execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.workspace.dir, 'tizen_author.p12')} -p 1234`)
         .then(() => resolve())
         .catch((e) => {
             logError(e);
@@ -185,7 +185,7 @@ const runTizen = async (c, platform, target) => {
         }]);
 
         if (startEmulator) {
-            const defaultTarget = c.files.private.config.defaultTargets[platform];
+            const defaultTarget = c.files.workspace.config.defaultTargets[platform];
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;
@@ -201,7 +201,7 @@ const runTizen = async (c, platform, target) => {
                     return continueLaunching();
                 } catch (err) {
                     logDebug(err);
-                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.private.dir}/${RENATIVE_CONFIG_NAME}`);
+                    logError(`Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME}`);
                 }
             }
         }

@@ -255,7 +255,7 @@ const _rnvRunWithPlatform = async (c) => {
     logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform].defaultPort;
-    const target = c.program.target || c.files.private.config.defaultTargets[platform];
+    const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
     const { device, hosted } = c.program;
 
     logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}`, chalk.grey);
@@ -353,7 +353,7 @@ const _rnvPackageWithPlatform = c => new Promise((resolve, reject) => {
     logTask(`_rnvPackageWithPlatform:${c.platform}`);
     const { platform } = c;
 
-    const target = c.program.target || c.files.private.config.defaultTargets[platform];
+    const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
 
     switch (platform) {
     case IOS:

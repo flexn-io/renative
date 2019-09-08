@@ -20,7 +20,7 @@ export const rnvTargetLaunch = async (c) => {
     await isPlatformSupported(c);
 
     const { platform, program } = c;
-    const target = program.target || c.files.private.config.defaultTargets[platform];
+    const target = program.target || c.files.workspace.config.defaultTargets[platform];
 
     switch (platform) {
     case ANDROID:

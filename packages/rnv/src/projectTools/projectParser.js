@@ -248,7 +248,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.private.project.projectConfig.dir);
+    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.projectConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
 
     if (WEB_HOSTED_PLATFORMS.includes(platform)) {
@@ -268,7 +268,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     }
 
     // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
-    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.private.appConfig.dir);
+    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.workspace.appConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath0sec, destPath);
 
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
@@ -277,7 +277,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
         copyFolderContentsRecursiveSync(sourcePath3, destPath);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
-        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.private.project.projectConfig.dir, `plugins/${key}`));
+        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.workspace.project.projectConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
@@ -285,7 +285,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
-        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.private.appConfig.dir, `plugins/${key}`));
+        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath);
     });
 

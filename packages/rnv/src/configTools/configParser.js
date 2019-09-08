@@ -82,7 +82,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
             },
             template: {},
             appConfig: {},
-            private: {
+            workspace: {
                 project: {
                     projectConfig: {},
                     builds: {},
@@ -107,7 +107,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                 platformTemplates: {}
             },
             appConfig: {},
-            private: {
+            workspace: {
                 project: {
                     projectConfig: {},
                     builds: {},
@@ -167,17 +167,10 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
-    _generateConfigPaths(c.paths.private, c.paths.GLOBAL_RNV_DIR);
+    _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 
     // LOAD WORKSPACES
     _loadWorkspacesSync(c);
-
-    // LOAD PROJECT TEMPLATES
-    loadProjectTemplates(c);
-
-    // LOAD PLUGIN TEMPLATES
-    _loadPluginTemplates(c);
-
 
     return c;
 };
@@ -197,16 +190,22 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
         if (!c.files.project.config) return resolve();
 
         // LOAD ~/.rnv/RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.private, getRealPath(c, _getPrivateDirPath(c)));
-        _loadConfigFiles(c, c.files.private, c.paths.private);
+        _generateConfigPaths(c.paths.workspace, getRealPath(c, _getPrivateDirPath(c)));
+        _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
 
         // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.private.project, path.join(c.paths.private.dir, c.files.project.config.projectName));
-        _loadConfigFiles(c, c.files.private.project, c.paths.private.project);
+        _generateConfigPaths(c.paths.workspace.project, path.join(c.paths.workspace.dir, c.files.project.config.projectName));
+        _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
+
+        // LOAD PROJECT TEMPLATES
+        loadProjectTemplates(c);
+
+        // LOAD PLUGIN TEMPLATES
+        loadPluginTemplates(c);
 
 
-        c.paths.private.project.projectConfig.dir = path.join(c.paths.private.project.dir, 'projectConfig');
-        c.paths.private.project.appConfigsDir = path.join(c.paths.private.project.dir, 'appConfigs');
+        c.paths.workspace.project.projectConfig.dir = path.join(c.paths.workspace.project.dir, 'projectConfig');
+        c.paths.workspace.project.appConfigsDir = path.join(c.paths.workspace.project.dir, 'appConfigs');
 
         _findAndSwitchAppConfigDir(c);
 
@@ -370,9 +369,9 @@ export const setAppConfig = (c, appId) => {
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
     _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
 
-    _generateConfigPaths(c.paths.private.appConfig, path.join(c.paths.private.project.appConfigsDir, appId));
+    _generateConfigPaths(c.paths.workspace.appConfig, path.join(c.paths.workspace.project.appConfigsDir, appId));
 
-    _loadConfigFiles(c, c.files.private.appConfig, c.paths.private.appConfig, c.paths.private.project.appConfigsDir);
+    _loadConfigFiles(c, c.files.workspace.appConfig, c.paths.workspace.appConfig, c.paths.workspace.project.appConfigsDir);
     generateBuildConfig(c);
     generateLocalConfig(c);
 };
@@ -401,17 +400,17 @@ export const generateBuildConfig = (c) => {
         c.paths.project.config,
         c.paths.project.configPrivate,
         c.paths.project.configLocal,
-        c.paths.private.project.config,
-        c.paths.private.project.configPrivate,
-        c.paths.private.project.configLocal,
+        c.paths.workspace.project.config,
+        c.paths.workspace.project.configPrivate,
+        c.paths.workspace.project.configLocal,
         c.paths.appConfig.configBase,
         c.paths.appConfig.config,
         c.paths.appConfig.configPrivate,
         c.paths.appConfig.configLocal,
-        c.paths.private.appConfig.configBase,
-        c.paths.private.appConfig.config,
-        c.paths.private.appConfig.configPrivate,
-        c.paths.private.appConfig.configLocal
+        c.paths.workspace.appConfig.configBase,
+        c.paths.workspace.appConfig.config,
+        c.paths.workspace.appConfig.configPrivate,
+        c.paths.workspace.appConfig.configLocal
     ];
     const cleanPaths = mergeOrder.filter(v => v);
     const existsPaths = cleanPaths.filter((v) => {
@@ -429,27 +428,27 @@ export const generateBuildConfig = (c) => {
         c.files.project.config,
         c.files.project.configPrivate,
         c.files.project.configLocal,
-        c.files.private.project.config,
-        c.files.private.project.configPrivate,
-        c.files.private.project.configLocal,
+        c.files.workspace.project.config,
+        c.files.workspace.project.configPrivate,
+        c.files.workspace.project.configLocal,
         c.files.appConfig.configBase,
         c.files.appConfig.config,
         c.files.appConfig.configPrivate,
         c.files.appConfig.configLocal,
-        c.files.private.appConfig.configBase,
-        c.files.private.appConfig.config,
-        c.files.private.appConfig.configPrivate,
-        c.files.private.appConfig.configLocal
+        c.files.workspace.appConfig.configBase,
+        c.files.workspace.appConfig.config,
+        c.files.workspace.appConfig.configPrivate,
+        c.files.workspace.appConfig.configLocal
     ];
 
     const mergeFolders = [
         // platform templates
         c.paths.rnv.platformTemplate.dir,
         c.paths.project.projectConfig.buildsDir,
-        c.paths.private.project.projectConfig.buildsDir,
+        c.paths.workspace.project.projectConfig.buildsDir,
         // ...c.paths.project.appConfigs.dirs,
         c.paths.appConfig.buildsDir,
-        c.paths.private.appConfig.buildsDir
+        c.paths.workspace.appConfig.buildsDir
         // PROJECT PLUGINS?
         // PROJECT ASSETS?
         // PROJECT FONTS?
@@ -628,7 +627,7 @@ export const loadProjectTemplates = (c) => {
     c.runtime.configProjectTemplates = mergeObjects(c, {}, c.files.rnv.projectTemplates.config, true, true);
 };
 
-const _loadPluginTemplates = (c) => {
+export const loadPluginTemplates = (c) => {
     c.files.rnv.pluginTemplates.config = readObjectSync(c.paths.rnv.pluginTemplates.config);
 };
 
@@ -642,7 +641,7 @@ const _loadWorkspacesSync = (c) => {
         c.files.configWorkspaces = {
             workspaces: {
                 rnv: {
-                    path: c.paths.private.dir
+                    path: c.paths.workspace.dir
                 }
             }
         };
@@ -655,56 +654,56 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
 
 
     // Check globalConfig Dir
-    if (fs.existsSync(c.paths.private.dir)) {
-        logDebug(`${c.paths.private.dir} folder exists!`);
+    if (fs.existsSync(c.paths.workspace.dir)) {
+        logDebug(`${c.paths.workspace.dir} folder exists!`);
     } else {
-        console.log(`${c.paths.private.dir} folder missing! Creating one for you...`);
-        mkdirSync(c.paths.private.dir);
+        console.log(`${c.paths.workspace.dir} folder missing! Creating one for you...`);
+        mkdirSync(c.paths.workspace.dir);
     }
 
     // Check globalConfig
-    if (fs.existsSync(c.paths.private.config)) {
-        logDebug(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
+    if (fs.existsSync(c.paths.workspace.config)) {
+        logDebug(`${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file exists!`);
     } else {
-        const oldGlobalConfigPath = path.join(c.paths.private.dir, 'config.json');
+        const oldGlobalConfigPath = path.join(c.paths.workspace.dir, 'config.json');
         if (fs.existsSync(oldGlobalConfigPath)) {
             logWarning('Found old version of your config. will copy it to new renative.json config');
-            copyFileSync(oldGlobalConfigPath, c.paths.private.config);
+            copyFileSync(oldGlobalConfigPath, c.paths.workspace.config);
         } else {
-            console.log(`${c.paths.private.dir}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
-            copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.private.config);
+            console.log(`${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME} file missing! Creating one for you...`);
+            copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json'), c.paths.workspace.config);
             console.log(
                 `Don\'t forget to Edit: ${
-                    c.paths.private.dir
+                    c.paths.workspace.dir
                 }/${RENATIVE_CONFIG_NAME} with correct paths to your SDKs before continuing!`,
             );
         }
     }
 
-    if (fs.existsSync(c.paths.private.config)) {
-        c.files.private.config = JSON.parse(fs.readFileSync(c.paths.private.config).toString());
+    if (fs.existsSync(c.paths.workspace.config)) {
+        c.files.workspace.config = JSON.parse(fs.readFileSync(c.paths.workspace.config).toString());
 
-        if (c.files.private.config?.appConfigsPath) {
-            if (!fs.existsSync(c.files.private.config.appConfigsPath)) {
+        if (c.files.workspace.config?.appConfigsPath) {
+            if (!fs.existsSync(c.files.workspace.config.appConfigsPath)) {
                 logWarning(
                     `Looks like your custom global appConfig is pointing to ${chalk.white(
-                        c.files.private.config.appConfigsPath,
+                        c.files.workspace.config.appConfigsPath,
                     )} which doesn't exist! Make sure you create one in that location`,
                 );
             } else {
                 logInfo(
                     `Found custom appConfing location pointing to ${chalk.white(
-                        c.files.private.config.appConfigsPath,
+                        c.files.workspace.config.appConfigsPath,
                     )}. ReNativewill now swith to that location!`,
                 );
-                c.paths.project.appConfigsDir = c.files.private.config.appConfigsPath;
+                c.paths.project.appConfigsDir = c.files.workspace.config.appConfigsPath;
             }
         }
 
         const isRunningOnWindows = process.platform === 'win32';
 
         // Check global SDKs
-        const { sdks } = c.files.private.config;
+        const { sdks } = c.files.workspace.config;
         if (sdks) {
             if (sdks.ANDROID_SDK) {
                 c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
@@ -718,29 +717,29 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
                 c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
             }
             if (sdks.WEBOS_SDK) {
-                c.cli[CLI_WEBOS_ARES] = path.join(c.files.private.config.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.private.config.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.private.config.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.private.config.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.private.config.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.private.config.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.private.config.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
             }
         } else {
-            logWarning(`Your ${c.paths.private.config} is missing SDK configuration object`);
+            logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
         }
 
 
         // Check config sanity
-        if (c.files.private.config.defaultTargets === undefined) {
+        if (c.files.workspace.config.defaultTargets === undefined) {
             logWarning(
-                `Looks like you\'re missing defaultTargets in your config ${chalk.white(c.paths.private.config)}. Let's add them!`,
+                `Looks like you\'re missing defaultTargets in your config ${chalk.white(c.paths.workspace.config)}. Let's add them!`,
             );
             const defaultConfig = JSON.parse(
                 fs.readFileSync(path.join(c.paths.rnv.dir, 'supportFiles', 'global-config-template.json')).toString(),
             );
-            const newConfig = { ...c.files.private.config, defaultTargets: defaultConfig.defaultTargets };
-            fs.writeFileSync(c.paths.private.config, JSON.stringify(newConfig, null, 2));
+            const newConfig = { ...c.files.workspace.config, defaultTargets: defaultConfig.defaultTargets };
+            fs.writeFileSync(c.paths.workspace.config, JSON.stringify(newConfig, null, 2));
         }
     }
 

@@ -10,7 +10,7 @@ import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 
 const getEnvVar = (c) => {
-    const p1 = c.paths.private.dir.split('/').pop().replace('.', '');
+    const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
     const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
     logDebug('encrypt looking for env var:', envVar);
@@ -31,7 +31,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
-        const destTemp = `${path.join(c.paths.private.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
+        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
 
         const envVar = getEnvVar(c);
         const key = c.program.key || c.process.env[envVar];
@@ -43,7 +43,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             {
                 gzip: true,
                 file: destTemp,
-                cwd: c.paths.private.dir
+                cwd: c.paths.workspace.dir
             },
             [source]
         )
@@ -70,7 +70,7 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
-        const destTemp = `${path.join(c.paths.private.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
+        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
         const key = c.program.key || c.process.env[envVar];
@@ -83,14 +83,14 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
                 tar.x(
                     {
                         file: destTemp,
-                        cwd: c.paths.private.dir
+                        cwd: c.paths.workspace.dir
                     }
                 ).then(() => {
                     removeFilesSync([destTemp]);
                     if (fs.existsSync(ts)) {
-                        copyFileSync(ts, path.join(c.paths.private.dir, c.files.project.package.name, 'timestamp'));
+                        copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
                     }
-                    logSuccess(`Files succesfully extracted into ${c.paths.private.dir}`);
+                    logSuccess(`Files succesfully extracted into ${c.paths.workspace.dir}`);
                     resolve();
                 })
                     .catch(e => reject(e));
@@ -118,7 +118,7 @@ export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
         mkdirSync(ppFolder);
     }
 
-    const list = getFileListSync(c.paths.private.project.dir);
+    const list = getFileListSync(c.paths.workspace.project.dir);
     const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
 
     try {
@@ -144,7 +144,7 @@ export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
     }
     const kChain = c.program.keychain || 'ios-build.keychain';
     const kChainPath = path.join(c.paths.home.dir, 'Library/Keychains', kChain);
-    const list = getFileListSync(c.paths.private.project.dir);
+    const list = getFileListSync(c.paths.workspace.project.dir);
     const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
 

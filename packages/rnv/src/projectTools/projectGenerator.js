@@ -48,7 +48,7 @@ import { executePipe } from './buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { getWorkspaceOptions } from './workspace';
-import { generateRuntimeConfig, loadProjectTemplates } from '../configTools/configParser';
+import { generateRuntimeConfig, loadProjectTemplates, parseRenativeConfigs } from '../configTools/configParser';
 
 const highlight = chalk.green;
 
@@ -112,7 +112,7 @@ export const createNewProject = async (c) => {
         default: data.defaultWorkspace,
         choices: data.optionWorkspaces.keysAsArray
     }]);
-
+    console.log('KJSKJHSKJSHKJ', c.files.workspace);
     loadProjectTemplates(c);
     data.optionTemplates = getTemplateOptions(c);
 

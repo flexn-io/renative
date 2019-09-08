@@ -17,9 +17,9 @@ export const checkAndMigrateProject = async (c) => {
     const paths = {
         project: prjDir,
         globalConfig: path.join(c.paths.GLOBAL_RNV_DIR, 'config.json'),
-        // privateProjectConfig: path.join(c.paths.private.project.dir, 'config.json'),
-        // privateProjectConfig2: path.join(c.paths.private.project.dir, 'config.private.json'),
-        // privateProjectConfigNew: path.join(c.paths.private.project.dir, 'renative.private.json'),
+        // privateProjectConfig: path.join(c.paths.workspace.project.dir, 'config.json'),
+        // privateProjectConfig2: path.join(c.paths.workspace.project.dir, 'config.private.json'),
+        // privateProjectConfigNew: path.join(c.paths.workspace.project.dir, 'renative.private.json'),
         config: path.join(prjDir, 'rnv-config.json'),
         configNew: path.join(prjDir, 'renative.json'),
         package: path.join(prjDir, 'package.json'),
@@ -141,9 +141,9 @@ const _migrateFile = (oldPath, newPath) => {
 const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
     logTask('MIGRATION STARTED');
 
-    if (!fs.existsSync(c.paths.private.config)) {
+    if (!fs.existsSync(c.paths.workspace.config)) {
         if (fs.existsSync(paths.globalConfig)) {
-            copyFileSync(paths.globalConfig, c.paths.private.config);
+            copyFileSync(paths.globalConfig, c.paths.workspace.config);
         }
     }
 

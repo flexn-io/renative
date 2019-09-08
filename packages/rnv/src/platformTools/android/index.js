@@ -437,7 +437,7 @@ const _getDeviceProp = (arr, prop) => {
 
 const _askForNewEmulator = async (c, platform) => {
     logTask('_askForNewEmulator');
-    const emuName = c.files.private.config.defaultTargets[platform];
+    const emuName = c.files.workspace.config.defaultTargets[platform];
 
     const { confirm } = await inquirer.prompt({
         name: 'confirm',
@@ -649,8 +649,8 @@ const _checkSigningCerts = async (c) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
 
-    if (signingConfig === 'Release' && !c.files.private.appConfig.configPrivate) {
-        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.private.appConfig.dir)} yet.`);
+    if (signingConfig === 'Release' && !c.files.workspace.appConfig.configPrivate) {
+        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.workspace.appConfig.dir)} yet.`);
 
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
@@ -663,7 +663,7 @@ const _checkSigningCerts = async (c) => {
                 {
                     type: 'input',
                     name: 'storeFile',
-                    message: `Paste asolute or relative path to ${chalk.white(c.paths.private.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
+                    message: `Paste asolute or relative path to ${chalk.white(c.paths.workspace.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
                 },
                 {
                     type: 'password',
@@ -682,14 +682,14 @@ const _checkSigningCerts = async (c) => {
                 }
             ]);
 
-            if (c.paths.private.appConfig.dir) {
-                mkdirSync(c.paths.private.appConfig.dir);
-                c.files.private.appConfig.configPrivate = {
+            if (c.paths.workspace.appConfig.dir) {
+                mkdirSync(c.paths.workspace.appConfig.dir);
+                c.files.workspace.appConfig.configPrivate = {
                     android: { storeFile, storePassword, keyAlias, keyPassword }
                 };
             }
-            fs.writeFileSync(c.paths.private.appConfig.configPrivate, JSON.stringify(c.files.private.appConfig.configPrivate, null, 2));
-            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.private.appConfig.dir)}.`);
+            fs.writeFileSync(c.paths.workspace.appConfig.configPrivate, JSON.stringify(c.files.workspace.appConfig.configPrivate, null, 2));
+            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.workspace.appConfig.dir)}.`);
         } else {
             return Promise.reject('You selected no. Can\'t proceed');
         }
@@ -754,9 +754,9 @@ const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
 
     const appFolder = getAppFolder(c, platform);
 
-    const addNDK = c.files.private.config.sdks.ANDROID_NDK && !c.files.private.config.sdks.ANDROID_NDK.includes('<USER>');
-    const ndkString = `ndk.dir=${c.files.private.config.sdks.ANDROID_NDK}`;
-    let sdkDir = c.files.private.config.sdks.ANDROID_SDK;
+    const addNDK = c.files.workspace.config.sdks.ANDROID_NDK && !c.files.workspace.config.sdks.ANDROID_NDK.includes('<USER>');
+    const ndkString = `ndk.dir=${c.files.workspace.config.sdks.ANDROID_NDK}`;
+    let sdkDir = c.files.workspace.config.sdks.ANDROID_SDK;
 
     if (isRunningOnWindows) {
         sdkDir = sdkDir.replace(/\\/g, '/');
