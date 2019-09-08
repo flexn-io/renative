@@ -60,8 +60,8 @@ const siteConfig = {
         secondaryColor: '#20232a',
     },
     algolia: {
-        apiKey: 'my-api-key',
-        indexName: 'my-index-name',
+        apiKey: 'ce70fa21a21dad8ee49ed142a8a63b67',
+        indexName: 'renative',
         algoliaOptions: {} // Optional, if provided by Algolia
     },
 
