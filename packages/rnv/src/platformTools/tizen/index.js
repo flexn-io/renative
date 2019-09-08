@@ -161,10 +161,10 @@ const runTizen = async (c, platform, target) => {
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
     if (!platformConfig) {
-        throw new Error(`runTizen: ${chalk.blue(platform)} not defined in your ${chalk.white(c.paths.appConfig.config)}`);
+        throw new Error(`runTizen: ${chalk.grey(platform)} not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
     if (!platformConfig.appName) {
-        throw new Error(`runTizen: ${chalk.blue(platform)}.appName not defined in your ${chalk.white(c.paths.appConfig.config)}`);
+        throw new Error(`runTizen: ${chalk.grey(platform)}.appName not defined in your ${chalk.white(c.paths.appConfig.config)}`);
     }
 
     const tDir = getAppFolder(c, platform);

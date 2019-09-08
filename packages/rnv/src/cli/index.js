@@ -283,7 +283,7 @@ Command: ${c.command}
 Description: ${cmd.desc}.
 ${subCommands}
 ${opts}
-More info at ${chalk.blue(`https://renative.org/docs/rnv-${c.command}`)}
+More info at ${chalk.grey(`https://renative.org/docs/rnv-${c.command}`)}
 `);
     return Promise.resolve();
 };

@@ -84,7 +84,7 @@ const listWebOSTargets = async (c) => {
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 
-    const deviceArray = devices.map((device, i) => `-[${i + 1}] ${device.name} | ${device.device}`);
+    const deviceArray = devices.map((device, i) => ` [${i + 1}]> ${chalk.bold(device.name)} | ${device.device}`);
     console.log(deviceArray.join('\n'));
     return true;
 };

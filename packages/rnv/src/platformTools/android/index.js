@@ -93,12 +93,12 @@ const _getDeviceString = (device, i) => {
     if (isWear) deviceIcon = 'Wear ⌚ ';
     if (!deviceIcon && (udid !== 'unknown' || avdConfig)) deviceIcon = 'Phone 📱 ';
 
-    const deviceString = `${chalk.white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk.blue(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
+    const deviceString = `${chalk.white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk.grey(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
         isActive ? chalk.magenta(' (active)') : ''}`;
 
     if (i === null) return { key: name, name: deviceString, value: name };
 
-    return `-[${i + 1}] ${deviceString}\n`;
+    return ` [${i + 1}]> ${deviceString}\n`;
 };
 
 const resetAdb = async (c) => {

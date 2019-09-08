@@ -100,7 +100,7 @@ const _runXcodeProject = async (c, platform, target) => {
         return Promise.reject(
             `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
                 c.paths.appConfig.config,
-            )}! Check example config for more info:  ${chalk.blue(
+            )}! Check example config for more info:  ${chalk.grey(
                 'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/renative.json',
             )} `,
         );
@@ -162,7 +162,7 @@ const _runXcodeProject = async (c, platform, target) => {
                 return Promise.reject(`Could not find device ${c.program.target}`);
             }
 
-            const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+            const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
 
             const { sim } = await inquirer.prompt({
                 name: 'sim',

@@ -12,7 +12,7 @@ export const rnvWorkspaceList = async (c) => {
 
     const opts = generateOptions(c.files.configWorkspaces?.workspaces, true, null, (i, obj, mapping, defaultVal) => {
         const isConnected = '';
-        return `-[${chalk.grey(i + 1)}] ${chalk.grey.bold(defaultVal)}${isConnected} \n`;
+        return ` [${chalk.grey(i + 1)}]> ${chalk.bold(defaultVal)}${isConnected} \n`;
     });
 
     logToSummary(`Workspaces:\n\n${opts.asString}`);
@@ -31,4 +31,4 @@ export const rnvWorkspaceUpdate = async (c) => {
 };
 
 
-export const getWorkspaceOptions = c => generateOptions(c.files.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => `-[${chalk.green(i + 1)}] ${chalk.green(defaultVal)}\n`);
+export const getWorkspaceOptions = c => generateOptions(c.files.configWorkspaces?.workspaces, false, null, (i, obj, mapping, defaultVal) => ` [${chalk.grey(i + 1)}]> ${chalk.bold(defaultVal)}\n`);

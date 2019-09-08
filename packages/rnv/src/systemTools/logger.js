@@ -46,7 +46,7 @@ export const logWelcome = () => {
             str += printIntoBox(`      ${chalk.yellow('Use "npm install rnv" for stable one.')}`, 1);
         }
     }
-    str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
+    str += printIntoBox(`      ${chalk.grey('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      ${getCurrentCommand()}`);
     if (_c?.timeStart) str += printIntoBox(`      Start Time: ${_c.timeStart.toLocaleString()}`);

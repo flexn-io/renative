@@ -79,7 +79,7 @@ export const rnvPlatformEject = async (c) => {
 const _genPlatOptions = (c) => {
     const opts = generateOptions(c.buildConfig.defaults.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
         const isEjected = c.paths.project.platformTemplatesDirs[obj].includes(c.paths.rnv.platformTemplates.dir) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
-        return `-[${chalk.white(i + 1)}] ${chalk.white(defaultVal)} - ${isEjected} \n`;
+        return ` [${chalk.white(i + 1)}]> ${chalk.bold(defaultVal)} - ${isEjected} \n`;
     });
     return opts;
 };
