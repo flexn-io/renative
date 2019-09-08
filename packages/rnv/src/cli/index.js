@@ -11,12 +11,12 @@ import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projec
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
 import { rnvClean } from '../systemTools/cleaner';
-import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy } from '../platformTools/runner';
+import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 
 
 const COMMANDS = {
     start: {
-        fn: rnvWorkspaceList
+        fn: rnvStart
     },
     run: {
         desc: 'Run your app on target device or emulator',
@@ -204,6 +204,7 @@ const run = async (c) => {
     } else {
         await _handleUnknownCommand(c);
     }
+    return c;
 };
 
 // ##########################################
