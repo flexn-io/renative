@@ -117,7 +117,7 @@ export const rnvPluginAdd = async (c) => {
 };
 
 const _checkAndAddDependantPlugins = (c, plugin) => {
-    const templatePlugins = c.files.rnv.pluginTemplates.config.plugins;
+    const templatePlugins = c.files.rnv.pluginTemplates.config.pluginTemplates;
     if (plugin.dependsOn) {
         plugin.dependsOn.forEach((v) => {
             if (templatePlugins[v]) {
@@ -156,7 +156,7 @@ export const rnvPluginUpdate = async (c) => {
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
-    const origPlugin = c.files.rnv.pluginTemplates.config.plugins[key];
+    const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
     if (typeof plugin === 'string' || plugin instanceof String) {
         if (plugin === 'source:rnv') {
             return origPlugin;

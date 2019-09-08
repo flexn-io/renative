@@ -50,6 +50,8 @@ import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { getWorkspaceOptions } from './workspace';
 import { generateRuntimeConfig } from '../configTools/configParser';
 
+const highlight = chalk.green;
+
 export const createNewProject = async (c) => {
     logTask('createNewProject');
     const { args } = c.program;
@@ -58,7 +60,8 @@ export const createNewProject = async (c) => {
         defaultVersion: '0.1.0',
         defaultTemplate: 'renative-template-hello-world',
         defaultProjectName: 'helloRenative',
-        defaultAppTitle: 'Hello Renative'
+        defaultAppTitle: 'Hello Renative',
+        defaultWorkspace: 'rnv'
     };
     data.optionPlatforms = generateOptions(SUPPORTED_PLATFORMS, true);
     data.optionTemplates = getTemplateOptions(c);
@@ -80,7 +83,7 @@ export const createNewProject = async (c) => {
     }
 
     const {
-        inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms
+        inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace
     } = await inquirer.prompt([{
         name: 'inputAppTitle',
         type: 'input',
@@ -102,12 +105,12 @@ export const createNewProject = async (c) => {
         default: data.defaultVersion,
         validate: v => !!semver.valid(semver.coerce(v)) || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
         message: 'What\'s your Version?'
-    // }, {
-    //     name: 'inputWorkspace',
-    //     type: 'list',
-    //     message: 'What workspace to use?',
-    //     default: data.defaultWorkspace,
-    //     choices: data.optionWorkspaces.keysAsArray
+    }, {
+        name: 'inputWorkspace',
+        type: 'list',
+        message: 'What workspace to use?',
+        default: data.defaultWorkspace,
+        choices: data.optionWorkspaces.keysAsArray
     }, {
         name: 'inputTemplate',
         type: 'list',
@@ -126,11 +129,12 @@ export const createNewProject = async (c) => {
 
 
     data = {
-        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms
+        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace
     };
 
     data.optionTemplates.selectedOption = inputTemplate;
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
+    data.optionWorkspaces.selectedOption = inputWorkspace;
     _prepareProjectOverview(c, data);
 
     const { confirm } = await inquirer.prompt({
@@ -170,7 +174,7 @@ const _generateProject = (c, data) => {
 
         const config = {
             projectName: data.projectName,
-            workspace: 'rnv',
+            workspace: data.optionWorkspaces.selectedOption,
             paths: {
                 appConfigsDir: './appConfigs',
                 platformTemplatesDir: 'RNV_HOME/platformTemplates',
@@ -209,6 +213,7 @@ const _prepareProjectOverview = (c, data) => {
     let str = printBoxStart('🚀  ReNative Project Generator');
     str += printIntoBox('');
     str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`, 1);
+    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`, 1);
     str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`, 1);
     str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
     str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
@@ -240,9 +245,4 @@ const _prepareProjectOverview = (c, data) => {
     str += '\n';
 
     data.confirmString = str;
-};
-
-export const projectGeneratorHelp = async (c) => {
-    console.log(`Creates new project:
-YSSYYSYSYSY`);
 };

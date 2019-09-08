@@ -15,8 +15,6 @@ import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
 import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig } from '../configTools/configParser';
 
-import { templates } from '../../renativeTemplates/templates.json';
-
 
 // let templateName = c.buildConfig.currentTemplate;
 // if (!templateName) {
@@ -302,7 +300,7 @@ const _writeObjectSync = (c, p, s) => {
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = c => generateOptions(templates, false, null, (i, obj, mapping, defaultVal) => {
+export const getTemplateOptions = c => generateOptions(c.runtime.configProjectTemplates, false, null, (i, obj, mapping, defaultVal) => {
     const exists = c.buildConfig.templates?.[defaultVal];
     const installed = exists ? chalk.red(' (installed)') : '';
     return `-[${chalk.green(i + 1)}] ${chalk.green(defaultVal)}${installed} \n`;
