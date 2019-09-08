@@ -182,7 +182,7 @@ const _generateProject = (c, data) => {
 
         const config = {
             projectName: data.projectName,
-            workspace: data.optionWorkspaces.selectedOption,
+            workspaceID: data.optionWorkspaces.selectedOption,
             paths: {
                 appConfigsDir: './appConfigs',
                 platformTemplatesDir: 'RNV_HOME/platformTemplates',

@@ -143,7 +143,7 @@ export const logSummary = () => {
         }
         if (_c.buildConfig) {
             str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig._meta?.currentAppConfigId)}`, 1);
-            str += printIntoBox(`Workspace: ${_highlightColor(_c.buildConfig.workspace)}`, 1);
+            str += printIntoBox(`Workspace: ${_highlightColor(_c.buildConfig.workspaceID)}`, 1);
         }
         if (_c.files.project.config) {
             const defaultProjectConfigs = _c.files.project.config.defaults;

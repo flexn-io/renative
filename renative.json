@@ -3,7 +3,7 @@
         "SOME_ENV_VAR": "xxxx"
     },
     "projectName": "renative",
-    "workspace": "rnv",
+    "workspaceID": "rnv",
     "isWrapper": true,
     "paths": {
         "appConfigsDir": "./appConfigs",
