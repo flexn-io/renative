@@ -112,8 +112,9 @@ export const createNewProject = async (c) => {
         default: data.defaultWorkspace,
         choices: data.optionWorkspaces.keysAsArray
     }]);
-    console.log('KJSKJHSKJSHKJ', c.files.workspace);
-    loadProjectTemplates(c);
+
+    c.runtime.selectedWorkspace = inputWorkspace;
+    parseRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
     const {

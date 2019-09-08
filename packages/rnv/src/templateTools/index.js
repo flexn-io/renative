@@ -300,7 +300,7 @@ const _writeObjectSync = (c, p, s) => {
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = c => generateOptions(c.runtime.configProjectTemplates?.projectTemplates, false, null, (i, obj, mapping, defaultVal) => {
+export const getTemplateOptions = c => generateOptions(c.buildConfig.projectTemplates, false, null, (i, obj, mapping, defaultVal) => {
     const exists = c.buildConfig.templates?.[defaultVal];
     const installed = exists ? chalk.red(' (installed)') : '';
     return `-[${chalk.green(i + 1)}] ${chalk.green(defaultVal)}${installed} \n`;

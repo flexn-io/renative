@@ -184,24 +184,24 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
         // LOAD ./package.json
         loadFile(c.files.project, c.paths.project, 'package');
 
-        // LOAD ./RENATIVE.*.JSON
-        _loadConfigFiles(c, c.files.project, c.paths.project);
-        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
-        if (!c.files.project.config) return resolve();
-
-        // LOAD ~/.rnv/RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.workspace, getRealPath(c, _getPrivateDirPath(c)));
+        // LOAD WORKSPACE /RENATIVE.*.JSON
+        _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
         _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
-
-        // LOAD ~/.rnv/[PROJECT_NAME]/RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.workspace.project, path.join(c.paths.workspace.dir, c.files.project.config.projectName));
-        _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
 
         // LOAD PROJECT TEMPLATES
         loadProjectTemplates(c);
 
         // LOAD PLUGIN TEMPLATES
         loadPluginTemplates(c);
+
+        // LOAD ./RENATIVE.*.JSON
+        _loadConfigFiles(c, c.files.project, c.paths.project);
+        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        if (!c.files.project.config) return resolve();
+
+        // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
+        _generateConfigPaths(c.paths.workspace.project, path.join(c.paths.workspace.dir, c.files.project.config.projectName));
+        _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
 
 
         c.paths.workspace.project.projectConfig.dir = path.join(c.paths.workspace.project.dir, 'projectConfig');
@@ -213,6 +213,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
         c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
     } catch (e) {
+        console.log(e);
         reject(e);
         return;
     }
@@ -220,12 +221,12 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _getPrivateDirPath = (c) => {
+const _getWorkspaceDirPath = (c) => {
     const wss = c.files.configWorkspaces;
-    const ws = c.files.buildConfig?.workspace;
+    const ws = c.runtime.selectedWorkspace || c.files.buildConfig?.workspace;
     let dirPath;
-    if (wss && ws) {
-        dirPath = wss[ws];
+    if (wss?.workspaces && ws) {
+        dirPath = wss.workspaces[ws]?.path;
     }
     if (!dirPath) {
         return c.files.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
@@ -397,6 +398,9 @@ export const generateBuildConfig = (c) => {
     logTask('generateBuildConfig');
 
     const mergeOrder = [
+        c.paths.rnv.projectTemplates.config,
+        c.paths.rnv.pluginTemplates.config,
+        c.paths.workspace.config,
         c.paths.project.config,
         c.paths.project.configPrivate,
         c.paths.project.configLocal,
@@ -425,6 +429,9 @@ export const generateBuildConfig = (c) => {
     });
 
     const mergeFiles = [
+        c.files.rnv.projectTemplates.config,
+        c.files.rnv.pluginTemplates.config,
+        c.files.workspace.config,
         c.files.project.config,
         c.files.project.configPrivate,
         c.files.project.configLocal,
@@ -624,7 +631,6 @@ const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) =>
 
 export const loadProjectTemplates = (c) => {
     c.files.rnv.projectTemplates.config = readObjectSync(c.paths.rnv.projectTemplates.config);
-    c.runtime.configProjectTemplates = mergeObjects(c, {}, c.files.rnv.projectTemplates.config, true, true);
 };
 
 export const loadPluginTemplates = (c) => {
