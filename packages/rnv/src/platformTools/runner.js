@@ -71,30 +71,12 @@ import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, 
 
 const isRunningOnWindows = process.platform === 'win32';
 
-
-const PIPES = {
-    RUN_BEFORE: 'run:before',
-    RUN_AFTER: 'run:after',
-    LOG_BEFORE: 'log:before',
-    LOG_AFTER: 'log:after',
-    START_BEFORE: 'start:before',
-    START_AFTER: 'start:after',
-    PACKAGE_BEFORE: 'package:before',
-    PACKAGE_AFTER: 'package:after',
-    EXPORT_BEFORE: 'export:before',
-    EXPORT_AFTER: 'export:after',
-    BUILD_BEFORE: 'build:before',
-    BUILD_AFTER: 'build:after',
-    DEPLOY_BEFORE: 'deploy:before',
-    DEPLOY_AFTER: 'deploy:after',
-};
-
 // ##########################################
 // PUBLIC API
 // ##########################################
 
 
-export const rnvStart = c => new Promise((resolve, reject) => {
+export const rnvStart = async c => new Promise((resolve, reject) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
     const { hosted } = c.program;
@@ -122,10 +104,8 @@ export const rnvStart = c => new Promise((resolve, reject) => {
     case WEBOS:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
-        executePipe(c, PIPES.START_BEFORE)
-            .then(() => configureIfRequired(c, platform))
+        configureIfRequired(c, platform)
             .then(() => runWebDevServer(c, platform, port))
-            .then(() => executePipe(c, PIPES.START_AFTER))
             .then(() => resolve())
             .catch(e => reject(e));
         return;
@@ -142,10 +122,7 @@ export const rnvStart = c => new Promise((resolve, reject) => {
         startCmd = 'node ./node_modules/react-native/local-cli/cli.js start';
     }
 
-    executePipe(c, PIPES.START_BEFORE)
-        .then(() => {
-            shell.exec(startCmd);
-        })
+    shell.exec(startCmd)
         .catch(e => reject(e));
 });
 
@@ -153,9 +130,13 @@ const runWeinre = () => {
     shell.exec('npx weinre --boundHost -all-');
 };
 
-export const rnvDebug = c => executePipe(c, PIPES.START_BEFORE)
-    .then(() => runWeinre())
-    .then(() => executePipe(c, PIPES.START_AFTER));
+export const rnvDebug = async (c) => {
+    logTask(`rnvDebug:${c.platform}`);
+
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await runWeinre();
+};
 
 
 export const rnvRun = async (c) => {
@@ -223,9 +204,9 @@ const rnvLog = async (c) => {
 // PRIVATE
 // ##########################################
 
-const _fix = c => new Promise((resolve, reject) => {
-    cleanNodeModules(c).then(() => resolve()).catch(e => reject(e));
-});
+const _fix = async (c) => {
+    await cleanNodeModules(c);
+};
 
 const _isWebHostEnabled = (c, platform) => {
     const { hosted } = c.program;
@@ -272,11 +253,10 @@ const _rnvRunWithPlatform = async (c) => {
     switch (platform) {
     case IOS:
     case TVOS:
-        return executePipe(c, PIPES.RUN_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => runXcodeProject(c, platform, target))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await runXcodeProject(c, platform, target);
+        return;
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
@@ -285,25 +265,21 @@ const _rnvRunWithPlatform = async (c) => {
             await setupInstance.askToInstallSDK('android');
         }
 
-        await executePipe(c, PIPES.RUN_BEFORE);
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
         await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
-        await executePipe(c, PIPES.RUN_AFTER);
         return;
     case MACOS:
     case WINDOWS:
-        return executePipe(c, PIPES.RUN_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => runElectron(c, platform, port))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await runElectron(c, platform, port);
+        return;
     case WEB:
-        return executePipe(c, PIPES.RUN_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => runWeb(c, platform, port))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await runWeb(c, platform, port);
+        return;
     case TIZEN:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
@@ -311,37 +287,33 @@ const _rnvRunWithPlatform = async (c) => {
             const setupInstance = PlatformSetup(c);
             await setupInstance.askToInstallSDK('tizen');
         }
-
-        return executePipe(c, PIPES.RUN_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => _configureHostedIfRequired(c, platform))
-            .then(() => runTizen(c, platform, target))
-            .then(() => executePipe(c, PIPES.RUN_AFTER))
-            .then(() => _startHostedServerIfRequired(c, platform));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await _configureHostedIfRequired(c, platform);
+        await runTizen(c, platform, target);
+        await executePipe(c, PIPES.RUN_AFTER);
+        await _startHostedServerIfRequired(c, platform);
+        return;
     case WEBOS:
         if (!checkSdk(c, platform, logError)) {
             const setupInstance = PlatformSetup(c);
             await setupInstance.askToInstallSDK('webos');
         }
-
-        return executePipe(c, PIPES.RUN_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => _configureHostedIfRequired(c, platform))
-            .then(() => runWebOS(c, platform, target))
-            .then(() => executePipe(c, PIPES.RUN_AFTER))
-            .then(() => _startHostedServerIfRequired(c, platform));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await _configureHostedIfRequired(c, platform);
+        await runWebOS(c, platform, target);
+        await _startHostedServerIfRequired(c, platform);
+        return;
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:
         if (platform === KAIOS && !checkSdk(c, platform, throwErr)) return;
 
-        return executePipe(c, PIPES.RUN_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => runFirefoxProject(c, platform))
-            .then(() => executePipe(c, PIPES.RUN_AFTER));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await runFirefoxProject(c, platform);
+        return;
     default:
         break;
     }
@@ -349,7 +321,7 @@ const _rnvRunWithPlatform = async (c) => {
     return logErrorPlatform(platform);
 };
 
-const _rnvPackageWithPlatform = c => new Promise((resolve, reject) => {
+const _rnvPackageWithPlatform = async (c) => {
     logTask(`_rnvPackageWithPlatform:${c.platform}`);
     const { platform } = c;
 
@@ -358,96 +330,78 @@ const _rnvPackageWithPlatform = c => new Promise((resolve, reject) => {
     switch (platform) {
     case IOS:
     case TVOS:
-        executePipe(c, PIPES.PACKAGE_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => packageBundleForXcode(c, platform))
-            .then(() => executePipe(c, PIPES.PACKAGE_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await packageBundleForXcode(c, platform);
         return;
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
         if (!checkSdk(c, platform, reject)) return;
-
-        executePipe(c, PIPES.PACKAGE_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => configureGradleProject(c, platform))
-            .then(() => packageAndroid(c, platform, target, platform === ANDROID_WEAR))
-            .then(() => executePipe(c, PIPES.PACKAGE_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await configureGradleProject(c, platform);
+        await packageAndroid(c, platform, target, platform === ANDROID_WEAR);
         return;
     }
 
     logErrorPlatform(platform, resolve);
-});
+};
 
-const _rnvExportWithPlatform = c => new Promise((resolve, reject) => {
+const _rnvExportWithPlatform = async (c) => {
     logTask(`_rnvExportWithPlatform:${c.platform}`);
     const { platform } = c;
     switch (platform) {
     case IOS:
     case TVOS:
-        executePipe(c, PIPES.EXPORT_BEFORE)
-            .then(() => (c.program.only ? Promise.resolve() : _rnvBuildWithPlatform(c, platform)))
-            .then(() => exportXcodeProject(c, platform))
-            .then(() => executePipe(c, PIPES.EXPORT_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        if (!c.program.only) {
+            await _rnvBuildWithPlatform(c, platform);
+        }
+        await exportXcodeProject(c, platform);
         return;
     case MACOS:
     case WINDOWS:
-        executePipe(c, PIPES.EXPORT_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => configureElectronProject(c, platform))
-            .then(() => buildElectron(c, platform))
-            .then(() => exportElectron(c, platform))
-            .then(() => executePipe(c, PIPES.EXPORT_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await configureElectronProject(c, platform);
+        await buildElectron(c, platform);
+        await exportElectron(c, platform);
+
         return;
     }
 
     logErrorPlatform(platform, resolve);
-});
+};
 
-const _rnvDeployWithPlatform = c => new Promise((resolve, reject) => {
+const _rnvDeployWithPlatform = async (c) => {
     logTask(`_rnvDeployWithPlatform:${c.platform}`);
     const { platform } = c;
 
     switch (platform) {
     case WEB:
-        executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(() => (c.program.only ? Promise.resolve() : rnvBuild(c)))
-            .then(() => deployWeb(c, platform))
-            .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        if (!c.program.only) {
+            await rnvBuild(c);
+        }
+        await deployWeb(c, platform);
         return;
     case IOS:
-        executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(v => (c.program.only ? Promise.resolve() : _rnvExportWithPlatform(c)))
-            .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        if (!c.program.only) {
+            await _rnvExportWithPlatform(c);
+        }
+
         return;
     case ANDROID:
-        executePipe(c, PIPES.DEPLOY_BEFORE)
-            .then(v => (c.program.only ? Promise.resolve() : _rnvBuildWithPlatform(c)))
-            .then(() => executePipe(c, PIPES.DEPLOY_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        if (!c.program.only) {
+            await _rnvBuildWithPlatform(c);
+        }
         return;
     }
 
     logErrorPlatform(platform, resolve);
-});
+};
 
-const _rnvBuildWithPlatform = c => new Promise((resolve, reject) => {
+const _rnvBuildWithPlatform = async (c) => {
     logTask(`_rnvBuildWithPlatform:${c.platform}`);
     const { platform } = c;
 
@@ -455,98 +409,65 @@ const _rnvBuildWithPlatform = c => new Promise((resolve, reject) => {
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
-        executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => configureGradleProject(c, platform))
-            .then(() => packageAndroid(c, platform))
-            .then(() => buildAndroid(c, platform))
-            .then(() => executePipe(c, PIPES.BUILD_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await configureGradleProject(c, platform);
+        await packageAndroid(c, platform);
+        await buildAndroid(c, platform);
         return;
     case MACOS:
     case WINDOWS:
-        executePipe(c, PIPES.RUN_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => configureElectronProject(c, platform))
-            .then(() => buildElectron(c, platform))
-            .then(() => executePipe(c, PIPES.RUN_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await configureElectronProject(c, platform);
+        await buildElectron(c, platform);
         return;
     case IOS:
     case TVOS:
-        executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => (c.program.only ? Promise.resolve() : _rnvPackageWithPlatform(c, platform)))
-            .then(() => archiveXcodeProject(c, platform))
-            .then(() => executePipe(c, PIPES.BUILD_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        if (!c.program.only) {
+            await _rnvPackageWithPlatform(c, platform);
+        }
+        await archiveXcodeProject(c, platform);
         return;
     case WEB:
-        executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => buildWeb(c, platform))
-            .then(() => executePipe(c, PIPES.BUILD_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await buildWeb(c, platform);
         return;
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:
-        executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => buildFirefoxProject(c, platform))
-            .then(() => executePipe(c, PIPES.BUILD_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await buildFirefoxProject(c, platform);
         return;
     case TIZEN:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
         if (!checkSdk(c, platform, reject)) return;
-
-        executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => buildTizenProject(c, platform))
-            .then(() => executePipe(c, PIPES.BUILD_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await buildTizenProject(c, platform);
         return;
     case WEBOS:
         if (!checkSdk(c, platform, reject)) return;
-
-        executePipe(c, PIPES.BUILD_BEFORE)
-            .then(() => cleanPlatformIfRequired(c, platform))
-            .then(() => configureIfRequired(c, platform))
-            .then(() => buildWebOSProject(c, platform))
-            .then(() => executePipe(c, PIPES.BUILD_AFTER))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await cleanPlatformIfRequired(c, platform);
+        await configureIfRequired(c, platform);
+        await buildWebOSProject(c, platform);
         return;
     }
 
     logErrorPlatform(platform, resolve);
-});
+};
 
 
-const _runAndroid = (c, platform, target, forcePackage) => new Promise((resolve, reject) => {
+const _runAndroid = async (c, platform, target, forcePackage) => {
     logTask(`_runAndroid:${platform}`);
 
     if (c.buildConfig.platforms[platform].runScheme === 'Release' || forcePackage) {
-        packageAndroid(c, platform).then(() => {
-            runAndroid(c, platform, target)
-                .then(() => resolve())
-                .catch(e => reject(e));
-        });
+        await packageAndroid(c, platform);
+        await runAndroid(c, platform, target);
     } else {
-        runAndroid(c, platform, target)
-            .then(() => resolve())
-            .catch(e => reject(e));
+        await runAndroid(c, platform, target);
     }
-});
+};
