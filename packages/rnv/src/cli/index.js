@@ -4,7 +4,7 @@ import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from '../systemT
 import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpdate } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList } from '../templateTools';
-import { targetCreate, rnvTargetLaunch, rnTargetList } from '../platformTools/target';
+import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
 import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink } from '../pluginTools';
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
@@ -123,7 +123,7 @@ const COMMANDS = {
                 fn: rnvTargetLaunch
             },
             list: {
-                fn: rnTargetList
+                fn: rnvTargetList
             }
         }
     },

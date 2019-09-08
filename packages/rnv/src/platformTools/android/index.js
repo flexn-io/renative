@@ -12,19 +12,17 @@ import inquirer from 'inquirer';
 import { executeAsync, execCLI, executeTelnet } from '../../systemTools/exec';
 import { createPlatformBuild } from '..';
 import {
-    logTask,
-    logError,
     getAppFolder,
     isPlatformActive,
     getAppTemplateFolder,
-    logWarning,
-    logDebug,
     getConfigProp,
-    logInfo,
-    logSuccess,
     waitForEmulator,
     getAppId
 } from '../../common';
+import { logToSummary, logTask,
+    logError, logWarning,
+    logDebug, logInfo,
+    logSuccess } from '../../systemTools/logger';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
@@ -78,8 +76,8 @@ const listAndroidTargets = async (c) => {
     await resetAdb(c);
     const list = await _listAndroidTargets(c, false, device, device);
     const devices = await composeDevicesString(list);
-    console.log(devices);
-    if (devices.trim() === '') console.log('No devices found');
+    logToSummary(`Android Targets:\n${devices}`);
+    if (devices.trim() === '') logToSummary('Android Targets: No devices found');
     return devices;
 };
 

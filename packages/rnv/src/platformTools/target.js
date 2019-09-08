@@ -60,14 +60,12 @@ export const rnvTargetLaunch = async (c) => {
     }
 };
 
-export const rnTargetList = async (c) => {
-    logTask('rnTargetList');
+export const rnvTargetList = async (c) => {
+    logTask('rnvTargetList');
 
     await isPlatformSupported(c);
 
     const { platform } = c;
-
-    await isPlatformSupported(c);
 
     const throwError = (err) => {
         throw err;

@@ -6,11 +6,8 @@ import semver from 'semver';
 import inquirer from 'inquirer';
 import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
 import {
-    logTask,
     getAppFolder,
     isPlatformActive,
-    logInfo,
-    logSuccess,
     getAppVersion,
     getAppTitle,
     writeCleanFile,
@@ -19,6 +16,7 @@ import {
     getConfigProp,
     waitForEmulator
 } from '../../common';
+import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
     CLI_WEBOS_ARES_PACKAGE,
@@ -85,7 +83,9 @@ const listWebOSTargets = async (c) => {
     const devices = await parseDevices(c, devicesResponse);
 
     const deviceArray = devices.map((device, i) => ` [${i + 1}]> ${chalk.bold(device.name)} | ${device.device}`);
-    console.log(deviceArray.join('\n'));
+
+    logToSummary(`WebOS Targets:\n${deviceArray.join('\n')}`);
+
     return true;
 };
 
