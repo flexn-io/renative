@@ -12,23 +12,11 @@ import SetupTools from './setupTools';
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
-        .then(c => checkWelcome(c))
         .then(c => startBuilder(c))
         .then(v => CLI(v))
         .then(() => logComplete(true))
         .catch(e => logError(e, true));
 };
-
-const checkWelcome = c => new Promise((resolve, reject) => {
-    if ((!c.command && !c.subCommand) || c.command === 'help') {
-        logWelcome();
-        rnvHelp();
-        logComplete(true);
-    } else {
-        resolve(c);
-    }
-});
-
 
 export {
     Constants, Common, Exec, FileUtils,

@@ -13,6 +13,40 @@ import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpd
 import { rnvClean } from '../systemTools/cleaner';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 
+export const rnvHelp = () => {
+    let cmdsString = '';
+    for (const key in COMMANDS) {
+        cmdsString += `${key}, `;
+    }
+
+    logToSummary(`
+${chalk.bold.white('COMMANDS:')}
+
+${cmdsString}
+
+${chalk.bold.white('OPTIONS:')}
+
+'-i, --info', 'Show full debug info'
+'-u, --update', 'Force update dependencies (iOS only)'
+'-p, --platform <value>', 'Select specific platform' // <ios|android|web|...>
+'-c, --appConfigID <value>', 'Select specific appConfigID' // <ios|android|web|...>
+'-t, --target <value>', 'Select specific simulator' // <.....>
+'-d, --device [value]', 'Select connected device'
+'-s, --scheme <value>', 'Select build scheme' // <Debug | Release>
+'-f, --filter <value>', 'Filter Value'
+'-l, --list', 'Return list of items related to command' // <alpha|beta|prod>
+'-r, --reset', 'Also perform reset'
+'-b, --blueprint', 'Blueprint for targets'
+'-h, --host <value>', 'Custom Host IP'
+'-x, --exeMethod <value>', 'Executable method in buildHooks'
+'-P, --port <value>', 'Custom Port'
+'-H, --help', 'Help'
+'-D, --debug', 'enable remote debugger'
+'--hosted', 'Run in a hosted environment (skip bundleAssets)'
+'--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
+`);
+};
+
 
 const COMMANDS = {
     start: {
@@ -48,6 +82,7 @@ const COMMANDS = {
         params: ['mono', 'ci']
     },
     help: {
+        desc: 'Displays help',
         fn: rnvHelp
     },
     configure: {
@@ -282,41 +317,6 @@ const _handleUnknownCommand = async (c) => {
 
     c.command = command;
     return run(c);
-};
-
-
-export const rnvHelp = () => {
-    let cmdsString = '';
-    for (const key in COMMANDS) {
-        cmdsString += `${key}, `;
-    }
-
-    logToSummary(`
-${chalk.bold.white('COMMANDS:')}
-
-${cmdsString}
-
-${chalk.bold.white('OPTIONS:')}
-
-'-i, --info', 'Show full debug info'
-'-u, --update', 'Force update dependencies (iOS only)'
-'-p, --platform <value>', 'Select specific platform' // <ios|android|web|...>
-'-c, --appConfigID <value>', 'Select specific appConfigID' // <ios|android|web|...>
-'-t, --target <value>', 'Select specific simulator' // <.....>
-'-d, --device [value]', 'Select connected device'
-'-s, --scheme <value>', 'Select build scheme' // <Debug | Release>
-'-f, --filter <value>', 'Filter Value'
-'-l, --list', 'Return list of items related to command' // <alpha|beta|prod>
-'-r, --reset', 'Also perform reset'
-'-b, --blueprint', 'Blueprint for targets'
-'-h, --host <value>', 'Custom Host IP'
-'-x, --exeMethod <value>', 'Executable method in buildHooks'
-'-P, --port <value>', 'Custom Port'
-'-H, --help', 'Help'
-'-D, --debug', 'enable remote debugger'
-'--hosted', 'Run in a hosted environment (skip bundleAssets)'
-'--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
-`);
 };
 
 

@@ -4,10 +4,9 @@ import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
 import {
-    isPlatformSupportedSync,
-    logTask,
-    logSuccess
+    isPlatformSupportedSync
 } from '../common';
+import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync, removeDirs } from '../systemTools/fileutils';
 import { executePipe } from '../projectTools/buildHooks';
@@ -16,7 +15,7 @@ import { PLATFORMS } from '../constants';
 
 export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
-    console.log(`\n${opts.asString}`);
+    logToSummary(`\n${opts.asString}`);
     resolve();
 });
 
