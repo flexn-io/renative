@@ -203,7 +203,12 @@ export const isSdkInstalled = (c, platform) => {
 
 export const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        reject && reject(`${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.workspace.config?.sdks?.ANDROID_SDK)}`);
+        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.workspace.config?.sdks?.ANDROID_SDK)}`;
+        if (reject) {
+            reject(err);
+        } else {
+            throw new Error(err);
+        }
         return false;
     }
     return true;
