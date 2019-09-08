@@ -13,7 +13,7 @@ import { logToSummary, logError, logInfo, logWarning, logTask, logDebug } from '
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
-import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig } from '../configTools/configParser';
+import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig, updateConfig } from '../configTools/configParser';
 
 
 // let templateName = c.buildConfig.currentTemplate;
@@ -162,7 +162,7 @@ const _configureSrc = c => new Promise((resolve, reject) => {
 });
 
 
-const _configureAppConfigs = c => new Promise((resolve, reject) => {
+const _configureAppConfigs = async (c) => {
     // Check appConfigs
     logTask('configureProject:check appConfigs', chalk.grey);
     //
@@ -170,7 +170,7 @@ const _configureAppConfigs = c => new Promise((resolve, reject) => {
         logInfo(
             `Looks like your appConfig folder ${chalk.white(
                 c.paths.project.appConfigsDir,
-            )} is missing! Let's create sample config for you.`,
+            )} is missing! ReNative will create one from template.`,
         );
 
         // TODO: GET CORRECT PROJECT TEMPLATE
@@ -203,12 +203,12 @@ const _configureAppConfigs = c => new Promise((resolve, reject) => {
                     }
                 }
             }
+            await updateConfig(c, '?');
         } catch (e) {
             logError(e);
         }
     }
-    resolve();
-});
+};
 
 const _configureProjectConfig = c => new Promise((resolve, reject) => {
     // Check projectConfigs
