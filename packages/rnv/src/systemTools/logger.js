@@ -142,7 +142,8 @@ export const logSummary = () => {
             str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
         if (_c.buildConfig) {
-            str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig.id)}`, 1);
+            str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig._meta?.currentAppConfigId)}`, 1);
+            str += printIntoBox(`Workspace: ${_highlightColor(_c.buildConfig.workspace)}`, 1);
         }
         if (_c.files.project.config) {
             const defaultProjectConfigs = _c.files.project.config.defaults;
@@ -282,9 +283,9 @@ export const printArrIntoBox = (arr, prefix = '') => {
         const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
         if (stringArr.length > l) {
             if (i === 0 && prefix.length) {
-                output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr)}`, 2);
+                output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr)}`, 2);
             } else {
-                output += printIntoBox(_highlightColor(stringArr), 1);
+                output += printIntoBox(_defaultColor(stringArr), 1);
             }
 
             stringArr = '';
@@ -294,9 +295,9 @@ export const printArrIntoBox = (arr, prefix = '') => {
         // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
     });
     if (i === 0 && prefix.length) {
-        output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr.slice(0, -2))}`, 2);
+        output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr.slice(0, -2))}`, 2);
     } else {
-        output += printIntoBox(_highlightColor(stringArr.slice(0, -2)), 1);
+        output += printIntoBox(_defaultColor(stringArr.slice(0, -2)), 1);
     }
 
     return output;
