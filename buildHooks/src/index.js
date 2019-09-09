@@ -37,7 +37,7 @@ const hooks = {
         _updatePackageJson(c, path.join(pkgFolder, 'renative/package.json'), v);
         FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
         FileUtils.updateObjectSync(c.paths.rnv.pluginTemplates.config, {
-            plugins: {
+            pluginTemplates: {
                 renative: {
                     version: c.files.project.package.version
                 }
