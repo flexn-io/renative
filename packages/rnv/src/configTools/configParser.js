@@ -144,7 +144,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.home.dir = homedir;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
     c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
-    c.paths.GLOBAL_RNV_CONFIG_WORKSPACES = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
+    c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
 
     _generateConfigPaths(c.paths.project, base);
 
@@ -224,12 +224,23 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 });
 
 const _getWorkspaceDirPath = (c) => {
-    const wss = c.files.configWorkspaces;
+    logTask('_getWorkspaceDirPath');
+    const wss = c.files.rnv.configWorkspaces;
     const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
 
     let dirPath;
     if (wss?.workspaces && ws) {
         dirPath = wss.workspaces[ws]?.path;
+        if (!dirPath) {
+            const wsDir = path.join(c.paths.home.dir, `.${ws}`);
+            if (fs.existsSync(wsDir)) {
+                wss.workspaces[ws] = {
+                    path: wsDir
+                };
+                writeObjectSync(c.paths.rnv.configWorkspaces, wss);
+                logInfo(`Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.rnv.configWorkspaces} has been updated.`);
+            }
+        }
     }
     if (!dirPath) {
         return c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
@@ -645,19 +656,19 @@ export const loadPluginTemplates = (c) => {
 
 const _loadWorkspacesSync = (c) => {
     // CHECK WORKSPACES
-    if (fs.existsSync(c.paths.GLOBAL_RNV_CONFIG_WORKSPACES)) {
-        logDebug(`${c.paths.GLOBAL_RNV_CONFIG_WORKSPACES} file exists!`);
-        c.files.configWorkspaces = readObjectSync(c.paths.GLOBAL_RNV_CONFIG_WORKSPACES);
+    if (fs.existsSync(c.paths.rnv.configWorkspaces)) {
+        logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
+        c.files.rnv.configWorkspaces = readObjectSync(c.paths.rnv.configWorkspaces);
     } else {
-        logWarning(`Cannot find ${c.paths.GLOBAL_RNV_CONFIG_WORKSPACES}. creating one..`);
-        c.files.configWorkspaces = {
+        logWarning(`Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`);
+        c.files.rnv.configWorkspaces = {
             workspaces: {
                 rnv: {
                     path: c.paths.workspace.dir
                 }
             }
         };
-        writeObjectSync(c.paths.GLOBAL_RNV_CONFIG_WORKSPACES, c.files.configWorkspaces);
+        writeObjectSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
     }
 };
 
