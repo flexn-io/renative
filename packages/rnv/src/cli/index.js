@@ -12,6 +12,8 @@ import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
 import { rnvClean } from '../systemTools/cleaner';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
+import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
+    WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -47,7 +49,6 @@ ${chalk.bold.white('OPTIONS:')}
 `);
 };
 
-
 const COMMANDS = {
     start: {
         fn: rnvStart
@@ -58,6 +59,7 @@ const COMMANDS = {
     },
     package: {
         desc: 'Package JS Code',
+        platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvPackage
     },
     deploy: {
@@ -70,10 +72,12 @@ const COMMANDS = {
     },
     export: {
         desc: 'Export your app (ios only)',
+        platforms: [IOS, TVOS],
         fn: rnvExport
     },
     log: {
         desc: 'Attach logger to device or emulator and print out logs',
+        platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvLog
     },
     new: {
@@ -118,6 +122,7 @@ const COMMANDS = {
     },
     target: {
         desc: 'Manages simulators and emulators',
+        platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TIZEN, TIZEN_MOBILE, TVOS, WEBOS, TIZEN_WATCH],
         subCommands: {
             launch: {
                 fn: rnvTargetLaunch
@@ -179,6 +184,7 @@ const COMMANDS = {
     },
     crypto: {
         desc: 'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
+        platforms: [IOS, TVOS],
         subCommands: {
             encrypt: {
                 fn: rnvCryptoEncrypt
@@ -237,18 +243,12 @@ const run = async (c) => {
             await _execCommandHep(c, cmd);
         } else if (cmdFn) {
             if (subCmdFn) {
-                await executePipe(c, `${c.command}:${c.subCommand}:before`);
-                await subCmdFn(c);
-                await executePipe(c, `${c.command}:${c.subCommand}:after`);
+                await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
             } else {
-                await executePipe(c, `${c.command}:before`);
-                await cmdFn(c);
-                await executePipe(c, `${c.command}:after`);
+                await _execute(c, cmdFn, cmd, c.command, c.subCommand);
             }
         } else if (subCmdFn) {
-            await executePipe(c, `${c.command}:${c.subCommand}:before`);
-            await subCmdFn(c);
-            await executePipe(c, `${c.command}:${c.subCommand}:before`);
+            await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
         } else {
             await _handleUnknownSubCommand(c);
         }
@@ -256,6 +256,17 @@ const run = async (c) => {
         await _handleUnknownCommand(c);
     }
     return c;
+};
+
+const _execute = async (c, cmdFn, cmd, command, subCommand) => {
+    if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
+        await _handleUnknownPlatform(c, cmd.platforms);
+        return;
+    }
+    const subCmd = subCommand ? `:${c.subCommand}` : '';
+    await executePipe(c, `${c.command}${subCmd}:before`);
+    await cmdFn(c);
+    await executePipe(c, `${c.command}${subCmd}:after`);
 };
 
 // ##########################################
@@ -290,7 +301,7 @@ More info at ${chalk.grey(`https://renative.org/docs/rnv-${c.command}`)}
 
 const _handleUnknownSubCommand = async (c) => {
     logTask('_handleUnknownSubCommand');
-    logWarning(`cli: Command ${chalk.white.bold(c.command)} does not support method ${chalk.white.bold(c.subCommand)}!`);
+    logWarning(`cli: Command ${chalk.bold(c.command)} does not support method ${chalk.bold(c.subCommand)}!`);
 
     const cmds = COMMANDS[c.command]?.subCommands;
 
@@ -307,15 +318,28 @@ const _handleUnknownSubCommand = async (c) => {
 
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
-    logWarning(`cli: Command ${chalk.white.bold(c.command)} not supported!`);
+    logWarning(`cli: Command ${chalk.bold(c.command)} not supported!`);
     const { command } = await inquirer.prompt({
         type: 'list',
         name: 'command',
         message: 'Pick a command',
         choices: Object.keys(COMMANDS)
     });
-
     c.command = command;
+    return run(c);
+};
+
+
+const _handleUnknownPlatform = async (c, platforms) => {
+    logTask('_handleUnknownPlatform');
+    const { platform } = await inquirer.prompt({
+        type: 'list',
+        name: 'platform',
+        message: `cli: Command ${chalk.grey(c.command)} does not support platform ${chalk.grey(c.platform)}. pick one of the following`,
+        choices: platforms
+    });
+
+    c.platform = platform;
     return run(c);
 };
 
