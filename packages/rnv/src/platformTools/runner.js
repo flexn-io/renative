@@ -267,7 +267,7 @@ const _rnvRunWithPlatform = async (c) => {
         break;
     }
 
-    return logErrorPlatform(platform);
+    return logErrorPlatform(c, platform);
 };
 
 const _rnvPackageWithPlatform = async (c) => {
@@ -294,7 +294,7 @@ const _rnvPackageWithPlatform = async (c) => {
         break;
     }
 
-    logErrorPlatform(platform);
+    logErrorPlatform(c, platform);
 };
 
 const _rnvExportWithPlatform = async (c) => {
@@ -319,7 +319,7 @@ const _rnvExportWithPlatform = async (c) => {
         break;
     }
 
-    logErrorPlatform(platform);
+    logErrorPlatform(c, platform);
 };
 
 const _rnvDeployWithPlatform = async (c) => {
@@ -346,7 +346,7 @@ const _rnvDeployWithPlatform = async (c) => {
         break;
     }
 
-    logErrorPlatform(platform);
+    logErrorPlatform(c, platform);
 };
 
 const _rnvBuildWithPlatform = async (c) => {
@@ -407,7 +407,7 @@ const _rnvBuildWithPlatform = async (c) => {
         break;
     }
 
-    logErrorPlatform(platform);
+    logErrorPlatform(c, platform);
 };
 
 

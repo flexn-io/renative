@@ -326,9 +326,8 @@ export const getAppVersionCode = (c, platform) => {
     return Number(vc).toString();
 };
 
-export const logErrorPlatform = (platform, resolve) => {
+export const logErrorPlatform = (c, platform) => {
     logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
-    resolve && resolve();
 };
 
 export const isPlatformActive = (c, platform, resolve) => {
