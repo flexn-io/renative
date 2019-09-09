@@ -146,6 +146,8 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
     c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
 
+    if (fs.existsSync(!c.paths.GLOBAL_RNV_DIR)) mkdirSync(c.paths.GLOBAL_RNV_DIR);
+
     _generateConfigPaths(c.paths.project, base);
 
     c.paths.buildHooks.dir = path.join(c.paths.project.dir, 'buildHooks/src');
