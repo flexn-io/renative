@@ -173,7 +173,11 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 
     // LOAD WORKSPACES
-    _loadWorkspacesSync(c);
+    try {
+        _loadWorkspacesSync(c);
+    } catch (e) {
+        logError(e);
+    }
 
     return c;
 };
