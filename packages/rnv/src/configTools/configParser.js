@@ -128,6 +128,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.rnv.dir = path.join(__dirname, '../..');
     c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
     c.paths.rnv.platformTemplates.dir = path.join(c.paths.rnv.dir, 'platformTemplates');
+    c.paths.rnv.plugins.dir = path.join(c.paths.rnv.dir, 'plugins');
     c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
     c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.dir, RENATIVE_CONFIG_PLUGINS_NAME);
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'projectTemplates');

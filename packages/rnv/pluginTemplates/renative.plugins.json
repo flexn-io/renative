@@ -1308,7 +1308,7 @@
     },
     "plugins": {
         "renative": {
-            "version": "0.27.0-alpha.1"
+            "version": "0.27.0-alpha.2"
         }
     }
 }
