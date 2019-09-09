@@ -10,8 +10,11 @@ describe('Bootstrapping the CLI', () => {
     });
 
     it('should create C variable correctly', async () => {
+        console.log('Executing...');
         const cKeys = Object.keys(c).sort();
         const expectKeys = ['buildConfig', 'cli', 'command', 'files', 'paths', 'platform', 'platformDefaults', 'process', 'program', 'runtime', 'subCommand'];
+        console.log('Generated keys:', cKeys);
+        console.log('Expected keys:', expectKeys);
         expect(cKeys).toEqual(expectKeys);
     });
 
