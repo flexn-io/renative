@@ -46,6 +46,8 @@ jobs:
       osx_image: xcode10.2
       install:
         - rm -rf ./node_modules && rm -rf ./package-lock.json
+        - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
+        - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm i > /dev/null 2>&1
