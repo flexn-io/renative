@@ -121,6 +121,11 @@ describe('Testing rnv status', () => {
     itShouldResolve('status');
 });
 
+describe('Testing rnv configure', () => {
+    itShouldResolve('configure help');
+    itShouldResolve('configure');
+});
+
 
 // ###############################################
 // HELPERS

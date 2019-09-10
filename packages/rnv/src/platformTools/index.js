@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
 import {
-    isPlatformSupportedSync
+    isPlatformSupportedSync, isPlatformSupported
 } from '../common';
 import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';

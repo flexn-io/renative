@@ -122,59 +122,50 @@ const _isOK = (c, p, list) => {
 };
 
 
-const _checkAndCreatePlatforms = (c, platform) => new Promise((resolve, reject) => {
+const _checkAndCreatePlatforms = async (c, platform) => {
     logTask(`_checkAndCreatePlatforms:${platform}`);
 
     if (!fs.existsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');
-        CLI(spawnCommand(c, {
+        await CLI(spawnCommand(c, {
+            command: 'platform',
             subCommand: 'configure',
             program: { appConfig: c.runtime.appId, platform }
-        }))
-            .then(() => resolve())
-            .catch(e => reject(e));
-
+        }));
         return;
     }
     if (platform) {
         const appFolder = getAppFolder(c, platform);
         if (!fs.existsSync(appFolder)) {
-            logWarning(`Platform ${platform} not created yet. creating them for you...`);
-            CLI(spawnCommand(c, {
+            logWarning(`Platform ${platform} not created yet. creating them for you at ${appFolder}`);
+            await CLI(spawnCommand(c, {
+                command: 'platform',
                 subCommand: 'configure',
                 program: { appConfig: c.runtime.appId, platform }
-            }))
-                .then(() => resolve())
-                .catch(e => reject(e));
-
-            return;
+            }));
         }
     } else {
         const { platforms } = c.buildConfig;
-        const cmds = [];
         if (!platforms) {
             reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
             return;
         }
-
-        Object.keys(platforms).forEach((k) => {
-            if (!fs.existsSync(k)) {
-                logWarning(`Platform ${k} not created yet. creating one for you...`);
-                cmds.push(CLI(spawnCommand(c, {
+        const ks = Object.keys(platforms);
+        for (let i = 0; i < ks.length; i++) {
+            const k = ks[i];
+            const appFolder = getAppFolder(c, k);
+            if (!fs.existsSync(appFolder)) {
+                logWarning(`Platform ${k} not created yet. creating one for you at ${appFolder}`);
+                await CLI(spawnCommand(c, {
+                    command: 'platform',
                     subCommand: 'configure',
-                    program: { appConfig: c.runtime.appId, platform }
-                })));
+                    platform: k,
+                    program: { appConfig: c.runtime.appId, platform: k }
+                }));
             }
-        });
-
-        Promise.all(cmds)
-            .then(() => resolve())
-            .catch(e => reject(e));
-
-        return;
+        }
     }
-    resolve();
-});
+};
 
 const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     logTask(`_runPlugins:${pluginsPath}`, chalk.grey);
