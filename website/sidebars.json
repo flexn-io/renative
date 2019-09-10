@@ -38,6 +38,7 @@
         "CLI": [
             "rnv",
             "rnv-new",
+            "rnv-configure",
             "rnv-start",
             "rnv-run",
             "rnv-package",

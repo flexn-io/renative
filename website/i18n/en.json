@@ -142,6 +142,10 @@
                 "title": "rnv build",
                 "sidebar_label": "build"
             },
+            "rnv-configure": {
+                "title": "rnv configure",
+                "sidebar_label": "configure"
+            },
             "rnv-crypto": {
                 "title": "rnv crypto",
                 "sidebar_label": "crypto"
