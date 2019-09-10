@@ -8,6 +8,7 @@ jobs:
       node_js: 10.15.3
       install:
         - rm -rf ./node_modules && rm -rf ./package-lock.json
+        - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm i > /dev/null 2>&1
