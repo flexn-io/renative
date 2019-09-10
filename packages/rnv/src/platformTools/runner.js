@@ -42,6 +42,7 @@ import {
     exportXcodeProject,
     archiveXcodeProject,
     packageBundleForXcode,
+    runAppleLog
 } from './apple';
 import { buildWeb, runWeb, runWebDevServer, deployWeb } from './web';
 import { runTizen, buildTizenProject } from './tizen';
@@ -57,6 +58,7 @@ import {
     runAndroid,
     configureGradleProject,
     buildAndroid,
+    runAndroidLog
 } from './android';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
@@ -159,6 +161,21 @@ export const rnvDeploy = async (c) => {
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await _rnvDeployWithPlatform(c);
+};
+
+export const rnvLog = async (c) => {
+    switch (c.platform) {
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        await runAndroidLog(c);
+        return;
+    case IOS:
+    case TVOS:
+        await runAppleLog(c);
+    }
+
+    logErrorPlatform(c, c.platform);
 };
 
 // ##########################################

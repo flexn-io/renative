@@ -326,6 +326,7 @@ export const getAppFolderName = (c, platform) => {
 
 // Resolve or reject will not be called so this will keep running
 const runAppleLog = c => new Promise(() => {
+    logTask('runAppleLog');
     const filter = c.program.filter || 'RNV';
     const child = child_process.execFile(
         'xcrun',
