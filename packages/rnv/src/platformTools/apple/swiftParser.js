@@ -34,8 +34,11 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+    const forceBundle = getGetJsBundleFile(c, platform);
     let bundle;
-    if (isBundled) {
+    if (forceBundle) {
+        bundle = forceBundle;
+    } else if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
     } else {
         bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
