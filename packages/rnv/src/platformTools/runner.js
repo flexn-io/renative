@@ -173,6 +173,7 @@ export const rnvLog = async (c) => {
     case IOS:
     case TVOS:
         await runAppleLog(c);
+        return;
     }
 
     logErrorPlatform(c, c.platform);
@@ -280,8 +281,6 @@ const _rnvRunWithPlatform = async (c) => {
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
         return runFirefoxProject(c, platform);
-    default:
-        break;
     }
 
     return logErrorPlatform(c, platform);
@@ -307,8 +306,6 @@ const _rnvPackageWithPlatform = async (c) => {
         await configureIfRequired(c, platform);
         await configureGradleProject(c, platform);
         return packageAndroid(c, platform, target, platform === ANDROID_WEAR);
-    default:
-        break;
     }
 
     logErrorPlatform(c, platform);
@@ -332,8 +329,6 @@ const _rnvExportWithPlatform = async (c) => {
         await configureElectronProject(c, platform);
         await buildElectron(c, platform);
         return exportElectron(c, platform);
-    default:
-        break;
     }
 
     logErrorPlatform(c, platform);
@@ -353,14 +348,13 @@ const _rnvDeployWithPlatform = async (c) => {
         if (!c.program.only) {
             return _rnvExportWithPlatform(c);
         }
-        break;
+        return;
+
     case ANDROID:
         if (!c.program.only) {
             return _rnvBuildWithPlatform(c);
         }
-        break;
-    default:
-        break;
+        return;
     }
 
     logErrorPlatform(c, platform);
@@ -420,8 +414,6 @@ const _rnvBuildWithPlatform = async (c) => {
         await configureIfRequired(c, platform);
         await buildWebOSProject(c, platform);
         return;
-    default:
-        break;
     }
 
     logErrorPlatform(c, platform);
