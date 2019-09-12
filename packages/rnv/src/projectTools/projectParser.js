@@ -306,10 +306,39 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
     ]).then(() => resolve()).catch(e => reject(e));
 });
 
+
+export const upgradeProjectDependencies = (c, version) => {
+    const thw = 'renative-template-hello-world';
+    const tb = 'renative-template-blank';
+    const devDependencies = c.files.project.package?.devDependencies;
+    if (devDependencies?.rnv) {
+        devDependencies.rnv = version;
+    }
+    if (devDependencies[thw]) {
+        devDependencies[thw] = version;
+    }
+    if (devDependencies[tb]) {
+        devDependencies[tb] = version;
+    }
+    const dependencies = c.files.project.package?.dependencies;
+    if (devDependencies?.renative) {
+        devDependencies.renative = version;
+    }
+
+    writeObjectSync(c.paths.project.package, c.files.project.package);
+
+    if (c.files.project.config?.templates?.[thw]?.version) c.files.project.config.templates[thw].version = version;
+    if (c.files.project.config?.templates?.[tb]?.version) c.files.project.config.templates[tb].version = version;
+
+    c._requiresNpmInstall = true;
+
+    writeObjectSync(c.paths.project.config, c.files.project.config);
+};
+
 export const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules
-    if (!fs.existsSync(c.paths.project.nodeModulesDir) || c._requiresNpmInstall) {
+    if (!fs.existsSync(c.paths.project.nodeModulesDir) || c._requiresNpmInstall && !c.runtime.skipPackageUpdate) {
         if (!fs.existsSync(c.paths.project.nodeModulesDir)) {
             logWarning(
                 `Looks like your node_modules folder ${chalk.white(c.paths.project.nodeModulesDir)} is missing! Let's run ${chalk.white(

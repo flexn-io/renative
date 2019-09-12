@@ -44,7 +44,7 @@ import {
 } from '../systemTools/logger';
 import {
     copyRuntimeAssets, checkAndCreateProjectPackage, checkAndCreateProjectConfig,
-    checkAndCreateGitignore, copySharedPlatforms
+    checkAndCreateGitignore, copySharedPlatforms, upgradeProjectDependencies
 } from '../projectTools/projectParser';
 
 const base = path.resolve('.');
@@ -316,13 +316,26 @@ export const versionCheck = async (c) => {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
             const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
 
-            const { confirm } = await inquirer.prompt({
-                message: `You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json`,
-                type: 'confirm',
-                name: 'confirm',
+            const actionNoUpdate = 'Continue and skip updating package.json';
+            const actionWithUpdate = 'Continue and update package.json';
+            const actionUpgrade = `Upgrade project to ${c.runtime.rnvVersionRunner}`;
+
+            const { chosenAction } = await inquirer.prompt({
+                message: `You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json. what to do next?`,
+                type: 'list',
+                name: 'chosenAction',
+                choices: [
+                    actionNoUpdate,
+                    actionWithUpdate,
+                    actionUpgrade
+                ]
             });
 
-            if (!confirm) return Promise.reject('Action canceled');
+            c.runtime.skipPackageUpdate = chosenAction === actionNoUpdate;
+
+            if (chosenAction === actionUpgrade) {
+                upgradeProjectDependencies(c, c.runtime.rnvVersionRunner);
+            }
         }
     }
 };

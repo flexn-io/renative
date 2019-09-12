@@ -247,7 +247,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
     logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
     versionCheck(c)
         .then(() => {
-            if (hasPackageChanged) {
+            if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
                 writeObjectSync(c.paths.project.package, c.files.project.package);
                 c._requiresNpmInstall = true;
             }
