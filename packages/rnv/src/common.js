@@ -224,7 +224,10 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => {
+    console.warn('!!!!!!!!', c.paths.project.platformTemplatesDirs);
+    path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`)
+};
 
 export const getAppConfigId = (c, platform) => c.buildConfig.id;
 
@@ -279,13 +282,6 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     return result;
 };
 
-export const getJsBundleFileDefaults = {
-    android: 'super.getJSBundleFile()',
-    androidtv: 'super.getJSBundleFile()',
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
-    androidwear: '"assets://index.androidwear.bundle"',
-};
-
 export const getAppId = (c, platform) => {
     const id = getConfigProp(c, platform, 'id');
     const idSuffix = getConfigProp(c, platform, 'idSuffix');
@@ -302,7 +298,7 @@ export const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].
 
 export const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
 
-export const getGetJsBundleFile = (c, platform) => c.buildConfig.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
+export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
 export const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
 
