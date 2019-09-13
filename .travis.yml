@@ -10,8 +10,8 @@ jobs:
         - rm -rf ./node_modules && rm -rf ./package-lock.json
         - mkdir /home/travis/.rnv
         - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
-        - npm i > /dev/null 2>&1
         - cd packages/rnv
+        - npm i > /dev/null 2>&1
         - npm run build
         - npm link
       script: npm run test:setup
@@ -31,6 +31,7 @@ jobs:
         - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
         - sudo apt-get install -y nodejs
         - rm -rf ./node_modules && rm -rf ./package-lock.json
+        - cd packages/rnv
         - npm i > /dev/null 2>&1
         - npm run build
         - sudo npm run link > /dev/null 2>&1
@@ -48,9 +49,10 @@ jobs:
         - mkdir /Users/travis/.rnv
         - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
         - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
+        - cd packages/rnv
         - npm i > /dev/null 2>&1
         - npm run build
-        - npm run link
+        - npm link
       script: npm run test:ios
 
 stages:
