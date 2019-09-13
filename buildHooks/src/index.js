@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import shelljs from 'shelljs';
+// import shelljs from 'shelljs';
 import path from 'path';
 import fs from 'fs';
 import { PlatformTools, FileUtils, Doctor } from 'rnv';
@@ -14,9 +14,9 @@ const hooks = {
             const pf = path.join(c.paths.rnv.pluginTemplates.dir, k);
             const fp = path.join(pf, 'renative-plugin.json');
 
-            if (fs.existsSync(pf)) {
-                shelljs.mkdir('-p', pf);
-            }
+            // if (fs.existsSync(pf)) {
+            //     shelljs.mkdir('-p', pf);
+            // }
 
             const plugin = Object.assign({ name: k }, c.files.rnv.pluginTemplates.config.pluginTemplates[k]);
 
