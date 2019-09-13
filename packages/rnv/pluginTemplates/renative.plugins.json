@@ -1287,6 +1287,21 @@
                 "modulePaths": true
             }
         },
+        "react-native-webview": {
+            "version": "7.0.5",
+            "ios": {
+                "podName": "react-native-webview"
+            },
+            "android": {
+                "package": "com.reactnativecommunity.webview.RNCWebViewPackage"
+            },
+            "androidtv": {
+                "package": "com.reactnativecommunity.webview.RNCWebViewPackage"
+            },
+            "webpack": {
+                "modulePaths": true
+            }
+        },
         "react-native-snap-carousel": {
             "version": "3.7.5",
             "webpack": {

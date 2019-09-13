@@ -83,8 +83,8 @@ export const rnvPluginAdd = async (c) => {
 
     const o = _getPluginList(c);
 
-    const { plugins } = await inquirer.prompt({
-        name: 'plugins',
+    const { plugin } = await inquirer.prompt({
+        name: 'plugin',
         type: 'rawlist',
         message: 'Select the plugins you want to add',
         choices: o.asArray,
@@ -92,28 +92,23 @@ export const rnvPluginAdd = async (c) => {
     });
 
     const installMessage = [];
+    const selectedPlugins = {};
+    selectedPlugins[plugin] = o.json[plugin];
+    installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.json[plugin].version)})`);
 
-    if (plugins.length) {
-        const selectedPlugins = {};
-        plugins.forEach((plugin) => {
-            selectedPlugins[plugin] = o.json[plugin];
-            installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.json[plugin].version)})`);
-        });
+    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
 
-        const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
+    Object.keys(selectedPlugins).forEach((key) => {
+        // c.buildConfig.plugins[key] = 'source:rnv';
+        c.files.project.config.plugins[key] = 'source:rnv';
 
-        Object.keys(selectedPlugins).forEach((key) => {
-            // c.buildConfig.plugins[key] = 'source:rnv';
-            c.files.project.config.plugins[key] = 'source:rnv';
+        // c.buildConfig.plugins[key] = selectedPlugins[key];
+        _checkAndAddDependantPlugins(c, selectedPlugins[key]);
+    });
 
-            // c.buildConfig.plugins[key] = selectedPlugins[key];
-            _checkAndAddDependantPlugins(c, selectedPlugins[key]);
-        });
-
-        writeObjectSync(c.paths.project.config, c.files.project.config);
-        spinner.succeed('All plugins installed!');
-        logSuccess('Plugins installed successfully!');
-    }
+    writeObjectSync(c.paths.project.config, c.files.project.config);
+    spinner.succeed('All plugins installed!');
+    logSuccess('Plugins installed successfully!');
 };
 
 const _checkAndAddDependantPlugins = (c, plugin) => {
