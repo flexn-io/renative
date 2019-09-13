@@ -314,6 +314,10 @@ export const versionCheck = async (c) => {
     logTask(`versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${c.runtime.rnvVersionProject}`, chalk.grey);
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
+            if (c.program.ci) {
+                throw `You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}`;
+                return;
+            }
             const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
 
             const actionNoUpdate = 'Continue and skip updating package.json';

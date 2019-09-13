@@ -11,6 +11,7 @@ import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projec
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
 import { rnvClean } from '../systemTools/cleaner';
+import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
@@ -301,15 +302,14 @@ More info at ${chalk.grey(`https://renative.org/docs/rnv-${c.command}`)}
 
 const _handleUnknownSubCommand = async (c) => {
     logTask('_handleUnknownSubCommand');
-    logWarning(`cli: Command ${chalk.bold(c.command)} does not support method ${chalk.bold(c.subCommand)}!`);
-
     const cmds = COMMANDS[c.command]?.subCommands;
 
-    const { subCommand } = await inquirer.prompt({
+    const { subCommand } = await inquirerPrompt(c, {
         type: 'list',
         name: 'subCommand',
         message: 'Pick a subCommand',
-        choices: Object.keys(cmds)
+        choices: Object.keys(cmds),
+        logMessage: `cli: Command ${chalk.bold(c.command)} does not support method ${chalk.bold(c.subCommand)}!`
     });
 
     c.subCommand = subCommand;
@@ -318,12 +318,13 @@ const _handleUnknownSubCommand = async (c) => {
 
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
-    logWarning(`cli: Command ${chalk.bold(c.command)} not supported!`);
-    const { command } = await inquirer.prompt({
+
+    const { command } = await inquirerPrompt(c, {
         type: 'list',
         name: 'command',
         message: 'Pick a command',
-        choices: Object.keys(COMMANDS)
+        choices: Object.keys(COMMANDS),
+        logMessage: `cli: Command ${chalk.bold(c.command)} not supported!`
     });
     c.command = command;
     return run(c);
@@ -332,11 +333,12 @@ const _handleUnknownCommand = async (c) => {
 
 const _handleUnknownPlatform = async (c, platforms) => {
     logTask('_handleUnknownPlatform');
-    const { platform } = await inquirer.prompt({
+    const { platform } = await inquirerPrompt(c, {
         type: 'list',
         name: 'platform',
-        message: `cli: Command ${chalk.grey(c.command)} does not support platform ${chalk.grey(c.platform)}. pick one of the following`,
-        choices: platforms
+        message: 'pick one of the following',
+        choices: platforms,
+        logMessage: `cli: Command ${chalk.grey(c.command)} does not support platform ${chalk.grey(c.platform)}. `
     });
 
     c.platform = platform;

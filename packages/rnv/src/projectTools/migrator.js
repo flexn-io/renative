@@ -35,6 +35,10 @@ export const checkAndMigrateProject = async (c) => {
     }
 
     if (fs.existsSync(paths.config)) {
+        if (c.program.ci) {
+            throw 'Your project has been created with previous version of ReNative';
+            return;
+        }
         const { confirm } = await inquirer.prompt({
             name: 'confirm',
             type: 'confirm',

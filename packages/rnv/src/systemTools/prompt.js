@@ -1,6 +1,17 @@
 import chalk from 'chalk';
+import inquirer from 'inquirer';
+import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from './logger';
 
 const highlight = chalk.grey.bold;
+
+export const inquirerPrompt = async (c, params) => {
+    if (c.program.ci) {
+        throw params.logMessage || '--ci option does not allow prompts';
+    }
+    if (params.logMessage) logWarning(params.logMessage);
+    const result = await inquirer.prompt(params);
+    return result;
+};
 
 export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
     let asString = '';
