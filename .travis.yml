@@ -8,6 +8,8 @@ jobs:
       node_js: 10.15.3
       install:
         - rm -rf ./node_modules && rm -rf ./package-lock.json
+        - mkdir /home/travis/.rnv
+        - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm i > /dev/null 2>&1
@@ -37,6 +39,7 @@ jobs:
         - sudo npm link > /dev/null 2>&1
         - mkdir /home/travis/.rnv
         - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/renative.json
+        - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
         - yes | sdkmanager "emulator"
       script: npm run test
     - language: node_js
@@ -45,6 +48,9 @@ jobs:
       osx_image: xcode10.2
       install:
         - rm -rf ./node_modules && rm -rf ./package-lock.json
+        - mkdir /Users/travis/.rnv
+        - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
+        - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm i > /dev/null 2>&1

@@ -75,13 +75,14 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     resolve();
 });
 
-const runXcodeProject = (c, platform, target) => {
+const runXcodeProject = async (c, platform, target) => {
     logTask(`runXcodeProject:${platform}:${target}`);
 
     if (target === '?') {
-        launchAppleSimulator(c, platform, target).then(newTarget => _runXcodeProject(c, platform, newTarget));
+        const newTarget = await launchAppleSimulator(c, platform, target);
+        await _runXcodeProject(c, platform, newTarget);
     } else {
-        return _runXcodeProject(c, platform, target);
+        await _runXcodeProject(c, platform, target);
     }
 };
 
@@ -100,7 +101,7 @@ const _runXcodeProject = async (c, platform, target) => {
         return Promise.reject(
             `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
                 c.paths.appConfig.config,
-            )}! Check example config for more info:  ${chalk.blue(
+            )}! Check example config for more info:  ${chalk.grey(
                 'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/renative.json',
             )} `,
         );
@@ -162,7 +163,7 @@ const _runXcodeProject = async (c, platform, target) => {
                 return Promise.reject(`Could not find device ${c.program.target}`);
             }
 
-            const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+            const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
 
             const { sim } = await inquirer.prompt({
                 name: 'sim',
@@ -325,6 +326,7 @@ export const getAppFolderName = (c, platform) => {
 
 // Resolve or reject will not be called so this will keep running
 const runAppleLog = c => new Promise(() => {
+    logTask('runAppleLog');
     const filter = c.program.filter || 'RNV';
     const child = child_process.execFile(
         'xcrun',

@@ -231,16 +231,21 @@ export const updateObjectSync = (filePath, updateObj) => {
 
 export const getRealPath = (c, p, key = 'undefined', original) => {
     if (!p) {
-        logInfo(`Path ${chalk.white(key)} is not defined. using default: ${chalk.white(original)}`);
+        if (original) logInfo(`Path ${chalk.white(key)} is not defined. using default: ${chalk.white(original)}`);
         return original;
     }
     if (p.startsWith('./')) {
         return path.join(c.paths.project.dir, p);
     }
-    return p.replace(/RNV_HOME/g, c.paths.rnv.dir)
+    const output = p.replace(/\$RNV_HOME/g, c.paths.rnv.dir)
         .replace(/~/g, c.paths.home.dir)
+        .replace(/\$USER_HOME/g, c.paths.home.dir)
+        .replace(/\$PROJECT_HOME/g, c.paths.project.dir)
+        .replace(/\$WORKSPACE_HOME/g, c.paths.workspace.dir)
+        .replace(/RNV_HOME/g, c.paths.rnv.dir)
         .replace(/USER_HOME/g, c.paths.home.dir)
         .replace(/PROJECT_HOME/g, c.paths.project.dir);
+    return output;
 };
 
 const _refToValue = (c, ref, key) => {

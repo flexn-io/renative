@@ -259,7 +259,6 @@ PATH_PROPS
 
 ```json
 {
-    "globalConfigDir": "",
     "appConfigsDir": "",
     "appConfigsDirs": "",
     "platformTemplatesDir": "",

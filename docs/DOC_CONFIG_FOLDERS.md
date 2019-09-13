@@ -117,7 +117,9 @@ Legend:
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
 - `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
-- `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "paths": { "globalConfigDir": "~/.myCustomGlobalFolder" } }` in `renative.json` of each project
+- `~/.rnv` - name of default workspace folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "workspace": "MY_WORKSPACE_NAME" }` in `renative.json` of each project
+
+Your workspaces can be found in `~./renative.workspaces.json`
 
 ##### Platform Builds Overrides
 

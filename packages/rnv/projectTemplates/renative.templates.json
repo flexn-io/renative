@@ -1,0 +1,7 @@
+{
+    "projectTemplates": {
+        "renative-template-hello-world": {},
+        "renative-template-blank": {},
+        "@reactseals/renative-template-chat": {}
+    }
+}

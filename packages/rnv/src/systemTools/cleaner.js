@@ -6,8 +6,8 @@ import inquirer from 'inquirer';
 import { removeDirs } from './fileutils';
 import { logTask } from './logger';
 
-const cleanProjectModules = async (c, skipQuestion = false) => {
-    logTask('cleanProjectModules');
+const rnvClean = async (c, skipQuestion = false) => {
+    logTask('rnvClean');
     const pathsToRemove = [
         c.paths.project.nodeModulesDir,
         path.join(c.paths.project.dir, 'package-lock.json')
@@ -41,4 +41,4 @@ const cleanProjectModules = async (c, skipQuestion = false) => {
     if (confirm) return removeDirs(pathsToRemove);
 };
 
-export { cleanProjectModules };
+export { rnvClean };
