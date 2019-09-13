@@ -304,7 +304,7 @@ const _handleUnknownSubCommand = async (c) => {
     logTask('_handleUnknownSubCommand');
     const cmds = COMMANDS[c.command]?.subCommands;
 
-    const { subCommand } = await inquirerPrompt(c, {
+    const { subCommand } = await inquirerPrompt({
         type: 'list',
         name: 'subCommand',
         message: 'Pick a subCommand',
@@ -319,7 +319,7 @@ const _handleUnknownSubCommand = async (c) => {
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
 
-    const { command } = await inquirerPrompt(c, {
+    const { command } = await inquirerPrompt({
         type: 'list',
         name: 'command',
         message: 'Pick a command',
@@ -333,7 +333,7 @@ const _handleUnknownCommand = async (c) => {
 
 const _handleUnknownPlatform = async (c, platforms) => {
     logTask('_handleUnknownPlatform');
-    const { platform } = await inquirerPrompt(c, {
+    const { platform } = await inquirerPrompt({
         type: 'list',
         name: 'platform',
         message: 'pick one of the following',

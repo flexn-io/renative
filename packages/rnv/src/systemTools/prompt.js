@@ -1,10 +1,12 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from './logger';
+import Config from '../config';
 
 const highlight = chalk.grey.bold;
 
-export const inquirerPrompt = async (c, params) => {
+export const inquirerPrompt = async (params) => {
+    const c = Config.getConfig();
     if (c.program.ci) {
         throw params.logMessage || '--ci option does not allow prompts';
     }

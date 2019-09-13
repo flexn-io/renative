@@ -1,55 +1,63 @@
-import { initializeBuilder } from './common';
 
 class Config {
     constructor() {
         this.config = {};
     }
 
-    async initializeConfig(cmd, subCmd, program) {
-        this.config = await initializeBuilder(cmd, subCmd, process, program);
+    // async initializeConfig(cmd, subCmd, program) {
+    //     this.config = await initializeBuilder(cmd, subCmd, process, program);
+    // }
+
+    async initializeConfig(c) {
+        this.config = c;
+        return c;
     }
 
-    getBuildConfig() {
-        return this.config.buildConfig;
+    getConfig() {
+        return this.config;
     }
 
-    updateLocalConfig() {
-        writeFileSync(file, newConfig);
-        this.initializeConfig();
-    }
+    //     getBuildConfig() {
+    //         return this.config.buildConfig;
+    //     }
 
-    updateGlobalonfig() {
-        writeFileSync(file, newConfig);
-        this.initializeConfig();
-    }
+    //     updateLocalConfig() {
+    //         writeFileSync(file, newConfig);
+    //         this.initializeConfig();
+    //     }
 
-    updateCLIPath() {
-        writeFileSync(file, newConfig);
-        this.initializeConfig();
-    }
+    //     updateGlobalonfig() {
+    //         writeFileSync(file, newConfig);
+    //         this.initializeConfig();
+    //     }
 
-    getPath(path) { // getPath(RNV_PLUGINTEMPLATES_DIR) / PROJECT_BUILDS_DIR...
-        return this.config.paths[path];
-    }
+    //     updateCLIPath() {
+    //         writeFileSync(file, newConfig);
+    //         this.initializeConfig();
+    //     }
 
-    get getInfo() {
-        return this.c.program.info;
-    }
+    //     getPath(path) { // getPath(RNV_PLUGINTEMPLATES_DIR) / PROJECT_BUILDS_DIR...
+    //         return this.config.paths[path];
+    //     }
 
-    get platform() {
-        return this.config.program.platform;
-    }
+    //     get getInfo() {
+    //         return this.c.program.info;
+    //     }
 
-    get mono() {
-        return this.config.program.mono;
-    }
+    //     get platform() {
+    //         return this.config.program.platform;
+    //     }
 
-    get target() {}
+    //     get mono() {
+    //         return this.config.program.mono;
+    //     }
 
-    set target(newTarget) {
-        this.config.target = newTarget;
-        this.initializeConfig();
-    }
+    //     get target() {}
+
+//     set target(newTarget) {
+//         this.config.target = newTarget;
+//         this.initializeConfig();
+//     }
 }
 
 export default new Config();
