@@ -11,6 +11,7 @@ jobs:
         - mkdir /home/travis/.rnv
         - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
         - npm i > /dev/null 2>&1
+        - cd packages/rnv
         - npm run build
         - npm run link
       script: npm run test:setup
