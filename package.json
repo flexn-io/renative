@@ -52,9 +52,6 @@
         "David Rielo <https://github.com/davidrielo>",
         "Sander Looijenga <https://github.com/sanderlooijenga>"
     ],
-    "bin": {
-        "rnv": "./rnv-cli/bin/index.js"
-    },
     "repository": {
         "type": "git",
         "url": "git://github.com/pavjacko/renative.git"
