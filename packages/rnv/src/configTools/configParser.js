@@ -598,6 +598,12 @@ export const updateConfig = async (c, appConfigId) => {
         }
 
         if (configDirs.length) {
+            if (configDirs.length === 1) {
+                // we have only one, skip the question
+                setAppConfig(c, configDirs[0]);
+                return true;
+            }
+
             const { conf } = await inquirer.prompt({
                 name: 'conf',
                 type: 'list',
