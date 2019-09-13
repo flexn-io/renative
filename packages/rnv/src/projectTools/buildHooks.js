@@ -69,7 +69,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
             return;
         }
 
-        executeAsync(c, `${path.join(c.paths.rnv.nodeModulesDir, '.bin/babel')} --no-babelrc ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, { cwd: c.paths.rnv.dir })
+        executeAsync(c, `babel --no-babelrc ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`)
             .then(() => {
                 const h = require(c.paths.buildHooks.dist.index);
                 c.buildHooks = h.hooks;

@@ -38,7 +38,22 @@ const rnvClean = async (c, skipQuestion = false) => {
         message: `Are you sure you want to remove these files/folders? \n${msg}`,
     });
 
-    if (confirm) return removeDirs(pathsToRemove);
+    if (confirm) {
+        await removeDirs(pathsToRemove);
+
+        const buildDirs = [
+            c.paths.project.builds.dir,
+            c.paths.project.assets.dir
+        ];
+        const { confirmBuilds } = await inquirer.prompt({
+            name: 'confirmBuilds',
+            type: 'confirm',
+            message: `Do you also want to clean your platformBuilds and platformAssets? \n${chalk.red(buildDirs.join('\n'))}`,
+        });
+        if (confirmBuilds) {
+            await removeDirs(buildDirs);
+        }
+    }
 };
 
 export { rnvClean };

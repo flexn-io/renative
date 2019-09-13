@@ -59,7 +59,6 @@
     "scripts": {
         "lerna": "npx lerna bootstrap",
         "link": "cd ./packages/rnv && npm link",
-        "preinstall": "cd packages/rnv && npm i",
         "build": "cd packages/rnv && npm run build:dev",
         "prePublish": "rnv hooks run -x prePublish",
         "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank",
@@ -99,8 +98,6 @@
     "devDependencies": {
         "concurrently": "4.1.1",
         "lerna": "3.16.4",
-        "pretty-quick": "1.11.0",
-        "prettier": "1.17.1",
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
         "rnv": "file:./packages/rnv"
