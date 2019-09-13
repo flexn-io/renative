@@ -142,7 +142,7 @@ const runWebOS = async (c, platform, target) => {
             if (response.setupDevice) {
                 // Yes, I would like that
                 logInfo('Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n');
-                await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { stdio: 'inherit', silent: true });
+                await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { interactive: true });
 
                 const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
                 const dev = await parseDevices(c, newDeviceResponse);

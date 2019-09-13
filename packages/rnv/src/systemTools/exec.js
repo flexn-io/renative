@@ -20,6 +20,7 @@ const { exec, execSync } = require('child_process');
  * @property {Boolean} silent - don't print anything
  * @property {Boolean} ignoreErrors - will print the loader but it will finish with a
  * checkmark regardless of the outcome. Also, it never throws a catch.
+ * @property {Boolean} interactive - when you want to execute a command that requires user input
  *
  * Execute commands
  *
@@ -37,6 +38,13 @@ const _execute = (c, command, opts = {}) => {
         maxErrorLength: c.program?.maxErrorLength,
         mono: c.program?.mono,
     };
+
+    if (opts.interactive) {
+        defaultOpts.silent = true;
+        defaultOpts.stdio = 'inherit';
+        defaultOpts.shell = true;
+    }
+
     const mergedOpts = { ...defaultOpts, ...opts };
 
     let cleanCommand = command;
