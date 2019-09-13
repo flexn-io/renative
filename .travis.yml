@@ -32,8 +32,8 @@ jobs:
         - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
         - sudo apt-get install -y nodejs
         - rm -rf ./node_modules && rm -rf ./package-lock.json
-        - cd packages/rnv
         - npm i > /dev/null 2>&1
+        - cd packages/rnv
         - npm run build:dev
         - sudo npm link > /dev/null 2>&1
         - mkdir /home/travis/.rnv
