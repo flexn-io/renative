@@ -13,7 +13,7 @@ jobs:
         - npm i > /dev/null 2>&1
         - cd packages/rnv
         - npm run build
-        - npm run link
+        - npm link
       script: npm run test:setup
     - language: android
       sudo: required
