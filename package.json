@@ -60,10 +60,10 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "lerna": "npx lerna bootstrap",
         "link": "cd ./packages/rnv && npm link",
         "preinstall": "cd packages/rnv && npm i",
+        "build": "cd packages/rnv && npm run build:dev",
         "prePublish": "rnv hooks run -x prePublish",
         "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank",
         "publish:blank": "cd packages/renative-template-blank && npm publish",
