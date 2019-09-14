@@ -41,7 +41,7 @@ import {
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
 import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
-import { generateOptions } from './systemTools/prompt';
+import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
 export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto'];
@@ -113,11 +113,12 @@ export const isPlatformSupported = async (c) => {
     const opts = generateOptions(platformsAsObj);
 
     if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
-        const { platform } = await inquirer.prompt({
+        const { platform } = await inquirerPrompt(c, {
             name: 'platform',
             type: 'list',
             message: 'Pick one of available platforms',
-            choices: opts.keysAsArray
+            choices: opts.keysAsArray,
+            logMessage: 'You need to specify platform'
         });
 
         c.platform = platform;
@@ -150,11 +151,12 @@ export const isBuildSchemeSupported = async (c) => {
         }
         const opts = generateOptions(buildSchemes);
 
-        const { selectedScheme } = await inquirer.prompt({
+        const { selectedScheme } = await inquirerPrompt(c, {
             name: 'selectedScheme',
             type: 'list',
             message: 'Pick one of available buildSchemes',
-            choices: opts.keysAsArray
+            choices: opts.keysAsArray,
+            logMessage: 'You need to specify scheme'
         });
 
         c.program.scheme = selectedScheme;
