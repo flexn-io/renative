@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import shelljs from 'shelljs';
+// import shelljs from 'shelljs';
 import path from 'path';
 import fs from 'fs';
 import { PlatformTools, FileUtils, Doctor } from 'rnv';
@@ -10,15 +10,15 @@ const hooks = {
         resolve();
     }),
     convertPlugins: c => new Promise((resolve, reject) => {
-        for (const k in c.files.rnv.pluginTemplates.config.plugins) {
+        for (const k in c.files.rnv.pluginTemplates.config.pluginTemplates) {
             const pf = path.join(c.paths.rnv.pluginTemplates.dir, k);
             const fp = path.join(pf, 'renative-plugin.json');
 
-            if (fs.existsSync(pf)) {
-                shelljs.mkdir('-p', pf);
-            }
+            // if (fs.existsSync(pf)) {
+            //     shelljs.mkdir('-p', pf);
+            // }
 
-            const plugin = Object.assign({ name: k }, c.files.rnv.pluginTemplates.config.plugins[k]);
+            const plugin = Object.assign({ name: k }, c.files.rnv.pluginTemplates.config.pluginTemplates[k]);
 
             fs.writeFileSync(fp, JSON.stringify(plugin, null, 2));
         }
@@ -37,7 +37,7 @@ const hooks = {
         _updatePackageJson(c, path.join(pkgFolder, 'renative/package.json'), v);
         FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
         FileUtils.updateObjectSync(c.paths.rnv.pluginTemplates.config, {
-            plugins: {
+            pluginTemplates: {
                 renative: {
                     version: c.files.project.package.version
                 }

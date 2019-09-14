@@ -39,6 +39,7 @@ const siteConfig = {
     // For no header links in the top nav bar -> headerLinks: [],
     headerLinks: [
         { doc: 'installation', label: 'Docs' },
+        { doc: 'rnv', label: 'API' },
         // { doc: 'doc4', label: 'API' },
         // { page: 'help', label: 'Help' },
         // { blog: true, label: 'Blog' },
@@ -58,6 +59,11 @@ const siteConfig = {
     colors: {
         primaryColor: '#20232a',
         secondaryColor: '#20232a',
+    },
+    algolia: {
+        apiKey: 'ce70fa21a21dad8ee49ed142a8a63b67',
+        indexName: 'renative',
+        algoliaOptions: {} // Optional, if provided by Algolia
     },
 
     /* Custom fonts for website */

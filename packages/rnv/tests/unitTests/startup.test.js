@@ -10,7 +10,9 @@ describe('Bootstrapping the CLI', () => {
     });
 
     it('should create C variable correctly', async () => {
-        expect(Object.keys(c).sort()).toEqual(['buildConfig', 'cli', 'command', 'files', 'paths', 'platform', 'platformDefaults', 'process', 'program', 'runtime', 'subCommand']);
+        const cKeys = Object.keys(c).sort();
+        const expectKeys = ['buildConfig', 'cli', 'command', 'files', 'paths', 'platform', 'platformDefaults', 'process', 'program', 'runtime', 'subCommand'];
+        expect(cKeys).toEqual(expectKeys);
     });
 
     it('should return app version', () => {

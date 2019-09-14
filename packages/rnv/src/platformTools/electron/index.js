@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import { spawn } from 'child_process';
-import { createPlatformBuild } from '../../cli/platform';
+import { createPlatformBuild } from '..';
 import { executeAsync } from '../../systemTools/exec';
 import {
     isPlatformSupportedSync,

@@ -2,13 +2,12 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import child_process from 'child_process';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
     isPlatformActive,
-    logDebug
 } from '../../common';
+import { logToSummary, logTask,
+    logError,
+    logWarning, logDebug } from '../../systemTools/logger';
 import { IOS, TVOS } from '../../constants';
 
 export const getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
@@ -81,7 +80,7 @@ export const launchAppleSimulator = async (c, platform, target) => {
     }
 
     logWarning(`Your specified simulator target ${chalk.white(target)} doesn't exists`);
-    const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+    const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
 
     const { sim } = await inquirer.prompt({
         name: 'sim',
@@ -110,11 +109,14 @@ export const listAppleDevices = (c, platform) => new Promise((resolve) => {
     logTask(`listAppleDevices:${platform}`);
 
     const devicesArr = getAppleDevices(c, platform);
-    let devicesString = '\n';
+    let devicesString = '';
     devicesArr.forEach((v, i) => {
-        devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
+        devicesString += ` [${i + 1}]> ${chalk.bold(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${
             v.isDevice ? chalk.red(' (device)') : ''
         }\n`;
     });
-    console.log(devicesString);
+
+    logToSummary(`${platform} Targets:\n\n${devicesString}`);
+
+    resolve();
 });
