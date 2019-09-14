@@ -41,7 +41,7 @@ import {
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
 import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
-import { generateOptions } from './systemTools/prompt';
+import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
 export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto'];
@@ -113,11 +113,12 @@ export const isPlatformSupported = async (c) => {
     const opts = generateOptions(platformsAsObj);
 
     if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
-        const { platform } = await inquirer.prompt({
+        const { platform } = await inquirerPrompt(c, {
             name: 'platform',
             type: 'list',
             message: 'Pick one of available platforms',
-            choices: opts.keysAsArray
+            choices: opts.keysAsArray,
+            logMessage: 'You need to specify platform'
         });
 
         c.platform = platform;
@@ -150,11 +151,12 @@ export const isBuildSchemeSupported = async (c) => {
         }
         const opts = generateOptions(buildSchemes);
 
-        const { selectedScheme } = await inquirer.prompt({
+        const { selectedScheme } = await inquirerPrompt(c, {
             name: 'selectedScheme',
             type: 'list',
             message: 'Pick one of available buildSchemes',
-            choices: opts.keysAsArray
+            choices: opts.keysAsArray,
+            logMessage: 'You need to specify scheme'
         });
 
         c.program.scheme = selectedScheme;
@@ -225,7 +227,10 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => {
+    console.warn('!!!!!!!!', c.paths.project.platformTemplatesDirs);
+    path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`)
+};
 
 export const getAppConfigId = (c, platform) => c.buildConfig.id;
 
@@ -280,13 +285,6 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     return result;
 };
 
-export const getJsBundleFileDefaults = {
-    android: 'super.getJSBundleFile()',
-    androidtv: 'super.getJSBundleFile()',
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
-    androidwear: '"assets://index.androidwear.bundle"',
-};
-
 export const getAppId = (c, platform) => {
     const id = getConfigProp(c, platform, 'id');
     const idSuffix = getConfigProp(c, platform, 'idSuffix');
@@ -303,7 +301,7 @@ export const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].
 
 export const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
 
-export const getGetJsBundleFile = (c, platform) => c.buildConfig.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
+export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
 export const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
 
