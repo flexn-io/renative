@@ -9,9 +9,9 @@ const React = require('react');
 
 const CompLibrary = require('../../core/CompLibrary.js');
 
-const MarkdownBlock = CompLibrary.MarkdownBlock; /* Used to read markdown */
-const Container = CompLibrary.Container;
-const GridBlock = CompLibrary.GridBlock;
+const { MarkdownBlock } = CompLibrary; /* Used to read markdown */
+const { Container } = CompLibrary;
+const { GridBlock } = CompLibrary;
 
 class HomeSplash extends React.Component {
     render() {
@@ -20,6 +20,34 @@ class HomeSplash extends React.Component {
         const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
         const langPart = `${language ? `${language}/` : ''}`;
         const docUrl = doc => `${baseUrl}${docsPart}${langPart}${doc}`;
+
+        const Follow = props => (
+            <div>
+                <a
+                    className="github-button"
+                    href={siteConfig.repoUrl}
+                    data-icon="octicon-star"
+                    data-count-href="/pavjacko/renative/stargazers"
+                    data-count-aria-label="# stargazers on GitHub"
+                    aria-label="Star this project on GitHub"
+                >
+          Star
+                </a>
+
+
+                <a
+                    href={`https://twitter.com/${
+                        siteConfig.twitterUsername
+                    }`}
+                    className="twitter-follow-button"
+                >
+                        Follow @
+                    {siteConfig.twitterUsername}
+
+                </a>
+
+            </div>
+        );
 
         const SplashContainer = props => (
             <div className="homeContainer">
@@ -85,6 +113,7 @@ Try It Out
         );
     }
 }
+
 
 class Index extends React.Component {
     render() {
@@ -349,7 +378,6 @@ Users
 
         return (
             <div>
-
                 <HomeSplash siteConfig={siteConfig} language={language} />
                 <div className="mainContainer">
                     <Platforms />

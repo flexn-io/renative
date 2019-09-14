@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import { spawn } from 'child_process';
-import { createPlatformBuild } from '../../cli/platform';
+import { createPlatformBuild } from '..';
 import { executeAsync } from '../../systemTools/exec';
 import {
     isPlatformSupportedSync,
@@ -29,7 +29,8 @@ import {
     getConfigProp,
     checkPortInUse,
     logInfo,
-    resolveNodeModulePath
+    resolveNodeModulePath,
+    waitForWebpack
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS } from '../../constants';
@@ -156,7 +157,10 @@ const runElectron = async (c, platform, port) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            await _runElectronSimulator(c, platform);
+            waitForWebpack(port)
+                .then(() => _runElectronSimulator(c, platform))
+                .catch(logError);
+            // await _runElectronSimulator(c, platform);
             await runElectronDevServer(c, platform, port);
         } else {
             logInfo(
@@ -170,6 +174,7 @@ const runElectron = async (c, platform, port) => {
 };
 
 const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_runElectronSimulator:${platform}`);
     const appFolder = getAppFolder(c, platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 

@@ -1,12 +1,13 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { removeDirs } from './fileutils';
-import { logTask } from '../common';
-import { askQuestion, generateOptions, finishQuestion } from './prompt';
+import inquirer from 'inquirer';
 
-const cleanProjectModules = (c, skipQuestion = false) => new Promise((resolve, reject) => {
-    logTask('cleanProjectModules');
+import { removeDirs } from './fileutils';
+import { logTask } from './logger';
+
+const rnvClean = async (c, skipQuestion = false) => {
+    logTask('rnvClean');
     const pathsToRemove = [
         c.paths.project.nodeModulesDir,
         path.join(c.paths.project.dir, 'package-lock.json')
@@ -28,16 +29,31 @@ const cleanProjectModules = (c, skipQuestion = false) => new Promise((resolve, r
 
 
     if (skipQuestion) {
-        removeDirs(pathsToRemove).then(() => resolve()).catch(e => reject(e));
-    } else {
-        askQuestion(`Following files/folders will be removed:\n\n${msg}\npress (ENTER) to confirm`)
-            .then(() => {
-                finishQuestion();
-                removeDirs(pathsToRemove).then(() => resolve())
-                    .catch(e => reject(e));
-            })
-            .catch(e => reject(e));
+        return removeDirs(pathsToRemove);
     }
-});
 
-export { cleanProjectModules };
+    const { confirm } = await inquirer.prompt({
+        name: 'confirm',
+        type: 'confirm',
+        message: `Are you sure you want to remove these files/folders? \n${msg}`,
+    });
+
+    if (confirm) {
+        await removeDirs(pathsToRemove);
+
+        const buildDirs = [
+            c.paths.project.builds.dir,
+            c.paths.project.assets.dir
+        ];
+        const { confirmBuilds } = await inquirer.prompt({
+            name: 'confirmBuilds',
+            type: 'confirm',
+            message: `Do you also want to clean your platformBuilds and platformAssets? \n${chalk.red(buildDirs.join('\n'))}`,
+        });
+        if (confirmBuilds) {
+            await removeDirs(buildDirs);
+        }
+    }
+};
+
+export { rnvClean };

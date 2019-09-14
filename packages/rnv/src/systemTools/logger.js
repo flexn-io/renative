@@ -46,7 +46,7 @@ export const logWelcome = () => {
             str += printIntoBox(`      ${chalk.yellow('Use "npm install rnv" for stable one.')}`, 1);
         }
     }
-    str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
+    str += printIntoBox(`      ${chalk.grey('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      ${getCurrentCommand()}`);
     if (_c?.timeStart) str += printIntoBox(`      Start Time: ${_c.timeStart.toLocaleString()}`);
@@ -115,6 +115,10 @@ export const getCurrentCommand = (excludeDollar = false) => {
     return `${dollar}rnv ${output}`;
 };
 
+export const logToSummary = (v) => {
+    _messages.push(`\n${v}`);
+};
+
 export const logSummary = () => {
     let logContent = printIntoBox('All good as 🦄 ');
     if (_messages && _messages.length) {
@@ -138,7 +142,8 @@ export const logSummary = () => {
             str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
         if (_c.buildConfig) {
-            str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig.id)}`, 1);
+            str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig._meta?.currentAppConfigId)}`, 1);
+            str += printIntoBox(`Workspace: ${_highlightColor(_c.buildConfig.workspaceID)}`, 1);
         }
         if (_c.files.project.config) {
             const defaultProjectConfigs = _c.files.project.config.defaults;
@@ -236,6 +241,7 @@ export const logEnd = (code) => {
     if (_currentProcess) _currentProcess.exit(code);
 };
 
+
 export const logInitialize = () => {
     logWelcome();
     // console.log(
@@ -277,9 +283,9 @@ export const printArrIntoBox = (arr, prefix = '') => {
         const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
         if (stringArr.length > l) {
             if (i === 0 && prefix.length) {
-                output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr)}`, 2);
+                output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr)}`, 2);
             } else {
-                output += printIntoBox(_highlightColor(stringArr), 1);
+                output += printIntoBox(_defaultColor(stringArr), 1);
             }
 
             stringArr = '';
@@ -289,9 +295,9 @@ export const printArrIntoBox = (arr, prefix = '') => {
         // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
     });
     if (i === 0 && prefix.length) {
-        output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr.slice(0, -2))}`, 2);
+        output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr.slice(0, -2))}`, 2);
     } else {
-        output += printIntoBox(_highlightColor(stringArr.slice(0, -2)), 1);
+        output += printIntoBox(_defaultColor(stringArr.slice(0, -2)), 1);
     }
 
     return output;
@@ -305,20 +311,6 @@ export const printBoxStart = (str, str2) => {
     return output;
 };
 
-export const logStatus = () => {
-    // let str = printBoxStart('🚀  STATUS');
-    // // str += printIntoBox('SHlelelele euheu ehhh');
-    // // console.log('SSKJJSKL', _c);
-    // if (_c) {
-    //     if (_c.runtime.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.runtime.appId)}`, 1);
-    //     if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
-    //     if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
-    // }
-    //
-    // str += printIntoBox('');
-    // str += printBoxEnd();
-
-    // console.log(str);
-};
+export const rnvStatus = async () => Promise.resolve();
 
 export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');

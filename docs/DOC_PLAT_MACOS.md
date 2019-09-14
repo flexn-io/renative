@@ -4,22 +4,20 @@ title: macOS Platform
 sidebar_label: macOS
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_macos.png?raw=true" width=50 height=50 />
-
-## macOS
-
-![](https://img.shields.io/badge/Mac-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Windows-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_macos.gif?raw=true" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-yes-brightgreen.svg" />
+    <img src="https://img.shields.io/badge/Windows-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Linux-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/HostMode-n/a-lightgrey.svg" />
+  </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_macos.gif" height="250"/>
+
+## Overview
 
 -   support for OSX/macOS
 -   Based on Electron

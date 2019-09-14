@@ -6,11 +6,8 @@ import semver from 'semver';
 import inquirer from 'inquirer';
 import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
 import {
-    logTask,
     getAppFolder,
     isPlatformActive,
-    logInfo,
-    logSuccess,
     getAppVersion,
     getAppTitle,
     writeCleanFile,
@@ -19,6 +16,7 @@ import {
     getConfigProp,
     waitForEmulator
 } from '../../common';
+import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
     CLI_WEBOS_ARES_PACKAGE,
@@ -37,7 +35,7 @@ const CHECK_INTEVAL = 5000;
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
-    const ePath = path.join(c.files.private.config.sdks.WEBOS_SDK, `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
+    const ePath = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
 
     if (!fs.existsSync(ePath)) {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
@@ -84,8 +82,10 @@ const listWebOSTargets = async (c) => {
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 
-    const deviceArray = devices.map((device, i) => `-[${i + 1}] ${device.name} | ${device.device}`);
-    console.log(deviceArray.join('\n'));
+    const deviceArray = devices.map((device, i) => ` [${i + 1}]> ${chalk.bold(device.name)} | ${device.device}`);
+
+    logToSummary(`WebOS Targets:\n${deviceArray.join('\n')}`);
+
     return true;
 };
 
@@ -142,7 +142,7 @@ const runWebOS = async (c, platform, target) => {
             if (response.setupDevice) {
                 // Yes, I would like that
                 logInfo('Please follow the instructions from http://webostv.developer.lge.com/develop/app-test/#installDevModeApp on how to setup the TV and the connection with the PC. Then follow the onscreen prompts\n');
-                await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { stdio: 'inherit', silent: true });
+                await execCLI(c, CLI_WEBOS_ARES_SETUP_DEVICE, '', { interactive: true });
 
                 const newDeviceResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
                 const dev = await parseDevices(c, newDeviceResponse);

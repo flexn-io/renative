@@ -1,15 +1,15 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
+import inquirer from 'inquirer';
 
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
 import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTools/logger';
 import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
-import { cleanProjectModules } from '../systemTools/cleaner';
+import { rnvClean } from '../systemTools/cleaner';
 import { configureNodeModules } from './projectParser';
 
-export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
+export const checkAndMigrateProject = async (c) => {
     logTask('checkAndMigrateProject');
     const prjDir = c.paths.project.dir;
 
@@ -17,9 +17,9 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
     const paths = {
         project: prjDir,
         globalConfig: path.join(c.paths.GLOBAL_RNV_DIR, 'config.json'),
-        // privateProjectConfig: path.join(c.paths.private.project.dir, 'config.json'),
-        // privateProjectConfig2: path.join(c.paths.private.project.dir, 'config.private.json'),
-        // privateProjectConfigNew: path.join(c.paths.private.project.dir, 'renative.private.json'),
+        // privateProjectConfig: path.join(c.paths.workspace.project.dir, 'config.json'),
+        // privateProjectConfig2: path.join(c.paths.workspace.project.dir, 'config.private.json'),
+        // privateProjectConfigNew: path.join(c.paths.workspace.project.dir, 'renative.private.json'),
         config: path.join(prjDir, 'rnv-config.json'),
         configNew: path.join(prjDir, 'renative.json'),
         package: path.join(prjDir, 'package.json'),
@@ -35,25 +35,27 @@ export const checkAndMigrateProject = c => new Promise((resolve, reject) => {
     }
 
     if (fs.existsSync(paths.config)) {
-        askQuestion('Your project has been created with previous version of ReNative. Do you want to migrate it to new format? Backing up project is recommended! To Proceed type: (y)')
-            .then((v) => {
-                if (v === 'y') {
-                    c.program.reset = true;
-                    _migrateProject(c, paths)
-                        .then(() => _migrateProjectSoft(c, paths))
-                        .then(() => cleanProjectModules(c))
-                        .then(() => configureNodeModules(c))
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                    return;
-                }
-                return resolve();
-            })
-            .catch(e => reject(e));
+        if (c.program.ci) {
+            throw 'Your project has been created with previous version of ReNative';
+            return;
+        }
+        const { confirm } = await inquirer.prompt({
+            name: 'confirm',
+            type: 'confirm',
+            message: 'Your project has been created with previous version of ReNative. Do you want to migrate it to new format? Backing up project is recommended!'
+        });
+
+        if (confirm) {
+            c.program.reset = true;
+            return _migrateProject(c, paths)
+                .then(() => _migrateProjectSoft(c, paths))
+                .then(() => rnvClean(c))
+                .then(() => configureNodeModules(c));
+        }
     } else {
-        _migrateProjectSoft(c, paths).then(() => resolve()).catch(e => reject(e));
+        return _migrateProjectSoft(c, paths);
     }
-});
+};
 
 const PATH_PROPS = [
     { oldKey: 'globalConfigFolder', newKey: 'globalConfigDir' },
@@ -143,9 +145,9 @@ const _migrateFile = (oldPath, newPath) => {
 const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
     logTask('MIGRATION STARTED');
 
-    if (!fs.existsSync(c.paths.private.config)) {
+    if (!fs.existsSync(c.paths.workspace.config)) {
         if (fs.existsSync(paths.globalConfig)) {
-            copyFileSync(paths.globalConfig, c.paths.private.config);
+            copyFileSync(paths.globalConfig, c.paths.workspace.config);
         }
     }
 

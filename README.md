@@ -1,7 +1,7 @@
 <p align='center'>
     <br />
     <br />
-  <p align='center'><img width="300" height="321" src="https://github.com/pavjacko/renative/blob/master/docs/images/logo-512.png?raw=true" /></p>
+  <p align='center'><img width="300" height="321" src="https://renative.org/img/logo-512.png" /></p>
   <br />
   <br />
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
@@ -76,121 +76,121 @@ Contributing
 <table>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_ios.png?raw=true" width=20 height=20 />
+      <img src="https://renative.org/img/ic_ios.png" width=20 height=20 />
       </br>
       <a href="#ios">iOS</a>
     </th><th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tvos.png?raw=true" width=36 height=20 />
+      <img src="https://renative.org/img/ic_tvos.png" width=36 height=20 />
       </br>
       <a href="#tvos">tvOS</a>
     </th><th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_androidtv.png?raw=true" width=20 height=20 />
+      <img src="https://renative.org/img/ic_androidtv.png" width=20 height=20 />
       </br>
       <a href="#android-tv">Android TV</a>
     </th><th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_macos.png?raw=true" width=20 height=20 />
+      <img src="https://renative.org/img/ic_macos.png" width=20 height=20 />
       </br>
       <a href="#macos">macOS</a>
     </th>
   </tr>
   <tr>
     <th>
-      <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_ios.gif?raw=true" />
+      <img src="https://renative.org/img/rnv_ios.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_tvos.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_tvos.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_android-tv.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_android-tv.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_macos.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_macos.gif" />
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_android.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_android.png" width=20 height=20 />
     </br>
     <a href="#android">Android</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_web.png?raw=true" width=80 height=20 />
+    <img src="https://renative.org/img/ic_web.png" width=80 height=20 />
     </br>
     <a href="#web">Web</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizen.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_tizen.png" width=20 height=20 />
     </br>
     <a href="#tizen-tv">Tizen TV</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_webos.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_webos.png" width=20 height=20 />
     </br>
     <a href="#lg-webos">LG webOS</a>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_android.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_android.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_web.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_web.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_tizen.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_tizen.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_webos.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_webos.gif" />
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_firefoxos.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_firefoxos.png" width=20 height=20 />
     </br>
     <a href="#firefoxos">FirefoxOS</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_windows.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_windows.png" width=20 height=20 />
     </br>
     <a href="#windows">Windows</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_firefoxtv.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_firefoxtv.png" width=20 height=20 />
     </br>
     <a href="#firefoxtv">Firefox TV</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_kaios.png?raw=true" width=55 height=20 />
+    <img src="https://renative.org/img/ic_kaios.png" width=55 height=20 />
     </br>
     <a href="#kaios">KaiOS</a>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_firefoxos.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_firefoxos.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_windows.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_windows.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_firefoxtv.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_firefoxtv.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_kaios.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_kaios.gif" />
     </th>
   </tr>
 
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizen.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_tizen.png" width=20 height=20 />
     </br>
     <a href="#tizen-mobile">Tizen Mobile</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizenwatch.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_tizenwatch.png" width=20 height=20 />
     </br>
     <a href="#tizen-watch">Tizen Watch</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_androidwear.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_androidwear.png" width=20 height=20 />
     </br>
     <a href="#android-wear">Android Wear</a>
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_xbox.png?raw=true" width=20 height=20 />
+    <img src="https://renative.org/img/ic_xbox.png" width=20 height=20 />
     </br>
     <a href="#xbox">Xbox</a>
     </th>
   </tr>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_tizenmobile.gif?raw=true" />
+    <img src="https://renative.org/img/rnv_tizenmobile.gif" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_tizenwatch.gif?raw=true" width="136" height="184" />
+    <img src="https://renative.org/img/rnv_tizenwatch.gif" width="136" height="184" />
     </th><th>
-    <img src="https://github.com/pavjacko/renative/blob/master/docs/images/rnv_androidwear.gif?raw=true" width="150" height="150" />
+    <img src="https://renative.org/img/rnv_androidwear.gif" width="150" height="150" />
     </th><th>
     coming soon
     </th>
@@ -216,7 +216,7 @@ Contributing
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_quickstart.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_quickstart.png" width=50 height=50 />
 
 ## Quick Start
 
@@ -231,7 +231,7 @@ $ rnv new
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_features.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_features.png" width=50 height=50 />
 
 ## Features
 
@@ -248,7 +248,7 @@ $ rnv new
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_templates.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_templates.png" width=50 height=50 />
 
 ## Templates / Starters
 
@@ -259,7 +259,7 @@ Too lazy to build your idea from scratch? use one of the predefined & community 
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_plugins.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_plugins.png" width=50 height=50 />
 
 ## Plugins
 
@@ -269,7 +269,7 @@ ReNative supports standard community driven react-native plugins you can use to 
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_integrations.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_integrations.png" width=50 height=50 />
 
 ## Integrations
 
@@ -280,7 +280,7 @@ ReNative supports integration for various services and deployment infrastructure
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_configuration.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_configuration.png" width=50 height=50 />
 
 ## JSON Configurations
 
@@ -291,7 +291,7 @@ Tire of setting up and managing countless of various projects? you can go as sim
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_appconfigs.png" width=50 height=50 />
 
 ## Folder Configurations
 
@@ -301,7 +301,7 @@ ReNative offers flexible and scalable folder override & injection features to cr
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_hooks.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_hooks.png" width=50 height=50 />
 
 ## Build Hooks
 
@@ -312,7 +312,7 @@ Sometimes you need to extend CLI functionality with custom build scripts. ReNati
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_runtime.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_runtime.png" width=50 height=50 />
 
 ## Runtime
 
@@ -323,7 +323,7 @@ ReNative runtime is an NPM dependency used abstract away some of the complexitie
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_cli.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
 ## CLI
 
@@ -334,7 +334,7 @@ One CLI to do it all. `rnv` is your entry point and control centre to building m
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_arch.png" width=50 height=50 />
 
 ## Architecture
 
@@ -347,19 +347,19 @@ More in-depth explanation how ReNative internals work
 
 <p>
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_android.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_web.png?raw=true" width=200 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_webos.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_macos.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_windows.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_ios.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_android.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_androidtv.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_web.png" width=200 height=50 />
+<img src="https://renative.org/img/ic_tizen.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_tizenwatch.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_webos.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_tizen.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_macos.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_windows.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_ios.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_androidwear.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_firefoxos.png" width=50 height=50 />
+<img src="https://renative.org/img/ic_firefoxtv.png" width=50 height=50 />
 </p>
  -->
 
@@ -367,7 +367,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_ios.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_ios.png" width=50 height=50 />
 
 ## iOS
 
@@ -377,7 +377,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_android.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_android.png" width=50 height=50 />
 
 ## Android
 
@@ -387,7 +387,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tvos.png?raw=true" width=90 height=50 />
+<img src="https://renative.org/img/ic_tvos.png" width=90 height=50 />
 
 ## tvOS
 
@@ -397,7 +397,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_androidtv.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_androidtv.png" width=50 height=50 />
 
 ## Android TV
 
@@ -407,7 +407,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_web.png?raw=true" width=200 height=50 />
+<img src="https://renative.org/img/ic_web.png" width=200 height=50 />
 
 ## Web
 
@@ -417,7 +417,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_tizen.png" width=50 height=50 />
 
 ## Tizen TV
 
@@ -427,7 +427,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizenwatch.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_tizenwatch.png" width=50 height=50 />
 
 ## Tizen Watch
 
@@ -437,7 +437,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_webos.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_webos.png" width=50 height=50 />
 
 ## LG webOS
 
@@ -447,7 +447,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_tizen.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_tizen.png" width=50 height=50 />
 
 ## Tizen Mobile
 
@@ -457,7 +457,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_macos.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_macos.png" width=50 height=50 />
 
 ## macOS
 
@@ -467,7 +467,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_windows.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_windows.png" width=50 height=50 />
 
 ## Windows
 
@@ -477,7 +477,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_androidwear.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_androidwear.png" width=50 height=50 />
 
 ## Android Wear
 
@@ -487,7 +487,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_kaios.png?raw=true" width=140 height=50 />
+<img src="https://renative.org/img/ic_kaios.png" width=140 height=50 />
 
 ## KaiOS
 
@@ -497,7 +497,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_firefoxos.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_firefoxos.png" width=50 height=50 />
 
 ## FirefoxOS
 
@@ -507,7 +507,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_firefoxtv.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_firefoxtv.png" width=50 height=50 />
 
 ## FirefoxTV
 
@@ -517,7 +517,7 @@ More in-depth explanation how ReNative internals work
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_construction.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_construction.png" width=50 height=50 />
 
 ## Developing ReNative
 
@@ -528,7 +528,7 @@ If you need full control over whole ReNative build or want to contribute, you ca
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_issues.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_issues.png" width=50 height=50 />
 
 ## Common Issues
 
@@ -538,7 +538,7 @@ If you face unexpected issues always good to check if there is a quick solution 
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_chat.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_chat.png" width=50 height=50 />
 
 ## Discussions
 
@@ -546,7 +546,7 @@ https://spectrum.chat/renative
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_contributor.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_contributor.png" width=50 height=50 />
 
 ## Contributors
 
@@ -562,11 +562,11 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 ## Sponsors
 
-<a href="https://www.24i.com"><img src="https://github.com/pavjacko/renative/blob/master/docs/sponsors/24i.jpg?raw=true" width=200 height=85 /></a>
+<a href="https://www.24i.com"><img src="https://renative.org/img/sponsors/24i.jpg" width=200 height=85 /></a>
 
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/master/docs/images/ic_community.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_community.png" width=50 height=50 />
 
 ## Community
 

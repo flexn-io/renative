@@ -1,17 +1,13 @@
-import path from 'path';
-import fs from 'fs';
+import inquirer from 'inquirer';
 import chalk from 'chalk';
-import readline from 'readline';
 import child_process from 'child_process';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
     isPlatformActive,
-    logDebug
 } from '../../common';
-import { getQuestion } from '../../systemTools/prompt';
+import { logToSummary, logTask,
+    logError,
+    logWarning, logDebug } from '../../systemTools/logger';
 import { IOS, TVOS } from '../../constants';
 
 export const getAppleDevices = (c, platform, ignoreDevices, ignoreSimulators) => {
@@ -68,7 +64,7 @@ const _parseIOSDevicesList = (text, platform, ignoreDevices = false, ignoreSimul
     return devices;
 };
 
-export const launchAppleSimulator = (c, platform, target) => new Promise((resolve) => {
+export const launchAppleSimulator = async (c, platform, target) => {
     logTask(`launchAppleSimulator:${platform}:${target}`);
 
     const devicesArr = getAppleDevices(c, platform, true);
@@ -80,30 +76,25 @@ export const launchAppleSimulator = (c, platform, target) => new Promise((resolv
     }
     if (selectedDevice) {
         _launchSimulator(selectedDevice);
-        resolve(selectedDevice.name);
-    } else {
-        logWarning(`Your specified simulator target ${chalk.white(target)} doesn't exists`);
-        const readlineInterface = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-        let devicesString = '\n';
-        devicesArr.forEach((v, i) => {
-            devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(
-                v.udid,
-            )}${v.isDevice ? chalk.red(' (device)') : ''}\n`;
-        });
-        readlineInterface.question(getQuestion(`${devicesString}\nType number of the simulator you want to launch`), (v) => {
-            const chosenDevice = devicesArr[parseInt(v, 10) - 1];
-            if (chosenDevice) {
-                _launchSimulator(chosenDevice);
-                resolve(chosenDevice.name);
-            } else {
-                logError(`Wrong choice ${v}! Ingoring`);
-            }
-        });
+        return selectedDevice.name;
     }
-});
+
+    logWarning(`Your specified simulator target ${chalk.white(target)} doesn't exists`);
+    const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+
+    const { sim } = await inquirer.prompt({
+        name: 'sim',
+        message: 'Select the simulator you want to launch',
+        type: 'list',
+        choices: devices
+    });
+
+    if (sim) {
+        _launchSimulator(sim);
+        return sim.name;
+    }
+    return Promise.reject('Action canceled!');
+};
 
 const _launchSimulator = (selectedDevice) => {
     try {
@@ -118,11 +109,14 @@ export const listAppleDevices = (c, platform) => new Promise((resolve) => {
     logTask(`listAppleDevices:${platform}`);
 
     const devicesArr = getAppleDevices(c, platform);
-    let devicesString = '\n';
+    let devicesString = '';
     devicesArr.forEach((v, i) => {
-        devicesString += `-[${i + 1}] ${chalk.white(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.blue(v.udid)}${
+        devicesString += ` [${i + 1}]> ${chalk.bold(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${
             v.isDevice ? chalk.red(' (device)') : ''
         }\n`;
     });
-    console.log(devicesString);
+
+    logToSummary(`${platform} Targets:\n\n${devicesString}`);
+
+    resolve();
 });

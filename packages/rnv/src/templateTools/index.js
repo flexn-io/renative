@@ -1,20 +1,19 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
-import merge from 'deepmerge';
+import inquirer from 'inquirer';
+
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
     removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
-import { logError, logInfo, logWarning, logTask, logDebug } from '../common';
+import { logToSummary, logError, logInfo, logWarning, logTask, logDebug } from '../systemTools/logger';
 import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
-import { generateOptions, askQuestion, finishQuestion } from '../systemTools/prompt';
+import { generateOptions } from '../systemTools/prompt';
 import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
-import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig } from '../configTools/configParser';
-
-import { templates } from '../../renativeTemplates/templates.json';
+import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig, updateConfig } from '../configTools/configParser';
 
 
 // let templateName = c.buildConfig.currentTemplate;
@@ -25,30 +24,20 @@ import { templates } from '../../renativeTemplates/templates.json';
 //     fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
 // }
 
-export const listTemplates = c => new Promise((resolve, reject) => {
-    logTask('listTemplates');
-    const opts = getTemplateOptions(c);
-    console.log(opts.asString);
-    resolve();
-});
 
-export const addTemplate = (c, opts) => new Promise((resolve, reject) => {
+export const addTemplate = (c, template) => {
     logTask('addTemplate');
-    const { maxErrorLength } = c.program;
 
     c.files.project.config.templates = c.files.project.config.templates || {};
 
-    if (!c.files.project.config.templates[opts.selectedOption]) {
-        c.files.project.config.templates[opts.selectedOption] = {
+    if (!c.files.project.config.templates[template]) {
+        c.files.project.config.templates[template] = {
             version: 'latest'
         };
     }
 
     _writeObjectSync(c, c.paths.project.config, c.files.project.config);
-
-
-    resolve();
-});
+};
 
 export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     logTask('checkIfTemplateInstalled');
@@ -80,7 +69,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reject) => {
+export const applyTemplate = async (c, selectedTemplate) => {
     logTask(`applyTemplate:${c.buildConfig.currentTemplate}=>${selectedTemplate}:`);
     c.runtime.selectedTemplate = selectedTemplate;
 
@@ -88,34 +77,25 @@ export const applyTemplate = (c, selectedTemplate) => new Promise((resolve, reje
         logWarning('You don\'t have any current template selected');
         const opts = getInstalledTemplateOptions(c);
 
-        askQuestion(`Pick which template to apply: \n${opts.asString}`)
-            .then(v => opts.pick(v))
-            .then((v) => {
-                finishQuestion();
-                c.buildConfig.currentTemplate = opts.selectedOption;
-                c.files.project.config.currentTemplate = opts.selectedOption;
-                _writeObjectSync(c, c.paths.project.config, c.files.project.config);
-                return Promise.resolve();
-            })
-            .then(() => _applyTemplate(c))
-            .then(() => _configureSrc(c))
-            .then(() => _configureAppConfigs(c))
-            .then(() => _configureProjectConfig(c))
-            .then(() => _configureRenativeConfig(c))
-            .then(() => _configureEntryPoints(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    } else {
-        _applyTemplate(c)
-            .then(() => _configureSrc(c))
-            .then(() => _configureAppConfigs(c))
-            .then(() => _configureProjectConfig(c))
-            .then(() => _configureRenativeConfig(c))
-            .then(() => _configureEntryPoints(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
+        const { template } = await inquirer.prompt({
+            type: 'list',
+            name: 'template',
+            message: 'Pick which template to apply',
+            choices: opts.keysAsArray
+        });
+
+        c.buildConfig.currentTemplate = template;
+        c.files.project.config.currentTemplate = template;
+        _writeObjectSync(c, c.paths.project.config, c.files.project.config);
     }
-});
+
+    await _applyTemplate(c);
+    await _configureSrc(c);
+    await _configureAppConfigs(c);
+    await _configureProjectConfig(c);
+    await _configureRenativeConfig(c);
+    await _configureEntryPoints(c);
+};
 
 const _cleanProjectTemplateSync = (c) => {
     logTask('_cleanProjectTemplateSync');
@@ -182,7 +162,7 @@ const _configureSrc = c => new Promise((resolve, reject) => {
 });
 
 
-const _configureAppConfigs = c => new Promise((resolve, reject) => {
+const _configureAppConfigs = async (c) => {
     // Check appConfigs
     logTask('configureProject:check appConfigs', chalk.grey);
     //
@@ -190,7 +170,7 @@ const _configureAppConfigs = c => new Promise((resolve, reject) => {
         logInfo(
             `Looks like your appConfig folder ${chalk.white(
                 c.paths.project.appConfigsDir,
-            )} is missing! Let's create sample config for you.`,
+            )} is missing! ReNative will create one from template.`,
         );
 
         // TODO: GET CORRECT PROJECT TEMPLATE
@@ -223,12 +203,12 @@ const _configureAppConfigs = c => new Promise((resolve, reject) => {
                     }
                 }
             }
+            await updateConfig(c, '?');
         } catch (e) {
             logError(e);
         }
     }
-    resolve();
-});
+};
 
 const _configureProjectConfig = c => new Promise((resolve, reject) => {
     // Check projectConfigs
@@ -320,10 +300,10 @@ const _writeObjectSync = (c, p, s) => {
     generateBuildConfig(c);
 };
 
-export const getTemplateOptions = c => generateOptions(templates, false, null, (i, obj, mapping, defaultVal) => {
+export const getTemplateOptions = c => generateOptions(c.buildConfig.projectTemplates, false, null, (i, obj, mapping, defaultVal) => {
     const exists = c.buildConfig.templates?.[defaultVal];
-    const installed = exists ? chalk.red(' (installed)') : '';
-    return `-[${chalk.green(i + 1)}] ${chalk.green(defaultVal)}${installed} \n`;
+    const installed = exists ? chalk.yellow(' (installed)') : '';
+    return ` [${chalk.grey(i + 1)}]> ${chalk.bold(defaultVal)}${installed} \n`;
 });
 
 export const getInstalledTemplateOptions = (c) => {
@@ -332,4 +312,45 @@ export const getInstalledTemplateOptions = (c) => {
     }
     logError('You don\'t have any local templates installed');
     return [];
+};
+
+
+export const rnvTemplateList = c => new Promise((resolve, reject) => {
+    logTask('rnvTemplateList');
+    const opts = getTemplateOptions(c);
+    logToSummary(`Templates:\n\n${opts.asString}`);
+    resolve();
+});
+
+export const rnvTemplateAdd = async (c) => {
+    logTask('rnvTemplateAdd');
+
+    const opts = getTemplateOptions(c);
+
+    const { template } = await inquirer.prompt({
+        type: 'list',
+        message: 'Pick which template to install',
+        name: 'template',
+        choices: opts.keysAsArray
+    });
+
+    addTemplate(c, template);
+};
+
+export const rnvTemplateApply = async (c) => {
+    logTask(`rnvTemplateApply:${c.program.template}`);
+
+    if (c.program.template) {
+        return applyTemplate(c, c.program.template);
+    }
+    const opts = getInstalledTemplateOptions(c);
+
+    const { template } = await inquirer.prompt({
+        type: 'list',
+        message: 'Pick which template to install',
+        name: 'template',
+        choices: opts.keysAsArray
+    });
+
+    applyTemplate(c, template);
 };

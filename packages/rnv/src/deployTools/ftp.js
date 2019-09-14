@@ -1,13 +1,12 @@
 import path from 'path';
 import fs from 'fs';
+import inquirer from 'inquirer';
+
 import {
     logInfo,
-    logComplete,
-    logError,
     logTask,
-} from '../common';
-import { askQuestion, generateOptions, finishQuestion } from '../systemTools/prompt';
-import { RENATIVE_CONFIG_NAME } from '../constants';
+} from '../systemTools/logger';
+import { writeObjectSync } from '../systemTools/fileutils';
 import { DEPLOY_TARGET_FTP } from './webTools';
 
 const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
@@ -26,7 +25,6 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
         });
     }
     promise.then((envContent) => {
-        const envObj = {};
         let matches = 0;
         const targetMatches = 2;
         envContent.split('\n').map(line => line.split('=')).forEach(([key, val]) => {
@@ -66,41 +64,46 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
         }).catch(reject);
 });
 
-const _createEnvFtpConfig = (configFilePath, previousContent = '') => new Promise((resolve, reject) => {
+const _createEnvFtpConfig = async (configFilePath, previousContent = '') => {
     let envContent = previousContent || '';
-    askQuestion('Type your FTP host').then((v) => {
-        finishQuestion();
-        if (v) {
-            envContent += `RNV_DEPLOY_WEB_FTP_SERVER=${v}\n`;
-        } else {
-            return reject(new Error('NO FTP SERVER PROVIDED'));
-        }
-        askQuestion('Type your FTP user').then((v) => {
-            finishQuestion();
-            if (v) {
-                envContent += `RNV_DEPLOY_WEB_FTP_USER=${v}\n`;
-            } else {
-                return reject(new Error('NO FTP USER PROVIDED'));
-            }
-            askQuestion('Type your FTP password (or press ENTER for prompting every time)').then((v) => {
-                finishQuestion();
-                if (v) {
-                    envContent += `RNV_DEPLOY_WEB_FTP_PASSWORD=${v}\n`;
-                }
-                askQuestion('Type your FTP port (or enter for 21)').then((v) => {
-                    finishQuestion();
-                    const port = !v || isNaN(v) ? 21 : v;
-                    envContent += `RNV_DEPLOY_WEB_FTP_PORT=${port}`;
-                    fs.writeFileSync(configFilePath, envContent);
-                    logInfo(`Writing .env config to ${configFilePath}`);
-                    resolve();
-                });
-            });
-        });
-    });
-});
 
-const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
+    const { host, user, password, port } = await inquirer.prompt([
+        {
+            name: 'host',
+            type: 'input',
+            message: 'Type your FTP host',
+            validate: i => !!i || 'No FTP server provided'
+        },
+        {
+            name: 'port',
+            type: 'number',
+            message: 'Type your FTP port',
+            default: 21,
+            validate: i => !!i || 'No FTP server provided'
+        },
+        {
+            name: 'user',
+            message: 'Type your FTP user',
+            type: 'input',
+            validate: i => !!i || 'No FTP user provided'
+        },
+        {
+            name: 'password',
+            message: 'Type your FTP password (or press ENTER for prompting every time)',
+            type: 'password',
+        },
+    ]);
+
+    envContent += `RNV_DEPLOY_WEB_FTP_SERVER=${host}\n`;
+    envContent += `RNV_DEPLOY_WEB_FTP_USER=${user}\n`;
+    envContent += `RNV_DEPLOY_WEB_FTP_PASSWORD=${password}\n`;
+    envContent += `RNV_DEPLOY_WEB_FTP_PORT=${port}`;
+
+    fs.writeFileSync(configFilePath, envContent);
+    logInfo(`Writing .env config to ${configFilePath}`);
+};
+
+const _createDeployConfig = async (c, platform) => {
     logTask(`_createDeployConfig:${platform}`);
 
     const deploy = c.buildConfig.platforms[platform].deploy || {};
@@ -108,65 +111,60 @@ const _createDeployConfig = (c, platform) => new Promise((resolve, reject) => {
     deploy[DEPLOY_TARGET_FTP] = {};
     deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
 
-    const targetConfigPromise = new Promise((resolve, reject) => {
-        deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
-        askQuestion('Folder on the ftp to upload the project (default is \'/\')')
-            .then((v) => {
-                finishQuestion();
-                deploy[DEPLOY_TARGET_FTP].remoteRoot = v || '/';
-            })
-            .then(() => askQuestion('Delete all contents of that folder when deploying versions y/N (default is \'N\')?')
-                .then((v) => {
-                    finishQuestion();
-                    deploy[DEPLOY_TARGET_FTP].deleteRemote = ['yes', 'Y', 'y'].indexOf(v) > -1;
-                }))
-            .then(() => askQuestion('Included files pattern, comma separated (default \'*\',\'**/*\' = all except dot files)')
-                .then((v) => {
-                    finishQuestion();
-                    deploy[DEPLOY_TARGET_FTP].include = v ? v.split(',') : ['*', '**/*'];
-                }))
-            .then(() => {
-                deploy[DEPLOY_TARGET_FTP].exclude = [];
-                return askQuestion('Excluded files pattern, comma separated (default [])')
-                    .then((v) => {
-                        finishQuestion();
-                        deploy[DEPLOY_TARGET_FTP].exclude = v ? v.split(',') : [];
-                    });
-            })
-            .then(() => askQuestion('Exclude sourcemaps? y/N (default = N)')
-                .then((v) => {
-                    finishQuestion();
-                    deploy[DEPLOY_TARGET_FTP].exclude = deploy[DEPLOY_TARGET_FTP].exclude.concat(['yes', 'Y', 'y'].indexOf(v) > -1 ? ['**/*.map'] : []);
-                }))
-            .then(resolve);
-    });
+    deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+    const { remoteRoot, deleteRemote, include, exclude, excludeSourcemaps } = await inquirer.prompt([
+        {
+            name: 'remoteRoot',
+            type: 'input',
+            message: 'Folder on the ftp to upload the project',
+            default: '/',
+        },
+        {
+            name: 'deleteRemote',
+            type: 'confirm',
+            message: 'Delete all contents of that folder when deploying versions?',
+        },
+        {
+            name: 'include',
+            type: 'input',
+            message: 'Included files pattern, comma separated',
+            default: '\'*\',\'**/*\''
+        },
+        {
+            name: 'exclude',
+            type: 'input',
+            message: 'Excluded files pattern, comma separated',
+            default: '[]'
+        },
+        {
+            name: 'excludeSourcemaps',
+            type: 'confirm',
+            message: 'Exclude sourcemaps?',
+        },
+    ]);
 
-    targetConfigPromise
-        .then(() => {
-            logInfo(`Setting your appconfig for ${platform} to include deploy type: ${DEPLOY_TARGET_FTP}
+    deploy[DEPLOY_TARGET_FTP].remoteRoot = remoteRoot || '/';
+    deploy[DEPLOY_TARGET_FTP].deleteRemote = deleteRemote;
+    deploy[DEPLOY_TARGET_FTP].include = include ? include.split(',') : ['*', '**/*'];
+    deploy[DEPLOY_TARGET_FTP].exclude = exclude ? exclude.split(',') : [];
+    deploy[DEPLOY_TARGET_FTP].exclude = deploy[DEPLOY_TARGET_FTP].exclude.concat(excludeSourcemaps ? ['**/*.map'] : []);
+
+    logInfo(`Setting your appconfig for ${platform} to include deploy type: ${DEPLOY_TARGET_FTP}
                     on ${c.paths.appConfig.config}
                 `);
 
-            // TODO: Review this (where to put what props renative.*.json)
-            c.files.appConfig.config.platforms[platform].deploy = deploy;
-            writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
-            resolve();
-        })
-        .catch(reject);
-});
+    // TODO: Review this (where to put what props renative.*.json)
+    c.files.appConfig.config.platforms[platform].deploy = deploy;
+    writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
+};
 
-const deployToFtp = (c, platform) => new Promise((resolve, reject) => {
+const deployToFtp = (c, platform) => {
     logTask(`checkDeployConfigTarget:${platform}`);
     const targetConfig = c.buildConfig.platforms[platform];
-    if (targetConfig && targetConfig.deploy[DEPLOY_TARGET_FTP] && targetConfig.deploy[DEPLOY_TARGET_FTP].type) {
-        _deployToFtp(c, platform).then(resolve).catch(reject);
-    } else {
-        _createDeployConfig(c, platform)
-            .then(() => {
-                _deployToFtp(c, platform).then(resolve).catch(reject);
-            })
-            .catch(reject);
+    if (targetConfig?.deploy?.[DEPLOY_TARGET_FTP]?.type) {
+        return _deployToFtp(c, platform);
     }
-});
+    return _createDeployConfig(c, platform).then(() => _deployToFtp(c, platform));
+};
 
 export { deployToFtp };

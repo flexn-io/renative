@@ -38,11 +38,11 @@
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Renative Config",
     "type": "object",
+    "worspace": {
+        "type": "string",
+        "description": "Workspace ID"
+    },
     "properties": {
-        "globalConfigDir": {
-            "type": "string",
-            "description": "Path to global config folder"
-        },
         "platformTemplatesDirs": {
             "type": "object",
             "description": "Object with keys per each platform template path",

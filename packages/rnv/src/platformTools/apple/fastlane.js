@@ -52,7 +52,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         '--team_id',
         teamID,
         '--output_path',
-        `${c.paths.private.dir}/${c.files.project.package.name}/appConfigs/${appId}/certs`,
+        `${c.paths.workspace.dir}/${c.files.project.package.name}/appConfigs/${appId}/certs`,
         '--force'
     ];
     if (process.env.APPLE_DEVELOPER_USERNAME) {
@@ -65,7 +65,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         args.push(`--${provisioning}`);
     }
 
-    executeAsync(c, `fastlane ${args.join(' ')}`)
+    executeAsync(c, `fastlane ${args.join(' ')}`, { shell: true, stdio: 'inherit', silent: true })
         .then(() => {
             logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
 

@@ -4,31 +4,30 @@ title: Windows Platform
 sidebar_label: Windows
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_windows.png?raw=true" width=50 height=50 />
-
-## Windows
-
-![](https://img.shields.io/badge/Mac-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/Windows-yes-brightgreen.svg)
-![](https://img.shields.io/badge/Linux-n/a-lightgrey.svg)
-![](https://img.shields.io/badge/HostMode-yes-brightgreen.svg)
-
 <table>
   <tr>
-    <th>
-      <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_windows.gif?raw=true" />
-    </th>
+  <td>
+    <img src="https://img.shields.io/badge/Mac-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Windows-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Linux-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
+  </td>
   </tr>
 </table>
+
+<img src="https://renative.org/img/rnv_windows.gif" height="250"/>
+
+
+## Overview
 
 -   support for Windows 10+
 -   Based on Electron
 
-#### Requirements
+## Requirements
 
 -   Windows dev environment
 
-#### Project Configuration
+## Project Configuration
 
 | Feature          |  Version  |
 | ---------------- | :-------: |
@@ -36,7 +35,7 @@ sidebar_label: Windows
 | react-native-web |  `0.9.1`  |
 | electron-builder | `20.28.2` |
 
-#### Run
+## Run
 
 Run on Simulator
 

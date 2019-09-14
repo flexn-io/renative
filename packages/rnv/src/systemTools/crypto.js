@@ -10,22 +10,28 @@ import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 
 const getEnvVar = (c) => {
-    const p1 = c.paths.private.dir.split('/').pop().replace('.', '');
+    const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
     const p2 = c.files.project.package.name.replace('@', '').replace('/', '_').replace(/-/g, '_');
     const envVar = `CRYPTO_${p1}_${p2}`.toUpperCase();
     logDebug('encrypt looking for env var:', envVar);
     return envVar;
 };
 
-export const encrypt = c => new Promise((resolve, reject) => {
-    logTask('encrypt');
+export const rnvCryptoUpdateProfile = c => new Promise((resolve, reject) => {
+    updateProfile(c)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
+
+export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoEncrypt');
 
     const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
-        const destTemp = `${path.join(c.paths.private.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
+        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
 
         const envVar = getEnvVar(c);
         const key = c.program.key || c.process.env[envVar];
@@ -37,7 +43,7 @@ export const encrypt = c => new Promise((resolve, reject) => {
             {
                 gzip: true,
                 file: destTemp,
-                cwd: c.paths.private.dir
+                cwd: c.paths.workspace.dir
             },
             [source]
         )
@@ -56,15 +62,15 @@ export const encrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const decrypt = c => new Promise((resolve, reject) => {
-    logTask('encrypt');
+export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoDecrypt');
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
 
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
-        const destTemp = `${path.join(c.paths.private.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
+        const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
         const key = c.program.key || c.process.env[envVar];
@@ -77,14 +83,14 @@ export const decrypt = c => new Promise((resolve, reject) => {
                 tar.x(
                     {
                         file: destTemp,
-                        cwd: c.paths.private.dir
+                        cwd: c.paths.workspace.dir
                     }
                 ).then(() => {
                     removeFilesSync([destTemp]);
                     if (fs.existsSync(ts)) {
-                        copyFileSync(ts, path.join(c.paths.private.dir, c.files.project.package.name, 'timestamp'));
+                        copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
                     }
-                    logSuccess(`Files succesfully extracted into ${c.paths.private.dir}`);
+                    logSuccess(`Files succesfully extracted into ${c.paths.workspace.dir}`);
                     resolve();
                 })
                     .catch(e => reject(e));
@@ -97,10 +103,10 @@ export const decrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const installProfiles = c => new Promise((resolve, reject) => {
-    logTask('installProfiles');
+export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoInstallProfiles');
     if (c.platform !== 'ios') {
-        logError(`installProfiles: platform ${c.platform} not supported`);
+        logError(`rnvCryptoInstallProfiles: platform ${c.platform} not supported`);
         resolve();
         return;
     }
@@ -112,12 +118,12 @@ export const installProfiles = c => new Promise((resolve, reject) => {
         mkdirSync(ppFolder);
     }
 
-    const list = getFileListSync(c.paths.private.project.dir);
+    const list = getFileListSync(c.paths.workspace.project.dir);
     const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
 
     try {
         mobileprovisionArr.forEach((v) => {
-            console.log(`installProfiles: Installing: ${v}`);
+            console.log(`rnvCryptoInstallProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
     } catch (e) {
@@ -127,8 +133,8 @@ export const installProfiles = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const installCerts = c => new Promise((resolve, reject) => {
-    logTask('installCerts');
+export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoInstallCerts');
     const { maxErrorLength } = c.program;
 
     if (c.platform !== 'ios') {
@@ -138,7 +144,7 @@ export const installCerts = c => new Promise((resolve, reject) => {
     }
     const kChain = c.program.keychain || 'ios-build.keychain';
     const kChainPath = path.join(c.paths.home.dir, 'Library/Keychains', kChain);
-    const list = getFileListSync(c.paths.private.project.dir);
+    const list = getFileListSync(c.paths.workspace.project.dir);
     const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
 
@@ -151,12 +157,12 @@ export const installCerts = c => new Promise((resolve, reject) => {
 });
 
 
-export const updateProfiles = (c) => {
-    logTask('updateProfiles');
+export const rnvCryptoUpdateProfiles = (c) => {
+    logTask('rnvCryptoUpdateProfiles');
     switch (c.platform) {
     case IOS:
     case TVOS:
-        const appId = c.runtime.appId;
+        const { appId } = c.runtime;
         return _updateProfiles(c)
             .then(() => {
                 setAppConfig(c, appId);
@@ -165,7 +171,7 @@ export const updateProfiles = (c) => {
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };
 
-export const _updateProfiles = (c) => {
+const _updateProfiles = (c) => {
     logTask('_updateProfiles', chalk.grey);
     const acList = listAppConfigsFoldersSync(c, true);
     const fullList = [];
