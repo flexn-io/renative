@@ -6,7 +6,7 @@ const highlight = chalk.grey.bold;
 
 export const inquirerPrompt = async (c, params) => {
     if (c.program.ci) {
-        throw params.logMessage || '--ci option does not allow prompts';
+        throw params.logMessage || params.warningMessage || '--ci option does not allow prompts';
     }
     if (params.logMessage) logWarning(params.logMessage);
     const result = await inquirer.prompt(params);
