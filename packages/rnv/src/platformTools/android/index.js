@@ -232,11 +232,12 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
     const { arch, name } = device;
+    const stacktrace = c.program.info ? ' --debug' : '';
 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig} -x bundleReleaseJsAndAssets`))
+        .then(() => executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`))
         .then(() => {
             if (outputAab) {
                 const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
