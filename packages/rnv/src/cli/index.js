@@ -15,6 +15,7 @@ import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
+import Config from '../config';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -231,8 +232,15 @@ const COMMANDS = {
 // PUBLIC API
 // ##########################################
 
-const run = async (c) => {
+const run = async (c, spawnC) => {
     logTask('cli');
+
+    let oldC;
+    if (spawnC) {
+        oldC = c;
+        c = _spawnCommand(c, spawnC);
+        Config.initializeConfig(c);
+    }
 
     const cmd = COMMANDS[c.command];
     const cmdFn = cmd?.fn;
@@ -256,7 +264,7 @@ const run = async (c) => {
     } else {
         await _handleUnknownCommand(c);
     }
-    return c;
+    if (spawnC) Config.initializeConfig(oldC);
 };
 
 const _execute = async (c, cmdFn, cmd, command, subCommand) => {
@@ -265,6 +273,7 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
         return;
     }
     const subCmd = subCommand ? `:${c.subCommand}` : '';
+
     await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
     await executePipe(c, `${c.command}${subCmd}:after`);
@@ -304,7 +313,7 @@ const _handleUnknownSubCommand = async (c) => {
     logTask('_handleUnknownSubCommand');
     const cmds = COMMANDS[c.command]?.subCommands;
 
-    const { subCommand } = await inquirerPrompt(c, {
+    const { subCommand } = await inquirerPrompt({
         type: 'list',
         name: 'subCommand',
         message: 'Pick a subCommand',
@@ -319,7 +328,7 @@ const _handleUnknownSubCommand = async (c) => {
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
 
-    const { command } = await inquirerPrompt(c, {
+    const { command } = await inquirerPrompt({
         type: 'list',
         name: 'command',
         message: 'Pick a command',
@@ -333,7 +342,7 @@ const _handleUnknownCommand = async (c) => {
 
 const _handleUnknownPlatform = async (c, platforms) => {
     logTask('_handleUnknownPlatform');
-    const { platform } = await inquirerPrompt(c, {
+    const { platform } = await inquirerPrompt({
         type: 'list',
         name: 'platform',
         message: 'pick one of the following',
@@ -343,6 +352,35 @@ const _handleUnknownPlatform = async (c, platforms) => {
 
     c.platform = platform;
     return run(c);
+};
+
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
+
+export const _spawnCommand = (c, overrideParams) => {
+    const newCommand = {};
+
+    Object.keys(c).forEach((k) => {
+        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
+            newCommand[k] = { ...c[k] };
+        } else {
+            newCommand[k] = c[k];
+        }
+    });
+
+    const merge = require('deepmerge');
+
+    Object.keys(overrideParams).forEach((k) => {
+        if (newCommand[k] && typeof overrideParams[k] === 'object') {
+            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
+        } else {
+            newCommand[k] = overrideParams[k];
+        }
+    });
+
+    // This causes stack overflow on Linux
+    // const merge = require('deepmerge');
+    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
+    return newCommand;
 };
 
 

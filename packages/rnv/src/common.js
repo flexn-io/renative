@@ -165,33 +165,6 @@ export const isBuildSchemeSupported = async (c) => {
     return scheme;
 };
 
-export const spawnCommand = (c, overrideParams) => {
-    const newCommand = {};
-
-    Object.keys(c).forEach((k) => {
-        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
-            newCommand[k] = { ...c[k] };
-        } else {
-            newCommand[k] = c[k];
-        }
-    });
-
-    const merge = require('deepmerge');
-
-    Object.keys(overrideParams).forEach((k) => {
-        if (newCommand[k] && typeof overrideParams[k] === 'object') {
-            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
-        } else {
-            newCommand[k] = overrideParams[k];
-        }
-    });
-
-    // This causes stack overflow on Linux
-    // const merge = require('deepmerge');
-    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
-    return newCommand;
-};
-
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
@@ -216,8 +189,6 @@ export const checkSdk = (c, platform, reject) => {
     return true;
 };
 
-const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
-
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
 export const getAppSubFolder = (c, platform) => {
@@ -227,10 +198,7 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => {
-    console.warn('!!!!!!!!', c.paths.project.platformTemplatesDirs);
-    path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`)
-};
+export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
 export const getAppConfigId = (c, platform) => c.buildConfig.id;
 
@@ -353,9 +321,7 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
     }
     PLATFORM_RUNS[platform] = true;
     const { device } = c.program;
-    // if (!fs.existsSync(getAppFolder(c, platform))) {
-    //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
-    const nc = spawnCommand(c, {
+    const nc = {
         command: 'configure',
         program: {
             appConfig: c.id,
@@ -363,18 +329,18 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
             platform,
             device
         }
-    });
+    };
 
     if (c.program.reset) {
         cleanPlatformBuild(c, platform)
             .then(() => cleanPlaformAssets(c))
             .then(() => createPlatformBuild(c, platform))
-            .then(() => CLI(nc))
+            .then(() => CLI(c, nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
         createPlatformBuild(c, platform)
-            .then(() => CLI(nc))
+            .then(() => CLI(c, nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     }
@@ -526,24 +492,6 @@ export const waitForWebpack = (port) => {
     });
 };
 
-export const parseErrorMessage = (text, maxErrorLength = 800) => {
-    const errors = [];
-    const toSearch = /(exception|error|fatal|\[!])/i;
-
-    const extractError = (t) => {
-        const errorFound = t ? t.search(toSearch) : -1;
-        if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
-        const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
-        let extractedError = usefulString.substring(0, maxErrorLength);
-        if (extractedError.length === maxErrorLength) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
-        errors.push(extractedError); // save the error
-        const newString = usefulString.substring(100); // dump everything we processed and continue
-        return extractError(newString);
-    };
-
-    return extractError(text);
-};
-
 // TODO: remove this
 export {
     logInfo,
@@ -597,6 +545,5 @@ export default {
     checkPortInUse,
     resolveNodeModulePath,
     configureRnvGlobal,
-    waitForEmulator,
-    parseErrorMessage
+    waitForEmulator
 };

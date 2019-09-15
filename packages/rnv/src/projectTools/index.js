@@ -12,7 +12,6 @@ import {
     isPlatformActive,
     logWarning,
     logInfo,
-    spawnCommand
 } from '../common';
 import { generateOptions } from '../systemTools/prompt';
 import {
@@ -127,22 +126,22 @@ const _checkAndCreatePlatforms = async (c, platform) => {
 
     if (!fs.existsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');
-        await CLI(spawnCommand(c, {
+        await CLI(c, {
             command: 'platform',
             subCommand: 'configure',
             program: { appConfig: c.runtime.appId, platform }
-        }));
+        });
         return;
     }
     if (platform) {
         const appFolder = getAppFolder(c, platform);
         if (!fs.existsSync(appFolder)) {
             logWarning(`Platform ${platform} not created yet. creating them for you at ${appFolder}`);
-            await CLI(spawnCommand(c, {
+            await CLI(c, {
                 command: 'platform',
                 subCommand: 'configure',
                 program: { appConfig: c.runtime.appId, platform }
-            }));
+            });
         }
     } else {
         const { platforms } = c.buildConfig;
@@ -156,12 +155,12 @@ const _checkAndCreatePlatforms = async (c, platform) => {
             const appFolder = getAppFolder(c, k);
             if (!fs.existsSync(appFolder)) {
                 logWarning(`Platform ${k} not created yet. creating one for you at ${appFolder}`);
-                await CLI(spawnCommand(c, {
+                await CLI(c, {
                     command: 'platform',
                     subCommand: 'configure',
                     platform: k,
                     program: { appConfig: c.runtime.appId, platform: k }
-                }));
+                });
             }
         }
     }
