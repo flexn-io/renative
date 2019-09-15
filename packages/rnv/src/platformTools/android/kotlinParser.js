@@ -34,15 +34,24 @@ import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 export const parseMainApplicationSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
+    const bundleFile = getGetJsBundleFile(c, platform) || JS_BUNDLE_DEFAULTS[platform];
     writeCleanFile(getBuildFilePath(c, platform, applicationPath), path.join(appFolder, applicationPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
-        { pattern: '{{GET_JS_BUNDLE_FILE}}', override: getGetJsBundleFile(c, platform) },
+        { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginImports },
         { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
         { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.mainApplicationMethods },
     ]);
 };
+
+const JS_BUNDLE_DEFAULTS = {
+    android: 'super.getJSBundleFile()',
+    androidtv: 'super.getJSBundleFile()',
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
+    androidwear: '"assets://index.androidwear.bundle"',
+};
+
 
 export const parseMainActivitySync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
