@@ -104,7 +104,7 @@ ReNative
                     <ProjectTitle siteConfig={siteConfig} img_src={`${baseUrl}img/logo_large.png`} />
 
                     <PromoSection>
-                        <Button href={docUrl('installation.html')} className="buttonDark">
+                        <Button href={docUrl('quickstart')} className="buttonDark">
 Try It Out
                         </Button>
                     </PromoSection>

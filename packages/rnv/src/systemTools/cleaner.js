@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import { removeDirs } from './fileutils';
-import { logTask } from './logger';
+import { logTask, logToSummary } from './logger';
 
 const rnvClean = async (c, skipQuestion = false) => {
     logTask('rnvClean');
@@ -17,14 +17,31 @@ const rnvClean = async (c, skipQuestion = false) => {
     if (fs.existsSync(packagesFolder)) {
         fs.readdirSync(packagesFolder).forEach((dir) => {
             if (dir === '.DS_Store') {
-                pathsToRemove.push(path.join(packagesFolder, dir));
-                msg += chalk.red(`./packages/${dir}\n`);
+                const pth = path.join(packagesFolder, dir);
+
+                if (fs.existsSync(pth)) {
+                    pathsToRemove.push(pth);
+                    msg += chalk.red(`./packages/${dir}\n`);
+                }
             } else {
-                pathsToRemove.push(path.join(packagesFolder, dir, 'node_modules'));
-                pathsToRemove.push(path.join(packagesFolder, dir, 'package-lock.json'));
-                msg += chalk.red(`./packages/${dir}/node_modules\n./packages/${dir}/package-lock.json\n`);
+                const pth2 = path.join(packagesFolder, dir, 'node_modules');
+                if (fs.existsSync(pth2)) {
+                    pathsToRemove.push(pth2);
+                    msg += chalk.red(`./packages/${dir}/node_modules\n`);
+                }
+
+                const pth3 = path.join(packagesFolder, dir, 'package-lock.json');
+                if (fs.existsSync(pth3)) {
+                    pathsToRemove.push(pth3);
+                    msg += chalk.red(`./packages/${dir}/package-lock.json\n`);
+                }
             }
         });
+    }
+
+    if (pathsToRemove) {
+        logToSummary('Nothing to clean');
+        return Promise.resolve();
     }
 
 

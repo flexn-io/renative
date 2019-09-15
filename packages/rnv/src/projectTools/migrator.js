@@ -73,8 +73,7 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
     try {
         let requiresSave = false;
         files = {
-            configNew: readObjectSync(paths.configNew),
-            // privateProjectConfig: readObjectSync(paths.privateProjectConfig),
+            configNew: fs.existsSync(paths.configNew) ? readObjectSync(paths.configNew) : null,
         };
 
         if (files.configNew?.paths) {

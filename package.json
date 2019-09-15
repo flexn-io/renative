@@ -69,7 +69,7 @@
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
         "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages",
         "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && npm run watch",
-        "start:website": "cd website && npm run start",
+        "website": "cd website && npm run start",
         "test": "rnv template apply --template renative-template-hello-world && npm run test:rnv && npm run test:run",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
         "test:rnv:unit": "cd ./packages/rnv && npm run test",

@@ -111,6 +111,10 @@
                 "title": "Plugins",
                 "sidebar_label": "Plugins"
             },
+            "quickstart": {
+                "title": "Quick Start",
+                "sidebar_label": "Quick Start"
+            },
             "config": {
                 "title": "Config Files",
                 "sidebar_label": "Config Files"
@@ -226,7 +230,7 @@
                 "title": "Features",
                 "sidebar_label": "Features"
             },
-            "version-0.26/version-0.26-installation": {
+            "version-0.26/version-0.26-quickstart": {
                 "title": "Installation",
                 "sidebar_label": "Installation"
             },

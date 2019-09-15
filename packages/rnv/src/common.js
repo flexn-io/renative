@@ -66,9 +66,10 @@ export const startBuilder = async (c) => {
         if (!c.paths.project.configExists) {
             const { command } = await inquirerPrompt({
                 type: 'list',
+                default: 'new',
                 name: 'command',
                 message: 'Pick a command',
-                choices: NO_OP_COMMANDS,
+                choices: NO_OP_COMMANDS.sort(),
                 pageSize: 15,
                 logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
             });

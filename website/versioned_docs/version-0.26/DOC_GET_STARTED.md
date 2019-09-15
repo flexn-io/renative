@@ -1,8 +1,8 @@
 ---
-id: version-0.26-installation
+id: version-0.26-quickstart
 title: Installation
 sidebar_label: Installation
-original_id: installation
+original_id: quickstart
 ---
 
 

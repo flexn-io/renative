@@ -1,9 +1,6 @@
 {
     "version-0.26-docs": {
-        "GettingStarted": [
-            "version-0.26-installation",
-            "version-0.26-features"
-        ],
+        "GettingStarted": ["version-0.26-quickstart", "version-0.26-features"],
         "Platforms": [
             "version-0.26-platforms_overview",
             "version-0.26-android",

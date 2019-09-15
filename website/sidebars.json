@@ -1,6 +1,11 @@
 {
     "docs-sidebar": {
-        "GettingStarted": ["installation", "features", "architecture"],
+        "GettingStarted": [
+            "quickstart",
+            "installation",
+            "features",
+            "architecture"
+        ],
         "Platforms": [
             "platforms_overview",
             "android",
