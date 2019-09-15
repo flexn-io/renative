@@ -5,10 +5,12 @@ import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from './logger';
 const highlight = chalk.grey.bold;
 
 export const inquirerPrompt = async (c, params) => {
+    const msg = params.logMessage || params.warningMessage;
     if (c.program.ci) {
-        throw params.logMessage || params.warningMessage || '--ci option does not allow prompts';
+        throw msg || '--ci option does not allow prompts';
     }
-    if (params.logMessage) logWarning(params.logMessage);
+    if (msg && params.logMessage) logTask(msg, chalk.grey);
+    if (msg && params.warningMessage) logWarning(msg);
     const result = await inquirer.prompt(params);
     return result;
 };
