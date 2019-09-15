@@ -579,14 +579,16 @@ export const updateConfig = async (c, appConfigId) => {
 
     setAppConfig(c, appConfigId);
 
-    if (!fs.existsSync(c.paths.appConfig.dir)) {
+    const isPureRnv = (!c.command && !c.subCommand);
+
+    if (!fs.existsSync(c.paths.appConfig.dir) || isPureRnv) {
         const configDirs = listAppConfigsFoldersSync(c, true);
 
         if (!appConfigId) {
             logWarning(
                 'It seems you don\'t have any appConfig active',
             );
-        } else if (appConfigId !== '?') {
+        } else if (appConfigId !== '?' && !isPureRnv) {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,

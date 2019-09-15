@@ -330,6 +330,7 @@ const _handleUnknownCommand = async (c) => {
 
     c.program.scheme = '?';
     c.program.appConfigID = '?';
+    c.runtime.appId = '?';
 
     const { command } = await inquirerPrompt({
         type: 'list',

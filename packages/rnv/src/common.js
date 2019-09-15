@@ -56,34 +56,45 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
     resolve(c);
 });
 
-export const startBuilder = c => new Promise((resolve, reject) => {
+export const startBuilder = async (c) => {
     logTask('initializeBuilder');
 
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        checkAndMigrateProject(c)
-            .then(() => parseRenativeConfigs(c))
-            .then(() => configureRnvGlobal(c))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+
+    if (!c.command) {
+        if (!c.paths.project.configExists) {
+            const { command } = await inquirerPrompt({
+                type: 'list',
+                name: 'command',
+                message: 'Pick a command',
+                choices: NO_OP_COMMANDS,
+                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project'
+            });
+            c.command = command;
+        }
     }
 
-    checkAndMigrateProject(c)
-        .then(() => parseRenativeConfigs(c))
-        .then(() => checkIsRenativeProject(c))
-        .then(() => checkAndCreateProjectPackage(c))
-        .then(() => configureRnvGlobal(c))
-        .then(() => checkIfTemplateInstalled(c))
-        .then(() => fixRenativeConfigsSync(c))
-        .then(() => configureNodeModules(c))
-        .then(() => applyTemplate(c))
-        .then(() => configurePlugins(c))
-        .then(() => configureNodeModules(c))
-        .then(() => updateConfig(c, c.runtime.appId))
-        .then(() => logAppInfo(c))
-        .then(() => resolve(c))
-        .catch(e => reject(e));
-});
+    if (NO_OP_COMMANDS.includes(c.command)) {
+        await configureRnvGlobal(c);
+        return c;
+    }
+
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+    await checkIsRenativeProject(c);
+    await checkAndCreateProjectPackage(c);
+    await configureRnvGlobal(c);
+    await checkIfTemplateInstalled(c);
+    await fixRenativeConfigsSync(c);
+    await configureNodeModules(c);
+    await applyTemplate(c);
+    await configurePlugins(c);
+    await configureNodeModules(c);
+    await updateConfig(c, c.runtime.appId);
+    await logAppInfo(c);
+    return c;
+};
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
