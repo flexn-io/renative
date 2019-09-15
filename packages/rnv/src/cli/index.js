@@ -265,12 +265,14 @@ const _execute = async (c, cmdFn, cmd, command, subCommand, spawnC) => {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
     }
-    const subCmd = subCommand ? `:${c.subCommand}` : '';
+    let subCmd = subCommand ? `:${c.subCommand}` : '';
     if (spawnC) {
         const oldC = c;
         const spawnedC = _spawnCommand(c, spawnC);
+        subCmd = c.subCommand || '';
+        console.log('DJHDKJDHDK', spawnC, spawnedC.command);
         Config.initializeConfig(spawnedC);
-        await executePipe(spawnedC, `${c.command}${subCmd}:before`);
+        await executePipe(spawnedC, `${spawnedC.command}${subCmd}:before`);
         await cmdFn(spawnedC);
         await executePipe(spawnedC, `${c.command}${subCmd}:after`);
         Config.initializeConfig(oldC);

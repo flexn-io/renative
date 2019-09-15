@@ -80,7 +80,7 @@ const _execute = (c, command, opts = {}) => {
         const text = Buffer.from(buffer).toString().trim();
         const lastLine = text.split('\n').pop();
         spinner.text = lastLine.substring(0, MAX_OUTPUT_LENGTH);
-        if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...';
+        if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
     };
 
     if (c.program?.info) {
@@ -107,7 +107,7 @@ const _execute = (c, command, opts = {}) => {
             return true;
         }
         const errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
-        return Promise.reject(`FAILED: ${logMessage} with ERROR: ${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
 
