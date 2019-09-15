@@ -69,7 +69,8 @@ export const startBuilder = async (c) => {
                 name: 'command',
                 message: 'Pick a command',
                 choices: NO_OP_COMMANDS,
-                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project'
+                pageSize: 15,
+                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
             });
             c.command = command;
         }
