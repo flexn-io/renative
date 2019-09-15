@@ -16,7 +16,8 @@ import {
     getConfigProp,
     logSuccess,
     waitForWebpack,
-    logError
+    logError,
+    getAppTitle
 } from '../../common';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
@@ -73,6 +74,7 @@ const _generateWebpackConfigs = (c) => {
     const env = getConfigProp(c, c.platform, 'environment');
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     const entryFile = getConfigProp(c, c.platform, 'entryFile', 'index.web');
+    const title = getAppTitle(c, c.platform);
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
@@ -83,6 +85,7 @@ const _generateWebpackConfigs = (c) => {
         modulePaths,
         moduleAliases,
         entryFile,
+        title,
         ...extendConfig
     };
 
