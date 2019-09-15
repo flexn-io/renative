@@ -320,7 +320,7 @@ export const versionCheck = async (c) => {
             const actionWithUpdate = 'Continue and update package.json';
             const actionUpgrade = `Upgrade project to ${c.runtime.rnvVersionRunner}`;
 
-            const { chosenAction } = await inquirerPrompt(c, {
+            const { chosenAction } = await inquirerPrompt({
                 message: 'What to do next?',
                 type: 'list',
                 name: 'chosenAction',
@@ -601,12 +601,13 @@ export const updateConfig = async (c, appConfigId) => {
                 return true;
             }
 
-            const { conf } = await inquirer.prompt({
+            const { conf } = await inquirerPrompt({
                 name: 'conf',
                 type: 'list',
-                message: 'ReNative found existing appConfigs. Which one would you like to pick?',
+                message: 'Which one would you like to pick?',
                 choices: configDirs,
-                pageSize: 50
+                pageSize: 50,
+                logMessage: 'ReNative found multiple existing appConfigs'
             });
 
             if (conf) {
@@ -614,12 +615,13 @@ export const updateConfig = async (c, appConfigId) => {
                 return true;
             }
         }
-        const { conf } = await inquirer.prompt({
+        const { conf } = await inquirerPrompt({
             name: 'conf',
             type: 'confirm',
             message: `Do you want ReNative to create new sample appConfig (${chalk.white(
                 appConfigId,
             )}) for you?`,
+            warningMessage: 'No app configs found for this project'
         });
 
         if (conf) {

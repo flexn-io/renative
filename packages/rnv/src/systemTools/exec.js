@@ -196,15 +196,9 @@ const executeTelnet = (port, command) => new Promise((resolve) => {
 // };
 
 export const parseErrorMessage = (text, maxErrorLength = 800) => {
-    const errors = [];
     const toSearch = /(exception|error|fatal|\[!])/i;
-
     let arr = text.split('\n');
-    const finalText = '';
-    arr = arr.filter((v) => {
-        const result = v.search(toSearch);
-        return result !== -1;
-    });
+    arr = arr.filter(v => v.search(toSearch) !== -1);
     arr = arr.map((v) => {
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
@@ -212,6 +206,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     });
     return arr.join('\n');
 };
+
 
 const isUsingWindows = process.platform === 'win32';
 

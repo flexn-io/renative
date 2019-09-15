@@ -113,7 +113,7 @@ export const isPlatformSupported = async (c) => {
     const opts = generateOptions(platformsAsObj);
 
     if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
-        const { platform } = await inquirerPrompt(c, {
+        const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',
             message: 'Pick one of available platforms',
@@ -151,7 +151,7 @@ export const isBuildSchemeSupported = async (c) => {
         }
         const opts = generateOptions(buildSchemes);
 
-        const { selectedScheme } = await inquirerPrompt(c, {
+        const { selectedScheme } = await inquirerPrompt({
             name: 'selectedScheme',
             type: 'list',
             message: 'Pick one of available buildSchemes',
