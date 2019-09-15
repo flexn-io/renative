@@ -18,6 +18,7 @@ import {
     getIP,
     getBuildFilePath,
     logSuccess,
+    getGetJsBundleFile,
     getBuildsFolder
 } from '../../common';
 import { copyBuildsFolder } from '../../projectTools/projectParser';

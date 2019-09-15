@@ -235,6 +235,13 @@ const COMMANDS = {
 const run = async (c, spawnC) => {
     logTask('cli');
 
+    let oldC;
+    if (spawnC) {
+        oldC = c;
+        c = _spawnCommand(c, spawnC);
+        Config.initializeConfig(c);
+    }
+
     const cmd = COMMANDS[c.command];
     const cmdFn = cmd?.fn;
     const subCmd = cmd?.subCommands?.[c.subCommand];
@@ -245,39 +252,27 @@ const run = async (c, spawnC) => {
             await _execCommandHep(c, cmd);
         } else if (cmdFn) {
             if (subCmdFn) {
-                await _execute(c, subCmdFn, cmd, c.command, c.subCommand, spawnC);
+                await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
             } else {
-                await _execute(c, cmdFn, cmd, c.command, c.subCommand, spawnC);
+                await _execute(c, cmdFn, cmd, c.command, c.subCommand);
             }
         } else if (subCmdFn) {
-            await _execute(c, subCmdFn, cmd, c.command, c.subCommand, spawnC);
+            await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
         } else {
             await _handleUnknownSubCommand(c);
         }
     } else {
         await _handleUnknownCommand(c);
     }
-    return c;
+    if (spawnC) Config.initializeConfig(oldC);
 };
 
-const _execute = async (c, cmdFn, cmd, command, subCommand, spawnC) => {
+const _execute = async (c, cmdFn, cmd, command, subCommand) => {
     if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
     }
-    let subCmd = subCommand ? `:${c.subCommand}` : '';
-    if (spawnC) {
-        const oldC = c;
-        const spawnedC = _spawnCommand(c, spawnC);
-        subCmd = c.subCommand || '';
-        console.log('DJHDKJDHDK', spawnC, spawnedC.command);
-        Config.initializeConfig(spawnedC);
-        await executePipe(spawnedC, `${spawnedC.command}${subCmd}:before`);
-        await cmdFn(spawnedC);
-        await executePipe(spawnedC, `${c.command}${subCmd}:after`);
-        Config.initializeConfig(oldC);
-        return;
-    }
+    const subCmd = subCommand ? `:${c.subCommand}` : '';
 
     await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
