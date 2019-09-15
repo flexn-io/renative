@@ -227,10 +227,7 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => {
-    console.warn('!!!!!!!!', c.paths.project.platformTemplatesDirs);
-    path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`)
-};
+export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
 export const getAppConfigId = (c, platform) => c.buildConfig.id;
 
