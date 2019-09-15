@@ -169,12 +169,15 @@ These are features of this project
             { title: 'Web', url: 'web' },
             { title: 'LG WebOS', url: 'webos' },
             { title: 'Tizen Mobile', url: 'tizenmobile' },
+            { title: 'Tizen TV', url: 'tizen' },
+            { title: 'Tizen Watch', url: 'tizenwatch' },
+            { title: 'Firefox OS', url: 'firefoxos' },
             { title: 'Windows', url: 'windows' },
+            { title: 'macOS / OSX', url: 'macos' },
+            { title: 'Android Wear', url: 'androidwear' },
             { title: 'Firefox TV', url: 'firefoxtv' },
             { title: 'KaiOS', url: 'kaios' },
-            { title: 'Firefox OS', url: 'firefoxos' },
-            { title: 'Tizen Watch', url: 'tizenwatch' },
-            { title: 'Android Wear', url: 'androidwear' }
+
         ];
 
         const Platforms = props => (
