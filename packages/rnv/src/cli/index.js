@@ -15,6 +15,7 @@ import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
+import Config from '../config';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -231,7 +232,7 @@ const COMMANDS = {
 // PUBLIC API
 // ##########################################
 
-const run = async (c) => {
+const run = async (c, spawnC) => {
     logTask('cli');
 
     const cmd = COMMANDS[c.command];
@@ -244,12 +245,12 @@ const run = async (c) => {
             await _execCommandHep(c, cmd);
         } else if (cmdFn) {
             if (subCmdFn) {
-                await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
+                await _execute(c, subCmdFn, cmd, c.command, c.subCommand, spawnC);
             } else {
-                await _execute(c, cmdFn, cmd, c.command, c.subCommand);
+                await _execute(c, cmdFn, cmd, c.command, c.subCommand, spawnC);
             }
         } else if (subCmdFn) {
-            await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
+            await _execute(c, subCmdFn, cmd, c.command, c.subCommand, spawnC);
         } else {
             await _handleUnknownSubCommand(c);
         }
@@ -259,12 +260,23 @@ const run = async (c) => {
     return c;
 };
 
-const _execute = async (c, cmdFn, cmd, command, subCommand) => {
+const _execute = async (c, cmdFn, cmd, command, subCommand, spawnC) => {
     if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
     }
     const subCmd = subCommand ? `:${c.subCommand}` : '';
+    if (spawnC) {
+        const oldC = c;
+        const spawnedC = _spawnCommand(c, spawnC);
+        Config.initializeConfig(spawnedC);
+        await executePipe(spawnedC, `${c.command}${subCmd}:before`);
+        await cmdFn(spawnedC);
+        await executePipe(spawnedC, `${c.command}${subCmd}:after`);
+        Config.initializeConfig(oldC);
+        return;
+    }
+
     await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
     await executePipe(c, `${c.command}${subCmd}:after`);
@@ -343,6 +355,35 @@ const _handleUnknownPlatform = async (c, platforms) => {
 
     c.platform = platform;
     return run(c);
+};
+
+const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
+
+export const _spawnCommand = (c, overrideParams) => {
+    const newCommand = {};
+
+    Object.keys(c).forEach((k) => {
+        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
+            newCommand[k] = { ...c[k] };
+        } else {
+            newCommand[k] = c[k];
+        }
+    });
+
+    const merge = require('deepmerge');
+
+    Object.keys(overrideParams).forEach((k) => {
+        if (newCommand[k] && typeof overrideParams[k] === 'object') {
+            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
+        } else {
+            newCommand[k] = overrideParams[k];
+        }
+    });
+
+    // This causes stack overflow on Linux
+    // const merge = require('deepmerge');
+    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
+    return newCommand;
 };
 
 

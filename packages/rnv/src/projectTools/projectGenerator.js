@@ -12,7 +12,6 @@ import {
     isPlatformActive,
     logWarning,
     logInfo,
-    spawnCommand
 } from '../common';
 import { generateOptions } from '../systemTools/prompt';
 import {

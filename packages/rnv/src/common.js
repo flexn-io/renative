@@ -165,33 +165,6 @@ export const isBuildSchemeSupported = async (c) => {
     return scheme;
 };
 
-export const spawnCommand = (c, overrideParams) => {
-    const newCommand = {};
-
-    Object.keys(c).forEach((k) => {
-        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
-            newCommand[k] = { ...c[k] };
-        } else {
-            newCommand[k] = c[k];
-        }
-    });
-
-    const merge = require('deepmerge');
-
-    Object.keys(overrideParams).forEach((k) => {
-        if (newCommand[k] && typeof overrideParams[k] === 'object') {
-            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
-        } else {
-            newCommand[k] = overrideParams[k];
-        }
-    });
-
-    // This causes stack overflow on Linux
-    // const merge = require('deepmerge');
-    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
-    return newCommand;
-};
-
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
@@ -215,8 +188,6 @@ export const checkSdk = (c, platform, reject) => {
     }
     return true;
 };
-
-const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
@@ -350,9 +321,7 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
     }
     PLATFORM_RUNS[platform] = true;
     const { device } = c.program;
-    // if (!fs.existsSync(getAppFolder(c, platform))) {
-    //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
-    const nc = spawnCommand(c, {
+    const nc = {
         command: 'configure',
         program: {
             appConfig: c.id,
@@ -360,18 +329,18 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
             platform,
             device
         }
-    });
+    };
 
     if (c.program.reset) {
         cleanPlatformBuild(c, platform)
             .then(() => cleanPlaformAssets(c))
             .then(() => createPlatformBuild(c, platform))
-            .then(() => CLI(nc))
+            .then(() => CLI(c, nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
         createPlatformBuild(c, platform)
-            .then(() => CLI(nc))
+            .then(() => CLI(c, nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     }
