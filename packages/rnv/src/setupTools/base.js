@@ -7,9 +7,12 @@ import { logInfo, logDebug } from '../common';
 import { configureRnvGlobal } from '../configTools/configParser';
 import { replaceHomeFolder, updateConfigFile } from '../systemTools/fileutils';
 import setupConfig from './config';
+import Config from '../config';
 
 class BasePlatformSetup {
     constructor(os, c) {
+        // eslint-disable-next-line no-param-reassign
+        if (!c) c = Config.getConfig();
         const { paths } = c;
         this.os = os;
         this.c = c;
@@ -38,16 +41,18 @@ class BasePlatformSetup {
         if (sdk === 'android') {
             const { location } = setupConfig.android;
             await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
+            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'tizen') {
             await updateConfigFile({ tizenSdk: this.tizenSdkPath }, this.globalConfigPath);
+            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'webos') {
             await updateConfigFile({ webosSdk: this.webosSdkPath }, this.globalConfigPath);
+            await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
         }
-        await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
     }
 
     async downloadSdk(sdk) {
@@ -88,9 +93,9 @@ class BasePlatformSetup {
         await shell.exec(`${setupConfig.android.location}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`);
     }
 
-    async installSdk(sdk) {
-        this.checkPrereqs();
-        await this.installPrereqs();
+    async installSdk(sdk, skipPrereq) {
+        !skipPrereq && this.checkPrereqs();
+        !skipPrereq && await this.installPrereqs();
 
         switch (sdk) {
         case 'android':
@@ -103,6 +108,9 @@ class BasePlatformSetup {
             break;
         case 'webos':
             await this.installWebosSdk();
+            break;
+        case 'fastlane':
+            await this.installFastlane();
             break;
         default:
             break;
@@ -121,6 +129,11 @@ class BasePlatformSetup {
         return true;
     }
 
+    async installFastlane() {
+        // to be overwritten
+        return true;
+    }
+
     async askToInstallSDK(sdk) {
         let sdkInstall;
         if (!this.c.program.ci) {
@@ -134,7 +147,7 @@ class BasePlatformSetup {
         }
 
         if (this.c.program.ci || sdkInstall) {
-            await this.installSdk(sdk);
+            await this.installSdk(sdk, sdk === 'fastlane'); // no prereqs needed for fastlane
         }
     }
 }

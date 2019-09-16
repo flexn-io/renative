@@ -320,7 +320,7 @@ export const versionCheck = async (c) => {
             const actionWithUpdate = 'Continue and update package.json';
             const actionUpgrade = `Upgrade project to ${c.runtime.rnvVersionRunner}`;
 
-            const { chosenAction } = await inquirerPrompt(c, {
+            const { chosenAction } = await inquirerPrompt({
                 message: 'What to do next?',
                 type: 'list',
                 name: 'chosenAction',

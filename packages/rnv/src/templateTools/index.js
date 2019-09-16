@@ -5,14 +5,13 @@ import inquirer from 'inquirer';
 
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
-    cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, writeObjectSync, removeDirsSync, removeDirs,
+    copyFolderContentsRecursiveSync,
+    copyFileSync, writeObjectSync, removeDirsSync,
     removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
-import { logToSummary, logError, logInfo, logWarning, logTask, logDebug } from '../systemTools/logger';
-import { getMergedPlugin, getLocalRenativePlugin } from '../pluginTools';
+import { logToSummary, logError, logInfo, logWarning, logTask } from '../systemTools/logger';
+import { getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
-import { configureEntryPoints, npmInstall } from '../projectTools/projectParser';
 import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig, updateConfig } from '../configTools/configParser';
 
 

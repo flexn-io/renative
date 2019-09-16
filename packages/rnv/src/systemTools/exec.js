@@ -7,6 +7,7 @@ import ora from 'ora';
 import NClient from 'netcat/client';
 import util from 'util';
 
+import Config from '../config';
 import { logDebug, parseErrorMessage } from '../common';
 
 const { exec, execSync } = require('child_process');

@@ -6,45 +6,33 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
-import inquirer from 'inquirer';
 
-import {
-    cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
-    getRealPath,
-    isRunningOnWindows
-} from './systemTools/fileutils';
+import { isRunningOnWindows } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
-import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
-import { getMergedPlugin, configurePlugins } from './pluginTools';
+import { configurePlugins } from './pluginTools';
 import {
-    logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
+    logWelcome, configureLogger, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo, getCurrentCommand
+    logInitialize, logAppInfo
 } from './systemTools/logger';
 import {
-    ANDROID,
-    WEB,
-    TIZEN,
     IOS,
     TVOS,
-    WEBOS,
-    PLATFORMS,
     SDK_PLATFORMS,
     SUPPORTED_PLATFORMS
 } from './constants';
-import { executeAsync, execCLI } from './systemTools/exec';
+import { execCLI } from './systemTools/exec';
 import {
-    parseRenativeConfigs, createRnvConfig, updateConfig, gatherInfo,
+    parseRenativeConfigs, createRnvConfig, updateConfig,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
-import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
+import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto', 'fastlane'];
 export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
@@ -113,7 +101,7 @@ export const isPlatformSupported = async (c) => {
     const opts = generateOptions(platformsAsObj);
 
     if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
-        const { platform } = await inquirerPrompt(c, {
+        const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',
             message: 'Pick one of available platforms',
@@ -151,7 +139,7 @@ export const isBuildSchemeSupported = async (c) => {
         }
         const opts = generateOptions(buildSchemes);
 
-        const { selectedScheme } = await inquirerPrompt(c, {
+        const { selectedScheme } = await inquirerPrompt({
             name: 'selectedScheme',
             type: 'list',
             message: 'Pick one of available buildSchemes',
@@ -200,7 +188,7 @@ export const getAppSubFolder = (c, platform) => {
 
 export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
-export const getAppConfigId = (c, platform) => c.buildConfig.id;
+export const getAppConfigId = c => c.buildConfig.id;
 
 const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
     if (resultCli) {
@@ -524,7 +512,6 @@ export {
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    configureEntryPoints,
     logWelcome,
     isPlatformSupported,
     isBuildSchemeSupported,

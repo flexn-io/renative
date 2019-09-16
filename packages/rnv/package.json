@@ -92,6 +92,7 @@
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-plugin-transform-runtime": "6.23.0",
         "babel-polyfill": "6.26.0",
+        "commander": "^3.0.1",
         "copy-webpack-plugin": "4.6.0",
         "cross-env": "5.2.0",
         "css-hot-loader": "1.4.2",

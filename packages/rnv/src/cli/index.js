@@ -10,6 +10,7 @@ import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfi
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
+import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
@@ -224,6 +225,10 @@ const COMMANDS = {
                 fn: rnvWorkspaceUpdate
             }
         }
+    },
+    fastlane: {
+        desc: 'Run fastlane commands',
+        fn: rnvFastlane
     }
 };
 
