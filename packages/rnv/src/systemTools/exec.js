@@ -123,6 +123,7 @@ const _execute = (c, command, opts = {}) => {
  *
  */
 const execCLI = (c, cli, command, opts = {}) => {
+    if (!c.program) return Promise.reject('You need to pass c object as first parameter to execCLI()');
     const p = c.cli[cli];
 
     if (!fs.existsSync(p)) {
@@ -145,6 +146,7 @@ const execCLI = (c, cli, command, opts = {}) => {
  *
  */
 const executeAsync = (c, cmd, opts) => {
+    if (!c.program) return Promise.reject('You need to pass c object as first parameter to executeAsync()');
     if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
     return _execute(c, cmd, opts);
 };
@@ -196,6 +198,7 @@ const executeTelnet = (port, command) => new Promise((resolve) => {
 // };
 
 export const parseErrorMessage = (text, maxErrorLength = 800) => {
+    if (!text) return '';
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
     arr = arr.filter(v => v.search(toSearch) !== -1);
