@@ -82,7 +82,7 @@ master
                                     <a
                                         href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${
                                             props.language ? `${props.language}/` : ''
-                                        }next/installation`}
+                                        }next/quickstart`}
                                     >
                     Documentation
                                     </a>

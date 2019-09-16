@@ -7,8 +7,7 @@ import ora from 'ora';
 import NClient from 'netcat/client';
 import util from 'util';
 
-import Config from '../config';
-import { logDebug, parseErrorMessage } from '../common';
+import { logDebug } from './logger';
 
 const { exec, execSync } = require('child_process');
 
@@ -176,6 +175,38 @@ const executeTelnet = (port, command) => new Promise((resolve) => {
     });
     nc2.on('close', () => resolve(output));
 });
+
+// Legacy error parser
+// export const parseErrorMessage = (text, maxErrorLength = 800) => {
+//     const errors = [];
+//     const toSearch = /(exception|error|fatal|\[!])/i;
+//
+//     const extractError = (t) => {
+//         const errorFound = t ? t.search(toSearch) : -1;
+//         if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
+//         const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
+//         let extractedError = usefulString.substring(0, maxErrorLength);
+//         if (extractedError.length === maxErrorLength) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
+//         errors.push(extractedError); // save the error
+//         const newString = usefulString.substring(100); // dump everything we processed and continue
+//         return extractError(newString);
+//     };
+//
+//     return extractError(text);
+// };
+
+export const parseErrorMessage = (text, maxErrorLength = 800) => {
+    const toSearch = /(exception|error|fatal|\[!])/i;
+    let arr = text.split('\n');
+    arr = arr.filter(v => v.search(toSearch) !== -1);
+    arr = arr.map((v) => {
+        let extractedError = v.substring(0, maxErrorLength);
+        if (extractedError.length === maxErrorLength) extractedError += '...';
+        return extractedError;
+    });
+    return arr.join('\n');
+};
+
 
 const isUsingWindows = process.platform === 'win32';
 

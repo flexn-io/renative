@@ -579,14 +579,16 @@ export const updateConfig = async (c, appConfigId) => {
 
     setAppConfig(c, appConfigId);
 
-    if (!fs.existsSync(c.paths.appConfig.dir)) {
+    const isPureRnv = (!c.command && !c.subCommand);
+
+    if (!fs.existsSync(c.paths.appConfig.dir) || isPureRnv) {
         const configDirs = listAppConfigsFoldersSync(c, true);
 
         if (!appConfigId) {
             logWarning(
                 'It seems you don\'t have any appConfig active',
             );
-        } else if (appConfigId !== '?') {
+        } else if (appConfigId !== '?' && !isPureRnv) {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,
@@ -601,12 +603,13 @@ export const updateConfig = async (c, appConfigId) => {
                 return true;
             }
 
-            const { conf } = await inquirer.prompt({
+            const { conf } = await inquirerPrompt({
                 name: 'conf',
                 type: 'list',
-                message: 'ReNative found existing appConfigs. Which one would you like to pick?',
+                message: 'Which one would you like to pick?',
                 choices: configDirs,
-                pageSize: 50
+                pageSize: 50,
+                logMessage: 'ReNative found multiple existing appConfigs'
             });
 
             if (conf) {
@@ -614,12 +617,13 @@ export const updateConfig = async (c, appConfigId) => {
                 return true;
             }
         }
-        const { conf } = await inquirer.prompt({
+        const { conf } = await inquirerPrompt({
             name: 'conf',
             type: 'confirm',
             message: `Do you want ReNative to create new sample appConfig (${chalk.white(
                 appConfigId,
             )}) for you?`,
+            warningMessage: 'No app configs found for this project'
         });
 
         if (conf) {

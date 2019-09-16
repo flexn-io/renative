@@ -106,6 +106,10 @@ Emulator / Simulator / Device Management
 
 `$ rnv tools fixPackage` - fix + cleanup+ format your `package.json`
 
+##### rnv fastlane
+
+`$ rnv fastlane <commands>` - Run fastlane directly from rnv. Supports all fastlane commands. It installs fastlane automatically if it's not installed.
+
 ### Options
 
 You can combine most of the above commands with following extra arguments you can combine together

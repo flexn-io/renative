@@ -32,7 +32,7 @@ import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets 
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto', 'fastlane'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto', 'fastlane', 'help'];
 export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
@@ -44,34 +44,47 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
     resolve(c);
 });
 
-export const startBuilder = c => new Promise((resolve, reject) => {
+export const startBuilder = async (c) => {
     logTask('initializeBuilder');
 
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        checkAndMigrateProject(c)
-            .then(() => parseRenativeConfigs(c))
-            .then(() => configureRnvGlobal(c))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-        return;
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+
+    if (!c.command) {
+        if (!c.paths.project.configExists) {
+            const { command } = await inquirerPrompt({
+                type: 'list',
+                default: 'new',
+                name: 'command',
+                message: 'Pick a command',
+                choices: NO_OP_COMMANDS.sort(),
+                pageSize: 15,
+                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
+            });
+            c.command = command;
+        }
     }
 
-    checkAndMigrateProject(c)
-        .then(() => parseRenativeConfigs(c))
-        .then(() => checkIsRenativeProject(c))
-        .then(() => checkAndCreateProjectPackage(c))
-        .then(() => configureRnvGlobal(c))
-        .then(() => checkIfTemplateInstalled(c))
-        .then(() => fixRenativeConfigsSync(c))
-        .then(() => configureNodeModules(c))
-        .then(() => applyTemplate(c))
-        .then(() => configurePlugins(c))
-        .then(() => configureNodeModules(c))
-        .then(() => updateConfig(c, c.runtime.appId))
-        .then(() => logAppInfo(c))
-        .then(() => resolve(c))
-        .catch(e => reject(e));
-});
+    if (NO_OP_COMMANDS.includes(c.command)) {
+        await configureRnvGlobal(c);
+        return c;
+    }
+
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+    await checkIsRenativeProject(c);
+    await checkAndCreateProjectPackage(c);
+    await configureRnvGlobal(c);
+    await checkIfTemplateInstalled(c);
+    await fixRenativeConfigsSync(c);
+    await configureNodeModules(c);
+    await applyTemplate(c);
+    await configurePlugins(c);
+    await configureNodeModules(c);
+    await updateConfig(c, c.runtime.appId);
+    await logAppInfo(c);
+    return c;
+};
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -480,24 +493,6 @@ export const waitForWebpack = (port) => {
     });
 };
 
-export const parseErrorMessage = (text, maxErrorLength = 800) => {
-    const errors = [];
-    const toSearch = /(exception|error|fatal|\[!])/i;
-
-    const extractError = (t) => {
-        const errorFound = t ? t.search(toSearch) : -1;
-        if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
-        const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
-        let extractedError = usefulString.substring(0, maxErrorLength);
-        if (extractedError.length === maxErrorLength) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
-        errors.push(extractedError); // save the error
-        const newString = usefulString.substring(100); // dump everything we processed and continue
-        return extractError(newString);
-    };
-
-    return extractError(text);
-};
-
 // TODO: remove this
 export {
     logInfo,
@@ -550,6 +545,5 @@ export default {
     checkPortInUse,
     resolveNodeModulePath,
     configureRnvGlobal,
-    waitForEmulator,
-    parseErrorMessage
+    waitForEmulator
 };

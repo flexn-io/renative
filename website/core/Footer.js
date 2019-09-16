@@ -9,19 +9,20 @@ const React = require('react');
 
 class Footer extends React.Component {
     docUrl(doc, language) {
-        const baseUrl = this.props.config.baseUrl;
-        const docsUrl = this.props.config.docsUrl;
+        const { baseUrl } = this.props.config;
+        const { docsUrl } = this.props.config;
         const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
         const langPart = `${language ? `${language}/` : ''}`;
         return `${baseUrl}${docsPart}${langPart}${doc}`;
     }
 
     pageUrl(doc, language) {
-        const baseUrl = this.props.config.baseUrl;
+        const { baseUrl } = this.props.config;
         return baseUrl + (language ? `${language}/` : '') + doc;
     }
 
     render() {
+        const language = ''; // this.props.language
         return (
             <footer className="nav-footer" id="footer">
                 <section className="sitemap">
@@ -39,13 +40,13 @@ class Footer extends React.Component {
                         <h5>
 Docs
                         </h5>
-                        <a href={this.docUrl('installation', this.props.language)}>
+                        <a href={this.docUrl('installation', language)}>
               Getting Started
                         </a>
-                        <a href={this.docUrl('platforms_overview', this.props.language)}>
+                        <a href={this.docUrl('platforms_overview', language)}>
               Platforms
                         </a>
-                        <a href={this.docUrl('plugins', this.props.language)}>
+                        <a href={this.docUrl('plugins', language)}>
               Guides
                         </a>
                     </div>

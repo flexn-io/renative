@@ -8,6 +8,7 @@ import chalk from 'chalk';
 import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
+import execa from 'execa';
 
 import { executeAsync, execCLI, executeTelnet } from '../../systemTools/exec';
 import { createPlatformBuild } from '..';
@@ -232,11 +233,12 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
     const { arch, name } = device;
+    const stacktrace = c.program.info ? ' --debug' : '';
 
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig} -x bundleReleaseJsAndAssets`))
+        .then(() => executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`))
         .then(() => {
             if (outputAab) {
                 const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
@@ -408,9 +410,10 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
 });
 
 // Resolve or reject will not be called so this will keep running
-export const runAndroidLog = c => new Promise(() => {
+export const runAndroidLog = async (c) => {
+    logTask('runAndroidLog');
     const filter = c.program.filter || '';
-    const child = child_process.spawn(c.cli[CLI_ANDROID_ADB], ['logcat']);
+    const child = execa.command(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
     child.stdout.on('data', (data) => {
         const d = data.toString().split('\n');
@@ -424,4 +427,5 @@ export const runAndroidLog = c => new Promise(() => {
             }
         });
     });
-});
+    return child.then(res => res.stdout).catch(err => Promise.reject(`Error: ${err}`));
+};

@@ -12,8 +12,8 @@ import Config from './config';
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
-        .then(c => startBuilder(c))
         .then(c => Config.initializeConfig(c))
+        .then(c => startBuilder(c))
         .then(c => CLI(c))
         .then(() => logComplete(true))
         .catch(e => logError(e, true));

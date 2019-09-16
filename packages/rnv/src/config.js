@@ -8,7 +8,7 @@ class Config {
     //     this.config = await initializeBuilder(cmd, subCmd, process, program);
     // }
 
-    async initializeConfig(c) {
+    initializeConfig(c) {
         this.config = c;
         return c;
     }
