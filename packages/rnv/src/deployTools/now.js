@@ -1,56 +1,62 @@
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
+import inquirer from 'inquirer';
+import dotenv from 'dotenv';
+
 import { executeAsync } from '../systemTools/exec';
 import {
     logInfo,
-    getAppFolder,
-    askQuestion,
-    finishQuestion,
+    getAppFolder
 } from '../common';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
-    require('dotenv').config();
+    dotenv.config();
     const defaultBuildFolder = path.join(getAppFolder(c, 'web'), 'public');
     const params = [defaultBuildFolder, '-A', nowConfigPath];
     if (process.env.NOW_TOKEN) params.push('-t', process.env.NOW_TOKEN);
-    executeAsync('now', params)
+    executeAsync(c, `now ${params.join(' ')}`)
         .then(() => resolve())
         .catch(error => reject(error));
 });
 
-const _createConfigFiles = (configFilePath, envConfigPath, nowParamsExists = false, envContent = '') => new Promise((resolve, reject) => {
+const _createConfigFiles = async (configFilePath, envConfigPath, nowParamsExists = false, envContent = '') => {
     if (!fs.existsSync(configFilePath)) {
         const content = { public: true, version: 2 };
         logInfo(`${chalk.white('now.json')} file does not exist. Creating one for you`);
-        askQuestion('What is your project name?')
-            .then((v) => {
-                finishQuestion();
-                content.name = v;
-                if (!nowParamsExists) {
-                    askQuestion('Do you have now token? If no leave empty and you will be asked to create one')
-                        .then((v) => {
-                            finishQuestion();
-                            if (v) {
-                                envContent += `NOW_TOKEN=${v}\n`;
-                                fs.writeFileSync(envConfigPath, envContent);
-                            }
-                            fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
-                            resolve();
-                        });
-                    return;
-                }
-                fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
-                resolve();
+
+        const { name } = await inquirer.prompt([{
+            type: 'input',
+            name: 'name',
+            message: 'What is your project name?',
+            validate: i => !!i || 'Please enter a name'
+        }, {
+            type: 'input',
+            name: 'token',
+            message: 'Do you have now token? If no leave empty and you will be asked to create one'
+        }]);
+
+        content.name = name;
+
+        if (!nowParamsExists) {
+            const { token } = await inquirer.prompt({
+                type: 'input',
+                name: 'token',
+                message: 'Do you have now token? If no leave empty and you will be asked to create one'
             });
-        return;
+            if (token) {
+                envContent += `NOW_TOKEN=${token}\n`;
+                fs.writeFileSync(envConfigPath, envContent);
+            }
+            return fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
+        }
+        return fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
     }
-    resolve();
-});
+};
 
 const deployToNow = c => new Promise((resolve, reject) => {
-    const nowConfigPath = path.resolve(c.paths.projectRootFolder, 'now.json');
-    const envConfigPath = path.resolve(c.paths.projectRootFolder, '.env');
+    const nowConfigPath = path.resolve(c.paths.project.dir, 'now.json');
+    const envConfigPath = path.resolve(c.paths.project.dir, '.env');
 
     let envContent;
     try {

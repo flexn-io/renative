@@ -14,14 +14,14 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     getAppId,
-    copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { IOS, TVOS } from '../../constants';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from '../apple';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
@@ -49,6 +49,13 @@ export const parseXcodeProject = (c, platform) => new Promise((resolve, reject) 
         xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
+
+        const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '10.0');
+        if (platform === IOS) {
+            xcodeProj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', deploymentTarget);
+        } else if (platform === TVOS) {
+            xcodeProj.updateBuildProperty('TVOS_DEPLOYMENT_TARGET', deploymentTarget);
+        }
 
         const provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
         if (provisionProfileSpecifier) {

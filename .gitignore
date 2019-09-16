@@ -45,15 +45,18 @@ buck-out/
 !.vscode/launch.json
 !.vscode/extensions.json
 
+#-------------------------------
+# RENATIVE
+#-------------------------------
+
 platformBuilds/
 platformAssets/
-
 package-lock.json
-
 buildHooks/dist
-
-
-
+renative.local.json
+renative.private.json
+renative.build.json
+renative.runtime.json
 release-configs.gradle
 rnv-config.local.json
 
@@ -63,3 +66,6 @@ rnv-config.local.json
 /projectConfig
 /src
 /index.*.js
+
+# Testing
+/packages/**/coverage

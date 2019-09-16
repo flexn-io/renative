@@ -10,24 +10,34 @@ import {
     getAppFolder,
     isPlatformActive,
     getConfigProp,
-    logDebug
+    logDebug,
+    getAppId
 } from '../../common';
 import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
+import { setAppConfig } from '../../configTools/configParser';
 
-export const updateProfile = c => new Promise((resolve, reject) => {
-    logTask('updateProfile', chalk.grey);
+export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) => {
+    logTask(`updateProfile:${appConfigId}`, chalk.grey);
+
+    // TODO: run trough all schemes
+    // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes
+    // const currScheme = c.program.scheme
+    // for(k in schemes) {
+    //   c.program.scheme = k
+    // }
+
+    if (appConfigId) setAppConfig(c, appConfigId);
 
     if (c.platform !== IOS && c.platform !== TVOS) {
         reject(`updateProfile:platform ${c.platform} not supported`);
         return;
     }
-    const {
-        appId, platform, paths, files, program
-    } = c;
+    const { platform } = c;
 
-    const { scheme } = program;
-    const id = getConfigProp(c, platform, 'id');
+    const { appId } = c.runtime;
+    const { scheme } = c.program;
+    const id = getAppId(c, platform);
     const teamID = getConfigProp(c, platform, 'teamID');
     const pMethod = getConfigProp(c, platform, 'exportOptions')?.method;
     const runScheme = getConfigProp(c, platform, 'runScheme');
@@ -42,7 +52,7 @@ export const updateProfile = c => new Promise((resolve, reject) => {
         '--team_id',
         teamID,
         '--output_path',
-        `${paths.globalConfigFolder}/${files.projectPackage.name}/appConfigs/${appId}/certs`,
+        `${c.paths.workspace.dir}/${c.files.project.package.name}/appConfigs/${appId}/certs`,
         '--force'
     ];
     if (process.env.APPLE_DEVELOPER_USERNAME) {
@@ -55,7 +65,7 @@ export const updateProfile = c => new Promise((resolve, reject) => {
         args.push(`--${provisioning}`);
     }
 
-    executeAsync('fastlane', args)
+    executeAsync(c, `fastlane ${args.join(' ')}`, { shell: true, stdio: 'inherit', silent: true })
         .then(() => {
             logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
 

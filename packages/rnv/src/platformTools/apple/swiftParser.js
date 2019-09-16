@@ -14,23 +14,15 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     getAppId,
-    copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
+    getGetJsBundleFile,
     getBuildsFolder
 } from '../../common';
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
-
-
-VALUES = {
-    provisioningStyle: {
-        allowedValues: ['Automatic', 'Manual'],
-        defaultValue: 'Automatic'
-    }
-};
 
 export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
@@ -38,13 +30,16 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
 
     const entryFile = getEntryFile(c, platform);
     const appTemplateFolder = getAppTemplateFolder(c, platform);
-    const { backgroundColor } = c.files.appConfigFile.platforms[platform];
+    const { backgroundColor } = c.buildConfig.platforms[platform];
     const tId = getConfigProp(c, platform, 'teamID');
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+    const forceBundle = getGetJsBundleFile(c, platform);
     let bundle;
-    if (isBundled) {
+    if (forceBundle) {
+        bundle = forceBundle;
+    } else if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
     } else {
         bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
@@ -62,7 +57,7 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         if (UI_COLORS.includes(backgroundColor)) {
             pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
         } else {
-            logWarning(`Your choosen color in config.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
+            logWarning(`Your choosen color in renative.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
         }
     }
 

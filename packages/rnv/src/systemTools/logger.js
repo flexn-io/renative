@@ -1,5 +1,5 @@
 import _chalk from 'chalk';
-import { generateOptions } from '../common';
+import { generateOptions } from './prompt';
 
 const _chalkCols = {
     white: v => v,
@@ -38,11 +38,15 @@ export const logWelcome = () => {
 │                                                                              │
 `);
 
-    if (_c?.files?.rnvPackage?.version) {
-        _c.rnvVersion = _c.files.rnvPackage.version;
+    if (_c?.files?.rnv?.package?.version) {
+        _c.rnvVersion = _c.files.rnv.package.version;
         str += printIntoBox(`      Version: ${chalk.green(_c.rnvVersion)}`, 1);
+        if (_c.rnvVersion.includes('alpha')) {
+            str += printIntoBox(`      ${chalk.yellow('WARNING: this is a prerelease version.')}`, 1);
+            str += printIntoBox(`      ${chalk.yellow('Use "npm install rnv" for stable one.')}`, 1);
+        }
     }
-    str += printIntoBox(`      ${chalk.blue('https://renative.org')}`, 1);
+    str += printIntoBox(`      ${chalk.grey('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      ${getCurrentCommand()}`);
     if (_c?.timeStart) str += printIntoBox(`      Start Time: ${_c.timeStart.toLocaleString()}`);
@@ -53,7 +57,7 @@ export const logWelcome = () => {
     console.log(str);
 };
 
-let _messages;
+let _messages = [];
 let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
@@ -61,6 +65,7 @@ let _c;
 let _isMono = false;
 let _defaultColor;
 let _highlightColor;
+
 
 export const configureLogger = (c, process, command, subCommand, isInfoEnabled) => {
     _messages = [];
@@ -82,6 +87,7 @@ const _updateDefaultColors = () => {
     _defaultColor = chalk.gray;
     _highlightColor = chalk.green;
 };
+_updateDefaultColors();
 
 export const logAndSave = (msg, skipLog) => {
     if (_messages && !_messages.includes(msg)) _messages.push(msg);
@@ -91,6 +97,7 @@ export const logAndSave = (msg, skipLog) => {
 const PRIVATE_PARAMS = ['-k', '--key'];
 
 export const getCurrentCommand = (excludeDollar = false) => {
+    if (!_c) return '_c is undefined';
     const argArr = _c.process.argv.slice(2);
     let hideNext = false;
     const output = argArr.map((v) => {
@@ -106,6 +113,10 @@ export const getCurrentCommand = (excludeDollar = false) => {
     }).join(' ');
     const dollar = excludeDollar ? '' : '$ ';
     return `${dollar}rnv ${output}`;
+};
+
+export const logToSummary = (v) => {
+    _messages.push(`\n${v}`);
 };
 
 export const logSummary = () => {
@@ -126,28 +137,29 @@ export const logSummary = () => {
 
     let str = printBoxStart(`🚀  SUMMARY ${timeString}`, getCurrentCommand());
     if (_c) {
-        if (_c.files.projectPackage) {
-            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.projectPackage.name)}`, 1);
-            str += printIntoBox(`Project Version: ${_highlightColor(_c.files.projectPackage.version)}`, 1);
+        if (_c.files.project.package) {
+            str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
+            str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
-        if (_c.files.appConfigFile) {
-            str += printIntoBox(`App Config: ${_highlightColor(_c.files.appConfigFile.id)}`, 1);
+        if (_c.buildConfig) {
+            str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig._meta?.currentAppConfigId)}`, 1);
+            str += printIntoBox(`Workspace: ${_highlightColor(_c.buildConfig.workspaceID)}`, 1);
         }
-        if (_c.files.projectConfig) {
-            const defaultProjectConfigs = _c.files.projectConfig.defaultProjectConfigs;
-            if (defaultProjectConfigs.supportedPlatforms) {
+        if (_c.files.project.config) {
+            const defaultProjectConfigs = _c.files.project.config.defaults;
+            if (defaultProjectConfigs?.supportedPlatforms) {
                 const plats = [];
-                generateOptions(_c.files.projectConfig.defaultProjectConfigs.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
+                generateOptions(_c.buildConfig?.defaults?.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
-                    if (_c.paths.platformTemplatesFolders) {
-                        isEjected = _c.paths.platformTemplatesFolders[obj].includes(_c.paths.rnvPlatformTemplatesFolder) ? '' : '(ejected)';
+                    if (_c.paths.project.platformTemplatesDirs) {
+                        isEjected = _c.paths.project.platformTemplatesDirs[obj].includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
                     }
 
                     plats.push(`${defaultVal}${isEjected}`);
                 });
                 str += printArrIntoBox(plats, 'Supported Platfroms: ');
             }
-            if (defaultProjectConfigs.template) {
+            if (defaultProjectConfigs?.template) {
                 str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
             }
         }
@@ -188,7 +200,8 @@ export const setCurrentJob = (job) => {
 
 export const logTask = (task, customChalk) => {
     const ch = customChalk || chalk.green;
-    console.log(ch(`${RNV} - ${task} - Starting!`));
+    const postMsg = customChalk ? '' : ' - Starting!';
+    console.log(ch(`${RNV} - ${task}${postMsg}`));
 };
 
 export const logWarning = (msg) => {
@@ -202,6 +215,8 @@ export const logInfo = (msg) => {
 export const logDebug = (...args) => {
     if (_isInfoEnabled) console.log.apply(null, args);
 };
+
+export const isInfoEnabled = () => _isInfoEnabled;
 
 export const logComplete = (isEnd = false) => {
     console.log(chalk.bold.white(`\n ${RNV} - Done! 🚀`));
@@ -226,6 +241,7 @@ export const logEnd = (code) => {
     if (_currentProcess) _currentProcess.exit(code);
 };
 
+
 export const logInitialize = () => {
     logWelcome();
     // console.log(
@@ -234,7 +250,7 @@ export const logInitialize = () => {
 };
 
 export const logAppInfo = c => new Promise((resolve, reject) => {
-    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.files.appConfigFile.id)}\n${LINE2}`));
+    console.log(chalk.gray(`\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(c.buildConfig.id)}\n${LINE2}`));
 
     resolve();
 });
@@ -267,9 +283,9 @@ export const printArrIntoBox = (arr, prefix = '') => {
         const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
         if (stringArr.length > l) {
             if (i === 0 && prefix.length) {
-                output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr)}`, 2);
+                output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr)}`, 2);
             } else {
-                output += printIntoBox(_highlightColor(stringArr), 1);
+                output += printIntoBox(_defaultColor(stringArr), 1);
             }
 
             stringArr = '';
@@ -279,9 +295,9 @@ export const printArrIntoBox = (arr, prefix = '') => {
         // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
     });
     if (i === 0 && prefix.length) {
-        output += printIntoBox(`${_defaultColor(prefix)}${_highlightColor(stringArr.slice(0, -2))}`, 2);
+        output += printIntoBox(`${_defaultColor(prefix)}${_defaultColor(stringArr.slice(0, -2))}`, 2);
     } else {
-        output += printIntoBox(_highlightColor(stringArr.slice(0, -2)), 1);
+        output += printIntoBox(_defaultColor(stringArr.slice(0, -2)), 1);
     }
 
     return output;
@@ -290,25 +306,11 @@ export const printArrIntoBox = (arr, prefix = '') => {
 export const printBoxStart = (str, str2) => {
     let output = _defaultColor('┌──────────────────────────────────────────────────────────────────────────────┐\n');
     output += printIntoBox(str);
-    output += printIntoBox(str2);
+    output += printIntoBox(str2 || '');
     output += _defaultColor('├──────────────────────────────────────────────────────────────────────────────┤\n');
     return output;
 };
 
-export const logStatus = () => {
-    // let str = printBoxStart('🚀  STATUS');
-    // // str += printIntoBox('SHlelelele euheu ehhh');
-    // // console.log('SSKJJSKL', _c);
-    // if (_c) {
-    //     if (_c.appId) str += printIntoBox(`App Config: ${_highlightColor(_c.appId)}`, 1);
-    //     if (_c.program.scheme) str += printIntoBox(`Build Scheme: ${_highlightColor(_c.program.scheme)}`, 1);
-    //     if (_c.platform) str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
-    // }
-    //
-    // str += printIntoBox('');
-    // str += printBoxEnd();
-
-    // console.log(str);
-};
+export const rnvStatus = async () => Promise.resolve();
 
 export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');

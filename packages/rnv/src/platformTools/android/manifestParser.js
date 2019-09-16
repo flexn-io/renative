@@ -11,7 +11,6 @@ import {
     logError,
     getAppFolder,
     isPlatformActive,
-    copyBuildsFolder,
     getAppVersion,
     getAppTitle,
     getAppVersionCode,
@@ -27,6 +26,7 @@ import {
     logSuccess,
     getBuildsFolder,
 } from '../../common';
+import { copyBuildsFolder } from '../../projectTools/projectParser'
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
@@ -139,7 +139,7 @@ export const parseAndroidManifestSync = (c, platform) => {
     logTask(`parseAndroidManifestSync:${platform}`);
     const pluginConfig = {};
     try {
-        const baseManifestFilePath = path.join(c.paths.rnvRootFolder, `src/platformTools/android/supportFiles/AndroidManifest_${platform}.json`);
+        const baseManifestFilePath = path.join(c.paths.rnv.dir, `src/platformTools/android/supportFiles/AndroidManifest_${platform}.json`);
         const baseManifestFile = readObjectSync(baseManifestFilePath);
         const appFolder = getAppFolder(c, platform);
         const application = _findChildNode('application', '.MainApplication', baseManifestFile);
@@ -147,10 +147,13 @@ export const parseAndroidManifestSync = (c, platform) => {
         baseManifestFile.package = getAppId(c, platform);
 
         // projectConfig/plugins.json PLUGIN CONFIG ROOT OVERRIDES
-        const pluginConfigAndroid = c.files.pluginConfig?.android?.AndroidManifest;
+        const pluginConfigAndroid = c.buildConfig?.platforms?.[platform]?.AndroidManifest;
         if (pluginConfigAndroid) {
             const applicationExt = _findChildNode('application', '.MainApplication', pluginConfigAndroid);
             _mergeNodeParameters(application, applicationExt);
+            if (applicationExt.children) {
+                _mergeNodeChildren(application, applicationExt.children);
+            }
         }
 
         // projectConfig/plugins.json PLUGIN CONFIG OVERRIDES
@@ -168,27 +171,29 @@ export const parseAndroidManifestSync = (c, platform) => {
 
         // appConfig PERMISSIONS OVERRIDES
         let prms = '';
-        const { permissions } = c.files.appConfigFile.platforms[platform];
-        const configPermissions = c.files.permissionsConfig?.permissions;
+        const configPermissions = c.buildConfig?.permissions;
 
-        if (permissions && configPermissions) {
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
+        if (includedPermissions && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
-            if (permissions[0] === '*') {
+            if (includedPermissions[0] === '*') {
                 for (const k in pc) {
                     prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
+                    const key = pc[k].key || k;
                     baseManifestFile.children.push({
                         tag: 'uses-permission',
-                        'android:name': pc[k].key
+                        'android:name': key
                     });
                 }
             } else {
-                permissions.forEach((v) => {
+                includedPermissions.forEach((v) => {
                     if (pc[v]) {
                         prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
+                        const key = pc[v].key || k;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
-                            'android:name': pc[v].key
+                            'android:name': key
                         });
                     }
                 });

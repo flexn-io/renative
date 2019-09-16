@@ -1,146 +1,212 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import shell from 'shelljs';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
+import execa from 'execa';
+import ora from 'ora';
+import NClient from 'netcat/client';
+import util from 'util';
 
-import { logDebug, logError } from '../common';
+import { logDebug } from './logger';
 
-const { spawn, exec, execSync } = require('child_process');
+const { exec, execSync } = require('child_process');
 
-const SEPARATOR = process.platform === 'win32' ? ';' : ':';
-const env = Object.assign({}, process.env);
-env.PATH = path.resolve('./node_modules/.bin') + SEPARATOR + env.PATH;
-
-const execCLI = (c, cli, command, log = console.log) => new Promise((resolve, reject) => {
-    log(`execCLI:${cli}:${command}`);
-
-    let toBeExecuted;
-
-    if (c && cli) {
-        const p = c.cli[cli];
-
-        if (!fs.existsSync(p)) {
-            reject(
-                `Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
-                    c.paths.globalConfigPath
-                )} file if you SDK path is correct`
-            );
-            return;
-        }
-        toBeExecuted = `${p} ${command}`;
-    } else {
-        toBeExecuted = command;
-    }
-
-    logDebug('ExecCLI:', toBeExecuted);
-
-    shell.exec(toBeExecuted, { silent: true, env: process.env, stdio: [process.stdin, 'pipe', 'pipe'] }, (error, stdout) => {
-        if (error) {
-            reject(`Command ${cli} failed: "${chalk.white(`${toBeExecuted}`)}". ${stdout.trim()}`);
-            return;
-        }
-
-        resolve(stdout.trim());
-    });
-});
-
-const executeAsync = (
-    cmd,
-    args,
-    opts = {}
-) => new Promise((resolve, reject) => {
-    if (cmd === 'npm' && process.platform === 'win32') cmd = 'npm.cmd';
-
+/**
+ *
+ * Also accepts the Node's child_process exec/spawn options
+ *
+ * @typedef {Object} Opts
+ * @property {Object} privateParams - private params that will be masked in the logs
+ * @property {Boolean} silent - don't print anything
+ * @property {Boolean} ignoreErrors - will print the loader but it will finish with a
+ * checkmark regardless of the outcome. Also, it never throws a catch.
+ * @property {Boolean} interactive - when you want to execute a command that requires user input
+ *
+ * Execute commands
+ *
+ * @param {String} command - command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
+const _execute = (c, command, opts = {}) => {
     const defaultOpts = {
-        // cwd: process.cwd(),
-        privateParams: [],
         stdio: 'pipe',
-        env,
+        localDir: path.resolve('./node_modules/.bin'),
+        preferLocal: true,
+        all: true,
+        maxErrorLength: c.program?.maxErrorLength,
+        mono: c.program?.mono,
     };
+
+    if (opts.interactive) {
+        defaultOpts.silent = true;
+        defaultOpts.stdio = 'inherit';
+        defaultOpts.shell = true;
+    }
 
     const mergedOpts = { ...defaultOpts, ...opts };
 
-    let cleanArgs = '';
-    let hideNext = false;
-    const pp = mergedOpts?.privateParams || [];
-    if (args) {
-        args.forEach((v) => {
-            if (hideNext) {
-                hideNext = false;
-                cleanArgs += ' ***********';
-            } else {
-                cleanArgs += ` ${v}`;
-            }
-            if (pp.includes(v)) {
-                hideNext = true;
-            }
-        });
+    let cleanCommand = command;
+    let interval;
+    const intervalTimer = 30000; // 30s
+    let timer = intervalTimer;
+
+    if (Array.isArray(command)) cleanCommand = command.join(' ');
+
+    let logMessage = cleanCommand;
+    const { privateParams } = mergedOpts;
+    if (privateParams && Array.isArray(privateParams)) {
+        logMessage = util.format(command, Array.from(privateParams, () => '*******'));
+        cleanCommand = util.format(command, ...privateParams);
     }
 
-    logDebug(`executeAsync:${cmd} ${cleanArgs}`);
+    logDebug(`_execute: ${logMessage}`);
+    const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
+    const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
 
-    const command = spawn(cmd, args, mergedOpts);
+    if (mono) {
+        interval = setInterval(() => {
+            console.log(`Executing: ${logMessage} - ${timer / 1000}s`);
+            timer += intervalTimer;
+        }, intervalTimer);
+    }
 
-    let stdout = '';
-    let stdoutErr = '';
-    let ended = false;
-    const findError = new RegExp(/error |fatal |invalid /i);
+    const child = execa.command(cleanCommand, mergedOpts);
 
-    /* eslint-disable-next-line no-unused-expressions */
-    command.stdout
-            && command.stdout.on('data', (output) => {
-                const outputStr = output.toString();
-                console.log(outputStr);
-                if (outputStr) {
-                    stdout += outputStr;
+    const MAX_OUTPUT_LENGTH = 200;
 
-                    if (findError.test(outputStr)) {
-                        stdoutErr += outputStr;
-                    }
-                }
-            });
-
-    /* eslint-disable-next-line no-unused-expressions */
-    command.stderr
-            && command.stderr.on('data', (output) => {
-                const outputStr = output.toString();
-                if (outputStr) stdoutErr += outputStr;
-            });
-
-    command.on('close', (code) => {
-        logDebug(`Command ${cmd} ${cleanArgs} exited with code ${code}`);
-        if (code !== 0) {
-            reject(new Error(`process exited with code ${code}. <ERROR> ${stdoutErr} </ERROR>`));
-        } else {
-            ended = true;
-
-            logDebug('Execute Command:', command);
-            resolve(stdout);
-        }
-    });
-
-    command.on('error', (error) => {
-        logDebug(`Command ${cmd} ${cleanArgs} errored with ${error}`);
-        reject(new Error(`process errored with ${error}`));
-    });
-
-    const killChildProcess = () => {
-        if (ended) return;
-        logDebug(`Killing child process ${cmd} ${cleanArgs}`);
-        command.kill(1);
+    const printLastLine = (buffer) => {
+        const text = Buffer.from(buffer).toString().trim();
+        const lastLine = text.split('\n').pop();
+        spinner.text = lastLine.substring(0, MAX_OUTPUT_LENGTH);
+        if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
     };
 
-    process.on('exit', killChildProcess);
-    process.on('SIGINT', killChildProcess);
+    if (c.program?.info) {
+        child.stdout.pipe(process.stdout);
+    } else if (spinner) {
+        child.stdout.on('data', printLastLine);
+    }
+
+    return child.then((res) => {
+        spinner && child.stdout.off('data', printLastLine);
+        !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
+        logDebug(res.all);
+        interval && clearInterval(interval);
+        // logDebug(res);
+        return res.stdout;
+    }).catch((err) => {
+        spinner && child.stdout.off('data', printLastLine);
+        if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        logDebug(err.all);
+        interval && clearInterval(interval);
+        // logDebug(err);
+        if (ignoreErrors && !silent && !mono) {
+            spinner.succeed(`Executing: ${logMessage}`);
+            return true;
+        }
+        const errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
+        return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
+    });
+};
+
+/**
+ *
+ * Execute CLI command
+ *
+ * @param {Object} c - the trusty old c object
+ * @param {String} cli - the cli to be executed
+ * @param {String} command - the command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
+const execCLI = (c, cli, command, opts = {}) => {
+    const p = c.cli[cli];
+
+    if (!fs.existsSync(p)) {
+        logDebug('execCLI error', cli, command);
+        return Promise.reject(`Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
+            c.paths.globalConfigPath
+        )} file if you SDK path is correct`);
+    }
+
+    return _execute(c, `${p} ${command}`, { ...opts, shell: true });
+};
+
+/**
+ *
+ * Execute a plain command
+ *
+ * @param {String} command - the command to be executed
+ * @param {Opts} [opts={}] - the options for the command
+ * @returns {Promise}
+ *
+ */
+const executeAsync = (c, cmd, opts) => {
+    if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
+    return _execute(c, cmd, opts);
+};
+
+/**
+ *
+ * Connect to a local telnet server and execute a command
+ *
+ * @param {Number|String} port - where do you want me to connect to?
+ * @param {String} command - the command to be executed once I'm connected
+ * @returns {Promise}
+ *
+ */
+const executeTelnet = (port, command) => new Promise((resolve) => {
+    const nc2 = new NClient();
+    logDebug(`execTelnet: ${port} ${command}`);
+
+    let output = '';
+
+    nc2.addr('127.0.0.1')
+        .port(parseInt(port, 10))
+        .connect()
+        .send(`${command}\n`);
+    nc2.on('data', (data) => {
+        const resp = Buffer.from(data).toString();
+        output += resp;
+        if (output.includes('OK')) nc2.close();
+    });
+    nc2.on('close', () => resolve(output));
 });
 
-function execShellAsync(command) {
-    logDebug('Exec:', command);
-    return new Promise((resolve) => {
-        shell.exec(command, resolve);
+// Legacy error parser
+// export const parseErrorMessage = (text, maxErrorLength = 800) => {
+//     const errors = [];
+//     const toSearch = /(exception|error|fatal|\[!])/i;
+//
+//     const extractError = (t) => {
+//         const errorFound = t ? t.search(toSearch) : -1;
+//         if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
+//         const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
+//         let extractedError = usefulString.substring(0, maxErrorLength);
+//         if (extractedError.length === maxErrorLength) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
+//         errors.push(extractedError); // save the error
+//         const newString = usefulString.substring(100); // dump everything we processed and continue
+//         return extractError(newString);
+//     };
+//
+//     return extractError(text);
+// };
+
+export const parseErrorMessage = (text, maxErrorLength = 800) => {
+    const toSearch = /(exception|error|fatal|\[!])/i;
+    let arr = text.split('\n');
+    arr = arr.filter(v => v.search(toSearch) !== -1);
+    arr = arr.map((v) => {
+        let extractedError = v.substring(0, maxErrorLength);
+        if (extractedError.length === maxErrorLength) extractedError += '...';
+        return extractedError;
     });
-}
+    return arr.join('\n');
+};
+
 
 const isUsingWindows = process.platform === 'win32';
 
@@ -282,10 +348,13 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-export { executeAsync, execShellAsync, execCLI, commandExists, commandExistsSync };
+const openCommand = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
+
+export { executeAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
 
 export default {
     executeAsync,
-    execShellAsync,
     execCLI,
+    openCommand,
+    executeTelnet
 };

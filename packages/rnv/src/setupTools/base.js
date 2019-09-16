@@ -3,16 +3,17 @@ import shell from 'shelljs';
 import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemTools/exec';
-import { logInfo, logDebug, configureRnvGlobal } from '../common';
+import { logInfo, logDebug } from '../common';
+import { configureRnvGlobal } from '../configTools/configParser';
 import { replaceHomeFolder, updateConfigFile } from '../systemTools/fileutils';
 import setupConfig from './config';
 
 class BasePlatformSetup {
     constructor(os, c) {
-        const { paths: { globalConfigPath } } = c;
+        const { paths } = c;
         this.os = os;
         this.c = c;
-        this.globalConfigPath = globalConfigPath;
+        this.globalConfigPath = paths.workspace.config;
         this.availableDownloader = null;
         this.androidSdkLocation = replaceHomeFolder('~/Android');
         this.sdksToInstall = '"build-tools;28.0.3" "emulator" "extras;android;m2repository" "extras;google;m2repository" "patcher;v4" "platform-tools" "platforms;android-28" "sources;android-28" "system-images;android-28;google_apis_playstore;x86" "tools"';

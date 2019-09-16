@@ -1,38 +1,76 @@
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
-import { removeDirs } from './fileutils';
-import { logTask, askQuestion, finishQuestion } from '../common';
+import inquirer from 'inquirer';
 
-const cleanProjectModules = c => new Promise((resolve, reject) => {
-    logTask('cleanProjectModules');
+import { removeDirs } from './fileutils';
+import { logTask, logToSummary } from './logger';
+
+const rnvClean = async (c, skipQuestion = false) => {
+    logTask('rnvClean');
     const pathsToRemove = [
-        c.paths.projectNodeModulesFolder,
-        path.join(c.paths.projectRootFolder, 'package-lock.json')
+        c.paths.project.nodeModulesDir,
+        path.join(c.paths.project.dir, 'package-lock.json')
     ];
     let msg = chalk.red('./node_modules\n./package-lock.json\n');
-    const packagesFolder = path.join(c.paths.projectRootFolder, 'packages');
+    const packagesFolder = path.join(c.paths.project.dir, 'packages');
     if (fs.existsSync(packagesFolder)) {
         fs.readdirSync(packagesFolder).forEach((dir) => {
             if (dir === '.DS_Store') {
-                pathsToRemove.push(path.join(packagesFolder, dir));
-                msg += chalk.red(`./packages/${dir}\n`);
+                const pth = path.join(packagesFolder, dir);
+
+                if (fs.existsSync(pth)) {
+                    pathsToRemove.push(pth);
+                    msg += chalk.red(`./packages/${dir}\n`);
+                }
             } else {
-                pathsToRemove.push(path.join(packagesFolder, dir, 'node_modules'));
-                pathsToRemove.push(path.join(packagesFolder, dir, 'package-lock.json'));
-                msg += chalk.red(`./packages/${dir}/node_modules\n./packages/${dir}/package-lock.json\n`);
+                const pth2 = path.join(packagesFolder, dir, 'node_modules');
+                if (fs.existsSync(pth2)) {
+                    pathsToRemove.push(pth2);
+                    msg += chalk.red(`./packages/${dir}/node_modules\n`);
+                }
+
+                const pth3 = path.join(packagesFolder, dir, 'package-lock.json');
+                if (fs.existsSync(pth3)) {
+                    pathsToRemove.push(pth3);
+                    msg += chalk.red(`./packages/${dir}/package-lock.json\n`);
+                }
             }
         });
     }
 
+    if (pathsToRemove) {
+        logToSummary('Nothing to clean');
+        return Promise.resolve();
+    }
 
-    askQuestion(`Following files/folders will be removed:\n\n${msg}\npress (ENTER) to confirm`)
-        .then(() => {
-            finishQuestion();
-            removeDirs(pathsToRemove).then(() => resolve())
-                .catch(e => reject(e));
-        })
-        .catch(e => reject(e));
-});
 
-export { cleanProjectModules };
+    if (skipQuestion) {
+        return removeDirs(pathsToRemove);
+    }
+
+    const { confirm } = await inquirer.prompt({
+        name: 'confirm',
+        type: 'confirm',
+        message: `Are you sure you want to remove these files/folders? \n${msg}`,
+    });
+
+    if (confirm) {
+        await removeDirs(pathsToRemove);
+
+        const buildDirs = [
+            c.paths.project.builds.dir,
+            c.paths.project.assets.dir
+        ];
+        const { confirmBuilds } = await inquirer.prompt({
+            name: 'confirmBuilds',
+            type: 'confirm',
+            message: `Do you also want to clean your platformBuilds and platformAssets? \n${chalk.red(buildDirs.join('\n'))}`,
+        });
+        if (confirmBuilds) {
+            await removeDirs(buildDirs);
+        }
+    }
+};
+
+export { rnvClean };

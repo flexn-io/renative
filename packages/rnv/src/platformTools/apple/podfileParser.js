@@ -14,14 +14,13 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     getAppId,
-    copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
@@ -52,7 +51,8 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
         }
 
         if (pluginPlat.Podfile) {
-            const injectLines = pluginPlat.Podfile.injectLines;
+            const { injectLines } = pluginPlat.Podfile;
+            // INJECT LINES
             if (injectLines) {
                 injectLines.forEach((v) => {
                     c.pluginConfigiOS.podfileInject += `${v}\n`;
@@ -61,27 +61,30 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
         }
     });
 
-    // SUBSPECS
-    const reactCore = c.files.pluginConfig ? c.files.pluginConfig.reactCore : c.files.pluginTemplatesConfig.reactCore;
-    if (reactCore) {
-        if (reactCore.ios.reactSubSpecs) {
-            reactCore.ios.reactSubSpecs.forEach((v) => {
-                if (!pluginSubspecs.includes(`'${v}'`)) {
-                    pluginSubspecs += `  '${v}',\n`;
-                }
-            });
-        }
-    }
-
     // WARNINGS
     const ignoreWarnings = getConfigProp(c, platform, 'ignoreWarnings');
     const podWarnings = ignoreWarnings ? 'inhibit_all_warnings!' : '';
+
+    // SOURCES
+    c.pluginConfigiOS.podfileSources = '';
+    const podfileSources = c.buildConfig?.platforms?.ios?.Podfile?.sources;
+    if (podfileSources && podfileSources.length) {
+        podfileSources.forEach((v) => {
+            c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
+        });
+    }
+
+    // DEPLOYMENT TARGET
+    const deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '10.0');
+    c.pluginConfigiOS.deploymentTarget = deploymentTarget;
 
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
+        { pattern: '{{PLUGIN_PODFILE_SOURCES}}', override: c.pluginConfigiOS.podfileSources },
+        { pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}', override: c.pluginConfigiOS.deploymentTarget }
     ]);
     resolve();
 });

@@ -1,0 +1,71 @@
+{
+    "env": {
+        "SOME_ENV_VAR": "xxxx"
+    },
+    "projectName": "renative",
+    "workspaceID": "rnv",
+    "isWrapper": true,
+    "paths": {
+        "appConfigsDir": "./appConfigs",
+        "platformTemplatesDir": "RNV_HOME/platformTemplates",
+        "entryDir": "./",
+        "platformAssetsDir": "./platformAssets",
+        "platformBuildsDir": "./platformBuilds",
+        "projectConfigDir": "./projectConfig"
+    },
+    "defaults": {
+        "ports": {
+            "ios": "9081",
+            "android": "9081",
+            "androidtv": "9081",
+            "tvos": "9081",
+            "web": "9080"
+        },
+        "supportedPlatforms": [
+            "ios",
+            "android",
+            "androidtv",
+            "androidwear",
+            "web",
+            "tizen",
+            "tvos",
+            "webos",
+            "macos",
+            "windows",
+            "tizenwatch",
+            "tizenmobile",
+            "kaios",
+            "firefoxos",
+            "firefoxtv"
+        ],
+        "schemes": {
+            "run": "debug",
+            "build": "release",
+            "export": "release"
+        },
+        "targets": {}
+    },
+    "templates": {
+        "renative-template-hello-world": {
+            "version": "file:./packages/renative-template-hello-world",
+            "webpack": {
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "packages/renative-template-hello-world"
+                    }
+                }
+            }
+        },
+        "renative-template-blank": {
+            "version": "file:./packages/renative-template-blank",
+            "webpack": {
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "packages/renative-template-blank"
+                    }
+                }
+            }
+        }
+    },
+    "currentTemplate": "renative-template-hello-world"
+}

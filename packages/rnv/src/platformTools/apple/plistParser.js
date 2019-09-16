@@ -11,20 +11,20 @@ import {
     logDebug,
     getAppVersion,
     getAppTitle,
+    getAppVersionCode,
     getEntryFile,
     writeCleanFile,
     getAppTemplateFolder,
     getAppId,
-    copyBuildsFolder,
     getConfigProp,
     getIP,
-    getQuestion,
     getBuildFilePath,
     logSuccess,
     getBuildsFolder
 } from '../../common';
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
-import { getAppFolderName } from '../apple';
+import { getAppFolderName } from './index';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
 
 
@@ -52,7 +52,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, rej
     // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
     if (!pluginsEntitlementsObj) {
-        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/entitlements.json'));
+        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/entitlements.json'));
     }
 
     saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
@@ -60,40 +60,39 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, rej
 });
 
 export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`parseInfoPlistSync:${platform}`);
+    logTask(`parseInfoPlist:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
-    const { permissions, orientationSupport, urlScheme, plistExtra } = c.files.appConfigFile.platforms[platform];
+    const plat = c.buildConfig.platforms[platform];
+    const { orientationSupport, urlScheme } = plat;
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnvRootFolder, 'src/platformTools/apple/supportFiles/info.plist.json'));
+    let plistObj = readObjectSync(path.join(c.paths.rnv.dir, `src/platformTools/apple/supportFiles/info.plist.${platform}.json`));
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
+    plistObj.CFBundleVersion = getAppVersionCode(c, platform);
     // FONTS
     if (c.pluginConfigiOS.embeddedFonts.length) {
         plistObj.UIAppFonts = c.pluginConfigiOS.embeddedFonts;
     }
     // PERMISSIONS
     const pluginPermissions = '';
-    if (permissions) {
-        if (permissions.length && permissions[0] === '*') {
-            if (c.files.permissionsConfig) {
-                const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
-                const pc = c.files.permissionsConfig.permissions[plat];
-                for (const v in pc) {
-                    plistObj[pc[v].key] = pc[v].desc;
-                }
+    const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
+    if (includedPermissions) {
+        const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
+        const pc = c.buildConfig.permissions[plat];
+        if (includedPermissions.length && includedPermissions[0] === '*') {
+            for (const v in pc) {
+                const key = pc[v].key || v;
+                plistObj[key] = pc[v].desc;
             }
         } else {
-            permissions.forEach((v) => {
-                if (c.files.permissionsConfig) {
-                    const plat = c.files.permissionsConfig.permissions[platform] ? platform : 'ios';
-                    const pc = c.files.permissionsConfig.permissions[plat];
-                    if (pc[v]) {
-                        plistObj[pc[v].key] = pc[v].desc;
-                    }
+            includedPermissions.forEach((v) => {
+                if (pc[v]) {
+                    const key = pc[v].key || v;
+                    plistObj[key] = pc[v].desc;
                 }
             });
         }
@@ -111,22 +110,26 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
             plistObj['UISupportedInterfaceOrientations~ipad'] = ['UIInterfaceOrientationPortrait'];
         }
     }
-    // URL_SCHEMES
+    // URL_SCHEMES (LEGACY)
     if (urlScheme) {
+        logWarning('urlScheme is DEPRECATED. use "plist:{ CFBundleURLTypes: []}" object instead');
         plistObj.CFBundleURLTypes.push({
             CFBundleTypeRole: 'Editor',
             CFBundleURLName: urlScheme,
             CFBundleURLSchemes: [urlScheme]
         });
     }
-    // PLIST EXTRAS
-    if (plistExtra) {
-        plistObj = mergeObjects(c, plistObj, plistExtra);
+
+    // PLIST
+    const plist = getConfigProp(c, platform, 'plist');
+    if (plist) {
+        plistObj = mergeObjects(c, plistObj, plist, true, true);
     }
+
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         if (pluginPlat.plist) {
-            plistObj = mergeObjects(c, plistObj, pluginPlat.plist);
+            plistObj = mergeObjects(c, plistObj, pluginPlat.plist, true, true);
         }
     });
     saveObjToPlistSync(plistPath, plistObj);

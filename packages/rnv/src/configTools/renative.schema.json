@@ -1,0 +1,189 @@
+{
+    "definitions": {
+        "apple_build_scheme": {
+            "type": "object"
+        },
+        "android_build_scheme": {
+            "type": "object"
+        },
+        "web_build_scheme": {
+            "type": "object"
+        },
+        "tizen_build_scheme": {
+            "type": "object"
+        },
+        "plugin": {
+            "type": "object",
+            "properties": {
+              "version": {
+                  "type": "string",
+                  "description": "TODO"
+              },
+              "ios": {
+                  "type": "object"
+              },
+              "android": {
+                  "type": "object"
+              },
+              "androidtv": {
+                  "type": "object"
+              },
+              "tvos": {
+                  "type": "object"
+              }
+            }
+        }
+    },
+    "$id": "https://example.com/person.schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Renative Config",
+    "type": "object",
+    "worspace": {
+        "type": "string",
+        "description": "Workspace ID"
+    },
+    "properties": {
+        "platformTemplatesDirs": {
+            "type": "object",
+            "description": "Object with keys per each platform template path",
+            "properties": {
+
+            }
+        },
+        "entryDir": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "platformAssetsDir": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "platformBuildsDir": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "buildHooks": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "projectConfigDir": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "platformTemplatesDirs": {
+            "type": "object",
+            "description": "TODO",
+            "properties": {
+                "template": {
+                    "type": "string",
+                    "description": "TODO"
+                },
+                "supportedPlatforms": {
+                    "type": "array",
+                    "description": "TODO"
+                }
+            }
+        },
+        "crypto": {
+            "type": "object",
+            "description": "TODO",
+            "properties": {
+                "encrypt": {
+                    "type": "object",
+                    "description": "TODO",
+                    "properties": {
+                        "source": {
+                            "type": "string",
+                            "description": "TODO"
+                        }
+                    }
+                },
+                "decrypt": {
+                    "type": "object",
+                    "description": "TODO",
+                    "properties": {
+                        "source": {
+                            "type": "string",
+                            "description": "TODO"
+                        }
+                    }
+                }
+            }
+        },
+        "common": {
+            "type": "object",
+            "description": "TODO",
+            "required": ["title", "id"],
+            "properties": {
+                "title": {
+                    "type": "string",
+                    "description": "TODO"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "TODO"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "TODO"
+                },
+                "author": {
+                    "type": "string",
+                    "description": "TODO"
+                },
+                "includedPlugins": {
+                    "type": "array",
+                    "description": "TODO"
+                },
+                "excludedPlugins": {
+                    "type": "array",
+                    "description": "TODO"
+                }
+            }
+        },
+        "platforms": {
+            "type": "object",
+            "description": "TODO",
+            "properties": {
+                "ios": {
+                    "$ref": "#/definitions/apple_config"
+                },
+                "android": {
+                    "$ref": "#/definitions/apple_config"
+                },
+                "tvos": {
+                    "$ref": "#/definitions/apple_config"
+                },
+                "androidtv": {
+                    "$ref": "#/definitions/apple_config"
+                },
+                "web": {
+                    "$ref": "#/definitions/apple_config"
+                },
+                "tizen": {
+                    "$ref": "#/definitions/apple_config"
+                },
+                "webos": {
+                    "$ref": "#/definitions/apple_config"
+                }
+            }
+        },
+        "plugins": {
+            "type": "object",
+            "description": "TODO",
+            "properties": {
+                "children": {
+                    "type": "object",
+                    "properties": {
+                        "$ref": "#/definitions/plugin"
+                    }
+                }
+            }
+        },
+        "permissions": {
+            "type": "object",
+            "description": "TODO",
+            "properties": {}
+        }
+    }
+}

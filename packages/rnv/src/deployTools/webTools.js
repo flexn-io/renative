@@ -1,18 +1,16 @@
 import chalk from 'chalk';
-import path from 'path';
-import fs from 'fs';
+import minimist from 'minimist';
+import inquirer from 'inquirer';
+
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
 import {
-    askQuestion,
-    finishQuestion,
     logTask,
     logComplete,
     logError,
-    logInfo,
-    generateOptions
+    logInfo
 } from '../common';
-import { RNV_APP_CONFIG_NAME } from '../constants';
+import { generateOptions } from '../systemTools/prompt';
 
 const DEPLOY_TARGET_FTP = 'ftp';
 const DEPLOY_TARGET_NOW = 'now';
@@ -34,31 +32,26 @@ const _runDeployment = (c, platform, deployType) => new Promise((resolve, reject
     }
 });
 
-const selectWebToolAndDeploy = (c, platform) => new Promise((resolve, reject) => {
-    const argv = require('minimist')(c.process.argv.slice(2));
+const selectWebToolAndDeploy = async (c, platform) => {
+    const argv = minimist(c.process.argv.slice(2));
     const deployType = argv.t;
-    const targetConfig = c.files.appConfigFile.platforms[platform];
+    const targetConfig = c.buildConfig.platforms[platform];
 
     if (deployType || (targetConfig && targetConfig.deploy && targetConfig.deploy.type)) {
-        _runDeployment(c, platform, deployType || targetConfig.deploy.type)
-            .then(resolve).catch(reject);
-    } else {
-        const opts = generateOptions([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE]);
-        askQuestion(`Which type of deploy option would you like to use for ${chalk.white(platform)} deployment:\n${opts.asString}`)
-            .then(v => opts.pick(v))
-            .then((selectedDeployTarget) => {
-                finishQuestion();
-                const configFilePath = path.resolve(
-                    c.files.projectConfig.appConfigsFolder,
-                    c.defaultAppConfigId,
-                    RNV_APP_CONFIG_NAME
-                );
-                logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(configFilePath)}`);
-                _runDeployment(c, platform, selectedDeployTarget).then(resolve).catch(reject);
-            })
-            .catch(e => reject(e));
+        return _runDeployment(c, platform, deployType || targetConfig.deploy.type);
     }
-});
+    const opts = generateOptions([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE]);
+
+    const { selectedDeployTarget } = await inquirer.prompt({
+        name: 'selectedDeployTarget',
+        type: 'list',
+        choices: opts.keysAsArray,
+        message: `Which type of deploy option would you like to use for ${chalk.white(platform)} deployment?`
+    });
+
+    logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(c.paths.appConfig.config)}`);
+    return _runDeployment(c, platform, selectedDeployTarget);
+};
 
 export {
     selectWebToolAndDeploy,
