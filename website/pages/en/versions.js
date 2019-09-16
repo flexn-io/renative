@@ -50,7 +50,7 @@ Current version (Stable)
                                     <a
                                         href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${
                                             props.language ? `${props.language}/` : ''
-                                        }installation`}
+                                        }quickstart`}
                                     >
                     Documentation
                                     </a>
@@ -118,7 +118,7 @@ Here you can find previous versions of the documentation.
                                             <a
                                                 href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${
                                                     props.language ? `${props.language}/` : ''
-                                                }${version}/installation`}
+                                                }${version}/quickstart`}
                                             >
                           Documentation
                                             </a>
