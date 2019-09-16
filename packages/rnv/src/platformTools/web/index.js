@@ -175,7 +175,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
 });
 
 const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
-    waitForWebpack(port)
+    waitForWebpack(c, port)
         .then(() => open(`http://${devServerHost}:${port}/`))
         .catch(logError);
     resolve();
