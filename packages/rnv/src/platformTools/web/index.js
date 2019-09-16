@@ -19,7 +19,7 @@ import {
     logError,
     getAppTitle
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
 import { selectWebToolAndDeploy } from '../../deployTools/webTools';
@@ -131,11 +131,11 @@ const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const configureProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+const configureProject = async (c, platform, appFolderName) => {
     logTask(`configureProject:${platform}`);
 
-    resolve();
-});
+    await copyAssetsFolder(c, platform);
+};
 
 const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);

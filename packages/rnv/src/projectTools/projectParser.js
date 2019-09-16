@@ -208,7 +208,8 @@ const ASSET_PATH_ALIASES = {
     firefoxtv: '',
     firefoxos: '',
     windows: '',
-    macos: ''
+    macos: '',
+    web: 'public'
 };
 
 export const copyAssetsFolder = (c, platform, customFn) => new Promise((resolve, reject) => {
