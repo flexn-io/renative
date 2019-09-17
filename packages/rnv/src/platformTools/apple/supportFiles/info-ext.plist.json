@@ -22,7 +22,7 @@
             ]
         }
     ],
-    "CFBundleVersion": "1700",
+    "CFBundleVersion": "1",
     "Fabric": {
         "APIKey": "{{FABRIC_KEY}}",
         "Kits": [{

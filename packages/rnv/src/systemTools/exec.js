@@ -7,7 +7,7 @@ import ora from 'ora';
 import NClient from 'netcat/client';
 import util from 'util';
 
-import { logDebug, parseErrorMessage } from '../common';
+import { logDebug } from './logger';
 
 const { exec, execSync } = require('child_process');
 
@@ -20,6 +20,7 @@ const { exec, execSync } = require('child_process');
  * @property {Boolean} silent - don't print anything
  * @property {Boolean} ignoreErrors - will print the loader but it will finish with a
  * checkmark regardless of the outcome. Also, it never throws a catch.
+ * @property {Boolean} interactive - when you want to execute a command that requires user input
  *
  * Execute commands
  *
@@ -34,9 +35,16 @@ const _execute = (c, command, opts = {}) => {
         localDir: path.resolve('./node_modules/.bin'),
         preferLocal: true,
         all: true,
-        maxErrorLength: c.program.maxErrorLength,
-        mono: c.program.mono,
+        maxErrorLength: c.program?.maxErrorLength,
+        mono: c.program?.mono,
     };
+
+    if (opts.interactive) {
+        defaultOpts.silent = true;
+        defaultOpts.stdio = 'inherit';
+        defaultOpts.shell = true;
+    }
+
     const mergedOpts = { ...defaultOpts, ...opts };
 
     let cleanCommand = command;
@@ -64,22 +72,42 @@ const _execute = (c, command, opts = {}) => {
         }, intervalTimer);
     }
 
-    return execa.command(cleanCommand, mergedOpts).then((res) => {
-        !silent && !mono && spinner.succeed();
+    const child = execa.command(cleanCommand, mergedOpts);
+
+    const MAX_OUTPUT_LENGTH = 200;
+
+    const printLastLine = (buffer) => {
+        const text = Buffer.from(buffer).toString().trim();
+        const lastLine = text.split('\n').pop();
+        spinner.text = lastLine.substring(0, MAX_OUTPUT_LENGTH);
+        if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
+    };
+
+    if (c.program?.info) {
+        child.stdout.pipe(process.stdout);
+    } else if (spinner) {
+        child.stdout.on('data', printLastLine);
+    }
+
+    return child.then((res) => {
+        spinner && child.stdout.off('data', printLastLine);
+        !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
         logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        if (!silent && !mono && !ignoreErrors) spinner.fail(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        spinner && child.stdout.off('data', printLastLine);
+        if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);
         // logDebug(err);
         if (ignoreErrors && !silent && !mono) {
-            spinner.succeed();
+            spinner.succeed(`Executing: ${logMessage}`);
             return true;
         }
-        return Promise.reject(parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        const errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
+        return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
 
@@ -95,8 +123,8 @@ const _execute = (c, command, opts = {}) => {
  *
  */
 const execCLI = (c, cli, command, opts = {}) => {
+    if (!c.program) return Promise.reject('You need to pass c object as first parameter to execCLI()');
     const p = c.cli[cli];
-    const { maxErrorLength } = c.program;
 
     if (!fs.existsSync(p)) {
         logDebug('execCLI error', cli, command);
@@ -105,7 +133,7 @@ const execCLI = (c, cli, command, opts = {}) => {
         )} file if you SDK path is correct`);
     }
 
-    return _execute(c, `${p} ${command}`, { ...opts, shell: true, maxErrorLength });
+    return _execute(c, `${p} ${command}`, { ...opts, shell: true });
 };
 
 /**
@@ -118,6 +146,7 @@ const execCLI = (c, cli, command, opts = {}) => {
  *
  */
 const executeAsync = (c, cmd, opts) => {
+    if (!c.program) return Promise.reject('You need to pass c object as first parameter to executeAsync()');
     if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
     return _execute(c, cmd, opts);
 };
@@ -148,6 +177,39 @@ const executeTelnet = (port, command) => new Promise((resolve) => {
     });
     nc2.on('close', () => resolve(output));
 });
+
+// Legacy error parser
+// export const parseErrorMessage = (text, maxErrorLength = 800) => {
+//     const errors = [];
+//     const toSearch = /(exception|error|fatal|\[!])/i;
+//
+//     const extractError = (t) => {
+//         const errorFound = t ? t.search(toSearch) : -1;
+//         if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
+//         const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
+//         let extractedError = usefulString.substring(0, maxErrorLength);
+//         if (extractedError.length === maxErrorLength) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
+//         errors.push(extractedError); // save the error
+//         const newString = usefulString.substring(100); // dump everything we processed and continue
+//         return extractError(newString);
+//     };
+//
+//     return extractError(text);
+// };
+
+export const parseErrorMessage = (text, maxErrorLength = 800) => {
+    if (!text) return '';
+    const toSearch = /(exception|error|fatal|\[!])/i;
+    let arr = text.split('\n');
+    arr = arr.filter(v => v.search(toSearch) !== -1);
+    arr = arr.map((v) => {
+        let extractedError = v.substring(0, maxErrorLength);
+        if (extractedError.length === maxErrorLength) extractedError += '...';
+        return extractedError;
+    });
+    return arr.join('\n');
+};
+
 
 const isUsingWindows = process.platform === 'win32';
 

@@ -4,14 +4,18 @@ import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
 import ora from 'ora';
+import ip from 'ip';
+import axios from 'axios';
+import inquirer from 'inquirer';
 
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
-    getRealPath
+    getRealPath,
+    isRunningOnWindows
 } from './systemTools/fileutils';
-import { createPlatformBuild, cleanPlatformBuild } from './cli/platform';
-import appRunner from './cli/app';
+import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
+import CLI from './cli';
 import { configureTizenGlobal } from './platformTools/tizen';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
 import { getMergedPlugin, configurePlugins } from './pluginTools';
@@ -37,10 +41,10 @@ import {
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
 import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
-import { askQuestion, generateOptions, finishQuestion } from './systemTools/prompt';
+import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto', 'help'];
 export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
@@ -52,34 +56,47 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
     resolve(c);
 });
 
-export const startBuilder = c => new Promise((resolve, reject) => {
+export const startBuilder = async (c) => {
     logTask('initializeBuilder');
 
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        checkAndMigrateProject(c)
-            .then(() => parseRenativeConfigs(c))
-            .then(() => configureRnvGlobal(c))
-            .then(() => resolve(c))
-            .catch(e => reject(c));
-        return;
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+
+    if (!c.command) {
+        if (!c.paths.project.configExists) {
+            const { command } = await inquirerPrompt({
+                type: 'list',
+                default: 'new',
+                name: 'command',
+                message: 'Pick a command',
+                choices: NO_OP_COMMANDS.sort(),
+                pageSize: 15,
+                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
+            });
+            c.command = command;
+        }
     }
 
-    checkAndMigrateProject(c)
-        .then(() => parseRenativeConfigs(c))
-        .then(() => checkIsRenativeProject(c))
-        .then(() => checkAndCreateProjectPackage(c))
-        .then(() => configureRnvGlobal(c))
-        .then(() => checkIfTemplateInstalled(c))
-        .then(() => fixRenativeConfigsSync(c))
-        .then(() => configureNodeModules(c))
-        .then(() => applyTemplate(c))
-        .then(() => configurePlugins(c))
-        .then(() => configureNodeModules(c))
-        .then(() => updateConfig(c, c.runtime.appId))
-        .then(() => logAppInfo(c))
-        .then(() => resolve(c))
-        .catch(e => reject(e));
-});
+    if (NO_OP_COMMANDS.includes(c.command)) {
+        await configureRnvGlobal(c);
+        return c;
+    }
+
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+    await checkIsRenativeProject(c);
+    await checkAndCreateProjectPackage(c);
+    await configureRnvGlobal(c);
+    await checkIfTemplateInstalled(c);
+    await fixRenativeConfigsSync(c);
+    await configureNodeModules(c);
+    await applyTemplate(c);
+    await configurePlugins(c);
+    await configureNodeModules(c);
+    await updateConfig(c, c.runtime.appId);
+    await logAppInfo(c);
+    return c;
+};
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -102,32 +119,28 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
     return true;
 };
 
-export const isPlatformSupported = c => new Promise((resolve, reject) => {
+export const isPlatformSupported = async (c) => {
     logTask(`isPlatformSupported:${c.platform}`);
-    if (!c.platform || c.platform === '?') {
-        let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
-        if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
-        const opts = generateOptions(platformsAsObj);
+    let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
+    if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
+    const opts = generateOptions(platformsAsObj);
 
-        askQuestion(`Pick one of available platforms (number or text):\n${opts.asString}`).then((v) => {
-            finishQuestion();
-
-            opts.pick(v)
-                .then((selectedPlatform) => {
-                    c.platform = selectedPlatform;
-                    c.program.platform = selectedPlatform;
-                    resolve(selectedPlatform);
-                })
-                .catch(e => reject(e));
+    if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
+        const { platform } = await inquirerPrompt({
+            name: 'platform',
+            type: 'list',
+            message: 'Pick one of available platforms',
+            choices: opts.keysAsArray,
+            logMessage: 'You need to specify platform'
         });
-    } else if (!SUPPORTED_PLATFORMS.includes(c.platform)) {
-        reject(chalk.red(`Platform ${c.platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))}`));
-    } else {
-        resolve();
-    }
-});
 
-export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
+        c.platform = platform;
+        c.program.platform = platform;
+        return platform;
+    }
+};
+
+export const isBuildSchemeSupported = async (c) => {
     logTask(`isBuildSchemeSupported:${c.platform}`);
 
     const { scheme } = c.program;
@@ -141,7 +154,6 @@ export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
 
     if (!buildSchemes) {
         logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
-        resolve();
         return;
     }
 
@@ -152,52 +164,26 @@ export const isBuildSchemeSupported = c => new Promise((resolve, reject) => {
         }
         const opts = generateOptions(buildSchemes);
 
-        askQuestion(`Pick one of available buildSchemes (number or text):\n${opts.asString}`).then((v) => {
-            finishQuestion();
-            opts.pick(v)
-                .then((selectedScheme) => {
-                    c.program.scheme = selectedScheme;
-                    resolve(selectedScheme);
-                }).catch(e => reject(e));
+        const { selectedScheme } = await inquirerPrompt({
+            name: 'selectedScheme',
+            type: 'list',
+            message: 'Pick one of available buildSchemes',
+            choices: opts.keysAsArray,
+            logMessage: 'You need to specify scheme'
         });
-    } else {
-        resolve(scheme);
+
+        c.program.scheme = selectedScheme;
+        return selectedScheme;
     }
-});
-
-export const spawnCommand = (c, overrideParams) => {
-    const newCommand = {};
-
-    Object.keys(c).forEach((k) => {
-        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
-            newCommand[k] = { ...c[k] };
-        } else {
-            newCommand[k] = c[k];
-        }
-    });
-
-    const merge = require('deepmerge');
-
-    Object.keys(overrideParams).forEach((k) => {
-        if (newCommand[k] && typeof overrideParams[k] === 'object') {
-            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
-        } else {
-            newCommand[k] = overrideParams[k];
-        }
-    });
-
-    // This causes stack overflow on Linux
-    // const merge = require('deepmerge');
-    // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
-    return newCommand;
+    return scheme;
 };
 
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
-    if (c.files.private.config) {
+    if (c.files.workspace.config) {
         const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(c.files.private.config.sdks[sdkPlatform]);
+        if (sdkPlatform) return fs.existsSync(c.files.workspace.config.sdks[sdkPlatform]);
     }
 
     return false;
@@ -205,13 +191,16 @@ export const isSdkInstalled = (c, platform) => {
 
 export const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        reject && reject(`${platform} requires SDK to be installed. check your ${chalk.white(c.paths.private.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.private.config?.sdks?.ANDROID_SDK)}`);
+        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.workspace.config?.sdks?.ANDROID_SDK)}`;
+        if (reject) {
+            reject(err);
+        } else {
+            throw new Error(err);
+        }
         return false;
     }
     return true;
 };
-
-const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
@@ -235,10 +224,12 @@ const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
         const val = Object.assign(o3 || {}, o2 || {}, o1);
         return val;
     }
+    if (o1 === null) return null;
     if (o2) {
         if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
         return Object.assign(o3 || {}, o2);
     }
+    if (o2 === null) return null;
     return o3;
 };
 
@@ -275,13 +266,6 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     return result;
 };
 
-export const getJsBundleFileDefaults = {
-    android: 'super.getJSBundleFile()',
-    androidtv: 'super.getJSBundleFile()',
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
-    androidwear: '"assets://index.androidwear.bundle"',
-};
-
 export const getAppId = (c, platform) => {
     const id = getConfigProp(c, platform, 'id');
     const idSuffix = getConfigProp(c, platform, 'idSuffix');
@@ -290,7 +274,7 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.verion || c.files.project.package.version;
+export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.version || c.files.project.package.version;
 
 export const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
 
@@ -298,7 +282,7 @@ export const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].
 
 export const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
 
-export const getGetJsBundleFile = (c, platform) => c.buildConfig.platforms[platform].getJsBundleFile || getJsBundleFileDefaults[platform];
+export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
 export const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
 
@@ -306,8 +290,8 @@ export const getAppVersionCode = (c, platform) => {
     if (c.buildConfig.platforms[platform].versionCode) {
         return c.buildConfig.platforms[platform].versionCode;
     }
-    if (c.buildConfig.common.verionCode) {
-        return c.buildConfig.common.verionCode;
+    if (c.buildConfig.common.versionCode) {
+        return c.buildConfig.common.versionCode;
     }
     const version = getAppVersion(c, platform);
 
@@ -321,9 +305,8 @@ export const getAppVersionCode = (c, platform) => {
     return Number(vc).toString();
 };
 
-export const logErrorPlatform = (platform, resolve) => {
+export const logErrorPlatform = (c, platform) => {
     logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
-    resolve && resolve();
 };
 
 export const isPlatformActive = (c, platform, resolve) => {
@@ -343,7 +326,7 @@ export const isPlatformActive = (c, platform, resolve) => {
 export const PLATFORM_RUNS = {};
 
 export const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_configureIfRequired:${platform}`);
+    logTask(`configureIfRequired:${platform}`);
 
     if (PLATFORM_RUNS[platform]) {
         resolve();
@@ -351,9 +334,7 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
     }
     PLATFORM_RUNS[platform] = true;
     const { device } = c.program;
-    // if (!fs.existsSync(getAppFolder(c, platform))) {
-    //    logWarning(`Looks like your app is not configured for ${platform}! Let's try to fix it!`);
-    const nc = spawnCommand(c, {
+    const nc = {
         command: 'configure',
         program: {
             appConfig: c.id,
@@ -361,18 +342,18 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
             platform,
             device
         }
-    });
+    };
 
     if (c.program.reset) {
         cleanPlatformBuild(c, platform)
             .then(() => cleanPlaformAssets(c))
             .then(() => createPlatformBuild(c, platform))
-            .then(() => appRunner(nc))
+            .then(() => CLI(c, nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     } else {
         createPlatformBuild(c, platform)
-            .then(() => appRunner(nc))
+            .then(() => CLI(c, nc))
             .then(() => resolve(c))
             .catch(e => reject(e));
     }
@@ -410,10 +391,7 @@ export const getBuildsFolder = (c, platform, customPath) => {
     return path.join(pp, `builds/${platform}`);
 };
 
-export const getIP = () => {
-    const ip = require('ip');
-    return ip.address();
-};
+export const getIP = () => ip.address();
 
 export const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
     if (c.program.reset) {
@@ -490,22 +468,46 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const parseErrorMessage = (text, maxErrorLength = 400) => {
-    const errors = [];
-    const toSearch = /(exception|error|fatal|\[!])/i;
+export const waitForWebpack = (c, port) => {
+    logTask(`waitForWebpack:${port}`);
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    const spinner = ora('Waiting for webpack to finish...').start();
 
-    const extractError = (t) => {
-        const errorFound = t ? t.search(toSearch) : -1;
-        if (errorFound === -1) return errors.length ? errors.join(' ') : false; // return the errors or false if we found nothing at all
-        const usefulString = t.substring(errorFound); // dump first part of the string that doesn't contain what we look for
-        let extractedError = usefulString.substring(0, maxErrorLength);
-        if (extractedError.length === maxErrorLength) extractedError += '...'; // add elipsis if string is bigger than maxErrorLength
-        errors.push(extractedError); // save the error
-        const newString = usefulString.substring(100); // dump everything we processed and continue
-        return extractError(newString);
-    };
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
+    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+        devServerHost = '127.0.0.1';
+    }
 
-    return extractError(text);
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            axios.get(`http://${devServerHost}:${port}`).then((res) => {
+                if (res.status === 200) {
+                    const isReady = res.data.toString().includes('<!DOCTYPE html>');
+                    if (isReady) {
+                        clearInterval(interval);
+                        spinner.succeed();
+                        return resolve(true);
+                    }
+                }
+                attempts++;
+                if (attempts === maxAttempts) {
+                    clearInterval(interval);
+                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    return reject('Can\'t connect to webpack. Try restarting it.');
+                }
+            }).catch(() => {
+                attempts++;
+                if (attempts > maxAttempts) {
+                    clearInterval(interval);
+                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    return reject('Can\'t connect to webpack. Try restarting it.');
+                }
+            });
+        }, CHECK_INTEVAL);
+    });
 };
 
 // TODO: remove this
@@ -561,6 +563,5 @@ export default {
     checkPortInUse,
     resolveNodeModulePath,
     configureRnvGlobal,
-    waitForEmulator,
-    parseErrorMessage
+    waitForEmulator
 };

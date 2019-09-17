@@ -18,18 +18,11 @@ import {
     getIP,
     getBuildFilePath,
     logSuccess,
+    getGetJsBundleFile,
     getBuildsFolder
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
-
-
-VALUES = {
-    provisioningStyle: {
-        allowedValues: ['Automatic', 'Manual'],
-        defaultValue: 'Automatic'
-    }
-};
 
 export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
@@ -42,8 +35,11 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
     const runScheme = getConfigProp(c, platform, 'runScheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+    const forceBundle = getGetJsBundleFile(c, platform);
     let bundle;
-    if (isBundled) {
+    if (forceBundle) {
+        bundle = forceBundle;
+    } else if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
     } else {
         bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;

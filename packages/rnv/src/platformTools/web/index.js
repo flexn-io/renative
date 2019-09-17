@@ -15,8 +15,11 @@ import {
     resolveNodeModulePath,
     getConfigProp,
     logSuccess,
+    waitForWebpack,
+    logError,
+    getAppTitle
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
 import { selectWebToolAndDeploy } from '../../deployTools/webTools';
@@ -71,6 +74,7 @@ const _generateWebpackConfigs = (c) => {
     const env = getConfigProp(c, c.platform, 'environment');
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     const entryFile = getConfigProp(c, c.platform, 'entryFile', 'index.web');
+    const title = getAppTitle(c, c.platform);
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
@@ -81,6 +85,7 @@ const _generateWebpackConfigs = (c) => {
         modulePaths,
         moduleAliases,
         entryFile,
+        title,
         ...extendConfig
     };
 
@@ -126,11 +131,11 @@ const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const configureProject = (c, platform, appFolderName) => new Promise((resolve, reject) => {
+const configureProject = async (c, platform, appFolderName) => {
     logTask(`configureProject:${platform}`);
 
-    resolve();
-});
+    await copyAssetsFolder(c, platform);
+};
 
 const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
@@ -170,13 +175,9 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
 });
 
 const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
-    // if (delay) {
-    //         const process = fork(path.join(c.paths.rnv.nodeModulesDir, 'open', 'index.js'));
-    //         process.send(`http://0.0.0.0:${port}`);
-    // } else {
-    //     open(`http://0.0.0.0:${port}`);
-    // }
-    open(`http://${devServerHost}:${port}`);
+    waitForWebpack(c, port)
+        .then(() => open(`http://${devServerHost}:${port}/`))
+        .catch(logError);
     resolve();
 });
 

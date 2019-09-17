@@ -52,8 +52,8 @@ class LinuxPlatformSetup extends BasePlatformSetup {
             logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify({ androidSdk: location })}`);
             await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
             // @todo find a more elegant way to update this
-            this.c.files.private.config.sdks.ANDROID_SDK = location;
-            const { sdks: { ANDROID_SDK } } = this.c.files.private.config;
+            this.c.files.workspace.config.sdks.ANDROID_SDK = location;
+            const { sdks: { ANDROID_SDK } } = this.c.files.workspace.config;
             this.c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
             this.c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');
             this.c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager');

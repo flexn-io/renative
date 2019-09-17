@@ -48,6 +48,7 @@ import {
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
+    WEB_HOSTED_PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
@@ -62,7 +63,6 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand
 } from '../systemTools/logger';
-import { getQuestion } from '../systemTools/prompt';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 
@@ -206,7 +206,10 @@ const ASSET_PATH_ALIASES = {
     webos: 'public',
     kaios: '',
     firefoxtv: '',
-    firefoxos: ''
+    firefoxos: '',
+    windows: '',
+    macos: '',
+    web: 'public'
 };
 
 export const copyAssetsFolder = (c, platform, customFn) => new Promise((resolve, reject) => {
@@ -248,8 +251,14 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.private.project.projectConfig.dir);
+    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.projectConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
+
+    if (WEB_HOSTED_PLATFORMS.includes(platform)) {
+        // FOLDER MERGERS _SHARED
+        const sourcePathShared = path.join(c.paths.project.projectConfig.dir, 'builds/_shared');
+        copyFolderContentsRecursiveSync(sourcePathShared, path.join(c.paths.project.builds.dir, '_shared'));
+    }
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
@@ -262,7 +271,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     }
 
     // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
-    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.private.appConfig.dir);
+    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.workspace.appConfig.dir);
     copyFolderContentsRecursiveSync(sourcePath0sec, destPath);
 
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
@@ -271,7 +280,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
         copyFolderContentsRecursiveSync(sourcePath3, destPath);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
-        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.private.project.projectConfig.dir, `plugins/${key}`));
+        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.workspace.project.projectConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
@@ -279,7 +288,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
-        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.private.appConfig.dir, `plugins/${key}`));
+        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`));
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath);
     });
 
@@ -298,10 +307,39 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
     ]).then(() => resolve()).catch(e => reject(e));
 });
 
+
+export const upgradeProjectDependencies = (c, version) => {
+    const thw = 'renative-template-hello-world';
+    const tb = 'renative-template-blank';
+    const devDependencies = c.files.project.package?.devDependencies;
+    if (devDependencies?.rnv) {
+        devDependencies.rnv = version;
+    }
+    if (devDependencies[thw]) {
+        devDependencies[thw] = version;
+    }
+    if (devDependencies[tb]) {
+        devDependencies[tb] = version;
+    }
+    const dependencies = c.files.project.package?.dependencies;
+    if (devDependencies?.renative) {
+        devDependencies.renative = version;
+    }
+
+    writeObjectSync(c.paths.project.package, c.files.project.package);
+
+    if (c.files.project.config?.templates?.[thw]?.version) c.files.project.config.templates[thw].version = version;
+    if (c.files.project.config?.templates?.[tb]?.version) c.files.project.config.templates[tb].version = version;
+
+    c._requiresNpmInstall = true;
+
+    writeObjectSync(c.paths.project.config, c.files.project.config);
+};
+
 export const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules
-    if (!fs.existsSync(c.paths.project.nodeModulesDir) || c._requiresNpmInstall) {
+    if (!fs.existsSync(c.paths.project.nodeModulesDir) || c._requiresNpmInstall && !c.runtime.skipPackageUpdate) {
         if (!fs.existsSync(c.paths.project.nodeModulesDir)) {
             logWarning(
                 `Looks like your node_modules folder ${chalk.white(c.paths.project.nodeModulesDir)} is missing! Let's run ${chalk.white(

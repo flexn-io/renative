@@ -1,6 +1,21 @@
 import chalk from 'chalk';
+import inquirer from 'inquirer';
+import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from './logger';
+import Config from '../config';
 
-const highlight = chalk.green;
+const highlight = chalk.grey.bold;
+
+export const inquirerPrompt = async (params) => {
+    const c = Config.getConfig();
+    const msg = params.logMessage || params.warningMessage;
+    if (c.program.ci) {
+        throw msg || '--ci option does not allow prompts';
+    }
+    if (msg && params.logMessage) logTask(msg, chalk.grey);
+    if (msg && params.warningMessage) logWarning(msg);
+    const result = await inquirer.prompt(params);
+    return result;
+};
 
 export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
     let asString = '';
@@ -10,51 +25,7 @@ export const generateOptions = (inputData, isMultiChoice = false, mapping, rende
     const keysAsArray = [];
     const isArray = Array.isArray(inputData);
 
-    const output = {
-        pick: (v, defaultOption) => new Promise((resolve, reject) => {
-            let selectedOptions = [];
-            const pickedOpt = v || defaultOption;
-            if (isMultiChoice) {
-                const wrongOptions = [];
-                if (pickedOpt) {
-                    const choiceArr = v.split(',');
-                    choiceArr.forEach((choice) => {
-                        let selectedOption = choice;
-                        if (isNaN(choice)) {
-                            selectedOption = choice;
-                        } else {
-                            selectedOption = keysAsArray[choice - 1];
-                        }
-                        selectedOptions.push(selectedOption);
-                        if (!valuesAsObject[selectedOption]) {
-                            wrongOptions.push(choice);
-                        }
-                    });
-                } else {
-                    selectedOptions = keysAsArray;
-                }
-                if (wrongOptions.length) {
-                    reject(`${highlight(wrongOptions.join(','))} ...Really?! 🙈`);
-                } else {
-                    output.selectedOptions = selectedOptions;
-                    resolve(selectedOptions);
-                }
-            } else {
-                let selectedOption = pickedOpt;
-                if (isNaN(pickedOpt)) {
-                    selectedOption = pickedOpt;
-                } else {
-                    selectedOption = keysAsArray[v - 1];
-                }
-                if (!valuesAsObject[selectedOption]) {
-                    reject(`${highlight(pickedOpt)} ...Really?! 🙈`);
-                } else {
-                    output.selectedOption = selectedOption;
-                    resolve(selectedOption);
-                }
-            }
-        })
-    };
+    const output = {};
     const renderer = renderMethod || _generateOptionString;
     if (isArray) {
         inputData.map((v, i) => {
@@ -75,35 +46,32 @@ export const generateOptions = (inputData, isMultiChoice = false, mapping, rende
             i++;
         }
     }
-    output.keysAsArray = keysAsArray;
-    output.valuesAsArray = valuesAsArray;
+    output.keysAsArray = keysAsArray.sort(_sort);
+    output.valuesAsArray = valuesAsArray.sort(_sort);
     output.keysAsObject = keysAsObject;
     output.valuesAsObject = valuesAsObject;
     output.asString = asString;
     return output;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) => `-[${highlight(i + 1)}] ${highlight(mapping ? '' : defaultVal)} \n`;
-
-let _currentQuestion;
-
-export const askQuestion = (question, obj, key) => new Promise((resolve, reject) => {
-    if (!_currentQuestion) {
-        _currentQuestion = require('readline').createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
+const _sort = (a, b) => {
+    let aStr = '';
+    let bStr = '';
+    if (typeof a === 'string') {
+        aStr = a.toLowerCase();
+        bStr = b.toLowerCase();
+    } else {
+        if (a && a.name) aStr = a.name.toLowerCase();
+        if (b && b.name) bStr = b.name.toLowerCase();
     }
 
-    _currentQuestion.question(getQuestion(question), (v) => {
-        if (obj && key) obj[key] = v;
-        resolve(v === '' ? null : v);
-    });
-});
+    let com = 0;
+    if (aStr > bStr) {
+        com = 1;
+    } else if (aStr < bStr) {
+        com = -1;
+    }
+    return com;
+};
 
-export const getQuestion = msg => chalk.blue(`\n ❓ ${msg}: `);
-
-export const finishQuestion = () => new Promise((resolve, reject) => {
-    _currentQuestion && _currentQuestion.close();
-    _currentQuestion = null;
-});
+const _generateOptionString = (i, obj, mapping, defaultVal) => ` [${highlight(i + 1)}]> ${highlight(mapping ? '' : defaultVal)} \n`;

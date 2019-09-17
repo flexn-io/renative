@@ -5,7 +5,7 @@ sidebar_label: Config Folders
 ---
 
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_appconfigs.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_appconfigs.png" width=50 height=50 />
 
 
 ## Structure
@@ -38,6 +38,8 @@ Following is the order of merges of various folders (if present) contributing to
 `[RNV_ROOT]/platformTemplates/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+⬇️
+`./projectConfig/builds/_shared/*/**` => `./platformBuilds/_shared/*/*`</br>
 ⬇️
 `~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
@@ -91,7 +93,7 @@ Following is the order of merges of various folders (if present) contributing to
 - `fonts` - TODO
 - `assets` - TODO
 
-#### File Overrides / Injectors
+## File Overrides / Injectors
 
 Every time you run RNV command, ReNative checks following "special" folders and copies contents of those into designated target folders
 
@@ -115,7 +117,9 @@ Legend:
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
 - `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
-- `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "paths": { "globalConfigDir": "~/.myCustomGlobalFolder" } }` in `renative.json` of each project
+- `~/.rnv` - name of default workspace folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "workspace": "MY_WORKSPACE_NAME" }` in `renative.json` of each project
+
+Your workspaces can be found in `~./renative.workspaces.json`
 
 ##### Platform Builds Overrides
 
@@ -151,7 +155,7 @@ Plugin + App Config Scoped Build Override (Private Content)
 
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
-##### Platform Assets Overrides
+## Platform Assets Overrides
 
 Project Scoped Assets Override
 
@@ -186,7 +190,7 @@ Plugin + App Config Scoped Build Override (Private Content)
 `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 
-#### Build Flavour Injectors
+## Build Flavour Injectors
 
 Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
 
@@ -211,14 +215,14 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
 
 
-#### Flavoured Builds
+## Flavoured Builds
 
 Combination of features above allows you to configure and build large number of flavoured builds with almost no extra configuration
 
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch3.png?raw=true" />
+    <img src="https://renative.org/img/rnv_arch3.png" />
     </th>
   </tr>
 </table>

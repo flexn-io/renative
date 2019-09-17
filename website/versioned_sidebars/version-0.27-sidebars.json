@@ -1,0 +1,64 @@
+{
+    "version-0.27-docs-sidebar": {
+        "GettingStarted": [
+            "version-0.27-quickstart",
+            "version-0.27-installation",
+            "version-0.27-features",
+            "version-0.27-architecture"
+        ],
+        "Platforms": [
+            "version-0.27-platforms_overview",
+            "version-0.27-android",
+            "version-0.27-androidtv",
+            "version-0.27-androidwear",
+            "version-0.27-firefoxos",
+            "version-0.27-firefoxtv",
+            "version-0.27-ios",
+            "version-0.27-kaios",
+            "version-0.27-macos",
+            "version-0.27-tizen",
+            "version-0.27-tizenmobile",
+            "version-0.27-tizenwatch",
+            "version-0.27-tvos",
+            "version-0.27-web",
+            "version-0.27-webos",
+            "version-0.27-windows"
+        ],
+        "Guides": [
+            "version-0.27-cli",
+            "version-0.27-plugins",
+            "version-0.27-templates",
+            "version-0.27-integrations",
+            "version-0.27-workspaces",
+            "version-0.27-config",
+            "version-0.27-rnv_config",
+            "version-0.27-config_folders",
+            "version-0.27-build_hooks",
+            "version-0.27-runtime",
+            "version-0.27-common_issues",
+            "version-0.27-develop"
+        ]
+    },
+    "version-0.27-api-sidebar": {
+        "CLI": [
+            "version-0.27-rnv",
+            "version-0.27-rnv-new",
+            "version-0.27-rnv-configure",
+            "version-0.27-rnv-start",
+            "version-0.27-rnv-run",
+            "version-0.27-rnv-package",
+            "version-0.27-rnv-build",
+            "version-0.27-rnv-export",
+            "version-0.27-rnv-deploy",
+            "version-0.27-rnv-log",
+            "version-0.27-rnv-status",
+            "version-0.27-rnv-crypto",
+            "version-0.27-rnv-platform",
+            "version-0.27-rnv-plugin",
+            "version-0.27-rnv-template",
+            "version-0.27-rnv-target",
+            "version-0.27-rnv-workspace",
+            "version-0.27-rnv-clean"
+        ]
+    }
+}

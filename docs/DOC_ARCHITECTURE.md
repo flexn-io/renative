@@ -1,17 +1,18 @@
-# Documentation for ReNative Architecture
-
+---
+id: architecture
+title: Architecture
+sidebar_label: Architecture
 ---
 
-<img src="https://github.com/pavjacko/renative/blob/develop/docs/images/ic_arch.png?raw=true" width=50 height=50 />
+<img src="https://renative.org/img/ic_arch.png" width=50 height=50 />
 
-## Architecture
 
-Build Process
+## Build Process
 
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch1.png?raw=true" />
+    <img src="https://renative.org/img/rnv_arch1.png" />
     </th>
   </tr>
 </table>
@@ -33,14 +34,14 @@ Folder Structure (Generated Project)
     └── renative.json           # React Native Plugins configuration
 
 
-### Override Mechanism
+## Override Mechanism
 
 ReNative support flexible override mechanism which allows you customise your project to great degree
 
 <table>
   <tr>
     <th>
-    <img src="https://github.com/pavjacko/renative/blob/develop/docs/images/rnv_arch2.png?raw=true" />
+    <img src="https://renative.org/img/rnv_arch2.png" />
     </th>
   </tr>
 </table>
