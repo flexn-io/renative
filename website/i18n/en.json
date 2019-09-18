@@ -146,6 +146,10 @@
                 "title": "rnv build",
                 "sidebar_label": "build"
             },
+            "rnv-clean": {
+                "title": "rnv clean",
+                "sidebar_label": "clean"
+            },
             "rnv-configure": {
                 "title": "rnv configure",
                 "sidebar_label": "configure"

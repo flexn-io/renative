@@ -21,3 +21,11 @@ Display start help
 ```bash
 rnv start help
 ```
+
+## Options
+
+`-p`, `--platform` - Specify platform
+
+`-r`, `--reset` - Reset bundler cache
+
+`--mono` - Monochromatic output to terminal (no colors)
