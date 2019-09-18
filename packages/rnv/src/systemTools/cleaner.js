@@ -14,7 +14,7 @@ const rnvClean = async (c, skipQuestion = false) => {
     if (fs.existsSync(c.paths.project.nodeModulesDir)) pathsToRemove.push(c.paths.project.nodeModulesDir);
     const pkgLock = path.join(c.paths.project.dir, 'package-lock.json');
     if (fs.existsSync(pkgLock)) pathsToRemove.push(pkgLock);
-    let msg = chalk.red('./node_modules\n./package-lock.json\n');
+    let msg = chalk.red(`${c.paths.project.nodeModulesDir}\n${pkgLock}\n`);
     const packagesFolder = path.join(c.paths.project.dir, 'packages');
     if (fs.existsSync(packagesFolder)) {
         fs.readdirSync(packagesFolder).forEach((dir) => {
@@ -23,19 +23,19 @@ const rnvClean = async (c, skipQuestion = false) => {
 
                 if (fs.existsSync(pth)) {
                     pathsToRemove.push(pth);
-                    msg += chalk.red(`./packages/${dir}\n`);
+                    msg += chalk.red(`${pth}\n`);
                 }
             } else {
                 const pth2 = path.join(packagesFolder, dir, 'node_modules');
                 if (fs.existsSync(pth2)) {
                     pathsToRemove.push(pth2);
-                    msg += chalk.red(`./packages/${dir}/node_modules\n`);
+                    msg += chalk.red(`${pth2}\n`);
                 }
 
                 const pth3 = path.join(packagesFolder, dir, 'package-lock.json');
                 if (fs.existsSync(pth3)) {
                     pathsToRemove.push(pth3);
-                    msg += chalk.red(`./packages/${dir}/package-lock.json\n`);
+                    msg += chalk.red(`${pth3}\n`);
                 }
             }
         });
