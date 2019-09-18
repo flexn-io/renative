@@ -72,9 +72,9 @@
         "prettier": "^1.17.1"
     },
     "peerDependencies": {
-        "react": "16.8.6",
-        "react-dom": "16.8.6",
-        "react-native": "0.59.5"
+        "react": "16.9.0",
+        "react-dom": "16.9.0",
+        "react-native": "0.60.5"
     },
     "engines": {
         "cocoapods": ">=1.5.3",
