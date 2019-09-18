@@ -157,7 +157,7 @@ export const logSummary = () => {
 
                     plats.push(`${defaultVal}${isEjected}`);
                 });
-                str += printArrIntoBox(plats, 'Supported Platfroms: ');
+                str += printArrIntoBox(plats, 'Supported Platforms: ');
             }
             if (defaultProjectConfigs?.template) {
                 str += printIntoBox(`Master Template: ${_highlightColor(defaultProjectConfigs.template)}`, 1);
