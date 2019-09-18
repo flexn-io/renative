@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-plugin
+id: version-0.27.0-rnv-plugin
 title: rnv plugin
 sidebar_label: plugin
 original_id: rnv-plugin

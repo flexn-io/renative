@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-start
+id: version-0.27.0-rnv-start
 title: rnv start
 sidebar_label: start
 original_id: rnv-start
@@ -22,11 +22,3 @@ Display start help
 ```bash
 rnv start help
 ```
-
-## Options
-
-`-p`, `--platform` - Specify platform
-
-`-r`, `--reset` - Reset bundler cache
-
-`--mono` - Monochromatic output to terminal (no colors)

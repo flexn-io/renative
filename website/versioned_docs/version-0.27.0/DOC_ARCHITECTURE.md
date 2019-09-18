@@ -1,5 +1,5 @@
 ---
-id: version-0.27-architecture
+id: version-0.27.0-architecture
 title: Architecture
 sidebar_label: Architecture
 original_id: architecture

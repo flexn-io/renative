@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-workspace
+id: version-0.27.0-rnv-workspace
 title: rnv workspace
 sidebar_label: workspace
 original_id: rnv-workspace

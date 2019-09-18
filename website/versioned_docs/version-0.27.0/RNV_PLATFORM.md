@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-platform
+id: version-0.27.0-rnv-platform
 title: rnv platform
 sidebar_label: platform
 original_id: rnv-platform

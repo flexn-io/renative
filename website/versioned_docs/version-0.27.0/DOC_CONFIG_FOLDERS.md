@@ -1,5 +1,5 @@
 ---
-id: version-0.27-config_folders
+id: version-0.27.0-config_folders
 title: Config Folders
 sidebar_label: Config Folders
 original_id: config_folders

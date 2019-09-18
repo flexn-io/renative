@@ -1,5 +1,5 @@
 ---
-id: version-0.27-workspaces
+id: version-0.27.0-workspaces
 title: Workspaces
 sidebar_label: Workspaces
 original_id: workspaces

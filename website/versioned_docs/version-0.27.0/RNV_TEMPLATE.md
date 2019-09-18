@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-template
+id: version-0.27.0-rnv-template
 title: rnv template
 sidebar_label: template
 original_id: rnv-template

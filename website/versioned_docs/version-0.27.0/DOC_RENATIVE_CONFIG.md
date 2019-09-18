@@ -1,5 +1,5 @@
 ---
-id: version-0.27-config
+id: version-0.27.0-config
 title: Config Files
 sidebar_label: Config Files
 original_id: config

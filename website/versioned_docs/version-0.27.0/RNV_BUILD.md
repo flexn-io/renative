@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-build
+id: version-0.27.0-rnv-build
 title: rnv build
 sidebar_label: build
 original_id: rnv-build

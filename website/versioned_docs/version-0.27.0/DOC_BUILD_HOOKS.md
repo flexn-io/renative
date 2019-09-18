@@ -1,5 +1,5 @@
 ---
-id: version-0.27-build_hooks
+id: version-0.27.0-build_hooks
 title: Build Hooks
 sidebar_label: Build Hooks
 original_id: build_hooks

@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-status
+id: version-0.27.0-rnv-status
 title: rnv status
 sidebar_label: status
 original_id: rnv-status

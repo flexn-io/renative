@@ -1,5 +1,5 @@
 ---
-id: version-0.27-androidtv
+id: version-0.27.0-androidtv
 title: Android TV Platform
 sidebar_label: Android TV
 original_id: androidtv
