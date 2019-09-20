@@ -35,7 +35,7 @@ import {
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
-import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator } from './deviceManager';
+import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator, connectToWifiDevice } from './deviceManager';
 
 
 const isRunningOnWindows = process.platform === 'win32';

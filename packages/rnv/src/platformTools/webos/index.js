@@ -102,9 +102,10 @@ const waitForEmulatorToBeReady = async (c) => {
 const runWebOS = async (c, platform, target) => {
     logTask(`runWebOS:${platform}:${target}`);
 
-    const { device, hosted, maxErrorLength } = c.program;
+    const { device, hosted, maxErrorLength, debug } = c.program;
 
-    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    let isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    if (debug) isHosted = false;
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
