@@ -26,7 +26,7 @@ import { IOS, TVOS } from '../../constants';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
 import { parseProvisioningProfiles } from './provisionParser';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects, writeObjectSync } from '../../systemTools/fileutils';
 
 const xcode = require('xcode');
 
@@ -61,16 +61,18 @@ export const parseXcodeProject = async (c, platform) => {
             const { autoFix } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'autoFix',
-                message: `Found following eligible provisioning profile on your sustem: ${eligibleProfile.Entitlements['application-identifier']}. Do you want ReNative to fix your app confing?`,
+                message: `Found following eligible provisioning profile on your system: ${eligibleProfile.Entitlements['application-identifier']}. Do you want ReNative to fix your app confing?`,
                 warningMessage: 'No provisionProfileSpecifier configured in appConfig despite setting provisioningStyle to manual'
             });
             if (autoFix) {
-                return;
+                c.runtime.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
+                c.files.appConfig.config.platforms[platform].buildSchemes[c.program.scheme].provisionProfileSpecifier = eligibleProfile.Name;
+                writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
+        } else {
+            throw `No provisionProfileSpecifier configured in appConfig and no availabbel provisioning profiles availiable for ${c.runtime.xcodeProj.id}`;
         }
-        throw `No provisionProfileSpecifier configured in appConfig and no availabbel provisioning profiles availiable for ${c.runtime.xcodeProj.id}`;
     }
-
 
     await _parseXcodeProject(c, platform);
 };
