@@ -199,6 +199,7 @@ const COMMANDS = {
                 fn: rnvCryptoInstallCerts
             },
             updateProfile: {
+                requiredParams: ['scheme', 'platform'],
                 fn: rnvCryptoUpdateProfile
             },
             updateProfiles: {
@@ -278,7 +279,24 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
     }
-    const subCmd = subCommand ? `:${c.subCommand}` : '';
+    let subCmd = '';
+    if (subCommand) {
+        subCmd = `:${c.subCommand}`;
+        const requiredParams = cmd.subCommands[c.subCommand]?.requiredParams;
+        if (requiredParams) {
+            for (let i = 0; i < requiredParams.length; i++) {
+                const requiredParam = requiredParams[i];
+                // const { subCommand } = await inquirerPrompt({
+                //     type: 'list',
+                //     name: 'subCommand',
+                //     message: 'Pick a subCommand',
+                //     choices: Object.keys(cmds),
+                //     logMessage: `cli: Command ${chalk.bold(c.command)} does not support method ${chalk.bold(c.subCommand)}!`
+                // });
+            }
+        }
+    }
+
 
     await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);

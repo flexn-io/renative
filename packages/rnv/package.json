@@ -140,6 +140,7 @@
         "schedule": "0.4.0",
         "semver": "5.5.0",
         "shelljs": "0.8.2",
+        "ios-mobileprovision-finder": "1.0.11",
         "source-map-loader": "0.2.4",
         "style-loader": "0.19.0",
         "svg2js": "0.0.4-alpha1",
