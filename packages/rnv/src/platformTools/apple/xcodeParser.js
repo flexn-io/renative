@@ -85,11 +85,11 @@ const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject
     xcodeProj.parse(() => {
         const {
             provisioningStyle, deploymentTarget,
-            provisionProfileSpecifier, codeSignIdentity, systemCapabilities, runScheme, tId, appId
+            provisionProfileSpecifier, codeSignIdentity, systemCapabilities, runScheme, teamID, appId
         } = c.runtime.xcodeProj;
 
         if (c.runtime.xcodeProj.teamID) {
-            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
+            xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', teamID);
         } else {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
@@ -183,8 +183,8 @@ const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject
 // const xcodeProj = xcode.project(projectPath);
 // xcodeProj.parse(() => {
 //     const appId = getAppId(c, platform);
-//     if (tId) {
-//         xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', tId);
+//     if (teamID) {
+//         xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', teamID);
 //     } else {
 //         xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
 //     }
