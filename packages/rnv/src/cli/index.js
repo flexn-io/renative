@@ -75,7 +75,7 @@ const COMMANDS = {
     },
     export: {
         desc: 'Export your app (ios only)',
-        platforms: [IOS, TVOS],
+        platforms: [IOS, TVOS, MACOS, WINDOWS],
         fn: rnvExport
     },
     log: {

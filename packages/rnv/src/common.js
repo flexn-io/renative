@@ -18,8 +18,8 @@ import {
     logInitialize, logAppInfo
 } from './systemTools/logger';
 import {
-    IOS,
-    TVOS,
+    IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
+    WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
     SDK_PLATFORMS,
     SUPPORTED_PLATFORMS
 } from './constants';
@@ -191,6 +191,37 @@ export const checkSdk = (c, platform, reject) => {
 };
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+
+export const getBinaryPath = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const id = getConfigProp(c, platform, 'id');
+    const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'debug');
+    const version = getAppVersion(c, platform);
+    const productName = 'ReNative - macos';
+    const appName = getConfigProp(c, c.platform, 'appName');
+
+    switch (platform) {
+    case IOS:
+    case TVOS:
+        return `${appFolder}/release/RNVApp.ipa`;
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
+    case WEB:
+        return `${appFolder}/public`;
+    case MACOS:
+    case WINDOWS:
+        return `${appFolder}/build/release/${productName}-${version}`;
+    case TIZEN:
+    case TIZEN_MOBILE:
+        return `${appFolder}/output/${appName}.wgt`;
+    case WEBOS:
+        return `${appFolder}/output/${id}_${version}_all.ipk`;
+    }
+
+    return appFolder;
+};
 
 export const getAppSubFolder = (c, platform) => {
     let subFolder = '';
