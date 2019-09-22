@@ -32,7 +32,7 @@ import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets 
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto', 'fastlane', 'help'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
 export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
@@ -456,17 +456,22 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = (port) => {
+export const waitForWebpack = (c, port) => {
     logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
     const spinner = ora('Waiting for webpack to finish...').start();
-    const localIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
+    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+        devServerHost = '127.0.0.1';
+    }
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            axios.get(`http://${localIp}:${port}`).then((res) => {
+            axios.get(`http://${devServerHost}:${port}`).then((res) => {
                 if (res.status === 200) {
                     const isReady = res.data.toString().includes('<!DOCTYPE html>');
                     if (isReady) {
