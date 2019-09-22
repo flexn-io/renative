@@ -44,7 +44,7 @@ import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackag
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { checkAndMigrateProject } from './projectTools/migrator';
 
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto', 'help'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
 export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
