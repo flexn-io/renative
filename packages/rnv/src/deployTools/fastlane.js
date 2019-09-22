@@ -23,7 +23,10 @@ const rnvFastlane = async () => {
 
     const appFolder = getAppFolder(c, c.platform);
 
-    return executeAsync(c, `fastlane ${args.join(' ')}`, {
+    let fastlaneArgs = [...c.program.rawArgs];
+    fastlaneArgs = fastlaneArgs.slice(3);
+
+    return executeAsync(c, `fastlane ${fastlaneArgs.join(' ')}`, {
         interactive: true,
         env: process.env,
         cwd: appFolder

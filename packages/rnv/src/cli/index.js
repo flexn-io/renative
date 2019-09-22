@@ -227,7 +227,7 @@ const COMMANDS = {
         }
     },
     fastlane: {
-        desc: 'Run fastlane commands',
+        desc: 'Run fastlane commands on currectly active app/platform directly via rnv command',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvFastlane
     }

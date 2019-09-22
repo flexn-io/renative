@@ -33,10 +33,13 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         reject(`updateProfile:platform ${c.platform} not supported`);
         return;
     }
+    const { scheme } = c.program;
+
+
     const { platform } = c;
 
     const { appId } = c.runtime;
-    const { scheme } = c.program;
+
     const id = getAppId(c, platform);
     const teamID = getConfigProp(c, platform, 'teamID');
     const pMethod = getConfigProp(c, platform, 'exportOptions')?.method;
@@ -45,7 +48,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
     if (pMethod === 'ad-hoc') provisioning = 'adhoc';
     if (pMethod === 'development' || runScheme === 'Debug') provisioning = 'development';
 
-    let args = [
+    const args = [
         'sigh',
         '--app_identifier',
         id,
@@ -55,12 +58,12 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         `${c.paths.workspace.dir}/${c.files.project.package.name}/appConfigs/${appId}/certs`,
         '--force'
     ];
-    if (process.env.APPLE_DEVELOPER_USERNAME) {
-        args = args.concat([
-            '--username',
-            process.env.APPLE_DEVELOPER_USERNAME
-        ]);
-    }
+    // if (process.env.APPLE_DEVELOPER_USERNAME) {
+    //     args = args.concat([
+    //         '--username',
+    //         process.env.APPLE_DEVELOPER_USERNAME
+    //     ]);
+    // }
     if (provisioning) {
         args.push(`--${provisioning}`);
     }
