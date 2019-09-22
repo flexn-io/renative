@@ -228,6 +228,7 @@ const COMMANDS = {
     },
     fastlane: {
         desc: 'Run fastlane commands',
+        platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvFastlane
     }
 };

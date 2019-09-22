@@ -1,6 +1,7 @@
 import { executeAsync } from '../systemTools/exec';
 import { commandExistsSync } from '../systemTools/exec';
 import { inquirerPrompt } from '../systemTools/prompt';
+import { getAppFolder } from '../common';
 import Config from '../config';
 import PlatformSetup from '../setupTools';
 
@@ -16,7 +17,17 @@ const rnvFastlane = async () => {
 
     const c = Config.getConfig();
 
-    return executeAsync(c, `fastlane ${args.join(' ')}`, { interactive: true });
+    // shell: true,
+    // stdio: 'inherit',
+    // silent: true,
+
+    const appFolder = getAppFolder(c, c.platform);
+
+    return executeAsync(c, `fastlane ${args.join(' ')}`, {
+        interactive: true,
+        env: process.env,
+        cwd: appFolder
+    });
 };
 
 export { rnvFastlane };
