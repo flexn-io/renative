@@ -166,6 +166,10 @@
                 "title": "rnv export",
                 "sidebar_label": "export"
             },
+            "rnv-fastlane": {
+                "title": "rnv fastlane",
+                "sidebar_label": "fastlane"
+            },
             "rnv-log": {
                 "title": "rnv log",
                 "sidebar_label": "log"

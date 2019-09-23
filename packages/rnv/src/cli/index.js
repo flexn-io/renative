@@ -10,11 +10,13 @@ import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfi
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
+import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
+// import { getBinaryPath } from '../common';
 import Config from '../config';
 
 export const rnvHelp = () => {
@@ -74,7 +76,7 @@ const COMMANDS = {
     },
     export: {
         desc: 'Export your app (ios only)',
-        platforms: [IOS, TVOS],
+        platforms: [IOS, TVOS, MACOS, WINDOWS],
         fn: rnvExport
     },
     log: {
@@ -198,6 +200,7 @@ const COMMANDS = {
                 fn: rnvCryptoInstallCerts
             },
             updateProfile: {
+                requiredParams: ['scheme', 'platform'],
                 fn: rnvCryptoUpdateProfile
             },
             updateProfiles: {
@@ -224,6 +227,11 @@ const COMMANDS = {
                 fn: rnvWorkspaceUpdate
             }
         }
+    },
+    fastlane: {
+        desc: 'Run fastlane commands on currectly active app/platform directly via rnv command',
+        platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
+        fn: rnvFastlane
     }
 };
 
@@ -272,7 +280,17 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
     }
-    const subCmd = subCommand ? `:${c.subCommand}` : '';
+    let subCmd = '';
+    if (subCommand) {
+        subCmd = `:${c.subCommand}`;
+        const requiredParams = cmd.subCommands[c.subCommand]?.requiredParams;
+        if (requiredParams) {
+            for (let i = 0; i < requiredParams.length; i++) {
+                const requiredParam = requiredParams[i];
+                // TODO
+            }
+        }
+    }
 
     await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
