@@ -16,6 +16,7 @@ import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
+// import { getBinaryPath } from '../common';
 import Config from '../config';
 
 export const rnvHelp = () => {
@@ -286,17 +287,10 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
         if (requiredParams) {
             for (let i = 0; i < requiredParams.length; i++) {
                 const requiredParam = requiredParams[i];
-                // const { subCommand } = await inquirerPrompt({
-                //     type: 'list',
-                //     name: 'subCommand',
-                //     message: 'Pick a subCommand',
-                //     choices: Object.keys(cmds),
-                //     logMessage: `cli: Command ${chalk.bold(c.command)} does not support method ${chalk.bold(c.subCommand)}!`
-                // });
+                // TODO
             }
         }
     }
-
 
     await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);

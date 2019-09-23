@@ -195,10 +195,10 @@ export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.di
 export const getBinaryPath = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const id = getConfigProp(c, platform, 'id');
-    const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'debug');
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'debug');
     const version = getAppVersion(c, platform);
     const productName = 'ReNative - macos';
-    const appName = getConfigProp(c, c.platform, 'appName');
+    const appName = getConfigProp(c, platform, 'appName');
 
     switch (platform) {
     case IOS:
@@ -276,7 +276,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
     const resultScheme = scheme[key];
-    const resultCommon = c.buildConfig.common[key];
+    const resultCommon = c.buildConfig.common?.[key];
 
     const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
@@ -293,20 +293,20 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.version || c.files.project.package.version;
+export const getAppVersion = (c, platform) => c.buildConfig.platforms?.[platform]?.version || c.buildConfig.common?.version || c.files.project.package?.version;
 
-export const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
+export const getAppAuthor = (c, platform) => c.buildConfig.platforms?.[platform]?.author || c.buildConfig.common?.author || c.files.project.package?.author;
 
-export const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].license || c.buildConfig.common.license || c.files.project.package.license;
+export const getAppLicense = (c, platform) => c.buildConfig.platforms?.[platform]?.license || c.buildConfig.common?.license || c.files.project.package?.license;
 
-export const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
+export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
 
 export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
+export const getAppDescription = (c, platform) => c.buildConfig.platforms?.[platform]?.description || c.buildConfig.common?.description || c.files.project.package?.description;
 
 export const getAppVersionCode = (c, platform) => {
-    if (c.buildConfig.platforms[platform].versionCode) {
+    if (c.buildConfig.platforms?.[platform]?.versionCode) {
         return c.buildConfig.platforms[platform].versionCode;
     }
     if (c.buildConfig.common.versionCode) {
