@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "0.27.1",
+    "version": "0.27.2-alpha.1",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`",
     "keywords": [
         "android tv",
@@ -120,6 +120,7 @@
         "html-webpack-plugin": "3.2.0",
         "icon-toolkit": "0.0.9",
         "inquirer": "6.3.1",
+        "ios-mobileprovision-finder": "1.0.11",
         "ip": "1.1.5",
         "jest": "24.9.0",
         "lint-staged": "8.1.0",
@@ -140,7 +141,6 @@
         "schedule": "0.4.0",
         "semver": "5.5.0",
         "shelljs": "0.8.2",
-        "ios-mobileprovision-finder": "1.0.11",
         "source-map-loader": "0.2.4",
         "style-loader": "0.19.0",
         "svg2js": "0.0.4-alpha1",
