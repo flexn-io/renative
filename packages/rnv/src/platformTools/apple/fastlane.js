@@ -50,7 +50,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
 
     const certsPath = path.join(c.paths.workspace.appConfig.dir, 'certs');
 
-    const args = [
+    let args = [
         'sigh',
         '--app_identifier',
         id,
@@ -60,12 +60,12 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         certsPath,
         '--force'
     ];
-    // if (process.env.APPLE_DEVELOPER_USERNAME) {
-    //     args = args.concat([
-    //         '--username',
-    //         process.env.APPLE_DEVELOPER_USERNAME
-    //     ]);
-    // }
+    if (process.env.APPLE_DEVELOPER_USERNAME) {
+        args = args.concat([
+            '--username',
+            process.env.APPLE_DEVELOPER_USERNAME
+        ]);
+    }
     if (provisioning) {
         args.push(`--${provisioning}`);
     }
