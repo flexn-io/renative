@@ -48,6 +48,8 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
     if (pMethod === 'ad-hoc') provisioning = 'adhoc';
     if (pMethod === 'development' || runScheme === 'Debug') provisioning = 'development';
 
+    const certsPath = path.join(c.paths.workspace.appConfig.dir, 'certs');
+
     const args = [
         'sigh',
         '--app_identifier',
@@ -55,7 +57,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         '--team_id',
         teamID,
         '--output_path',
-        `${c.paths.workspace.dir}/${c.files.project.package.name}/appConfigs/${appId}/certs`,
+        certsPath,
         '--force'
     ];
     // if (process.env.APPLE_DEVELOPER_USERNAME) {
