@@ -2,7 +2,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import open from 'open';
+import open from 'react-dev-utils/openBrowser';
 import ip from 'ip';
 import { executeAsync } from '../../systemTools/exec';
 import {
