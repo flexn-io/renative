@@ -33,8 +33,17 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve, re
     const tId = getConfigProp(c, platform, 'teamID');
     const appFolder = getAppFolder(c, platform);
     const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
+    const id = getConfigProp(c, platform, 'id');
 
     c.pluginConfigiOS.exportOptions = objToPlist(exportOptions);
+
+    if (exportOptions.provisioningProfiles) {
+        const expProvProfile = exportOptions.provisioningProfiles[id];
+        if (!expProvProfile) {
+            logError(`Your exportOptions.provisionProfiles object in ${c.paths.appConfig.config} does not include id ${id}!`);
+        }
+    }
+
     const bPath = getBuildFilePath(c, platform, 'exportOptions.plist');
     writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), [
         { pattern: '{{TEAM_ID}}', override: tId },
