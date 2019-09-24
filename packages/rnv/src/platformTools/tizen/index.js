@@ -24,6 +24,7 @@ import {
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync } from '../../systemTools/fileutils';
 import { buildWeb } from '../web';
+import { executePipe } from '../../projectTools/buildHooks';
 
 const CHECK_INTEVAL = 2000;
 
@@ -121,8 +122,8 @@ const getRunningDevices = async (c) => {
             const name = words[0].trim();
             const deviceInfoXML = await execCLI(c, CLI_SDB_TIZEN, `-s ${name} shell cat /etc/config/model-config.xml`, { ignoreErrors: true });
 
-            let deviceInfo,
-                deviceType;
+            let deviceInfo;
+            let deviceType;
 
             if (deviceInfoXML !== true) {
                 // for some reason the tv does not connect through sdb
@@ -156,7 +157,7 @@ const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const { hosted, maxErrorLength } = c.program;
+    const { hosted } = c.program;
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
@@ -209,7 +210,6 @@ const runTizen = async (c, platform, target) => {
 
     const continueLaunching = async () => {
         let hasDevice = false;
-        const { maxErrorLength } = c.program;
 
         !isHosted && await buildWeb(c, platform);
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
@@ -302,14 +302,15 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
 
     const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);
-    const { maxErrorLength } = c.program;
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
     const certProfile = platformConfig.certificateProfile;
 
     buildWeb(c, platform)
+        .then(() => executePipe(c, 'package:before'))
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
         .then(() => execCLI(c, CLI_TIZEN, `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`))
+        .then(() => executePipe(c, 'package:after'))
         .then(() => {
             logSuccess(`Your GWT package is located in ${chalk.white(tOut)} .`);
             return resolve();
