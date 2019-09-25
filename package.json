@@ -57,7 +57,7 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "build": "cd packages/rnv && npm run build:dev",
+        "build": "lerna run build",
         "lerna": "npx lerna bootstrap",
         "link": "cd ./packages/rnv && npm link",
         "prePublish": "rnv hooks run -x prePublish",
@@ -94,8 +94,7 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative",
-        "rnv-deploy-docker": "./packages/rnv-deploy-docker"
+        "renative": "file:./packages/renative"
     },
     "devDependencies": {
         "concurrently": "4.1.1",

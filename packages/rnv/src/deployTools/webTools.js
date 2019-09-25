@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import minimist from 'minimist';
 import inquirer from 'inquirer';
+import path from 'path';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
@@ -26,9 +27,8 @@ const _runDeployment = async (c, platform, deployType) => {
     case DEPLOY_TARGET_NONE:
         return Promise.resolve();
     case DEPLOY_TARGET_DOCKER:
-        const a = require('rnv-deploy-docker');
-        console.log('dd', a);
-        break;
+        const deployToDocker = require(path.join(c.paths.project.nodeModulesDir, '/rnv-deploy-docker')).default;
+        return deployToDocker();
     default:
         return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
     }

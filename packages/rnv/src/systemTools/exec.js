@@ -6,6 +6,7 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import util from 'util';
+import Config from '../config';
 
 import { logDebug } from './logger';
 
@@ -146,7 +147,12 @@ const execCLI = (c, cli, command, opts = {}) => {
  *
  */
 const executeAsync = (c, cmd, opts) => {
-    if (!c.program) return Promise.reject('You need to pass c object as first parameter to executeAsync()');
+    // swap values if c is not specified and get it from it's rightful place, config :)
+    if (typeof c === 'string') {
+        opts = cmd;
+        cmd = c;
+        c = Config.getConfig();
+    }
     if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
     return _execute(c, cmd, opts);
 };
