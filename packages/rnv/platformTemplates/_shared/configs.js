@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 function generateConfig(config) {
     const projectDir = path.resolve(config.currentDir, '../../');
@@ -164,6 +165,8 @@ function generateConfig(config) {
         },
     });
     plugins.harddisk = new HtmlWebpackHarddiskPlugin();
+
+    plugins.analyzer = new BundleAnalyzerPlugin();
 
     const extensions = config.extensions.map(v => `.${v}.js`).concat(['.js']);
 
