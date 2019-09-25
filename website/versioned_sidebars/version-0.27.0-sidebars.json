@@ -1,0 +1,64 @@
+{
+    "version-0.27.0-docs-sidebar": {
+        "GettingStarted": [
+            "version-0.27.0-quickstart",
+            "version-0.27.0-installation",
+            "version-0.27.0-features",
+            "version-0.27.0-architecture"
+        ],
+        "Platforms": [
+            "version-0.27.0-platforms_overview",
+            "version-0.27.0-android",
+            "version-0.27.0-androidtv",
+            "version-0.27.0-androidwear",
+            "version-0.27.0-firefoxos",
+            "version-0.27.0-firefoxtv",
+            "version-0.27.0-ios",
+            "version-0.27.0-kaios",
+            "version-0.27.0-macos",
+            "version-0.27.0-tizen",
+            "version-0.27.0-tizenmobile",
+            "version-0.27.0-tizenwatch",
+            "version-0.27.0-tvos",
+            "version-0.27.0-web",
+            "version-0.27.0-webos",
+            "version-0.27.0-windows"
+        ],
+        "Guides": [
+            "version-0.27.0-cli",
+            "version-0.27.0-plugins",
+            "version-0.27.0-templates",
+            "version-0.27.0-integrations",
+            "version-0.27.0-workspaces",
+            "version-0.27.0-config",
+            "version-0.27.0-rnv_config",
+            "version-0.27.0-config_folders",
+            "version-0.27.0-build_hooks",
+            "version-0.27.0-runtime",
+            "version-0.27.0-common_issues",
+            "version-0.27.0-develop"
+        ]
+    },
+    "version-0.27.0-api-sidebar": {
+        "CLI": [
+            "version-0.27.0-rnv",
+            "version-0.27.0-rnv-new",
+            "version-0.27.0-rnv-clean",
+            "version-0.27.0-rnv-configure",
+            "version-0.27.0-rnv-start",
+            "version-0.27.0-rnv-run",
+            "version-0.27.0-rnv-package",
+            "version-0.27.0-rnv-build",
+            "version-0.27.0-rnv-export",
+            "version-0.27.0-rnv-deploy",
+            "version-0.27.0-rnv-log",
+            "version-0.27.0-rnv-status",
+            "version-0.27.0-rnv-crypto",
+            "version-0.27.0-rnv-platform",
+            "version-0.27.0-rnv-plugin",
+            "version-0.27.0-rnv-template",
+            "version-0.27.0-rnv-target",
+            "version-0.27.0-rnv-workspace"
+        ]
+    }
+}

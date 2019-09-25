@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import chalk from 'chalk';
-import open from 'open';
+import open from 'react-dev-utils/openBrowser';
 import ip from 'ip';
 import path from 'path';
 
@@ -79,7 +79,7 @@ export const rnvStart = async (c) => {
 
     if (_isWebHostEnabled(c, platform) && hosted) {
         const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
-        waitForWebpack(port)
+        waitForWebpack(c, port)
             .then(() => open(`http://${hostIp}:${port}/`))
             .catch(logError);
     }

@@ -3,22 +3,22 @@ import { executeAsync, commandExistsSync, commandExists, executeTelnet, parseErr
 describe('Testing exec functions', () => {
     it('should execute command', async () => {
         expect.assertions(1);
-        await expect(executeAsync({}, 'node -v').then(data => typeof data)).resolves.toBe('string');
+        await expect(executeAsync({ program: {} }, 'node -v').then(data => typeof data)).resolves.toBe('string');
     });
 
     it('should execute array command', async () => {
         expect.assertions(1);
-        await expect(executeAsync({}, ['node', '-v']).then(data => typeof data)).resolves.toBe('string');
+        await expect(executeAsync({ program: {} }, ['node', '-v']).then(data => typeof data)).resolves.toBe('string');
     });
 
     it('should execute command with privateParams', async () => {
         expect.assertions(1);
-        await expect(executeAsync({}, 'node %s', { privateParams: ['-v'] }).then(data => typeof data)).resolves.toBe('string');
+        await expect(executeAsync({ program: {} }, 'node %s', { privateParams: ['-v'] }).then(data => typeof data)).resolves.toBe('string');
     });
 
     it('should execute with error', async () => {
         expect.assertions(1);
-        await expect(executeAsync({}, 'shouldTrow')).rejects.toBeDefined();
+        await expect(executeAsync({ program: {} }, 'shouldTrow')).rejects.toBeDefined();
     });
 
     it('should recognize command sync', () => {

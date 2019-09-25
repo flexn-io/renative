@@ -9,7 +9,7 @@ original_id: windows
   <tr>
   <td>
     <img src="https://img.shields.io/badge/Mac-n/a-lightgrey.svg" />
-    <img src="https://img.shields.io/badge/Windows-n/a-lightgrey.svg" />
+    <img src="https://img.shields.io/badge/Windows-yes-brightgreen.svg" />
     <img src="https://img.shields.io/badge/Linux-n/a-lightgrey.svg" />
     <img src="https://img.shields.io/badge/HostMode-yes-brightgreen.svg" />
   </td>

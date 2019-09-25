@@ -21,3 +21,25 @@ Display help
 ```bash
 rnv run help
 ```
+
+## Options
+
+`--ci` - Don't ask for confirmations
+
+`-c`, `--appConfigID` - Switch to different appConfig beforehand
+
+`-p`, `--platform` - Specify platform
+
+`-s`, `--scheme` - Specify build scheme
+
+`-r`, `--reset` - Clean project beforehand
+
+`-t`, `--target` - Specify target simulator / device
+
+`-d`, `--device` - Run on device
+
+`-i`, `--info` - Show full stack trace
+
+`--hosted` - Run platform as hosted web app in browser
+
+`--mono` - Monochromatic output to terminal (no colors)
