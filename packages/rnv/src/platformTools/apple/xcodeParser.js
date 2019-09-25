@@ -32,6 +32,7 @@ const xcode = require('xcode');
 
 
 export const parseXcodeProject = async (c, platform) => {
+    logTask('parseXcodeProject');
     // PROJECT
     c.runtime.xcodeProj = {};
     c.runtime.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
@@ -70,7 +71,7 @@ export const parseXcodeProject = async (c, platform) => {
                 writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
         } else {
-            throw `Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`;
+            logWarning(`Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`);
         }
     }
 
@@ -78,6 +79,7 @@ export const parseXcodeProject = async (c, platform) => {
 };
 
 const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject) => {
+    logTask('_parseXcodeProject');
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);

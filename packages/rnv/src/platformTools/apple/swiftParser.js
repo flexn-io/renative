@@ -70,13 +70,13 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()
         let v = RCTRootView(
-            bundleURL: bundleUrl,
+            bundleURL: bundleUrl!,
             moduleName: moduleName,
             initialProperties: nil,
             launchOptions: launchOptions)
         vc.view = v
         ${pluginBgColor}
-        v?.frame = vc.view.bounds
+        v.frame = vc.view.bounds
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()
         UNUserNotificationCenter.current().delegate = self

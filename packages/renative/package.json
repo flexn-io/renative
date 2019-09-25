@@ -74,7 +74,7 @@
     "peerDependencies": {
         "react": "16.9.0",
         "react-dom": "16.9.0",
-        "react-native": "0.60.5"
+        "react-native": "0.61.1"
     },
     "engines": {
         "cocoapods": ">=1.5.3",
