@@ -23,7 +23,6 @@
     },
     "homepage": "https://github.com/pavjacko/renative#readme",
     "dependencies": {
-        "dockerode": "3.0.1",
         "rnv": "../rnv"
     },
     "devDependencies": {
