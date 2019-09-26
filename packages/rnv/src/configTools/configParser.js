@@ -146,7 +146,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
     c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
 
-    if (fs.existsSync(!c.paths.GLOBAL_RNV_DIR)) mkdirSync(c.paths.GLOBAL_RNV_DIR);
+    if (!fs.existsSync(c.paths.GLOBAL_RNV_DIR)) mkdirSync(c.paths.GLOBAL_RNV_DIR);
 
     _generateConfigPaths(c.paths.project, base);
 
@@ -766,7 +766,7 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
             if (sdks.TIZEN_SDK) {
                 c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, `tools/emulator/bin/em-cli${isRunningOnWindows ? '.bat' : ''}`);
                 c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, `tools/ide/bin/tizen${isRunningOnWindows ? '.bat' : ''}`);
-                c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
+                c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, `tools/sdb${isRunningOnWindows ? '.exe' : ''}`);
             }
             if (sdks.WEBOS_SDK) {
                 c.cli[CLI_WEBOS_ARES] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);

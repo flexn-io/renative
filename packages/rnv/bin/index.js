@@ -44,6 +44,7 @@ program
     .option('--hosted', 'Run in a hosted environment (skip budleAssets)')
     .option('--maxErrorLength <number>', 'Specify how many characters each error should display. Default 200')
     .option('--skipTargetCheck', 'Skip Android target check, just display the raw adb devices to choose from')
+    .option('--analyzer', 'Enable real-time bundle analyzer')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;
