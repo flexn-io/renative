@@ -1,8 +1,1 @@
-{
-	"aps-environment": "development",
-  "com.apple.developer.icloud-container-identifiers": [],
-	"com.apple.developer.icloud-services": [],
-	"com.apple.developer.icloud-services": [],
-  "com.apple.developer.ubiquity-container-identifiers": [],
-	"com.apple.developer.ubiquity-kvstore-identifier": "$(TeamIdentifierPrefix)$(CFBundleIdentifier)"
-}
+{}

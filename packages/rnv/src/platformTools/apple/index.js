@@ -431,11 +431,22 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
                 .then(() => resolve())
                 .catch((e) => {
                     if (!c.program.update) {
-                        logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                        runPod(c, 'update', getAppFolder(c, platform), true)
-                            .then(() => parseXcodeProject(c, platform))
-                            .then(() => resolve())
-                            .catch(err => reject(err));
+                        if (e && e.toString) {
+                            const s = e.toString();
+                            if (
+                                s.includes('No provisionProfileSpecifier configured')
+                              || s.includes('TypeError:')
+                              || s.includes('ReferenceError:')
+                            ) {
+                                reject(e);
+                            }
+                        } else {
+                            logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
+                            runPod(c, 'update', getAppFolder(c, platform), true)
+                                .then(() => parseXcodeProject(c, platform))
+                                .then(() => resolve())
+                                .catch(err => reject(err));
+                        }
                     } else {
                         reject(e);
                     }
