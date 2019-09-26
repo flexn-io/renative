@@ -8,7 +8,8 @@ import NClient from 'netcat/client';
 import util from 'util';
 import Config from '../config';
 
-import { logDebug } from './logger';
+import { logDebug, logTask, logError, logWarning } from './logger';
+import { removeDirs } from './fileutils';
 
 const { exec, execSync } = require('child_process');
 
@@ -357,7 +358,35 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-const openCommand = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
+export const cleanNodeModules = c => new Promise((resolve, reject) => {
+    logTask(`cleanNodeModules:${c.paths.project.nodeModulesDir}`);
+    removeDirs([
+        path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+    ]).then(() => resolve()).catch(e => reject(e));
+});
+
+export const npmInstall = async (failOnError = false) => {
+    logTask('npmInstall');
+
+    return executeAsync('npm install')
+        .catch((e) => {
+            if (failOnError) {
+                return logError(e);
+            }
+            logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
+            return cleanNodeModules(Config.getConfig())
+                .then(() => npmInstall(true))
+                .catch(f => logError(f));
+        });
+};
+
+// eslint-disable-next-line no-nested-ternary
+const openCommand = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
 
 export { executeAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
 

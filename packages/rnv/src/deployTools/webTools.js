@@ -27,6 +27,7 @@ const _runDeployment = async (c, platform, deployType) => {
     case DEPLOY_TARGET_NONE:
         return Promise.resolve();
     case DEPLOY_TARGET_DOCKER:
+        // eslint-disable-next-line global-require, import/no-dynamic-require
         const deployToDocker = require(path.join(c.paths.project.nodeModulesDir, '/rnv-deploy-docker')).default;
         return deployToDocker();
     default:

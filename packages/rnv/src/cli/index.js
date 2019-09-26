@@ -1,6 +1,5 @@
 import chalk from 'chalk';
-import inquirer from 'inquirer';
-import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from '../systemTools/logger';
+import { logTask, rnvStatus, logToSummary } from '../systemTools/logger';
 import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpdate } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList } from '../templateTools';

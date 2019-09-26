@@ -1,5 +1,5 @@
 import { writeObjectSync } from './systemTools/fileutils';
-import { npmInstall } from './projectTools/projectParser';
+import { npmInstall } from './systemTools/exec';
 
 class Config {
     constructor() {
@@ -41,7 +41,7 @@ class Config {
         const existingPath = this.config.paths.project.package;
         currentPackage.dependencies[dependency] = version;
         writeObjectSync(existingPath, currentPackage);
-        await npmInstall(this.config);
+        await npmInstall();
     }
 
     getProjectConfig() {
