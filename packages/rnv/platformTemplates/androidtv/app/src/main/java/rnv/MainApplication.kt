@@ -43,5 +43,6 @@ class MainApplication : Application(), ReactApplication {
         if (BuildConfig.DEBUG) {
           WebView.setWebContentsDebuggingEnabled(true)
         }
+{{PLUGIN_ON_CREATE}}
     }
 }

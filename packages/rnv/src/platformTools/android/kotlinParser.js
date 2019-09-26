@@ -41,7 +41,8 @@ export const parseMainApplicationSync = (c, platform) => {
         { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
         { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginImports },
         { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
-        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.mainApplicationMethods },
+        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.pluginApplicationMethods },
+        { pattern: '{{PLUGIN_ON_CREATE}}', override: c.pluginConfigAndroid.pluginApplicationCreateMethods },
     ]);
 };
 
@@ -134,16 +135,23 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     _injectPackage(c, plugin, pkg);
 
-    if (plugin.MainApplication) {
-        if (plugin.MainApplication.packages) {
-            plugin.MainApplication.packages.forEach((v) => {
+    const { mainApplication } = plugin;
+    if (mainApplication) {
+        if (mainApplication.packages) {
+            mainApplication.packages.forEach((v) => {
                 _injectPackage(c, plugin, v);
             });
         }
-    }
 
-    if (plugin.mainApplicationMethods) {
-        c.pluginConfigAndroid.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+        if (mainApplication.createMethods instanceof Array) {
+            c.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
+            c.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join('\n    ')}`;
+        }
+
+        if (mainApplication.methods instanceof Array) {
+            c.pluginConfigAndroid.pluginApplicationMethods += '\n';
+            c.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;
+        }
     }
 };
 
