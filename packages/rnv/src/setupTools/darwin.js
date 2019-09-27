@@ -14,6 +14,10 @@ class LinuxPlatformSetup extends BasePlatformSetup {
         }
         return executeAsync(c, 'sudo gem install fastlane -NV', { interactive: true });
     }
+
+    async installDocker() {
+        throw new Error('Automated Docker install is not supported on this platform. Please go to https://hub.docker.com/editions/community/docker-ce-desktop-mac and install it manually. Then rerun this command');
+    }
 }
 
 export default LinuxPlatformSetup;

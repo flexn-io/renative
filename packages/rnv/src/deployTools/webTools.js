@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import minimist from 'minimist';
 import inquirer from 'inquirer';
+import path from 'path';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
@@ -10,27 +11,29 @@ import {
     logError,
     logInfo
 } from '../common';
-import { generateOptions } from '../systemTools/prompt';
+import { configureDeploymentIfRequired } from './configure';
 
+const DEPLOY_TARGET_DOCKER = 'docker';
 const DEPLOY_TARGET_FTP = 'ftp';
 const DEPLOY_TARGET_NOW = 'now';
 const DEPLOY_TARGET_NONE = 'none';
 
-const _runDeployment = (c, platform, deployType) => new Promise((resolve, reject) => {
+const _runDeployment = async (c, platform, deployType) => {
     switch (deployType) {
     case DEPLOY_TARGET_FTP:
-        deployToFtp(c, platform).then(resolve).catch(reject);
-        return;
+        return deployToFtp(c, platform);
     case DEPLOY_TARGET_NOW:
-        deployToNow(c, platform).then(resolve).catch(reject);
-        return;
+        return deployToNow(c, platform);
     case DEPLOY_TARGET_NONE:
-        resolve();
-        return;
+        return Promise.resolve();
+    case DEPLOY_TARGET_DOCKER:
+        // eslint-disable-next-line global-require, import/no-dynamic-require
+        const deployToDocker = require(path.join(c.paths.project.nodeModulesDir, '/rnv-deploy-docker')).default;
+        return deployToDocker();
     default:
-        reject(new Error(`Deploy Type not supported ${deployType}`));
+        return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
     }
-});
+};
 
 const selectWebToolAndDeploy = async (c, platform) => {
     const argv = minimist(c.process.argv.slice(2));
@@ -40,14 +43,16 @@ const selectWebToolAndDeploy = async (c, platform) => {
     if (deployType || (targetConfig && targetConfig.deploy && targetConfig.deploy.type)) {
         return _runDeployment(c, platform, deployType || targetConfig.deploy.type);
     }
-    const opts = generateOptions([DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE]);
+    const choices = [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE];
 
     const { selectedDeployTarget } = await inquirer.prompt({
         name: 'selectedDeployTarget',
         type: 'list',
-        choices: opts.keysAsArray,
+        choices,
         message: `Which type of deploy option would you like to use for ${chalk.white(platform)} deployment?`
     });
+
+    await configureDeploymentIfRequired(selectedDeployTarget);
 
     logInfo(`Setting your appconfig for ${chalk.white(platform)} to include deploy type: ${chalk.white(selectedDeployTarget)} at ${chalk.white(c.paths.appConfig.config)}`);
     return _runDeployment(c, platform, selectedDeployTarget);

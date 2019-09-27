@@ -57,7 +57,7 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "build": "cd packages/rnv && npm run build:dev",
+        "build": "lerna run build",
         "lerna": "npx lerna bootstrap",
         "link": "cd ./packages/rnv && npm link",
         "prePublish": "rnv hooks run -x prePublish",

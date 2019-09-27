@@ -25,4 +25,4 @@ export {
     run, CLI
 };
 
-export default { run };
+export default { run, Config };
