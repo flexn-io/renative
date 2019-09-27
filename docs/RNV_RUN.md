@@ -40,6 +40,8 @@ rnv run help
 
 `-i`, `--info` - Show full stack trace
 
+`--analyzer` - Show app size analysis report
+
 `--hosted` - Run platform as hosted web app in browser
 
 `--mono` - Monochromatic output to terminal (no colors)
