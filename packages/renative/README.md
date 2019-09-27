@@ -327,7 +327,7 @@ ReNative runtime is an NPM dependency used abstract away some of the complexitie
 
 ## CLI
 
-One CLI to do it all. `rnv` is your entry point and control centre to building multi-platfom apps with just a few commands to learn
+One CLI to do it all. `rnv` is your entry point and control centre to building multi-platform apps with just a few commands to learn
 
 [Documentation for RNV CLI](https://renative.org/docs/cli)
 
