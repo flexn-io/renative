@@ -70,7 +70,7 @@ export const parseXcodeProject = async (c, platform) => {
                 writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
         } else {
-            throw `Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`;
+            logWarning(`Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`);
         }
     }
 

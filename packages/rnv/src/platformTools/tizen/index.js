@@ -106,7 +106,7 @@ const getDeviceID = async (c, target) => {
         const deviceID = devices[0].split('device')[1].trim();
         return deviceID;
     }
-    throw `No device matching ${target} could be found.`;
+    return Promise.reject(`No device matching ${target} could be found.`);
 };
 
 const getRunningDevices = async (c) => {
@@ -121,8 +121,8 @@ const getRunningDevices = async (c) => {
             const name = words[0].trim();
             const deviceInfoXML = await execCLI(c, CLI_SDB_TIZEN, `-s ${name} shell cat /etc/config/model-config.xml`, { ignoreErrors: true });
 
-            let deviceInfo,
-                deviceType;
+            let deviceInfo;
+            let deviceType;
 
             if (deviceInfoXML !== true) {
                 // for some reason the tv does not connect through sdb
