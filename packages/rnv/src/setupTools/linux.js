@@ -4,7 +4,7 @@ import path from 'path';
 import { commandExistsSync } from '../systemTools/exec';
 import { logInfo, logDebug } from '../common';
 import BasePlatformSetup from './base';
-import { updateConfigFile } from '../systemTools/fileutils';
+import { updateConfigFile, getRealPath } from '../systemTools/fileutils';
 import setupConfig from './config';
 import {
     CLI_ANDROID_ADB,
@@ -54,10 +54,10 @@ class LinuxPlatformSetup extends BasePlatformSetup {
             // @todo find a more elegant way to update this
             this.c.files.workspace.config.sdks.ANDROID_SDK = location;
             const { sdks: { ANDROID_SDK } } = this.c.files.workspace.config;
-            this.c.cli[CLI_ANDROID_EMULATOR] = path.join(ANDROID_SDK, 'emulator/emulator');
-            this.c.cli[CLI_ANDROID_ADB] = path.join(ANDROID_SDK, 'platform-tools/adb');
-            this.c.cli[CLI_ANDROID_AVDMANAGER] = path.join(ANDROID_SDK, 'tools/bin/avdmanager');
-            this.c.cli[CLI_ANDROID_SDKMANAGER] = path.join(ANDROID_SDK, 'tools/bin/sdkmanager');
+            this.c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(ANDROID_SDK, 'emulator/emulator'));
+            this.c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(ANDROID_SDK, 'platform-tools/adb'));
+            this.c.cli[CLI_ANDROID_AVDMANAGER] = getRealPath(c, path.join(ANDROID_SDK, 'tools/bin/avdmanager'));
+            this.c.cli[CLI_ANDROID_SDKMANAGER] = getRealPath(c, path.join(ANDROID_SDK, 'tools/bin/sdkmanager'));
         }
     }
 }

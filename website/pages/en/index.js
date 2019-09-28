@@ -281,7 +281,7 @@ These are features of this project
                 {[
                     {
                         content:
-              `[Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you](${baseUrl}docs/bbuild_hooks)`,
+              `[Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you](${baseUrl}docs/build_hooks)`,
                         image: `${baseUrl}img/undraw_convert_2gjv.svg`,
                         imageAlign: 'right',
                         title: 'Build Hooks',
@@ -310,7 +310,7 @@ These are features of this project
                 {[
                     {
                         content:
-              `[One CLI to do it all. rnv is your entry point and control centre to building multi-platfom apps with just a few commands to learn](${baseUrl}docs/cli)`,
+              `[One CLI to do it all. rnv is your entry point and control centre to building multi-platform apps with just a few commands to learn](${baseUrl}docs/cli)`,
                         image: `${baseUrl}img/rnv_cli.gif`,
                         imageAlign: 'right',
                         title: 'CLI',

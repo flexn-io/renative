@@ -14,6 +14,8 @@ const config = {
 };
 
 const C = Configs.generateConfig(config);
+const plugins = [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk];
+if (config.analyzer) plugins.push(C.Plugins.analyzer);
 
 const conf = {
     entry: C.entry,
@@ -26,7 +28,7 @@ const conf = {
     module: {
         rules: [C.Rules.babel, C.Rules.css, C.Rules.image, C.Rules.fonts, C.Rules.sourcemap],
     },
-    plugins: [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk],
+    plugins,
     resolve: {
         symlinks: false,
         extensions: C.extensions,

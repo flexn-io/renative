@@ -21,3 +21,13 @@ Display log help
 ```bash
 rnv log help
 ```
+
+## Options
+
+`--ci` - Don't ask for confirmations
+
+`-p`, `--platform` - Specify platform
+
+`-r`, `--reset` - Clean project beforehand
+
+`--mono` - Monochromatic output to terminal (no colors)

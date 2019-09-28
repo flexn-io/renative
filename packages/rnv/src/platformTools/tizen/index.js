@@ -87,7 +87,7 @@ const addDevelopTizenCertificate = c => new Promise((resolve) => {
 });
 
 const getDeviceID = async (c, target) => {
-    const { device, maxErrorLength } = c.program;
+    const { device } = c.program;
 
     if (device) {
         const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
@@ -106,11 +106,11 @@ const getDeviceID = async (c, target) => {
         const deviceID = devices[0].split('device')[1].trim();
         return deviceID;
     }
-    throw `No device matching ${target} could be found.`;
+    return Promise.reject(`No device matching ${target} could be found.`);
 };
 
 const getRunningDevices = async (c) => {
-    const { platform, maxErrorLength } = c.program;
+    const { platform } = c.program;
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList.trim().split(/\r?\n/).filter(line => !line.includes('List of devices'));
     const devices = [];
@@ -121,8 +121,8 @@ const getRunningDevices = async (c) => {
             const name = words[0].trim();
             const deviceInfoXML = await execCLI(c, CLI_SDB_TIZEN, `-s ${name} shell cat /etc/config/model-config.xml`, { ignoreErrors: true });
 
-            let deviceInfo,
-                deviceType;
+            let deviceInfo;
+            let deviceType;
 
             if (deviceInfoXML !== true) {
                 // for some reason the tv does not connect through sdb
@@ -156,9 +156,10 @@ const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const { hosted, maxErrorLength } = c.program;
+    const { hosted, debug } = c.program;
 
-    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    let isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    if (debug) isHosted = false;
 
     if (!platformConfig) {
         throw new Error(`runTizen: ${chalk.grey(platform)} not defined in your ${chalk.white(c.paths.appConfig.config)}`);
@@ -209,7 +210,6 @@ const runTizen = async (c, platform, target) => {
 
     const continueLaunching = async () => {
         let hasDevice = false;
-        const { maxErrorLength } = c.program;
 
         !isHosted && await buildWeb(c, platform);
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
@@ -302,7 +302,6 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
 
     const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);
-    const { maxErrorLength } = c.program;
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
     const certProfile = platformConfig.certificateProfile;

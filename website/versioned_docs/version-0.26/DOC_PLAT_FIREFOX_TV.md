@@ -40,17 +40,17 @@ After installation you can launch it via Applications:
 Run on Simulator
 
 ```
-rnv run -p forefoxtv
+rnv run -p firefoxtv
 ```
 
 Run on Device
 
 ```
-rnv run -p forefoxtv -d
+rnv run -p firefoxtv -d
 ```
 
 Run in Browser
 
 ```
-rnv run -p forefoxtv --hosted
+rnv run -p firefoxtv --hosted
 ```

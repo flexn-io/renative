@@ -146,6 +146,10 @@
                 "title": "rnv build",
                 "sidebar_label": "build"
             },
+            "rnv-clean": {
+                "title": "rnv clean",
+                "sidebar_label": "clean"
+            },
             "rnv-configure": {
                 "title": "rnv configure",
                 "sidebar_label": "configure"
@@ -161,6 +165,10 @@
             "rnv-export": {
                 "title": "rnv export",
                 "sidebar_label": "export"
+            },
+            "rnv-fastlane": {
+                "title": "rnv fastlane",
+                "sidebar_label": "fastlane"
             },
             "rnv-log": {
                 "title": "rnv log",
@@ -330,121 +338,181 @@
                 "title": "rnv",
                 "sidebar_label": "rnv"
             },
-            "version-0.27/version-0.27-architecture": {
+            "version-0.27.0/version-0.27.0-architecture": {
                 "title": "Architecture",
                 "sidebar_label": "Architecture"
             },
-            "version-0.27/version-0.27-build_hooks": {
+            "version-0.27.0/version-0.27.0-build_hooks": {
                 "title": "Build Hooks",
                 "sidebar_label": "Build Hooks"
             },
-            "version-0.27/version-0.27-config_folders": {
+            "version-0.27.0/version-0.27.0-config_folders": {
                 "title": "Config Folders",
                 "sidebar_label": "Config Folders"
             },
-            "version-0.27/version-0.27-installation": {
+            "version-0.27.0/version-0.27.0-installation": {
                 "title": "Installation",
                 "sidebar_label": "Installation"
             },
-            "version-0.27/version-0.27-platforms_overview": {
+            "version-0.27.0/version-0.27.0-platforms_overview": {
                 "title": "Overview",
                 "sidebar_label": "Overview"
             },
-            "version-0.27/version-0.27-androidtv": {
+            "version-0.27.0/version-0.27.0-androidtv": {
                 "title": "Android TV Platform",
                 "sidebar_label": "Android TV"
             },
-            "version-0.27/version-0.27-android": {
+            "version-0.27.0/version-0.27.0-android": {
                 "title": "Android Platform",
                 "sidebar_label": "Android"
             },
-            "version-0.27/version-0.27-ios": {
+            "version-0.27.0/version-0.27.0-ios": {
                 "title": "iOS Platform",
                 "sidebar_label": "iOS"
             },
-            "version-0.27/version-0.27-plugins": {
+            "version-0.27.0/version-0.27.0-plugins": {
                 "title": "Plugins",
                 "sidebar_label": "Plugins"
             },
-            "version-0.27/version-0.27-quickstart": {
+            "version-0.27.0/version-0.27.0-quickstart": {
                 "title": "Quick Start",
                 "sidebar_label": "Quick Start"
             },
-            "version-0.27/version-0.27-config": {
+            "version-0.27.0/version-0.27.0-config": {
                 "title": "Config Files",
                 "sidebar_label": "Config Files"
             },
-            "version-0.27/version-0.27-workspaces": {
+            "version-0.27.0/version-0.27.0-workspaces": {
                 "title": "Workspaces",
                 "sidebar_label": "Workspaces"
             },
-            "version-0.27/version-0.27-rnv-build": {
+            "version-0.27.0/version-0.27.0-rnv-build": {
                 "title": "rnv build",
                 "sidebar_label": "build"
             },
-            "version-0.27/version-0.27-rnv-configure": {
+            "version-0.27.0/version-0.27.0-rnv-configure": {
                 "title": "rnv configure",
                 "sidebar_label": "configure"
             },
-            "version-0.27/version-0.27-rnv-crypto": {
+            "version-0.27.0/version-0.27.0-rnv-crypto": {
                 "title": "rnv crypto",
                 "sidebar_label": "crypto"
             },
-            "version-0.27/version-0.27-rnv-deploy": {
+            "version-0.27.0/version-0.27.0-rnv-deploy": {
                 "title": "rnv deploy",
                 "sidebar_label": "deploy"
             },
-            "version-0.27/version-0.27-rnv-export": {
+            "version-0.27.0/version-0.27.0-rnv-export": {
                 "title": "rnv export",
                 "sidebar_label": "export"
             },
-            "version-0.27/version-0.27-rnv-log": {
+            "version-0.27.0/version-0.27.0-rnv-log": {
                 "title": "rnv log",
                 "sidebar_label": "log"
             },
-            "version-0.27/version-0.27-rnv-new": {
+            "version-0.27.0/version-0.27.0-rnv-new": {
                 "title": "rnv new",
                 "sidebar_label": "new"
             },
-            "version-0.27/version-0.27-rnv-package": {
+            "version-0.27.0/version-0.27.0-rnv-package": {
                 "title": "rnv package",
                 "sidebar_label": "package"
             },
-            "version-0.27/version-0.27-rnv-platform": {
+            "version-0.27.0/version-0.27.0-rnv-platform": {
                 "title": "rnv platform",
                 "sidebar_label": "platform"
             },
-            "version-0.27/version-0.27-rnv-plugin": {
+            "version-0.27.0/version-0.27.0-rnv-plugin": {
                 "title": "rnv plugin",
                 "sidebar_label": "plugin"
             },
-            "version-0.27/version-0.27-rnv-run": {
+            "version-0.27.0/version-0.27.0-rnv-run": {
                 "title": "rnv run",
                 "sidebar_label": "run"
             },
-            "version-0.27/version-0.27-rnv-start": {
+            "version-0.27.0/version-0.27.0-rnv-start": {
                 "title": "rnv start",
                 "sidebar_label": "start"
             },
-            "version-0.27/version-0.27-rnv-status": {
+            "version-0.27.0/version-0.27.0-rnv-status": {
                 "title": "rnv status",
                 "sidebar_label": "status"
             },
-            "version-0.27/version-0.27-rnv-target": {
+            "version-0.27.0/version-0.27.0-rnv-target": {
                 "title": "rnv target",
                 "sidebar_label": "target"
             },
-            "version-0.27/version-0.27-rnv-template": {
+            "version-0.27.0/version-0.27.0-rnv-template": {
                 "title": "rnv template",
                 "sidebar_label": "template"
             },
-            "version-0.27/version-0.27-rnv-workspace": {
+            "version-0.27.0/version-0.27.0-rnv-workspace": {
                 "title": "rnv workspace",
                 "sidebar_label": "workspace"
             },
-            "version-0.27/version-0.27-rnv": {
+            "version-0.27.0/version-0.27.0-rnv": {
                 "title": "rnv",
                 "sidebar_label": "rnv"
+            },
+            "version-0.27.1/version-0.27.1-rnv-clean": {
+                "title": "rnv clean",
+                "sidebar_label": "clean"
+            },
+            "version-0.27.1/version-0.27.1-rnv-configure": {
+                "title": "rnv configure",
+                "sidebar_label": "configure"
+            },
+            "version-0.27.1/version-0.27.1-rnv-deploy": {
+                "title": "rnv deploy",
+                "sidebar_label": "deploy"
+            },
+            "version-0.27.1/version-0.27.1-rnv-export": {
+                "title": "rnv export",
+                "sidebar_label": "export"
+            },
+            "version-0.27.1/version-0.27.1-rnv-log": {
+                "title": "rnv log",
+                "sidebar_label": "log"
+            },
+            "version-0.27.1/version-0.27.1-rnv-package": {
+                "title": "rnv package",
+                "sidebar_label": "package"
+            },
+            "version-0.27.1/version-0.27.1-rnv-run": {
+                "title": "rnv run",
+                "sidebar_label": "run"
+            },
+            "version-0.27.1/version-0.27.1-rnv-start": {
+                "title": "rnv start",
+                "sidebar_label": "start"
+            },
+            "version-0.27.2/version-0.27.2-config_folders": {
+                "title": "Config Folders",
+                "sidebar_label": "Config Folders"
+            },
+            "version-0.27.2/version-0.27.2-config": {
+                "title": "Config Files",
+                "sidebar_label": "Config Files"
+            },
+            "version-0.27.2/version-0.27.2-cli": {
+                "title": "ReNative CLI",
+                "sidebar_label": "ReNative CLI"
+            },
+            "version-0.27.2/version-0.27.2-rnv-build": {
+                "title": "rnv build",
+                "sidebar_label": "build"
+            },
+            "version-0.27.2/version-0.27.2-rnv-fastlane": {
+                "title": "rnv fastlane",
+                "sidebar_label": "fastlane"
+            },
+            "version-0.27.2/version-0.27.2-rnv-package": {
+                "title": "rnv package",
+                "sidebar_label": "package"
+            },
+            "version-0.27.2/version-0.27.2-rnv-run": {
+                "title": "rnv run",
+                "sidebar_label": "run"
             }
         },
         "links": {
