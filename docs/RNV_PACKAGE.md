@@ -36,4 +36,6 @@ rnv package help
 
 `-i`, `--info` - Show full stack trace
 
+`--analyzer` - Show app size analysis report
+
 `--mono` - Monochromatic output to terminal (no colors)

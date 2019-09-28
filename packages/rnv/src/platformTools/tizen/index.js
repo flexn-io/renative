@@ -106,7 +106,7 @@ const getDeviceID = async (c, target) => {
         const deviceID = devices[0].split('device')[1].trim();
         return deviceID;
     }
-    throw `No device matching ${target} could be found.`;
+    return Promise.reject(`No device matching ${target} could be found.`);
 };
 
 const getRunningDevices = async (c) => {
