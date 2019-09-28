@@ -467,7 +467,7 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     const { maxErrorLength } = c.program;
 
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
-        .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k system-images;android-${apiVersion};${emuPlatform};x86`))
+        .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`))
         .catch(e => logError(e, true));
 };
 

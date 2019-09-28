@@ -7,7 +7,7 @@ import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
 
-import { isRunningOnWindows } from './systemTools/fileutils';
+import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
@@ -171,7 +171,7 @@ export const isSdkInstalled = (c, platform) => {
 
     if (c.files.workspace.config) {
         const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(c.files.workspace.config.sdks[sdkPlatform]);
+        if (sdkPlatform) return fs.existsSync(getRealPath(c, c.files.workspace.config.sdks[sdkPlatform]));
     }
 
     return false;
