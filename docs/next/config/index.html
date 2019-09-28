@@ -55,48 +55,73 @@
               }
             });
         </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Config Files</h1></header><article><div><span><p><img src="https://renative.org/img/ic_configuration.png" width=50 height=50 /></p>
+<p>Legend:</p>
+<ul>
+<li><code>[PLATFORM]</code> - specific platform key like <code>ios</code>, <code>android</code>, <code>web</code>, etc..</li>
+<li><code>[APP_ID]</code> - name of your folder in <code>./appConfigs</code> which contains specific <code>renative.json</code> file</li>
+<li><code>[PROJECT_NAME]</code> - <code>name</code> field in the root <code>package.json</code> file of your project</li>
+<li><code>[PLUGIN_ID]</code> - <code>key</code> of the plugin defined in <code>./projectConfig/plugins.json</code></li>
+<li><code>[WORKSPACE_PATH]</code> - <code>path</code> to your workspace (<code>~/.rnv</code> by default) where local and sensitive information is stored.</li>
+</ul>
+<p>NOTE: <code>[WORKSPACE_PATH]</code> folder path can be customised in <code>~/.rnv/renative.workspaces.json</code></p>
+<pre><code class="hljs">{
+    <span class="hljs-attr">"workspaces"</span>: {
+        <span class="hljs-attr">"rnv"</span>: {
+            <span class="hljs-attr">"path"</span>: <span class="hljs-string">"~/.rnv"</span>
+        },
+        <span class="hljs-attr">"SOME_ANOTHER_WORKSPACE_ID"</span>: {
+            <span class="hljs-attr">"path"</span>: <span class="hljs-string">"&lt;WORKSPACE_PATH&gt;"</span>
+        }
+    }
+}
+</code></pre>
+<p>You can then switch to custom workspace per each project <code>./renative.json</code></p>
+<pre><code class="hljs">{
+  <span class="hljs-attr">"workspaceID"</span>: <span class="hljs-string">"SOME_ANOTHER_WORKSPACE_ID"</span>
+}
+</code></pre>
 <h2><a class="anchor" aria-hidden="true" id="json-configurations"></a><a href="#json-configurations" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON Configurations</h2>
 <p>App configs are ReNative compliant app configuration folders which follow prescribed structure</p>
 <p>Applies for:</p>
 <ul>
-<li><code>renative.json</code> - standard config (commited to git)</li>
+<li><code>renative.json</code> - standard config (committed to git)</li>
 <li><code>renative.private.json</code> - config containing sensitive values (ignored from git)</li>
 <li><code>renative.local.json</code> - config containing local values (ignored from git)</li>
 <li><code>renative.build.json</code> - final merged config located in <code>./platformBuilds/renative.build.json</code> (ignored from git)</li>
 <li><code>renative.runtime.json</code> - final merged config available to app runtime located in <code>./platformBuilds/renative.runtime.json</code> (ignored from git)</li>
-<li><code>renative.template.json</code> - config for renative template projects used to generate new projects (commited to git)</li>
-<li><code>renative.plugin.json</code> - config for renative plugin projects (commited to git)</li>
+<li><code>renative.template.json</code> - config for renative template projects used to generate new projects (committed to git)</li>
+<li><code>renative.plugin.json</code> - config for renative plugin projects (committed to git)</li>
 </ul>
 <h2><a class="anchor" aria-hidden="true" id="structure"></a><a href="#structure" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Structure</h2>
-<p><code>DEV_PATH_X</code></p>
+<p><code>[PROJECT_PATH]</code></p>
 <pre><code class="hljs">.
 └── [PROJECT_NAME]
-    ├── appConfigs                 
-    │   └── [APP_ID]              
+    ├── appConfigs
+    │   └── [APP_ID]
     │       ├── renative.json
-    │       └── renative.local.json             
-    ├── platformBuilds              
+    │       └── renative.local.json
+    ├── platformBuilds
     │   └── renative.build.json
     ├── renative.json
     └── renative.local.json
 </code></pre>
-<p><code>~/.rnv</code></p>
+<p><code>[WORKSPACE_PATH]</code></p>
 <pre><code class="hljs">.
 └── [PROJECT_NAME]
-    ├── appConfigs                 
-    │   └── [APP_ID]              
+    ├── appConfigs
+    │   └── [APP_ID]
     │       ├── renative.json
-    │       └── renative.private.json             
+    │       └── renative.private.json
     ├── renative.json
-    └── renative.private.json                        
+    └── renative.private.json
 </code></pre>
 <h2><a class="anchor" aria-hidden="true" id="merges"></a><a href="#merges" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Merges</h2>
 <p>Following is the order of merges of various renative configs (if present) producing final <code>platformAssets/renative.json</code> config file.</p>
-<p><code>~/.rnv/renative.json</code></br>
+<p><code>[WORKSPACE_PATH]/renative.json</code></br>
 ⬇️
-<code>~/.rnv/renative.private.json</code></br>
+<code>[WORKSPACE_PATH]/renative.private.json</code></br>
 ⬇️
-<code>~/.rnv/renative.local.json</code></br>
+<code>[WORKSPACE_PATH]/renative.local.json</code></br>
 ⬇️
 <code>./renative.json</code></br>
 ⬇️
@@ -104,11 +129,11 @@
 ⬇️
 <code>./renative.local.json</code></br>
 ⬇️
-<code>~/.rnv/[PROJECT-NAME]/renative.json</code></br>
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/renative.json</code></br>
 ⬇️
-<code>~/.rnv/[PROJECT-NAME]/renative.private.json</code></br>
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/renative.private.json</code></br>
 ⬇️
-<code>~/.rnv/[PROJECT-NAME]/renative.local.json</code></br>
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/renative.local.json</code></br>
 ⬇️
 <code>./appConfigs/[APP_ID_BASE]/renative.json</code></br>
 ⬇️
@@ -118,11 +143,11 @@
 ⬇️
 <code>./appConfigs/[APP_ID]/renative.local.json</code></br>
 ⬇️
-<code>~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.json</code></br>
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.json</code></br>
 ⬇️
-<code>~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.private.json</code></br>
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.private.json</code></br>
 ⬇️
-<code>~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.local.json</code></br></p>
+<code>[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.local.json</code></br></p>
 <ul>
 <li><p><code>./platformBuilds/renative.build.json</code></p></li>
 <li><p><code>./platformAssets/renative.runtime.json</code> - (subset of renative config available at runtime and packaged with final app)</p></li>
@@ -240,7 +265,7 @@
 <p>BUILD_SCHEME_PROPS</p>
 <pre><code class="hljs css language-json">{
   "buildSchemes": {
-    "[BUILD_SHEME_KEY]": {
+    "[BUILD_SCHEME_KEY]": {
       "[PLATFORM]": {
         ...COMMON_PROPS
         ...[PLATFORM]_COMMON_PROPS
