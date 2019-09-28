@@ -41,19 +41,19 @@ Following is the order of merges of various folders (if present) contributing to
 ⬇️
 `./projectConfig/builds/_shared/*/**` => `./platformBuilds/_shared/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./platformBuilds`
 
@@ -63,19 +63,19 @@ Following is the order of merges of various folders (if present) contributing to
 ⬇️
 `./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `./projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `./platformAssets`
 
@@ -95,6 +95,30 @@ Following is the order of merges of various folders (if present) contributing to
 
 ## File Overrides / Injectors
 
+Legend:
+
+- `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
+- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
+- `[PROJECT_NAME]` - `name` field in the root `package.json` file of your project
+- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
+- `[WORKSPACE_PATH]` - `path` to your workspace (`~/.rnv` by default) where local and sensitive information is stored.
+
+NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
+```
+{
+    "workspaces": {
+        "rnv": {
+            "path": "~/.rnv"
+        },
+        "SOME_ANOTHER_WORKSPACE_ID": {
+            "path": "<WORKSPACE_PATH>"
+        }
+    }
+}
+```
+
+
+
 Every time you run RNV command, ReNative checks following "special" folders and copies contents of those into designated target folders
 
 - `*/plugins/[PLUGIN_ID]`
@@ -108,20 +132,12 @@ You can utilise above folders in following places:
 
 - `./appConfigs/[APP_ID]`
 - `./projectConfig`
-- `~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]`
-- `~/.rnv/[PROJECT-NAME]/projectConfig`
+- `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]`
+- `[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig`
 
-Legend:
 
-- `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
-- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
-- `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
-- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
-- `~/.rnv` - name of default workspace folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "workspace": "MY_WORKSPACE_NAME" }` in `renative.json` of each project
 
-Your workspaces can be found in `~./renative.workspaces.json`
-
-##### Platform Builds Overrides
+## Platform Builds Overrides
 
 Project Scoped Build Override
 
@@ -129,7 +145,7 @@ Project Scoped Build Override
 
 Project Scoped Build Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 App Config Scoped Build Override
 
@@ -137,7 +153,7 @@ App Config Scoped Build Override
 
 App Config Scoped Build Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + Project Scoped Build Override
 
@@ -145,7 +161,7 @@ Plugin + Project Scoped Build Override
 
 Plugin + Project Scoped Build Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + App Config Scoped Build Override
 
@@ -153,9 +169,9 @@ Plugin + App Config Scoped Build Override
 
 Plugin + App Config Scoped Build Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
-## Platform Assets Overrides
+### Platform Assets Overrides
 
 Project Scoped Assets Override
 
@@ -163,7 +179,7 @@ Project Scoped Assets Override
 
 Project Scoped Assets Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 App Config Scoped Build Override
 
@@ -171,7 +187,7 @@ App Config Scoped Build Override
 
 App Config Scoped Build Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + Project Scoped Build Override
 
@@ -179,7 +195,7 @@ Plugin + Project Scoped Build Override
 
 Plugin + Project Scoped Build Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + App Config Scoped Build Override
 
@@ -187,10 +203,10 @@ Plugin + App Config Scoped Build Override
 
 Plugin + App Config Scoped Build Override (Private Content)
 
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 
-## Build Flavour Injectors
+### Build Flavour Injectors
 
 Sometimes you need to add buildFlavour specific file into project before build. ie Firebase, Crashlytics configs and so on
 
@@ -215,7 +231,7 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
 
 
-## Flavoured Builds
+### Flavoured Builds
 
 Combination of features above allows you to configure and build large number of flavoured builds with almost no extra configuration
 
@@ -236,13 +252,13 @@ Override Rules:
 - https://github.com/pavjacko/renative/tree/develop#platform-assets-overrides
 
 
-#### ✅ What to add to `./appConfigs/*/**`
+### ✅ What to add to `./appConfigs/*/**`
 
 - icon assets
 - splash screens
 - runtime configs
 
-#### ❌ What NOT to add to `./appConfigs/*/**`
+### ❌ What NOT to add to `./appConfigs/*/**`
 
 - passwords
 - production keys
@@ -253,4 +269,4 @@ Override Rules:
 
 those should be added to private project mirror:
 
-`~/.rnv/[PROJECT-NAME]/appConfigs/*/**`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/*/**`
