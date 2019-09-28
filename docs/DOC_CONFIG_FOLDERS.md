@@ -7,6 +7,35 @@ sidebar_label: Config Folders
 
 <img src="https://renative.org/img/ic_appconfigs.png" width=50 height=50 />
 
+Legend:
+
+- `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
+- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
+- `[PROJECT_NAME]` - `name` field in the root `package.json` file of your project
+- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
+- `[WORKSPACE_PATH]` - `path` to your workspace (`~/.rnv` by default) where local and sensitive information is stored.
+
+NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
+```
+{
+    "workspaces": {
+        "rnv": {
+            "path": "~/.rnv"
+        },
+        "SOME_ANOTHER_WORKSPACE_ID": {
+            "path": "<WORKSPACE_PATH>"
+        }
+    }
+}
+```
+
+You can then switch to custom workspace per each project `./renative.json`
+
+```
+{
+  "workspaceID": "SOME_ANOTHER_WORKSPACE_ID"
+}
+```
 
 ## Structure
 
@@ -94,29 +123,6 @@ Following is the order of merges of various folders (if present) contributing to
 - `assets` - TODO
 
 ## File Overrides / Injectors
-
-Legend:
-
-- `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
-- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
-- `[PROJECT_NAME]` - `name` field in the root `package.json` file of your project
-- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
-- `[WORKSPACE_PATH]` - `path` to your workspace (`~/.rnv` by default) where local and sensitive information is stored.
-
-NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
-```
-{
-    "workspaces": {
-        "rnv": {
-            "path": "~/.rnv"
-        },
-        "SOME_ANOTHER_WORKSPACE_ID": {
-            "path": "<WORKSPACE_PATH>"
-        }
-    }
-}
-```
-
 
 
 Every time you run RNV command, ReNative checks following "special" folders and copies contents of those into designated target folders
@@ -252,13 +258,13 @@ Override Rules:
 - https://github.com/pavjacko/renative/tree/develop#platform-assets-overrides
 
 
-### ✅ What to add to `./appConfigs/*/**`
+#### ✅ What to add to `./appConfigs/*/**`
 
 - icon assets
 - splash screens
 - runtime configs
 
-### ❌ What NOT to add to `./appConfigs/*/**`
+#### ❌ What NOT to add to `./appConfigs/*/**`
 
 - passwords
 - production keys

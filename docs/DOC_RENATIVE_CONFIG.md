@@ -29,6 +29,14 @@ NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.works
 }
 ```
 
+You can then switch to custom workspace per each project `./renative.json`
+
+```
+{
+  "workspaceID": "SOME_ANOTHER_WORKSPACE_ID"
+}
+```
+
 ## JSON Configurations
 
 App configs are ReNative compliant app configuration folders which follow prescribed structure
