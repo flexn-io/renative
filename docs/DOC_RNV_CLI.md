@@ -25,27 +25,27 @@ Deployed to https://www.npmjs.com/package/rnv
 
 ##### rnv start
 
-`$ rnv start -p <PLATFOM>` - start server / bundler for specific platform. (no `-p` defaults to metro bundler)
+`$ rnv start -p <PLATFORM>` - start server / bundler for specific platform. (no `-p` defaults to metro bundler)
 
 ##### rnv run
 
-`$ rnv run -p <PLATFOM>` - runs app specific platform
+`$ rnv run -p <PLATFORM>` - runs app specific platform
 
 ##### rnv package
 
-`$ rnv package -p <PLATFOM>` - package JS for specific platform
+`$ rnv package -p <PLATFORM>` - package JS for specific platform
 
 ##### rnv build
 
-`$ rnv build -p <PLATFOM>` - build / compile app for specific platform
+`$ rnv build -p <PLATFORM>` - build / compile app for specific platform
 
 ##### rnv export
 
-`$ rnv export -p <PLATFOM>` - export / archive app for specific platform
+`$ rnv export -p <PLATFORM>` - export / archive app for specific platform
 
 ##### rnv deploy
 
-`$ rnv deploy -p <PLATFOM>` - deploy app for specific platform
+`$ rnv deploy -p <PLATFORM>` - deploy app for specific platform
 
 ##### rnv status
 
@@ -80,13 +80,13 @@ If however you need to customise them you can eject them directly into your proj
 
 `$ rnv platform eject` - gives options which platforms to eject
 
-your projects will be build using `./platformTemplates/[PLATFOM]/*` from this point
+your projects will be build using `./platformTemplates/[PLATFORM]/*` from this point
 
 If you want to revert back to using ReNative templates simply run
 
 `$ rnv platform connect` - gives options which platforms to connect
 
-your projects will be build using `./node_modules/rnv/platformTemplates/[PLATFOM]/*` from this point
+your projects will be build using `./node_modules/rnv/platformTemplates/[PLATFORM]/*` from this point
 
 ##### rnv plugin
 
@@ -174,9 +174,9 @@ Allows you to run some platforms directly in browser
 
 ##### --only
 
-ususall ReNative runs in cascading dependency mode. that means that if for example your run `deploy` command, rnv runs all necessary commands (`configure`, `package`, `build`, `export`) before running `deploy` command itself
+usually ReNative runs in cascading dependency mode. that means that if for example your run `deploy` command, rnv runs all necessary commands (`configure`, `package`, `build`, `export`) before running `deploy` command itself
 
-sometimes you just want to run last command. `--only` esures only top level command is executed
+sometimes you just want to run last command. `--only` ensures only top level command is executed
 
 `$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME>` - run all dependant commands + deploy
 
