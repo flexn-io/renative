@@ -24,7 +24,7 @@ import { logToSummary, logTask,
     logError, logWarning,
     logDebug, logInfo,
     logSuccess } from '../../systemTools/logger';
-import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
+import { copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
@@ -284,8 +284,8 @@ export const configureAndroidProperties = (c, platform) => new Promise((resolve)
     const appFolder = getAppFolder(c, platform);
 
     const addNDK = c.files.workspace.config.sdks.ANDROID_NDK && !c.files.workspace.config.sdks.ANDROID_NDK.includes('<USER>');
-    const ndkString = `ndk.dir=${c.files.workspace.config.sdks.ANDROID_NDK}`;
-    let sdkDir = c.files.workspace.config.sdks.ANDROID_SDK;
+    const ndkString = `ndk.dir=${getRealPath(c, c.files.workspace.config.sdks.ANDROID_NDK)}`;
+    let sdkDir = getRealPath(c, c.files.workspace.config.sdks.ANDROID_SDK);
 
     if (isRunningOnWindows) {
         sdkDir = sdkDir.replace(/\\/g, '/');
