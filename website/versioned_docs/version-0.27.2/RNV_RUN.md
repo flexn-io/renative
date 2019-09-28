@@ -1,5 +1,5 @@
 ---
-id: version-0.27-rnv-run
+id: version-0.27.2-rnv-run
 title: rnv run
 sidebar_label: run
 original_id: rnv-run
@@ -40,6 +40,8 @@ rnv run help
 `-d`, `--device` - Run on device
 
 `-i`, `--info` - Show full stack trace
+
+`--analyzer` - Show app size analysis report
 
 `--hosted` - Run platform as hosted web app in browser
 
