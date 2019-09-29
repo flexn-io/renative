@@ -7,7 +7,7 @@ const configureDeploymentIfRequired = async (deploymentTarget) => {
     const projectConfig = Config.getProjectConfig();
 
     if (deploymentTarget === 'docker') {
-        if (!projectConfig.package.dependencies['rnv-deploy-docker']) {
+        if (!projectConfig.package.dependencies['@rnv/deploy-docker']) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: 'You do not have Docker deployment configured. Do you want to configure it now?'
@@ -19,7 +19,7 @@ const configureDeploymentIfRequired = async (deploymentTarget) => {
                     await setupInstance.askToInstallSDK('docker');
                 }
 
-                await Config.injectProjectDependency('rnv-deploy-docker', './packages/rnv-deploy-docker'); // @TODO TO BE CHANGED
+                await Config.injectProjectDependency('@rnv/deploy-docker', './packages/rnv-deploy-docker'); // @TODO TO BE CHANGED
             }
         }
     }

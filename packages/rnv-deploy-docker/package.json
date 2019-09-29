@@ -1,11 +1,12 @@
 {
-    "name": "rnv-deploy-docker",
+    "name": "@rnv/deploy-docker",
     "version": "0.0.1",
     "description": "Gives RNV the possibility to deploy web apps as a Docker image published to dockerhub",
     "main": "dist/index.js",
     "scripts": {
         "build": "npx babel index.js --out-dir dist",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prepublishOnly": "npm run build"
     },
     "repository": {
         "type": "git",
@@ -22,8 +23,8 @@
         "url": "https://github.com/pavjacko/renative/issues"
     },
     "homepage": "https://github.com/pavjacko/renative#readme",
-    "dependencies": {
-        "rnv": "../rnv"
+    "peerDependencies": {
+        "rnv": "latest"
     },
     "devDependencies": {
         "@babel/cli": "7.6.0",
