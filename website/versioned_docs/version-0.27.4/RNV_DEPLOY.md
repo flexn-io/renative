@@ -1,31 +1,30 @@
 ---
-id: rnv-build
-title: rnv build
-sidebar_label: build
+id: version-0.27.4-rnv-deploy
+title: rnv deploy
+sidebar_label: deploy
+original_id: rnv-deploy
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-> runs build / archive commands on selected platform
-
 ## Task Order
 
-🔥 -> `configure` -> `package` -> `build` ->  ✅
+🔥 -> `configure` -> `package` -> `build` -> `export` -> `deploy` ->  ✅
 
-## build
+## deploy
 
-Get interactive options for build
+Get interactive options for deploy
 
 ```bash
-rnv build
+rnv deploy
 ```
 
 ### help
 
-Display build help
+Display deploy help
 
 ```bash
-rnv build help
+rnv deploy help
 ```
 
 ## Options
@@ -42,12 +41,12 @@ rnv build help
 
 `-i`, `--info` - Show full stack trace
 
-`--analyzer` - Show app size analysis report
-
 `--xcodebuildArchiveArgs` - Pass down standard xcodebuild arguments (`ios`, `tvos` only)
 
 Example:
 
 `--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=\"IDENTITY\" OTHER_CODE_SIGN_FLAGS=\"--keychain KEYCHAIN\""`
+
+`--xcodebuildExportArgs` - Pass down custom xcodebuild arguments (`ios`, `tvos` only)
 
 `--mono` - Monochromatic output to terminal (no colors)

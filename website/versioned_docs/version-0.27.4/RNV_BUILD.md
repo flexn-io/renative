@@ -1,7 +1,8 @@
 ---
-id: rnv-build
+id: version-0.27.4-rnv-build
 title: rnv build
 sidebar_label: build
+original_id: rnv-build
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />

@@ -6,6 +6,10 @@ sidebar_label: package
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## Task Order
+
+🔥 -> `configure` -> `package` ->  ✅
+
 ## package
 
 Get interactive options for package

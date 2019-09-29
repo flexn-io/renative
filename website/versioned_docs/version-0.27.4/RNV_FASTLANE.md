@@ -1,7 +1,8 @@
 ---
-id: rnv-fastlane
+id: version-0.27.4-rnv-fastlane
 title: rnv fastlane
 sidebar_label: fastlane
+original_id: rnv-fastlane
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />

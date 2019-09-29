@@ -1,31 +1,30 @@
 ---
-id: rnv-build
-title: rnv build
-sidebar_label: build
+id: version-0.27.4-rnv-package
+title: rnv package
+sidebar_label: package
+original_id: rnv-package
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-> runs build / archive commands on selected platform
-
 ## Task Order
 
-🔥 -> `configure` -> `package` -> `build` ->  ✅
+🔥 -> `configure` -> `package` ->  ✅
 
-## build
+## package
 
-Get interactive options for build
+Get interactive options for package
 
 ```bash
-rnv build
+rnv package
 ```
 
 ### help
 
-Display build help
+Display package help
 
 ```bash
-rnv build help
+rnv package help
 ```
 
 ## Options
@@ -43,11 +42,5 @@ rnv build help
 `-i`, `--info` - Show full stack trace
 
 `--analyzer` - Show app size analysis report
-
-`--xcodebuildArchiveArgs` - Pass down standard xcodebuild arguments (`ios`, `tvos` only)
-
-Example:
-
-`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=\"IDENTITY\" OTHER_CODE_SIGN_FLAGS=\"--keychain KEYCHAIN\""`
 
 `--mono` - Monochromatic output to terminal (no colors)

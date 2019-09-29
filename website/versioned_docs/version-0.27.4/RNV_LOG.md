@@ -1,7 +1,8 @@
 ---
-id: rnv-log
+id: version-0.27.4-rnv-log
 title: rnv log
 sidebar_label: log
+original_id: rnv-log
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />

@@ -1,29 +1,32 @@
 ---
-id: rnv-run
-title: rnv run
-sidebar_label: run
+id: version-0.27.4-rnv-configure
+title: rnv configure
+sidebar_label: configure
+original_id: rnv-configure
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> Configures your project to selected appConfig
+
 ## Task Order
 
-🔥 -> `configure` -> `package` -> `run` ->  ✅
+🔥 -> `configure` -> ✅
 
-## run
+## configure
 
-Runs specific app of specific platform
+Configure all platforms of current app config
 
 ```bash
-rnv run
+rnv configure
 ```
 
 ### help
 
-Display help
+Display configure help
 
 ```bash
-rnv run help
+rnv configure help
 ```
 
 ## Options
@@ -34,18 +37,8 @@ rnv run help
 
 `-p`, `--platform` - Specify platform
 
-`-s`, `--scheme` - Specify build scheme
-
 `-r`, `--reset` - Clean project beforehand
 
-`-t`, `--target` - Specify target simulator / device
-
-`-d`, `--device` - Run on device
-
 `-i`, `--info` - Show full stack trace
-
-`--analyzer` - Show app size analysis report
-
-`--hosted` - Run platform as hosted web app in browser
 
 `--mono` - Monochromatic output to terminal (no colors)

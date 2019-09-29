@@ -1,7 +1,8 @@
 ---
-id: rnv-crypto
+id: version-0.27.4-rnv-crypto
 title: rnv crypto
 sidebar_label: crypto
+original_id: rnv-crypto
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
