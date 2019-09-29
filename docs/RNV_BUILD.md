@@ -38,4 +38,10 @@ rnv build help
 
 `--analyzer` - Show app size analysis report
 
+`--xcodebuildArchiveArgs` - Pass down standard xcodebuild arguments (`ios`, `tvos` only)
+
+Example:
+
+`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=\"IDENTITY\" OTHER_CODE_SIGN_FLAGS=\"--keychain KEYCHAIN\""`
+
 `--mono` - Monochromatic output to terminal (no colors)

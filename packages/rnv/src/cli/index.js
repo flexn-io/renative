@@ -250,10 +250,10 @@ export const SKIP_APP_CONFIG_CHECK = ['crypto'];
 // PUBLIC API
 // ##########################################
 
-const run = async (c, spawnC) => {
+const run = async (c, spawnC, skipStartBuilder) => {
     logTask('cli');
 
-    await _startBuilder(c);
+    if (!skipStartBuilder) await _startBuilder(c);
 
     let oldC;
     if (spawnC) {

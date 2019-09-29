@@ -132,12 +132,12 @@ describe('Testing rnv configure', () => {
 // ###############################################
 
 const shouldReject = async (cmd, reject) => {
-    await expect(cli(getConfig(cmd))).rejects.toThrow(reject);
+    await expect(cli(getConfig(cmd), null, true)).rejects.toThrow(reject);
 };
 
 
 const shouldResolve = async (cmd) => {
-    await expect(cli(getConfig(cmd))).resolves;
+    await expect(cli(getConfig(cmd), null, true)).resolves;
 };
 
 const getConfig = (s) => {
