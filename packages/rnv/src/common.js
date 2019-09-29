@@ -10,8 +10,6 @@ import axios from 'axios';
 import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
-import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
-import { configurePlugins } from './pluginTools';
 import {
     logWelcome, configureLogger, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -28,12 +26,8 @@ import {
     parseRenativeConfigs, createRnvConfig, updateConfig,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
-import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
+import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
-import { checkAndMigrateProject } from './projectTools/migrator';
-
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
-export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -43,48 +37,6 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
 
     resolve(c);
 });
-
-export const startBuilder = async (c) => {
-    logTask('initializeBuilder');
-
-    await checkAndMigrateProject(c);
-    await parseRenativeConfigs(c);
-
-    if (!c.command) {
-        if (!c.paths.project.configExists) {
-            const { command } = await inquirerPrompt({
-                type: 'list',
-                default: 'new',
-                name: 'command',
-                message: 'Pick a command',
-                choices: NO_OP_COMMANDS.sort(),
-                pageSize: 15,
-                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
-            });
-            c.command = command;
-        }
-    }
-
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        await configureRnvGlobal(c);
-        return c;
-    }
-
-    await checkAndMigrateProject(c);
-    await parseRenativeConfigs(c);
-    await checkIsRenativeProject(c);
-    await checkAndCreateProjectPackage(c);
-    await configureRnvGlobal(c);
-    await checkIfTemplateInstalled(c);
-    await fixRenativeConfigsSync(c);
-    await configureNodeModules(c);
-    await applyTemplate(c);
-    await configurePlugins(c);
-    await configureNodeModules(c);
-    await updateConfig(c, c.runtime.appId);
-    await logAppInfo(c);
-    return c;
-};
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -553,7 +505,6 @@ export default {
     logComplete,
     logError,
     initializeBuilder,
-    startBuilder,
     logDebug,
     logInfo,
     logErrorPlatform,

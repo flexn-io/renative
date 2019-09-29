@@ -11,7 +11,7 @@ const itShouldReject = (cmd, reject) => {
 
 describe('Testing rnv target', () => {
     itShouldResolve('target help');
-    itShouldReject('target list -p android', 'Platform unsupported for automated SDK setup');
+    itShouldResolve('target list -p android');
     itShouldResolve('target launch -p android -t emu');
 });
 
