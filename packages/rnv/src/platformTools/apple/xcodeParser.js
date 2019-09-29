@@ -169,6 +169,31 @@ const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject
                         });
                     });
                 }
+                if (pluginPlat.xcodeproj.frameworks) {
+                    for (const k in pluginPlat.xcodeproj.frameworks) {
+                        let fPath;
+                        let opts;
+                        if (k.startsWith('./')) {
+                            fPath = path.join(appFolder, k.replace('./', ''));
+                            opts = {
+                                customFramework: true,
+                                embed: true,
+                                link: true,
+                            };
+                        } else {
+                            fPath = path.join('System/Library/Frameworks', k);
+                            opts = {
+                                embed: true
+                            };
+                        }
+                        xcodeProj.addFramework(fPath, opts);
+                    }
+                }
+                if (pluginPlat.xcodeproj.buildSettings) {
+                    for (const k in pluginPlat.xcodeproj.buildSettings) {
+                        xcodeProj.addToBuildSettings(k, pluginPlat.xcodeproj.buildSettings[k]);
+                    }
+                }
             }
         });
 
