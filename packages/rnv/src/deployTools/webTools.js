@@ -28,7 +28,7 @@ const _runDeployment = async (c, platform, deployType) => {
         return Promise.resolve();
     case DEPLOY_TARGET_DOCKER:
         // eslint-disable-next-line global-require, import/no-dynamic-require
-        const deployToDocker = require(path.join(c.paths.project.nodeModulesDir, '/rnv-deploy-docker')).default;
+        const deployToDocker = require(path.join(c.paths.project.nodeModulesDir, '/@rnv/deploy-docker')).default;
         return deployToDocker();
     default:
         return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
@@ -41,6 +41,7 @@ const selectWebToolAndDeploy = async (c, platform) => {
     const targetConfig = c.buildConfig.platforms[platform];
 
     if (deployType || (targetConfig && targetConfig.deploy && targetConfig.deploy.type)) {
+        await configureDeploymentIfRequired(deployType || targetConfig.deploy.type);
         return _runDeployment(c, platform, deployType || targetConfig.deploy.type);
     }
     const choices = [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE];

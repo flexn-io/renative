@@ -19,7 +19,7 @@ const configureDeploymentIfRequired = async (deploymentTarget) => {
                     await setupInstance.askToInstallSDK('docker');
                 }
 
-                await Config.injectProjectDependency('@rnv/deploy-docker', './packages/rnv-deploy-docker'); // @TODO TO BE CHANGED
+                await Config.injectProjectDependency('@rnv/deploy-docker', 'latest'); // @TODO TO BE CHANGED
             }
         }
     }
