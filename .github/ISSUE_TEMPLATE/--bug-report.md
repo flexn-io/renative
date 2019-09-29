@@ -8,7 +8,7 @@ assignees: ''
 ---
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+A clear and concise description of what the bug is. 
 
 **To Reproduce**
 Steps to reproduce the behavior:
@@ -18,8 +18,9 @@ Steps to reproduce the behavior:
 **Expected behavior**
 A clear and concise description of what you expected to happen.
 
-**Screenshots**
+**Screenshots or copy&paste**
 If applicable, add screenshots to help explain your problem.
+If applicable, copy&paste the output of the command. **Run the command with `-i` to get more debugging informations**
 
 **Desktop (please complete the following information):**
  - OS: [e.g. osx, windows 7, ubuntu 16.04]
