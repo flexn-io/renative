@@ -6,6 +6,12 @@ sidebar_label: build
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> runs build / archive commands on selected platform
+
+## Task Order
+
+🔥 -> `configure` -> `package` -> `build` ->  ✅
+
 ## build
 
 Get interactive options for build

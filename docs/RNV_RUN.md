@@ -6,6 +6,10 @@ sidebar_label: run
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## Task Order
+
+🔥 -> `configure` -> `package` -> `run` ->  ✅
+
 ## run
 
 Runs specific app of specific platform

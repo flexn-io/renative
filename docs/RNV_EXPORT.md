@@ -6,6 +6,10 @@ sidebar_label: export
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## Task Order
+
+🔥 -> `configure` -> `package` -> `build` -> `export` ->  ✅
+
 ## export
 
 Get interactive options for export
