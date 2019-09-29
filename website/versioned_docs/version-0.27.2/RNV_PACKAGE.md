@@ -1,25 +1,26 @@
 ---
-id: rnv-run
-title: rnv run
-sidebar_label: run
+id: version-0.27.2-rnv-package
+title: rnv package
+sidebar_label: package
+original_id: rnv-package
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-## run
+## package
 
-Runs specific app of specific platform
+Get interactive options for package
 
 ```bash
-rnv run
+rnv package
 ```
 
 ### help
 
-Display help
+Display package help
 
 ```bash
-rnv run help
+rnv package help
 ```
 
 ## Options
@@ -34,14 +35,8 @@ rnv run help
 
 `-r`, `--reset` - Clean project beforehand
 
-`-t`, `--target` - Specify target simulator / device
-
-`-d`, `--device` - Run on device
-
 `-i`, `--info` - Show full stack trace
 
 `--analyzer` - Show app size analysis report
-
-`--hosted` - Run platform as hosted web app in browser
 
 `--mono` - Monochromatic output to terminal (no colors)

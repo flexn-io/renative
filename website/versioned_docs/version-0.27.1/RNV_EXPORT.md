@@ -1,26 +1,26 @@
 ---
-id: version-0.27-rnv-deploy
-title: rnv deploy
-sidebar_label: deploy
-original_id: rnv-deploy
+id: version-0.27.1-rnv-export
+title: rnv export
+sidebar_label: export
+original_id: rnv-export
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-## deploy
+## export
 
-Get interactive options for deploy
+Get interactive options for export
 
 ```bash
-rnv deploy
+rnv export
 ```
 
 ### help
 
-Display deploy help
+Display export help
 
 ```bash
-rnv deploy help
+rnv export help
 ```
 
 ## Options

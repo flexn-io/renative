@@ -1,5 +1,5 @@
 ---
-id: version-0.27.0-config
+id: version-0.27.2-config
 title: Config Files
 sidebar_label: Config Files
 original_id: config
@@ -8,23 +8,53 @@ original_id: config
 
 <img src="https://renative.org/img/ic_configuration.png" width=50 height=50 />
 
+Legend:
+
+- `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
+- `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
+- `[PROJECT_NAME]` - `name` field in the root `package.json` file of your project
+- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
+- `[WORKSPACE_PATH]` - `path` to your workspace (`~/.rnv` by default) where local and sensitive information is stored.
+
+NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
+```
+{
+    "workspaces": {
+        "rnv": {
+            "path": "~/.rnv"
+        },
+        "SOME_ANOTHER_WORKSPACE_ID": {
+            "path": "<WORKSPACE_PATH>"
+        }
+    }
+}
+```
+
+You can then switch to custom workspace per each project `./renative.json`
+
+```
+{
+  "workspaceID": "SOME_ANOTHER_WORKSPACE_ID"
+}
+```
+
 ## JSON Configurations
 
 App configs are ReNative compliant app configuration folders which follow prescribed structure
 
 Applies for:
 
-- `renative.json` - standard config (commited to git)
+- `renative.json` - standard config (committed to git)
 - `renative.private.json` - config containing sensitive values (ignored from git)
 - `renative.local.json` - config containing local values (ignored from git)
 - `renative.build.json` - final merged config located in `./platformBuilds/renative.build.json` (ignored from git)
 - `renative.runtime.json` - final merged config available to app runtime located in `./platformBuilds/renative.runtime.json` (ignored from git)
-- `renative.template.json` - config for renative template projects used to generate new projects (commited to git)
-- `renative.plugin.json` - config for renative plugin projects (commited to git)
+- `renative.template.json` - config for renative template projects used to generate new projects (committed to git)
+- `renative.plugin.json` - config for renative plugin projects (committed to git)
 
 ## Structure
 
-`DEV_PATH_X`
+`[PROJECT_PATH]`
 
     .
     └── [PROJECT_NAME]
@@ -37,7 +67,7 @@ Applies for:
         ├── renative.json
         └── renative.local.json
 
-`~/.rnv`
+`[WORKSPACE_PATH]`
 
     .
     └── [PROJECT_NAME]
@@ -52,11 +82,11 @@ Applies for:
 
 Following is the order of merges of various renative configs (if present) producing final `platformAssets/renative.json` config file.
 
-`~/.rnv/renative.json`</br>
+`[WORKSPACE_PATH]/renative.json`</br>
 ⬇️
-`~/.rnv/renative.private.json`</br>
+`[WORKSPACE_PATH]/renative.private.json`</br>
 ⬇️
-`~/.rnv/renative.local.json`</br>
+`[WORKSPACE_PATH]/renative.local.json`</br>
 ⬇️
 `./renative.json`</br>
 ⬇️
@@ -64,11 +94,11 @@ Following is the order of merges of various renative configs (if present) produc
 ⬇️
 `./renative.local.json`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/renative.json`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/renative.json`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/renative.private.json`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/renative.private.json`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/renative.local.json`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/renative.local.json`</br>
 ⬇️
 `./appConfigs/[APP_ID_BASE]/renative.json`</br>
 ⬇️
@@ -78,11 +108,11 @@ Following is the order of merges of various renative configs (if present) produc
 ⬇️
 `./appConfigs/[APP_ID]/renative.local.json`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.json`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.json`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.private.json`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.private.json`</br>
 ⬇️
-`~/.rnv/[PROJECT-NAME]/appConfigs/[APP_ID]/renative.local.json`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.local.json`</br>
 
 
 

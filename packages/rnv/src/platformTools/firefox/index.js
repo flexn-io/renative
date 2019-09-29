@@ -37,7 +37,7 @@ import {
     CLI_WEBOS_ARES_LAUNCH,
     KAIOS_SDK,
 } from '../../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync } from '../../systemTools/fileutils';
+import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
 import { buildWeb } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
@@ -52,7 +52,7 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
         return;
     }
 
-    const ePath = path.join(c.files.workspace.config.sdks.KAIOS_SDK);
+    const ePath = getRealPath(path.join(c.files.workspace.config.sdks.KAIOS_SDK));
 
     if (!fs.existsSync(ePath)) {
         reject(`Can't find emulator at path: ${ePath}`);

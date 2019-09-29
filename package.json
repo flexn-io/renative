@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.27.2-alpha.4",
+    "version": "0.27.3",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -72,7 +72,7 @@
         "test": "rnv template apply --template renative-template-hello-world && npm run test:rnv && npm run test:run",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
         "test:rnv:unit": "cd ./packages/rnv && npm run test",
-        "test:run": "rnv run -p androidwear -t Android_Wear_Round_API_28 && concurrently \"rnv start\" \"rnv run -p tizen -t T-samsung-5.0-x86\" \"rnv run -p tizenwatch -t W-5.0-circle-x86\" \"rnv run -p tizenmobile -t M-5.0-x86\" \"rnv run -p ios -t 'iPhone 6'\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p androidtv -t Android_TV_1080p_API_22\" \"rnv run -p macos\" \"rnv run -p web\" \"rnv run -p tvos\" \"rnv run -p webos -t emulator\"",
+        "test:run": "rnv run -p androidwear -t Android_Wear_Round_API_28 -c helloWorld && concurrently \"rnv start\" \"rnv run -p tizen -t T-samsung-5.0-x86\" \"rnv run -p tizenwatch -t W-5.0-circle-x86\" \"rnv run -p tizenmobile -t M-5.0-x86\" \"rnv run -p ios -t 'iPhone 6'\" \"rnv run -p android -t Nexus_5X_API_26\" \"rnv run -p androidtv -t Android_TV_1080p_API_22\" \"rnv run -p macos\" \"rnv run -p web\" \"rnv run -p tvos\" \"rnv run -p webos\"",
         "ut": "cd ./packages/rnv && npm run test",
         "watch": "cd ./packages/rnv && npm run watch",
         "website": "cd website && npm run start"
