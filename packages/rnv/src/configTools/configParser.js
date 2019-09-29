@@ -249,6 +249,9 @@ const _getWorkspaceDirPath = (c) => {
             }
         }
     }
+    if (c.buildConfig?.paths?.globalConfigDir) {
+        logWarning(`paths.globalConfigDir in ${c.paths.project.config} is DEPRECATED. use workspaceID insead. more info at https://renative.org/docs/workspaces`);
+    }
     if (!dirPath) {
         return c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
     }
