@@ -92,14 +92,14 @@ const _execute = (c, command, opts = {}) => {
     }
 
     return child.then((res) => {
-        spinner && child.stdout.off('data', printLastLine);
+        spinner && child.stdout.off && child.stdout.off('data', printLastLine);
         !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
         logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        spinner && child.stdout.off('data', printLastLine);
+        spinner && child.stdout.off && child.stdout.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);

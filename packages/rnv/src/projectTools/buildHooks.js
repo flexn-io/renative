@@ -23,8 +23,12 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
 
     buildHooks(c)
         .then(() => {
-            if (c.buildHooks[c.program.exeMethod]) {
-                c.buildHooks[c.program.exeMethod](c)
+            if (!c.buildHooks) {
+                reject('Build hooks have not been compiled properly!');
+                return;
+            }
+            if (c.buildHooks[c.program?.exeMethod]) {
+                c.buildHooks[c.program?.exeMethod](c)
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
