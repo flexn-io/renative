@@ -3,7 +3,8 @@
     "xmlns:android": "http://schemas.android.com/apk/res/android",
     "package": "{{APPLICATION_ID}}",
     "xmlns:tools": "http://schemas.android.com/tools",
-    "children": [{
+    "children": [
+        {
             "tag": "uses-feature",
             "android:name": "android.hardware.touchscreen",
             "android:required": false
@@ -19,26 +20,31 @@
             "android:label": "@string/app_name",
             "android:icon": "@mipmap/ic_launcher",
             "android:supportsRtl": true,
+            "android:usesCleartextTraffic": true,
             "android:theme": "@style/AppTheme",
-            "children": [{
+            "children": [
+                {
                     "tag": "activity",
                     "android:name": ".MainActivity",
                     "android:banner": "@drawable/ic_logo",
                     "android:icon": "@drawable/ic_logo",
                     "android:screenOrientation": "landscape",
                     "android:logo": "@drawable/ic_logo",
-                    "children": [{
-                        "tag": "intent-filter",
-                        "children": [{
-                                "tag": "action",
-                                "android:name": "android.intent.action.MAIN"
-                            },
-                            {
-                                "tag": "category",
-                                "android:name": "android.intent.category.LEANBACK_LAUNCHER"
-                            }
-                        ]
-                    }]
+                    "children": [
+                        {
+                            "tag": "intent-filter",
+                            "children": [
+                                {
+                                    "tag": "action",
+                                    "android:name": "android.intent.action.MAIN"
+                                },
+                                {
+                                    "tag": "category",
+                                    "android:name": "android.intent.category.LEANBACK_LAUNCHER"
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "tag": "activity",

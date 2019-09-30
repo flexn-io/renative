@@ -20,6 +20,10 @@ module.exports = {
     entry: C.entry,
     devServer: C.devServer,
     output: C.output,
+    optimization: {
+        // We no not want to minimize our code.
+        minimize: false
+    },
     module: {
         rules: [C.Rules.babel, C.Rules.css, C.Rules.image, C.Rules.fonts, C.Rules.sourcemap],
     },

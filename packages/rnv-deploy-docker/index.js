@@ -1,11 +1,17 @@
-import { writeCleanFile } from 'rnv/dist/common';
-import config from 'rnv/dist/config';
+/* eslint-disable global-require, import/no-dynamic-require */
 import path from 'path';
-import { inquirerPrompt } from 'rnv/dist/systemTools/prompt';
-import { logInfo, logTask } from 'rnv/dist/systemTools/logger';
-import { executeAsync } from 'rnv/dist/systemTools/exec';
+import { getInstalledPath } from 'get-installed-path';
+
 
 const doDeploy = async () => {
+    // rnv paths
+    const rnvPath = await getInstalledPath('rnv', { local: false });
+    const { writeCleanFile } = require(path.join(rnvPath, 'dist/common'));
+    const config = require(path.join(rnvPath, 'dist/config')).default;
+    const { inquirerPrompt } = require(path.join(rnvPath, 'dist/systemTools/prompt'));
+    const { logInfo, logTask } = require(path.join(rnvPath, 'dist/systemTools/logger'));
+    const { executeAsync } = require(path.join(rnvPath, 'dist/systemTools/exec'));
+
     const { paths, runtime, platform, files } = config.getConfig();
     const projectBuilds = paths.project.builds.dir;
     const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);

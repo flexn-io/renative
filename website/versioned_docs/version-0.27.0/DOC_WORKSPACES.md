@@ -21,3 +21,32 @@ Workspace `myOrganisation`
 Workspace `myOtherOrganisation`
 
 `~/.myOtherOrganisation`
+
+
+
+run `rnv run workspaces list` to check your workspace list.
+
+## Custom Workspaces
+
+
+NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
+```
+{
+    "workspaces": {
+        "rnv": {
+            "path": "~/.rnv"
+        },
+        "SOME_ANOTHER_WORKSPACE_ID": {
+            "path": "<WORKSPACE_PATH>"
+        }
+    }
+}
+```
+
+You can then switch to custom workspace per each project `./renative.json`
+
+```
+{
+  "workspaceID": "SOME_ANOTHER_WORKSPACE_ID"
+}
+```

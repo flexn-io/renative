@@ -45,6 +45,8 @@ program
     .option('--maxErrorLength <number>', 'Specify how many characters each error should display. Default 200')
     .option('--skipTargetCheck', 'Skip Android target check, just display the raw adb devices to choose from')
     .option('--analyzer', 'Enable real-time bundle analyzer')
+    .option('--xcodebuildArchiveArgs <value>', 'pass down custom xcodebuild arguments')
+    .option('--xcodebuildExportArgs <value>', 'pass down custom xcodebuild arguments')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

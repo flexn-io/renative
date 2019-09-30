@@ -102,7 +102,7 @@ rnv run -p android -d
 ## Deploy on Device
 
 This will run production version on your device (not connected to metro bundler)
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
 ```
 rnv start

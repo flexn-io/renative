@@ -329,7 +329,7 @@ const getEmulatorName = async (words) => {
     return emulatorName;
 };
 
-const connectToWifiDevice = async (c, ip) => {
+export const connectToWifiDevice = async (c, ip) => {
     const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, `connect ${ip}:5555`);
     if (deviceResponse.includes('connected')) return true;
     logError(`Failed to connect to ${ip}:5555`);
@@ -467,7 +467,7 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     const { maxErrorLength } = c.program;
 
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
-        .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k system-images;android-${apiVersion};${emuPlatform};x86`))
+        .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`))
         .catch(e => logError(e, true));
 };
 
