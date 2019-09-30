@@ -28,11 +28,11 @@ Applies for:
 
     .
     └── [PROJECT_NAME]
-        ├── appConfigs                 
-        │   └── [APP_ID]              
+        ├── appConfigs
+        │   └── [APP_ID]
         │       ├── renative.json
-        │       └── renative.local.json             
-        ├── platformBuilds              
+        │       └── renative.local.json
+        ├── platformBuilds
         │   └── renative.build.json
         ├── renative.json
         └── renative.local.json
@@ -41,12 +41,12 @@ Applies for:
 
     .
     └── [PROJECT_NAME]
-        ├── appConfigs                 
-        │   └── [APP_ID]              
+        ├── appConfigs
+        │   └── [APP_ID]
         │       ├── renative.json
-        │       └── renative.private.json             
+        │       └── renative.private.json
         ├── renative.json
-        └── renative.private.json                        
+        └── renative.private.json
 
 ## Merges
 
@@ -246,7 +246,7 @@ BUILD_SCHEME_PROPS
 ```json
 {
   "buildSchemes": {
-    "[BUILD_SHEME_KEY]": {
+    "[BUILD_SCHEME_KEY]": {
       "[PLATFORM]": {
         ...COMMON_PROPS
         ...[PLATFORM]_COMMON_PROPS

@@ -70,7 +70,7 @@ export const parseXcodeProject = async (c, platform) => {
                 writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
         } else {
-            throw `Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`;
+            logWarning(`Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`);
         }
     }
 
@@ -168,6 +168,31 @@ const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject
                             inputPaths: v.inputPaths || ['"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"']
                         });
                     });
+                }
+                if (pluginPlat.xcodeproj.frameworks) {
+                    for (const k in pluginPlat.xcodeproj.frameworks) {
+                        let fPath;
+                        let opts;
+                        if (k.startsWith('./')) {
+                            fPath = path.join(appFolder, k.replace('./', ''));
+                            opts = {
+                                customFramework: true,
+                                embed: true,
+                                link: true,
+                            };
+                        } else {
+                            fPath = path.join('System/Library/Frameworks', k);
+                            opts = {
+                                embed: true
+                            };
+                        }
+                        xcodeProj.addFramework(fPath, opts);
+                    }
+                }
+                if (pluginPlat.xcodeproj.buildSettings) {
+                    for (const k in pluginPlat.xcodeproj.buildSettings) {
+                        xcodeProj.addToBuildSettings(k, pluginPlat.xcodeproj.buildSettings[k]);
+                    }
                 }
             }
         });

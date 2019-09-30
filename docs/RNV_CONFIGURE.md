@@ -6,6 +6,12 @@ sidebar_label: configure
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> Configures your project to selected appConfig
+
+## Task Order
+
+🔥 -> `configure` -> ✅
+
 ## configure
 
 Configure all platforms of current app config

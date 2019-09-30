@@ -6,6 +6,10 @@ sidebar_label: fastlane
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## Task Order
+
+🔥 -> `configure` -> `fastlane` ->  ✅
+
 ## fastlane
 
 Get interactive options for fastlane

@@ -87,15 +87,15 @@ export const rnvStart = async (c) => {
     switch (platform) {
     case MACOS:
     case WINDOWS:
-        await runElectronDevServer(c, platform, port);
+        return runElectronDevServer(c, platform, port);
+
     case WEB:
     case TIZEN:
     case WEBOS:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
         await configureIfRequired(c, platform);
-        await runWebDevServer(c, platform, port);
-        return;
+        return runWebDevServer(c, platform, port);
     default:
         if (hosted) {
             return logError('This platform does not support hosted mode', true);
@@ -184,7 +184,8 @@ export const rnvLog = async (c) => {
 // ##########################################
 
 const _isWebHostEnabled = (c, platform) => {
-    const { hosted } = c.program;
+    const { hosted, debug } = c.program;
+    if (debug) return false;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
 };
@@ -349,15 +350,20 @@ const _rnvDeployWithPlatform = async (c) => {
             return _rnvExportWithPlatform(c);
         }
         return;
-
+    // case WEBOS: 
+    case TIZEN:
+        if (!c.program.only) {
+            await rnvBuild(c);
+        }
+        return;
     case ANDROID:
         if (!c.program.only) {
             return _rnvBuildWithPlatform(c);
         }
         return;
+    default:
+        logErrorPlatform(c, platform);
     }
-
-    logErrorPlatform(c, platform);
 };
 
 const _rnvBuildWithPlatform = async (c) => {

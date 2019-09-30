@@ -16,6 +16,8 @@ function generateConfig(config) {
     const devServerHost = config.devServerHost || '0.0.0.0';
 
     const modulePaths = [
+        'index.webos.js',
+        'index.tizen.js',
         'src',
         'packages',
         'node_modules/react-native-screens',
@@ -71,6 +73,7 @@ function generateConfig(config) {
         'node_modules/react-native-orientation-locker',
         'node_modules/react-navigation',
         'node_modules/@react-navigation/native',
+        'node_modules/rnv-platform-info'
     ].concat(config.modulePaths);
 
     const rules = {};
@@ -81,7 +84,12 @@ function generateConfig(config) {
             loader: 'babel-loader',
             options: {
                 babelrc: false,
-                presets: ['module:metro-react-native-babel-preset'],
+                plugins: ['@babel/plugin-proposal-class-properties'],
+                presets: ['module:metro-react-native-babel-preset', ['@babel/preset-env', {
+                    forceAllTransforms: true,
+                    targets: 'Samsung 4',
+                    spec: true,
+                }]],
             },
         },
     };
