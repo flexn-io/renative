@@ -112,6 +112,9 @@ class BasePlatformSetup {
         case 'fastlane':
             await this.installFastlane();
             break;
+        case 'docker':
+            await this.installDocker();
+            break;
         default:
             break;
         }
@@ -134,6 +137,11 @@ class BasePlatformSetup {
         return true;
     }
 
+    async installDocker() {
+        // to be overwritten
+        return true;
+    }
+
     async askToInstallSDK(sdk) {
         let sdkInstall;
         if (!this.c.program.ci) {
@@ -147,7 +155,7 @@ class BasePlatformSetup {
         }
 
         if (this.c.program.ci || sdkInstall) {
-            await this.installSdk(sdk, sdk === 'fastlane'); // no prereqs needed for fastlane
+            await this.installSdk(sdk, ['fastlane', 'docker'].includes(sdk)); // no prereqs needed for fastlane
         }
     }
 }

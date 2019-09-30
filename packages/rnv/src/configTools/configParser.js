@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import merge from 'deepmerge';
-import inquirer from 'inquirer';
 import {
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_AVDMANAGER,

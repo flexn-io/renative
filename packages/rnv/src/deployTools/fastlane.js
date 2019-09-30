@@ -10,7 +10,6 @@ const rnvFastlane = async () => {
     args.shift(); // we know the first one is fastlane, trash it
 
     if (!commandExistsSync('fastlane')) {
-        console.log('!exist');
         const setupInstance = PlatformSetup();
         await setupInstance.askToInstallSDK('fastlane');
     }

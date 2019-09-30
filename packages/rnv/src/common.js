@@ -342,10 +342,12 @@ export const writeCleanFile = (source, destination, overrides) => {
     }
     const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
-    overrides.forEach((v) => {
-        const regEx = new RegExp(v.pattern, 'g');
-        pFileClean = pFileClean.replace(regEx, v.override);
-    });
+    if (overrides) {
+        overrides.forEach((v) => {
+            const regEx = new RegExp(v.pattern, 'g');
+            pFileClean = pFileClean.replace(regEx, v.override);
+        });
+    }
 
     fs.writeFileSync(destination, pFileClean, 'utf8');
 };
