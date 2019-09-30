@@ -148,6 +148,12 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
             c.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join('\n    ')}`;
         }
 
+        if (mainApplication.imports instanceof Array) {
+            mainApplication.imports.forEach((v) => {
+                c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
+            });
+        }
+
         if (mainApplication.methods instanceof Array) {
             c.pluginConfigAndroid.pluginApplicationMethods += '\n';
             c.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;

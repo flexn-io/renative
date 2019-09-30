@@ -344,6 +344,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         pluginPackages: 'MainReactPackage(),\n',
         pluginActivityImports: '',
         pluginActivityMethods: '',
+        pluginApplicationImports: '',
         pluginApplicationMethods: '',
         pluginApplicationCreateMethods: '',
         applyPlugin: '',
