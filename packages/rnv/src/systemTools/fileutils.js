@@ -352,7 +352,7 @@ export const updateConfigFile = async (update, globalConfigPath) => {
         configContents.sdks.WEBOS_SDK = update.webosSdk;
     }
 
-    logDebug(`Updating ${this.globalConfigPath} with ${JSON.stringify(update, null, 3)}`);
+    logDebug(`Updating ${globalConfigPath}. New file ${JSON.stringify(configContents, null, 3)}`);
 
     fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
