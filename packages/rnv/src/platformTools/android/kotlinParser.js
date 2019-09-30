@@ -155,8 +155,8 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     }
 
     if (plugin.mainApplicationMethods) {
-        logWarning('Deprecation warning: use of MainApplicationMethods is deprecated, please use mainApplication methods instead');
-        c.pluginConfigAndroid.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+        logWarning('MainApplicationMethods is DEPRECATED, please use mainApplication.methods instead'); // TODO Example
+        c.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };
 

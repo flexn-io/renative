@@ -384,6 +384,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         appDelegateMethods: {
             application: {
                 didFinishLaunchingWithOptions: [],
+                applicationDidBecomeActive: [],
                 open: [],
                 supportedInterfaceOrientationsFor: [],
                 didReceiveRemoteNotification: [],
