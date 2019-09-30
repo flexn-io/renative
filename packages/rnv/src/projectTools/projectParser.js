@@ -75,42 +75,46 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         copyFolderContentsRecursiveSync(sourcePath, destPath);
     }
 
-    // FONTS
-    let fontsObj = 'export default [';
-
     if (c.buildConfig) {
         if (!c.buildConfig.common) {
             reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
             return;
         }
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.buildConfig.common;
-                    if (includedFonts) {
-                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                            if (font) {
-                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
-                                if (fs.existsSync(fontSource)) {
-                                    // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-                                    // mkdirSync(fontFolder);
-                                    // const fontDest = path.join(fontFolder, font);
-                                    // copyFileSync(fontSource, fontDest);
-                                    fontsObj += `{
-                                            fontFamily: '${key}',
-                                            file: require('../../projectConfig/fonts/${font}'),
-                                        },`;
-                                } else {
-                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                                }
-                            }
+    }
+
+    // FONTS
+    let fontsObj = 'export default [';
+
+
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts) {
+                if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                    if (font) {
+                        const fontSource = path.join(dir, font);
+
+                        const relativePath = dir.replace(c.paths.project.dir, '');
+                        console.log('SHKSJHKJS', relativePath);
+                        if (fs.existsSync(fontSource)) {
+                            // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                            // mkdirSync(fontFolder);
+                            // const fontDest = path.join(fontFolder, font);
+                            // copyFileSync(fontSource, fontDest);
+                            fontsObj += `{
+                              fontFamily: '${key}',
+                              file: require('../..${relativePath}/${font}'),
+                          },`;
+                        } else {
+                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }
-            });
+            }
         }
-    }
+    });
+
 
     fontsObj += '];';
     if (fs.existsSync(c.paths.project.assets.runtimeDir)) {
@@ -129,6 +133,34 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     resolve();
 });
+
+
+export const parseFonts = (c, callback) => {
+    logTask('parseFonts');
+
+    if (c.buildConfig) {
+        // FONTS - PROJECT CONFIG
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
+                if (callback) callback(font, c.paths.project.projectConfig.fontsDir);
+            });
+        }
+        // FONTS - APP CONFIG
+        if (c.paths.appConfig.fontsDirs) {
+            c.paths.appConfig.fontsDirs.forEach((v) => {
+                if (fs.existsSync(v)) {
+                    fs.readdirSync(v).forEach((font) => {
+                        if (callback) callback(font, v);
+                    });
+                }
+            });
+        } else if (fs.existsSync(c.paths.appConfig.fontsDir)) {
+            fs.readdirSync(c.paths.appConfig.fontsDir).forEach((font) => {
+                if (callback) callback(font, c.paths.appConfig.fontsDir);
+            });
+        }
+    }
+};
 
 
 export const copySharedPlatforms = c => new Promise((resolve) => {

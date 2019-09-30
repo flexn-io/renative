@@ -25,7 +25,7 @@ import { logToSummary, logTask,
     logDebug, logInfo,
     logSuccess } from '../../systemTools/logger';
 import { copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
-import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
@@ -370,31 +370,27 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(0, c.pluginConfigAndroid.pluginPackages.length - 2);
 
     // FONTS
-    if (c.buildConfig) {
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.buildConfig.common;
-                    if (includedFonts) {
-                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                            if (font) {
-                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
-                                if (fs.existsSync(fontSource)) {
-                                    const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-                                    mkdirSync(fontFolder);
-                                    const fontDest = path.join(fontFolder, font);
-                                    copyFileSync(fontSource, fontDest);
-                                } else {
-                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                                }
-                            }
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts) {
+                if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                    if (font) {
+                        const fontSource = path.join(dir, font);
+                        if (fs.existsSync(fontSource)) {
+                            const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                            mkdirSync(fontFolder);
+                            const fontDest = path.join(fontFolder, font);
+                            copyFileSync(fontSource, fontDest);
+                        } else {
+                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }
-            });
+            }
         }
-    }
+    });
 
     parseSettingsGradleSync(c, platform);
     parseAppBuildGradleSync(c, platform);

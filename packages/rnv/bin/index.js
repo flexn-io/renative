@@ -18,7 +18,7 @@ program
     .option('-i, --info', 'show full debug Info')
     .option('-u, --update', 'force Update dependencies (iOS only)')
     .option('-p, --platform [value]', 'select specific Platform')
-    .option('-c, --appConfigID <value>', 'select specific app Config id')
+    .option('-c, --appConfigID [value]', 'select specific app Config id')
     .option('-t, --target <value>', 'select specific Target device/simulator')
     .option('-T, --template <value>', 'select specific template')
     .option('-d, --device [value]', 'select connected Device')
