@@ -2,7 +2,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import open from 'open';
+import open from 'react-dev-utils/openBrowser';
 import ip from 'ip';
 import { executeAsync } from '../../systemTools/exec';
 import {
@@ -17,6 +17,7 @@ import {
     logSuccess,
     waitForWebpack,
     logError,
+    logWarning,
     getAppTitle
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -75,6 +76,7 @@ const _generateWebpackConfigs = (c) => {
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     const entryFile = getConfigProp(c, c.platform, 'entryFile', 'index.web');
     const title = getAppTitle(c, c.platform);
+    const analyzer = getConfigProp(c, c.platform, 'analyzer') || c.program.analyzer;
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
@@ -84,6 +86,7 @@ const _generateWebpackConfigs = (c) => {
     const obj = {
         modulePaths,
         moduleAliases,
+        analyzer,
         entryFile,
         title,
         ...extendConfig
@@ -161,7 +164,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
-                logInfo(
+                logWarning(
                     `Looks like your ${chalk.white(platform)} devServerHost at port ${chalk.white(
                         port
                     )} is already running. ReNative Will use it!`

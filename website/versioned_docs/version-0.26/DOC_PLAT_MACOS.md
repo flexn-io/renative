@@ -52,7 +52,7 @@ rnv run -p macos --hosted
 #### Deploy on Electron Simulator
 
 This will run production version on your simulator (not connected to devserver)
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
 ```
 rnv run -p macos -s release

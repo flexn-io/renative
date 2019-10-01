@@ -1,0 +1,65 @@
+{
+    "version-0.27.2-docs-sidebar": {
+        "GettingStarted": [
+            "version-0.27.2-quickstart",
+            "version-0.27.2-installation",
+            "version-0.27.2-features",
+            "version-0.27.2-architecture"
+        ],
+        "Platforms": [
+            "version-0.27.2-platforms_overview",
+            "version-0.27.2-android",
+            "version-0.27.2-androidtv",
+            "version-0.27.2-androidwear",
+            "version-0.27.2-firefoxos",
+            "version-0.27.2-firefoxtv",
+            "version-0.27.2-ios",
+            "version-0.27.2-kaios",
+            "version-0.27.2-macos",
+            "version-0.27.2-tizen",
+            "version-0.27.2-tizenmobile",
+            "version-0.27.2-tizenwatch",
+            "version-0.27.2-tvos",
+            "version-0.27.2-web",
+            "version-0.27.2-webos",
+            "version-0.27.2-windows"
+        ],
+        "Guides": [
+            "version-0.27.2-cli",
+            "version-0.27.2-plugins",
+            "version-0.27.2-templates",
+            "version-0.27.2-integrations",
+            "version-0.27.2-workspaces",
+            "version-0.27.2-config",
+            "version-0.27.2-rnv_config",
+            "version-0.27.2-config_folders",
+            "version-0.27.2-build_hooks",
+            "version-0.27.2-runtime",
+            "version-0.27.2-common_issues",
+            "version-0.27.2-develop"
+        ]
+    },
+    "version-0.27.2-api-sidebar": {
+        "CLI": [
+            "version-0.27.2-rnv",
+            "version-0.27.2-rnv-build",
+            "version-0.27.2-rnv-crypto",
+            "version-0.27.2-rnv-clean",
+            "version-0.27.2-rnv-configure",
+            "version-0.27.2-rnv-deploy",
+            "version-0.27.2-rnv-export",
+            "version-0.27.2-rnv-fastlane",
+            "version-0.27.2-rnv-log",
+            "version-0.27.2-rnv-new",
+            "version-0.27.2-rnv-package",
+            "version-0.27.2-rnv-platform",
+            "version-0.27.2-rnv-plugin",
+            "version-0.27.2-rnv-run",
+            "version-0.27.2-rnv-start",
+            "version-0.27.2-rnv-status",
+            "version-0.27.2-rnv-target",
+            "version-0.27.2-rnv-template",
+            "version-0.27.2-rnv-workspace"
+        ]
+    }
+}

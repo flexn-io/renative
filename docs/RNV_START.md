@@ -6,6 +6,10 @@ sidebar_label: start
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## Task Order
+
+🔥 -> `configure` -> `start` ->  ✅
+
 ## start
 
 Get interactive options for start

@@ -18,7 +18,7 @@ program
     .option('-i, --info', 'show full debug Info')
     .option('-u, --update', 'force Update dependencies (iOS only)')
     .option('-p, --platform [value]', 'select specific Platform')
-    .option('-c, --appConfigID <value>', 'select specific app Config id')
+    .option('-c, --appConfigID [value]', 'select specific app Config id')
     .option('-t, --target <value>', 'select specific Target device/simulator')
     .option('-T, --template <value>', 'select specific template')
     .option('-d, --device [value]', 'select connected Device')
@@ -44,6 +44,9 @@ program
     .option('--hosted', 'Run in a hosted environment (skip budleAssets)')
     .option('--maxErrorLength <number>', 'Specify how many characters each error should display. Default 200')
     .option('--skipTargetCheck', 'Skip Android target check, just display the raw adb devices to choose from')
+    .option('--analyzer', 'Enable real-time bundle analyzer')
+    .option('--xcodebuildArchiveArgs <value>', 'pass down custom xcodebuild arguments')
+    .option('--xcodebuildExportArgs <value>', 'pass down custom xcodebuild arguments')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

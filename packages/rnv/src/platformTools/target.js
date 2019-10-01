@@ -87,6 +87,6 @@ export const rnvTargetList = async (c) => {
         if (!checkSdk(c, platform, throwError)) return;
         return listWebOSTargets(c);
     default:
-        throw `"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`;
+        return Promise.reject(`"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`);
     }
 };

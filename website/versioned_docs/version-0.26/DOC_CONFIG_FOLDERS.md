@@ -15,15 +15,15 @@ applies for both public and private `./..` and `~./rnv/[PROJECT_NAME]/..`
 
 
     .
-    ├── projectConfig               
-    │   ├── fonts                   
-    │   ├── plugins                 
-    │   └── builds                  
+    ├── projectConfig
+    │   ├── fonts
+    │   ├── plugins
+    │   └── builds
     └── appConfigs
         └── [APP_ID]
             ├── assets
             │   └── [PLATFORM]
-            ├── fonts   
+            ├── fonts
             ├── builds
             └── plugins
                 └── [PLUGIN_KEY]
@@ -99,7 +99,7 @@ Following is the order of merges of various folders (if present) contributing to
 Every time you run RNV command, ReNative checks following "special" folders and copies contents of those into designated target folders
 
 - `*/plugins/[PLUGIN_ID]`
-- `*/plugins/[PLUGIN_ID]/overrides` -> special override allows you to override files in plugin itslef! (located `./node_modules`)
+- `*/plugins/[PLUGIN_ID]/overrides` -> special override allows you to override files in plugin itself! (located `./node_modules`)
 - `*/builds/[PLATFORM]`
 - `*/fonts`
 - `*/assets/runtime`
@@ -114,10 +114,10 @@ You can utilise above folders in following places:
 
 Legend:
 
-- `[PLATFORM]` - specific platform key like `ios`, `andoid`, `web`, etc..
+- `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
-- `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
+- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
 - `~/.rnv` - name of default global folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "paths": { "globalConfigDir": "~/.myCustomGlobalFolder" } }` in `renative.json` of each project
 
 ##### Platform Builds Overrides

@@ -42,22 +42,23 @@
     "api-sidebar": {
         "CLI": [
             "rnv",
-            "rnv-new",
+            "rnv-build",
+            "rnv-crypto",
             "rnv-clean",
             "rnv-configure",
-            "rnv-start",
-            "rnv-run",
-            "rnv-package",
-            "rnv-build",
-            "rnv-export",
             "rnv-deploy",
+            "rnv-export",
+            "rnv-fastlane",
             "rnv-log",
-            "rnv-status",
-            "rnv-crypto",
+            "rnv-new",
+            "rnv-package",
             "rnv-platform",
             "rnv-plugin",
-            "rnv-template",
+            "rnv-run",
+            "rnv-start",
+            "rnv-status",
             "rnv-target",
+            "rnv-template",
             "rnv-workspace"
         ]
     }

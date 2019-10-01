@@ -3,17 +3,13 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import inquirer from 'inquirer';
-import semver from 'semver';
 import {
     logTask,
-    logSuccess,
     getAppFolder,
     isPlatformActive,
     logWarning,
     logInfo,
 } from '../common';
-import { generateOptions } from '../systemTools/prompt';
 import {
     IOS,
     ANDROID,
@@ -30,8 +26,6 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    RENATIVE_CONFIG_NAME,
-    SUPPORTED_PLATFORMS
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject } from '../platformTools/android';
@@ -40,14 +34,9 @@ import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
-import { getTemplateOptions } from '../templateTools';
-import { copyFolderContentsRecursiveSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
-import { executeAsync } from '../systemTools/exec';
+import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import CLI from '../cli';
-import { executePipe } from './buildHooks';
-import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
-import { getWorkspaceOptions } from './workspace';
 import { generateRuntimeConfig } from '../configTools/configParser';
 
 export const rnvConfigure = c => new Promise((resolve, reject) => {
