@@ -345,6 +345,7 @@ const _rnvDeployWithPlatform = async (c) => {
             await rnvBuild(c);
         }
         return deployWeb(c, platform);
+    case TVOS:
     case IOS:
         if (!c.program.only) {
             return _rnvExportWithPlatform(c);
@@ -356,6 +357,7 @@ const _rnvDeployWithPlatform = async (c) => {
             await rnvBuild(c);
         }
         return;
+    case ANDROID_TV:
     case ANDROID:
         if (!c.program.only) {
             return _rnvBuildWithPlatform(c);
