@@ -1,63 +1,15 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import merge from 'deepmerge';
 import {
-    IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
-    TIZEN_WATCH,
-    TIZEN_MOBILE,
-    KAIOS,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_SDKMANAGER,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_SDB_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
-    CLI_WEBOS_ARES_NOVACOM,
-    FORM_FACTOR_MOBILE,
-    FORM_FACTOR_DESKTOP,
-    FORM_FACTOR_WATCH,
-    FORM_FACTOR_TV,
-    ANDROID_SDK,
-    CLI_WEBOS_ARES_SETUP_DEVICE,
-    CLI_WEBOS_ARES_DEVICE_INFO,
-    TIZEN_SDK,
-    WEBOS_SDK,
-    KAIOS_SDK,
-    FIREFOX_OS,
-    FIREFOX_TV,
-    RENATIVE_CONFIG_NAME,
-    RENATIVE_CONFIG_PRIVATE_NAME,
-    RENATIVE_CONFIG_LOCAL_NAME,
-    RENATIVE_CONFIG_TEMPLATE_NAME,
-    RN_CLI_CONFIG_NAME,
-    SAMPLE_APP_ID,
-    RN_BABEL_CONFIG_NAME,
-    PLATFORMS,
     WEB_HOSTED_PLATFORMS,
-    SUPPORTED_PLATFORMS
 } from '../constants';
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
-    cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
-    getRealPath
+    cleanFolder, copyFolderContentsRecursiveSync,
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync
 } from '../systemTools/fileutils';
-import { executeAsync } from '../systemTools/exec';
+import { executeAsync, npmInstall } from '../systemTools/exec';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -123,42 +75,46 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         copyFolderContentsRecursiveSync(sourcePath, destPath);
     }
 
-    // FONTS
-    let fontsObj = 'export default [';
-
     if (c.buildConfig) {
         if (!c.buildConfig.common) {
             reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
             return;
         }
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.buildConfig.common;
-                    if (includedFonts) {
-                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                            if (font) {
-                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
-                                if (fs.existsSync(fontSource)) {
-                                    // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-                                    // mkdirSync(fontFolder);
-                                    // const fontDest = path.join(fontFolder, font);
-                                    // copyFileSync(fontSource, fontDest);
-                                    fontsObj += `{
-                                            fontFamily: '${key}',
-                                            file: require('../../projectConfig/fonts/${font}'),
-                                        },`;
-                                } else {
-                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                                }
-                            }
+    }
+
+    // FONTS
+    let fontsObj = 'export default [';
+
+
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts) {
+                if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                    if (font) {
+                        const fontSource = path.join(dir, font);
+
+                        const relativePath = dir.replace(c.paths.project.dir, '');
+                        console.log('SHKSJHKJS', relativePath);
+                        if (fs.existsSync(fontSource)) {
+                            // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                            // mkdirSync(fontFolder);
+                            // const fontDest = path.join(fontFolder, font);
+                            // copyFileSync(fontSource, fontDest);
+                            fontsObj += `{
+                              fontFamily: '${key}',
+                              file: require('../..${relativePath}/${font}'),
+                          },`;
+                        } else {
+                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }
-            });
+            }
         }
-    }
+    });
+
 
     fontsObj += '];';
     if (fs.existsSync(c.paths.project.assets.runtimeDir)) {
@@ -177,6 +133,34 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     resolve();
 });
+
+
+export const parseFonts = (c, callback) => {
+    logTask('parseFonts');
+
+    if (c.buildConfig) {
+        // FONTS - PROJECT CONFIG
+        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
+                if (callback) callback(font, c.paths.project.projectConfig.fontsDir);
+            });
+        }
+        // FONTS - APP CONFIG
+        if (c.paths.appConfig.fontsDirs) {
+            c.paths.appConfig.fontsDirs.forEach((v) => {
+                if (fs.existsSync(v)) {
+                    fs.readdirSync(v).forEach((font) => {
+                        if (callback) callback(font, v);
+                    });
+                }
+            });
+        } else if (fs.existsSync(c.paths.appConfig.fontsDir)) {
+            fs.readdirSync(c.paths.appConfig.fontsDir).forEach((font) => {
+                if (callback) callback(font, c.paths.appConfig.fontsDir);
+            });
+        }
+    }
+};
 
 
 export const copySharedPlatforms = c => new Promise((resolve) => {
@@ -295,19 +279,6 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     resolve();
 });
 
-export const cleanNodeModules = c => new Promise((resolve, reject) => {
-    logTask(`cleanNodeModules:${c.paths.project.nodeModulesDir}`);
-    removeDirs([
-        path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-    ]).then(() => resolve()).catch(e => reject(e));
-});
-
-
 export const upgradeProjectDependencies = (c, version) => {
     const thw = 'renative-template-hello-world';
     const tb = 'renative-template-blank';
@@ -349,7 +320,7 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
         } else {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
-        npmInstall(c).then(() => resolve()).catch(e => reject(e));
+        npmInstall().then(() => resolve()).catch(e => reject(e));
     } else {
         resolve();
     }
@@ -362,28 +333,4 @@ export const cleanPlaformAssets = c => new Promise((resolve, reject) => {
         mkdirSync(c.paths.project.assets.runtimeDir);
         resolve();
     });
-});
-
-export const npmInstall = (c, failOnError = false) => new Promise((resolve, reject) => {
-    logTask('npmInstall');
-
-    executeAsync(c, 'npm install')
-        .then(() => {
-            resolve();
-        })
-        .catch((e) => {
-            if (failOnError) {
-                logError(e);
-                resolve();
-            } else {
-                logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
-                cleanNodeModules(c)
-                    .then(() => npmInstall(c, true))
-                    .then(() => resolve())
-                    .catch((e) => {
-                        logError(e);
-                        resolve();
-                    });
-            }
-        });
 });

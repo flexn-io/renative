@@ -19,7 +19,7 @@ import {
     getIP,
     logSuccess,
 } from '../../common';
-import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
 import { IOS, TVOS, MACOS } from '../../constants';
 import {
@@ -401,29 +401,26 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     };
 
     // FONTS
-    if (c.buildConfig) {
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.buildConfig.common;
-                    if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                        const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
-                        if (fs.existsSync(fontSource)) {
-                            const fontFolder = path.join(appFolder, 'fonts');
-                            mkdirSync(fontFolder);
-                            const fontDest = path.join(fontFolder, font);
-                            copyFileSync(fontSource, fontDest);
-                            c.pluginConfigiOS.embeddedFontSources.push(fontSource);
-                            c.pluginConfigiOS.embeddedFonts.push(font);
-                        } else {
-                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                        }
-                    }
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
+                const fontSource = path.join(dir, font);
+                if (fs.existsSync(fontSource)) {
+                    const fontFolder = path.join(appFolder, 'fonts');
+                    mkdirSync(fontFolder);
+                    const fontDest = path.join(fontFolder, font);
+                    copyFileSync(fontSource, fontDest);
+                    c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                    c.pluginConfigiOS.embeddedFonts.push(font);
+                } else {
+                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                 }
-            });
+            }
         }
-    }
+    });
+
 
     // CHECK TEAM ID IF DEVICE
     const tId = getConfigProp(c, platform, 'teamID');
