@@ -340,6 +340,7 @@ const _rnvDeployWithPlatform = async (c) => {
     const { platform } = c;
 
     switch (platform) {
+    case TIZEN:
     case WEB:
         if (!c.program.only) {
             await rnvBuild(c);
@@ -350,12 +351,12 @@ const _rnvDeployWithPlatform = async (c) => {
             return _rnvExportWithPlatform(c);
         }
         return;
-    // case WEBOS: 
-    case TIZEN:
-        if (!c.program.only) {
-            await rnvBuild(c);
-        }
-        return;
+    // case WEBOS:
+    // case TIZEN:
+    //     if (!c.program.only) {
+    //         await rnvBuild(c);
+    //     }
+    //     return;
     case ANDROID:
         if (!c.program.only) {
             return _rnvBuildWithPlatform(c);

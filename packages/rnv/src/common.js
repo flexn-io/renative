@@ -243,7 +243,7 @@ export const getAppId = (c, platform) => {
     return idSuffix ? `${id}${idSuffix}` : id;
 };
 
-export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
+export const getAppTitle = (c, platform) => c.buildConfig.platforms?.[platform]?.appName || c.buildConfig.common?.title || c.files.project.package?.id;
 
 export const getAppVersion = (c, platform) => c.buildConfig.platforms?.[platform]?.version || c.buildConfig.common?.version || c.files.project.package?.version;
 

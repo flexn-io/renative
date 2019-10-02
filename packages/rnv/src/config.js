@@ -36,11 +36,20 @@ class Config {
         return cleanedArgs;
     }
 
-    async injectProjectDependency(dependency, version) {
+    _injectProjectDep(dependency, version, dev = false) {
         const currentPackage = this.config.files.project.package;
         const existingPath = this.config.paths.project.package;
-        currentPackage.dependencies[dependency] = version;
+        currentPackage[dev ? 'devDependencies' : 'dependencies'][dependency] = version;
         writeObjectSync(existingPath, currentPackage);
+    }
+
+    async injectProjectDependency(dependency, version) {
+        this._injectProjectDep(dependency, version);
+        await npmInstall();
+    }
+
+    async injectProjectDevDependency(dependency, version) {
+        this._injectProjectDep(dependency, version, true);
         await npmInstall();
     }
 

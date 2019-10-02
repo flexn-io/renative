@@ -1,4 +1,7 @@
 {
+  "plugins": [
+    "@babel/proposal-optional-chaining"
+  ],
   "presets": [
     [
       "@babel/preset-env",

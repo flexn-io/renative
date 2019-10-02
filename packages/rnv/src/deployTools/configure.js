@@ -8,7 +8,7 @@ const configureDeploymentIfRequired = async (deploymentTarget) => {
 
     // inject the package if necessary
     if (['aws', 'docker'].includes(deploymentTarget)) {
-        if (!projectConfig.package.dependencies[`@rnv/deploy-${deploymentTarget}`]) {
+        if (!projectConfig.package.dependencies[`@rnv/deploy-${deploymentTarget}`] && !projectConfig.package.devDependencies[`@rnv/deploy-${deploymentTarget}`]) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: 'You do not have Docker deployment configured. Do you want to configure it now?'
@@ -16,7 +16,7 @@ const configureDeploymentIfRequired = async (deploymentTarget) => {
 
             if (confirm) {
                 // @TODO TO BE CHANGED TO 'latest' or `npm view package version` after package deployment
-                await Config.injectProjectDependency(`@rnv/deploy-${deploymentTarget}`, 'latest');
+                await Config.injectProjectDevDependency(`@rnv/deploy-${deploymentTarget}`, 'latest');
             }
         }
     }
