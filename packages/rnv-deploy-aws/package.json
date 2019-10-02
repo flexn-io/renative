@@ -4,7 +4,7 @@
     "description": "Gives RNV the possibility to deploy web apps to S3 buckets behind CloudFront",
     "main": "dist/index.js",
     "scripts": {
-        "build": "npx babel index.js --out-dir dist",
+        "build": "npx babel src --out-dir dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -23,7 +23,8 @@
     },
     "homepage": "https://github.com/pavjacko/renative#readme",
     "dependencies": {
-        "aws-sdk": "^2.537.0"
+        "aws-sdk": "^2.537.0",
+        "uuid": "^3.3.3"
     },
     "peerDependencies": {
         "rnv": "latest"

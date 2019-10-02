@@ -6,11 +6,8 @@ import path from 'path';
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
 import {
-    logTask,
-    logComplete,
-    logError,
     logInfo
-} from '../common';
+} from '../systemTools/logger';
 import { configureDeploymentIfRequired } from './configure';
 
 const DEPLOY_TARGET_DOCKER = 'docker';

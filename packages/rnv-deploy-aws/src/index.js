@@ -1,196 +1,15 @@
 /* eslint-disable import/no-dynamic-require, global-require */
 import { getInstalledPath } from 'get-installed-path';
 import path from 'path';
-import aws from 'aws-sdk';
-import fs from 'fs';
 
-const uploadFolderToS3 = async (source, destination, s3, bucket) => {
-    const files = fs.readdirSync(source);
-    if (!files || files.length === 0) {
-        console.log(`provided folder '${source}' is empty or does not exist.`);
-        console.log('Make sure your project was compiled!');
-        return;
-    }
+import Deployer from './deployer';
 
-    // for each file in the directory
-    await Promise.all(files.map(async (file) => {
-        // get the full path of the file
-        const filePath = path.join(source, file);
-
-        // directory
-        if (fs.lstatSync(filePath).isDirectory()) {
-            return uploadFolderToS3(`${source}/${file}`, `${destination}/${file}`);
-        }
-
-        // read file contents
-        const fileContent = fs.readFileSync(filePath);
-
-        // upload file to S3
-        return s3.putObject({
-            Bucket: bucket,
-            Key: `${destination}/${file}`,
-            Body: fileContent
-        }).promise();
-    }));
-};
-
-const emptyS3Directory = async (bucket, dir, s3) => {
-    const listParams = {
-        Bucket: bucket,
-        Prefix: dir
-    };
-
-    const listedObjects = await s3.listObjectsV2(listParams).promise();
-
-    if (listedObjects.Contents.length === 0) return;
-
-    const deleteParams = {
-        Bucket: bucket,
-        Delete: { Objects: [] }
-    };
-
-    listedObjects.Contents.forEach(({ Key }) => {
-        deleteParams.Delete.Objects.push({ Key });
-    });
-
-    await s3.deleteObjects(deleteParams).promise();
-
-    if (listedObjects.IsTruncated) await emptyS3Directory(bucket, dir);
-};
-
-const bootstrapS3 = async (configRegion) => {
-    const rnvPath = await getInstalledPath('rnv', { local: false });
-    const { inquirerPrompt } = require(path.join(rnvPath, 'dist/systemTools/prompt'));
-    let s3;
-    let region = configRegion;
-
-    // check if we have credentials for AWS
-    try {
-        await new Promise((resolve, reject) => aws.config.getCredentials((err) => {
-            if (err) return reject(err);
-            return resolve();
-        }));
-    } catch (e) {
-        // get all the regions from ec2
-        const ec2 = new aws.EC2();
-        const regions = await ec2.describeRegions().promise();
-        const { accessKeyId } = await inquirerPrompt({
-            type: 'input',
-            name: 'accessKeyId',
-            message: 'Your AWS ACCESS_KEY_ID'
-        });
-        const { secretAccessKey } = await inquirerPrompt({
-            type: 'input',
-            name: 'secretAccessKey',
-            message: 'Your AWS SECRET_ACCESS_KEY'
-        });
-        if (!region) {
-            const regionAnswer = await inquirerPrompt({
-                type: 'select',
-                name: 'region',
-                choices: regions.data.Regions.map(r => r.RegionName),
-                message: 'AWS Region'
-            });
-            // eslint-disable-next-line prefer-destructuring
-            region = regionAnswer.region;
-        }
-
-        s3 = new aws.S3({
-            secretAccessKey,
-            region,
-            accessKeyId
-        });
-    }
-
-    s3 = new aws.S3();
-    return s3;
-};
-
-const deployVersion = async (options) => {
-    console.log('OPTIONS', options);
-
-    const rnvPath = await getInstalledPath('rnv', { local: false });
-    const config = require(path.join(rnvPath, 'dist/config')).default;
-
-    const { paths, runtime, platform } = config.getConfig();
-
-    const { bucket, region, version } = options;
-    const s3 = await bootstrapS3(region);
-    const basePath = `${paths.project.builds.dir}/${runtime.appId}_${platform}`;
-    const deployPath = `${basePath}/public`;
-
-    //   #Force-delete S3 version folder if it exists. Required for CloudFront to honour HTTP no-cache
-    //   echo Removing existing version files
-
-    await emptyS3Directory(bucket, version, s3);
-
-    //   aws s3 rm \
-    //   --recursive s3://$application_name.$client_name.$environment.$domain/$version_id 1> /dev/null
-
-    //   #Upload version files
-    //   echo Uploading new version files
-
-    await uploadFolderToS3(deployPath, version, s3, bucket);
-
-    //   aws s3 cp \
-    //   --recursive $sources_dir \
-    //   s3://$application_name.$client_name.$environment.$domain/$version_id 1> /dev/null
-
-    //   #Update root of bucket index.html to point to latest version
-    //   echo Updating index.html at root of bucket to point to the new version
-    //   echo -n '<body><head><meta http-equiv="refresh" content="0; ' > /tmp/index.temp.html
-    //   echo 'URL=http://'$application_name.$client_name.$environment.$domain/$version_id'/index.html" /></head></body>' \
-    //   >> /tmp/index.temp.html
-
-    //   aws s3 rm \
-    //   s3://$application_name.$client_name.$environment.$domain/index.html 1> /dev/null
-
-    await s3.deleteObject({
-        Bucket: bucket,
-        Key: 'index.html'
-    }).promise();
-
-    //   aws s3 cp \
-    //   /tmp/index.temp.html s3://$application_name.$client_name.$environment.$domain/index.html 1> /dev/null
-
-    await s3.putObject({
-        Bucket: bucket,
-        Key: 'index.html',
-        Body: fs.readFileSync(path.join(deployPath, 'index.html'))
-    }).promise();
-
-    //   #Check version folder exists and its index.html is present via S3 API
-    //   versionExists=False
-    //   versionAPILookup=$(aws s3api list-objects \
-    //                      --bucket $application_name.$client_name.$environment.$domain |\
-    //                      jq -r '.Contents[] | select(.Key=="'$version_id'/index.html")')
-    //   [[ -n "$versionAPILookup" ]] && versionExists=True || versionExists=False
-
-    //   #Get HTTP headers and index page html
-    //   versionHTTPGet=$(curl -sLD- http://$application_name.$client_name.$environment.$domain/$version_id/index.html)
-    //   [[ "$versionHTTPGet" =~ ^HTTP/[0-9.]{3,}[[:space:]]200 ]] && \
-    //      versionExists=True || versionExists=False
-
-    //   #Check HTML body has webpack JS
-    //   [[ "$versionHTTPGet" =~ (fetch).*(polyfill).*(bundle) ]] && \
-    //      versionExists=True || versionExists=False
-
-//   if [[ $versionExists = "True" ]]
-//   then
-//     echo Version URL: http://$application_name.$client_name.$environment.$domain/$version_id/index.html
-//     return 0
-//   else
-//     echo Something went wrong. Version files cannot be retrieved
-//     return 1
-//   fi
-};
-
-const deployToAWS = async () => {
+const deployToAWS = async (version) => {
     const rnvPath = await getInstalledPath('rnv', { local: false });
     const config = require(path.join(rnvPath, 'dist/config')).default;
 
     const { getConfigProp, getAppTitle } = require(path.join(rnvPath, 'dist/common'));
-    const { platform, program: { scheme } } = config.getConfig();
+    const { platform, paths, runtime, program: { scheme } } = config.getConfig();
     const schemes = getConfigProp(config.getConfig(), platform, 'buildSchemes');
     const selectedSchemeAwsSettings = schemes?.[scheme]?.awsDeploy;
     if (!selectedSchemeAwsSettings) throw new Error(`renative.json platforms.${platform}.buildSchemes.${scheme}.awsDeploy object is missing`);
@@ -206,18 +25,15 @@ const deployToAWS = async () => {
 
     if (!domain || !appName) throw new Error(`renative.json platforms.${platform}.buildSchemes.${scheme}.awsDeploy object is missing required params domain or appName`);
 
-    const version = 'v1.1.1';
     const bucket = `${appName}.${subdomainAddition ? `${subdomainAddition}.` : ''}${environment}.${domain}`;
     const url = `${https ? 'https' : 'http'}://${bucket}/${platform}-${scheme}-${version}/index.html`;
 
-    await deployVersion({
-        bucket, version: `${platform}-${scheme}-${version}`, region
-    });
+    await Deployer.initialize(region);
+    const basePath = `${paths.project.builds.dir}/${runtime.appId}_${platform}`;
+    const deployPath = `${basePath}/public`;
 
-    // deployVersion(`staging -c nxg -a ${appName} -n ${platform}-${scheme}-${v} -d ${deployPath}`);
-    // if (aws_access_key_id && aws_secret_access_key) {
-    //     params += ` -s ${aws_access_key_id} -k ${aws_secret_access_key}`;
-    // }
+    await Deployer.deployVersion(bucket, `${platform}-${scheme}-${version}`, url, deployPath);
+
     console.log('deployed', url);
 };
 
@@ -225,20 +41,11 @@ const doDeploy = async () => {
     const rnvPath = await getInstalledPath('rnv', { local: false });
     const config = require(path.join(rnvPath, 'dist/config')).default;
 
-    const { getConfigProp } = require(path.join(rnvPath, 'dist/common'));
-
-    const { paths, runtime, platform, files } = config.getConfig();
-    const projectBuilds = paths.project.builds.dir;
-    const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);
-
+    const { files } = config.getConfig();
     const version = `v${files.project.package.version}`;
-    const title = getConfigProp(config.getConfig(), platform, 'title');
-    return deployToAWS(version)
-        .then(deployToAWS('latest'))
-        .then((v) => {
-            const msg = `Just deployed NXG-SDK-UI *${title}* (*${platform}*) *${version}* to ${v}`;
-            return console.log(msg);
-        });
+
+    await deployToAWS(version);
+    await deployToAWS('latest');
 };
 
 export default doDeploy;
