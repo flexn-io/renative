@@ -133,19 +133,18 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         });
     }
 
-   _injectPackage(c, plugin, pkg);
+    _injectPackage(c, plugin, pkg);
 
-   if (plugin.MainApplication) {
+    if (plugin.MainApplication) {
         if (plugin.MainApplication.packages) {
             plugin.MainApplication.packages.forEach((v) => {
                 _injectPackage(c, plugin, v);
             });
         }
-   }
+    }
 
     const { mainApplication } = plugin;
     if (mainApplication) {
-
         if (mainApplication.createMethods instanceof Array) {
             c.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
             c.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join('\n    ')}`;
@@ -164,7 +163,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     }
 
     if (plugin.mainApplicationMethods) {
-        logWarning(`Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${platform}": { MainApplicationMethods }. Use "${platform}": { "mainApplication": { "methods": []}} instead`);
+        logWarning(`Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${c.platform}": { MainApplicationMethods }. Use "${c.platform}": { "mainApplication": { "methods": []}} instead`);
         c.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };
