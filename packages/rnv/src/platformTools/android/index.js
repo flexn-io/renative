@@ -25,7 +25,7 @@ import { logToSummary, logTask,
     logError, logWarning,
     logDebug, logInfo,
     logSuccess } from '../../systemTools/logger';
-import { copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
+import { copyFileSync, mkdirSync, getRealPath, updateObjectSync } from '../../systemTools/fileutils';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
@@ -181,7 +181,7 @@ const _checkSigningCerts = async (c) => {
     const privateConfig = c.files.workspace.appConfig.configPrivate?.[c.platform];
 
     if (isRelease && !privateConfig) {
-        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.workspace.appConfig.dir)} yet.`);
+        logWarning(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.workspace.appConfig.configPrivate)} for ${chalk.white(c.platform)} platform yet.`);
 
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
@@ -190,61 +190,90 @@ const _checkSigningCerts = async (c) => {
         });
 
         if (confirm) {
+            let confirmCopy = false;
+            let platCandidate;
             const { confirmNewKeystore } = await inquirerPrompt({
                 type: 'confirm',
                 name: 'confirmNewKeystore',
                 message: 'Do you want to generate new keystore as well?'
             });
 
-            let storeFile;
+            if (c.files.workspace.appConfig.configPrivate) {
+                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID];
 
-            if (!confirmNewKeystore) {
-                const result = await inquirerPrompt({
-                    type: 'input',
-                    name: 'storeFile',
-                    message: `Paste asolute or relative path to ${chalk.white(c.paths.workspace.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
+                platCandidates.forEach((v) => {
+                    if (c.files.workspace.appConfig.configPrivate[v]) {
+                        platCandidate = v;
+                    }
                 });
-                storeFile = result.storeFile;
-            }
-
-            const { storePassword, keyAlias, keyPassword } = await inquirer.prompt([
-                {
-                    type: 'password',
-                    name: 'storePassword',
-                    message: 'storePassword',
-                },
-                {
-                    type: 'input',
-                    name: 'keyAlias',
-                    message: 'keyAlias',
-                },
-                {
-                    type: 'password',
-                    name: 'keyPassword',
-                    message: 'keyPassword',
+                if (platCandidate) {
+                    const resultCopy = await inquirerPrompt({
+                        type: 'confirm',
+                        name: 'confirmCopy',
+                        message: `Found existing keystore configuration for ${platCandidate}. do you want to reuse it?`
+                    });
+                    confirmCopy = resultCopy.confirmCopy;
                 }
-            ]);
-
-
-            if (confirmNewKeystore) {
-                const keystorePath = `${c.paths.workspace.appConfig.dir}/release.keystore`;
-                const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
-                await executeAsync(c, keytoolCmd, {
-                    env: process.env,
-                    shell: true,
-                    stdio: 'inherit',
-                    silent: true,
-                });
-                storeFile = './release.keystore';
             }
 
-            if (c.paths.workspace.appConfig.dir) {
-                mkdirSync(c.paths.workspace.appConfig.dir);
-                c.files.workspace.appConfig.configPrivate = {};
-                c.files.workspace.appConfig.configPrivate[c.platform] = { storeFile, storePassword, keyAlias, keyPassword };
+
+            if (confirmCopy) {
+                c.files.workspace.appConfig.configPrivate[c.platform] = c.files.workspace.appConfig.configPrivate[platCandidate];
+            } else {
+                let storeFile;
+
+                if (!confirmNewKeystore) {
+                    const result = await inquirerPrompt({
+                        type: 'input',
+                        name: 'storeFile',
+                        message: `Paste asolute or relative path to ${chalk.white(c.paths.workspace.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
+                    });
+                    storeFile = result.storeFile;
+                }
+
+                const { storePassword, keyAlias, keyPassword } = await inquirer.prompt([
+                    {
+                        type: 'password',
+                        name: 'storePassword',
+                        message: 'storePassword',
+                    },
+                    {
+                        type: 'input',
+                        name: 'keyAlias',
+                        message: 'keyAlias',
+                    },
+                    {
+                        type: 'password',
+                        name: 'keyPassword',
+                        message: 'keyPassword',
+                    }
+                ]);
+
+
+                if (confirmNewKeystore) {
+                    const keystorePath = `${c.paths.workspace.appConfig.dir}/release.keystore`;
+                    mkdirSync(c.paths.workspace.appConfig.dir);
+                    const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
+                    await executeAsync(c, keytoolCmd, {
+                        env: process.env,
+                        shell: true,
+                        stdio: 'inherit',
+                        silent: true,
+                    });
+                    storeFile = './release.keystore';
+                }
+
+                if (c.paths.workspace.appConfig.dir) {
+                    mkdirSync(c.paths.workspace.appConfig.dir);
+                    c.files.workspace.appConfig.configPrivate = {};
+                    c.files.workspace.appConfig.configPrivate[c.platform] = { storeFile, storePassword, keyAlias, keyPassword };
+                }
             }
-            fs.writeFileSync(c.paths.workspace.appConfig.configPrivate, JSON.stringify(c.files.workspace.appConfig.configPrivate, null, 2));
-            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.workspace.appConfig.dir)}.`);
+
+
+            updateObjectSync(c.paths.workspace.appConfig.configPrivate, c.files.workspace.appConfig.configPrivate);
+            logSuccess(`Successfully updated private config file at ${chalk.white(c.paths.workspace.appConfig.dir)}.`);
+            await configureProject(c, c.platform);
         } else {
             return Promise.reject('You selected no. Can\'t proceed');
         }
