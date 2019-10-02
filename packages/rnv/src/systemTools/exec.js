@@ -208,7 +208,21 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
-    arr = arr.filter(v => v.search(toSearch) !== -1);
+
+    let errFound = 0;
+    arr = arr.filter((v) => {
+        if (v === '') return false;
+        if (v.search(toSearch) !== -1) {
+            errFound = 5;
+            return true;
+        }
+        if (errFound > 0) {
+            errFound -= 1;
+            return true;
+        }
+        return false;
+    });
+
     arr = arr.map((v) => {
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
