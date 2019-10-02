@@ -53,6 +53,7 @@ export const parseBuildGradleSync = (c, platform) => {
 };
 
 export const parseAppBuildGradleSync = (c, platform) => {
+    logTask('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c, platform);
 
     // ANDROID PROPS
