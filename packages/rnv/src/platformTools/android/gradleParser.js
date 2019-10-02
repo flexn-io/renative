@@ -193,7 +193,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
     // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
     const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX');
     if (enableAndroidX === true) {
-        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.appcompat:appcompat:$version"\n';
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.appcompat:appcompat:1.1.0"\n';
     } else {
         c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'com.android.support:appcompat-v7:27.0.2\'\n';
     }
@@ -258,10 +258,12 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
 
     // APP/BUILD.GRADLE
     if (plugin.projectName) {
-        c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
-        c.pluginConfigAndroid.pluginPaths += `project(':${
-            plugin.projectName
-        }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        if (!plugin.skipLinking) {
+            c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${
+                plugin.projectName
+            }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
@@ -270,8 +272,10 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             }
         }
     } else {
-        c.pluginConfigAndroid.pluginIncludes += `, ':${key}'`;
-        c.pluginConfigAndroid.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        if (!plugin.skipLinking) {
+            c.pluginConfigAndroid.pluginIncludes += `, ':${key}'`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
