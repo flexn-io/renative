@@ -99,3 +99,73 @@ Plugin Spec:
   }
 }
 ```
+
+## Adapt 3rd party plugins to support rnv
+
+You can adapt existing plugin to support rnv projects
+
+```json
+"example": {
+            "version": "0.1.0",
+            "no-npm": true,
+            "androidtv": {
+                "implementation": "debugImplementation(name:'Example', ext:'aar')\nreleaseImplementation(name:'ExampleProduction', ext:'aar')",
+                 "mainApplication": {
+                    "imports": ["import com.example.Example"],
+                    "createMethods": [
+                        "Example.init(this)"
+                    ]
+                },
+                "BuildGradle": {
+                    "allprojects": {
+                        "repositories": {
+                            "flatDir { dirs 'libs' }": true
+                        }
+                    }
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.example.ApiKey",
+                                    "android:value": "@EXAMPLE_API_KEY@"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "tvos": {
+                "podName": "ExampleInstrumentalApplication",
+                "appDelegateImports": [
+                    "ExampleInstrumentalApplication"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "applicationDidBecomeActive": [
+                            "ExampleInstrumentalApplication.instance.start()"
+                        ]
+                    }
+                },
+                "plist": {
+                    "Example": {
+                        "APIKey": "@EXAMPLE_API_KEY@"
+                    }
+                },
+                "xcodeproj": {
+                    "buildPhases": [
+                        {
+                            "shellPath": "/bin/sh",
+                            "shellScript": "\"${PODS_ROOT}/Example/run\" @EXAMPLE_API_KEY@"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+
+```
