@@ -20,6 +20,7 @@ import {
     waitForEmulator,
     getAppId
 } from '../../common';
+import { inquirerPrompt } from '../../systemTools/prompt';
 import { logToSummary, logTask,
     logError, logWarning,
     logDebug, logInfo,
@@ -176,8 +177,10 @@ const _runGradle = async (c, platform) => {
 const _checkSigningCerts = async (c) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
+    const isRelease = signingConfig === 'Release';
+    const privateConfig = c.files.workspace.appConfig.configPrivate?.[c.platform];
 
-    if (signingConfig === 'Release' && !c.files.workspace.appConfig.configPrivate) {
+    if (isRelease && !privateConfig) {
         logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.workspace.appConfig.dir)} yet.`);
 
         const { confirm } = await inquirer.prompt({
@@ -187,12 +190,24 @@ const _checkSigningCerts = async (c) => {
         });
 
         if (confirm) {
-            const { storeFile, storePassword, keyAlias, keyPassword } = await inquirer.prompt([
-                {
+            const { confirmNewKeystore } = await inquirerPrompt({
+                type: 'confirm',
+                name: 'confirmNewKeystore',
+                message: 'Do you want to generate new keystore as well?'
+            });
+
+            let storeFile;
+
+            if (!confirmNewKeystore) {
+                const result = await inquirerPrompt({
                     type: 'input',
                     name: 'storeFile',
                     message: `Paste asolute or relative path to ${chalk.white(c.paths.workspace.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
-                },
+                });
+                storeFile = result.storeFile;
+            }
+
+            const { storePassword, keyAlias, keyPassword } = await inquirer.prompt([
                 {
                     type: 'password',
                     name: 'storePassword',
@@ -210,11 +225,23 @@ const _checkSigningCerts = async (c) => {
                 }
             ]);
 
+
+            if (confirmNewKeystore) {
+                const keystorePath = `${c.paths.workspace.appConfig.dir}/release.keystore`;
+                const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
+                await executeAsync(c, keytoolCmd, {
+                    env: process.env,
+                    shell: true,
+                    stdio: 'inherit',
+                    silent: true,
+                });
+                storeFile = './release.keystore';
+            }
+
             if (c.paths.workspace.appConfig.dir) {
                 mkdirSync(c.paths.workspace.appConfig.dir);
-                c.files.workspace.appConfig.configPrivate = {
-                    android: { storeFile, storePassword, keyAlias, keyPassword }
-                };
+                c.files.workspace.appConfig.configPrivate = {};
+                c.files.workspace.appConfig.configPrivate[c.platform] = { storeFile, storePassword, keyAlias, keyPassword };
             }
             fs.writeFileSync(c.paths.workspace.appConfig.configPrivate, JSON.stringify(c.files.workspace.appConfig.configPrivate, null, 2));
             logSuccess(`Successfully created private config file at ${chalk.white(c.paths.workspace.appConfig.dir)}.`);
