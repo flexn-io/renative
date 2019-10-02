@@ -39,7 +39,7 @@ export const parseMainApplicationSync = (c, platform) => {
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
         { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
-        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginImports },
+        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginApplicationImports },
         { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
         { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.pluginApplicationMethods },
         { pattern: '{{PLUGIN_ON_CREATE}}', override: c.pluginConfigAndroid.pluginApplicationCreateMethods },
@@ -129,19 +129,22 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     if (plugin.imports) {
         plugin.imports.forEach((v) => {
-            c.pluginConfigAndroid.pluginImports += `import ${v}\n`;
+            c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
         });
     }
 
-    _injectPackage(c, plugin, pkg);
+   _injectPackage(c, plugin, pkg);
 
-    const { mainApplication } = plugin;
-    if (mainApplication) {
-        if (mainApplication.packages) {
-            mainApplication.packages.forEach((v) => {
+   if (plugin.MainApplication) {
+        if (plugin.MainApplication.packages) {
+            plugin.MainApplication.packages.forEach((v) => {
                 _injectPackage(c, plugin, v);
             });
         }
+   }
+
+    const { mainApplication } = plugin;
+    if (mainApplication) {
 
         if (mainApplication.createMethods instanceof Array) {
             c.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
@@ -161,13 +164,13 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     }
 
     if (plugin.mainApplicationMethods) {
-        logWarning(`Plugin ${key} in ${c.paths.project.config} is using DEPRECATED MainApplicationMethods. Use "mainApplication": { "methods": []} instead`);
+        logWarning(`Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${platform}": { MainApplicationMethods }. Use "${platform}": { "mainApplication": { "methods": []}} instead`);
         c.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };
 
 const _injectPackage = (c, plugin, pkg) => {
-    if (pkg) c.pluginConfigAndroid.pluginImports += `import ${pkg}\n`;
+    if (pkg) c.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     let packageParams = '';
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
