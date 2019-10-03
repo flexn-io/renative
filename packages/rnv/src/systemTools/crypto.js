@@ -17,11 +17,9 @@ const getEnvVar = (c) => {
     return envVar;
 };
 
-export const rnvCryptoUpdateProfile = c => new Promise((resolve, reject) => {
-    updateProfile(c)
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+export const rnvCryptoUpdateProfile = async (c) => {
+    await updateProfile(c);
+};
 
 export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
     logTask('rnvCryptoEncrypt');

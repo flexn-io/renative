@@ -40,17 +40,17 @@ After installation you can launch it via Applications:
 Run on Simulator
 
 ```
-rnv run -p forefoxos
+rnv run -p firefoxos
 ```
 
 Run on Device
 
 ```
-rnv run -p forefoxos -d
+rnv run -p firefoxos -d
 ```
 
 Run in Browser
 
 ```
-rnv run -p forefoxos --hosted
+rnv run -p firefoxos --hosted
 ```

@@ -1,21 +1,28 @@
 import chalk from 'chalk';
-import inquirer from 'inquirer';
-import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from '../systemTools/logger';
+import { logTask, rnvStatus, logToSummary, logAppInfo } from '../systemTools/logger';
 import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpdate } from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
-import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList } from '../templateTools';
+import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList, applyTemplate, checkIfTemplateInstalled } from '../templateTools';
 import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
-import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink } from '../pluginTools';
+import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink, configurePlugins } from '../pluginTools';
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
+import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
+// import { getBinaryPath } from '../common';
 import Config from '../config';
+import { checkAndMigrateProject } from '../projectTools/migrator';
+import {
+    parseRenativeConfigs, createRnvConfig, updateConfig,
+    fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
+} from '../configTools/configParser';
+import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -74,7 +81,7 @@ const COMMANDS = {
     },
     export: {
         desc: 'Export your app (ios only)',
-        platforms: [IOS, TVOS],
+        platforms: [IOS, TVOS, MACOS, WINDOWS],
         fn: rnvExport
     },
     log: {
@@ -186,7 +193,6 @@ const COMMANDS = {
     },
     crypto: {
         desc: 'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
-        platforms: [IOS, TVOS],
         subCommands: {
             encrypt: {
                 fn: rnvCryptoEncrypt
@@ -195,15 +201,20 @@ const COMMANDS = {
                 fn: rnvCryptoDecrypt
             },
             installCerts: {
+                platforms: [IOS, TVOS],
                 fn: rnvCryptoInstallCerts
             },
             updateProfile: {
+                requiredParams: ['scheme', 'platform'],
+                platforms: [IOS, TVOS],
                 fn: rnvCryptoUpdateProfile
             },
             updateProfiles: {
+                platforms: [IOS, TVOS],
                 fn: rnvCryptoUpdateProfiles
             },
             installProfiles: {
+                platforms: [IOS, TVOS],
                 fn: rnvCryptoInstallProfiles
             }
         }
@@ -224,16 +235,25 @@ const COMMANDS = {
                 fn: rnvWorkspaceUpdate
             }
         }
+    },
+    fastlane: {
+        desc: 'Run fastlane commands on currectly active app/platform directly via rnv command',
+        platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
+        fn: rnvFastlane
     }
 };
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
+export const SKIP_APP_CONFIG_CHECK = ['crypto'];
 
 
 // ##########################################
 // PUBLIC API
 // ##########################################
 
-const run = async (c, spawnC) => {
+const run = async (c, spawnC, skipStartBuilder) => {
     logTask('cli');
+
+    if (!skipStartBuilder) await _startBuilder(c);
 
     let oldC;
     if (spawnC) {
@@ -272,7 +292,23 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
     }
-    const subCmd = subCommand ? `:${c.subCommand}` : '';
+
+    let subCmd = '';
+    if (subCommand) {
+        subCmd = `:${c.subCommand}`;
+        const requiredPlatforms = cmd.subCommands[c.subCommand]?.platforms;
+        if (requiredPlatforms && !requiredPlatforms.includes(c.platform)) {
+            await _handleUnknownPlatform(c, requiredPlatforms);
+            return;
+        }
+        const requiredParams = cmd.subCommands[c.subCommand]?.requiredParams;
+        if (requiredParams) {
+            for (let i = 0; i < requiredParams.length; i++) {
+                const requiredParam = requiredParams[i];
+                // TODO
+            }
+        }
+    }
 
     await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
@@ -282,6 +318,50 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
 // ##########################################
 // PRIVATE API
 // ##########################################
+
+export const _startBuilder = async (c) => {
+    logTask('initializeBuilder');
+
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+
+    if (!c.command) {
+        if (!c.paths.project.configExists) {
+            const { command } = await inquirerPrompt({
+                type: 'list',
+                default: 'new',
+                name: 'command',
+                message: 'Pick a command',
+                choices: NO_OP_COMMANDS.sort(),
+                pageSize: 15,
+                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
+            });
+            c.command = command;
+        }
+    }
+
+    if (NO_OP_COMMANDS.includes(c.command)) {
+        await configureRnvGlobal(c);
+        return c;
+    }
+
+    await checkAndMigrateProject(c);
+    await parseRenativeConfigs(c);
+    await checkIsRenativeProject(c);
+    await checkAndCreateProjectPackage(c);
+    await configureRnvGlobal(c);
+    await checkIfTemplateInstalled(c);
+    await fixRenativeConfigsSync(c);
+    await configureNodeModules(c);
+    await applyTemplate(c);
+    await configurePlugins(c);
+    await configureNodeModules(c);
+
+    if (!SKIP_APP_CONFIG_CHECK.includes(c.command)) {
+        await updateConfig(c, c.runtime.appId);
+    }
+    await logAppInfo(c);
+};
 
 const _execCommandHep = async (c, cmd) => {
     let opts = '';
@@ -336,7 +416,8 @@ const _handleUnknownCommand = async (c) => {
         type: 'list',
         name: 'command',
         message: 'Pick a command',
-        choices: Object.keys(COMMANDS),
+        pageSize: 7,
+        choices: Object.keys(COMMANDS).sort(),
         logMessage: `cli: Command ${chalk.bold(c.command)} not supported!`
     });
     c.command = command;

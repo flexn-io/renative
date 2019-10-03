@@ -6,6 +6,12 @@ sidebar_label: crypto
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information
+
+## Task Order
+
+🔥 -> `crypto` ->  ✅
+
 ## crypto
 
 Get interactive options for crypto

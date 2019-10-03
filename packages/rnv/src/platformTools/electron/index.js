@@ -157,7 +157,7 @@ const runElectron = async (c, platform, port) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            waitForWebpack(port)
+            waitForWebpack(c, port)
                 .then(() => _runElectronSimulator(c, platform))
                 .catch(logError);
             // await _runElectronSimulator(c, platform);
@@ -209,7 +209,18 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_generateICNS:${platform}`);
     const { maxErrorLength } = c.program;
 
-    const source = path.join(c.paths.appConfig.dir, `assets/${platform}/AppIcon.iconset`);
+    let source;
+
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const pf = path.join(v, `assets/${platform}/AppIcon.iconset`);
+            if (fs.existsSync(pf)) {
+                source = pf;
+            }
+        });
+    } else {
+        source = path.join(v, `assets/${platform}/AppIcon.iconset`);
+    }
 
     const dest = path.join(getAppFolder(c, platform), 'resources/icon.icns');
 

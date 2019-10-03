@@ -6,6 +6,10 @@ sidebar_label: start
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## Task Order
+
+🔥 -> `configure` -> `start` ->  ✅
+
 ## start
 
 Get interactive options for start
@@ -21,3 +25,11 @@ Display start help
 ```bash
 rnv start help
 ```
+
+## Options
+
+`-p`, `--platform` - Specify platform
+
+`-r`, `--reset` - Reset bundler cache
+
+`--mono` - Monochromatic output to terminal (no colors)

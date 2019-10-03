@@ -19,7 +19,7 @@ import {
     getIP,
     logSuccess,
 } from '../../common';
-import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
 import { IOS, TVOS, MACOS } from '../../constants';
 import {
@@ -228,34 +228,45 @@ const archiveXcodeProject = (c, platform) => {
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const exportPathArchive = `${exportPath}/${scheme}.xcarchive`;
-    const p = [
-        '-workspace',
-        `${appPath}/${appFolderName}.xcworkspace`,
-        '-scheme',
-        scheme,
-        '-sdk',
-        ...sdkArr,
-        '-configuration',
-        runScheme,
-        'archive',
-        '-archivePath',
-        exportPathArchive
-    ];
+    let ps = '';
+    if (c.program.xcodebuildArchiveArgs) {
+        ps = c.program.xcodebuildArchiveArgs;
+    }
+    const p = [];
 
-    if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
-    if (ignoreLogs) p.push('-quiet');
+    if (!ps.includes('-workspace')) {
+        p.push(`-workspace ${appPath}/${appFolderName}.xcworkspace`);
+    }
+    if (!ps.includes('-scheme')) {
+        p.push(`-scheme ${scheme}`);
+    }
+    if (!ps.includes('-sdk')) {
+        p.push('-sdk');
+        p.push(...sdkArr);
+    }
+    if (!ps.includes('-configuration')) {
+        p.push(`-configuration ${runScheme}`);
+    }
+    p.push('archive');
+    if (!ps.includes('-archivePath')) {
+        p.push(`-archivePath ${exportPathArchive}`);
+    }
+
+    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) p.push('-allowProvisioningUpdates');
+    if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
     // if (sdk === 'iphonesimulator') p.push('ONLY_ACTIVE_ARCH=NO', "-destination='name=iPhone 7,OS=10.2'");
+
 
     logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
 
     if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         return packageBundleForXcode(c, platform, bundleIsDev)
-            .then(() => executeAsync(c, `xcodebuild ${p.join(' ')}`))
+            .then(() => executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`))
             .then(() => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
             });
     }
-    return executeAsync(c, `xcodebuild ${p.join(' ')}`)
+    return executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`)
         .then(() => {
             logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
         });
@@ -270,17 +281,26 @@ const exportXcodeProject = (c, platform) => {
     const scheme = getConfigProp(c, platform, 'scheme');
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
-    const p = [
-        '-exportArchive',
-        '-archivePath',
-        `${exportPath}/${scheme}.xcarchive`,
-        '-exportOptionsPlist',
-        `${appPath}/exportOptions.plist`,
-        '-exportPath',
-        `${exportPath}`,
-    ];
-    if (allowProvisioningUpdates) p.push('-allowProvisioningUpdates');
-    if (ignoreLogs) p.push('-quiet');
+
+    let ps = '';
+    if (c.program.xcodebuildExportArgs) {
+        ps = c.program.xcodebuildExportArgs;
+    }
+    const p = ['-exportArchive'];
+
+    if (!ps.includes('-archivePath')) {
+        p.push(`-archivePath ${exportPath}/${scheme}.xcarchive`);
+    }
+    if (!ps.includes('-exportOptionsPlist')) {
+        p.push(`-exportOptionsPlist ${appPath}/exportOptions.plist`);
+    }
+    if (!ps.includes('-exportPath')) {
+        p.push(`-exportPath ${exportPath}`);
+    }
+
+    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) p.push('-allowProvisioningUpdates');
+    if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
+
     logDebug('running', p);
 
     logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
@@ -364,6 +384,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         appDelegateMethods: {
             application: {
                 didFinishLaunchingWithOptions: [],
+                applicationDidBecomeActive: [],
                 open: [],
                 supportedInterfaceOrientationsFor: [],
                 didReceiveRemoteNotification: [],
@@ -380,29 +401,26 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     };
 
     // FONTS
-    if (c.buildConfig) {
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.buildConfig.common;
-                    if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                        const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
-                        if (fs.existsSync(fontSource)) {
-                            const fontFolder = path.join(appFolder, 'fonts');
-                            mkdirSync(fontFolder);
-                            const fontDest = path.join(fontFolder, font);
-                            copyFileSync(fontSource, fontDest);
-                            c.pluginConfigiOS.embeddedFontSources.push(fontSource);
-                            c.pluginConfigiOS.embeddedFonts.push(font);
-                        } else {
-                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                        }
-                    }
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
+                const fontSource = path.join(dir, font);
+                if (fs.existsSync(fontSource)) {
+                    const fontFolder = path.join(appFolder, 'fonts');
+                    mkdirSync(fontFolder);
+                    const fontDest = path.join(fontFolder, font);
+                    copyFileSync(fontSource, fontDest);
+                    c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                    c.pluginConfigiOS.embeddedFonts.push(font);
+                } else {
+                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                 }
-            });
+            }
         }
-    }
+    });
+
 
     // CHECK TEAM ID IF DEVICE
     const tId = getConfigProp(c, platform, 'teamID');
@@ -431,11 +449,22 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
                 .then(() => resolve())
                 .catch((e) => {
                     if (!c.program.update) {
-                        logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                        runPod(c, 'update', getAppFolder(c, platform), true)
-                            .then(() => parseXcodeProject(c, platform))
-                            .then(() => resolve())
-                            .catch(err => reject(err));
+                        if (e && e.toString) {
+                            const s = e.toString();
+                            if (
+                                s.includes('No provisionProfileSpecifier configured')
+                              || s.includes('TypeError:')
+                              || s.includes('ReferenceError:')
+                            ) {
+                                reject(e);
+                            }
+                        } else {
+                            logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
+                            runPod(c, 'update', getAppFolder(c, platform), true)
+                                .then(() => parseXcodeProject(c, platform))
+                                .then(() => resolve())
+                                .catch(err => reject(err));
+                        }
                     } else {
                         reject(e);
                     }

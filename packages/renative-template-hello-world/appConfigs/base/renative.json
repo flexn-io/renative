@@ -21,7 +21,7 @@
             "entryFile": "index.ios",
             "scheme": "RNVApp",
             "teamID": "",
-            "provisioningStyle": "Manual",
+            "provisioningStyle": "Automatic",
             "backgroundColor": "black",
             "systemCapabilities": {
                 "com.apple.AccessWiFi": false,
@@ -208,8 +208,8 @@
             "entryFile": "index.web",
             "backgroundColor": "black",
             "webpackConfig": {
-              "devServerHost": "0.0.0.0",
-              "baseUrl": ""
+                "devServerHost": "0.0.0.0",
+                "baseUrl": ""
             },
             "buildSchemes": {
                 "debug": {

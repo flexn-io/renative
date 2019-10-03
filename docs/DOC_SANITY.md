@@ -28,7 +28,7 @@ TBC
 ```
 rnv profile
 rnv debug
-rnv intgeration
+rnv integration
 rnv doctor
 ```
 

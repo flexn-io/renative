@@ -6,46 +6,28 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
-import inquirer from 'inquirer';
 
-import {
-    cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
-    getRealPath,
-    isRunningOnWindows
-} from './systemTools/fileutils';
+import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
-import { configureTizenGlobal } from './platformTools/tizen';
-import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
-import { getMergedPlugin, configurePlugins } from './pluginTools';
 import {
-    logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
+    logWelcome, configureLogger, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo, getCurrentCommand
+    logInitialize, logAppInfo
 } from './systemTools/logger';
 import {
-    ANDROID,
-    WEB,
-    TIZEN,
-    IOS,
-    TVOS,
-    WEBOS,
-    PLATFORMS,
+    IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
+    WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
     SDK_PLATFORMS,
     SUPPORTED_PLATFORMS
 } from './constants';
-import { executeAsync, execCLI } from './systemTools/exec';
+import { execCLI } from './systemTools/exec';
 import {
-    parseRenativeConfigs, createRnvConfig, updateConfig, gatherInfo,
+    parseRenativeConfigs, createRnvConfig, updateConfig,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
-import { configureEntryPoints, configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
+import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
-import { checkAndMigrateProject } from './projectTools/migrator';
-
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'crypto', 'help'];
-export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -55,48 +37,6 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
 
     resolve(c);
 });
-
-export const startBuilder = async (c) => {
-    logTask('initializeBuilder');
-
-    await checkAndMigrateProject(c);
-    await parseRenativeConfigs(c);
-
-    if (!c.command) {
-        if (!c.paths.project.configExists) {
-            const { command } = await inquirerPrompt({
-                type: 'list',
-                default: 'new',
-                name: 'command',
-                message: 'Pick a command',
-                choices: NO_OP_COMMANDS.sort(),
-                pageSize: 15,
-                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
-            });
-            c.command = command;
-        }
-    }
-
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        await configureRnvGlobal(c);
-        return c;
-    }
-
-    await checkAndMigrateProject(c);
-    await parseRenativeConfigs(c);
-    await checkIsRenativeProject(c);
-    await checkAndCreateProjectPackage(c);
-    await configureRnvGlobal(c);
-    await checkIfTemplateInstalled(c);
-    await fixRenativeConfigsSync(c);
-    await configureNodeModules(c);
-    await applyTemplate(c);
-    await configurePlugins(c);
-    await configureNodeModules(c);
-    await updateConfig(c, c.runtime.appId);
-    await logAppInfo(c);
-    return c;
-};
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -183,7 +123,7 @@ export const isSdkInstalled = (c, platform) => {
 
     if (c.files.workspace.config) {
         const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(c.files.workspace.config.sdks[sdkPlatform]);
+        if (sdkPlatform) return fs.existsSync(getRealPath(c, c.files.workspace.config.sdks[sdkPlatform]));
     }
 
     return false;
@@ -204,6 +144,37 @@ export const checkSdk = (c, platform, reject) => {
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
+export const getBinaryPath = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const id = getConfigProp(c, platform, 'id');
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'debug');
+    const version = getAppVersion(c, platform);
+    const productName = 'ReNative - macos';
+    const appName = getConfigProp(c, platform, 'appName');
+
+    switch (platform) {
+    case IOS:
+    case TVOS:
+        return `${appFolder}/release/RNVApp.ipa`;
+    case ANDROID:
+    case ANDROID_TV:
+    case ANDROID_WEAR:
+        return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
+    case WEB:
+        return `${appFolder}/public`;
+    case MACOS:
+    case WINDOWS:
+        return `${appFolder}/build/release/${productName}-${version}`;
+    case TIZEN:
+    case TIZEN_MOBILE:
+        return `${appFolder}/output/${appName}.wgt`;
+    case WEBOS:
+        return `${appFolder}/output/${id}_${version}_all.ipk`;
+    }
+
+    return appFolder;
+};
+
 export const getAppSubFolder = (c, platform) => {
     let subFolder = '';
     if (platform === IOS) subFolder = 'RNVApp';
@@ -213,7 +184,7 @@ export const getAppSubFolder = (c, platform) => {
 
 export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
-export const getAppConfigId = (c, platform) => c.buildConfig.id;
+export const getAppConfigId = c => c.buildConfig.id;
 
 const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
     if (resultCli) {
@@ -257,7 +228,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
     const resultScheme = scheme[key];
-    const resultCommon = c.buildConfig.common[key];
+    const resultCommon = c.buildConfig.common?.[key];
 
     const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
@@ -274,20 +245,20 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms[platform].version || c.buildConfig.common.version || c.files.project.package.version;
+export const getAppVersion = (c, platform) => c.buildConfig.platforms?.[platform]?.version || c.buildConfig.common?.version || c.files.project.package?.version;
 
-export const getAppAuthor = (c, platform) => c.buildConfig.platforms[platform].author || c.buildConfig.common.author || c.files.project.package.author;
+export const getAppAuthor = (c, platform) => c.buildConfig.platforms?.[platform]?.author || c.buildConfig.common?.author || c.files.project.package?.author;
 
-export const getAppLicense = (c, platform) => c.buildConfig.platforms[platform].license || c.buildConfig.common.license || c.files.project.package.license;
+export const getAppLicense = (c, platform) => c.buildConfig.platforms?.[platform]?.license || c.buildConfig.common?.license || c.files.project.package?.license;
 
-export const getEntryFile = (c, platform) => c.buildConfig.platforms[platform].entryFile;
+export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
 
 export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) => c.buildConfig.platforms[platform].description || c.buildConfig.common.description || c.files.project.package.description;
+export const getAppDescription = (c, platform) => c.buildConfig.platforms?.[platform]?.description || c.buildConfig.common?.description || c.files.project.package?.description;
 
 export const getAppVersionCode = (c, platform) => {
-    if (c.buildConfig.platforms[platform].versionCode) {
+    if (c.buildConfig.platforms?.[platform]?.versionCode) {
         return c.buildConfig.platforms[platform].versionCode;
     }
     if (c.buildConfig.common.versionCode) {
@@ -371,10 +342,12 @@ export const writeCleanFile = (source, destination, overrides) => {
     }
     const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
-    overrides.forEach((v) => {
-        const regEx = new RegExp(v.pattern, 'g');
-        pFileClean = pFileClean.replace(regEx, v.override);
-    });
+    if (overrides) {
+        overrides.forEach((v) => {
+            const regEx = new RegExp(v.pattern, 'g');
+            pFileClean = pFileClean.replace(regEx, v.override);
+        });
+    }
 
     fs.writeFileSync(destination, pFileClean, 'utf8');
 };
@@ -468,17 +441,22 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = (port) => {
+export const waitForWebpack = (c, port) => {
     logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
     const spinner = ora('Waiting for webpack to finish...').start();
-    const localIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
+    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+        devServerHost = '127.0.0.1';
+    }
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            axios.get(`http://${localIp}:${port}`).then((res) => {
+            axios.get(`http://${devServerHost}:${port}`).then((res) => {
                 if (res.status === 200) {
                     const isReady = res.data.toString().includes('<!DOCTYPE html>');
                     if (isReady) {
@@ -519,7 +497,6 @@ export {
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    configureEntryPoints,
     logWelcome,
     isPlatformSupported,
     isBuildSchemeSupported,
@@ -530,7 +507,6 @@ export default {
     logComplete,
     logError,
     initializeBuilder,
-    startBuilder,
     logDebug,
     logInfo,
     logErrorPlatform,

@@ -52,7 +52,7 @@ IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
 2. Have ios developer account properly configured with ability to generate provisioning profiles dynamically (Dynamic Signing)
 3. Have correct TeamID assigned `..platforms.ios.teamID` in your `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
-You can configure each `buldScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
 
 ```
 rnv start

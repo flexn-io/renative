@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import merge from 'deepmerge';
-import inquirer from 'inquirer';
 import {
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_AVDMANAGER,
@@ -147,7 +146,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
     c.paths.rnv.configWorkspaces = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_WORKSPACES_NAME);
 
-    if (fs.existsSync(!c.paths.GLOBAL_RNV_DIR)) mkdirSync(c.paths.GLOBAL_RNV_DIR);
+    if (!fs.existsSync(c.paths.GLOBAL_RNV_DIR)) mkdirSync(c.paths.GLOBAL_RNV_DIR);
 
     _generateConfigPaths(c.paths.project, base);
 
@@ -248,6 +247,9 @@ const _getWorkspaceDirPath = (c) => {
                 logInfo(`Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.rnv.configWorkspaces} has been updated.`);
             }
         }
+    }
+    if (c.buildConfig?.paths?.globalConfigDir) {
+        logWarning(`paths.globalConfigDir in ${c.paths.project.config} is DEPRECATED. use workspaceID insead. more info at https://renative.org/docs/workspaces`);
     }
     if (!dirPath) {
         return c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
@@ -382,6 +384,10 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
             path.join(extendDir, extendAppId),
             pathObj.dir
         ];
+        pathObj.fontDirs = [
+            path.join(pathObj.dirs[0], 'fonts'),
+            path.join(pathObj.dirs[1], 'fonts')
+        ];
         loadFile(fileObj, pathObj, 'configBase');
     }
 
@@ -394,7 +400,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
 export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
-    if (!appId || appId === '?') return;
+    if (!appId || appId === '?' || appId === true) return;
 
     c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
@@ -402,6 +408,7 @@ export const setAppConfig = (c, appId) => {
     _findAndSwitchAppConfigDir(c, appId);
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
+    c.paths.appConfig.fontsDir = path.join(c.paths.appConfig.dir, 'fonts');
     _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
 
     const workspaceAppConfigsDir = getRealPath(c, c.buildConfig.workspaceAppConfigsDir);
@@ -759,24 +766,24 @@ export const configureRnvGlobal = c => new Promise((resolve, reject) => {
         const { sdks } = c.files.workspace.config;
         if (sdks) {
             if (sdks.ANDROID_SDK) {
-                c.cli[CLI_ANDROID_EMULATOR] = path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`);
-                c.cli[CLI_ANDROID_ADB] = path.join(sdks.ANDROID_SDK, `platform-tools/adb${isRunningOnWindows ? '.exe' : ''}`);
-                c.cli[CLI_ANDROID_AVDMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/avdmanager${isRunningOnWindows ? '.bat' : ''}`);
-                c.cli[CLI_ANDROID_SDKMANAGER] = path.join(sdks.ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`);
+                c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdks.ANDROID_SDK, `emulator/emulator${isRunningOnWindows ? '.exe' : ''}`));
+                c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(sdks.ANDROID_SDK, `platform-tools/adb${isRunningOnWindows ? '.exe' : ''}`));
+                c.cli[CLI_ANDROID_AVDMANAGER] = getRealPath(c, path.join(sdks.ANDROID_SDK, `tools/bin/avdmanager${isRunningOnWindows ? '.bat' : ''}`));
+                c.cli[CLI_ANDROID_SDKMANAGER] = getRealPath(c, path.join(sdks.ANDROID_SDK, `tools/bin/sdkmanager${isRunningOnWindows ? '.bat' : ''}`));
             }
             if (sdks.TIZEN_SDK) {
-                c.cli[CLI_TIZEN_EMULATOR] = path.join(sdks.TIZEN_SDK, `tools/emulator/bin/em-cli${isRunningOnWindows ? '.bat' : ''}`);
-                c.cli[CLI_TIZEN] = path.join(sdks.TIZEN_SDK, `tools/ide/bin/tizen${isRunningOnWindows ? '.bat' : ''}`);
-                c.cli[CLI_SDB_TIZEN] = path.join(sdks.TIZEN_SDK, 'tools/sdb');
+                c.cli[CLI_TIZEN_EMULATOR] = getRealPath(c, path.join(sdks.TIZEN_SDK, `tools/emulator/bin/em-cli${isRunningOnWindows ? '.bat' : ''}`));
+                c.cli[CLI_TIZEN] = getRealPath(c, path.join(sdks.TIZEN_SDK, `tools/ide/bin/tizen${isRunningOnWindows ? '.bat' : ''}`));
+                c.cli[CLI_SDB_TIZEN] = getRealPath(c, path.join(sdks.TIZEN_SDK, `tools/sdb${isRunningOnWindows ? '.exe' : ''}`));
             }
             if (sdks.WEBOS_SDK) {
-                c.cli[CLI_WEBOS_ARES] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_PACKAGE] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_INSTALL] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_LAUNCH] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`);
-                c.cli[CLI_WEBOS_ARES_NOVACOM] = path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`);
+                c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares${isRunningOnWindows ? '.cmd' : ''}`));
+                c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(c, path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-package${isRunningOnWindows ? '.cmd' : ''}`));
+                c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(c, path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-install${isRunningOnWindows ? '.cmd' : ''}`));
+                c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(c, path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-launch${isRunningOnWindows ? '.cmd' : ''}`));
+                c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = getRealPath(c, path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-setup-device${isRunningOnWindows ? '.cmd' : ''}`));
+                c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(c, path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-device-info${isRunningOnWindows ? '.cmd' : ''}`));
+                c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(c, path.join(c.files.workspace.config.sdks.WEBOS_SDK, `CLI/bin/ares-novacom${isRunningOnWindows ? '.cmd' : ''}`));
             }
         } else {
             logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);

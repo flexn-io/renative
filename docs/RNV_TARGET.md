@@ -6,6 +6,8 @@ sidebar_label: target
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> Manages simulators and emulators
+
 ## target
 
 Get interactive options for target
