@@ -22,10 +22,7 @@ import {
     waitForEmulator
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
-import { copyFolderContentsRecursiveSync } from '../../systemTools/fileutils';
 import { buildWeb } from '../web';
-
-const CHECK_INTEVAL = 2000;
 
 const formatXMLObject = obj => ({
     ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
@@ -53,17 +50,15 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
 
 function launchTizenSimulator(c, name) {
     logTask(`launchTizenSimulator:${name}`);
-    const { maxErrorLength } = c.program;
 
     if (name) {
-        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, { detached: true, maxErrorLength });
+        return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, { detached: true });
     }
     return Promise.reject('No simulator -t target name specified!');
 }
 
 const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
-    const { maxErrorLength } = c.program;
 
     execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.workspace.dir} -a rnv -f tizen_author -p 1234`)
         .then(() => addDevelopTizenCertificate(c))
@@ -76,7 +71,6 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
 
 const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
-    const { maxErrorLength } = c.program;
 
     execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.workspace.dir, 'tizen_author.p12')} -p 1234`)
         .then(() => resolve())
@@ -91,7 +85,9 @@ const getDeviceID = async (c, target) => {
 
     if (device) {
         const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
-        if (connectResponse.includes('failed to connect to remote target')) throw new Error(connectResponse);
+        if (connectResponse.includes('EPERM')) throw new Error('We can\'t connect to this device even though it is reachable. Please make sure you have enabled Developer Mode and you have added your IP in the Host PC IP section. For more information consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device');
+        if (connectResponse.includes('failed to connect to remote target')) throw new Error(`Failed to connect to ${target}. Make sure the IP is correct and you are connected on the same network.`);
+        if (connectResponse.includes('error')) throw new Error(connectResponse);
     }
 
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
