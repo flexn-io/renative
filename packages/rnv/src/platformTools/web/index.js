@@ -17,6 +17,7 @@ import {
     logSuccess,
     waitForWebpack,
     logError,
+    logWarning,
     getAppTitle
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -163,7 +164,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
-                logInfo(
+                logWarning(
                     `Looks like your ${chalk.white(platform)} devServerHost at port ${chalk.white(
                         port
                     )} is already running. ReNative Will use it!`

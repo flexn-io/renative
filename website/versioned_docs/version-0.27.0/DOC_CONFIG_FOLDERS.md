@@ -15,15 +15,15 @@ applies for both public and private `./..` and `~./rnv/[PROJECT_NAME]/..`
 
 
     .
-    ├── projectConfig               
-    │   ├── fonts                   
-    │   ├── plugins                 
-    │   └── builds                  
+    ├── projectConfig
+    │   ├── fonts
+    │   ├── plugins
+    │   └── builds
     └── appConfigs
         └── [APP_ID]
             ├── assets
             │   └── [PLATFORM]
-            ├── fonts   
+            ├── fonts
             ├── builds
             └── plugins
                 └── [PLUGIN_KEY]
@@ -117,7 +117,7 @@ Legend:
 - `[PLATFORM]` - specific platform key like `ios`, `andoid`, `web`, etc..
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT-NAME]` - `name` field in the root `package.json` file of your project
-- `[PLUGIN_ID]` - `key` of the plugin definced in `./projectConfig/plugins.json`
+- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
 - `~/.rnv` - name of default workspace folder where local and sensitive information is stored. NOTE: this folder path can be customized via ` { "workspace": "MY_WORKSPACE_NAME" }` in `renative.json` of each project
 
 Your workspaces can be found in `~./renative.workspaces.json`

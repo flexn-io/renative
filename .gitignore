@@ -69,3 +69,4 @@ rnv-config.local.json
 
 # Testing
 /packages/**/coverage
+/packages/**/dist

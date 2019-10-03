@@ -6,6 +6,10 @@ sidebar_label: status
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+## Task Order
+
+🔥 -> `status` ->  ✅
+
 ## status
 
 Show current project summary

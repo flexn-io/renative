@@ -14,13 +14,13 @@ App configs are ReNative compliant app configuration folders which follow prescr
 
 Applies for:
 
-- `renative.json` - standard config (commited to git)
+- `renative.json` - standard config (committed to git)
 - `renative.private.json` - config containing sensitive values (ignored from git)
 - `renative.local.json` - config containing local values (ignored from git)
 - `renative.build.json` - final merged config located in `./platformBuilds/renative.build.json` (ignored from git)
 - `renative.runtime.json` - final merged config available to app runtime located in `./platformBuilds/renative.runtime.json` (ignored from git)
-- `renative.template.json` - config for renative template projects used to generate new projects (commited to git)
-- `renative.plugin.json` - config for renative plugin projects (commited to git)
+- `renative.template.json` - config for renative template projects used to generate new projects (committed to git)
+- `renative.plugin.json` - config for renative plugin projects (committed to git)
 
 ## Structure
 
@@ -28,11 +28,11 @@ Applies for:
 
     .
     └── [PROJECT_NAME]
-        ├── appConfigs                 
-        │   └── [APP_ID]              
+        ├── appConfigs
+        │   └── [APP_ID]
         │       ├── renative.json
-        │       └── renative.local.json             
-        ├── platformBuilds              
+        │       └── renative.local.json
+        ├── platformBuilds
         │   └── renative.build.json
         ├── renative.json
         └── renative.local.json
@@ -41,12 +41,12 @@ Applies for:
 
     .
     └── [PROJECT_NAME]
-        ├── appConfigs                 
-        │   └── [APP_ID]              
+        ├── appConfigs
+        │   └── [APP_ID]
         │       ├── renative.json
-        │       └── renative.private.json             
+        │       └── renative.private.json
         ├── renative.json
-        └── renative.private.json                        
+        └── renative.private.json
 
 ## Merges
 
@@ -190,7 +190,7 @@ BUILD_SCHEME_PROPS
 ```json
 {
   "buildSchemes": {
-    "[BUILD_SHEME_KEY]": {
+    "[BUILD_SCHEME_KEY]": {
       "[PLATFORM]": {
         ...COMMON_PROPS
         ...[PLATFORM]_COMMON_PROPS

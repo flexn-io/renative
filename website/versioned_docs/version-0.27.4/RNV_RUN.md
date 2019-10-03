@@ -1,26 +1,30 @@
 ---
-id: version-0.27-rnv-deploy
-title: rnv deploy
-sidebar_label: deploy
-original_id: rnv-deploy
+id: version-0.27.4-rnv-run
+title: rnv run
+sidebar_label: run
+original_id: rnv-run
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-## deploy
+## Task Order
 
-Get interactive options for deploy
+🔥 -> `configure` -> `package` -> `run` ->  ✅
+
+## run
+
+Runs specific app of specific platform
 
 ```bash
-rnv deploy
+rnv run
 ```
 
 ### help
 
-Display deploy help
+Display help
 
 ```bash
-rnv deploy help
+rnv run help
 ```
 
 ## Options
@@ -35,6 +39,14 @@ rnv deploy help
 
 `-r`, `--reset` - Clean project beforehand
 
+`-t`, `--target` - Specify target simulator / device
+
+`-d`, `--device` - Run on device
+
 `-i`, `--info` - Show full stack trace
+
+`--analyzer` - Show app size analysis report
+
+`--hosted` - Run platform as hosted web app in browser
 
 `--mono` - Monochromatic output to terminal (no colors)

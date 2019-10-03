@@ -85,6 +85,12 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
                 end: 'return true',
 
             },
+            applicationDidBecomeActive: {
+                func: 'func applicationDidBecomeActive(_ application: UIApplication) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
+            },
             open: {
                 func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
                 begin: 'var handled = false',

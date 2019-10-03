@@ -112,7 +112,7 @@ const _mergeNodeParameters = (node, nodeParamsExt) => {
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
 
-const _mergeNodeChildren = (node, nodeChildrenExt) => {
+const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
     // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);
     if (!node) {
         logWarning('_mergeNodeChildren: Node is undefined');

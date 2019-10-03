@@ -1,4 +1,4 @@
-import Common, { initializeBuilder, startBuilder } from './common';
+import Common, { initializeBuilder } from './common';
 import Logger, { logComplete, logError } from './systemTools/logger';
 import CLI from './cli';
 import Constants from './constants';
@@ -13,7 +13,6 @@ import Config from './config';
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
         .then(c => Config.initializeConfig(c))
-        .then(c => startBuilder(c))
         .then(c => CLI(c))
         .then(() => logComplete(true))
         .catch(e => logError(e, true));
@@ -25,4 +24,4 @@ export {
     run, CLI
 };
 
-export default { run };
+export default { run, Config };

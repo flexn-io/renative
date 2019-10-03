@@ -1,11 +1,17 @@
 ---
-id: version-0.27-rnv-clean
+id: version-0.27.4-rnv-clean
 title: rnv clean
 sidebar_label: clean
 original_id: rnv-clean
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
+
+> Automatically removes all node_modules and lock in your project and its dependencies
+
+## Task Order
+
+🔥 -> `clean` ->  ✅
 
 ## clean
 

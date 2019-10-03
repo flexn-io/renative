@@ -39,9 +39,10 @@ export const parseMainApplicationSync = (c, platform) => {
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
         { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
-        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginImports },
+        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginApplicationImports },
         { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
-        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.mainApplicationMethods },
+        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.pluginApplicationMethods },
+        { pattern: '{{PLUGIN_ON_CREATE}}', override: c.pluginConfigAndroid.pluginApplicationCreateMethods },
     ]);
 };
 
@@ -128,7 +129,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     if (plugin.imports) {
         plugin.imports.forEach((v) => {
-            c.pluginConfigAndroid.pluginImports += `import ${v}\n`;
+            c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
         });
     }
 
@@ -142,13 +143,33 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         }
     }
 
+    const { mainApplication } = plugin;
+    if (mainApplication) {
+        if (mainApplication.createMethods instanceof Array) {
+            c.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
+            c.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join('\n    ')}`;
+        }
+
+        if (mainApplication.imports instanceof Array) {
+            mainApplication.imports.forEach((v) => {
+                c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
+            });
+        }
+
+        if (mainApplication.methods instanceof Array) {
+            c.pluginConfigAndroid.pluginApplicationMethods += '\n';
+            c.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;
+        }
+    }
+
     if (plugin.mainApplicationMethods) {
-        c.pluginConfigAndroid.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+        logWarning(`Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${c.platform}": { MainApplicationMethods }. Use "${c.platform}": { "mainApplication": { "methods": []}} instead`);
+        c.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };
 
 const _injectPackage = (c, plugin, pkg) => {
-    if (pkg) c.pluginConfigAndroid.pluginImports += `import ${pkg}\n`;
+    if (pkg) c.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     let packageParams = '';
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
