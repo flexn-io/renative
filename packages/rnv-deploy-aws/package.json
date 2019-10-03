@@ -24,6 +24,7 @@
     "homepage": "https://github.com/pavjacko/renative#readme",
     "dependencies": {
         "aws-sdk": "^2.537.0",
+        "mime-types": "^2.1.24",
         "uuid": "^3.3.3"
     },
     "peerDependencies": {

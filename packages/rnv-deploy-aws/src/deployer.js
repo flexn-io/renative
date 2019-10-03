@@ -4,6 +4,7 @@ import { getInstalledPath } from 'get-installed-path';
 import path from 'path';
 import fs from 'fs';
 import uuid from 'uuid/v1';
+import mime from 'mime-types';
 
 class Deployer {
     async initialize(configRegion) {
@@ -77,6 +78,7 @@ class Deployer {
         await this.s3.putObject({
             Bucket: bucket,
             Key: 'index.html',
+            ContentType: 'text/html',
             Body: `<body><head><meta http-equiv="refresh" content="0; URL=${url} /></head></body>`
         }).promise();
     }
@@ -105,7 +107,8 @@ class Deployer {
             return this.s3.putObject({
                 Bucket: bucket,
                 Key: `${destination}/${file}`,
-                Body: fileContent
+                Body: fileContent,
+                ContentType: mime.lookup(file),
             }).promise();
         }));
     }
@@ -139,11 +142,15 @@ class Deployer {
         const app = bucket.split('.')[0];
 
         this.logDebug(`checking if ${domain} exists and has a CNAME of ${app}`);
-        const exists = await this.getHostedZone(domain);
-        console.log('**********', exists);
-        if (!exists) {
-            // await this.r53.createHostedZone({ Name: domain, CallerReference: uuid() }).promise();
+        const zone = await this.getHostedZone(domain);
+        if (!zone) {
+            this.logDebug(`${domain} hosted zone does not exists. Creating...`);
+            // const newZone = await this.r53.createHostedZone({ Name: domain, CallerReference: uuid() }).promise();
+            // zone = newZone.data.HostedZone;
+            if (!zone) throw new Error('Zone was not correctly created!');
         }
+        this.logDebug(`checking if ${domain} has the ${app} CNAME`);
+        console.log(zone);
     }
 
     async getHostedZone(domain) {

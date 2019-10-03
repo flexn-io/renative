@@ -45,7 +45,7 @@ const doDeploy = async () => {
     const version = `v${files.project.package.version}`;
 
     await deployToAWS(version);
-    await deployToAWS('latest');
+    // await deployToAWS('latest');
 };
 
 export default doDeploy;
