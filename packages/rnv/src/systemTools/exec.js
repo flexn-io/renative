@@ -212,6 +212,9 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     let errFound = 0;
     arr = arr.filter((v) => {
         if (v === '') return false;
+        if (v.includes('-Werror')) {
+            return false;
+        }
         if (v.search(toSearch) !== -1) {
             errFound = 5;
             return true;
