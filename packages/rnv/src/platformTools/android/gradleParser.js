@@ -192,7 +192,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
     targetCompatibility 1.8`;
 
     // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
-    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX');
+    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
     if (enableAndroidX === true) {
         c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.appcompat:appcompat:1.1.0"\n';
     } else {
