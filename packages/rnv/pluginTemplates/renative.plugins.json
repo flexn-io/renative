@@ -318,10 +318,10 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)"
+                            "ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)"
                         ],
                         "open": [
-                            "FBSDKApplicationDelegate.sharedInstance().application(app, open: url, options: options)"
+                            "ApplicationDelegate.shared.application(app, open: url, options: options)"
                         ]
                     }
                 },
