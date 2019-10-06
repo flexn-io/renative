@@ -47,8 +47,8 @@ export const rnvConfigure = c => new Promise((resolve, reject) => {
         .then(() => copyRuntimeAssets(c))
         .then(() => copySharedPlatforms(c))
         .then(() => generateRuntimeConfig(c))
-        .then(() => _runPlugins(c, c.paths.rnv.plugins.dir))
-        .then(() => _runPlugins(c, c.paths.project.projectConfig.pluginsDir))
+        .then(() => overridePlugins(c, c.paths.rnv.plugins.dir))
+        .then(() => overridePlugins(c, c.paths.project.projectConfig.pluginsDir))
         .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
         .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
@@ -155,8 +155,8 @@ const _checkAndCreatePlatforms = async (c, platform) => {
     }
 };
 
-const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
-    logTask(`_runPlugins:${pluginsPath}`, chalk.grey);
+const overridePlugins = (c, pluginsPath) => new Promise((resolve) => {
+    logTask(`overridePlugins:${pluginsPath}`, chalk.grey);
 
     if (!fs.existsSync(pluginsPath)) {
         logInfo(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
