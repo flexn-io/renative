@@ -347,21 +347,14 @@
             },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"],
                 "implementations": [
-                    "'com.facebook.android:facebook-android-sdk:4.22.1'"
+                    "'com.facebook.android:facebook-android-sdk:[4,5)'"
                 ],
                 "imports": ["com.facebook.CallbackManager"],
                 "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
                 "mainActivity": {
-                    "imports": [
-                        "com.facebook.appevents.AppEventsLogger",
-                        "com.facebook.FacebookSdk"
-                    ],
-                    "createMethods": [
-                        "FacebookSdk.sdkInitialize(applicationContext)",
-                        "AppEventsLogger.activateApp(this)"
-                    ],
+                    "imports": [],
+                    "createMethods": [],
                     "resultMethods": [
                         "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
                     ]
@@ -369,21 +362,14 @@
             },
             "androidtv": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
-                "packageParams": ["mCallbackManager"],
                 "implementations": [
-                    "'com.facebook.android:facebook-android-sdk:4.22.1'"
+                    "'com.facebook.android:facebook-android-sdk:[4,5)'"
                 ],
                 "imports": ["com.facebook.CallbackManager"],
                 "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
                 "mainActivity": {
-                    "imports": [
-                        "com.facebook.appevents.AppEventsLogger",
-                        "com.facebook.FacebookSdk"
-                    ],
-                    "createMethods": [
-                        "FacebookSdk.sdkInitialize(applicationContext)",
-                        "AppEventsLogger.activateApp(this)"
-                    ],
+                    "imports": [],
+                    "createMethods": [],
                     "resultMethods": [
                         "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
                     ]
@@ -597,10 +583,10 @@
                 "podName": "react-native-document-picker"
             },
             "android": {
-                "package": "com.reactnativedocumentpicker.ReactNativeDocumentPicker"
+                "package": "io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage"
             },
             "androidtv": {
-                "package": "com.reactnativedocumentpicker.ReactNativeDocumentPicker"
+                "package": "io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage"
             }
         },
         "react-native-image-crop-picker": {
