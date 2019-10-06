@@ -34,7 +34,7 @@ import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
-import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, readObjectSync } from '../systemTools/fileutils';
 import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
@@ -174,7 +174,26 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
             //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
             // });
         } else {
-            logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping override action`);
+            logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping folder override action`);
+        }
+
+        const overrideConfig = readObjectSync(path.resolve(pluginsPath, dir, 'overrides.json'));
+        if (overrideConfig?.overrides) {
+            for (const k in overrideConfig.overrides) {
+                const override = overrideConfig.overrides[k];
+                ovDir = path.join(dest, k);
+                if (fs.existsSync(ovDir)) {
+                    if (fs.lstatSync(ovDir).isDirectory()) {
+                        logWarning('overrides.json: Directories not supported yet. specify path to actual file');
+                    } else {
+                        let fileToFix = fs.readFileSync(ovDir).toString();
+                        for (const fk in override) {
+                            fileToFix = fileToFix.replace(new RegExp(fk, 'g'), override[fk]);
+                        }
+                        fs.writeFileSync(ovDir, fileToFix);
+                    }
+                }
+            }
         }
     });
 
