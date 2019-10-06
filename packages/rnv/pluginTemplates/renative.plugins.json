@@ -1185,9 +1185,11 @@
                 "podName": "RNCAsyncStorage"
             },
             "android": {
+                "projectName": "react-native-community-async-storage",
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
             },
             "androidtv": {
+                "projectName": "react-native-community-async-storage",
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
             },
             "webpack": {

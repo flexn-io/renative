@@ -253,7 +253,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
     }
-
+    const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     const modulePath = `../../${pathFixed}`;
 
@@ -274,14 +274,14 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         }
     } else {
         if (!plugin.skipLinking) {
-            c.pluginConfigAndroid.pluginIncludes += `, ':${key}'`;
-            c.pluginConfigAndroid.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+            c.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
-                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${key}')\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${keyFixed}')\n`;
             }
         }
     }
