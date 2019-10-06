@@ -209,6 +209,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate },
         { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: c.pluginConfigAndroid.appBuildGradleSigningConfigs },
         { pattern: '{{PLUGIN_SPLITS}}', override: c.pluginConfigAndroid.splits },
+        { pattern: '{{PLUGIN_ANDROID_DEFAULT_CONFIG}}', override: c.pluginConfigAndroid.defaultConfig },
         { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: c.pluginConfigAndroid.packagingOptions },
         { pattern: '{{PLUGIN_BUILD_TYPES}}', override: c.pluginConfigAndroid.buildTypes },
         { pattern: '{{PLUGIN_MULTI_APKS}}', override: c.pluginConfigAndroid.multiAPKs },
@@ -297,6 +298,12 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
                 c.pluginConfigAndroid.applyPlugin += `apply ${v}\n`;
+            });
+        }
+
+        if (appBuildGradle.defaultConfig) {
+            appBuildGradle.defaultConfig.forEach((v) => {
+                c.pluginConfigAndroid.defaultConfig += `${v}\n`;
             });
         }
     }

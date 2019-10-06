@@ -255,7 +255,7 @@
             }
         },
         "react-native-camera": {
-            "version": "1.8.0",
+            "version": "3.6.0",
             "ios": {
                 "podName": "react-native-camera"
             },
@@ -263,10 +263,20 @@
                 "podName": "react-native-camera"
             },
             "android": {
-                "package": "org.reactnative.camera.RNCameraPackage"
+                "package": "org.reactnative.camera.RNCameraPackage",
+                "app/build.gradle": {
+                    "defaultConfig": [
+                        "missingDimensionStrategy 'react-native-camera', 'general'"
+                    ]
+                }
             },
             "androidtv": {
-                "package": "org.reactnative.camera.RNCameraPackage"
+                "package": "org.reactnative.camera.RNCameraPackage",
+                "app/build.gradle": {
+                    "defaultConfig": [
+                        "missingDimensionStrategy 'react-native-camera', 'general'"
+                    ]
+                }
             },
             "webpack": {
                 "modulePaths": true

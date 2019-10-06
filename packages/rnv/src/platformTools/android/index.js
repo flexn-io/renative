@@ -404,6 +404,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         pluginApplicationMethods: '',
         pluginApplicationCreateMethods: '',
         applyPlugin: '',
+        defaultConfig: '',
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
         pluginSplashActivityImports: '',
