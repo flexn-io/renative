@@ -237,11 +237,19 @@ export const parseGradlePropertiesSync = (c, platform) => {
     const pluginConfigAndroid = c.buildConfig?.platforms?.[platform] || {};
 
     const gradleProps = pluginConfigAndroid['gradle.properties'];
+
     if (gradleProps) {
+        const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
+        if (enableAndroidX === true) {
+            gradleProps['android.useAndroidX'] = true;
+            gradleProps['android.enableJetifier'] = true;
+        }
+
         Object.keys(gradleProps).forEach((key) => {
             pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
         });
     }
+
     const gradleProperties = 'gradle.properties';
     writeCleanFile(getBuildFilePath(c, platform, gradleProperties), path.join(appFolder, gradleProperties), [
         { pattern: '{{PLUGIN_GRADLE_PROPERTIES}}', override: pluginGradleProperties }

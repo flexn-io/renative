@@ -1,10 +1,24 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply from: "../../../node_modules/react-native/react.gradle"
 {{PLUGIN_APPLY}}
 
 {{PLUGIN_LOCAL_PROPERTIES}}
+
+import com.android.build.OutputFile
+
+project.ext.react = [
+    entryFile: "index.android.js",
+    enableHermes: true,
+    root: "../../../",
+]
+
+apply from: "../../../node_modules/react-native/react.gradle"
+
+def enableSeparateBuildPerCPUArchitecture = false
+def enableProguardInReleaseBuilds = false
+def jscFlavor = 'org.webkit:android-jsc:+'
+def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
     compileSdkVersion {{COMPILE_SDK_VERSION}}
@@ -14,9 +28,11 @@ android {
         targetSdkVersion {{TARGET_SDK_VERSION}}
         versionCode {{VERSION_CODE}}
         versionName "{{VERSION_NAME}}"
+        renderscriptSupportModeEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+        {{PLUGIN_ANDROID_DEFAULT_CONFIG}}
     }
 {{PLUGIN_SPLITS}}
     packagingOptions {
@@ -39,15 +55,27 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     implementation 'com.android.support:support-v4:+'
     testImplementation 'junit:junit:4.12'
+    implementation 'org.webkit:android-jsc:+'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {
-        transitive = true
-    }
 
+    if (enableHermes) {
+        def hermesPath = "../../../node_modules/hermes-engine/android/";
+        debugImplementation files(hermesPath + "hermes-debug.aar")
+        releaseImplementation files(hermesPath + "hermes-release.aar")
+    } else {
+        implementation jscFlavor
+    }
 {{PLUGIN_IMPLEMENTATIONS}}
 }
 
 {{PLUGIN_MULTI_APKS}}
 
 {{PLUGIN_AFTER_EVALUATE}}
+
+task copyDownloadableDepsToLibs(type: Copy) {
+    from configurations.compile
+    into 'libs'
+}
+
+// apply from: file("../../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project, '../..')
