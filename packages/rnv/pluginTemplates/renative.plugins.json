@@ -493,6 +493,64 @@
                 "moduleAliases": true
             }
         },
+        "react-native-local-mongodb": {
+            "version": "2.2.4"
+        },
+        "react-native-actionsheet": {
+            "version": "2.3.0"
+        },
+        "react-native-animatable": {
+            "version": "1.2.4"
+        },
+        "react-native-autocomplete-input": {
+            "version": "3.6.0"
+        },
+        "react-native-datepicker": {
+            "version": "1.7.2"
+        },
+        "react-native-extended-stylesheet": {
+            "version": "0.8.0"
+        },
+        "react-native-keyboard-spacer": {
+            "version": "0.4.1"
+        },
+        "react-native-material-dropdown": {
+            "version": "0.11.1"
+        },
+        "react-native-modal": {
+            "version": "7.0.0"
+        },
+        "react-native-onfido-sdk": {
+            "version": "0.0.7"
+        },
+        "react-native-pdf-view": {
+            "version": "0.3.2"
+        },
+        "react-native-progress": {
+            "version": "3.5.0"
+        },
+        "react-native-root-toast": {
+            "version": "2.2.1"
+        },
+        "react-native-simple-radio-button": {
+            "version": "2.7.3"
+        },
+        "react-native-svg-charts": {
+            "version": "5.3.0"
+        },
+        "react-native-swipeout": {
+            "version": "2.3.3"
+        },
+        "react-native-fingerprint-scanner": {
+            "version": "3.0.0",
+            "ios": {
+                "podName": "react-native-fingerprint-scanner"
+            },
+            "android": {
+                "projectName": "react-native-fingerprint-scanner",
+                "package": "com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage"
+            }
+        },
         "react-native-keep-awake": {
             "version": "4.0.0",
             "ios": {
