@@ -1416,7 +1416,12 @@
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
             },
             "webpack": {
-                "modulePaths": true
+                "modulePaths": true,
+                "moduleAliases": {
+                    "@react-native-community/netinfo": {
+                        "projectPath": "node_modules/@react-native-community/netinfo/web"
+                    }
+                }
             }
         },
         "react-native-fast-image": {
