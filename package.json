@@ -58,9 +58,9 @@
     },
     "scripts": {
         "build": "lerna run build",
-        "postinstall": "npx jetify",
         "lerna": "npx lerna bootstrap",
         "link": "cd ./packages/rnv && npm link",
+        "postinstall": "npx jetify",
         "prePublish": "rnv hooks run -x prePublish",
         "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank",
         "publish:blank": "cd packages/renative-template-blank && npm publish",
@@ -100,11 +100,11 @@
     },
     "devDependencies": {
         "concurrently": "4.1.1",
+        "jetifier": "^1.6.4",
         "lerna": "3.16.4",
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
-        "rnv": "file:./packages/rnv",
-        "jetifier": "^1.6.4"
+        "rnv": "file:./packages/rnv"
     },
     "engines": {
         "cocoapods": ">=1.5.3",
