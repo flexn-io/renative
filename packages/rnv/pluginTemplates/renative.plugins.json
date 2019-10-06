@@ -1335,6 +1335,9 @@
                 "podName": "RNAirplay"
             }
         },
+        "react-native-cached-image": {
+            "version": "1.4.3"
+        },
         "react-native-navigation-bar-color": {
             "version": "0.1.0",
             "android": {
@@ -1343,6 +1346,9 @@
             "androidtv": {
                 "package": "com.thebylito.navigationbarcolor.NavigationBarColorPackage"
             }
+        },
+        "react-native-picker-select": {
+            "version": "6.3.3"
         },
         "@react-native-community/netinfo": {
             "version": "4.3.3",
