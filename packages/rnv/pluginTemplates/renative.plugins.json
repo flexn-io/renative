@@ -1038,7 +1038,7 @@
             }
         },
         "lottie-react-native": {
-            "version": "2.6.1",
+            "version": "3.2.1",
             "ios": {
                 "podName": "lottie-react-native"
             },
