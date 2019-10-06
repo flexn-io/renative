@@ -311,7 +311,7 @@
             "FB_DISPLAY_NAME": "",
             "FB_URL_SCHEMES": [],
             "FB_QUERY_SCHEMES": [],
-            "version": "0.8.0",
+            "version": "1.0.4",
             "ios": {
                 "podName": "react-native-fbsdk",
                 "appDelegateImports": ["FBSDKCoreKit"],
@@ -1299,7 +1299,7 @@
             }
         },
         "react-native-keyboard-aware-scroll-view": {
-            "version": "0.8.0",
+            "version": "0.9.1",
             "webpack": {
                 "modulePaths": true
             }
@@ -1381,7 +1381,7 @@
             }
         },
         "react-native-webview": {
-            "version": "7.0.5",
+            "version": "7.4.1",
             "ios": {
                 "podName": "react-native-webview"
             },
