@@ -187,16 +187,16 @@ export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.p
 export const getAppConfigId = c => c.buildConfig.id;
 
 const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
-    if (resultCli) {
+    if (resultCli || resultCli === false) {
         return resultCli;
     }
-    if (o1) {
+    if (o1 || o1 === false) {
         if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
         const val = Object.assign(o3 || {}, o2 || {}, o1);
         return val;
     }
     if (o1 === null) return null;
-    if (o2) {
+    if (o2 || o2 === false) {
         if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
         return Object.assign(o3 || {}, o2);
     }
