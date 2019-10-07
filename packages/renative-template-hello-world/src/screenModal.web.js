@@ -45,9 +45,6 @@ const ScreenMyPage = (props) => (
                 iconColor={Theme.color3}
                 style={{ width: 40, height: 40, marginLeft: 10 }}
                 onPress={() => {
-
-                    // pretend like we saved a record to the DB here
-                    // and then we navigate imperatively
                     props.navigate("/", { replace: false })
                 }}
             />

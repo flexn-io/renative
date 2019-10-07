@@ -83,7 +83,6 @@ class ScreenHome extends React.Component {
                     {title}
                 </Text>
                 <Text style={styles.textH2}>
-v
                     {packageJson.version}
                 </Text>
                 <Text style={styles.textH3}>
