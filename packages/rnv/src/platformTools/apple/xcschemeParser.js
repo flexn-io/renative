@@ -1,30 +1,14 @@
 import path from 'path';
-import fs from 'fs';
-import chalk from 'chalk';
 import {
     logTask,
-    logError,
-    logWarning,
     getAppFolder,
-    isPlatformActive,
-    logDebug,
-    getAppVersion,
-    getAppTitle,
-    getEntryFile,
     writeCleanFile,
     getAppTemplateFolder,
-    getAppId,
     getConfigProp,
-    getIP,
-    getBuildFilePath,
-    logSuccess,
-    getBuildsFolder
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
-import { getAppFolderName } from '../apple';
+import { getAppFolderName } from './index';
 
-export const parseXcscheme = (c, platform) => new Promise((resolve, reject) => {
+export const parseXcscheme = async (c, platform) => {
     logTask(`parseXcscheme:${platform}`);
     // XCSCHEME
     const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
@@ -42,5 +26,4 @@ export const parseXcscheme = (c, platform) => new Promise((resolve, reject) => {
         { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
         { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId },
     ]);
-    resolve();
-});
+};
