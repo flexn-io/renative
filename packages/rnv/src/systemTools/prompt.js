@@ -13,6 +13,11 @@ export const inquirerPrompt = async (params) => {
     }
     if (msg && params.logMessage) logTask(msg, chalk.grey);
     if (msg && params.warningMessage) logWarning(msg);
+
+    // allow passing in just { type: 'prompt', ... } instead of { type: 'prompt', name: 'prompt', ... }
+    const { type, name } = params;
+    if (type === 'confirm' && !name) params.name = 'confirm';
+
     const result = await inquirer.prompt(params);
     return result;
 };

@@ -6,8 +6,10 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import util from 'util';
+import Config from '../config';
 
-import { logDebug } from './logger';
+import { logDebug, logTask, logError, logWarning } from './logger';
+import { removeDirs } from './fileutils';
 
 const { exec, execSync } = require('child_process');
 
@@ -90,14 +92,14 @@ const _execute = (c, command, opts = {}) => {
     }
 
     return child.then((res) => {
-        spinner && child.stdout.off('data', printLastLine);
+        spinner && child.stdout.off && child.stdout.off('data', printLastLine);
         !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
         logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        spinner && child.stdout.off('data', printLastLine);
+        spinner && child.stdout.off && child.stdout.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);
@@ -146,7 +148,12 @@ const execCLI = (c, cli, command, opts = {}) => {
  *
  */
 const executeAsync = (c, cmd, opts) => {
-    if (!c.program) return Promise.reject('You need to pass c object as first parameter to executeAsync()');
+    // swap values if c is not specified and get it from it's rightful place, config :)
+    if (typeof c === 'string') {
+        opts = cmd;
+        cmd = c;
+        c = Config.getConfig();
+    }
     if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
     return _execute(c, cmd, opts);
 };
@@ -201,7 +208,24 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
-    arr = arr.filter(v => v.search(toSearch) !== -1);
+
+    let errFound = 0;
+    arr = arr.filter((v) => {
+        if (v === '') return false;
+        if (v.includes('-Werror')) {
+            return false;
+        }
+        if (v.search(toSearch) !== -1) {
+            errFound = 5;
+            return true;
+        }
+        if (errFound > 0) {
+            errFound -= 1;
+            return true;
+        }
+        return false;
+    });
+
     arr = arr.map((v) => {
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
@@ -351,7 +375,35 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-const openCommand = process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open';
+export const cleanNodeModules = c => new Promise((resolve, reject) => {
+    logTask(`cleanNodeModules:${c.paths.project.nodeModulesDir}`);
+    removeDirs([
+        path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+        path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+    ]).then(() => resolve()).catch(e => reject(e));
+});
+
+export const npmInstall = async (failOnError = false) => {
+    logTask('npmInstall');
+
+    return executeAsync('npm install')
+        .catch((e) => {
+            if (failOnError) {
+                return logError(e);
+            }
+            logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
+            return cleanNodeModules(Config.getConfig())
+                .then(() => npmInstall(true))
+                .catch(f => logError(f));
+        });
+};
+
+// eslint-disable-next-line no-nested-ternary
+const openCommand = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
 
 export { executeAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
 

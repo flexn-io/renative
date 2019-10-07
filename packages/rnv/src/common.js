@@ -10,8 +10,6 @@ import axios from 'axios';
 import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
-import { applyTemplate, checkIfTemplateInstalled } from './templateTools';
-import { configurePlugins } from './pluginTools';
 import {
     logWelcome, configureLogger, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -28,12 +26,8 @@ import {
     parseRenativeConfigs, createRnvConfig, updateConfig,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from './configTools/configParser';
-import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from './projectTools/projectParser';
+import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
-import { checkAndMigrateProject } from './projectTools/migrator';
-
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
-export const PARSE_RENATIVE_CONFIG = ['crypto'];
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -43,48 +37,6 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
 
     resolve(c);
 });
-
-export const startBuilder = async (c) => {
-    logTask('initializeBuilder');
-
-    await checkAndMigrateProject(c);
-    await parseRenativeConfigs(c);
-
-    if (!c.command) {
-        if (!c.paths.project.configExists) {
-            const { command } = await inquirerPrompt({
-                type: 'list',
-                default: 'new',
-                name: 'command',
-                message: 'Pick a command',
-                choices: NO_OP_COMMANDS.sort(),
-                pageSize: 15,
-                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
-            });
-            c.command = command;
-        }
-    }
-
-    if (NO_OP_COMMANDS.includes(c.command)) {
-        await configureRnvGlobal(c);
-        return c;
-    }
-
-    await checkAndMigrateProject(c);
-    await parseRenativeConfigs(c);
-    await checkIsRenativeProject(c);
-    await checkAndCreateProjectPackage(c);
-    await configureRnvGlobal(c);
-    await checkIfTemplateInstalled(c);
-    await fixRenativeConfigsSync(c);
-    await configureNodeModules(c);
-    await applyTemplate(c);
-    await configurePlugins(c);
-    await configureNodeModules(c);
-    await updateConfig(c, c.runtime.appId);
-    await logAppInfo(c);
-    return c;
-};
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -234,22 +186,21 @@ export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.p
 
 export const getAppConfigId = c => c.buildConfig.id;
 
-const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
-    if (resultCli) {
+const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resultCommon) => {
+    if (resultCli !== undefined) {
         return resultCli;
     }
-    if (o1) {
-        if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
-        const val = Object.assign(o3 || {}, o2 || {}, o1);
+    if (resultScheme !== undefined) {
+        if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') return resultScheme;
+        const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
         return val;
     }
-    if (o1 === null) return null;
-    if (o2) {
-        if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
-        return Object.assign(o3 || {}, o2);
+    if (resultPlatforms !== undefined) {
+        if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') return resultPlatforms;
+        return Object.assign(resultCommon || {}, resultPlatforms);
     }
-    if (o2 === null) return null;
-    return o3;
+    if (resultPlatforms === null) return null;
+    return resultCommon;
 };
 
 export const CLI_PROPS = [
@@ -268,20 +219,19 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     let resultPlatforms;
     let scheme;
     if (p) {
-        scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+        scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
         resultPlatforms = c.buildConfig.platforms[platform][key];
     }
 
-
     scheme = scheme || {};
-    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
+    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
     const resultScheme = scheme[key];
     const resultCommon = c.buildConfig.common?.[key];
 
-    const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+    let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
+    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
-    if (result === null || result === undefined) return defaultVal;
     return result;
 };
 
@@ -390,10 +340,12 @@ export const writeCleanFile = (source, destination, overrides) => {
     }
     const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
-    overrides.forEach((v) => {
-        const regEx = new RegExp(v.pattern, 'g');
-        pFileClean = pFileClean.replace(regEx, v.override);
-    });
+    if (overrides) {
+        overrides.forEach((v) => {
+            const regEx = new RegExp(v.pattern, 'g');
+            pFileClean = pFileClean.replace(regEx, v.override);
+        });
+    }
 
     fs.writeFileSync(destination, pFileClean, 'utf8');
 };
@@ -553,7 +505,6 @@ export default {
     logComplete,
     logError,
     initializeBuilder,
-    startBuilder,
     logDebug,
     logInfo,
     logErrorPlatform,

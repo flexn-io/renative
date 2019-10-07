@@ -1,3 +1,5 @@
+import { writeObjectSync } from './systemTools/fileutils';
+import { npmInstall } from './systemTools/exec';
 
 class Config {
     constructor() {
@@ -32,6 +34,18 @@ class Config {
         const missingArg = rawArgs[rawArgs.indexOf(cleanedArgs[1]) + 1];
         cleanedArgs.splice(2, 0, missingArg);
         return cleanedArgs;
+    }
+
+    async injectProjectDependency(dependency, version) {
+        const currentPackage = this.config.files.project.package;
+        const existingPath = this.config.paths.project.package;
+        currentPackage.dependencies[dependency] = version;
+        writeObjectSync(existingPath, currentPackage);
+        await npmInstall();
+    }
+
+    getProjectConfig() {
+        return this.config.files.project;
     }
 
     //     getBuildConfig() {

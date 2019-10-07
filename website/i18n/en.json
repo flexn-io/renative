@@ -513,6 +513,70 @@
             "version-0.27.2/version-0.27.2-rnv-run": {
                 "title": "rnv run",
                 "sidebar_label": "run"
+            },
+            "version-0.27.4/version-0.27.4-rnv-build": {
+                "title": "rnv build",
+                "sidebar_label": "build"
+            },
+            "version-0.27.4/version-0.27.4-rnv-clean": {
+                "title": "rnv clean",
+                "sidebar_label": "clean"
+            },
+            "version-0.27.4/version-0.27.4-rnv-configure": {
+                "title": "rnv configure",
+                "sidebar_label": "configure"
+            },
+            "version-0.27.4/version-0.27.4-rnv-crypto": {
+                "title": "rnv crypto",
+                "sidebar_label": "crypto"
+            },
+            "version-0.27.4/version-0.27.4-rnv-deploy": {
+                "title": "rnv deploy",
+                "sidebar_label": "deploy"
+            },
+            "version-0.27.4/version-0.27.4-rnv-export": {
+                "title": "rnv export",
+                "sidebar_label": "export"
+            },
+            "version-0.27.4/version-0.27.4-rnv-fastlane": {
+                "title": "rnv fastlane",
+                "sidebar_label": "fastlane"
+            },
+            "version-0.27.4/version-0.27.4-rnv-log": {
+                "title": "rnv log",
+                "sidebar_label": "log"
+            },
+            "version-0.27.4/version-0.27.4-rnv-new": {
+                "title": "rnv new",
+                "sidebar_label": "new"
+            },
+            "version-0.27.4/version-0.27.4-rnv-package": {
+                "title": "rnv package",
+                "sidebar_label": "package"
+            },
+            "version-0.27.4/version-0.27.4-rnv-platform": {
+                "title": "rnv platform",
+                "sidebar_label": "platform"
+            },
+            "version-0.27.4/version-0.27.4-rnv-plugin": {
+                "title": "rnv plugin",
+                "sidebar_label": "plugin"
+            },
+            "version-0.27.4/version-0.27.4-rnv-run": {
+                "title": "rnv run",
+                "sidebar_label": "run"
+            },
+            "version-0.27.4/version-0.27.4-rnv-start": {
+                "title": "rnv start",
+                "sidebar_label": "start"
+            },
+            "version-0.27.4/version-0.27.4-rnv-status": {
+                "title": "rnv status",
+                "sidebar_label": "status"
+            },
+            "version-0.27.4/version-0.27.4-rnv-target": {
+                "title": "rnv target",
+                "sidebar_label": "target"
             }
         },
         "links": {

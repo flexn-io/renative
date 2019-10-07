@@ -2,7 +2,6 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import merge from 'deepmerge';
-import inquirer from 'inquirer';
 import {
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_AVDMANAGER,
@@ -249,6 +248,9 @@ const _getWorkspaceDirPath = (c) => {
             }
         }
     }
+    if (c.buildConfig?.paths?.globalConfigDir) {
+        logWarning(`paths.globalConfigDir in ${c.paths.project.config} is DEPRECATED. use workspaceID insead. more info at https://renative.org/docs/workspaces`);
+    }
     if (!dirPath) {
         return c.buildConfig?.paths?.globalConfigDir || c.paths.GLOBAL_RNV_DIR;
     }
@@ -382,6 +384,10 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
             path.join(extendDir, extendAppId),
             pathObj.dir
         ];
+        pathObj.fontDirs = [
+            path.join(pathObj.dirs[0], 'fonts'),
+            path.join(pathObj.dirs[1], 'fonts')
+        ];
         loadFile(fileObj, pathObj, 'configBase');
     }
 
@@ -394,7 +400,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
 export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
-    if (!appId || appId === '?') return;
+    if (!appId || appId === '?' || appId === true) return;
 
     c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
@@ -402,6 +408,7 @@ export const setAppConfig = (c, appId) => {
     _findAndSwitchAppConfigDir(c, appId);
 
     _generateConfigPaths(c.paths.appConfig, path.join(c.paths.project.appConfigsDir, appId));
+    c.paths.appConfig.fontsDir = path.join(c.paths.appConfig.dir, 'fonts');
     _loadConfigFiles(c, c.files.appConfig, c.paths.appConfig, c.paths.project.appConfigsDir);
 
     const workspaceAppConfigsDir = getRealPath(c, c.buildConfig.workspaceAppConfigsDir);

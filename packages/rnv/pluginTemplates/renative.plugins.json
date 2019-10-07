@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.27.2",
+            "version": "0.27.5",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -849,6 +849,21 @@
                 }
             },
             "androidtv": {
+                "BuildGradle": {
+                    "buildscript": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        },
+                        "dependencies": {
+                            "classpath 'io.fabric.tools:gradle:1.25.4'": true
+                        }
+                    },
+                    "allprojects": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    }
+                },
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
