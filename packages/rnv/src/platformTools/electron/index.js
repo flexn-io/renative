@@ -218,8 +218,8 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
                 source = pf;
             }
         });
-    } else {
-        source = path.join(v, `assets/${platform}/AppIcon.iconset`);
+    } else if (c.paths.appConfig.dir) {
+        source = path.join(c.paths.appConfig.dir, `assets/${platform}/AppIcon.iconset`);
     }
 
     const dest = path.join(getAppFolder(c, platform), 'resources/icon.icns');
