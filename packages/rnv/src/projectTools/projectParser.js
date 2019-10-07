@@ -96,7 +96,6 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                         const fontSource = path.join(dir, font);
 
                         const relativePath = dir.replace(c.paths.project.dir, '');
-                        console.log('SHKSJHKJS', relativePath);
                         if (fs.existsSync(fontSource)) {
                             // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                             // mkdirSync(fontFolder);
