@@ -84,7 +84,12 @@ const getDeviceID = async (c, target) => {
     const { device } = c.program;
 
     if (device) {
-        const connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
+        let connectResponse;
+        try {
+            connectResponse = await execCLI(c, CLI_SDB_TIZEN, `connect ${target}`);
+        } catch (e) {
+            connectResponse = e;
+        }
         if (connectResponse.includes('EPERM')) throw new Error('We can\'t connect to this device even though it is reachable. Please make sure you have enabled Developer Mode and you have added your IP in the Host PC IP section. For more information consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device');
         if (connectResponse.includes('failed to connect to remote target')) throw new Error(`Failed to connect to ${target}. Make sure the IP is correct and you are connected on the same network.`);
         if (connectResponse.includes('error')) throw new Error(connectResponse);
