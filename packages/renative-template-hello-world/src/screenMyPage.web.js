@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import Theme from './theme';
-import { Router, Link } from "@reach/router";
+import { Router, Link, Redirect } from "@reach/router";
 
 const styles = StyleSheet.create({
     container: {
@@ -69,6 +69,7 @@ const Sections = (props) => (
         {props.children}
     </div>
 );
+
 
 const Section = (props) => {
     return (
