@@ -11,7 +11,9 @@
       "react-navigation": "source:rnv",
       "react-navigation-tabs": "source:rnv",
       "react-native-reanimated": "source:rnv",
-      "react-native-vector-icons": "source:rnv"
+      "react-native-vector-icons": "source:rnv",
+      "@reach/router": "source:rnv",
+      "hash-source": "source:rnv"
   },
   "platforms": {
     "android": {

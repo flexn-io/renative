@@ -1334,6 +1334,12 @@
             "android": {
                 "package": "com.entria.views.RNViewOverflowPackage"
             }
+        },
+        "@reach/router": {
+            "version": "1.2.1"
+        },
+        "hash-source": {
+            "version": "1.0.4"
         }
     },
     "plugins": {
