@@ -108,7 +108,7 @@ const _runXcodeProject = async (c, platform, target) => {
     }
 
     if (device === true) {
-        const devicesArr = getAppleDevices(c, platform, false, true);
+        const devicesArr = await getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
             logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)} udid: ${chalk.white(devicesArr[0].udid)}`);
             if (devicesArr[0].udid) {
