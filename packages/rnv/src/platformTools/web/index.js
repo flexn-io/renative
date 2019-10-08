@@ -23,7 +23,7 @@ import {
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
-import { selectWebToolAndDeploy } from '../../deployTools/webTools';
+import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
 
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -196,9 +196,14 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     return executeAsync(c, command, { stdio: 'inherit', silent: true });
 });
 
-const deployWeb = (c, platform) => new Promise((resolve, reject) => {
+const deployWeb = (c, platform) => {
     logTask(`deployWeb:${platform}`);
-    selectWebToolAndDeploy(c, platform).then(resolve).catch(reject);
-});
+    return selectWebToolAndDeploy(c, platform);
+};
 
-export { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb };
+const exportWeb = (c, platform) => {
+    logTask(`exportWeb:${platform}`);
+    return selectWebToolAndExport(c, platform);
+};
+
+export { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb, exportWeb };
