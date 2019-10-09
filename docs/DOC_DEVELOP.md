@@ -18,7 +18,6 @@ If you need full control over whole ReNative build you can clone and develop it 
 5) npm run link
 ```
 
-
 At this point your global `$ rnv` command is linked directly into project above.
 
 It's also best way to contribute back to RNV! :)
@@ -28,6 +27,9 @@ It's also best way to contribute back to RNV! :)
 rnv template apply
 => pick renative-template-hello-world
 ```
+
+#### Windows development
+Requirements: Python 2.7, Visual Studio installed or install `windows-build-tools`(https://www.npmjs.com/package/windows-build-tools). **Please make sure you follow the package's instructions, especially running it in PowerShell as Administrator**
 
 ## RNV C Object
 
