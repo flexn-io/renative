@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.28.0-alpha.2",
+            "version": "0.28.0-alpha.3",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -1459,6 +1459,9 @@
             "webpack": {
                 "modulePaths": true
             }
+        },
+        "@react-native-community/slider": {
+            "version": "2.0.2"
         },
         "react-native-render-html": {
             "version": "4.1.1",
