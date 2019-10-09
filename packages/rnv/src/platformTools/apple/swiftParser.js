@@ -29,12 +29,8 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
     const { backgroundColor } = c.buildConfig.platforms[platform];
-    const tId = getConfigProp(c, platform, 'teamID');
-    const runScheme = getConfigProp(c, platform, 'runScheme');
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-    const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+
     const forceBundle = getGetJsBundleFile(c, platform);
     let bundle;
     if (forceBundle) {

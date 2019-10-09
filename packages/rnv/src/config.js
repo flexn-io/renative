@@ -1,5 +1,6 @@
 import { writeObjectSync } from './systemTools/fileutils';
 import { npmInstall } from './systemTools/exec';
+import { inquirerPrompt } from './systemTools/prompt';
 
 class Config {
     constructor() {
@@ -46,6 +47,22 @@ class Config {
 
     getProjectConfig() {
         return this.config.files.project;
+    }
+
+    async checkRequiredPackage(pkg) {
+        if (!pkg) return;
+        const projectConfig = this.getProjectConfig();
+
+        if (!projectConfig.package.dependencies[pkg]) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: `You do not have ${pkg} installed. Do you want to add it now?`
+            });
+
+            if (confirm) {
+                await this.injectProjectDependency(pkg, 'latest'); // @TODO TO BE CHANGED
+            }
+        }
     }
 
     //     getBuildConfig() {

@@ -1,6 +1,6 @@
 {
     "name": "@rnv/deploy-docker",
-    "version": "0.0.2",
+    "version": "0.0.4",
     "description": "Gives RNV the possibility to deploy web apps as a Docker image published to dockerhub",
     "main": "dist/index.js",
     "scripts": {
