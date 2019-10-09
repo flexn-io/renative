@@ -399,6 +399,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RNVAppTVOS-Bridging-Header.h";
 				SDKROOT = appletvos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -427,6 +428,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "RNVAppTVOS-Bridging-Header.h";
 				SDKROOT = appletvos;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
