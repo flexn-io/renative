@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.28.0-alpha.3",
+    "version": "0.28.0-alpha.4",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -83,8 +83,6 @@
         "@react-navigation/native": "3.5.0",
         "@react-navigation/web": "1.0.0-alpha.9",
         "@rnv/deploy-docker": "latest",
-        "electron": "5.0.2",
-        "electron-builder": "21.1.1",
         "husky": "3.0.5",
         "react": "16.9.0",
         "react-art": "16.9.0",
@@ -98,16 +96,18 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative",
-        "xcode": "2.0.0"
+        "renative": "file:./packages/renative"
     },
     "devDependencies": {
         "concurrently": "4.1.1",
-        "jetifier": "^1.6.4",
+        "electron": "5.0.2",
+        "electron-builder": "21.1.1",
+        "jetifier": "1.6.4",
         "lerna": "3.16.4",
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
-        "rnv": "file:./packages/rnv"
+        "rnv": "file:./packages/rnv",
+        "xcode": "2.0.0"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

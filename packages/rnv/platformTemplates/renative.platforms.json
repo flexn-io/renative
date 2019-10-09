@@ -1,0 +1,36 @@
+{
+    "platforms": {
+        "ios": {
+            "npm": {
+                "devDependencies": {
+                    "xcode": "2.0.0",
+                    "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
+                }
+            }
+        },
+        "tvos": {
+            "npm": {
+                "devDependencies": {
+                    "xcode": "2.0.0",
+                    "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
+                }
+            }
+        },
+        "macos": {
+            "npm": {
+                "devDependencies": {
+                    "electron": "5.0.2",
+                    "electron-builder": "21.1.1"
+                }
+            }
+        },
+        "windows": {
+            "npm": {
+                "devDependencies": {
+                    "electron": "5.0.2",
+                    "electron-builder": "21.1.1"
+                }
+            }
+        }
+    }
+}
