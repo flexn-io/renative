@@ -8,7 +8,6 @@
 
 import UIKit
 import CoreData
-import React
 import UserNotifications
 {{APPDELEGATE_IMPORTS}}
 
