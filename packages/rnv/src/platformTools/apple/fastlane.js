@@ -1,16 +1,10 @@
 import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
-import child_process from 'child_process';
 import {
     logTask,
-    logError,
     logWarning,
     logSuccess,
-    getAppFolder,
-    isPlatformActive,
     getConfigProp,
-    logDebug,
     getAppId
 } from '../../common';
 import { executeAsync } from '../../systemTools/exec';
@@ -58,7 +52,9 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         teamID,
         '--output_path',
         certsPath,
-        '--force'
+        '--force',
+        '--platform',
+        platform
     ];
     if (process.env.APPLE_DEVELOPER_USERNAME) {
         args = args.concat([
