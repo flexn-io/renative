@@ -338,10 +338,6 @@
                     "LSApplicationQueriesSchemes": []
                 }
             },
-            "tvos": {
-                "podName": "react-native-fbsdk",
-                "appDelegateImports": ["FBSDKCoreKit"]
-            },
             "android": {
                 "package": "com.facebook.reactnative.androidsdk.FBSDKPackage",
                 "implementations": [
@@ -547,9 +543,6 @@
             "version": "0.19.0",
             "ios": {
                 "podName": "react-native-maps"
-            },
-            "tvos": {
-                "podName": "react-native-maps"
             }
         },
         "react-native-document-picker": {
@@ -609,9 +602,6 @@
             "ios": {
                 "podName": "react-native-webview-bridge"
             },
-            "tvos": {
-                "podName": "react-native-webview-bridge"
-            },
             "android": {
                 "package": "com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage"
             },
@@ -624,9 +614,6 @@
             "ios": {
                 "podName": "Picker"
             },
-            "tvos": {
-                "podName": "Picker"
-            },
             "android": {
                 "package": "com.beefe.picker.PickerViewPackage"
             },
@@ -637,9 +624,6 @@
         "react-native-permissions": {
             "version": "1.1.1",
             "ios": {
-                "podName": "ReactNativePermissions"
-            },
-            "tvos": {
                 "podName": "ReactNativePermissions"
             }
         },
@@ -744,9 +728,6 @@
         "react-native-contacts": {
             "version": "3.1.2",
             "ios": {
-                "podName": "react-native-contacts"
-            },
-            "tvos": {
                 "podName": "react-native-contacts"
             },
             "android": {
