@@ -29,7 +29,7 @@ rnv template apply
 ```
 
 #### Windows development
-Requirements: Python 2.7, Visual Studio installed or install `windows-build-tools`(https://www.npmjs.com/package/windows-build-tools). **Please make sure you follow the package's instructions, especially running it in PowerShell as Administrator**
+Requirements: Python 2.7, Visual Studio installed or install `windows-build-tools`(https://www.npmjs.com/package/windows-build-tools). **Please make sure you follow the package's instructions, especially running it in PowerShell as Administrator** 
 
 ## RNV C Object
 
