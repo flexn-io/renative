@@ -259,9 +259,6 @@
             "ios": {
                 "podName": "react-native-camera"
             },
-            "tvos": {
-                "podName": "react-native-camera"
-            },
             "android": {
                 "package": "org.reactnative.camera.RNCameraPackage",
                 "app/build.gradle": {
@@ -381,9 +378,6 @@
             "ios": {
                 "podName": "RNZipArchive"
             },
-            "tvos": {
-                "podName": "RNZipArchive"
-            },
             "android": {
                 "package": "com.rnziparchive.RNZipArchivePackage"
             },
@@ -394,9 +388,6 @@
         "react-native-image-picker": {
             "version": "0.27.1",
             "ios": {
-                "podName": "react-native-image-picker"
-            },
-            "tvos": {
                 "podName": "react-native-image-picker"
             },
             "android": {
@@ -412,10 +403,6 @@
         "react-native-nfc-manager": {
             "version": "1.2.2",
             "ios": {
-                "podName": "react-native-nfc-manager",
-                "path": "node_modules/react-native-nfc-manager"
-            },
-            "tvos": {
                 "podName": "react-native-nfc-manager",
                 "path": "node_modules/react-native-nfc-manager"
             },
@@ -457,9 +444,6 @@
             "ios": {
                 "podName": "react-native-pdf"
             },
-            "tvos": {
-                "podName": "react-native-pdf"
-            },
             "android": {
                 "package": "org.wonday.pdf.RCTPdfView"
             },
@@ -470,9 +454,6 @@
         "react-native-sensors": {
             "version": "5.3.2",
             "ios": {
-                "podName": "RNSensors"
-            },
-            "tvos": {
                 "podName": "RNSensors"
             },
             "android": {
@@ -552,9 +533,6 @@
             "ios": {
                 "podName": "react-native-keep-awake"
             },
-            "tvos": {
-                "podName": "react-native-keep-awake"
-            },
             "android": {
                 "package": "com.corbt.keepawake.KCKeepAwakePackage"
             },
@@ -579,9 +557,6 @@
             "ios": {
                 "podName": "react-native-document-picker"
             },
-            "tvos": {
-                "podName": "react-native-document-picker"
-            },
             "android": {
                 "package": "io.github.elyx0.reactnativedocumentpicker.DocumentPickerPackage"
             },
@@ -592,9 +567,6 @@
         "react-native-image-crop-picker": {
             "version": "0.25.3",
             "ios": {
-                "podName": "RNImageCropPicker"
-            },
-            "tvos": {
                 "podName": "RNImageCropPicker"
             },
             "android": {
@@ -731,10 +703,6 @@
                 "podName": "RNPhotoEditor",
                 "path": "node_modules/react-native-photo-editor/ios"
             },
-            "tvos": {
-                "podName": "RNPhotoEditor",
-                "path": "node_modules/react-native-photo-editor/ios"
-            },
             "android": {
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
             },
@@ -762,9 +730,6 @@
         "react-native-signature-capture": {
             "version": "0.4.9",
             "ios": {
-                "podName": "react-native-signature-capture"
-            },
-            "tvos": {
                 "podName": "react-native-signature-capture"
             },
             "android": {
@@ -856,11 +821,6 @@
                 "podName": "iOSPhotoEditor",
                 "git": "https://github.com/prscX/photo-editor",
                 "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8"
-            },
-            "tvos": {
-                "podName": "iOSPhotoEditor",
-                "git": "https://github.com/prscX/photo-editor",
-                "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8"
             }
         },
         "google-maps": {
@@ -877,11 +837,6 @@
                         ]
                     }
                 }
-            },
-            "tvos": {
-                "podName": "GoogleMaps",
-                "appDelegateImports": ["GoogleMaps"],
-                "version": "2.5.0"
             }
         },
         "crashlytics": {
