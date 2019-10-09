@@ -18,6 +18,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+        {{DEFAULT_CONFIG}}
     }
 {{PLUGIN_SPLITS}}
     packagingOptions {

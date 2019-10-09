@@ -205,6 +205,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
         { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
+        { pattern: '{{DEFAULT_CONFIG}}', override: c.pluginConfigAndroid.appBuildGradleDefaultConfig },
         { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: c.pluginConfigAndroid.appBuildGradleImplementations },
         { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate },
         { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: c.pluginConfigAndroid.appBuildGradleSigningConfigs },
@@ -297,6 +298,11 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
                 c.pluginConfigAndroid.applyPlugin += `apply ${v}\n`;
+            });
+        }
+        if (appBuildGradle.defaultConfig) {
+            appBuildGradle.defaultConfig.forEach((v) => {
+                c.pluginConfigAndroid.appBuildGradleDefaultConfig += `${v}\n`;
             });
         }
     }
