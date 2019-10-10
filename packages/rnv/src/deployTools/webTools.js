@@ -9,7 +9,8 @@ import {
     logTask,
     logComplete,
     logError,
-    logInfo
+    logInfo,
+    importPackageFromProject
 } from '../common';
 import { configureDeploymentIfRequired, configureExportIfRequired } from './configure';
 
@@ -27,8 +28,9 @@ const _runDeployment = async (c, platform, deployType) => {
     case DEPLOY_TARGET_NONE:
         return Promise.resolve();
     case DEPLOY_TARGET_DOCKER:
-        // eslint-disable-next-line global-require, import/no-dynamic-require
-        const deployToDocker = require(path.join(c.paths.project.nodeModulesDir, '/@rnv/deploy-docker'));
+        const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
+        const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
+        deployToDocker.setRNVPath(rnvPath);
         return deployToDocker.doDeploy();
     default:
         return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
@@ -38,8 +40,9 @@ const _runDeployment = async (c, platform, deployType) => {
 const _runExport = (c, platform, deployType) => {
     switch (deployType) {
     case DEPLOY_TARGET_DOCKER:
-        // eslint-disable-next-line global-require, import/no-dynamic-require
-        const deployToDocker = require(path.join(c.paths.project.nodeModulesDir, '/@rnv/deploy-docker'));
+        const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
+        const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
+        deployToDocker.setRNVPath(rnvPath);
         return deployToDocker.doExport();
     default:
         return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
