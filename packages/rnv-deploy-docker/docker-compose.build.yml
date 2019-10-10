@@ -1,6 +1,6 @@
 version: "2.3"
 services:
   web:
-    image: {{IMAGE_AND_TAG}}
+    build: .
     ports:
       - "8080:80"
