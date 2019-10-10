@@ -17,6 +17,7 @@ const buildImage = async () => {
 
     const dockerFile = path.join(__dirname, '../Dockerfile');
     const nginxConfFile = path.join(__dirname, '../nginx/default.conf');
+    const dockerComposeBuildFile = path.join(__dirname, '../docker-compose.build.yml');
     const dockerComposeFile = path.join(__dirname, '../docker-compose.yml');
 
     await cleanFolder(path.join(dockerDestination));
@@ -24,15 +25,20 @@ const buildImage = async () => {
 
     const copiedDockerFile = path.join(dockerDestination, 'Dockerfile');
     const copiedNginxConfFile = path.join(dockerDestination, 'nginx.default.conf');
+    const copiedDockerComposeBuildFile = path.join(dockerDestination, 'docker-compose.build.yml');
     const copiedDockerComposeFile = path.join(dockerDestination, 'docker-compose.yml');
+
+    const imageName = runtime.appId.toLowerCase();
+    const appVersion = files.project.package.version;
+
     // save the docker files
     logTask('docker:Dockerfile:create');
     writeCleanFile(dockerFile, copiedDockerFile);
     writeCleanFile(nginxConfFile, copiedNginxConfFile);
-    writeCleanFile(dockerComposeFile, copiedDockerComposeFile);
-
-    const imageName = runtime.appId.toLowerCase();
-    const appVersion = files.project.package.version;
+    writeCleanFile(dockerComposeBuildFile, copiedDockerComposeBuildFile);
+    writeCleanFile(dockerComposeFile, copiedDockerComposeFile, [
+        { pattern: '{{IMAGE_AND_TAG}}', override: `${imageName}:${appVersion}` },
+    ]);
 
     logTask('docker:Dockerfile:build');
     await executeAsync(`docker build -t ${imageName}:${appVersion} ${dockerDestination}`);
