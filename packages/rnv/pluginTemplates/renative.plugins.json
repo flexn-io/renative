@@ -424,10 +424,6 @@
                 "podName": "ReactNativeExceptionHandler",
                 "path": "node_modules/react-native-exception-handler/ios"
             },
-            "tvos": {
-                "podName": "ReactNativeExceptionHandler",
-                "path": "node_modules/react-native-exception-handler/ios"
-            },
             "android": {
                 "package": "com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage"
             },
