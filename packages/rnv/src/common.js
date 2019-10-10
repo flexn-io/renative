@@ -28,6 +28,7 @@ import {
 } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
+// import Config from './config';
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -479,6 +480,13 @@ export const waitForWebpack = (c, port) => {
             });
         }, CHECK_INTEVAL);
     });
+};
+export const importPackageFromProject = (name) => {
+    const c = Config.getConfig();
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
+    if (pkg.default) return pkg.default;
+    return pkg;
 };
 
 // TODO: remove this
