@@ -1334,6 +1334,25 @@
             "android": {
                 "package": "com.entria.views.RNViewOverflowPackage"
             }
+        },
+        "detox": {
+            "version": "14.4.0",
+            "android": {
+                "implementation": "androidTestImplementation('com.wix:detox:+') { transitive = true }\nandroidTestImplementation 'junit:junit:4.12'",
+                "app/build.gradle": {
+                    "defaultConfig": [
+                        "testBuildType System.getProperty('testBuildType', 'debug')",
+                        "testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'"
+                    ]
+                },
+                "BuildGradle": {
+                    "allprojects": {
+                        "repositories": {
+                            " maven {url \"$rootDir/../../node_modules/detox/Detox-android\"}": true
+                        }
+                    }
+                }
+            }
         }
     },
     "plugins": {
