@@ -207,7 +207,7 @@ const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
     });
 
 const composeXcodeArgsFromCLI = (string) => {
-    const spacesReplaced = string.replace(/\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/, '&&&'); // replaces spaces outside quotes with &&& for easy split
+    const spacesReplaced = string.replace(/\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/g, '&&&'); // replaces spaces outside quotes with &&& for easy split
     const keysAndValues = spacesReplaced.split('&&&');
     const unescapedValues = keysAndValues.map(s => s.replace(/\'/g, '').replace(/"/g, '').replace(/\\/g, '')); // removes all quotes or backslashes
 
@@ -280,6 +280,8 @@ const archiveXcodeProject = (c, platform) => {
     }
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
+
+    logDebug('xcodebuild args', args);
 
     return executeAsync('xcodebuild', { rawCommand: { args } })
         .then(() => {
