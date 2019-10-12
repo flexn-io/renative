@@ -217,7 +217,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
             return false;
         }
         // Cleaner Android reporting
-        if (v.includes('[DEBUG]') || v.includes('[INFO]') || v.includes('[LIFECYCLE]') || v.includes('[WARN]') || v.includes(':+HeapDumpOnOutOfMemoryError')) {
+        if (v.includes('[DEBUG]') || v.includes('[INFO]') || v.includes('[LIFECYCLE]') || v.includes('[WARN]') || v.includes(':+HeapDumpOnOutOfMemoryError') || v.includes('.errors.') || v.includes('-exception-') || v.includes('error_prone_annotations')) {
             return false;
         }
         if (v.search(toSearch) !== -1) {
