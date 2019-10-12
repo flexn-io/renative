@@ -199,6 +199,16 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'com.android.support:appcompat-v7:27.0.2\'\n';
     }
 
+    // ENABLE HERMES
+    const enableHermes = getConfigProp(c, platform, 'enableHermes', false);
+
+    if (enableHermes) {
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    debugImplementation files("../../../node_modules/hermes-engine/android/hermes-debug.aar")\n';
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    releaseImplementation files("../../../node_modules/hermes-engine/android/hermes-release.aar")\n';
+    } else {
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'org.webkit:android-jsc:+\'\n';
+    }
+    c.pluginConfigAndroid.enableHermes = `    enableHermes: ${enableHermes},`;
 
     writeCleanFile(getBuildFilePath(c, platform, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
         { pattern: '{{PLUGIN_APPLY}}', override: c.pluginConfigAndroid.applyPlugin },
@@ -218,6 +228,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
         { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: c.pluginConfigAndroid.compileOptions },
         { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: c.pluginConfigAndroid.localProperties },
+        { pattern: '{{PLUGIN_ENABLE_HERMES}}', override: c.pluginConfigAndroid.enableHermes }
     ]);
 };
 

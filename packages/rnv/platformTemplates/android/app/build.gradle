@@ -9,7 +9,9 @@ import com.android.build.OutputFile
 
 project.ext.react = [
     entryFile: "index.android.js",
-    enableHermes: true,
+{{PLUGIN_ENABLE_HERMES}}
+    hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermes",
+    inputExcludes: ["platformBuilds/**"],
     root: "../../../",
 ]
 
@@ -17,8 +19,6 @@ apply from: "../../../node_modules/react-native/react.gradle"
 
 def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
-def jscFlavor = 'org.webkit:android-jsc:+'
-def enableHermes = project.ext.react.get("enableHermes", false);
 
 android {
     compileSdkVersion {{COMPILE_SDK_VERSION}}
@@ -58,14 +58,6 @@ dependencies {
     implementation 'org.webkit:android-jsc:+'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
-    if (enableHermes) {
-        def hermesPath = "../../../node_modules/hermes-engine/android/";
-        debugImplementation files(hermesPath + "hermes-debug.aar")
-        releaseImplementation files(hermesPath + "hermes-release.aar")
-    } else {
-        implementation jscFlavor
-    }
 {{PLUGIN_IMPLEMENTATIONS}}
 }
 

@@ -8,8 +8,10 @@ apply plugin: 'kotlin-android-extensions'
 import com.android.build.OutputFile
 
 project.ext.react = [
-    entryFile: "index.android.js",
-    enableHermes: true,
+    entryFile: "index.androidtv.js",
+{{PLUGIN_ENABLE_HERMES}}
+    hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermes",
+    inputExcludes: ["platformBuilds/**"],
     root: "../../../",
 ]
 
@@ -58,14 +60,6 @@ dependencies {
     implementation 'org.webkit:android-jsc:+'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-
-    if (enableHermes) {
-        def hermesPath = "../../../node_modules/hermes-engine/android/";
-        debugImplementation files(hermesPath + "hermes-debug.aar")
-        releaseImplementation files(hermesPath + "hermes-release.aar")
-    } else {
-        implementation jscFlavor
-    }
 {{PLUGIN_IMPLEMENTATIONS}}
 }
 

@@ -87,6 +87,7 @@
         },
         "android": {
             "entryFile": "index.android",
+            "enableHermes": true,
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
@@ -107,6 +108,7 @@
         },
         "androidtv": {
             "entryFile": "index.androidtv",
+            "enableHermes": true,
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
@@ -127,6 +129,7 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
+            "enableHermes": true,
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 23,
