@@ -49,6 +49,6 @@ rnv build help
 
 Example:
 
-`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=\"IDENTITY\" OTHER_CODE_SIGN_FLAGS=\"--keychain KEYCHAIN\""`
+`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=iPhone\ Distribution\ (XXX) OTHER_CODE_SIGN_FLAGS=--keychain SOME_PATH_TO_KEYCHAIN"`
 
 `--mono` - Monochromatic output to terminal (no colors)
