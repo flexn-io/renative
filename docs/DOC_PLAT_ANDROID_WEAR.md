@@ -61,6 +61,23 @@ Launch specific emulator:
 rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ```
 
+## Android X support
+
+androidX is enabled by default
+
+make sure you have this piece of script in package.json
+
+```
+"scripts" : {
+  "postinstall": "jetify"
+}
+```
+
+## Hermes support
+
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidwear.enableHermes`
+or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
+
 ## App Config
 
 <a href="#android-based-config">see: Android based config</a>

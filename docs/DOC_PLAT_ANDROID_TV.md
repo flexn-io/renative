@@ -59,6 +59,23 @@ Launch specific emulator:
 rnv target launch -p androidtv -t Android_TV_720p_API_22
 ```
 
+## Android X support
+
+androidX is enabled by default
+
+make sure you have this piece of script in package.json
+
+```
+"scripts" : {
+  "postinstall": "jetify"
+}
+```
+
+## Hermes support
+
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidtv.enableHermes`
+or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
+
 ## App Config
 
 <a href="#android-based-config">see: Android based config</a>

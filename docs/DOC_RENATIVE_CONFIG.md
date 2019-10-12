@@ -422,7 +422,8 @@ ANDROID_CONFIG_PROPS
   "storeFile": "",
   "storePassword": "",
   "keyAlias": "",
-  "keyPassword": ""
+  "keyPassword": "",
+  "enableHermes": false
 }
 ```
 
