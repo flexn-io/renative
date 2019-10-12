@@ -88,6 +88,9 @@ v
                 <Text style={styles.textH3}>
                     {`platform: ${Api.platform}`}
                 </Text>
+                <Text style={styles.textH3}>
+                    {`hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`}
+                </Text>
                 <Button
                     style={styleButton}
                     title="Try Me!"
