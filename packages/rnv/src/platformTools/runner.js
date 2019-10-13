@@ -103,11 +103,9 @@ export const rnvStart = async (c) => {
         }
     }
 
-    let startCmd;
+    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --watchFolders src --sourceExts ${PLATFORMS[platform].sourceExts.join(',')},js,js,json,ts,tsx --port ${PLATFORMS[platform].defaultPort} --config=metro.config.js`;
     if (c.program.reset) {
-        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start --reset-cache';
-    } else {
-        startCmd = `node ./node_modules/react-native/local-cli/cli.js start --watchFolders src --sourceExts ${PLATFORMS[platform].sourceExts.join(',')},js,js,json,ts,tsx --port ${PLATFORMS[platform].defaultPort}`;
+        startCmd += ' --reset-cache';
     }
 
     await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });

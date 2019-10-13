@@ -267,7 +267,7 @@ export const RENATIVE_CONFIG_RUNTIME_NAME = 'renative.runtime.json';
 export const RENATIVE_CONFIG_WORKSPACES_NAME = 'renative.workspaces.json';
 export const RENATIVE_CONFIG_PLUGINS_NAME = 'renative.plugins.json';
 export const RENATIVE_CONFIG_TEMPLATES_NAME = 'renative.templates.json';
-export const RN_CLI_CONFIG_NAME = 'rn-cli.config.js';
+export const RN_CLI_CONFIG_NAME = 'metro.config.js';
 export const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 export const SAMPLE_APP_ID = 'helloWorld';
 
