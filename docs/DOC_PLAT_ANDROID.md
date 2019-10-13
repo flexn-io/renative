@@ -25,6 +25,15 @@ sidebar_label: Android
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.mobile.js`          | 1 |
+| `.android.js`       | 2 |
+| `.native.js`         | 3 |
+| `.js`             | 4 |
+
 ## Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development

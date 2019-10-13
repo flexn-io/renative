@@ -23,6 +23,16 @@ sidebar_label: Android TV
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.tv.js`          | 1 |
+| `.androidtv.js`       | 2 |
+| `.android.js`       | 3 |
+| `.native.js`         | 4 |
+| `.js`             | 5 |
+
 ## Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development

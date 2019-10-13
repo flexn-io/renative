@@ -23,6 +23,16 @@ sidebar_label: tvOS
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.tv.js`          | 1 |
+| `.tvos.js`       | 2 |
+| `.ios.js`       | 3 |
+| `.native.js`         | 4 |
+| `.js`             | 5 |
+
 ## Requirements
 
 -   [CocoaPods](https://cocoapods.org) `1.5.3` or newer

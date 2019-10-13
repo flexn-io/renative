@@ -23,6 +23,16 @@ sidebar_label: Android Wear
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.watch.js`          | 1 |
+| `.androidwear.js`       | 2 |
+| `.android.js`       | 3 |
+| `.native.js`         | 4 |
+| `.js`             | 5 |
+
 ## Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development

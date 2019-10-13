@@ -14,7 +14,7 @@ const config = {
         ])
     },
     projectRoot: path.resolve(__dirname),
-    watchFolders: [path.resolve(__dirname, 'src')]
+    watchFolders: [path.resolve(__dirname)]
 };
 
 module.exports = config;

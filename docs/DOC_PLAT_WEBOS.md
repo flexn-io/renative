@@ -22,6 +22,16 @@ sidebar_label: LG WebOS
 
 -   Latest LG webOS Project
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.tv.js`          | 1 |
+| `.smarttv.js`     | 2 |
+| `.webos.js`       | 3 |
+| `.web.js`         | 4 |
+| `.js`             | 5 |
+
 ## Requirements
 
 -   [LG Emulator](http://webostv.developer.lge.com/sdk/tools/emulator/introduction-emulator/) v3.0.0

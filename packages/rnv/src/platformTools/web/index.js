@@ -20,6 +20,7 @@ import {
     logWarning,
     getAppTitle
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
@@ -89,6 +90,7 @@ const _generateWebpackConfigs = (c) => {
         analyzer,
         entryFile,
         title,
+        extensions: PLATFORMS[c.platform] ? PLATFORMS[c.platform].sourceExts : [],
         ...extendConfig
     };
 
@@ -193,7 +195,9 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
 
     _generateWebpackConfigs(c);
     const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
-    return executeAsync(c, command, { stdio: 'inherit', silent: true });
+    executeAsync(c, command, { stdio: 'inherit', silent: true })
+        .then(() => resolve())
+        .catch(e => resolve());
 });
 
 const deployWeb = (c, platform) => {
