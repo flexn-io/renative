@@ -5,7 +5,6 @@ const config = {
     resolver: {
         blacklistRE: blacklist([
             /platformBuilds\/.*/,
-            /platformAssets\/.*/,
             /buildHooks\/.*/,
             /appConfigs\/.*/,
             /renative.local.*/,

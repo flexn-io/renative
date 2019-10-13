@@ -9,7 +9,7 @@ class App extends React.Component {
         return (
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
                 <Text>
-                    {`This is blank app. platform: ${Api.platform}, form factor: ${Api.formFactor}`}
+                    {`This is blank app. \nplatform: ${Api.platform}, \nform factor: ${Api.formFactor}`}
                 </Text>
             </View>
         );
