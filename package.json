@@ -58,6 +58,7 @@
     },
     "scripts": {
         "build": "lerna run build",
+        "start": "concurrently \"rnv start\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
         "lerna": "npx lerna bootstrap",
         "link": "cd ./packages/rnv && npm link",
         "postinstall": "npx jetify",
