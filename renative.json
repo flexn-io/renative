@@ -65,6 +65,16 @@
                     }
                 }
             }
+        },
+        "renative-template-kitchen-sink": {
+            "version": "file:./packages/renative-template-kitchen-sink",
+            "webpack": {
+                "moduleAliases": {
+                    "renative": {
+                        "projectPath": "packages/renative-template-kitchen-sink"
+                    }
+                }
+            }
         }
     },
     "currentTemplate": "renative-template-hello-world"

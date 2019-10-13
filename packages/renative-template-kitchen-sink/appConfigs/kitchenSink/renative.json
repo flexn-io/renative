@@ -1,8 +1,8 @@
 {
-    "id": "helloWorld",
+    "id": "kitchenSink",
     "common": {
-        "id": "renative.blank",
-        "title": "ReNative Blank",
+        "id": "renative.kitchensink",
+        "title": "ReNative Kitchen Sink",
         "description": "Cross-platform application project based on ReNative",
         "author": {
             "name": "Pavel Jacko",
@@ -26,7 +26,7 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -43,7 +43,7 @@
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -61,7 +61,7 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -78,7 +78,7 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -95,7 +95,7 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -111,7 +111,7 @@
             "buildSchemes": {
                 "buildSchemes": {
                     "debug": {
-                        "id": "renative.blank.debug",
+                        "id": "renative.kitchensink.debug",
                         "bundleAssets": false,
                         "environment": "development"
                     },
@@ -125,15 +125,15 @@
         },
         "tizen": {
             "appName": "RNVanillaTV",
-            "package": "NkVRhWHJST",
-            "id": "NkVRhWHJST.RNVanillaTV",
+            "package": "NkVRhWHJSU",
+            "id": "NkVRhWHJSU.RNVanillaTV",
             "entryFile": "index.tizen",
             "certificateProfile": "RNVanillaCert"
         },
         "tizenwatch": {
             "appName": "RNVanillaWatch",
-            "package": "cHIP2fIRQZ",
-            "id": "cHIP2fIRQZ.RNVanillaWatch",
+            "package": "cHIP2fIRQY",
+            "id": "cHIP2fIRQY.RNVanillaWatch",
             "entryFile": "index.tizenwatch",
             "certificateProfile": "RNVanillaCert"
         },
@@ -141,7 +141,7 @@
             "entryFile": "index.web",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "bundleAssets": false,
                     "environment": "developement"
                 },
@@ -161,7 +161,7 @@
             "entryFile": "index.kaios",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -174,7 +174,7 @@
             "entryFile": "index.firefoxos",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -187,7 +187,7 @@
             "entryFile": "index.firefoxtv",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
+                    "id": "renative.kitchensink.debug",
                     "bundleAssets": false
                 },
                 "release": {

@@ -63,9 +63,10 @@
         "link": "cd ./packages/rnv && npm link",
         "postinstall": "npx jetify",
         "prePublish": "rnv hooks run -x prePublish",
-        "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank",
+        "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",
         "publish:blank": "cd packages/renative-template-blank && npm publish",
         "publish:hello": "cd packages/renative-template-hello-world && npm publish",
+        "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
         "publish:renative": "cd packages/renative && npm publish",
         "publish:rnv": "cd packages/rnv && npm publish",
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
@@ -108,7 +109,8 @@
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
         "rnv": "file:./packages/rnv",
-        "xcode": "2.0.0"
+        "xcode": "2.0.0",
+        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink"
     },
     "engines": {
         "cocoapods": ">=1.5.3",
