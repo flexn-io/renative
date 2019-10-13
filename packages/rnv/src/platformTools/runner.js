@@ -35,7 +35,8 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    WEB_HOSTED_PLATFORMS
+    WEB_HOSTED_PLATFORMS,
+    PLATFORMS
 } from '../constants';
 import {
     runXcodeProject,
@@ -106,7 +107,7 @@ export const rnvStart = async (c) => {
     if (c.program.reset) {
         startCmd = 'node ./node_modules/react-native/local-cli/cli.js start --reset-cache';
     } else {
-        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start';
+        startCmd = `node ./node_modules/react-native/local-cli/cli.js start --watchFolders src --sourceExts ${PLATFORMS[platform].sourceExts.join(',')},js,js,json,ts,tsx --port ${PLATFORMS[platform].defaultPort}`;
     }
 
     await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });

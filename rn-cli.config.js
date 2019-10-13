@@ -5,6 +5,7 @@ const config = {
     projectRoot: path.resolve(__dirname),
     watchFolders: [path.resolve(__dirname)],
     modulePaths: [path.resolve(__dirname)],
+    getSourceExts: () => ['xxx.js'],
     resolver: {
         blacklistRE: blacklist([
             /node_modules\/.*\/node_modules\/react-native\/.*/,
