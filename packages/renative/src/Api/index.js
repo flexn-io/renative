@@ -1,10 +1,11 @@
 import { DrawerActions } from 'react-navigation';
 import { getNavigation } from '../Navigation';
+import platform from './platform';
+import factor from './factor';
 
 export default {
-    platform: 'unknown',
-    formFactor: 'unknown',
-    platformGroup: 'unknown',
+    platform,
+    formFactor: factor,
     navigation: {
         openDrawer: () => {
             const nav = getNavigation();
