@@ -403,6 +403,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         pluginApplicationImports: '',
         pluginApplicationMethods: '',
         pluginApplicationCreateMethods: '',
+        pluginApplicationDebugServer: '',
         applyPlugin: '',
         defaultConfig: '',
         pluginActivityCreateMethods: '',
