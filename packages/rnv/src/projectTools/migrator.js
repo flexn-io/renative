@@ -94,7 +94,7 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
             logWarning(`Found deprecated metro config ${paths.metroConfig} and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`);
             const metroConfig = fs.readFileSync(paths.metroConfig).toString();
             fs.writeFileSync(paths.metroConfigNew, metroConfig);
-            removeFilesSync(paths.metroConfig);
+            removeFilesSync([paths.metroConfig]);
         }
 
         if (files.configNew?.android) {
