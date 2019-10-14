@@ -4,6 +4,17 @@ import { Api } from 'renative';
 
 let AppContainer;
 
+const Tile = ({children, title}) => {
+  return (
+    <View>
+      <Text>{title}</View>
+      <View>
+      {children}
+      </View>
+    </View>
+  )
+}
+
 class App extends React.Component {
     render() {
         return (
@@ -18,6 +29,7 @@ class App extends React.Component {
                     {`factor: ${Api.formFactor}`}
                 </Text>
             </View>
+            <Tile><Text>BBOOO</Text></Tile>
         );
     }
 }

@@ -501,6 +501,9 @@
         "react-native-root-toast": {
             "version": "2.2.1"
         },
+        "react-native-viewpager": {
+            "version": "0.2.13"
+        },
         "react-native-simple-radio-button": {
             "version": "2.7.3"
         },
