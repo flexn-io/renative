@@ -417,7 +417,6 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         appBuildGradleSigningConfigs: '',
         appBuildGradleImplementations: '',
         appBuildGradleAfterEvaluate: '',
-        appBuildGradleDefaultConfig: '',
     };
 
     // PLUGINS

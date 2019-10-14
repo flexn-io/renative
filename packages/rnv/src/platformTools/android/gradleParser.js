@@ -215,7 +215,6 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
         { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
-        { pattern: '{{DEFAULT_CONFIG}}', override: c.pluginConfigAndroid.appBuildGradleDefaultConfig },
         { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: c.pluginConfigAndroid.appBuildGradleImplementations },
         { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate },
         { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: c.pluginConfigAndroid.appBuildGradleSigningConfigs },
@@ -281,16 +280,16 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     // APP/BUILD.GRADLE
     if (plugin.projectName) {
         if (!plugin.skipLinking) {
-            c.pluginConfigAndroid.pluginIncludes += `, ':${_fixGradle5(plugin.projectName)}'`;
+            c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
             c.pluginConfigAndroid.pluginPaths += `project(':${
-                _fixGradle5(plugin.projectName)
+                plugin.projectName
             }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
-                c.pluginConfigAndroid.appBuildGradleImplementations += `${_fixGradle5(plugin.implementation)}\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
-                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${_fixGradle5(plugin.projectName)}')\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${plugin.projectName}')\n`;
             }
         }
     } else {
@@ -300,7 +299,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
-                c.pluginConfigAndroid.appBuildGradleImplementations += `${_fixGradle5(plugin.implementation)}\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${keyFixed}')\n`;
             }
@@ -389,8 +388,6 @@ const _fixAndroidLegacy = (c, modulePath) => {
         ]);
     }
 };
-
-const _fixGradle5 = (name) => name.replace(/[\\\/:<>“?*|]/g, '-');
 
 // const _getPrivateConfig = (c, platform) => {
 //     let privateConfigFolder = path.join(c.paths.workspace.dir, c.files.project.package.name, c.buildConfig.id);
