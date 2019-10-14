@@ -25,6 +25,7 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
+    RENATIVE_CONFIG_PLATFORMS_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
@@ -129,6 +130,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.rnv.nodeModulesDir = path.join(c.paths.rnv.dir, 'node_modules');
     c.paths.rnv.platformTemplates.dir = path.join(c.paths.rnv.dir, 'platformTemplates');
     c.paths.rnv.pluginTemplates.dir = path.join(c.paths.rnv.dir, 'pluginTemplates');
+    c.paths.rnv.platformTemplates.config = path.join(c.paths.rnv.platformTemplates.dir, RENATIVE_CONFIG_PLATFORMS_NAME);
     c.paths.rnv.pluginTemplates.config = path.join(c.paths.rnv.pluginTemplates.dir, RENATIVE_CONFIG_PLUGINS_NAME);
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'projectTemplates');
     c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
@@ -203,6 +205,9 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
         // LOAD PLUGIN TEMPLATES
         loadPluginTemplates(c);
+
+        // LOAD PLATFORM TEMPLATES
+        loadPlatformTemplates(c);
 
         if (!c.files.project.config) return resolve();
 
@@ -443,6 +448,7 @@ export const generateBuildConfig = (c) => {
     const mergeOrder = [
         c.paths.rnv.projectTemplates.config,
         c.paths.rnv.pluginTemplates.config,
+        c.files.rnv.platformTemplates.config,
         c.paths.workspace.config,
         c.paths.project.config,
         c.paths.project.configPrivate,
@@ -688,6 +694,10 @@ export const loadProjectTemplates = (c) => {
 
 export const loadPluginTemplates = (c) => {
     c.files.rnv.pluginTemplates.config = readObjectSync(c.paths.rnv.pluginTemplates.config);
+};
+
+export const loadPlatformTemplates = (c) => {
+    c.files.rnv.platformTemplates.config = readObjectSync(c.paths.rnv.platformTemplates.config);
 };
 
 const _loadWorkspacesSync = (c) => {

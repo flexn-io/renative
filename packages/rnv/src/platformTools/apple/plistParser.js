@@ -89,7 +89,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     // PERMISSIONS
     const pluginPermissions = '';
     const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
-    if (includedPermissions) {
+    if (includedPermissions && c.buildConfig.permissions) {
         const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
         const pc = c.buildConfig.permissions[plat];
         if (includedPermissions.length && includedPermissions[0] === '*') {
