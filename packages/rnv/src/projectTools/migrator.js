@@ -90,6 +90,13 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
             });
         }
 
+        if (fs.existsSync(paths.package)) {
+            const packageString = fs.readFileSync(paths.package).toString();
+            if (!packageString.includes('npx jetify')) {
+                logWarning(`You're missing ${chalk.white('"scripts": { "postinstall": "npx jetify" }')} in your package.json. Your android build might fail!`);
+            }
+        }
+
         if (fs.existsSync(paths.metroConfig)) {
             logWarning(`Found deprecated metro config ${paths.metroConfig} and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`);
             const metroConfig = fs.readFileSync(paths.metroConfig).toString();
