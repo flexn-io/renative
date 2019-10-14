@@ -28,6 +28,7 @@ import {
 } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
+import Config from './config';
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -186,22 +187,21 @@ export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.p
 
 export const getAppConfigId = c => c.buildConfig.id;
 
-const _getValueOrMergedObject = (resultCli, o1, o2, o3) => {
-    if (resultCli || resultCli === false) {
+const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resultCommon) => {
+    if (resultCli !== undefined) {
         return resultCli;
     }
-    if (o1 || o1 === false) {
-        if (Array.isArray(o1) || typeof o1 !== 'object') return o1;
-        const val = Object.assign(o3 || {}, o2 || {}, o1);
+    if (resultScheme !== undefined) {
+        if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') return resultScheme;
+        const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
         return val;
     }
-    if (o1 === null) return null;
-    if (o2 || o2 === false) {
-        if (Array.isArray(o2) || typeof o2 !== 'object') return o2;
-        return Object.assign(o3 || {}, o2);
+    if (resultPlatforms !== undefined) {
+        if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') return resultPlatforms;
+        return Object.assign(resultCommon || {}, resultPlatforms);
     }
-    if (o2 === null) return null;
-    return o3;
+    if (resultPlatforms === null) return null;
+    return resultCommon;
 };
 
 export const CLI_PROPS = [
@@ -220,20 +220,19 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     let resultPlatforms;
     let scheme;
     if (p) {
-        scheme = p.buildSchemes ? p.buildSchemes[ps] : null;
+        scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
         resultPlatforms = c.buildConfig.platforms[platform][key];
     }
 
-
     scheme = scheme || {};
-    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : null;
+    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
     const resultScheme = scheme[key];
     const resultCommon = c.buildConfig.common?.[key];
 
-    const result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+    let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
+    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
-    if (result === null || result === undefined) return defaultVal;
     return result;
 };
 
@@ -481,6 +480,13 @@ export const waitForWebpack = (c, port) => {
             });
         }, CHECK_INTEVAL);
     });
+};
+export const importPackageFromProject = (name) => {
+    const c = Config.getConfig();
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
+    if (pkg.default) return pkg.default;
+    return pkg;
 };
 
 // TODO: remove this

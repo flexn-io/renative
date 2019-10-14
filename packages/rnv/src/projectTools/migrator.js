@@ -7,6 +7,7 @@ import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTo
 import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
 import { rnvClean } from '../systemTools/cleaner';
+import { RN_CLI_CONFIG_NAME } from '../constants';
 import { configureNodeModules } from './projectParser';
 
 export const checkAndMigrateProject = async (c) => {
@@ -25,7 +26,9 @@ export const checkAndMigrateProject = async (c) => {
         package: path.join(prjDir, 'package.json'),
         plugins: path.join(prjDir, 'projectConfig/plugins.json'),
         permissions: path.join(prjDir, 'projectConfig/permissions.json'),
-        appConfigs: path.join(prjDir, 'appConfigs')
+        appConfigs: path.join(prjDir, 'appConfigs'),
+        metroConfig: path.join(prjDir, 'rn-cli.config.js'),
+        metroConfigNew: path.join(prjDir, RN_CLI_CONFIG_NAME)
     };
 
     try {
@@ -85,6 +88,13 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
                     requiresSave = true;
                 }
             });
+        }
+
+        if (fs.existsSync(paths.metroConfig)) {
+            logWarning(`Found deprecated metro config ${paths.metroConfig} and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`);
+            const metroConfig = fs.readFileSync(paths.metroConfig).toString();
+            fs.writeFileSync(paths.metroConfigNew, metroConfig);
+            removeFilesSync(paths.metroConfig);
         }
 
         if (files.configNew?.android) {

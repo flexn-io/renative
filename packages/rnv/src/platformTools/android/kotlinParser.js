@@ -25,8 +25,10 @@ import {
     getConfigProp,
     logInfo,
     logSuccess,
+    getIP,
     getBuildsFolder,
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
@@ -35,6 +37,15 @@ export const parseMainApplicationSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     const bundleFile = getGetJsBundleFile(c, platform) || JS_BUNDLE_DEFAULTS[platform];
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    // const host = getConfigProp(c, platform, 'host', '10.0.2.2');
+    const bundlerIp = c.device ? getIP() : '10.0.2.2';
+    if (!bundleAssets) {
+        c.pluginConfigAndroid.pluginApplicationDebugServer += '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
+        c.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${PLATFORMS[platform].defaultPort}").apply()\n`;
+    }
+
+
     writeCleanFile(getBuildFilePath(c, platform, applicationPath), path.join(appFolder, applicationPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
@@ -43,6 +54,8 @@ export const parseMainApplicationSync = (c, platform) => {
         { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
         { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.pluginApplicationMethods },
         { pattern: '{{PLUGIN_ON_CREATE}}', override: c.pluginConfigAndroid.pluginApplicationCreateMethods },
+        { pattern: '{{PLUGIN_DEBUG_SERVER}}', override: c.pluginConfigAndroid.pluginApplicationDebugServer },
+
     ]);
 };
 
@@ -72,7 +85,7 @@ export const parseSplashActivitySync = (c, platform) => {
 
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
-    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX');
+    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
     if (enableAndroidX === true) {
         c.pluginConfigAndroid.pluginSplashActivityImports += 'import androidx.appcompat.app.AppCompatActivity\n';
     } else {

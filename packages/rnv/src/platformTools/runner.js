@@ -35,7 +35,8 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    WEB_HOSTED_PLATFORMS
+    WEB_HOSTED_PLATFORMS,
+    PLATFORMS
 } from '../constants';
 import {
     runXcodeProject,
@@ -44,7 +45,7 @@ import {
     packageBundleForXcode,
     runAppleLog
 } from './apple';
-import { buildWeb, runWeb, runWebDevServer, deployWeb } from './web';
+import { buildWeb, runWeb, runWebDevServer, deployWeb, exportWeb } from './web';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -102,11 +103,11 @@ export const rnvStart = async (c) => {
         }
     }
 
-    let startCmd;
+    const sourceExts = PLATFORMS[platform] ? PLATFORMS[platform].sourceExts.join(',') : 'mobile.js';
+    const defaultPort = PLATFORMS[platform]?.defaultPort || 8081;
+    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --watchFolders src --sourceExts ${sourceExts},js,js,json,ts,tsx --port ${defaultPort} --config=metro.config.js`;
     if (c.program.reset) {
-        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start --reset-cache';
-    } else {
-        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start';
+        startCmd += ' --reset-cache';
     }
 
     await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
@@ -316,6 +317,11 @@ const _rnvExportWithPlatform = async (c) => {
     logTask(`_rnvExportWithPlatform:${c.platform}`);
     const { platform } = c;
     switch (platform) {
+    case WEB:
+        if (!c.program.only) {
+            await rnvBuild(c);
+        }
+        return exportWeb(c, platform);
     case IOS:
     case TVOS:
         if (!c.program.only) {
@@ -351,7 +357,7 @@ const _rnvDeployWithPlatform = async (c) => {
             return _rnvExportWithPlatform(c);
         }
         return;
-    // case WEBOS: 
+    // case WEBOS:
     case TIZEN:
         if (!c.program.only) {
             await rnvBuild(c);

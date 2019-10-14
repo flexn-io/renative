@@ -23,6 +23,15 @@ sidebar_label: Windows
 -   support for Windows 10+
 -   Based on Electron
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.desktop.js`          | 1 |
+| `.windows.js`     | 2 |
+| `.web.js`         | 3 |
+| `.js`             | 4 |
+
 ## Requirements
 
 -   Windows dev environment

@@ -24,6 +24,15 @@ sidebar_label: iOS
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.mobile.js`          | 1 |
+| `.ios.js`       | 2 |
+| `.native.js`         | 3 |
+| `.js`             | 4 |
+
 ## Requirements
 
 -   [CocoaPods](https://cocoapods.org) `1.5.3` or newer

@@ -32,6 +32,7 @@
             "workspaces",
             "config",
             "rnv_config",
+            "file_extensions",
             "config_folders",
             "build_hooks",
             "runtime",

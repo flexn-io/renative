@@ -23,6 +23,16 @@ sidebar_label: Tizen TV
 -   Latest Tizen project
 -   Support for Tizen 5.0, 4.0, 3.0
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.tv.js`          | 1 |
+| `.smarttv.js`     | 2 |
+| `.tizen.js`       | 3 |
+| `.web.js`         | 4 |
+| `.js`             | 5 |
+
 ## Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
@@ -60,13 +70,14 @@ rnv target launch -p tizen -t T-samsung-5.0-x86
 rnv run -p tizen
 ```
 
-Run on Device
+##### Run on Device
 
 ```
 rnv run -p tizen -d
 ```
+*Before you run on a physical device, make sure you have enabled `Dev Mode` and you set your IP correctly, otherwise the connection will fail. For more informations about `Dev Mode` consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device*
 
-Run in Browser
+##### Run in Browser
 
 ```
 rnv run -p tizen --hosted
@@ -74,14 +85,22 @@ rnv run -p tizen --hosted
 
 ## Advanced
 
-Clean and Re-build platform project
+##### Clean and Re-build platform project
 
 ```
 rnv run -p tizen -r
 ```
 
-Launch with specific Tizen simulator:
+##### Launch with specific Tizen simulator:
 
 ```
 rnv run -p tizen -t T-samsung-5.0-x86
 ```
+
+##### Launch on a specific Tizen device
+
+```
+rnv run -p tizen -d -t <IP>
+```
+
+*Before you run on a physical device, make sure you have enabled `Dev Mode` and you set your IP correctly, otherwise the connection will fail. For more informations about `Dev Mode` consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device*

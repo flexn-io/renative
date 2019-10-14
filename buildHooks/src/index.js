@@ -34,6 +34,7 @@ const hooks = {
         _updatePackageJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
         _updatePackageJson(c, path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
         _updatePackageJson(c, path.join(pkgFolder, 'renative-template-blank/package.json'), v);
+        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-kitchen-sink/package.json'), v);
         _updatePackageJson(c, path.join(pkgFolder, 'renative/package.json'), v);
         FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
         FileUtils.updateObjectSync(c.paths.rnv.pluginTemplates.config, {

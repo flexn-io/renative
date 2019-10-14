@@ -74,54 +74,223 @@ export const OS = {
 
 export const PLATFORMS = {
     // ACTIVE
-    android: { defaultPort: 8081, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: false },
-    androidtv: { defaultPort: 8081, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: false },
-    androidwear: { defaultPort: 8081, icon: ICONS.WATCH, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: false },
-    firefoxos: { defaultPort: 8089, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    firefoxtv: { defaultPort: 8088, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    ios: { defaultPort: 8081, icon: ICONS.PHONE, supportedOS: OS.MAC_ONLY, isActive: true, requiresSharedConfig: false },
-    kaios: { defaultPort: 8086, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    macos: { defaultPort: 8084, icon: ICONS.DESKTOP, supportedOS: OS.MAC_ONLY, isActive: true, requiresSharedConfig: true },
-    tizen: { defaultPort: 8083, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    tizenwatch: { defaultPort: 8087, icon: ICONS.WATCH, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    tizenmobile: { defaultPort: 8087, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    tvos: { defaultPort: 8081, icon: ICONS.TV, supportedOS: OS.MAC_ONLY, isActive: true, requiresSharedConfig: false },
-    web: { defaultPort: 8080, icon: ICONS.BROWSER, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    webos: { defaultPort: 8083, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true },
-    windows: { defaultPort: 8085, icon: ICONS.DESKTOP, supportedOS: OS.WINDOWS_ONLY, isActive: true, requiresSharedConfig: true },
+    web: {
+        defaultPort: 8080,
+        icon: ICONS.BROWSER,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['web.js']
+    },
+    ios: {
+        defaultPort: 8081,
+        icon: ICONS.PHONE,
+        supportedOS: OS.MAC_ONLY,
+        isActive: true,
+        requiresSharedConfig: false,
+        sourceExts: ['mobile.js']
+    },
+    android: {
+        defaultPort: 8081,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: false,
+        sourceExts: ['mobile.js']
+    },
+    androidtv: {
+        defaultPort: 8083,
+        icon: ICONS.TV,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: false,
+        sourceExts: ['tv.js', 'androidtv.js']
+    },
+    tvos: {
+        defaultPort: 8084,
+        icon: ICONS.TV,
+        supportedOS: OS.MAC_ONLY,
+        isActive: true,
+        requiresSharedConfig: false,
+        sourceExts: ['tv.js', 'tvos.js']
+    },
+    macos: {
+        defaultPort: 8085,
+        icon: ICONS.DESKTOP,
+        supportedOS: OS.MAC_ONLY,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['desktop.js', 'macos.js', 'web.js']
+    },
+    tizen: {
+        defaultPort: 8086,
+        icon: ICONS.TV,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['tv.js', 'smarttv.js', 'tizen.js', 'web.js']
+    },
+    webos: {
+        defaultPort: 8087,
+        icon: ICONS.TV,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['tv.js', 'webos.js', 'tizen.js', 'web.js']
+    },
+    androidwear: {
+        defaultPort: 8088,
+        icon: ICONS.WATCH,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: false,
+        sourceExts: ['wear.js', 'androidwear.js']
+    },
+    tizenwatch: {
+        defaultPort: 8089,
+        icon: ICONS.WATCH,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['wear.js', 'tizenwatch.js', 'web.js']
+    },
+    tizenmobile: {
+        defaultPort: 8010,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['mobile.js', 'tizenmobile.js', 'web.js']
+    },
+    windows: {
+        defaultPort: 8011,
+        icon: ICONS.DESKTOP,
+        supportedOS: OS.WINDOWS_ONLY,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['desktop.js', 'windows.js', 'web.js']
+    },
+    kaios: {
+        defaultPort: 8012,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: ['tv.js', 'smarttv.js', 'kaios.js', 'web.js']
+    },
+    firefoxos: {
+        defaultPort: 8013,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: []
+    },
+    firefoxtv: {
+        defaultPort: 8014,
+        icon: ICONS.TV,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: []
+    },
     // NON ACTIVE
-    watchos: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    androidauto: { defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    alexa: { defaultPort: 999999, icon: ICONS.VOICE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    appleauto: { defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    astian: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    blackberry: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    chromecast: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    chromeos: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    fireos: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    firetv: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    hbbtv: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    meego: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    netcast: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    occulus: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    orsay: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    ps4: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    roku: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    sailfish: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    tivo: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    ubuntu: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    ubuntutouch: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    unity: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    vewd: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    vieraconnect: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    vizio: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    webnext: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    webian: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    wii: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    wp10: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    wp8: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    xbox: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
-    xbox360: { defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true },
+    watchos: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    androidauto: {
+        defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    alexa: {
+        defaultPort: 999999, icon: ICONS.VOICE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    appleauto: {
+        defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    astian: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    blackberry: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    chromecast: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    chromeos: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    fireos: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    firetv: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    hbbtv: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    meego: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    netcast: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    occulus: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    orsay: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    ps4: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    roku: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    sailfish: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    tivo: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    ubuntu: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    ubuntutouch: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    unity: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    vewd: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    vieraconnect: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    vizio: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    webnext: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    webian: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    wii: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    wp10: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    wp8: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    xbox: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
+    xbox360: {
+        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+    },
 };
 
 export const WEB_HOSTED_PLATFORMS = [
@@ -173,7 +342,7 @@ export const RENATIVE_CONFIG_RUNTIME_NAME = 'renative.runtime.json';
 export const RENATIVE_CONFIG_WORKSPACES_NAME = 'renative.workspaces.json';
 export const RENATIVE_CONFIG_PLUGINS_NAME = 'renative.plugins.json';
 export const RENATIVE_CONFIG_TEMPLATES_NAME = 'renative.templates.json';
-export const RN_CLI_CONFIG_NAME = 'rn-cli.config.js';
+export const RN_CLI_CONFIG_NAME = 'metro.config.js';
 export const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 export const SAMPLE_APP_ID = 'helloWorld';
 

@@ -31,6 +31,10 @@
                 "title": "Develop ReNative",
                 "sidebar_label": "Develop ReNative"
             },
+            "file_extensions": {
+                "title": "File Extensions",
+                "sidebar_label": "File Extensions"
+            },
             "features": {
                 "title": "Features",
                 "sidebar_label": "Features"

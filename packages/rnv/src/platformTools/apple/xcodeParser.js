@@ -32,6 +32,7 @@ const xcode = require('xcode');
 
 
 export const parseXcodeProject = async (c, platform) => {
+    logTask('parseXcodeProject');
     // PROJECT
     c.runtime.xcodeProj = {};
     c.runtime.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
@@ -78,6 +79,7 @@ export const parseXcodeProject = async (c, platform) => {
 };
 
 const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject) => {
+    logTask('_parseXcodeProject');
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);

@@ -23,6 +23,15 @@ sidebar_label: Tizen Mobile
 -   Latest Tizen project
 -   Support for Tizen 5.0, 4.0, 3.0
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.mobile.js`          | 1 |
+| `.tizenmobile.js`       | 2 |
+| `.web.js`         | 3 |
+| `.js`             | 4 |
+
 ## Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`
