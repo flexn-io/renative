@@ -173,7 +173,7 @@
             }
         },
         "react-native-video": {
-            "version": "2.0.0",
+            "version": "5.0.2",
             "ios": {
                 "podName": "react-native-video"
             },
@@ -1363,7 +1363,7 @@
             }
         },
         "react-native-fast-image": {
-            "version": "6.0.3",
+            "version": "7.0.2",
             "ios": {
                 "podName": "react-native-fast-image"
             },
