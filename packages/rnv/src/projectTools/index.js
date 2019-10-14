@@ -38,36 +38,38 @@ import { copyFolderContentsRecursiveSync, readObjectSync } from '../systemTools/
 import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
+import Config from '../config';
 
-export const rnvConfigure = c => new Promise((resolve, reject) => {
+export const rnvConfigure = async (c) => {
     const p = c.program.platform || 'all';
     logTask(`rnvConfigure:${p}`);
 
-    _checkAndCreatePlatforms(c, c.program.platform)
-        .then(() => copyRuntimeAssets(c))
-        .then(() => copySharedPlatforms(c))
-        .then(() => generateRuntimeConfig(c))
-        .then(() => overridePlugins(c, c.paths.rnv.pluginTemplates.dir))
-        .then(() => overridePlugins(c, c.paths.project.projectConfig.pluginsDir))
-        .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN]) ? configureTizenGlobal(c, TIZEN) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN]) ? configureTizenProject(c, TIZEN) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN_WATCH]) ? configureTizenProject(c, TIZEN_WATCH) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN_MOBILE]) ? configureTizenProject(c, TIZEN_MOBILE) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [WEBOS]) ? configureWebOSProject(c, WEBOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [WEB]) ? configureWebProject(c, WEB) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [MACOS]) ? configureElectronProject(c, MACOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [WINDOWS]) ? configureElectronProject(c, WINDOWS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [KAIOS]) ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [FIREFOX_OS]) ? configureKaiOSProject(c, FIREFOX_OS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [FIREFOX_TV]) ? configureKaiOSProject(c, FIREFOX_TV) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    // inject packages if needed
+    if (p !== 'all') await Config.injectPlatformDependencies(p);
+
+    await _checkAndCreatePlatforms(c, c.program.platform);
+    await copyRuntimeAssets(c);
+    await copySharedPlatforms(c);
+    await generateRuntimeConfig(c);
+    await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
+    await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
+    if (_isOK(c, p, [ANDROID])) await configureGradleProject(c, ANDROID);
+    if (_isOK(c, p, [ANDROID_TV])) await configureGradleProject(c, ANDROID_TV);
+    if (_isOK(c, p, [ANDROID_WEAR])) await configureGradleProject(c, ANDROID_WEAR);
+    if (_isOK(c, p, [TIZEN])) await configureTizenGlobal(c, TIZEN);
+    if (_isOK(c, p, [TIZEN])) await configureTizenProject(c, TIZEN);
+    if (_isOK(c, p, [TIZEN_WATCH])) await configureTizenProject(c, TIZEN_WATCH);
+    if (_isOK(c, p, [TIZEN_MOBILE])) await configureTizenProject(c, TIZEN_MOBILE);
+    if (_isOK(c, p, [WEBOS])) await configureWebOSProject(c, WEBOS);
+    if (_isOK(c, p, [WEB])) await configureWebProject(c, WEB);
+    if (_isOK(c, p, [MACOS])) await configureElectronProject(c, MACOS);
+    if (_isOK(c, p, [WINDOWS])) await configureElectronProject(c, WINDOWS);
+    if (_isOK(c, p, [KAIOS])) await configureKaiOSProject(c, KAIOS);
+    if (_isOK(c, p, [FIREFOX_OS])) await configureKaiOSProject(c, FIREFOX_OS);
+    if (_isOK(c, p, [FIREFOX_TV])) await configureKaiOSProject(c, FIREFOX_TV);
+    if (_isOK(c, p, [IOS])) await configureXcodeProject(c, IOS);
+    if (_isOK(c, p, [TVOS])) await configureXcodeProject(c, TVOS);
+};
 
 export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
