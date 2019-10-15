@@ -1489,6 +1489,9 @@
             "ios": {
                 "podName": "react-native-fast-image"
             },
+            "tvos": {
+                "podName": "react-native-fast-image"
+            },
             "android": {
                 "package": "com.dylanvann.fastimage.FastImageViewPackage"
             },
