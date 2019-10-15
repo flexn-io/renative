@@ -1,4 +1,4 @@
-export default () => {
+export default (style) => {
     const spatialScript = document.createElement('script');
     spatialScript.type = 'text/javascript';
     spatialScript.src = 'https://luke-chang.github.io/js-spatial-navigation/spatial_navigation.js';
@@ -33,8 +33,7 @@ export default () => {
     focusedStyle.type = 'text/css';
     focusedStyle.appendChild(
         document.createTextNode(`:focus {
-    border: 5px solid #04fff3;
-    border-radius:5px;
+          ${style?.focused || 'border: 5px solid #04fff3; border-radius:5px;'}
     }
   `),
     );

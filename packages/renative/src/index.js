@@ -3,7 +3,8 @@ import Button from './Button';
 import Api from './Api';
 import { createNavigator, createNavigatorView, createApp } from './Navigation';
 import { createSideMenuNavigator, SideMenu, createTabNavigator } from './Navigation/menuNavigator';
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './serviceWorker';
+import registerFocusManger from './focus';
 import {
     ANDROID,
     ANDROID_AUTO,
@@ -103,5 +104,8 @@ export {
     FORM_FACTOR_DESKTOP,
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
-    createSideMenuNavigator, SideMenu, createTabNavigator
+    registerFocusManger,
+    createSideMenuNavigator,
+    SideMenu,
+    createTabNavigator
 };
