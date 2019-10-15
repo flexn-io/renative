@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, ScrollView, TextInput, Image, Button, ActivityIndicator,
     ImageBackground, ProgressViewIOS, Switch, DatePickerIOS, ViewPagerAndroid } from 'react-native';
-import { Api } from 'renative';
+import { Api, registerFocusManger, registerServiceWorker } from 'renative';
 
+registerFocusManger({ focused: 'border: 5px solid #62DBFB; border-radius:5px;' });
+registerServiceWorker();
 let AppContainer;
 
 const Tile = ({ children, title }) => (
