@@ -73,7 +73,7 @@ const buildHooks = c => new Promise((resolve, reject) => {
             return;
         }
 
-        executeAsync(c, `babel --no-babelrc ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, {
+        executeAsync(c, `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, {
             cwd: c.paths.buildHooks.dir
         })
             .then(() => {

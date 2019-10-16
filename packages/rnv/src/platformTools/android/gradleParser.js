@@ -199,6 +199,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'com.android.support:appcompat-v7:27.0.2\'\n';
     }
 
+    c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
     // ENABLE HERMES
     const enableHermes = getConfigProp(c, platform, 'enableHermes', false);
 

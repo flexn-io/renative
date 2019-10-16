@@ -118,7 +118,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
 
     fontsObj += '];';
-    if (fs.existsSync(c.paths.project.assets.runtimeDir)) {
+    if (!fs.existsSync(c.paths.project.assets.runtimeDir)) {
         mkdirSync(c.paths.project.assets.runtimeDir);
     }
     fs.writeFileSync(path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js'), fontsObj);

@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.28.0-alpha.7",
+            "version": "0.28.0-alpha.11",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -173,7 +173,7 @@
             }
         },
         "react-native-video": {
-            "version": "2.0.0",
+            "version": "5.0.2",
             "ios": {
                 "podName": "react-native-video"
             },
@@ -192,6 +192,7 @@
         },
         "react-native-languages": {
             "version": "3.0.2",
+            "deprecated": "This plugin has been DEPRECATED. use react-native-localize instead",
             "ios": {
                 "podName": "RNLanguages"
             },
@@ -200,6 +201,18 @@
             },
             "androidtv": {
                 "package": "com.reactcommunity.rnlanguages.RNLanguagesPackage"
+            }
+        },
+        "react-native-localize": {
+            "version": "1.3.0",
+            "ios": {
+                "podName": "RNLocalize"
+            },
+            "android": {
+                "package": "com.reactcommunity.rnlanguages.RNLocalizePackage"
+            },
+            "androidtv": {
+                "package": "com.reactcommunity.rnlanguages.RNLocalizePackage"
             }
         },
         "react-native-linear-gradient": {
@@ -280,7 +293,7 @@
             }
         },
         "react-native-fs": {
-            "version": "2.10",
+            "version": "2.14.1",
             "ios": {
                 "podName": "RNFS"
             },
@@ -292,6 +305,57 @@
             },
             "androidtv": {
                 "package": "com.rnfs.RNFSPackage"
+            }
+        },
+        "react-native-idle-timer": {
+            "version": "2.1.5",
+            "ios": {
+                "path": "node_modules/react-native-idle-timer",
+                "podName": "react-native-idle-timer"
+            },
+            "android": {
+                "package": "com.marcshilling.idletimer.IdleTimerPackage"
+            },
+            "androidtv": {
+                "package": "com.marcshilling.idletimer.IdleTimerPackage"
+            }
+        },
+        "react-native-image-cache-manager": {
+            "version": "1.0.1"
+        },
+        "@monterosa/react-native-parallax-scroll": {
+            "version": "1.8.0",
+            "webpack": {
+                "modulePaths": [
+                    "node_modules/@monterosa/react-native-parallax-scroll"
+                ],
+                "moduleAliases": {
+                    "@monterosa/react-native-parallax-scroll": {
+                        "projectPath": "node_modules/@monterosa/react-native-parallax-scroll"
+                    }
+                }
+            }
+        },
+        "react-native-dominant-color": {
+            "version": "1.0.0",
+            "android": {
+                "path": "node_modules/react-native-dominant-color/android",
+                "package": "cl.hasaezs.rndominantcolor.RNDominantColorPackage"
+            },
+            "androidtv": {
+                "path": "node_modules/react-native-dominant-color/android",
+                "package": "cl.hasaezs.rndominantcolor.RNDominantColorPackage"
+            }
+        },
+        "react-native-extract-color": {
+            "version": "github:kasinskas/react-native-extract-color",
+            "ios": {
+                "podName": "RNExtractColor",
+                "path": "node_modules/react-native-extract-color/ios"
+            },
+            "tvos": {
+                "podName": "RNExtractColor",
+                "path": "node_modules/react-native-extract-color/ios"
             }
         },
         "react-native-uri-scheme": {
@@ -501,6 +565,9 @@
         "react-native-root-toast": {
             "version": "2.2.1"
         },
+        "react-native-viewpager": {
+            "version": "0.2.13"
+        },
         "react-native-simple-radio-button": {
             "version": "2.7.3"
         },
@@ -640,6 +707,9 @@
         },
         "react-native-material-dialog": {
             "version": "0.7.6"
+        },
+        "@react-native-community/datetimepicker": {
+            "version": "2.1.0"
         },
         "@mapbox/react-native-mapbox-gl": {
             "version": "github:nitaliano/react-native-mapbox-gl",
@@ -1199,6 +1269,9 @@
             "ios": {
                 "podName": "RNCAsyncStorage"
             },
+            "tvos": {
+                "podName": "RNCAsyncStorage"
+            },
             "android": {
                 "projectName": "react-native-community-async-storage",
                 "package": "com.reactnativecommunity.asyncstorage.AsyncStoragePackage"
@@ -1356,9 +1429,67 @@
                 }
             }
         },
-        "react-native-fast-image": {
-            "version": "6.0.3",
+        "react-native-system-setting": {
+            "version": "1.7.2",
             "ios": {
+                "path": "node_modules/react-native-system-setting",
+                "podName": "RCTSystemSetting"
+            },
+            "android": {
+                "package": "com.ninty.system.setting.SystemSettingPackage"
+            },
+            "androidtv": {
+                "package": "com.ninty.system.setting.SystemSettingPackage"
+            }
+        },
+        "@react-native-community/masked-view": {
+            "version": "0.1.1",
+            "ios": {
+                "path": "node_modules/@react-native-community/masked-view",
+                "podName": "RNCMaskedView"
+            },
+            "tvos": {
+                "path": "node_modules/@react-native-community/masked-view",
+                "podName": "RNCMaskedView"
+            },
+            "android": {
+                "path": "node_modules/@react-native-community/masked-view/android",
+                "projectName": "react-native-community-masked-view",
+                "package": "org.reactnative.maskedview.RNCMaskedViewPackage"
+            },
+            "androidtv": {
+                "path": "node_modules/@react-native-community/masked-view/android",
+                "projectName": "react-native-community-masked-view",
+                "package": "org.reactnative.maskedview.RNCMaskedViewPackage"
+            }
+        },
+        "@react-native-community/blur": {
+            "version": "3.3.1",
+            "ios": {
+                "path": "node_modules/@react-native-community/blur",
+                "podName": "react-native-blur"
+            },
+            "tvos": {
+                "path": "node_modules/@react-native-community/blur",
+                "podName": "react-native-blur"
+            },
+            "android": {
+                "path": "node_modules/@react-native-community/blur/android",
+                "projectName": "react-native-community-blur",
+                "package": "com.cmcewen.blurview.BlurViewPackage"
+            },
+            "androidtv": {
+                "path": "node_modules/@react-native-community/blur/android",
+                "projectName": "react-native-community-blur",
+                "package": "com.cmcewen.blurview.BlurViewPackage"
+            }
+        },
+        "react-native-fast-image": {
+            "version": "7.0.2",
+            "ios": {
+                "podName": "react-native-fast-image"
+            },
+            "tvos": {
                 "podName": "react-native-fast-image"
             },
             "android": {
