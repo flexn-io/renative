@@ -192,7 +192,7 @@
         },
         "react-native-languages": {
             "version": "3.0.2",
-            "deprecated": "This plugin has been DEPRECATED. use react-native-localize instead",
+            "deprecated": "react-native-languages has been DEPRECATED. use react-native-localize instead",
             "ios": {
                 "podName": "RNLanguages"
             },
