@@ -109,7 +109,8 @@
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
         "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
         "rnv": "file:./packages/rnv",
-        "xcode": "2.0.0"
+        "xcode": "2.0.0",
+        "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

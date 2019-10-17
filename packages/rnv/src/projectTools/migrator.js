@@ -92,8 +92,8 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
 
         if (fs.existsSync(paths.package)) {
             const packageString = fs.readFileSync(paths.package).toString();
-            if (!packageString.includes('npx jetify')) {
-                logWarning(`You're missing ${chalk.white('"scripts": { "postinstall": "npx jetify" }')} in your package.json. Your android build might fail!`);
+            if (!packageString.includes('jetify') && !packageString.includes('postinstall')) {
+                logWarning(`You're missing ${chalk.white('"scripts": { "postinstall": "jetify" }')} in your package.json. Your android build might fail!`);
             }
         }
 
