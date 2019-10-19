@@ -20,6 +20,7 @@ import {
     waitForEmulator,
     getAppId
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { logToSummary, logTask,
     logError, logWarning,
@@ -63,6 +64,7 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
         reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
     }
 
+    const sourceExts = PLATFORMS[platform] ? PLATFORMS[platform].sourceExts.join(',') : 'mobile.js';
     console.log('ANDROID PACKAGE STARTING...');
     executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
         .then(() => {
@@ -310,9 +312,10 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
             logInfo(`Installing ${apkPath} on ${name}`);
             return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
         })
-        .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
-            ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8081`)
-            : Promise.resolve()))
+        // NOTE: this is no longer needed.
+        // .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
+        //     ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8083`)
+        //     : Promise.resolve()))
         .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`))
         .then(() => resolve())
         .catch(e => reject(e));
