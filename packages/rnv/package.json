@@ -158,9 +158,6 @@
     "peerDependencies": {
         "now": "15.3.0"
     },
-    "optionalDependencies": {
-        "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
-    },
     "engines": {
         "cocoapods": ">=1.5.3",
         "node": ">=6.0.0",
