@@ -118,14 +118,11 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     resolve();
 });
 
-const buildElectron = (c, platform) => new Promise((resolve, reject) => {
+const buildElectron = (c, platform) => {
     logTask(`buildElectron:${platform}`);
 
-    const appFolder = getAppFolder(c, platform);
-    buildWeb(c, platform)
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    return buildWeb(c, platform);
+};
 
 const exportElectron = (c, platform) => new Promise((resolve, reject) => {
     logTask(`exportElectron:${platform}`);
@@ -207,7 +204,6 @@ const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject
 
 const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_generateICNS:${platform}`);
-    const { maxErrorLength } = c.program;
 
     let source;
 
@@ -218,8 +214,8 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
                 source = pf;
             }
         });
-    } else {
-        source = path.join(v, `assets/${platform}/AppIcon.iconset`);
+    } else if (c.paths.appConfig.dir) {
+        source = path.join(c.paths.appConfig.dir, `assets/${platform}/AppIcon.iconset`);
     }
 
     const dest = path.join(getAppFolder(c, platform), 'resources/icon.icns');

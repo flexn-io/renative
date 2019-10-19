@@ -44,7 +44,7 @@ import {
     packageBundleForXcode,
     runAppleLog
 } from './apple';
-import { buildWeb, runWeb, runWebDevServer, deployWeb } from './web';
+import { buildWeb, runWeb, runWebDevServer, deployWeb, exportWeb } from './web';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -316,6 +316,11 @@ const _rnvExportWithPlatform = async (c) => {
     logTask(`_rnvExportWithPlatform:${c.platform}`);
     const { platform } = c;
     switch (platform) {
+    case WEB:
+        if (!c.program.only) {
+            await rnvBuild(c);
+        }
+        return exportWeb(c, platform);
     case IOS:
     case TVOS:
         if (!c.program.only) {
@@ -351,7 +356,7 @@ const _rnvDeployWithPlatform = async (c) => {
             return _rnvExportWithPlatform(c);
         }
         return;
-    // case WEBOS: 
+    // case WEBOS:
     case TIZEN:
         if (!c.program.only) {
             await rnvBuild(c);
