@@ -37,10 +37,10 @@ class Config {
         return cleanedArgs;
     }
 
-    async injectProjectDependency(dependency, version, isDevDependency = false, skipInstall = false) {
+    async injectProjectDependency(dependency, version, type, skipInstall = false) {
         const currentPackage = this.config.files.project.package;
         const existingPath = this.config.paths.project.package;
-        currentPackage[isDevDependency ? 'devDependencies' : 'dependencies'][dependency] = version;
+        currentPackage[type][dependency] = version;
         writeObjectSync(existingPath, currentPackage);
         if (!skipInstall) await npmInstall();
         return true;
@@ -50,11 +50,11 @@ class Config {
         return this.config.files.project;
     }
 
-    async checkRequiredPackage(pkg, version = false, isDevDependency = false, skipAsking = false, skipInstall = false) {
+    async checkRequiredPackage(pkg, version = false, type, skipAsking = false, skipInstall = false) {
         if (!pkg) return false;
         const projectConfig = this.getProjectConfig();
 
-        if (!projectConfig.package[isDevDependency ? 'devDependencies' : 'dependencies'][pkg]) {
+        if (!projectConfig.package[type][pkg]) {
             let confirm = skipAsking;
             if (!confirm) {
                 const resp = await inquirerPrompt({
@@ -65,7 +65,7 @@ class Config {
             }
 
             if (confirm) {
-                return this.injectProjectDependency(pkg, version || 'latest', isDevDependency, skipInstall);
+                return this.injectProjectDependency(pkg, version || 'latest', type, skipInstall);
             }
         }
         return false;
@@ -75,9 +75,9 @@ class Config {
         const npmDeps = this.config.files?.rnv?.platformTemplates?.config?.platforms?.[platform]?.npm;
 
         if (npmDeps) {
-            const promises = Object.keys(npmDeps).reduce((acc, type) => { // iterate over dependencies or devDepencencies
+            const promises = Object.keys(npmDeps).reduce((acc, type) => { // iterate over dependencies, devDepencencies or optionalDependencies
                 Object.keys(npmDeps[type]).forEach((dep) => { // iterate over deps
-                    acc.push(this.checkRequiredPackage(dep, npmDeps[type][dep], type === 'devDependencies', true, true));
+                    acc.push(this.checkRequiredPackage(dep, npmDeps[type][dep], type, true, true));
                 });
                 return acc;
             }, []);
