@@ -51,7 +51,11 @@ export const rnvConfigure = async (c) => {
     await copyRuntimeAssets(c);
     await copySharedPlatforms(c);
     await generateRuntimeConfig(c);
-    await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
+    const ptDirs = c.paths.rnv.pluginTemplates.dirs;
+    for (let i = 0; i < ptDirs.length; i++) {
+        await overridePlugins(c, ptDirs[i]);
+    }
+    // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
     await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
     if (_isOK(c, p, [ANDROID])) await configureGradleProject(c, ANDROID);
     if (_isOK(c, p, [ANDROID_TV])) await configureGradleProject(c, ANDROID_TV);

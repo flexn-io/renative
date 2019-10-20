@@ -727,6 +727,8 @@ export const loadPluginTemplates = (c) => {
         rnv: c.files.rnv.pluginTemplates.config
     };
 
+    c.paths.rnv.pluginTemplates.dirs = [c.paths.rnv.pluginTemplates.dir];
+
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
 
     if (customPluginTemplates) {
@@ -744,6 +746,7 @@ export const loadPluginTemplates = (c) => {
                     }
 
                     const ptConfig = path.join(ptPath, RENATIVE_CONFIG_PLUGINS_NAME);
+                    c.paths.rnv.pluginTemplates.dirs.push(ptPath);
                     if (fs.existsSync(ptConfig)) {
                         c.files.rnv.pluginTemplates.configs[k] = readObjectSync(ptConfig);
                     }
