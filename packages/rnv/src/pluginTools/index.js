@@ -24,56 +24,59 @@ export const rnvPluginList = c => new Promise((resolve) => {
 });
 
 const _getPluginList = (c, isUpdate = false) => {
-    const plugins = c.files.rnv.pluginTemplates.config?.pluginTemplates;
     const output = {
         asString: '',
         asArray: [],
         plugins: [],
-        json: plugins,
+        // json: plugins,
     };
 
     let i = 1;
 
-    Object.keys(plugins).forEach((k) => {
-        const p = plugins[k];
+    Object.keys(c.files.rnv.pluginTemplates.configs).forEach((pk) => {
+        const plugins = c.files.rnv.pluginTemplates.configs[pk].pluginTemplates;
+        Object.keys(plugins).forEach((k) => {
+            const p = plugins[k];
 
-        let platforms = '';
-        SUPPORTED_PLATFORMS.forEach((v) => {
-            if (p[v]) platforms += `${v}, `;
-        });
-        if (platforms.length) platforms = platforms.slice(0, platforms.length - 2);
-        const installedPlugin = c.buildConfig && c.buildConfig.plugins && c.buildConfig.plugins[k];
-        const installedString = installedPlugin ? chalk.yellow('installed') : chalk.green('not installed');
-        if (isUpdate && installedPlugin) {
-            output.plugins.push(k);
-            let versionString;
-            if (installedPlugin.version !== p.version) {
-                versionString = `(${chalk.yellow(installedPlugin.version)}) => (${chalk.green(p.version)})`;
-            } else {
-                versionString = `(${chalk.green(installedPlugin.version)})`;
-            }
-            output.asString += ` [${i}]> ${chalk.bold(k)} ${versionString}\n`;
-            output.asArray.push({ name: `${k} ${versionString}`, value: k });
-            i++;
-        } else if (!isUpdate) {
-            output.plugins.push(k);
-            output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}\n`;
-            output.asArray.push({ name: `${k} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}`, value: k });
+            let platforms = '';
+            SUPPORTED_PLATFORMS.forEach((v) => {
+                if (p[v]) platforms += `${v}, `;
+            });
+            if (platforms.length) platforms = platforms.slice(0, platforms.length - 2);
+            const installedPlugin = c.buildConfig && c.buildConfig.plugins && c.buildConfig.plugins[k];
+            const installedString = installedPlugin ? chalk.yellow('installed') : chalk.green('not installed');
+            if (isUpdate && installedPlugin) {
+                output.plugins.push(k);
+                let versionString;
+                if (installedPlugin.version !== p.version) {
+                    versionString = `(${chalk.yellow(installedPlugin.version)}) => (${chalk.green(p.version)})`;
+                } else {
+                    versionString = `(${chalk.green(installedPlugin.version)})`;
+                }
+                output.asString += ` [${i}]> ${chalk.bold(k)} ${versionString}\n`;
+                output.asArray.push({ name: `${k} ${versionString}`, value: k });
+                i++;
+            } else if (!isUpdate) {
+                output.plugins.push(k);
+                output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}\n`;
+                output.asArray.push({ name: `${k} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}`, value: k });
 
-            i++;
-        }
-        output.asArray.sort((a, b) => {
-            const aStr = a.name.toLowerCase();
-            const bStr = b.name.toLowerCase();
-            let com = 0;
-            if (aStr > bStr) {
-                com = 1;
-            } else if (aStr < bStr) {
-                com = -1;
+                i++;
             }
-            return com;
+            output.asArray.sort((a, b) => {
+                const aStr = a.name.toLowerCase();
+                const bStr = b.name.toLowerCase();
+                let com = 0;
+                if (aStr > bStr) {
+                    com = 1;
+                } else if (aStr < bStr) {
+                    com = -1;
+                }
+                return com;
+            });
         });
     });
+
 
     return output;
 };
@@ -112,13 +115,15 @@ export const rnvPluginAdd = async (c) => {
 };
 
 const _checkAndAddDependantPlugins = (c, plugin) => {
-    const templatePlugins = c.files.rnv.pluginTemplates.config.pluginTemplates;
     if (plugin.dependsOn) {
         plugin.dependsOn.forEach((v) => {
-            if (templatePlugins[v]) {
-                console.log(`Added dependant plugin ${v}`);
-                c.buildConfig.plugins[v] = templatePlugins[v];
-            }
+            Object.keys(c.files.rnv.pluginTemplates.configs).forEach((p) => {
+                const templatePlugins = c.files.rnv.pluginTemplates.configs[p].pluginTemplates;
+                if (templatePlugins[v]) {
+                    console.log(`Added dependant plugin ${v}`);
+                    c.buildConfig.plugins[v] = templatePlugins[v];
+                }
+            });
         });
     }
 };
@@ -151,14 +156,34 @@ export const rnvPluginUpdate = async (c) => {
 
 const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
-    const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
+
+    // const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
+    const rnvPlugin = c.files.rnv.pluginTemplates.configs?.rnv?.pluginTemplates?.[key];
+
+    let origPlugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
-        if (plugin === 'source:rnv') {
+        const scope = plugin.split(':').pop();
+
+        origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[key];
+        if (origPlugin) {
+            if (rnvPlugin && !origPlugin?.skipMerge) {
+                origPlugin = mergeObjects(c, rnvPlugin, origPlugin, true, true);
+            }
             return origPlugin;
         }
-        // NOT RECOGNIZED
-        logWarning(`Plugin ${key} is not recognized RNV plugin`);
+        logWarning(`Plugin ${key} is not recognized plugin in ${plugin} scope`);
         return null;
+    }
+
+    if (plugin) {
+        if (plugin.source) {
+            origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]?.pluginTemplates?.[key];
+            if (rnvPlugin && !origPlugin?.skipMerge) {
+                origPlugin = mergeObjects(c, rnvPlugin, origPlugin, true, true);
+            }
+        } else {
+            origPlugin = rnvPlugin;
+        }
     }
 
 
