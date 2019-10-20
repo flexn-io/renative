@@ -500,9 +500,14 @@ export const generateBuildConfig = (c) => {
         return exists;
     });
 
+    let pluginTemplates = [];
+    if (c.files.rnv.pluginTemplates.configs) {
+        pluginTemplates = Object.keys(c.files.rnv.pluginTemplates.configs).map(v => c.files.rnv.pluginTemplates.configs[v]);
+    }
+
     const mergeFiles = [
         c.files.rnv.projectTemplates.config,
-        c.files.rnv.pluginTemplates.config,
+        ...pluginTemplates,
         c.files.workspace.config,
         c.files.project.config,
         c.files.project.configPrivate,

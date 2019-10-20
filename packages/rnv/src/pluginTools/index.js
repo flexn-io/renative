@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import ora from 'ora';
-import { mergeObjects, writeObjectSync } from '../systemTools/fileutils';
+import { mergeObjects, writeObjectSync, sanitizeDynamicProps } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
 import { versionCheck } from '../configTools/configParser';
 
@@ -165,9 +165,10 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
         const scope = plugin.split(':').pop();
 
         origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[key];
+
         if (origPlugin) {
             if (rnvPlugin && !origPlugin?.skipMerge) {
-                origPlugin = mergeObjects(c, rnvPlugin, origPlugin, true, true);
+                origPlugin = _getMergedPlugin(c, rnvPlugin, origPlugin, true, true);
             }
             return origPlugin;
         }
@@ -179,7 +180,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
         if (plugin.source) {
             origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]?.pluginTemplates?.[key];
             if (rnvPlugin && !origPlugin?.skipMerge) {
-                origPlugin = mergeObjects(c, rnvPlugin, origPlugin, true, true);
+                origPlugin = _getMergedPlugin(c, rnvPlugin, origPlugin, true, true);
             }
         } else {
             origPlugin = rnvPlugin;
@@ -188,12 +189,14 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
 
     if (origPlugin) {
-        const mergedPlugin = mergeObjects(c, origPlugin, plugin, true, true);
+        const mergedPlugin = _getMergedPlugin(c, origPlugin, plugin, true, true);
         return mergedPlugin;
     }
 
     return plugin;
 };
+
+const _getMergedPlugin = (c, obj1, obj2) => sanitizeDynamicProps(mergeObjects(c, obj1, obj2, true, true), c.buildConfig?._refs);
 
 
 export const configurePlugins = c => new Promise((resolve, reject) => {
