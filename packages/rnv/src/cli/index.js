@@ -296,12 +296,12 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
     let subCmd = '';
     if (subCommand) {
         subCmd = `:${c.subCommand}`;
-        const requiredPlatforms = cmd.subCommands[c.subCommand]?.platforms;
+        const requiredPlatforms = cmd.subCommands?.[c.subCommand]?.platforms;
         if (requiredPlatforms && !requiredPlatforms.includes(c.platform)) {
             await _handleUnknownPlatform(c, requiredPlatforms);
             return;
         }
-        const requiredParams = cmd.subCommands[c.subCommand]?.requiredParams;
+        const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
         if (requiredParams) {
             for (let i = 0; i < requiredParams.length; i++) {
                 const requiredParam = requiredParams[i];

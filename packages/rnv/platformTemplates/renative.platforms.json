@@ -3,7 +3,9 @@
         "ios": {
             "npm": {
                 "devDependencies": {
-                    "xcode": "2.0.0",
+                    "xcode": "2.0.0"
+                },
+                "optionalDependencies": {
                     "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
                 }
             }
@@ -11,7 +13,9 @@
         "tvos": {
             "npm": {
                 "devDependencies": {
-                    "xcode": "2.0.0",
+                    "xcode": "2.0.0"
+                },
+                "optionalDependencies": {
                     "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
                 }
             }
