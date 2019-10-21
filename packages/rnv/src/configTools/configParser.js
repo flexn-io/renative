@@ -555,7 +555,9 @@ export const generateBuildConfig = (c) => {
     logTask(`generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
 
     let out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
-    out = merge({}, out);
+    out = merge({
+        _sourceExt: c.platform ? PLATFORMS[c.platform]?.sourceExts : []
+    }, out);
     logDebug(`generateBuildConfig: will sanitize file at: ${c.paths.project.builds.config}`);
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);

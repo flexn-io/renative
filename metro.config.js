@@ -1,8 +1,10 @@
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
+const buildConfig = require('./platfromBuilds/renative.build.json');
 
 const config = {
     resolver: {
+        sourceExts: buildConfig._sourceExt,
         blacklistRE: blacklist([
             /platformBuilds\/.*/,
             /buildHooks\/.*/,
