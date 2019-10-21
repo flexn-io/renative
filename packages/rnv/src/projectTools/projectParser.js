@@ -295,6 +295,8 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
 });
 
 export const upgradeProjectDependencies = (c, version) => {
+    logTask('upgradeProjectDependencies');
+
     const thw = 'renative-template-hello-world';
     const tb = 'renative-template-blank';
     const devDependencies = c.files.project.package?.devDependencies;
@@ -335,6 +337,7 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
         } else {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
+        c._requiresNpmInstall = false;
         npmInstall().then(() => resolve()).catch(e => reject(e));
     } else {
         resolve();
