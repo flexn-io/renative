@@ -210,7 +210,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
-        const hasAssetFolder = c.paths.appConfig.dirs.filter(v => fs.existsSync(v)).length;
+        const hasAssetFolder = c.paths.appConfig.dirs.filter(v => fs.existsSync(path.join(v, '/assets'))).length;
         if (!hasAssetFolder) {
             await generateDefaultAssets(c, platform, c.paths.appConfig.dirs[0]);
         }
@@ -228,6 +228,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 };
 
 const generateDefaultAssets = async (c, platform, sourcePath) => {
+    logTask(`generateDefaultAssets:${platform}`);
     const { confirm } = await inquirerPrompt({
         type: 'confirm',
         message: `It seems you don\'t have assets configured in ${chalk.white(sourcePath)} do you want generate default ones?`
