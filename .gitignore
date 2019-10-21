@@ -59,6 +59,7 @@ renative.build.json
 renative.runtime.json
 release-configs.gradle
 rnv-config.local.json
+metro.config.local.js
 
 # ONLY FOR ReNative WRAPPER PROJECT
 

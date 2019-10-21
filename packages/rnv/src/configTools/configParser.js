@@ -555,14 +555,21 @@ export const generateBuildConfig = (c) => {
     logTask(`generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
 
     let out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
-    out = merge({
-        _sourceExt: c.platform ? PLATFORMS[c.platform]?.sourceExts : []
-    }, out);
+    out = merge({}, out);
+
     logDebug(`generateBuildConfig: will sanitize file at: ${c.paths.project.builds.config}`);
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
+    }
+    const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
+    if (c.platform) {
+        const sourceExts = PLATFORMS[c.platform]?.sourceExts || [];
+        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
+        fs.writeFileSync(localMetroPath, `module.exports = ${sourceExtsStr}`);
+    } else if (!fs.existsSync(localMetroPath)) {
+        fs.writeFileSync(localMetroPath, 'module.exports = []');
     }
 };
 

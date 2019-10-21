@@ -1,10 +1,10 @@
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
-const buildConfig = require('./platfromBuilds/renative.build.json');
+const sourceExts = require('./metro.config.local');
 
 const config = {
     resolver: {
-        sourceExts: buildConfig._sourceExt,
+        sourceExts,
         blacklistRE: blacklist([
             /platformBuilds\/.*/,
             /buildHooks\/.*/,
@@ -15,7 +15,6 @@ const config = {
         ])
     },
     projectRoot: path.resolve(__dirname),
-    // watchFolders: [path.resolve(__dirname)]
 };
 
 module.exports = config;
