@@ -6,7 +6,7 @@
                     "xcode": "2.0.0"
                 },
                 "optionalDependencies": {
-                    "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
+                    "ios-deploy": "1.10.0-beta.3"
                 }
             }
         },
@@ -16,7 +16,7 @@
                     "xcode": "2.0.0"
                 },
                 "optionalDependencies": {
-                    "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
+                    "ios-deploy": "1.10.0-beta.3"
                 }
             }
         },
