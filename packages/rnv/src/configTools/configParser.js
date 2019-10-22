@@ -566,7 +566,7 @@ export const generateBuildConfig = (c) => {
     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
     if (c.platform) {
         const sourceExts = PLATFORMS[c.platform]?.sourceExts || [];
-        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
+        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}', 'tsx', 'ts', 'js']` : '[\'tsx\', \'ts\', \'js\']';
         fs.writeFileSync(localMetroPath, `module.exports = ${sourceExtsStr}`);
     } else if (!fs.existsSync(localMetroPath)) {
         fs.writeFileSync(localMetroPath, 'module.exports = []');
