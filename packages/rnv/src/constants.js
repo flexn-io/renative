@@ -128,7 +128,7 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['tv.js', 'smarttv.js', 'tizen.js', 'web.js']
+        sourceExts: ['tizen.js', 'smarttv.js', 'tv.js', 'web.js']
     },
     webos: {
         defaultPort: 8087,
@@ -136,7 +136,7 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['tv.js', 'webos.js', 'tizen.js', 'web.js']
+        sourceExts: ['webos.js', 'smarttv.js', 'tv.js', 'web.js']
     },
     androidwear: {
         defaultPort: 8088,
@@ -176,7 +176,7 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['tv.js', 'smarttv.js', 'kaios.js', 'web.js']
+        sourceExts: ['kaios.js', 'smarttv.js', 'tv.js', 'web.js']
     },
     firefoxos: {
         defaultPort: 8013,
