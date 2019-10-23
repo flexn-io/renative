@@ -166,7 +166,7 @@ function generateConfig(config) {
 
     const output = {
         filename: '[name].js',
-        publicPath: '/' + path.relative(config.currentDir, path.join(appBuildPublicDir, 'assets')) + '/',
+        publicPath: `${baseUrl}assets/`,
         path: path.join(appBuildPublicDir, 'assets'),
     };
 
