@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.28.0-alpha.12",
+            "version": "0.28.0-alpha.23",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -654,7 +654,19 @@
             "dependsOn": ["svgs"]
         },
         "react-native-vector-icons": {
-            "version": "6.4.2",
+            "version": "6.6.0",
+            "ios": {
+                "podName": "RNVectorIcons"
+            },
+            "tvos": {
+                "podName": "RNVectorIcons"
+            },
+            "android": {
+                "package": "com.oblador.vectoricons.VectorIconsPackage"
+            },
+            "androidtv": {
+                "package": "com.oblador.vectoricons.VectorIconsPackage"
+            },
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true

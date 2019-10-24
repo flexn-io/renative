@@ -91,7 +91,17 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                     platformTemplates: {}
                 },
                 appConfig: {}
+            },
+            defaultWorkspace: {
+                project: {
+                    projectConfig: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {}
+                },
+                appConfig: {}
             }
+
         },
         files: {
             rnv: {
@@ -109,6 +119,15 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
             },
             appConfig: {},
             workspace: {
+                project: {
+                    projectConfig: {},
+                    builds: {},
+                    assets: {},
+                    platformTemplates: {}
+                },
+                appConfig: {}
+            },
+            defaultWorkspace: {
                 project: {
                     projectConfig: {},
                     builds: {},
@@ -199,6 +218,10 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
         // LOAD WORKSPACE /RENATIVE.*.JSON
         _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
         _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+
+        // LOAD DEFAULT WORKSPACE
+        _generateConfigPaths(c.paths.defaultWorkspace, c.paths.GLOBAL_RNV_DIR);
+        _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
 
         // LOAD PROJECT TEMPLATES
         loadProjectTemplates(c);
@@ -477,9 +500,14 @@ export const generateBuildConfig = (c) => {
         return exists;
     });
 
+    let pluginTemplates = [];
+    if (c.files.rnv.pluginTemplates.configs) {
+        pluginTemplates = Object.keys(c.files.rnv.pluginTemplates.configs).map(v => c.files.rnv.pluginTemplates.configs[v]);
+    }
+
     const mergeFiles = [
         c.files.rnv.projectTemplates.config,
-        c.files.rnv.pluginTemplates.config,
+        ...pluginTemplates,
         c.files.workspace.config,
         c.files.project.config,
         c.files.project.configPrivate,
@@ -528,11 +556,21 @@ export const generateBuildConfig = (c) => {
 
     let out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
     out = merge({}, out);
+
     logDebug(`generateBuildConfig: will sanitize file at: ${c.paths.project.builds.config}`);
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
+    }
+    const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
+    const defaultExts = '\'native\', \'ios.js\', \'native.js\', \'js\', \'ios.json\', \'native.json\', \'json\', \'ios.ts\', \'native.ts\', \'ts\', \'ios.tsx\', \'native.tsx\', \'tsx\'';
+    if (c.platform) {
+        const sourceExts = PLATFORMS[c.platform]?.sourceExts || [];
+        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}', ${defaultExts}]` : `[${defaultExts}]`;
+        fs.writeFileSync(localMetroPath, `module.exports = ${sourceExtsStr}`);
+    } else if (!fs.existsSync(localMetroPath)) {
+        fs.writeFileSync(localMetroPath, 'module.exports = []');
     }
 };
 
@@ -694,6 +732,38 @@ export const loadProjectTemplates = (c) => {
 
 export const loadPluginTemplates = (c) => {
     c.files.rnv.pluginTemplates.config = readObjectSync(c.paths.rnv.pluginTemplates.config);
+
+    c.files.rnv.pluginTemplates.configs = {
+        rnv: c.files.rnv.pluginTemplates.config
+    };
+
+    c.paths.rnv.pluginTemplates.dirs = [c.paths.rnv.pluginTemplates.dir];
+
+    const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
+
+    if (customPluginTemplates) {
+        Object.keys(customPluginTemplates).forEach((k) => {
+            const val = customPluginTemplates[k];
+            if (val.npm) {
+                const npmDep = c.files.project.package?.dependencies[val.npm] || c.files.project.package?.devDependencies[val.npm];
+
+                if (npmDep) {
+                    let ptPath;
+                    if (npmDep.startsWith('file:')) {
+                        ptPath = path.join(c.paths.project.dir, npmDep.replace('file:', ''), val.path || '');
+                    } else {
+                        ptPath = path.join(c.paths.project.nodeModulesDir, val.npm, val.path || '');
+                    }
+
+                    const ptConfig = path.join(ptPath, RENATIVE_CONFIG_PLUGINS_NAME);
+                    c.paths.rnv.pluginTemplates.dirs.push(ptPath);
+                    if (fs.existsSync(ptConfig)) {
+                        c.files.rnv.pluginTemplates.configs[k] = readObjectSync(ptConfig);
+                    }
+                }
+            }
+        });
+    }
 };
 
 export const loadPlatformTemplates = (c) => {

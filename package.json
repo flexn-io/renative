@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.28.0-alpha.12",
+    "version": "0.28.0-alpha.23",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -98,7 +98,7 @@
         "react-native-gesture-handler": "1.4.1",
         "react-native-orientation-locker": "1.1.5",
         "react-native-reanimated": "1.0.0-alpha.12",
-        "react-native-vector-icons": "6.4.2",
+        "react-native-vector-icons": "6.6.0",
         "react-native-web": "0.11.4",
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
@@ -118,7 +118,7 @@
         "xcode": "2.0.0"
     },
     "optionalDependencies": {
-        "ios-deploy": "https://github.com/mihaiblaga89/ios-deploy/tarball/my_master"
+        "ios-deploy": "1.10.0-beta.3"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

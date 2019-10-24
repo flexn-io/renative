@@ -16,7 +16,7 @@ const plugins = [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk];
 if (config.analyzer) plugins.push(C.Plugins.analyzer);
 
 module.exports = {
-    entry: C.entry,
+    entry: { raf: 'raf/polyfill', ...C.entry },
     devServer: C.devServer,
     output: C.output,
     optimization: {

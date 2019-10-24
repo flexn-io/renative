@@ -40,6 +40,7 @@ class Config {
     async injectProjectDependency(dependency, version, type, skipInstall = false) {
         const currentPackage = this.config.files.project.package;
         const existingPath = this.config.paths.project.package;
+        if (!currentPackage[type]) currentPackage[type] = {};
         currentPackage[type][dependency] = version;
         writeObjectSync(existingPath, currentPackage);
         if (!skipInstall) await npmInstall();
@@ -54,7 +55,7 @@ class Config {
         if (!pkg) return false;
         const projectConfig = this.getProjectConfig();
 
-        if (!projectConfig.package[type][pkg]) {
+        if (!projectConfig.package[type]?.[pkg]) {
             let confirm = skipAsking;
             if (!confirm) {
                 const resp = await inquirerPrompt({
