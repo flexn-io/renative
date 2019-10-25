@@ -1083,7 +1083,7 @@
             }
         },
         "react-native-prompt-android": {
-            "version": "0.3.1",
+            "version": "0.3.5",
             "android": {
                 "package": "im.shimo.react.prompt.RNPromptPackage"
             },
