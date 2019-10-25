@@ -88,6 +88,7 @@ export const rnvStart = async (c) => {
     switch (platform) {
     case MACOS:
     case WINDOWS:
+        await configureIfRequired(c, platform);
         return runElectronDevServer(c, platform, port);
 
     case WEB:

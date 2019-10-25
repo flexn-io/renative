@@ -80,7 +80,7 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['web.js']
+        sourceExts: ['browser.js', 'web.js']
     },
     ios: {
         defaultPort: 8081,
@@ -88,7 +88,7 @@ export const PLATFORMS = {
         supportedOS: OS.MAC_ONLY,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['mobile.js']
+        sourceExts: ['mobile.js', 'ios.js', 'native.js', 'js']
     },
     android: {
         defaultPort: 8081,
@@ -96,7 +96,7 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['mobile.js']
+        sourceExts: ['mobile.js', 'android.js', 'native.js', 'js']
     },
     androidtv: {
         defaultPort: 8083,
@@ -104,7 +104,7 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['tv.js', 'androidtv.js']
+        sourceExts: ['tv.js', 'androidtv.js', 'android.js', 'native.js', 'js']
     },
     tvos: {
         defaultPort: 8084,
@@ -112,7 +112,7 @@ export const PLATFORMS = {
         supportedOS: OS.MAC_ONLY,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['tv.js', 'tvos.js']
+        sourceExts: ['tv.js', 'tvos.js', 'ios.js', 'native.js', 'js']
     },
     macos: {
         defaultPort: 8085,
@@ -144,7 +144,7 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['wear.js', 'androidwear.js']
+        sourceExts: ['wear.js', 'androidwear.js', 'android.js', 'native.js', 'js']
     },
     tizenwatch: {
         defaultPort: 8089,
