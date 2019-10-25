@@ -9,6 +9,11 @@ import PlatformTools from './platformTools';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 import Config from './config';
+import pkg from '../package.json';
+
+const Sentry = require('@sentry/node');
+
+Sentry.init({ dsn: 'https://004caee3caa04c81a10f2ba31a945362@sentry.io/1795473', release: `rnv@${pkg.version}` });
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)

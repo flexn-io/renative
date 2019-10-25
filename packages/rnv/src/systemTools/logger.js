@@ -1,6 +1,8 @@
 import _chalk from 'chalk';
 import { generateOptions } from './prompt';
 
+const Sentry = require('@sentry/node');
+
 const _chalkCols = {
     white: v => v,
     green: v => v,
@@ -229,17 +231,33 @@ export const logSuccess = (msg) => {
 };
 
 export const logError = (e, isEnd = false) => {
+    if (e instanceof Error) {
+        Sentry.captureException(e);
+    } else {
+        Sentry.captureException(new Error(e));
+    }
+
     if (e && e.message) {
         logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
         logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
     }
+
     if (isEnd) logEnd(1);
 };
 
 export const logEnd = (code) => {
     logSummary();
-    if (_currentProcess) _currentProcess.exit(code);
+    if (_currentProcess) {
+        const client = Sentry.getCurrentHub().getClient();
+        if (client) {
+            client.close(2000).then(() => {
+                _currentProcess.exit(code);
+            });
+        } else {
+            _currentProcess.exit(code);
+        }
+    }
 };
 
 
