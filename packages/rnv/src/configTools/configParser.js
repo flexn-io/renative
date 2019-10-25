@@ -564,10 +564,10 @@ export const generateBuildConfig = (c) => {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
     }
     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
-    const defaultExts = '\'native\', \'ios.js\', \'native.js\', \'js\', \'ios.json\', \'native.json\', \'json\', \'ios.ts\', \'native.ts\', \'ts\', \'ios.tsx\', \'native.tsx\', \'tsx\'';
+
     if (c.platform) {
         const sourceExts = PLATFORMS[c.platform]?.sourceExts || [];
-        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}', ${defaultExts}]` : `[${defaultExts}]`;
+        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
         fs.writeFileSync(localMetroPath, `module.exports = ${sourceExtsStr}`);
     } else if (!fs.existsSync(localMetroPath)) {
         fs.writeFileSync(localMetroPath, 'module.exports = []');
