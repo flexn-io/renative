@@ -440,41 +440,41 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = (c, port) => {
+export const waitForWebpack = async (c, port) => {
     logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
-    const spinner = ora('Waiting for webpack to finish...').start();
+    // const spinner = ora('Waiting for webpack to finish...').start();
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     let devServerHost = extendConfig.devServerHost || '0.0.0.0';
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
-
+    const url = `http://${devServerHost}:${port}`;
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            axios.get(`http://${devServerHost}:${port}`).then((res) => {
+            axios.get(url).then((res) => {
                 if (res.status === 200) {
                     const isReady = res.data.toString().includes('<!DOCTYPE html>');
                     if (isReady) {
                         clearInterval(interval);
-                        spinner.succeed();
+                        // spinner.succeed();
                         return resolve(true);
                     }
                 }
                 attempts++;
                 if (attempts === maxAttempts) {
                     clearInterval(interval);
-                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
                     return reject('Can\'t connect to webpack. Try restarting it.');
                 }
             }).catch(() => {
                 attempts++;
                 if (attempts > maxAttempts) {
                     clearInterval(interval);
-                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
                     return reject('Can\'t connect to webpack. Try restarting it.');
                 }
             });

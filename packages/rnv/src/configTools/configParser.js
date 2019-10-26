@@ -190,6 +190,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
+
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 
     // LOAD WORKSPACES
@@ -205,15 +206,16 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     logTask('parseRenativeConfigs');
     try {
-        // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
-        loadFile(c.files.project.builds, c.paths.project.builds, 'config');
-
         // LOAD ./package.json
         loadFile(c.files.project, c.paths.project, 'package');
 
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
         c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
+
+        // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
+        loadFile(c.files.project.builds, c.paths.project.builds, 'config');
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
         _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));

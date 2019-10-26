@@ -76,7 +76,7 @@
         "publish:sink:alpha": "cd packages/renative-template-kitchen-sink && npm publish --tag alpha",
         "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages",
         "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && npm run watch",
-        "start": "concurrently \"rnv start\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
+        "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
         "test": "rnv template apply --template renative-template-hello-world && npm run test:rnv && npm run test:run",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
         "test:rnv:unit": "cd ./packages/rnv && npm run test",
@@ -103,7 +103,8 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative"
+        "renative": "file:./packages/renative",
+        "raf": "3.4.1"
     },
     "devDependencies": {
         "concurrently": "4.1.1",

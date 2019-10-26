@@ -46,7 +46,7 @@ Applies for:
 - `renative.json` - standard config (committed to git)
 - `renative.private.json` - config containing sensitive values (ignored from git)
 - `renative.local.json` - config containing local values (ignored from git)
-- `renative.build.json` - final merged config located in `./platformBuilds/renative.build.json` (ignored from git)
+- `[APP_ID]_[PLATFORM].json` - final merged config located in `./platformBuilds/[APP_ID]_[PLATFORM].json` (ignored from git)
 - `renative.runtime.json` - final merged config available to app runtime located in `./platformBuilds/renative.runtime.json` (ignored from git)
 - `renative.template.json` - config for renative template projects used to generate new projects (committed to git)
 - `renative.plugin.json` - config for renative plugin projects (committed to git)
