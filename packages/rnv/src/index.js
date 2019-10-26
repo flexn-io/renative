@@ -1,11 +1,11 @@
+import { RewriteFrames } from '@sentry/integrations';
 import Common, { initializeBuilder } from './common';
-import Logger, { logComplete, logError } from './systemTools/logger';
+import { logComplete, logError } from './systemTools/logger';
 import CLI from './cli';
 import Constants from './constants';
 import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
 import Doctor from './systemTools/doctor';
-import PlatformTools from './platformTools';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 import Config from './config';
@@ -13,7 +13,18 @@ import pkg from '../package.json';
 
 const Sentry = require('@sentry/node');
 
-Sentry.init({ dsn: 'https://004caee3caa04c81a10f2ba31a945362@sentry.io/1795473', release: `rnv@${pkg.version}` });
+Sentry.init({
+    dsn: 'https://004caee3caa04c81a10f2ba31a945362@sentry.io/1795473',
+    release: `rnv@${pkg.version}`,
+    integrations: [new RewriteFrames({
+        root: __dirname,
+        iteratee: (frame) => {
+            console.log('frameeee', frame);
+            frame.filename = frame.filename.includes('rnv/dist/') ? frame.filename.split('rnv/dist/')[1] : frame.filename;
+            return frame;
+        }
+    })]
+});
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
@@ -25,7 +36,7 @@ const run = (cmd, subCmd, program, process) => {
 
 export {
     Constants, Common, Exec, FileUtils,
-    PlatformTools, Doctor, PluginTools, SetupTools, Logger,
+    Doctor, PluginTools, SetupTools,
     run, CLI
 };
 

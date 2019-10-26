@@ -4,10 +4,10 @@ import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpd
 import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList, applyTemplate, checkIfTemplateInstalled } from '../templateTools';
 import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
-import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink, configurePlugins } from '../pluginTools';
+import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
-import { rnvConfigure, rnvSwitch } from '../projectTools';
+import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
 import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';

@@ -71,6 +71,7 @@ const PATH_PROPS = [
 ];
 
 const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
+    asd();
     logTask('_migrateProjectSoft');
     let files;
     try {

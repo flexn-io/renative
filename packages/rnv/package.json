@@ -61,7 +61,7 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "build": "babel src -d dist",
+        "build": "babel src -d dist --source-maps",
         "build:dev": "babel src -d dist -retainLines",
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "prepare": "npm run build",
@@ -83,6 +83,7 @@
         "@babel/preset-env": "7.3.4",
         "@babel/runtime": "7.1.2",
         "@sentry/node": "^5.7.1",
+        "@sentry/integrations": "5.7.1",
         "axios": "0.19.0",
         "babel-eslint": "8.2.6",
         "babel-jest": "24.9.0",
@@ -94,6 +95,7 @@
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-plugin-transform-runtime": "6.23.0",
         "babel-polyfill": "6.26.0",
+        "better-opn": "1.0.0",
         "commander": "^3.0.1",
         "copy-webpack-plugin": "4.6.0",
         "cross-env": "5.2.0",
