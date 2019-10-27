@@ -17,7 +17,8 @@ import {
     logDebug,
     writeCleanFile,
     getConfigProp,
-    waitForWebpack
+    waitForWebpack,
+    getSourceExts
 } from '../common';
 import {
     IOS,

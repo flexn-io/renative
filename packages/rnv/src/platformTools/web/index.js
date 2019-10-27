@@ -181,10 +181,16 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
 });
 
 const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
+    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${delay}`);
     waitForWebpack(c, port)
-        .then(() => open(`http://${devServerHost}:${port}/`))
-        .catch(logError);
-    resolve();
+        .then(() => {
+            open(`http://${devServerHost}:${port}/`);
+            resolve();
+        })
+        .catch((e) => {
+            logWarning(e);
+            resolve();
+        });
 });
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
@@ -197,8 +203,14 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     _generateWebpackConfigs(c);
     const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
     executeAsync(c, command, { stdio: 'inherit', silent: true })
-        .then(() => resolve())
-        .catch(e => resolve());
+        .then(() => {
+            logDebug('runWebDevServer: running');
+            resolve();
+        })
+        .catch((e) => {
+            logDebug(e);
+            resolve();
+        });
 });
 
 const deployWeb = (c, platform) => {
