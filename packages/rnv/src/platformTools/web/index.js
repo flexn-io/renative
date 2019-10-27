@@ -12,6 +12,7 @@ import {
     getAppTemplateFolder,
     checkPortInUse,
     logInfo,
+    logDebug,
     resolveNodeModulePath,
     getConfigProp,
     logSuccess,
