@@ -49,3 +49,6 @@ platformBuilds/
 platformAssets/
 
 package-lock.json
+
+Dockerfile
+coverage/

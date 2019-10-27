@@ -22,6 +22,15 @@ sidebar_label: macOS
 -   support for OSX/macOS
 -   Based on Electron
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.desktop.js`          | 1 |
+| `.macos.js`     | 2 |
+| `.web.js`         | 3 |
+| `.js`             | 4 |
+
 #### Requirements
 
 -   n/a

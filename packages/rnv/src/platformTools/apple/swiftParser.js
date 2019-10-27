@@ -21,10 +21,12 @@ import {
     getGetJsBundleFile,
     getBuildsFolder
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
-export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port) => new Promise((resolve, reject) => {
+    if (!port) port = PLATFORMS[platform].defaultPort;
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 
@@ -66,13 +68,13 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()
         let v = RCTRootView(
-            bundleURL: bundleUrl,
+            bundleURL: bundleUrl!,
             moduleName: moduleName,
             initialProperties: nil,
             launchOptions: launchOptions)
         vc.view = v
         ${pluginBgColor}
-        v?.frame = vc.view.bounds
+        v.frame = vc.view.bounds
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()
         UNUserNotificationCenter.current().delegate = self

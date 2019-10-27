@@ -23,6 +23,16 @@ sidebar_label: Tizen Watch
 -   Latest Tizen project
 -   Support for Tizen 5.0
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.watch.js`          | 1 |
+| `.tizenwatch.js`     | 2 |
+| `.web.js`       | 3 |
+| `.js.js`         | 4 |
+
+
 ## Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`

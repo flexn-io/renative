@@ -1,0 +1,16 @@
+{
+    "overrides": {
+        "android/src/main/java/com/sensors/Magnetometer.java": {
+            "import android.support.annotation.Nullable;": "import androidx.annotation.Nullable;"
+        },
+        "android/src/main/java/com/sensors/Gyroscope.java": {
+            "import android.support.annotation.Nullable;": "import androidx.annotation.Nullable;"
+        },
+        "android/src/main/java/com/sensors/Accelerometer.java": {
+            "import android.support.annotation.Nullable;": "import androidx.annotation.Nullable;"
+        },
+        "android/src/main/java/com/sensors/Barometer.java": {
+            "import android.support.annotation.Nullable;": "import androidx.annotation.Nullable;"
+        }
+    }
+}

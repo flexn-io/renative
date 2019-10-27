@@ -12,14 +12,17 @@ import {
     getAppTemplateFolder,
     checkPortInUse,
     logInfo,
+    logDebug,
     resolveNodeModulePath,
     getConfigProp,
     logSuccess,
     waitForWebpack,
     logError,
     logWarning,
-    getAppTitle
+    getAppTitle,
+    getSourceExts
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
@@ -89,6 +92,7 @@ const _generateWebpackConfigs = (c) => {
         analyzer,
         entryFile,
         title,
+        extensions: getSourceExts(c),
         ...extendConfig
     };
 
@@ -178,10 +182,16 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
 });
 
 const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
+    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${delay}`);
     waitForWebpack(c, port)
-        .then(() => open(`http://${devServerHost}:${port}/`))
-        .catch(logError);
-    resolve();
+        .then(() => {
+            open(`http://${devServerHost}:${port}/`);
+            resolve();
+        })
+        .catch((e) => {
+            logWarning(e);
+            resolve();
+        });
 });
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
@@ -193,7 +203,15 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
 
     _generateWebpackConfigs(c);
     const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
-    return executeAsync(c, command, { stdio: 'inherit', silent: true });
+    executeAsync(c, command, { stdio: 'inherit', silent: true })
+        .then(() => {
+            logDebug('runWebDevServer: running');
+            resolve();
+        })
+        .catch((e) => {
+            logDebug(e);
+            resolve();
+        });
 });
 
 const deployWeb = (c, platform) => {

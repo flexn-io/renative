@@ -17,7 +17,8 @@ import {
     logDebug,
     writeCleanFile,
     getConfigProp,
-    waitForWebpack
+    waitForWebpack,
+    getSourceExts
 } from '../common';
 import {
     IOS,
@@ -35,7 +36,8 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    WEB_HOSTED_PLATFORMS
+    WEB_HOSTED_PLATFORMS,
+    PLATFORMS
 } from '../constants';
 import {
     runXcodeProject,
@@ -74,10 +76,11 @@ export const rnvStart = async (c) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
     const { hosted } = c.program;
+    const isWebHostEnabled = _isWebHostEnabled(c, platform);
 
-    logTask(`rnvStart:${platform}:${port}`);
+    logTask(`rnvStart:${platform}:${port}:${hosted}:${isWebHostEnabled}`);
 
-    if (_isWebHostEnabled(c, platform) && hosted) {
+    if (isWebHostEnabled && hosted) {
         const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         waitForWebpack(c, port)
             .then(() => open(`http://${hostIp}:${port}/`))
@@ -87,6 +90,7 @@ export const rnvStart = async (c) => {
     switch (platform) {
     case MACOS:
     case WINDOWS:
+        await configureIfRequired(c, platform);
         return runElectronDevServer(c, platform, port);
 
     case WEB:
@@ -102,11 +106,10 @@ export const rnvStart = async (c) => {
         }
     }
 
-    let startCmd;
+    const defaultPort = PLATFORMS[platform]?.defaultPort || 8081;
+    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --sourceExts ${getSourceExts(c).join(',')} --port ${defaultPort} --config=metro.config.js`;
     if (c.program.reset) {
-        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start --reset-cache';
-    } else {
-        startCmd = 'node ./node_modules/react-native/local-cli/cli.js start';
+        startCmd += ' --reset-cache';
     }
 
     await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });

@@ -217,7 +217,12 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     let errFound = 0;
     arr = arr.filter((v) => {
         if (v === '') return false;
+        // Cleaner iOS reporting
         if (v.includes('-Werror')) {
+            return false;
+        }
+        // Cleaner Android reporting
+        if (v.includes('[DEBUG]') || v.includes('[INFO]') || v.includes('[LIFECYCLE]') || v.includes('[WARN]') || v.includes(':+HeapDumpOnOutOfMemoryError') || v.includes('.errors.') || v.includes('-exception-') || v.includes('error_prone_annotations')) {
             return false;
         }
         if (v.search(toSearch) !== -1) {

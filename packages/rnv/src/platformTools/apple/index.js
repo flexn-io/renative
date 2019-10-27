@@ -49,7 +49,9 @@ const runPod = (c, command, cwd, rejectOnFail = false) => new Promise((resolve, 
             cwd,
             evn: process.env,
         })
-            .then(() => resolve())
+            .then(() => {
+                resolve();
+            })
             .catch((e) => {
                 if (rejectOnFail) {
                     logWarning(e);
@@ -186,7 +188,7 @@ const _runXcodeProject = async (c, platform, target) => {
 
     if (p) {
         const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-        if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
+        // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
             return packageBundleForXcode(c, platform, bundleIsDev).then(() => executeAsync(c, `react-native ${p.join(' ')}`));
@@ -463,7 +465,9 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .then(() => {
             runPod(c, forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
                 .then(() => parseXcodeProject(c, platform))
-                .then(() => resolve())
+                .then(() => {
+                    resolve();
+                })
                 .catch((e) => {
                     if (!c.program.update) {
                         if (e && e.toString) {
