@@ -60,7 +60,8 @@ ${chalk.bold.white('OPTIONS:')}
 
 const COMMANDS = {
     start: {
-        fn: rnvStart
+        fn: rnvStart,
+        platforms: SUPPORTED_PLATFORMS
     },
     run: {
         desc: 'Run your app on target device or emulator',

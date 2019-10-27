@@ -7,24 +7,59 @@
         "description": "Cross-platform application project based on ReNative",
         "buildSchemes": {
             "debug": {
-                "id": "helloWorld.debug",
+                "id": "renative.helloworld.debug",
                 "title": "ReNative Debug"
             },
             "release": {}
         }
     },
     "platforms": {
-      "tizen": {
-          "package": "NkVRhWHJST",
-          "id": "NkVRhWHJST.RNVanillaTV"
-      },
-      "tizenwatch": {
-          "package": "cHIP2fIRQZ",
-          "id": "cHIP2fIRQZ.RNVanillaWatch"
-      },
-      "tizenmobile": {
-          "package": "PauodvCU2r",
-          "id": "PauodvCU2r.RNVanillaMobile"
-      }
+        "android": {
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug"
+                }
+            }
+        },
+        "androidtv": {
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug"
+                }
+            }
+        },
+        "androidwear": {
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug"
+                }
+            }
+        },
+        "ios": {
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug"
+                }
+            }
+        },
+        "tvos": {
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.helloworld.debug"
+                }
+            }
+        },
+        "tizen": {
+            "package": "NkVRhWHJST",
+            "id": "NkVRhWHJST.RNVanillaTV"
+        },
+        "tizenwatch": {
+            "package": "cHIP2fIRQZ",
+            "id": "cHIP2fIRQZ.RNVanillaWatch"
+        },
+        "tizenmobile": {
+            "package": "PauodvCU2r",
+            "id": "PauodvCU2r.RNVanillaMobile"
+        }
     }
 }

@@ -35,6 +35,13 @@
                     "electron-builder": "21.1.1"
                 }
             }
+        },
+        "tizen": {
+            "npm": {
+                "dependencies": {
+                    "raf": "3.4.1"
+                }
+            }
         }
     }
 }

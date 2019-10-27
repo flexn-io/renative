@@ -64,7 +64,6 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
         reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
     }
 
-    const sourceExts = PLATFORMS[platform] ? PLATFORMS[platform].sourceExts.join(',') : 'mobile.js';
     console.log('ANDROID PACKAGE STARTING...');
     executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
         .then(() => {

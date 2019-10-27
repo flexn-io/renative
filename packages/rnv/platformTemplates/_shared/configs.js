@@ -162,7 +162,7 @@ function generateConfig(config) {
 
     plugins.analyzer = new BundleAnalyzerPlugin();
 
-    const extensions = config.extensions.map(v => `.${v}`).concat(['.js']);
+    const extensions = config.extensions.map(v => `.${v}`);
 
     const output = {
         filename: '[name].js',
