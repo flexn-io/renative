@@ -18,7 +18,8 @@ import {
     waitForWebpack,
     logError,
     logWarning,
-    getAppTitle
+    getAppTitle,
+    getSourceExts
 } from '../../common';
 import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -90,7 +91,7 @@ const _generateWebpackConfigs = (c) => {
         analyzer,
         entryFile,
         title,
-        extensions: PLATFORMS[c.platform] ? PLATFORMS[c.platform].sourceExts : [],
+        extensions: getSourceExts(c),
         ...extendConfig
     };
 
