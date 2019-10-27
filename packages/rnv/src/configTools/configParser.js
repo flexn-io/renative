@@ -32,11 +32,13 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
+
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
     getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps, mergeObjects
 } from '../systemTools/fileutils';
+import { getSourceExtsAsString } from '../common';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -568,9 +570,7 @@ export const generateBuildConfig = (c) => {
     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
 
     if (c.platform) {
-        const sourceExts = PLATFORMS[c.platform]?.sourceExts || [];
-        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
-        fs.writeFileSync(localMetroPath, `module.exports = ${sourceExtsStr}`);
+        fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
     } else if (!fs.existsSync(localMetroPath)) {
         fs.writeFileSync(localMetroPath, 'module.exports = []');
     }

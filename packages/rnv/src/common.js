@@ -19,6 +19,7 @@ import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
     SDK_PLATFORMS,
+    PLATFORMS,
     SUPPORTED_PLATFORMS
 } from './constants';
 import { execCLI } from './systemTools/exec';
@@ -58,6 +59,19 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
     }
     if (resolve) resolve();
     return true;
+};
+
+export const getSourceExts = (c) => {
+    const sExt = PLATFORMS[c.platform]?.sourceExts;
+    if (sExt) {
+        return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
+    }
+    return [];
+};
+
+export const getSourceExtsAsString = (c) => {
+    const sourceExts = getSourceExts(c);
+    return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
 };
 
 export const isPlatformSupported = async (c) => {

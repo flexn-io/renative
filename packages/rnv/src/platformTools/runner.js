@@ -105,9 +105,8 @@ export const rnvStart = async (c) => {
         }
     }
 
-    const sourceExts = PLATFORMS[platform] ? PLATFORMS[platform].sourceExts.join(',') : 'mobile.js';
     const defaultPort = PLATFORMS[platform]?.defaultPort || 8081;
-    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --sourceExts ${sourceExts} --port ${defaultPort} --config=metro.config.js`;
+    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --sourceExts ${getSourceExts(c).join(',')} --port ${defaultPort} --config=metro.config.js`;
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }
