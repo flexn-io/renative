@@ -476,6 +476,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
                                 s.includes('No provisionProfileSpecifier configured')
                               || s.includes('TypeError:')
                               || s.includes('ReferenceError:')
+                              || s.includes('find gem cocoapods')
                             ) {
                                 reject(e);
                             }
