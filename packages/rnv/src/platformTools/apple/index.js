@@ -208,6 +208,14 @@ const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
         return Promise.reject(e);
     });
 
+const composeXcodeArgsFromCLI = (string) => {
+    const spacesReplaced = string.replace(/\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/g, '&&&'); // replaces spaces outside quotes with &&& for easy split
+    const keysAndValues = spacesReplaced.split('&&&');
+    const unescapedValues = keysAndValues.map(s => s.replace(/\'/g, '').replace(/"/g, '').replace(/\\/g, '')); // removes all quotes or backslashes
+
+    return unescapedValues;
+};
+
 const archiveXcodeProject = (c, platform) => {
     logTask(`archiveXcodeProject:${platform}`);
 
@@ -237,21 +245,25 @@ const archiveXcodeProject = (c, platform) => {
     const p = [];
 
     if (!ps.includes('-workspace')) {
-        p.push(`-workspace ${appPath}/${appFolderName}.xcworkspace`);
+        p.push('-workspace');
+        p.push(`${appPath}/${appFolderName}.xcworkspace`);
     }
     if (!ps.includes('-scheme')) {
-        p.push(`-scheme ${scheme}`);
+        p.push('-scheme');
+        p.push(scheme);
     }
     if (!ps.includes('-sdk')) {
         p.push('-sdk');
         p.push(...sdkArr);
     }
     if (!ps.includes('-configuration')) {
-        p.push(`-configuration ${runScheme}`);
+        p.push('-configuration');
+        p.push(runScheme);
     }
     p.push('archive');
     if (!ps.includes('-archivePath')) {
-        p.push(`-archivePath ${exportPathArchive}`);
+        p.push('-archivePath');
+        p.push(exportPathArchive);
     }
 
     if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) p.push('-allowProvisioningUpdates');
@@ -268,7 +280,12 @@ const archiveXcodeProject = (c, platform) => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
             });
     }
-    return executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`)
+
+    const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
+
+    logDebug('xcodebuild args', args);
+
+    return executeAsync('xcodebuild', { rawCommand: { args } })
         .then(() => {
             logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
         });
