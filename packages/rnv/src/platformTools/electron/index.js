@@ -175,7 +175,7 @@ const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => 
     const appFolder = getAppFolder(c, platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
-    const child = spawn('node', [elc, appFolder], {
+    const child = spawn('node', [elc, path.join(appFolder, '/main.js')], {
         detached: true,
         env: process.env,
         stdio: 'inherit',
