@@ -15,12 +15,17 @@ const Sentry = require('@sentry/node');
 
 Sentry.init({
     dsn: 'https://004caee3caa04c81a10f2ba31a945362@sentry.io/1795473',
+    // dsn: 'http://93c73cf78e1247388ebd9e390d362ad3@localhost:9000/1',
     release: `rnv@${pkg.version}`,
     integrations: [new RewriteFrames({
-        root: __dirname,
+        root: '/',
         iteratee: (frame) => {
             console.log('frameeee', frame);
-            frame.filename = frame.filename.includes('rnv/dist/') ? frame.filename.split('rnv/dist/')[1] : frame.filename;
+            if (frame.filename.includes('rnv/dist/')) {
+                frame.filename = frame.filename.split('rnv/dist/')[1];
+            } else if (frame.filename.includes('/node_modules/')) {
+                frame.filename = `node_modules/${frame.filename.split('/node_modules/')[1]}`;
+            }
             return frame;
         }
     })]
