@@ -73,10 +73,10 @@ export const parseXcodeProject = async (c, platform) => {
     await _parseXcodeProject(c, platform);
 };
 
-const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject) => {
+const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('_parseXcodeProject');
-    // eslint-disable-next-line global-require
-    const xcode = require('xcode');
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
     const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
@@ -123,7 +123,6 @@ const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject
             }
         }
 
-
         if (systemCapabilities) {
             const sysCapObj = {};
             for (const sk in systemCapabilities) {
@@ -133,12 +132,10 @@ const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject
             // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
         }
-
         // FONTS
         c.pluginConfigiOS.embeddedFontSources.forEach((v) => {
             xcodeProj.addResourceFile(v);
         });
-
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
@@ -195,7 +192,6 @@ const _parseXcodeProject = (c, platform, config) => new Promise((resolve, reject
                 }
             }
         });
-
         fs.writeFileSync(projectPath, xcodeProj.writeSync());
         resolve();
     });
