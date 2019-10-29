@@ -64,8 +64,12 @@ import {
 } from './android';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
+import { isBundlerRunning, waitForBundler } from './bundler';
+import { logInfo } from '../systemTools/logger';
 
 const isRunningOnWindows = process.platform === 'win32';
+
+let keepRNVRunning = false;
 
 // ##########################################
 // PUBLIC API
@@ -211,6 +215,23 @@ const _startHostedServerIfRequired = (c, platform) => {
     }
 };
 
+const startBundlerIfRequired = async (c) => {
+    const isRunning = await isBundlerRunning();
+    if (!isRunning) {
+        rnvStart(c);
+        keepRNVRunning = true;
+        await waitForBundler();
+    } else {
+        logInfo('Bundler already running. Using it');
+    }
+};
+
+const waitForBundlerIfRequired = async () => {
+    // return a new promise that does...nothing, just to keep RNV running while the bundler is running
+    if (keepRNVRunning) return new Promise(() => {});
+    return true;
+};
+
 const _rnvRunWithPlatform = async (c) => {
     logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
@@ -234,7 +255,9 @@ const _rnvRunWithPlatform = async (c) => {
     case TVOS:
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
-        return runXcodeProject(c, platform, target);
+        await startBundlerIfRequired(c);
+        await runXcodeProject(c, platform, target);
+        return waitForBundlerIfRequired();
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
@@ -245,7 +268,9 @@ const _rnvRunWithPlatform = async (c) => {
 
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
-        return _runAndroid(c, platform, target, platform === ANDROID_WEAR);
+        await startBundlerIfRequired(c);
+        await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
+        return waitForBundlerIfRequired();
     case MACOS:
     case WINDOWS:
         await cleanPlatformIfRequired(c, platform);
@@ -280,14 +305,14 @@ const _rnvRunWithPlatform = async (c) => {
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:
-        if (platform === KAIOS && !checkSdk(c, platform, throwErr)) return;
+        if (platform === KAIOS && !checkSdk(c, platform, throwErr)) return false;
 
         await cleanPlatformIfRequired(c, platform);
         await configureIfRequired(c, platform);
         return runFirefoxProject(c, platform);
+    default:
+        return logErrorPlatform(c, platform);
     }
-
-    return logErrorPlatform(c, platform);
 };
 
 const _rnvPackageWithPlatform = async (c) => {

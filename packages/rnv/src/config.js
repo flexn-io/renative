@@ -93,6 +93,15 @@ class Config {
         // add other deps that are not npm
     }
 
+    get platform() {
+        return this.config.platform;
+    }
+
+    get currentPlatformDefaultPort() {
+        const { platform } = this.config;
+        return this.config.platformDefaults[platform].defaultPort;
+    }
+
     //     getBuildConfig() {
     //         return this.config.buildConfig;
     //     }
