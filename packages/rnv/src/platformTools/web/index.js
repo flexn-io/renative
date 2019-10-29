@@ -163,7 +163,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                         port
                     )} is not running. Starting it up for you...`
                 );
-                _runWebBrowser(c, platform, devServerHost, port, 500)
+                _runWebBrowser(c, platform, devServerHost, port)
                     .then(() => runWebDevServer(c, platform, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
@@ -181,17 +181,16 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
-    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${delay}`);
+const _runWebBrowser = (c, platform, devServerHost, port) => new Promise((resolve) => {
+    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}`);
     waitForWebpack(c, port)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
-            resolve();
         })
         .catch((e) => {
             logWarning(e);
-            resolve();
         });
+    return resolve();
 });
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
