@@ -144,7 +144,7 @@ const configureProject = async (c, platform, appFolderName) => {
     await copyAssetsFolder(c, platform);
 };
 
-const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
+const runWeb = (c, platform, port, shouldOpenBrowser) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
 
     let devServerHost = '0.0.0.0';
@@ -166,7 +166,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                         port
                     )} is not running. Starting it up for you...`
                 );
-                _runWebBrowser(c, platform, devServerHost, port)
+                _runWebBrowser(c, platform, devServerHost, port, false, shouldOpenBrowser)
                     .then(() => runWebDevServer(c, platform, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
@@ -176,7 +176,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                         port
                     )} is already running. ReNative Will use it!`
                 );
-                _runWebBrowser(c, platform, devServerHost, port, true)
+                _runWebBrowser(c, platform, devServerHost, port, true, shouldOpenBrowser)
                     .then(() => resolve())
                     .catch(e => reject(e));
             }
@@ -184,8 +184,9 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
-    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}`);
+const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted, shouldOpenBrowser) => new Promise((resolve) => {
+    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${shouldOpenBrowser}`);
+    if (!shouldOpenBrowser) return resolve();
     const wait = waitForWebpack(c, port)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);

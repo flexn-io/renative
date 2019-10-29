@@ -72,7 +72,7 @@ const isRunningOnWindows = process.platform === 'win32';
 // ##########################################
 
 
-export const rnvStart = async (c) => {
+export const rnvStart = async (c, shouldOpenBrowser) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
     const { hosted } = c.program;
@@ -99,7 +99,7 @@ export const rnvStart = async (c) => {
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
         await configureIfRequired(c, platform);
-        return runWeb(c, platform, port);
+        return runWeb(c, platform, port, shouldOpenBrowser);
     default:
         if (hosted) {
             return logError('This platform does not support hosted mode', true);
@@ -225,7 +225,7 @@ const _rnvRunWithPlatform = async (c) => {
     };
 
     if (_isWebHostEnabled(c, platform) && hosted) {
-        return rnvStart(c);
+        return rnvStart(c, true);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
 
@@ -261,7 +261,7 @@ const _rnvRunWithPlatform = async (c) => {
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
         }
-        return runWeb(c, platform, port);
+        return runWeb(c, platform, port, true);
     case TIZEN:
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
