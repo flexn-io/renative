@@ -143,7 +143,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['macos.desktop.js', 'desktop.js'],
             platforms: ['macos.js'],
-            fallbacks: ['desktop.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'js', 'tsx', 'ts']
         }
     },
     tizen: {
@@ -177,9 +177,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: false,
         sourceExts: {
-            factors: ['androidwear.wear.js', 'wear.js'],
+            factors: ['androidwear.watch.js', 'watch.js'],
             platforms: ['androidwear.js', 'android.js'],
-            fallbacks: ['wear.native.js', 'native.js', 'js', 'tsx', 'ts']
+            fallbacks: ['watch.native.js', 'native.js', 'js', 'tsx', 'ts']
         }
     },
     tizenwatch: {
@@ -189,9 +189,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['tizenwatch.wear.js', 'wear.js'],
+            factors: ['tizenwatch.watch.js', 'watch.js'],
             platforms: ['tizenwatch.js'],
-            fallbacks: ['wear.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['watch.web.js', 'web.js', 'js', 'tsx', 'ts']
         }
     },
     tizenmobile: {
@@ -215,7 +215,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['windows.desktop.js', 'desktop.js'],
             platforms: ['windows.js'],
-            fallbacks: ['desktop.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'js', 'tsx', 'ts']
         }
     },
     kaios: {

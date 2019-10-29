@@ -27,11 +27,13 @@ sidebar_label: Tizen TV
 
 | Extension | Priority  |
 | --------- | :-------: |
-| `.tv.js`          | 1 |
-| `.smarttv.js`     | 2 |
+| `tizen.tv.js`          | 1 |
+| `.tv.js`          | 2 |
 | `.tizen.js`       | 3 |
-| `.web.js`         | 4 |
-| `.js`             | 5 |
+| `.tv.web.js`     | 4 |
+| `.web.js`         | 5 |
+| `.js`             | 6 |
+
 
 ## Requirements
 

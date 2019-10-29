@@ -6,6 +6,7 @@ import { createSideMenuNavigator, SideMenu, createTabNavigator } from './Navigat
 import registerServiceWorker from './serviceWorker';
 import registerFocusManger from './focus';
 import platform from './Api/platform';
+import factor from './Api/factor';
 import {
     ANDROID,
     ANDROID_AUTO,
@@ -69,6 +70,13 @@ export const isWindows = () => platform === WINDOWS;
 export const isFirefoxos = () => platform === FIREFOX_OS;
 export const isFirefoxtv = () => platform === FIREFOX_TV;
 export const isKaios = () => platform === KAIOS;
+
+export const isBrowser = () => factor === 'browser';
+export const isDesktop = () => factor === 'desktop';
+export const isMobile = () => factor === 'mobile';
+export const isTv = () => factor === 'tv';
+export const isWatch = () => factor === 'watch';
+
 
 export {
     Icon,
