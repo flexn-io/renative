@@ -466,17 +466,14 @@ export const waitForWebpack = async (c, port) => {
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
-    const url = `http://${devServerHost}:${port}`;
+    const url = `http://${devServerHost}:${port}/assets/bundle.js`;
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
             axios.get(url).then((res) => {
                 if (res.status === 200) {
-                    const isReady = res.data.toString().includes('<!DOCTYPE html>');
-                    if (isReady) {
-                        clearInterval(interval);
-                        // spinner.succeed();
-                        return resolve(true);
-                    }
+                    clearInterval(interval);
+                    // spinner.succeed();
+                    return resolve(true);
                 }
                 attempts++;
                 if (attempts === maxAttempts) {
