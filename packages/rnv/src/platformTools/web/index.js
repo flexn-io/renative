@@ -173,7 +173,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                         port
                     )} is already running. ReNative Will use it!`
                 );
-                _runWebBrowser(c, platform, devServerHost, port)
+                _runWebBrowser(c, platform, devServerHost, port, true)
                     .then(() => resolve())
                     .catch(e => reject(e));
             }
@@ -181,15 +181,16 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _runWebBrowser = (c, platform, devServerHost, port) => new Promise((resolve) => {
+const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
     logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}`);
-    waitForWebpack(c, port)
+    const wait = waitForWebpack(c, port)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })
         .catch((e) => {
             logWarning(e);
         });
+    if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser
     return resolve();
 });
 
