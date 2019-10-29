@@ -22,7 +22,7 @@ import {
     getAppTitle,
     getSourceExts
 } from '../../common';
-import { PLATFORMS } from '../../constants';
+import { PLATFORMS, WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
@@ -147,9 +147,12 @@ const configureProject = async (c, platform, appFolderName) => {
 const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
 
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
+    let devServerHost = '0.0.0.0';
 
+    if (platform === WEB) {
+        const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+        if (extendConfig.devServerHost) devServerHost = extendConfig.devServerHost;
+    }
 
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
@@ -224,4 +227,4 @@ const exportWeb = (c, platform) => {
     return selectWebToolAndExport(c, platform);
 };
 
-export { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb, exportWeb };
+export { buildWeb, runWeb, configureWebProject, deployWeb, exportWeb };

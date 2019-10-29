@@ -46,7 +46,7 @@ import {
     packageBundleForXcode,
     runAppleLog
 } from './apple';
-import { buildWeb, runWeb, runWebDevServer, deployWeb, exportWeb } from './web';
+import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -99,7 +99,7 @@ export const rnvStart = async (c) => {
     case TIZEN_MOBILE:
     case TIZEN_WATCH:
         await configureIfRequired(c, platform);
-        return runWebDevServer(c, platform, port);
+        return runWeb(c, platform, port);
     default:
         if (hosted) {
             return logError('This platform does not support hosted mode', true);
