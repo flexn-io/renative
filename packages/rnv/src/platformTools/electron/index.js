@@ -34,7 +34,7 @@ import {
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS } from '../../constants';
-import { buildWeb, runWeb, runWebDevServer } from '../web';
+import { buildWeb, runWeb } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync
@@ -197,7 +197,7 @@ const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject
         path.join(appFolder, 'webpack.config.js')
     );
 
-    runWebDevServer(c, platform, port)
+    runWeb(c, platform, port)
         .then(() => resolve())
         .catch(e => reject(e));
 });
