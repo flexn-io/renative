@@ -11,6 +11,8 @@ import SetupTools from './setupTools';
 import Config from './config';
 import pkg from '../package.json';
 
+import 'source-map-support/register';
+
 const Sentry = require('@sentry/node');
 
 Sentry.init({
