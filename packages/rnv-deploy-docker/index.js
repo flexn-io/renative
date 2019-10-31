@@ -40,7 +40,7 @@ class Docker {
         const healthCheck = deployOptions?.docker?.healthcheckProbe;
         if (healthCheck) {
             writeCleanFile(dockerFile, copiedDockerFile, [
-                { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: `RUN echo "${imageName}:${appVersion}" > /var/www/localhost/htdocs/testprobe.html` }
+                { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: 'RUN touch /var/www/localhost/htdocs/testprobe.html' }
             ]);
         } else {
             writeCleanFile(dockerFile, copiedDockerFile);
