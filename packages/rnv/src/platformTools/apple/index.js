@@ -455,13 +455,13 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     const forceUpdate = !fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
     copyAssetsFolder(c, platform)
         .then(() => copyAppleAssets(c, platform, appFolderName))
-        .then(() => copyBuildsFolder(c, platform))
         .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))
         .then(() => parseExportOptionsPlist(c, platform))
         .then(() => parseXcscheme(c, platform))
         .then(() => parsePodFile(c, platform))
         .then(() => parseEntitlementsPlist(c, platform))
         .then(() => parseInfoPlist(c, platform))
+        .then(() => copyBuildsFolder(c, platform))
         .then(() => {
             runPod(c, forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
                 .then(() => parseXcodeProject(c, platform))

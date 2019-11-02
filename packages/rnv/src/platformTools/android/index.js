@@ -359,19 +359,16 @@ sdk.dir=${sdkDir}`,
     resolve();
 });
 
-export const configureGradleProject = (c, platform) => new Promise((resolve, reject) => {
+export const configureGradleProject = async (c, platform) => {
     logTask(`configureGradleProject:${platform}`);
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureAndroidProperties(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureAndroidProperties(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 export const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);

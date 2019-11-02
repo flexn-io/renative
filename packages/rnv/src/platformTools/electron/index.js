@@ -42,15 +42,13 @@ import {
 
 const isRunningOnWindows = process.platform === 'win32';
 
-const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
+const configureElectronProject = async (c, platform) => {
     logTask(`configureElectronProject:${platform}`);
 
-    copyAssetsFolder(c, platform, platform === MACOS ? _generateICNS : null)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform, platform === MACOS ? _generateICNS : null);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
