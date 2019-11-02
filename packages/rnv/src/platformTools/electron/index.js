@@ -49,6 +49,7 @@ const configureElectronProject = async (c, platform) => {
     await configureProject(c, platform);
     return copyBuildsFolder(c, platform);
 };
+const merge = require('deepmerge');
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
@@ -105,25 +106,24 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const macConfig = {};
     if (platform === MACOS) {
         macConfig.mac = {
-            entitlements: 'entitlements.mac.plist',
-            entitlementsInherit: 'entitlements.mac.plist'
+            entitlements: path.join(appFolder, 'entitlements.mac.plist'),
+            entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist')
         };
     }
 
-    let electronConfig = {
+    let electronConfig = merge({
         appId,
         directories: {
             app: appFolder,
             buildResources: path.join(appFolder, 'resources'),
             output: path.join(appFolder, 'build/release')
         },
-        ...macConfig
-    };
+    }, macConfig);
 
     const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
 
     if (electronConfigExt) {
-        electronConfig = { ...electronConfig, ...electronConfigExt };
+        electronConfig = merge(electronConfig, electronConfigExt);
     }
     writeObjectSync(electronConfigPath, electronConfig);
 
