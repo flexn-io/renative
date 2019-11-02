@@ -38,13 +38,17 @@ class Docker {
         logTask('docker:Dockerfile:create');
         const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
         const healthCheck = deployOptions?.docker?.healthcheckProbe;
+
+        let additionalCommands = '';
+
         if (healthCheck) {
-            writeCleanFile(dockerFile, copiedDockerFile, [
-                { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: 'RUN touch /var/www/localhost/htdocs/testprobe.html' }
-            ]);
-        } else {
-            writeCleanFile(dockerFile, copiedDockerFile);
+            additionalCommands = 'RUN touch /var/www/localhost/htdocs/testprobe.html';
         }
+
+        writeCleanFile(dockerFile, copiedDockerFile, [
+            { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: additionalCommands }
+        ]);
+
         writeCleanFile(nginxConfFile, copiedNginxConfFile);
         writeCleanFile(dockerComposeBuildFile, copiedDockerComposeBuildFile);
         writeCleanFile(dockerComposeFile, copiedDockerComposeFile, [
