@@ -33,11 +33,11 @@ import {
     waitForWebpack
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
-import { MACOS } from '../../constants';
+import { MACOS, WINDOWS } from '../../constants';
 import { buildWeb, runWeb } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
-    copyFileSync, mkdirSync, writeObjectSync, readObjectSync
+    copyFileSync, mkdirSync, writeObjectSync, readObjectSync, removeDirs, removeDirsSync
 } from '../../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -78,7 +78,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
-    packageJson.productName = `${getAppTitle(c, platform)} - ${platform}`;
+    packageJson.productName = `${getAppTitle(c, platform)}`;
     packageJson.version = `${getAppVersion(c, platform)}`;
     packageJson.description = `${getAppDescription(c, platform)}`;
     packageJson.author = getAppAuthor(c, platform);
@@ -104,14 +104,29 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
         );
     }
 
-    const electronConfig = {
+    const macConfig = {};
+    if (platform === MACOS) {
+        macConfig.mac = {
+            entitlements: 'entitlements.mac.plist',
+            entitlementsInherit: 'entitlements.mac.plist'
+        };
+    }
+
+    let electronConfig = {
         appId,
         directories: {
             app: appFolder,
             buildResources: path.join(appFolder, 'resources'),
             output: path.join(appFolder, 'build/release')
-        }
+        },
+        ...macConfig
     };
+
+    const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
+
+    if (electronConfigExt) {
+        electronConfig = { ...electronConfig, ...electronConfigExt };
+    }
     writeObjectSync(electronConfigPath, electronConfig);
 
 
@@ -124,18 +139,21 @@ const buildElectron = (c, platform) => {
     return buildWeb(c, platform);
 };
 
-const exportElectron = (c, platform) => new Promise((resolve, reject) => {
+const exportElectron = async (c, platform) => {
     logTask(`exportElectron:${platform}`);
     const { maxErrorLength } = c.program;
-
     const appFolder = getAppFolder(c, platform);
-    executeAsync(c, `npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
-        .then(() => {
-            logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+    const buildPath = path.join(appFolder, 'build');
+
+    if (fs.existsSync(buildPath)) {
+        console.log(`removing old build ${buildPath}`);
+        await removeDirs([buildPath]);
+    }
+
+    await executeAsync(c, `npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`);
+
+    logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
+};
 
 const runElectron = async (c, platform, port) => {
     logTask(`runElectron:${platform}`);
