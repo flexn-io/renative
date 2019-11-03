@@ -73,8 +73,13 @@ const _execute = (c, command, opts = {}) => {
             timer += intervalTimer;
         }, intervalTimer);
     }
-
-    const child = execa.command(cleanCommand, mergedOpts);
+    let child;
+    if (opts.rawCommand) {
+        const { args } = opts.rawCommand;
+        child = execa(command, args, mergedOpts);
+    } else {
+        child = execa.command(cleanCommand, mergedOpts);
+    }
 
     const MAX_OUTPUT_LENGTH = 200;
 
@@ -86,9 +91,9 @@ const _execute = (c, command, opts = {}) => {
     };
 
     if (c.program?.info) {
-        child.stdout?.pipe(process.stdout);
+        child?.stdout?.pipe(process.stdout);
     } else if (spinner) {
-        child.stdout?.on('data', printLastLine);
+        child?.stdout?.on('data', printLastLine);
     }
 
     return child.then((res) => {
@@ -212,7 +217,12 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     let errFound = 0;
     arr = arr.filter((v) => {
         if (v === '') return false;
+        // Cleaner iOS reporting
         if (v.includes('-Werror')) {
+            return false;
+        }
+        // Cleaner Android reporting
+        if (v.includes('[DEBUG]') || v.includes('[INFO]') || v.includes('[LIFECYCLE]') || v.includes('[WARN]') || v.includes(':+HeapDumpOnOutOfMemoryError') || v.includes('.errors.') || v.includes('-exception-') || v.includes('error_prone_annotations')) {
             return false;
         }
         if (v.search(toSearch) !== -1) {

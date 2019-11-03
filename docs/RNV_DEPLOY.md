@@ -44,7 +44,7 @@ rnv deploy help
 
 Example:
 
-`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=\"IDENTITY\" OTHER_CODE_SIGN_FLAGS=\"--keychain KEYCHAIN\""`
+`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=iPhone\ Distribution\ (XXX) OTHER_CODE_SIGN_FLAGS=--keychain SOME_PATH_TO_KEYCHAIN"`
 
 `--xcodebuildExportArgs` - Pass down custom xcodebuild arguments (`ios`, `tvos` only)
 

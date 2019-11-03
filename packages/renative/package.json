@@ -1,6 +1,6 @@
 {
     "name": "renative",
-    "version": "0.27.6",
+    "version": "0.28.0-alpha.34",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -72,9 +72,9 @@
         "prettier": "^1.17.1"
     },
     "peerDependencies": {
-        "react": "16.8.6",
-        "react-dom": "16.8.6",
-        "react-native": "0.59.5"
+        "react": "16.9.0",
+        "react-dom": "16.9.0",
+        "react-native": "0.61.2"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

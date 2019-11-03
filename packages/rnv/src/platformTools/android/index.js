@@ -20,6 +20,7 @@ import {
     waitForEmulator,
     getAppId
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { logToSummary, logTask,
     logError, logWarning,
@@ -35,7 +36,7 @@ import {
     parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator, connectToWifiDevice } from './deviceManager';
 
 
@@ -44,6 +45,11 @@ const isRunningOnWindows = process.platform === 'win32';
 
 export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
+
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
+
+    if (!bundleAssets) return;
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.buildConfig.platforms[platform];
@@ -79,22 +85,9 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 export const runAndroid = async (c, platform, target) => {
     logTask(`runAndroid:${platform}:${target}`);
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
-
-    if (bundleAssets) {
-        await packageAndroid(c, platform, bundleIsDev);
-    }
-    await _runGradle(c, platform);
-};
-
-const _runGradle = async (c, platform) => {
-    logTask(`_runGradle:${platform}`);
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
     if (outputAab) return _runGradleApp(c, platform, {});
-
-    const { target } = c.program;
 
     await resetAdb(c);
 
@@ -310,9 +303,10 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
             logInfo(`Installing ${apkPath} on ${name}`);
             return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
         })
-        .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
-            ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8081`)
-            : Promise.resolve()))
+        // NOTE: this is no longer needed.
+        // .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
+        //     ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8083`)
+        //     : Promise.resolve()))
         .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -357,19 +351,16 @@ sdk.dir=${sdkDir}`,
     resolve();
 });
 
-export const configureGradleProject = (c, platform) => new Promise((resolve, reject) => {
+export const configureGradleProject = async (c, platform) => {
     logTask(`configureGradleProject:${platform}`);
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureAndroidProperties(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureAndroidProperties(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 export const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
@@ -403,7 +394,9 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         pluginApplicationImports: '',
         pluginApplicationMethods: '',
         pluginApplicationCreateMethods: '',
+        pluginApplicationDebugServer: '',
         applyPlugin: '',
+        defaultConfig: '',
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
         pluginSplashActivityImports: '',
@@ -457,6 +450,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     parseMainApplicationSync(c, platform);
     parseSplashActivitySync(c, platform);
     parseValuesStringsSync(c, platform);
+    parseValuesColorsSync(c, platform);
     parseAndroidManifestSync(c, platform);
     parseGradlePropertiesSync(c, platform);
 

@@ -1,5 +1,18 @@
 # Changelog
 
+## [v0.28.0]
+
+- Migration to React Native 0.61.2
+- Support for Hermes Engine
+- AndroidX Support
+
+- Migrated 30+ plugins
+
+- RN Camera
+- Local Storage
+- NetInfo
+-
+
 ## [v0.26.0]
 
 - new config system

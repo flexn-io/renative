@@ -23,6 +23,18 @@ sidebar_label: Tizen TV
 -   Latest Tizen project
 -   Support for Tizen 5.0, 4.0, 3.0
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `tizen.tv.js`          | 1 |
+| `.tv.js`          | 2 |
+| `.tizen.js`       | 3 |
+| `.tv.web.js`     | 4 |
+| `.web.js`         | 5 |
+| `.js`             | 6 |
+
+
 ## Requirements
 
 -   [Tizen SDK](https://developer.tizen.org/ko/development/tizen-studio/configurable-sdk) `5.0`

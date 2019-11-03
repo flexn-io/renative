@@ -3,6 +3,8 @@ package {{APPLICATION_ID}}
 import {{APPLICATION_ID}}.BuildConfig
 
 import android.app.Application
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.webkit.WebView
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactNativeHost
@@ -24,7 +26,7 @@ class MainApplication : Application(), ReactApplication {
 
         override fun getPackages(): List<ReactPackage> {
             return Arrays.asList<ReactPackage>(
-            {{PLUGIN_PACKAGES}}
+{{PLUGIN_PACKAGES}}
             )
         }
 
@@ -33,16 +35,17 @@ class MainApplication : Application(), ReactApplication {
         override fun getJSBundleFile(): String? = {{GET_JS_BUNDLE_FILE}}
     }
 
-    {{PLUGIN_METHODS}}
+{{PLUGIN_METHODS}}
 
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost
 
     override fun onCreate() {
         super.onCreate()
+{{PLUGIN_DEBUG_SERVER}}
         SoLoader.init(this, /* native exopackage */ false)
         if (BuildConfig.DEBUG) {
           WebView.setWebContentsDebuggingEnabled(true)
         }
-        {{PLUGIN_ON_CREATE}}
+{{PLUGIN_ON_CREATE}}
     }
 }

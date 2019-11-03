@@ -22,6 +22,14 @@ sidebar_label: Web
 
 -   Supports Chrome, Safari, Firefox, IE10+
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.web.js`          | 1 |
+| `.js`          | 2 |
+
+
 ## Requirements
 
 -   no extra requirements required

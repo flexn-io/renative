@@ -4,3 +4,6 @@ services:
     image: {{IMAGE_AND_TAG}}
     ports:
       - "8080:80"
+      - "8443:443"
+    volumes:
+      - /tmp/dockernginxlogs:/var/log/nginx

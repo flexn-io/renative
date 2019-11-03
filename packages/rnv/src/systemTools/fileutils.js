@@ -195,11 +195,11 @@ export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
 export const readObjectSync = (filePath, sanitize = false, c) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
-        logWarning('readObjectSync: filePath is undefined');
+        logDebug('readObjectSync: filePath is undefined');
         return null;
     }
     if (!fs.existsSync(filePath)) {
-        logWarning(`readObjectSync: File at ${filePath} does not exist`);
+        logDebug(`readObjectSync: File at ${filePath} does not exist`);
         return null;
     }
     let obj;

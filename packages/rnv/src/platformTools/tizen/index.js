@@ -22,7 +22,7 @@ import {
     waitForEmulator
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
-import { buildWeb } from '../web';
+import { buildWeb, configureCoreWebProject } from '../web';
 
 const formatXMLObject = obj => ({
     ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
@@ -317,17 +317,16 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const configureTizenProject = (c, platform) => new Promise((resolve, reject) => {
+const configureTizenProject = async (c, platform) => {
     logTask('configureTizenProject');
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureCoreWebProject(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 const configureProject = (c, platform) => new Promise((resolve) => {
     logTask(`configureProject:${platform}`);

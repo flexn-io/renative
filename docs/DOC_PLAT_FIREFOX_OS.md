@@ -17,6 +17,15 @@ sidebar_label: Firefox OS
 
 <img src="https://renative.org/img/rnv_firefoxos.gif" height="250"/>
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.mobile.js`          | 1 |
+| `.firefoxos.js`     | 2 |
+| `.web.js`         | 3 |
+| `.js`             | 4 |
+
 
 ## Requirements
 

@@ -25,6 +25,15 @@ sidebar_label: Android
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+## File Extension Support
+
+| Extension | Priority  |
+| --------- | :-------: |
+| `.mobile.js`          | 1 |
+| `.android.js`       | 2 |
+| `.native.js`         | 3 |
+| `.js`             | 4 |
+
 ## Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -54,35 +63,20 @@ You can create variety of emulators via Android Studio IDE
 
 ## Android X support
 
-Requires:
+androidX is enabled by default
 
-0) Install Jetifier:
-
-`npm i -S -E jetifier`
-
-1) renative.json
-
-```
-"platforms": {
-    "android": {
-      "enableAndroidX": true,
-      "gradle.properties": {
-         "android.useDeprecatedNdk": true,
-         "android.enableJetifier": true,
-         "android.useAndroidX": true
-      }
-   }
-}
-```
-
-
-2) package.json
+make sure you have this piece of script in package.json
 
 ```
 "scripts" : {
   "postinstall": "jetify"
 }
 ```
+
+## Hermes support
+
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.android.enableHermes`
+or `renative.json:platforms.android.buildSchemes.[SCHEME].enableHermes`
 
 ## Run on Simulator
 

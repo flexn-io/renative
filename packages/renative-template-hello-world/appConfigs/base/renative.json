@@ -14,7 +14,8 @@
             "run": "debug",
             "build": "release",
             "export": "release"
-        }
+        },
+        "backgroundColor": "#111111"
     },
     "platforms": {
         "ios": {
@@ -22,7 +23,6 @@
             "scheme": "RNVApp",
             "teamID": "",
             "provisioningStyle": "Automatic",
-            "backgroundColor": "black",
             "systemCapabilities": {
                 "com.apple.AccessWiFi": false,
                 "com.apple.ApplePay": false,
@@ -68,7 +68,6 @@
             "entryFile": "index.tvos",
             "teamID": "",
             "provisioningStyle": "Manual",
-            "backgroundColor": "black",
             "entitlements": {},
             "permissions": ["*"],
             "scheme": "RNVAppTVOS",
@@ -87,10 +86,10 @@
         },
         "android": {
             "entryFile": "index.android",
+            "enableHermes": true,
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
-            "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -101,16 +100,16 @@
                     "signingConfig": "Release",
                     "multipleAPKs": true,
                     "bundleAssets": true,
-                    "bundleIsDev": true
+                    "bundleIsDev": false
                 }
             }
         },
         "androidtv": {
             "entryFile": "index.androidtv",
+            "enableHermes": true,
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
-            "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -127,10 +126,10 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
+            "enableHermes": true,
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 23,
-            "backgroundColor": "black",
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -146,7 +145,6 @@
         },
         "macos": {
             "entryFile": "index.macos",
-            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false,
@@ -162,7 +160,6 @@
         "tizen": {
             "appName": "RNVanillaTV",
             "entryFile": "index.tizen",
-            "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert",
             "buildSchemes": {
                 "debug": {
@@ -177,7 +174,6 @@
         "tizenwatch": {
             "appName": "RNVanillaWatch",
             "entryFile": "index.tizenwatch",
-            "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert",
             "buildSchemes": {
                 "debug": {
@@ -192,7 +188,6 @@
         "tizenmobile": {
             "appName": "RNVanillaMobile",
             "entryFile": "index.tizenmobile",
-            "backgroundColor": "black",
             "certificateProfile": "RNVanillaCert",
             "buildSchemes": {
                 "debug": {
@@ -206,7 +201,6 @@
         },
         "web": {
             "entryFile": "index.web",
-            "backgroundColor": "black",
             "webpackConfig": {
                 "devServerHost": "0.0.0.0",
                 "baseUrl": ""
@@ -225,7 +219,6 @@
         },
         "webos": {
             "entryFile": "index.webos",
-            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -238,7 +231,6 @@
         },
         "windows": {
             "entryFile": "index.windows",
-            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -251,7 +243,6 @@
         },
         "kaios": {
             "entryFile": "index.kaios",
-            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -264,7 +255,6 @@
         },
         "firefoxos": {
             "entryFile": "index.firefoxos",
-            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
@@ -277,7 +267,6 @@
         },
         "firefoxtv": {
             "entryFile": "index.firefoxtv",
-            "backgroundColor": "black",
             "buildSchemes": {
                 "debug": {
                     "bundleAssets": false
