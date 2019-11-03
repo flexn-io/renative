@@ -146,6 +146,18 @@
                 "title": "Workspaces",
                 "sidebar_label": "Workspaces"
             },
+            "integration_docker": {
+                "title": "Docker",
+                "sidebar_label": "Docker"
+            },
+            "integration_now": {
+                "title": "Now",
+                "sidebar_label": "Now"
+            },
+            "integration_testflight": {
+                "title": "TestFlight",
+                "sidebar_label": "TestFlight"
+            },
             "rnv-build": {
                 "title": "rnv build",
                 "sidebar_label": "build"
@@ -590,10 +602,12 @@
             "Github": "Github"
         },
         "categories": {
-            "GettingStarted": "GettingStarted",
-            "Platforms": "Platforms",
+            "Getting Started": "Getting Started",
             "Guides": "Guides",
-            "CLI": "CLI"
+            "Platforms": "Platforms",
+            "Integrations": "Integrations",
+            "CLI": "CLI",
+            "GettingStarted": "GettingStarted"
         }
     },
     "pages-strings": {
