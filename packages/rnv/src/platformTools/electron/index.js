@@ -87,12 +87,22 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     writeObjectSync(packagePath, packageJson);
 
+    let browserWindow = { width: 1200, height: 800, webPreferences: { nodeIntegration: true } };
+    const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
+    if (browserWindowExt) {
+        browserWindow = merge(browserWindow, browserWindowExt);
+    }
+    const browserWindowStr = JSON.stringify(browserWindow, null, 2);
+
     if (bundleAssets) {
-        copyFileSync(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'));
+        writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'), [
+            { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
+        ]);
     } else {
         const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     }
 
