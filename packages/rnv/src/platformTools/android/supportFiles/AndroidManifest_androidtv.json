@@ -27,11 +27,11 @@
             "children": [
                 {
                     "tag": "activity",
-                    "android:name": ".MainActivity",
-                    "android:banner": "@drawable/ic_logo",
-                    "android:icon": "@drawable/ic_logo",
+                    "android:name": ".SplashActivity",
                     "android:screenOrientation": "landscape",
-                    "android:logo": "@drawable/ic_logo",
+                    "android:noHistory": true,
+                    "android:launchMode": "singleTask",
+                    "android:theme": "@style/SplashTheme",
                     "children": [
                         {
                             "tag": "intent-filter",
@@ -43,6 +43,33 @@
                                 {
                                     "tag": "category",
                                     "android:name": "android.intent.category.LEANBACK_LAUNCHER"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "tag": "activity",
+                    "android:name": ".MainActivity",
+                    "android:banner": "@drawable/ic_logo",
+                    "android:icon": "@drawable/ic_logo",
+                    "android:screenOrientation": "landscape",
+                    "android:logo": "@drawable/ic_logo",
+                    "children": [
+                        {
+                            "tag": "intent-filter",
+                            "children": [
+                                {
+                                    "tag": "action",
+                                    "android:name": "android.intent.action.VIEW"
+                                },
+                                {
+                                    "tag": "category",
+                                    "android:name": "android.intent.category.DEFAULT"
+                                },
+                                {
+                                    "tag": "category",
+                                    "android:name": "android.intent.category.BROWSABLE"
                                 }
                             ]
                         }

@@ -216,6 +216,9 @@ const _startHostedServerIfRequired = (c, platform) => {
 };
 
 const startBundlerIfRequired = async (c) => {
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    if (bundleAssets === true) return;
+
     const isRunning = await isBundlerRunning();
     if (!isRunning) {
         rnvStart(c);
@@ -226,7 +229,9 @@ const startBundlerIfRequired = async (c) => {
     }
 };
 
-const waitForBundlerIfRequired = async () => {
+const waitForBundlerIfRequired = async (c) => {
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
+    if (bundleAssets === true) return;
     // return a new promise that does...nothing, just to keep RNV running while the bundler is running
     if (keepRNVRunning) return new Promise(() => {});
     return true;
@@ -258,7 +263,7 @@ const _rnvRunWithPlatform = async (c) => {
             await configureIfRequired(c, platform);
             await startBundlerIfRequired(c);
             await runXcodeProject(c, platform, target);
-            return waitForBundlerIfRequired();
+            return waitForBundlerIfRequired(c);
         }
         return runXcodeProject(c, platform, target);
     case ANDROID:
@@ -272,11 +277,11 @@ const _rnvRunWithPlatform = async (c) => {
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await startBundlerIfRequired(c);
-            if ((c.buildConfig.platforms[platform].runScheme === 'Release' || platform === ANDROID_WEAR)) {
+            if (getConfigProp(c, platform, 'bundleAssets') === true || platform === ANDROID_WEAR) {
                 await packageAndroid(c, platform);
             }
             await runAndroid(c, platform, target);
-            return waitForBundlerIfRequired();
+            return waitForBundlerIfRequired(c);
         }
         return runAndroid(c, platform, target);
     case MACOS:
