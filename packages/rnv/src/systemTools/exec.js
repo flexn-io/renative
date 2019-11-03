@@ -73,8 +73,13 @@ const _execute = (c, command, opts = {}) => {
             timer += intervalTimer;
         }, intervalTimer);
     }
-
-    const child = execa.command(cleanCommand, mergedOpts);
+    let child;
+    if (opts.rawCommand) {
+        const { args } = opts.rawCommand;
+        child = execa(command, args, mergedOpts);
+    } else {
+        child = execa.command(cleanCommand, mergedOpts);
+    }
 
     const MAX_OUTPUT_LENGTH = 200;
 
@@ -86,9 +91,9 @@ const _execute = (c, command, opts = {}) => {
     };
 
     if (c.program?.info) {
-        child.stdout?.pipe(process.stdout);
+        child?.stdout?.pipe(process.stdout);
     } else if (spinner) {
-        child.stdout?.on('data', printLastLine);
+        child?.stdout?.on('data', printLastLine);
     }
 
     return child.then((res) => {

@@ -7,7 +7,7 @@ class Docker {
     }
 
     async buildImage() {
-        const { writeCleanFile } = require(path.join(this.rnvPath, 'dist/common'));
+        const { writeCleanFile, getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
         const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
         const config = require(path.join(this.rnvPath, 'dist/config')).default;
         const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
@@ -36,7 +36,19 @@ class Docker {
 
         // save the docker files
         logTask('docker:Dockerfile:create');
-        writeCleanFile(dockerFile, copiedDockerFile);
+        const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
+        const healthCheck = deployOptions?.docker?.healthcheckProbe;
+
+        let additionalCommands = '';
+
+        if (healthCheck) {
+            additionalCommands = 'RUN touch /var/www/localhost/htdocs/testprobe.html';
+        }
+
+        writeCleanFile(dockerFile, copiedDockerFile, [
+            { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: additionalCommands }
+        ]);
+
         writeCleanFile(nginxConfFile, copiedNginxConfFile);
         writeCleanFile(dockerComposeBuildFile, copiedDockerComposeBuildFile);
         writeCleanFile(dockerComposeFile, copiedDockerComposeFile, [

@@ -102,7 +102,7 @@
                     "signingConfig": "Release",
                     "multipleAPKs": true,
                     "bundleAssets": true,
-                    "bundleIsDev": true
+                    "bundleIsDev": false
                 }
             }
         },

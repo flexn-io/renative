@@ -80,111 +80,167 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['browser.js', 'web.js']
+        sourceExts: {
+            factors: ['browser.js'],
+            platforms: ['web.js'],
+            fallbacks: ['js', 'tsx', 'ts']
+        }
     },
     ios: {
-        defaultPort: 8081,
+        defaultPort: 8082,
         icon: ICONS.PHONE,
         supportedOS: OS.MAC_ONLY,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['mobile.js', 'ios.js', 'native.js', 'js']
+        sourceExts: {
+            factors: ['ios.mobile.js', 'mobile.js'],
+            platforms: ['ios.js'],
+            fallbacks: ['mobile.native.js', 'native.js', 'js', 'tsx', 'ts']
+        }
     },
     android: {
-        defaultPort: 8081,
+        defaultPort: 8083,
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['mobile.js', 'android.js', 'native.js', 'js']
+        sourceExts: {
+            factors: ['android.mobile.js', 'mobile.js'],
+            platforms: ['android.js'],
+            fallbacks: ['mobile.native.js', 'native.js', 'js', 'tsx', 'ts']
+        }
     },
     androidtv: {
-        defaultPort: 8083,
+        defaultPort: 8084,
         icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['tv.js', 'androidtv.js', 'android.js', 'native.js', 'js']
+        sourceExts: {
+            factors: ['androidtv.tv.js', 'tv.js'],
+            platforms: ['androidtv.js', 'android.js'],
+            fallbacks: ['tv.native.js', 'native.js', 'js', 'tsx', 'ts']
+        }
     },
     tvos: {
-        defaultPort: 8084,
+        defaultPort: 8085,
         icon: ICONS.TV,
         supportedOS: OS.MAC_ONLY,
         isActive: true,
         requiresSharedConfig: false,
-        sourceExts: ['tv.js', 'tvos.js', 'ios.js', 'native.js', 'js']
+        sourceExts: {
+            factors: ['tvos.tv.js', 'tv.js'],
+            platforms: ['tvos.js', 'ios.js'],
+            fallbacks: ['tv.native.js', 'native.js', 'js', 'tsx', 'ts']
+        }
     },
     macos: {
-        defaultPort: 8085,
+        defaultPort: 8086,
         icon: ICONS.DESKTOP,
         supportedOS: OS.MAC_ONLY,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['desktop.js', 'macos.js', 'web.js']
+        sourceExts: {
+            factors: ['macos.desktop.js', 'desktop.js'],
+            platforms: ['macos.js'],
+            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
     tizen: {
-        defaultPort: 8086,
-        icon: ICONS.TV,
-        supportedOS: OS.ALL,
-        isActive: true,
-        requiresSharedConfig: true,
-        sourceExts: ['tv.js', 'smarttv.js', 'tizen.js', 'web.js']
-    },
-    webos: {
         defaultPort: 8087,
         icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['tv.js', 'webos.js', 'tizen.js', 'web.js']
+        sourceExts: {
+            factors: ['tizen.tv.js', 'tv.js'],
+            platforms: ['tizen.js'],
+            fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
-    androidwear: {
+    webos: {
         defaultPort: 8088,
-        icon: ICONS.WATCH,
+        icon: ICONS.TV,
         supportedOS: OS.ALL,
         isActive: true,
-        requiresSharedConfig: false,
-        sourceExts: ['wear.js', 'androidwear.js', 'android.js', 'native.js', 'js']
+        requiresSharedConfig: true,
+        sourceExts: {
+            factors: ['webos.tv.js', 'tv.js'],
+            platforms: ['webos.js'],
+            fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
-    tizenwatch: {
+    androidwear: {
         defaultPort: 8089,
         icon: ICONS.WATCH,
         supportedOS: OS.ALL,
         isActive: true,
+        requiresSharedConfig: false,
+        sourceExts: {
+            factors: ['androidwear.watch.js', 'watch.js'],
+            platforms: ['androidwear.js', 'android.js'],
+            fallbacks: ['watch.native.js', 'native.js', 'js', 'tsx', 'ts']
+        }
+    },
+    tizenwatch: {
+        defaultPort: 8090,
+        icon: ICONS.WATCH,
+        supportedOS: OS.ALL,
+        isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['wear.js', 'tizenwatch.js', 'web.js']
+        sourceExts: {
+            factors: ['tizenwatch.watch.js', 'watch.js'],
+            platforms: ['tizenwatch.js'],
+            fallbacks: ['watch.web.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
     tizenmobile: {
-        defaultPort: 8010,
+        defaultPort: 8091,
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['mobile.js', 'tizenmobile.js', 'web.js']
+        sourceExts: {
+            factors: ['tizenmobile.mobile.js', 'moblie.js'],
+            platforms: ['tizenmobile.js'],
+            fallbacks: ['mobile.web.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
     windows: {
-        defaultPort: 8011,
+        defaultPort: 8092,
         icon: ICONS.DESKTOP,
         supportedOS: OS.WINDOWS_ONLY,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['desktop.js', 'windows.js', 'web.js']
+        sourceExts: {
+            factors: ['windows.desktop.js', 'desktop.js'],
+            platforms: ['windows.js'],
+            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
     kaios: {
-        defaultPort: 8012,
+        defaultPort: 8093,
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: ['tv.js', 'smarttv.js', 'kaios.js', 'web.js']
+        sourceExts: {
+            factors: ['kaios.mobile.js', 'mobile.js'],
+            platforms: ['kaios.js'],
+            fallbacks: ['mobile.web.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
     firefoxos: {
-        defaultPort: 8013,
+        defaultPort: 8094,
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: []
+        sourceExts: {
+            factors: ['firefoxos.mobile.js', 'mobile.js'],
+            platforms: ['firefoxos.js'],
+            fallbacks: ['mobile.web.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
     firefoxtv: {
         defaultPort: 8014,
@@ -192,7 +248,11 @@ export const PLATFORMS = {
         supportedOS: OS.ALL,
         isActive: true,
         requiresSharedConfig: true,
-        sourceExts: []
+        sourceExts: {
+            factors: ['firefoxtv.tv.js', 'tv.js'],
+            platforms: ['firefoxtv.js'],
+            fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
+        }
     },
     // NON ACTIVE
     watchos: {

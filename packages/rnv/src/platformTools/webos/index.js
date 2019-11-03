@@ -205,17 +205,15 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(reject);
 });
 
-const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => {
+const configureWebOSProject = async (c, platform) => {
     logTask('configureWebOSProject');
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);

@@ -5,6 +5,8 @@ import { createNavigator, createNavigatorView, createApp } from './Navigation';
 import { createSideMenuNavigator, SideMenu, createTabNavigator } from './Navigation/menuNavigator';
 import registerServiceWorker from './serviceWorker';
 import registerFocusManger from './focus';
+import platform from './Api/platform';
+import factor from './Api/factor';
 import {
     ANDROID,
     ANDROID_AUTO,
@@ -51,6 +53,30 @@ import {
     FORM_FACTOR_WATCH,
     FORM_FACTOR_TV,
 } from './Constants';
+
+
+export const isAndroid = () => platform === ANDROID;
+export const isAndroidtv = () => platform === ANDROID_TV;
+export const isAndroidwear = () => platform === ANDROID_WEAR;
+export const isIos = () => platform === IOS;
+export const isTvos = () => platform === TVOS;
+export const isWeb = () => platform === WEB;
+export const isWebos = () => platform === WEBOS;
+export const isTizen = () => platform === TIZEN;
+export const isTizenwatch = () => platform === TIZEN_WATCH;
+export const isTizenphone = () => platform === TIZEN_MOBILE;
+export const isMacos = () => platform === MACOS;
+export const isWindows = () => platform === WINDOWS;
+export const isFirefoxos = () => platform === FIREFOX_OS;
+export const isFirefoxtv = () => platform === FIREFOX_TV;
+export const isKaios = () => platform === KAIOS;
+
+export const isBrowser = () => factor === 'browser';
+export const isDesktop = () => factor === 'desktop';
+export const isMobile = () => factor === 'mobile';
+export const isTv = () => factor === 'tv';
+export const isWatch = () => factor === 'watch';
+
 
 export {
     Icon,

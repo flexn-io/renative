@@ -32,11 +32,13 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
+
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
     getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps, mergeObjects
 } from '../systemTools/fileutils';
+import { getSourceExtsAsString } from '../common';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -190,6 +192,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
+
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 
     // LOAD WORKSPACES
@@ -205,15 +208,16 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
     logTask('parseRenativeConfigs');
     try {
-        // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
-        loadFile(c.files.project.builds, c.paths.project.builds, 'config');
-
         // LOAD ./package.json
         loadFile(c.files.project, c.paths.project, 'package');
 
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
         c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
+
+        // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
+        loadFile(c.files.project.builds, c.paths.project.builds, 'config');
 
         // LOAD WORKSPACE /RENATIVE.*.JSON
         _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
@@ -566,9 +570,7 @@ export const generateBuildConfig = (c) => {
     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
 
     if (c.platform) {
-        const sourceExts = PLATFORMS[c.platform]?.sourceExts || [];
-        const sourceExtsStr = sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
-        fs.writeFileSync(localMetroPath, `module.exports = ${sourceExtsStr}`);
+        fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
     } else if (!fs.existsSync(localMetroPath)) {
         fs.writeFileSync(localMetroPath, 'module.exports = []');
     }

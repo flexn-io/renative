@@ -14,7 +14,7 @@ if (config.analyzer) plugins.push(C.Plugins.analyzer);
 
 module.exports = {
     entry: C.entry,
-    output: C.output,
+    output: { ...C.output, libraryTarget: 'commonjs2' },
     module: {
         rules: [C.Rules.babel, C.Rules.css, C.Rules.image, C.Rules.fonts, C.Rules.sourcemap],
     },
@@ -24,4 +24,9 @@ module.exports = {
         extensions: C.extensions,
         alias: C.aliases,
     },
+    externals: {
+        fs: 'commonjs fs',
+        path: 'commonjs path',
+    },
+    target: 'electron-renderer'
 };
