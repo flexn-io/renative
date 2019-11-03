@@ -36,7 +36,7 @@ import {
     parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator, connectToWifiDevice } from './deviceManager';
 
 
@@ -450,6 +450,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     parseMainApplicationSync(c, platform);
     parseSplashActivitySync(c, platform);
     parseValuesStringsSync(c, platform);
+    parseValuesColorsSync(c, platform);
     parseAndroidManifestSync(c, platform);
     parseGradlePropertiesSync(c, platform);
 

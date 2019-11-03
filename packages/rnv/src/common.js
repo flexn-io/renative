@@ -6,6 +6,7 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
+import colorString from 'color-string';
 
 import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
@@ -93,6 +94,26 @@ export const isPlatformSupported = async (c) => {
         c.program.platform = platform;
         return platform;
     }
+};
+
+export const sanitizeColor = (val) => {
+    if (!val) {
+        logWarning('sanitizeColor: passed null. will use default #FFFFFF instead');
+        return {
+            rgb: [255, 255, 255, 1],
+            rgbDecimal: [1, 1, 1, 1],
+            hex: '#FFFFFF'
+        };
+    }
+
+    const rgb = colorString.get.rgb(val);
+    const hex = colorString.to.hex(rgb);
+
+    return {
+        rgb,
+        rgbDecimal: rgb.map(v => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
+        hex
+    };
 };
 
 export const isBuildSchemeSupported = async (c) => {
@@ -197,7 +218,10 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => {
+    console.log('getAppTemplateFolder', c.paths.project.platformTemplatesDirs[platform], platform);
+    return path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+};
 
 export const getAppConfigId = c => c.buildConfig.id;
 

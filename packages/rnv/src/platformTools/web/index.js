@@ -19,8 +19,11 @@ import {
     waitForWebpack,
     logError,
     logWarning,
+    writeCleanFile,
+    getBuildFilePath,
     getAppTitle,
-    getSourceExts
+    getSourceExts,
+    sanitizeColor
 } from '../../common';
 import { PLATFORMS, WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -133,8 +136,17 @@ const configureWebProject = async (c, platform) => {
     await configureProject(c, platform);
 
     _generateWebpackConfigs(c);
+    _parseCssSync(c, platform);
 
     return copyBuildsFolder(c, platform);
+};
+
+export const _parseCssSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const stringsPath = 'public/app.css';
+    writeCleanFile(getBuildFilePath(c, platform, stringsPath), path.join(appFolder, stringsPath), [
+        { pattern: '{{PLUGIN_COLORS_BG}}', override: sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).hex },
+    ]);
 };
 
 const configureProject = async (c, platform, appFolderName) => {
