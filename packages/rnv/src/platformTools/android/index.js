@@ -46,6 +46,11 @@ const isRunningOnWindows = process.platform === 'win32';
 export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
 
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
+
+    if (!bundleAssets) return;
+
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.buildConfig.platforms[platform];
     // TODO Android PROD Crashes if not using this hardcoded one
@@ -80,22 +85,9 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 export const runAndroid = async (c, platform, target) => {
     logTask(`runAndroid:${platform}:${target}`);
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
-
-    if (bundleAssets) {
-        await packageAndroid(c, platform, bundleIsDev);
-    }
-    await _runGradle(c, platform);
-};
-
-const _runGradle = async (c, platform) => {
-    logTask(`_runGradle:${platform}`);
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
     if (outputAab) return _runGradleApp(c, platform, {});
-
-    const { target } = c.program;
 
     await resetAdb(c);
 

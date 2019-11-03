@@ -256,10 +256,11 @@ const _rnvRunWithPlatform = async (c) => {
         if (!c.program.only) {
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
+            await startBundlerIfRequired(c);
+            await runXcodeProject(c, platform, target);
+            return waitForBundlerIfRequired();
         }
-        await startBundlerIfRequired(c);
-        await runXcodeProject(c, platform, target);
-        return waitForBundlerIfRequired();
+        return runXcodeProject(c, platform, target);
     case ANDROID:
     case ANDROID_TV:
     case ANDROID_WEAR:
@@ -270,10 +271,14 @@ const _rnvRunWithPlatform = async (c) => {
         if (!c.program.only) {
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
+            await startBundlerIfRequired(c);
+            if ((c.buildConfig.platforms[platform].runScheme === 'Release' || platform === ANDROID_WEAR)) {
+                await packageAndroid(c, platform);
+            }
+            await runAndroid(c, platform, target);
+            return waitForBundlerIfRequired();
         }
-        await startBundlerIfRequired(c);
-        await _runAndroid(c, platform, target, platform === ANDROID_WEAR);
-        return waitForBundlerIfRequired();
+        return runAndroid(c, platform, target);
     case MACOS:
     case WINDOWS:
         if (!c.program.only) {
@@ -475,16 +480,4 @@ const _rnvBuildWithPlatform = async (c) => {
     }
 
     logErrorPlatform(c, platform);
-};
-
-
-const _runAndroid = async (c, platform, target, forcePackage) => {
-    logTask(`_runAndroid:${platform}`);
-
-    if (c.buildConfig.platforms[platform].runScheme === 'Release' || forcePackage) {
-        await packageAndroid(c, platform);
-        await runAndroid(c, platform, target);
-    } else {
-        await runAndroid(c, platform, target);
-    }
 };
