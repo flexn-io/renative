@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle dep
 import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import semver from 'semver';
@@ -50,6 +49,8 @@ import { getWorkspaceOptions } from './workspace';
 import { generateRuntimeConfig, loadProjectTemplates, parseRenativeConfigs } from '../configTools/configParser';
 
 const highlight = chalk.green;
+
+const Sentry = require('@sentry/node');
 
 export const createNewProject = async (c) => {
     logTask('createNewProject');
@@ -151,6 +152,22 @@ export const createNewProject = async (c) => {
     });
 
     if (confirm) {
+        try {
+            Sentry.captureEvent({
+                type: 'newProject',
+                message: 'newProject',
+                breadcrumbs: null,
+                level: 'info',
+                extra: {
+                    template: inputTemplate,
+                    platforms: inputSupportedPlatforms
+                },
+                tags: {
+                    type: 'newProject',
+                }
+            });
+        } catch {}
+
         await _generateProject(c, data);
     }
 };
