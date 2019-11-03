@@ -107,16 +107,16 @@
 <ol>
 <li>renative.json</li>
 </ol>
-<pre><code class="hljs"><span class="hljs-string">"platforms"</span>: {
-    <span class="hljs-string">"android"</span>: {
-      <span class="hljs-string">"enableAndroidX"</span>: <span class="hljs-literal">true</span>,
-      <span class="hljs-string">"gradle.properties"</span>: {
-         <span class="hljs-string">"android.useDeprecatedNdk"</span>: <span class="hljs-literal">true</span>,
-         <span class="hljs-string">"android.enableJetifier"</span>: <span class="hljs-literal">true</span>,
-         <span class="hljs-string">"android.useAndroidX"</span>: <span class="hljs-literal">true</span>
-      }
-   }
-}
+<pre><code class="hljs"><span class="hljs-attr">"platforms":</span> <span class="hljs-string">{</span>
+    <span class="hljs-attr">"android":</span> <span class="hljs-string">{</span>
+      <span class="hljs-attr">"enableAndroidX":</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+      <span class="hljs-attr">"gradle.properties":</span> <span class="hljs-string">{</span>
+         <span class="hljs-attr">"android.useDeprecatedNdk":</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+         <span class="hljs-attr">"android.enableJetifier":</span> <span class="hljs-literal">true</span><span class="hljs-string">,</span>
+         <span class="hljs-attr">"android.useAndroidX":</span> <span class="hljs-literal">true</span>
+      <span class="hljs-string">}</span>
+   <span class="hljs-string">}</span>
+<span class="hljs-string">}</span>
 </code></pre>
 <ol start="2">
 <li>package.json</li>
@@ -145,13 +145,13 @@ rnv <span class="hljs-built_in">run</span> -p android -s <span class="hljs-built
 <pre><code class="hljs">rnv <span class="hljs-keyword">run</span><span class="bash"> -p android -r</span>
 </code></pre>
 <p>Launch specific android emulator:</p>
-<pre><code class="hljs">rnv target launch -<span class="hljs-selector-tag">p</span> android -t Nexus_5X_API_26
+<pre><code class="hljs">rnv target <span class="hljs-built_in">launch</span> -p android -t Nexus_5X_API_26
 </code></pre>
 <p>Launch app with specific iOS simulator (let ReNative to give you the list of available options):</p>
 <pre><code class="hljs">rnv <span class="hljs-keyword">run</span><span class="bash"> -p android -t ?</span>
 </code></pre>
 <p>Launch specific emulator :</p>
-<pre><code class="hljs">rnv target launch -<span class="hljs-selector-tag">p</span> android -t Nexus_5X_API_26
+<pre><code class="hljs">rnv target <span class="hljs-built_in">launch</span> -p android -t Nexus_5X_API_26
 </code></pre>
 <p>Launch specific emulator (let ReNative to give you the list of available options):</p>
 <pre><code class="hljs">rnv target <span class="hljs-built_in">launch</span> -p android -t ?
@@ -160,7 +160,7 @@ rnv <span class="hljs-built_in">run</span> -p android -s <span class="hljs-built
 <pre><code class="hljs">rnv <span class="hljs-keyword">target</span> <span class="hljs-keyword">list</span> -p android
 </code></pre>
 <p>Get device/simulator logs</p>
-<pre><code class="hljs">rnv log -<span class="hljs-selector-tag">p</span> android
+<pre><code class="hljs">rnv <span class="hljs-built_in">log</span> -p android
 </code></pre>
 <p>Get device/simulator logs with filter</p>
 <pre><code class="hljs">rnv log -<span class="hljs-selector-tag">p</span> android -f com<span class="hljs-selector-class">.myapp</span>
