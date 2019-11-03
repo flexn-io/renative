@@ -340,7 +340,7 @@ const _generateConfigPaths = (pathObj, dir) => {
 export const versionCheck = async (c) => {
     logTask('versionCheck');
 
-    if (c.runtime.isWrapper) {
+    if (c.runtime.isWrapper || c.runtime.versionCheckCompleted) {
         return true;
     }
     c.runtime.rnvVersionRunner = c.files.rnv?.package?.version;
@@ -364,6 +364,8 @@ export const versionCheck = async (c) => {
                 ],
                 warningMessage: `You are running $rnv v${chalk.red(c.runtime.rnvVersionRunner)} against project built with rnv v${chalk.red(c.runtime.rnvVersionProject)}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json.`
             });
+
+            c.runtime.versionCheckCompleted = true;
 
             c.runtime.skipPackageUpdate = chosenAction === actionNoUpdate;
 
