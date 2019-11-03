@@ -22,7 +22,7 @@ import {
     waitForEmulator
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
-import { buildWeb } from '../web';
+import { buildWeb, configureCoreWebProject } from '../web';
 
 const formatXMLObject = obj => ({
     ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
@@ -323,6 +323,7 @@ const configureTizenProject = async (c, platform) => {
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
+    await configureCoreWebProject(c, platform);
     await configureProject(c, platform);
     return copyBuildsFolder(c, platform);
 };

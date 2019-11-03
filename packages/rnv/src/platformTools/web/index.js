@@ -133,26 +133,24 @@ const configureWebProject = async (c, platform) => {
 
     if (!isPlatformActive(c, platform)) return;
 
-    await configureProject(c, platform);
+    await copyAssetsFolder(c, platform);
 
-    _generateWebpackConfigs(c);
-    _parseCssSync(c, platform);
+    await configureCoreWebProject(c, platform);
 
     return copyBuildsFolder(c, platform);
 };
 
-export const _parseCssSync = (c, platform) => {
+export const configureCoreWebProject = async (c, platform) => {
+    _generateWebpackConfigs(c);
+    _parseCssSync(c, platform);
+};
+
+const _parseCssSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const stringsPath = 'public/app.css';
     writeCleanFile(getBuildFilePath(c, platform, stringsPath), path.join(appFolder, stringsPath), [
         { pattern: '{{PLUGIN_COLORS_BG}}', override: sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).hex },
     ]);
-};
-
-const configureProject = async (c, platform, appFolderName) => {
-    logTask(`configureProject:${platform}`);
-
-    await copyAssetsFolder(c, platform);
 };
 
 const runWeb = (c, platform, port, shouldOpenBrowser) => new Promise((resolve, reject) => {
