@@ -24,13 +24,16 @@ sidebar_label: LG WebOS
 
 ## File Extension Support
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `.tv.js`          | 1 |
-| `.smarttv.js`     | 2 |
-| `.webos.js`       | 3 |
-| `.web.js`         | 4 |
-| `.js`             | 5 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `webos.tv.js` | `form factor` | 1 |
+| `tv.js` | `form factor` | 2 |
+| `webos.js` | `platform` | 3 |
+| `tv.web.js` | `fallback` | 4 |
+| `web.js` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
 
 ## Requirements
 

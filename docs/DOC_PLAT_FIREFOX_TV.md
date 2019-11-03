@@ -20,13 +20,16 @@ sidebar_label: Firefox TV
 
 ## File Extension Support
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `.tv.js`          | 1 |
-| `.smarttv.js`     | 2 |
-| `.firefoxtv.js`       | 3 |
-| `.web.js`         | 4 |
-| `.js`             | 5 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `firefoxtv.tv.js` | `form factor` | 1 |
+| `tv.js` | `form factor` | 2 |
+| `firefoxtv.js` | `platform` | 3 |
+| `tv.web.js` | `fallback` | 4 |
+| `web.js` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
 
 #### Requirements
 

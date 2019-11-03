@@ -26,12 +26,16 @@ sidebar_label: iOS
 
 ## File Extension Support
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `.mobile.js`          | 1 |
-| `.ios.js`       | 2 |
-| `.native.js`         | 3 |
-| `.js`             | 4 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `ios.mobile.js` | `form factor` | 1 |
+| `mobile.js` | `form factor` | 2 |
+| `ios.js` | `platform` | 3 |
+| `mobile.native.js` | `fallback` | 4 |
+| `native.js` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
 
 ## Requirements
 

@@ -25,12 +25,17 @@ sidebar_label: Windows
 
 ## File Extension Support
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `.desktop.js`          | 1 |
-| `.windows.js`     | 2 |
-| `.web.js`         | 3 |
-| `.js`             | 4 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `windows.desktop.js` | `form factor` | 1 |
+| `desktop.js` | `form factor` | 2 |
+| `windows.js` | `platform` | 3 |
+| `desktop.web.js` | `fallback` | 4 |
+| `electron.js` | `fallback` | 5 |
+| `web.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
 
 ## Requirements
 

@@ -25,14 +25,16 @@ sidebar_label: Tizen TV
 
 ## File Extension Support
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `tizen.tv.js`          | 1 |
-| `.tv.js`          | 2 |
-| `.tizen.js`       | 3 |
-| `.tv.web.js`     | 4 |
-| `.web.js`         | 5 |
-| `.js`             | 6 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `tizen.tv.js` | `form factor` | 1 |
+| `tv.js` | `form factor` | 2 |
+| `tizen.js` | `platform` | 3 |
+| `tv.web.js` | `fallback` | 4 |
+| `web.js` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
 
 
 ## Requirements
