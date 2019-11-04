@@ -1139,16 +1139,10 @@
         "@react-native-firebase/app": {
             "version": "6.0.3",
             "ios": {
-                "appDelegateImports": ["Firebase"],
-                "appDelegateMethods": {
-                    "application": {
-                        "didFinishLaunchingWithOptions": [
-                            "if ([FIRApp defaultApp] == nil) {  [FIRApp configure]; }"
-                        ]
-                    }
-                }
+                "podName": "RNFBApp"
             },
             "android": {
+                "package": "io.invertase.firebase.app.ReactNativeFirebaseAppPackage",
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
@@ -1161,6 +1155,7 @@
                 }
             },
             "androidtv": {
+                "package": "io.invertase.firebase.app.ReactNativeFirebaseAppPackage",
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
@@ -1171,6 +1166,19 @@
                 "app/build.gradle": {
                     "apply": ["plugin: 'com.google.gms.google-services'"]
                 }
+            }
+        },
+        "@react-native-firebase/analytics": {
+            "version": "6.0.3",
+            "dependsOn": ["@react-native-firebase/app"],
+            "ios": {
+                "podName": "RNFBAnalytics"
+            },
+            "android": {
+                "package": "io.invertase.firebase.app.ReactNativeFirebaseAnalyticsPackage"
+            },
+            "androidtv": {
+                "package": "io.invertase.firebase.app.ReactNativeFirebaseAnalyticsPackage"
             }
         },
         "react-native-firebase": {
