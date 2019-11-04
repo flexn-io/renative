@@ -282,25 +282,22 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms?.[platform]?.version || c.buildConfig.common?.version || c.files.project.package?.version;
+export const getAppVersion = (c, platform) => getConfigProp(c, platform, 'version') || c.files.project.package?.version;
 
-export const getAppAuthor = (c, platform) => c.buildConfig.platforms?.[platform]?.author || c.buildConfig.common?.author || c.files.project.package?.author;
+export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
 
-export const getAppLicense = (c, platform) => c.buildConfig.platforms?.[platform]?.license || c.buildConfig.common?.license || c.files.project.package?.license;
+export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
 
 export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
 
 export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) => c.buildConfig.platforms?.[platform]?.description || c.buildConfig.common?.description || c.files.project.package?.description;
+export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description') || c.files.project.package?.description;
 
 export const getAppVersionCode = (c, platform) => {
-    if (c.buildConfig.platforms?.[platform]?.versionCode) {
-        return c.buildConfig.platforms[platform].versionCode;
-    }
-    if (c.buildConfig.common.versionCode) {
-        return c.buildConfig.common.versionCode;
-    }
+    const versionCode = getConfigProp(c, platform, 'versionCode');
+    if (versionCode) return versionCode;
+
     const version = getAppVersion(c, platform);
 
     let vc = '';
