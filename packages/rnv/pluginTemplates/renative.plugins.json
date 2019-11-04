@@ -1136,8 +1136,46 @@
                 "package": "com.wscodelabs.callLogs.CallLogPackage"
             }
         },
+        "@react-native-firebase/app": {
+            "version": "6.0.3",
+            "ios": {
+                "appDelegateImports": ["Firebase"],
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "if ([FIRApp defaultApp] == nil) {  [FIRApp configure]; }"
+                        ]
+                    }
+                }
+            },
+            "android": {
+                "build.gradle": {
+                    "buildscript": {
+                        "dependencies": [
+                            "classpath 'com.google.gms:google-services:4.2.0'"
+                        ]
+                    }
+                },
+                "app/build.gradle": {
+                    "apply": ["plugin: 'com.google.gms.google-services'"]
+                }
+            },
+            "androidtv": {
+                "build.gradle": {
+                    "buildscript": {
+                        "dependencies": [
+                            "classpath 'com.google.gms:google-services:4.2.0'"
+                        ]
+                    }
+                },
+                "app/build.gradle": {
+                    "apply": ["plugin: 'com.google.gms.google-services'"]
+                }
+            }
+        },
         "react-native-firebase": {
             "version": "5.5.5",
+            "deprecated": "react-native-firebase is DEPRECATED. use @react-native-firebase/app instead",
             "ios": {
                 "podName": "RNFirebase",
                 "path": "node_modules/react-native-firebase/ios",
