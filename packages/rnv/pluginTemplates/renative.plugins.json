@@ -689,7 +689,13 @@
             "ios": {
                 "podName": "RNAudio"
             },
+            "tvos": {
+                "podName": "RNAudio"
+            },
             "android": {
+                "package": "com.rnim.rn.audio.ReactNativeAudioPackage"
+            },
+            "androidtv": {
                 "package": "com.rnim.rn.audio.ReactNativeAudioPackage"
             }
         },

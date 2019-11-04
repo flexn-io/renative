@@ -31,6 +31,9 @@
                     "android:screenOrientation": "landscape",
                     "android:noHistory": true,
                     "android:launchMode": "singleTask",
+                    "android:banner": "@drawable/ic_logo",
+                    "android:icon": "@drawable/ic_logo",
+                    "android:logo": "@drawable/ic_logo",
                     "android:theme": "@style/SplashTheme",
                     "children": [
                         {
