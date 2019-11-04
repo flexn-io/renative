@@ -209,10 +209,10 @@
                 "podName": "RNLocalize"
             },
             "android": {
-                "package": "com.reactcommunity.rnlanguages.RNLocalizePackage"
+                "package": "com.reactcommunity.rnlocalize.RNLocalizePackage"
             },
             "androidtv": {
-                "package": "com.reactcommunity.rnlanguages.RNLocalizePackage"
+                "package": "com.reactcommunity.rnlocalize.RNLocalizePackage"
             }
         },
         "react-native-linear-gradient": {
