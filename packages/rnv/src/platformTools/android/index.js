@@ -84,7 +84,7 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 
 export const runAndroid = async (c, platform, defaultTarget) => {
     const { target } = c.program;
-    logTask(`runAndroid:${platform}:${target}`);
+    logTask(`runAndroid:${platform}:${target}:${defaultTarget}`);
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
@@ -166,9 +166,14 @@ export const runAndroid = async (c, platform, defaultTarget) => {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
         const foundDevice = devicesAndEmulators.find(d => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget));
-        await launchAndroidSimulator(c, platform, foundDevice, true);
-        const device = await checkForActiveEmulator(c, platform);
-        await _runGradleApp(c, platform, device);
+        if (!foundDevice) {
+            logDebug('Target not provided, asking where to run');
+            await askWhereToRun();
+        } else {
+            await launchAndroidSimulator(c, platform, foundDevice, true);
+            const device = await checkForActiveEmulator(c, platform);
+            await _runGradleApp(c, platform, device);
+        }
     } else {
         // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
