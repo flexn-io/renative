@@ -6,9 +6,11 @@ sidebar_label: plugin
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> Manages renative plugins
+
 ## Task Order
 
-🔥 -> `plugin` ->  ✅
+🔥 `plugin`  ✅
 
 ## plugin
 

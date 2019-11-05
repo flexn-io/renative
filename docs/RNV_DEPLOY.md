@@ -6,9 +6,11 @@ sidebar_label: deploy
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> runs deploy commands on selected platform
+
 ## Task Order
 
-🔥 -> `configure` -> `package` -> `build` -> `export` -> `deploy` ->  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ➡️ `deploy`  ✅
 
 ## deploy
 

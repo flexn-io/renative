@@ -146,9 +146,25 @@
                 "title": "Workspaces",
                 "sidebar_label": "Workspaces"
             },
+            "integration_aws": {
+                "title": "AWS",
+                "sidebar_label": "AWS"
+            },
+            "integration_azure": {
+                "title": "Azure",
+                "sidebar_label": "Azure"
+            },
             "integration_docker": {
                 "title": "Docker",
                 "sidebar_label": "Docker"
+            },
+            "integration_fastlane": {
+                "title": "Fastlane",
+                "sidebar_label": "Fastlane"
+            },
+            "integration_ftp": {
+                "title": "FTP",
+                "sidebar_label": "FTP"
             },
             "integration_now": {
                 "title": "Now",
