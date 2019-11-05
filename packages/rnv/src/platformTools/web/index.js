@@ -12,14 +12,20 @@ import {
     getAppTemplateFolder,
     checkPortInUse,
     logInfo,
+    logDebug,
     resolveNodeModulePath,
     getConfigProp,
     logSuccess,
     waitForWebpack,
     logError,
     logWarning,
-    getAppTitle
+    writeCleanFile,
+    getBuildFilePath,
+    getAppTitle,
+    getSourceExts,
+    sanitizeColor
 } from '../../common';
+import { PLATFORMS, WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
@@ -89,6 +95,7 @@ const _generateWebpackConfigs = (c) => {
         analyzer,
         entryFile,
         title,
+        extensions: getSourceExts(c),
         ...extendConfig
     };
 
@@ -111,8 +118,6 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    _generateWebpackConfigs(c);
-
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
     executeAsync(c, `npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
@@ -123,29 +128,40 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const configureWebProject = (c, platform) => new Promise((resolve, reject) => {
+const configureWebProject = async (c, platform) => {
     logTask(`configureWebProject:${platform}`);
 
-    if (!isPlatformActive(c, platform, resolve)) return;
-
-    copyBuildsFolder(c, platform)
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
-
-const configureProject = async (c, platform, appFolderName) => {
-    logTask(`configureProject:${platform}`);
+    if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
+
+    await configureCoreWebProject(c, platform);
+
+    return copyBuildsFolder(c, platform);
 };
 
-const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
+export const configureCoreWebProject = async (c, platform) => {
+    _generateWebpackConfigs(c);
+    _parseCssSync(c, platform);
+};
+
+const _parseCssSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const stringsPath = 'public/app.css';
+    writeCleanFile(getBuildFilePath(c, platform, stringsPath), path.join(appFolder, stringsPath), [
+        { pattern: '{{PLUGIN_COLORS_BG}}', override: sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).hex },
+    ]);
+};
+
+const runWeb = (c, platform, port, shouldOpenBrowser) => new Promise((resolve, reject) => {
     logTask(`runWeb:${platform}:${port}`);
 
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
+    let devServerHost = '0.0.0.0';
 
+    if (platform === WEB) {
+        const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+        if (extendConfig.devServerHost) devServerHost = extendConfig.devServerHost;
+    }
 
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
@@ -159,7 +175,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                         port
                     )} is not running. Starting it up for you...`
                 );
-                _runWebBrowser(c, platform, devServerHost, port, 500)
+                _runWebBrowser(c, platform, devServerHost, port, false, shouldOpenBrowser)
                     .then(() => runWebDevServer(c, platform, port))
                     .then(() => resolve())
                     .catch(e => reject(e));
@@ -169,7 +185,7 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
                         port
                     )} is already running. ReNative Will use it!`
                 );
-                _runWebBrowser(c, platform, devServerHost, port)
+                _runWebBrowser(c, platform, devServerHost, port, true, shouldOpenBrowser)
                     .then(() => resolve())
                     .catch(e => reject(e));
             }
@@ -177,11 +193,18 @@ const runWeb = (c, platform, port) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const _runWebBrowser = (c, platform, devServerHost, port, delay = 0) => new Promise((resolve, reject) => {
-    waitForWebpack(c, port)
-        .then(() => open(`http://${devServerHost}:${port}/`))
-        .catch(logError);
-    resolve();
+const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted, shouldOpenBrowser) => new Promise((resolve) => {
+    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${shouldOpenBrowser}`);
+    if (!shouldOpenBrowser) return resolve();
+    const wait = waitForWebpack(c, port)
+        .then(() => {
+            open(`http://${devServerHost}:${port}/`);
+        })
+        .catch((e) => {
+            logWarning(e);
+        });
+    if (alreadyStarted) return wait; // if it's already started, return the promise so it rnv will wait, otherwise it will exit before opening the browser
+    return resolve();
 });
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
@@ -191,9 +214,16 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     const wpPublic = path.join(appFolder, 'public');
     const wpConfig = path.join(appFolder, 'webpack.config.js');
 
-    _generateWebpackConfigs(c);
     const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
-    return executeAsync(c, command, { stdio: 'inherit', silent: true });
+    executeAsync(c, command, { stdio: 'inherit', silent: true })
+        .then(() => {
+            logDebug('runWebDevServer: running');
+            resolve();
+        })
+        .catch((e) => {
+            logDebug(e);
+            resolve();
+        });
 });
 
 const deployWeb = (c, platform) => {
@@ -206,4 +236,4 @@ const exportWeb = (c, platform) => {
     return selectWebToolAndExport(c, platform);
 };
 
-export { buildWeb, runWeb, configureWebProject, runWebDevServer, deployWeb, exportWeb };
+export { buildWeb, runWeb, configureWebProject, deployWeb, exportWeb };

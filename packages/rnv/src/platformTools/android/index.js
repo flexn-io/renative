@@ -20,6 +20,7 @@ import {
     waitForEmulator,
     getAppId
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { logToSummary, logTask,
     logError, logWarning,
@@ -35,7 +36,7 @@ import {
     parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator, connectToWifiDevice } from './deviceManager';
 
 
@@ -44,6 +45,11 @@ const isRunningOnWindows = process.platform === 'win32';
 
 export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
+
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
+
+    if (!bundleAssets) return;
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.buildConfig.platforms[platform];
@@ -76,25 +82,13 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 });
 
 
-export const runAndroid = async (c, platform, target) => {
+export const runAndroid = async (c, platform, defaultTarget) => {
+    const { target } = c.program;
     logTask(`runAndroid:${platform}:${target}`);
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
-
-    if (bundleAssets) {
-        await packageAndroid(c, platform, bundleIsDev);
-    }
-    await _runGradle(c, platform);
-};
-
-const _runGradle = async (c, platform) => {
-    logTask(`_runGradle:${platform}`);
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
     if (outputAab) return _runGradleApp(c, platform, {});
-
-    const { target } = c.program;
 
     await resetAdb(c);
 
@@ -149,6 +143,7 @@ const _runGradle = async (c, platform) => {
     };
 
     if (target) {
+        // a target is provided
         logDebug('Target provided', target);
         const foundDevice = devicesAndEmulators.find(d => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
@@ -167,7 +162,15 @@ const _runGradle = async (c, platform) => {
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, dv);
+    } else if (defaultTarget) {
+        // neither a target nor an active device is found, revert to default target if available
+        logDebug('Default target used', defaultTarget);
+        const foundDevice = devicesAndEmulators.find(d => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget));
+        await launchAndroidSimulator(c, platform, foundDevice, true);
+        const device = await checkForActiveEmulator(c, platform);
+        await _runGradleApp(c, platform, device);
     } else {
+        // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
         await askWhereToRun();
     }
@@ -310,9 +313,10 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
             logInfo(`Installing ${apkPath} on ${name}`);
             return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
         })
-        .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
-            ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8081`)
-            : Promise.resolve()))
+        // NOTE: this is no longer needed.
+        // .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
+        //     ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8083`)
+        //     : Promise.resolve()))
         .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -357,19 +361,16 @@ sdk.dir=${sdkDir}`,
     resolve();
 });
 
-export const configureGradleProject = (c, platform) => new Promise((resolve, reject) => {
+export const configureGradleProject = async (c, platform) => {
     logTask(`configureGradleProject:${platform}`);
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureAndroidProperties(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureAndroidProperties(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 export const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
@@ -403,7 +404,9 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         pluginApplicationImports: '',
         pluginApplicationMethods: '',
         pluginApplicationCreateMethods: '',
+        pluginApplicationDebugServer: '',
         applyPlugin: '',
+        defaultConfig: '',
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
         pluginSplashActivityImports: '',
@@ -457,6 +460,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     parseMainApplicationSync(c, platform);
     parseSplashActivitySync(c, platform);
     parseValuesStringsSync(c, platform);
+    parseValuesColorsSync(c, platform);
     parseAndroidManifestSync(c, platform);
     parseGradlePropertiesSync(c, platform);
 

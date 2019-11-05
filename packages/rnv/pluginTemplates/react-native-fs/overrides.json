@@ -1,0 +1,7 @@
+{
+    "overrides": {
+        "android/src/main/java/com/rnfs/RNFSManager.java": {
+            "import android.support.annotation.Nullable;": "import androidx.annotation.Nullable;"
+        }
+    }
+}

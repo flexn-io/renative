@@ -38,7 +38,7 @@ import {
     KAIOS_SDK,
 } from '../../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
-import { buildWeb } from '../web';
+import { buildWeb, configureCoreWebProject } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
     logTask('launchKaiOSSimulator');
@@ -69,17 +69,16 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
     });
 });
 
-const configureKaiOSProject = (c, platform) => new Promise((resolve, reject) => {
+const configureKaiOSProject = async (c, platform) => {
     logTask('configureKaiOSProject');
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureCoreWebProject(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
@@ -100,25 +99,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     manifestFile.developer = getAppAuthor(c, platform);
 
     fs.writeFileSync(manifestFilePath2, JSON.stringify(manifestFile, null, 2));
-
-    if (bundleAssets) {
-        if (bundleIsDev) {
-            copyFileSync(
-                path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-                path.join(appFolder, 'webpack.config.js')
-            );
-        } else {
-            copyFileSync(
-                path.join(templateFolder, '_privateConfig', 'webpack.config.js'),
-                path.join(appFolder, 'webpack.config.js')
-            );
-        }
-    } else {
-        copyFileSync(
-            path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-            path.join(appFolder, 'webpack.config.js')
-        );
-    }
 
     resolve();
 });

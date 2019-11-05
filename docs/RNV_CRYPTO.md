@@ -10,7 +10,7 @@ sidebar_label: crypto
 
 ## Task Order
 
-🔥 -> `crypto` ->  ✅
+🔥 `crypto`  ✅
 
 ## crypto
 

@@ -19,12 +19,15 @@ import {
     getBuildFilePath,
     logSuccess,
     getGetJsBundleFile,
-    getBuildsFolder
+    getBuildsFolder,
+    sanitizeColor
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
-export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port) => new Promise((resolve, reject) => {
+    if (!port) port = PLATFORMS[platform].defaultPort;
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 
@@ -47,16 +50,18 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
     });
 
     // BG COLOR
-    let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
-    const UI_COLORS = ['black', 'blue', 'brown', 'clear', 'cyan', 'darkGray', 'gray', 'green', 'lightGray', 'magneta', 'orange', 'purple', 'red', 'white', 'yellow'];
-    if (backgroundColor) {
-        if (UI_COLORS.includes(backgroundColor)) {
-            pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
-        } else {
-            logWarning(`Your choosen color in renative.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
-        }
-    }
+    // let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
+    // const UI_COLORS = ['black', 'blue', 'brown', 'clear', 'cyan', 'darkGray', 'gray', 'green', 'lightGray', 'magneta', 'orange', 'purple', 'red', 'white', 'yellow'];
+    // if (backgroundColor) {
+    //     if (UI_COLORS.includes(backgroundColor)) {
+    //         pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
+    //     } else {
+    //         logWarning(`Your choosen color in renative.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
+    //     }
+    // }
 
+    const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).rgbDecimal;
+    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
     const methods = {
         application: {
             didFinishLaunchingWithOptions: {
@@ -66,13 +71,13 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()
         let v = RCTRootView(
-            bundleURL: bundleUrl,
+            bundleURL: bundleUrl!,
             moduleName: moduleName,
             initialProperties: nil,
             launchOptions: launchOptions)
         vc.view = v
         ${pluginBgColor}
-        v?.frame = vc.view.bounds
+        v.frame = vc.view.bounds
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()
         UNUserNotificationCenter.current().delegate = self

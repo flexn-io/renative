@@ -6,6 +6,12 @@ sidebar_label: template
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> Manages project templates
+
+## Task Order
+
+🔥 `template`  ✅
+
 ## template
 
 Get interactive options for template

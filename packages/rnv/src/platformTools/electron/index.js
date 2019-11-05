@@ -33,24 +33,24 @@ import {
     waitForWebpack
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
-import { MACOS } from '../../constants';
-import { buildWeb, runWeb, runWebDevServer } from '../web';
+import { MACOS, WINDOWS } from '../../constants';
+import { buildWeb, runWeb, configureCoreWebProject } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
-    copyFileSync, mkdirSync, writeObjectSync, readObjectSync
+    copyFileSync, mkdirSync, writeObjectSync, readObjectSync, removeDirs, removeDirsSync
 } from '../../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
 
-const configureElectronProject = (c, platform) => new Promise((resolve, reject) => {
+const configureElectronProject = async (c, platform) => {
     logTask(`configureElectronProject:${platform}`);
 
-    copyAssetsFolder(c, platform, platform === MACOS ? _generateICNS : null)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform, platform === MACOS ? _generateICNS : null);
+    await configureCoreWebProject(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
+const merge = require('deepmerge');
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
@@ -78,7 +78,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const packageJson = readObjectSync(pkgJson);
 
     packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
-    packageJson.productName = `${getAppTitle(c, platform)} - ${platform}`;
+    packageJson.productName = `${getAppTitle(c, platform)}`;
     packageJson.version = `${getAppVersion(c, platform)}`;
     packageJson.description = `${getAppDescription(c, platform)}`;
     packageJson.author = getAppAuthor(c, platform);
@@ -87,31 +87,47 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     writeObjectSync(packagePath, packageJson);
 
+    let browserWindow = { width: 1200, height: 800, webPreferences: { nodeIntegration: true } };
+    const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
+    if (browserWindowExt) {
+        browserWindow = merge(browserWindow, browserWindowExt);
+    }
+    const browserWindowStr = JSON.stringify(browserWindow, null, 2);
+
     if (bundleAssets) {
-        copyFileSync(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'));
-        copyFileSync(
-            path.join(templateFolder, '_privateConfig', 'webpack.config.js'),
-            path.join(appFolder, 'webpack.config.js')
-        );
+        writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'), [
+            { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
+        ]);
     } else {
         const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
-        copyFileSync(
-            path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-            path.join(appFolder, 'webpack.config.js')
-        );
     }
 
-    const electronConfig = {
+    const macConfig = {};
+    if (platform === MACOS) {
+        macConfig.mac = {
+            entitlements: path.join(appFolder, 'entitlements.mac.plist'),
+            entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist')
+        };
+    }
+
+    let electronConfig = merge({
         appId,
         directories: {
             app: appFolder,
             buildResources: path.join(appFolder, 'resources'),
             output: path.join(appFolder, 'build/release')
-        }
-    };
+        },
+    }, macConfig);
+
+    const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
+
+    if (electronConfigExt) {
+        electronConfig = merge(electronConfig, electronConfigExt);
+    }
     writeObjectSync(electronConfigPath, electronConfig);
 
 
@@ -124,18 +140,21 @@ const buildElectron = (c, platform) => {
     return buildWeb(c, platform);
 };
 
-const exportElectron = (c, platform) => new Promise((resolve, reject) => {
+const exportElectron = async (c, platform) => {
     logTask(`exportElectron:${platform}`);
     const { maxErrorLength } = c.program;
-
     const appFolder = getAppFolder(c, platform);
-    executeAsync(c, `npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`)
-        .then(() => {
-            logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+    const buildPath = path.join(appFolder, 'build');
+
+    if (fs.existsSync(buildPath)) {
+        console.log(`removing old build ${buildPath}`);
+        await removeDirs([buildPath]);
+    }
+
+    await executeAsync(c, `npx electron-builder --config ${path.join(appFolder, 'electronConfig.json')}`);
+
+    logSuccess(`Your Exported App is located in ${chalk.white(path.join(appFolder, 'build/release'))} .`);
+};
 
 const runElectron = async (c, platform, port) => {
     logTask(`runElectron:${platform}`);
@@ -175,7 +194,7 @@ const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => 
     const appFolder = getAppFolder(c, platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
-    const child = spawn('node', [elc, appFolder], {
+    const child = spawn('node', [elc, path.join(appFolder, '/main.js')], {
         detached: true,
         env: process.env,
         stdio: 'inherit',
@@ -187,20 +206,11 @@ const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => 
     resolve();
 });
 
-const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject) => {
+const runElectronDevServer = async (c, platform, port) => {
     logTask(`runElectronDevServer:${platform}`);
 
-    const appFolder = getAppFolder(c, platform);
-    const templateFolder = getAppTemplateFolder(c, platform);
-    copyFileSync(
-        path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-        path.join(appFolder, 'webpack.config.js')
-    );
-
-    runWebDevServer(c, platform, port)
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    return runWeb(c, platform, port);
+};
 
 const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_generateICNS:${platform}`);

@@ -5,7 +5,6 @@ const config = {
     currentDir: __dirname,
     metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
     environment: 'development',
-    extensions: ['firefoxos', 'firefox', 'web'],
     ...Extend
 };
 

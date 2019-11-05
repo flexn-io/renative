@@ -6,9 +6,11 @@ sidebar_label: start
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> start server / bundler on selected platform
+
 ## Task Order
 
-🔥 -> `configure` -> `start` ->  ✅
+🔥 `configure` ➡️ `start`  ✅
 
 ## start
 

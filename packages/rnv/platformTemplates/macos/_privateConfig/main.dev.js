@@ -10,7 +10,7 @@ const loadDevServer = () => {
         mainWindow
             .loadURL('{{DEV_SERVER}}')
             .then(() => {})
-            .catch(e => {
+            .catch((e) => {
                 loadDevServer();
             });
     }, 1000);
@@ -18,7 +18,7 @@ const loadDevServer = () => {
 
 function createWindow() {
     // Create the browser window.
-    mainWindow = new BrowserWindow({ width: 800, height: 600 });
+    mainWindow = new BrowserWindow({{PLUGIN_INJECT_BROWSER_WINDOW}});
 
     // and load the index.html of the app.
     loadDevServer();

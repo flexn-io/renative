@@ -37,32 +37,69 @@ class Config {
         return cleanedArgs;
     }
 
-    async injectProjectDependency(dependency, version) {
+    async injectProjectDependency(dependency, version, type, skipInstall = false) {
         const currentPackage = this.config.files.project.package;
         const existingPath = this.config.paths.project.package;
-        currentPackage.dependencies[dependency] = version;
+        if (!currentPackage[type]) currentPackage[type] = {};
+        currentPackage[type][dependency] = version;
         writeObjectSync(existingPath, currentPackage);
-        await npmInstall();
+        if (!skipInstall) await npmInstall();
+        return true;
     }
 
     getProjectConfig() {
         return this.config.files.project;
     }
 
-    async checkRequiredPackage(pkg) {
-        if (!pkg) return;
+    async checkRequiredPackage(pkg, version = false, type, skipAsking = false, skipInstall = false) {
+        if (!pkg) return false;
         const projectConfig = this.getProjectConfig();
 
-        if (!projectConfig.package.dependencies[pkg]) {
-            const { confirm } = await inquirerPrompt({
-                type: 'confirm',
-                message: `You do not have ${pkg} installed. Do you want to add it now?`
-            });
+        if (!projectConfig.package[type]?.[pkg]) {
+            let confirm = skipAsking;
+            if (!confirm) {
+                const resp = await inquirerPrompt({
+                    type: 'confirm',
+                    message: `You do not have ${pkg} installed. Do you want to add it now?`
+                });
+                confirm = resp.confirm;
+            }
 
             if (confirm) {
-                await this.injectProjectDependency(pkg, 'latest'); // @TODO TO BE CHANGED
+                return this.injectProjectDependency(pkg, version || 'latest', type, skipInstall);
             }
         }
+        return false;
+    }
+
+    async injectPlatformDependencies(platform) {
+        const npmDeps = this.config.files?.rnv?.platformTemplates?.config?.platforms?.[platform]?.npm;
+
+        if (npmDeps) {
+            const promises = Object.keys(npmDeps).reduce((acc, type) => { // iterate over dependencies, devDepencencies or optionalDependencies
+                Object.keys(npmDeps[type]).forEach((dep) => { // iterate over deps
+                    acc.push(this.checkRequiredPackage(dep, npmDeps[type][dep], type, true, true));
+                });
+                return acc;
+            }, []);
+
+            const installed = await Promise.all(promises);
+
+            if (installed.some(i => i === true)) { // do npm i only if something new is added
+                await npmInstall();
+            }
+        }
+
+        // add other deps that are not npm
+    }
+
+    get platform() {
+        return this.config.platform;
+    }
+
+    get currentPlatformDefaultPort() {
+        const { platform } = this.config;
+        return this.config.platformDefaults[platform].defaultPort;
     }
 
     //     getBuildConfig() {
