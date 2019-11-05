@@ -82,7 +82,8 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 });
 
 
-export const runAndroid = async (c, platform, target) => {
+export const runAndroid = async (c, platform, defaultTarget) => {
+    const { target } = c.program;
     logTask(`runAndroid:${platform}:${target}`);
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
@@ -142,6 +143,7 @@ export const runAndroid = async (c, platform, target) => {
     };
 
     if (target) {
+        // a target is provided
         logDebug('Target provided', target);
         const foundDevice = devicesAndEmulators.find(d => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
@@ -160,7 +162,15 @@ export const runAndroid = async (c, platform, target) => {
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, dv);
+    } else if (defaultTarget) {
+        // neither a target nor an active device is found, revert to default target if available
+        logDebug('Default target used', defaultTarget);
+        const foundDevice = devicesAndEmulators.find(d => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget));
+        await launchAndroidSimulator(c, platform, foundDevice, true);
+        const device = await checkForActiveEmulator(c, platform);
+        await _runGradleApp(c, platform, device);
     } else {
+        // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
         await askWhereToRun();
     }
