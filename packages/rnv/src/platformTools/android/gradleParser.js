@@ -134,7 +134,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
 
 
     // MULTI APK
-    const buildNumberOffset = getConfigProp(c, platform, 'buildNumberOffset', 0);
+    const versionCodeOffset = getConfigProp(c, platform, 'versionCodeOffset', 0);
     const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
     c.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
@@ -146,7 +146,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         variant.outputs.each { output ->
           def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
           if (bavc != null) {
-            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc)) + ${buildNumberOffset}
+            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc)) + ${versionCodeOffset}
           }
         }
       }`;
