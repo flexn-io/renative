@@ -266,7 +266,8 @@ COMMON_PROPS
   "includedFonts": [],
   "excludedFonts": [],
   "backgroundColor": "",
-  "port": 1111
+  "port": 1111,
+  "versionCodeOffset": 0
 }
 ```
 
