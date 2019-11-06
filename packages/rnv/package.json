@@ -95,11 +95,8 @@
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-plugin-transform-runtime": "6.23.0",
         "babel-polyfill": "6.26.0",
-<<<<<<< HEAD
         "better-opn": "1.0.0",
-=======
         "color-string": "1.5.3",
->>>>>>> 2f5c94881e4ebce5d0c707d98378fd90436dcc2b
         "commander": "^3.0.1",
         "copy-webpack-plugin": "4.6.0",
         "cross-env": "5.2.0",
