@@ -1,0 +1,7 @@
+{
+    "overrides": {
+        "app/android/settings.gradle": {
+            "rootProject.name = '@react-native-firebase_app'')": "rootProject.name = 'react-native-firebase-app'')"
+        }
+    }
+}

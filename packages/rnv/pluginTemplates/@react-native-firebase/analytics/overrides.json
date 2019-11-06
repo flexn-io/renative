@@ -1,0 +1,10 @@
+{
+    "overrides": {
+        "analytics/android/build.gradle": {
+            "api project(':@react-native-firebase_app')": "api project(':react-native-firebase-app')"
+        },
+        "analytics/android/settings.gradle": {
+            "rootProject.name = '@react-native-firebase_analytics'')": "rootProject.name = 'react-native-firebase-analytics'')"
+        }
+    }
+}

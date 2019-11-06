@@ -1175,10 +1175,10 @@
                 "podName": "RNFBAnalytics"
             },
             "android": {
-                "package": "io.invertase.firebase.app.ReactNativeFirebaseAnalyticsPackage"
+                "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage"
             },
             "androidtv": {
-                "package": "io.invertase.firebase.app.ReactNativeFirebaseAnalyticsPackage"
+                "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage"
             }
         },
         "react-native-firebase": {
