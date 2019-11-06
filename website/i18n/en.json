@@ -47,6 +47,10 @@
                 "title": "Integrations",
                 "sidebar_label": "Integrations"
             },
+            "migrating_react_native": {
+                "title": "Migrating react-native project to ReNative",
+                "sidebar_label": "Migrating react-native"
+            },
             "platforms_overview": {
                 "title": "Overview",
                 "sidebar_label": "Overview"
@@ -625,6 +629,10 @@
             "version-0.28/version-0.28-integrations": {
                 "title": "Integrations",
                 "sidebar_label": "Integrations"
+            },
+            "version-0.28/version-0.28-migrating_react_native": {
+                "title": "Migrating react-native project to ReNative",
+                "sidebar_label": "Migrating react-native"
             },
             "version-0.28/version-0.28-androidtv": {
                 "title": "Android TV Platform",

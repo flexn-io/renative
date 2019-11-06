@@ -3,6 +3,7 @@
         "Getting Started": [
             "version-0.28-quickstart",
             "version-0.28-installation",
+            "version-0.28-migrating_react_native",
             "version-0.28-features",
             "version-0.28-architecture"
         ],

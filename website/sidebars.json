@@ -3,6 +3,7 @@
         "Getting Started": [
             "quickstart",
             "installation",
+            "migrating_react_native",
             "features",
             "architecture"
         ],
