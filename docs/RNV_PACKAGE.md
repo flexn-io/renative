@@ -6,9 +6,11 @@ sidebar_label: package
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> packages javascript into bundle on selected platform.
+
 ## Task Order
 
-🔥 -> `configure` -> `package` ->  ✅
+🔥 `configure` ➡️ `package`  ✅
 
 ## package
 

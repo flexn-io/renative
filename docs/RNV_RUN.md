@@ -6,9 +6,12 @@ sidebar_label: run
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> runs app on emulator / device on selected platform.
+This command also triggers concurrent server / bundler is configured
+
 ## Task Order
 
-🔥 -> `configure` -> `package` -> `run` ->  ✅
+🔥 `configure` ➡️ `package` ➡️ `compile` ➡️ `run` ➡️ `install` ➡️ `launch`  ✅
 
 ## run
 
@@ -43,6 +46,8 @@ rnv run help
 `-d`, `--device` - Run on device
 
 `-i`, `--info` - Show full stack trace
+
+`-o`, `--only` - Execute only run task
 
 `--analyzer` - Show app size analysis report
 

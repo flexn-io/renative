@@ -6,9 +6,11 @@ sidebar_label: export
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> runs export commands on selected platform
+
 ## Task Order
 
-🔥 -> `configure` -> `package` -> `build` -> `export` ->  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export`  ✅
 
 ## export
 
@@ -39,6 +41,8 @@ rnv export help
 `-r`, `--reset` - Clean project beforehand
 
 `-i`, `--info` - Show full stack trace
+
+`-o`, `--only` - Run only export task
 
 `--xcodebuildArchiveArgs` - Pass down standard xcodebuild arguments (`ios`, `tvos` only)
 

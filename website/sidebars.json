@@ -40,7 +40,11 @@
             "windows"
         ],
         "Integrations": [
+            "integration_aws",
+            "integration_azure",
             "integration_docker",
+            "integration_fastlane",
+            "integration_ftp",
             "integration_now",
             "integration_testflight"
         ]
