@@ -6,6 +6,7 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
+import colorString from 'color-string';
 
 import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
@@ -93,6 +94,26 @@ export const isPlatformSupported = async (c) => {
         c.program.platform = platform;
         return platform;
     }
+};
+
+export const sanitizeColor = (val) => {
+    if (!val) {
+        logWarning('sanitizeColor: passed null. will use default #FFFFFF instead');
+        return {
+            rgb: [255, 255, 255, 1],
+            rgbDecimal: [1, 1, 1, 1],
+            hex: '#FFFFFF'
+        };
+    }
+
+    const rgb = colorString.get.rgb(val);
+    const hex = colorString.to.hex(rgb);
+
+    return {
+        rgb,
+        rgbDecimal: rgb.map(v => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
+        hex
+    };
 };
 
 export const isBuildSchemeSupported = async (c) => {
@@ -197,7 +218,10 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => {
+    console.log('getAppTemplateFolder', c.paths.project.platformTemplatesDirs[platform], platform);
+    return path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+};
 
 export const getAppConfigId = c => c.buildConfig.id;
 
@@ -258,25 +282,22 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms?.[platform]?.version || c.buildConfig.common?.version || c.files.project.package?.version;
+export const getAppVersion = (c, platform) => getConfigProp(c, platform, 'version') || c.files.project.package?.version;
 
-export const getAppAuthor = (c, platform) => c.buildConfig.platforms?.[platform]?.author || c.buildConfig.common?.author || c.files.project.package?.author;
+export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
 
-export const getAppLicense = (c, platform) => c.buildConfig.platforms?.[platform]?.license || c.buildConfig.common?.license || c.files.project.package?.license;
+export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
 
 export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
 
 export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) => c.buildConfig.platforms?.[platform]?.description || c.buildConfig.common?.description || c.files.project.package?.description;
+export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description') || c.files.project.package?.description;
 
 export const getAppVersionCode = (c, platform) => {
-    if (c.buildConfig.platforms?.[platform]?.versionCode) {
-        return c.buildConfig.platforms[platform].versionCode;
-    }
-    if (c.buildConfig.common.versionCode) {
-        return c.buildConfig.common.versionCode;
-    }
+    const versionCode = getConfigProp(c, platform, 'versionCode');
+    if (versionCode) return versionCode;
+
     const version = getAppVersion(c, platform);
 
     let vc = '';

@@ -1,10 +1,25 @@
 {
     "docs-sidebar": {
-        "GettingStarted": [
+        "Getting Started": [
             "quickstart",
             "installation",
             "features",
             "architecture"
+        ],
+        "Guides": [
+            "cli",
+            "plugins",
+            "templates",
+            "integrations",
+            "workspaces",
+            "config",
+            "rnv_config",
+            "file_extensions",
+            "config_folders",
+            "build_hooks",
+            "runtime",
+            "common_issues",
+            "develop"
         ],
         "Platforms": [
             "platforms_overview",
@@ -24,20 +39,14 @@
             "webos",
             "windows"
         ],
-        "Guides": [
-            "cli",
-            "plugins",
-            "templates",
-            "integrations",
-            "workspaces",
-            "config",
-            "rnv_config",
-            "file_extensions",
-            "config_folders",
-            "build_hooks",
-            "runtime",
-            "common_issues",
-            "develop"
+        "Integrations": [
+            "integration_aws",
+            "integration_azure",
+            "integration_docker",
+            "integration_fastlane",
+            "integration_ftp",
+            "integration_now",
+            "integration_testflight"
         ]
     },
     "api-sidebar": {

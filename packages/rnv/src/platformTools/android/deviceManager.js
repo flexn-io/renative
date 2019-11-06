@@ -484,6 +484,7 @@ export const checkForActiveEmulator = (c, platform) => new Promise((resolve, rej
             running = true;
             getAndroidTargets(c, false, true, false)
                 .then((v) => {
+                    logDebug('Available devices after filtering', c);
                     if (v.length > 0) {
                         logSuccess(`Found active emulator! ${chalk.white(v[0].udid)}. Will use it`);
                         clearInterval(poll);

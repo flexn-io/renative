@@ -10,7 +10,7 @@ sidebar_label: clean
 
 ## Task Order
 
-🔥 -> `clean` ->  ✅
+🔥 `clean`  ✅
 
 ## clean
 

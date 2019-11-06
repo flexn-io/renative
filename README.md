@@ -206,6 +206,9 @@ Contributing
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/renative/pulls)
 ![hits](https://hits.dwyl.com/pavjacko/renative.svg)
+[![Actions Status](https://github.com/pavjacko/renative/workflows/Node%20CI/badge.svg)](https://github.com/pavjacko/renative/actions)
+[![codecov](https://codecov.io/gh/pavjacko/renative/branch/master/graph/badge.svg)](https://codecov.io/gh/pavjacko/renative)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 <!-- [![OpenCollective](https://opencollective.com/renative/backers/badge.svg)](#backers) -->
 <!-- [![OpenCollective](https://opencollective.com/renative/sponsors/badge.svg)](#sponsors) -->

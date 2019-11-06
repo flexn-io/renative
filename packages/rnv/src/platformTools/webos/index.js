@@ -27,7 +27,7 @@ import {
     CLI_WEBOS_ARES_SETUP_DEVICE
 } from '../../constants';
 import { getRealPath } from '../../systemTools/fileutils';
-import { buildWeb } from '../web';
+import { buildWeb, configureCoreWebProject } from '../web';
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -211,6 +211,7 @@ const configureWebOSProject = async (c, platform) => {
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
+    await configureCoreWebProject(c, platform);
     await configureProject(c, platform);
     return copyBuildsFolder(c, platform);
 };

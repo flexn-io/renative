@@ -47,7 +47,7 @@
             }
         },
         "renative": {
-            "version": "0.28.0-alpha.33",
+            "version": "0.28.3",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -209,10 +209,10 @@
                 "podName": "RNLocalize"
             },
             "android": {
-                "package": "com.reactcommunity.rnlanguages.RNLocalizePackage"
+                "package": "com.reactcommunity.rnlocalize.RNLocalizePackage"
             },
             "androidtv": {
-                "package": "com.reactcommunity.rnlanguages.RNLocalizePackage"
+                "package": "com.reactcommunity.rnlocalize.RNLocalizePackage"
             }
         },
         "react-native-linear-gradient": {
@@ -689,7 +689,13 @@
             "ios": {
                 "podName": "RNAudio"
             },
+            "tvos": {
+                "podName": "RNAudio"
+            },
             "android": {
+                "package": "com.rnim.rn.audio.ReactNativeAudioPackage"
+            },
+            "androidtv": {
                 "package": "com.rnim.rn.audio.ReactNativeAudioPackage"
             }
         },

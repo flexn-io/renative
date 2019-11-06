@@ -36,7 +36,7 @@ import {
     parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator, connectToWifiDevice } from './deviceManager';
 
 
@@ -82,8 +82,9 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 });
 
 
-export const runAndroid = async (c, platform, target) => {
-    logTask(`runAndroid:${platform}:${target}`);
+export const runAndroid = async (c, platform, defaultTarget) => {
+    const { target } = c.program;
+    logTask(`runAndroid:${platform}:${target}:${defaultTarget}`);
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
@@ -142,6 +143,7 @@ export const runAndroid = async (c, platform, target) => {
     };
 
     if (target) {
+        // a target is provided
         logDebug('Target provided', target);
         const foundDevice = devicesAndEmulators.find(d => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
@@ -160,7 +162,20 @@ export const runAndroid = async (c, platform, target) => {
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, dv);
+    } else if (defaultTarget) {
+        // neither a target nor an active device is found, revert to default target if available
+        logDebug('Default target used', defaultTarget);
+        const foundDevice = devicesAndEmulators.find(d => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget));
+        if (!foundDevice) {
+            logDebug('Target not provided, asking where to run');
+            await askWhereToRun();
+        } else {
+            await launchAndroidSimulator(c, platform, foundDevice, true);
+            const device = await checkForActiveEmulator(c, platform);
+            await _runGradleApp(c, platform, device);
+        }
     } else {
+        // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
         await askWhereToRun();
     }
@@ -450,6 +465,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     parseMainApplicationSync(c, platform);
     parseSplashActivitySync(c, platform);
     parseValuesStringsSync(c, platform);
+    parseValuesColorsSync(c, platform);
     parseAndroidManifestSync(c, platform);
     parseGradlePropertiesSync(c, platform);
 

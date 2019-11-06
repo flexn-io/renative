@@ -6,9 +6,11 @@ sidebar_label: platform
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> Manages renative platforms
+
 ## Task Order
 
-🔥 -> `platform` ->  ✅
+🔥 `platform`  ✅
 
 ## platform
 

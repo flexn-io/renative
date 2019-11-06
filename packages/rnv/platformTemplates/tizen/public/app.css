@@ -9,6 +9,10 @@ body::-webkit-scrollbar, div::-webkit-scrollbar {
      display: none;
 }
 
+body {
+  background-color: {{PLUGIN_COLORS_BG}};
+}
+
 /* native css scrolling smooth */
 html {
     scroll-behavior: smooth;

@@ -34,7 +34,7 @@ import {
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS, WINDOWS } from '../../constants';
-import { buildWeb, runWeb } from '../web';
+import { buildWeb, runWeb, configureCoreWebProject } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
     copyFileSync, mkdirSync, writeObjectSync, readObjectSync, removeDirs, removeDirsSync
@@ -46,6 +46,7 @@ const configureElectronProject = async (c, platform) => {
     logTask(`configureElectronProject:${platform}`);
 
     await copyAssetsFolder(c, platform, platform === MACOS ? _generateICNS : null);
+    await configureCoreWebProject(c, platform);
     await configureProject(c, platform);
     return copyBuildsFolder(c, platform);
 };
@@ -86,21 +87,23 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     writeObjectSync(packagePath, packageJson);
 
+    let browserWindow = { width: 1200, height: 800, webPreferences: { nodeIntegration: true } };
+    const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
+    if (browserWindowExt) {
+        browserWindow = merge(browserWindow, browserWindowExt);
+    }
+    const browserWindowStr = JSON.stringify(browserWindow, null, 2);
+
     if (bundleAssets) {
-        copyFileSync(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'));
-        copyFileSync(
-            path.join(templateFolder, '_privateConfig', 'webpack.config.js'),
-            path.join(appFolder, 'webpack.config.js')
-        );
+        writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.js'), path.join(appFolder, 'main.js'), [
+            { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
+        ]);
     } else {
         const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
-        copyFileSync(
-            path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-            path.join(appFolder, 'webpack.config.js')
-        );
     }
 
     const macConfig = {};
@@ -203,20 +206,11 @@ const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => 
     resolve();
 });
 
-const runElectronDevServer = (c, platform, port) => new Promise((resolve, reject) => {
+const runElectronDevServer = async (c, platform, port) => {
     logTask(`runElectronDevServer:${platform}`);
 
-    const appFolder = getAppFolder(c, platform);
-    const templateFolder = getAppTemplateFolder(c, platform);
-    copyFileSync(
-        path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-        path.join(appFolder, 'webpack.config.js')
-    );
-
-    runWeb(c, platform, port)
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    return runWeb(c, platform, port);
+};
 
 const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_generateICNS:${platform}`);

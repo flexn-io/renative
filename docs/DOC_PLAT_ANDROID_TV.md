@@ -25,13 +25,17 @@ sidebar_label: Android TV
 
 ## File Extension Support
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `.tv.js`          | 1 |
-| `.androidtv.js`       | 2 |
-| `.android.js`       | 3 |
-| `.native.js`         | 4 |
-| `.js`             | 5 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `androidtv.tv.js` | `form factor` | 1 |
+| `tv.js` | `form factor` | 2 |
+| `androidtv.js` | `platform` | 3 |
+| `android.js` | `platform` | 4 |
+| `tv.native.js` | `fallback` | 5 |
+| `native.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
 
 ## Requirements
 

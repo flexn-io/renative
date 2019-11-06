@@ -38,7 +38,7 @@ import {
     KAIOS_SDK,
 } from '../../constants';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
-import { buildWeb } from '../web';
+import { buildWeb, configureCoreWebProject } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
     logTask('launchKaiOSSimulator');
@@ -75,6 +75,7 @@ const configureKaiOSProject = async (c, platform) => {
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
+    await configureCoreWebProject(c, platform);
     await configureProject(c, platform);
     return copyBuildsFolder(c, platform);
 };
@@ -98,25 +99,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     manifestFile.developer = getAppAuthor(c, platform);
 
     fs.writeFileSync(manifestFilePath2, JSON.stringify(manifestFile, null, 2));
-
-    if (bundleAssets) {
-        if (bundleIsDev) {
-            copyFileSync(
-                path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-                path.join(appFolder, 'webpack.config.js')
-            );
-        } else {
-            copyFileSync(
-                path.join(templateFolder, '_privateConfig', 'webpack.config.js'),
-                path.join(appFolder, 'webpack.config.js')
-            );
-        }
-    } else {
-        copyFileSync(
-            path.join(templateFolder, '_privateConfig', 'webpack.config.dev.js'),
-            path.join(appFolder, 'webpack.config.js')
-        );
-    }
 
     resolve();
 });
