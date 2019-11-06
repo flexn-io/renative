@@ -23,6 +23,7 @@ import {
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from '../configTools/configParser';
 import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
+import rnvConfig from '../systemTools/config';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -53,6 +54,7 @@ ${chalk.bold.white('OPTIONS:')}
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
 '-D, --debug', 'enable remote debugger'
+'-G, --global', 'Flag for setting a config value for all RNV projects'
 '--hosted', 'Run in a hosted environment (skip bundleAssets)'
 '--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
 `);
@@ -62,6 +64,10 @@ const COMMANDS = {
     start: {
         fn: rnvStart,
         platforms: SUPPORTED_PLATFORMS
+    },
+    config: {
+        desc: 'Edit or display RNV configs',
+        fn: rnvConfig
     },
     run: {
         desc: 'Run your app on target device or emulator',
@@ -243,8 +249,8 @@ const COMMANDS = {
         fn: rnvFastlane
     }
 };
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
-export const SKIP_APP_CONFIG_CHECK = ['crypto'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help', 'config'];
+export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
 
 
 // ##########################################

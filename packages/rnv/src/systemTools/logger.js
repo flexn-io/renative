@@ -230,11 +230,13 @@ export const logSuccess = (msg) => {
     logAndSave(`✅ ${chalk.magenta(msg)}`);
 };
 
-export const logError = (e, isEnd = false) => {
-    if (e instanceof Error) {
-        Sentry.captureException(e);
-    } else {
-        Sentry.captureException(new Error(e));
+export const logError = (e, isEnd = false, skipAnalytics = false) => {
+    if (!skipAnalytics) {
+        if (e instanceof Error) {
+            Sentry.captureException(e);
+        } else {
+            Sentry.captureException(new Error(e));
+        }
     }
 
     if (e && e.message) {

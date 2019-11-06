@@ -34,9 +34,10 @@ import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTool
 
 const isRunningOnWindows = process.platform === 'win32';
 
-const _generateWebpackConfigs = (c) => {
-    const appFolder = getAppFolder(c, c.platform);
-    const templateFolder = getAppTemplateFolder(c, c.platform);
+const _generateWebpackConfigs = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    console.log(Object.keys(c).join(', '), platform);
+    const templateFolder = getAppTemplateFolder(c, platform);
 
     const { plugins } = c.buildConfig;
     let modulePaths = [];
@@ -78,11 +79,11 @@ const _generateWebpackConfigs = (c) => {
         }
     }
 
-    const env = getConfigProp(c, c.platform, 'environment');
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    const entryFile = getConfigProp(c, c.platform, 'entryFile', 'index.web');
-    const title = getAppTitle(c, c.platform);
-    const analyzer = getConfigProp(c, c.platform, 'analyzer') || c.program.analyzer;
+    const env = getConfigProp(c, platform, 'environment');
+    const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});
+    const entryFile = getConfigProp(c, platform, 'entryFile', 'index.web');
+    const title = getAppTitle(c, platform);
+    const analyzer = getConfigProp(c, platform, 'analyzer') || c.program.analyzer;
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
@@ -141,7 +142,7 @@ const configureWebProject = async (c, platform) => {
 };
 
 export const configureCoreWebProject = async (c, platform) => {
-    _generateWebpackConfigs(c);
+    _generateWebpackConfigs(c, platform);
     _parseCssSync(c, platform);
 };
 

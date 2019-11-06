@@ -97,6 +97,7 @@
         "babel-polyfill": "6.26.0",
         "better-opn": "1.0.0",
         "color-string": "1.5.3",
+        "console-table-printer": "1.1.10",
         "commander": "^3.0.1",
         "copy-webpack-plugin": "4.6.0",
         "cross-env": "5.2.0",

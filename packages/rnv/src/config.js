@@ -31,10 +31,18 @@ class Config {
     get rnvArguments() {
         // commander is stupid https://github.com/tj/commander.js/issues/53
         const { args, rawArgs } = this.config.program;
-        const cleanedArgs = args.filter(arg => typeof arg === 'string');
-        const missingArg = rawArgs[rawArgs.indexOf(cleanedArgs[1]) + 1];
-        cleanedArgs.splice(2, 0, missingArg);
-        return cleanedArgs;
+        const argsCopy = [...args];
+        let missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 1];
+        if (missingArg?.[0] === '-') {
+            if (rawArgs[rawArgs.indexOf(argsCopy[1]) + 2]) {
+                missingArg = rawArgs[rawArgs.indexOf(argsCopy[1]) + 2];
+            } else {
+                missingArg = undefined;
+            }
+        }
+        if (rawArgs.length === 3) missingArg = undefined;
+        argsCopy[2] = missingArg;
+        return argsCopy.filter(arg => !!arg);
     }
 
     async injectProjectDependency(dependency, version, type, skipInstall = false) {
@@ -100,6 +108,10 @@ class Config {
     get currentPlatformDefaultPort() {
         const { platform } = this.config;
         return this.config.platformDefaults[platform].defaultPort;
+    }
+
+    get program() {
+        return this.config.program;
     }
 
     //     getBuildConfig() {
