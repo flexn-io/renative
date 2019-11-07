@@ -64,6 +64,7 @@ rnv-config.local.json
 rnv-cli/dist
 test/appConfigs
 test/*.js
+.idea
 
 # ONLY FOR ReNative WRAPPER PROJECT
 
