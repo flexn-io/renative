@@ -62,8 +62,7 @@ rnv-config.local.json
 
 # fix some trash files PR
 rnv-cli/dist
-test/appConfigs
-test/*.js
+test/*
 .idea
 
 # ONLY FOR ReNative WRAPPER PROJECT
