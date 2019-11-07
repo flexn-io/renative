@@ -60,6 +60,11 @@ renative.runtime.json
 release-configs.gradle
 rnv-config.local.json
 
+# fix some trash files PR
+rnv-cli/dist
+test/appConfigs
+test/*.js
+
 # ONLY FOR ReNative WRAPPER PROJECT
 
 /appConfigs
