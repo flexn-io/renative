@@ -43,8 +43,8 @@ const hooks = {
     }),
     convertPlugins: c => new Promise((resolve, reject) => {
         for (const k in c.files.rnv.pluginTemplates.config.pluginTemplates) {
-            const pf = path.join(c.paths.rnv.pluginTemplates.dir, k);
-            const fp = path.join(pf, 'renative-plugin.json');
+            const pf = path.join(c.paths.project.dir, 'docs/plugins', `${k}.md`);
+            // const fp = path.join(pf, 'renative-plugin.json');
 
             // if (fs.existsSync(pf)) {
             //     shelljs.mkdir('-p', pf);
@@ -52,7 +52,9 @@ const hooks = {
 
             const plugin = Object.assign({ name: k }, c.files.rnv.pluginTemplates.config.pluginTemplates[k]);
 
-            fs.writeFileSync(fp, JSON.stringify(plugin, null, 2));
+            console.log('PLUGIN', pf);
+
+            // fs.writeFileSync(fp, JSON.stringify(plugin, null, 2));
         }
 
         resolve();
