@@ -18,6 +18,20 @@ sidebar_label: Firefox TV
 
 <img src="https://renative.org/img/rnv_firefoxtv.gif" height="250"/>
 
+## File Extension Support
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `firefoxtv.tv.js` | `form factor` | 1 |
+| `web.tv.js` | `form factor` | 2 |
+| `tv.js` | `form factor` | 3 |
+| `firefoxtv.js` | `platform` | 4 |
+| `tv.web.js` | `fallback` | 5 |
+| `web.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
+
 #### Requirements
 
 -   [FirefoxDeveloperEdition](https://www.mozilla.org/en-US/firefox/developer/) for IDE + Emulator

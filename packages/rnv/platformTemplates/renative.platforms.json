@@ -1,0 +1,47 @@
+{
+    "platforms": {
+        "ios": {
+            "npm": {
+                "devDependencies": {
+                    "xcode": "2.0.0"
+                },
+                "optionalDependencies": {
+                    "ios-deploy": "1.10.0-beta.3"
+                }
+            }
+        },
+        "tvos": {
+            "npm": {
+                "devDependencies": {
+                    "xcode": "2.0.0"
+                },
+                "optionalDependencies": {
+                    "ios-deploy": "1.10.0-beta.3"
+                }
+            }
+        },
+        "macos": {
+            "npm": {
+                "devDependencies": {
+                    "electron": "7.0.0",
+                    "electron-builder": "21.1.1"
+                }
+            }
+        },
+        "windows": {
+            "npm": {
+                "devDependencies": {
+                    "electron": "7.0.0",
+                    "electron-builder": "21.1.1"
+                }
+            }
+        },
+        "tizen": {
+            "npm": {
+                "dependencies": {
+                    "raf": "3.4.1"
+                }
+            }
+        }
+    }
+}

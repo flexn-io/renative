@@ -86,7 +86,10 @@ v
                     {packageJson.version}
                 </Text>
                 <Text style={styles.textH3}>
-                    {`platform: ${Api.platform}`}
+                    {`platform: ${Api.platform}, factor: ${Api.formFactor}`}
+                </Text>
+                <Text style={styles.textH3}>
+                    {`hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`}
                 </Text>
                 <Button
                     style={styleButton}

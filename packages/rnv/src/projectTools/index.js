@@ -34,40 +34,46 @@ import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
-import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, readObjectSync } from '../systemTools/fileutils';
 import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
+import Config from '../config';
 
-export const rnvConfigure = c => new Promise((resolve, reject) => {
+export const rnvConfigure = async (c) => {
     const p = c.program.platform || 'all';
     logTask(`rnvConfigure:${p}`);
 
-    _checkAndCreatePlatforms(c, c.program.platform)
-        .then(() => copyRuntimeAssets(c))
-        .then(() => copySharedPlatforms(c))
-        .then(() => generateRuntimeConfig(c))
-        .then(() => _runPlugins(c, c.paths.rnv.plugins.dir))
-        .then(() => _runPlugins(c, c.paths.project.projectConfig.pluginsDir))
-        .then(() => (_isOK(c, p, [ANDROID]) ? configureGradleProject(c, ANDROID) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [ANDROID_TV]) ? configureGradleProject(c, ANDROID_TV) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [ANDROID_WEAR]) ? configureGradleProject(c, ANDROID_WEAR) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN]) ? configureTizenGlobal(c, TIZEN) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN]) ? configureTizenProject(c, TIZEN) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN_WATCH]) ? configureTizenProject(c, TIZEN_WATCH) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TIZEN_MOBILE]) ? configureTizenProject(c, TIZEN_MOBILE) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [WEBOS]) ? configureWebOSProject(c, WEBOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [WEB]) ? configureWebProject(c, WEB) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [MACOS]) ? configureElectronProject(c, MACOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [WINDOWS]) ? configureElectronProject(c, WINDOWS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [KAIOS]) ? configureKaiOSProject(c, KAIOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [FIREFOX_OS]) ? configureKaiOSProject(c, FIREFOX_OS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [FIREFOX_TV]) ? configureKaiOSProject(c, FIREFOX_TV) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [IOS]) ? configureXcodeProject(c, IOS) : Promise.resolve()))
-        .then(() => (_isOK(c, p, [TVOS]) ? configureXcodeProject(c, TVOS) : Promise.resolve()))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    // inject packages if needed
+    if (p !== 'all') await Config.injectPlatformDependencies(p);
+
+    await _checkAndCreatePlatforms(c, c.program.platform);
+    await copyRuntimeAssets(c);
+    await copySharedPlatforms(c);
+    await generateRuntimeConfig(c);
+    const ptDirs = c.paths.rnv.pluginTemplates.dirs;
+    for (let i = 0; i < ptDirs.length; i++) {
+        await overridePlugins(c, ptDirs[i]);
+    }
+    // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
+    await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
+    if (_isOK(c, p, [ANDROID])) await configureGradleProject(c, ANDROID);
+    if (_isOK(c, p, [ANDROID_TV])) await configureGradleProject(c, ANDROID_TV);
+    if (_isOK(c, p, [ANDROID_WEAR])) await configureGradleProject(c, ANDROID_WEAR);
+    if (_isOK(c, p, [TIZEN])) await configureTizenGlobal(c, TIZEN);
+    if (_isOK(c, p, [TIZEN])) await configureTizenProject(c, TIZEN);
+    if (_isOK(c, p, [TIZEN_WATCH])) await configureTizenProject(c, TIZEN_WATCH);
+    if (_isOK(c, p, [TIZEN_MOBILE])) await configureTizenProject(c, TIZEN_MOBILE);
+    if (_isOK(c, p, [WEBOS])) await configureWebOSProject(c, WEBOS);
+    if (_isOK(c, p, [WEB])) await configureWebProject(c, WEB);
+    if (_isOK(c, p, [MACOS])) await configureElectronProject(c, MACOS);
+    if (_isOK(c, p, [WINDOWS])) await configureElectronProject(c, WINDOWS);
+    if (_isOK(c, p, [KAIOS])) await configureKaiOSProject(c, KAIOS);
+    if (_isOK(c, p, [FIREFOX_OS])) await configureKaiOSProject(c, FIREFOX_OS);
+    if (_isOK(c, p, [FIREFOX_TV])) await configureKaiOSProject(c, FIREFOX_TV);
+    if (_isOK(c, p, [IOS])) await configureXcodeProject(c, IOS);
+    if (_isOK(c, p, [TVOS])) await configureXcodeProject(c, TVOS);
+};
 
 export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
@@ -155,8 +161,8 @@ const _checkAndCreatePlatforms = async (c, platform) => {
     }
 };
 
-const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
-    logTask(`_runPlugins:${pluginsPath}`, chalk.grey);
+const overridePlugins = (c, pluginsPath) => new Promise((resolve) => {
+    logTask(`overridePlugins:${pluginsPath}`, chalk.grey);
 
     if (!fs.existsSync(pluginsPath)) {
         logInfo(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
@@ -165,18 +171,48 @@ const _runPlugins = (c, pluginsPath) => new Promise((resolve) => {
     }
 
     fs.readdirSync(pluginsPath).forEach((dir) => {
-        const source = path.resolve(pluginsPath, dir, 'overrides');
-        const dest = path.resolve(c.paths.project.dir, 'node_modules', dir);
-
-        if (fs.existsSync(source)) {
-            copyFolderContentsRecursiveSync(source, dest, false);
-            // fs.readdirSync(pp).forEach((dir) => {
-            //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
-            // });
+        if (dir.startsWith('@')) {
+            const pluginsPathNested = path.join(pluginsPath, dir);
+            fs.readdirSync(pluginsPathNested).forEach((subDir) => {
+                _overridePlugins(c, pluginsPath, `${dir}/${subDir}`);
+            });
         } else {
-            logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping override action`);
+            _overridePlugins(c, pluginsPath, dir);
         }
     });
 
     resolve();
 });
+
+const _overridePlugins = (c, pluginsPath, dir) => {
+    const source = path.resolve(pluginsPath, dir, 'overrides');
+    const dest = path.resolve(c.paths.project.dir, 'node_modules', dir);
+
+    if (fs.existsSync(source)) {
+        copyFolderContentsRecursiveSync(source, dest, false);
+        // fs.readdirSync(pp).forEach((dir) => {
+        //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
+        // });
+    } else {
+        logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping folder override action`);
+    }
+
+    const overrideConfig = readObjectSync(path.resolve(pluginsPath, dir, 'overrides.json'));
+    if (overrideConfig?.overrides) {
+        for (const k in overrideConfig.overrides) {
+            const override = overrideConfig.overrides[k];
+            ovDir = path.join(dest, k);
+            if (fs.existsSync(ovDir)) {
+                if (fs.lstatSync(ovDir).isDirectory()) {
+                    logWarning('overrides.json: Directories not supported yet. specify path to actual file');
+                } else {
+                    let fileToFix = fs.readFileSync(ovDir).toString();
+                    for (const fk in override) {
+                        fileToFix = fileToFix.replace(new RegExp(fk, 'g'), override[fk]);
+                    }
+                    fs.writeFileSync(ovDir, fileToFix);
+                }
+            }
+        }
+    }
+};

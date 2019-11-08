@@ -23,6 +23,20 @@ sidebar_label: Android TV
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+## File Extension Support
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `androidtv.tv.js` | `form factor` | 1 |
+| `tv.js` | `form factor` | 2 |
+| `androidtv.js` | `platform` | 3 |
+| `android.js` | `platform` | 4 |
+| `tv.native.js` | `fallback` | 5 |
+| `native.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
+
 ## Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -58,6 +72,23 @@ Launch specific emulator:
 ```
 rnv target launch -p androidtv -t Android_TV_720p_API_22
 ```
+
+## Android X support
+
+androidX is enabled by default
+
+make sure you have this piece of script in package.json
+
+```
+"scripts" : {
+  "postinstall": "jetify"
+}
+```
+
+## Hermes support
+
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidtv.enableHermes`
+or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
 
 ## App Config
 

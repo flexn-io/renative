@@ -26,11 +26,10 @@ import {
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE
 } from '../../constants';
-import { copyFolderContentsRecursiveSync, getRealPath } from '../../systemTools/fileutils';
-import { buildWeb } from '../web';
+import { getRealPath } from '../../systemTools/fileutils';
+import { buildWeb, configureCoreWebProject } from '../web';
 
 const isRunningOnWindows = process.platform === 'win32';
-const CHECK_INTEVAL = 5000;
 
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
@@ -40,7 +39,7 @@ const launchWebOSimulator = (c) => {
     if (!fs.existsSync(ePath)) {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
-
+    if (isRunningOnWindows) return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
 };
 
@@ -67,8 +66,6 @@ const parseDevices = (c, devicesResponse) => {
 };
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
-    const { maxErrorLength } = c.program;
-
     await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
 };
@@ -78,7 +75,6 @@ const buildDeviceChoices = devices => devices.map(device => ({
 }));
 
 const listWebOSTargets = async (c) => {
-    const { maxErrorLength } = c.program;
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
 
@@ -90,7 +86,6 @@ const listWebOSTargets = async (c) => {
 };
 
 const waitForEmulatorToBeReady = async (c) => {
-    const { maxErrorLength } = c.program;
     const devicesResponse = await execCLI(c, CLI_WEBOS_ARES_DEVICE_INFO, '-D');
     const devices = await parseDevices(c, devicesResponse);
     const emulator = devices.filter(d => !d.isDevice)[0];
@@ -200,7 +195,6 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
-    const { maxErrorLength } = c.program;
 
     buildWeb(c, platform)
         .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`))
@@ -211,17 +205,16 @@ const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(reject);
 });
 
-const configureWebOSProject = (c, platform) => new Promise((resolve, reject) => {
+const configureWebOSProject = async (c, platform) => {
     logTask('configureWebOSProject');
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureCoreWebProject(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);

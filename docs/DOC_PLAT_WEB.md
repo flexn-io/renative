@@ -22,6 +22,17 @@ sidebar_label: Web
 
 -   Supports Chrome, Safari, Firefox, IE10+
 
+## File Extension Support
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `browser.js` | `form factor` | 1 |
+| `web.js` | `platform` | 2 |
+| `js` | `fallback` | 3 |
+| `tsx` | `fallback` | 4 |
+| `ts` | `fallback` | 5 |
+
+
 ## Requirements
 
 -   no extra requirements required

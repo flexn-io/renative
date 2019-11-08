@@ -7,7 +7,7 @@ import {
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync
+    copyFileSync, mkdirSync, removeDirs, writeObjectSync, isRunningOnWindows
 } from '../systemTools/fileutils';
 import { executeAsync, npmInstall } from '../systemTools/exec';
 import {
@@ -17,6 +17,7 @@ import {
 } from '../systemTools/logger';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
+import { inquirerPrompt } from '../systemTools/prompt';
 
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
@@ -95,7 +96,8 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                     if (font) {
                         const fontSource = path.join(dir, font);
 
-                        const relativePath = dir.replace(c.paths.project.dir, '');
+                        let relativePath = dir.replace(c.paths.project.dir, '');
+                        if (isRunningOnWindows) relativePath = relativePath.replace(/\\/g, '/'); // strings don't like windows backslashes
                         if (fs.existsSync(fontSource)) {
                             // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                             // mkdirSync(fontFolder);
@@ -116,7 +118,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
 
     fontsObj += '];';
-    if (fs.existsSync(c.paths.project.assets.runtimeDir)) {
+    if (!fs.existsSync(c.paths.project.assets.runtimeDir)) {
         mkdirSync(c.paths.project.assets.runtimeDir);
     }
     fs.writeFileSync(path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js'), fontsObj);
@@ -195,33 +197,47 @@ const ASSET_PATH_ALIASES = {
     web: 'public'
 };
 
-export const copyAssetsFolder = (c, platform, customFn) => new Promise((resolve, reject) => {
+export const copyAssetsFolder = async (c, platform, customFn) => {
     logTask(`copyAssetsFolder:${platform}`);
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
     if (customFn) {
-        customFn(c, platform)
-            .then(v => resolve())
-            .catch(e => reject(e));
-        return;
+        return customFn(c, platform);
     }
 
     const destPath = path.join(getAppSubFolder(c, platform), ASSET_PATH_ALIASES[platform]);
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
+        const hasAssetFolder = c.paths.appConfig.dirs.filter(v => fs.existsSync(path.join(v, `assets/${platform}`))).length;
+        if (!hasAssetFolder) {
+            await generateDefaultAssets(c, platform, path.join(c.paths.appConfig.dirs[0], `assets/${platform}`));
+        }
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${platform}`);
             copyFolderContentsRecursiveSync(sourcePath, destPath);
         });
     } else {
         const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
+        if (!fs.existsSync(sourcePath)) {
+            await generateDefaultAssets(c, platform, sourcePath);
+        }
         copyFolderContentsRecursiveSync(sourcePath, destPath);
     }
+};
 
-    resolve();
-});
+const generateDefaultAssets = async (c, platform, sourcePath) => {
+    logTask(`generateDefaultAssets:${platform}`);
+    const { confirm } = await inquirerPrompt({
+        type: 'confirm',
+        message: `It seems you don't have assets configured in ${chalk.white(sourcePath)} do you want generate default ones?`
+    });
+
+    if (confirm) {
+        copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`), sourcePath);
+    }
+};
 
 export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
     logTask(`copyBuildsFolder:${platform}`);
@@ -279,6 +295,8 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
 });
 
 export const upgradeProjectDependencies = (c, version) => {
+    logTask('upgradeProjectDependencies');
+
     const thw = 'renative-template-hello-world';
     const tb = 'renative-template-blank';
     const devDependencies = c.files.project.package?.devDependencies;
@@ -319,6 +337,7 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
         } else {
             logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
         }
+        c._requiresNpmInstall = false;
         npmInstall().then(() => resolve()).catch(e => reject(e));
     } else {
         resolve();

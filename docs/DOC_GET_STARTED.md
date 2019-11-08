@@ -43,23 +43,6 @@ Follow steps in the terminal
 
 ## Run first app
 
-<table>
-  <tr>
-    <th>
-    <img src="https://renative.org/img/terminal.png" />
-    </th>
-  </tr>
-</table>
-
-**TAB 1:**
-
-Start the bundler
-
-```bash
-$ rnv start
-```
-
-**TAB 2:**
 
 Run your first `ios` app
 
@@ -67,7 +50,13 @@ Run your first `ios` app
 $ rnv run -p ios
 ```
 
-**TAB 3:**
+
+Run your first `android` app
+
+```bash
+$ rnv run -p android
+```
+
 
 Run your first `web` app
 
@@ -75,13 +64,11 @@ Run your first `web` app
 $ rnv run -p web
 ```
 
-open: http://0.0.0.0:8080/
-
-🎉 `Congratulations! You're now multi-platform developer!` 🎉
+... and so on
 
 All app code is located in `./src` directory
 
-##### RNV + NPX
+## NPX
 
 ⚠️
 

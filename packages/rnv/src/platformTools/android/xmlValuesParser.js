@@ -25,8 +25,9 @@ import {
     logInfo,
     logSuccess,
     getBuildsFolder,
+    sanitizeColor
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
@@ -35,6 +36,14 @@ export const parseValuesStringsSync = (c, platform) => {
     const stringsPath = 'app/src/main/res/values/strings.xml';
     writeCleanFile(getBuildFilePath(c, platform, stringsPath), path.join(appFolder, stringsPath), [
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
+    ]);
+};
+
+export const parseValuesColorsSync = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const stringsPath = 'app/src/main/res/values/colors.xml';
+    writeCleanFile(getBuildFilePath(c, platform, stringsPath), path.join(appFolder, stringsPath), [
+        { pattern: '{{PLUGIN_COLORS_BG}}', override: sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).hex },
     ]);
 };
 

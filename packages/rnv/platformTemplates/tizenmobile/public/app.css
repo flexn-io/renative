@@ -17,6 +17,7 @@ html {
 
 body{
     height: 100%;
+    background-color: {{PLUGIN_COLORS_BG}};
 }
 
 /* remove outline */

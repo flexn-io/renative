@@ -25,7 +25,7 @@ import {
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects } from '../../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects, sanitizeDynamicProps } from '../../systemTools/fileutils';
 
 
 export const parseExportOptionsPlist = (c, platform) => new Promise((resolve, reject) => {
@@ -64,7 +64,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, rej
         pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/entitlements.json'));
     }
 
-    saveObjToPlistSync(entitlementsPath, pluginsEntitlementsObj);
+    saveObjToPlistSync(c, entitlementsPath, pluginsEntitlementsObj);
     resolve();
 });
 
@@ -89,7 +89,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     // PERMISSIONS
     const pluginPermissions = '';
     const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
-    if (includedPermissions) {
+    if (includedPermissions && c.buildConfig.permissions) {
         const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
         const pc = c.buildConfig.permissions[plat];
         if (includedPermissions.length && includedPermissions[0] === '*') {
@@ -141,7 +141,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
             plistObj = mergeObjects(c, plistObj, pluginPlat.plist, true, true);
         }
     });
-    saveObjToPlistSync(plistPath, plistObj);
+    saveObjToPlistSync(c, plistPath, plistObj);
     resolve();
 });
 
@@ -186,7 +186,8 @@ const _parseObject = (obj, level) => {
     return output;
 };
 
-const saveObjToPlistSync = (filePath, obj) => {
+const saveObjToPlistSync = (c, filePath, obj) => {
+    // fs.writeFileSync(filePath, objToPlist(sanitizeDynamicProps(obj, c.buildConfig?._refs)));
     fs.writeFileSync(filePath, objToPlist(obj));
 };
 

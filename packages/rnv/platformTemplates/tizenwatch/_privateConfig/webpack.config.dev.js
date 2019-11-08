@@ -5,7 +5,6 @@ const config = {
     currentDir: __dirname,
     metaTags: { viewport: 'content="width=200"' },
     environment: 'development',
-    extensions: ['tizenwatch', 'smarttv', 'web'],
     customScripts: [],
     devServerHost: '0.0.0.0',
     baseUrl: '',

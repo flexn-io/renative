@@ -59,6 +59,7 @@ renative.build.json
 renative.runtime.json
 release-configs.gradle
 rnv-config.local.json
+metro.config.local.js
 
 # fix some trash files PR
 rnv-cli/dist

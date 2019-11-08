@@ -6,6 +6,7 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
+import colorString from 'color-string';
 
 import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
@@ -19,6 +20,7 @@ import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
     SDK_PLATFORMS,
+    PLATFORMS,
     SUPPORTED_PLATFORMS
 } from './constants';
 import { execCLI } from './systemTools/exec';
@@ -28,6 +30,7 @@ import {
 } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
+import Config from './config';
 
 export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -59,6 +62,19 @@ export const isPlatformSupportedSync = (platform, resolve, reject) => {
     return true;
 };
 
+export const getSourceExts = (c) => {
+    const sExt = PLATFORMS[c.platform]?.sourceExts;
+    if (sExt) {
+        return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
+    }
+    return [];
+};
+
+export const getSourceExtsAsString = (c) => {
+    const sourceExts = getSourceExts(c);
+    return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
+};
+
 export const isPlatformSupported = async (c) => {
     logTask(`isPlatformSupported:${c.platform}`);
     let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
@@ -78,6 +94,26 @@ export const isPlatformSupported = async (c) => {
         c.program.platform = platform;
         return platform;
     }
+};
+
+export const sanitizeColor = (val) => {
+    if (!val) {
+        logWarning('sanitizeColor: passed null. will use default #FFFFFF instead');
+        return {
+            rgb: [255, 255, 255, 1],
+            rgbDecimal: [1, 1, 1, 1],
+            hex: '#FFFFFF'
+        };
+    }
+
+    const rgb = colorString.get.rgb(val);
+    const hex = colorString.to.hex(rgb);
+
+    return {
+        rgb,
+        rgbDecimal: rgb.map(v => (v > 1 ? Math.round((v / 255) * 10) / 10 : v)),
+        hex
+    };
 };
 
 export const isBuildSchemeSupported = async (c) => {
@@ -182,7 +218,10 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => {
+    console.log('getAppTemplateFolder', c.paths.project.platformTemplatesDirs[platform], platform);
+    return path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+};
 
 export const getAppConfigId = c => c.buildConfig.id;
 
@@ -243,25 +282,22 @@ export const getAppId = (c, platform) => {
 
 export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
 
-export const getAppVersion = (c, platform) => c.buildConfig.platforms?.[platform]?.version || c.buildConfig.common?.version || c.files.project.package?.version;
+export const getAppVersion = (c, platform) => getConfigProp(c, platform, 'version') || c.files.project.package?.version;
 
-export const getAppAuthor = (c, platform) => c.buildConfig.platforms?.[platform]?.author || c.buildConfig.common?.author || c.files.project.package?.author;
+export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
 
-export const getAppLicense = (c, platform) => c.buildConfig.platforms?.[platform]?.license || c.buildConfig.common?.license || c.files.project.package?.license;
+export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
 
 export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
 
 export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) => c.buildConfig.platforms?.[platform]?.description || c.buildConfig.common?.description || c.files.project.package?.description;
+export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description') || c.files.project.package?.description;
 
 export const getAppVersionCode = (c, platform) => {
-    if (c.buildConfig.platforms?.[platform]?.versionCode) {
-        return c.buildConfig.platforms[platform].versionCode;
-    }
-    if (c.buildConfig.common.versionCode) {
-        return c.buildConfig.common.versionCode;
-    }
+    const versionCode = getConfigProp(c, platform, 'versionCode');
+    if (versionCode) return versionCode;
+
     const version = getAppVersion(c, platform);
 
     let vc = '';
@@ -439,46 +475,50 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = (c, port) => {
+export const waitForWebpack = async (c, port) => {
     logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
-    const spinner = ora('Waiting for webpack to finish...').start();
+    // const spinner = ora('Waiting for webpack to finish...').start();
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     let devServerHost = extendConfig.devServerHost || '0.0.0.0';
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
-
+    const url = `http://${devServerHost}:${port}/assets/bundle.js`;
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            axios.get(`http://${devServerHost}:${port}`).then((res) => {
+            axios.get(url).then((res) => {
                 if (res.status === 200) {
-                    const isReady = res.data.toString().includes('<!DOCTYPE html>');
-                    if (isReady) {
-                        clearInterval(interval);
-                        spinner.succeed();
-                        return resolve(true);
-                    }
+                    clearInterval(interval);
+                    // spinner.succeed();
+                    return resolve(true);
                 }
                 attempts++;
                 if (attempts === maxAttempts) {
                     clearInterval(interval);
-                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
                     return reject('Can\'t connect to webpack. Try restarting it.');
                 }
             }).catch(() => {
                 attempts++;
                 if (attempts > maxAttempts) {
                     clearInterval(interval);
-                    spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
                     return reject('Can\'t connect to webpack. Try restarting it.');
                 }
             });
         }, CHECK_INTEVAL);
     });
+};
+export const importPackageFromProject = (name) => {
+    const c = Config.getConfig();
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
+    if (pkg.default) return pkg.default;
+    return pkg;
 };
 
 // TODO: remove this
