@@ -23,13 +23,14 @@ sidebar_label: Firefox TV
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `firefoxtv.tv.js` | `form factor` | 1 |
-| `tv.js` | `form factor` | 2 |
-| `firefoxtv.js` | `platform` | 3 |
-| `tv.web.js` | `fallback` | 4 |
-| `web.js` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
+| `web.tv.js` | `form factor` | 2 |
+| `tv.js` | `form factor` | 3 |
+| `firefoxtv.js` | `platform` | 4 |
+| `tv.web.js` | `fallback` | 5 |
+| `web.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
 
 #### Requirements
 
