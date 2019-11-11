@@ -112,6 +112,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             entitlements: path.join(appFolder, 'entitlements.mac.plist'),
             entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist')
         };
+        macConfig.mas = {
+            entitlements: path.join(appFolder, 'entitlements.mas.plist'),
+            entitlementsInherit: path.join(appFolder, 'entitlements.mas.plist')
+        };
     }
 
     let electronConfig = merge({
