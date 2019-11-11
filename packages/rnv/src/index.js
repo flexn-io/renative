@@ -1,4 +1,3 @@
-import { RewriteFrames } from '@sentry/integrations';
 import Common, { initializeBuilder } from './common';
 import { logComplete, logError } from './systemTools/logger';
 import CLI from './cli';
@@ -9,31 +8,11 @@ import Doctor from './systemTools/doctor';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 import Config from './config';
-import pkg from '../package.json';
+import Analytics from './systemTools/analytics';
 
 import 'source-map-support/register';
 
-const Sentry = require('@sentry/node');
-
-Sentry.init({
-    dsn: 'https://004caee3caa04c81a10f2ba31a945362@sentry.io/1795473',
-    release: `rnv@${pkg.version}`,
-    integrations: [new RewriteFrames({
-        root: '/',
-        iteratee: (frame) => {
-            if (frame.filename.includes('rnv/dist/') || frame.filename.includes('rnv/src')) {
-                if (frame.filename.includes('rnv/dist/')) {
-                    frame.filename = frame.filename.split('rnv/dist/')[1];
-                } else {
-                    frame.filename = frame.filename.split('rnv/src/')[1];
-                }
-            } else if (frame.filename.includes('/node_modules/')) {
-                frame.filename = `node_modules/${frame.filename.split('/node_modules/')[1]}`;
-            }
-            return frame;
-        }
-    })]
-});
+Analytics.initialize();
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)

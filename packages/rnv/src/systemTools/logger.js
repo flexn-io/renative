@@ -1,7 +1,6 @@
 import _chalk from 'chalk';
 import { generateOptions } from './prompt';
-
-const Sentry = require('@sentry/node');
+import Analytics from './analytics';
 
 const _chalkCols = {
     white: v => v,
@@ -232,11 +231,7 @@ export const logSuccess = (msg) => {
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {
     if (!skipAnalytics) {
-        if (e instanceof Error) {
-            Sentry.captureException(e);
-        } else {
-            Sentry.captureException(new Error(e));
-        }
+        Analytics.captureException(e);
     }
 
     if (e && e.message) {
@@ -251,14 +246,9 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
 export const logEnd = (code) => {
     logSummary();
     if (_currentProcess) {
-        const client = Sentry.getCurrentHub().getClient();
-        if (client) {
-            client.close(2000).then(() => {
-                _currentProcess.exit(code);
-            });
-        } else {
+        Analytics.teardown().then(() => {
             _currentProcess.exit(code);
-        }
+        });
     }
 };
 

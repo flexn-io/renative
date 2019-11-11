@@ -137,14 +137,13 @@ class Config {
         return value;
     }
 
-    getConfigValue(key) {
-        let value = this.config.buildConfig?.[key];
+    getMergedConfigValue(key) {
+        let value = this.config.buildConfig?.[configSchema[key].key];
         if (value === undefined && configSchema[key].default) value = configSchema[key].default;
         return value;
     }
 
     listConfigValue(key) {
-        console.log('asd', this.getConfigValue(key));
         let localVal = this.getConfigValueSeparate(key).toString();
         let globalVal = this.getConfigValueSeparate(key, true).toString();
 
@@ -196,7 +195,7 @@ class Config {
     }
 
     get isAnalyticsEnabled() {
-        getConfigValue;
+        return this.getMergedConfigValue('analytics');
     }
 
     //     getBuildConfig() {

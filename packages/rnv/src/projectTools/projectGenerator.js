@@ -47,10 +47,9 @@ import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../sy
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { getWorkspaceOptions } from './workspace';
 import { generateRuntimeConfig, loadProjectTemplates, parseRenativeConfigs } from '../configTools/configParser';
+import Analytics from '../systemTools/analytics';
 
 const highlight = chalk.green;
-
-const Sentry = require('@sentry/node');
 
 export const createNewProject = async (c) => {
     logTask('createNewProject');
@@ -153,7 +152,7 @@ export const createNewProject = async (c) => {
 
     if (confirm) {
         try {
-            Sentry.captureEvent({
+            Analytics.captureEvent({
                 type: 'newProject',
                 message: 'newProject',
                 breadcrumbs: null,
