@@ -153,7 +153,7 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['tizen.tv.js', 'tv.js'],
+            factors: ['tizen.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['tizen.js'],
             fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
         }
@@ -165,7 +165,7 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['webos.tv.js', 'tv.js'],
+            factors: ['webos.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['webos.js'],
             fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
         }
@@ -249,7 +249,7 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['firefoxtv.tv.js', 'tv.js'],
+            factors: ['firefoxtv.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['firefoxtv.js'],
             fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
         }

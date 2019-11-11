@@ -112,6 +112,11 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             entitlements: path.join(appFolder, 'entitlements.mac.plist'),
             entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist')
         };
+        macConfig.mas = {
+            entitlements: path.join(appFolder, 'entitlements.mas.plist'),
+            entitlementsInherit: path.join(appFolder, 'entitlements.mas.plist'),
+            provisioningProfile: path.join(appFolder, 'embedded.provisionprofile')
+        };
     }
 
     let electronConfig = merge({
@@ -121,6 +126,9 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             buildResources: path.join(appFolder, 'resources'),
             output: path.join(appFolder, 'build/release')
         },
+        files: [
+            '!build/release'
+        ],
     }, macConfig);
 
     const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
