@@ -16,14 +16,13 @@ import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } 
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
 // import { getBinaryPath } from '../common';
-import Config from '../config';
+import Config, { rnvConfigHandler } from '../config';
 import { checkAndMigrateProject } from '../projectTools/migrator';
 import {
     parseRenativeConfigs, createRnvConfig, updateConfig,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from '../configTools/configParser';
 import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
-import rnvConfig from '../systemTools/config';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -66,8 +65,8 @@ const COMMANDS = {
         platforms: SUPPORTED_PLATFORMS
     },
     config: {
+        fn: rnvConfigHandler,
         desc: 'Edit or display RNV configs',
-        fn: rnvConfig
     },
     run: {
         desc: 'Run your app on target device or emulator',
@@ -291,7 +290,7 @@ const run = async (c, spawnC, skipStartBuilder) => {
     } else {
         await _handleUnknownCommand(c);
     }
-    if (spawnC) Config.initializeConfig(oldC);
+    // if (spawnC) Config.initializeConfig(oldC);
 };
 
 const _execute = async (c, cmdFn, cmd, command, subCommand) => {
