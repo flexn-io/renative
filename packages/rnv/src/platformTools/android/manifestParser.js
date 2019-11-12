@@ -26,7 +26,7 @@ import {
     logSuccess,
     getBuildsFolder,
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser'
+import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
@@ -174,17 +174,20 @@ export const parseAndroidManifestSync = (c, platform) => {
         const configPermissions = c.buildConfig?.permissions;
 
         const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
+        const excludedPermissions = getConfigProp(c, platform, 'excludedPermissions');
         if (includedPermissions && configPermissions) {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
             if (includedPermissions[0] === '*') {
                 for (const k in pc) {
-                    prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
-                    const key = pc[k].key || k;
-                    baseManifestFile.children.push({
-                        tag: 'uses-permission',
-                        'android:name': key
-                    });
+                    if (!(excludedPermissions && excludedPermissions.includes(k))) {
+                        prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
+                        const key = pc[k].key || k;
+                        baseManifestFile.children.push({
+                            tag: 'uses-permission',
+                            'android:name': key
+                        });
+                    }
                 }
             } else {
                 includedPermissions.forEach((v) => {
