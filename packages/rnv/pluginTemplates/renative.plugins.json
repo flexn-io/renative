@@ -1624,6 +1624,9 @@
                     "packages": ["com.reactnative.googlecast.GoogleCastPackage"]
                 },
                 "mainActivity": {
+                    "imports": [
+                        "com.google.android.gms.cast.framework.CastContext"
+                    ],
                     "createMethods": ["CastContext.getSharedInstance(this)"]
                 },
                 "AndroidManifest": {
