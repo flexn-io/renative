@@ -20,7 +20,7 @@ const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${ta
 const htmlTemp = (options) => {
     const config = Object.assign(DEFAULT_CONFIG, options);
     const {
-        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp
+        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment
     } = config;
 
     const linkTags = [
@@ -36,6 +36,12 @@ const htmlTemp = (options) => {
 
     if (debug === 'true' && debugIp) {
         remoteDebugScript = `<script src="http://${debugIp}:8080/target/target-script-min.js#anonymous"></script>`;
+    }
+
+    let webosScripts = '';
+
+    if (platform === 'webos') {
+        webosScripts = `<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV${environment === 'production' ? '' : '-dev'}.js"></script>`;
     }
 
     const errScript = `
@@ -60,6 +66,7 @@ ${htmlTag}
         ${titleTag}
         ${remoteDebugScript || ''}
         ${isDebug ? errScript : ''}
+        ${webosScripts}
     </head>
     <body>
         ${noScript}

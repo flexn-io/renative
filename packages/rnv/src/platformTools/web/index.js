@@ -120,7 +120,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    executeAsync(c, `npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
+    executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
         .then(() => {
             logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'public'))} .`);
             resolve();
@@ -222,7 +222,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    const command = `npx cross-env ${debugVariables} webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
+    const command = `npx cross-env PLATFORM=${platform} ${debugVariables} webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
     executeAsync(c, command, { stdio: 'inherit', silent: true })
         .then(() => {
             logDebug('runWebDevServer: running');
