@@ -203,6 +203,29 @@ export const parseAndroidManifestSync = (c, platform) => {
             }
         }
 
+        // appConfig FEATURES OVERRIDES
+        const includedFeatures = getConfigProp(c, platform, 'includedFeatures');
+        if (includedFeatures) {
+            includedFeatures.forEach((key) => {
+                baseManifestFile.children.push({
+                    tag: 'uses-feature',
+                    'android:name': key,
+                    'android:required': true
+                });
+            });
+        }
+
+        const excludedFeatures = getConfigProp(c, platform, 'excludedFeatures');
+        if (excludedFeatures) {
+            excludedFeatures.forEach((key) => {
+                baseManifestFile.children.push({
+                    tag: 'uses-feature',
+                    'android:name': key,
+                    'android:required': false
+                });
+            });
+        }
+
         const manifestXml = _convertToXML(baseManifestFile);
         // get correct source of manifest
         const manifestFile = 'app/src/main/AndroidManifest.xml';

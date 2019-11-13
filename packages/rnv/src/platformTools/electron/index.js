@@ -110,12 +110,14 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (platform === MACOS) {
         macConfig.mac = {
             entitlements: path.join(appFolder, 'entitlements.mac.plist'),
-            entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist')
+            entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist'),
+            hardenedRuntime: true
         };
         macConfig.mas = {
             entitlements: path.join(appFolder, 'entitlements.mas.plist'),
-            entitlementsInherit: path.join(appFolder, 'entitlements.mas.plist'),
-            provisioningProfile: path.join(appFolder, 'embedded.provisionprofile')
+            entitlementsInherit: path.join(appFolder, 'entitlements.mas.inherit.plist'),
+            provisioningProfile: path.join(appFolder, 'embedded.provisionprofile'),
+            hardenedRuntime: false
         };
     }
 
