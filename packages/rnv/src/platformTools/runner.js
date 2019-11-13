@@ -192,7 +192,7 @@ export const rnvLog = async (c) => {
 
 const _isWebHostEnabled = (c, platform) => {
     const { hosted, debug } = c.program;
-    if (debug) return false;
+    // if (debug) return false;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
     return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
 };

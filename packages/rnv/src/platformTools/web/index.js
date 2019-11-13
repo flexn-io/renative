@@ -106,7 +106,7 @@ const _generateWebpackConfigs = (c) => {
 };
 
 const buildWeb = (c, platform) => new Promise((resolve, reject) => {
-    const { debug, debugIp, maxErrorLength } = c.program;
+    const { debug, debugIp } = c.program;
     logTask(`buildWeb:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -209,12 +209,20 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted, should
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWebDevServer:${platform}`);
+    const { debug, debugIp } = c.program;
 
     const appFolder = getAppFolder(c, platform);
     const wpPublic = path.join(appFolder, 'public');
     const wpConfig = path.join(appFolder, 'webpack.config.js');
 
-    const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
+    let debugVariables = '';
+
+    if (debug) {
+        logInfo(`Starting a remote debugger build with ip ${debugIp || ip.address()}. If this IP is not correct, you can always override it with --debugIp`);
+        debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
+    }
+
+    const command = `npx cross-env ${debugVariables} webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
     executeAsync(c, command, { stdio: 'inherit', silent: true })
         .then(() => {
             logDebug('runWebDevServer: running');
