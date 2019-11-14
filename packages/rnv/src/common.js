@@ -476,6 +476,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
 };
 
 export const waitForWebpack = async (c, port) => {
+    if (!port) port = c.program.port || c.platformDefaults[c.platform] ? c.platformDefaults[c.platform].defaultPort : null;
     logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;

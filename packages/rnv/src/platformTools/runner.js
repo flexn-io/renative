@@ -309,8 +309,9 @@ const _rnvRunWithPlatform = async (c) => {
             await configureIfRequired(c, platform);
             await _configureHostedIfRequired(c, platform);
         }
+        const webpackTizen = _startHostedServerIfRequired(c, platform);
         await runTizen(c, platform, target);
-        return _startHostedServerIfRequired(c, platform);
+        return webpackTizen;
     case WEBOS:
         if (!checkSdk(c, platform, logError)) {
             const setupInstance = PlatformSetup(c);
@@ -321,8 +322,9 @@ const _rnvRunWithPlatform = async (c) => {
             await configureIfRequired(c, platform);
             await _configureHostedIfRequired(c, platform);
         }
+        const webpackWebos = _startHostedServerIfRequired(c, platform);
         await runWebOS(c, platform, target);
-        return _startHostedServerIfRequired(c, platform);
+        return webpackWebos;
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:

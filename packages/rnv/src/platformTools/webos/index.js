@@ -14,7 +14,8 @@ import {
     getAppId,
     getAppTemplateFolder,
     getConfigProp,
-    waitForEmulator
+    waitForEmulator,
+    waitForWebpack
 } from '../../common';
 import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -67,6 +68,12 @@ const parseDevices = (c, devicesResponse) => {
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
     await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    const { hosted } = c.program;
+    const { platform } = c;
+    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    if (isHosted) {
+        await waitForWebpack(c);
+    }
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
 };
 
@@ -97,10 +104,9 @@ const waitForEmulatorToBeReady = async (c) => {
 const runWebOS = async (c, platform, target) => {
     logTask(`runWebOS:${platform}:${target}`);
 
-    const { device, hosted, maxErrorLength, debug } = c.program;
+    const { device, hosted } = c.program;
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
-    // if (debug) isHosted = false;
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
@@ -148,8 +154,11 @@ const runWebOS = async (c, platform, target) => {
                     const newDevice = actualDev[0];
                     // Oh boy, oh boy, I did it! I have a TV connected!
                     logInfo('Please enter the `Passphrase` from the TV\'s Developer Mode app');
-                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit', maxErrorLength });
+                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit' });
                     await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`);
+                    if (isHosted) {
+                        await waitForWebpack(c);
+                    }
                     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`);
                 } else {
                     // Yes, I said I would but I didn't
@@ -159,6 +168,9 @@ const runWebOS = async (c, platform, target) => {
         } else if (actualDevices.length === 1) {
             const tv = actualDevices[0];
             await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${tv.name} ${appPath}`);
+            if (isHosted) {
+                await waitForWebpack(c);
+            }
             await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${tv.name} ${tId}`);
         }
     } else if (!c.program.target) {

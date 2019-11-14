@@ -7,7 +7,7 @@ import net from 'net';
 import parser from 'xml2json';
 
 import { execCLI } from '../../systemTools/exec';
-import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../../constants';
+import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN, WEB_HOSTED_PLATFORMS } from '../../constants';
 import {
     logTask,
     logError,
@@ -19,7 +19,8 @@ import {
     writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
-    waitForEmulator
+    waitForEmulator,
+    waitForWebpack
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { buildWeb, configureCoreWebProject } from '../web';
@@ -239,6 +240,10 @@ const runTizen = async (c, platform, target) => {
 
             await launchTizenSimulator(c, target);
             hasDevice = await waitForEmulatorToBeReady(c, target);
+        }
+
+        if (isHosted) {
+            await waitForWebpack(c);
         }
 
         if (platform !== 'tizenwatch' && platform !== 'tizenmobile' && hasDevice) {
