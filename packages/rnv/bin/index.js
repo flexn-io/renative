@@ -33,6 +33,7 @@ program
     .option('-x, --exeMethod <value>', 'eXecutable method in buildHooks')
     .option('-P, --port <value>', 'custom Port')
     .option('-D, --debug', 'enable remote debugger')
+    .option('-G, --global', 'Flag for setting a config value for all RNV projects')
     .option('--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect')
     .option('--ci', 'CI/CD flag so it wont ask questions')
     .option('--mono', 'Monochrome console output without chalk')
