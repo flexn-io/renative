@@ -116,6 +116,10 @@ class Config {
         return this.config.platformDefaults[platform].defaultPort;
     }
 
+    get isRenativeProject() {
+        return this.config?.paths?.project?.configExists || false;
+    }
+
     get program() {
         return this.config.program;
     }
