@@ -220,7 +220,7 @@ const _generateProject = (c, data) => {
 
         logSuccess(
             `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
-                'rnv run -p web',
+                `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`,
             )} to see magic happen!`,
         );
     });
