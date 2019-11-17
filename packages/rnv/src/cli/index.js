@@ -4,10 +4,10 @@ import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpd
 import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList, applyTemplate, checkIfTemplateInstalled } from '../templateTools';
 import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
-import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink, configurePlugins } from '../pluginTools';
+import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
-import { rnvConfigure, rnvSwitch } from '../projectTools';
+import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
 import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
@@ -16,7 +16,7 @@ import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } 
 import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
 // import { getBinaryPath } from '../common';
-import Config from '../config';
+import Config, { rnvConfigHandler } from '../config';
 import { checkAndMigrateProject } from '../projectTools/migrator';
 import {
     parseRenativeConfigs, createRnvConfig, updateConfig,
@@ -53,6 +53,7 @@ ${chalk.bold.white('OPTIONS:')}
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
 '-D, --debug', 'enable remote debugger'
+'-G, --global', 'Flag for setting a config value for all RNV projects'
 '--hosted', 'Run in a hosted environment (skip bundleAssets)'
 '--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
 `);
@@ -62,6 +63,10 @@ const COMMANDS = {
     start: {
         fn: rnvStart,
         platforms: SUPPORTED_PLATFORMS
+    },
+    config: {
+        fn: rnvConfigHandler,
+        desc: 'Edit or display RNV configs',
     },
     run: {
         desc: 'Run your app on target device or emulator',
@@ -243,8 +248,8 @@ const COMMANDS = {
         fn: rnvFastlane
     }
 };
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
-export const SKIP_APP_CONFIG_CHECK = ['crypto'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help', 'config'];
+export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
 
 
 // ##########################################
@@ -285,7 +290,7 @@ const run = async (c, spawnC, skipStartBuilder) => {
     } else {
         await _handleUnknownCommand(c);
     }
-    if (spawnC) Config.initializeConfig(oldC);
+    // if (spawnC) Config.initializeConfig(oldC);
 };
 
 const _execute = async (c, cmdFn, cmd, command, subCommand) => {
