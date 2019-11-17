@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle dep
 import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import semver from 'semver';
@@ -48,6 +47,7 @@ import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../sy
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { getWorkspaceOptions } from './workspace';
 import { generateRuntimeConfig, loadProjectTemplates, parseRenativeConfigs } from '../configTools/configParser';
+import Analytics from '../systemTools/analytics';
 
 const highlight = chalk.green;
 
@@ -151,6 +151,22 @@ export const createNewProject = async (c) => {
     });
 
     if (confirm) {
+        try {
+            Analytics.captureEvent({
+                type: 'newProject',
+                message: 'newProject',
+                breadcrumbs: null,
+                level: 'info',
+                extra: {
+                    template: inputTemplate,
+                    platforms: inputSupportedPlatforms
+                },
+                tags: {
+                    type: 'newProject',
+                }
+            });
+        } catch {}
+
         await _generateProject(c, data);
     }
 };
