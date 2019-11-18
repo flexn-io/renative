@@ -38,7 +38,7 @@ import {
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
     getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps, mergeObjects
 } from '../systemTools/fileutils';
-import { getSourceExtsAsString } from '../common';
+import { getSourceExtsAsString, getConfigProp } from '../common';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -587,6 +587,10 @@ export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
         common: c.buildConfig.common,
         runtime: c.buildConfig.runtime
     };
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
 
     if (fs.existsSync(c.paths.project.assets.dir)) {
         writeObjectSync(c.paths.project.assets.config, c.assetConfig);
