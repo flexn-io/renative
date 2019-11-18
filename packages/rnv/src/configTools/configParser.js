@@ -49,6 +49,7 @@ import {
     checkAndCreateGitignore, copySharedPlatforms, upgradeProjectDependencies
 } from '../projectTools/projectParser';
 import { inquirerPrompt } from '../systemTools/prompt';
+import Config from '../config';
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -569,12 +570,14 @@ export const generateBuildConfig = (c) => {
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
     }
-    const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
+    if (Config.isRenativeProject) {
+        const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
 
-    if (c.platform) {
-        fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
-    } else if (!fs.existsSync(localMetroPath)) {
-        fs.writeFileSync(localMetroPath, 'module.exports = []');
+        if (c.platform) {
+            fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
+        } else if (!fs.existsSync(localMetroPath)) {
+            fs.writeFileSync(localMetroPath, 'module.exports = []');
+        }
     }
 };
 
