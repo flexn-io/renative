@@ -110,6 +110,23 @@ Emulator / Simulator / Device Management
 
 `$ rnv fastlane <commands>` - Run fastlane directly from rnv. Supports all fastlane commands. It installs fastlane automatically if it's not installed.
 
+##### rnv config
+
+`$ rnv config list` - will print out the current configurations, both global and per project
+
+`$ rnv config <key>` - will print out the current values for that key, both global and per project
+
+`$ rnv config <key> <value>` - will update the value for that key, project wise if `-G` or `--global` is not specified.
+
+###### Current supported configs
+
+
+| Key           |Possible Values | Default Value  | Description |
+| ------------- |----------------|----------------|-------------|
+| analytics     |`true` / `false`|          `true`| Enabled by default. Allows us to track RNV errors and metrics with Sentry in order to improve it  |
+
+
+
 ### Options
 
 You can combine most of the above commands with following extra arguments you can combine together
@@ -181,3 +198,8 @@ sometimes you just want to run last command. `--only` ensures only top level com
 `$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME>` - run all dependant commands + deploy
 
 `$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME> --only` - run deploy only
+
+
+##### -g, --global
+
+Used for `rnv config` to modify the config value globally, not just in the current project
