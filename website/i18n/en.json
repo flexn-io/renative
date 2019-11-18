@@ -11,6 +11,10 @@
             "CONTRIBUTING": {
                 "title": "CONTRIBUTING"
             },
+            "analytics": {
+                "title": "Analytics",
+                "sidebar_label": "Analytics"
+            },
             "architecture": {
                 "title": "Architecture",
                 "sidebar_label": "Architecture"
@@ -613,6 +617,10 @@
             "version-0.27.4/version-0.27.4-rnv-target": {
                 "title": "rnv target",
                 "sidebar_label": "target"
+            },
+            "version-0.28/version-0.28-analytics": {
+                "title": "Analytics",
+                "sidebar_label": "Analytics"
             },
             "version-0.28/version-0.28-develop": {
                 "title": "Develop ReNative",

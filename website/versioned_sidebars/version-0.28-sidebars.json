@@ -20,7 +20,8 @@
             "version-0.28-build_hooks",
             "version-0.28-runtime",
             "version-0.28-common_issues",
-            "version-0.28-develop"
+            "version-0.28-develop",
+            "version-0.28-analytics"
         ],
         "Platforms": [
             "version-0.28-platforms_overview",

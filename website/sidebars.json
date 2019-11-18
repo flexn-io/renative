@@ -20,7 +20,8 @@
             "build_hooks",
             "runtime",
             "common_issues",
-            "develop"
+            "develop",
+            "analytics"
         ],
         "Platforms": [
             "platforms_overview",
