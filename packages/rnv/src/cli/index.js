@@ -317,9 +317,9 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
         }
     }
 
-    await executePipe(c, `${c.command}${subCmd}:before`);
+    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
-    await executePipe(c, `${c.command}${subCmd}:after`);
+    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:after`);
 };
 
 // ##########################################

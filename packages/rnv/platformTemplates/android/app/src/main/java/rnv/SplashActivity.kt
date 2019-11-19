@@ -18,6 +18,8 @@ class SplashActivity : AppCompatActivity() {
         intent.putExtras(fcmIntent)
         startActivity(intent)
 
-        finish()
+        if (!this.isTaskRoot) {
+            finish()
+        }
     }
 }
