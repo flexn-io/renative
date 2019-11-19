@@ -268,7 +268,8 @@ COMMON_PROPS
   "excludedFonts": [],
   "backgroundColor": "",
   "port": 1111,
-  "versionCodeOffset": 0
+  "versionCodeOffset": 0,
+  "runtime": {}
 }
 ```
 
@@ -547,7 +548,7 @@ You can configure different app ID, Title etc. with buildScheme field in you app
 
 Example:
 
-```
+```json
 "buildSchemes": {
   "debug": {
     "id": "renative.helloworld.debug",
@@ -571,3 +572,10 @@ this will allow you to build 2 separate iOS apps with slightly different configu
 and
 
 `$ rnv run -p ios -s release`
+
+
+## Runtime Props
+
+When you define object with key `runtime`, its properties will be merged into final `./platformAssets/renative.runtime.json` file
+
+you can import above file into your code and get different values depending on your build

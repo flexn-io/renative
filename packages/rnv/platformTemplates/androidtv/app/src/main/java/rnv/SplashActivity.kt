@@ -11,13 +11,15 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val fcmIntent: Intent = this.getIntent()
-        //val bundle: Bundle = fcmIntent.getExtras()
+        //val bundle: Bundle? = fcmIntent.getExtras()
 
         // Start main activity
         val intent: Intent = Intent(this, MainActivity::class.java)
         intent.putExtras(fcmIntent)
         startActivity(intent)
 
-        finish()
+        if (!this.isTaskRoot) {
+            finish()
+        }
     }
 }
