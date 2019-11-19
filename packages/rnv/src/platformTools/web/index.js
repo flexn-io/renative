@@ -219,7 +219,16 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     executeAsync(c, command, { stdio: 'inherit', silent: true })
         .then(() => {
             logDebug('runWebDevServer: running');
-            resolve();
+            //const runNgrok = c => executeAsync(c, 'npx ngrok --blablabla ...);
+            executeAsync(c, `npx ngrok http ${port}` )
+                .then(() => {
+                    logDebug('runWebDevServer: tunnel created');
+                    resolve();
+                })
+                .catch((e) => {
+                    logDebug(e);
+                    resolve();
+                });
         })
         .catch((e) => {
             logDebug(e);

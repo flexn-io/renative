@@ -55,6 +55,7 @@ ${chalk.bold.white('OPTIONS:')}
 '-D, --debug', 'enable remote debugger'
 '-G, --global', 'Flag for setting a config value for all RNV projects'
 '--hosted', 'Run in a hosted environment (skip bundleAssets)'
+'--tunnel', 'Exposes local server to internet over secure tunnels'
 '--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
 `);
 };

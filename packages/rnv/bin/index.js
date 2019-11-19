@@ -48,6 +48,7 @@ program
     .option('--analyzer', 'Enable real-time bundle analyzer')
     .option('--xcodebuildArchiveArgs <value>', 'pass down custom xcodebuild arguments')
     .option('--xcodebuildExportArgs <value>', 'pass down custom xcodebuild arguments')
+    .option('--tunnel', 'Exposes local server to internet over secure tunnels')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;
