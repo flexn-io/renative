@@ -29,6 +29,8 @@ import {
 } from '../../constants';
 import { getRealPath } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
+import { rnvStart } from '../runner';
+import Config from '../../config';
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -42,6 +44,12 @@ const launchWebOSimulator = (c) => {
     }
     if (isRunningOnWindows) return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
+};
+
+const startHostedServerIfRequired = (c) => {
+    if (Config.isWebHostEnabled) {
+        return rnvStart(c);
+    }
 };
 
 const parseDevices = (c, devicesResponse) => {
@@ -67,14 +75,23 @@ const parseDevices = (c, devicesResponse) => {
 };
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
-    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    try {
+        await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    } catch (e) {
+        // installing it again if it fails. For some reason webosCLI says that it can't connect to
+        // the device from time to time. Running it again works.
+        await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    }
     const { hosted } = c.program;
     const { platform } = c;
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    let toReturn = true;
     if (isHosted) {
+        toReturn = startHostedServerIfRequired(c);
         await waitForWebpack(c);
     }
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
+    return toReturn;
 };
 
 const buildDeviceChoices = devices => devices.map(device => ({
@@ -155,30 +172,22 @@ const runWebOS = async (c, platform, target) => {
                     // Oh boy, oh boy, I did it! I have a TV connected!
                     logInfo('Please enter the `Passphrase` from the TV\'s Developer Mode app');
                     await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit' });
-                    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`);
-                    if (isHosted) {
-                        await waitForWebpack(c);
-                    }
-                    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`);
-                } else {
-                    // Yes, I said I would but I didn't
-                    // @todo handle user not setting up the device
+                    return installAndLaunchApp(c, newDevice.name, appPath, tId);
                 }
+                // Yes, I said I would but I didn't
+                // @todo handle user not setting up the device
             }
         } else if (actualDevices.length === 1) {
             const tv = actualDevices[0];
-            await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${tv.name} ${appPath}`);
-            if (isHosted) {
-                await waitForWebpack(c);
-            }
-            await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${tv.name} ${tId}`);
+            return installAndLaunchApp(c, tv.name, appPath, tId);
         }
     } else if (!c.program.target) {
         // No target specified
         if (activeDevices.length === 1) {
             // One device present
-            await installAndLaunchApp(c, devices[0].name, appPath, tId);
-        } else if (activeDevices.length > 1) {
+            return installAndLaunchApp(c, devices[0].name, appPath, tId);
+        }
+        if (activeDevices.length > 1) {
             // More than one, choosing
             const choices = buildDeviceChoices(devices);
             const response = await inquirer.prompt([{
@@ -188,16 +197,16 @@ const runWebOS = async (c, platform, target) => {
                 choices
             }]);
             if (response.chosenDevice) {
-                await installAndLaunchApp(c, response.chosenDevice, appPath, tId);
+                return installAndLaunchApp(c, response.chosenDevice, appPath, tId);
             }
         } else {
             await launchWebOSimulator(c);
             await waitForEmulatorToBeReady(c);
-            await installAndLaunchApp(c, tSim, appPath, tId);
+            return installAndLaunchApp(c, tSim, appPath, tId);
         }
     } else {
         // Target specified, using that
-        await installAndLaunchApp(c, c.program.target, appPath, tId);
+        return installAndLaunchApp(c, c.program.target, appPath, tId);
     }
 };
 

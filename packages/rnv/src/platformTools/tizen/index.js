@@ -24,6 +24,8 @@ import {
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { buildWeb, configureCoreWebProject } from '../web';
+import { rnvStart } from '../runner';
+import Config from '../../config';
 
 const formatXMLObject = obj => ({
     ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
@@ -154,6 +156,12 @@ const waitForEmulatorToBeReady = (c, target) => waitForEmulator(c, CLI_SDB_TIZEN
 
 const composeDevicesString = devices => devices.map(device => ({ key: device.id, name: device.name, value: device.id }));
 
+const startHostedServerIfRequired = (c) => {
+    if (Config.isWebHostEnabled) {
+        return rnvStart(c);
+    }
+};
+
 const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
@@ -242,7 +250,10 @@ const runTizen = async (c, platform, target) => {
             hasDevice = await waitForEmulatorToBeReady(c, target);
         }
 
+        let toReturn = true;
+
         if (isHosted) {
+            toReturn = startHostedServerIfRequired(c);
             await waitForWebpack(c);
         }
 
@@ -252,7 +263,7 @@ const runTizen = async (c, platform, target) => {
             const packageID = tId.split('.');
             await execCLI(c, CLI_TIZEN, `run -p ${packageID[0]} -t ${deviceID}`);
         }
-        return true;
+        return toReturn;
     };
 
     // Check if target is present or it's the default one

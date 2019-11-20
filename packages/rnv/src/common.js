@@ -225,36 +225,20 @@ export const getAppTemplateFolder = (c, platform) => {
 
 export const getAppConfigId = c => c.buildConfig.id;
 
-const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resultCommon) => {
-    if (resultCli !== undefined) {
-        return resultCli;
-    }
-    if (resultScheme !== undefined) {
-        if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') return resultScheme;
-        const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
-        return val;
-    }
-    if (resultPlatforms !== undefined) {
-        if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') return resultPlatforms;
-        return Object.assign(resultCommon || {}, resultPlatforms);
-    }
-    if (resultPlatforms === null) return null;
-    return resultCommon;
-};
-
 export const CLI_PROPS = [
     'provisioningStyle',
     'codeSignIdentity',
     'provisionProfileSpecifier'
 ];
 
+// We need to slowly move this to Config and refactor everything to use it from there
 export const getConfigProp = (c, platform, key, defaultVal) => {
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
         return null;
     }
     const p = c.buildConfig.platforms[platform];
-    const ps = _getScheme(c);
+    const ps = Config.getScheme();
     let resultPlatforms;
     let scheme;
     if (p) {
@@ -267,7 +251,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     const resultScheme = scheme[key];
     const resultCommon = c.buildConfig.common?.[key];
 
-    let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+    let result = Config.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
@@ -393,7 +377,7 @@ export const getBuildsFolder = (c, platform, customPath) => {
     // if (!fs.existsSync(pp)) {
     //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
     // }
-    const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
+    const p = path.join(pp, `builds/${platform}@${Config.getScheme()}`);
     if (fs.existsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
 };

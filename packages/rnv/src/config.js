@@ -1,12 +1,19 @@
 /* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
 import { printTable } from 'console-table-printer';
 import fs from 'fs';
+import chalk from 'chalk';
 
 import { writeObjectSync } from './systemTools/fileutils';
 import { npmInstall } from './systemTools/exec';
-import { logWarning } from './systemTools/logger';
+import { logWarning, logTask, logError } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
-import { configSchema } from './constants';
+import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
+
+export const CLI_PROPS = [
+    'provisioningStyle',
+    'codeSignIdentity',
+    'provisionProfileSpecifier'
+];
 
 class Config {
     constructor() {
@@ -196,6 +203,61 @@ class Config {
             return true;
         }
         return false;
+    }
+
+    getScheme() {
+        return this.config.program.scheme || 'debug';
+    }
+
+    getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon) {
+        if (resultCli !== undefined) {
+            return resultCli;
+        }
+        if (resultScheme !== undefined) {
+            if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') return resultScheme;
+            const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
+            return val;
+        }
+        if (resultPlatforms !== undefined) {
+            if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') return resultPlatforms;
+            return Object.assign(resultCommon || {}, resultPlatforms);
+        }
+        if (resultPlatforms === null) return null;
+        return resultCommon;
+    }
+
+
+    getConfigProp(c, platform, key, defaultVal) {
+        if (!c.buildConfig) {
+            logError('getConfigProp: c.buildConfig is undefined!');
+            return null;
+        }
+        const p = c.buildConfig.platforms[platform];
+        const ps = this.getScheme(c);
+        let resultPlatforms;
+        let scheme;
+        if (p) {
+            scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
+            resultPlatforms = c.buildConfig.platforms[platform][key];
+        }
+
+        scheme = scheme || {};
+        const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
+        const resultScheme = scheme[key];
+        const resultCommon = c.buildConfig.common?.[key];
+
+        let result = this.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+
+        if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
+        logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+        return result;
+    }
+
+    get isWebHostEnabled() {
+        const { hosted } = this.config.program;
+        // if (debug) return false;
+        const bundleAssets = this.getConfigProp(this.config, this.platform, 'bundleAssets');
+        return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(this.platform);
     }
 
     get isAnalyticsEnabled() {
