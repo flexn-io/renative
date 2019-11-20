@@ -7,6 +7,7 @@ import { npmInstall } from './systemTools/exec';
 import { logWarning } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema } from './constants';
+import pkg from '../package.json';
 
 class Config {
     constructor() {
@@ -200,6 +201,10 @@ class Config {
 
     get isAnalyticsEnabled() {
         return this.getMergedConfigValue('analytics');
+    }
+
+    get isRnvLinked() {
+        return !!pkg._id; // packages installed from npm have some extra props in package.json
     }
 
     //     getBuildConfig() {

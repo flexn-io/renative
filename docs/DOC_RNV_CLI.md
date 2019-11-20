@@ -118,12 +118,14 @@ Emulator / Simulator / Device Management
 
 `$ rnv config <key> <value>` - will update the value for that key, project wise if `-G` or `--global` is not specified.
 
+*Project values take precedence over the global ones, basically you can have for example `analytics` disabled globally and enabled on one project*
+
 ###### Current supported configs
 
 
 | Key           |Possible Values | Default Value  | Description |
 | ------------- |----------------|----------------|-------------|
-| analytics     |`true` / `false`|          `true`| Enabled by default. Allows us to track RNV errors and metrics with Sentry in order to improve it  |
+| analytics     |`true` / `false`|          `true`| Enabled by default, both globally and per project. Allows us to track RNV errors and metrics with Sentry in order to improve it  |
 
 
 
