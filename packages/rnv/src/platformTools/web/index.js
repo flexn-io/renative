@@ -36,7 +36,6 @@ const isRunningOnWindows = process.platform === 'win32';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
-    console.log(Object.keys(c).join(', '), platform);
     const templateFolder = getAppTemplateFolder(c, platform);
 
     const { plugins } = c.buildConfig;

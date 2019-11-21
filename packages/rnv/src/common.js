@@ -219,7 +219,6 @@ export const getAppSubFolder = (c, platform) => {
 };
 
 export const getAppTemplateFolder = (c, platform) => {
-    console.log('getAppTemplateFolder', c.paths.project.platformTemplatesDirs[platform], platform);
     return path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 };
 

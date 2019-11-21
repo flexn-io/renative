@@ -1,9 +1,10 @@
 /* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
 import { printTable } from 'console-table-printer';
 import fs from 'fs';
+import semver from 'semver';
 
 import { writeObjectSync } from './systemTools/fileutils';
-import { npmInstall } from './systemTools/exec';
+import { npmInstall, executeAsync } from './systemTools/exec';
 import { logWarning } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema } from './constants';
@@ -70,19 +71,62 @@ class Config {
         const projectConfig = this.getProjectConfig();
 
         if (!projectConfig.package[type]?.[pkg]) {
+            // package does not exist, adding it
             let confirm = skipAsking;
             if (!confirm) {
                 const resp = await inquirerPrompt({
                     type: 'confirm',
                     message: `You do not have ${pkg} installed. Do you want to add it now?`
                 });
+                // eslint-disable-next-line prefer-destructuring
                 confirm = resp.confirm;
             }
 
             if (confirm) {
-                return this.injectProjectDependency(pkg, version || 'latest', type, skipInstall);
+                let latestVersion = 'latest';
+                if (!version) {
+                    try {
+                        latestVersion = await executeAsync(`npm show ${pkg} version`);
+                        // eslint-disable-next-line no-empty
+                    } catch (e) {}
+                }
+                return this.injectProjectDependency(pkg, version || latestVersion, type, skipInstall);
+            }
+        } else if (!version) {
+            // package exists, checking version only if version is not
+            const currentVersion = projectConfig.package[type][pkg];
+            let latestVersion = false;
+            try {
+                latestVersion = await executeAsync(`npm show ${pkg} version`);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
+            if (latestVersion) {
+                let updateAvailable = false;
+
+                try {
+                    // semver might fail if you have a path instead of a version (like when you are developing)
+                    updateAvailable = semver.gt(currentVersion, latestVersion);
+                    // eslint-disable-next-line no-empty
+                } catch (e) {}
+
+                if (updateAvailable) {
+                    let confirm = skipAsking;
+                    if (!confirm) {
+                        const resp = await inquirerPrompt({
+                            type: 'confirm',
+                            message: `Seems like ${pkg}@${currentVersion} is installed while there is a newer version, ${pkg}@${latestVersion}. Do you want to upgrade?`
+                        });
+                        // eslint-disable-next-line prefer-destructuring
+                        confirm = resp.confirm;
+                    }
+
+                    if (confirm) {
+                        return this.injectProjectDependency(pkg, latestVersion, type, skipInstall);
+                    }
+                }
             }
         }
+
         return false;
     }
 

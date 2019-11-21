@@ -11,7 +11,6 @@ class Analytics {
 
     initialize() {
         if (Config.isAnalyticsEnabled) {
-            console.log('ANALYTICS ENABLED');
             // ERROR HANDLING
             // eslint-disable-next-line global-require
             this.errorFixer = require('@sentry/node');
