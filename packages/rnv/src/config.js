@@ -105,7 +105,7 @@ class Config {
 
                 try {
                     // semver might fail if you have a path instead of a version (like when you are developing)
-                    updateAvailable = semver.gt(currentVersion, latestVersion);
+                    updateAvailable = semver.lt(currentVersion, latestVersion);
                     // eslint-disable-next-line no-empty
                 } catch (e) {}
 
