@@ -71,6 +71,27 @@ You can do that by adding the following flag into your `appConfigs/xxx/renative.
 }
 ```
 
+#### Zip the export
+
+You can also instruct `rnv` to make a zip from the output files (`xx.tar` and `docker-compose.yml`) in order to make distribution easier.
+
+You can do that by adding the following flag into your appConfigs/xxx/renative.json file:
+
+```
+{
+    platforms: {
+        web: {
+            deploy: {
+                "docker": {
+                    "zipImage": true
+                }
+            }
+        }
+    }
+}
+```
+
+
 #### Making changes
 
 If you feel brave and want to modify any file, for example the nginx config, make sure you build your image again since everything is copied over at build step.
