@@ -23,6 +23,7 @@ import {
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from '../configTools/configParser';
 import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
+import rnvPublish from '../projectTools/publish';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -246,6 +247,10 @@ const COMMANDS = {
         desc: 'Run fastlane commands on currectly active app/platform directly via rnv command',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvFastlane
+    },
+    publish: {
+        desc: 'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+        fn: rnvPublish
     }
 };
 export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help', 'config'];

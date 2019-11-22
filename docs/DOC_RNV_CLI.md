@@ -110,6 +110,10 @@ Emulator / Simulator / Device Management
 
 `$ rnv fastlane <commands>` - Run fastlane directly from rnv. Supports all fastlane commands. It installs fastlane automatically if it's not installed.
 
+##### rnv publish
+
+`$ rnv publish [patch|minor|major]` - Will help you bump the version, create a commit and a tag and push them. It uses [release-it](https://github.com/release-it/release-it) under the hood so you can configure it and pass whatever arguments that are supported by `release-it`. You can also run `rnv publish` without any arguments to enter interactive mode.
+
 ### Options
 
 You can combine most of the above commands with following extra arguments you can combine together
