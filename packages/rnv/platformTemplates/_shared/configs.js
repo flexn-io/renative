@@ -155,9 +155,12 @@ function generateConfig(config) {
         templateParameters: {
             ...config,
             debug: process.env.DEBUG,
-            debugIp: process.env.DEBUG_IP
+            debugIp: process.env.DEBUG_IP,
+            platform: process.env.PLATFORM,
+            environment: config.environment,
         },
     });
+
     plugins.harddisk = new HtmlWebpackHarddiskPlugin();
 
     plugins.analyzer = new BundleAnalyzerPlugin();
