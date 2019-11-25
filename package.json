@@ -116,7 +116,8 @@
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
         "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
         "rnv": "file:./packages/rnv",
-        "xcode": "2.0.0"
+        "xcode": "2.0.0",
+        "release-it": "12.4.3"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0-beta.3"
@@ -140,6 +141,15 @@
     "husky": {
         "hooks": {
             "pre-commit": "pretty-quick --staged && npm run test:rnv:unit"
+        }
+    },
+    "release-it": {
+        "git": {
+            "tagName": "v${version}",
+            "requireCleanWorkingDir": false
+        },
+        "npm": {
+            "publish": false
         }
     }
 }
