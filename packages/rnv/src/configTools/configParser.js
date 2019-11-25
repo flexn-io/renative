@@ -157,7 +157,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'projectTemplates');
     c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
-    c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
 
     c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'projectTemplate');
     c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
