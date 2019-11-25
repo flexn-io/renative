@@ -112,7 +112,7 @@ function generateConfig(config) {
     };
 
     rules.fonts = {
-        test: /\.(ttf|otf)(\?[\s\S]+)?$/,
+        test: /\.(woff|woff2|eot|ttf|otf)(\?[\s\S]+)?$/,
         use: 'file-loader',
     };
 
