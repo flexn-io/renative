@@ -1,12 +1,20 @@
 /* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
 import { printTable } from 'console-table-printer';
 import fs from 'fs';
+import chalk from 'chalk';
+import semver from 'semver';
 
 import { writeObjectSync } from './systemTools/fileutils';
-import { npmInstall } from './systemTools/exec';
-import { logWarning } from './systemTools/logger';
+import { npmInstall, executeAsync } from './systemTools/exec';
+import { logWarning, logTask, logError } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
-import { configSchema } from './constants';
+import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
+
+export const CLI_PROPS = [
+    'provisioningStyle',
+    'codeSignIdentity',
+    'provisionProfileSpecifier'
+];
 
 class Config {
     constructor() {
@@ -70,19 +78,62 @@ class Config {
         const projectConfig = this.getProjectConfig();
 
         if (!projectConfig.package[type]?.[pkg]) {
+            // package does not exist, adding it
             let confirm = skipAsking;
             if (!confirm) {
                 const resp = await inquirerPrompt({
                     type: 'confirm',
                     message: `You do not have ${pkg} installed. Do you want to add it now?`
                 });
+                // eslint-disable-next-line prefer-destructuring
                 confirm = resp.confirm;
             }
 
             if (confirm) {
-                return this.injectProjectDependency(pkg, version || 'latest', type, skipInstall);
+                let latestVersion = 'latest';
+                if (!version) {
+                    try {
+                        latestVersion = await executeAsync(`npm show ${pkg} version`);
+                        // eslint-disable-next-line no-empty
+                    } catch (e) {}
+                }
+                return this.injectProjectDependency(pkg, version || latestVersion, type, skipInstall);
+            }
+        } else if (!version) {
+            // package exists, checking version only if version is not
+            const currentVersion = projectConfig.package[type][pkg];
+            let latestVersion = false;
+            try {
+                latestVersion = await executeAsync(`npm show ${pkg} version`);
+                // eslint-disable-next-line no-empty
+            } catch (e) {}
+            if (latestVersion) {
+                let updateAvailable = false;
+
+                try {
+                    // semver might fail if you have a path instead of a version (like when you are developing)
+                    updateAvailable = semver.lt(currentVersion, latestVersion);
+                    // eslint-disable-next-line no-empty
+                } catch (e) {}
+
+                if (updateAvailable) {
+                    let confirm = skipAsking;
+                    if (!confirm) {
+                        const resp = await inquirerPrompt({
+                            type: 'confirm',
+                            message: `Seems like ${pkg}@${currentVersion} is installed while there is a newer version, ${pkg}@${latestVersion}. Do you want to upgrade?`
+                        });
+                        // eslint-disable-next-line prefer-destructuring
+                        confirm = resp.confirm;
+                    }
+
+                    if (confirm) {
+                        return this.injectProjectDependency(pkg, latestVersion, type, skipInstall);
+                    }
+                }
             }
         }
+
         return false;
     }
 
@@ -196,6 +247,61 @@ class Config {
             return true;
         }
         return false;
+    }
+
+    getScheme() {
+        return this.config.program.scheme || 'debug';
+    }
+
+    getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon) {
+        if (resultCli !== undefined) {
+            return resultCli;
+        }
+        if (resultScheme !== undefined) {
+            if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') return resultScheme;
+            const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
+            return val;
+        }
+        if (resultPlatforms !== undefined) {
+            if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') return resultPlatforms;
+            return Object.assign(resultCommon || {}, resultPlatforms);
+        }
+        if (resultPlatforms === null) return null;
+        return resultCommon;
+    }
+
+
+    getConfigProp(c, platform, key, defaultVal) {
+        if (!c.buildConfig) {
+            logError('getConfigProp: c.buildConfig is undefined!');
+            return null;
+        }
+        const p = c.buildConfig.platforms[platform];
+        const ps = this.getScheme(c);
+        let resultPlatforms;
+        let scheme;
+        if (p) {
+            scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
+            resultPlatforms = c.buildConfig.platforms[platform][key];
+        }
+
+        scheme = scheme || {};
+        const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
+        const resultScheme = scheme[key];
+        const resultCommon = c.buildConfig.common?.[key];
+
+        let result = this.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+
+        if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
+        logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+        return result;
+    }
+
+    get isWebHostEnabled() {
+        const { hosted } = this.config.program;
+        // if (debug) return false;
+        const bundleAssets = this.getConfigProp(this.config, this.platform, 'bundleAssets');
+        return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(this.platform);
     }
 
     get isAnalyticsEnabled() {
