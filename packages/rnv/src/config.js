@@ -250,7 +250,7 @@ class Config {
     }
 
     getScheme() {
-        return this.config.program.scheme || 'debug';
+        return this.config?.program?.scheme || 'debug';
     }
 
     getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon) {
