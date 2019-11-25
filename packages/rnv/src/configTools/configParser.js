@@ -213,7 +213,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
-        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        c.runtime.appId = c.runtime.appId || c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
         c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 
         // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
@@ -648,7 +648,7 @@ export const updateConfig = async (c, appConfigId) => {
             logWarning(
                 'It seems you don\'t have any appConfig active',
             );
-        } else if (appConfigId !== '?' && !isPureRnv) {
+        } else if (appConfigId !== '?' && appConfigId !== true && !isPureRnv) {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,
@@ -659,6 +659,7 @@ export const updateConfig = async (c, appConfigId) => {
         if (configDirs.length) {
             if (configDirs.length === 1) {
                 // we have only one, skip the question
+                logInfo(`Found only one app config available. Will use ${chalk.white(configDirs[0])}`);
                 setAppConfig(c, configDirs[0]);
                 return true;
             }
