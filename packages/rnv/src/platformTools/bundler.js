@@ -17,7 +17,7 @@ export const waitForBundler = async () => {
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 1000;
-    const spinner = ora('Waiting for emulator to boot...').start();
+    const spinner = ora('Waiting for bundler to finish...').start();
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(async () => {
