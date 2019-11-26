@@ -24,6 +24,7 @@ import {
 } from '../configTools/configParser';
 import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
 import rnvPublish from '../projectTools/publish';
+import rnvPkg from '../projectTools/package';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -251,6 +252,10 @@ const COMMANDS = {
     publish: {
         desc: 'Provides help deploying a new version, like tagging a commit, pushing it, etc',
         fn: rnvPublish
+    },
+    pkg: {
+        desc: 'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+        fn: rnvPkg
     }
 };
 export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help', 'config'];

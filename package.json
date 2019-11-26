@@ -150,6 +150,9 @@
         },
         "npm": {
             "publish": false
+        },
+        "hooks": {
+            "before:git": "rnv pkg version ${version}"
         }
     }
 }

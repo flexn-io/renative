@@ -1,12 +1,38 @@
+/* eslint-disable global-require, import/no-dynamic-require */
+import semver from 'semver';
+
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
 import { writeObjectSync } from '../systemTools/fileutils';
+
+/*
+ *
+ * Usage
+ * rnv publish
+ * rnv publish patch|minor|major
+ * rnv publish patch|minor|major alpha|beta|rc
+ * rnv publish 1.0.0
+ * rnv publish 1.0.0-alpha.1
+ * rnv publish ... --dry-run
+ *
+ * Basically the same as release-it documentation. The only difference is that you don't need to specify --preRelease=beta
+ * if you are publishing a beta/alpha/rc. That is done automatically by checking if the second arg is alpha, beta, rc.
+ *
+ */
+
+const includesPre = (version) => {
+    if (version.includes('alpha')) return 'alpha';
+    if (version.includes('beta')) return 'beta';
+    if (version.includes('rc')) return 'rc';
+    return false;
+};
 
 const rnvPublish = async () => {
     // make sure release-it is installed
     await Config.checkRequiredPackage('release-it', '12.4.3', 'devDependencies');
     // make sure required object is present in package.json
     const pkgJson = Config.getProjectConfig().package;
+    const existingPath = Config.getConfig().paths.project.package;
 
     if (!pkgJson['release-it']) {
         pkgJson['release-it'] = {
@@ -17,9 +43,22 @@ const rnvPublish = async () => {
             },
             npm: {
                 publish: false
+            },
+            hooks: {
+                // eslint-disable-next-line no-template-curly-in-string
+                'before:git': 'rnv pkg version ${version}' // @todo change it to npx after publish
             }
         };
-        const existingPath = Config.getConfig().paths.project.package;
+        writeObjectSync(existingPath, pkgJson);
+    }
+
+    // backwards compatibility and user change friendly
+    if (!pkgJson['release-it']?.hooks?.['before:git']) {
+        if (!pkgJson['release-it'].hooks) {
+            pkgJson['release-it'].hooks = {};
+        }
+        // eslint-disable-next-line no-template-curly-in-string
+        pkgJson['release-it'].hooks['before:git'] = 'rnv pkg version ${version}';
         writeObjectSync(existingPath, pkgJson);
     }
 
@@ -27,10 +66,26 @@ const rnvPublish = async () => {
     let args = [...Config.getConfig().program.rawArgs];
     args = args.slice(3);
 
+    const maybeVersion = args[0];
+    const secondArg = args[1];
+    let prereleaseMark = '';
+
+    // for handling `rnv publish patch alpha`
+    if (['alpha', 'beta', 'rc'].includes(secondArg)) {
+        args.splice(1, 1); // remove it so it won't interfere with release-it
+        prereleaseMark = `--preRelease=${secondArg}`;
+    }
+
+    // for handling `rnv publish 1.0.0-alpha.1`
+    if (semver.valid(maybeVersion) && includesPre(maybeVersion)) {
+        prereleaseMark = `--preRelease=${includesPre(maybeVersion)}`;
+    }
+
     const { dir } = Config.getConfig().paths.project;
 
-    return executeAsync(`release-it ${args.join(' ')}`, { interactive: true, env: process.env, cwd: dir }).catch((e) => {
+    return executeAsync(`release-it ${args.join(' ')} ${prereleaseMark}`, { interactive: true, env: process.env, cwd: dir }).catch((e) => {
         if (e.includes('SIGINT')) return Promise.resolve();
+        if (e.includes('--no-git.requireUpstream')) return Promise.reject(new Error('Seems like you have no upstream configured for current branch. Run `git push -u <origin> <your_branch>` to fix it then try again.'));
         return Promise.reject(e);
     });
 };
