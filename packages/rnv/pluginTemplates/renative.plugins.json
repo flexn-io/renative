@@ -1601,7 +1601,7 @@
             }
         },
         "react-native-google-cast": {
-            "version": "3.2.1",
+            "version": "github:hosek/react-native-google-cast#feat/custom-cast-dialog-support",
             "ios": {
                 "podName": "react-native-google-cast/NoBluetooth",
                 "path": "node_modules/react-native-google-cast/ios",
