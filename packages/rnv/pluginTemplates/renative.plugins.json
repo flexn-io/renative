@@ -736,7 +736,7 @@
             }
         },
         "react-native-device-info": {
-            "version": "2.1.2",
+            "version": "2.3.2",
             "ios": {
                 "podName": "RNDeviceInfo"
             },
