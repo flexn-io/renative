@@ -52,24 +52,32 @@ const rnvClean = async (c, skipQuestion = false) => {
         nothingToClean: !skipQuestion
     };
 
-    if (pathsToRemove.length && !skipQuestion) {
-        const { confirm } = await inquirer.prompt({
-            name: 'confirm',
-            type: 'confirm',
-            message: `Do you want to remove node_module related files/folders? \n${msg}`,
-        });
-        answers.modules = confirm;
-        if (confirm) answers.nothingToClean = false;
+    if (pathsToRemove.length) {
+        if (!skipQuestion) {
+            const { confirm } = await inquirer.prompt({
+                name: 'confirm',
+                type: 'confirm',
+                message: `Do you want to remove node_module related files/folders? \n${msg}`,
+            });
+            answers.modules = confirm;
+            if (confirm) answers.nothingToClean = false;
+        } else {
+            answers.modules = true;
+        }
     }
 
-    if (buildDirs.length && !skipQuestion) {
-        const { confirmBuilds } = await inquirer.prompt({
-            name: 'confirmBuilds',
-            type: 'confirm',
-            message: `Do you want to clean your platformBuilds and platformAssets? \n${chalk.red(buildDirs.join('\n'))}`,
-        });
-        answers.builds = confirmBuilds;
-        if (confirmBuilds) answers.nothingToClean = false;
+    if (buildDirs.length) {
+        if (!skipQuestion) {
+            const { confirmBuilds } = await inquirer.prompt({
+                name: 'confirmBuilds',
+                type: 'confirm',
+                message: `Do you want to clean your platformBuilds and platformAssets? \n${chalk.red(buildDirs.join('\n'))}`,
+            });
+            answers.builds = confirmBuilds;
+            if (confirmBuilds) answers.nothingToClean = false;
+        } else {
+            answers.builds = true;
+        }
     }
 
     if (!skipQuestion) {
@@ -80,6 +88,8 @@ const rnvClean = async (c, skipQuestion = false) => {
         });
         answers.cache = confirmCache;
         if (confirmCache) answers.nothingToClean = false;
+    } else {
+        answers.cache = true;
     }
 
     if (answers.nothingToClean) {

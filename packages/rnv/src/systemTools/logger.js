@@ -1,5 +1,6 @@
 import _chalk from 'chalk';
 import { generateOptions } from './prompt';
+import Analytics from './analytics';
 
 const _chalkCols = {
     white: v => v,
@@ -228,18 +229,27 @@ export const logSuccess = (msg) => {
     logAndSave(`✅ ${chalk.magenta(msg)}`);
 };
 
-export const logError = (e, isEnd = false) => {
+export const logError = (e, isEnd = false, skipAnalytics = false) => {
+    if (!skipAnalytics) {
+        Analytics.captureException(e);
+    }
+
     if (e && e.message) {
         logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
         logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
     }
+
     if (isEnd) logEnd(1);
 };
 
 export const logEnd = (code) => {
     logSummary();
-    if (_currentProcess) _currentProcess.exit(code);
+    if (_currentProcess) {
+        Analytics.teardown().then(() => {
+            _currentProcess.exit(code);
+        });
+    }
 };
 
 

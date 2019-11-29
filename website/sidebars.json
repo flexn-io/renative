@@ -5,6 +5,7 @@
             "installation",
             "migrating_react_native",
             "features",
+            "customize",
             "architecture"
         ],
         "Guides": [
@@ -20,7 +21,8 @@
             "build_hooks",
             "runtime",
             "common_issues",
-            "develop"
+            "develop",
+            "analytics"
         ],
         "Platforms": [
             "platforms_overview",

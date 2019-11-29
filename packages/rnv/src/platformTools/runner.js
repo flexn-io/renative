@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import chalk from 'chalk';
-import open from 'react-dev-utils/openBrowser';
+import open from 'better-opn';
 import ip from 'ip';
 import path from 'path';
 
@@ -66,6 +66,7 @@ import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
 import { isBundlerRunning, waitForBundler } from './bundler';
 import { logInfo } from '../systemTools/logger';
+import Config from '../config';
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -80,11 +81,10 @@ export const rnvStart = async (c, shouldOpenBrowser) => {
     const { platform } = c;
     const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
     const { hosted } = c.program;
-    const isWebHostEnabled = _isWebHostEnabled(c, platform);
 
-    logTask(`rnvStart:${platform}:${port}:${hosted}:${isWebHostEnabled}`);
+    logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
 
-    if (isWebHostEnabled && hosted) {
+    if (Config.isWebHostEnabled && hosted) {
         const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         waitForWebpack(c, port)
             .then(() => open(`http://${hostIp}:${port}/`))
@@ -190,28 +190,15 @@ export const rnvLog = async (c) => {
 // PRIVATE
 // ##########################################
 
-const _isWebHostEnabled = (c, platform) => {
-    const { hosted, debug } = c.program;
-    if (debug) return false;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(platform);
-};
-
 
 const _configureHostedIfRequired = async (c, platform) => {
-    if (_isWebHostEnabled(c, platform)) {
+    if (Config.isWebHostEnabled) {
         logDebug('Running hosted build');
         const { project, rnv } = c.paths;
         copyFolderContentsRecursiveSync(path.join(rnv.dir, 'supportFiles', 'appShell'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public'));
         writeCleanFile(path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.platformDefaults[platform].defaultPort}` },
         ]);
-    }
-};
-
-const _startHostedServerIfRequired = (c, platform) => {
-    if (_isWebHostEnabled(c, platform)) {
-        return rnvStart(c);
     }
 };
 
@@ -250,7 +237,7 @@ const _rnvRunWithPlatform = async (c) => {
         throw err;
     };
 
-    if (_isWebHostEnabled(c, platform) && hosted) {
+    if (Config.isWebHostEnabled && hosted) {
         return rnvStart(c, true);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
@@ -309,8 +296,7 @@ const _rnvRunWithPlatform = async (c) => {
             await configureIfRequired(c, platform);
             await _configureHostedIfRequired(c, platform);
         }
-        await runTizen(c, platform, target);
-        return _startHostedServerIfRequired(c, platform);
+        return runTizen(c, platform, target);
     case WEBOS:
         if (!checkSdk(c, platform, logError)) {
             const setupInstance = PlatformSetup(c);
@@ -321,8 +307,7 @@ const _rnvRunWithPlatform = async (c) => {
             await configureIfRequired(c, platform);
             await _configureHostedIfRequired(c, platform);
         }
-        await runWebOS(c, platform, target);
-        return _startHostedServerIfRequired(c, platform);
+        return runWebOS(c, platform, target);
     case KAIOS:
     case FIREFOX_OS:
     case FIREFOX_TV:

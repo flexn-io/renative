@@ -500,3 +500,11 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
+
+export const configSchema = {
+    analytics: {
+        values: ['true', 'false'],
+        key: 'enableAnalytics',
+        default: true,
+    }
+};
