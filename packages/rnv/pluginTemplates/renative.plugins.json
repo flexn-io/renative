@@ -1143,7 +1143,7 @@
             }
         },
         "@react-native-firebase/app": {
-            "version": "6.0.3",
+            "version": "6.1.0",
             "ios": {
                 "podName": "RNFBApp"
             },
@@ -1175,7 +1175,7 @@
             }
         },
         "@react-native-firebase/analytics": {
-            "version": "6.0.3",
+            "version": "6.1.0",
             "dependsOn": ["@react-native-firebase/app"],
             "ios": {
                 "podName": "RNFBAnalytics",
