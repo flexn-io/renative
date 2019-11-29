@@ -2,7 +2,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import open from 'react-dev-utils/openBrowser';
+import open from 'better-opn';
 import ip from 'ip';
 import { executeAsync } from '../../systemTools/exec';
 import {
@@ -34,9 +34,9 @@ import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTool
 
 const isRunningOnWindows = process.platform === 'win32';
 
-const _generateWebpackConfigs = (c) => {
-    const appFolder = getAppFolder(c, c.platform);
-    const templateFolder = getAppTemplateFolder(c, c.platform);
+const _generateWebpackConfigs = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const templateFolder = getAppTemplateFolder(c, platform);
 
     const { plugins } = c.buildConfig;
     let modulePaths = [];
@@ -78,11 +78,11 @@ const _generateWebpackConfigs = (c) => {
         }
     }
 
-    const env = getConfigProp(c, c.platform, 'environment');
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    const entryFile = getConfigProp(c, c.platform, 'entryFile', 'index.web');
-    const title = getAppTitle(c, c.platform);
-    const analyzer = getConfigProp(c, c.platform, 'analyzer') || c.program.analyzer;
+    const env = getConfigProp(c, platform, 'environment');
+    const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});
+    const entryFile = getConfigProp(c, platform, 'entryFile', 'index.web');
+    const title = getAppTitle(c, platform);
+    const analyzer = getConfigProp(c, platform, 'analyzer') || c.program.analyzer;
 
     copyFileSync(
         path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
@@ -106,7 +106,7 @@ const _generateWebpackConfigs = (c) => {
 };
 
 const buildWeb = (c, platform) => new Promise((resolve, reject) => {
-    const { debug, debugIp, maxErrorLength } = c.program;
+    const { debug, debugIp } = c.program;
     logTask(`buildWeb:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -120,7 +120,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 
     const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
 
-    executeAsync(c, `npx cross-env NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
+    executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
         .then(() => {
             logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'public'))} .`);
             resolve();
@@ -141,7 +141,7 @@ const configureWebProject = async (c, platform) => {
 };
 
 export const configureCoreWebProject = async (c, platform) => {
-    _generateWebpackConfigs(c);
+    _generateWebpackConfigs(c, platform);
     _parseCssSync(c, platform);
 };
 
@@ -209,12 +209,20 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted, should
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
     logTask(`runWebDevServer:${platform}`);
+    const { debug, debugIp } = c.program;
 
     const appFolder = getAppFolder(c, platform);
     const wpPublic = path.join(appFolder, 'public');
     const wpConfig = path.join(appFolder, 'webpack.config.js');
 
-    const command = `webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
+    let debugVariables = '';
+
+    if (debug) {
+        logInfo(`Starting a remote debugger build with ip ${debugIp || ip.address()}. If this IP is not correct, you can always override it with --debugIp`);
+        debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
+    }
+
+    const command = `npx cross-env PLATFORM=${platform} ${debugVariables} webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
     executeAsync(c, command, { stdio: 'inherit', silent: true })
         .then(() => {
             logDebug('runWebDevServer: running');

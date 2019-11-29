@@ -62,10 +62,11 @@ class Docker {
     }
 
     async saveImage() {
+        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
         const config = require(path.join(this.rnvPath, 'dist/config')).default;
-        const { runtime, files, paths, platform } = config.getConfig();
+        const { runtime, files, paths, platform, program: { scheme = 'debug' } } = config.getConfig();
         const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
-        const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
+        const { executeAsync, commandExistsSync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
         const imageName = runtime.appId.toLowerCase();
         const appVersion = files.project.package.version;
 
@@ -77,6 +78,17 @@ class Docker {
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
         logInfo(`${imageName}_${appVersion}.tar file has been saved in ${dockerDestination}. You can import it on another machine by running 'docker load -i ${imageName}_${appVersion}.tar'`);
+
+        const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
+        const zipImage = deployOptions?.docker?.zipImage;
+
+        if (zipImage) {
+            logTask('docker:zipImage');
+            if (commandExistsSync('zip')) {
+                const pth = `${dockerDestination}${path.sep}`;
+                await executeAsync(`zip -j ${pth}web_${imageName}_${scheme}_${appVersion}.zip ${pth}${imageName}_${appVersion}.tar ${pth}docker-compose.yml`);
+            }
+        }
     }
 
     async doExport() {

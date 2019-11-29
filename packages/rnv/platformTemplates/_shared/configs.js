@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 function generateConfig(config) {
@@ -97,10 +97,10 @@ function generateConfig(config) {
     rules.css = {
         test: /\.css$/,
         use: ['css-hot-loader'].concat(
-            ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: 'css-loader',
-            })
+            {
+                loader: MiniCssExtractPlugin.loader,
+            },
+            'css-loader',
         ),
     };
 
@@ -112,7 +112,7 @@ function generateConfig(config) {
     };
 
     rules.fonts = {
-        test: /\.(ttf|otf)(\?[\s\S]+)?$/,
+        test: /\.(woff|woff2|eot|ttf|otf)(\?[\s\S]+)?$/,
         use: 'file-loader',
     };
 
@@ -155,12 +155,17 @@ function generateConfig(config) {
         templateParameters: {
             ...config,
             debug: process.env.DEBUG,
-            debugIp: process.env.DEBUG_IP
+            debugIp: process.env.DEBUG_IP,
+            platform: process.env.PLATFORM,
+            environment: config.environment,
         },
     });
+
     plugins.harddisk = new HtmlWebpackHarddiskPlugin();
 
     plugins.analyzer = new BundleAnalyzerPlugin();
+
+    plugins.css = new MiniCssExtractPlugin();
 
     const extensions = config.extensions.map(v => `.${v}`);
 

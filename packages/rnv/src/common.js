@@ -218,29 +218,9 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => {
-    console.log('getAppTemplateFolder', c.paths.project.platformTemplatesDirs[platform], platform);
-    return path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-};
+export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
 export const getAppConfigId = c => c.buildConfig.id;
-
-const _getValueOrMergedObject = (resultCli, resultScheme, resultPlatforms, resultCommon) => {
-    if (resultCli !== undefined) {
-        return resultCli;
-    }
-    if (resultScheme !== undefined) {
-        if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') return resultScheme;
-        const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
-        return val;
-    }
-    if (resultPlatforms !== undefined) {
-        if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') return resultPlatforms;
-        return Object.assign(resultCommon || {}, resultPlatforms);
-    }
-    if (resultPlatforms === null) return null;
-    return resultCommon;
-};
 
 export const CLI_PROPS = [
     'provisioningStyle',
@@ -248,6 +228,7 @@ export const CLI_PROPS = [
     'provisionProfileSpecifier'
 ];
 
+// We need to slowly move this to Config and refactor everything to use it from there
 export const getConfigProp = (c, platform, key, defaultVal) => {
     if (!c.buildConfig) {
         logError('getConfigProp: c.buildConfig is undefined!');
@@ -267,7 +248,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     const resultScheme = scheme[key];
     const resultCommon = c.buildConfig.common?.[key];
 
-    let result = _getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+    let result = Config.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
@@ -476,6 +457,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
 };
 
 export const waitForWebpack = async (c, port) => {
+    if (!port) port = c.program.port || c.platformDefaults[c.platform] ? c.platformDefaults[c.platform].defaultPort : null;
     logTask(`waitForWebpack:${port}`);
     let attempts = 0;
     const maxAttempts = 10;

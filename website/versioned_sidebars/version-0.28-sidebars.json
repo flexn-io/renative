@@ -5,6 +5,7 @@
             "version-0.28-installation",
             "version-0.28-migrating_react_native",
             "version-0.28-features",
+            "version-0.28-customize",
             "version-0.28-architecture"
         ],
         "Guides": [
@@ -20,7 +21,8 @@
             "version-0.28-build_hooks",
             "version-0.28-runtime",
             "version-0.28-common_issues",
-            "version-0.28-develop"
+            "version-0.28-develop",
+            "version-0.28-analytics"
         ],
         "Platforms": [
             "version-0.28-platforms_overview",

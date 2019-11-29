@@ -38,7 +38,7 @@ import {
     copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
     getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps, mergeObjects
 } from '../systemTools/fileutils';
-import { getSourceExtsAsString } from '../common';
+import { getSourceExtsAsString, getConfigProp } from '../common';
 import {
     logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
@@ -49,6 +49,7 @@ import {
     checkAndCreateGitignore, copySharedPlatforms, upgradeProjectDependencies
 } from '../projectTools/projectParser';
 import { inquirerPrompt } from '../systemTools/prompt';
+import Config from '../config';
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -156,7 +157,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'projectTemplates');
     c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
-    c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
 
     c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'projectTemplate');
     c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
@@ -213,7 +213,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
-        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        c.runtime.appId = c.runtime.appId || c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
         c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 
         // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
@@ -569,12 +569,14 @@ export const generateBuildConfig = (c) => {
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeObjectSync(c.paths.project.builds.config, c.buildConfig);
     }
-    const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
+    if (Config.isRenativeProject) {
+        const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
 
-    if (c.platform) {
-        fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
-    } else if (!fs.existsSync(localMetroPath)) {
-        fs.writeFileSync(localMetroPath, 'module.exports = []');
+        if (c.platform) {
+            fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
+        } else if (!fs.existsSync(localMetroPath)) {
+            fs.writeFileSync(localMetroPath, 'module.exports = []');
+        }
     }
 };
 
@@ -584,6 +586,10 @@ export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
         common: c.buildConfig.common,
         runtime: c.buildConfig.runtime
     };
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});
+    c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
 
     if (fs.existsSync(c.paths.project.assets.dir)) {
         writeObjectSync(c.paths.project.assets.config, c.assetConfig);
@@ -642,7 +648,7 @@ export const updateConfig = async (c, appConfigId) => {
             logWarning(
                 'It seems you don\'t have any appConfig active',
             );
-        } else if (appConfigId !== '?' && !isPureRnv) {
+        } else if (appConfigId !== '?' && appConfigId !== true && !isPureRnv) {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,
@@ -653,6 +659,7 @@ export const updateConfig = async (c, appConfigId) => {
         if (configDirs.length) {
             if (configDirs.length === 1) {
                 // we have only one, skip the question
+                logInfo(`Found only one app config available. Will use ${chalk.white(configDirs[0])}`);
                 setAppConfig(c, configDirs[0]);
                 return true;
             }
