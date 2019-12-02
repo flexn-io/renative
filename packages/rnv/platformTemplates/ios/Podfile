@@ -49,4 +49,17 @@ pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
 end
 
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    if ['RNFBApp', 'RNFBMessaging'].include?(target.name)
+      target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'GoogleUtilities'})
+    elsif target.name.eql?('RNFBAnalytics')
+      target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'FirebaseAnalytics'})
+      target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'GoogleAppMeasurement'})
+      target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'nanopb'})
+      target.add_system_framework(installer.pods_project.targets.find{|target| target.name == 'GoogleUtilities'})
+    end
+  end
+end
+
 {{PLUGIN_PODFILE_INJECT}}
