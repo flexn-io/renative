@@ -65,6 +65,7 @@
             "rnv-new",
             "rnv-package",
             "rnv-platform",
+            "rnv-publish",
             "rnv-plugin",
             "rnv-run",
             "rnv-start",

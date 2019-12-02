@@ -144,6 +144,9 @@
         }
     },
     "release-it": {
+        "publish": "local",
+        "skipRootPublish": true,
+        "rootPublishCommand": "rnv deploy -p ios -s debug",
         "git": {
             "tagName": "v${version}",
             "requireCleanWorkingDir": false

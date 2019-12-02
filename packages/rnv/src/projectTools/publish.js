@@ -4,6 +4,7 @@ import semver from 'semver';
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
 import { writeObjectSync } from '../systemTools/fileutils';
+import { logWarning } from '../common';
 
 /*
  *
@@ -62,6 +63,11 @@ const rnvPublish = async () => {
         writeObjectSync(existingPath, pkgJson);
     }
 
+    if (!pkgJson['release-it'].release) {
+        pkgJson['release-it'].release = 'local';
+        pkgJson['release-it'].skipRootDeploy = true;
+        pkgJson['release-it'].rootDeployCommand = 'rnv deploy -p ios -s debug';
+    }
 
     let args = [...Config.getConfig().program.rawArgs];
     args = args.slice(3);
@@ -82,12 +88,27 @@ const rnvPublish = async () => {
     }
 
     const { dir } = Config.getConfig().paths.project;
-
-    return executeAsync(`release-it ${args.join(' ')} ${prereleaseMark}`, { interactive: true, env: process.env, cwd: dir }).catch((e) => {
+    const execCommonOpts = { interactive: true, env: process.env, cwd: dir };
+    const releaseIt = () => executeAsync(`release-it ${args.join(' ')} ${prereleaseMark}`, execCommonOpts).catch((e) => {
         if (e.includes('SIGINT')) return Promise.resolve();
         if (e.includes('--no-git.requireUpstream')) return Promise.reject(new Error('Seems like you have no upstream configured for current branch. Run `git push -u <origin> <your_branch>` to fix it then try again.'));
         return Promise.reject(e);
     });
+
+    const { ci } = Config.getConfig().program;
+
+    const publishMode = pkgJson['release-it'].publish || 'local';
+    const { skipRootPublish, rootPublishCommand } = pkgJson['release-it'];
+
+    // we have a ci flag, checking if the project is configured for ci releases to do a bumpless deploy
+    if (ci) {
+        if (publishMode !== 'ci') return logWarning('You are running publish with --ci flag but this project is set for local deployments. Check package.json release-it.publish property');
+        await executeAsync('rnv pkg publish', execCommonOpts);
+        if (!skipRootPublish) await executeAsync(rootPublishCommand, execCommonOpts);
+        return releaseIt();
+    }
+
+    return releaseIt();
 };
 
 export default rnvPublish;

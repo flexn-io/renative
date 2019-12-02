@@ -39,6 +39,19 @@ const bumpVersions = (version) => {
     }
 };
 
+const publishAll = () => {
+    const { project: { dir } } = Config.getConfig().paths;
+    const packagesDir = path.join(dir, 'packages');
+    if (fs.existsSync(packagesDir)) {
+        const packages = fs.readdirSync(packagesDir);
+        return Promise.all(packages.map((name) => {
+            const pkgPath = path.join(packagesDir, name);
+            return executeAsync('npm i', { cwd: pkgPath });
+        }));
+    }
+    return true;
+};
+
 const rnvPkg = async () => {
     let args = [...Config.getConfig().program.rawArgs];
     args = args.slice(3);
@@ -53,8 +66,7 @@ const rnvPkg = async () => {
             if (!semver.valid(secondArg)) return logError(`Invalid version specified ${secondArg}`, false, true);
             return bumpVersions(secondArg);
         case 'publish':
-
-            break;
+            return publishAll();
         default:
             logError(`Unknown argument ${firstArg}`, false, true);
             break;
