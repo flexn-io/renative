@@ -11,7 +11,7 @@ import { logDebug, logError, logWarning, logInfo } from './logger';
 export const isRunningOnWindows = process.platform === 'win32';
 
 export const copyFileSync = (source, target) => {
-    logDebug('copyFileSync', source, target);
+    logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
     if (source.indexOf('.DS_Store') !== -1) return;
@@ -21,6 +21,13 @@ export const copyFileSync = (source, target) => {
             targetFile = path.join(target, path.basename(source));
         }
     }
+    if (fs.existsSync(targetFile)) {
+        const src = fs.readFileSync(source);
+        const dst = fs.readFileSync(targetFile);
+
+        if (Buffer.compare(src, dst) === 0) return;
+    }
+    logDebug('copyFileSync', source, targetFile, 'executed');
     fs.writeFileSync(targetFile, fs.readFileSync(source));
 };
 
@@ -185,11 +192,13 @@ export const removeDirSync = (dir, rmSelf) => {
 };
 
 export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
-    if (addNewLine) {
-        fs.writeFileSync(filePath, `${JSON.stringify(obj, null, spaces || 4)}\n`);
-    } else {
-        fs.writeFileSync(filePath, JSON.stringify(obj, null, spaces || 4));
+    logDebug('writeObjectSync', filePath);
+    const output = `${JSON.stringify(obj, null, spaces || 4)}${addNewLine ? '\n' : ''}`;
+    if (fs.existsSync(filePath)) {
+        if (fs.readFileSync(filePath).toString() === output) return;
     }
+    logDebug('writeObjectSync', filePath, 'executed');
+    fs.writeFileSync(filePath, output);
 };
 
 export const readObjectSync = (filePath, sanitize = false, c) => {
