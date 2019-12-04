@@ -1617,6 +1617,52 @@
                     }
                 }
             }
+        },
+        "react-native-google-cast": {
+            "version": "github:hosek/react-native-google-cast#feat/custom-cast-dialog-support",
+            "ios": {
+                "podName": "react-native-google-cast/NoBluetooth",
+                "path": "node_modules/react-native-google-cast/ios",
+                "appDelegateImports": ["GoogleCast"],
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "let criteria = GCKDiscoveryCriteria(applicationID: kGCKDefaultMediaReceiverApplicationID)",
+                            "let options = GCKCastOptions(discoveryCriteria: criteria)",
+                            "GCKCastContext.setSharedInstanceWith(options)"
+                        ]
+                    }
+                }
+            },
+            "android": {
+                "implementations": [
+                    "'com.google.android.gms:play-services-cast-framework:16.0.2'"
+                ],
+                "MainApplication": {
+                    "packages": ["com.reactnative.googlecast.GoogleCastPackage"]
+                },
+                "mainActivity": {
+                    "imports": [
+                        "com.google.android.gms.cast.framework.CastContext"
+                    ],
+                    "createMethods": ["CastContext.getSharedInstance(this)"]
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
+                                    "android:value": "com.reactnative.googlecast.GoogleCastOptionsProvider"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
         }
     },
     "plugins": {
