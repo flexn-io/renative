@@ -6,6 +6,7 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
 import ncp from 'ncp';
+
 import { logDebug, logError, logWarning, logInfo } from './logger';
 
 export const isRunningOnWindows = process.platform === 'win32';
@@ -29,6 +30,14 @@ export const copyFileSync = (source, target) => {
     }
     logDebug('copyFileSync', source, targetFile, 'executed');
     fs.writeFileSync(targetFile, fs.readFileSync(source));
+};
+
+export const invalidatePodsChecksum = (c) => {
+    const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    if (fs.existsSync(podChecksumPath)) {
+        fs.unlinkSync(podChecksumPath);
+    }
 };
 
 export const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) => {

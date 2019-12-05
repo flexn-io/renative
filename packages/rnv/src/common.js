@@ -7,6 +7,7 @@ import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
 import colorString from 'color-string';
+import crypto from 'crypto';
 
 import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
@@ -40,6 +41,12 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
 
     resolve(c);
 });
+
+
+export const generateChecksum = (str, algorithm, encoding) => crypto
+    .createHash(algorithm || 'md5')
+    .update(str, 'utf8')
+    .digest(encoding || 'hex');
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {

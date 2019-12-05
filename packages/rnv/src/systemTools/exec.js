@@ -9,7 +9,7 @@ import util from 'util';
 import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
-import { removeDirs } from './fileutils';
+import { removeDirs, invalidatePodsChecksum } from './fileutils';
 
 const { exec, execSync } = require('child_process');
 
@@ -399,8 +399,10 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
 
 export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
+    const c = Config.getConfig();
 
     return executeAsync('npm install')
+        .then(() => invalidatePodsChecksum(c))
         .catch((e) => {
             if (failOnError) {
                 return logError(e);
