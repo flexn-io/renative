@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTools/logger';
-import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
+import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeFileSync } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
 import { rnvClean } from '../systemTools/cleaner';
 import { RN_CLI_CONFIG_NAME } from '../constants';
@@ -138,7 +138,7 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
             logWarning(`Found legacy object ${chalk.red(paths.plugins)}. this should be migrated to ${chalk.green('./renative.json')}`);
         }
 
-        if (requiresSave) writeObjectSync(paths.configNew, files.configNew);
+        if (requiresSave) writeFileSync(paths.configNew, files.configNew);
 
         // _migrateFile(paths.privateProjectConfig, paths.privateProjectConfigNew);
         // _migrateFile(paths.privateProjectConfig2, paths.privateProjectConfigNew);
@@ -247,7 +247,7 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
         }
     });
 
-    writeObjectSync(c.paths.project.config, newConfig);
+    writeFileSync(c.paths.project.config, newConfig);
 
     logDebug(`Paths to delete, ${pathsToDelete.join('\n')}`);
 

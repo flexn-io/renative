@@ -7,7 +7,7 @@ import {
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, isRunningOnWindows
+    copyFileSync, mkdirSync, removeDirs, writeFileSync, isRunningOnWindows
 } from '../systemTools/fileutils';
 import { executeAsync, npmInstall } from '../systemTools/exec';
 import {
@@ -326,14 +326,14 @@ export const upgradeProjectDependencies = (c, version) => {
         devDependencies.renative = version;
     }
 
-    writeObjectSync(c.paths.project.package, c.files.project.package);
+    writeFileSync(c.paths.project.package, c.files.project.package);
 
     if (c.files.project.config?.templates?.[thw]?.version) c.files.project.config.templates[thw].version = version;
     if (c.files.project.config?.templates?.[tb]?.version) c.files.project.config.templates[tb].version = version;
 
     c._requiresNpmInstall = true;
 
-    writeObjectSync(c.paths.project.config, c.files.project.config);
+    writeFileSync(c.paths.project.config, c.files.project.config);
 };
 
 export const configureNodeModules = c => new Promise((resolve, reject) => {

@@ -7,7 +7,7 @@ import {
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
     logInitialize, logAppInfo, getCurrentCommand, logToSummary
 } from '../systemTools/logger';
-import { writeObjectSync, mkdirSync } from '../systemTools/fileutils';
+import { writeFileSync, mkdirSync } from '../systemTools/fileutils';
 
 export const rnvWorkspaceList = async (c) => {
     logTask('rnvWorkspaceList');
@@ -61,9 +61,9 @@ export const rnvWorkspaceAdd = async (c) => {
     };
 
     mkdirSync(workspacePath);
-    writeObjectSync(path.join(workspacePath, 'renative.json'), workspaceConfig);
+    writeFileSync(path.join(workspacePath, 'renative.json'), workspaceConfig);
 
-    writeObjectSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+    writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
 };
 
 export const rnvWorkspaceConnect = async (c) => {

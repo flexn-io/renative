@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import ora from 'ora';
-import { mergeObjects, writeObjectSync, sanitizeDynamicProps } from '../systemTools/fileutils';
+import { mergeObjects, writeFileSync, sanitizeDynamicProps } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
 import { versionCheck } from '../configTools/configParser';
 
@@ -109,7 +109,7 @@ export const rnvPluginAdd = async (c) => {
         _checkAndAddDependantPlugins(c, selectedPlugins[key]);
     });
 
-    writeObjectSync(c.paths.project.config, c.files.project.config);
+    writeFileSync(c.paths.project.config, c.files.project.config);
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');
 };
@@ -148,7 +148,7 @@ export const rnvPluginUpdate = async (c) => {
             c.files.project.config.plugins[key] = o.json[key];
         });
 
-        writeObjectSync(c.paths.project.config, c.files.project.config);
+        writeFileSync(c.paths.project.config, c.files.project.config);
 
         logSuccess('Plugins updated successfully!');
     }
@@ -271,7 +271,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
     versionCheck(c)
         .then(() => {
             if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
-                writeObjectSync(c.paths.project.package, c.files.project.package);
+                writeFileSync(c.paths.project.package, c.files.project.package);
                 c._requiresNpmInstall = true;
             }
             resolve();
