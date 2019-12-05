@@ -1,6 +1,6 @@
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
-import { writeObjectSync } from '../systemTools/fileutils';
+import { writeFileSync } from '../systemTools/fileutils';
 
 const rnvPublish = async () => {
     // make sure release-it is installed
@@ -20,7 +20,7 @@ const rnvPublish = async () => {
             }
         };
         const existingPath = Config.getConfig().paths.project.package;
-        writeObjectSync(existingPath, pkgJson);
+        writeFileSync(existingPath, pkgJson);
     }
 
 

@@ -191,13 +191,19 @@ export const removeDirSync = (dir, rmSelf) => {
     }
 };
 
-export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
-    logDebug('writeObjectSync', filePath);
-    const output = `${JSON.stringify(obj, null, spaces || 4)}${addNewLine ? '\n' : ''}`;
+export const writeFileSync = (filePath, obj, spaces, addNewLine = true) => {
+    logDebug('writeFileSync', filePath);
+    if (filePath.includes('?') || filePath.includes('undefined')) return;
+    let output;
+    if (typeof obj === 'string') {
+        output = obj;
+    } else {
+        output = `${JSON.stringify(obj, null, spaces || 4)}${addNewLine ? '\n' : ''}`;
+    }
     if (fs.existsSync(filePath)) {
         if (fs.readFileSync(filePath).toString() === output) return;
     }
-    logDebug('writeObjectSync', filePath, 'executed');
+    logDebug('writeFileSync', filePath, 'executed');
     fs.writeFileSync(filePath, output);
 };
 
@@ -238,7 +244,7 @@ export const updateObjectSync = (filePath, updateObj) => {
     } else {
         output = updateObj;
     }
-    writeObjectSync(filePath, output);
+    writeFileSync(filePath, output);
     return output;
 };
 
@@ -406,7 +412,7 @@ export default {
     copyFolderContentsRecursive,
     copyFolderContentsRecursiveSync,
     cleanFolder,
-    writeObjectSync,
+    writeFileSync,
     readObjectSync,
     updateObjectSync,
     arrayMerge,
