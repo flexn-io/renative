@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
-    copyFileSync, writeObjectSync, removeDirsSync,
+    copyFileSync, writeFileSync, removeDirsSync,
     removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
 import { logToSummary, logError, logInfo, logWarning, logTask } from '../systemTools/logger';
@@ -295,7 +295,7 @@ const _configureEntryPoints = c => new Promise((resolve, reject) => {
 });
 
 const _writeObjectSync = (c, p, s) => {
-    writeObjectSync(p, s);
+    writeFileSync(p, s);
     generateBuildConfig(c);
 };
 

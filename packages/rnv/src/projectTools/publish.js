@@ -3,8 +3,8 @@ import semver from 'semver';
 
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
-import { writeObjectSync } from '../systemTools/fileutils';
 import { logWarning } from '../common';
+import { writeFileSync } from '../systemTools/fileutils';
 
 /*
  *
@@ -50,7 +50,7 @@ const rnvPublish = async () => {
                 'before:git': 'rnv pkg version ${version}' // @todo change it to npx after publish
             }
         };
-        writeObjectSync(existingPath, pkgJson);
+        writeFileSync(existingPath, pkgJson);
     }
 
     // backwards compatibility and user change friendly
@@ -60,7 +60,7 @@ const rnvPublish = async () => {
         }
         // eslint-disable-next-line no-template-curly-in-string
         pkgJson['release-it'].hooks['before:git'] = 'rnv pkg version ${version}';
-        writeObjectSync(existingPath, pkgJson);
+        writeFileSync(existingPath, pkgJson);
     }
 
     if (!pkgJson['release-it'].release) {

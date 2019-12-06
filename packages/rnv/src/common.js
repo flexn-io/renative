@@ -7,6 +7,7 @@ import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
 import colorString from 'color-string';
+import crypto from 'crypto';
 
 import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
@@ -40,6 +41,12 @@ export const initializeBuilder = (cmd, subCmd, process, program) => new Promise(
 
     resolve(c);
 });
+
+
+export const generateChecksum = (str, algorithm, encoding) => crypto
+    .createHash(algorithm || 'md5')
+    .update(str, 'utf8')
+    .digest(encoding || 'hex');
 
 export const isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
@@ -218,9 +225,7 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => {
-    return path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-};
+export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
 
 export const getAppConfigId = c => c.buildConfig.id;
 
@@ -237,7 +242,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         return null;
     }
     const p = c.buildConfig.platforms[platform];
-    const ps = Config.getScheme();
+    const ps = _getScheme(c);
     let resultPlatforms;
     let scheme;
     if (p) {
@@ -376,7 +381,7 @@ export const getBuildsFolder = (c, platform, customPath) => {
     // if (!fs.existsSync(pp)) {
     //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
     // }
-    const p = path.join(pp, `builds/${platform}@${Config.getScheme()}`);
+    const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
     if (fs.existsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
 };

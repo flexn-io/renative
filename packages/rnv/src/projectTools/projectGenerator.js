@@ -40,7 +40,7 @@ import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
-import { copyFolderContentsRecursiveSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, mkdirSync, writeFileSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
 import { executePipe } from './buildHooks';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
@@ -216,7 +216,7 @@ const _generateProject = (c, data) => {
             isNew: true
         };
 
-        writeObjectSync(c.paths.project.config, config);
+        writeFileSync(c.paths.project.config, config);
 
         logSuccess(
             `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(

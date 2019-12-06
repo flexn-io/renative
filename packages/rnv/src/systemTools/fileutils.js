@@ -6,12 +6,13 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
 import ncp from 'ncp';
+
 import { logDebug, logError, logWarning, logInfo } from './logger';
 
 export const isRunningOnWindows = process.platform === 'win32';
 
 export const copyFileSync = (source, target) => {
-    logDebug('copyFileSync', source, target);
+    logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
     if (source.indexOf('.DS_Store') !== -1) return;
@@ -21,7 +22,22 @@ export const copyFileSync = (source, target) => {
             targetFile = path.join(target, path.basename(source));
         }
     }
+    if (fs.existsSync(targetFile)) {
+        const src = fs.readFileSync(source);
+        const dst = fs.readFileSync(targetFile);
+
+        if (Buffer.compare(src, dst) === 0) return;
+    }
+    logDebug('copyFileSync', source, targetFile, 'executed');
     fs.writeFileSync(targetFile, fs.readFileSync(source));
+};
+
+export const invalidatePodsChecksum = (c) => {
+    const appFolder = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    if (fs.existsSync(podChecksumPath)) {
+        fs.unlinkSync(podChecksumPath);
+    }
 };
 
 export const copyFolderRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
@@ -184,12 +200,20 @@ export const removeDirSync = (dir, rmSelf) => {
     }
 };
 
-export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
-    if (addNewLine) {
-        fs.writeFileSync(filePath, `${JSON.stringify(obj, null, spaces || 4)}\n`);
+export const writeFileSync = (filePath, obj, spaces, addNewLine = true) => {
+    logDebug('writeFileSync', filePath);
+    if (filePath.includes('?') || filePath.includes('undefined')) return;
+    let output;
+    if (typeof obj === 'string') {
+        output = obj;
     } else {
-        fs.writeFileSync(filePath, JSON.stringify(obj, null, spaces || 4));
+        output = `${JSON.stringify(obj, null, spaces || 4)}${addNewLine ? '\n' : ''}`;
     }
+    if (fs.existsSync(filePath)) {
+        if (fs.readFileSync(filePath).toString() === output) return;
+    }
+    logDebug('writeFileSync', filePath, 'executed');
+    fs.writeFileSync(filePath, output);
 };
 
 export const readObjectSync = (filePath, sanitize = false, c) => {
@@ -229,7 +253,7 @@ export const updateObjectSync = (filePath, updateObj) => {
     } else {
         output = updateObj;
     }
-    writeObjectSync(filePath, output);
+    writeFileSync(filePath, output);
     return output;
 };
 
@@ -397,7 +421,7 @@ export default {
     copyFolderContentsRecursive,
     copyFolderContentsRecursiveSync,
     cleanFolder,
-    writeObjectSync,
+    writeFileSync,
     readObjectSync,
     updateObjectSync,
     arrayMerge,

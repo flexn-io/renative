@@ -24,7 +24,7 @@ import { IOS, TVOS } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
 import { parseProvisioningProfiles } from './provisionParser';
-import { writeObjectSync } from '../../systemTools/fileutils';
+import { writeFileSync } from '../../systemTools/fileutils';
 
 export const parseXcodeProject = async (c, platform) => {
     logTask('parseXcodeProject');
@@ -63,7 +63,7 @@ export const parseXcodeProject = async (c, platform) => {
             if (autoFix) {
                 c.runtime.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
                 c.files.appConfig.config.platforms[platform].buildSchemes[c.program.scheme].provisionProfileSpecifier = eligibleProfile.Name;
-                writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
+                writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
         } else {
             logWarning(`Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`);

@@ -37,7 +37,7 @@ import { MACOS, WINDOWS } from '../../constants';
 import { buildWeb, runWeb, configureCoreWebProject } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
-    copyFileSync, mkdirSync, writeObjectSync, readObjectSync, removeDirs, removeDirsSync
+    copyFileSync, mkdirSync, writeFileSync, readObjectSync, removeDirs, removeDirsSync
 } from '../../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -85,7 +85,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     packageJson.license = `${getAppLicense(c, platform)}`;
     packageJson.main = './main.js';
 
-    writeObjectSync(packagePath, packageJson);
+    writeFileSync(packagePath, packageJson);
 
     let browserWindow = { width: 1200, height: 800, webPreferences: { nodeIntegration: true } };
     const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
@@ -138,7 +138,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (electronConfigExt) {
         electronConfig = merge(electronConfig, electronConfigExt);
     }
-    writeObjectSync(electronConfigPath, electronConfig);
+    writeFileSync(electronConfigPath, electronConfig);
 
 
     resolve();

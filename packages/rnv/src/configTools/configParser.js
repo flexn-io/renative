@@ -35,7 +35,7 @@ import {
 
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
+    copyFileSync, mkdirSync, removeDirs, writeFileSync, readObjectSync,
     getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps, mergeObjects
 } from '../systemTools/fileutils';
 import { getSourceExtsAsString, getConfigProp } from '../common';
@@ -192,7 +192,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
-
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 
     // LOAD WORKSPACES
@@ -213,7 +212,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
-        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        c.runtime.appId = c.runtime.appId || c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
         c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 
         // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
@@ -274,7 +273,7 @@ const _getWorkspaceDirPath = (c) => {
                 wss.workspaces[ws] = {
                     path: wsDir
                 };
-                writeObjectSync(c.paths.rnv.configWorkspaces, wss);
+                writeFileSync(c.paths.rnv.configWorkspaces, wss);
                 logInfo(`Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.rnv.configWorkspaces} has been updated.`);
             }
         }
@@ -567,7 +566,7 @@ export const generateBuildConfig = (c) => {
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
     if (fs.existsSync(c.paths.project.builds.dir)) {
-        writeObjectSync(c.paths.project.builds.config, c.buildConfig);
+        writeFileSync(c.paths.project.builds.config, c.buildConfig);
     }
     if (Config.isRenativeProject) {
         const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
@@ -592,7 +591,7 @@ export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
     c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
 
     if (fs.existsSync(c.paths.project.assets.dir)) {
-        writeObjectSync(c.paths.project.assets.config, c.assetConfig);
+        writeFileSync(c.paths.project.assets.config, c.assetConfig);
     }
     resolve();
 });
@@ -607,7 +606,7 @@ export const generateLocalConfig = (c, resetAppId) => {
         configLocal._meta.currentAppConfigId = c.runtime.appId;
     }
     c.files.project.configLocal = configLocal;
-    writeObjectSync(c.paths.project.configLocal, configLocal);
+    writeFileSync(c.paths.project.configLocal, configLocal);
 };
 
 const _generatePlatformTemplatePaths = (c) => {
@@ -648,7 +647,7 @@ export const updateConfig = async (c, appConfigId) => {
             logWarning(
                 'It seems you don\'t have any appConfig active',
             );
-        } else if (appConfigId !== '?' && !isPureRnv) {
+        } else if (appConfigId !== '?' && appConfigId !== true && !isPureRnv) {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,
@@ -659,6 +658,7 @@ export const updateConfig = async (c, appConfigId) => {
         if (configDirs.length) {
             if (configDirs.length === 1) {
                 // we have only one, skip the question
+                logInfo(`Found only one app config available. Will use ${chalk.white(configDirs[0])}`);
                 setAppConfig(c, configDirs[0]);
                 return true;
             }
@@ -794,7 +794,7 @@ const _loadWorkspacesSync = (c) => {
                 }
             }
         };
-        writeObjectSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+        writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
     }
 };
 
