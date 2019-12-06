@@ -68,6 +68,7 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
+        const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
@@ -88,7 +89,7 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
                     if (fs.existsSync(ts)) {
                         copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
                     }
-                    logSuccess(`Files succesfully extracted into ${c.paths.workspace.dir}`);
+                    logSuccess(`Files succesfully extracted into ${destFolder}`);
                     resolve();
                 })
                     .catch(e => reject(e));

@@ -29,7 +29,11 @@ export const copyFileSync = (source, target) => {
         if (Buffer.compare(src, dst) === 0) return;
     }
     logDebug('copyFileSync', source, targetFile, 'executed');
-    fs.writeFileSync(targetFile, fs.readFileSync(source));
+    try {
+        fs.writeFileSync(targetFile, fs.readFileSync(source));
+    } catch (e) {
+        console.log('copyFileSync', e);
+    }
 };
 
 export const invalidatePodsChecksum = (c) => {
