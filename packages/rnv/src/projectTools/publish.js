@@ -47,7 +47,7 @@ const rnvPublish = async () => {
             },
             hooks: {
                 // eslint-disable-next-line no-template-curly-in-string
-                'before:git': 'rnv pkg version ${version}' // @todo change it to npx after publish
+                'before:git': 'npx rnv pkg version ${version}'
             }
         };
         writeFileSync(existingPath, pkgJson);
@@ -59,14 +59,14 @@ const rnvPublish = async () => {
             pkgJson['release-it'].hooks = {};
         }
         // eslint-disable-next-line no-template-curly-in-string
-        pkgJson['release-it'].hooks['before:git'] = 'rnv pkg version ${version}';
+        pkgJson['release-it'].hooks['before:git'] = 'npx rnv pkg version ${version}';
         writeFileSync(existingPath, pkgJson);
     }
 
     if (!pkgJson['release-it'].publish) {
         pkgJson['release-it'].publish = 'local';
         pkgJson['release-it'].skipRootPublish = true;
-        pkgJson['release-it'].rootPublishCommand = 'rnv deploy -p ios -s debug';
+        pkgJson['release-it'].rootPublishCommand = 'npx rnv deploy -p ios -s debug';
         writeFileSync(existingPath, pkgJson);
     }
 
@@ -95,7 +95,7 @@ const rnvPublish = async () => {
     const { skipRootPublish, rootPublishCommand } = pkgJson['release-it'];
 
     const rootPublishIfNecessary = async () => {
-        await executeAsync('rnv pkg publish', execCommonOpts);
+        await executeAsync('npx rnv pkg publish', execCommonOpts);
         if (!skipRootPublish) {
             if (!rootPublishCommand) throw new Error('You don\'t have a rootPublishCommand specified in package.json');
             return executeAsync(rootPublishCommand, execCommonOpts);
