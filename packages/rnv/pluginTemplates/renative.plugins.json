@@ -935,15 +935,8 @@
             "no-npm": true,
             "ios": {
                 "podName": "Crashlytics",
-                "version": "3.13.4",
-                "xcodeproj": {
-                    "buildPhases": [
-                        {
-                            "shellPath": "/bin/sh",
-                            "shellScript": "\"${PODS_ROOT}/Fabric/upload-symbols\" -gsp \"${PROJECT_DIR}/RNVApp/GoogleService-Info.plist\" -p ios \"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}\""
-                        }
-                    ]
-                }
+                "appDelegateImports": ["Crashlytics"],
+                "version": "3.13.4"
             },
             "android": {
                 "skipImplementation": true,
@@ -964,14 +957,25 @@
             "no-npm": true,
             "ios": {
                 "podName": "Fabric",
+                "appDelegateImports": ["Fabric"],
                 "version": "1.10.2",
-                "xcodeproj": {
-                    "buildPhases": [
-                        {
-                            "shellPath": "/bin/sh",
-                            "shellScript": "\"${PODS_ROOT}/Fabric/run\""
-                        }
-                    ]
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "Fabric.with([Crashlytics.self])"
+                        ]
+                    }
+                },
+                "plist": {
+                    "Fabric": {
+                        "APIKey": "",
+                        "Kits": [
+                            {
+                                "KitInfo": {},
+                                "KitName": "Crashlytics"
+                            }
+                        ]
+                    }
                 }
             },
             "android": {
