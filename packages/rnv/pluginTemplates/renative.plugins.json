@@ -1166,11 +1166,39 @@
             "no-npm": true,
             "ios": {
                 "podNames": ["Firebase/Core', '~> 6.3.0"],
+                "appDelegateImports": ["Firebase"],
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "FirebaseApp.configure()",
+                            "if #available(iOS 10.0, *) {",
+                            "  // For iOS 10 display notification (sent via APNS)",
+                            "  UNUserNotificationCenter.current().delegate = self",
+                            "  let authOptions: UNAuthorizationOptions = [.alert, .badge, .sound]",
+                            "  UNUserNotificationCenter.current().requestAuthorization(",
+                            "    options: authOptions,",
+                            "    completionHandler: {_, _ in })",
+                            "} else {",
+                            "  let settings: UIUserNotificationSettings =",
+                            "  UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)",
+                            "  application.registerUserNotificationSettings(settings)",
+                            "}",
+                            "application.registerForRemoteNotifications()"
+                        ]
+                    }
+                }
+            }
+        },
+        "Firebase/Messaging": {
+            "no-npm": true,
+            "ios": {
+                "podNames": ["Firebase/Messaging', '~> 6.3.0"],
                 "appDelegateImports": ["Firebase"]
             }
         },
         "firebase-core": {
             "no-npm": true,
+            "deprecated": "firebase-core plugin is deprecated use Firebase/<SUBMODULE> instead",
             "ios": {
                 "podNames": [
                     "Firebase/Core', '~> 6.3.0",
