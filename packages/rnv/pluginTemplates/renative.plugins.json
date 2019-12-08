@@ -933,6 +933,7 @@
         },
         "crashlytics": {
             "no-npm": true,
+            "deprecated": "crashlytics plugin is deprecated use Crashlytics (uppercase) in combination with Firebase",
             "ios": {
                 "podName": "Crashlytics",
                 "appDelegateImports": ["Crashlytics"],
@@ -955,6 +956,7 @@
         },
         "fabric": {
             "no-npm": true,
+            "deprecated": "fabric plugin is deprecated use Fabric (uppercase) in combination with Firebase",
             "ios": {
                 "podName": "Fabric",
                 "appDelegateImports": ["Fabric"],
