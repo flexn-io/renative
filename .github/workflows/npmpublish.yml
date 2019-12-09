@@ -1,0 +1,29 @@
+name: Node.js Package
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - run: npm i
+      - run: npx lerna run build
+      - run: npx rnv publish --ci
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - name: Set env
+        run: echo ::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})
+      - name: Sentry.io release management
+        uses: juankaram/sentry-release@v1.0.0
+        env:
+          SENTRY_ORG: "rnv"
+          SENTRY_PROJECT: "rnv"
+          SENTRY_AUTH_TOKEN: ${{secrets.sentry_token}}

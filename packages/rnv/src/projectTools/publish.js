@@ -59,7 +59,7 @@ const rnvPublish = async () => {
             pkgJson['release-it'].hooks = {};
         }
         // eslint-disable-next-line no-template-curly-in-string
-        pkgJson['release-it'].hooks['before:git'] = 'npx rnv pkg version ${version}';
+        pkgJson['release-it'].hooks['after:bump'] = 'npx rnv pkg version ${version}';
         writeFileSync(existingPath, pkgJson);
     }
 
@@ -95,10 +95,12 @@ const rnvPublish = async () => {
     const { skipRootPublish, rootPublishCommand } = pkgJson['release-it'];
 
     const rootPublishIfNecessary = async () => {
-        await executeAsync('npx rnv pkg publish', execCommonOpts);
-        if (!skipRootPublish) {
-            if (!rootPublishCommand) throw new Error('You don\'t have a rootPublishCommand specified in package.json');
-            return executeAsync(rootPublishCommand, execCommonOpts);
+        if ((ci && publishMode === 'ci') || (!ci && publishMode === 'local')) {
+            await executeAsync('npx rnv pkg publish', execCommonOpts);
+            if (!skipRootPublish) {
+                if (!rootPublishCommand) throw new Error('You don\'t have a rootPublishCommand specified in package.json');
+                return executeAsync(rootPublishCommand, execCommonOpts);
+            }
         }
     };
 

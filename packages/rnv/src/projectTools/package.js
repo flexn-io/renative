@@ -5,8 +5,8 @@ import semver from 'semver';
 
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
-import { writeObjectSync, copyFileSync, updateObjectSync } from '../systemTools/fileutils';
-import { logError } from '../systemTools/logger';
+import { writeFileSync, copyFileSync, updateObjectSync } from '../systemTools/fileutils';
+import { logError, logToSummary } from '../systemTools/logger';
 
 const bumpVersions = (version) => {
     const { project: { dir }, rnv: { pluginTemplates } } = Config.getConfig().paths;
@@ -21,7 +21,7 @@ const bumpVersions = (version) => {
                 // we found a packaaaage, fist-bumpin' it
                 const existingPkgJson = require(pkgJsonPath);
                 existingPkgJson.version = version;
-                writeObjectSync(pkgJsonPath, existingPkgJson);
+                writeFileSync(pkgJsonPath, existingPkgJson);
             }
         });
         // check if it's our turf and do some extra magic
@@ -46,7 +46,14 @@ const publishAll = () => {
         const packages = fs.readdirSync(packagesDir);
         return Promise.all(packages.map((name) => {
             const pkgPath = path.join(packagesDir, name);
-            return executeAsync('npm i', { cwd: pkgPath });
+            const pkgJsonPath = path.join(pkgPath, 'package.json');
+            const pkgJson = require(pkgJsonPath);
+            const { version } = pkgJson;
+            let tagString = '';
+            if (version.includes('alpha')) tagString = '--tag alpha';
+            if (version.includes('beta')) tagString = '--tag beta';
+            if (version.includes('rc')) tagString = '--tag rc';
+            return executeAsync(`npm publish ${tagString}`, { cwd: pkgPath }).then(logToSummary);
         }));
     }
     return true;
