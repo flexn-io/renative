@@ -425,7 +425,11 @@
                     "'com.facebook.android:facebook-android-sdk:[4,5)'"
                 ],
                 "imports": ["com.facebook.CallbackManager"],
-                "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
+                "mainApplication": {
+                    "methods": [
+                        "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}"
+                    ]
+                },
                 "mainActivity": {
                     "imports": [],
                     "createMethods": [],
@@ -440,7 +444,11 @@
                     "'com.facebook.android:facebook-android-sdk:[4,5)'"
                 ],
                 "imports": ["com.facebook.CallbackManager"],
-                "mainApplicationMethods": "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}",
+                "mainApplication": {
+                    "methods": [
+                        "    companion object {\n @JvmStatic \n private val mCallbackManager = CallbackManager.Factory.create() \n fun getCallbackManager(): CallbackManager = mCallbackManager \n}"
+                    ]
+                },
                 "mainActivity": {
                     "imports": [],
                     "createMethods": [],

@@ -422,6 +422,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         buildGradleBuildScriptDexOptions: '',
         appBuildGradleSigningConfigs: '',
         appBuildGradleImplementations: '',
+        resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
     };
 
