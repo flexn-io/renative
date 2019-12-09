@@ -525,7 +525,7 @@
             }
         },
         "react-native-sensors": {
-            "version": "5.3.2",
+            "version": "5.3.3",
             "ios": {
                 "podName": "RNSensors"
             },
@@ -553,7 +553,7 @@
             "version": "1.2.4"
         },
         "react-native-autocomplete-input": {
-            "version": "3.6.0"
+            "version": "4.1.0"
         },
         "react-native-datepicker": {
             "version": "1.7.2"
@@ -602,6 +602,17 @@
             "android": {
                 "projectName": "react-native-fingerprint-scanner",
                 "package": "com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage"
+            }
+        },
+        "@react-native-community/geolocation": {
+            "version": "2.0.2",
+            "android": {
+                "path": "/node_modules/@react-native-community/geolocation/android",
+                "package": "com.reactnativecommunity.geolocation.GeolocationPackage"
+            },
+            "ios": {
+                "podName": "react-native-geolocation",
+                "path": "node_modules/@react-native-community/geolocation"
             }
         },
         "react-native-keep-awake": {
@@ -671,7 +682,10 @@
             "dependsOn": ["svgs"]
         },
         "react-native-android-open-settings": {
-            "version": "1.3.0"
+            "version": "1.3.0",
+            "android": {
+                "package": "com.levelasquez.androidopensettings.AndroidOpenSettingsPackage"
+            }
         },
         "react-native-vector-icons": {
             "version": "6.6.0",
@@ -817,20 +831,22 @@
             }
         },
         "react-native-sqlite-storage": {
-            "version": "3.3.9",
-            "ios": {
-                "podName": "react-native-sqlite-storage"
-            },
-            "tvos": {
-                "podName": "react-native-sqlite-storage"
-            },
+            "version": "3.3.11",
             "android": {
-                "package": "org.pgsqlite.SQLitePluginPackage",
-                "path": "node_modules/react-native-sqlite-storage/src/android"
+                "path": "/node_modules/react-native-sqlite-storage/src/android",
+                "package": "org.pgsqlite.SQLitePluginPackage"
             },
             "androidtv": {
-                "package": "org.pgsqlite.SQLitePluginPackage",
-                "path": "node_modules/react-native-sqlite-storage/src/android"
+                "path": "/node_modules/react-native-sqlite-storage/src/android",
+                "package": "org.pgsqlite.SQLitePluginPackage"
+            },
+            "ios": {
+                "podName": "react-native-sqlite-storage",
+                "path": "node_modules/react-native-sqlite-storage"
+            },
+            "tvos": {
+                "podName": "react-native-sqlite-storage",
+                "path": "node_modules/react-native-sqlite-storage"
             }
         },
         "react-native-signature-capture": {
@@ -1304,6 +1320,36 @@
             },
             "androidtv": {
                 "package": "com.wscodelabs.callLogs.CallLogPackage"
+            }
+        },
+        "@react-native-community/cameraroll": {
+            "version": "1.2.1",
+            "ios": {
+                "podName": "react-native-cameraroll"
+            },
+            "android": {
+                "package": "com.reactnativecommunity.cameraroll.CameraRollPackage"
+            }
+        },
+        "react-native-simple-shadow-view": {
+            "version": "1.6.3",
+            "android": {
+                "package": "com.como.RNTShadowView.ShadowViewPackage"
+            }
+        },
+        "react-native-webrtc": {
+            "version": "1.75.2",
+            "ios": {
+                "podName": "react-native-webrtc",
+                "path": "node_modules/react-native-webrtc"
+            },
+            "android": {
+                "path": "node_modules/react-native-webrtc/android",
+                "package": "com.oney.WebRTCModule.WebRTCModulePackage"
+            },
+            "androidtv": {
+                "path": "node_modules/react-native-webrtc/android",
+                "package": "com.oney.WebRTCModule.WebRTCModulePackage"
             }
         },
         "react-native-firebase": {

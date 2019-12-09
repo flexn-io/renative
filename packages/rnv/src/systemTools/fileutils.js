@@ -220,6 +220,12 @@ export const writeFileSync = (filePath, obj, spaces, addNewLine = true) => {
     fs.writeFileSync(filePath, output);
 };
 
+export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
+    logDebug('writeObjectSync', filePath);
+    logWarning('writeObjectSync is DEPRECATED. use writeFileSync instead');
+    writeFileSync = (filePath, obj, spaces, addNewLine);
+};
+
 export const readObjectSync = (filePath, sanitize = false, c) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
