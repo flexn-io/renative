@@ -292,6 +292,17 @@
                 "modulePaths": true
             }
         },
+        "@react-native-community/viewpager": {
+            "version": "2.0.1",
+            "ios": {
+                "podName": "react-native-viewpager",
+                "path": "node_modules/@react-native-community/viewpager"
+            },
+            "android": {
+                "path": "node_modules/@react-native-community/viewpager/android",
+                "package": "com.reactnativecommunity.viewpager.RNCViewPagerPackage"
+            }
+        },
         "react-native-fs": {
             "version": "2.14.1",
             "ios": {
@@ -1491,7 +1502,7 @@
             }
         },
         "react-native-web": {
-            "version": "0.11.4"
+            "version": "0.11.7"
         },
         "react-native-web-image-loader": {
             "version": "0.0.5"
