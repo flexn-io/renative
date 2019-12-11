@@ -258,7 +258,7 @@ const COMMANDS = {
         fn: rnvPkg
     }
 };
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help', 'config'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'help', 'config'];
 export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
 
 

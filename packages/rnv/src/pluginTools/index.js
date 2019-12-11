@@ -28,7 +28,7 @@ const _getPluginList = (c, isUpdate = false) => {
         asString: '',
         asArray: [],
         plugins: [],
-        // json: plugins,
+        allPlugins: {} // this is used by rnvPluginAdd
     };
 
     let i = 1;
@@ -55,11 +55,13 @@ const _getPluginList = (c, isUpdate = false) => {
                 }
                 output.asString += ` [${i}]> ${chalk.bold(k)} ${versionString}\n`;
                 output.asArray.push({ name: `${k} ${versionString}`, value: k });
+                output.allPlugins[k] = p; // this is used by rnvPluginAdd
                 i++;
             } else if (!isUpdate) {
                 output.plugins.push(k);
                 output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}\n`;
                 output.asArray.push({ name: `${k} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}`, value: k });
+                output.allPlugins[k] = p; // this is used by rnvPluginAdd
 
                 i++;
             }
@@ -91,13 +93,13 @@ export const rnvPluginAdd = async (c) => {
         type: 'rawlist',
         message: 'Select the plugins you want to add',
         choices: o.asArray,
-        pageSize: 100
+        pageSize: 50
     });
 
     const installMessage = [];
     const selectedPlugins = {};
-    selectedPlugins[plugin] = o.json[plugin];
-    installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.json[plugin].version)})`);
+    selectedPlugins[plugin] = o.allPlugins[plugin];
+    installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.allPlugins[plugin].version)})`);
 
     const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
 

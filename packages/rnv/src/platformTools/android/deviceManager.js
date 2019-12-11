@@ -332,7 +332,7 @@ const getEmulatorName = async (words) => {
 export const connectToWifiDevice = async (c, ip) => {
     const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, `connect ${ip}:5555`);
     if (deviceResponse.includes('connected')) return true;
-    logError(`Failed to connect to ${ip}:5555`);
+    logError(`Failed to connect to ${ip}:5555`, false, true);
     return false;
 };
 
@@ -446,17 +446,17 @@ export const askForNewEmulator = async (c, platform) => {
 
     if (confirm) {
         switch (platform) {
-        case 'android':
-            return _createEmulator(c, '28', 'google_apis', emuName)
-                .then(() => launchAndroidSimulator(c, platform, emuName, true));
-        case 'androidtv':
-            return _createEmulator(c, '28', 'android-tv', emuName)
-                .then(() => launchAndroidSimulator(c, platform, emuName, true));
-        case 'androidwear':
-            return _createEmulator(c, '28', 'android-wear', emuName)
-                .then(() => launchAndroidSimulator(c, platform, emuName, true));
-        default:
-            return Promise.reject('Cannot find any active or created emulators');
+            case 'android':
+                return _createEmulator(c, '28', 'google_apis', emuName)
+                    .then(() => launchAndroidSimulator(c, platform, emuName, true));
+            case 'androidtv':
+                return _createEmulator(c, '28', 'android-tv', emuName)
+                    .then(() => launchAndroidSimulator(c, platform, emuName, true));
+            case 'androidwear':
+                return _createEmulator(c, '28', 'android-wear', emuName)
+                    .then(() => launchAndroidSimulator(c, platform, emuName, true));
+            default:
+                return Promise.reject('Cannot find any active or created emulators');
         }
     }
     return Promise.reject('Action canceled!');
