@@ -8,7 +8,7 @@ import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
-import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
+import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles, checkCrypto } from '../systemTools/crypto';
 import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
@@ -89,7 +89,7 @@ const COMMANDS = {
     },
     export: {
         desc: 'Export your app (ios only)',
-        platforms: [IOS, TVOS, MACOS, WINDOWS, WEB],
+        platforms: [IOS, TVOS, MACOS, WINDOWS, WEB, ANDROID, ANDROID_TV, ANDROID_WEAR],
         fn: rnvExport
     },
     log: {
@@ -335,8 +335,13 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
 // PRIVATE API
 // ##########################################
 
+let _builderStarted = false;
 export const _startBuilder = async (c) => {
-    logTask('initializeBuilder');
+    logTask(`initializeBuilder:${_builderStarted}`);
+
+    if (_builderStarted) return;
+
+    _builderStarted = true;
 
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
@@ -372,6 +377,7 @@ export const _startBuilder = async (c) => {
     await applyTemplate(c);
     await configurePlugins(c);
     await configureNodeModules(c);
+    await checkCrypto(c);
 
     if (!SKIP_APP_CONFIG_CHECK.includes(c.command)) {
         await updateConfig(c, c.runtime.appId);
