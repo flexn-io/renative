@@ -117,8 +117,8 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             for (const configName in bc) {
                 const config = bc[configName];
                 if ((runScheme && config.name === runScheme) || (!runScheme)) {
-                    if (config.buildSettings[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
-                    if (config.buildSettings[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
+                    if (config.buildSettings?.[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
+                    if (config.buildSettings?.[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
                 }
             }
         }
