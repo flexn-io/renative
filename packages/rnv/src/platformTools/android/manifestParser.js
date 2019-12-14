@@ -25,6 +25,7 @@ import {
     logInfo,
     logSuccess,
     getBuildsFolder,
+    getFlavouredProp
 } from '../../common';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
@@ -147,7 +148,8 @@ export const parseAndroidManifestSync = (c, platform) => {
         baseManifestFile.package = getAppId(c, platform);
 
         // projectConfig/plugins.json PLUGIN CONFIG ROOT OVERRIDES
-        const pluginConfigAndroid = c.buildConfig?.platforms?.[platform]?.AndroidManifest;
+        const pluginConfigAndroid = getFlavouredProp(c, c.buildConfig?.platforms?.[platform], 'AndroidManifest');
+
         if (pluginConfigAndroid) {
             const applicationExt = _findChildNode('application', '.MainApplication', pluginConfigAndroid);
             _mergeNodeParameters(application, applicationExt);
@@ -158,8 +160,9 @@ export const parseAndroidManifestSync = (c, platform) => {
 
         // projectConfig/plugins.json PLUGIN CONFIG OVERRIDES
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            if (pluginPlat && pluginPlat.AndroidManifest) {
-                _mergeNodeChildren(baseManifestFile, pluginPlat.AndroidManifest.children);
+            const androidManifest = getFlavouredProp(c, pluginPlat, 'AndroidManifest');
+            if (androidManifest) {
+                _mergeNodeChildren(baseManifestFile, androidManifest.children);
                 // const pluginApplication = _findChildNode('application', '.MainApplication', pluginPlat.AndroidManifest);
                 // if (pluginApplication) {
                 //     _mergeNodeParameters(application, pluginApplication);

@@ -67,7 +67,6 @@ class ScreenHome extends React.Component {
         const selectedStyle = isWear ? styles.appContainerView : styles.appContainerScroll;
         const styleButton = isWear ? styles.buttonWear : styles.button;
         const SelectedView = isWear ? View : ScrollView;
-        const title = `${config.common.title}!`;
         return (
             <SelectedView
                 style={[selectedStyle, { backgroundColor: this.state.bgColor }]}
@@ -79,7 +78,7 @@ class ScreenHome extends React.Component {
                 <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
                 <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
                 <Text style={styles.textH2}>
-                    {title}
+                    {config.welcomeMessage}
                 </Text>
                 <Text style={styles.textH2}>
 v

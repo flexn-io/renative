@@ -581,10 +581,10 @@ export const generateBuildConfig = (c) => {
 
 export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
     logTask('generateRuntimeConfig');
-    c.assetConfig = {
-        common: c.buildConfig.common,
-        runtime: c.buildConfig.runtime
-    };
+    // c.assetConfig = {
+    //     common: c.buildConfig.common,
+    //     runtime: c.buildConfig.runtime
+    // };
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});

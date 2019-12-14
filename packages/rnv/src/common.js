@@ -196,23 +196,23 @@ export const getBinaryPath = (c, platform) => {
     const appName = getConfigProp(c, platform, 'appName');
 
     switch (platform) {
-    case IOS:
-    case TVOS:
-        return `${appFolder}/release/RNVApp.ipa`;
-    case ANDROID:
-    case ANDROID_TV:
-    case ANDROID_WEAR:
-        return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
-    case WEB:
-        return `${appFolder}/public`;
-    case MACOS:
-    case WINDOWS:
-        return `${appFolder}/build/release/${productName}-${version}`;
-    case TIZEN:
-    case TIZEN_MOBILE:
-        return `${appFolder}/output/${appName}.wgt`;
-    case WEBOS:
-        return `${appFolder}/output/${id}_${version}_all.ipk`;
+        case IOS:
+        case TVOS:
+            return `${appFolder}/release/RNVApp.ipa`;
+        case ANDROID:
+        case ANDROID_TV:
+        case ANDROID_WEAR:
+            return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
+        case WEB:
+            return `${appFolder}/public`;
+        case MACOS:
+        case WINDOWS:
+            return `${appFolder}/build/release/${productName}-${version}`;
+        case TIZEN:
+        case TIZEN_MOBILE:
+            return `${appFolder}/output/${appName}.wgt`;
+        case WEBOS:
+            return `${appFolder}/output/${id}_${version}_all.ipk`;
     }
 
     return appFolder;
@@ -247,13 +247,13 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     let scheme;
     if (p) {
         scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
-        resultPlatforms = c.buildConfig.platforms[platform][key];
+        resultPlatforms = getFlavouredProp(c, c.buildConfig.platforms[platform], key);
     }
 
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
     const resultScheme = scheme[key];
-    const resultCommon = c.buildConfig.common?.[key];
+    const resultCommon = getFlavouredProp(c, c.buildConfig.common, key);
 
     let result = Config.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
@@ -415,6 +415,13 @@ export const resolveNodeModulePath = (c, filePath) => {
         pth = path.join(c.paths.project.nodeModulesDir, filePath);
     }
     return pth;
+};
+
+export const getFlavouredProp = (c, obj, key) => {
+    if (!key) return null;
+    const val1 = obj[`${key}@${_getScheme(c)}`];
+    if (val1) return val1;
+    return obj[key];
 };
 
 export const getBuildFilePath = (c, platform, filePath) => {
