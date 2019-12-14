@@ -198,7 +198,10 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     return plugin;
 };
 
-const _getMergedPlugin = (c, obj1, obj2) => sanitizeDynamicProps(mergeObjects(c, obj1, obj2, true, true), c.buildConfig?._refs);
+const _getMergedPlugin = (c, obj1, obj2) => {
+    const obj = sanitizeDynamicProps(mergeObjects(c, obj1, obj2, true, true), c.buildConfig?._refs);
+    return sanitizeDynamicProps(obj, obj.props);
+};
 
 
 export const configurePlugins = c => new Promise((resolve, reject) => {
@@ -281,8 +284,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
 });
 
 const parsePlugins = (c, platform, pluginCallback) => {
-    logTask(`parsePlugins:${platform}`);
-
+    logTask(`parsePluginsa:${platform}`);
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);

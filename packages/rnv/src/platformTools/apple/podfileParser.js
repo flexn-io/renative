@@ -28,7 +28,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
     logTask(`parsePodFileSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    let pluginSubspecs = '';
+    const pluginSubspecs = '';
     let pluginInject = '';
 
     // PLUGINS
@@ -47,11 +47,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
         const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
         if (reactSubSpecs) {
-            reactSubSpecs.forEach((v) => {
-                if (!pluginSubspecs.includes(`'${v}'`)) {
-                    pluginSubspecs += `  '${v}',\n`;
-                }
-            });
+            logWarning('pluginSubspecs prop is deprecated. yoy can safely remove it');
         }
 
         const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');
@@ -86,7 +82,6 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
         { pattern: '{{PLUGIN_PODFILE_SOURCES}}', override: c.pluginConfigiOS.podfileSources },

@@ -18,6 +18,7 @@ import {
     getBuildFilePath,
     logSuccess,
     getBuildsFolder,
+    getFlavouredProp
 } from '../../common';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';

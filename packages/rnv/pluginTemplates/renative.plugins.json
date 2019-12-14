@@ -2,48 +2,14 @@
     "pluginTemplates": {
         "react-native": {
             "version": "0.61.2",
-            "ios": {
-                "reactSubSpecs": [
-                    "Core",
-                    "RCTImage",
-                    "RCTNetwork",
-                    "RCTText",
-                    "RCTWebSocket",
-                    "DevSupport",
-                    "CxxBridge",
-                    "RCTAnimation",
-                    "RCTLinkingIOS",
-                    "RCTGeolocation",
-                    "RCTVibration",
-                    "PrivateDatabase",
-                    "RCTActionSheet",
-                    "RCTSettings"
-                ]
-            },
-            "tvos": {
-                "reactSubSpecs": [
-                    "Core",
-                    "RCTImage",
-                    "RCTNetwork",
-                    "RCTText",
-                    "RCTWebSocket",
-                    "DevSupport",
-                    "CxxBridge",
-                    "RCTAnimation",
-                    "RCTLinkingIOS",
-                    "RCTVibration",
-                    "PrivateDatabase",
-                    "RCTSettings"
-                ]
-            },
             "android": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }"
             },
             "androidtv": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }"
             },
             "androidwear": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }"
             }
         },
         "renative": {
@@ -1332,7 +1298,11 @@
             }
         },
         "react-native-simple-compass": {
-            "version": "1.0.0",
+            "version": "github:cjrorvik/react-native-simple-compass.git#9c133bd0922204bb78e5fc0b2d85dfd5a647732d",
+            "ios": {
+                "podName": "react-native-simple-compass",
+                "path": "node_modules/react-native-simple-compass"
+            },
             "android": {
                 "package": "com.reactlibrary.RNSimpleCompassPackage"
             },
@@ -1400,7 +1370,8 @@
         "react-native-firebase": {
             "version": "5.5.5",
             "props": {
-                "URI_SCHEME": ""
+                "URL_SCHEME": "",
+                "URL_NAME": ""
             },
             "ios": {
                 "podName": "RNFirebase",
@@ -1425,6 +1396,14 @@
                             "FirebaseApp.configure()"
                         ]
                     }
+                },
+                "plist": {
+                    "CFBundleURLTypes": [
+                        {
+                            "CFBundleURLName": "{{props.URL_NAME}}",
+                            "CFBundleURLSchemes": ["{{props.URL_SCHEME}}"]
+                        }
+                    ]
                 }
             },
             "android": {
