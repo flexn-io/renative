@@ -139,25 +139,26 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            if (pluginPlat.xcodeproj) {
-                if (pluginPlat.xcodeproj.resourceFiles) {
-                    pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
+            const xcodeproj = getFlavouredProp(c, plugin, 'xcodeproj');
+            if (xcodeproj) {
+                if (xcodeproj.resourceFiles) {
+                    xcodeproj.resourceFiles.forEach((v) => {
                         xcodeProj.addResourceFile(path.join(appFolder, v));
                     });
                 }
-                if (pluginPlat.xcodeproj.sourceFiles) {
-                    pluginPlat.xcodeproj.sourceFiles.forEach((v) => {
+                if (xcodeproj.sourceFiles) {
+                    xcodeproj.sourceFiles.forEach((v) => {
                         // const group = xcodeProj.hash.project.objects.PBXGroup['200132F21F6BF9CF00450340'];
                         xcodeProj.addSourceFile(v, null, '200132F21F6BF9CF00450340');
                     });
                 }
-                if (pluginPlat.xcodeproj.headerFiles) {
-                    pluginPlat.xcodeproj.headerFiles.forEach((v) => {
+                if (xcodeproj.headerFiles) {
+                    xcodeproj.headerFiles.forEach((v) => {
                         xcodeProj.addHeaderFile(v, null, '200132F21F6BF9CF00450340');
                     });
                 }
-                if (pluginPlat.xcodeproj.buildPhases) {
-                    pluginPlat.xcodeproj.buildPhases.forEach((v) => {
+                if (xcodeproj.buildPhases) {
+                    xcodeproj.buildPhases.forEach((v) => {
                         xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'ShellScript', null, {
                             shellPath: v.shellPath || '/bin/sh',
                             shellScript: v.shellScript,
@@ -165,8 +166,8 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         });
                     });
                 }
-                if (pluginPlat.xcodeproj.frameworks) {
-                    for (const k in pluginPlat.xcodeproj.frameworks) {
+                if (xcodeproj.frameworks) {
+                    for (const k in xcodeproj.frameworks) {
                         let fPath;
                         let opts;
                         if (k.startsWith('./')) {
@@ -185,9 +186,9 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         xcodeProj.addFramework(fPath, opts);
                     }
                 }
-                if (pluginPlat.xcodeproj.buildSettings) {
-                    for (const k in pluginPlat.xcodeproj.buildSettings) {
-                        xcodeProj.addToBuildSettings(k, pluginPlat.xcodeproj.buildSettings[k]);
+                if (xcodeproj.buildSettings) {
+                    for (const k in xcodeproj.buildSettings) {
+                        xcodeProj.addToBuildSettings(k, xcodeproj.buildSettings[k]);
                     }
                 }
             }

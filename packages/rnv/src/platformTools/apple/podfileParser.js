@@ -18,7 +18,8 @@ import {
     getIP,
     getBuildFilePath,
     logSuccess,
-    getBuildsFolder
+    getBuildsFolder,
+    getFlavouredProp
 } from '../../common';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
@@ -33,25 +34,29 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
     // PLUGINS
     c.pluginConfigiOS.podfileInject = '';
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        if (pluginPlat.podName) {
-            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin, key);
+        const podName = getFlavouredProp(c, pluginPlat, 'podName');
+        if (podName) {
+            pluginInject += _injectPod(podName, pluginPlat, plugin, key);
         }
-        if (pluginPlat.podNames) {
-            pluginPlat.podNames.forEach((v) => {
+        const podNames = getFlavouredProp(c, pluginPlat, 'podNames');
+        if (podNames) {
+            podNames.forEach((v) => {
                 pluginInject += _injectPod(v, pluginPlat, plugin, key);
             });
         }
 
-        if (pluginPlat.reactSubSpecs) {
-            pluginPlat.reactSubSpecs.forEach((v) => {
+        const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
+        if (reactSubSpecs) {
+            reactSubSpecs.forEach((v) => {
                 if (!pluginSubspecs.includes(`'${v}'`)) {
                     pluginSubspecs += `  '${v}',\n`;
                 }
             });
         }
 
-        if (pluginPlat.Podfile) {
-            const { injectLines } = pluginPlat.Podfile;
+        const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');
+        if (podfile) {
+            const { injectLines } = podfile;
             // INJECT LINES
             if (injectLines) {
                 injectLines.forEach((v) => {
@@ -67,7 +72,8 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     // SOURCES
     c.pluginConfigiOS.podfileSources = '';
-    const podfileSources = c.buildConfig?.platforms?.ios?.Podfile?.sources;
+    const podfileObj = getFlavouredProp(c, c.buildConfig?.platforms?.[platform], 'Podfile');
+    const podfileSources = podfileObj?.sources;
     if (podfileSources && podfileSources.length) {
         podfileSources.forEach((v) => {
             c.pluginConfigiOS.podfileSources += `source '${v}'\n`;

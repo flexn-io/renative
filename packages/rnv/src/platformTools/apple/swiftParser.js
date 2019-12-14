@@ -20,7 +20,8 @@ import {
     logSuccess,
     getGetJsBundleFile,
     getBuildsFolder,
-    sanitizeColor
+    sanitizeColor,
+    getFlavouredProp
 } from '../../common';
 import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
@@ -198,8 +199,9 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
 
 export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
     logTask(`injectPluginSwiftSync:${c.platform}:${key}`, chalk.grey);
-    if (plugin.appDelegateImports instanceof Array) {
-        plugin.appDelegateImports.forEach((appDelegateImport) => {
+    const appDelegateImports = getFlavouredProp(c, plugin, 'appDelegateImports');
+    if (appDelegateImports instanceof Array) {
+        appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
             logTask('appDelegateImports add', chalk.grey);
             if (c.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
@@ -212,11 +214,12 @@ export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
     //     c.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
 
-    if (plugin.appDelegateMethods) {
-        for (const key in plugin.appDelegateMethods) {
-            for (const key2 in plugin.appDelegateMethods[key]) {
+    const appDelegateMethods = getFlavouredProp(c, plugin, 'appDelegateMethods');
+    if (appDelegateMethods) {
+        for (const key in appDelegateMethods) {
+            for (const key2 in appDelegateMethods[key]) {
                 const plugArr = c.pluginConfigiOS.appDelegateMethods[key][key2];
-                const plugVal = plugin.appDelegateMethods[key][key2];
+                const plugVal = appDelegateMethods[key][key2];
                 if (plugVal) {
                     plugVal.forEach((v) => {
                         if (!plugArr.includes(v)) {
