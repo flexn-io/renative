@@ -252,13 +252,11 @@ const _prepareProjectOverview = (c, data) => {
 │   │   └── [APP_ID]          # Example application flavour                    │
 │   │       ├── assets        # Platform assets injected to ./platformAssets   │
 │   │       ├── builds        # Platform files injected to ./platformBuilds    │
+│   │       ├── fonts             # Folder for all custom fonts                │
+│   │       ├── plugins           # Multi-platform plugins injections          │
 │   │       └── renative.json # Application flavour config                     │
 │   ├── platformAssets        # Generated cross-platform assets                │
 │   ├── platformBuilds        # Generated platform app projects                │
-│   ├── projectConfigs        # Project configuration files/assets             │
-│   │   ├── fonts             # Folder for all custom fonts                    │
-│   │   ├── builds            # platformBuilds/* injections                    │
-│   │   └── plugins           # Multi-platform plugins injections              │
 │   ├── src                   # Source code files                              │
 │   ├── index.*.js            # Entry files                                    │
 │   └── renative.json         # ReNative project configuration                 │

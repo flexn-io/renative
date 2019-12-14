@@ -427,7 +427,7 @@ export const getFlavouredProp = (c, obj, key) => {
 export const getBuildFilePath = (c, platform, filePath) => {
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
-    // P2 => projectConfigs + @buildSchemes
+    // P2 => appConfigs/base + @buildSchemes
     const sp2 = path.join(getBuildsFolder(c, platform, c.paths.project.projectConfig.dir), filePath);
     if (fs.existsSync(sp2)) sp = sp2;
     // P3 => appConfigs + @buildSchemes
