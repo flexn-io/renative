@@ -395,10 +395,12 @@
             }
         },
         "react-native-fbsdk": {
-            "FB_KEY": "",
-            "FB_DISPLAY_NAME": "",
-            "FB_URL_SCHEMES": [],
-            "FB_QUERY_SCHEMES": [],
+            "props": {
+                "APP_ID": "",
+                "APP_NAME": "",
+                "URL_SCHEMES": null,
+                "QUERIES_SCHEMES": null
+            },
             "version": "1.0.4",
             "ios": {
                 "podName": "react-native-fbsdk",
@@ -414,9 +416,20 @@
                     }
                 },
                 "plist": {
-                    "FacebookAppID": "{{FB_KEY}}",
-                    "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
-                    "LSApplicationQueriesSchemes": []
+                    "FacebookAppID": "{{props.APP_ID}}",
+                    "FacebookDisplayName": "{{props.APP_NAME}}",
+                    "CFBundleURLTypes": [
+                        {
+                            "CFBundleTypeRole": "Editor",
+                            "CFBundleURLSchemes": ["fb{{props.APP_ID}}"]
+                        }
+                    ],
+                    "LSApplicationQueriesSchemes": [
+                        "fbapi",
+                        "fb-messenger-share-api",
+                        "fbauth2",
+                        "fbshareextension"
+                    ]
                 }
             },
             "android": {
@@ -435,6 +448,30 @@
                     "createMethods": [],
                     "resultMethods": [
                         "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                    ]
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.facebook.sdk.ApplicationId",
+                                    "android:value": "@string/facebook_app_id"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "ResourceStrings": {
+                    "children": [
+                        {
+                            "tag": "string",
+                            "name": "facebook_app_id",
+                            "child_value": "{{props.APP_ID}}"
+                        }
                     ]
                 }
             },
@@ -1362,6 +1399,9 @@
         },
         "react-native-firebase": {
             "version": "5.5.5",
+            "props": {
+                "URI_SCHEME": ""
+            },
             "ios": {
                 "podName": "RNFirebase",
                 "path": "node_modules/react-native-firebase/ios",
@@ -1415,6 +1455,31 @@
                             "tag": "application",
                             "android:name": ".MainApplication",
                             "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.google.firebase.messaging.default_notification_icon",
+                                    "android:resource": "@drawable/ic_stat_ic_notification"
+                                },
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "uriScheme",
+                                    "android:value": "{{props.URI_SCHEME}}"
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "data",
+                                                    "android:scheme": "{{props.URI_SCHEME}}"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 {
                                     "tag": "service",
                                     "android:name": "io.invertase.firebase.messaging.RNFirebaseMessagingService",
