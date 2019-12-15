@@ -214,6 +214,9 @@
             "ios": {
                 "podName": "react-native-fetch-blob"
             },
+            "tvos": {
+                "podName": "react-native-fetch-blob"
+            },
             "android": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
             },
@@ -1733,6 +1736,9 @@
         "@react-native-community/netinfo": {
             "version": "4.3.3",
             "ios": {
+                "podName": "react-native-netinfo"
+            },
+            "tvos": {
                 "podName": "react-native-netinfo"
             },
             "android": {
