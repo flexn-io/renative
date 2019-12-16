@@ -284,7 +284,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
 });
 
 const parsePlugins = (c, platform, pluginCallback) => {
-    logTask(`parsePluginsa:${platform}`);
+    logTask(`parsePlugins:${platform}`);
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);

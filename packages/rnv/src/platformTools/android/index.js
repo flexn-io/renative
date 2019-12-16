@@ -49,7 +49,10 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
 
-    if (!bundleAssets) return;
+    if (!bundleAssets) {
+        resolve();
+        return;
+    }
 
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.buildConfig.platforms[platform];
