@@ -154,16 +154,8 @@ export const createNewProject = async (c) => {
         try {
             Analytics.captureEvent({
                 type: 'newProject',
-                message: 'newProject',
-                breadcrumbs: null,
-                level: 'info',
-                extra: {
-                    template: inputTemplate,
-                    platforms: inputSupportedPlatforms
-                },
-                tags: {
-                    type: 'newProject',
-                }
+                template: inputTemplate,
+                platforms: inputSupportedPlatforms
             });
         } catch {}
 
