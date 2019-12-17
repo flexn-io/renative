@@ -1,7 +1,26 @@
 import { RewriteFrames } from '@sentry/integrations';
+import { machineIdSync } from 'node-machine-id';
+import axios from 'axios';
+import os from 'os';
 
 import Config from '../config';
 import pkg from '../../package.json';
+import { REDASH_KEY, REDASH_URL } from '../constants';
+
+class Redash {
+    captureEvent(e) {
+        const defaultProps = {
+            fingerprint: machineIdSync(),
+            os: os.platform(),
+            rnvVersion: pkg.version,
+        };
+        return axios.post(REDASH_URL, { ...e, ...defaultProps }, {
+            headers: {
+                'x-api-key': REDASH_KEY
+            }
+        }).catch(() => true);
+    }
+}
 
 class Analytics {
     constructor() {
@@ -36,8 +55,7 @@ class Analytics {
             });
 
             // EVENT HANDLING
-            // Sentry for now
-            this.knowItAll = this.errorFixer;
+            this.knowItAll = new Redash();
         }
     }
 

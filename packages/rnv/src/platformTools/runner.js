@@ -67,6 +67,7 @@ import { executeAsync } from '../systemTools/exec';
 import { isBundlerRunning, waitForBundler } from './bundler';
 import { logInfo } from '../systemTools/logger';
 import Config from '../config';
+import Analytics from '../systemTools/analytics';
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -241,6 +242,11 @@ const _rnvRunWithPlatform = async (c) => {
         return rnvStart(c, true);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
+
+    Analytics.captureEvent({
+        type: 'runProject',
+        platform,
+    });
 
     switch (platform) {
         case IOS:
