@@ -1897,7 +1897,7 @@
         "react-native-google-cast": {
             "version": "github:hosek/react-native-google-cast#feat/custom-cast-dialog-support",
             "ios": {
-                "podName": "react-native-google-cast/NoBluetooth",
+                "podName": "react-native-google-cast",
                 "path": "node_modules/react-native-google-cast/ios",
                 "appDelegateImports": ["GoogleCast"],
                 "appDelegateMethods": {
