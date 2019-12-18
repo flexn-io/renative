@@ -42,6 +42,18 @@ import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulat
 
 const isRunningOnWindows = process.platform === 'win32';
 
+const _getEntryOutputName = (c) => {
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
+    const { entryFile } = c.buildConfig.platforms[c.platform];
+    // TODO Android PROD Crashes if not using this hardcoded one
+    let outputFile;
+    if (c.platform === ANDROID_WEAR) {
+        outputFile = entryFile;
+    } else {
+        outputFile = 'index.android';
+    }
+    return outputFile;
+};
 
 export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`packageAndroid:${platform}`);
@@ -49,21 +61,12 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
     const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
 
-    if (!bundleAssets) {
+    if (!bundleAssets && platform !== ANDROID_WEAR) {
         resolve();
         return;
     }
 
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const { entryFile } = c.buildConfig.platforms[platform];
-    // TODO Android PROD Crashes if not using this hardcoded one
-    let outputFile;
-    if (platform === ANDROID_WEAR) {
-        outputFile = entryFile;
-    } else {
-        outputFile = 'index.android';
-    }
-
+    const outputFile = _getEntryOutputName(c);
 
     const appFolder = getAppFolder(c, platform);
     let reactNative = 'react-native';
@@ -73,7 +76,7 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
     }
 
     console.log('ANDROID PACKAGE STARTING...');
-    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
+    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
         .then(() => {
             console.log('ANDROID PACKAGE FINISHED');
             return resolve();
@@ -397,8 +400,10 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         return;
     }
 
+    const outputFile = _getEntryOutputName(c);
+
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
-    fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
+    fs.writeFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
     fs.chmodSync(gradlew, '755');
 
     // INJECTORS

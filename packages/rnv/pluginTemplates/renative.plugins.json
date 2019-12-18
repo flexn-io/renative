@@ -715,6 +715,9 @@
             "androidtv": {
                 "package": "com.oblador.vectoricons.VectorIconsPackage"
             },
+            "androidwear": {
+                "package": "com.oblador.vectoricons.VectorIconsPackage"
+            },
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
@@ -926,6 +929,9 @@
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
             "androidtv": {
+                "package": "com.swmansion.reanimated.ReanimatedPackage"
+            },
+            "androidwear": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
             "webpack": {
