@@ -11,7 +11,7 @@
         "entryDir": "./",
         "platformAssetsDir": "./platformAssets",
         "platformBuildsDir": "./platformBuilds",
-        "projectConfigDir": "./projectConfig"
+        "projectConfigDir": "./appConfigs/base"
     },
     "defaults": {
         "ports": {

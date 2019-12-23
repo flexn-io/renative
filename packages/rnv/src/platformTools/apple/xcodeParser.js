@@ -18,6 +18,7 @@ import {
     getBuildFilePath,
     logSuccess,
     getBuildsFolder,
+    getFlavouredProp
 } from '../../common';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';
@@ -139,25 +140,26 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            if (pluginPlat.xcodeproj) {
-                if (pluginPlat.xcodeproj.resourceFiles) {
-                    pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
+            const xcodeprojObj = getFlavouredProp(c, pluginPlat, 'xcodeproj');
+            if (xcodeprojObj) {
+                if (xcodeprojObj.resourceFiles) {
+                    xcodeprojObj.resourceFiles.forEach((v) => {
                         xcodeProj.addResourceFile(path.join(appFolder, v));
                     });
                 }
-                if (pluginPlat.xcodeproj.sourceFiles) {
-                    pluginPlat.xcodeproj.sourceFiles.forEach((v) => {
+                if (xcodeprojObj.sourceFiles) {
+                    xcodeprojObj.sourceFiles.forEach((v) => {
                         // const group = xcodeProj.hash.project.objects.PBXGroup['200132F21F6BF9CF00450340'];
                         xcodeProj.addSourceFile(v, null, '200132F21F6BF9CF00450340');
                     });
                 }
-                if (pluginPlat.xcodeproj.headerFiles) {
-                    pluginPlat.xcodeproj.headerFiles.forEach((v) => {
+                if (xcodeprojObj.headerFiles) {
+                    xcodeprojObj.headerFiles.forEach((v) => {
                         xcodeProj.addHeaderFile(v, null, '200132F21F6BF9CF00450340');
                     });
                 }
-                if (pluginPlat.xcodeproj.buildPhases) {
-                    pluginPlat.xcodeproj.buildPhases.forEach((v) => {
+                if (xcodeprojObj.buildPhases) {
+                    xcodeprojObj.buildPhases.forEach((v) => {
                         xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'ShellScript', null, {
                             shellPath: v.shellPath || '/bin/sh',
                             shellScript: v.shellScript,
@@ -165,8 +167,8 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         });
                     });
                 }
-                if (pluginPlat.xcodeproj.frameworks) {
-                    for (const k in pluginPlat.xcodeproj.frameworks) {
+                if (xcodeprojObj.frameworks) {
+                    for (const k in xcodeprojObj.frameworks) {
                         let fPath;
                         let opts;
                         if (k.startsWith('./')) {
@@ -185,9 +187,9 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         xcodeProj.addFramework(fPath, opts);
                     }
                 }
-                if (pluginPlat.xcodeproj.buildSettings) {
-                    for (const k in pluginPlat.xcodeproj.buildSettings) {
-                        xcodeProj.addToBuildSettings(k, pluginPlat.xcodeproj.buildSettings[k]);
+                if (xcodeprojObj.buildSettings) {
+                    for (const k in xcodeprojObj.buildSettings) {
+                        xcodeProj.addToBuildSettings(k, xcodeprojObj.buildSettings[k]);
                     }
                 }
             }

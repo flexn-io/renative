@@ -2,52 +2,18 @@
     "pluginTemplates": {
         "react-native": {
             "version": "0.61.2",
-            "ios": {
-                "reactSubSpecs": [
-                    "Core",
-                    "RCTImage",
-                    "RCTNetwork",
-                    "RCTText",
-                    "RCTWebSocket",
-                    "DevSupport",
-                    "CxxBridge",
-                    "RCTAnimation",
-                    "RCTLinkingIOS",
-                    "RCTGeolocation",
-                    "RCTVibration",
-                    "PrivateDatabase",
-                    "RCTActionSheet",
-                    "RCTSettings"
-                ]
-            },
-            "tvos": {
-                "reactSubSpecs": [
-                    "Core",
-                    "RCTImage",
-                    "RCTNetwork",
-                    "RCTText",
-                    "RCTWebSocket",
-                    "DevSupport",
-                    "CxxBridge",
-                    "RCTAnimation",
-                    "RCTLinkingIOS",
-                    "RCTVibration",
-                    "PrivateDatabase",
-                    "RCTSettings"
-                ]
-            },
             "android": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }"
             },
             "androidtv": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }"
             },
             "androidwear": {
-                "implementation": "implementation ('com.facebook.react:react-native:+') {\n}"
+                "implementation": "implementation ('com.facebook.react:react-native:+') {\n exclude group: 'com.android.support' \n exclude group: 'javax.inject' \n exclude group: 'com.squareup.okhttp3', module: 'okhttp' \n exclude group: 'com.squareup.okio' \n }"
             }
         },
         "renative": {
-            "version": "0.28.12-alpha.9",
+            "version": "0.28.12-alpha.11",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -248,6 +214,9 @@
             "ios": {
                 "podName": "react-native-fetch-blob"
             },
+            "tvos": {
+                "podName": "react-native-fetch-blob"
+            },
             "android": {
                 "package": "com.RNFetchBlob.RNFetchBlobPackage"
             },
@@ -395,10 +364,12 @@
             }
         },
         "react-native-fbsdk": {
-            "FB_KEY": "",
-            "FB_DISPLAY_NAME": "",
-            "FB_URL_SCHEMES": [],
-            "FB_QUERY_SCHEMES": [],
+            "props": {
+                "APP_ID": "",
+                "APP_NAME": "",
+                "URL_SCHEMES": null,
+                "QUERIES_SCHEMES": null
+            },
             "version": "1.0.4",
             "ios": {
                 "podName": "react-native-fbsdk",
@@ -414,9 +385,20 @@
                     }
                 },
                 "plist": {
-                    "FacebookAppID": "{{FB_KEY}}",
-                    "FacebookDisplayName": "{{FB_DISPLAY_NAME}}",
-                    "LSApplicationQueriesSchemes": []
+                    "FacebookAppID": "{{props.APP_ID}}",
+                    "FacebookDisplayName": "{{props.APP_NAME}}",
+                    "CFBundleURLTypes": [
+                        {
+                            "CFBundleTypeRole": "Editor",
+                            "CFBundleURLSchemes": ["fb{{props.APP_ID}}"]
+                        }
+                    ],
+                    "LSApplicationQueriesSchemes": [
+                        "fbapi",
+                        "fb-messenger-share-api",
+                        "fbauth2",
+                        "fbshareextension"
+                    ]
                 }
             },
             "android": {
@@ -435,6 +417,30 @@
                     "createMethods": [],
                     "resultMethods": [
                         "MainApplication.getCallbackManager().onActivityResult(requestCode, resultCode, data)"
+                    ]
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.facebook.sdk.ApplicationId",
+                                    "android:value": "@string/facebook_app_id"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "ResourceStrings": {
+                    "children": [
+                        {
+                            "tag": "string",
+                            "name": "facebook_app_id",
+                            "child_value": "{{props.APP_ID}}"
+                        }
                     ]
                 }
             },
@@ -709,6 +715,9 @@
             "androidtv": {
                 "package": "com.oblador.vectoricons.VectorIconsPackage"
             },
+            "androidwear": {
+                "package": "com.oblador.vectoricons.VectorIconsPackage"
+            },
             "webpack": {
                 "modulePaths": true,
                 "moduleAliases": true
@@ -920,6 +929,9 @@
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
             "androidtv": {
+                "package": "com.swmansion.reanimated.ReanimatedPackage"
+            },
+            "androidwear": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
             "webpack": {
@@ -1295,7 +1307,11 @@
             }
         },
         "react-native-simple-compass": {
-            "version": "1.0.0",
+            "version": "github:cjrorvik/react-native-simple-compass.git#9c133bd0922204bb78e5fc0b2d85dfd5a647732d",
+            "ios": {
+                "podName": "react-native-simple-compass",
+                "path": "node_modules/react-native-simple-compass"
+            },
             "android": {
                 "package": "com.reactlibrary.RNSimpleCompassPackage"
             },
@@ -1362,6 +1378,10 @@
         },
         "react-native-firebase": {
             "version": "5.5.5",
+            "props": {
+                "URL_SCHEME": "",
+                "URL_NAME": ""
+            },
             "ios": {
                 "podName": "RNFirebase",
                 "path": "node_modules/react-native-firebase/ios",
@@ -1385,6 +1405,14 @@
                             "FirebaseApp.configure()"
                         ]
                     }
+                },
+                "plist": {
+                    "CFBundleURLTypes": [
+                        {
+                            "CFBundleURLName": "{{props.URL_NAME}}",
+                            "CFBundleURLSchemes": ["{{props.URL_SCHEME}}"]
+                        }
+                    ]
                 }
             },
             "android": {
@@ -1415,6 +1443,31 @@
                             "tag": "application",
                             "android:name": ".MainApplication",
                             "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.google.firebase.messaging.default_notification_icon",
+                                    "android:resource": "@drawable/ic_stat_ic_notification"
+                                },
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "uriScheme",
+                                    "android:value": "{{props.URI_SCHEME}}"
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "data",
+                                                    "android:scheme": "{{props.URI_SCHEME}}"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 {
                                     "tag": "service",
                                     "android:name": "io.invertase.firebase.messaging.RNFirebaseMessagingService",
@@ -1691,6 +1744,9 @@
             "ios": {
                 "podName": "react-native-netinfo"
             },
+            "tvos": {
+                "podName": "react-native-netinfo"
+            },
             "android": {
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
             },
@@ -1847,7 +1903,7 @@
         "react-native-google-cast": {
             "version": "github:hosek/react-native-google-cast#feat/custom-cast-dialog-support",
             "ios": {
-                "podName": "react-native-google-cast/NoBluetooth",
+                "podName": "react-native-google-cast",
                 "path": "node_modules/react-native-google-cast/ios",
                 "appDelegateImports": ["GoogleCast"],
                 "appDelegateMethods": {

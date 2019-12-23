@@ -12,7 +12,7 @@ Legend:
 - `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT_NAME]` - `name` field in the root `package.json` file of your project
-- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
+- `[PLUGIN_ID]` - `key` of the plugin defined in one of the `renative.json` files
 - `[WORKSPACE_PATH]` - `path` to your workspace (`~/.rnv` by default) where local and sensitive information is stored.
 
 NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
@@ -43,12 +43,12 @@ applies for both public and private `./..` and `~./rnv/[PROJECT_NAME]/..`
 
 
     .
-    ├── projectConfig
-    │   ├── fonts
-    │   ├── plugins
-    │   └── builds
     └── appConfigs
-        └── [APP_ID]
+        ├── base
+        │   ├── fonts
+        │   ├── plugins
+        │   └── builds
+        └── [APP_ID]          # Extend / Override appConfigs/base
             ├── assets
             │   └── [PLATFORM]
             ├── fonts
@@ -66,19 +66,19 @@ Following is the order of merges of various folders (if present) contributing to
 ⬇️
 `[RNV_ROOT]/platformTemplates/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`./appConfigs/base/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`./projectConfig/builds/_shared/*/**` => `./platformBuilds/_shared/*/*`</br>
+`./appConfigs/base/builds/_shared/*/**` => `./platformBuilds/_shared/*/*`</br>
 ⬇️
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`./projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`./appConfigs/base/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`</br>
 ⬇️
@@ -90,17 +90,17 @@ Following is the order of merges of various folders (if present) contributing to
 Following is the order of merges of various folders (if present) contributing to final `platformAssets/*/**`.
 
 ⬇️
-`./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`./appConfigs/base/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`./projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`./appConfigs/base/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
 `./appConfigs/[APP_ID]/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`</br>
 ⬇️
@@ -111,16 +111,16 @@ Following is the order of merges of various folders (if present) contributing to
 
 ## Special Folders
 
-- `platformBuilds` - TODO
-- `platformAssets` - TODO
-- `appConfigs` - TODO
-- `projectConfig` - TODO
-- `buildHooks` - TODO
-- `src` - TODO
-- `builds` - TODO
-- `plugins` - TODO
-- `fonts` - TODO
-- `assets` - TODO
+- `platformBuilds` - all builds and projects are dynamically generated
+- `platformAssets` - all shared assets are dynamically copied here
+- `appConfigs` - all configuration files overrides flavours are placed here
+- `projectConfig` - DEPRECATED (use appConfigs/base)
+- `buildHooks` - allows you to extend RNV build functionality
+- `src` - source code of the project
+- `builds` - contents of this folder will be injected into `./platformBuilds/[APP_ID]_[PLATFORM]` destination
+- `plugins` - allows you to extend / override project files based on activated plugin
+- `fonts` - special folder used for dynamic fonts injections
+- `assets` - contents of this folder will be injected into `./platformAssets` destination
 
 ## File Overrides / Injectors
 
@@ -136,10 +136,10 @@ Every time you run RNV command, ReNative checks following "special" folders and 
 
 You can utilise above folders in following places:
 
+- `./appConfigs/base`
 - `./appConfigs/[APP_ID]`
-- `./projectConfig`
 - `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]`
-- `[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig`
+- `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base`
 
 
 
@@ -147,11 +147,11 @@ You can utilise above folders in following places:
 
 Project Scoped Build Override
 
-`./projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./appConfigs/base/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Project Scoped Build Override (Private Content)
 
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 App Config Scoped Build Override
 
@@ -163,11 +163,11 @@ App Config Scoped Build Override (Private Content)
 
 Plugin + Project Scoped Build Override
 
-`./projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`./appConfigs/base/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + Project Scoped Build Override (Private Content)
 
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/plugins/[PLUGIN_ID]/builds/[PLATFORM]/*/**` => `./platformBuilds/[APP_ID]_[PLATFORM]/*/*`
 
 Plugin + App Config Scoped Build Override
 
@@ -181,11 +181,11 @@ Plugin + App Config Scoped Build Override (Private Content)
 
 Project Scoped Assets Override
 
-`./projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`./appConfigs/base/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Project Scoped Assets Override (Private Content)
 
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 App Config Scoped Build Override
 
@@ -197,11 +197,11 @@ App Config Scoped Build Override (Private Content)
 
 Plugin + Project Scoped Build Override
 
-`./projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`./appConfigs/base/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + Project Scoped Build Override (Private Content)
 
-`[WORKSPACE_PATH]/[PROJECT_NAME]/projectConfig/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
+`[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/base/plugins/[PLUGIN_ID]/assets/runtime/*/**` => `./platformAssets/runtime/*/*`
 
 Plugin + App Config Scoped Build Override
 
