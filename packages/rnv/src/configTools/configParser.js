@@ -183,7 +183,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
     c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
     c.paths.project.npmLinkPolyfill = path.join(c.paths.project.dir, 'npm_link_polyfill.json');
-    c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'projectConfig');
+    c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'appConfigs', 'base');
     c.paths.project.projectConfig.pluginsDir = path.join(c.paths.project.projectConfig.dir, 'plugins');
     c.paths.project.projectConfig.fontsDir = path.join(c.paths.project.projectConfig.dir, 'fonts');
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
@@ -581,10 +581,10 @@ export const generateBuildConfig = (c) => {
 
 export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
     logTask('generateRuntimeConfig');
-    c.assetConfig = {
-        common: c.buildConfig.common,
-        runtime: c.buildConfig.runtime
-    };
+    // c.assetConfig = {
+    //     common: c.buildConfig.common,
+    //     runtime: c.buildConfig.runtime
+    // };
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});

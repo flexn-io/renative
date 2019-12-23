@@ -12,7 +12,7 @@ Legend:
 - `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT_NAME]` - `name` field in the root `package.json` file of your project
-- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
+- `[PLUGIN_ID]` - `key` of the plugin defined in one of the `renative.json` files
 - `[WORKSPACE_PATH]` - `path` to your workspace (`~/.rnv` by default) where local and sensitive information is stored.
 
 NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
@@ -296,8 +296,7 @@ PATH_PROPS
     "platformTemplatesDir": "",
     "entryDir": "",
     "platformAssetsDir": "",
-    "platformBuildsDir": "",
-    "projectConfigDir": ""
+    "platformBuildsDir": ""
 }
 ```
 

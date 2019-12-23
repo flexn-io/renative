@@ -20,7 +20,8 @@ import {
     getIP,
     getBuildFilePath,
     logSuccess,
-    getBuildsFolder
+    getBuildsFolder,
+    getFlavouredProp
 } from '../../common';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
@@ -137,8 +138,9 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        if (pluginPlat.plist) {
-            plistObj = mergeObjects(c, plistObj, pluginPlat.plist, true, true);
+        const plist = getFlavouredProp(c, pluginPlat, 'plist');
+        if (plist) {
+            plistObj = mergeObjects(c, plistObj, plist, true, true);
         }
     });
     saveObjToPlistSync(c, plistPath, plistObj);

@@ -14,7 +14,7 @@ ReNative allows you to customize, extend or override pretty much anything.
 
 Let's imagine you want to override one of the files generated in `./platformBuilds/[APP_ID]_[PLATFORM]/[FILE_PATH]`
 
-you can override any file via `./projectConfig/builds/[PLATFORM]/[FILE_PATH]`
+you can override any file via `./appConfigs/base/builds/[PLATFORM]/[FILE_PATH]`
 
 
 
@@ -26,7 +26,7 @@ Webpack config file of your web app:
 
 Will be overridden with:
 
-`./projectConfig/builds/web/webpack.config.js`
+`./appConfigs/base/builds/web/webpack.config.js`
 
 
 ## Example 2
