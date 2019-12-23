@@ -98,25 +98,25 @@ class BasePlatformSetup {
         !skipPrereq && await this.installPrereqs();
 
         switch (sdk) {
-        case 'android':
-            await this.downloadSdk(sdk);
-            await this.unzipSdk(sdk);
-            await this.installSdksAndEmulator();
-            break;
-        case 'tizen':
-            await this.installTizenSdk();
-            break;
-        case 'webos':
-            await this.installWebosSdk();
-            break;
-        case 'fastlane':
-            await this.installFastlane();
-            break;
-        case 'docker':
-            await this.installDocker();
-            break;
-        default:
-            break;
+            case 'android':
+                await this.downloadSdk(sdk);
+                await this.unzipSdk(sdk);
+                await this.installSdksAndEmulator();
+                break;
+            case 'tizen':
+                await this.installTizenSdk();
+                break;
+            case 'webos':
+                await this.installWebosSdk();
+                break;
+            case 'fastlane':
+                await this.installFastlane();
+                break;
+            case 'docker':
+                await this.installDocker();
+                break;
+            default:
+                break;
         }
 
         this.postInstall(sdk);
@@ -156,6 +156,8 @@ class BasePlatformSetup {
 
         if (this.c.program.ci || sdkInstall) {
             await this.installSdk(sdk, ['fastlane', 'docker'].includes(sdk)); // no prereqs needed for fastlane
+        } else {
+            throw new Error(`You can't run the project on this platform without ${sdk} sdk installed`);
         }
     }
 }

@@ -2,10 +2,19 @@ import { RewriteFrames } from '@sentry/integrations';
 import { machineIdSync } from 'node-machine-id';
 import axios from 'axios';
 import os from 'os';
+import path from 'path';
 
 import Config from '../config';
 import pkg from '../../package.json';
 import { REDASH_KEY, REDASH_URL } from '../constants';
+
+// deal with useless duplicate errors on sentry because of different error texts
+const sanitizeError = (err) => {
+    if (err.includes('file if you SDK path is correct.')) {
+        return err.toLowerCase().split('. check your ')[0];
+    }
+    return err;
+};
 
 class Redash {
     captureEvent(e) {
@@ -40,14 +49,14 @@ class Analytics {
                 integrations: [new RewriteFrames({
                     root: '/',
                     iteratee: (frame) => {
-                        if (frame.filename.includes('rnv/dist/') || frame.filename.includes('rnv/src')) {
-                            if (frame.filename.includes('rnv/dist/')) {
-                                frame.filename = frame.filename.split('rnv/dist/')[1];
+                        if (frame.filename.includes(`rnv${path.sep}dist${path.sep}`) || frame.filename.includes(`rnv${path.sep}src${path.sep}`)) {
+                            if (frame.filename.includes(`rnv${path.sep}dist${path.sep}`)) {
+                                frame.filename = frame.filename.split(`rnv${path.sep}dist${path.sep}`)[1];
                             } else {
-                                frame.filename = frame.filename.split('rnv/src/')[1];
+                                frame.filename = frame.filename.split(`rnv${path.sep}src${path.sep}`)[1];
                             }
-                        } else if (frame.filename.includes('/node_modules/')) {
-                            frame.filename = `node_modules/${frame.filename.split('/node_modules/')[1]}`;
+                        } else if (frame.filename.includes(`${path.sep}node_modules${path.sep}`)) {
+                            frame.filename = `node_modules/${frame.filename.split(`${path.sep}node_modules${path.sep}`)[1]}`;
                         }
                         return frame;
                     }
@@ -59,13 +68,18 @@ class Analytics {
         }
     }
 
-    captureException(e) {
+    captureException(e, context = {}) {
         if (Config.isAnalyticsEnabled && this.errorFixer) {
-            if (e instanceof Error) {
-                this.errorFixer.captureException(e);
-            } else {
-                this.errorFixer.captureException(new Error(e));
-            }
+            this.errorFixer.withScope((scope) => {
+                const { extra = {}, tags = {} } = context;
+                scope.setTags({ ...tags, os: os.platform() });
+                scope.setExtras({ ...extra, fingerprint: machineIdSync() });
+                if (e instanceof Error) {
+                    this.errorFixer.captureException(e);
+                } else {
+                    this.errorFixer.captureException(new Error(sanitizeError(e)));
+                }
+            });
         }
     }
 
