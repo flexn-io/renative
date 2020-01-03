@@ -1451,7 +1451,7 @@
                                 {
                                     "tag": "meta-data",
                                     "android:name": "uriScheme",
-                                    "android:value": "{{props.URI_SCHEME}}"
+                                    "android:value": "{{props.URL_SCHEME}}"
                                 },
                                 {
                                     "tag": "activity",
@@ -1462,7 +1462,7 @@
                                             "children": [
                                                 {
                                                     "tag": "data",
-                                                    "android:scheme": "{{props.URI_SCHEME}}"
+                                                    "android:scheme": "{{props.URL_SCHEME}}"
                                                 }
                                             ]
                                         }
