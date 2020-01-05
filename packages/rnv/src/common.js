@@ -161,20 +161,21 @@ export const isBuildSchemeSupported = async (c) => {
     return scheme;
 };
 
+export const getCurrentSdkPath = (c, platform) => {
+    return c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]]
+}
+
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
-    if (c.files.workspace.config) {
-        const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(getRealPath(c, c.files.workspace.config.sdks[sdkPlatform]));
-    }
+    const sdkPath = getCurrentSdkPath(c, platform);
 
-    return false;
+    return fs.existsSync(getRealPath(c, sdkPath));
 };
 
 export const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.workspace.config?.sdks?.ANDROID_SDK)}`;
+        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(getCurrentSdkPath(c, platform))}`;
         if (reject) {
             reject(err);
         } else {

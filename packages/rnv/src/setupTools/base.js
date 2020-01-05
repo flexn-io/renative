@@ -8,6 +8,7 @@ import { configureRnvGlobal } from '../configTools/configParser';
 import { replaceHomeFolder, updateConfigFile } from '../systemTools/fileutils';
 import setupConfig from './config';
 import Config from '../config';
+import { logTask, logError } from '../systemTools/logger';
 
 class BasePlatformSetup {
     constructor(os, c) {
@@ -94,6 +95,7 @@ class BasePlatformSetup {
     }
 
     async installSdk(sdk, skipPrereq) {
+        logTask(`installSdk:${sdk}`);
         !skipPrereq && this.checkPrereqs();
         !skipPrereq && await this.installPrereqs();
 
@@ -124,21 +126,25 @@ class BasePlatformSetup {
 
     async installTizenSdk() {
         // to be overwritten
+        logError('Install webos sdk not supported yet. Follow https://developer.tizen.org/development/tizen-studio/download to install it manually');
         return true;
     }
 
     async installWebosSdk() {
         // to be overwritten
+        logError('Install webos sdk not supported yet. Follow http://webostv.developer.lge.com/sdk/installation/ to install it manually');
         return true;
     }
 
     async installFastlane() {
         // to be overwritten
+        logError('Install fastlane not supported yet. Follow https://docs.fastlane.tools/getting-started/ios/setup/ to install it manually');
         return true;
     }
 
     async installDocker() {
         // to be overwritten
+        logError('Install docker not supported yet');
         return true;
     }
 
