@@ -34,7 +34,7 @@ export const parseXcodeProject = async (c, platform) => {
     c.runtime.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
     c.runtime.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '10.0');
     c.runtime.xcodeProj.provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
-    c.runtime.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity');
+    c.runtime.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
     c.runtime.xcodeProj.systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
     c.runtime.xcodeProj.runScheme = getConfigProp(c, platform, 'runScheme');
     c.runtime.xcodeProj.teamID = getConfigProp(c, platform, 'teamID');
@@ -108,21 +108,21 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             xcodeProj.updateBuildProperty('PROVISIONING_PROFILE_SPECIFIER', `"${provisionProfileSpecifier}"`);
         }
 
-        if (codeSignIdentity) {
-            const bc = xcodeProj.pbxXCBuildConfigurationSection();
+        xcodeProj.updateBuildProperty('CODE_SIGN_IDENTITY', `"${codeSignIdentity}"`);
+        xcodeProj.updateBuildProperty('"CODE_SIGN_IDENTITY[sdk=iphoneos*]"', `"${codeSignIdentity}"`);
 
-            // xcodeProj.updateBuildProperty('CODE_SIGN_IDENTITY', `"${codeSignIdentity}"`, runScheme);
-            // xcodeProj.updateBuildProperty('"CODE_SIGN_IDENTITY[sdk=iphoneos*]"', `"${codeSignIdentity}"`, runScheme);
-            const cs1 = 'CODE_SIGN_IDENTITY';
-            const cs2 = '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"';
-            for (const configName in bc) {
-                const config = bc[configName];
-                if ((runScheme && config.name === runScheme) || (!runScheme)) {
-                    if (config.buildSettings?.[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
-                    if (config.buildSettings?.[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
-                }
-            }
-        }
+        // if (codeSignIdentity) {
+        //     const bc = xcodeProj.pbxXCBuildConfigurationSection();
+        //     const cs1 = 'CODE_SIGN_IDENTITY';
+        //     const cs2 = '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"';
+        //     for (const configName in bc) {
+        //         const config = bc[configName];
+        //         if ((runScheme && config.name === runScheme) || (!runScheme)) {
+        //             if (config.buildSettings?.[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
+        //             if (config.buildSettings?.[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
+        //         }
+        //     }
+        // }
 
         if (systemCapabilities) {
             const sysCapObj = {};
