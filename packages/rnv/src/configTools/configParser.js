@@ -785,6 +785,19 @@ const _loadWorkspacesSync = (c) => {
     if (fs.existsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
         c.files.rnv.configWorkspaces = readObjectSync(c.paths.rnv.configWorkspaces);
+
+        if (!c.files.rnv.configWorkspaces) c.files.rnv.configWorkspaces = {};
+
+        if (!c.files.rnv.configWorkspaces?.workspaces) c.files.rnv.configWorkspaces.workspaces = {};
+        if (Object.keys(c.files.rnv.configWorkspaces.workspaces).length === 0) {
+            logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`)
+            c.files.rnv.configWorkspaces.workspaces = {
+                rnv: {
+                    path: c.paths.workspace.dir
+                }
+            };
+            writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+        }
     } else {
         logWarning(`Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`);
         c.files.rnv.configWorkspaces = {
