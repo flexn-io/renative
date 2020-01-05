@@ -54,13 +54,13 @@
                 };
               }
             });
-        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Config Files</h1></header><article><div><span><p><img src="https://renative.org/img/ic_configuration.png" width=50 height=50 /></p>
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Config Files</h1></header><article><div><span><p><img src="https://renative.org/img/ic_configuration.png" width=50 height=50 /></p>
 <p>Legend:</p>
 <ul>
 <li><code>[PLATFORM]</code> - specific platform key like <code>ios</code>, <code>android</code>, <code>web</code>, etc..</li>
 <li><code>[APP_ID]</code> - name of your folder in <code>./appConfigs</code> which contains specific <code>renative.json</code> file</li>
 <li><code>[PROJECT_NAME]</code> - <code>name</code> field in the root <code>package.json</code> file of your project</li>
-<li><code>[PLUGIN_ID]</code> - <code>key</code> of the plugin defined in <code>./projectConfig/plugins.json</code></li>
+<li><code>[PLUGIN_ID]</code> - <code>key</code> of the plugin defined in one of the <code>renative.json</code> files</li>
 <li><code>[WORKSPACE_PATH]</code> - <code>path</code> to your workspace (<code>~/.rnv</code> by default) where local and sensitive information is stored.</li>
 </ul>
 <p>NOTE: <code>[WORKSPACE_PATH]</code> folder path can be customised in <code>~/.rnv/renative.workspaces.json</code></p>
@@ -283,8 +283,7 @@
     <span class="hljs-attr">"platformTemplatesDir"</span>: <span class="hljs-string">""</span>,
     <span class="hljs-attr">"entryDir"</span>: <span class="hljs-string">""</span>,
     <span class="hljs-attr">"platformAssetsDir"</span>: <span class="hljs-string">""</span>,
-    <span class="hljs-attr">"platformBuildsDir"</span>: <span class="hljs-string">""</span>,
-    <span class="hljs-attr">"projectConfigDir"</span>: <span class="hljs-string">""</span>
+    <span class="hljs-attr">"platformBuildsDir"</span>: <span class="hljs-string">""</span>
 }
 </code></pre>
 <p>SDK_PROPS</p>
