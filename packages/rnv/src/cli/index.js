@@ -430,7 +430,7 @@ const _handleUnknownSubCommand = async (c) => {
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
 
-    c.program.scheme = '?';
+    c.program.scheme = true;
 
     const { command } = await inquirerPrompt({
         type: 'list',

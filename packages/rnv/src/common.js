@@ -88,7 +88,7 @@ export const isPlatformSupported = async (c) => {
     if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
     const opts = generateOptions(platformsAsObj);
 
-    if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
+    if (!c.platform || c.platform === true || !SUPPORTED_PLATFORMS.includes(c.platform)) {
         const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',
@@ -141,8 +141,8 @@ export const isBuildSchemeSupported = async (c) => {
     }
 
     const schemeDoesNotExist = scheme && !buildSchemes[scheme];
-    if (scheme === '?' || schemeDoesNotExist) {
-        if (schemeDoesNotExist && scheme && scheme !== '?') {
+    if (scheme === true || schemeDoesNotExist) {
+        if (schemeDoesNotExist && scheme && scheme !== true) {
             logError('Build scheme you picked does not exists.');
         }
         const opts = generateOptions(buildSchemes);

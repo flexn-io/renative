@@ -112,7 +112,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
 const runXcodeProject = async (c, platform, target) => {
     logTask(`runXcodeProject:${platform}:${target}`);
 
-    if (target === '?') {
+    if (target === true) {
         const newTarget = await launchAppleSimulator(c, platform, target);
         await _runXcodeProject(c, platform, newTarget);
     } else {

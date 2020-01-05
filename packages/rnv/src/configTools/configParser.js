@@ -432,7 +432,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
 export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
-    if (!appId || appId === '?' || appId === true) return;
+    if (!appId || appId === true || appId === true) return;
 
     c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
@@ -647,7 +647,7 @@ export const updateConfig = async (c, appConfigId) => {
             logWarning(
                 'It seems you don\'t have any appConfig active',
             );
-        } else if (appConfigId !== '?' && appConfigId !== true && !isPureRnv) {
+        } else if (appConfigId !== true && appConfigId !== true && !isPureRnv) {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,

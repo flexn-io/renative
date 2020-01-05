@@ -202,7 +202,7 @@ const _configureAppConfigs = async (c) => {
                     }
                 }
             }
-            await updateConfig(c, '?');
+            await updateConfig(c, true);
         } catch (e) {
             logError(e);
         }
