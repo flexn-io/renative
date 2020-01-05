@@ -3,9 +3,9 @@ import ora from 'ora';
 
 import Config from '../config';
 
-export const isBundlerRunning = async () => {
+export const isBundlerRunning = async (c) => {
     try {
-        const { data } = await axios.get(`http://127.0.0.1:${Config.currentPlatformDefaultPort}`);
+        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}`);
         if (data.includes('React Native')) return true;
         return false;
     } catch {
@@ -13,7 +13,7 @@ export const isBundlerRunning = async () => {
     }
 };
 
-export const waitForBundler = async () => {
+export const waitForBundler = async (c) => {
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 1000;
@@ -21,7 +21,7 @@ export const waitForBundler = async () => {
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(async () => {
-            isBundlerRunning()
+            isBundlerRunning(c)
                 .then((running) => {
                     if (running) {
                         clearInterval(interval);

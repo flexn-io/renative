@@ -470,9 +470,8 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = async (c, port) => {
-    if (!port) port = c.program.port || c.platformDefaults[c.platform] ? c.platformDefaults[c.platform].defaultPort : null;
-    logTask(`waitForWebpack:${port}`);
+export const waitForWebpack = async (c) => {
+    logTask(`waitForWebpack:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
@@ -483,7 +482,7 @@ export const waitForWebpack = async (c, port) => {
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
-    const url = `http://${devServerHost}:${port}/assets/bundle.js`;
+    const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
             axios.get(url).then((res) => {

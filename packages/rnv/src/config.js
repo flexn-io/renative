@@ -162,11 +162,6 @@ class Config {
         return this.config.platform;
     }
 
-    get currentPlatformDefaultPort() {
-        const { platform } = this.config;
-        return this.config.platformDefaults[platform].defaultPort;
-    }
-
     get isRenativeProject() {
         return this.config?.paths?.project?.configExists || false;
     }

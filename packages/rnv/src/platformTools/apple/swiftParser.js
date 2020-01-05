@@ -28,7 +28,7 @@ import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port) => new Promise((resolve, reject) => {
-    if (!port) port = PLATFORMS[platform].defaultPort;
+    if (!port) port = c.runtime.port;
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 

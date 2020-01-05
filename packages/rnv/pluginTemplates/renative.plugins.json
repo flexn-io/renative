@@ -1120,6 +1120,20 @@
                         "Fabric.with(this, crashlyticsKit)"
                     ]
                 }
+            },
+            "androidtv": {
+                "skipImplementation": true,
+                "mainActivity": {
+                    "imports": [
+                        "com.crashlytics.android.Crashlytics",
+                        "com.crashlytics.android.core.CrashlyticsCore"
+                    ],
+                    "createMethods": [
+                        "val core = CrashlyticsCore.Builder().listener {}.build()",
+                        "val crashlyticsKit = Crashlytics.Builder().core(core).build()",
+                        "Fabric.with(this, crashlyticsKit)"
+                    ]
+                }
             }
         },
         "Fabric": {
@@ -1546,15 +1560,17 @@
                 }
             },
             "androidtv": {
-                "imports": [
-                    "io.invertase.firebase.RNFirebasePackage",
-                    "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
-                    "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
-                ],
                 "implementations": [
                     "'com.google.firebase:firebase-core:16.0.4'",
-                    "'com.google.firebase:firebase-messaging:17.3.4'"
+                    "'com.google.firebase:firebase-messaging:18.0.0'"
                 ],
+                "MainApplication": {
+                    "packages": [
+                        "io.invertase.firebase.RNFirebasePackage",
+                        "io.invertase.firebase.notifications.RNFirebaseNotificationsPackage",
+                        "io.invertase.firebase.messaging.RNFirebaseMessagingPackage"
+                    ]
+                },
                 "build.gradle": {
                     "buildscript": {
                         "dependencies": [
@@ -1564,6 +1580,113 @@
                 },
                 "app/build.gradle": {
                     "apply": ["plugin: 'com.google.gms.google-services'"]
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.google.firebase.messaging.default_notification_icon",
+                                    "android:resource": "@drawable/ic_stat_ic_notification"
+                                },
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "uriScheme",
+                                    "android:value": "{{props.URL_SCHEME}}"
+                                },
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "data",
+                                                    "android:scheme": "{{props.URL_SCHEME}}"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "service",
+                                    "android:name": "io.invertase.firebase.messaging.RNFirebaseMessagingService",
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "com.google.firebase.MESSAGING_EVENT"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "service",
+                                    "android:name": "io.invertase.firebase.messaging.RNFirebaseBackgroundMessagingService"
+                                },
+                                {
+                                    "tag": "receiver",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseBackgroundNotificationActionReceiver",
+                                    "android:exported": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "io.invertase.firebase.notifications.BackgroundAction"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "tag": "service",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseBackgroundNotificationActionsService"
+                                },
+                                {
+                                    "tag": "receiver",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseNotificationReceiver"
+                                },
+                                {
+                                    "tag": "receiver",
+                                    "android:name": "io.invertase.firebase.notifications.RNFirebaseNotificationsRebootReceiver",
+                                    "android:exported": true,
+                                    "android:enabled": true,
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.BOOT_COMPLETED"
+                                                },
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "android.intent.action.QUICKBOOT_POWERON"
+                                                },
+                                                {
+                                                    "tag": "action",
+                                                    "android:name": "com.htc.intent.action.QUICKBOOT_POWERON"
+                                                },
+                                                {
+                                                    "tag": "category",
+                                                    "android:name": "android.intent.category.DEFAULT"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
                 }
             }
         },

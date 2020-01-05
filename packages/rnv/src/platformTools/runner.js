@@ -80,7 +80,7 @@ let keepRNVRunning = false;
 
 export const rnvStart = async (c, shouldOpenBrowser) => {
     const { platform } = c;
-    const port = c.program.port || c.platformDefaults[platform] ? c.platformDefaults[platform].defaultPort : null;
+    const port = c.runtime.port
     const { hosted } = c.program;
 
     logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
@@ -111,8 +111,7 @@ export const rnvStart = async (c, shouldOpenBrowser) => {
             }
     }
 
-    const defaultPort = PLATFORMS[platform]?.defaultPort || 8081;
-    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --sourceExts ${getSourceExts(c).join(',')} --port ${defaultPort} --config=metro.config.js`;
+    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --sourceExts ${getSourceExts(c).join(',')} --port ${c.runtime.port} --config=metro.config.js`;
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }
@@ -198,7 +197,7 @@ const _configureHostedIfRequired = async (c, platform) => {
         const { project, rnv } = c.paths;
         copyFolderContentsRecursiveSync(path.join(rnv.dir, 'supportFiles', 'appShell'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public'));
         writeCleanFile(path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.runtime.port}` },
         ]);
     }
 };
@@ -207,11 +206,11 @@ const startBundlerIfRequired = async (c) => {
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
 
-    const isRunning = await isBundlerRunning();
+    const isRunning = await isBundlerRunning(c);
     if (!isRunning) {
         rnvStart(c);
         keepRNVRunning = true;
-        await waitForBundler();
+        await waitForBundler(c);
     } else {
         logInfo('Bundler already running. Using it');
     }
@@ -228,7 +227,7 @@ const waitForBundlerIfRequired = async (c) => {
 const _rnvRunWithPlatform = async (c) => {
     logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
-    const port = c.program.port || c.platformDefaults[platform].defaultPort;
+    const port = c.runtime.port
     const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
     const { hosted } = c.program;
 
