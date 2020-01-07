@@ -139,8 +139,8 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const plist = getFlavouredProp(c, pluginPlat, 'plist');
-        if (plist) {
-            plistObj = mergeObjects(c, plistObj, plist, true, true);
+        if (plist) {            
+            plistObj = mergeObjects(c, plistObj, plist, true, false);
         }
     });
     saveObjToPlistSync(c, plistPath, plistObj);

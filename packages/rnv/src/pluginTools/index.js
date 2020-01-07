@@ -101,15 +101,37 @@ export const rnvPluginAdd = async (c) => {
     selectedPlugins[plugin] = o.allPlugins[plugin];
     installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.allPlugins[plugin].version)})`);
 
-    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
+    const questionPlugins = {}
 
     Object.keys(selectedPlugins).forEach((key) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
+        const plugin = selectedPlugins[key]
+        if(plugin.props) questionPlugins[key] = plugin;
         c.files.project.config.plugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];
         _checkAndAddDependantPlugins(c, selectedPlugins[key]);
     });
+
+    const pluginKeys = Object.keys(questionPlugins)
+    for(let i = 0; i < pluginKeys.length; i++) {
+        const pluginKey = pluginKeys[i]
+        const plugin = questionPlugins[pluginKey];
+        const pluginProps = Object.keys(plugin.props);
+        const finalProps = {}
+        for(let i2 = 0; i2 < pluginProps.length; i2 ++) {
+            const { propValue } = await inquirer.prompt({
+                name: 'propValue',
+                type: 'input',
+                message: `${pluginKey}: Add value for ${pluginProps[i2]} (You can do this later in ./renative.json file)`
+            });
+            finalProps[pluginProps[i2]] = propValue
+        }
+        c.files.project.config.plugins[pluginKey] = {}
+        c.files.project.config.plugins[pluginKey].props = finalProps
+    }
+
+    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
 
     writeFileSync(c.paths.project.config, c.files.project.config);
     spinner.succeed('All plugins installed!');

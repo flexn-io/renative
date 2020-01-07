@@ -2068,6 +2068,59 @@
                     ]
                 }
             }
+        },
+        "react-native-auth0": {
+            "version": "2.1.0",
+            "props": {
+                "DOMAIN": ""
+            },
+            "dependsOn": ["RCTLinkingIOS"],
+            "ios": {
+                "podName": "A0Auth0",
+                "path": "node_modules/react-native-auth0/ios",
+                "plist": {
+                    "CFBundleURLTypes": [
+                        {
+                            "CFBundleTypeRole": "None",
+                            "CFBundleURLName": "auth0",
+                            "CFBundleURLSchemes": [
+                                "$(PRODUCT_BUNDLE_IDENTIFIER)"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "android": {
+                "package": "com.auth0.react.A0Auth0Package",
+                "path": "node_modules/react-native-auth0/android",
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "activity",
+                                    "android:name": ".MainActivity",
+                                    "children": [
+                                        {
+                                            "tag": "intent-filter",
+                                            "children": [
+                                                {
+                                                    "tag": "data",
+                                                    "android:host": "{{props.DOMAIN}}",
+                                                    "android:pathPrefix": "/android/${applicationId}/callback",
+                                                    "android:scheme": "${applicationId}"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
         }
     },
     "plugins": {
