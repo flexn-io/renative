@@ -1,14 +1,9 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
-import path from 'path';
-import inquirer from 'inquirer';
-import {
-    isPlatformSupportedSync, getConfig, logTask, logComplete, logError,
-    getAppFolder, isPlatformSupported, checkSdk
-} from '../common';
+import { logTask, logError, isPlatformSupported, checkSdk } from '../common';
 import PlatformSetup from '../setupTools';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_EMULATOR, CLI_ANDROID_SDKMANAGER } from '../constants';
-import { launchTizenSimulator } from './tizen';
+import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
+import { launchTizenSimulator, listTizenTargets } from './tizen';
 import { launchWebOSimulator, listWebOSTargets } from './webos';
 import { listAndroidTargets, launchAndroidSimulator } from './android/deviceManager';
 import { listAppleDevices, launchAppleSimulator } from './apple';
@@ -68,6 +63,8 @@ export const rnvTargetList = async (c) => {
         case IOS:
         case TVOS:
             return listAppleDevices(c, platform);
+        case TIZEN:
+            return listTizenTargets(c, platform);
         case WEBOS:
             if (!checkSdk(c, platform, throwError)) return;
             return listWebOSTargets(c);
