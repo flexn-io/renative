@@ -192,6 +192,8 @@ const _updateProfile = (c, v) => new Promise((resolve, reject) => {
 export const checkCrypto = async (c) => {
     logTask('checkCrypto');
 
+    if (c.program.ci) return;
+
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
     const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
