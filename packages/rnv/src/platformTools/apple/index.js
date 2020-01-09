@@ -52,46 +52,52 @@ const checkIfPodsIsRequired = async (c) => {
 };
 
 const updatePodsChecksum = (c) => {
+    logTask('updatePodsChecksum');
     const appFolder = getAppFolder(c, c.platform);
     const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
     const podContentChecksum = generateChecksum(fs.readFileSync(path.join(appFolder, 'Podfile')).toString());
     if (fs.existsSync(podChecksumPath)) {
         const existingContent = fs.readFileSync(podChecksumPath).toString();
         if (existingContent !== podContentChecksum) {
-            logDebug(`runPod:updateChecksum:${podContentChecksum}`);
+            logDebug(`updatePodsChecksum:${podContentChecksum}`);
             return fs.writeFileSync(podChecksumPath, podContentChecksum);
         }
         return true;
     }
-    logDebug(`runPod:updateChecksum:${podContentChecksum}`);
+    logDebug(`updatePodsChecksum:${podContentChecksum}`);
     return fs.writeFileSync(podChecksumPath, podContentChecksum);
 };
 
-const runPod = async (c, command, cwd, rejectOnFail = false) => {
-    logTask(`runPod:${command}:${rejectOnFail}`);
+const runPod = async (c, platform) => {
+    logTask(`runPod:${platform}`);
 
-    if (!fs.existsSync(cwd)) {
-        if (rejectOnFail) return Promise.reject(`Location ${cwd} does not exists!`);
-        logError(`Location ${cwd} does not exists!`);
-        return true;
+    const appFolder = getAppFolder(c, platform);
+
+    if (!fs.existsSync(appFolder)) {
+        return Promise.reject(`Location ${appFolder} does not exists!`);
     }
-    const podsRequired = command === 'install' || await checkIfPodsIsRequired(c);
+    const podsRequired = c.program.updatePods || await checkIfPodsIsRequired(c);
 
     if (podsRequired) {
         await checkIfCommandExists('pod');
-        return executeAsync(c, `pod ${command}`, {
-            cwd,
-            evn: process.env,
-        })
-            .then(() => updatePodsChecksum(c))
-            .catch((e) => {
-                if (rejectOnFail) {
-                    logWarning(e);
-                    return Promise.reject(e);
-                }
-                logError(e);
-                return true;
+
+        try {
+            await executeAsync(c, 'pod install', {
+                cwd: appFolder,
+                env: process.env,
             });
+        } catch (e) {
+            const s = e?.toString ? e.toString() : '';
+            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods') 
+            if (isGenericError) return new Error(`pod install failed with:\n ${s}`);
+            logWarning(`Looks like pod install is not enough! Let's try pod update! Error:\n ${s}`);
+            return executeAsync(c, 'pod update', { cwd: appFolder, env: process.env })
+                .then(() => updatePodsChecksum(c))
+                .catch(er => Promise.reject(er));
+        }
+        
+        updatePodsChecksum(c);
+        return true;
     }
 };
 
@@ -483,8 +489,6 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         );
     }
 
-    // PARSERS
-    const forceUpdate = fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
     copyAssetsFolder(c, platform)
         .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))
@@ -494,36 +498,8 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         .then(() => parseEntitlementsPlist(c, platform))
         .then(() => parseInfoPlist(c, platform))
         .then(() => copyBuildsFolder(c, platform))
-        .then(() => {
-            runPod(c, forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
-                .then(() => parseXcodeProject(c, platform))
-                .then(() => {
-                    resolve();
-                })
-                .catch((e) => {
-                    if (!c.program.update) {
-                        if (e && e.toString) {
-                            const s = e.toString();
-                            if (
-                                s.includes('No provisionProfileSpecifier configured')
-                              || s.includes('TypeError:')
-                              || s.includes('ReferenceError:')
-                              || s.includes('find gem cocoapods')
-                            ) {
-                                reject(e);
-                            }
-                        } else {
-                            logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                            runPod(c, 'update', getAppFolder(c, platform), true)
-                                .then(() => parseXcodeProject(c, platform))
-                                .then(() => resolve())
-                                .catch(err => reject(err));
-                        }
-                    } else {
-                        reject(e);
-                    }
-                });
-        })
+        .then(() => runPod(c, platform))
+        .then(() => resolve())
         .catch(e => reject(e));
 });
 
