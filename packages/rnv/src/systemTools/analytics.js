@@ -83,10 +83,11 @@ class Analytics {
         }
     }
 
-    captureEvent(e) {
+    async captureEvent(e) {
         if (Config.isAnalyticsEnabled && this.knowItAll) {
-            this.knowItAll.captureEvent(e);
+            return this.knowItAll.captureEvent(e);
         }
+        return true;
     }
 
     teardown() {

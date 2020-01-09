@@ -195,7 +195,7 @@ export const createNewProject = async (c) => {
     });
     data.optionTemplates.selectedOption = inputTemplate;
 
-    const templateVersionsStr = await executeAsync(c, `npm view ${data.optionTemplates.selectedOption} versions`)
+    const templateVersionsStr = await executeAsync(c, `npm view ${data.optionTemplates.selectedOption} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',').reverse();
     data.optionTemplates.selectedVersion = versionArr[0];
 
@@ -228,7 +228,7 @@ export const createNewProject = async (c) => {
         ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace
     };
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
-    
+
 
     _prepareProjectOverview(c, data);
 
@@ -240,7 +240,7 @@ export const createNewProject = async (c) => {
 
     if (confirm) {
         try {
-            Analytics.captureEvent({
+            await Analytics.captureEvent({
                 type: 'newProject',
                 template: inputTemplate,
                 platforms: inputSupportedPlatforms
@@ -250,5 +250,3 @@ export const createNewProject = async (c) => {
         await _generateProject(c, data);
     }
 };
-
-
