@@ -38,31 +38,19 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const executePipe = (c, key) => new Promise((resolve, reject) => {
+const executePipe = async (c, key) => {
     logTask(`executePipe:${key}`);
+    
+    await buildHooks(c);
+        
+    const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
-    buildHooks(c)
-        .then(() => {
-            const pipe = c.buildPipes ? c.buildPipes[key] : null;
-
-            if (Array.isArray(pipe)) {
-                const chain = pipe
-                    .reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve())
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-                return;
-            }
-            if (pipe) {
-                c.buildPipes[key](c)
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-                return;
-            }
-
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+    if (Array.isArray(pipe)) {
+        await pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve())
+    } else if (pipe) {
+        await pipe(c);
+    }
+};
 
 const buildHooks = c => new Promise((resolve, reject) => {
     logTask('buildHooks');

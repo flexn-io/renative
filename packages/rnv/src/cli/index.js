@@ -445,12 +445,14 @@ const run = async (c, spawnC, skipStartBuilder) => {
             await _execCommandHep(c, cmd);
         } else if (cmdFn) {
             if (subCmdFn) {
-                await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
+                await _execute(c, subCmdFn, cmd);
             } else {
-                await _execute(c, cmdFn, cmd, c.command, c.subCommand);
+                //There is no subCommand function available so reset the key not to confuse pipe hooks
+                c.subCommand = null;
+                await _execute(c, cmdFn, cmd);
             }
         } else if (subCmdFn) {
-            await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
+            await _execute(c, subCmdFn, cmd);
         } else {
             await _handleUnknownSubCommand(c);
         }
@@ -460,14 +462,15 @@ const run = async (c, spawnC, skipStartBuilder) => {
     // if (spawnC) Config.initializeConfig(oldC);
 };
 
-const _execute = async (c, cmdFn, cmd, command, subCommand) => {
+const _execute = async (c, cmdFn, cmd) => {
+    logTask(`_execute:${c.command}:${c.subCommand}`)
     if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
     }
 
     let subCmd = '';
-    if (subCommand) {
+    if (c.subCommand) {
         subCmd = `:${c.subCommand}`;
         const requiredPlatforms = cmd.subCommands?.[c.subCommand]?.platforms;
         if (requiredPlatforms && !requiredPlatforms.includes(c.platform)) {
