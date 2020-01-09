@@ -18,13 +18,14 @@ import {
     getBuildFilePath,
     logSuccess,
     getBuildsFolder,
+    getFlavouredProp
 } from '../../common';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
 import { parseProvisioningProfiles } from './provisionParser';
-import { writeObjectSync } from '../../systemTools/fileutils';
+import { writeFileSync } from '../../systemTools/fileutils';
 
 export const parseXcodeProject = async (c, platform) => {
     logTask('parseXcodeProject');
@@ -33,7 +34,7 @@ export const parseXcodeProject = async (c, platform) => {
     c.runtime.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
     c.runtime.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '10.0');
     c.runtime.xcodeProj.provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
-    c.runtime.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity');
+    c.runtime.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
     c.runtime.xcodeProj.systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
     c.runtime.xcodeProj.runScheme = getConfigProp(c, platform, 'runScheme');
     c.runtime.xcodeProj.teamID = getConfigProp(c, platform, 'teamID');
@@ -63,7 +64,7 @@ export const parseXcodeProject = async (c, platform) => {
             if (autoFix) {
                 c.runtime.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
                 c.files.appConfig.config.platforms[platform].buildSchemes[c.program.scheme].provisionProfileSpecifier = eligibleProfile.Name;
-                writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
+                writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
             }
         } else {
             logWarning(`Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`);
@@ -107,21 +108,21 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             xcodeProj.updateBuildProperty('PROVISIONING_PROFILE_SPECIFIER', `"${provisionProfileSpecifier}"`);
         }
 
-        if (codeSignIdentity) {
-            const bc = xcodeProj.pbxXCBuildConfigurationSection();
+        xcodeProj.updateBuildProperty('CODE_SIGN_IDENTITY', `"${codeSignIdentity}"`);
+        xcodeProj.updateBuildProperty('"CODE_SIGN_IDENTITY[sdk=iphoneos*]"', `"${codeSignIdentity}"`);
 
-            // xcodeProj.updateBuildProperty('CODE_SIGN_IDENTITY', `"${codeSignIdentity}"`, runScheme);
-            // xcodeProj.updateBuildProperty('"CODE_SIGN_IDENTITY[sdk=iphoneos*]"', `"${codeSignIdentity}"`, runScheme);
-            const cs1 = 'CODE_SIGN_IDENTITY';
-            const cs2 = '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"';
-            for (const configName in bc) {
-                const config = bc[configName];
-                if ((runScheme && config.name === runScheme) || (!runScheme)) {
-                    if (config.buildSettings[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
-                    if (config.buildSettings[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
-                }
-            }
-        }
+        // if (codeSignIdentity) {
+        //     const bc = xcodeProj.pbxXCBuildConfigurationSection();
+        //     const cs1 = 'CODE_SIGN_IDENTITY';
+        //     const cs2 = '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"';
+        //     for (const configName in bc) {
+        //         const config = bc[configName];
+        //         if ((runScheme && config.name === runScheme) || (!runScheme)) {
+        //             if (config.buildSettings?.[cs1]) config.buildSettings[cs1] = `"${codeSignIdentity}"`;
+        //             if (config.buildSettings?.[cs2]) config.buildSettings[cs2] = `"${codeSignIdentity}"`;
+        //         }
+        //     }
+        // }
 
         if (systemCapabilities) {
             const sysCapObj = {};
@@ -139,25 +140,26 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            if (pluginPlat.xcodeproj) {
-                if (pluginPlat.xcodeproj.resourceFiles) {
-                    pluginPlat.xcodeproj.resourceFiles.forEach((v) => {
+            const xcodeprojObj = getFlavouredProp(c, pluginPlat, 'xcodeproj');
+            if (xcodeprojObj) {
+                if (xcodeprojObj.resourceFiles) {
+                    xcodeprojObj.resourceFiles.forEach((v) => {
                         xcodeProj.addResourceFile(path.join(appFolder, v));
                     });
                 }
-                if (pluginPlat.xcodeproj.sourceFiles) {
-                    pluginPlat.xcodeproj.sourceFiles.forEach((v) => {
+                if (xcodeprojObj.sourceFiles) {
+                    xcodeprojObj.sourceFiles.forEach((v) => {
                         // const group = xcodeProj.hash.project.objects.PBXGroup['200132F21F6BF9CF00450340'];
                         xcodeProj.addSourceFile(v, null, '200132F21F6BF9CF00450340');
                     });
                 }
-                if (pluginPlat.xcodeproj.headerFiles) {
-                    pluginPlat.xcodeproj.headerFiles.forEach((v) => {
+                if (xcodeprojObj.headerFiles) {
+                    xcodeprojObj.headerFiles.forEach((v) => {
                         xcodeProj.addHeaderFile(v, null, '200132F21F6BF9CF00450340');
                     });
                 }
-                if (pluginPlat.xcodeproj.buildPhases) {
-                    pluginPlat.xcodeproj.buildPhases.forEach((v) => {
+                if (xcodeprojObj.buildPhases) {
+                    xcodeprojObj.buildPhases.forEach((v) => {
                         xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'ShellScript', null, {
                             shellPath: v.shellPath || '/bin/sh',
                             shellScript: v.shellScript,
@@ -165,8 +167,8 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         });
                     });
                 }
-                if (pluginPlat.xcodeproj.frameworks) {
-                    for (const k in pluginPlat.xcodeproj.frameworks) {
+                if (xcodeprojObj.frameworks) {
+                    for (const k in xcodeprojObj.frameworks) {
                         let fPath;
                         let opts;
                         if (k.startsWith('./')) {
@@ -185,9 +187,9 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         xcodeProj.addFramework(fPath, opts);
                     }
                 }
-                if (pluginPlat.xcodeproj.buildSettings) {
-                    for (const k in pluginPlat.xcodeproj.buildSettings) {
-                        xcodeProj.addToBuildSettings(k, pluginPlat.xcodeproj.buildSettings[k]);
+                if (xcodeprojObj.buildSettings) {
+                    for (const k in xcodeprojObj.buildSettings) {
+                        xcodeProj.addToBuildSettings(k, xcodeprojObj.buildSettings[k]);
                     }
                 }
             }

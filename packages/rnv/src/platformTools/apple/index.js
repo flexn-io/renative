@@ -9,15 +9,12 @@ import inquirer from 'inquirer';
 import { executeAsync } from '../../systemTools/exec';
 import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
     isPlatformActive,
-    logDebug,
     getConfigProp,
     getIP,
     logSuccess,
+    generateChecksum
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
@@ -30,38 +27,73 @@ import { parseXcscheme } from './xcschemeParser';
 import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
+import { logInfo, logTask,
+    logError,
+    logWarning, logDebug } from '../../systemTools/logger';
 
 const checkIfCommandExists = command => new Promise((resolve, reject) => child_process.exec(`command -v ${command} 2>/dev/null`, (error) => {
     if (error) return reject(new Error(`${command} not installed`));
-    return resolve();
+    return resolve(true);
 }));
 
-const runPod = (c, command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
+const checkIfPodsIsRequired = async (c) => {
+    const appFolder = getAppFolder(c, c.platform);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    if (!fs.existsSync(podChecksumPath)) return true;
+    const podChecksum = fs.readFileSync(podChecksumPath).toString();
+    const podContentChecksum = generateChecksum(fs.readFileSync(path.join(appFolder, 'Podfile')).toString());
+
+    if (podChecksum !== podContentChecksum) {
+        logDebug('runPod:isMandatory');
+        return true;
+    }
+    logInfo('Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter');
+    return false;
+};
+
+const updatePodsChecksum = (c) => {
+    const appFolder = getAppFolder(c, c.platform);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    const podContentChecksum = generateChecksum(fs.readFileSync(path.join(appFolder, 'Podfile')).toString());
+    if (fs.existsSync(podChecksumPath)) {
+        const existingContent = fs.readFileSync(podChecksumPath).toString();
+        if (existingContent !== podContentChecksum) {
+            logDebug(`runPod:updateChecksum:${podContentChecksum}`);
+            return fs.writeFileSync(podChecksumPath, podContentChecksum);
+        }
+        return true;
+    }
+    logDebug(`runPod:updateChecksum:${podContentChecksum}`);
+    return fs.writeFileSync(podChecksumPath, podContentChecksum);
+};
+
+const runPod = async (c, command, cwd, rejectOnFail = false) => {
     logTask(`runPod:${command}:${rejectOnFail}`);
 
     if (!fs.existsSync(cwd)) {
-        if (rejectOnFail) return reject(`Location ${cwd} does not exists!`);
+        if (rejectOnFail) return Promise.reject(`Location ${cwd} does not exists!`);
         logError(`Location ${cwd} does not exists!`);
-        return resolve();
+        return true;
     }
-    return checkIfCommandExists('pod')
-        .then(() => executeAsync(c, `pod ${command}`, {
+    const podsRequired = command === 'install' || await checkIfPodsIsRequired(c);
+
+    if (podsRequired) {
+        await checkIfCommandExists('pod');
+        return executeAsync(c, `pod ${command}`, {
             cwd,
             evn: process.env,
         })
-            .then(() => {
-                resolve();
-            })
+            .then(() => updatePodsChecksum(c))
             .catch((e) => {
                 if (rejectOnFail) {
                     logWarning(e);
-                    return reject(e);
+                    return Promise.reject(e);
                 }
                 logError(e);
-                return resolve();
-            }))
-        .catch(err => logError(err));
-});
+                return true;
+            });
+    }
+};
 
 const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) => {
     logTask('copyAppleAssets');
@@ -80,7 +112,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
 const runXcodeProject = async (c, platform, target) => {
     logTask(`runXcodeProject:${platform}:${target}`);
 
-    if (target === '?') {
+    if (target === true) {
         const newTarget = await launchAppleSimulator(c, platform, target);
         await _runXcodeProject(c, platform, newTarget);
     } else {
@@ -452,7 +484,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     }
 
     // PARSERS
-    const forceUpdate = !fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
+    const forceUpdate = fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
     copyAssetsFolder(c, platform)
         .then(() => copyAppleAssets(c, platform, appFolderName))
         .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))

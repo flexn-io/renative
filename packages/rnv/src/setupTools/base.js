@@ -8,6 +8,7 @@ import { configureRnvGlobal } from '../configTools/configParser';
 import { replaceHomeFolder, updateConfigFile } from '../systemTools/fileutils';
 import setupConfig from './config';
 import Config from '../config';
+import { logTask, logError } from '../systemTools/logger';
 
 class BasePlatformSetup {
     constructor(os, c) {
@@ -94,29 +95,30 @@ class BasePlatformSetup {
     }
 
     async installSdk(sdk, skipPrereq) {
+        logTask(`installSdk:${sdk}`);
         !skipPrereq && this.checkPrereqs();
         !skipPrereq && await this.installPrereqs();
 
         switch (sdk) {
-        case 'android':
-            await this.downloadSdk(sdk);
-            await this.unzipSdk(sdk);
-            await this.installSdksAndEmulator();
-            break;
-        case 'tizen':
-            await this.installTizenSdk();
-            break;
-        case 'webos':
-            await this.installWebosSdk();
-            break;
-        case 'fastlane':
-            await this.installFastlane();
-            break;
-        case 'docker':
-            await this.installDocker();
-            break;
-        default:
-            break;
+            case 'android':
+                await this.downloadSdk(sdk);
+                await this.unzipSdk(sdk);
+                await this.installSdksAndEmulator();
+                break;
+            case 'tizen':
+                await this.installTizenSdk();
+                break;
+            case 'webos':
+                await this.installWebosSdk();
+                break;
+            case 'fastlane':
+                await this.installFastlane();
+                break;
+            case 'docker':
+                await this.installDocker();
+                break;
+            default:
+                break;
         }
 
         this.postInstall(sdk);
@@ -124,21 +126,25 @@ class BasePlatformSetup {
 
     async installTizenSdk() {
         // to be overwritten
+        logError('Install webos sdk not supported yet. Follow https://developer.tizen.org/development/tizen-studio/download to install it manually');
         return true;
     }
 
     async installWebosSdk() {
         // to be overwritten
+        logError('Install webos sdk not supported yet. Follow http://webostv.developer.lge.com/sdk/installation/ to install it manually');
         return true;
     }
 
     async installFastlane() {
         // to be overwritten
+        logError('Install fastlane not supported yet. Follow https://docs.fastlane.tools/getting-started/ios/setup/ to install it manually');
         return true;
     }
 
     async installDocker() {
         // to be overwritten
+        logError('Install docker not supported yet');
         return true;
     }
 
@@ -156,6 +162,8 @@ class BasePlatformSetup {
 
         if (this.c.program.ci || sdkInstall) {
             await this.installSdk(sdk, ['fastlane', 'docker'].includes(sdk)); // no prereqs needed for fastlane
+        } else {
+            throw new Error(`You can't run the project on this platform without ${sdk} sdk installed`);
         }
     }
 }

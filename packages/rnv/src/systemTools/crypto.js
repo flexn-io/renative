@@ -8,6 +8,7 @@ import { IOS, TVOS, RENATIVE_CONFIG_NAME } from '../constants';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
+import { inquirerPrompt } from './prompt';
 
 const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
@@ -26,11 +27,12 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
 
     const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+    const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
-
+        const timestamp = (new Date()).getTime();
         const envVar = getEnvVar(c);
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
@@ -48,7 +50,8 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             .then(() => executeAsync(c, `openssl enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
-                fs.writeFileSync(`${dest}.timestamp`, (new Date()).getTime());
+                fs.writeFileSync(`${dest}.timestamp`, timestamp);
+                fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
                 logSuccess(`Files succesfully encrypted into ${dest}`);
                 resolve();
             }).catch((e) => {
@@ -68,6 +71,7 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
+        const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
@@ -88,7 +92,7 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
                     if (fs.existsSync(ts)) {
                         copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
                     }
-                    logSuccess(`Files succesfully extracted into ${c.paths.workspace.dir}`);
+                    logSuccess(`Files succesfully extracted into ${destFolder}`);
                     resolve();
                 })
                     .catch(e => reject(e));
@@ -158,13 +162,13 @@ export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
 export const rnvCryptoUpdateProfiles = (c) => {
     logTask('rnvCryptoUpdateProfiles');
     switch (c.platform) {
-    case IOS:
-    case TVOS:
-        const { appId } = c.runtime;
-        return _updateProfiles(c)
-            .then(() => {
-                setAppConfig(c, appId);
-            });
+        case IOS:
+        case TVOS:
+            const { appId } = c.runtime;
+            return _updateProfiles(c)
+                .then(() => {
+                    setAppConfig(c, appId);
+                });
     }
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };
@@ -184,3 +188,44 @@ const _updateProfile = (c, v) => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch(e => reject(e));
 });
+
+export const checkCrypto = async (c) => {
+    logTask('checkCrypto');
+
+    const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
+    const source = `./${c.files.project.package.name}`;
+    const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+
+    if (destRaw) {
+        if (sourceRaw && destRaw) {
+            const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
+            const tsProjectPath = `${source}.timestamp`;
+            const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
+            if (!fs.existsSync(source)) {
+                logWarning('This project uses encrypted files but you don\'t have them installed');
+            } else {
+                let tsWorkspace = 0;
+                let tsProject = 0;
+                if (fs.existsSync(tsWorkspacePath)) {
+                    tsWorkspace = parseInt(fs.readFileSync(tsWorkspacePath).toString());
+                }
+
+                if (fs.existsSync(tsProjectPath)) {
+                    tsProject = parseInt(fs.readFileSync(tsProjectPath).toString());
+                }
+                if (tsProject > tsWorkspace) {
+                    const { confirm } = await inquirerPrompt({
+                        type: 'confirm',
+                        message: `Your ${tsWorkspacePath} is out of date. do you want to run decrypt?`
+                    });
+
+                    if (confirm) {
+                        await rnvCryptoDecrypt(c);
+                    }
+                } else if (tsProject < tsWorkspace) {
+                    logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
+                }
+            }
+        }
+    }
+};

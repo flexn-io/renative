@@ -58,6 +58,7 @@
                     "android:icon": "@drawable/ic_logo",
                     "android:screenOrientation": "landscape",
                     "android:logo": "@drawable/ic_logo",
+                    "android:launchMode": "singleTask",
                     "children": [
                         {
                             "tag": "intent-filter",

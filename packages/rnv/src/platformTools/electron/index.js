@@ -37,7 +37,7 @@ import { MACOS, WINDOWS } from '../../constants';
 import { buildWeb, runWeb, configureCoreWebProject } from '../web';
 import {
     cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
-    copyFileSync, mkdirSync, writeObjectSync, readObjectSync, removeDirs, removeDirsSync
+    copyFileSync, mkdirSync, writeFileSync, readObjectSync, removeDirs, removeDirsSync
 } from '../../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -85,7 +85,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     packageJson.license = `${getAppLicense(c, platform)}`;
     packageJson.main = './main.js';
 
-    writeObjectSync(packagePath, packageJson);
+    writeFileSync(packagePath, packageJson);
 
     let browserWindow = { width: 1200, height: 800, webPreferences: { nodeIntegration: true } };
     const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
@@ -101,7 +101,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     } else {
         const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.runtime.port}` },
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     }
@@ -138,7 +138,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (electronConfigExt) {
         electronConfig = merge(electronConfig, electronConfigExt);
     }
-    writeObjectSync(electronConfigPath, electronConfig);
+    writeFileSync(electronConfigPath, electronConfig);
 
 
     resolve();

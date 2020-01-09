@@ -128,6 +128,9 @@ Emulator / Simulator / Device Management
 | analytics     |`true` / `false`|          `true`| Enabled by default, both globally and per project. Allows us to track RNV errors and metrics with Sentry in order to improve it  |
 
 
+##### rnv publish
+
+`$ rnv publish [patch|minor|major]` - Will help you bump the version, create a commit and a tag and push them. It uses [release-it](https://github.com/release-it/release-it) under the hood so you can configure it and pass whatever arguments that are supported by `release-it`. You can also run `rnv publish` without any arguments to enter interactive mode.
 
 ### Options
 

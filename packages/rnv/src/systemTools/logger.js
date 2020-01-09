@@ -143,8 +143,10 @@ export const logSummary = () => {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
             str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
-        if (_c.buildConfig) {
+        if (_c.buildConfig?._meta?.currentAppConfigId) {
             str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig._meta?.currentAppConfigId)}`, 1);
+        }
+        if (_c.buildConfig?.workspaceID) {
             str += printIntoBox(`Workspace: ${_highlightColor(_c.buildConfig.workspaceID)}`, 1);
         }
         if (_c.files.project.config) {

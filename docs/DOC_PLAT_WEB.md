@@ -87,6 +87,9 @@ Run app on custom port `9999`:
 rnv run -p web --port 9999
 ```
 
+## Modifying index.html
+In order for you to do that you'll need to run the project first, so it generates the files you need first. Then you can copy `platformBuilds/_shared/template.js` to `platformConfig/builds/_shared/template.js` and modify it. If `platformConfig` or other folders do not exist manually create them.
+
 ## App Config
 
 <a href="##web-based-config">see: Web based config</a>

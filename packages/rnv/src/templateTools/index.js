@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
-    copyFileSync, writeObjectSync, removeDirsSync,
+    copyFileSync, writeFileSync, removeDirsSync,
     removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
 import { logToSummary, logError, logInfo, logWarning, logTask } from '../systemTools/logger';
@@ -202,7 +202,7 @@ const _configureAppConfigs = async (c) => {
                     }
                 }
             }
-            await updateConfig(c, '?');
+            await updateConfig(c, true);
         } catch (e) {
             logError(e);
         }
@@ -295,7 +295,7 @@ const _configureEntryPoints = c => new Promise((resolve, reject) => {
 });
 
 const _writeObjectSync = (c, p, s) => {
-    writeObjectSync(p, s);
+    writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
@@ -309,7 +309,7 @@ export const getInstalledTemplateOptions = (c) => {
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
-    logError('You don\'t have any local templates installed');
+    logError('You don\'t have any local templates installed', false, true);
     return [];
 };
 

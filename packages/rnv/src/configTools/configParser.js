@@ -35,7 +35,7 @@ import {
 
 import {
     cleanFolder, copyFolderRecursiveSync, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, readObjectSync,
+    copyFileSync, mkdirSync, removeDirs, writeFileSync, readObjectSync,
     getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps, mergeObjects
 } from '../systemTools/fileutils';
 import { getSourceExtsAsString, getConfigProp } from '../common';
@@ -157,7 +157,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.rnv.projectTemplates.dir = path.join(c.paths.rnv.dir, 'projectTemplates');
     c.paths.rnv.projectTemplates.config = path.join(c.paths.rnv.projectTemplates.dir, RENATIVE_CONFIG_TEMPLATES_NAME);
     c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
-    c.paths.rnv.package = path.join(c.paths.rnv.dir, 'package.json');
 
     c.paths.rnv.projectTemplate.dir = path.join(c.paths.rnv.dir, 'projectTemplate');
     c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
@@ -184,7 +183,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
     c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
     c.paths.project.npmLinkPolyfill = path.join(c.paths.project.dir, 'npm_link_polyfill.json');
-    c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'projectConfig');
+    c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'appConfigs', 'base');
     c.paths.project.projectConfig.pluginsDir = path.join(c.paths.project.projectConfig.dir, 'plugins');
     c.paths.project.projectConfig.fontsDir = path.join(c.paths.project.projectConfig.dir, 'fonts');
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
@@ -192,7 +191,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_RUNTIME_NAME);
     c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
-
 
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 
@@ -214,7 +212,7 @@ export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
 
         // LOAD ./RENATIVE.*.JSON
         _loadConfigFiles(c, c.files.project, c.paths.project);
-        c.runtime.appId = c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        c.runtime.appId = c.runtime.appId || c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
         c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 
         // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
@@ -275,7 +273,7 @@ const _getWorkspaceDirPath = (c) => {
                 wss.workspaces[ws] = {
                     path: wsDir
                 };
-                writeObjectSync(c.paths.rnv.configWorkspaces, wss);
+                writeFileSync(c.paths.rnv.configWorkspaces, wss);
                 logInfo(`Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.rnv.configWorkspaces} has been updated.`);
             }
         }
@@ -434,7 +432,7 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
 export const setAppConfig = (c, appId) => {
     logTask(`setAppConfig:${appId}`);
 
-    if (!appId || appId === '?' || appId === true) return;
+    if (!appId || appId === true || appId === true) return;
 
     c.runtime.appId = appId;
     c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
@@ -568,7 +566,7 @@ export const generateBuildConfig = (c) => {
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
     if (fs.existsSync(c.paths.project.builds.dir)) {
-        writeObjectSync(c.paths.project.builds.config, c.buildConfig);
+        writeFileSync(c.paths.project.builds.config, c.buildConfig);
     }
     if (Config.isRenativeProject) {
         const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
@@ -583,17 +581,17 @@ export const generateBuildConfig = (c) => {
 
 export const generateRuntimeConfig = c => new Promise((resolve, reject) => {
     logTask('generateRuntimeConfig');
-    c.assetConfig = {
-        common: c.buildConfig.common,
-        runtime: c.buildConfig.runtime
-    };
+    // c.assetConfig = {
+    //     common: c.buildConfig.common,
+    //     runtime: c.buildConfig.runtime
+    // };
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.common?.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, c.buildConfig.platforms?.[c.platform]?.runtime || {});
     c.assetConfig = mergeObjects(c, c.assetConfig, getConfigProp(c, c.platform, 'runtime') || {});
 
     if (fs.existsSync(c.paths.project.assets.dir)) {
-        writeObjectSync(c.paths.project.assets.config, c.assetConfig);
+        writeFileSync(c.paths.project.assets.config, c.assetConfig);
     }
     resolve();
 });
@@ -608,7 +606,7 @@ export const generateLocalConfig = (c, resetAppId) => {
         configLocal._meta.currentAppConfigId = c.runtime.appId;
     }
     c.files.project.configLocal = configLocal;
-    writeObjectSync(c.paths.project.configLocal, configLocal);
+    writeFileSync(c.paths.project.configLocal, configLocal);
 };
 
 const _generatePlatformTemplatePaths = (c) => {
@@ -649,7 +647,7 @@ export const updateConfig = async (c, appConfigId) => {
             logWarning(
                 'It seems you don\'t have any appConfig active',
             );
-        } else if (appConfigId !== '?' && !isPureRnv) {
+        } else if (appConfigId !== true && appConfigId !== true && !isPureRnv) {
             logWarning(
                 `It seems you don't have appConfig named ${chalk.white(appConfigId)} present in your config folder: ${chalk.white(
                     c.paths.project.appConfigsDir,
@@ -660,6 +658,7 @@ export const updateConfig = async (c, appConfigId) => {
         if (configDirs.length) {
             if (configDirs.length === 1) {
                 // we have only one, skip the question
+                logInfo(`Found only one app config available. Will use ${chalk.white(configDirs[0])}`);
                 setAppConfig(c, configDirs[0]);
                 return true;
             }
@@ -786,6 +785,19 @@ const _loadWorkspacesSync = (c) => {
     if (fs.existsSync(c.paths.rnv.configWorkspaces)) {
         logDebug(`${c.paths.rnv.configWorkspaces} file exists!`);
         c.files.rnv.configWorkspaces = readObjectSync(c.paths.rnv.configWorkspaces);
+
+        if (!c.files.rnv.configWorkspaces) c.files.rnv.configWorkspaces = {};
+
+        if (!c.files.rnv.configWorkspaces?.workspaces) c.files.rnv.configWorkspaces.workspaces = {};
+        if (Object.keys(c.files.rnv.configWorkspaces.workspaces).length === 0) {
+            logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`)
+            c.files.rnv.configWorkspaces.workspaces = {
+                rnv: {
+                    path: c.paths.workspace.dir
+                }
+            };
+            writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+        }
     } else {
         logWarning(`Cannot find ${c.paths.rnv.configWorkspaces}. creating one..`);
         c.files.rnv.configWorkspaces = {
@@ -795,7 +807,7 @@ const _loadWorkspacesSync = (c) => {
                 }
             }
         };
-        writeObjectSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
+        writeFileSync(c.paths.rnv.configWorkspaces, c.files.rnv.configWorkspaces);
     }
 };
 

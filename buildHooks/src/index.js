@@ -100,7 +100,7 @@ const _updatePackageJson = (c, pPath, updateObj) => {
         obj = merge(pObj, updateObj);
     }
     const output = Doctor.fixPackageObject(obj);
-    FileUtils.writeObjectSync(pPath, output, 4, true);
+    FileUtils.writeFileSync(pPath, output, 4, true);
 };
 
 export { pipes, hooks };
