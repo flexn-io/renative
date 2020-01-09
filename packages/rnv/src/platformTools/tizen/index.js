@@ -345,10 +345,17 @@ export const buildTizenProject = (c, platform) => new Promise((resolve, reject) 
         .catch(e => reject(e));
 });
 
+let _isGlobalConfigured = false;
+
 export const configureTizenProject = async (c, platform) => {
     logTask('configureTizenProject');
 
     if (!isPlatformActive(c, platform)) return;
+
+    if(!_isGlobalConfigured) {
+        _isGlobalConfigured = true;
+        await configureTizenGlobal(c);
+    }
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c, platform);

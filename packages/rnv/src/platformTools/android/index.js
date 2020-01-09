@@ -43,7 +43,7 @@ import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulat
 const isRunningOnWindows = process.platform === 'win32';
 
 const _getEntryOutputName = (c) => {
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler    
     const { entryFile } = c.buildConfig.platforms[c.platform];
     // TODO Android PROD Crashes if not using this hardcoded one
     let outputFile;
@@ -372,7 +372,8 @@ sdk.dir=${sdkDir}`,
     resolve();
 });
 
-export const configureGradleProject = async (c, platform) => {
+export const configureGradleProject = async (c) => {
+    const platform = c.platform;
     logTask(`configureGradleProject:${platform}`);
 
     if (!isPlatformActive(c, platform)) return;

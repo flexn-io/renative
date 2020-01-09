@@ -162,7 +162,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.files.rnv.package = JSON.parse(fs.readFileSync(c.paths.rnv.package).toString());
 
     c.platform = c.program.platform;
-    c.runtime.platform = c.platform;
     c.paths.home.dir = homedir;
     c.paths.GLOBAL_RNV_DIR = path.join(c.paths.home.dir, '.rnv');
     c.paths.GLOBAL_RNV_CONFIG = path.join(c.paths.GLOBAL_RNV_DIR, RENATIVE_CONFIG_NAME);
@@ -435,7 +434,7 @@ export const setAppConfig = (c, appId) => {
     if (!appId || appId === true || appId === true) return;
 
     c.runtime.appId = appId;
-    c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.runtime.platform}`);
+    c.runtime.appDir = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}`);
 
     _findAndSwitchAppConfigDir(c, appId);
 
