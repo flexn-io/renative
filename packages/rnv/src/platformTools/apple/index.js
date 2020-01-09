@@ -423,7 +423,7 @@ const runAppleLog = c => new Promise(() => {
     });
 });
 
-const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
+const configureXcodeProject = async (c, platform, ip, port) => {
     logTask(`configureXcodeProject:${platform}`);
     const { device } = c.program;
     const bundlerIp = device ? getIP() : 'localhost';
@@ -489,19 +489,19 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         );
     }
 
-    copyAssetsFolder(c, platform)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
-        .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))
-        .then(() => parseExportOptionsPlist(c, platform))
-        .then(() => parseXcscheme(c, platform))
-        .then(() => parsePodFile(c, platform))
-        .then(() => parseEntitlementsPlist(c, platform))
-        .then(() => parseInfoPlist(c, platform))
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => runPod(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await copyAppleAssets(c, platform, appFolderName);
+    await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port);
+    await parseExportOptionsPlist(c, platform);
+    await parseXcscheme(c, platform);
+    await parsePodFile(c, platform);
+    await parseEntitlementsPlist(c, platform);
+    await parseInfoPlist(c, platform);
+    await copyBuildsFolder(c, platform);
+    await runPod(c, platform);
+    await parseXcodeProject(c, platform);
+    return true;
+};
 
 export {
     runPod,
