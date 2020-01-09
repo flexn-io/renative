@@ -457,8 +457,9 @@ const _findAndSwitchAppConfigDir = (c, appId) => {
     logTask(`_findAndSwitchAppConfigDir:${appId}`);
 
     c.paths.project.appConfigsDir = getRealPath(c, c.buildConfig.paths?.appConfigsDir, 'appConfigsDir', c.paths.project.appConfigsDir);
-    if (c.buildConfig.paths?.appConfigsDirs && appId) {
-        c.buildConfig.paths.appConfigsDirs.forEach((v) => {
+    const appConfigsDirs = c.buildConfig.paths?.appConfigsDirs;
+    if (appConfigsDirs && appConfigsDirs.forEach && appId) {
+        appConfigsDirs.forEach((v) => {
             const altPath = path.join(v, appId);
             if (fs.existsSync(altPath)) {
                 logInfo(`Found config in following location: ${altPath}. Will use it`);
@@ -478,20 +479,22 @@ export const generateBuildConfig = (c) => {
         c.paths.rnv.pluginTemplates.config,
         c.files.rnv.platformTemplates.config,
         c.paths.workspace.config,
-        c.paths.project.config,
-        c.paths.project.configPrivate,
-        c.paths.project.configLocal,
+        c.paths.workspace.configPrivate,
+        c.paths.workspace.configLocal,
         c.paths.workspace.project.config,
         c.paths.workspace.project.configPrivate,
         c.paths.workspace.project.configLocal,
-        c.paths.appConfig.configBase,
-        c.paths.appConfig.config,
-        c.paths.appConfig.configPrivate,
-        c.paths.appConfig.configLocal,
         c.paths.workspace.appConfig.configBase,
         c.paths.workspace.appConfig.config,
         c.paths.workspace.appConfig.configPrivate,
-        c.paths.workspace.appConfig.configLocal
+        c.paths.workspace.appConfig.configLocal,
+        c.paths.project.config,
+        c.paths.project.configPrivate,
+        c.paths.project.configLocal,
+        c.paths.appConfig.configBase,
+        c.paths.appConfig.config,
+        c.paths.appConfig.configPrivate,
+        c.paths.appConfig.configLocal
     ];
     const cleanPaths = mergeOrder.filter(v => v);
     const existsPaths = cleanPaths.filter((v) => {
@@ -514,21 +517,23 @@ export const generateBuildConfig = (c) => {
         c.files.rnv.projectTemplates.config,
         ...pluginTemplates,
         c.files.workspace.config,
-        c.files.project.config,
-        c.files.project.configPrivate,
-        c.files.project.configLocal,
+        c.files.workspace.configPrivate,
+        c.files.workspace.configLocal,
         c.files.workspace.project.config,
         c.files.workspace.project.configPrivate,
         c.files.workspace.project.configLocal,
-        c.files.appConfig.configBase,
-        c.files.appConfig.config,
-        c.files.appConfig.configPrivate,
-        c.files.appConfig.configLocal,
         c.files.workspace.appConfig.configBase,
         c.files.workspace.appConfig.config,
         c.files.workspace.appConfig.configPrivate,
-        c.files.workspace.appConfig.configLocal
-    ];
+        c.files.workspace.appConfig.configLocal,
+        c.files.project.config,
+        c.files.project.configPrivate,
+        c.files.project.configLocal,
+        c.files.appConfig.configBase,
+        c.files.appConfig.config,
+        c.files.appConfig.configPrivate,
+        c.files.appConfig.configLocal
+    ];    
 
     const mergeFolders = [
         // platform templates
@@ -701,8 +706,9 @@ export const updateConfig = async (c, appConfigId) => {
 export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
     logTask(`listAppConfigsFoldersSync:${ignoreHiddenConfigs}`);
     const configDirs = [];
-    if (c.buildConfig?.paths?.appConfigsDirs) {
-        c.buildConfig.paths.appConfigsDirs.forEach((v) => {
+    const appConfigsDirs = c.buildConfig.paths?.appConfigsDirs;
+    if (appConfigsDirs && appConfigsDirs.forEach) {
+        appConfigsDirs.forEach((v) => {
             _listAppConfigsFoldersSync(v, configDirs, ignoreHiddenConfigs);
         });
     } else {

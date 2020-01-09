@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.14",
+            "version": "0.28.15-alpha.1",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -965,6 +965,9 @@
         "google-maps": {
             "no-npm": true,
             "MAPS_API_KEY": "define_your_own_api_key",
+            "props": {
+                "API_KEY": ""
+            },
             "ios": {
                 "podName": "GoogleMaps",
                 "appDelegateImports": ["GoogleMaps"],
@@ -972,7 +975,7 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "GMSServices.provideAPIKey(\"{{MAPS_API_KEY}}\")"
+                            "GMSServices.provideAPIKey(\"{{props.API_KEY}}\")"
                         ]
                     }
                 }
