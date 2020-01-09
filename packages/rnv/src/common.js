@@ -161,9 +161,7 @@ export const isBuildSchemeSupported = async (c) => {
     return scheme;
 };
 
-export const getCurrentSdkPath = (c, platform) => {
-    return c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]]
-}
+export const getCurrentSdkPath = (c, platform) => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]];
 
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);

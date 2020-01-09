@@ -303,6 +303,10 @@ class Config {
         return this.getMergedConfigValue('analytics');
     }
 
+    get projectPath() {
+        return this.config.paths.project.dir;
+    }
+
     //     getBuildConfig() {
     //         return this.config.buildConfig;
     //     }

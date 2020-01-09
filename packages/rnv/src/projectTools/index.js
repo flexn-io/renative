@@ -39,6 +39,7 @@ import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 import Config from '../config';
+import { commandExistsSync, executeAsync } from '../systemTools/exec';
 
 export const rnvConfigure = async (c) => {
     const p = c.program.platform || 'all';
@@ -213,6 +214,21 @@ const _overridePlugins = (c, pluginsPath, dir) => {
                     fs.writeFileSync(ovDir, fileToFix);
                 }
             }
+        }
+    }
+};
+
+export const configureGit = async () => {
+    const { projectPath } = Config;
+
+    if (!fs.existsSync(path.join(projectPath, '.git'))) {
+        logInfo('Your project does not have a git repo. Creating one...');
+        if (commandExistsSync('git')) {
+            await executeAsync('git init');
+            await executeAsync('git add -A');
+            await executeAsync('git commit -m "Initial"');
+        } else {
+            logWarning('We tried to create a git repo inside your project but you don\'t seem to have git installed');
         }
     }
 };

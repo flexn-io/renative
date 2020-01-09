@@ -7,7 +7,7 @@ import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/t
 import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
-import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
+import { rnvConfigure, rnvSwitch, rnvLink, configureGit } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles, checkCrypto } from '../systemTools/crypto';
 import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
@@ -322,6 +322,7 @@ export const _startBuilder = async (c) => {
     await configurePlugins(c);
     await configureNodeModules(c);
     await checkCrypto(c);
+    await configureGit();
 
     if (!SKIP_APP_CONFIG_CHECK.includes(c.command)) {
         await updateConfig(c, c.runtime.appId);
@@ -389,7 +390,6 @@ const _handleUnknownCommand = async (c) => {
 };
 
 
-
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 export const _spawnCommand = (c, overrideParams) => {
@@ -418,7 +418,6 @@ export const _spawnCommand = (c, overrideParams) => {
     // const newCommand = merge(c, overrideParams, { arrayMerge: _arrayMergeOverride });
     return newCommand;
 };
-
 
 
 // ##########################################
@@ -485,7 +484,7 @@ const _execute = async (c, cmdFn, cmd, command, subCommand) => {
         }
     }
 
-    c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;    
+    c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
 
     if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
