@@ -42,13 +42,13 @@ import Config from '../config';
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
 
 export const rnvConfigure = async (c) => {
-    const p = c.program.platform || 'all';
-    logTask(`rnvConfigure:${p}`);
+    const p = c.platform || 'all';
+    logTask(`rnvConfigure:${c.platform}:${p}`);
 
     // inject packages if needed
     if (p !== 'all') await Config.injectPlatformDependencies(p);
 
-    await _checkAndCreatePlatforms(c, c.program.platform);
+    await _checkAndCreatePlatforms(c, c.platform);
     await copyRuntimeAssets(c);
     await copySharedPlatforms(c);
     await generateRuntimeConfig(c);
@@ -58,23 +58,35 @@ export const rnvConfigure = async (c) => {
     }
     // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
     await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
-    if (_isOK(c, p, [ANDROID])) await configureGradleProject(c, ANDROID);
-    if (_isOK(c, p, [ANDROID_TV])) await configureGradleProject(c, ANDROID_TV);
-    if (_isOK(c, p, [ANDROID_WEAR])) await configureGradleProject(c, ANDROID_WEAR);
-    if (_isOK(c, p, [TIZEN])) await configureTizenGlobal(c, TIZEN);
-    if (_isOK(c, p, [TIZEN])) await configureTizenProject(c, TIZEN);
-    if (_isOK(c, p, [TIZEN_WATCH])) await configureTizenProject(c, TIZEN_WATCH);
-    if (_isOK(c, p, [TIZEN_MOBILE])) await configureTizenProject(c, TIZEN_MOBILE);
-    if (_isOK(c, p, [WEBOS])) await configureWebOSProject(c, WEBOS);
-    if (_isOK(c, p, [WEB])) await configureWebProject(c, WEB);
-    if (_isOK(c, p, [MACOS])) await configureElectronProject(c, MACOS);
-    if (_isOK(c, p, [WINDOWS])) await configureElectronProject(c, WINDOWS);
-    if (_isOK(c, p, [KAIOS])) await configureKaiOSProject(c, KAIOS);
-    if (_isOK(c, p, [FIREFOX_OS])) await configureKaiOSProject(c, FIREFOX_OS);
-    if (_isOK(c, p, [FIREFOX_TV])) await configureKaiOSProject(c, FIREFOX_TV);
-    if (_isOK(c, p, [IOS])) await configureXcodeProject(c, IOS);
-    if (_isOK(c, p, [TVOS])) await configureXcodeProject(c, TVOS);
+
+    const originalPlatform = c.platform;
+
+    await _configurePlatform(c, p, ANDROID, configureGradleProject);
+    await _configurePlatform(c, p, ANDROID_TV, configureGradleProject);
+    await _configurePlatform(c, p, ANDROID_WEAR, configureGradleProject);
+    await _configurePlatform(c, p, TIZEN, configureTizenProject);
+    await _configurePlatform(c, p, TIZEN_WATCH, configureTizenProject);
+    await _configurePlatform(c, p, TIZEN_MOBILE, configureTizenProject);
+    await _configurePlatform(c, p, WEBOS, configureWebOSProject);
+    await _configurePlatform(c, p, WEB, configureWebProject);
+    await _configurePlatform(c, p, MACOS, configureElectronProject);
+    await _configurePlatform(c, p, WINDOWS, configureElectronProject);
+    await _configurePlatform(c, p, KAIOS, configureKaiOSProject);
+    await _configurePlatform(c, p, FIREFOX_OS, configureKaiOSProject);
+    await _configurePlatform(c, p, FIREFOX_TV, configureKaiOSProject);
+    await _configurePlatform(c, p, IOS, configureXcodeProject);
+    await _configurePlatform(c, p, TVOS, configureXcodeProject);
+
+    c.platform = originalPlatform;
 };
+
+const _configurePlatform = async (c, p, platform, method) => {
+    if (_isOK(c, p, [platform])) {
+        c.platform = platform;
+        await method(c, platform);
+    }
+    return;
+}
 
 export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
@@ -218,15 +230,16 @@ const _overridePlugins = (c, pluginsPath, dir) => {
     }
 };
 
-export const configureGit = async () => {
-    const { projectPath } = Config;
+export const configureGit = async (c) => {
+    const projectPath = c.paths.project.dir;
+    logTask(`configureGit:${projectPath}`)
 
     if (!fs.existsSync(path.join(projectPath, '.git'))) {
         logInfo('Your project does not have a git repo. Creating one...');
         if (commandExistsSync('git')) {
-            await executeAsync('git init');
-            await executeAsync('git add -A');
-            await executeAsync('git commit -m "Initial"');
+            await executeAsync('git init', { cwd: projectPath });
+            await executeAsync('git add -A', { cwd: projectPath });
+            await executeAsync('git commit -m "Initial"', { cwd: projectPath });
         } else {
             logWarning('We tried to create a git repo inside your project but you don\'t seem to have git installed');
         }

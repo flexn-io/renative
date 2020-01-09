@@ -68,6 +68,7 @@ import { isBundlerRunning, waitForBundler } from './bundler';
 import { logInfo } from '../systemTools/logger';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
+import { inquirerPrompt } from '../../dist/systemTools/prompt';
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -212,7 +213,16 @@ const startBundlerIfRequired = async (c) => {
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
-        logInfo('Bundler already running. Using it');
+
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: 'Continue?',
+            warningMessage: `Another bundler at port ${c.runtime.port} already running`
+        });
+
+        if (confirm) return true;
+        return Promise.reject('Cancelled by user');
+        
     }
 };
 

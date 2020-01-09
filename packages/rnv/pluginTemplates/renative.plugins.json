@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.15-alpha.1",
+            "version": "0.28.15-alpha.2",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -789,6 +789,9 @@
                 "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
             },
             "androidtv": {
+                "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
+            },
+            "androidwear": {
                 "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
             }
         },
@@ -1877,6 +1880,9 @@
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
             },
             "androidtv": {
+                "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
+            },
+            "androidwear": {
                 "package": "com.reactnativecommunity.netinfo.NetInfoPackage"
             },
             "webpack": {
