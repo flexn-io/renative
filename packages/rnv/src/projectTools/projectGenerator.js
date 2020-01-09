@@ -14,6 +14,7 @@ import {
     SUPPORTED_PLATFORMS
 } from '../constants';
 import { getTemplateOptions } from '../templateTools';
+import { configureGit } from '../projectTools';
 import { mkdirSync, writeFileSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
@@ -68,6 +69,10 @@ const _generateProject = async (c, data) => {
 
     writeFileSync(c.paths.project.config, config);
 
+    if (data.gitEnabled) {
+        await configureGit(c);
+    }
+    
     logSuccess(
         `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
             `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`,
@@ -91,6 +96,7 @@ const _prepareProjectOverview = (c, data) => {
     str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
     str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
     str += printIntoBox(`Project Template: ${highlight(tempString)}`, 1);
+    str += printIntoBox(`Git Enabled: ${highlight(data.gitEnabled)}`, 1);
     str += printIntoBox('');
     str += printIntoBox('Project Platforms:');
     str += printArrIntoBox(data.optionPlatforms.selectedOptions);
@@ -223,9 +229,16 @@ export const createNewProject = async (c) => {
         choices: data.optionPlatforms.keysAsArray
     });
 
+    const {
+        gitEnabled
+    } = await inquirer.prompt({
+        name: 'gitEnabled',
+        type: 'confirm',
+        message: 'Do you want to set-up git in your new project?'
+    });
 
     data = {
-        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace
+        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace, gitEnabled
     };
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
 

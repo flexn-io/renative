@@ -7,7 +7,7 @@ import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/t
 import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
 import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
-import { rnvConfigure, rnvSwitch, rnvLink, configureGit } from '../projectTools';
+import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles, checkCrypto } from '../systemTools/crypto';
 import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
@@ -322,7 +322,6 @@ export const _startBuilder = async (c) => {
     await configurePlugins(c);
     await configureNodeModules(c);
     await checkCrypto(c);
-    await configureGit();
 
     if (!SKIP_APP_CONFIG_CHECK.includes(c.command)) {
         await updateConfig(c, c.runtime.appId);
