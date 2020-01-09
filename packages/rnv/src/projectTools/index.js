@@ -66,7 +66,7 @@ export const rnvConfigure = async (c) => {
     await _configurePlatform(c, p, TIZEN, configureTizenProject);
     await _configurePlatform(c, p, TIZEN_WATCH, configureTizenProject);
     await _configurePlatform(c, p, TIZEN_MOBILE, configureTizenProject);
-    await _configurePlatform(c, p, WEBOS, configureGradleProject);
+    await _configurePlatform(c, p, WEBOS, configureWebOSProject);
     await _configurePlatform(c, p, WEB, configureWebProject);
     await _configurePlatform(c, p, MACOS, configureElectronProject);
     await _configurePlatform(c, p, WINDOWS, configureElectronProject);
