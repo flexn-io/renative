@@ -244,7 +244,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     const configFile = 'public/appinfo.json';
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform).toLowerCase() },
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
         { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
     ]);
