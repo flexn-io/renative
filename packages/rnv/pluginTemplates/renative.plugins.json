@@ -195,6 +195,9 @@
             "androidtv": {
                 "package": "com.BV.LinearGradient.LinearGradientPackage"
             },
+            "androidwear": {
+                "package": "com.BV.LinearGradient.LinearGradientPackage"
+            },
             "webpack": {
                 "modulePaths": [
                     "react-native-web-linear-gradient",
@@ -686,6 +689,9 @@
                 "package": "com.horcrux.svg.SvgPackage"
             },
             "androidtv": {
+                "package": "com.horcrux.svg.SvgPackage"
+            },
+            "androidwear": {
                 "package": "com.horcrux.svg.SvgPackage"
             },
             "webpack": {
