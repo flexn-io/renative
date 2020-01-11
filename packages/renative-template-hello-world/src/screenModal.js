@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Icon, Api } from 'renative';
+import { Icon, Api, getScaledValue } from 'renative';
 import Theme from './theme';
 
 const styles = StyleSheet.create({
@@ -15,19 +15,24 @@ const styles = StyleSheet.create({
     },
     header: {
         width: '100%',
-        height: 50,
+        height: getScaledValue(50),
         alignItems: 'flex-end',
-        paddingRight: 40,
-        paddingTop: 20
+        paddingRight: getScaledValue(40),
+        paddingTop: getScaledValue(20)
     },
     textH2: {
-        fontFamily: 'TimeBurner',
-        fontSize: 20,
-        marginHorizontal: 20,
+        fontFamily: Theme.primaryFontFamily,
+        fontSize: getScaledValue(20),
+        marginHorizontal: getScaledValue(20),
         color: Theme.color4,
         justifyContent: 'center',
         alignItems: 'center',
     },
+    icon: {
+        width: getScaledValue(40),
+        height: getScaledValue(40),
+        marginLeft: getScaledValue(10)
+    }
 });
 
 const ScreenMyPage = () => (
@@ -38,7 +43,7 @@ const ScreenMyPage = () => (
                 iconName="md-close-circle"
                 className="focusable"
                 iconColor={Theme.color3}
-                style={{ width: 40, height: 40, marginLeft: 10 }}
+                style={styles.icon}
                 onPress={() => {
                     Api.navigation.pop();
                 }}

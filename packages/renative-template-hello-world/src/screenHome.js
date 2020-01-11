@@ -1,6 +1,6 @@
 import React from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import { Icon, Button, Api } from 'renative';
+import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, PixelRatio } from 'react-native';
+import { Icon, Button, Api, getScaledValue, isWatch } from 'renative';
 import config from '../platformAssets/renative.runtime.json';
 import packageJson from '../package.json';
 import Theme from './theme';
@@ -8,51 +8,51 @@ import Theme from './theme';
 const styles = StyleSheet.create({
     appContainerScroll: {
         flex: 1,
-        paddingTop: 50
+        paddingTop: getScaledValue(50)
     },
     appContainerView: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        paddingVertical: 30,
+        paddingVertical: getScaledValue(30),
     },
     textH2: {
-        fontFamily: 'TimeBurner',
-        fontSize: 20,
-        marginHorizontal: 20,
+        fontFamily: Theme.primaryFontFamily,
+        fontSize: getScaledValue(20),
+        marginHorizontal: getScaledValue(20),
         color: Theme.color4,
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center'
     },
     textH3: {
-        fontFamily: 'TimeBurner',
-        fontSize: 15,
-        marginHorizontal: 20,
-        marginTop: 5,
+        fontFamily: Theme.primaryFontFamily,
+        fontSize: getScaledValue(15),
+        marginHorizontal: getScaledValue(20),
+        marginTop: getScaledValue(5),
         color: Theme.color2,
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center'
     },
     image: {
-        marginBottom: 30,
-        width: 83,
-        height: 97,
+        marginBottom: getScaledValue(30),
+        width: getScaledValue(83),
+        height: getScaledValue(97),
     },
     buttonWear: {
-        minWidth: 130
+        minWidth: getScaledValue(130)
     },
     button: {
-        minWidth: 150
+        minWidth: getScaledValue(150)
     }
 });
 
 const stylesObbj = {
     icon: {
-        width: 40,
-        height: 40,
-        margin: 10,
+        width: getScaledValue(40),
+        height: getScaledValue(40),
+        margin: getScaledValue(10),
     }
 };
 
@@ -63,7 +63,7 @@ class ScreenHome extends React.Component {
     }
 
     render() {
-        const isWear = Api.platform === 'androidwear';
+        const isWear = isWatch();
         const selectedStyle = isWear ? styles.appContainerView : styles.appContainerScroll;
         const styleButton = isWear ? styles.buttonWear : styles.button;
         const SelectedView = isWear ? View : ScrollView;
@@ -89,6 +89,9 @@ v
                 </Text>
                 <Text style={styles.textH3}>
                     {`hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`}
+                </Text>
+                <Text style={styles.textH3}>
+                    {`pixelRatio: ${PixelRatio.get()}, ${PixelRatio.getFontScale()}`}
                 </Text>
                 <Button
                     style={styleButton}

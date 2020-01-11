@@ -11,6 +11,9 @@ import '../platformAssets/runtime/fontManager';
 registerFocusManger({ focused: 'border: 5px solid #62DBFB; border-radius:5px;' });
 registerServiceWorker();
 
+console.disableYellowBox = true;
+
+
 let AppContainer;
 
 class App extends React.Component {

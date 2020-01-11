@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, getScaledValue } from 'react-native';
 import Theme from './theme';
 
 const styles = StyleSheet.create({
@@ -10,9 +10,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     textH2: {
-        fontFamily: 'TimeBurner',
-        fontSize: 20,
-        marginHorizontal: 20,
+        fontFamily: Theme.primaryFontFamily,
+        fontSize: getScaledValue(20),
+        marginHorizontal: getScaledValue(20),
         color: Theme.color4,
         justifyContent: 'center',
         alignItems: 'center',
