@@ -1,21 +1,20 @@
 import React from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-
-import Api from '../Api';
+import Api, { getScaledValue } from '../Api';
 import Icon from '../Icon';
 
 const hasFocus = Api.formFactor === 'tv' && Api.platform !== 'tvos';
 
 const styles = StyleSheet.create({
     button: {
-        marginTop: 30,
-        marginHorizontal: 20,
-        borderWidth: 2,
-        borderRadius: 25,
+        marginTop: getScaledValue(30),
+        marginHorizontal: getScaledValue(20),
+        borderWidth: getScaledValue(2),
+        borderRadius: getScaledValue(25),
         borderColor: '#62DBFB',
-        height: 50,
-        minWidth: 150,
-        maxWidth: 200,
+        height: getScaledValue(50),
+        minWidth: getScaledValue(150),
+        maxWidth: getScaledValue(200),
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row'
@@ -23,9 +22,16 @@ const styles = StyleSheet.create({
     buttonText: {
         fontFamily: 'TimeBurner',
         color: '#62DBFB',
-        fontSize: 20,
+        fontSize: getScaledValue(20),
     },
 });
+
+const stylesStatic = {
+  button: {
+    width: getScaledValue(30),
+    marginRight: getScaledValue(10),
+  }
+}
 
 const parallax = {
     enabled: true,
@@ -70,7 +76,7 @@ class Button extends React.Component {
                 }}
             >
                 {hasIcon ? (
-                    <Icon iconFont={iconFont} iconName={iconName} iconColor={iconColor} style={{ width: 30, marginRight: 10 }} />
+                    <Icon iconFont={iconFont} iconName={iconName} iconColor={iconColor} style={stylesStatic.button} />
                 ) : undefined}
                 <Text style={styles.buttonText}>
                     {this.props.title}

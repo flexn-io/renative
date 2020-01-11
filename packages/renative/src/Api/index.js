@@ -2,6 +2,7 @@ import { DrawerActions } from 'react-navigation';
 import { getNavigation } from '../Navigation';
 import platform from './platform';
 import factor from './factor';
+import { isTizenmobile, isTizenwatch, isTvos } from '../is'
 
 export default {
     platform,
@@ -21,3 +22,10 @@ export default {
         }
     },
 };
+
+export const getScaledValue = (v) => {
+  if(isTizenmobile()) return v * 3
+  if(isTizenwatch()) return v * 2
+  if(isTvos()) return v * 2
+  return v
+}
