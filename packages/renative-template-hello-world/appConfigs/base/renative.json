@@ -15,7 +15,10 @@
             "build": "release",
             "export": "release"
         },
-        "backgroundColor": "#111111"
+        "backgroundColor": "#111111",
+        "runtime": {
+            "welcomeMessage": "Hello ReNative!"
+        }
     },
     "platforms": {
         "ios": {

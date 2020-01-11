@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.28.12-alpha3",
+    "version": "0.28.15-alpha.4",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -100,7 +100,7 @@
         "react-native-orientation-locker": "1.1.5",
         "react-native-reanimated": "1.0.0-alpha.12",
         "react-native-vector-icons": "6.6.0",
-        "react-native-web": "0.11.4",
+        "react-native-web": "0.11.7",
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",

@@ -236,11 +236,13 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         return false;
     });
 
-    arr = arr.map((v) => {
+    arr = arr.map((str) => {
+        const v = str.replace(/\s{2,}/g, ' ');
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
         return extractedError;
     });
+        
     return arr.join('\n');
 };
 

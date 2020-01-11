@@ -19,13 +19,13 @@ export const rnvPlatformList = c => new Promise((resolve, reject) => {
 });
 
 export const rnvPlatformConfigure = async (c) => {
-    c.runtime.platform = c.program.platform || 'all';
-    logTask(`rnvPlatformConfigure:${c.runtime.platform}`);
+    //c.platform = c.program.platform || 'all';
+    logTask(`rnvPlatformConfigure:${c.platform}`);
 
     await isPlatformSupported(c);
-    await cleanPlatformBuild(c, c.runtime.platform);
-    await cleanPlaformAssets(c, c.runtime.platform);
-    await _runCopyPlatforms(c, c.runtime.platform);
+    await cleanPlatformBuild(c, c.platform);
+    await cleanPlaformAssets(c, c.platform);
+    await _runCopyPlatforms(c, c.platform);
 };
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
