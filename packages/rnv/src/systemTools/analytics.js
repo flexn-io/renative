@@ -13,6 +13,9 @@ const sanitizeError = (err) => {
     if (err.includes('file if you SDK path is correct.')) {
         return err.toLowerCase().split('. check your ')[0];
     }
+    if (err.includes('AppConfig error - ')) {
+        return err.split(' - ')[0];
+    }
     return err;
 };
 

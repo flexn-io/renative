@@ -2,6 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import merge from 'deepmerge';
+import { promisify } from 'util';
+import inquirer from 'inquirer';
 import {
     CLI_ANDROID_EMULATOR,
     CLI_ANDROID_AVDMANAGER,
@@ -53,6 +55,8 @@ import Config from '../config';
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
+
+const readdirAsync = promisify(fs.readdir);
 
 const IGNORE_FOLDERS = ['.git'];
 
@@ -203,60 +207,121 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     return c;
 };
 
-export const parseRenativeConfigs = c => new Promise((resolve, reject) => {
-    logTask('parseRenativeConfigs');
-    try {
-        // LOAD ./package.json
-        loadFile(c.files.project, c.paths.project, 'package');
+const loadAppConfigIDfromDir = (dir, appConfigsDir) => {
+    const filePath = path.join(appConfigsDir, dir, 'renative.json');
+    if (fs.existsSync(filePath)) {
+        const renativeConf = JSON.parse(fs.readFileSync(filePath));
+        return { dir, id: renativeConf.id };
+    }
+    return { dir, id: null };
+};
 
-        // LOAD ./RENATIVE.*.JSON
-        _loadConfigFiles(c, c.files.project, c.paths.project);
-        c.runtime.appId = c.runtime.appId || c.program.appConfigID || c.files.project?.configLocal?._meta?.currentAppConfigId;
-        c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
+const askUserAboutConfigs = async (dir, id, basePath) => {
+    logWarning(`AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`);
+    const { choice } = await inquirer.prompt({
+        type: 'list',
+        name: 'choice',
+        message: 'You must choose what you want to keep',
+        choices: [{
+            name: `Keep ID from renative.json (${id}) and rename the folder (${dir} -> ${id})`,
+            value: 'keepID'
+        }, {
+            name: `Keep folder name (${dir}) and rename the ID from renative.json (${id} -> ${dir})`,
+            value: 'keepFolder'
+        }, new inquirer.Separator(), {
+            name: 'I\'ll do it manually',
+            value: 'manually'
+        }]
+    });
 
-        // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
-        loadFile(c.files.project.builds, c.paths.project.builds, 'config');
+    if (choice === 'manually') throw new Error('Please do the changes and rerun the command');
 
-        // LOAD WORKSPACE /RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
-        _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
-
-        // LOAD DEFAULT WORKSPACE
-        _generateConfigPaths(c.paths.defaultWorkspace, c.paths.GLOBAL_RNV_DIR);
-        _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
-
-        // LOAD PROJECT TEMPLATES
-        loadProjectTemplates(c);
-
-        // LOAD PLUGIN TEMPLATES
-        loadPluginTemplates(c);
-
-        // LOAD PLATFORM TEMPLATES
-        loadPlatformTemplates(c);
-
-        if (!c.files.project.config) return resolve();
-
-        // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
-        _generateConfigPaths(c.paths.workspace.project, path.join(c.paths.workspace.dir, c.files.project.config.projectName));
-        _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
-
-
-        c.paths.workspace.project.projectConfig.dir = path.join(c.paths.workspace.project.dir, 'projectConfig');
-
-
-        _findAndSwitchAppConfigDir(c);
-
-        c.runtime.isWrapper = c.buildConfig.isWrapper;
-
-        c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
-    } catch (e) {
-        console.log(e);
-        reject(e);
-        return;
+    if (choice === 'keepID') {
+        fs.renameSync(path.join(basePath, dir), path.join(basePath, id));
     }
 
-    resolve();
-});
+    if (choice === 'keepFolder') {
+        const filePath = path.join(basePath, dir, 'renative.json');
+        const fileContents = JSON.parse(fs.readFileSync(filePath));
+        fileContents.id = dir;
+
+        writeFileSync(filePath, fileContents);
+    }
+};
+
+const matchAppConfigID = async (appConfigID, c) => {
+    const { appConfigsDir } = c.paths.project;
+    if (!appConfigID) return false;
+
+    const appConfigDirContents = await (await readdirAsync(appConfigsDir)).filter(folder => fs.statSync(path.join(appConfigsDir, folder)).isDirectory());
+
+    const appConfigs = appConfigDirContents.map(dir => loadAppConfigIDfromDir(dir, appConfigsDir)).filter(conf => conf.id !== null);
+    // find duplicates
+    const ids = [];
+    const dirs = [];
+    await Promise.all(appConfigs.map(async (conf) => {
+        const id = conf.id.toLowerCase();
+        const dir = conf.dir.toLowerCase();
+        // find mismatches
+        if (id !== dir) await askUserAboutConfigs(conf.dir, conf.id, appConfigsDir);
+        if (ids.includes(id)) throw new Error(`AppConfig error - You have 2 duplicate app configs with ID ${id}. Keep in mind that ID is case insensitive. Please edit one of them in /appConfigs/<folder>/renative.json`);
+        ids.push(id);
+        if (dirs.includes(dir)) throw new Error(`AppConfig error - You have 2 duplicate app config folders named ${dir}. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`);
+        dirs.push(dir);
+    }));
+
+    const foundConfig = appConfigs.filter(cfg => cfg.id === appConfigID || cfg.id.toLowerCase() === appConfigID || cfg.dir === appConfigID || cfg.dir.toLowerCase() === appConfigID);
+    if (!foundConfig.length) return false;
+
+    return foundConfig[0].id.toLowerCase();
+};
+
+export const parseRenativeConfigs = async (c) => {
+    logTask('parseRenativeConfigs');
+    // LOAD ./package.json
+    loadFile(c.files.project, c.paths.project, 'package');
+
+    // LOAD ./RENATIVE.*.JSON
+    _loadConfigFiles(c, c.files.project, c.paths.project);
+    c.runtime.appId = c.runtime.appId || await matchAppConfigID(c.program.appConfigID?.toLowerCase?.(), c) || c.files.project?.configLocal?._meta?.currentAppConfigId;
+    c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
+
+    // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
+    loadFile(c.files.project.builds, c.paths.project.builds, 'config');
+
+    // LOAD WORKSPACE /RENATIVE.*.JSON
+    _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
+    _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
+
+    // LOAD DEFAULT WORKSPACE
+    _generateConfigPaths(c.paths.defaultWorkspace, c.paths.GLOBAL_RNV_DIR);
+    _loadConfigFiles(c, c.files.defaultWorkspace, c.paths.defaultWorkspace);
+
+    // LOAD PROJECT TEMPLATES
+    loadProjectTemplates(c);
+
+    // LOAD PLUGIN TEMPLATES
+    loadPluginTemplates(c);
+
+    // LOAD PLATFORM TEMPLATES
+    loadPlatformTemplates(c);
+
+    if (!c.files.project.config) return;
+
+    // LOAD WORKSPACE /[PROJECT_NAME]/RENATIVE.*.JSON
+    _generateConfigPaths(c.paths.workspace.project, path.join(c.paths.workspace.dir, c.files.project.config.projectName));
+    _loadConfigFiles(c, c.files.workspace.project, c.paths.workspace.project);
+
+
+    c.paths.workspace.project.projectConfig.dir = path.join(c.paths.workspace.project.dir, 'projectConfig');
+
+
+    _findAndSwitchAppConfigDir(c);
+
+    c.runtime.isWrapper = c.buildConfig.isWrapper;
+
+    c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
+};
 
 const _getWorkspaceDirPath = (c) => {
     logTask('_getWorkspaceDirPath');
@@ -795,7 +860,7 @@ const _loadWorkspacesSync = (c) => {
 
         if (!c.files.rnv.configWorkspaces?.workspaces) c.files.rnv.configWorkspaces.workspaces = {};
         if (Object.keys(c.files.rnv.configWorkspaces.workspaces).length === 0) {
-            logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`)
+            logWarning(`No workspace found in ${c.paths.rnv.configWorkspaces}. Creating default rnv one for you`);
             c.files.rnv.configWorkspaces.workspaces = {
                 rnv: {
                     path: c.paths.workspace.dir
