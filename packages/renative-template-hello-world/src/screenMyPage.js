@@ -1,5 +1,7 @@
 import React from 'react';
-import { Text, View, StyleSheet, getScaledValue } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
+import { getScaledValue } from 'renative';
+
 import Theme from './theme';
 
 const styles = StyleSheet.create({

@@ -49,11 +49,11 @@ class Button extends React.Component {
     }
 
     blurState = {
-        borderColor: '#62DBFB',
+        alpha: 1
     };
 
     focusState = {
-        borderColor: '#CC0000',
+        alpha: 0.4
     };
 
     render() {

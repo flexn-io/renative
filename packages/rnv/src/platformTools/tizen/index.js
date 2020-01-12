@@ -140,7 +140,7 @@ const _getRunningDevices = async (c) => {
             let deviceInfo;
             let deviceType;
 
-            if (deviceInfoXML !== true) {
+            if (deviceInfoXML !== true && deviceInfoXML !== '') {                
                 // for some reason the tv does not connect through sdb
                 deviceInfo = formatXMLObject(parser.toJson(deviceInfoXML, { object: true, reversible: false }));
                 deviceType = deviceInfo['tizen.org/feature/profile'];

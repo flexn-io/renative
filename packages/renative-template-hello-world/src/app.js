@@ -8,9 +8,10 @@ import Menu from './menu';
 
 import '../platformAssets/runtime/fontManager';
 
-registerFocusManger({ focused: 'border: 5px solid #62DBFB; border-radius:5px;' });
+registerFocusManger({ focused: 'opacity: 0.4' });
 registerServiceWorker();
 
+// Flag to enable yellow warnings
 console.disableYellowBox = true;
 
 
