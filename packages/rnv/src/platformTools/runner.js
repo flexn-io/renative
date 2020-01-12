@@ -18,7 +18,8 @@ import {
     writeCleanFile,
     getConfigProp,
     waitForWebpack,
-    getSourceExts
+    getSourceExts,
+    confirmActiveBundler
 } from '../common';
 import {
     IOS,
@@ -213,16 +214,7 @@ const startBundlerIfRequired = async (c) => {
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
-
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            message: 'Continue?',
-            warningMessage: `Another bundler at port ${c.runtime.port} already running`
-        });
-
-        if (confirm) return true;
-        return Promise.reject('Cancelled by user');
-        
+        await confirmActiveBundler(c);
     }
 };
 
