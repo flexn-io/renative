@@ -162,6 +162,7 @@ export const isBuildSchemeSupported = async (c) => {
 };
 
 export const confirmActiveBundler = async (c) => {
+    if (c.runtime.skipActiveServerCheck) return true;
     const { confirm } = await inquirerPrompt({
         type: 'confirm',
         message: 'It will be used for this session. Continue?',

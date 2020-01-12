@@ -20,7 +20,9 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator,
-    waitForWebpack
+    waitForWebpack,
+    checkPortInUse,
+    confirmActiveBundler
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { buildWeb, configureCoreWebProject } from '../web';
@@ -199,6 +201,15 @@ export const runTizen = async (c, platform, target) => {
 
 
     let deviceID;
+
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
+    
 
     const askForEmulator = async () => {
         const { startEmulator } = await inquirer.prompt([{

@@ -80,7 +80,7 @@ let keepRNVRunning = false;
 // ##########################################
 
 
-export const rnvStart = async (c, shouldOpenBrowser) => {
+export const rnvStart = async (c) => {
     const { platform } = c;
     const port = c.runtime.port
     const { hosted } = c.program;
@@ -106,7 +106,7 @@ export const rnvStart = async (c, shouldOpenBrowser) => {
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
             await configureIfRequired(c, platform);
-            return runWeb(c, platform, port, shouldOpenBrowser);
+            return runWeb(c, platform, port);
         default:
             if (hosted) {
                 return logError('This platform does not support hosted mode', true);
@@ -240,7 +240,8 @@ const _rnvRunWithPlatform = async (c) => {
     };
 
     if (Config.isWebHostEnabled && hosted) {
-        return rnvStart(c, true);
+        c.runtime.shouldOpenBrowser = true
+        return rnvStart(c);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
 

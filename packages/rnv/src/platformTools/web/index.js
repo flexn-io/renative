@@ -154,7 +154,7 @@ const _parseCssSync = (c, platform) => {
     ]);
 };
 
-const runWeb = async (c, platform, port, shouldOpenBrowser) => {
+const runWeb = async (c, platform, port) => {
     logTask(`runWeb:${platform}:${port}`);
 
     let devServerHost = '0.0.0.0';
@@ -176,18 +176,18 @@ const runWeb = async (c, platform, port, shouldOpenBrowser) => {
                 port
             )} is not running. Starting it up for you...`
         );
-        await _runWebBrowser(c, platform, devServerHost, port, false, shouldOpenBrowser);
+        await _runWebBrowser(c, platform, devServerHost, port, false);
         await runWebDevServer(c, platform, port);
     } else {
         await confirmActiveBundler(c);
-        await _runWebBrowser(c, platform, devServerHost, port, true, shouldOpenBrowser);
+        await _runWebBrowser(c, platform, devServerHost, port, true);
     }
 
 };
 
-const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted, shouldOpenBrowser) => new Promise((resolve) => {
-    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${shouldOpenBrowser}`);
-    if (!shouldOpenBrowser) return resolve();
+const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
+    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`);
+    if (!c.runtime.shouldOpenBrowser) return resolve();
     const wait = waitForWebpack(c, port)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
