@@ -101,7 +101,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     } else {
         const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.runtime.port}` },
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     }

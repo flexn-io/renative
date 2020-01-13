@@ -4,11 +4,12 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTools/logger';
-import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeFileSync } from '../systemTools/fileutils';
+import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeFileSync, copyFolderContentsRecursiveSync, removeDirs } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
 import { rnvClean } from '../systemTools/cleaner';
 import { RN_CLI_CONFIG_NAME } from '../constants';
 import { configureNodeModules } from './projectParser';
+import { inquirerPrompt } from '../systemTools/prompt';
 
 export const checkAndMigrateProject = async (c) => {
     logTask('checkAndMigrateProject');
@@ -21,6 +22,7 @@ export const checkAndMigrateProject = async (c) => {
         // privateProjectConfig: path.join(c.paths.workspace.project.dir, 'config.json'),
         // privateProjectConfig2: path.join(c.paths.workspace.project.dir, 'config.private.json'),
         // privateProjectConfigNew: path.join(c.paths.workspace.project.dir, 'renative.private.json'),
+        projectConfigDir: path.join(prjDir, 'projectConfig'),
         config: path.join(prjDir, 'rnv-config.json'),
         configNew: path.join(prjDir, 'renative.json'),
         package: path.join(prjDir, 'package.json'),
@@ -70,7 +72,7 @@ const PATH_PROPS = [
     { oldKey: 'projectConfigFolder', newKey: 'projectConfigDir' },
 ];
 
-const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
+const _migrateProjectSoft = async (c, paths) => {
     logTask('_migrateProjectSoft');
     let files;
     try {
@@ -140,14 +142,27 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
 
         if (requiresSave) writeFileSync(paths.configNew, files.configNew);
 
+        if (fs.existsSync(paths.projectConfigDir)) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: 'in RNV 0.28.12+ ./projectConfig has been migrated to ./appConfigs/base. confirm to migrate to new structure. (having a backup or clean git status is recommended)'
+            });
+
+            if (confirm) {
+                copyFolderContentsRecursiveSync(paths.projectConfigDir, c.paths.project.projectConfig.dir);
+
+                await removeDirs([paths.projectConfigDir]);
+            } else {
+                logError('Not migrating ./projectConfig will most likely result in errors');
+            }
+        }
+
         // _migrateFile(paths.privateProjectConfig, paths.privateProjectConfigNew);
         // _migrateFile(paths.privateProjectConfig2, paths.privateProjectConfigNew);
     } catch (e) {
         logError(`Migration not successfull. ${e}`);
     }
-
-    resolve();
-});
+};
 
 const _migrateFile = (oldPath, newPath) => {
     if (!fs.existsSync(newPath)) {

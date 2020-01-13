@@ -11,7 +11,7 @@ sidebar_label: Plugins
 
 ReNative Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
-Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
+Get list of all available community plugins. (NOTE you can always add new one manually into one of the `renative.json` files)
 
 `$ rnv plugin list`
 
@@ -40,7 +40,7 @@ and follow the command prompt steps
 ## Custom Plugin Support
 
 You can configure multiple React Native plugins without need to update project blueprints.
-default location of plugin configs is `./projectConfig/plugins.json`
+default location of plugin configs is `./renative.json`
 
 Example:
 

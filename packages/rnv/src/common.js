@@ -88,7 +88,7 @@ export const isPlatformSupported = async (c) => {
     if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
     const opts = generateOptions(platformsAsObj);
 
-    if (!c.platform || c.platform === '?' || !SUPPORTED_PLATFORMS.includes(c.platform)) {
+    if (!c.platform || c.platform === true || !SUPPORTED_PLATFORMS.includes(c.platform)) {
         const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',
@@ -141,8 +141,8 @@ export const isBuildSchemeSupported = async (c) => {
     }
 
     const schemeDoesNotExist = scheme && !buildSchemes[scheme];
-    if (scheme === '?' || schemeDoesNotExist) {
-        if (schemeDoesNotExist && scheme && scheme !== '?') {
+    if (scheme === true || schemeDoesNotExist) {
+        if (schemeDoesNotExist && scheme && scheme !== true) {
             logError('Build scheme you picked does not exists.');
         }
         const opts = generateOptions(buildSchemes);
@@ -161,20 +161,19 @@ export const isBuildSchemeSupported = async (c) => {
     return scheme;
 };
 
+export const getCurrentSdkPath = (c, platform) => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]];
+
 export const isSdkInstalled = (c, platform) => {
     logTask(`isSdkInstalled: ${platform}`);
 
-    if (c.files.workspace.config) {
-        const sdkPlatform = SDK_PLATFORMS[platform];
-        if (sdkPlatform) return fs.existsSync(getRealPath(c, c.files.workspace.config.sdks[sdkPlatform]));
-    }
+    const sdkPath = getCurrentSdkPath(c, platform);
 
-    return false;
+    return fs.existsSync(getRealPath(c, sdkPath));
 };
 
 export const checkSdk = (c, platform, reject) => {
     if (!isSdkInstalled(c, platform)) {
-        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(c.files.workspace.config?.sdks?.ANDROID_SDK)}`;
+        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(getCurrentSdkPath(c, platform))}`;
         if (reject) {
             reject(err);
         } else {
@@ -196,23 +195,23 @@ export const getBinaryPath = (c, platform) => {
     const appName = getConfigProp(c, platform, 'appName');
 
     switch (platform) {
-    case IOS:
-    case TVOS:
-        return `${appFolder}/release/RNVApp.ipa`;
-    case ANDROID:
-    case ANDROID_TV:
-    case ANDROID_WEAR:
-        return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
-    case WEB:
-        return `${appFolder}/public`;
-    case MACOS:
-    case WINDOWS:
-        return `${appFolder}/build/release/${productName}-${version}`;
-    case TIZEN:
-    case TIZEN_MOBILE:
-        return `${appFolder}/output/${appName}.wgt`;
-    case WEBOS:
-        return `${appFolder}/output/${id}_${version}_all.ipk`;
+        case IOS:
+        case TVOS:
+            return `${appFolder}/release/RNVApp.ipa`;
+        case ANDROID:
+        case ANDROID_TV:
+        case ANDROID_WEAR:
+            return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
+        case WEB:
+            return `${appFolder}/public`;
+        case MACOS:
+        case WINDOWS:
+            return `${appFolder}/build/release/${productName}-${version}`;
+        case TIZEN:
+        case TIZEN_MOBILE:
+            return `${appFolder}/output/${appName}.wgt`;
+        case WEBOS:
+            return `${appFolder}/output/${id}_${version}_all.ipk`;
     }
 
     return appFolder;
@@ -247,13 +246,13 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     let scheme;
     if (p) {
         scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
-        resultPlatforms = c.buildConfig.platforms[platform][key];
+        resultPlatforms = getFlavouredProp(c, c.buildConfig.platforms[platform], key);
     }
 
     scheme = scheme || {};
     const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
     const resultScheme = scheme[key];
-    const resultCommon = c.buildConfig.common?.[key];
+    const resultCommon = getFlavouredProp(c, c.buildConfig.common, key);
 
     let result = Config.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
 
@@ -417,10 +416,17 @@ export const resolveNodeModulePath = (c, filePath) => {
     return pth;
 };
 
+export const getFlavouredProp = (c, obj, key) => {
+    if (!key) return null;
+    const val1 = obj[`${key}@${_getScheme(c)}`];
+    if (val1) return val1;
+    return obj[key];
+};
+
 export const getBuildFilePath = (c, platform, filePath) => {
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
-    // P2 => projectConfigs + @buildSchemes
+    // P2 => appConfigs/base + @buildSchemes
     const sp2 = path.join(getBuildsFolder(c, platform, c.paths.project.projectConfig.dir), filePath);
     if (fs.existsSync(sp2)) sp = sp2;
     // P3 => appConfigs + @buildSchemes
@@ -463,9 +469,8 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = async (c, port) => {
-    if (!port) port = c.program.port || c.platformDefaults[c.platform] ? c.platformDefaults[c.platform].defaultPort : null;
-    logTask(`waitForWebpack:${port}`);
+export const waitForWebpack = async (c) => {
+    logTask(`waitForWebpack:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
@@ -476,7 +481,7 @@ export const waitForWebpack = async (c, port) => {
     if (isRunningOnWindows && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
-    const url = `http://${devServerHost}:${port}/assets/bundle.js`;
+    const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
             axios.get(url).then((res) => {

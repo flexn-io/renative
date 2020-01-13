@@ -202,7 +202,7 @@ const _configureAppConfigs = async (c) => {
                     }
                 }
             }
-            await updateConfig(c, '?');
+            await updateConfig(c, true);
         } catch (e) {
             logError(e);
         }
@@ -309,7 +309,7 @@ export const getInstalledTemplateOptions = (c) => {
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
-    logError('You don\'t have any local templates installed');
+    logError('You don\'t have any local templates installed', false, true);
     return [];
 };
 

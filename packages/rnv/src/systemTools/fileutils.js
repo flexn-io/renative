@@ -220,6 +220,12 @@ export const writeFileSync = (filePath, obj, spaces, addNewLine = true) => {
     fs.writeFileSync(filePath, output);
 };
 
+export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
+    logDebug('writeObjectSync', filePath);
+    logWarning('writeObjectSync is DEPRECATED. use writeFileSync instead');
+    return writeFileSync(filePath, obj, spaces, addNewLine);
+};
+
 export const readObjectSync = (filePath, sanitize = false, c) => {
     logDebug(`readObjectSync:${sanitize}:${filePath}`);
     if (!filePath) {
@@ -338,7 +344,7 @@ export const sanitizeDynamicProps = (obj, props) => {
         obj.forEach((v) => {
             if (typeof val === 'string') {
                 Object.keys(props).forEach((pk) => {
-                    val = val.replace(`@${pk}@`, props[pk]);
+                    val = val.replace(`@${pk}@`, props[pk]).replace(`{{props.${pk}}}`, props[pk]);
                     obj[key] = val;
                 });
             } else {
@@ -351,7 +357,7 @@ export const sanitizeDynamicProps = (obj, props) => {
         if (val) {
             if (typeof val === 'string') {
                 Object.keys(props).forEach((pk) => {
-                    val = val.replace(`@${pk}@`, props[pk]);
+                    val = val.replace(`@${pk}@`, props[pk]).replace(`{{props.${pk}}}`, props[pk]);
                     obj[key] = val;
                 });
             } else {
@@ -361,6 +367,7 @@ export const sanitizeDynamicProps = (obj, props) => {
     });
     return obj;
 };
+
 
 export const mergeObjects = (c, obj1, obj2, dynamicRefs = true, replaceArrays = false) => {
     if (!obj2) return obj1;
