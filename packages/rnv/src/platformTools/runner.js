@@ -240,7 +240,7 @@ const _rnvRunWithPlatform = async (c) => {
     };
 
     if (Config.isWebHostEnabled && hosted) {
-        c.runtime.shouldOpenBrowser = true
+        c.runtime.shouldOpenBrowser = true;
         return rnvStart(c);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
@@ -291,6 +291,7 @@ const _rnvRunWithPlatform = async (c) => {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
+            c.runtime.shouldOpenBrowser = true;
             return runWeb(c, platform, port, true);
         case TIZEN:
         case TIZEN_MOBILE:
