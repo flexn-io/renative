@@ -9,6 +9,7 @@ import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync,
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
+import { cleanFolder } from '../../dist/systemTools/fileutils';
 
 const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
@@ -169,6 +170,7 @@ export const rnvCryptoUpdateProfiles = (c) => {
                 .then(() => {
                     setAppConfig(c, appId);
                 });
+        default:
     }
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };
@@ -202,7 +204,8 @@ export const checkCrypto = async (c) => {
         if (sourceRaw && destRaw) {
             const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
             const tsProjectPath = `${source}.timestamp`;
-            const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
+            const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+            const tsWorkspacePath = path.join(wsPath, 'timestamp');
             if (!fs.existsSync(source)) {
                 logWarning('This project uses encrypted files but you don\'t have them installed');
             } else {
@@ -215,14 +218,29 @@ export const checkCrypto = async (c) => {
                 if (fs.existsSync(tsProjectPath)) {
                     tsProject = parseInt(fs.readFileSync(tsProjectPath).toString());
                 }
+
+                const options = [
+                    'Yes - override (recommended)',
+                    'Yes - merge',
+                    'Skip'
+                ];
                 if (tsProject > tsWorkspace) {
-                    const { confirm } = await inquirerPrompt({
-                        type: 'confirm',
+                    const { option } = await inquirerPrompt({
+                        name: 'option',
+                        type: 'list',
+                        choices: options,
                         message: `Your ${tsWorkspacePath} is out of date. do you want to run decrypt?`
                     });
 
-                    if (confirm) {
-                        await rnvCryptoDecrypt(c);
+                    switch (option) {
+                        case options[0]:
+                            await cleanFolder(wsPath);
+                            await rnvCryptoDecrypt(c);
+                            break;
+                        case options[1]:
+                            await rnvCryptoDecrypt(c);
+                            break;
+                        default:
                     }
                 } else if (tsProject < tsWorkspace) {
                     logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
