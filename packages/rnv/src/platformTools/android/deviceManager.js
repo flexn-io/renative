@@ -202,6 +202,11 @@ const decideIfWearRunning = async (c, device) => {
 const getDeviceType = async (device, c) => {
     logDebug('getDeviceType - in', { device });
 
+    if (device.product === 'tunny') {
+        device.isNotEligibleAndroid = true;
+        return device;
+    }
+
     if (device.udid !== 'unknown') {
         const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
         const screenDensityResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
@@ -420,6 +425,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
             // filter devices based on selected platform
             const { platform } = c;
             if (skipTargetCheck) return true; // return everything if skipTargetCheck is used
+            if (device.isNotEligibleAndroid) return false;
             const matches = (platform === ANDROID && device.isTablet) || (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', { device, matches, platform });
             return matches;

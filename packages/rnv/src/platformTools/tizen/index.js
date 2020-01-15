@@ -20,7 +20,9 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator,
-    waitForWebpack
+    waitForWebpack,
+    checkPortInUse,
+    confirmActiveBundler
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { buildWeb, configureCoreWebProject } from '../web';
@@ -140,7 +142,7 @@ const _getRunningDevices = async (c) => {
             let deviceInfo;
             let deviceType;
 
-            if (deviceInfoXML !== true) {
+            if (deviceInfoXML !== true && deviceInfoXML !== '') {                
                 // for some reason the tv does not connect through sdb
                 deviceInfo = formatXMLObject(parser.toJson(deviceInfoXML, { object: true, reversible: false }));
                 deviceType = deviceInfo['tizen.org/feature/profile'];
@@ -199,6 +201,15 @@ export const runTizen = async (c, platform, target) => {
 
 
     let deviceID;
+
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
+    
 
     const askForEmulator = async () => {
         const { startEmulator } = await inquirer.prompt([{

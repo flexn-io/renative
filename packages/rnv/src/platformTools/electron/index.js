@@ -30,7 +30,8 @@ import {
     checkPortInUse,
     logInfo,
     resolveNodeModulePath,
-    waitForWebpack
+    waitForWebpack,
+    confirmActiveBundler
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS, WINDOWS } from '../../constants';
@@ -189,11 +190,7 @@ const runElectron = async (c, platform, port) => {
             // await _runElectronSimulator(c, platform);
             await runElectronDevServer(c, platform, port);
         } else {
-            logInfo(
-                `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
-                    port
-                )} is already running. ReNative will use it!`
-            );
+            await confirmActiveBundler(c);
             await _runElectronSimulator(c, platform);
         }
     }

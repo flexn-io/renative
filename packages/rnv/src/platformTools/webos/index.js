@@ -15,7 +15,9 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator,
-    waitForWebpack
+    waitForWebpack,
+    checkPortInUse,
+    confirmActiveBundler
 } from '../../common';
 import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -135,6 +137,14 @@ const runWebOS = async (c, platform, target) => {
     const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
+
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
 
     // Start the fun
     !isHosted && await buildWeb(c, platform);

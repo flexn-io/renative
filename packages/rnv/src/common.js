@@ -161,6 +161,18 @@ export const isBuildSchemeSupported = async (c) => {
     return scheme;
 };
 
+export const confirmActiveBundler = async (c) => {
+    if (c.runtime.skipActiveServerCheck) return true;
+    const { confirm } = await inquirerPrompt({
+        type: 'confirm',
+        message: 'It will be used for this session. Continue?',
+        warningMessage: `Another ${c.platform} server at port ${c.runtime.port} already running`
+    });
+
+    if (confirm) return true;
+    return Promise.reject('Cancelled by user');
+}
+
 export const getCurrentSdkPath = (c, platform) => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]];
 
 export const isSdkInstalled = (c, platform) => {

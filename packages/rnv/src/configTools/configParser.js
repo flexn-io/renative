@@ -770,7 +770,7 @@ export const updateConfig = async (c, appConfigId) => {
 export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
     logTask(`listAppConfigsFoldersSync:${ignoreHiddenConfigs}`);
     const configDirs = [];
-    const appConfigsDirs = c.buildConfig.paths?.appConfigsDirs;
+    const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs;
     if (appConfigsDirs && appConfigsDirs.forEach) {
         appConfigsDirs.forEach((v) => {
             _listAppConfigsFoldersSync(v, configDirs, ignoreHiddenConfigs);
@@ -783,6 +783,7 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
 };
 
 const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) => {
+    logTask(`_listAppConfigsFoldersSync:${dirPath}`, chalk.grey);
     if (!fs.existsSync(dirPath)) return;
     fs.readdirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);

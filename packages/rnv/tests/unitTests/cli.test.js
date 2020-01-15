@@ -48,7 +48,7 @@ describe('Testing rnv run', () => {
     itShouldResolve('run -p androidwear');
     itShouldResolve('run -p androidtv');
     itShouldResolve('run -p tizen');
-    itShouldResolve('run -p tizenphone');
+    itShouldResolve('run -p tizenmobile');
     itShouldResolve('run -p tizenwatch');
     itShouldResolve('run -p webos');
     itShouldResolve('run -p web');
@@ -64,7 +64,7 @@ describe('Testing rnv build', () => {
     itShouldResolve('build -p androidwear');
     itShouldResolve('build -p androidtv');
     itShouldResolve('build -p tizen');
-    itShouldResolve('build -p tizenphone');
+    itShouldResolve('build -p tizenmobile');
     itShouldResolve('build -p tizenwatch');
     itShouldResolve('build -p webos');
     itShouldResolve('build -p web');
@@ -160,7 +160,7 @@ const getConfig = (s) => {
     c.buildConfig = {
         defaults: {
             supportedPlatforms: ['ios', 'android', 'tizen', 'web', 'macos',
-                'webos', 'tizenphone', 'tizenwatch', 'androidtv', 'androidwear',
+                'webos', 'tizenmobile', 'tizenwatch', 'androidtv', 'androidwear',
                 'firefoxtv', 'firefoxos']
         },
         defaultTargets: {},

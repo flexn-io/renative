@@ -18,7 +18,8 @@ import {
     writeCleanFile,
     getConfigProp,
     waitForWebpack,
-    getSourceExts
+    getSourceExts,
+    confirmActiveBundler
 } from '../common';
 import {
     IOS,
@@ -79,7 +80,7 @@ let keepRNVRunning = false;
 // ##########################################
 
 
-export const rnvStart = async (c, shouldOpenBrowser) => {
+export const rnvStart = async (c) => {
     const { platform } = c;
     const port = c.runtime.port
     const { hosted } = c.program;
@@ -105,7 +106,7 @@ export const rnvStart = async (c, shouldOpenBrowser) => {
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
             await configureIfRequired(c, platform);
-            return runWeb(c, platform, port, shouldOpenBrowser);
+            return runWeb(c, platform, port);
         default:
             if (hosted) {
                 return logError('This platform does not support hosted mode', true);
@@ -213,16 +214,7 @@ const startBundlerIfRequired = async (c) => {
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
-
-        const { confirm } = await inquirerPrompt({
-            type: 'confirm',
-            message: 'Continue?',
-            warningMessage: `Another bundler at port ${c.runtime.port} already running`
-        });
-
-        if (confirm) return true;
-        return Promise.reject('Cancelled by user');
-        
+        await confirmActiveBundler(c);
     }
 };
 
@@ -248,7 +240,8 @@ const _rnvRunWithPlatform = async (c) => {
     };
 
     if (Config.isWebHostEnabled && hosted) {
-        return rnvStart(c, true);
+        c.runtime.shouldOpenBrowser = true;
+        return rnvStart(c);
         // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
 
@@ -298,6 +291,7 @@ const _rnvRunWithPlatform = async (c) => {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
+            c.runtime.shouldOpenBrowser = true;
             return runWeb(c, platform, port, true);
         case TIZEN:
         case TIZEN_MOBILE:
