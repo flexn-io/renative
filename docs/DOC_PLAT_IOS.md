@@ -230,3 +230,20 @@ Create IPA:
 ```
 rnv export -p ios -s appstore
 ```
+
+
+## Advanced configuration examples
+
+Adding new props to plist:
+```json
+{
+  "platforms": {
+    "ios": {
+      "plist": {
+        "UIBackgroundModes": ["audio", "remote-notification"],
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
+  }
+}
+```

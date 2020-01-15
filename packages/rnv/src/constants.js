@@ -508,3 +508,6 @@ export const configSchema = {
         default: true,
     }
 };
+
+export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
+export const REDASH_KEY = 'zCYINQqMxvat1V41Hb9d69JMVBDNLyeQ4wICtdtD';

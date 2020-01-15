@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import ora from 'ora';
-import { mergeObjects, writeObjectSync, sanitizeDynamicProps } from '../systemTools/fileutils';
+import { mergeObjects, writeFileSync, sanitizeDynamicProps } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
 import { versionCheck } from '../configTools/configParser';
 
@@ -28,7 +28,7 @@ const _getPluginList = (c, isUpdate = false) => {
         asString: '',
         asArray: [],
         plugins: [],
-        // json: plugins,
+        allPlugins: {} // this is used by rnvPluginAdd
     };
 
     let i = 1;
@@ -55,11 +55,13 @@ const _getPluginList = (c, isUpdate = false) => {
                 }
                 output.asString += ` [${i}]> ${chalk.bold(k)} ${versionString}\n`;
                 output.asArray.push({ name: `${k} ${versionString}`, value: k });
+                output.allPlugins[k] = p; // this is used by rnvPluginAdd
                 i++;
             } else if (!isUpdate) {
                 output.plugins.push(k);
                 output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}\n`;
                 output.asArray.push({ name: `${k} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}`, value: k });
+                output.allPlugins[k] = p; // this is used by rnvPluginAdd
 
                 i++;
             }
@@ -91,25 +93,47 @@ export const rnvPluginAdd = async (c) => {
         type: 'rawlist',
         message: 'Select the plugins you want to add',
         choices: o.asArray,
-        pageSize: 100
+        pageSize: 50
     });
 
     const installMessage = [];
     const selectedPlugins = {};
-    selectedPlugins[plugin] = o.json[plugin];
-    installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.json[plugin].version)})`);
+    selectedPlugins[plugin] = o.allPlugins[plugin];
+    installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.allPlugins[plugin].version)})`);
 
-    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
+    const questionPlugins = {}
 
     Object.keys(selectedPlugins).forEach((key) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
+        const plugin = selectedPlugins[key]
+        if(plugin.props) questionPlugins[key] = plugin;
         c.files.project.config.plugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];
         _checkAndAddDependantPlugins(c, selectedPlugins[key]);
     });
 
-    writeObjectSync(c.paths.project.config, c.files.project.config);
+    const pluginKeys = Object.keys(questionPlugins)
+    for(let i = 0; i < pluginKeys.length; i++) {
+        const pluginKey = pluginKeys[i]
+        const plugin = questionPlugins[pluginKey];
+        const pluginProps = Object.keys(plugin.props);
+        const finalProps = {}
+        for(let i2 = 0; i2 < pluginProps.length; i2 ++) {
+            const { propValue } = await inquirer.prompt({
+                name: 'propValue',
+                type: 'input',
+                message: `${pluginKey}: Add value for ${pluginProps[i2]} (You can do this later in ./renative.json file)`
+            });
+            finalProps[pluginProps[i2]] = propValue
+        }
+        c.files.project.config.plugins[pluginKey] = {}
+        c.files.project.config.plugins[pluginKey].props = finalProps
+    }
+
+    const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
+
+    writeFileSync(c.paths.project.config, c.files.project.config);
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');
 };
@@ -148,7 +172,7 @@ export const rnvPluginUpdate = async (c) => {
             c.files.project.config.plugins[key] = o.json[key];
         });
 
-        writeObjectSync(c.paths.project.config, c.files.project.config);
+        writeFileSync(c.paths.project.config, c.files.project.config);
 
         logSuccess('Plugins updated successfully!');
     }
@@ -196,7 +220,10 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     return plugin;
 };
 
-const _getMergedPlugin = (c, obj1, obj2) => sanitizeDynamicProps(mergeObjects(c, obj1, obj2, true, true), c.buildConfig?._refs);
+const _getMergedPlugin = (c, obj1, obj2) => {
+    const obj = sanitizeDynamicProps(mergeObjects(c, obj1, obj2, true, true), c.buildConfig?._refs);
+    return sanitizeDynamicProps(obj, obj.props);
+};
 
 
 export const configurePlugins = c => new Promise((resolve, reject) => {
@@ -271,7 +298,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
     versionCheck(c)
         .then(() => {
             if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
-                writeObjectSync(c.paths.project.package, c.files.project.package);
+                writeFileSync(c.paths.project.package, c.files.project.package);
                 c._requiresNpmInstall = true;
             }
             resolve();
@@ -280,7 +307,6 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
 
 const parsePlugins = (c, platform, pluginCallback) => {
     logTask(`parsePlugins:${platform}`);
-
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
         const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);

@@ -12,8 +12,9 @@ Legend:
 - `[PLATFORM]` - specific platform key like `ios`, `android`, `web`, etc..
 - `[APP_ID]` - name of your folder in `./appConfigs` which contains specific `renative.json` file
 - `[PROJECT_NAME]` - `name` field in the root `package.json` file of your project
-- `[PLUGIN_ID]` - `key` of the plugin defined in `./projectConfig/plugins.json`
-- `[WORKSPACE_PATH]` - `path` to your workspace (`~/.rnv` by default) where local and sensitive information is stored.
+- `[PLUGIN_ID]` - `key` of the plugin defined in one of the `renative.json` files
+- `[WORKSPACE_PATH]` - `path` to your global workspace (`~/.rnv` by default) where local and sensitive information is stored.
+- `[PROJECT_PATH]` - `path` to working copy of your project.
 
 NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
 ```
@@ -87,31 +88,30 @@ Following is the order of merges of various renative configs (if present) produc
 ⬇️
 `[WORKSPACE_PATH]/renative.local.json`</br>
 ⬇️
-`./renative.json`</br>
-⬇️
-`./renative.private.json`</br>
-⬇️
-`./renative.local.json`</br>
-⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/renative.json`</br>
 ⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/renative.private.json`</br>
 ⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/renative.local.json`</br>
 ⬇️
-`./appConfigs/[APP_ID_BASE]/renative.json`</br>
-⬇️
-`./appConfigs/[APP_ID]/renative.json`</br>
-⬇️
-`./appConfigs/[APP_ID]/renative.private.json`</br>
-⬇️
-`./appConfigs/[APP_ID]/renative.local.json`</br>
-⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.json`</br>
 ⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.private.json`</br>
 ⬇️
 `[WORKSPACE_PATH]/[PROJECT_NAME]/appConfigs/[APP_ID]/renative.local.json`</br>
+⬇️
+`[PROJECT_PATH]/renative.json`</br>
+⬇️
+`[PROJECT_PATH]/renative.private.json`</br>
+⬇️
+`[PROJECT_PATH]/renative.local.json`</br>
+⬇️
+`[PROJECT_PATH]/appConfigs/[APP_ID]/renative.json`</br>
+⬇️
+`[PROJECT_PATH]/appConfigs/[APP_ID]/renative.private.json`</br>
+⬇️
+`[PROJECT_PATH]/appConfigs/[APP_ID]/renative.local.json`</br>
+
 
 
 
@@ -128,10 +128,7 @@ CONFIG_ROOT
 {
   "env": {},
   "hidden": false,
-  "disabled": false,
   "definitions": {},
-  "profiles": {},
-  "isWrapper": true,
   "sdks": {
     ...SDK_PROPS
   },
@@ -166,59 +163,83 @@ CONFIG_ROOT
 
 #### env
 
-TODO
+Define environment variables
 
 #### hidden
 
-TODO
+Hide app config from available options in CLI. Used mostly to hide base configs other would inherit from
 
-#### disabled
-
-TODO
 
 #### definitions
 
-TODO
+Define injectable props to be reused across config file
 
-#### profiles
-
-TODO
-
-#### isWrapper
-
-TODO
 
 #### sdks
 
-TODO
+Define paths to your SDK Configurations
+
+#### workspaceID
+
+Current workspace this project belongs to
 
 #### paths
 
-TODO
+Define custom paths for RNV to look into
+
+```json
+{
+    "paths": {
+        "entryDir": "./",
+        "platformAssetsDir": "./platformAssets",
+        "platformBuildsDir": "./platformBuilds"
+    }
+}
+```
 
 #### defaults
 
-TODO
+Default system config for this project
+
+```json
+{
+      "defaults": {
+        "supportedPlatforms": [
+            "ios",
+            "android",
+            "androidtv",
+            "web",
+            "macos",
+            "tvos",
+            "androidwear"
+        ]
+    },
+}
+```
+
+#### enableAnalytics
+
+Enable or disable sending analytics to improve ReNative
 
 #### plugins
 
-TODO
+Plugin configurations
 
 #### permissions
 
-TODO
+Define list of permissions to be used in project
 
 #### common
 
-TODO
+Common properties inherited for every platform
 
 #### platforms
 
-TODO
+Platform specififc configurations
 
 #### runtime
 
-
+Special runtime injection object to be available for runtime code via `platformAssets/runtime.json`
 
 ## Common Props
 
@@ -296,8 +317,7 @@ PATH_PROPS
     "platformTemplatesDir": "",
     "entryDir": "",
     "platformAssetsDir": "",
-    "platformBuildsDir": "",
-    "projectConfigDir": ""
+    "platformBuildsDir": ""
 }
 ```
 

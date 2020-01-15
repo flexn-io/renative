@@ -24,6 +24,7 @@
                     "tag": "activity",
                     "android:name": ".MainActivity",
                     "android:label": "@string/app_name",
+                    "android:launchMode": "singleTask",
                     "children": [
                         {
                             "tag": "intent-filter",

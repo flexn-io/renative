@@ -15,7 +15,9 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator,
-    waitForWebpack
+    waitForWebpack,
+    checkPortInUse,
+    confirmActiveBundler
 } from '../../common';
 import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -136,6 +138,14 @@ const runWebOS = async (c, platform, target) => {
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
 
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
+
     // Start the fun
     !isHosted && await buildWeb(c, platform);
     await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
@@ -244,7 +254,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     const configFile = 'public/appinfo.json';
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform).toLowerCase() },
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
         { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
     ]);

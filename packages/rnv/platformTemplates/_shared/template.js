@@ -11,6 +11,8 @@ const DEFAULT_CONFIG = {
     },
 };
 
+const merge = require('deepmerge');
+
 const indent = level => '    '.repeat(level);
 
 const removeBlankLines = string => string.replace(/^\s*\n/gm, '');
@@ -18,7 +20,7 @@ const removeBlankLines = string => string.replace(/^\s*\n/gm, '');
 const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${tag}" ${tags[tag]} />`);
 
 const htmlTemp = (options) => {
-    const config = Object.assign(DEFAULT_CONFIG, options);
+    const config = merge(DEFAULT_CONFIG, options);
     const {
         docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment
     } = config;
@@ -41,7 +43,10 @@ const htmlTemp = (options) => {
     let webosScripts = '';
 
     if (platform === 'webos') {
-        webosScripts = `<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV${environment === 'production' ? '' : '-dev'}.js"></script>`;
+        webosScripts = '<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV.js"></script>';
+        if (environment !== 'production') {
+            webosScripts += '\n<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV-dev.js"></script>';
+        }
     }
 
     const errScript = `
@@ -61,7 +66,7 @@ ${htmlTag}
     <head>
         ${contentType}
         <meta charset="utf-8" />
-        ${constructMetaTags({ ...metaTags, ...config.metaTags }).join(`\n${indent(2)}`)}
+        ${constructMetaTags(metaTags).join(`\n${indent(2)}`)}
         ${linkTags.join(`\n${indent(2)}`)}
         ${titleTag}
         ${remoteDebugScript || ''}

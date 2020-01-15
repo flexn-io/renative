@@ -234,6 +234,10 @@
                 "title": "rnv plugin",
                 "sidebar_label": "plugin"
             },
+            "rnv-publish": {
+                "title": "rnv publish",
+                "sidebar_label": "publish"
+            },
             "rnv-run": {
                 "title": "rnv run",
                 "sidebar_label": "run"

@@ -4,7 +4,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import semver from 'semver';
 
-import { writeObjectSync } from './systemTools/fileutils';
+import { writeFileSync } from './systemTools/fileutils';
 import { npmInstall, executeAsync } from './systemTools/exec';
 import { logWarning, logTask, logError } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
@@ -64,7 +64,7 @@ class Config {
         const existingPath = this.config.paths.project.package;
         if (!currentPackage[type]) currentPackage[type] = {};
         currentPackage[type][dependency] = version;
-        writeObjectSync(existingPath, currentPackage);
+        writeFileSync(existingPath, currentPackage);
         if (!skipInstall) await npmInstall();
         return true;
     }
@@ -162,11 +162,6 @@ class Config {
         return this.config.platform;
     }
 
-    get currentPlatformDefaultPort() {
-        const { platform } = this.config;
-        return this.config.platformDefaults[platform].defaultPort;
-    }
-
     get isRenativeProject() {
         return this.config?.paths?.project?.configExists || false;
     }
@@ -243,7 +238,7 @@ class Config {
             if (['true', 'false'].includes(value)) value = value === 'true'; // convert string to bool if it matches a bool value
 
             config[configSchema[key].key] = value;
-            writeObjectSync(configPath, config);
+            writeFileSync(configPath, config);
             return true;
         }
         return false;
@@ -306,6 +301,10 @@ class Config {
 
     get isAnalyticsEnabled() {
         return this.getMergedConfigValue('analytics');
+    }
+
+    get projectPath() {
+        return this.config.paths.project.dir;
     }
 
     //     getBuildConfig() {

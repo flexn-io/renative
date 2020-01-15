@@ -23,7 +23,8 @@ import {
     getBuildFilePath,
     getAppTitle,
     getSourceExts,
-    sanitizeColor
+    sanitizeColor,
+    confirmActiveBundler
 } from '../../common';
 import { PLATFORMS, WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
@@ -153,7 +154,7 @@ const _parseCssSync = (c, platform) => {
     ]);
 };
 
-const runWeb = (c, platform, port, shouldOpenBrowser) => new Promise((resolve, reject) => {
+const runWeb = async (c, platform, port) => {
     logTask(`runWeb:${platform}:${port}`);
 
     let devServerHost = '0.0.0.0';
@@ -167,35 +168,26 @@ const runWeb = (c, platform, port, shouldOpenBrowser) => new Promise((resolve, r
         devServerHost = '127.0.0.1';
     }
 
-    checkPortInUse(c, platform, port)
-        .then((isPortActive) => {
-            if (!isPortActive) {
-                logInfo(
-                    `Looks like your ${chalk.white(platform)} devServerHost ${chalk.white(devServerHost)} at port ${chalk.white(
-                        port
-                    )} is not running. Starting it up for you...`
-                );
-                _runWebBrowser(c, platform, devServerHost, port, false, shouldOpenBrowser)
-                    .then(() => runWebDevServer(c, platform, port))
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-            } else {
-                logWarning(
-                    `Looks like your ${chalk.white(platform)} devServerHost at port ${chalk.white(
-                        port
-                    )} is already running. ReNative Will use it!`
-                );
-                _runWebBrowser(c, platform, devServerHost, port, true, shouldOpenBrowser)
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-            }
-        })
-        .catch(e => reject(e));
-});
+    const isPortActive = await checkPortInUse(c, platform, port);
 
-const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted, shouldOpenBrowser) => new Promise((resolve) => {
-    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${shouldOpenBrowser}`);
-    if (!shouldOpenBrowser) return resolve();
+    if (!isPortActive) {
+        logInfo(
+            `Looks like your ${chalk.white(platform)} devServerHost ${chalk.white(devServerHost)} at port ${chalk.white(
+                port
+            )} is not running. Starting it up for you...`
+        );
+        await _runWebBrowser(c, platform, devServerHost, port, false);
+        await runWebDevServer(c, platform, port);
+    } else {
+        await confirmActiveBundler(c);
+        await _runWebBrowser(c, platform, devServerHost, port, true);
+    }
+
+};
+
+const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
+    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`);
+    if (!c.runtime.shouldOpenBrowser) return resolve();
     const wait = waitForWebpack(c, port)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);

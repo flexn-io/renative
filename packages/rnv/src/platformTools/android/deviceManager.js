@@ -202,6 +202,11 @@ const decideIfWearRunning = async (c, device) => {
 const getDeviceType = async (device, c) => {
     logDebug('getDeviceType - in', { device });
 
+    if (device.product === 'tunny') {
+        device.isNotEligibleAndroid = true;
+        return device;
+    }
+
     if (device.udid !== 'unknown') {
         const screenSizeResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm size`);
         const screenDensityResult = await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell wm density`);
@@ -332,7 +337,7 @@ const getEmulatorName = async (words) => {
 export const connectToWifiDevice = async (c, ip) => {
     const deviceResponse = await execCLI(c, CLI_ANDROID_ADB, `connect ${ip}:5555`);
     if (deviceResponse.includes('connected')) return true;
-    logError(`Failed to connect to ${ip}:5555`);
+    logError(`Failed to connect to ${ip}:5555`, false, true);
     return false;
 };
 
@@ -420,6 +425,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
             // filter devices based on selected platform
             const { platform } = c;
             if (skipTargetCheck) return true; // return everything if skipTargetCheck is used
+            if (device.isNotEligibleAndroid) return false;
             const matches = (platform === ANDROID && device.isTablet) || (platform === ANDROID_WEAR && device.isWear) || (platform === ANDROID_TV && device.isTV) || (platform === ANDROID && device.isMobile);
             logDebug('getDeviceType - filter', { device, matches, platform });
             return matches;
@@ -446,17 +452,17 @@ export const askForNewEmulator = async (c, platform) => {
 
     if (confirm) {
         switch (platform) {
-        case 'android':
-            return _createEmulator(c, '28', 'google_apis', emuName)
-                .then(() => launchAndroidSimulator(c, platform, emuName, true));
-        case 'androidtv':
-            return _createEmulator(c, '28', 'android-tv', emuName)
-                .then(() => launchAndroidSimulator(c, platform, emuName, true));
-        case 'androidwear':
-            return _createEmulator(c, '28', 'android-wear', emuName)
-                .then(() => launchAndroidSimulator(c, platform, emuName, true));
-        default:
-            return Promise.reject('Cannot find any active or created emulators');
+            case 'android':
+                return _createEmulator(c, '28', 'google_apis', emuName)
+                    .then(() => launchAndroidSimulator(c, platform, emuName, true));
+            case 'androidtv':
+                return _createEmulator(c, '28', 'android-tv', emuName)
+                    .then(() => launchAndroidSimulator(c, platform, emuName, true));
+            case 'androidwear':
+                return _createEmulator(c, '28', 'android-wear', emuName)
+                    .then(() => launchAndroidSimulator(c, platform, emuName, true));
+            default:
+                return Promise.reject('Cannot find any active or created emulators');
         }
     }
     return Promise.reject('Action canceled!');

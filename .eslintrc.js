@@ -20,7 +20,7 @@ module.exports = {
         'arrow-body-style': ['warn', 'as-needed'],
         camelcase: 'off',
         'class-methods-use-this': 'off',
-        indent: ['error', 4],
+        indent: ['error', 4, { "SwitchCase": 1 }],
         'new-cap': ['error', { capIsNew: false }],
         'no-duplicate-imports': 'off',
         'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['el', 'ref', 'event'] }],

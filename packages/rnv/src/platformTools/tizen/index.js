@@ -20,12 +20,15 @@ import {
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator,
-    waitForWebpack
+    waitForWebpack,
+    checkPortInUse,
+    confirmActiveBundler
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';
+import { logToSummary } from '../../systemTools/logger';
 
 const formatXMLObject = obj => ({
     ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
@@ -34,7 +37,7 @@ const formatXMLObject = obj => ({
     }, {})
 });
 
-const configureTizenGlobal = c => new Promise((resolve, reject) => {
+export const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
@@ -51,16 +54,27 @@ const configureTizenGlobal = c => new Promise((resolve, reject) => {
     // }
 });
 
-function launchTizenSimulator(c, name) {
+export const launchTizenSimulator = (c, name) => {
     logTask(`launchTizenSimulator:${name}`);
 
     if (name) {
         return execCLI(c, CLI_TIZEN_EMULATOR, `launch --name ${name}`, { detached: true });
     }
     return Promise.reject('No simulator -t target name specified!');
+};
+
+export const listTizenTargets = async (c, name) => {
+    const targets = await execCLI(c, CLI_TIZEN_EMULATOR, `list-vm`, { detached: true });    
+    const targetArr = targets.split('\n');
+    let targetStr = ''
+    Object.keys(targetArr).forEach((i) => {
+        targetStr += `[${i}]> ${targetArr[i]}\n`;
+    })
+    logToSummary(`Tizen Targets:\n${targetStr}`);
+    
 }
 
-const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
+export const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
 
     execCLI(c, CLI_TIZEN, `certificate -- ${c.paths.workspace.dir} -a rnv -f tizen_author -p 1234`)
@@ -72,7 +86,7 @@ const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
         });
 });
 
-const addDevelopTizenCertificate = c => new Promise((resolve) => {
+export const addDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
 
     execCLI(c, CLI_TIZEN, `security-profiles add -n RNVanillaCert -a ${path.join(c.paths.workspace.dir, 'tizen_author.p12')} -p 1234`)
@@ -83,7 +97,7 @@ const addDevelopTizenCertificate = c => new Promise((resolve) => {
         });
 });
 
-const getDeviceID = async (c, target) => {
+const _getDeviceID = async (c, target) => {
     const { device } = c.program;
 
     if (device) {
@@ -113,7 +127,7 @@ const getDeviceID = async (c, target) => {
     return Promise.reject(`No device matching ${target} could be found.`);
 };
 
-const getRunningDevices = async (c) => {
+const _getRunningDevices = async (c) => {
     const { platform } = c.program;
     const devicesList = await execCLI(c, CLI_SDB_TIZEN, 'devices');
     const lines = devicesList.trim().split(/\r?\n/).filter(line => !line.includes('List of devices'));
@@ -128,7 +142,7 @@ const getRunningDevices = async (c) => {
             let deviceInfo;
             let deviceType;
 
-            if (deviceInfoXML !== true) {
+            if (deviceInfoXML !== true && deviceInfoXML !== '') {                
                 // for some reason the tv does not connect through sdb
                 deviceInfo = formatXMLObject(parser.toJson(deviceInfoXML, { object: true, reversible: false }));
                 deviceType = deviceInfo['tizen.org/feature/profile'];
@@ -148,13 +162,13 @@ const getRunningDevices = async (c) => {
     return devices;
 };
 
-const waitForEmulatorToBeReady = (c, target) => waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
+const _waitForEmulatorToBeReady = (c, target) => waitForEmulator(c, CLI_SDB_TIZEN, 'devices', (res) => {
     const lines = res.trim().split(/\r?\n/);
     const devices = lines.filter(line => line.includes(target) && line.includes('device'));
     return devices.length > 0;
 });
 
-const composeDevicesString = devices => devices.map(device => ({ key: device.id, name: device.name, value: device.id }));
+const _composeDevicesString = devices => devices.map(device => ({ key: device.id, name: device.name, value: device.id }));
 
 const startHostedServerIfRequired = (c) => {
     if (Config.isWebHostEnabled) {
@@ -162,7 +176,7 @@ const startHostedServerIfRequired = (c) => {
     }
 };
 
-const runTizen = async (c, platform, target) => {
+export const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
@@ -188,6 +202,15 @@ const runTizen = async (c, platform, target) => {
 
     let deviceID;
 
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
+    
+
     const askForEmulator = async () => {
         const { startEmulator } = await inquirer.prompt([{
             name: 'startEmulator',
@@ -200,7 +223,7 @@ const runTizen = async (c, platform, target) => {
             try {
                 await launchTizenSimulator(c, defaultTarget);
                 deviceID = defaultTarget;
-                await waitForEmulatorToBeReady(c, defaultTarget);
+                await _waitForEmulatorToBeReady(c, defaultTarget);
                 return continueLaunching();
             } catch (e) {
                 logDebug(`askForEmulator:ERRROR: ${e}`);
@@ -208,7 +231,7 @@ const runTizen = async (c, platform, target) => {
                     await execCLI(c, CLI_TIZEN_EMULATOR, `create -n ${defaultTarget} -p tv-samsung-5.0-x86`);
                     await launchTizenSimulator(c, defaultTarget);
                     deviceID = defaultTarget;
-                    await waitForEmulatorToBeReady(c, defaultTarget);
+                    await _waitForEmulatorToBeReady(c, defaultTarget);
                     return continueLaunching();
                 } catch (err) {
                     logDebug(err);
@@ -232,7 +255,7 @@ const runTizen = async (c, platform, target) => {
         } catch (e) {
             if (e && e.includes && e.includes('No device matching')) {
                 await launchTizenSimulator(c, target);
-                hasDevice = await waitForEmulatorToBeReady(c, target);
+                hasDevice = await _waitForEmulatorToBeReady(c, target);
             }
         }
         try {
@@ -247,7 +270,7 @@ const runTizen = async (c, platform, target) => {
             );
 
             await launchTizenSimulator(c, target);
-            hasDevice = await waitForEmulatorToBeReady(c, target);
+            hasDevice = await _waitForEmulatorToBeReady(c, target);
         }
 
         let toReturn = true;
@@ -270,12 +293,12 @@ const runTizen = async (c, platform, target) => {
     const isTargetSpecified = c.program.target;
 
     // Check for running devices
-    const devices = await getRunningDevices(c);
+    const devices = await _getRunningDevices(c);
 
     if (isTargetSpecified) {
         // The user requested a specific target, searching for it in active ones
         if (net.isIP(target)) {
-            deviceID = await getDeviceID(c, target);
+            deviceID = await _getDeviceID(c, target);
             return continueLaunching();
         }
 
@@ -289,7 +312,7 @@ const runTizen = async (c, platform, target) => {
         try {
             // try to launch it, see if it's a simulator that's not started yet
             await launchTizenSimulator(c, target);
-            await waitForEmulatorToBeReady(c, target);
+            await _waitForEmulatorToBeReady(c, target);
             deviceID = target;
             return continueLaunching();
         } catch (e) {
@@ -300,7 +323,7 @@ const runTizen = async (c, platform, target) => {
             deviceID = devices[0].id;
             return continueLaunching();
         } if (devices.length > 1) {
-            const choices = composeDevicesString(devices);
+            const choices = _composeDevicesString(devices);
             const { chosenEmulator } = await inquirer.prompt([{
                 name: 'chosenEmulator',
                 type: 'list',
@@ -314,7 +337,7 @@ const runTizen = async (c, platform, target) => {
     }
 };
 
-const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
+export const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildTizenProject:${platform}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
@@ -333,10 +356,17 @@ const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const configureTizenProject = async (c, platform) => {
+let _isGlobalConfigured = false;
+
+export const configureTizenProject = async (c, platform) => {
     logTask('configureTizenProject');
 
     if (!isPlatformActive(c, platform)) return;
+
+    if(!_isGlobalConfigured) {
+        _isGlobalConfigured = true;
+        await configureTizenGlobal(c);
+    }
 
     await copyAssetsFolder(c, platform);
     await configureCoreWebProject(c, platform);
@@ -344,7 +374,7 @@ const configureTizenProject = async (c, platform) => {
     return copyBuildsFolder(c, platform);
 };
 
-const configureProject = (c, platform) => new Promise((resolve) => {
+export const configureProject = (c, platform) => new Promise((resolve) => {
     logTask(`configureProject:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -359,13 +389,3 @@ const configureProject = (c, platform) => new Promise((resolve) => {
 
     resolve();
 });
-
-export {
-    launchTizenSimulator,
-    configureTizenProject,
-    createDevelopTizenCertificate,
-    addDevelopTizenCertificate,
-    runTizen,
-    buildTizenProject,
-    configureTizenGlobal,
-};

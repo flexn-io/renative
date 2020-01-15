@@ -9,7 +9,7 @@ import util from 'util';
 import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
-import { removeDirs } from './fileutils';
+import { removeDirs, invalidatePodsChecksum } from './fileutils';
 
 const { exec, execSync } = require('child_process');
 
@@ -236,11 +236,13 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         return false;
     });
 
-    arr = arr.map((v) => {
+    arr = arr.map((str) => {
+        const v = str.replace(/\s{2,}/g, ' ');
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
         return extractedError;
     });
+        
     return arr.join('\n');
 };
 
@@ -399,8 +401,10 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
 
 export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
+    const c = Config.getConfig();
 
     return executeAsync('npm install')
+        .then(() => invalidatePodsChecksum(c))
         .catch((e) => {
             if (failOnError) {
                 return logError(e);
