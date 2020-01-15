@@ -236,7 +236,11 @@ export const checkCrypto = async (c) => {
 
                 if (tsProject > tsWorkspace) {
                     logWarning(`Your ${tsWorkspacePath} is out of date. you should run decrypt`);
-                } else if (tsProject < tsWorkspace) {
+                    await rnvCryptoDecrypt(c);
+                    return;
+                }
+
+                if (tsProject < tsWorkspace) {
                     logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
                 }
             }
