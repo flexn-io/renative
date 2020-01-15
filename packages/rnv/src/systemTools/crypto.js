@@ -64,10 +64,30 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
+export const rnvCryptoDecrypt = async (c) => {
     logTask('rnvCryptoDecrypt');
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
+
+    const options = [
+        'Yes - override (recommended)',
+        'Yes - merge',
+        'Skip'
+    ];
+
+    const { option } = await inquirerPrompt({
+        name: 'option',
+        type: 'list',
+        choices: options,
+        message: 'How to decrypt?'
+    });
+
+    if (option === options[0] || c.program.ci === true) {
+        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        await cleanFolder(wsPath);
+    } else if (option === options[2]) {
+        return true;
+    }
 
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
@@ -78,36 +98,28 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
-            reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
-            return;
-        }        
-        if (!fs.existsSync(source)) {
-            reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
+            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
         }
-        executeAsync(c, `openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] })
-            .then(() => {
-                tar.x(
-                    {
-                        file: destTemp,
-                        cwd: c.paths.workspace.dir
-                    }
-                ).then(() => {
-                    removeFilesSync([destTemp]);
-                    if (fs.existsSync(ts)) {
-                        copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
-                    }
-                    logSuccess(`Files succesfully extracted into ${destFolder}`);
-                    resolve();
-                })
-                    .catch(e => reject(e));
-            }).catch((e) => {
-                reject(e);
-            });
+        if (!fs.existsSync(source)) {
+            return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
+        }
+        await executeAsync(c, `openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] })
+            
+        await tar.x({
+            file: destTemp,
+            cwd: c.paths.workspace.dir
+        });
+
+        removeFilesSync([destTemp]);
+        if (fs.existsSync(ts)) {
+            copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
+        }
+        logSuccess(`Files succesfully extracted into ${destFolder}`);
     } else {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
-        resolve();
+        return true;
     }
-});
+};
 
 export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
     logTask('rnvCryptoInstallProfiles');
@@ -222,29 +234,8 @@ export const checkCrypto = async (c) => {
                     tsProject = parseInt(fs.readFileSync(tsProjectPath).toString());
                 }
 
-                const options = [
-                    'Yes - override (recommended)',
-                    'Yes - merge',
-                    'Skip'
-                ];
                 if (tsProject > tsWorkspace) {
-                    const { option } = await inquirerPrompt({
-                        name: 'option',
-                        type: 'list',
-                        choices: options,
-                        message: `Your ${tsWorkspacePath} is out of date. do you want to run decrypt?`
-                    });
-
-                    switch (option) {
-                        case options[0]:
-                            await cleanFolder(wsPath);
-                            await rnvCryptoDecrypt(c);
-                            break;
-                        case options[1]:
-                            await rnvCryptoDecrypt(c);
-                            break;
-                        default:
-                    }
+                    logWarning(`Your ${tsWorkspacePath} is out of date. you should run decrypt`);
                 } else if (tsProject < tsWorkspace) {
                     logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
                 }
