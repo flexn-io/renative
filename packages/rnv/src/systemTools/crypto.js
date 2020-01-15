@@ -80,6 +80,9 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
         if (!key) {
             reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
             return;
+        }        
+        if (!fs.existsSync(source)) {
+            reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
         executeAsync(c, `openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] })
             .then(() => {
