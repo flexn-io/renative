@@ -4,9 +4,12 @@ import path from 'path';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import semver from 'semver';
+import fs from 'fs';
 import {
     logTask,
-    logSuccess
+    logSuccess,
+    logInfo,
+    logWarning
 } from '../common';
 import { generateOptions } from '../systemTools/prompt';
 import {
@@ -14,15 +17,30 @@ import {
     SUPPORTED_PLATFORMS
 } from '../constants';
 import { getTemplateOptions } from '../templateTools';
-import { configureGit } from '../projectTools';
 import { mkdirSync, writeFileSync } from '../systemTools/fileutils';
-import { executeAsync } from '../systemTools/exec';
+import { executeAsync, commandExistsSync } from '../systemTools/exec';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
 import { getWorkspaceOptions } from './workspace';
 import { parseRenativeConfigs } from '../configTools/configParser';
 import Analytics from '../systemTools/analytics';
 
 const highlight = chalk.green;
+
+const configureGit = async (c) => {
+    const projectPath = c.paths.project.dir;
+    logTask(`configureGit:${projectPath}`);
+
+    if (!fs.existsSync(path.join(projectPath, '.git'))) {
+        logInfo('Your project does not have a git repo. Creating one...');
+        if (commandExistsSync('git')) {
+            await executeAsync('git init', { cwd: projectPath });
+            await executeAsync('git add -A', { cwd: projectPath });
+            await executeAsync('git commit -m "Initial"', { cwd: projectPath });
+        } else {
+            logWarning('We tried to create a git repo inside your project but you don\'t seem to have git installed');
+        }
+    }
+};
 
 const _generateProject = async (c, data) => {
     logTask('_generateProject');
@@ -72,7 +90,7 @@ const _generateProject = async (c, data) => {
     if (data.gitEnabled) {
         await configureGit(c);
     }
-    
+
     logSuccess(
         `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
             `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`,
@@ -203,6 +221,15 @@ export const createNewProject = async (c) => {
 
     const templateVersionsStr = await executeAsync(c, `npm view ${data.optionTemplates.selectedOption} versions`);
     const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',').reverse();
+    const { rnvVersion } = c;
+
+    // filter greater versions than rnv
+    const validVersions = versionArr.filter(version => semver.lte(version, rnvVersion)).map(v => ({ name: v, value: v }));
+    if (validVersions[0].name === rnvVersion) {
+        // mark the same versions as recommended
+        validVersions[0].name = `${validVersions[0].name} (recommended)`;
+    }
+
     data.optionTemplates.selectedVersion = versionArr[0];
 
     const {
@@ -212,7 +239,7 @@ export const createNewProject = async (c) => {
         type: 'list',
         message: 'What version of template to use?',
         default: data.optionTemplates.selectedVersion,
-        choices: versionArr
+        choices: validVersions
     });
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
