@@ -21,10 +21,10 @@
       var iframe = document.getElementById( 'iframe' );
       iframe.src = href
       iframe.onload = function () {
-        if ( tizen ) iframe.contentWindow.tizen = tizen;
-        if ( webapis ) iframe.contentWindow.webapis = webapis;
-        if ( webOS ) iframe.contentWindow.webOS = webOS;
-        if ( webOSDev ) iframe.contentWindow.webOSDev = webOSDev;
+        if ( typeof tizen !== "undefined" ) iframe.contentWindow.tizen = tizen;
+        if ( typeof webapis !== "undefined" ) iframe.contentWindow.webapis = webapis;
+        if ( typeof webOS !== "undefined" ) iframe.contentWindow.webOS = webOS;
+        if ( typeof webOSDev !== "undefined" ) iframe.contentWindow.webOSDev = webOSDev;
       }
     }, 5000 );
   </script>

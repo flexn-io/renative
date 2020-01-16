@@ -14,23 +14,43 @@ import {
     WINDOWS,
     TVOS,
     TIZEN_WATCH,
-    KAIOS
+    KAIOS,
+    TIZEN_MOBILE,
+    getScaledValue,
 } from 'renative';
 import Theme from './theme';
 
 const isDrawerMenuBased = () => navStructure.root.menus.drawerMenu.isVisibleIn.includes(Api.platform);
 const isTopMenuBased = () => navStructure.root.menus.topMenu.isVisibleIn.includes(Api.platform);
 
+const styles = {
+  menuIcon: {
+    width: getScaledValue(40),
+    height: getScaledValue(40),
+    marginLeft: getScaledValue(10),
+  },
+  headerTitle: {
+      color: Theme.color3,
+      fontFamily: Theme.primaryFontFamily,
+      fontSize: getScaledValue(18)
+  },
+  header: {
+      backgroundColor: Theme.color1,
+      borderBottomWidth: isTopMenuBased ? 0 : 1,
+      height: getScaledValue(50),
+  }
+}
+
 const navStructure = {
     root: {
         menus: {
             drawerMenu: {
                 position: 'left',
-                isVisibleIn: [IOS, ANDROID],
+                isVisibleIn: [IOS, ANDROID, TIZEN_MOBILE],
                 component: 'Menu',
                 options: {
                     drawerBackgroundColor: Theme.color1,
-                    drawerWidth: 250
+                    drawerWidth: getScaledValue(250)
                 },
                 navigationOptions: {},
             },
@@ -39,7 +59,7 @@ const navStructure = {
                 isVisibleIn: [MACOS, WINDOWS],
                 component: 'Menu',
                 options: {
-                    menuWidth: 250
+                    menuWidth: getScaledValue(250)
                 },
                 navigationOptions: {},
             },
@@ -47,7 +67,7 @@ const navStructure = {
                 isVisibleIn: [TVOS, ANDROID_TV, TIZEN, FIREFOX_TV, WEB, WEBOS],
                 component: 'Menu',
                 options: {
-                    menuHeight: 100
+                    menuHeight: getScaledValue(100)
                 },
                 navigationOptions: {},
             },
@@ -71,7 +91,7 @@ const navStructure = {
             Home: {
                 screen: 'ScreenHome',
                 navigationOptions: {
-                    title: 'Home'
+                    title: 'Home',
                 },
                 stacks: ['stacks.MyPage2', 'stacks.MyPage3'],
             },
@@ -89,14 +109,8 @@ const navStructure = {
             },
         },
         navigationOptions: {
-            headerTitleStyle: {
-                color: Theme.color3,
-                fontFamily: Theme.primaryFontFamily,
-            },
-            headerStyle: {
-                backgroundColor: Theme.color1,
-                borderBottomWidth: isTopMenuBased ? 0 : 1,
-            },
+            headerTitleStyle: styles.headerTitle,
+            headerStyle: styles.header,
             headerLeft: (n) => {
                 if (!isDrawerMenuBased()) return null;
                 return (
@@ -104,7 +118,7 @@ const navStructure = {
                         iconFont="ionicons"
                         iconName="md-menu"
                         iconColor={Theme.color3}
-                        style={{ width: 40, height: 40, marginLeft: 10 }}
+                        style={styles.menuIcon}
                         onPress={() => {
                             Api.navigation.openDrawer();
                         }}
@@ -129,14 +143,9 @@ const navStructure = {
             },
         },
         navigationOptions: {
-            headerStyle: {
-                backgroundColor: Theme.color1,
-            },
+            headerStyle: styles.header,
             headerTintColor: Theme.color3,
-            headerTitleStyle: {
-                color: Theme.color3,
-                fontFamily: Theme.primaryFontFamily,
-            },
+            headerTitleStyle: styles.headerTitle,
         },
     },
     modals: {

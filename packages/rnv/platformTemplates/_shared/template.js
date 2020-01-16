@@ -43,7 +43,10 @@ const htmlTemp = (options) => {
     let webosScripts = '';
 
     if (platform === 'webos') {
-        webosScripts = `<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV${environment === 'production' ? '' : '-dev'}.js"></script>`;
+        webosScripts = '<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV.js"></script>';
+        if (environment !== 'production') {
+            webosScripts += '\n<script type="text/javascript" src="webOSTVjs-1.1.1/webOSTV-dev.js"></script>';
+        }
     }
 
     const errScript = `

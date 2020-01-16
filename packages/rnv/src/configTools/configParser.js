@@ -283,7 +283,9 @@ export const parseRenativeConfigs = async (c) => {
 
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
-    c.runtime.appId = c.runtime.appId || await matchAppConfigID(c.program.appConfigID?.toLowerCase?.(), c) || c.files.project?.configLocal?._meta?.currentAppConfigId;
+    if(c.program.appConfigID !== true) {
+      c.runtime.appId = c.runtime.appId || await matchAppConfigID(c.program.appConfigID?.toLowerCase?.(), c) || c.files.project?.configLocal?._meta?.currentAppConfigId;
+    }
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 
     // LOAD ./platformBuilds/RENATIVE.BUILLD.JSON
@@ -597,7 +599,7 @@ export const generateBuildConfig = (c) => {
         c.files.appConfig.config,
         c.files.appConfig.configPrivate,
         c.files.appConfig.configLocal
-    ];    
+    ];
 
     const mergeFolders = [
         // platform templates
@@ -770,7 +772,7 @@ export const updateConfig = async (c, appConfigId) => {
 export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
     logTask(`listAppConfigsFoldersSync:${ignoreHiddenConfigs}`);
     const configDirs = [];
-    const appConfigsDirs = c.buildConfig.paths?.appConfigsDirs;
+    const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs;
     if (appConfigsDirs && appConfigsDirs.forEach) {
         appConfigsDirs.forEach((v) => {
             _listAppConfigsFoldersSync(v, configDirs, ignoreHiddenConfigs);
@@ -783,6 +785,7 @@ export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
 };
 
 const _listAppConfigsFoldersSync = (dirPath, configDirs, ignoreHiddenConfigs) => {
+    logTask(`_listAppConfigsFoldersSync:${dirPath}`, chalk.grey);
     if (!fs.existsSync(dirPath)) return;
     fs.readdirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);
