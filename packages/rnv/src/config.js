@@ -307,6 +307,10 @@ class Config {
         return this.config.paths.project.dir;
     }
 
+    get buildConfig() {
+        return this.config.buildConfig;
+    }
+
     //     getBuildConfig() {
     //         return this.config.buildConfig;
     //     }

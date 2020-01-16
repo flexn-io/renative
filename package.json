@@ -142,19 +142,5 @@
         "hooks": {
             "pre-commit": "pretty-quick --staged && npm run test:rnv:unit"
         }
-    },
-    "release-it": {
-        "publish": "ci",
-        "skipRootPublish": true,
-        "git": {
-            "tagName": "v${version}",
-            "requireCleanWorkingDir": false
-        },
-        "npm": {
-            "publish": false
-        },
-        "hooks": {
-            "after:bump": "npx rnv pkg version ${version}"
-        }
     }
 }
