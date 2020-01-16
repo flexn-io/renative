@@ -19,6 +19,8 @@ jobs:
       - name: npm install and test
         run: |
           npm install
+          npm run lerna
+          npm run build
           npm run test:rnv:unit
         env:
           CI: true
