@@ -164,6 +164,7 @@ const decideIfTVRunning = async (c, device) => {
     const mod = await getRunningDeviceProp(c, udid, 'ro.product.model');
     const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
     const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
+    const clientIdBase = await getRunningDeviceProp(c, udid, 'ro.com.google.clientidbase');
     const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
     const hdmi = await getRunningDeviceProp(c, udid, 'init.svc.hdmi');
     const modelGroup = await getRunningDeviceProp(c, udid, 'ro.nrdp.modelgroup');
@@ -171,7 +172,7 @@ const decideIfTVRunning = async (c, device) => {
     const cecEnabled = await getRunningDeviceProp(c, udid, 'persist.sys.cec.enabled');
 
     let isTV = false;
-    [mod, name, flavor, description, model, product].forEach((string) => {
+    [mod, name, flavor, clientIdBase, description, model, product].forEach((string) => {
         if (string && string.toLowerCase().includes('tv')) isTV = true;
     });
 
