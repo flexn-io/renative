@@ -110,6 +110,7 @@
         "concurrently": "4.1.1",
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
+        "jest": "24.9.0",
         "jetifier": "1.6.4",
         "lerna": "3.16.4",
         "release-it": "12.4.3",
