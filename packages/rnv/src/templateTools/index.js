@@ -111,7 +111,7 @@ const _cleanProjectTemplateSync = (c) => {
     removeFilesSync(filesToRemove);
 };
 
-const _applyTemplate = c => new Promise((resolve, reject) => {
+const _applyTemplate = async (c) => {
     logTask(`_applyTemplate:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
@@ -129,8 +129,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
     if (!fs.existsSync(c.paths.template.configTemplate)) {
         logWarning(`Template file ${chalk.white(c.paths.template.configTemplate)} does not exist. check your ${chalk.white(c.paths.template.dir)}. skipping`);
-        resolve();
-        return;
+        return true;
     }
 
     logTask(`_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`, chalk.grey);
@@ -143,12 +142,11 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
         c.runtime.requiresForcedTemplateApply = true;
     }
 
-
-    setAppConfig(c, c.runtime.appId);
+    await setAppConfig(c, c.runtime.appId);
     generateLocalConfig(c, !!c.runtime.selectedTemplate);
 
-    resolve();
-});
+    return true;
+};
 
 const _configureSrc = c => new Promise((resolve, reject) => {
     // Check src
