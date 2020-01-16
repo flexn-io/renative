@@ -283,8 +283,8 @@ export const parseRenativeConfigs = async (c) => {
 
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
-    if(c.program.appConfigID !== true) {
-      c.runtime.appId = c.runtime.appId || await matchAppConfigID(c.program.appConfigID?.toLowerCase?.(), c) || c.files.project?.configLocal?._meta?.currentAppConfigId;
+    if (c.program.appConfigID !== true) {
+        c.runtime.appId = c.runtime.appId || await matchAppConfigID(c.program.appConfigID?.toLowerCase?.(), c) || c.files.project?.configLocal?._meta?.currentAppConfigId;
     }
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 
@@ -292,6 +292,7 @@ export const parseRenativeConfigs = async (c) => {
     loadFile(c.files.project.builds, c.paths.project.builds, 'config');
 
     // LOAD WORKSPACE /RENATIVE.*.JSON
+    console.log('XXXXXXXX1');
     _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
     _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
 
@@ -317,19 +318,24 @@ export const parseRenativeConfigs = async (c) => {
 
     c.paths.workspace.project.projectConfig.dir = path.join(c.paths.workspace.project.dir, 'projectConfig');
 
+    console.log('XXXXXXXX2');
 
     _findAndSwitchAppConfigDir(c);
+
+    console.log('XXXXXXXX3');
 
     c.runtime.isWrapper = c.buildConfig.isWrapper;
 
     c.paths.project.platformTemplatesDirs = _generatePlatformTemplatePaths(c);
+
+    console.log('XXXXXXXX4');
 };
 
 const _getWorkspaceDirPath = (c) => {
     logTask('_getWorkspaceDirPath');
     const wss = c.files.rnv.configWorkspaces;
     const ws = c.runtime.selectedWorkspace || c.buildConfig?.workspaceID;
-
+    console.log('SHGSSGJ', c.buildConfig?.workspaceID);
     let dirPath;
     if (wss?.workspaces && ws) {
         dirPath = wss.workspaces[ws]?.path;
@@ -517,6 +523,10 @@ export const setAppConfig = (c, appId) => {
     _loadConfigFiles(c, c.files.workspace.appConfig, c.paths.workspace.appConfig, c.paths.workspace.project.appConfigsDir);
     generateBuildConfig(c);
     generateLocalConfig(c);
+
+    // LOAD WORKSPACE /RENATIVE.*.JSON
+    _generateConfigPaths(c.paths.workspace, getRealPath(c, _getWorkspaceDirPath(c)));
+    _loadConfigFiles(c, c.files.workspace, c.paths.workspace);
 };
 
 const _findAndSwitchAppConfigDir = (c, appId) => {
@@ -626,6 +636,8 @@ export const generateBuildConfig = (c) => {
         }
     }];
 
+    console.log('SJKSKJSHSKSH', c.files.appConfig.configBase?.workspaceID);
+
     const existsFiles = mergeFiles.filter((v, i) => v);
 
     logTask(`generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${existsPaths.length}:${existsFiles.length}`, chalk.grey);
@@ -633,9 +645,14 @@ export const generateBuildConfig = (c) => {
     let out = merge.all([...meta, ...existsFiles], { arrayMerge: _arrayMergeOverride });
     out = merge({}, out);
 
+    console.log('SJKSKJSHSKSH2', out.workspaceID);
+
     logDebug(`generateBuildConfig: will sanitize file at: ${c.paths.project.builds.config}`);
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
+
+    console.log('SJKSKJSHSKSH3', c.buildConfig?.workspaceID);
+
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);
     }
