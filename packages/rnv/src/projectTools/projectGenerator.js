@@ -205,7 +205,7 @@ export const createNewProject = async (c) => {
     data.optionWorkspaces.selectedOption = inputWorkspace;
 
     c.runtime.selectedWorkspace = inputWorkspace;
-    parseRenativeConfigs(c);
+    await parseRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
     const {
