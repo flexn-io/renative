@@ -48,7 +48,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync(c, `${_getOpenSllPath()} enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
+            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 fs.writeFileSync(`${dest}.timestamp`, timestamp);
@@ -108,7 +108,7 @@ export const rnvCryptoDecrypt = async (c) => {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
 
-        await executeAsync(c, `${_getOpenSllPath()} enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] });
+        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] });
 
         await tar.x({
             file: destTemp,
@@ -126,11 +126,13 @@ export const rnvCryptoDecrypt = async (c) => {
     }
 };
 
-const _getOpenSllPath = () => {
-    const alternativeOpenssl = '/usr/local/opt/openssl/bin/openssl';
-    if (fs.existsSync(alternativeOpenssl)) {
-        return alternativeOpenssl;
+const _getOpenSllPath = (c) => {
+    const defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl');
+    if (fs.existsSync(defaultOpenssl)) {
+        return defaultOpenssl;
     }
+    logWarning(`${defaultOpenssl} is missing. will use default one`);
+
     return 'openssl';
 };
 
