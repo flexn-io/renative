@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Api, Button } from 'renative';
+import { Api, Button, getScaledValue } from 'renative';
 import { isTopMenuBased } from './nav';
 import Theme from './theme';
 
@@ -8,39 +8,39 @@ let isTop;
 
 const styles = StyleSheet.create({
     containerVertical: {
-        paddingTop: 40,
-        paddingLeft: 20,
+        paddingTop: getScaledValue(40),
+        paddingLeft: getScaledValue(20),
         width: '100%',
         height: '100%',
         backgroundColor: Theme.color1,
         alignItems: 'center',
-        borderRightWidth: 1,
+        borderRightWidth: getScaledValue(1),
         borderRightColor: '#AAAAAA',
         flexDirection: 'column'
     },
     containerHorizontal: {
-        paddingLeft: 40,
+        paddingLeft: getScaledValue(40),
         width: '100%',
         height: '100%',
         backgroundColor: Theme.color1,
         alignItems: 'center',
-        borderBottomWidth: 1,
+        borderBottomWidth: getScaledValue(1),
         borderBottomColor: '#AAAAAA',
         flexDirection: 'row'
     },
     text: {
-        fontFamily: 'TimeBurner',
+        fontFamily: Theme.primaryFontFamily,
         color: Theme.color4,
-        fontSize: 20,
-        marginTop: 10,
+        fontSize: getScaledValue(20),
+        marginTop: getScaledValue(10),
         textAlign: 'left',
     },
     button: {
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
-        marginHorizontal: 20,
-        maxWidth: 400,
-        minWidth: 50,
+        marginHorizontal: getScaledValue(20),
+        maxWidth: getScaledValue(400),
+        minWidth: getScaledValue(50),
         borderWidth: 0,
     },
 });

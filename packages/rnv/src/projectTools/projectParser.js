@@ -7,7 +7,7 @@ import {
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeObjectSync, isRunningOnWindows
+    copyFileSync, mkdirSync, removeDirs, writeFileSync, isRunningOnWindows
 } from '../systemTools/fileutils';
 import { executeAsync, npmInstall } from '../systemTools/exec';
 import {
@@ -121,7 +121,19 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     if (!fs.existsSync(c.paths.project.assets.runtimeDir)) {
         mkdirSync(c.paths.project.assets.runtimeDir);
     }
-    fs.writeFileSync(path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js'), fontsObj);
+    const fontJsPath = path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js');
+    if (fs.existsSync(fontJsPath)) {
+        const existingFileContents = fs.readFileSync(fontJsPath).toString();
+
+        if (existingFileContents !== fontsObj) {
+            logDebug('newFontsJsFile');
+            fs.writeFileSync(fontJsPath, fontsObj);
+        }
+    } else {
+        logDebug('newFontsJsFile');
+        fs.writeFileSync(fontJsPath, fontsObj);
+    }
+
     const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
     copyFileSync(
         path.resolve(supportFiles, 'fontManager.js'),
@@ -229,12 +241,16 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
 const generateDefaultAssets = async (c, platform, sourcePath) => {
     logTask(`generateDefaultAssets:${platform}`);
-    const { confirm } = await inquirerPrompt({
-        type: 'confirm',
-        message: `It seems you don't have assets configured in ${chalk.white(sourcePath)} do you want generate default ones?`
-    });
+    let confirmAssets = true;
+    if (c.program.ci === false) {
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: `It seems you don't have assets configured in ${chalk.white(sourcePath)} do you want generate default ones?`
+        });
+        confirmAssets = confirm;
+    }
 
-    if (confirm) {
+    if (confirmAssets) {
         copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`), sourcePath);
     }
 };
@@ -314,14 +330,14 @@ export const upgradeProjectDependencies = (c, version) => {
         devDependencies.renative = version;
     }
 
-    writeObjectSync(c.paths.project.package, c.files.project.package);
+    writeFileSync(c.paths.project.package, c.files.project.package);
 
     if (c.files.project.config?.templates?.[thw]?.version) c.files.project.config.templates[thw].version = version;
     if (c.files.project.config?.templates?.[tb]?.version) c.files.project.config.templates[tb].version = version;
 
     c._requiresNpmInstall = true;
 
-    writeObjectSync(c.paths.project.config, c.files.project.config);
+    writeFileSync(c.paths.project.config, c.files.project.config);
 };
 
 export const configureNodeModules = c => new Promise((resolve, reject) => {

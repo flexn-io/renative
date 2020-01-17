@@ -9,15 +9,12 @@ import inquirer from 'inquirer';
 import { executeAsync } from '../../systemTools/exec';
 import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
     isPlatformActive,
-    logDebug,
     getConfigProp,
     getIP,
     logSuccess,
+    generateChecksum
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
@@ -30,38 +27,79 @@ import { parseXcscheme } from './xcschemeParser';
 import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
+import { logInfo, logTask,
+    logError,
+    logWarning, logDebug } from '../../systemTools/logger';
 
 const checkIfCommandExists = command => new Promise((resolve, reject) => child_process.exec(`command -v ${command} 2>/dev/null`, (error) => {
     if (error) return reject(new Error(`${command} not installed`));
-    return resolve();
+    return resolve(true);
 }));
 
-const runPod = (c, command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
-    logTask(`runPod:${command}:${rejectOnFail}`);
+const checkIfPodsIsRequired = async (c) => {
+    const appFolder = getAppFolder(c, c.platform);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    if (!fs.existsSync(podChecksumPath)) return true;
+    const podChecksum = fs.readFileSync(podChecksumPath).toString();
+    const podContentChecksum = generateChecksum(fs.readFileSync(path.join(appFolder, 'Podfile')).toString());
 
-    if (!fs.existsSync(cwd)) {
-        if (rejectOnFail) return reject(`Location ${cwd} does not exists!`);
-        logError(`Location ${cwd} does not exists!`);
-        return resolve();
+    if (podChecksum !== podContentChecksum) {
+        logDebug('runPod:isMandatory');
+        return true;
     }
-    return checkIfCommandExists('pod')
-        .then(() => executeAsync(c, `pod ${command}`, {
-            cwd,
-            evn: process.env,
-        })
-            .then(() => {
-                resolve();
-            })
-            .catch((e) => {
-                if (rejectOnFail) {
-                    logWarning(e);
-                    return reject(e);
-                }
-                logError(e);
-                return resolve();
-            }))
-        .catch(err => logError(err));
-});
+    logInfo('Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter');
+    return false;
+};
+
+const updatePodsChecksum = (c) => {
+    logTask('updatePodsChecksum');
+    const appFolder = getAppFolder(c, c.platform);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    const podContentChecksum = generateChecksum(fs.readFileSync(path.join(appFolder, 'Podfile')).toString());
+    if (fs.existsSync(podChecksumPath)) {
+        const existingContent = fs.readFileSync(podChecksumPath).toString();
+        if (existingContent !== podContentChecksum) {
+            logDebug(`updatePodsChecksum:${podContentChecksum}`);
+            return fs.writeFileSync(podChecksumPath, podContentChecksum);
+        }
+        return true;
+    }
+    logDebug(`updatePodsChecksum:${podContentChecksum}`);
+    return fs.writeFileSync(podChecksumPath, podContentChecksum);
+};
+
+const runPod = async (c, platform) => {
+    logTask(`runPod:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+
+    if (!fs.existsSync(appFolder)) {
+        return Promise.reject(`Location ${appFolder} does not exists!`);
+    }
+    const podsRequired = c.program.updatePods || await checkIfPodsIsRequired(c);
+
+    if (podsRequired) {
+        await checkIfCommandExists('pod');
+
+        try {
+            await executeAsync(c, 'pod install', {
+                cwd: appFolder,
+                env: process.env,
+            });
+        } catch (e) {
+            const s = e?.toString ? e.toString() : '';
+            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods') 
+            if (isGenericError) return new Error(`pod install failed with:\n ${s}`);
+            logWarning(`Looks like pod install is not enough! Let's try pod update! Error:\n ${s}`);
+            return executeAsync(c, 'pod update', { cwd: appFolder, env: process.env })
+                .then(() => updatePodsChecksum(c))
+                .catch(er => Promise.reject(er));
+        }
+        
+        updatePodsChecksum(c);
+        return true;
+    }
+};
 
 const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) => {
     logTask('copyAppleAssets');
@@ -80,7 +118,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
 const runXcodeProject = async (c, platform, target) => {
     logTask(`runXcodeProject:${platform}:${target}`);
 
-    if (target === '?') {
+    if (target === true) {
         const newTarget = await launchAppleSimulator(c, platform, target);
         await _runXcodeProject(c, platform, newTarget);
     } else {
@@ -385,7 +423,7 @@ const runAppleLog = c => new Promise(() => {
     });
 });
 
-const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
+const configureXcodeProject = async (c, platform, ip, port) => {
     logTask(`configureXcodeProject:${platform}`);
     const { device } = c.program;
     const bundlerIp = device ? getIP() : 'localhost';
@@ -451,49 +489,19 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         );
     }
 
-    // PARSERS
-    const forceUpdate = !fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
-    copyAssetsFolder(c, platform)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
-        .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))
-        .then(() => parseExportOptionsPlist(c, platform))
-        .then(() => parseXcscheme(c, platform))
-        .then(() => parsePodFile(c, platform))
-        .then(() => parseEntitlementsPlist(c, platform))
-        .then(() => parseInfoPlist(c, platform))
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => {
-            runPod(c, forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
-                .then(() => parseXcodeProject(c, platform))
-                .then(() => {
-                    resolve();
-                })
-                .catch((e) => {
-                    if (!c.program.update) {
-                        if (e && e.toString) {
-                            const s = e.toString();
-                            if (
-                                s.includes('No provisionProfileSpecifier configured')
-                              || s.includes('TypeError:')
-                              || s.includes('ReferenceError:')
-                              || s.includes('find gem cocoapods')
-                            ) {
-                                reject(e);
-                            }
-                        } else {
-                            logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                            runPod(c, 'update', getAppFolder(c, platform), true)
-                                .then(() => parseXcodeProject(c, platform))
-                                .then(() => resolve())
-                                .catch(err => reject(err));
-                        }
-                    } else {
-                        reject(e);
-                    }
-                });
-        })
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await copyAppleAssets(c, platform, appFolderName);
+    await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port);
+    await parseExportOptionsPlist(c, platform);
+    await parseXcscheme(c, platform);
+    await parsePodFile(c, platform);
+    await parseEntitlementsPlist(c, platform);
+    await parseInfoPlist(c, platform);
+    await copyBuildsFolder(c, platform);
+    await runPod(c, platform);
+    await parseXcodeProject(c, platform);
+    return true;
+};
 
 export {
     runPod,

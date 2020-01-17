@@ -109,17 +109,15 @@
         "macos": {
             "entryFile": "index.macos",
             "buildSchemes": {
-                "buildSchemes": {
-                    "debug": {
-                        "id": "renative.blank.debug",
-                        "bundleAssets": false,
-                        "environment": "development"
-                    },
-                    "release": {
-                        "bundleAssets": true,
-                        "bundleIsDev": false,
-                        "environment": "production"
-                    }
+                "debug": {
+                    "id": "renative.blank.debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
                 }
             }
         },

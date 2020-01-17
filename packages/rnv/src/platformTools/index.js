@@ -8,8 +8,7 @@ import {
 } from '../common';
 import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
-import { cleanFolder, copyFolderContentsRecursiveSync, writeObjectSync, removeDirs } from '../systemTools/fileutils';
-import { executePipe } from '../projectTools/buildHooks';
+import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync, removeDirs } from '../systemTools/fileutils';
 import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS } from '../constants';
 
@@ -20,13 +19,13 @@ export const rnvPlatformList = c => new Promise((resolve, reject) => {
 });
 
 export const rnvPlatformConfigure = async (c) => {
-    c.runtime.platform = c.program.platform || 'all';
-    logTask(`rnvPlatformConfigure:${c.runtime.platform}`);
+    //c.platform = c.program.platform || 'all';
+    logTask(`rnvPlatformConfigure:${c.platform}`);
 
     await isPlatformSupported(c);
-    await cleanPlatformBuild(c, c.runtime.platform);
-    await cleanPlaformAssets(c, c.runtime.platform);
-    await _runCopyPlatforms(c, c.runtime.platform);
+    await cleanPlatformBuild(c, c.platform);
+    await cleanPlaformAssets(c, c.platform);
+    await _runCopyPlatforms(c, c.platform);
 };
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
@@ -65,7 +64,7 @@ export const rnvPlatformEject = async (c) => {
             c.files.project.config.platformTemplatesDirs = c.files.project.config.platformTemplatesDirs || {};
             c.files.project.config.platformTemplatesDirs[platform] = `./${ptfn}`;
 
-            writeObjectSync(c.paths.project.config, c.files.project.config);
+            writeFileSync(c.paths.project.config, c.files.project.config);
         });
     }
 
@@ -105,7 +104,7 @@ export const rnvPlatformConnect = async (c) => {
                 delete c.files.project.config.platformTemplatesDirs; // also cleanup the empty object
             }
 
-            writeObjectSync(c.paths.project.config, c.files.project.config);
+            writeFileSync(c.paths.project.config, c.files.project.config);
         });
     }
 

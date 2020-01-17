@@ -153,7 +153,7 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['tizen.tv.js', 'tv.js'],
+            factors: ['tizen.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['tizen.js'],
             fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
         }
@@ -165,7 +165,7 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['webos.tv.js', 'tv.js'],
+            factors: ['webos.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['webos.js'],
             fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
         }
@@ -249,7 +249,7 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['firefoxtv.tv.js', 'tv.js'],
+            factors: ['firefoxtv.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['firefoxtv.js'],
             fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
         }
@@ -500,3 +500,14 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
+
+export const configSchema = {
+    analytics: {
+        values: ['true', 'false'],
+        key: 'enableAnalytics',
+        default: true,
+    }
+};
+
+export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
+export const REDASH_KEY = 'zCYINQqMxvat1V41Hb9d69JMVBDNLyeQ4wICtdtD';

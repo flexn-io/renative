@@ -25,24 +25,33 @@ Each rnv supported platform creates unique path of priority extension allowing y
 Example of `android` platform file extensions:
 
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `.mobile.js`          | 1 |
-| `.android.js`       | 2 |
-| `.native.js`         | 3 |
-| `.js`             | 4 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `android.mobile.js` | `form factor` | 1 |
+| `mobile.js` | `form factor` | 2 |
+| `android.js` | `platform` | 3 |
+| `mobile.native.js` | `fallback` | 4 |
+| `native.js` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
 
 
 Example of `tizen` platform file extensions:
 
 
-| Extension | Priority  |
-| --------- | :-------: |
-| `.tv.js`          | 1 |
-| `.smarttv.js`     | 2 |
-| `.tizen.js`       | 3 |
-| `.web.js`         | 4 |
-| `.js`             | 5 |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `tizen.tv.js` | `form factor` | 1 |
+| `web.tv.js` | `form factor` | 2 |
+| `tv.js` | `form factor` | 3 |
+| `tizen.js` | `platform` | 4 |
+| `tv.web.js` | `fallback` | 5 |
+| `web.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
+
 
 
 ## Form Factors

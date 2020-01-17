@@ -11,6 +11,10 @@
             "CONTRIBUTING": {
                 "title": "CONTRIBUTING"
             },
+            "analytics": {
+                "title": "Analytics",
+                "sidebar_label": "Analytics"
+            },
             "architecture": {
                 "title": "Architecture",
                 "sidebar_label": "Architecture"
@@ -26,6 +30,10 @@
             "config_folders": {
                 "title": "Config Folders",
                 "sidebar_label": "Config Folders"
+            },
+            "customize": {
+                "title": "Customize ReNative Project",
+                "sidebar_label": "Customize ReNative"
             },
             "develop": {
                 "title": "Develop ReNative",
@@ -46,6 +54,10 @@
             "integrations": {
                 "title": "Integrations",
                 "sidebar_label": "Integrations"
+            },
+            "migrating_react_native": {
+                "title": "Migrating react-native project to ReNative",
+                "sidebar_label": "Migrating react-native"
             },
             "platforms_overview": {
                 "title": "Overview",
@@ -222,6 +234,10 @@
                 "title": "rnv plugin",
                 "sidebar_label": "plugin"
             },
+            "rnv-publish": {
+                "title": "rnv publish",
+                "sidebar_label": "publish"
+            },
             "rnv-run": {
                 "title": "rnv run",
                 "sidebar_label": "run"
@@ -261,6 +277,10 @@
             "version-0.26/version-0.26-config_folders": {
                 "title": "Config Folders",
                 "sidebar_label": "Config Folders"
+            },
+            "version-0.26/version-0.26-customize": {
+                "title": "Customize ReNative Project",
+                "sidebar_label": "Customize ReNative"
             },
             "version-0.26/version-0.26-develop": {
                 "title": "Develop ReNative",
@@ -610,6 +630,10 @@
                 "title": "rnv target",
                 "sidebar_label": "target"
             },
+            "version-0.28/version-0.28-analytics": {
+                "title": "Analytics",
+                "sidebar_label": "Analytics"
+            },
             "version-0.28/version-0.28-develop": {
                 "title": "Develop ReNative",
                 "sidebar_label": "Develop ReNative"
@@ -625,6 +649,10 @@
             "version-0.28/version-0.28-integrations": {
                 "title": "Integrations",
                 "sidebar_label": "Integrations"
+            },
+            "version-0.28/version-0.28-migrating_react_native": {
+                "title": "Migrating react-native project to ReNative",
+                "sidebar_label": "Migrating react-native"
             },
             "version-0.28/version-0.28-androidtv": {
                 "title": "Android TV Platform",

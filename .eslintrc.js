@@ -20,7 +20,7 @@ module.exports = {
         'arrow-body-style': ['warn', 'as-needed'],
         camelcase: 'off',
         'class-methods-use-this': 'off',
-        indent: ['error', 4],
+        indent: ['error', 4, { "SwitchCase": 1 }],
         'new-cap': ['error', { capIsNew: false }],
         'no-duplicate-imports': 'off',
         'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['el', 'ref', 'event'] }],
@@ -67,6 +67,7 @@ module.exports = {
         'no-underscore-dangle': 'off',
         'mocha/no-exclusive-tests': 'error',
         "prefer-destructuring": ["error", {"object": true, "array": false}],
-        "prefer-promise-reject-errors": "off"
+        "prefer-promise-reject-errors": "off",
+        "max-len": ["warn", { "code": 120, "ignoreComments": true, "ignoreStrings": true}]
     },
 };

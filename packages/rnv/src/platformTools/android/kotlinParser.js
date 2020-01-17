@@ -42,7 +42,7 @@ export const parseMainApplicationSync = (c, platform) => {
     const bundlerIp = getIP() || '10.0.2.2';
     if (!bundleAssets) {
         c.pluginConfigAndroid.pluginApplicationDebugServer += '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
-        c.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${PLATFORMS[platform].defaultPort}").apply()\n`;
+        c.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${c.runtime.port}").apply()\n`;
     }
 
 

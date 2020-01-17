@@ -132,12 +132,12 @@ import { isTizenwatch } from 'renative'
 isTizenwatch()
 ```
 
-### isTizenphone
+### isTizenmobile
 
 ```js
-import { isTizenphone } from 'renative'
+import { isTizenmobile } from 'renative'
 
-isTizenphone()
+isTizenmobile()
 ```
 
 ### isMacos
