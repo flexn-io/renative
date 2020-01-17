@@ -78,7 +78,7 @@ export const rnvCryptoDecrypt = async (c) => {
 
 
         const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
-        if (c.program.ci !== true) {
+        if (c.program.ci !== true && c.program.reset !== true) {
             const options = [
                 'Yes - override (recommended)',
                 'Yes - merge',
