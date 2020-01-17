@@ -129,8 +129,8 @@ export const rnvCryptoDecrypt = async (c) => {
 const _getOpenSllPath = (c) => {
 
     const { process: { platform } } = c;
-    let defaultOpenssl = 'openssl'
-    if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
+    let defaultOpenssl = 'openssl';
+    // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
     if (platform === 'darwin') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
     // if (fs.existsSync(defaultOpenssl)) {
     //     return defaultOpenssl;
