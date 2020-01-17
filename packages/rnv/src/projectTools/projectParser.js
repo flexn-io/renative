@@ -241,12 +241,16 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
 const generateDefaultAssets = async (c, platform, sourcePath) => {
     logTask(`generateDefaultAssets:${platform}`);
-    const { confirm } = await inquirerPrompt({
-        type: 'confirm',
-        message: `It seems you don't have assets configured in ${chalk.white(sourcePath)} do you want generate default ones?`
-    });
+    let confirmAssets = true;
+    if (c.program.ci === false) {
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: `It seems you don't have assets configured in ${chalk.white(sourcePath)} do you want generate default ones?`
+        });
+        confirmAssets = confirm;
+    }
 
-    if (confirm) {
+    if (confirmAssets) {
         copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`), sourcePath);
     }
 };
