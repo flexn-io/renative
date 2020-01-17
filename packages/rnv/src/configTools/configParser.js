@@ -217,8 +217,9 @@ const loadAppConfigIDfromDir = (dir, appConfigsDir) => {
     return { dir, id: null };
 };
 
-const askUserAboutConfigs = async (dir, id, basePath) => {
+const askUserAboutConfigs = async (c, dir, id, basePath) => {
     logWarning(`AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`);
+    if (c.program.ci === true) throw new Error('You cannot continue if you set --ci flag. please fix above error first');
     const { choice } = await inquirer.prompt({
         type: 'list',
         name: 'choice',
@@ -250,7 +251,7 @@ const askUserAboutConfigs = async (dir, id, basePath) => {
     }
 };
 
-const matchAppConfigID = async (appConfigID, c) => {
+const matchAppConfigID = async (c, appConfigID) => {
     const { appConfigsDir } = c.paths.project;
     if (!appConfigID) return false;
 
@@ -264,7 +265,7 @@ const matchAppConfigID = async (appConfigID, c) => {
         const id = conf.id.toLowerCase();
         const dir = conf.dir.toLowerCase();
         // find mismatches
-        if (id !== dir) await askUserAboutConfigs(conf.dir, conf.id, appConfigsDir);
+        if (id !== dir) await askUserAboutConfigs(c, conf.dir, conf.id, appConfigsDir);
         if (ids.includes(id)) throw new Error(`AppConfig error - You have 2 duplicate app configs with ID ${id}. Keep in mind that ID is case insensitive. Please edit one of them in /appConfigs/<folder>/renative.json`);
         ids.push(id);
         if (dirs.includes(dir)) throw new Error(`AppConfig error - You have 2 duplicate app config folders named ${dir}. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`);
@@ -285,7 +286,7 @@ export const parseRenativeConfigs = async (c) => {
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
     if (c.program.appConfigID !== true) {
-        c.runtime.appId = c.runtime.appId || await matchAppConfigID(c.program.appConfigID?.toLowerCase?.(), c) || c.files.project?.configLocal?._meta?.currentAppConfigId;
+        c.runtime.appId = c.runtime.appId || await matchAppConfigID(c, c.program.appConfigID?.toLowerCase?.()) || c.files.project?.configLocal?._meta?.currentAppConfigId;
     }
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);
 

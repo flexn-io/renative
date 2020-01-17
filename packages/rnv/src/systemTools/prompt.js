@@ -7,9 +7,9 @@ const highlight = chalk.grey.bold;
 
 export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
-    const msg = params.logMessage || params.warningMessage;
+    const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
-        throw msg || '--ci option does not allow prompts';
+        throw new Error(`--ci option does not allow prompts: ${msg}`);
     }
     if (msg && params.logMessage) logTask(msg, chalk.grey);
     if (msg && params.warningMessage) logWarning(msg);

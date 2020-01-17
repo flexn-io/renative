@@ -76,25 +76,29 @@ export const rnvCryptoDecrypt = async (c) => {
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
-        const options = [
-            'Yes - override (recommended)',
-            'Yes - merge',
-            'Skip'
-        ];
 
-        const { option } = await inquirerPrompt({
-            name: 'option',
-            type: 'list',
-            choices: options,
-            message: `How to decrypt to ${chalk.white(destFolder)} ?`
-        });
-
-        if (option === options[0] || c.program.ci === true) {
-            const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        if (c.program.ci !== true) {
+            const options = [
+                'Yes - override (recommended)',
+                'Yes - merge',
+                'Skip'
+            ];
+            const { option } = await inquirerPrompt({
+                name: 'option',
+                type: 'list',
+                choices: options,
+                message: `How to decrypt to ${chalk.white(destFolder)} ?`
+            });
+            if (option === options[0]) {
+                await cleanFolder(wsPath);
+            } else if (option === options[2]) {
+                return true;
+            }
+        } else {
             await cleanFolder(wsPath);
-        } else if (option === options[2]) {
-            return true;
         }
+
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
