@@ -127,13 +127,17 @@ export const rnvCryptoDecrypt = async (c) => {
 };
 
 const _getOpenSllPath = (c) => {
-    const defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl');
-    if (fs.existsSync(defaultOpenssl)) {
-        return defaultOpenssl;
-    }
-    logWarning(`${defaultOpenssl} is missing. will use default one`);
 
-    return 'openssl';
+    const { process: { platform } } = c;
+    let defaultOpenssl = 'openssl'
+    if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
+    if (platform === 'darwin') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
+    // if (fs.existsSync(defaultOpenssl)) {
+    //     return defaultOpenssl;
+    // }
+    // logWarning(`${defaultOpenssl} is missing. will use default one`);
+
+    return defaultOpenssl;
 };
 
 export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {

@@ -487,10 +487,11 @@ const _execute = async (c, cmdFn, cmd) => {
     }
 
     c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
+    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command)
 
-    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:before`);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
-    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:after`);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);
 };
 
 
