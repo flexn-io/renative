@@ -48,7 +48,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync(c, `/usr/local/opt/openssl/bin/openssl enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
+            .then(() => executeAsync(c, `${_getOpenSllPath()} enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 fs.writeFileSync(`${dest}.timestamp`, timestamp);
@@ -103,7 +103,8 @@ export const rnvCryptoDecrypt = async (c) => {
         if (!fs.existsSync(source)) {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
-        await executeAsync(c, `/usr/local/opt/openssl/bin/openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] });
+
+        await executeAsync(c, `${_getOpenSllPath()} enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] });
 
         await tar.x({
             file: destTemp,
@@ -119,6 +120,14 @@ export const rnvCryptoDecrypt = async (c) => {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         return true;
     }
+};
+
+const _getOpenSllPath = () => {
+    const alternativeOpenssl = '/usr/local/opt/openssl/bin/openssl';
+    if (fs.existsSync(alternativeOpenssl)) {
+        return alternativeOpenssl;
+    }
+    return 'openssl';
 };
 
 export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
