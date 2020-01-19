@@ -120,6 +120,7 @@ function generateConfig(config) {
         test: /\.js$/,
         use: ['source-map-loader'],
         enforce: 'pre',
+        exclude: [/node_modules/, /build/, /__test__/]
     };
 
     const aliases = {
