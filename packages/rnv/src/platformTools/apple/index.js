@@ -88,14 +88,14 @@ const runPod = async (c, platform) => {
             });
         } catch (e) {
             const s = e?.toString ? e.toString() : '';
-            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods') 
+            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods')
             if (isGenericError) return new Error(`pod install failed with:\n ${s}`);
             logWarning(`Looks like pod install is not enough! Let's try pod update! Error:\n ${s}`);
             return executeAsync(c, 'pod update', { cwd: appFolder, env: process.env })
                 .then(() => updatePodsChecksum(c))
                 .catch(er => Promise.reject(er));
         }
-        
+
         updatePodsChecksum(c);
         return true;
     }
@@ -147,6 +147,10 @@ const _runXcodeProject = async (c, platform, target) => {
         );
     }
 
+    let devicesArr
+    if(device === true) devicesArr = await getAppleDevices(c, platform, true);
+    else if (target === true) devicesArr = await getAppleDevices(c, platform);
+
     if (device === true) {
         const devicesArr = await getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
@@ -195,7 +199,7 @@ const _runXcodeProject = async (c, platform, target) => {
                 return _checkLockAndExec(c, p);
             };
 
-            if (c.program.target) {
+            if (c.program.target !== true) {
                 const selectedDevice = devicesArr.find(d => d.name === c.program.target);
                 if (selectedDevice) {
                     return run(selectedDevice);
@@ -220,8 +224,19 @@ const _runXcodeProject = async (c, platform, target) => {
         }
     } else if (device) {
         p = ['run-ios', '--project-path', appPath, '--device', device, '--scheme', scheme, '--configuration', runScheme];
+    } else if (target === true) {
+      const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+
+      const { sim } = await inquirer.prompt({
+          name: 'sim',
+          message: 'Select the device you want to launch on',
+          type: 'list',
+          choices: devices
+      });
+
+        p = ['run-ios', '--project-path', appPath, '--simulator', sim.name.replace(/(\s+)/g, '\\$1'), '--scheme', scheme, '--configuration', runScheme];
     } else {
-        p = ['run-ios', '--project-path', appPath, '--simulator', target.replace(/(\s+)/g, '\\$1'), '--scheme', scheme, '--configuration', runScheme];
+      p = ['run-ios', '--project-path', appPath, '--simulator', target.replace(/(\s+)/g, '\\$1'), '--scheme', scheme, '--configuration', runScheme];
     }
 
     if (p) {
