@@ -2,7 +2,7 @@ import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
 import fs from 'fs';
-import { logWarning, logInfo, logError, logTask, logDebug, logSuccess } from '../common';
+import { logWarning, logInfo, logError, logTask, logDebug, logSuccess, isMac } from '../common';
 import { listAppConfigsFoldersSync, generateBuildConfig, setAppConfig } from '../configTools/configParser';
 import { IOS, TVOS, RENATIVE_CONFIG_NAME } from '../constants';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
@@ -131,7 +131,7 @@ const _getOpenSllPath = (c) => {
     const { process: { platform } } = c;
     let defaultOpenssl = 'openssl';
     // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
-    if (platform === 'darwin') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
+    if (isMac(c)) defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
     // if (fs.existsSync(defaultOpenssl)) {
     //     return defaultOpenssl;
     // }

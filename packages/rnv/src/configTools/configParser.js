@@ -209,10 +209,15 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 };
 
 const loadAppConfigIDfromDir = (dir, appConfigsDir) => {
+    logTask(`loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk.grey)
     const filePath = path.join(appConfigsDir, dir, 'renative.json');
     if (fs.existsSync(filePath)) {
-        const renativeConf = JSON.parse(fs.readFileSync(filePath));
-        return { dir, id: renativeConf.id };
+        try {
+          const renativeConf = JSON.parse(fs.readFileSync(filePath));
+          return { dir, id: renativeConf.id };
+        } catch (e) {
+          logError(`File ${filePath} is MALFORMED:\n${e}`)
+        }
     }
     return { dir, id: null };
 };
