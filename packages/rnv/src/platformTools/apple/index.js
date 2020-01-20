@@ -115,31 +115,20 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     resolve();
 });
 
-const runXcodeProject = async (c, platform, target) => {
-    logTask(`runXcodeProject:${platform}:${target}`);
+export const runXcodeProject = async (c) => {
+    logTask(`runXcodeProject:${c.platform}:${c.runtime.target}`);
 
-    if (target === true) {
-        const newTarget = await launchAppleSimulator(c, platform, target);
-        await _runXcodeProject(c, platform, newTarget);
-    } else {
-        await _runXcodeProject(c, platform, target);
-    }
-};
-
-const _runXcodeProject = async (c, platform, target) => {
-    logTask(`_runXcodeProject:${platform}:${target}`);
-
-    const appPath = getAppFolder(c, platform);
+    const appPath = getAppFolder(c, c.platform);
     const { device } = c.program;
-    const scheme = getConfigProp(c, platform, 'scheme');
-    const runScheme = getConfigProp(c, platform, 'runScheme');
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const scheme = getConfigProp(c, c.platform, 'scheme');
+    const runScheme = getConfigProp(c, c.platform, 'runScheme');
+    const bundleIsDev = getConfigProp(c, c.platform, 'bundleIsDev') === true;
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets') === true;
     let p;
 
     if (!scheme) {
         return Promise.reject(
-            `You missing scheme in platforms.${chalk.yellow(platform)} in your ${chalk.white(
+            `You missing scheme in platforms.${chalk.yellow(c.platform)} in your ${chalk.white(
                 c.paths.appConfig.config,
             )}! Check example config for more info:  ${chalk.grey(
                 'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/renative.json',
@@ -148,63 +137,41 @@ const _runXcodeProject = async (c, platform, target) => {
     }
 
     let devicesArr
-    if(device === true) devicesArr = await getAppleDevices(c, platform, true);
-    else if (target === true) devicesArr = await getAppleDevices(c, platform);
+    if(device === true) devicesArr = await getAppleDevices(c, c.platform, false, true);
+    else if (c.runtime.target === true) devicesArr = await getAppleDevices(c, c.platform, true, false);
 
     if (device === true) {
-        const devicesArr = await getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
             logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)} udid: ${chalk.white(devicesArr[0].udid)}`);
             if (devicesArr[0].udid) {
-                p = [
-                    'run-ios',
-                    '--project-path',
-                    appPath,
-                    '--device',
-                    '--udid',
-                    devicesArr[0].udid,
-                    '--scheme',
-                    scheme,
-                    '--configuration',
-                    runScheme,
-                ];
+                p = `--device --udid ${devicesArr[0].udid}`;
             } else {
-                p = [
-                    'run-ios',
-                    '--project-path',
-                    appPath,
-                    '--device',
-                    devicesArr[0].name,
-                    '--scheme',
-                    scheme,
-                    '--configuration',
-                    runScheme,
-                ];
+                p = `--device ${devicesArr[0].name}`;
             }
         } else if (devicesArr.length > 1) {
             const run = (selectedDevice) => {
                 logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
                 if (selectedDevice.udid) {
-                    p = `run-ios --project-path ${appPath} --device --udid ${selectedDevice.udid} --scheme ${scheme} --configuration ${runScheme}`;
+                    p = `--device --udid ${selectedDevice.udid}`;
                 } else {
-                    p = `run-ios --project-path ${appPath} --device ${selectedDevice.name} --scheme ${scheme} --configuration ${runScheme}`;
+                    p = `--device ${selectedDevice.name}`;
                 }
 
                 logDebug(`RN params: ${p}`);
 
                 if (bundleAssets) {
                     logDebug('Assets will be bundled');
-                    return packageBundleForXcode(c, platform, bundleIsDev).then(() => _checkLockAndExec(c, p));
+                    return packageBundleForXcode(c, c.platform, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
                 }
-                return _checkLockAndExec(c, p);
+                return _checkLockAndExec(c, appPath, scheme, runScheme, p);
             };
 
-            if (c.program.target !== true) {
-                const selectedDevice = devicesArr.find(d => d.name === c.program.target);
+            if (c.runtime.target !== true) {
+                const selectedDevice = devicesArr.find(d => d.name === c.runtime.target);
                 if (selectedDevice) {
                     return run(selectedDevice);
                 }
-                return Promise.reject(`Could not find device ${c.program.target}`);
+                return Promise.reject(`Could not find device ${c.runtime.target}`);
             }
 
             const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
@@ -220,11 +187,11 @@ const _runXcodeProject = async (c, platform, target) => {
                 return run(sim);
             }
         } else {
-            return Promise.reject(`No ${platform} devices connected!`);
+            return Promise.reject(`No ${c.platform} devices connected!`);
         }
     } else if (device) {
-        p = ['run-ios', '--project-path', appPath, '--device', device, '--scheme', scheme, '--configuration', runScheme];
-    } else if (target === true) {
+        p = `--device ${device}`;
+    } else if (c.runtime.target === true) {
       const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
 
       const { sim } = await inquirer.prompt({
@@ -233,25 +200,24 @@ const _runXcodeProject = async (c, platform, target) => {
           type: 'list',
           choices: devices
       });
-
-        p = ['run-ios', '--project-path', appPath, '--simulator', sim.name.replace(/(\s+)/g, '\\$1'), '--scheme', scheme, '--configuration', runScheme];
+      p = `--simulator ${sim.name.replace(/(\s+)/g, '\\$1')}`;
     } else {
-      p = ['run-ios', '--project-path', appPath, '--simulator', target.replace(/(\s+)/g, '\\$1'), '--scheme', scheme, '--configuration', runScheme];
+      p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     }
 
     if (p) {
-        const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
+        const allowProvisioningUpdates = getConfigProp(c, c.platform, 'allowProvisioningUpdates', true);
         // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
-            return packageBundleForXcode(c, platform, bundleIsDev).then(() => executeAsync(c, `react-native ${p.join(' ')}`));
+            return packageBundleForXcode(c, c.platform, bundleIsDev).then(() => executeAsync(c, `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`));
         }
-        return _checkLockAndExec(c, p.join(' '));
+        return _checkLockAndExec(c, appPath, scheme, runScheme, p);
     }
     return Promise.reject('Missing options for react-native command!');
 };
 
-const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
+const _checkLockAndExec = (c, appPath, scheme, runScheme, p) => executeAsync(c, `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme}`)
     .catch((e) => {
         const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
         if (isDeviceLocked) {
@@ -522,7 +488,6 @@ export {
     runPod,
     copyAppleAssets,
     configureXcodeProject,
-    runXcodeProject,
     exportXcodeProject,
     archiveXcodeProject,
     packageBundleForXcode,

@@ -487,6 +487,9 @@ const _execute = async (c, cmdFn, cmd) => {
     }
 
     c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
+    if (c.program.target !== true) c.runtime.target = c.program.target || c.files.workspace.config.defaultTargets[c.platform];
+    else c.runtime.target = c.program.target
+
     const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command)
 
     if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);

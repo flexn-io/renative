@@ -230,7 +230,7 @@ const _rnvRunWithPlatform = async (c) => {
     logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
     const port = c.runtime.port
-    const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
+    const target = c.runtime.target
     const { hosted } = c.program;
 
     logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}`, chalk.grey);
@@ -257,10 +257,10 @@ const _rnvRunWithPlatform = async (c) => {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await startBundlerIfRequired(c);
-                await runXcodeProject(c, platform, target);
+                await runXcodeProject(c);
                 return waitForBundlerIfRequired(c);
             }
-            return runXcodeProject(c, platform, target);
+            return runXcodeProject(c);
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
