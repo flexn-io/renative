@@ -1,12 +1,10 @@
 import axios from 'axios';
 import ora from 'ora';
 
-import Config from '../config';
-
 export const isBundlerRunning = async (c) => {
     try {
-        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}/index.ios.bundle`);
-        if (data.includes('__BUNDLE_START_TIME__')) return true;
+        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}/index.${c.platform}.js`);
+        if (data.includes('import')) return true;
         return false;
     } catch {
         return false;
