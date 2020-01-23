@@ -1,34 +1,27 @@
 /* eslint-disable import/no-cycle */
 // @todo fix circular
 import path from 'path';
-import os from 'os';
 import fs from 'fs';
 import net from 'net';
 import chalk from 'chalk';
 import shell from 'shelljs';
-import child_process from 'child_process';
 import inquirer from 'inquirer';
 import execa from 'execa';
 
-import { executeAsync, execCLI, executeTelnet } from '../../systemTools/exec';
+import { executeAsync, execCLI } from '../../systemTools/exec';
 import { createPlatformBuild } from '..';
 import {
     getAppFolder,
     isPlatformActive,
     getAppTemplateFolder,
     getConfigProp,
-    waitForEmulator,
     getAppId
 } from '../../common';
-import { PLATFORMS } from '../../constants';
 import { inquirerPrompt } from '../../systemTools/prompt';
-import { logToSummary, logTask,
-    logError, logWarning,
-    logDebug, logInfo,
-    logSuccess } from '../../systemTools/logger';
+import { logTask, logWarning, logDebug, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyFileSync, mkdirSync, getRealPath, updateObjectSync } from '../../systemTools/fileutils';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
-import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
+import { ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_ADB } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
 import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './kotlinParser';
@@ -43,7 +36,7 @@ import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulat
 const isRunningOnWindows = process.platform === 'win32';
 
 const _getEntryOutputName = (c) => {
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler    
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.buildConfig.platforms[c.platform];
     // TODO Android PROD Crashes if not using this hardcoded one
     let outputFile;
@@ -59,7 +52,6 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
     logTask(`packageAndroid:${platform}`);
 
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
 
     if (!bundleAssets && platform !== ANDROID_WEAR) {
         resolve();
@@ -294,7 +286,7 @@ const _checkSigningCerts = async (c) => {
     }
 };
 
-const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => {
+const _runGradleApp = async (c, platform, device) => {
     logTask(`_runGradleApp:${platform}`);
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
@@ -307,31 +299,38 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
 
     shell.cd(`${appFolder}`);
 
-    _checkSigningCerts(c)
-        .then(() => executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`))
-        .then(() => {
-            if (outputAab) {
-                const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
-                logInfo(`App built. Path ${aabPath}`);
-                return Promise.resolve();
-            }
-            let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
-            if (!fs.existsSync(apkPath)) {
-                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
-            } if (!fs.existsSync(apkPath)) {
-                apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
-            }
-            logInfo(`Installing ${apkPath} on ${name}`);
-            return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
-        })
-        // NOTE: this is no longer needed.
-        // .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
-        //     ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8083`)
-        //     : Promise.resolve()))
-        .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await _checkSigningCerts(c);
+    await executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`);
+    if (outputAab) {
+        const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
+        logInfo(`App built. Path ${aabPath}`);
+        return true;
+    }
+    let apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}.apk`);
+    if (!fs.existsSync(apkPath)) {
+        apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${outputFolder}-unsigned.apk`);
+    } if (!fs.existsSync(apkPath)) {
+        apkPath = path.join(appFolder, `app/build/outputs/apk/${outputFolder}/app-${arch}-${outputFolder}.apk`);
+    }
+    logInfo(`Installing ${apkPath} on ${name}`);
+    try {
+        await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+    } catch (e) {
+        if (e?.includes('INSTALL_FAILED_UPDATE_INCOMPATIBLE') || e?.message?.includes('INSTALL_FAILED_UPDATE_INCOMPATIBLE')) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: 'It seems you already have the app installed but RNV can\'t update it. Uninstall that one and try again?'
+            });
+
+            if (!confirm) throw new Error('User canceled');
+            await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} uninstall ${bundleId}`);
+            await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+        }
+        throw new Error(e);
+    }
+
+    if (!outputAab) await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`);
+};
 
 export const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     logTask(`buildAndroid:${platform}`);
@@ -373,7 +372,7 @@ sdk.dir=${sdkDir}`,
 });
 
 export const configureGradleProject = async (c) => {
-    const platform = c.platform;
+    const { platform } = c;
     logTask(`configureGradleProject:${platform}`);
 
     if (!isPlatformActive(c, platform)) return;
