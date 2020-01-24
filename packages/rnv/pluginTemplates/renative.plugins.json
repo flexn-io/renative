@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.18-alpha.4",
+            "version": "0.28.18-alpha.5",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -784,7 +784,7 @@
             }
         },
         "react-native-device-info": {
-            "version": "2.3.2",
+            "version": "5.4.1",
             "ios": {
                 "podName": "RNDeviceInfo"
             },
