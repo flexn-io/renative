@@ -20,12 +20,14 @@ import {
     waitForEmulator,
     getAppId
 } from '../../common';
+import { PLATFORMS } from '../../constants';
+import { inquirerPrompt } from '../../systemTools/prompt';
 import { logToSummary, logTask,
     logError, logWarning,
     logDebug, logInfo,
     logSuccess } from '../../systemTools/logger';
-import { copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
-import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyFileSync, mkdirSync, getRealPath, updateObjectSync } from '../../systemTools/fileutils';
+import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
 import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
@@ -34,26 +36,37 @@ import {
     parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
     parseGradlePropertiesSync, injectPluginGradleSync
 } from './gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
+import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator, connectToWifiDevice } from './deviceManager';
 
 
 const isRunningOnWindows = process.platform === 'win32';
 
-
-export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`packageAndroid:${platform}`);
-
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
-    const { entryFile } = c.buildConfig.platforms[platform];
+const _getEntryOutputName = (c) => {
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler    
+    const { entryFile } = c.buildConfig.platforms[c.platform];
     // TODO Android PROD Crashes if not using this hardcoded one
     let outputFile;
-    if (platform === ANDROID_WEAR) {
+    if (c.platform === ANDROID_WEAR) {
         outputFile = entryFile;
     } else {
         outputFile = 'index.android';
     }
+    return outputFile;
+};
 
+export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`packageAndroid:${platform}`);
+
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
+
+    if (!bundleAssets && platform !== ANDROID_WEAR) {
+        resolve();
+        return;
+    }
+
+    const outputFile = _getEntryOutputName(c);
 
     const appFolder = getAppFolder(c, platform);
     let reactNative = 'react-native';
@@ -63,7 +76,7 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
     }
 
     console.log('ANDROID PACKAGE STARTING...');
-    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
+    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`)
         .then(() => {
             console.log('ANDROID PACKAGE FINISHED');
             return resolve();
@@ -75,25 +88,13 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 });
 
 
-export const runAndroid = async (c, platform, target) => {
-    logTask(`runAndroid:${platform}:${target}`);
+export const runAndroid = async (c, platform, defaultTarget) => {
+    const { target } = c.program;
+    logTask(`runAndroid:${platform}:${target}:${defaultTarget}`);
 
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev', false) === true;
-
-    if (bundleAssets) {
-        await packageAndroid(c, platform, bundleIsDev);
-    }
-    await _runGradle(c, platform);
-};
-
-const _runGradle = async (c, platform) => {
-    logTask(`_runGradle:${platform}`);
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
     if (outputAab) return _runGradleApp(c, platform, {});
-
-    const { target } = c.program;
 
     await resetAdb(c);
 
@@ -148,6 +149,7 @@ const _runGradle = async (c, platform) => {
     };
 
     if (target) {
+        // a target is provided
         logDebug('Target provided', target);
         const foundDevice = devicesAndEmulators.find(d => d.udid.includes(target) || d.name.includes(target));
         if (foundDevice) {
@@ -166,7 +168,20 @@ const _runGradle = async (c, platform) => {
         const dv = activeDevices[0];
         logInfo(`Found device ${dv.name}:${dv.udid}!`);
         await _runGradleApp(c, platform, dv);
+    } else if (defaultTarget) {
+        // neither a target nor an active device is found, revert to default target if available
+        logDebug('Default target used', defaultTarget);
+        const foundDevice = devicesAndEmulators.find(d => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget));
+        if (!foundDevice) {
+            logDebug('Target not provided, asking where to run');
+            await askWhereToRun();
+        } else {
+            await launchAndroidSimulator(c, platform, foundDevice, true);
+            const device = await checkForActiveEmulator(c, platform);
+            await _runGradleApp(c, platform, device);
+        }
     } else {
+        // we don't know what to do, ask the user
         logDebug('Target not provided, asking where to run');
         await askWhereToRun();
     }
@@ -176,9 +191,11 @@ const _runGradle = async (c, platform) => {
 const _checkSigningCerts = async (c) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(c, c.platform, 'signingConfig', 'Debug');
+    const isRelease = signingConfig === 'Release';
+    const privateConfig = c.files.workspace.appConfig.configPrivate?.[c.platform];
 
-    if (signingConfig === 'Release' && !c.files.workspace.appConfig.configPrivate) {
-        logError(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.workspace.appConfig.dir)} yet.`);
+    if (isRelease && !privateConfig) {
+        logWarning(`You're attempting to ${c.command} app in release mode but you have't configured your ${chalk.white(c.paths.workspace.appConfig.configPrivate)} for ${chalk.white(c.platform)} platform yet.`);
 
         const { confirm } = await inquirer.prompt({
             type: 'confirm',
@@ -187,37 +204,90 @@ const _checkSigningCerts = async (c) => {
         });
 
         if (confirm) {
-            const { storeFile, storePassword, keyAlias, keyPassword } = await inquirer.prompt([
-                {
-                    type: 'input',
-                    name: 'storeFile',
-                    message: `Paste asolute or relative path to ${chalk.white(c.paths.workspace.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
-                },
-                {
-                    type: 'password',
-                    name: 'storePassword',
-                    message: 'storePassword',
-                },
-                {
-                    type: 'input',
-                    name: 'keyAlias',
-                    message: 'keyAlias',
-                },
-                {
-                    type: 'password',
-                    name: 'keyPassword',
-                    message: 'keyPassword',
-                }
-            ]);
+            let confirmCopy = false;
+            let platCandidate;
+            const { confirmNewKeystore } = await inquirerPrompt({
+                type: 'confirm',
+                name: 'confirmNewKeystore',
+                message: 'Do you want to generate new keystore as well?'
+            });
 
-            if (c.paths.workspace.appConfig.dir) {
-                mkdirSync(c.paths.workspace.appConfig.dir);
-                c.files.workspace.appConfig.configPrivate = {
-                    android: { storeFile, storePassword, keyAlias, keyPassword }
-                };
+            if (c.files.workspace.appConfig.configPrivate) {
+                const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID];
+
+                platCandidates.forEach((v) => {
+                    if (c.files.workspace.appConfig.configPrivate[v]) {
+                        platCandidate = v;
+                    }
+                });
+                if (platCandidate) {
+                    const resultCopy = await inquirerPrompt({
+                        type: 'confirm',
+                        name: 'confirmCopy',
+                        message: `Found existing keystore configuration for ${platCandidate}. do you want to reuse it?`
+                    });
+                    confirmCopy = resultCopy.confirmCopy;
+                }
             }
-            fs.writeFileSync(c.paths.workspace.appConfig.configPrivate, JSON.stringify(c.files.workspace.appConfig.configPrivate, null, 2));
-            logSuccess(`Successfully created private config file at ${chalk.white(c.paths.workspace.appConfig.dir)}.`);
+
+
+            if (confirmCopy) {
+                c.files.workspace.appConfig.configPrivate[c.platform] = c.files.workspace.appConfig.configPrivate[platCandidate];
+            } else {
+                let storeFile;
+
+                if (!confirmNewKeystore) {
+                    const result = await inquirerPrompt({
+                        type: 'input',
+                        name: 'storeFile',
+                        message: `Paste asolute or relative path to ${chalk.white(c.paths.workspace.appConfig.dir)} of your existing ${chalk.white('release.keystore')} file`,
+                    });
+                    storeFile = result.storeFile;
+                }
+
+                const { storePassword, keyAlias, keyPassword } = await inquirer.prompt([
+                    {
+                        type: 'password',
+                        name: 'storePassword',
+                        message: 'storePassword',
+                    },
+                    {
+                        type: 'input',
+                        name: 'keyAlias',
+                        message: 'keyAlias',
+                    },
+                    {
+                        type: 'password',
+                        name: 'keyPassword',
+                        message: 'keyPassword',
+                    }
+                ]);
+
+
+                if (confirmNewKeystore) {
+                    const keystorePath = `${c.paths.workspace.appConfig.dir}/release.keystore`;
+                    mkdirSync(c.paths.workspace.appConfig.dir);
+                    const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
+                    await executeAsync(c, keytoolCmd, {
+                        env: process.env,
+                        shell: true,
+                        stdio: 'inherit',
+                        silent: true,
+                    });
+                    storeFile = './release.keystore';
+                }
+
+                if (c.paths.workspace.appConfig.dir) {
+                    mkdirSync(c.paths.workspace.appConfig.dir);
+                    c.files.workspace.appConfig.configPrivate = {};
+                    c.files.workspace.appConfig.configPrivate[c.platform] = { storeFile, storePassword, keyAlias, keyPassword };
+                }
+            }
+
+
+            updateObjectSync(c.paths.workspace.appConfig.configPrivate, c.files.workspace.appConfig.configPrivate);
+            logSuccess(`Successfully updated private config file at ${chalk.white(c.paths.workspace.appConfig.dir)}.`);
+            await configureProject(c, c.platform);
         } else {
             return Promise.reject('You selected no. Can\'t proceed');
         }
@@ -254,9 +324,10 @@ const _runGradleApp = (c, platform, device) => new Promise((resolve, reject) => 
             logInfo(`Installing ${apkPath} on ${name}`);
             return execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
         })
-        .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
-            ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8081`)
-            : Promise.resolve()))
+        // NOTE: this is no longer needed.
+        // .then(() => ((!outputAab && device.isDevice && platform !== ANDROID_WEAR)
+        //     ? execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} reverse tcp:8081 tcp:8083`)
+        //     : Promise.resolve()))
         .then(() => !outputAab && execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`))
         .then(() => resolve())
         .catch(e => reject(e));
@@ -301,19 +372,17 @@ sdk.dir=${sdkDir}`,
     resolve();
 });
 
-export const configureGradleProject = (c, platform) => new Promise((resolve, reject) => {
+export const configureGradleProject = async (c) => {
+    const platform = c.platform;
     logTask(`configureGradleProject:${platform}`);
 
-    if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform)) return;
 
-
-    copyAssetsFolder(c, platform)
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => configureAndroidProperties(c, platform))
-        .then(() => configureProject(c, platform))
-        .then(() => resolve())
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await configureAndroidProperties(c, platform);
+    await configureProject(c, platform);
+    return copyBuildsFolder(c, platform);
+};
 
 export const configureProject = (c, platform) => new Promise((resolve, reject) => {
     logTask(`configureProject:${platform}`);
@@ -332,8 +401,10 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         return;
     }
 
+    const outputFile = _getEntryOutputName(c);
+
     mkdirSync(path.join(appFolder, 'app/src/main/assets'));
-    fs.writeFileSync(path.join(appFolder, 'app/src/main/assets/index.android.bundle'), '{}');
+    fs.writeFileSync(path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`), '{}');
     fs.chmodSync(gradlew, '755');
 
     // INJECTORS
@@ -344,8 +415,12 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         pluginPackages: 'MainReactPackage(),\n',
         pluginActivityImports: '',
         pluginActivityMethods: '',
-        mainApplicationMethods: '',
+        pluginApplicationImports: '',
+        pluginApplicationMethods: '',
+        pluginApplicationCreateMethods: '',
+        pluginApplicationDebugServer: '',
         applyPlugin: '',
+        defaultConfig: '',
         pluginActivityCreateMethods: '',
         pluginActivityResultMethods: '',
         pluginSplashActivityImports: '',
@@ -356,6 +431,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
         buildGradleBuildScriptDexOptions: '',
         appBuildGradleSigningConfigs: '',
         appBuildGradleImplementations: '',
+        resourceStrings: [],
         appBuildGradleAfterEvaluate: '',
     };
 
@@ -370,31 +446,27 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(0, c.pluginConfigAndroid.pluginPackages.length - 2);
 
     // FONTS
-    if (c.buildConfig) {
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.buildConfig.common;
-                    if (includedFonts) {
-                        if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                            if (font) {
-                                const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
-                                if (fs.existsSync(fontSource)) {
-                                    const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
-                                    mkdirSync(fontFolder);
-                                    const fontDest = path.join(fontFolder, font);
-                                    copyFileSync(fontSource, fontDest);
-                                } else {
-                                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                                }
-                            }
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts) {
+                if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                    if (font) {
+                        const fontSource = path.join(dir, font);
+                        if (fs.existsSync(fontSource)) {
+                            const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
+                            mkdirSync(fontFolder);
+                            const fontDest = path.join(fontFolder, font);
+                            copyFileSync(fontSource, fontDest);
+                        } else {
+                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                         }
                     }
                 }
-            });
+            }
         }
-    }
+    });
 
     parseSettingsGradleSync(c, platform);
     parseAppBuildGradleSync(c, platform);
@@ -403,6 +475,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     parseMainApplicationSync(c, platform);
     parseSplashActivitySync(c, platform);
     parseValuesStringsSync(c, platform);
+    parseValuesColorsSync(c, platform);
     parseAndroidManifestSync(c, platform);
     parseGradlePropertiesSync(c, platform);
 

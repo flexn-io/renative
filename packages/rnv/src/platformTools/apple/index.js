@@ -9,17 +9,14 @@ import inquirer from 'inquirer';
 import { executeAsync } from '../../systemTools/exec';
 import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
     isPlatformActive,
-    logDebug,
     getConfigProp,
     getIP,
     logSuccess,
+    generateChecksum
 } from '../../common';
-import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
 import { IOS, TVOS, MACOS } from '../../constants';
 import {
@@ -30,36 +27,79 @@ import { parseXcscheme } from './xcschemeParser';
 import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
+import { logInfo, logTask,
+    logError,
+    logWarning, logDebug } from '../../systemTools/logger';
 
 const checkIfCommandExists = command => new Promise((resolve, reject) => child_process.exec(`command -v ${command} 2>/dev/null`, (error) => {
     if (error) return reject(new Error(`${command} not installed`));
-    return resolve();
+    return resolve(true);
 }));
 
-const runPod = (c, command, cwd, rejectOnFail = false) => new Promise((resolve, reject) => {
-    logTask(`runPod:${command}:${rejectOnFail}`);
+const checkIfPodsIsRequired = async (c) => {
+    const appFolder = getAppFolder(c, c.platform);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    if (!fs.existsSync(podChecksumPath)) return true;
+    const podChecksum = fs.readFileSync(podChecksumPath).toString();
+    const podContentChecksum = generateChecksum(fs.readFileSync(path.join(appFolder, 'Podfile')).toString());
 
-    if (!fs.existsSync(cwd)) {
-        if (rejectOnFail) return reject(`Location ${cwd} does not exists!`);
-        logError(`Location ${cwd} does not exists!`);
-        return resolve();
+    if (podChecksum !== podContentChecksum) {
+        logDebug('runPod:isMandatory');
+        return true;
     }
-    return checkIfCommandExists('pod')
-        .then(() => executeAsync(c, `pod ${command}`, {
-            cwd,
-            evn: process.env,
-        })
-            .then(() => resolve())
-            .catch((e) => {
-                if (rejectOnFail) {
-                    logWarning(e);
-                    return reject(e);
-                }
-                logError(e);
-                return resolve();
-            }))
-        .catch(err => logError(err));
-});
+    logInfo('Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter');
+    return false;
+};
+
+const updatePodsChecksum = (c) => {
+    logTask('updatePodsChecksum');
+    const appFolder = getAppFolder(c, c.platform);
+    const podChecksumPath = path.join(appFolder, 'Podfile.checksum');
+    const podContentChecksum = generateChecksum(fs.readFileSync(path.join(appFolder, 'Podfile')).toString());
+    if (fs.existsSync(podChecksumPath)) {
+        const existingContent = fs.readFileSync(podChecksumPath).toString();
+        if (existingContent !== podContentChecksum) {
+            logDebug(`updatePodsChecksum:${podContentChecksum}`);
+            return fs.writeFileSync(podChecksumPath, podContentChecksum);
+        }
+        return true;
+    }
+    logDebug(`updatePodsChecksum:${podContentChecksum}`);
+    return fs.writeFileSync(podChecksumPath, podContentChecksum);
+};
+
+const runPod = async (c, platform) => {
+    logTask(`runPod:${platform}`);
+
+    const appFolder = getAppFolder(c, platform);
+
+    if (!fs.existsSync(appFolder)) {
+        return Promise.reject(`Location ${appFolder} does not exists!`);
+    }
+    const podsRequired = c.program.updatePods || await checkIfPodsIsRequired(c);
+
+    if (podsRequired) {
+        await checkIfCommandExists('pod');
+
+        try {
+            await executeAsync(c, 'pod install', {
+                cwd: appFolder,
+                env: process.env,
+            });
+        } catch (e) {
+            const s = e?.toString ? e.toString() : '';
+            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods') 
+            if (isGenericError) return new Error(`pod install failed with:\n ${s}`);
+            logWarning(`Looks like pod install is not enough! Let's try pod update! Error:\n ${s}`);
+            return executeAsync(c, 'pod update', { cwd: appFolder, env: process.env })
+                .then(() => updatePodsChecksum(c))
+                .catch(er => Promise.reject(er));
+        }
+        
+        updatePodsChecksum(c);
+        return true;
+    }
+};
 
 const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) => {
     logTask('copyAppleAssets');
@@ -78,7 +118,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
 const runXcodeProject = async (c, platform, target) => {
     logTask(`runXcodeProject:${platform}:${target}`);
 
-    if (target === '?') {
+    if (target === true) {
         const newTarget = await launchAppleSimulator(c, platform, target);
         await _runXcodeProject(c, platform, newTarget);
     } else {
@@ -108,7 +148,7 @@ const _runXcodeProject = async (c, platform, target) => {
     }
 
     if (device === true) {
-        const devicesArr = getAppleDevices(c, platform, false, true);
+        const devicesArr = await getAppleDevices(c, platform, false, true);
         if (devicesArr.length === 1) {
             logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)} udid: ${chalk.white(devicesArr[0].udid)}`);
             if (devicesArr[0].udid) {
@@ -186,7 +226,7 @@ const _runXcodeProject = async (c, platform, target) => {
 
     if (p) {
         const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-        if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
+        // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
             return packageBundleForXcode(c, platform, bundleIsDev).then(() => executeAsync(c, `react-native ${p.join(' ')}`));
@@ -205,6 +245,14 @@ const _checkLockAndExec = (c, p) => executeAsync(c, `react-native ${p}`)
         }
         return Promise.reject(e);
     });
+
+const composeXcodeArgsFromCLI = (string) => {
+    const spacesReplaced = string.replace(/\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/g, '&&&'); // replaces spaces outside quotes with &&& for easy split
+    const keysAndValues = spacesReplaced.split('&&&');
+    const unescapedValues = keysAndValues.map(s => s.replace(/\'/g, '').replace(/"/g, '').replace(/\\/g, '')); // removes all quotes or backslashes
+
+    return unescapedValues;
+};
 
 const archiveXcodeProject = (c, platform) => {
     logTask(`archiveXcodeProject:${platform}`);
@@ -235,21 +283,25 @@ const archiveXcodeProject = (c, platform) => {
     const p = [];
 
     if (!ps.includes('-workspace')) {
-        p.push(`-workspace ${appPath}/${appFolderName}.xcworkspace`);
+        p.push('-workspace');
+        p.push(`${appPath}/${appFolderName}.xcworkspace`);
     }
     if (!ps.includes('-scheme')) {
-        p.push(`-scheme ${scheme}`);
+        p.push('-scheme');
+        p.push(scheme);
     }
     if (!ps.includes('-sdk')) {
         p.push('-sdk');
         p.push(...sdkArr);
     }
     if (!ps.includes('-configuration')) {
-        p.push(`-configuration ${runScheme}`);
+        p.push('-configuration');
+        p.push(runScheme);
     }
     p.push('archive');
     if (!ps.includes('-archivePath')) {
-        p.push(`-archivePath ${exportPathArchive}`);
+        p.push('-archivePath');
+        p.push(exportPathArchive);
     }
 
     if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) p.push('-allowProvisioningUpdates');
@@ -266,7 +318,12 @@ const archiveXcodeProject = (c, platform) => {
                 logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
             });
     }
-    return executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`)
+
+    const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
+
+    logDebug('xcodebuild args', args);
+
+    return executeAsync('xcodebuild', { rawCommand: { args } })
         .then(() => {
             logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
         });
@@ -366,7 +423,7 @@ const runAppleLog = c => new Promise(() => {
     });
 });
 
-const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, reject) => {
+const configureXcodeProject = async (c, platform, ip, port) => {
     logTask(`configureXcodeProject:${platform}`);
     const { device } = c.program;
     const bundlerIp = device ? getIP() : 'localhost';
@@ -384,6 +441,7 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         appDelegateMethods: {
             application: {
                 didFinishLaunchingWithOptions: [],
+                applicationDidBecomeActive: [],
                 open: [],
                 supportedInterfaceOrientationsFor: [],
                 didReceiveRemoteNotification: [],
@@ -400,29 +458,26 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
     };
 
     // FONTS
-    if (c.buildConfig) {
-        if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (font.includes('.ttf') || font.includes('.otf')) {
-                    const key = font.split('.')[0];
-                    const { includedFonts } = c.buildConfig.common;
-                    if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
-                        const fontSource = path.join(c.paths.project.projectConfig.dir, 'fonts', font);
-                        if (fs.existsSync(fontSource)) {
-                            const fontFolder = path.join(appFolder, 'fonts');
-                            mkdirSync(fontFolder);
-                            const fontDest = path.join(fontFolder, font);
-                            copyFileSync(fontSource, fontDest);
-                            c.pluginConfigiOS.embeddedFontSources.push(fontSource);
-                            c.pluginConfigiOS.embeddedFonts.push(font);
-                        } else {
-                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
-                        }
-                    }
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
+                const fontSource = path.join(dir, font);
+                if (fs.existsSync(fontSource)) {
+                    const fontFolder = path.join(appFolder, 'fonts');
+                    mkdirSync(fontFolder);
+                    const fontDest = path.join(fontFolder, font);
+                    copyFileSync(fontSource, fontDest);
+                    c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                    c.pluginConfigiOS.embeddedFonts.push(font);
+                } else {
+                    logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                 }
-            });
+            }
         }
-    }
+    });
+
 
     // CHECK TEAM ID IF DEVICE
     const tId = getConfigProp(c, platform, 'teamID');
@@ -434,46 +489,19 @@ const configureXcodeProject = (c, platform, ip, port) => new Promise((resolve, r
         );
     }
 
-    // PARSERS
-    const forceUpdate = !fs.existsSync(path.join(appFolder, 'Podfile.lock')) || c.program.update;
-    copyAssetsFolder(c, platform)
-        .then(() => copyAppleAssets(c, platform, appFolderName))
-        .then(() => copyBuildsFolder(c, platform))
-        .then(() => parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port))
-        .then(() => parseExportOptionsPlist(c, platform))
-        .then(() => parseXcscheme(c, platform))
-        .then(() => parsePodFile(c, platform))
-        .then(() => parseEntitlementsPlist(c, platform))
-        .then(() => parseInfoPlist(c, platform))
-        .then(() => {
-            runPod(c, forceUpdate ? 'update' : 'install', getAppFolder(c, platform), true)
-                .then(() => parseXcodeProject(c, platform))
-                .then(() => resolve())
-                .catch((e) => {
-                    if (!c.program.update) {
-                        if (e && e.toString) {
-                            const s = e.toString();
-                            if (
-                                s.includes('No provisionProfileSpecifier configured')
-                              || s.includes('TypeError:')
-                              || s.includes('ReferenceError:')
-                            ) {
-                                reject(e);
-                            }
-                        } else {
-                            logWarning(`Looks like pod install is not enough! Let's try pod update! Error: ${e}`);
-                            runPod(c, 'update', getAppFolder(c, platform), true)
-                                .then(() => parseXcodeProject(c, platform))
-                                .then(() => resolve())
-                                .catch(err => reject(err));
-                        }
-                    } else {
-                        reject(e);
-                    }
-                });
-        })
-        .catch(e => reject(e));
-});
+    await copyAssetsFolder(c, platform);
+    await copyAppleAssets(c, platform, appFolderName);
+    await parseAppDelegate(c, platform, appFolder, appFolderName, bundleAssets, bundlerIp, port);
+    await parseExportOptionsPlist(c, platform);
+    await parseXcscheme(c, platform);
+    await parsePodFile(c, platform);
+    await parseEntitlementsPlist(c, platform);
+    await parseInfoPlist(c, platform);
+    await copyBuildsFolder(c, platform);
+    await runPod(c, platform);
+    await parseXcodeProject(c, platform);
+    return true;
+};
 
 export {
     runPod,

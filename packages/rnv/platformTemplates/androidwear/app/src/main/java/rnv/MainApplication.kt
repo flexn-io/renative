@@ -33,10 +33,13 @@ class MainApplication : Application(), ReactApplication {
         override fun getJSBundleFile(): String? = {{GET_JS_BUNDLE_FILE}}
     }
 
+{{PLUGIN_METHODS}}
+
     override fun getReactNativeHost(): ReactNativeHost = mReactNativeHost
 
     override fun onCreate() {
         super.onCreate()
         SoLoader.init(this, /* native exopackage */ false)
+{{PLUGIN_ON_CREATE}}
     }
 }

@@ -17,6 +17,19 @@ sidebar_label: KaiOS
 
 <img src="https://renative.org/img/rnv_kaios.gif" height="250"/>
 
+## File Extension Support
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `kaios.mobile.js` | `form factor` | 1 |
+| `mobile.js` | `form factor` | 2 |
+| `kaios.js` | `platform` | 3 |
+| `mobile.web.js` | `fallback` | 4 |
+| `web.js` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
+
 ## Requirements
 
 -   [KaiOSrt](https://developer.kaiostech.com/simulator) for emulator

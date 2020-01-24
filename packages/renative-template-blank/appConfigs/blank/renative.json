@@ -1,8 +1,8 @@
 {
     "id": "helloWorld",
     "common": {
-        "id": "renative.helloworld",
-        "title": "ReNative",
+        "id": "renative.blank",
+        "title": "ReNative Blank",
         "description": "Cross-platform application project based on ReNative",
         "author": {
             "name": "Pavel Jacko",
@@ -57,6 +57,7 @@
         },
         "android": {
             "entryFile": "index.android",
+            "enableHermes": true,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -73,6 +74,7 @@
         },
         "androidtv": {
             "entryFile": "index.androidtv",
+            "enableHermes": true,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -89,6 +91,7 @@
         },
         "androidwear": {
             "entryFile": "index.androidwear",
+            "enableHermes": true,
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
@@ -106,17 +109,15 @@
         "macos": {
             "entryFile": "index.macos",
             "buildSchemes": {
-                "buildSchemes": {
-                    "debug": {
-                        "id": "renative.blank.debug",
-                        "bundleAssets": false,
-                        "environment": "development"
-                    },
-                    "release": {
-                        "bundleAssets": true,
-                        "bundleIsDev": false,
-                        "environment": "production"
-                    }
+                "debug": {
+                    "id": "renative.blank.debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
                 }
             }
         },

@@ -1,55 +1,146 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle dep
 import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import semver from 'semver';
+import fs from 'fs';
 import {
     logTask,
     logSuccess,
-    getAppFolder,
-    isPlatformActive,
-    logWarning,
     logInfo,
+    logWarning
 } from '../common';
 import { generateOptions } from '../systemTools/prompt';
 import {
-    IOS,
-    ANDROID,
-    TVOS,
-    TIZEN,
-    WEBOS,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    MACOS,
-    WINDOWS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
     RENATIVE_CONFIG_NAME,
     SUPPORTED_PLATFORMS
 } from '../constants';
-import { configureXcodeProject } from '../platformTools/apple';
-import { configureGradleProject } from '../platformTools/android';
-import { configureTizenProject, configureTizenGlobal } from '../platformTools/tizen';
-import { configureWebOSProject } from '../platformTools/webos';
-import { configureElectronProject } from '../platformTools/electron';
-import { configureKaiOSProject } from '../platformTools/firefox';
-import { configureWebProject } from '../platformTools/web';
 import { getTemplateOptions } from '../templateTools';
-import { copyFolderContentsRecursiveSync, mkdirSync, writeObjectSync } from '../systemTools/fileutils';
-import { executeAsync } from '../systemTools/exec';
-import { executePipe } from './buildHooks';
+import { mkdirSync, writeFileSync } from '../systemTools/fileutils';
+import { executeAsync, commandExistsSync } from '../systemTools/exec';
 import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
-import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { getWorkspaceOptions } from './workspace';
-import { generateRuntimeConfig, loadProjectTemplates, parseRenativeConfigs } from '../configTools/configParser';
+import { parseRenativeConfigs } from '../configTools/configParser';
+import Analytics from '../systemTools/analytics';
 
 const highlight = chalk.green;
+
+const configureGit = async (c) => {
+    const projectPath = c.paths.project.dir;
+    logTask(`configureGit:${projectPath}`);
+
+    if (!fs.existsSync(path.join(projectPath, '.git'))) {
+        logInfo('Your project does not have a git repo. Creating one...');
+        if (commandExistsSync('git')) {
+            await executeAsync('git init', { cwd: projectPath });
+            await executeAsync('git add -A', { cwd: projectPath });
+            await executeAsync('git commit -m "Initial"', { cwd: projectPath });
+        } else {
+            logWarning('We tried to create a git repo inside your project but you don\'t seem to have git installed');
+        }
+    }
+};
+
+const _generateProject = async (c, data) => {
+    logTask('_generateProject');
+
+    const base = path.resolve('.');
+
+    c.paths.project.dir = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
+    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
+    c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
+
+    data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
+
+    mkdirSync(c.paths.project.dir);
+
+    const templates = {};
+
+
+    logTask(`_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`, chalk.grey);
+
+    templates[data.optionTemplates.selectedOption] = {
+        version: data.optionTemplates.selectedVersion
+    };
+
+    const config = {
+        projectName: data.projectName,
+        workspaceID: data.optionWorkspaces.selectedOption,
+        paths: {
+            appConfigsDir: './appConfigs',
+            platformTemplatesDir: '$RNV_HOME/platformTemplates',
+            entryDir: './',
+            platformAssetsDir: './platformAssets',
+            platformBuildsDir: './platformBuilds',
+            projectConfigDir: './projectConfig'
+        },
+        defaults: {
+            title: data.appTitle,
+            id: data.appID,
+            supportedPlatforms: data.optionPlatforms.selectedOptions
+        },
+        templates,
+        currentTemplate: data.optionTemplates.selectedOption,
+        isNew: true
+    };
+
+    writeFileSync(c.paths.project.config, config);
+
+    if (data.gitEnabled) {
+        await configureGit(c);
+    }
+
+    logSuccess(
+        `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
+            `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`,
+        )} to see magic happen!`,
+    );
+};
+
+const _prepareProjectOverview = (c, data) => {
+    data.projectName = data.inputProjectName;
+    data.appTitle = data.inputAppTitle || data.defaultAppTitle;
+    data.teamID = '';
+    data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
+    data.version = data.inputVersion || data.defaultVersion;
+    const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
+
+    let str = printBoxStart('🚀  ReNative Project Generator');
+    str += printIntoBox('');
+    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`, 1);
+    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`, 1);
+    str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`, 1);
+    str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
+    str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
+    str += printIntoBox(`Project Template: ${highlight(tempString)}`, 1);
+    str += printIntoBox(`Git Enabled: ${highlight(data.gitEnabled)}`, 1);
+    str += printIntoBox('');
+    str += printIntoBox('Project Platforms:');
+    str += printArrIntoBox(data.optionPlatforms.selectedOptions);
+    str += printIntoBox('');
+    str += printIntoBox('Project Structure:');
+    str += printIntoBox('');
+    str += printIntoBox(data.projectName);
+    str += chalk.gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
+│   │   └── [APP_ID]          # Example application flavour                    │
+│   │       ├── assets        # Platform assets injected to ./platformAssets   │
+│   │       ├── builds        # Platform files injected to ./platformBuilds    │
+│   │       ├── fonts             # Folder for all custom fonts                │
+│   │       ├── plugins           # Multi-platform plugins injections          │
+│   │       └── renative.json # Application flavour config                     │
+│   ├── platformAssets        # Generated cross-platform assets                │
+│   ├── platformBuilds        # Generated platform app projects                │
+│   ├── src                   # Source code files                              │
+│   ├── index.*.js            # Entry files                                    │
+│   └── renative.json         # ReNative project configuration                 │
+`);
+    str += printIntoBox('');
+    str += printBoxEnd();
+    str += '\n';
+
+    data.confirmString = str;
+};
 
 export const createNewProject = async (c) => {
     logTask('createNewProject');
@@ -111,20 +202,51 @@ export const createNewProject = async (c) => {
         default: data.defaultWorkspace,
         choices: data.optionWorkspaces.keysAsArray
     }]);
+    data.optionWorkspaces.selectedOption = inputWorkspace;
 
     c.runtime.selectedWorkspace = inputWorkspace;
-    parseRenativeConfigs(c);
+    await parseRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
     const {
-        inputTemplate, inputSupportedPlatforms
-    } = await inquirer.prompt([{
+        inputTemplate
+    } = await inquirer.prompt({
         name: 'inputTemplate',
         type: 'list',
         message: 'What template to use?',
         default: data.defaultTemplate,
         choices: data.optionTemplates.keysAsArray
-    }, {
+    });
+    data.optionTemplates.selectedOption = inputTemplate;
+
+    const templateVersionsStr = await executeAsync(c, `npm view ${data.optionTemplates.selectedOption} versions`);
+    const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',').reverse();
+    const { rnvVersion } = c;
+
+    // filter greater versions than rnv
+    const validVersions = versionArr.filter(version => semver.lte(version, rnvVersion)).map(v => ({ name: v, value: v }));
+    if (validVersions[0].name === rnvVersion) {
+        // mark the same versions as recommended
+        validVersions[0].name = `${validVersions[0].name} (recommended)`;
+    }
+
+    data.optionTemplates.selectedVersion = versionArr[0];
+
+    const {
+        inputTemplateVersion
+    } = await inquirer.prompt({
+        name: 'inputTemplateVersion',
+        type: 'list',
+        message: 'What version of template to use?',
+        default: data.optionTemplates.selectedVersion,
+        choices: validVersions
+    });
+    data.optionTemplates.selectedVersion = inputTemplateVersion;
+
+
+    const {
+        inputSupportedPlatforms
+    } = await inquirer.prompt({
         name: 'inputSupportedPlatforms',
         type: 'checkbox',
         pageSize: 20,
@@ -132,16 +254,22 @@ export const createNewProject = async (c) => {
         validate: val => !!val.length || 'Please select at least a platform',
         default: data.optionPlatforms.keysAsArray,
         choices: data.optionPlatforms.keysAsArray
-    }]);
+    });
 
+    const {
+        gitEnabled
+    } = await inquirer.prompt({
+        name: 'gitEnabled',
+        type: 'confirm',
+        message: 'Do you want to set-up git in your new project?'
+    });
 
     data = {
-        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace
+        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace, gitEnabled
     };
-
-    data.optionTemplates.selectedOption = inputTemplate;
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
-    data.optionWorkspaces.selectedOption = inputWorkspace;
+
+
     _prepareProjectOverview(c, data);
 
     const { confirm } = await inquirer.prompt({
@@ -151,105 +279,14 @@ export const createNewProject = async (c) => {
     });
 
     if (confirm) {
+        try {
+            await Analytics.captureEvent({
+                type: 'newProject',
+                template: inputTemplate,
+                platforms: inputSupportedPlatforms
+            });
+        } catch {}
+
         await _generateProject(c, data);
     }
-};
-
-
-const _generateProject = (c, data) => {
-    logTask('_generateProject');
-
-    const base = path.resolve('.');
-
-    c.paths.project.dir = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
-    c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
-
-    data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
-
-    mkdirSync(c.paths.project.dir);
-
-    const templates = {};
-
-
-    return executeAsync(c, `npm show ${data.optionTemplates.selectedOption} version`).then((v) => {
-        logTask(`_generateProject:${data.optionTemplates.selectedOption}:${v}`, chalk.grey);
-
-        templates[data.optionTemplates.selectedOption] = {
-            version: v
-        };
-
-        const config = {
-            projectName: data.projectName,
-            workspaceID: data.optionWorkspaces.selectedOption,
-            paths: {
-                appConfigsDir: './appConfigs',
-                platformTemplatesDir: '$RNV_HOME/platformTemplates',
-                entryDir: './',
-                platformAssetsDir: './platformAssets',
-                platformBuildsDir: './platformBuilds',
-                projectConfigDir: './projectConfig'
-            },
-            defaults: {
-                title: data.appTitle,
-                id: data.appID,
-                supportedPlatforms: data.optionPlatforms.selectedOptions
-            },
-            templates,
-            currentTemplate: data.optionTemplates.selectedOption,
-            isNew: true
-        };
-
-        writeObjectSync(c.paths.project.config, config);
-
-        logSuccess(
-            `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
-                'rnv run -p web',
-            )} to see magic happen!`,
-        );
-    });
-};
-
-const _prepareProjectOverview = (c, data) => {
-    data.projectName = data.inputProjectName;
-    data.appTitle = data.inputAppTitle || data.defaultAppTitle;
-    data.teamID = '';
-    data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
-    data.version = data.inputVersion || data.defaultVersion;
-
-    let str = printBoxStart('🚀  ReNative Project Generator');
-    str += printIntoBox('');
-    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`, 1);
-    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`, 1);
-    str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`, 1);
-    str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
-    str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
-    str += printIntoBox(`Project Template: ${highlight(data.optionTemplates.selectedOption)}`, 1);
-    str += printIntoBox('');
-    str += printIntoBox('Project Platforms:');
-    str += printArrIntoBox(data.optionPlatforms.selectedOptions);
-    str += printIntoBox('');
-    str += printIntoBox('Project Structure:');
-    str += printIntoBox('');
-    str += printIntoBox(data.projectName);
-    str += chalk.gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
-│   │   └── [APP_ID]          # Example application flavour                    │
-│   │       ├── assets        # Platform assets injected to ./platformAssets   │
-│   │       ├── builds        # Platform files injected to ./platformBuilds    │
-│   │       └── renative.json # Application flavour config                     │
-│   ├── platformAssets        # Generated cross-platform assets                │
-│   ├── platformBuilds        # Generated platform app projects                │
-│   ├── projectConfigs        # Project configuration files/assets             │
-│   │   ├── fonts             # Folder for all custom fonts                    │
-│   │   ├── builds            # platformBuilds/* injections                    │
-│   │   └── plugins           # Multi-platform plugins injections              │
-│   ├── src                   # Source code files                              │
-│   ├── index.*.js            # Entry files                                    │
-│   └── renative.json         # ReNative project configuration                 │
-`);
-    str += printIntoBox('');
-    str += printBoxEnd();
-    str += '\n';
-
-    data.confirmString = str;
 };

@@ -9,7 +9,7 @@ import util from 'util';
 import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
-import { removeDirs } from './fileutils';
+import { removeDirs, invalidatePodsChecksum } from './fileutils';
 
 const { exec, execSync } = require('child_process');
 
@@ -73,8 +73,13 @@ const _execute = (c, command, opts = {}) => {
             timer += intervalTimer;
         }, intervalTimer);
     }
-
-    const child = execa.command(cleanCommand, mergedOpts);
+    let child;
+    if (opts.rawCommand) {
+        const { args } = opts.rawCommand;
+        child = execa(command, args, mergedOpts);
+    } else {
+        child = execa.command(cleanCommand, mergedOpts);
+    }
 
     const MAX_OUTPUT_LENGTH = 200;
 
@@ -86,20 +91,20 @@ const _execute = (c, command, opts = {}) => {
     };
 
     if (c.program?.info) {
-        child.stdout.pipe(process.stdout);
+        child?.stdout?.pipe(process.stdout);
     } else if (spinner) {
-        child.stdout.on('data', printLastLine);
+        child?.stdout?.on('data', printLastLine);
     }
 
     return child.then((res) => {
-        spinner && child.stdout.off && child.stdout.off('data', printLastLine);
+        spinner && child?.stdout?.off('data', printLastLine);
         !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
         logDebug(res.all);
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
-        spinner && child.stdout.off && child.stdout.off('data', printLastLine);
+        spinner && child?.stdout?.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
         logDebug(err.all);
         interval && clearInterval(interval);
@@ -208,12 +213,36 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     if (!text) return '';
     const toSearch = /(exception|error|fatal|\[!])/i;
     let arr = text.split('\n');
-    arr = arr.filter(v => v.search(toSearch) !== -1);
-    arr = arr.map((v) => {
+
+    let errFound = 0;
+    arr = arr.filter((v) => {
+        if (v === '') return false;
+        // Cleaner iOS reporting
+        if (v.includes('-Werror')) {
+            return false;
+        }
+        // Cleaner Android reporting
+        if (v.includes('[DEBUG]') || v.includes('[INFO]') || v.includes('[LIFECYCLE]') || v.includes('[WARN]') || v.includes(':+HeapDumpOnOutOfMemoryError') || v.includes('.errors.') || v.includes('-exception-') || v.includes('error_prone_annotations')) {
+            return false;
+        }
+        if (v.search(toSearch) !== -1) {
+            errFound = 5;
+            return true;
+        }
+        if (errFound > 0) {
+            errFound -= 1;
+            return true;
+        }
+        return false;
+    });
+
+    arr = arr.map((str) => {
+        const v = str.replace(/\s{2,}/g, ' ');
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
         return extractedError;
     });
+        
     return arr.join('\n');
 };
 
@@ -372,8 +401,10 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
 
 export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
+    const c = Config.getConfig();
 
     return executeAsync('npm install')
+        .then(() => invalidatePodsChecksum(c))
         .catch((e) => {
             if (failOnError) {
                 return logError(e);

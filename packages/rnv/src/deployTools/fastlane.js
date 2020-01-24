@@ -1,6 +1,5 @@
 import { executeAsync } from '../systemTools/exec';
 import { commandExistsSync } from '../systemTools/exec';
-import { inquirerPrompt } from '../systemTools/prompt';
 import { getAppFolder } from '../common';
 import Config from '../config';
 import PlatformSetup from '../setupTools';
@@ -15,11 +14,6 @@ const rnvFastlane = async () => {
     }
 
     const c = Config.getConfig();
-
-    // shell: true,
-    // stdio: 'inherit',
-    // silent: true,
-
     const appFolder = getAppFolder(c, c.platform);
 
     let fastlaneArgs = [...c.program.rawArgs];

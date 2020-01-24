@@ -17,6 +17,7 @@ html {
 
 body{
     height: 100%;
+    background-color: {{PLUGIN_COLORS_BG}};
 }
 
 /* remove outline */
@@ -51,15 +52,15 @@ there.
 /* Larger than Desktop HD and HD ready */
 @media (min-width: 1200px) {
     .root {
-        height: 720px;
-        width: 1280px;
+        height: 1280px;
+        width: 600px;
     }
 }
 
 /* Full HD and Larger */
 @media (min-width: 1900px) {
     .root {
-        height: 1080px;
-        width: 1920px;
+        height: 1920px;
+        width: 800px;
     }
 }

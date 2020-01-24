@@ -19,22 +19,22 @@ import {
     getBuildFilePath,
     logSuccess,
     getGetJsBundleFile,
-    getBuildsFolder
+    getBuildsFolder,
+    sanitizeColor,
+    getFlavouredProp
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
-export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port = 8081) => new Promise((resolve, reject) => {
+export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port) => new Promise((resolve, reject) => {
+    if (!port) port = c.runtime.port;
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
     const { backgroundColor } = c.buildConfig.platforms[platform];
-    const tId = getConfigProp(c, platform, 'teamID');
-    const runScheme = getConfigProp(c, platform, 'runScheme');
-    const allowProvisioningUpdates = getConfigProp(c, platform, 'allowProvisioningUpdates', true);
-    const provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
+
     const forceBundle = getGetJsBundleFile(c, platform);
     let bundle;
     if (forceBundle) {
@@ -51,16 +51,18 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
     });
 
     // BG COLOR
-    let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
-    const UI_COLORS = ['black', 'blue', 'brown', 'clear', 'cyan', 'darkGray', 'gray', 'green', 'lightGray', 'magneta', 'orange', 'purple', 'red', 'white', 'yellow'];
-    if (backgroundColor) {
-        if (UI_COLORS.includes(backgroundColor)) {
-            pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
-        } else {
-            logWarning(`Your choosen color in renative.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
-        }
-    }
+    // let pluginBgColor = 'vc.view.backgroundColor = UIColor.white';
+    // const UI_COLORS = ['black', 'blue', 'brown', 'clear', 'cyan', 'darkGray', 'gray', 'green', 'lightGray', 'magneta', 'orange', 'purple', 'red', 'white', 'yellow'];
+    // if (backgroundColor) {
+    //     if (UI_COLORS.includes(backgroundColor)) {
+    //         pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
+    //     } else {
+    //         logWarning(`Your choosen color in renative.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
+    //     }
+    // }
 
+    const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).rgbDecimal;
+    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
     const methods = {
         application: {
             didFinishLaunchingWithOptions: {
@@ -70,13 +72,13 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()
         let v = RCTRootView(
-            bundleURL: bundleUrl,
+            bundleURL: bundleUrl!,
             moduleName: moduleName,
             initialProperties: nil,
             launchOptions: launchOptions)
         vc.view = v
         ${pluginBgColor}
-        v?.frame = vc.view.bounds
+        v.frame = vc.view.bounds
         self.window?.rootViewController = vc
         self.window?.makeKeyAndVisible()
         UNUserNotificationCenter.current().delegate = self
@@ -84,6 +86,12 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
                 render: v => `${v}`,
                 end: 'return true',
 
+            },
+            applicationDidBecomeActive: {
+                func: 'func applicationDidBecomeActive(_ application: UIApplication) {',
+                begin: null,
+                render: v => `${v}`,
+                end: null,
             },
             open: {
                 func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
@@ -191,8 +199,9 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
 
 export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
     logTask(`injectPluginSwiftSync:${c.platform}:${key}`, chalk.grey);
-    if (plugin.appDelegateImports instanceof Array) {
-        plugin.appDelegateImports.forEach((appDelegateImport) => {
+    const appDelegateImports = getFlavouredProp(c, plugin, 'appDelegateImports');
+    if (appDelegateImports instanceof Array) {
+        appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
             logTask('appDelegateImports add', chalk.grey);
             if (c.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
@@ -205,11 +214,12 @@ export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
     //     c.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
 
-    if (plugin.appDelegateMethods) {
-        for (const key in plugin.appDelegateMethods) {
-            for (const key2 in plugin.appDelegateMethods[key]) {
+    const appDelegateMethods = getFlavouredProp(c, plugin, 'appDelegateMethods');
+    if (appDelegateMethods) {
+        for (const key in appDelegateMethods) {
+            for (const key2 in appDelegateMethods[key]) {
                 const plugArr = c.pluginConfigiOS.appDelegateMethods[key][key2];
-                const plugVal = plugin.appDelegateMethods[key][key2];
+                const plugVal = appDelegateMethods[key][key2];
                 if (plugVal) {
                     plugVal.forEach((v) => {
                         if (!plugArr.includes(v)) {

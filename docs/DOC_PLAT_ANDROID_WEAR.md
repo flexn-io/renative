@@ -23,6 +23,20 @@ sidebar_label: Android Wear
 -   Kotlin Support
 -   Support for Gradle 4.9
 
+## File Extension Support
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `androidwear.watch.js` | `form factor` | 1 |
+| `watch.js` | `form factor` | 2 |
+| `androidwear.js` | `platform` | 3 |
+| `android.js` | `platform` | 4 |
+| `watch.native.js` | `fallback` | 5 |
+| `native.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
+
 ## Requirements
 
 -   [Android Studio](https://developer.android.com/studio/index.html) for Android development
@@ -60,6 +74,23 @@ Launch specific emulator:
 ```
 rnv target launch -p androidwear -t Android_Wear_Round_API_28
 ```
+
+## Android X support
+
+androidX is enabled by default
+
+make sure you have this piece of script in package.json
+
+```
+"scripts" : {
+  "postinstall": "jetify"
+}
+```
+
+## Hermes support
+
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidwear.enableHermes`
+or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
 
 ## App Config
 

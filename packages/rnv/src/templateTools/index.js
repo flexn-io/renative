@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import { RENATIVE_CONFIG_NAME, RENATIVE_CONFIG_TEMPLATE_NAME } from '../constants';
 import {
     copyFolderContentsRecursiveSync,
-    copyFileSync, writeObjectSync, removeDirsSync,
+    copyFileSync, writeFileSync, removeDirsSync,
     removeFilesSync, mergeObjects, readObjectSync
 } from '../systemTools/fileutils';
 import { logToSummary, logError, logInfo, logWarning, logTask } from '../systemTools/logger';
@@ -111,7 +111,7 @@ const _cleanProjectTemplateSync = (c) => {
     removeFilesSync(filesToRemove);
 };
 
-const _applyTemplate = c => new Promise((resolve, reject) => {
+const _applyTemplate = async (c) => {
     logTask(`_applyTemplate:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
@@ -129,8 +129,7 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
 
     if (!fs.existsSync(c.paths.template.configTemplate)) {
         logWarning(`Template file ${chalk.white(c.paths.template.configTemplate)} does not exist. check your ${chalk.white(c.paths.template.dir)}. skipping`);
-        resolve();
-        return;
+        return true;
     }
 
     logTask(`_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`, chalk.grey);
@@ -143,12 +142,11 @@ const _applyTemplate = c => new Promise((resolve, reject) => {
         c.runtime.requiresForcedTemplateApply = true;
     }
 
-
-    setAppConfig(c, c.runtime.appId);
+    await setAppConfig(c, c.runtime.appId);
     generateLocalConfig(c, !!c.runtime.selectedTemplate);
 
-    resolve();
-});
+    return true;
+};
 
 const _configureSrc = c => new Promise((resolve, reject) => {
     // Check src
@@ -202,7 +200,7 @@ const _configureAppConfigs = async (c) => {
                     }
                 }
             }
-            await updateConfig(c, '?');
+            await updateConfig(c, true);
         } catch (e) {
             logError(e);
         }
@@ -295,7 +293,7 @@ const _configureEntryPoints = c => new Promise((resolve, reject) => {
 });
 
 const _writeObjectSync = (c, p, s) => {
-    writeObjectSync(p, s);
+    writeFileSync(p, s);
     generateBuildConfig(c);
 };
 
@@ -309,7 +307,7 @@ export const getInstalledTemplateOptions = (c) => {
     if (c.buildConfig.templates) {
         return generateOptions(c.buildConfig.templates);
     }
-    logError('You don\'t have any local templates installed');
+    logError('You don\'t have any local templates installed', false, true);
     return [];
 };
 

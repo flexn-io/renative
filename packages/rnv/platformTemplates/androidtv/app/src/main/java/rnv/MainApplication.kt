@@ -3,6 +3,8 @@ package {{APPLICATION_ID}}
 import {{APPLICATION_ID}}.BuildConfig
 
 import android.app.Application
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import android.webkit.WebView
 import com.facebook.react.ReactApplication
 import com.facebook.react.ReactNativeHost
@@ -39,9 +41,11 @@ class MainApplication : Application(), ReactApplication {
 
     override fun onCreate() {
         super.onCreate()
+{{PLUGIN_DEBUG_SERVER}}
         SoLoader.init(this, /* native exopackage */ false)
         if (BuildConfig.DEBUG) {
           WebView.setWebContentsDebuggingEnabled(true)
         }
+{{PLUGIN_ON_CREATE}}
     }
 }

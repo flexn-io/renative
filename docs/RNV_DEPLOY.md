@@ -6,9 +6,11 @@ sidebar_label: deploy
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
+> runs deploy commands on selected platform
+
 ## Task Order
 
-🔥 -> `configure` -> `package` -> `build` -> `export` -> `deploy` ->  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ➡️ `deploy`  ✅
 
 ## deploy
 
@@ -44,7 +46,7 @@ rnv deploy help
 
 Example:
 
-`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=\"IDENTITY\" OTHER_CODE_SIGN_FLAGS=\"--keychain KEYCHAIN\""`
+`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=iPhone\ Distribution\ (XXX) OTHER_CODE_SIGN_FLAGS=--keychain SOME_PATH_TO_KEYCHAIN"`
 
 `--xcodebuildExportArgs` - Pass down custom xcodebuild arguments (`ios`, `tvos` only)
 

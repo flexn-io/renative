@@ -11,7 +11,7 @@ sidebar_label: Plugins
 
 ReNative Supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
-Get list of all available community plugins. (NOTE you can always add new one manually into `projectConfig/plugins.json`)
+Get list of all available community plugins. (NOTE you can always add new one manually into one of the `renative.json` files)
 
 `$ rnv plugin list`
 
@@ -40,7 +40,7 @@ and follow the command prompt steps
 ## Custom Plugin Support
 
 You can configure multiple React Native plugins without need to update project blueprints.
-default location of plugin configs is `./projectConfig/plugins.json`
+default location of plugin configs is `./renative.json`
 
 Example:
 
@@ -98,4 +98,74 @@ Plugin Spec:
       }
   }
 }
+```
+
+## Adapt 3rd party plugins to support rnv
+
+You can adapt existing plugin to support rnv projects
+
+```json
+"example": {
+            "version": "0.1.0",
+            "no-npm": true,
+            "androidtv": {
+                "implementation": "debugImplementation(name:'Example', ext:'aar')\nreleaseImplementation(name:'ExampleProduction', ext:'aar')",
+                 "mainApplication": {
+                    "imports": ["import com.example.Example"],
+                    "createMethods": [
+                        "Example.init(this)"
+                    ]
+                },
+                "BuildGradle": {
+                    "allprojects": {
+                        "repositories": {
+                            "flatDir { dirs 'libs' }": true
+                        }
+                    }
+                },
+                "AndroidManifest": {
+                    "children": [
+                        {
+                            "tag": "application",
+                            "android:name": ".MainApplication",
+                            "children": [
+                                {
+                                    "tag": "meta-data",
+                                    "android:name": "com.example.ApiKey",
+                                    "android:value": "@EXAMPLE_API_KEY@"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "tvos": {
+                "podName": "ExampleInstrumentalApplication",
+                "appDelegateImports": [
+                    "ExampleInstrumentalApplication"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "applicationDidBecomeActive": [
+                            "ExampleInstrumentalApplication.instance.start()"
+                        ]
+                    }
+                },
+                "plist": {
+                    "Example": {
+                        "APIKey": "@EXAMPLE_API_KEY@"
+                    }
+                },
+                "xcodeproj": {
+                    "buildPhases": [
+                        {
+                            "shellPath": "/bin/sh",
+                            "shellScript": "\"${PODS_ROOT}/Example/run\" @EXAMPLE_API_KEY@"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+
 ```

@@ -2,7 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 function generateConfig(config) {
@@ -97,10 +97,10 @@ function generateConfig(config) {
     rules.css = {
         test: /\.css$/,
         use: ['css-hot-loader'].concat(
-            ExtractTextPlugin.extract({
-                fallback: 'style-loader',
-                use: 'css-loader',
-            })
+            {
+                loader: MiniCssExtractPlugin.loader,
+            },
+            'css-loader',
         ),
     };
 
@@ -112,7 +112,7 @@ function generateConfig(config) {
     };
 
     rules.fonts = {
-        test: /\.(ttf|otf)(\?[\s\S]+)?$/,
+        test: /\.(woff|woff2|eot|ttf|otf)(\?[\s\S]+)?$/,
         use: 'file-loader',
     };
 
@@ -120,28 +120,15 @@ function generateConfig(config) {
         test: /\.js$/,
         use: ['source-map-loader'],
         enforce: 'pre',
+        exclude: [/node_modules/, /build/, /__test__/]
     };
 
     const aliases = {
         react: path.resolve(projectDir, 'node_modules/react'),
         'react-native': 'react-native-web',
         'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-        // 'react-native/Libraries/Image/resolveAssetSource': 'react-native-web/dist/exports/Image/resolveAssetUri',
-        // 'react-native-linear-gradient': 'react-native-web-linear-gradient',
-        // 'react-native-vector-icons': 'react-native-web-vector-icons',
         'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
-        // 'react-native-vector-icons/Entypo': path.resolve(projectDir, 'node_modules/react-native-vector-icons/dist/Entypo'),
-        // svgs: path.resolve(projectDir, 'node_modules/svgs'),
-        // 'react-navigation-tabs': path.resolve(projectDir, 'node_modules/react-navigation-tabs'),
-        // 'react-navigation-stack': path.resolve(projectDir, 'node_modules/react-navigation-stack'),
-        // 'react-native-reanimated': path.resolve(projectDir, 'node_modules/react-native-reanimated'),
-        // 'react-native-gesture-handler': path.resolve(projectDir, 'node_modules/react-native-gesture-handler'),
-        // 'react-native-material-dropdown': path.resolve(projectDir, 'node_modules/react-native-material-dropdown'),
-        // 'react-native-material-buttons': path.resolve(projectDir, 'node_modules/react-native-material-buttons'),
-        // 'react-native-material-textfield': path.resolve(projectDir, 'node_modules/react-native-material-textfield'),
-        // 'react-native-material-ripple': path.resolve(projectDir, 'node_modules/react-native-material-ripple'),
-        // 'react-native-easy-grid': path.resolve(projectDir, 'node_modules/react-native-easy-grid'),
-        // 'react-native-svg': 'svgs',
+
     };
 
     if (config.moduleAliases) {
@@ -169,14 +156,19 @@ function generateConfig(config) {
         templateParameters: {
             ...config,
             debug: process.env.DEBUG,
-            debugIp: process.env.DEBUG_IP
+            debugIp: process.env.DEBUG_IP,
+            platform: process.env.PLATFORM,
+            environment: config.environment,
         },
     });
+
     plugins.harddisk = new HtmlWebpackHarddiskPlugin();
 
     plugins.analyzer = new BundleAnalyzerPlugin();
 
-    const extensions = config.extensions.map(v => `.${v}.js`).concat(['.js']);
+    plugins.css = new MiniCssExtractPlugin();
+
+    const extensions = config.extensions.map(v => `.${v}`);
 
     const output = {
         filename: '[name].js',

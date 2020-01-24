@@ -1,23 +1,17 @@
 import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
-import child_process from 'child_process';
 import {
     logTask,
-    logError,
     logWarning,
     logSuccess,
-    getAppFolder,
-    isPlatformActive,
     getConfigProp,
-    logDebug,
     getAppId
 } from '../../common';
 import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
 import { setAppConfig } from '../../configTools/configParser';
 
-export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) => {
+export const updateProfile = async (c, appConfigId) => {
     logTask(`updateProfile:${appConfigId}`, chalk.grey);
 
     // TODO: run trough all schemes
@@ -27,11 +21,10 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
     //   c.program.scheme = k
     // }
 
-    if (appConfigId) setAppConfig(c, appConfigId);
+    if (appConfigId) await setAppConfig(c, appConfigId);
 
     if (c.platform !== IOS && c.platform !== TVOS) {
-        reject(`updateProfile:platform ${c.platform} not supported`);
-        return;
+        return Promise.reject(`updateProfile:platform ${c.platform} not supported`);
     }
     const { scheme } = c.program;
 
@@ -58,7 +51,9 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         teamID,
         '--output_path',
         certsPath,
-        '--force'
+        '--force',
+        '--platform',
+        platform
     ];
     if (process.env.APPLE_DEVELOPER_USERNAME) {
         args = args.concat([
@@ -70,14 +65,12 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         args.push(`--${provisioning}`);
     }
 
-    executeAsync(c, `fastlane ${args.join(' ')}`, { shell: true, stdio: 'inherit', silent: true })
-        .then(() => {
-            logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
-
-            resolve();
-        })
-        .catch((e) => {
-            logWarning(e);
-            resolve();
-        });
-});
+    try {
+        await executeAsync(c, `fastlane ${args.join(' ')}`, { shell: true, stdio: 'inherit', silent: true });
+        logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
+        return true;
+    } catch (e) {
+        logWarning(e);
+        return true;
+    }
+};

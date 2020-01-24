@@ -1,5 +1,5 @@
 import React from 'react';
-import { createApp } from 'renative';
+import { createApp, registerFocusManger, registerServiceWorker } from 'renative';
 import { navStructure } from './nav';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
@@ -7,6 +7,13 @@ import ScreenModal from './screenModal';
 import Menu from './menu';
 
 import '../platformAssets/runtime/fontManager';
+
+registerFocusManger({ focused: 'opacity: 0.4' });
+registerServiceWorker();
+
+// Flag to enable yellow warnings
+console.disableYellowBox = true;
+
 
 let AppContainer;
 

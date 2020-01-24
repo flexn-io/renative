@@ -1,0 +1,198 @@
+{
+    "id": "kitchenSink",
+    "common": {
+        "id": "renative.kitchensink",
+        "title": "ReNative Kitchen Sink",
+        "description": "Cross-platform application project based on ReNative",
+        "author": {
+            "name": "Pavel Jacko",
+            "email": "Pavel Jacko <i@pavjacko.com>",
+            "url": "https://github.com/pavjacko"
+        },
+        "license": "MIT",
+        "includedPlugins": ["*"],
+        "includedFonts": ["*"],
+        "defaultSchemes": {
+            "run": "debug",
+            "build": "release",
+            "export": "release"
+        }
+    },
+    "platforms": {
+        "ios": {
+            "entryFile": "index.ios",
+            "scheme": "RNVApp",
+            "teamID": "",
+            "permissions": ["*"],
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "runScheme": "Debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
+        "tvos": {
+            "entryFile": "index.tvos",
+            "teamID": "",
+            "scheme": "RNVAppTVOS",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "runScheme": "Debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "scheme": "RNVAppTVOSRelease",
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
+        "android": {
+            "entryFile": "index.android",
+            "enableHermes": true,
+            "permissions": ["*"],
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "signingConfig": "Debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "signingConfig": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": true
+                }
+            }
+        },
+        "androidtv": {
+            "entryFile": "index.androidtv",
+            "enableHermes": true,
+            "permissions": ["*"],
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "signingConfig": "Debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "signingConfig": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
+        "androidwear": {
+            "entryFile": "index.androidwear",
+            "enableHermes": true,
+            "permissions": ["*"],
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "signingConfig": "Debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "signingConfig": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
+        "macos": {
+            "entryFile": "index.macos",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "bundleAssets": false,
+                    "environment": "development"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "environment": "production"
+                }
+            }
+        },
+        "tizen": {
+            "appName": "RNVanillaTV",
+            "package": "NkVRhWHJSU",
+            "id": "NkVRhWHJSU.RNVanillaTV",
+            "entryFile": "index.tizen",
+            "certificateProfile": "RNVanillaCert"
+        },
+        "tizenwatch": {
+            "appName": "RNVanillaWatch",
+            "package": "cHIP2fIRQY",
+            "id": "cHIP2fIRQY.RNVanillaWatch",
+            "entryFile": "index.tizenwatch",
+            "certificateProfile": "RNVanillaCert"
+        },
+        "web": {
+            "entryFile": "index.web",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "bundleAssets": false,
+                    "environment": "developement"
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "environment": "production"
+                }
+            }
+        },
+        "webos": {
+            "entryFile": "index.webos"
+        },
+        "windows": {
+            "entryFile": "index.windows"
+        },
+        "kaios": {
+            "entryFile": "index.kaios",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
+        "firefoxos": {
+            "entryFile": "index.firefoxos",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        },
+        "firefoxtv": {
+            "entryFile": "index.firefoxtv",
+            "buildSchemes": {
+                "debug": {
+                    "id": "renative.kitchensink.debug",
+                    "bundleAssets": false
+                },
+                "release": {
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
+        }
+    }
+}

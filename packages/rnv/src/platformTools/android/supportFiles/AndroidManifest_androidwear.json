@@ -3,7 +3,8 @@
     "xmlns:android": "http://schemas.android.com/apk/res/android",
     "package": "{{APPLICATION_ID}}",
     "xmlns:tools": "http://schemas.android.com/tools",
-    "children": [{
+    "children": [
+        {
             "tag": "uses-feature",
             "android:name": "android.hardware.type.watch",
             "android:required": false
@@ -15,23 +16,30 @@
             "android:icon": "@mipmap/ic_launcher_round",
             "android:supportsRtl": true,
             "android:usesCleartextTraffic": true,
+            "tools:replace": "android:appComponentFactory",
+            "android:appComponentFactory": "appComponentFactoryFix",
             "android:theme": "@style/AppTheme",
-            "children": [{
+            "children": [
+                {
                     "tag": "activity",
                     "android:name": ".MainActivity",
                     "android:label": "@string/app_name",
-                    "children": [{
-                        "tag": "intent-filter",
-                        "children": [{
-                                "tag": "action",
-                                "android:name": "android.intent.action.MAIN"
-                            },
-                            {
-                                "tag": "category",
-                                "android:name": "android.intent.category.LAUNCHER"
-                            }
-                        ]
-                    }]
+                    "android:launchMode": "singleTask",
+                    "children": [
+                        {
+                            "tag": "intent-filter",
+                            "children": [
+                                {
+                                    "tag": "action",
+                                    "android:name": "android.intent.action.MAIN"
+                                },
+                                {
+                                    "tag": "category",
+                                    "android:name": "android.intent.category.LAUNCHER"
+                                }
+                            ]
+                        }
+                    ]
                 },
                 {
                     "tag": "meta-data",

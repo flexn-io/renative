@@ -4,6 +4,10 @@
   min-height: 100vh;
 }
 
+body {
+  background-color: {{PLUGIN_COLORS_BG}};
+}
+
 body::-webkit-scrollbar, div::-webkit-scrollbar {
   width: 3px;
   height: 0px;

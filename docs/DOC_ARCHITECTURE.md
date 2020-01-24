@@ -21,15 +21,15 @@ Folder Structure (Generated Project)
 
     .
     ├── appConfigs                  # Application flavour configuration files/assets
+    │   ├── base                    # Shared project configuration files/assets
+    │   │   ├── fonts               # Folder for all custom fonts
+    │   │   └── builds              # Fonts configuration
     │   └── helloWorld              # Example application flavour
     │       ├── assets              # Platform assets injected to `./platformAssets`
     │       ├── builds              # Platform files injected to `./platformBuilds`
     │       └── renative.json       # Application flavour config
     ├── platformAssets              # Generated cross-platform assets
     ├── platformBuilds              # Generated platform app projects
-    ├── projectConfig               # Project configuration files/assets
-    │   ├── fonts                   # Folder for all custom fonts
-    │   └── builds                  # Fonts configuration
     ├── src                         # Source files
     └── renative.json           # React Native Plugins configuration
 

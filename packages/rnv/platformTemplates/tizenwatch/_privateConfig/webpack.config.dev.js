@@ -5,7 +5,6 @@ const config = {
     currentDir: __dirname,
     metaTags: { viewport: 'content="width=200"' },
     environment: 'development',
-    extensions: ['tizenwatch', 'smarttv', 'web'],
     customScripts: [],
     devServerHost: '0.0.0.0',
     baseUrl: '',
@@ -13,7 +12,7 @@ const config = {
 };
 
 const C = Configs.generateConfig(config);
-const plugins = [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk];
+const plugins = [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk, C.Plugins.css];
 if (config.analyzer) plugins.push(C.Plugins.analyzer);
 
 module.exports = {

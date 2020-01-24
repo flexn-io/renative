@@ -1,7 +1,7 @@
 import groovy.json.JsonSlurper
 
 buildscript {
-    ext.kotlin_version = '1.3.20'
+    ext.kotlin_version = '1.3.50'
     repositories {
         google()
         jcenter()
@@ -23,6 +23,7 @@ allprojects {
         mavenCentral()
         maven { url "$rootDir/../../node_modules/react-native/android" }
         maven { url "https://jitpack.io" }
+        maven { url("$rootDir/../../node_modules/jsc-android/dist") }
         {{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}
     }
 }

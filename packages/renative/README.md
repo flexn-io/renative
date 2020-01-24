@@ -7,10 +7,14 @@
   <p align='center'>build universal cross-platform apps with <a href="https://facebook.github.io/react-native/">react native</a></p>
   <p align='center'>
   <img src="https://img.shields.io/badge/Platforms_Supported-15-blue.svg" />
-  <img src="https://img.shields.io/badge/React_Native-0.59.5-blue.svg" />
-  <img src="https://img.shields.io/badge/React-16.8.6-blue.svg" />
+  <img src="https://img.shields.io/badge/React_Native-0.61.2-blue.svg" />
+  <img src="https://img.shields.io/badge/React-16.9.0-blue.svg" />
   <img src="https://img.shields.io/badge/Plugins-78-red.svg" />
   </p>
+</p>
+
+<p align='center'>
+  <a href="https://www.youtube.com/watch?v=PLCJzCDSyDk">Introduction Video</a>
 </p>
 
    <br />
@@ -206,6 +210,9 @@ Contributing
 [![License MIT](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/pavjacko/renative/pulls)
 ![hits](https://hits.dwyl.com/pavjacko/renative.svg)
+[![Actions Status](https://github.com/pavjacko/renative/workflows/Node%20CI/badge.svg)](https://github.com/pavjacko/renative/actions)
+[![codecov](https://codecov.io/gh/pavjacko/renative/branch/master/graph/badge.svg)](https://codecov.io/gh/pavjacko/renative)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 
 <!-- [![OpenCollective](https://opencollective.com/renative/backers/badge.svg)](#backers) -->
 <!-- [![OpenCollective](https://opencollective.com/renative/sponsors/badge.svg)](#sponsors) -->

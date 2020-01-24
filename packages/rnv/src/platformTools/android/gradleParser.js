@@ -53,6 +53,7 @@ export const parseBuildGradleSync = (c, platform) => {
 };
 
 export const parseAppBuildGradleSync = (c, platform) => {
+    logTask('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c, platform);
 
     // ANDROID PROPS
@@ -133,6 +134,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
 
 
     // MULTI APK
+    const versionCodeOffset = getConfigProp(c, platform, 'versionCodeOffset', 0);
     const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
     c.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
@@ -144,7 +146,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         variant.outputs.each { output ->
           def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
           if (bavc != null) {
-            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc))
+            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc)) + ${versionCodeOffset}
           }
         }
       }`;
@@ -191,13 +193,24 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
     targetCompatibility 1.8`;
 
     // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
-    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX');
+    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
     if (enableAndroidX === true) {
-        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.appcompat:appcompat:$version"\n';
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.appcompat:appcompat:1.1.0"\n';
     } else {
         c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'com.android.support:appcompat-v7:27.0.2\'\n';
     }
 
+    c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
+    // ENABLE HERMES
+    const enableHermes = getConfigProp(c, platform, 'enableHermes', false);
+
+    if (enableHermes) {
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    debugImplementation files("../../../node_modules/hermes-engine/android/hermes-debug.aar")\n';
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    releaseImplementation files("../../../node_modules/hermes-engine/android/hermes-release.aar")\n';
+    } else {
+        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'org.webkit:android-jsc:+\'\n';
+    }
+    c.pluginConfigAndroid.enableHermes = `    enableHermes: ${enableHermes},`;
 
     writeCleanFile(getBuildFilePath(c, platform, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
         { pattern: '{{PLUGIN_APPLY}}', override: c.pluginConfigAndroid.applyPlugin },
@@ -208,6 +221,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate },
         { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: c.pluginConfigAndroid.appBuildGradleSigningConfigs },
         { pattern: '{{PLUGIN_SPLITS}}', override: c.pluginConfigAndroid.splits },
+        { pattern: '{{PLUGIN_ANDROID_DEFAULT_CONFIG}}', override: c.pluginConfigAndroid.defaultConfig },
         { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: c.pluginConfigAndroid.packagingOptions },
         { pattern: '{{PLUGIN_BUILD_TYPES}}', override: c.pluginConfigAndroid.buildTypes },
         { pattern: '{{PLUGIN_MULTI_APKS}}', override: c.pluginConfigAndroid.multiAPKs },
@@ -216,6 +230,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
         { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: c.pluginConfigAndroid.compileOptions },
         { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: c.pluginConfigAndroid.localProperties },
+        { pattern: '{{PLUGIN_ENABLE_HERMES}}', override: c.pluginConfigAndroid.enableHermes }
     ]);
 };
 
@@ -235,11 +250,19 @@ export const parseGradlePropertiesSync = (c, platform) => {
     const pluginConfigAndroid = c.buildConfig?.platforms?.[platform] || {};
 
     const gradleProps = pluginConfigAndroid['gradle.properties'];
+
     if (gradleProps) {
+        const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
+        if (enableAndroidX === true) {
+            gradleProps['android.useAndroidX'] = true;
+            gradleProps['android.enableJetifier'] = true;
+        }
+
         Object.keys(gradleProps).forEach((key) => {
             pluginGradleProperties += `${key}=${gradleProps[key]}\n`;
         });
     }
+
     const gradleProperties = 'gradle.properties';
     writeCleanFile(getBuildFilePath(c, platform, gradleProperties), path.join(appFolder, gradleProperties), [
         { pattern: '{{PLUGIN_GRADLE_PROPERTIES}}', override: pluginGradleProperties }
@@ -252,16 +275,18 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
     }
-
+    const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     const modulePath = `../../${pathFixed}`;
 
     // APP/BUILD.GRADLE
     if (plugin.projectName) {
-        c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
-        c.pluginConfigAndroid.pluginPaths += `project(':${
-            plugin.projectName
-        }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        if (!plugin.skipLinking) {
+            c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${
+                plugin.projectName
+            }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
@@ -270,13 +295,15 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             }
         }
     } else {
-        c.pluginConfigAndroid.pluginIncludes += `, ':${key}'`;
-        c.pluginConfigAndroid.pluginPaths += `project(':${key}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        if (!plugin.skipLinking) {
+            c.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+        }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
-                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${key}')\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${keyFixed}')\n`;
             }
         }
     }
@@ -292,6 +319,12 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         if (appBuildGradle.apply) {
             appBuildGradle.apply.forEach((v) => {
                 c.pluginConfigAndroid.applyPlugin += `apply ${v}\n`;
+            });
+        }
+
+        if (appBuildGradle.defaultConfig) {
+            appBuildGradle.defaultConfig.forEach((v) => {
+                c.pluginConfigAndroid.defaultConfig += `${v}\n`;
             });
         }
     }

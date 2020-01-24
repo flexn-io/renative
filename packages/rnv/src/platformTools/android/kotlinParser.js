@@ -25,8 +25,10 @@ import {
     getConfigProp,
     logInfo,
     logSuccess,
+    getIP,
     getBuildsFolder,
 } from '../../common';
+import { PLATFORMS } from '../../constants';
 import { copyBuildsFolder } from '../../projectTools/projectParser';
 import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
@@ -34,22 +36,40 @@ import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 export const parseMainApplicationSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
-    const bundleFile = getGetJsBundleFile(c, platform) || JS_BUNDLE_DEFAULTS[platform];
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    const bundleFile = getGetJsBundleFile(c, platform) || bundleAssets ? JS_BUNDLE_DEFAULTS_BUNDLED[platform] : JS_BUNDLE_DEFAULTS[platform];
+    // const host = getConfigProp(c, platform, 'host', '10.0.2.2');
+    const bundlerIp = getIP() || '10.0.2.2';
+    if (!bundleAssets) {
+        c.pluginConfigAndroid.pluginApplicationDebugServer += '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
+        c.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${c.runtime.port}").apply()\n`;
+    }
+
+
     writeCleanFile(getBuildFilePath(c, platform, applicationPath), path.join(appFolder, applicationPath), [
         { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
         { pattern: '{{ENTRY_FILE}}', override: getEntryFile(c, platform) },
         { pattern: '{{GET_JS_BUNDLE_FILE}}', override: bundleFile },
-        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginImports },
+        { pattern: '{{PLUGIN_IMPORTS}}', override: c.pluginConfigAndroid.pluginApplicationImports },
         { pattern: '{{PLUGIN_PACKAGES}}', override: c.pluginConfigAndroid.pluginPackages },
-        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.mainApplicationMethods },
+        { pattern: '{{PLUGIN_METHODS}}', override: c.pluginConfigAndroid.pluginApplicationMethods },
+        { pattern: '{{PLUGIN_ON_CREATE}}', override: c.pluginConfigAndroid.pluginApplicationCreateMethods },
+        { pattern: '{{PLUGIN_DEBUG_SERVER}}', override: c.pluginConfigAndroid.pluginApplicationDebugServer },
+
     ]);
 };
 
 const JS_BUNDLE_DEFAULTS = {
-    android: 'super.getJSBundleFile()',
-    androidtv: 'super.getJSBundleFile()',
+    android: '"super.getJSBundleFile()"',
+    androidtv: '"super.getJSBundleFile()"',
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager
     androidwear: '"assets://index.androidwear.bundle"',
+};
+
+const JS_BUNDLE_DEFAULTS_BUNDLED = {
+    android: '"assets://index.android.bundle"',
+    androidtv: '"assets://index.android.bundle"',
+    androidwear: '"assets://index.android.bundle"',
 };
 
 
@@ -71,7 +91,7 @@ export const parseSplashActivitySync = (c, platform) => {
 
 
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
-    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX');
+    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
     if (enableAndroidX === true) {
         c.pluginConfigAndroid.pluginSplashActivityImports += 'import androidx.appcompat.app.AppCompatActivity\n';
     } else {
@@ -128,7 +148,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     if (plugin.imports) {
         plugin.imports.forEach((v) => {
-            c.pluginConfigAndroid.pluginImports += `import ${v}\n`;
+            c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
         });
     }
 
@@ -142,13 +162,33 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         }
     }
 
+    const { mainApplication } = plugin;
+    if (mainApplication) {
+        if (mainApplication.createMethods instanceof Array) {
+            c.pluginConfigAndroid.pluginApplicationCreateMethods += '\n';
+            c.pluginConfigAndroid.pluginApplicationCreateMethods += `${mainApplication.createMethods.join('\n    ')}`;
+        }
+
+        if (mainApplication.imports instanceof Array) {
+            mainApplication.imports.forEach((v) => {
+                c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
+            });
+        }
+
+        if (mainApplication.methods instanceof Array) {
+            c.pluginConfigAndroid.pluginApplicationMethods += '\n';
+            c.pluginConfigAndroid.pluginApplicationMethods += `${mainApplication.methods.join('\n    ')}`;
+        }
+    }
+
     if (plugin.mainApplicationMethods) {
-        c.pluginConfigAndroid.mainApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
+        logWarning(`Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${c.platform}": { MainApplicationMethods }. Use "${c.platform}": { "mainApplication": { "methods": []}} instead`);
+        c.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };
 
 const _injectPackage = (c, plugin, pkg) => {
-    if (pkg) c.pluginConfigAndroid.pluginImports += `import ${pkg}\n`;
+    if (pkg) c.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
     let packageParams = '';
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');

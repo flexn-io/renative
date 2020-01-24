@@ -6,7 +6,7 @@ import {
     logInfo,
     logTask,
 } from '../systemTools/logger';
-import { writeObjectSync } from '../systemTools/fileutils';
+import { writeFileSync } from '../systemTools/fileutils';
 import { DEPLOY_TARGET_FTP } from './webTools';
 
 const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
@@ -155,7 +155,7 @@ const _createDeployConfig = async (c, platform) => {
 
     // TODO: Review this (where to put what props renative.*.json)
     c.files.appConfig.config.platforms[platform].deploy = deploy;
-    writeObjectSync(c.paths.appConfig.config, c.files.appConfig.config);
+    writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
 };
 
 const deployToFtp = (c, platform) => {

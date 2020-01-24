@@ -4,10 +4,12 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import { logWarning, logTask, logDebug, logSuccess, logError } from '../systemTools/logger';
-import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeObjectSync } from '../systemTools/fileutils';
+import { readObjectSync, mergeObjects, copyFileSync, removeFilesSync, writeFileSync, copyFolderContentsRecursiveSync, removeDirs } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
 import { rnvClean } from '../systemTools/cleaner';
+import { RN_CLI_CONFIG_NAME } from '../constants';
 import { configureNodeModules } from './projectParser';
+import { inquirerPrompt } from '../systemTools/prompt';
 
 export const checkAndMigrateProject = async (c) => {
     logTask('checkAndMigrateProject');
@@ -20,12 +22,15 @@ export const checkAndMigrateProject = async (c) => {
         // privateProjectConfig: path.join(c.paths.workspace.project.dir, 'config.json'),
         // privateProjectConfig2: path.join(c.paths.workspace.project.dir, 'config.private.json'),
         // privateProjectConfigNew: path.join(c.paths.workspace.project.dir, 'renative.private.json'),
+        projectConfigDir: path.join(prjDir, 'projectConfig'),
         config: path.join(prjDir, 'rnv-config.json'),
         configNew: path.join(prjDir, 'renative.json'),
         package: path.join(prjDir, 'package.json'),
         plugins: path.join(prjDir, 'projectConfig/plugins.json'),
         permissions: path.join(prjDir, 'projectConfig/permissions.json'),
-        appConfigs: path.join(prjDir, 'appConfigs')
+        appConfigs: path.join(prjDir, 'appConfigs'),
+        metroConfig: path.join(prjDir, 'rn-cli.config.js'),
+        metroConfigNew: path.join(prjDir, RN_CLI_CONFIG_NAME)
     };
 
     try {
@@ -67,7 +72,7 @@ const PATH_PROPS = [
     { oldKey: 'projectConfigFolder', newKey: 'projectConfigDir' },
 ];
 
-const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
+const _migrateProjectSoft = async (c, paths) => {
     logTask('_migrateProjectSoft');
     let files;
     try {
@@ -87,16 +92,30 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
             });
         }
 
+        if (fs.existsSync(paths.package)) {
+            const packageString = fs.readFileSync(paths.package).toString();
+            if (!packageString.includes('jetify') && !packageString.includes('postinstall')) {
+                logWarning(`You're missing ${chalk.white('"scripts": { "postinstall": "jetify" }')} in your package.json. Your android build might fail!`);
+            }
+        }
+
+        if (fs.existsSync(paths.metroConfig)) {
+            logWarning(`Found deprecated metro config ${paths.metroConfig} and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`);
+            const metroConfig = fs.readFileSync(paths.metroConfig).toString();
+            fs.writeFileSync(paths.metroConfigNew, metroConfig);
+            removeFilesSync([paths.metroConfig]);
+        }
+
         if (files.configNew?.android) {
             logWarning('Found legacy object "android" at root. ReNative will try to fix it for you!');
             files.configNew.platforms = files.configNew.platforms || {};
 
-            files.configNew.platforms.android = mergeObjects(files.configNew.platforms.android || {}, files.configNew.android);
+            files.configNew.platforms.android = mergeObjects(c, files.configNew.platforms.android || {}, files.configNew.android);
             if (files.configNew.platforms.androidtv) {
-                files.configNew.platforms.androidtv = mergeObjects(files.configNew.platforms.androidtv || {}, files.configNew.android);
+                files.configNew.platforms.androidtv = mergeObjects(c, files.configNew.platforms.androidtv || {}, files.configNew.android);
             }
             if (files.configNew.platforms.androidwear) {
-                files.configNew.platforms.androidwear = mergeObjects(files.configNew.platforms.androidwear || {}, files.configNew.android);
+                files.configNew.platforms.androidwear = mergeObjects(c, files.configNew.platforms.androidwear || {}, files.configNew.android);
             }
             delete files.configNew.android;
             requiresSave = true;
@@ -105,9 +124,9 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
         if (files.configNew?.ios) {
             logWarning('Found legacy object "ios" at root. ReNative will try to fix it for you!');
             files.configNew.platforms = files.configNew.platforms || {};
-            files.configNew.platforms.ios = mergeObjects(files.configNew.platforms.ios || {}, files.configNew.ios);
+            files.configNew.platforms.ios = mergeObjects(c, files.configNew.platforms.ios || {}, files.configNew.ios);
             if (files.configNew.platforms.tvos) {
-                files.configNew.platforms.tvos = mergeObjects(files.configNew.platforms.tvos || {}, files.configNew.ios);
+                files.configNew.platforms.tvos = mergeObjects(c, files.configNew.platforms.tvos || {}, files.configNew.ios);
             }
             delete files.configNew.ios;
             requiresSave = true;
@@ -121,16 +140,29 @@ const _migrateProjectSoft = (c, paths) => new Promise((resolve, reject) => {
             logWarning(`Found legacy object ${chalk.red(paths.plugins)}. this should be migrated to ${chalk.green('./renative.json')}`);
         }
 
-        if (requiresSave) writeObjectSync(paths.configNew, files.configNew);
+        if (requiresSave) writeFileSync(paths.configNew, files.configNew);
+
+        if (fs.existsSync(paths.projectConfigDir)) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: 'in RNV 0.28.12+ ./projectConfig has been migrated to ./appConfigs/base. confirm to migrate to new structure. (having a backup or clean git status is recommended)'
+            });
+
+            if (confirm) {
+                copyFolderContentsRecursiveSync(paths.projectConfigDir, c.paths.project.projectConfig.dir);
+
+                await removeDirs([paths.projectConfigDir]);
+            } else {
+                logError('Not migrating ./projectConfig will most likely result in errors');
+            }
+        }
 
         // _migrateFile(paths.privateProjectConfig, paths.privateProjectConfigNew);
         // _migrateFile(paths.privateProjectConfig2, paths.privateProjectConfigNew);
     } catch (e) {
         logError(`Migration not successfull. ${e}`);
     }
-
-    resolve();
-});
+};
 
 const _migrateFile = (oldPath, newPath) => {
     if (!fs.existsSync(newPath)) {
@@ -169,7 +201,7 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
         newConfig.defaults = {};
 
         if (files.config.defaultProjectConfigs) {
-            newConfig.defaults = mergeObjects(newConfig.defaults, files.config.defaultProjectConfigs);
+            newConfig.defaults = mergeObjects(c, newConfig.defaults, files.config.defaultProjectConfigs);
         }
         newConfig.currentTemplate = newConfig.defaults.template || 'renative-template-hello-world';
 
@@ -230,7 +262,7 @@ const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
         }
     });
 
-    writeObjectSync(c.paths.project.config, newConfig);
+    writeFileSync(c.paths.project.config, newConfig);
 
     logDebug(`Paths to delete, ${pathsToDelete.join('\n')}`);
 

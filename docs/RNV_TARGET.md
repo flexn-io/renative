@@ -8,6 +8,10 @@ sidebar_label: target
 
 > Manages simulators and emulators
 
+## Task Order
+
+🔥 `target`  ✅
+
 ## target
 
 Get interactive options for target

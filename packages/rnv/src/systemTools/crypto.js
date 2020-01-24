@@ -8,6 +8,8 @@ import { IOS, TVOS, RENATIVE_CONFIG_NAME } from '../constants';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
+import { inquirerPrompt } from './prompt';
+import { cleanFolder } from '../../dist/systemTools/fileutils';
 
 const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
@@ -26,11 +28,12 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
 
     const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+    const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
-
+        const timestamp = (new Date()).getTime();
         const envVar = getEnvVar(c);
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
@@ -45,10 +48,11 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync(c, `openssl enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
+            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
-                fs.writeFileSync(`${dest}.timestamp`, (new Date()).getTime());
+                fs.writeFileSync(`${dest}.timestamp`, timestamp);
+                fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
                 logSuccess(`Files succesfully encrypted into ${dest}`);
                 resolve();
             }).catch((e) => {
@@ -60,7 +64,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
     }
 });
 
-export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
+export const rnvCryptoDecrypt = async (c) => {
     logTask('rnvCryptoDecrypt');
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
@@ -68,38 +72,73 @@ export const rnvCryptoDecrypt = c => new Promise((resolve, reject) => {
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
+        const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
 
+
+        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        if (c.program.ci !== true && c.program.reset !== true) {
+            const options = [
+                'Yes - override (recommended)',
+                'Yes - merge',
+                'Skip'
+            ];
+            const { option } = await inquirerPrompt({
+                name: 'option',
+                type: 'list',
+                choices: options,
+                message: `How to decrypt to ${chalk.white(destFolder)} ?`
+            });
+            if (option === options[0]) {
+                await cleanFolder(wsPath);
+            } else if (option === options[2]) {
+                return true;
+            }
+        } else {
+            await cleanFolder(wsPath);
+        }
+
+
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
-            reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
-            return;
+            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
         }
-        executeAsync(c, `openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] })
-            .then(() => {
-                tar.x(
-                    {
-                        file: destTemp,
-                        cwd: c.paths.workspace.dir
-                    }
-                ).then(() => {
-                    removeFilesSync([destTemp]);
-                    if (fs.existsSync(ts)) {
-                        copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
-                    }
-                    logSuccess(`Files succesfully extracted into ${c.paths.workspace.dir}`);
-                    resolve();
-                })
-                    .catch(e => reject(e));
-            }).catch((e) => {
-                reject(e);
-            });
+        if (!fs.existsSync(source)) {
+            return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
+        }
+
+        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] });
+
+        await tar.x({
+            file: destTemp,
+            cwd: c.paths.workspace.dir
+        });
+
+        removeFilesSync([destTemp]);
+        if (fs.existsSync(ts)) {
+            copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
+        }
+        logSuccess(`Files succesfully extracted into ${destFolder}`);
     } else {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
-        resolve();
+        return true;
     }
-});
+};
+
+const _getOpenSllPath = (c) => {
+
+    const { process: { platform } } = c;
+    let defaultOpenssl = 'openssl';
+    // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
+    if (platform === 'darwin') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
+    // if (fs.existsSync(defaultOpenssl)) {
+    //     return defaultOpenssl;
+    // }
+    // logWarning(`${defaultOpenssl} is missing. will use default one`);
+
+    return defaultOpenssl;
+};
 
 export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
     logTask('rnvCryptoInstallProfiles');
@@ -155,16 +194,16 @@ export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
 });
 
 
-export const rnvCryptoUpdateProfiles = (c) => {
+export const rnvCryptoUpdateProfiles = async (c) => {
     logTask('rnvCryptoUpdateProfiles');
     switch (c.platform) {
-    case IOS:
-    case TVOS:
-        const { appId } = c.runtime;
-        return _updateProfiles(c)
-            .then(() => {
-                setAppConfig(c, appId);
-            });
+        case IOS:
+        case TVOS:
+            const { appId } = c.runtime;
+            await _updateProfiles(c);
+            await setAppConfig(c, appId);
+        default:
+            return true;
     }
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };
@@ -184,3 +223,45 @@ const _updateProfile = (c, v) => new Promise((resolve, reject) => {
         .then(() => resolve())
         .catch(e => reject(e));
 });
+
+export const checkCrypto = async (c) => {
+    logTask('checkCrypto');
+
+    if (c.program.ci) return;
+
+    const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
+    const source = `./${c.files.project.package.name}`;
+    const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
+
+    if (destRaw) {
+        if (sourceRaw && destRaw) {
+            const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
+            const tsProjectPath = `${source}.timestamp`;
+            const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+            const tsWorkspacePath = path.join(wsPath, 'timestamp');
+            if (!fs.existsSync(source)) {
+                logWarning('This project uses encrypted files but you don\'t have them installed');
+            } else {
+                let tsWorkspace = 0;
+                let tsProject = 0;
+                if (fs.existsSync(tsWorkspacePath)) {
+                    tsWorkspace = parseInt(fs.readFileSync(tsWorkspacePath).toString());
+                }
+
+                if (fs.existsSync(tsProjectPath)) {
+                    tsProject = parseInt(fs.readFileSync(tsProjectPath).toString());
+                }
+
+                if (tsProject > tsWorkspace) {
+                    logWarning(`Your ${tsWorkspacePath} is out of date. you should run decrypt`);
+                    await rnvCryptoDecrypt(c);
+                    return;
+                }
+
+                if (tsProject < tsWorkspace) {
+                    logWarning(`Your ${tsWorkspacePath} is newer than your project one.`);
+                }
+            }
+        }
+    }
+};

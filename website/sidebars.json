@@ -1,10 +1,28 @@
 {
     "docs-sidebar": {
-        "GettingStarted": [
+        "Getting Started": [
             "quickstart",
             "installation",
+            "migrating_react_native",
             "features",
+            "customize",
             "architecture"
+        ],
+        "Guides": [
+            "cli",
+            "plugins",
+            "templates",
+            "integrations",
+            "workspaces",
+            "config",
+            "rnv_config",
+            "file_extensions",
+            "config_folders",
+            "build_hooks",
+            "runtime",
+            "common_issues",
+            "develop",
+            "analytics"
         ],
         "Platforms": [
             "platforms_overview",
@@ -24,19 +42,14 @@
             "webos",
             "windows"
         ],
-        "Guides": [
-            "cli",
-            "plugins",
-            "templates",
-            "integrations",
-            "workspaces",
-            "config",
-            "rnv_config",
-            "config_folders",
-            "build_hooks",
-            "runtime",
-            "common_issues",
-            "develop"
+        "Integrations": [
+            "integration_aws",
+            "integration_azure",
+            "integration_docker",
+            "integration_fastlane",
+            "integration_ftp",
+            "integration_now",
+            "integration_testflight"
         ]
     },
     "api-sidebar": {
@@ -53,6 +66,7 @@
             "rnv-new",
             "rnv-package",
             "rnv-platform",
+            "rnv-publish",
             "rnv-plugin",
             "rnv-run",
             "rnv-start",
