@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.28.18-alpha.5",
+    "version": "0.28.18-alpha.6",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -76,7 +76,7 @@
         "publish:sink:alpha": "cd packages/renative-template-kitchen-sink && npm publish --tag alpha",
         "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages",
         "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && npm run watch",
-        "run:apps": "ttab rnv run -p tizen -t T-samsung-5.5-x86 --ci && ttab rnv run -p androidwear -t Android_Wear_Round_API_28 --ci && ttab rnv run -p tizenwatch -t W-5.5-circle-x86 --ci && ttab rnv run -p tizenmobile -t M-5.5-x86 --ci && ttab rnv run -p ios -t 'iPhone 8' --ci && ttab rnv run -p android -t Pixel_2_API_28 --ci && ttab rnv run -p androidtv -t Android_TV_1080p_API_28 --ci && ttab rnv run -p macos --ci && ttab rnv run -p web --ci && ttab rnv run -p tvos -t Apple TV 4K --ci && ttab rnv run -p webos --ci",
+        "run:apps": "ttab rnv run -p web --ci && ttab rnv run -p ios -t 'iPhone 8' --ci && ttab rnv run -p android -t Pixel_2_API_28 --ci && ttab rnv run -p androidtv -t Android_TV_1080p_API_28 --ci && ttab rnv run -p tvos --ci && ttab rnv run -p macos --ci && ttab rnv run -p tizen -t T-samsung-5.5-x86 --ci && ttab rnv run -p webos --ci && ttab rnv run -p androidwear -t Android_Wear_Round_API_28 --ci && ttab rnv run -p tizenwatch -t W-5.5-circle-x86 --ci && ttab rnv run -p tizenmobile -t M-5.5-x86 --ci",
         "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloWorld --ci && npm run run:apps",
         "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
         "test:rnv": "cd ./packages/rnv && npm run test:local",
