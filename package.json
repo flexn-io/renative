@@ -57,10 +57,10 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "build": "lerna run build",
-        "lerna": "npx lerna bootstrap",
-        "link": "cd ./packages/rnv && npm link",
-        "postinstall": "npx jetify",
+        "build": "lerna run --parallel --concurrency 1 build",
+        "bootstrap": "npx lerna bootstrap",
+        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && npm run bootstrap",
+        "postinstall": "lerna link --force-local && npx jetify",
         "prePublish": "rnv hooks run -x prePublish",
         "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",
         "publish:alpha": "npm run prePublish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
@@ -89,7 +89,6 @@
         "@react-navigation/core": "3.4.2",
         "@react-navigation/native": "3.5.0",
         "@react-navigation/web": "1.0.0-alpha.9",
-        "@rnv/deploy-docker": "latest",
         "husky": "3.0.5",
         "raf": "3.4.1",
         "react": "16.9.0",
@@ -103,8 +102,7 @@
         "react-native-web": "0.11.7",
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
-        "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative"
+        "react-navigation-tabs": "2.0.0-alpha.0"
     },
     "devDependencies": {
         "concurrently": "4.1.1",
@@ -113,10 +111,6 @@
         "jetifier": "1.6.4",
         "lerna": "3.16.4",
         "release-it": "12.4.3",
-        "renative-template-blank": "file:./packages/renative-template-blank",
-        "renative-template-hello-world": "file:./packages/renative-template-hello-world",
-        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
-        "rnv": "file:./packages/rnv",
         "xcode": "2.0.0"
     },
     "optionalDependencies": {
@@ -143,6 +137,9 @@
             "pre-commit": "pretty-quick --staged && npm run test:rnv:unit"
         }
     },
+    "workspaces": [
+        "packages/*"
+    ],
     "release-it": {
         "publish": "local",
         "skipRootPublish": true,
