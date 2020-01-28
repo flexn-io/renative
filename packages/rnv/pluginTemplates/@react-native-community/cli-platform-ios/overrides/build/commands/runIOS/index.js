@@ -199,7 +199,7 @@ async function runOnDevice(selectedDevice, scheme, xcodeProject, args) {
     });
 
     if (isIOSDeployInstalled.error) {
-        _child_process().default.spawnSync('npm', ['install', '-g', 'ios-deploy@beta'], {
+        _child_process().default.spawnSync('npm', ['install', '-g', 'ios-deploy@1.10.0'], {
             encoding: 'utf8'
         });
         // throw new (_cliTools().CLIError)(`Failed to install the app on the device because we couldn't execute the "ios-deploy" command. Please install it by running "${_chalk().default.bold('npm install -g ios-deploy')}" and try again.`);
