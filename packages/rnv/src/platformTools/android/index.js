@@ -325,8 +325,9 @@ const _runGradleApp = async (c, platform, device) => {
             if (!confirm) throw new Error('User canceled');
             await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} uninstall ${bundleId}`);
             await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+        } else {
+            throw new Error(e);
         }
-        throw new Error(e);
     }
 
     if (!outputAab) await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`);
