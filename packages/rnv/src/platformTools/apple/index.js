@@ -88,7 +88,7 @@ const runPod = async (c, platform) => {
             });
         } catch (e) {
             const s = e?.toString ? e.toString() : '';
-            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods')
+            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods');
             if (isGenericError) return new Error(`pod install failed with:\n ${s}`);
             logWarning(`Looks like pod install is not enough! Let's try pod update! Error:\n ${s}`);
             return executeAsync(c, 'pod update', { cwd: appFolder, env: process.env })
@@ -136,8 +136,8 @@ export const runXcodeProject = async (c) => {
         );
     }
 
-    let devicesArr
-    if(device === true) devicesArr = await getAppleDevices(c, c.platform, false, true);
+    let devicesArr;
+    if (device === true) devicesArr = await getAppleDevices(c, c.platform, false, true);
     else if (c.runtime.target === true) devicesArr = await getAppleDevices(c, c.platform, true, false);
 
     if (device === true) {
@@ -192,17 +192,17 @@ export const runXcodeProject = async (c) => {
     } else if (device) {
         p = `--device ${device}`;
     } else if (c.runtime.target === true) {
-      const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+        const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
 
-      const { sim } = await inquirer.prompt({
-          name: 'sim',
-          message: 'Select the device you want to launch on',
-          type: 'list',
-          choices: devices
-      });
-      p = `--simulator ${sim.name.replace(/(\s+)/g, '\\$1')}`;
+        const { sim } = await inquirer.prompt({
+            name: 'sim',
+            message: 'Select the device you want to launch on',
+            type: 'list',
+            choices: devices
+        });
+        p = `--simulator ${sim.name.replace(/(\s+)/g, '\\$1')}`;
     } else {
-      p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     }
 
     if (p) {
@@ -210,14 +210,14 @@ export const runXcodeProject = async (c) => {
         // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
-            return packageBundleForXcode(c, c.platform, bundleIsDev).then(() => executeAsync(c, `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`));
+            return packageBundleForXcode(c, c.platform, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
         }
         return _checkLockAndExec(c, appPath, scheme, runScheme, p);
     }
     return Promise.reject('Missing options for react-native command!');
 };
 
-const _checkLockAndExec = (c, appPath, scheme, runScheme, p) => executeAsync(c, `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme}`)
+const _checkLockAndExec = (c, appPath, scheme, runScheme, p) => executeAsync(c, `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`)
     .catch((e) => {
         const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
         if (isDeviceLocked) {
