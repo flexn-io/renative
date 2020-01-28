@@ -3,37 +3,16 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import net from 'net';
 import chalk from 'chalk';
-import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI, executeTelnet } from '../../systemTools/exec';
-import { createPlatformBuild } from '..';
-import {
-    getAppFolder,
-    isPlatformActive,
-    getAppTemplateFolder,
-    getConfigProp,
-    waitForEmulator,
-    getAppId
-} from '../../common';
+import { execCLI, executeTelnet } from '../../systemTools/exec';
+import { waitForEmulator } from '../../common';
 import { logToSummary, logTask,
     logError, logWarning,
-    logDebug, logInfo,
-    logSuccess } from '../../systemTools/logger';
-import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
-import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+    logDebug, logSuccess } from '../../systemTools/logger';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
-import { parsePlugins } from '../../pluginTools';
-import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
-import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './kotlinParser';
-import {
-    parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
-    parseGradlePropertiesSync, injectPluginGradleSync
-} from './gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
 
 const CHECK_INTEVAL = 5000;
 
@@ -129,12 +108,6 @@ const calculateDeviceDiagonal = (width, height, density) => {
     const widthInches = width / density;
     const heightInches = height / density;
     return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
-};
-
-const isSquareishDevice = (width, height) => {
-    const ratio = width / height;
-    if (ratio > 0.8 && ratio < 1.2) return true;
-    return false;
 };
 
 const getRunningDeviceProp = async (c, udid, prop) => {
@@ -471,7 +444,6 @@ export const askForNewEmulator = async (c, platform) => {
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
-    const { maxErrorLength } = c.program;
 
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
         .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`))
@@ -490,16 +462,18 @@ export const checkForActiveEmulator = (c, platform) => new Promise((resolve, rej
         if (!running) {
             running = true;
             getAndroidTargets(c, false, true, false)
-                .then((v) => {
-                    logDebug('Available devices after filtering', c);
+                .then(async (v) => {
+                    logDebug('Available devices after filtering', v);
                     if (v.length > 0) {
                         logSuccess(`Found active emulator! ${chalk.white(v[0].udid)}. Will use it`);
                         clearInterval(poll);
                         resolve(v[0]);
                     } else {
-                        running = false;
                         console.log(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                         attempts++;
+                        if ([ANDROID_TV, ANDROID_WEAR].includes(platform) && attempts === 2) {
+                            await resetAdb(c); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
+                        }
                         if (attempts > maxAttempts) {
                             clearInterval(poll);
                             reject('Could not find any active emulatros');
@@ -507,6 +481,7 @@ export const checkForActiveEmulator = (c, platform) => new Promise((resolve, rej
                             // user from underlying failure of not being able to connect
                             // return _askForNewEmulator(c, platform);
                         }
+                        running = false;
                     }
                 })
                 .catch((e) => {
