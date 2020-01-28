@@ -477,17 +477,25 @@ const _execute = async (c, cmdFn, cmd) => {
             await _handleUnknownPlatform(c, requiredPlatforms);
             return;
         }
-        const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
-        if (requiredParams) {
-            for (let i = 0; i < requiredParams.length; i++) {
-                const requiredParam = requiredParams[i];
-                // TODO
-            }
-        }
+        // TODO: Required params
+        // const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
+        // if (requiredParams) {
+        //     for (let i = 0; i < requiredParams.length; i++) {
+        //         const requiredParam = requiredParams[i];
+        //
+        //     }
+        // }
     }
 
     c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
-    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command)
+    c.runtime.scheme = c.program.scheme || 'debug';
+    // const { scheme } = c.program;
+    // if (scheme !== true) {
+    //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];
+    //     c.runtime.scheme = isSchemePresent ? scheme : undefined;
+    // }
+
+    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command);
 
     if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
