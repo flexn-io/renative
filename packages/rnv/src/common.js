@@ -449,7 +449,7 @@ export const getBuildFilePath = (c, platform, filePath) => {
 
 export const waitForEmulator = async (c, cli, command, callback) => {
     let attempts = 0;
-    const maxAttempts = 10;
+    const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
     const spinner = ora('Waiting for emulator to boot...').start();
