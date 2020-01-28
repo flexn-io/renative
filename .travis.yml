@@ -8,6 +8,7 @@ jobs:
       node_js: 10.15.3
       install:
         - npm run bootstrap:clean
+        - ls -la packages/rnv/node_modules/
         - mkdir /home/travis/.rnv
         - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
         - cd packages/rnv
