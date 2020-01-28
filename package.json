@@ -58,6 +58,7 @@
     },
     "scripts": {
         "build": "lerna run --parallel --concurrency 1 build",
+        "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "bootstrap": "npx lerna bootstrap",
         "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && npm run bootstrap",
         "postinstall": "lerna link --force-local && npx jetify",
