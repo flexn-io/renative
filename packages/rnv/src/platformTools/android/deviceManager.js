@@ -471,7 +471,7 @@ export const checkForActiveEmulator = (c, platform) => new Promise((resolve, rej
                     } else {
                         console.log(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                         attempts++;
-                        if (platform === ANDROID_TV && attempts === 2) {
+                        if ([ANDROID_TV, ANDROID_WEAR].includes(platform) && attempts === 2) {
                             await resetAdb(c); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
                         }
                         if (attempts > maxAttempts) {
