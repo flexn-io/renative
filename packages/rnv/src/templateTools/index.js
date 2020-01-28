@@ -271,7 +271,7 @@ const _configureEntryPoints = c => new Promise((resolve, reject) => {
                 const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
                 if (!fs.existsSync(dest)) {
                     if (!plat.entryFile) {
-                        logError(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
+                        logWarning(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
                     } else if (!fs.existsSync(source)) {
                         logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
                         copyFileSync(backupSource, dest);
