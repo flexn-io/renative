@@ -314,7 +314,7 @@ const _runGradleApp = async (c, platform, device) => {
     }
     logInfo(`Installing ${apkPath} on ${name}`);
     try {
-        await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+        await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`, { ignoreErrors: true });
     } catch (e) {
         if (e?.includes('INSTALL_FAILED_UPDATE_INCOMPATIBLE') || e?.message?.includes('INSTALL_FAILED_UPDATE_INCOMPATIBLE')) {
             const { confirm } = await inquirerPrompt({
@@ -325,8 +325,9 @@ const _runGradleApp = async (c, platform, device) => {
             if (!confirm) throw new Error('User canceled');
             await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} uninstall ${bundleId}`);
             await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} install -r -d -f ${apkPath}`);
+        } else {
+            throw new Error(e);
         }
-        throw new Error(e);
     }
 
     if (!outputAab) await execCLI(c, CLI_ANDROID_ADB, `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`);
