@@ -1783,6 +1783,13 @@
                 "moduleAliases": true
             }
         },
+        "react-navigation-drawer": {
+            "version": "2.3.3",
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
+            }
+        },
         "react-native-easy-grid": {
             "version": "0.2.1",
             "webpack": {
