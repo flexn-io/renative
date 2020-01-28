@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync } from '../../systemTools/exec';
+import { executeAsync, commandExistsSync } from '../../systemTools/exec';
 import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
 import {
     getAppFolder,
@@ -30,11 +30,6 @@ import { parseAppDelegate } from './swiftParser';
 import { logInfo, logTask,
     logError,
     logWarning, logDebug } from '../../systemTools/logger';
-
-const checkIfCommandExists = command => new Promise((resolve, reject) => child_process.exec(`command -v ${command} 2>/dev/null`, (error) => {
-    if (error) return reject(new Error(`${command} not installed`));
-    return resolve(true);
-}));
 
 const checkIfPodsIsRequired = async (c) => {
     const appFolder = getAppFolder(c, c.platform);
@@ -79,7 +74,7 @@ const runPod = async (c, platform) => {
     const podsRequired = c.program.updatePods || await checkIfPodsIsRequired(c);
 
     if (podsRequired) {
-        await checkIfCommandExists('pod');
+        if (!commandExistsSync('pod')) throw new Error('Cocoapods not installed. Please run `sudo gem install cocoapods`');
 
         try {
             await executeAsync(c, 'pod install', {
@@ -88,14 +83,14 @@ const runPod = async (c, platform) => {
             });
         } catch (e) {
             const s = e?.toString ? e.toString() : '';
-            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods') 
+            const isGenericError = s.includes('No provisionProfileSpecifier configured') || s.includes('TypeError:') || s.includes('ReferenceError:') || s.includes('find gem cocoapods');
             if (isGenericError) return new Error(`pod install failed with:\n ${s}`);
             logWarning(`Looks like pod install is not enough! Let's try pod update! Error:\n ${s}`);
             return executeAsync(c, 'pod update', { cwd: appFolder, env: process.env })
                 .then(() => updatePodsChecksum(c))
                 .catch(er => Promise.reject(er));
         }
-        
+
         updatePodsChecksum(c);
         return true;
     }
