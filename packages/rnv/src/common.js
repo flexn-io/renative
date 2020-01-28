@@ -171,7 +171,7 @@ export const confirmActiveBundler = async (c) => {
 
     if (confirm) return true;
     return Promise.reject('Cancelled by user');
-}
+};
 
 export const getCurrentSdkPath = (c, platform) => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]];
 
@@ -253,7 +253,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         return null;
     }
     const p = c.buildConfig.platforms[platform];
-    const ps = _getScheme(c);
+    const ps = c.runtime.scheme;
     let resultPlatforms;
     let scheme;
     if (p) {
@@ -392,7 +392,7 @@ export const getBuildsFolder = (c, platform, customPath) => {
     // if (!fs.existsSync(pp)) {
     //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
     // }
-    const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
+    const p = path.join(pp, `builds/${platform}@${c.runtime.scheme}`);
     if (fs.existsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
 };
@@ -430,7 +430,7 @@ export const resolveNodeModulePath = (c, filePath) => {
 
 export const getFlavouredProp = (c, obj, key) => {
     if (!key) return null;
-    const val1 = obj[`${key}@${_getScheme(c)}`];
+    const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;
     return obj[key];
 };
@@ -449,7 +449,7 @@ export const getBuildFilePath = (c, platform, filePath) => {
 
 export const waitForEmulator = async (c, cli, command, callback) => {
     let attempts = 0;
-    const maxAttempts = 10;
+    const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
     const spinner = ora('Waiting for emulator to boot...').start();

@@ -5,16 +5,17 @@ import inquirer from 'inquirer';
 import dotenv from 'dotenv';
 
 import { executeAsync } from '../systemTools/exec';
-import {
-    logInfo,
-    getAppFolder
-} from '../common';
+import { logInfo, getAppFolder, getConfigProp } from '../common';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     dotenv.config();
     const defaultBuildFolder = path.join(getAppFolder(c, 'web'), 'public');
     const params = [defaultBuildFolder, '-A', nowConfigPath];
     if (process.env.NOW_TOKEN) params.push('-t', process.env.NOW_TOKEN);
+    const nowIsProduction = getConfigProp(c, c.platform, 'nowIsProduction', false) === true;
+
+    if (nowIsProduction) params.push('--prod');
+
     executeAsync(c, `now ${params.join(' ')}`)
         .then(() => resolve())
         .catch(error => reject(error));

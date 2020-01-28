@@ -28,7 +28,6 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
     logTask(`parsePodFileSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const pluginSubspecs = '';
     let pluginInject = '';
 
     // PLUGINS
@@ -47,7 +46,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
         const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
         if (reactSubSpecs) {
-            logWarning('pluginSubspecs prop is deprecated. yoy can safely remove it');
+            logWarning('reactSubSpecs prop is deprecated. yoy can safely remove it');
         }
 
         const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');
