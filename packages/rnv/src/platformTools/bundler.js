@@ -1,9 +1,10 @@
 import axios from 'axios';
 import ora from 'ora';
+import { getConfigProp } from '../common';
 
 export const isBundlerRunning = async (c) => {
     try {
-        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}/index.${c.platform}.js`);
+        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`);
         if (data.includes('import')) return true;
         return false;
     } catch {
