@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.18-alpha.8",
+            "version": "0.28.18-alpha.9",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -1220,9 +1220,12 @@
                         "maven { url 'https://maven.fabric.io/public' }"
                     ]
                 },
-                "skipImplementation": true,
+                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
                 "app/build.gradle": {
                     "apply": ["plugin: 'io.fabric'"]
+                },
+                "mainActivity": {
+                    "imports": ["io.fabric.sdk.android.Fabric"]
                 }
             }
         },
