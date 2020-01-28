@@ -19,7 +19,6 @@ jobs:
       - name: npm install and test
         run: |
           npm run bootstrap
-          npm run build
           npm run test:rnv:unit
         env:
           CI: true
