@@ -9,7 +9,7 @@ import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync,
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
-import { cleanFolder } from '../../dist/systemTools/fileutils';
+import { cleanFolder } from '../systemTools/fileutils';
 
 const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');

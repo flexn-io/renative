@@ -66,10 +66,10 @@ import {
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
 import { isBundlerRunning, waitForBundler } from './bundler';
-import { logInfo } from '../systemTools/logger';
+// import { logInfo } from '../systemTools/logger';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-import { inquirerPrompt } from '../../dist/systemTools/prompt';
+// import { inquirerPrompt } from '../systemTools/prompt';
 
 const isRunningOnWindows = process.platform === 'win32';
 
