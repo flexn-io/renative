@@ -6,7 +6,7 @@ import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } fro
 import { launchTizenSimulator, listTizenTargets } from './tizen';
 import { launchWebOSimulator, listWebOSTargets } from './webos';
 import { listAndroidTargets, launchAndroidSimulator } from './android/deviceManager';
-import { listAppleDevices, launchAppleSimulator } from './apple';
+import { listAppleDevices, launchAppleSimulator } from './apple/deviceManager';
 import { launchKaiOSSimulator } from './firefox';
 
 export const rnvTargetLaunch = async (c) => {
