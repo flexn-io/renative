@@ -416,7 +416,7 @@ export const checkPortInUse = (c, platform, port) => new Promise((resolve, rejec
             reject(err);
             return;
         }
-        resolve(port !== availablePort);
+        resolve(parseInt(port, 10) !== parseInt(availablePort, 10));
     });
 });
 
