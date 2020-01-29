@@ -18,7 +18,7 @@ import {
     generateChecksum
 } from '../../common';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
-import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
+import { copyFileSync, mkdirSync, writeFileSync } from '../../systemTools/fileutils';
 import { IOS, TVOS, MACOS } from '../../constants';
 import {
     parseExportOptionsPlist,
@@ -225,7 +225,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
         const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
         if (isDeviceLocked) {
             await inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' });
-            return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+            return runXcodeProject(c);
         }
         const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
         if (isDeviceNotRegistered) {
@@ -237,29 +237,70 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
             });
             if (confirm) {
                 await registerDevice(c);
-                return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+                return runXcodeProject(c);
             }
         }
         const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
         if (isDevelopmentTeamMissing) {
             const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
-            logWarning(`You need specify the development team if you want to run on ios devices. this can be set manually in ${chalk.white(loc)}`);
+            logWarning(`You need specify the development team if you want to run app on ${c.platform} device. this can be set manually in ${chalk.white(loc)}
+You can find correct teamID in the URL of your apple developer account: ${chalk.white('https://developer.apple.com/account/#/overview/YOUR-TEAM-ID')}`);
             const { confirm } = await inquirer.prompt({
                 name: 'confirm',
-                message: 'Do you want ReNative to set it up for you now?',
-                type: 'confirm'
+                message: `Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`,
+                type: 'input'
             });
             if (confirm) {
-                await _setDevelopmentTeam(c);
-                return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+                await _setDevelopmentTeam(c, confirm);
+                return runXcodeProject(c);
             }
         }
+        const isAutomaticSigningDisabled = e.includes('Automatic signing is disabled and unable to generate a profile');
+        if (isAutomaticSigningDisabled) {
+            const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
+            logWarning(`Your iOS App Development provisioning profiles don't match. under manual signing mode. To fix try:
+1) Configure your certificates, provisioning profiles correctly manually
+2) Try to generate matching profiles with ${chalk.white(fixCommand)}
+3) Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${c.platform}, scheme: ${c.runtime.scheme}`);
+            const { confirmAuto } = await inquirer.prompt({
+                name: 'confirmAuto',
+                message: 'Switch to automatic signing?',
+                type: 'confirm'
+            });
+            if (confirmAuto) {
+                await _setAutomaticSigning(c);
+                return runXcodeProject(c);
+            }
+        }
+        // Automatic signing is disabled and unable to generate a profile
         return Promise.reject(e);
     }
 };
 
-const _setDevelopmentTeam = async (c) => {
-    logTask('_setDevelopmentTeam');
+const _setAutomaticSigning = async (c) => {
+    logTask(`_setAutomaticSigning:${c.platform}`);
+
+    const scheme = c.files.appConfig?.config?.platforms?.[c.platform]?.buildSchemes?.[c.runtime.scheme];
+    if (scheme) {
+        scheme.provisioningStyle = 'Automatic';
+        writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
+        logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+    } else {
+        return Promise.reject(`Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`);
+    }
+};
+
+const _setDevelopmentTeam = async (c, teamID) => {
+    logTask(`_setDevelopmentTeam:${teamID}`);
+
+    const plat = c.files.appConfig?.config?.platforms?.[c.platform];
+    if (plat) {
+        plat.teamID = teamID;
+        writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
+        logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
+    } else {
+        return Promise.reject(`Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}" ... Object is null. Try update file manually`);
+    }
 };
 
 const composeXcodeArgsFromCLI = (string) => {
