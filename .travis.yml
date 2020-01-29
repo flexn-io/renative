@@ -8,11 +8,11 @@ jobs:
       node_js: 10.15.3
       install:
         - npm run bootstrap:clean
-        - ls -la packages/rnv/node_modules/.bin
         - mkdir /home/travis/.rnv
         - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
         - cd packages/rnv
         - npm run build:dev
+        - npm link
       script: npm run test:setup
     - language: android
       sudo: required
@@ -48,6 +48,7 @@ jobs:
         - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
         - cd packages/rnv
         - npm run build:dev
+        - npm link
       script: npm run test:ios
 
 stages:
