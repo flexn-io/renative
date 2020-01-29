@@ -237,7 +237,10 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
             });
             if (confirm) {
                 await registerDevice(c);
-                return runXcodeProject(c);
+                return Promise.reject('Updated. Re-run your last command');
+                // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
+                // await configureXcodeProject(c, c.platform);
+                // return runXcodeProject(c);
             }
         }
         const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
@@ -252,16 +255,21 @@ You can find correct teamID in the URL of your apple developer account: ${chalk.
             });
             if (confirm) {
                 await _setDevelopmentTeam(c, confirm);
-                return runXcodeProject(c);
+                return Promise.reject('Updated. Re-run your last command');
+                // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
+                // await configureXcodeProject(c, c.platform);
+                // return runXcodeProject(c);
             }
         }
         const isAutomaticSigningDisabled = e.includes('Automatic signing is disabled and unable to generate a profile');
         if (isAutomaticSigningDisabled) {
             const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
+            logError(e);
             logWarning(`Your iOS App Development provisioning profiles don't match. under manual signing mode. To fix try:
 1) Configure your certificates, provisioning profiles correctly manually
-2) Try to generate matching profiles with ${chalk.white(fixCommand)}
-3) Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${c.platform}, scheme: ${c.runtime.scheme}`);
+2) Try to generate matching profiles with ${chalk.white(fixCommand)} (you need correct priviledges in apple developer portal)
+2) Open generated project in Xcode: ${getAppFolder(c, c.platform)}.RNVApp.xcworkspace and run from there
+4) Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${c.platform}, scheme: ${c.runtime.scheme}`);
             const { confirmAuto } = await inquirer.prompt({
                 name: 'confirmAuto',
                 message: 'Switch to automatic signing?',
@@ -269,7 +277,10 @@ You can find correct teamID in the URL of your apple developer account: ${chalk.
             });
             if (confirmAuto) {
                 await _setAutomaticSigning(c);
-                return runXcodeProject(c);
+                return Promise.reject('Updated. Re-run your last command');
+                // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
+                // await configureXcodeProject(c, c.platform);
+                // return runXcodeProject(c);
             }
         }
         // Automatic signing is disabled and unable to generate a profile
