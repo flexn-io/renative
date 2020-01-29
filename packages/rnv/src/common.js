@@ -416,7 +416,7 @@ export const checkPortInUse = (c, platform, port) => new Promise((resolve, rejec
             reject(err);
             return;
         }
-        resolve(port !== availablePort);
+        resolve(parseInt(port, 10) !== parseInt(availablePort, 10));
     });
 });
 
@@ -525,6 +525,21 @@ export const importPackageFromProject = (name) => {
     const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
     if (pkg.default) return pkg.default;
     return pkg;
+};
+
+export const isMac = (c) => {
+    const { process: { platform } } = c;
+    return platform === 'darwin';
+};
+
+export const isLinux = (c) => {
+    const { process: { platform } } = c;
+    return platform === 'linux';
+};
+
+export const isWin = (c) => {
+    const { process: { platform } } = c;
+    return platform === 'win32';
 };
 
 // TODO: remove this
