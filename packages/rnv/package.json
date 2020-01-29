@@ -61,8 +61,8 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "build": "babel src -d dist --source-maps",
-        "build:dev": "babel src -d dist -retainLines",
+        "build": "npx babel src -d dist --source-maps",
+        "build:dev": "npm run build -- -retainLines",
         "build:clean": "rm -rf dist || true",
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
         "prepare": "npm run build",
