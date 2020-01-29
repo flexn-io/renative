@@ -172,7 +172,7 @@ export const runXcodeProject = async (c) => {
                 logWarning(`Could not find device ${c.runtime.target}`);
             }
 
-            const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+            const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
 
             const { sim } = await inquirer.prompt({
                 name: 'sim',
@@ -190,7 +190,7 @@ export const runXcodeProject = async (c) => {
     } else if (device) {
         p = `--device ${device}`;
     } else if (c.runtime.target === true) {
-        const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+        const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
 
         const { sim } = await inquirer.prompt({
             name: 'sim',
@@ -198,7 +198,7 @@ export const runXcodeProject = async (c) => {
             type: 'list',
             choices: devices
         });
-        c.runtime.target = sim;
+        c.runtime.target = sim.name;
         p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     } else {
         p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
@@ -217,6 +217,7 @@ export const runXcodeProject = async (c) => {
 };
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
+    logTask(`_checkLockAndExec:${scheme}:${runScheme}`);
     const cmd = `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     try {
         await executeAsync(c, cmd);
@@ -265,33 +266,41 @@ You can find correct teamID in the URL of your apple developer account: ${chalk.
         }
         const isAutomaticSigningDisabled = e.includes('Automatic signing is disabled and unable to generate a profile');
         if (isAutomaticSigningDisabled) {
-            const provisioningStyle = getConfigProp(c, c.platform, 'provisioningStyle');
-            // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
-            const isProvAutomatic = provisioningStyle === 'Automatic';
-            const proAutoText = isProvAutomatic ? '' : `4) Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${c.platform}, scheme: ${c.runtime.scheme}`;
-            const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
-            logError(e);
-            logWarning(`Your iOS App Development provisioning profiles don't match. under manual signing mode. To fix try:
-1) Configure your certificates, provisioning profiles correctly manually
-2) Try to generate matching profiles with ${chalk.white(fixCommand)} (you need correct priviledges in apple developer portal)
-3) Open generated project in Xcode: ${getAppFolder(c, c.platform)}.RNVApp.xcworkspace and run from there
-${proAutoText}`);
-            if (isProvAutomatic) return false;
-            const { confirmAuto } = await inquirer.prompt({
-                name: 'confirmAuto',
-                message: 'Switch to automatic signing?',
-                type: 'confirm'
-            });
-            if (confirmAuto) {
-                await _setAutomaticSigning(c);
-                return Promise.reject('Updated. Re-run your last command');
-                // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
-                // await configureXcodeProject(c, c.platform);
-                // return runXcodeProject(c);
-            }
+            return _handleProvisioningIssues(c, e, 'Your iOS App Development provisioning profiles don\'t match. under manual signing mode');
         }
-        // Automatic signing is disabled and unable to generate a profile
+        const isProvisioningMissing = e.includes('requires a provisioning profile');
+        if (isProvisioningMissing) {
+            return _handleProvisioningIssues(c, e, 'Your iOS App requires a provisioning profile');
+        }
         return Promise.reject(e);
+    }
+};
+
+const _handleProvisioningIssues = async (c, e, msg) => {
+    const provisioningStyle = getConfigProp(c, c.platform, 'provisioningStyle');
+    // Sometimes xcodebuild reports Automatic signing is disabled but it could be keychain not accepted by user
+    const isProvAutomatic = provisioningStyle === 'Automatic';
+    const proAutoText = isProvAutomatic ? '' : `${chalk.white('[4]>')} Switch to automatic signing for appId: ${c.runtime.appId} , platform: ${c.platform}, scheme: ${c.runtime.scheme}`;
+    const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
+    const workspacePath = chalk.white(`${getAppFolder(c, c.platform)}/RNVApp.xcworkspace`);
+    logError(e);
+    logWarning(`${msg}. To fix try:
+${chalk.white('[1]>')} Configure your certificates, provisioning profiles correctly manually
+${chalk.white('[2]>')} Try to generate matching profiles with ${chalk.white(fixCommand)} (you need correct priviledges in apple developer portal)
+${chalk.white('[3]>')} Open generated project in Xcode: ${workspacePath} and debug from there (Sometimes this helps for the first-time builds)
+${proAutoText}`);
+    if (isProvAutomatic) return false;
+    const { confirmAuto } = await inquirer.prompt({
+        name: 'confirmAuto',
+        message: 'Switch to automatic signing?',
+        type: 'confirm'
+    });
+    if (confirmAuto) {
+        await _setAutomaticSigning(c);
+        return Promise.reject('Updated. Re-run your last command');
+        // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
+        // await configureXcodeProject(c, c.platform);
+        // return runXcodeProject(c);
     }
 };
 
