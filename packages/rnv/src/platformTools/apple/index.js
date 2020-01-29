@@ -225,7 +225,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
         const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
         if (isDeviceLocked) {
             await inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' });
-            return runXcodeProject(c);
+            return executeAsync(c, cmd);
         }
         const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
         if (isDeviceNotRegistered) {
