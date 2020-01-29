@@ -232,7 +232,7 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
             logWarning(`${c.platform} DEVICE: ${chalk.white(c.runtime.target)} with UDID: ${chalk.white(c.runtime.targetUDID)} is not included in your provisionong profile in TEAM: ${chalk.white(getConfigProp(c, c.platform, 'teamID'))}`);
             const { confirm } = await inquirer.prompt({
                 name: 'confirm',
-                message: '. Do you want to register it?',
+                message: 'Do you want to register it?',
                 type: 'confirm'
             });
             if (confirm) {
@@ -240,8 +240,26 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
                 return _checkLockAndExec(c, appPath, scheme, runScheme, p);
             }
         }
+        const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
+        if (isDevelopmentTeamMissing) {
+            const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
+            logWarning(`You need specify the development team if you want to run on ios devices. this can be set manually in ${chalk.white(loc)}`);
+            const { confirm } = await inquirer.prompt({
+                name: 'confirm',
+                message: 'Do you want ReNative to set it up for you now?',
+                type: 'confirm'
+            });
+            if (confirm) {
+                await _setDevelopmentTeam(c);
+                return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+            }
+        }
         return Promise.reject(e);
     }
+};
+
+const _setDevelopmentTeam = async (c) => {
+    logTask('_setDevelopmentTeam');
 };
 
 const composeXcodeArgsFromCLI = (string) => {
