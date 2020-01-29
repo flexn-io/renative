@@ -8,6 +8,7 @@ import inquirer from 'inquirer';
 
 import { executeAsync, commandExistsSync } from '../../systemTools/exec';
 import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
+import { registerDevice } from './fastlane';
 import {
     getAppFolder,
     isPlatformActive,
@@ -140,12 +141,14 @@ export const runXcodeProject = async (c) => {
             logSuccess(`Found one device connected! device name: ${chalk.white(devicesArr[0].name)} udid: ${chalk.white(devicesArr[0].udid)}`);
             if (devicesArr[0].udid) {
                 p = `--device --udid ${devicesArr[0].udid}`;
+                c.runtime.targetUDID = devicesArr[0].udid;
             } else {
                 p = `--device ${devicesArr[0].name}`;
             }
         } else if (devicesArr.length > 1) {
             const run = (selectedDevice) => {
                 logDebug(`Selected device: ${JSON.stringify(selectedDevice, null, 3)}`);
+                c.runtime.targetUDID = selectedDevice.udid;
                 if (selectedDevice.udid) {
                     p = `--device --udid ${selectedDevice.udid}`;
                 } else {
@@ -166,7 +169,7 @@ export const runXcodeProject = async (c) => {
                 if (selectedDevice) {
                     return run(selectedDevice);
                 }
-                return Promise.reject(`Could not find device ${c.runtime.target}`);
+                logWarning(`Could not find device ${c.runtime.target}`);
             }
 
             const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.deviceIcon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
@@ -195,7 +198,8 @@ export const runXcodeProject = async (c) => {
             type: 'list',
             choices: devices
         });
-        p = `--simulator ${sim.name.replace(/(\s+)/g, '\\$1')}`;
+        c.runtime.target = sim;
+        p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     } else {
         p = `--simulator ${c.runtime.target.replace(/(\s+)/g, '\\$1')}`;
     }
@@ -212,15 +216,33 @@ export const runXcodeProject = async (c) => {
     return Promise.reject('Missing options for react-native command!');
 };
 
-const _checkLockAndExec = (c, appPath, scheme, runScheme, p) => executeAsync(c, `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`)
-    .catch((e) => {
+const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
+    const cmd = `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    try {
+        await executeAsync(c, cmd);
+        return true;
+    } catch (e) {
         const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
         if (isDeviceLocked) {
-            return inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' })
-                .then(() => executeAsync(c, `react-native ${p}`));
+            await inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' });
+            return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+        }
+        const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
+        if (isDeviceNotRegistered) {
+            logWarning(`${c.platform} DEVICE: ${chalk.white(c.runtime.target)} with UDID: ${chalk.white(c.runtime.targetUDID)} is not included in your provisionong profile in TEAM: ${chalk.white(getConfigProp(c, c.platform, 'teamID'))}`);
+            const { confirm } = await inquirer.prompt({
+                name: 'confirm',
+                message: '. Do you want to register it?',
+                type: 'confirm'
+            });
+            if (confirm) {
+                await registerDevice(c);
+                return _checkLockAndExec(c, appPath, scheme, runScheme, p);
+            }
         }
         return Promise.reject(e);
-    });
+    }
+};
 
 const composeXcodeArgsFromCLI = (string) => {
     const spacesReplaced = string.replace(/\s(?=(?:[^'"`]*(['"`])[^'"`]*\1)*[^'"`]*$)/g, '&&&'); // replaces spaces outside quotes with &&& for easy split

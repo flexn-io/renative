@@ -11,6 +11,32 @@ import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
 import { setAppConfig } from '../../configTools/configParser';
 
+export const registerDevice = async (c) => {
+    logTask(`registerDevice:${c.platform}`);
+
+
+    const teamID = getConfigProp(c, c.platform, 'teamID');
+    const udid = c.runtime.targetUDID;
+    const deviceName = c.runtime.target;
+
+    const args = [
+        'run',
+        'register_device',
+        `team_id:"${teamID}"`,
+        `udid:"${udid}"`,
+        `name:"${deviceName}"`
+    ];
+
+    try {
+        await executeAsync(c, `fastlane ${args.join(' ')}`, { shell: true, stdio: 'inherit', silent: true });
+        logSuccess(`Succesfully registered device ${deviceName}:${udid}:${teamID}`);
+        return true;
+    } catch (e) {
+        logWarning(e);
+        return true;
+    }
+};
+
 export const updateProfile = async (c, appConfigId) => {
     logTask(`updateProfile:${appConfigId}`, chalk.grey);
 
