@@ -7,7 +7,7 @@ import child_process from 'child_process';
 import inquirer from 'inquirer';
 
 import { executeAsync, commandExistsSync } from '../../systemTools/exec';
-import { launchAppleSimulator, getAppleDevices, listAppleDevices } from './deviceManager';
+import { getAppleDevices } from './deviceManager';
 import { registerDevice } from './fastlane';
 import {
     getAppFolder,
@@ -508,7 +508,5 @@ export {
     exportXcodeProject,
     archiveXcodeProject,
     packageBundleForXcode,
-    listAppleDevices,
-    launchAppleSimulator,
     runAppleLog,
 };
