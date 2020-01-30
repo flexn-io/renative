@@ -2,18 +2,18 @@
 
 jobs:
   include:
-    # - stage: test
-    #   dist: trusty
-    #   language: node_js
-    #   node_js: 10.15.3
-    #   install:
-    #     - npm run bootstrap:clean
-    #     - mkdir /home/travis/.rnv
-    #     - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
-    #     - cd packages/rnv
-    #     - npm run build:dev
-    #     - npm link
-    #   script: npm run test:setup
+    - stage: test
+      dist: trusty
+      language: node_js
+      node_js: 10.15.3
+      install:
+        - npm run bootstrap:clean
+        - mkdir /home/travis/.rnv
+        - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
+        - cd packages/rnv
+        - npm run build:dev
+        - npm link
+      script: npm run test:setup
     - language: android
       sudo: required
       jdk: oraclejdk8
@@ -38,19 +38,19 @@ jobs:
         - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
         - yes | sdkmanager "emulator"
       script: npm run test:integration
-    # - language: node_js
-    #   node_js: 10.15.3
-    #   os: osx
-    #   osx_image: xcode10.2
-    #   install:
-    #     - npm run bootstrap:clean
-    #     - mkdir /Users/travis/.rnv
-    #     - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
-    #     - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
-    #     - cd packages/rnv
-    #     - npm run build:dev
-    #     - npm link
-    #   script: npm run test:ios
+    - language: node_js
+      node_js: 10.15.3
+      os: osx
+      osx_image: xcode10.2
+      install:
+        - npm run bootstrap:clean
+        - mkdir /Users/travis/.rnv
+        - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
+        - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
+        - cd packages/rnv
+        - npm run build:dev
+        - npm link --unsafe-perms
+      script: npm run test:ios
 
 stages:
   - test
