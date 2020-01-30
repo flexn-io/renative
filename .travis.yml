@@ -32,7 +32,7 @@ jobs:
         - npm run bootstrap:clean
         - cd packages/rnv
         - npm run build:dev
-        - sudo npm link || true
+        - npm link
         - mkdir /home/travis/.rnv
         - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/renative.json
         - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
