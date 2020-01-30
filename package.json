@@ -103,7 +103,8 @@
         "react-native-web": "0.11.7",
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
-        "react-navigation-tabs": "2.0.0-alpha.0"
+        "react-navigation-tabs": "2.0.0-alpha.0",
+        "renative": "file:./packages/renative"
     },
     "devDependencies": {
         "concurrently": "4.1.1",
@@ -112,7 +113,10 @@
         "jetifier": "1.6.4",
         "lerna": "3.16.4",
         "release-it": "12.4.3",
-        "xcode": "2.0.0"
+        "xcode": "2.0.0",
+        "renative-template-hello-world": "file:./packages/renative-template-hello-world",
+        "renative-template-blank": "file:./packages/renative-template-blank",
+        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"

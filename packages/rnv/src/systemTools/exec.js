@@ -10,6 +10,7 @@ import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
+import { inquirerPrompt } from '../../dist/systemTools/prompt';
 
 const { exec, execSync } = require('child_process');
 
@@ -242,7 +243,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         if (extractedError.length === maxErrorLength) extractedError += '...';
         return extractedError;
     });
-        
+
     return arr.join('\n');
 };
 
@@ -403,7 +404,22 @@ export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
     const c = Config.getConfig();
 
-    return executeAsync('npm install')
+    const isYarnInstalled = commandExistsSync('yarn');
+    const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
+    let command = 'npm install';
+    if (fs.existsSync(yarnLockPath)) {
+        command = 'yarn';
+    } else if (isYarnInstalled) {
+        const { packageManager } = await inquirerPrompt({
+            type: 'list',
+            name: 'packageManager',
+            message: 'What package manager would you like to use?',
+            choices: ['yarn', 'npm'],
+        });
+        if (packageManager === 'yarn') command = 'yarn';
+    }
+
+    return executeAsync(command)
         .then(() => invalidatePodsChecksum(c))
         .catch((e) => {
             if (failOnError) {
