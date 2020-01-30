@@ -43,7 +43,7 @@ jobs:
       os: osx
       osx_image: xcode10.2
       before_install:
-        - npm run bootstrap:clean
+        - npm run bootstrap
       install:
         - mkdir /Users/travis/.rnv
         - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
