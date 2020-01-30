@@ -43,7 +43,7 @@ jobs:
       os: osx
       osx_image: xcode10.2
       before_install:
-        - npx lerna build
+        - npx lerna run build
         - npx lerna bootstrap
       install:
         - mkdir /Users/travis/.rnv
