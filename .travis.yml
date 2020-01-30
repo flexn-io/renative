@@ -42,14 +42,15 @@ jobs:
       node_js: 10.15.3
       os: osx
       osx_image: xcode10.2
-      install:
+      before_install:
         - npm run bootstrap:clean
+      install:
         - mkdir /Users/travis/.rnv
         - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
         - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
         - cd packages/rnv
         - npm run build:dev
-        - npm link --unsafe-perms
+        - npm link --unsafe-perm
       script: npm run test:ios
 
 stages:
