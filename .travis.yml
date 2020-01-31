@@ -43,7 +43,7 @@ jobs:
       os: osx
       osx_image: xcode10.2
       before_install:
-        - npm install lerna -g
+        - npm install lerna yarn -g
         - lerna bootstrap
       install:
         - mkdir /Users/travis/.rnv
