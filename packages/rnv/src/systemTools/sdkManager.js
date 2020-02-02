@@ -52,3 +52,10 @@ export const checkAndConfigureSdks = async (c) => {
         logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
     }
 };
+
+
+// usr/local/android-sdk
+// ~/Library/Android/sdk
+// ~\AppData\Local\Android\android-sdk
+// ~\AppData\Local\Android\sdk
+// C:\Program Files (x86)\Android\android-sdk
