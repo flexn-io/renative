@@ -5,22 +5,15 @@ import { spawn } from 'child_process';
 import { createPlatformBuild } from '..';
 import { executeAsync } from '../../systemTools/exec';
 import {
-    isPlatformSupportedSync,
-    getConfig,
     logTask,
-    logComplete,
     logError,
     getAppFolder,
     isPlatformActive,
-    configureIfRequired,
-    getAppConfigId,
     getAppVersion,
     getAppTitle,
-    getAppVersionCode,
     writeCleanFile,
     getAppId,
     getAppTemplateFolder,
-    getEntryFile,
     getAppDescription,
     getAppAuthor,
     getAppLicense,
@@ -35,10 +28,13 @@ import {
 } from '../../common';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS, WINDOWS } from '../../constants';
-import { buildWeb, runWeb, configureCoreWebProject } from '../web';
 import {
-    cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
-    copyFileSync, mkdirSync, writeFileSync, readObjectSync, removeDirs, removeDirsSync
+    buildWeb,
+    runWeb,
+    configureCoreWebProject
+} from '../web';
+import {
+    mkdirSync, writeFileSync, readObjectSync, removeDirs
 } from '../../systemTools/fileutils';
 
 const isRunningOnWindows = process.platform === 'win32';
@@ -78,7 +74,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const pkgJson = path.join(templateFolder, 'package.json');
     const packageJson = readObjectSync(pkgJson);
 
-    packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
+    packageJson.name = `${c.runtime.appId}-${platform}`;
     packageJson.productName = `${getAppTitle(c, platform)}`;
     packageJson.version = `${getAppVersion(c, platform)}`;
     packageJson.description = `${getAppDescription(c, platform)}`;

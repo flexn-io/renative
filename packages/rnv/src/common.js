@@ -9,38 +9,35 @@ import axios from 'axios';
 import colorString from 'color-string';
 import crypto from 'crypto';
 
-import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
     logWelcome, configureLogger, logError, logTask,
     logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo
+    logInitialize
 } from './systemTools/logger';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
-    WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
-    SDK_PLATFORMS,
+    WEBOS, MACOS, WINDOWS,
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from './constants';
 import { execCLI } from './systemTools/exec';
 import {
-    parseRenativeConfigs, createRnvConfig, updateConfig,
-    fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
+    createRnvConfig,
 } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import Config from './config';
 
-export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+export const initializeBuilder = async (cmd, subCmd, process, program) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
 
     configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
     logInitialize();
 
-    resolve(c);
-});
+    return c;
+};
 
 
 export const generateChecksum = (str, algorithm, encoding) => crypto
@@ -101,6 +98,7 @@ export const isPlatformSupported = async (c) => {
         c.program.platform = platform;
         return platform;
     }
+    return c.platform;
 };
 
 export const sanitizeColor = (val) => {
@@ -137,7 +135,7 @@ export const isBuildSchemeSupported = async (c) => {
 
     if (!buildSchemes) {
         logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
-        return;
+        return false;
     }
 
     const schemeDoesNotExist = scheme && !buildSchemes[scheme];
@@ -173,29 +171,6 @@ export const confirmActiveBundler = async (c) => {
     return Promise.reject('Cancelled by user');
 };
 
-export const getCurrentSdkPath = (c, platform) => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]];
-
-export const isSdkInstalled = (c, platform) => {
-    logTask(`isSdkInstalled: ${platform}`);
-
-    const sdkPath = getCurrentSdkPath(c, platform);
-
-    return fs.existsSync(getRealPath(c, sdkPath));
-};
-
-export const checkSdk = (c, platform, reject) => {
-    if (!isSdkInstalled(c, platform)) {
-        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(getCurrentSdkPath(c, platform))}`;
-        if (reject) {
-            reject(err);
-        } else {
-            throw new Error(err);
-        }
-        return false;
-    }
-    return true;
-};
-
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
 export const getBinaryPath = (c, platform) => {
@@ -224,9 +199,9 @@ export const getBinaryPath = (c, platform) => {
             return `${appFolder}/output/${appName}.wgt`;
         case WEBOS:
             return `${appFolder}/output/${id}_${version}_all.ipk`;
+        default:
+            return appFolder;
     }
-
-    return appFolder;
 };
 
 export const getAppSubFolder = (c, platform) => {
@@ -237,8 +212,6 @@ export const getAppSubFolder = (c, platform) => {
 };
 
 export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-
-export const getAppConfigId = c => c.buildConfig.id;
 
 export const CLI_PROPS = [
     'provisioningStyle',
@@ -385,8 +358,6 @@ export const writeCleanFile = (source, destination, overrides) => {
     fs.writeFileSync(destination, pFileClean, 'utf8');
 };
 
-const _getScheme = c => c.program.scheme || 'debug';
-
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fs.existsSync(pp)) {
@@ -490,7 +461,7 @@ export const waitForWebpack = async (c) => {
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     let devServerHost = extendConfig.devServerHost || '0.0.0.0';
-    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+    if (isWin(c) && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
     const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
@@ -528,19 +499,19 @@ export const importPackageFromProject = (name) => {
 };
 
 export const isMac = (c) => {
-  const { process: { platform } } = c;
-  return platform === 'darwin'
-}
+    const { process: { platform } } = c;
+    return platform === 'darwin';
+};
 
 export const isLinux = (c) => {
-  const { process: { platform } } = c;
-  return platform === 'linux'
-}
+    const { process: { platform } } = c;
+    return platform === 'linux';
+};
 
 export const isWin = (c) => {
-  const { process: { platform } } = c;
-  return platform === 'win32'
-}
+    const { process: { platform } } = c;
+    return platform === 'win32';
+};
 
 // TODO: remove this
 export {
@@ -570,8 +541,6 @@ export default {
     logInfo,
     logErrorPlatform,
     isPlatformActive,
-    isSdkInstalled,
-    checkSdk,
     logEnd,
     logWarning,
     configureIfRequired,
@@ -582,7 +551,6 @@ export default {
     writeCleanFile,
     getEntryFile,
     getGetJsBundleFile,
-    getAppConfigId,
     getAppDescription,
     getAppAuthor,
     getAppLicense,
@@ -592,6 +560,5 @@ export default {
     cleanPlatformIfRequired,
     checkPortInUse,
     resolveNodeModulePath,
-    configureRnvGlobal,
     waitForEmulator
 };

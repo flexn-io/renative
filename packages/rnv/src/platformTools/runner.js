@@ -10,7 +10,6 @@ import {
     isBuildSchemeSupported,
     logTask,
     logError,
-    checkSdk,
     logErrorPlatform,
     configureIfRequired,
     cleanPlatformIfRequired,
@@ -37,8 +36,6 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    WEB_HOSTED_PLATFORMS,
-    PLATFORMS
 } from '../constants';
 import {
     runXcodeProject,
@@ -66,10 +63,9 @@ import {
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
 import { isBundlerRunning, waitForBundler } from './bundler';
-import { logInfo } from '../systemTools/logger';
+import { checkSdk } from '../systemTools/sdkManager';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-import { inquirerPrompt } from '../../dist/systemTools/prompt';
 
 const isRunningOnWindows = process.platform === 'win32';
 
@@ -82,7 +78,7 @@ let keepRNVRunning = false;
 
 export const rnvStart = async (c) => {
     const { platform } = c;
-    const port = c.runtime.port
+    const { port } = c.runtime;
     const { hosted } = c.program;
 
     logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
@@ -229,8 +225,8 @@ const waitForBundlerIfRequired = async (c) => {
 const _rnvRunWithPlatform = async (c) => {
     logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
-    const port = c.runtime.port
-    const target = c.runtime.target
+    const { port } = c.runtime;
+    const { target } = c.runtime;
     const { hosted } = c.program;
 
     logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}`, chalk.grey);
@@ -264,7 +260,7 @@ const _rnvRunWithPlatform = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            if (!checkSdk(c, platform, logError)) {
+            if (!checkSdk(c, logError)) {
                 const setupInstance = PlatformSetup(c);
                 await setupInstance.askToInstallSDK('android');
             }
@@ -296,7 +292,7 @@ const _rnvRunWithPlatform = async (c) => {
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            if (!checkSdk(c, platform, logError)) {
+            if (!checkSdk(c, logError)) {
                 const setupInstance = PlatformSetup(c);
                 await setupInstance.askToInstallSDK('tizen');
             }
@@ -307,7 +303,7 @@ const _rnvRunWithPlatform = async (c) => {
             }
             return runTizen(c, platform, target);
         case WEBOS:
-            if (!checkSdk(c, platform, logError)) {
+            if (!checkSdk(c, logError)) {
                 const setupInstance = PlatformSetup(c);
                 await setupInstance.askToInstallSDK('webos');
             }
@@ -320,7 +316,7 @@ const _rnvRunWithPlatform = async (c) => {
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            if (platform === KAIOS && !checkSdk(c, platform, throwErr)) return;
+            if (platform === KAIOS && !checkSdk(c, throwErr)) return;
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
@@ -348,7 +344,7 @@ const _rnvPackageWithPlatform = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            checkSdk(c, platform);
+            checkSdk(c);
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
@@ -469,13 +465,13 @@ const _rnvBuildWithPlatform = async (c) => {
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            checkSdk(c, platform);
+            checkSdk(c);
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildTizenProject(c, platform);
             return;
         case WEBOS:
-            checkSdk(c, platform);
+            checkSdk(c);
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWebOSProject(c, platform);

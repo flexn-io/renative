@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
-import { logTask, logError, isPlatformSupported, checkSdk } from '../common';
+import { logTask, logError, isPlatformSupported } from '../common';
+import { checkSdk } from '../systemTools/sdkManager';
 import PlatformSetup from '../setupTools';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { launchTizenSimulator, listTizenTargets } from './tizen';
@@ -55,7 +56,7 @@ export const rnvTargetList = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            if (!checkSdk(c, platform, logError)) {
+            if (!checkSdk(c, logError)) {
                 const setupInstance = PlatformSetup(c);
                 await setupInstance.askToInstallSDK('android');
             }
@@ -66,7 +67,7 @@ export const rnvTargetList = async (c) => {
         case TIZEN:
             return listTizenTargets(c, platform);
         case WEBOS:
-            if (!checkSdk(c, platform, throwError)) return;
+            if (!checkSdk(c, throwError)) return;
             return listWebOSTargets(c);
         default:
             return Promise.reject(`"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`);
