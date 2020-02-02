@@ -173,37 +173,6 @@ export const confirmActiveBundler = async (c) => {
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
 
-export const getBinaryPath = (c, platform) => {
-    const appFolder = getAppFolder(c, platform);
-    const id = getConfigProp(c, platform, 'id');
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'debug');
-    const version = getAppVersion(c, platform);
-    const productName = 'ReNative - macos';
-    const appName = getConfigProp(c, platform, 'appName');
-
-    switch (platform) {
-        case IOS:
-        case TVOS:
-            return `${appFolder}/release/RNVApp.ipa`;
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
-        case WEB:
-            return `${appFolder}/public`;
-        case MACOS:
-        case WINDOWS:
-            return `${appFolder}/build/release/${productName}-${version}`;
-        case TIZEN:
-        case TIZEN_MOBILE:
-            return `${appFolder}/output/${appName}.wgt`;
-        case WEBOS:
-            return `${appFolder}/output/${id}_${version}_all.ipk`;
-        default:
-            return appFolder;
-    }
-};
-
 export const getAppSubFolder = (c, platform) => {
     let subFolder = '';
     if (platform === IOS) subFolder = 'RNVApp';
@@ -335,6 +304,37 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
             .catch(e => reject(e));
     }
 });
+
+export const getBinaryPath = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const id = getConfigProp(c, platform, 'id');
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'debug');
+    const version = getAppVersion(c, platform);
+    const productName = 'ReNative - macos';
+    const appName = getConfigProp(c, platform, 'appName');
+
+    switch (platform) {
+        case IOS:
+        case TVOS:
+            return `${appFolder}/release/RNVApp.ipa`;
+        case ANDROID:
+        case ANDROID_TV:
+        case ANDROID_WEAR:
+            return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
+        case WEB:
+            return `${appFolder}/public`;
+        case MACOS:
+        case WINDOWS:
+            return `${appFolder}/build/release/${productName}-${version}`;
+        case TIZEN:
+        case TIZEN_MOBILE:
+            return `${appFolder}/output/${appName}.wgt`;
+        case WEBOS:
+            return `${appFolder}/output/${id}_${version}_all.ipk`;
+        default:
+            return appFolder;
+    }
+};
 
 export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)
@@ -498,36 +498,17 @@ export const importPackageFromProject = (name) => {
     return pkg;
 };
 
-// TODO: remove this
-// export {
-//     logInfo,
-//     logDebug,
-//     logError,
-//     logTask,
-//     logEnd,
-//     logWarning,
-//     logSuccess,
-// };
-
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    // logWelcome,
     isPlatformSupported,
     isBuildSchemeSupported,
     isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
-    // logTask,
-    // logComplete,
-    // logError,
     initializeBuilder,
-    // logDebug,
-    // logInfo,
     logErrorPlatform,
     isPlatformActive,
-    // logEnd,
-    // logWarning,
     configureIfRequired,
     getAppId,
     getAppTitle,
@@ -539,7 +520,6 @@ export default {
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    // logSuccess,
     getConfigProp,
     getIP,
     cleanPlatformIfRequired,

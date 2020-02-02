@@ -6,19 +6,13 @@ import open from 'better-opn';
 import ip from 'ip';
 import { executeAsync } from '../../systemTools/exec';
 import {
-    logTask,
     getAppFolder,
     isPlatformActive,
     getAppTemplateFolder,
     checkPortInUse,
-    logInfo,
-    logDebug,
     resolveNodeModulePath,
     getConfigProp,
-    logSuccess,
     waitForWebpack,
-    logError,
-    logWarning,
     writeCleanFile,
     getBuildFilePath,
     getAppTitle,
@@ -26,7 +20,8 @@ import {
     sanitizeColor,
     confirmActiveBundler
 } from '../../common';
-import { PLATFORMS, WEB } from '../../constants';
+import { logTask, logInfo, logDebug, logSuccess, logWarning } from '../../systemTools/logger';
+import { WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';

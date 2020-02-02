@@ -1,11 +1,13 @@
 import path from 'path';
 import {
-    logTask,
     getAppFolder,
     writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
 } from '../../common';
+import {
+    logTask
+} from '../../systemTools/logger';
 import { getAppFolderName } from './index';
 
 export const parseXcscheme = async (c, platform) => {
