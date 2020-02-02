@@ -48,20 +48,23 @@ const _parseIOSDevicesList = (rawDevices, platform, ignoreDevices = false, ignor
     const decideIcon = (device) => {
         const { name, isDevice } = device;
         switch (platform) {
-        case IOS:
-            if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod') || isDevice) {
-                let icon = 'Phone 📱';
-                if (name.includes('iPad')) icon = 'Tablet 💊';
-                return icon;
-            }
-            return null;
-        case TVOS:
-            if ((name.includes('Apple TV') || isDevice) && !name.includes('iPhone') && !name.includes('iPad')) {
-                return 'TV 📺';
-            }
-            return null;
-        default:
-            return null;
+            case IOS:
+                if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod')) {
+                    let icon = 'Phone 📱';
+                    if (name.includes('iPad')) icon = 'Tablet 💊';
+                    return icon;
+                }
+                return null;
+            case TVOS:
+                if ((name.includes('TV')) && !name.includes('iPhone') && !name.includes('iPad')) {
+                    return 'TV 📺';
+                }
+                return null;
+            default:
+                if (isDevice) {
+                    return 'Apple Device';
+                }
+                return null;
         }
     };
     if (typeof rawDevices === 'string' && !ignoreDevices) {

@@ -209,10 +209,15 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
 };
 
 const loadAppConfigIDfromDir = (dir, appConfigsDir) => {
+    logTask(`loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk.grey);
     const filePath = path.join(appConfigsDir, dir, 'renative.json');
     if (fs.existsSync(filePath)) {
-        const renativeConf = JSON.parse(fs.readFileSync(filePath));
-        return { dir, id: renativeConf.id };
+        try {
+            const renativeConf = JSON.parse(fs.readFileSync(filePath));
+            return { dir, id: renativeConf.id };
+        } catch (e) {
+            logError(`File ${filePath} is MALFORMED:\n${e}`);
+        }
     }
     return { dir, id: null };
 };
@@ -252,33 +257,33 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
 };
 
 const matchAppConfigID = async (c, appConfigID) => {
-    logTask(`matchAppConfigID:${appConfigID}`, chalk.grey)
+    logTask(`matchAppConfigID:${appConfigID}`, chalk.grey);
 
     if (!appConfigID) return false;
 
-    let appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs || [c.paths.project?.appConfigsDir];
-    for (let i = 0; i< appConfigsDirs.length; i++) {
-      const appConfigsDir = appConfigsDirs[i]
+    const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs || [c.paths.project?.appConfigsDir];
+    for (let i = 0; i < appConfigsDirs.length; i++) {
+        const appConfigsDir = appConfigsDirs[i];
 
-      const appConfigDirContents = await (await readdirAsync(appConfigsDir)).filter(folder => fs.statSync(path.join(appConfigsDir, folder)).isDirectory());
+        const appConfigDirContents = await (await readdirAsync(appConfigsDir)).filter(folder => fs.statSync(path.join(appConfigsDir, folder)).isDirectory());
 
-      const appConfigs = appConfigDirContents.map(dir => loadAppConfigIDfromDir(dir, appConfigsDir)).filter(conf => conf.id !== null);
-      // find duplicates
-      const ids = [];
-      const dirs = [];
-      await Promise.all(appConfigs.map(async (conf) => {
-          const id = conf.id.toLowerCase();
-          const dir = conf.dir.toLowerCase();
-          // find mismatches
-          if (id !== dir) await askUserAboutConfigs(c, conf.dir, conf.id, appConfigsDir);
-          if (ids.includes(id)) throw new Error(`AppConfig error - You have 2 duplicate app configs with ID ${id}. Keep in mind that ID is case insensitive. Please edit one of them in /appConfigs/<folder>/renative.json`);
-          ids.push(id);
-          if (dirs.includes(dir)) throw new Error(`AppConfig error - You have 2 duplicate app config folders named ${dir}. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`);
-          dirs.push(dir);
-      }));
+        const appConfigs = appConfigDirContents.map(dir => loadAppConfigIDfromDir(dir, appConfigsDir)).filter(conf => conf.id !== null);
+        // find duplicates
+        const ids = [];
+        const dirs = [];
+        await Promise.all(appConfigs.map(async (conf) => {
+            const id = conf.id.toLowerCase();
+            const dir = conf.dir.toLowerCase();
+            // find mismatches
+            if (id !== dir) await askUserAboutConfigs(c, conf.dir, conf.id, appConfigsDir);
+            if (ids.includes(id)) throw new Error(`AppConfig error - You have 2 duplicate app configs with ID ${id}. Keep in mind that ID is case insensitive. Please edit one of them in /appConfigs/<folder>/renative.json`);
+            ids.push(id);
+            if (dirs.includes(dir)) throw new Error(`AppConfig error - You have 2 duplicate app config folders named ${dir}. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`);
+            dirs.push(dir);
+        }));
 
-      const foundConfig = appConfigs.filter(cfg => cfg.id === appConfigID || cfg.id.toLowerCase() === appConfigID || cfg.dir === appConfigID || cfg.dir.toLowerCase() === appConfigID);
-      if(foundConfig.length) return foundConfig[0].id.toLowerCase();
+        const foundConfig = appConfigs.filter(cfg => cfg.id === appConfigID || cfg.id.toLowerCase() === appConfigID || cfg.dir === appConfigID || cfg.dir.toLowerCase() === appConfigID);
+        if (foundConfig.length) return foundConfig[0].id.toLowerCase();
     }
     return false;
 };
@@ -291,7 +296,7 @@ export const parseRenativeConfigs = async (c) => {
     // LOAD ./RENATIVE.*.JSON
     _loadConfigFiles(c, c.files.project, c.paths.project);
     if (c.program.appConfigID !== true) {
-        const aid = await matchAppConfigID(c, c.program.appConfigID?.toLowerCase?.())
+        const aid = await matchAppConfigID(c, c.program.appConfigID?.toLowerCase?.());
         c.runtime.appId = aid || c.runtime.appId || c.files.project?.configLocal?._meta?.currentAppConfigId;
     }
     c.paths.project.builds.config = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${c.platform}.json`);

@@ -527,6 +527,21 @@ export const importPackageFromProject = (name) => {
     return pkg;
 };
 
+export const isMac = (c) => {
+  const { process: { platform } } = c;
+  return platform === 'darwin'
+}
+
+export const isLinux = (c) => {
+  const { process: { platform } } = c;
+  return platform === 'linux'
+}
+
+export const isWin = (c) => {
+  const { process: { platform } } = c;
+  return platform === 'win32'
+}
+
 // TODO: remove this
 export {
     logInfo,

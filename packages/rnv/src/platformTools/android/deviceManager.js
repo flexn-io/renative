@@ -74,7 +74,7 @@ const _getDeviceString = (device, i) => {
     const deviceString = `${chalk.white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk.grey(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
         isActive ? chalk.magenta(' (active)') : ''}`;
 
-    if (i === null) return { key: name, name: deviceString, value: name };
+    if (i === null) return { key: name, name: deviceString, value: name, icon: deviceIcon };
 
     return ` [${i + 1}]> ${deviceString}\n`;
 };
