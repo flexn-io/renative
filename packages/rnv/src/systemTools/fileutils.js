@@ -6,10 +6,9 @@ import shelljs from 'shelljs';
 import merge from 'deepmerge';
 import chalk from 'chalk';
 import ncp from 'ncp';
+import { isSystemWin } from '../utils';
 
 import { logDebug, logError, logWarning, logInfo } from './logger';
-
-export const isRunningOnWindows = process.platform === 'win32';
 
 export const copyFileSync = (source, target) => {
     logDebug('copyFileSync', source);
@@ -397,7 +396,7 @@ export const updateConfigFile = async (update, globalConfigPath) => {
 };
 
 export const replaceHomeFolder = (p) => {
-    if (isRunningOnWindows) return p.replace('~', process.env.USERPROFILE);
+    if (isSystemWin) return p.replace('~', process.env.USERPROFILE);
     return p.replace('~', process.env.HOME);
 };
 

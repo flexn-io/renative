@@ -31,9 +31,7 @@ import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectPa
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
-
-
-const isRunningOnWindows = process.platform === 'win32';
+import { isSystemWin } from '../../utils';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -164,7 +162,7 @@ const runWeb = async (c, platform, port) => {
         if (extendConfig.devServerHost) devServerHost = extendConfig.devServerHost;
     }
 
-    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+    if (isSystemWin && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
 
@@ -182,7 +180,6 @@ const runWeb = async (c, platform, port) => {
         await confirmActiveBundler(c);
         await _runWebBrowser(c, platform, devServerHost, port, true);
     }
-
 };
 
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {

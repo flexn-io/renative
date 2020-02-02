@@ -8,7 +8,7 @@ import ip from 'ip';
 import axios from 'axios';
 import colorString from 'color-string';
 import crypto from 'crypto';
-
+import { isSystemWin } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
@@ -461,7 +461,7 @@ export const waitForWebpack = async (c) => {
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     let devServerHost = extendConfig.devServerHost || '0.0.0.0';
-    if (isWin(c) && devServerHost === '0.0.0.0') {
+    if (isSystemWin && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
     const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
@@ -496,21 +496,6 @@ export const importPackageFromProject = (name) => {
     const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
     if (pkg.default) return pkg.default;
     return pkg;
-};
-
-export const isMac = (c) => {
-    const { process: { platform } } = c;
-    return platform === 'darwin';
-};
-
-export const isLinux = (c) => {
-    const { process: { platform } } = c;
-    return platform === 'linux';
-};
-
-export const isWin = (c) => {
-    const { process: { platform } } = c;
-    return platform === 'win32';
 };
 
 // TODO: remove this

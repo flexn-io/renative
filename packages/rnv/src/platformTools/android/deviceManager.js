@@ -9,6 +9,7 @@ import inquirer from 'inquirer';
 
 import { execCLI, executeTelnet } from '../../systemTools/exec';
 import { waitForEmulator } from '../../common';
+import { isSystemWin } from '../../utils';
 import { logToSummary, logTask,
     logError, logWarning,
     logDebug, logSuccess } from '../../systemTools/logger';
@@ -17,9 +18,6 @@ import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EM
 const CHECK_INTEVAL = 5000;
 
 const currentDeviceProps = {};
-
-const isRunningOnWindows = process.platform === 'win32';
-
 
 export const composeDevicesString = (devices, returnArray) => {
     logTask(`composeDevicesString:${devices ? devices.length : null}`);
@@ -375,7 +373,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                const findProcess = isRunningOnWindows ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`;
+                const findProcess = isSystemWin ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`;
                 child_process.execSync(findProcess);
                 logDebug('_parseDevicesResult 9 - excluding running emulator');
             } catch (e) {
@@ -455,7 +453,7 @@ const waitForEmulatorToBeReady = (c, emulator) => waitForEmulator(c, CLI_ANDROID
 export const checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask(`checkForActiveEmulator:${platform}`);
     let attempts = 1;
-    const maxAttempts = isRunningOnWindows ? 20 : 10;
+    const maxAttempts = isSystemWin ? 20 : 10;
     let running = false;
     const poll = setInterval(() => {
         // Prevent the interval from running until enough promises return to make it stop or we get a result

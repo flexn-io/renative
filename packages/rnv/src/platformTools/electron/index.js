@@ -26,6 +26,7 @@ import {
     waitForWebpack,
     confirmActiveBundler
 } from '../../common';
+import { isSystemWin } from '../../utils';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS, WINDOWS } from '../../constants';
 import {
@@ -36,8 +37,6 @@ import {
 import {
     mkdirSync, writeFileSync, readObjectSync, removeDirs
 } from '../../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
 
 const configureElectronProject = async (c, platform) => {
     logTask(`configureElectronProject:${platform}`);
@@ -96,7 +95,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     } else {
-        const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+        const ip = isSystemWin ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.runtime.port}` },
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },

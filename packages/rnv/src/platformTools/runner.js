@@ -66,8 +66,7 @@ import { isBundlerRunning, waitForBundler } from './bundler';
 import { checkSdk } from '../systemTools/sdkManager';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { isSystemWin } from '../utils';
 
 let keepRNVRunning = false;
 
@@ -84,7 +83,7 @@ export const rnvStart = async (c) => {
     logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
 
     if (Config.isWebHostEnabled && hosted) {
-        const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+        const hostIp = isSystemWin ? '127.0.0.1' : '0.0.0.0';
         waitForWebpack(c, port)
             .then(() => open(`http://${hostIp}:${port}/`))
             .catch(logError);

@@ -11,8 +11,7 @@ import { generateOptions } from '../systemTools/prompt';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
 import { executeAsync, execCLI } from '../systemTools/exec';
 import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { isSystemWin } from '../utils';
 
 // ##########################################
 // PUBLIC API

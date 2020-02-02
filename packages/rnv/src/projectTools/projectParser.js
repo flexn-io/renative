@@ -7,7 +7,7 @@ import {
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeFileSync, isRunningOnWindows
+    copyFileSync, mkdirSync, removeDirs, writeFileSync
 } from '../systemTools/fileutils';
 import { executeAsync, npmInstall } from '../systemTools/exec';
 import {
@@ -18,6 +18,7 @@ import {
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 import { inquirerPrompt } from '../systemTools/prompt';
+import { isSystemWin } from '../utils';
 
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
@@ -97,7 +98,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                         const fontSource = path.join(dir, font);
 
                         let relativePath = dir.replace(c.paths.project.dir, '');
-                        if (isRunningOnWindows) relativePath = relativePath.replace(/\\/g, '/'); // strings don't like windows backslashes
+                        if (isSystemWin) relativePath = relativePath.replace(/\\/g, '/'); // strings don't like windows backslashes
                         if (fs.existsSync(fontSource)) {
                             // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                             // mkdirSync(fontFolder);

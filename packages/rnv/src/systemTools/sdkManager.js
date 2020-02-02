@@ -25,26 +25,25 @@ import {
     TIZEN_WATCH,
     SDK_PLATFORMS
 } from '../constants';
-import { isWin } from '../common';
+import { isSystemWin } from '../utils';
 import {
     getRealPath
 } from './fileutils';
 import {
-    logTask, logWarning
+    logTask
 } from './logger';
 
-const _logSdkWarning = (c) => {
-    logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
-};
+// const _logSdkWarning = (c) => {
+//     logWarning(`Your ${c.paths.workspace.config} is missing SDK configuration object`);
+// };
 
 export const checkAndConfigureAndroidSdks = async (c) => {
     const sdk = c.files.workspace.config?.sdks?.ANDROID_SDK;
-    const isWindows = isWin(c);
     if (sdk) {
-        c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdk, `emulator/emulator${isWindows ? '.exe' : ''}`));
-        c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(sdk, `platform-tools/adb${isWindows ? '.exe' : ''}`));
-        c.cli[CLI_ANDROID_AVDMANAGER] = getRealPath(c, path.join(sdk, `tools/bin/avdmanager${isWindows ? '.bat' : ''}`));
-        c.cli[CLI_ANDROID_SDKMANAGER] = getRealPath(c, path.join(sdk, `tools/bin/sdkmanager${isWindows ? '.bat' : ''}`));
+        c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
+        c.cli[CLI_ANDROID_ADB] = getRealPath(c, path.join(sdk, `platform-tools/adb${isSystemWin ? '.exe' : ''}`));
+        c.cli[CLI_ANDROID_AVDMANAGER] = getRealPath(c, path.join(sdk, `tools/bin/avdmanager${isSystemWin ? '.bat' : ''}`));
+        c.cli[CLI_ANDROID_SDKMANAGER] = getRealPath(c, path.join(sdk, `tools/bin/sdkmanager${isSystemWin ? '.bat' : ''}`));
     } else {
     // TODO: FIX
     }
@@ -52,11 +51,10 @@ export const checkAndConfigureAndroidSdks = async (c) => {
 
 export const checkAndConfigureTizenSdks = async (c) => {
     const sdk = c.files.workspace.config?.sdks?.TIZEN_SDK;
-    const isWindows = isWin(c);
     if (sdk) {
-        c.cli[CLI_TIZEN_EMULATOR] = getRealPath(c, path.join(sdk, `tools/emulator/bin/em-cli${isWindows ? '.bat' : ''}`));
-        c.cli[CLI_TIZEN] = getRealPath(c, path.join(sdk, `tools/ide/bin/tizen${isWindows ? '.bat' : ''}`));
-        c.cli[CLI_SDB_TIZEN] = getRealPath(c, path.join(sdk, `tools/sdb${isWindows ? '.exe' : ''}`));
+        c.cli[CLI_TIZEN_EMULATOR] = getRealPath(c, path.join(sdk, `tools/emulator/bin/em-cli${isSystemWin ? '.bat' : ''}`));
+        c.cli[CLI_TIZEN] = getRealPath(c, path.join(sdk, `tools/ide/bin/tizen${isSystemWin ? '.bat' : ''}`));
+        c.cli[CLI_SDB_TIZEN] = getRealPath(c, path.join(sdk, `tools/sdb${isSystemWin ? '.exe' : ''}`));
     } else {
     // TODO: FIX
     }
@@ -64,15 +62,14 @@ export const checkAndConfigureTizenSdks = async (c) => {
 
 export const checkAndConfigureWebosSdks = async (c) => {
     const sdk = c.files.workspace.config?.sdks?.WEBOS_SDK;
-    const isWindows = isWin(c);
     if (sdk) {
-        c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(sdk, `CLI/bin/ares${isWindows ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(c, path.join(sdk, `CLI/bin/ares-package${isWindows ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(c, path.join(sdk, `CLI/bin/ares-install${isWindows ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(c, path.join(sdk, `CLI/bin/ares-launch${isWindows ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = getRealPath(c, path.join(sdk, `CLI/bin/ares-setup-device${isWindows ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(c, path.join(sdk, `CLI/bin/ares-device-info${isWindows ? '.cmd' : ''}`));
-        c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(c, path.join(sdk, `CLI/bin/ares-novacom${isWindows ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_PACKAGE] = getRealPath(c, path.join(sdk, `CLI/bin/ares-package${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_INSTALL] = getRealPath(c, path.join(sdk, `CLI/bin/ares-install${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_LAUNCH] = getRealPath(c, path.join(sdk, `CLI/bin/ares-launch${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_SETUP_DEVICE] = getRealPath(c, path.join(sdk, `CLI/bin/ares-setup-device${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_DEVICE_INFO] = getRealPath(c, path.join(sdk, `CLI/bin/ares-device-info${isSystemWin ? '.cmd' : ''}`));
+        c.cli[CLI_WEBOS_ARES_NOVACOM] = getRealPath(c, path.join(sdk, `CLI/bin/ares-novacom${isSystemWin ? '.cmd' : ''}`));
     } else {
     // TODO: FIX
     }
