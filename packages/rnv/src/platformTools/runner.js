@@ -8,18 +8,20 @@ import path from 'path';
 import {
     isPlatformSupported,
     isBuildSchemeSupported,
-    logTask,
-    logError,
     logErrorPlatform,
     configureIfRequired,
     cleanPlatformIfRequired,
-    logDebug,
     writeCleanFile,
     getConfigProp,
     waitForWebpack,
     getSourceExts,
     confirmActiveBundler
 } from '../common';
+import {
+    logTask,
+    logError,
+    logDebug
+} from '../systemTools/logger';
 import {
     IOS,
     TVOS,

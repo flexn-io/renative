@@ -1,35 +1,22 @@
 import path from 'path';
-import os from 'os';
-import fs from 'fs';
-import net from 'net';
-import chalk from 'chalk';
-import shell from 'shelljs';
-import child_process from 'child_process';
-import inquirer from 'inquirer';
+import {
+    getAppFolder,
+    writeCleanFile,
+    getAppId,
+    getBuildFilePath,
+    getConfigProp,
+    getFlavouredProp
+} from '../../common';
 import {
     logTask,
     logError,
-    getAppFolder,
-    isPlatformActive,
-    getAppVersion,
-    getAppTitle,
-    getAppVersionCode,
-    writeCleanFile,
-    getAppId,
-    getAppTemplateFolder,
-    getBuildFilePath,
-    getEntryFile,
-    logWarning,
-    logDebug,
-    getConfigProp,
-    logInfo,
-    logSuccess,
-    getBuildsFolder,
-    getFlavouredProp
-} from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
+    logWarning
+} from '../../systemTools/logger';
+import { readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+
+const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
+const SYSTEM_TAGS = ['tag', 'children'];
 
 const _findChildNode = (tag, name, node) => {
     if (!node) {
@@ -109,9 +96,6 @@ const _mergeNodeParameters = (node, nodeParamsExt) => {
         if (!SYSTEM_TAGS.includes(k)) node[k] = nodeParamsExt[k];
     }
 };
-
-const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
-const SYSTEM_TAGS = ['tag', 'children'];
 
 const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
     // console.log('_mergeNodeChildren', node, 'OVERRIDE', nodeChildrenExt);

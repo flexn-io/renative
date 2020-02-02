@@ -12,8 +12,8 @@ import { isSystemWin } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
-    logWelcome, configureLogger, logError, logTask,
-    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
+    configureLogger, logError, logTask,
+    logWarning, logInfo,
     logInitialize
 } from './systemTools/logger';
 import {
@@ -499,35 +499,35 @@ export const importPackageFromProject = (name) => {
 };
 
 // TODO: remove this
-export {
-    logInfo,
-    logDebug,
-    logError,
-    logTask,
-    logEnd,
-    logWarning,
-    logSuccess,
-};
+// export {
+//     logInfo,
+//     logDebug,
+//     logError,
+//     logTask,
+//     logEnd,
+//     logWarning,
+//     logSuccess,
+// };
 
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    logWelcome,
+    // logWelcome,
     isPlatformSupported,
     isBuildSchemeSupported,
     isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
-    logTask,
-    logComplete,
-    logError,
+    // logTask,
+    // logComplete,
+    // logError,
     initializeBuilder,
-    logDebug,
-    logInfo,
+    // logDebug,
+    // logInfo,
     logErrorPlatform,
     isPlatformActive,
-    logEnd,
-    logWarning,
+    // logEnd,
+    // logWarning,
     configureIfRequired,
     getAppId,
     getAppTitle,
@@ -539,7 +539,7 @@ export default {
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    logSuccess,
+    // logSuccess,
     getConfigProp,
     getIP,
     cleanPlatformIfRequired,

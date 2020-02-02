@@ -4,12 +4,14 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import {
-    logTask,
     getAppFolder,
-    isPlatformActive,
+    isPlatformActive
+} from '../common';
+import {
+    logTask,
     logWarning,
     logInfo,
-} from '../common';
+} from '../systemTools/logger';
 import {
     IOS,
     ANDROID,
@@ -85,8 +87,7 @@ const _configurePlatform = async (c, p, platform, method) => {
         c.platform = platform;
         await method(c, platform);
     }
-    return;
-}
+};
 
 export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';

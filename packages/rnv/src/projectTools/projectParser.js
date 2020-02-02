@@ -7,13 +7,12 @@ import {
 import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeFileSync
+    copyFileSync, mkdirSync, writeFileSync
 } from '../systemTools/fileutils';
-import { executeAsync, npmInstall } from '../systemTools/exec';
+import { npmInstall } from '../systemTools/exec';
 import {
-    logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
-    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo, getCurrentCommand
+    logTask,
+    logWarning, logDebug, logInfo
 } from '../systemTools/logger';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
@@ -326,7 +325,6 @@ export const upgradeProjectDependencies = (c, version) => {
     if (devDependencies[tb]) {
         devDependencies[tb] = version;
     }
-    const dependencies = c.files.project.package?.dependencies;
     if (devDependencies?.renative) {
         devDependencies.renative = version;
     }
@@ -361,11 +359,10 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
     }
 });
 
-export const cleanPlaformAssets = c => new Promise((resolve, reject) => {
+export const cleanPlaformAssets = async (c) => {
     logTask('cleanPlaformAssets');
 
-    cleanFolder(c.paths.project.assets.dir).then(() => {
-        mkdirSync(c.paths.project.assets.runtimeDir);
-        resolve();
-    });
-});
+    await cleanFolder(c.paths.project.assets.dir);
+    mkdirSync(c.paths.project.assets.runtimeDir);
+    return true;
+};
