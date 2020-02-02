@@ -5,8 +5,6 @@ import { spawn } from 'child_process';
 import { createPlatformBuild } from '..';
 import { executeAsync } from '../../systemTools/exec';
 import {
-    logTask,
-    logError,
     getAppFolder,
     isPlatformActive,
     getAppVersion,
@@ -17,18 +15,22 @@ import {
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    logWarning,
-    logSuccess,
     getConfigProp,
     checkPortInUse,
-    logInfo,
     resolveNodeModulePath,
     waitForWebpack,
     confirmActiveBundler
 } from '../../common';
+import {
+    logTask,
+    logError,
+    logWarning,
+    logSuccess,
+    logInfo
+} from '../../systemTools/logger';
 import { isSystemWin } from '../../utils';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
-import { MACOS, WINDOWS } from '../../constants';
+import { MACOS } from '../../constants';
 import {
     buildWeb,
     runWeb,
