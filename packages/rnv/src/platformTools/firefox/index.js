@@ -1,9 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execCLI } from '../../systemTools/exec';
 import {
-    logTask,
     getAppFolder,
     isPlatformActive,
     getAppTitle,
@@ -12,11 +10,14 @@ import {
     getAppAuthor,
     getConfigProp,
 } from '../../common';
+import {
+    logTask
+} from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
     KAIOS_SDK,
 } from '../../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
+import { getRealPath } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
