@@ -8,7 +8,7 @@ import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync, removeDirs } from '../systemTools/fileutils';
 import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS, SUPPORTED_PLATFORMS } from '../constants';
-import { checkAndConfigureSdks } from '../systemTools/sdkManager';
+import { checkAndConfigureSdks } from './sdkManager';
 
 export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
