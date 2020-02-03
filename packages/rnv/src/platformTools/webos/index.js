@@ -7,7 +7,6 @@ import inquirer from 'inquirer';
 import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppVersion,
     getAppTitle,
     writeCleanFile,
@@ -19,6 +18,7 @@ import {
     checkPortInUse,
     confirmActiveBundler
 } from '../../common';
+import { isPlatformActive } from '..';
 import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {

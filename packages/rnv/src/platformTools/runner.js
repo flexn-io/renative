@@ -6,7 +6,6 @@ import ip from 'ip';
 import path from 'path';
 
 import {
-    isPlatformSupported,
     isBuildSchemeSupported,
     logErrorPlatform,
     configureIfRequired,
@@ -17,6 +16,7 @@ import {
     getSourceExts,
     confirmActiveBundler
 } from '../common';
+import { isPlatformSupported } from './index';
 import {
     logTask,
     logError,

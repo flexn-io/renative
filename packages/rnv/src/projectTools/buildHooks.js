@@ -1,8 +1,7 @@
 import chalk from 'chalk';
 import fs from 'fs';
 import {
-    isPlatformSupportedSync, getConfig,
-    getAppFolder, resolveNodeModulePath
+    getConfig
 } from '../common';
 import { logToSummary, logTask } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';

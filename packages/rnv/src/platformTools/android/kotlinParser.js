@@ -1,37 +1,30 @@
 import path from 'path';
-import os from 'os';
-import fs from 'fs';
-import net from 'net';
-import chalk from 'chalk';
-import shell from 'shelljs';
-import child_process from 'child_process';
-import inquirer from 'inquirer';
 import {
-    logTask,
-    logError,
     getAppFolder,
-    isPlatformActive,
-    getAppVersion,
-    getAppTitle,
-    getAppVersionCode,
     writeCleanFile,
     getAppId,
-    getAppTemplateFolder,
     getBuildFilePath,
     getEntryFile,
     getGetJsBundleFile,
-    logWarning,
-    logDebug,
     getConfigProp,
-    logInfo,
-    logSuccess,
-    getIP,
-    getBuildsFolder,
+    getIP
 } from '../../common';
-import { PLATFORMS } from '../../constants';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import {
+    logWarning
+} from '../../systemTools/logger';
+
+const JS_BUNDLE_DEFAULTS = {
+    android: '"super.getJSBundleFile()"',
+    androidtv: '"super.getJSBundleFile()"',
+    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
+    androidwear: '"assets://index.androidwear.bundle"',
+};
+
+const JS_BUNDLE_DEFAULTS_BUNDLED = {
+    android: '"assets://index.android.bundle"',
+    androidtv: '"assets://index.android.bundle"',
+    androidwear: '"assets://index.android.bundle"',
+};
 
 export const parseMainApplicationSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -58,20 +51,6 @@ export const parseMainApplicationSync = (c, platform) => {
 
     ]);
 };
-
-const JS_BUNDLE_DEFAULTS = {
-    android: '"super.getJSBundleFile()"',
-    androidtv: '"super.getJSBundleFile()"',
-    // CRAPPY BUT Android Wear does not support webview required for connecting to packager
-    androidwear: '"assets://index.androidwear.bundle"',
-};
-
-const JS_BUNDLE_DEFAULTS_BUNDLED = {
-    android: '"assets://index.android.bundle"',
-    androidtv: '"assets://index.android.bundle"',
-    androidwear: '"assets://index.android.bundle"',
-};
-
 
 export const parseMainActivitySync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);

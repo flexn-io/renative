@@ -3,7 +3,6 @@ import fs from 'fs';
 import chalk from 'chalk';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppTitle,
     getAppTemplateFolder,
     getAppDescription,
@@ -13,6 +12,7 @@ import {
 import {
     logTask
 } from '../../systemTools/logger';
+import { isPlatformActive } from '..';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
     KAIOS_SDK,

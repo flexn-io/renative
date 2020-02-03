@@ -10,7 +10,6 @@ import { execCLI } from '../../systemTools/exec';
 import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../../constants';
 import {
     getAppFolder,
-    isPlatformActive,
     writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
@@ -27,6 +26,7 @@ import {
     logSuccess,
     logToSummary
 } from '../../systemTools/logger';
+import { isPlatformActive } from '..';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';

@@ -5,8 +5,8 @@ import fs from 'fs';
 import chalk from 'chalk';
 import {
     getAppFolder,
-    isPlatformActive
 } from '../common';
+import { isPlatformActive } from '../platformTools';
 import {
     logTask,
     logWarning,
@@ -31,7 +31,7 @@ import {
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject } from '../platformTools/android';
-import { configureTizenProject, configureTizenGlobal } from '../platformTools/tizen';
+import { configureTizenProject } from '../platformTools/tizen';
 import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';

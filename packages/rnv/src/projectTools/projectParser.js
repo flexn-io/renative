@@ -4,11 +4,12 @@ import chalk from 'chalk';
 import {
     WEB_HOSTED_PLATFORMS,
 } from '../constants';
-import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
+import { getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, writeFileSync
 } from '../systemTools/fileutils';
+import { isPlatformActive } from '../platformTools';
 import { npmInstall } from '../systemTools/exec';
 import {
     logTask,

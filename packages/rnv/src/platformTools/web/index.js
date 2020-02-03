@@ -7,7 +7,6 @@ import ip from 'ip';
 import { executeAsync } from '../../systemTools/exec';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppTemplateFolder,
     checkPortInUse,
     resolveNodeModulePath,
@@ -20,6 +19,7 @@ import {
     sanitizeColor,
     confirmActiveBundler
 } from '../../common';
+import { isPlatformActive } from '..';
 import { logTask, logInfo, logDebug, logSuccess, logWarning } from '../../systemTools/logger';
 import { WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';

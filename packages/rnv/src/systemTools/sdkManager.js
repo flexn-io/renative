@@ -38,6 +38,7 @@ import {
 // };
 
 export const checkAndConfigureAndroidSdks = async (c) => {
+    logTask(`checkAndConfigureAndroidSdks:${c.platform}`);
     const sdk = c.files.workspace.config?.sdks?.ANDROID_SDK;
     if (sdk) {
         c.cli[CLI_ANDROID_EMULATOR] = getRealPath(c, path.join(sdk, `emulator/emulator${isSystemWin ? '.exe' : ''}`));
@@ -50,6 +51,7 @@ export const checkAndConfigureAndroidSdks = async (c) => {
 };
 
 export const checkAndConfigureTizenSdks = async (c) => {
+    logTask(`checkAndConfigureTizenSdks:${c.platform}`);
     const sdk = c.files.workspace.config?.sdks?.TIZEN_SDK;
     if (sdk) {
         c.cli[CLI_TIZEN_EMULATOR] = getRealPath(c, path.join(sdk, `tools/emulator/bin/em-cli${isSystemWin ? '.bat' : ''}`));
@@ -61,6 +63,7 @@ export const checkAndConfigureTizenSdks = async (c) => {
 };
 
 export const checkAndConfigureWebosSdks = async (c) => {
+    logTask(`checkAndConfigureWebosSdks:${c.platform}`);
     const sdk = c.files.workspace.config?.sdks?.WEBOS_SDK;
     if (sdk) {
         c.cli[CLI_WEBOS_ARES] = getRealPath(c, path.join(sdk, `CLI/bin/ares${isSystemWin ? '.cmd' : ''}`));

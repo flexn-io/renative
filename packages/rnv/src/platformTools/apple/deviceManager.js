@@ -3,9 +3,8 @@ import chalk from 'chalk';
 import child_process from 'child_process';
 import {
     getAppFolder,
-    isPlatformActive,
 } from '../../common';
-import { logToSummary, logTask, logWarning, logDebug } from '../../systemTools/logger';
+import { logToSummary, logTask, logWarning } from '../../systemTools/logger';
 import { IOS, TVOS } from '../../constants';
 import { executeAsync } from '../../systemTools/exec';
 

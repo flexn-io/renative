@@ -9,14 +9,13 @@ import inquirer from 'inquirer';
 import execa from 'execa';
 
 import { executeAsync, execCLI } from '../../systemTools/exec';
-import { createPlatformBuild } from '..';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppTemplateFolder,
     getConfigProp,
     getAppId
 } from '../../common';
+import { isPlatformActive, createPlatformBuild } from '..';
 import { isSystemWin } from '../../utils';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { logTask, logWarning, logDebug, logInfo, logSuccess } from '../../systemTools/logger';

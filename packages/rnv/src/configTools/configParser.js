@@ -37,7 +37,6 @@ import {
     checkAndCreateGitignore, copySharedPlatforms, upgradeProjectDependencies
 } from '../projectTools/projectParser';
 import { inquirerPrompt } from '../systemTools/prompt';
-import { checkAndConfigureSdks } from '../systemTools/sdkManager';
 import Config from '../config';
 
 const base = path.resolve('.');
@@ -756,9 +755,6 @@ export const configureRnvGlobal = async (c) => {
                 c.paths.project.appConfigsDir = c.files.workspace.config.appConfigsPath;
             }
         }
-
-        // Check global SDKs
-        await checkAndConfigureSdks(c);
 
         // Check config sanity
         if (c.files.workspace.config.defaultTargets === undefined) {

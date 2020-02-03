@@ -19,8 +19,7 @@ import {
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS,
-    PLATFORMS,
-    SUPPORTED_PLATFORMS
+    PLATFORMS
 } from './constants';
 import { execCLI } from './systemTools/exec';
 import {
@@ -45,27 +44,6 @@ export const generateChecksum = (str, algorithm, encoding) => crypto
     .update(str, 'utf8')
     .digest(encoding || 'hex');
 
-export const isPlatformSupportedSync = (platform, resolve, reject) => {
-    if (!platform) {
-        if (reject) {
-            reject(
-                chalk.red(
-                    `You didn't specify platform. make sure you add "${chalk.white.bold(
-                        '-p <PLATFORM>',
-                    )}" option to your command!`,
-                ),
-            );
-        }
-        return false;
-    }
-    if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        if (reject) reject(chalk.red(`Platform ${platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))} .`));
-        return false;
-    }
-    if (resolve) resolve();
-    return true;
-};
-
 export const getSourceExts = (c) => {
     const sExt = PLATFORMS[c.platform]?.sourceExts;
     if (sExt) {
@@ -77,28 +55,6 @@ export const getSourceExts = (c) => {
 export const getSourceExtsAsString = (c) => {
     const sourceExts = getSourceExts(c);
     return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
-};
-
-export const isPlatformSupported = async (c) => {
-    logTask(`isPlatformSupported:${c.platform}`);
-    let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
-    if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
-    const opts = generateOptions(platformsAsObj);
-
-    if (!c.platform || c.platform === true || !SUPPORTED_PLATFORMS.includes(c.platform)) {
-        const { platform } = await inquirerPrompt({
-            name: 'platform',
-            type: 'list',
-            message: 'Pick one of available platforms',
-            choices: opts.keysAsArray,
-            logMessage: 'You need to specify platform'
-        });
-
-        c.platform = platform;
-        c.program.platform = platform;
-        return platform;
-    }
-    return c.platform;
 };
 
 export const sanitizeColor = (val) => {
@@ -253,20 +209,6 @@ export const getAppVersionCode = (c, platform) => {
 
 export const logErrorPlatform = (c, platform) => {
     logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
-};
-
-export const isPlatformActive = (c, platform, resolve) => {
-    if (!c.buildConfig || !c.buildConfig.platforms) {
-        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
-        if (resolve) resolve();
-        return false;
-    }
-    if (!c.buildConfig.platforms[platform]) {
-        console.log(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
-        if (resolve) resolve();
-        return false;
-    }
-    return true;
 };
 
 export const PLATFORM_RUNS = {};
@@ -501,14 +443,11 @@ export const importPackageFromProject = (name) => {
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    isPlatformSupported,
     isBuildSchemeSupported,
-    isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
     initializeBuilder,
     logErrorPlatform,
-    isPlatformActive,
     configureIfRequired,
     getAppId,
     getAppTitle,

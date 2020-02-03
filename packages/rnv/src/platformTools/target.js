@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
-import { logTask, logError, isPlatformSupported } from '../common';
+import { isPlatformSupported } from '.';
+import { logTask, logError } from '../systemTools/logger';
 import { checkSdk } from '../systemTools/sdkManager';
 import PlatformSetup from '../setupTools';
 import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';

@@ -6,7 +6,6 @@ import { createPlatformBuild } from '..';
 import { executeAsync } from '../../systemTools/exec';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppVersion,
     getAppTitle,
     writeCleanFile,
@@ -28,6 +27,7 @@ import {
     logSuccess,
     logInfo
 } from '../../systemTools/logger';
+import { isPlatformActive } from '..';
 import { isSystemWin } from '../../utils';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { MACOS } from '../../constants';

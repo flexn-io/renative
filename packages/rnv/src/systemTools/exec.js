@@ -242,7 +242,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         if (extractedError.length === maxErrorLength) extractedError += '...';
         return extractedError;
     });
-        
+
     return arr.join('\n');
 };
 
