@@ -1,18 +1,11 @@
 import chalk from 'chalk';
-import path from 'path';
 import fs from 'fs';
-import child_process from 'child_process';
 import {
-    isPlatformSupportedSync, getConfig,
-    getAppFolder, resolveNodeModulePath
+    getConfig
 } from '../common';
-import { logToSummary, logTask, logComplete, logError, logWarning } from '../systemTools/logger';
+import { logToSummary, logTask } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
-import { executeAsync, execCLI } from '../systemTools/exec';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { executeAsync } from '../systemTools/exec';
 
 // ##########################################
 // PUBLIC API
@@ -40,13 +33,13 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
 
 const executePipe = async (c, key) => {
     logTask(`executePipe:${key}`);
-    
+
     await buildHooks(c);
-        
+
     const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
     if (Array.isArray(pipe)) {
-        await pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve())
+        await pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve());
     } else if (pipe) {
         await pipe(c);
     }
@@ -72,8 +65,10 @@ const buildHooks = c => new Promise((resolve, reject) => {
                 resolve();
             })
             .catch((e) => {
-                logWarning(`BUILD_HOOK Failed with error: ${e}`);
-                resolve();
+                // logWarning(`BUILD_HOOK Failed with error: ${e}`);
+                // resolve();
+                // Fail Builds instead of warn when hook fails
+                reject(`BUILD_HOOK Failed with error: ${e}`);
             });
     } else {
         // logWarning(`Your buildHook ${chalk.white(c.paths.buildHooks.index)} is missing!. Skipping operation`);

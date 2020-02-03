@@ -7,7 +7,6 @@ import inquirer from 'inquirer';
 import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppVersion,
     getAppTitle,
     writeCleanFile,
@@ -19,6 +18,7 @@ import {
     checkPortInUse,
     confirmActiveBundler
 } from '../../common';
+import { isPlatformActive } from '..';
 import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
@@ -33,18 +33,17 @@ import { getRealPath } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { isSystemWin } from '../../utils';
 
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
-    const ePath = path.join(getRealPath(c, c.files.workspace.config.sdks.WEBOS_SDK), `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
+    const ePath = path.join(getRealPath(c, c.files.workspace.config.sdks.WEBOS_SDK), `Emulator/v4.0.0/LG_webOS_TV_Emulator${isSystemWin ? '.exe' : '_RCU.app'}`);
 
     if (!fs.existsSync(ePath)) {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
-    if (isRunningOnWindows) return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
+    if (isSystemWin) return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
 };
 

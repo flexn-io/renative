@@ -3,44 +3,21 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import net from 'net';
 import chalk from 'chalk';
-import shell from 'shelljs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
-import { executeAsync, execCLI, executeTelnet } from '../../systemTools/exec';
-import { createPlatformBuild } from '..';
-import {
-    getAppFolder,
-    isPlatformActive,
-    getAppTemplateFolder,
-    getConfigProp,
-    waitForEmulator,
-    getAppId
-} from '../../common';
+import { execCLI, executeTelnet } from '../../systemTools/exec';
+import { waitForEmulator } from '../../common';
+import { isSystemWin } from '../../utils';
 import { logToSummary, logTask,
     logError, logWarning,
-    logDebug, logInfo,
-    logSuccess } from '../../systemTools/logger';
-import { copyFileSync, mkdirSync } from '../../systemTools/fileutils';
-import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
+    logDebug, logSuccess } from '../../systemTools/logger';
 import { IS_TABLET_ABOVE_INCH, ANDROID_WEAR, ANDROID, ANDROID_TV, CLI_ANDROID_EMULATOR, CLI_ANDROID_ADB, CLI_ANDROID_AVDMANAGER, CLI_ANDROID_SDKMANAGER } from '../../constants';
-import { parsePlugins } from '../../pluginTools';
-import { parseAndroidManifestSync, injectPluginManifestSync } from './manifestParser';
-import { parseMainActivitySync, parseSplashActivitySync, parseMainApplicationSync, injectPluginKotlinSync } from './kotlinParser';
-import {
-    parseAppBuildGradleSync, parseBuildGradleSync, parseSettingsGradleSync,
-    parseGradlePropertiesSync, injectPluginGradleSync
-} from './gradleParser';
-import { parseValuesStringsSync, injectPluginXmlValuesSync } from './xmlValuesParser';
 
 const CHECK_INTEVAL = 5000;
 
 const currentDeviceProps = {};
-
-const isRunningOnWindows = process.platform === 'win32';
-
 
 export const composeDevicesString = (devices, returnArray) => {
     logTask(`composeDevicesString:${devices ? devices.length : null}`);
@@ -95,7 +72,7 @@ const _getDeviceString = (device, i) => {
     const deviceString = `${chalk.white(name)} | ${deviceIcon} | arch: ${arch} | udid: ${chalk.grey(udid)}${isDevice ? chalk.red(' (device)') : ''} ${
         isActive ? chalk.magenta(' (active)') : ''}`;
 
-    if (i === null) return { key: name, name: deviceString, value: name };
+    if (i === null) return { key: name, name: deviceString, value: name, icon: deviceIcon };
 
     return ` [${i + 1}]> ${deviceString}\n`;
 };
@@ -131,12 +108,6 @@ const calculateDeviceDiagonal = (width, height, density) => {
     return Math.sqrt(widthInches * widthInches + heightInches * heightInches);
 };
 
-const isSquareishDevice = (width, height) => {
-    const ratio = width / height;
-    if (ratio > 0.8 && ratio < 1.2) return true;
-    return false;
-};
-
 const getRunningDeviceProp = async (c, udid, prop) => {
     // avoid multiple calls to the same device
     if (currentDeviceProps[udid]) {
@@ -164,6 +135,7 @@ const decideIfTVRunning = async (c, device) => {
     const mod = await getRunningDeviceProp(c, udid, 'ro.product.model');
     const name = await getRunningDeviceProp(c, udid, 'ro.product.name');
     const flavor = await getRunningDeviceProp(c, udid, 'ro.build.flavor');
+    const clientIdBase = await getRunningDeviceProp(c, udid, 'ro.com.google.clientidbase');
     const description = await getRunningDeviceProp(c, udid, 'ro.build.description');
     const hdmi = await getRunningDeviceProp(c, udid, 'init.svc.hdmi');
     const modelGroup = await getRunningDeviceProp(c, udid, 'ro.nrdp.modelgroup');
@@ -171,7 +143,7 @@ const decideIfTVRunning = async (c, device) => {
     const cecEnabled = await getRunningDeviceProp(c, udid, 'persist.sys.cec.enabled');
 
     let isTV = false;
-    [mod, name, flavor, description, model, product].forEach((string) => {
+    [mod, name, flavor, clientIdBase, description, model, product].forEach((string) => {
         if (string && string.toLowerCase().includes('tv')) isTV = true;
     });
 
@@ -401,7 +373,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
 
                 // Yes, 2 greps. Hacky but it excludes the grep process corectly and quickly :)
                 // if this runs without throwing it means that the simulator is running so it needs to be excluded
-                const findProcess = isRunningOnWindows ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`;
+                const findProcess = isSystemWin ? `tasklist | find "avd ${line}"` : `ps x | grep "avd ${line}" | grep -v grep`;
                 child_process.execSync(findProcess);
                 logDebug('_parseDevicesResult 9 - excluding running emulator');
             } catch (e) {
@@ -470,7 +442,6 @@ export const askForNewEmulator = async (c, platform) => {
 
 const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
     logTask('_createEmulator');
-    const { maxErrorLength } = c.program;
 
     return execCLI(c, CLI_ANDROID_SDKMANAGER, `"system-images;android-${apiVersion};${emuPlatform};x86"`)
         .then(() => execCLI(c, CLI_ANDROID_AVDMANAGER, `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`))
@@ -482,23 +453,25 @@ const waitForEmulatorToBeReady = (c, emulator) => waitForEmulator(c, CLI_ANDROID
 export const checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
     logTask(`checkForActiveEmulator:${platform}`);
     let attempts = 1;
-    const maxAttempts = isRunningOnWindows ? 20 : 10;
+    const maxAttempts = isSystemWin ? 20 : 10;
     let running = false;
     const poll = setInterval(() => {
         // Prevent the interval from running until enough promises return to make it stop or we get a result
         if (!running) {
             running = true;
             getAndroidTargets(c, false, true, false)
-                .then((v) => {
-                    logDebug('Available devices after filtering', c);
+                .then(async (v) => {
+                    logDebug('Available devices after filtering', v);
                     if (v.length > 0) {
                         logSuccess(`Found active emulator! ${chalk.white(v[0].udid)}. Will use it`);
                         clearInterval(poll);
                         resolve(v[0]);
                     } else {
-                        running = false;
                         console.log(`looking for active emulators: attempt ${attempts}/${maxAttempts}`);
                         attempts++;
+                        if ([ANDROID_TV, ANDROID_WEAR].includes(platform) && attempts === 2) {
+                            await resetAdb(c); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
+                        }
                         if (attempts > maxAttempts) {
                             clearInterval(poll);
                             reject('Could not find any active emulatros');
@@ -506,6 +479,7 @@ export const checkForActiveEmulator = (c, platform) => new Promise((resolve, rej
                             // user from underlying failure of not being able to connect
                             // return _askForNewEmulator(c, platform);
                         }
+                        running = false;
                     }
                 })
                 .catch((e) => {

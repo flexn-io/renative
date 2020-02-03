@@ -2,9 +2,10 @@ import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
 import fs from 'fs';
-import { logWarning, logInfo, logError, logTask, logDebug, logSuccess } from '../common';
+import { logWarning, logError, logTask, logDebug, logSuccess } from './logger';
+import { isSystemMac } from '../utils';
 import { listAppConfigsFoldersSync, generateBuildConfig, setAppConfig } from '../configTools/configParser';
-import { IOS, TVOS, RENATIVE_CONFIG_NAME } from '../constants';
+import { IOS, TVOS } from '../constants';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
@@ -48,7 +49,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync(c, `openssl enc -aes-256-cbc -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
+            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 fs.writeFileSync(`${dest}.timestamp`, timestamp);
@@ -69,32 +70,36 @@ export const rnvCryptoDecrypt = async (c) => {
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
 
-    const options = [
-        'Yes - override (recommended)',
-        'Yes - merge',
-        'Skip'
-    ];
-
-    const { option } = await inquirerPrompt({
-        name: 'option',
-        type: 'list',
-        choices: options,
-        message: 'How to decrypt?'
-    });
-
-    if (option === options[0] || c.program.ci === true) {
-        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
-        await cleanFolder(wsPath);
-    } else if (option === options[2]) {
-        return true;
-    }
-
     if (sourceRaw) {
         const source = `${getRealPath(c, sourceRaw, 'decrypt.source')}`;
         const ts = `${source}.timestamp`;
         const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
+
+
+        const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
+        if (c.program.ci !== true && c.program.reset !== true) {
+            const options = [
+                'Yes - override (recommended)',
+                'Yes - merge',
+                'Skip'
+            ];
+            const { option } = await inquirerPrompt({
+                name: 'option',
+                type: 'list',
+                choices: options,
+                message: `How to decrypt to ${chalk.white(destFolder)} ?`
+            });
+            if (option === options[0]) {
+                await cleanFolder(wsPath);
+            } else if (option === options[2]) {
+                return true;
+            }
+        } else {
+            await cleanFolder(wsPath);
+        }
+
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
@@ -103,8 +108,9 @@ export const rnvCryptoDecrypt = async (c) => {
         if (!fs.existsSync(source)) {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
-        await executeAsync(c, `openssl enc -aes-256-cbc -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] })
-            
+
+        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] });
+
         await tar.x({
             file: destTemp,
             cwd: c.paths.workspace.dir
@@ -119,6 +125,19 @@ export const rnvCryptoDecrypt = async (c) => {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         return true;
     }
+};
+
+const _getOpenSllPath = (c) => {
+    const { process: { platform } } = c;
+    let defaultOpenssl = 'openssl';
+    // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
+    if (isSystemMac) defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
+    // if (fs.existsSync(defaultOpenssl)) {
+    //     return defaultOpenssl;
+    // }
+    // logWarning(`${defaultOpenssl} is missing. will use default one`);
+
+    return defaultOpenssl;
 };
 
 export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
@@ -175,17 +194,16 @@ export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
 });
 
 
-export const rnvCryptoUpdateProfiles = (c) => {
+export const rnvCryptoUpdateProfiles = async (c) => {
     logTask('rnvCryptoUpdateProfiles');
     switch (c.platform) {
         case IOS:
         case TVOS:
             const { appId } = c.runtime;
-            return _updateProfiles(c)
-                .then(() => {
-                    setAppConfig(c, appId);
-                });
+            await _updateProfiles(c);
+            await setAppConfig(c, appId);
         default:
+            return true;
     }
     return Promise.reject(`updateProfiles: Platform ${c.platform} not supported`);
 };

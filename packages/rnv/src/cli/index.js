@@ -447,7 +447,7 @@ const run = async (c, spawnC, skipStartBuilder) => {
             if (subCmdFn) {
                 await _execute(c, subCmdFn, cmd);
             } else {
-                //There is no subCommand function available so reset the key not to confuse pipe hooks
+                // There is no subCommand function available so reset the key not to confuse pipe hooks
                 c.subCommand = null;
                 await _execute(c, cmdFn, cmd);
             }
@@ -463,7 +463,7 @@ const run = async (c, spawnC, skipStartBuilder) => {
 };
 
 const _execute = async (c, cmdFn, cmd) => {
-    logTask(`_execute:${c.command}:${c.subCommand}`)
+    logTask(`_execute:${c.command}:${c.subCommand}`);
     if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
@@ -477,20 +477,30 @@ const _execute = async (c, cmdFn, cmd) => {
             await _handleUnknownPlatform(c, requiredPlatforms);
             return;
         }
-        const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
-        if (requiredParams) {
-            for (let i = 0; i < requiredParams.length; i++) {
-                const requiredParam = requiredParams[i];
-                // TODO
-            }
-        }
+        // TODO: Required params
+        // const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
+        // if (requiredParams) {
+        //     for (let i = 0; i < requiredParams.length; i++) {
+        //         const requiredParam = requiredParams[i];
+        //
+        //     }
+        // }
     }
 
     c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
+    if (c.program.target !== true) c.runtime.target = c.program.target || c.files.workspace.config.defaultTargets[c.platform];
+    else c.runtime.target = c.program.target;
+    c.runtime.scheme = c.program.scheme || 'debug';
+    // const { scheme } = c.program;
+    // if (scheme !== true) {
+    //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];
+    //     c.runtime.scheme = isSchemePresent ? scheme : undefined;
+    // }
 
-    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:before`);
+    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
-    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:after`);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);
 };
 
 

@@ -1,12 +1,11 @@
 import { replaceHomeFolder } from '../../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { isSystemWin } from '../../utils';
 
 let androidPlatform = 'linux';
 let tizenPlatform = 'ubuntu';
 let tizenExtension = 'bin';
 
-if (isRunningOnWindows) {
+if (isSystemWin) {
     androidPlatform = 'windows';
     tizenPlatform = 'windows';
     tizenExtension = 'exe';

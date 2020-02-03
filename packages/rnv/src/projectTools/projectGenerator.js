@@ -5,12 +5,6 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import semver from 'semver';
 import fs from 'fs';
-import {
-    logTask,
-    logSuccess,
-    logInfo,
-    logWarning
-} from '../common';
 import { generateOptions } from '../systemTools/prompt';
 import {
     RENATIVE_CONFIG_NAME,
@@ -19,7 +13,11 @@ import {
 import { getTemplateOptions } from '../templateTools';
 import { mkdirSync, writeFileSync } from '../systemTools/fileutils';
 import { executeAsync, commandExistsSync } from '../systemTools/exec';
-import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
+import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox,
+    logTask,
+    logSuccess,
+    logInfo,
+    logWarning } from '../systemTools/logger';
 import { getWorkspaceOptions } from './workspace';
 import { parseRenativeConfigs } from '../configTools/configParser';
 import Analytics from '../systemTools/analytics';
@@ -205,7 +203,7 @@ export const createNewProject = async (c) => {
     data.optionWorkspaces.selectedOption = inputWorkspace;
 
     c.runtime.selectedWorkspace = inputWorkspace;
-    parseRenativeConfigs(c);
+    await parseRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
     const {

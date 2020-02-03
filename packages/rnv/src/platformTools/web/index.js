@@ -6,19 +6,12 @@ import open from 'better-opn';
 import ip from 'ip';
 import { executeAsync } from '../../systemTools/exec';
 import {
-    logTask,
     getAppFolder,
-    isPlatformActive,
     getAppTemplateFolder,
     checkPortInUse,
-    logInfo,
-    logDebug,
     resolveNodeModulePath,
     getConfigProp,
-    logSuccess,
     waitForWebpack,
-    logError,
-    logWarning,
     writeCleanFile,
     getBuildFilePath,
     getAppTitle,
@@ -26,14 +19,14 @@ import {
     sanitizeColor,
     confirmActiveBundler
 } from '../../common';
-import { PLATFORMS, WEB } from '../../constants';
+import { isPlatformActive } from '..';
+import { logTask, logInfo, logDebug, logSuccess, logWarning } from '../../systemTools/logger';
+import { WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
-
-
-const isRunningOnWindows = process.platform === 'win32';
+import { isSystemWin } from '../../utils';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -164,7 +157,7 @@ const runWeb = async (c, platform, port) => {
         if (extendConfig.devServerHost) devServerHost = extendConfig.devServerHost;
     }
 
-    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
+    if (isSystemWin && devServerHost === '0.0.0.0') {
         devServerHost = '127.0.0.1';
     }
 
@@ -182,7 +175,6 @@ const runWeb = async (c, platform, port) => {
         await confirmActiveBundler(c);
         await _runWebBrowser(c, platform, devServerHost, port, true);
     }
-
 };
 
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {

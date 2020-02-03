@@ -244,10 +244,6 @@ class Config {
         return false;
     }
 
-    getScheme() {
-        return this.config?.program?.scheme || 'debug';
-    }
-
     getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon) {
         if (resultCli !== undefined) {
             return resultCli;
@@ -272,7 +268,7 @@ class Config {
             return null;
         }
         const p = c.buildConfig.platforms[platform];
-        const ps = this.getScheme(c);
+        const ps = c.runtime.scheme;
         let resultPlatforms;
         let scheme;
         if (p) {

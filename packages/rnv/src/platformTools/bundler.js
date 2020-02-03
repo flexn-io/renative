@@ -1,47 +1,40 @@
 import axios from 'axios';
 import ora from 'ora';
-
-import Config from '../config';
+import { getConfigProp } from '../common';
 
 export const isBundlerRunning = async (c) => {
     try {
-        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}`);
-        if (data.includes('React Native')) return true;
+        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`);
+        if (data.includes('import')) return true;
         return false;
     } catch {
         return false;
     }
 };
 
-export const waitForBundler = async (c) => {
-    let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 1000;
-    const spinner = ora('Waiting for bundler to finish...').start();
+const poll = (fn, timeout = 10000, interval = 1000) => {
+    const endTime = Number(new Date()) + timeout;
 
-    return new Promise((resolve, reject) => {
-        const interval = setInterval(async () => {
-            isBundlerRunning(c)
-                .then((running) => {
-                    if (running) {
-                        clearInterval(interval);
-                        spinner.succeed();
-                        return resolve(true);
-                    }
-                    attempts++;
-                    if (attempts === maxAttempts) {
-                        clearInterval(interval);
-                        spinner.fail('Can\'t connect to bundler. Try restarting it.');
-                        return reject('Can\'t connect to bundler. Try restarting it.');
-                    }
-                }).catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        spinner.fail('Can\'t connect to bundler. Try restarting it.');
-                        return reject('Can\'t connect to bundler. Try restarting it.');
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
+    const spinner = ora('Waiting for bundler to finish...').start();
+    const checkCondition = async (resolve, reject) => {
+        try {
+            const result = await fn();
+            if (result) {
+                spinner.succeed();
+                resolve();
+            } else if (Number(new Date()) < endTime) {
+                setTimeout(checkCondition, interval, resolve, reject);
+            } else {
+                spinner.fail('Can\'t connect to bundler. Try restarting it.');
+                reject();
+            }
+        } catch (e) {
+            spinner.fail('Can\'t connect to bundler. Try restarting it.');
+            reject(e);
+        }
+    };
+
+    return new Promise(checkCondition);
 };
+
+export const waitForBundler = async c => poll(() => isBundlerRunning(c));
