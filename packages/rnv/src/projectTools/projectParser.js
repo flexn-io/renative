@@ -4,20 +4,21 @@ import chalk from 'chalk';
 import {
     WEB_HOSTED_PLATFORMS,
 } from '../constants';
-import { isPlatformActive, getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
+import { getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, removeDirs, writeFileSync, isRunningOnWindows
+    copyFileSync, mkdirSync, writeFileSync
 } from '../systemTools/fileutils';
-import { executeAsync, npmInstall } from '../systemTools/exec';
+import { isPlatformActive } from '../platformTools';
+import { npmInstall } from '../systemTools/exec';
 import {
-    logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
-    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo, getCurrentCommand
+    logTask,
+    logWarning, logDebug, logInfo
 } from '../systemTools/logger';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 import { inquirerPrompt } from '../systemTools/prompt';
+import { isSystemWin } from '../utils';
 
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
@@ -97,7 +98,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                         const fontSource = path.join(dir, font);
 
                         let relativePath = dir.replace(c.paths.project.dir, '');
-                        if (isRunningOnWindows) relativePath = relativePath.replace(/\\/g, '/'); // strings don't like windows backslashes
+                        if (isSystemWin) relativePath = relativePath.replace(/\\/g, '/'); // strings don't like windows backslashes
                         if (fs.existsSync(fontSource)) {
                             // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                             // mkdirSync(fontFolder);
@@ -325,7 +326,6 @@ export const upgradeProjectDependencies = (c, version) => {
     if (devDependencies[tb]) {
         devDependencies[tb] = version;
     }
-    const dependencies = c.files.project.package?.dependencies;
     if (devDependencies?.renative) {
         devDependencies.renative = version;
     }
@@ -360,11 +360,10 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
     }
 });
 
-export const cleanPlaformAssets = c => new Promise((resolve, reject) => {
+export const cleanPlaformAssets = async (c) => {
     logTask('cleanPlaformAssets');
 
-    cleanFolder(c.paths.project.assets.dir).then(() => {
-        mkdirSync(c.paths.project.assets.runtimeDir);
-        resolve();
-    });
-});
+    await cleanFolder(c.paths.project.assets.dir);
+    mkdirSync(c.paths.project.assets.runtimeDir);
+    return true;
+};

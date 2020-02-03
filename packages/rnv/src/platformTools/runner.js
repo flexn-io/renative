@@ -6,21 +6,22 @@ import ip from 'ip';
 import path from 'path';
 
 import {
-    isPlatformSupported,
     isBuildSchemeSupported,
-    logTask,
-    logError,
-    checkSdk,
     logErrorPlatform,
     configureIfRequired,
     cleanPlatformIfRequired,
-    logDebug,
     writeCleanFile,
     getConfigProp,
     waitForWebpack,
     getSourceExts,
     confirmActiveBundler
 } from '../common';
+import { isPlatformSupported } from './index';
+import {
+    logTask,
+    logError,
+    logDebug
+} from '../systemTools/logger';
 import {
     IOS,
     TVOS,
@@ -37,8 +38,6 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    WEB_HOSTED_PLATFORMS,
-    PLATFORMS
 } from '../constants';
 import {
     runXcodeProject,
@@ -55,7 +54,6 @@ import {
     runElectron,
     buildElectron, runElectronDevServer, configureElectronProject, exportElectron
 } from './electron';
-import PlatformSetup from '../setupTools';
 import {
     packageAndroid,
     runAndroid,
@@ -66,12 +64,10 @@ import {
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
 import { isBundlerRunning, waitForBundler } from './bundler';
-import { logInfo } from '../systemTools/logger';
+import { checkSdk } from './sdkManager';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-import { inquirerPrompt } from '../../dist/systemTools/prompt';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { isSystemWin } from '../utils';
 
 let keepRNVRunning = false;
 
@@ -82,13 +78,13 @@ let keepRNVRunning = false;
 
 export const rnvStart = async (c) => {
     const { platform } = c;
-    const port = c.runtime.port
+    const { port } = c.runtime;
     const { hosted } = c.program;
 
     logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
 
     if (Config.isWebHostEnabled && hosted) {
-        const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
+        const hostIp = isSystemWin ? '127.0.0.1' : '0.0.0.0';
         waitForWebpack(c, port)
             .then(() => open(`http://${hostIp}:${port}/`))
             .catch(logError);
@@ -229,8 +225,8 @@ const waitForBundlerIfRequired = async (c) => {
 const _rnvRunWithPlatform = async (c) => {
     logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
-    const port = c.runtime.port
-    const target = c.runtime.target
+    const { port } = c.runtime;
+    const { target } = c.runtime;
     const { hosted } = c.program;
 
     logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}`, chalk.grey);
@@ -250,6 +246,8 @@ const _rnvRunWithPlatform = async (c) => {
         platform,
     });
 
+    await checkSdk(c);
+
     switch (platform) {
         case IOS:
         case TVOS:
@@ -264,10 +262,6 @@ const _rnvRunWithPlatform = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            if (!checkSdk(c, platform, logError)) {
-                const setupInstance = PlatformSetup(c);
-                await setupInstance.askToInstallSDK('android');
-            }
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
@@ -296,10 +290,6 @@ const _rnvRunWithPlatform = async (c) => {
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            if (!checkSdk(c, platform, logError)) {
-                const setupInstance = PlatformSetup(c);
-                await setupInstance.askToInstallSDK('tizen');
-            }
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
@@ -307,10 +297,6 @@ const _rnvRunWithPlatform = async (c) => {
             }
             return runTizen(c, platform, target);
         case WEBOS:
-            if (!checkSdk(c, platform, logError)) {
-                const setupInstance = PlatformSetup(c);
-                await setupInstance.askToInstallSDK('webos');
-            }
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
@@ -320,7 +306,6 @@ const _rnvRunWithPlatform = async (c) => {
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            if (platform === KAIOS && !checkSdk(c, platform, throwErr)) return;
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
@@ -337,6 +322,8 @@ const _rnvPackageWithPlatform = async (c) => {
 
     const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
 
+    await checkSdk(c);
+
     switch (platform) {
         case IOS:
         case TVOS:
@@ -348,16 +335,17 @@ const _rnvPackageWithPlatform = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            checkSdk(c, platform);
+
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await configureGradleProject(c, platform);
             }
             return packageAndroid(c, platform, target, platform === ANDROID_WEAR);
+        default:
+            logErrorPlatform(c, platform);
+            return false;
     }
-
-    logErrorPlatform(c, platform);
 };
 
 const _rnvExportWithPlatform = async (c) => {
@@ -388,9 +376,9 @@ const _rnvExportWithPlatform = async (c) => {
                 await buildElectron(c, platform);
             }
             return exportElectron(c, platform);
+        default:
+            logErrorPlatform(c, platform);
     }
-
-    logErrorPlatform(c, platform);
 };
 
 const _rnvDeployWithPlatform = async (c) => {
@@ -469,18 +457,16 @@ const _rnvBuildWithPlatform = async (c) => {
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            checkSdk(c, platform);
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildTizenProject(c, platform);
             return;
         case WEBOS:
-            checkSdk(c, platform);
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWebOSProject(c, platform);
             return;
+        default:
+            logErrorPlatform(c, platform);
     }
-
-    logErrorPlatform(c, platform);
 };

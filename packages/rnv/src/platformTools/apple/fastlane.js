@@ -1,12 +1,14 @@
 import path from 'path';
 import chalk from 'chalk';
 import {
-    logTask,
-    logWarning,
-    logSuccess,
     getConfigProp,
     getAppId
 } from '../../common';
+import {
+    logTask,
+    logWarning,
+    logSuccess
+} from '../../systemTools/logger';
 import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
 import { setAppConfig } from '../../configTools/configParser';

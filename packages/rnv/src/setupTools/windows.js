@@ -6,16 +6,10 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 
 import { commandExistsSync, executeAsync, openCommand } from '../systemTools/exec';
-import { logInfo, logDebug } from '../common';
+import { logInfo, logDebug } from '../systemTools/logger';
 import { replaceHomeFolder } from '../systemTools/fileutils';
 import BasePlatformSetup from './base';
 import setupConfig from './config';
-import {
-    CLI_ANDROID_ADB,
-    CLI_ANDROID_AVDMANAGER,
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_SDKMANAGER,
-} from '../constants';
 
 class LinuxPlatformSetup extends BasePlatformSetup {
     constructor(c) {

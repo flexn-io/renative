@@ -1,43 +1,23 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execCLI } from '../../systemTools/exec';
 import {
-    isPlatformSupportedSync,
-    getConfig,
-    logTask,
-    logComplete,
-    logError,
     getAppFolder,
-    isPlatformActive,
-    configureIfRequired,
-    getAppConfigId,
-    getAppVersion,
     getAppTitle,
-    getAppVersionCode,
-    writeCleanFile,
-    getAppId,
     getAppTemplateFolder,
-    getEntryFile,
     getAppDescription,
     getAppAuthor,
-    getAppLicense,
     getConfigProp,
 } from '../../common';
+import {
+    logTask
+} from '../../systemTools/logger';
+import { isPlatformActive } from '..';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_KAIOS_EMULATOR,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
     KAIOS_SDK,
 } from '../../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
+import { getRealPath } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {

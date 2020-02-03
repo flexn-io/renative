@@ -9,14 +9,14 @@ import inquirer from 'inquirer';
 import execa from 'execa';
 
 import { executeAsync, execCLI } from '../../systemTools/exec';
-import { createPlatformBuild } from '..';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppTemplateFolder,
     getConfigProp,
     getAppId
 } from '../../common';
+import { isPlatformActive, createPlatformBuild } from '..';
+import { isSystemWin } from '../../utils';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { logTask, logWarning, logDebug, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyFileSync, mkdirSync, getRealPath, updateObjectSync } from '../../systemTools/fileutils';
@@ -31,9 +31,6 @@ import {
 } from './gradleParser';
 import { parseValuesStringsSync, injectPluginXmlValuesSync, parseValuesColorsSync } from './xmlValuesParser';
 import { resetAdb, getAndroidTargets, composeDevicesString, launchAndroidSimulator, checkForActiveEmulator, askForNewEmulator, connectToWifiDevice } from './deviceManager';
-
-
-const isRunningOnWindows = process.platform === 'win32';
 
 const _getEntryOutputName = (c) => {
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
@@ -63,7 +60,7 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
     const appFolder = getAppFolder(c, platform);
     let reactNative = 'react-native';
 
-    if (isRunningOnWindows) {
+    if (isSystemWin) {
         reactNative = path.normalize(`${process.cwd()}/node_modules/.bin/react-native.cmd`);
     }
 
@@ -300,7 +297,7 @@ const _runGradleApp = async (c, platform, device) => {
     shell.cd(`${appFolder}`);
 
     await _checkSigningCerts(c);
-    await executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`);
+    await executeAsync(c, `${isSystemWin ? 'gradlew.bat' : './gradlew'} ${outputAab ? 'bundle' : 'assemble'}${signingConfig}${stacktrace} -x bundleReleaseJsAndAssets`);
     if (outputAab) {
         const aabPath = path.join(appFolder, `app/build/outputs/bundle/${outputFolder}/app.aab`);
         logInfo(`App built. Path ${aabPath}`);
@@ -342,7 +339,7 @@ export const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
     shell.cd(`${appFolder}`);
 
     _checkSigningCerts(c)
-        .then(() => executeAsync(c, `${isRunningOnWindows ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`))
+        .then(() => executeAsync(c, `${isSystemWin ? 'gradlew.bat' : './gradlew'} assemble${signingConfig} -x bundleReleaseJsAndAssets`))
         .then(() => {
             logSuccess(`Your APK is located in ${chalk.white(path.join(appFolder, `app/build/outputs/apk/${signingConfig.toLowerCase()}`))} .`);
             resolve();
@@ -358,7 +355,7 @@ export const configureAndroidProperties = (c, platform) => new Promise((resolve)
     const ndkString = `ndk.dir=${getRealPath(c, c.files.workspace.config.sdks.ANDROID_NDK)}`;
     let sdkDir = getRealPath(c, c.files.workspace.config.sdks.ANDROID_SDK);
 
-    if (isRunningOnWindows) {
+    if (isSystemWin) {
         sdkDir = sdkDir.replace(/\\/g, '/');
     }
 

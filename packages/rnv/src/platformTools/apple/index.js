@@ -11,12 +11,11 @@ import { getAppleDevices } from './deviceManager';
 import { registerDevice } from './fastlane';
 import {
     getAppFolder,
-    isPlatformActive,
     getConfigProp,
     getIP,
-    logSuccess,
     generateChecksum
 } from '../../common';
+import { isPlatformActive } from '..';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync, writeFileSync } from '../../systemTools/fileutils';
 import { IOS, TVOS, MACOS } from '../../constants';
@@ -30,7 +29,7 @@ import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
 import { logInfo, logTask,
     logError,
-    logWarning, logDebug } from '../../systemTools/logger';
+    logWarning, logDebug, logSuccess } from '../../systemTools/logger';
 
 const checkIfPodsIsRequired = async (c) => {
     const appFolder = getAppFolder(c, c.platform);
