@@ -123,6 +123,8 @@ const _getCurrentSdkPath = c => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[
 const _isSdkInstalled = (c) => {
     logTask(`_isSdkInstalled: ${c.platform}`);
 
+    if (!SDK_PLATFORMS[c.platform]) return true;
+
     const sdkPath = _getCurrentSdkPath(c, c.platform);
 
     return fs.existsSync(getRealPath(c, sdkPath));
