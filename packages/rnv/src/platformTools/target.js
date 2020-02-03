@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
-import { isPlatformSupported } from '.';
+import { isPlatformSupported } from './index';
 import { logTask, logError } from '../systemTools/logger';
 import { checkSdk } from '../systemTools/sdkManager';
 import PlatformSetup from '../setupTools';

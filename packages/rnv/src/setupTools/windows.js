@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 
 import { commandExistsSync, executeAsync, openCommand } from '../systemTools/exec';
-import { logInfo, logDebug } from '../common';
+import { logInfo, logDebug } from '../systemTools/logger';
 import { replaceHomeFolder } from '../systemTools/fileutils';
 import BasePlatformSetup from './base';
 import setupConfig from './config';

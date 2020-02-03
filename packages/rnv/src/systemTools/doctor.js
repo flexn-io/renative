@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
-import { logWarning } from '../common';
+import { logWarning } from './logger';
 
 const getSortedObject = (obj) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
