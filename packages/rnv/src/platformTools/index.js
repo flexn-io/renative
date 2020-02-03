@@ -3,6 +3,8 @@
 import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
+import fs from 'fs';
+
 import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync, removeDirs } from '../systemTools/fileutils';
@@ -24,6 +26,27 @@ export const rnvPlatformConfigure = async (c) => {
     await cleanPlatformBuild(c, c.platform);
     await cleanPlaformAssets(c, c.platform);
     await _runCopyPlatforms(c, c.platform);
+};
+
+export const rnvPlatformSetup = async (c) => {
+    const { project: { config } } = c.paths;
+    const projectConfig = JSON.parse(fs.readFileSync(config).toString());
+    const { supportedPlatforms } = projectConfig.defaults;
+
+    const {
+        inputSupportedPlatforms
+    } = await inquirer.prompt({
+        name: 'inputSupportedPlatforms',
+        type: 'checkbox',
+        pageSize: 20,
+        message: 'What platforms would you like to use?',
+        validate: val => !!val.length || 'Please select at least a platform',
+        default: supportedPlatforms,
+        choices: SUPPORTED_PLATFORMS
+    });
+
+    projectConfig.defaults.supportedPlatforms = inputSupportedPlatforms;
+    writeFileSync(config, projectConfig);
 };
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
@@ -203,6 +226,12 @@ export const isPlatformSupported = async (c) => {
 
         c.platform = platform;
     }
+
+    const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
+    if (Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
+        throw new Error('Looks like you\'re trying to run a platform that is not enabled for this project. Please run `rnv platform setup` to add/remove platforms');
+    }
+
     // Check global SDKs
     await checkAndConfigureSdks(c);
     return c.platform;
