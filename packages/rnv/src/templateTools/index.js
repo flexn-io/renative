@@ -93,7 +93,7 @@ export const applyTemplate = async (c, selectedTemplate) => {
     await _configureAppConfigs(c);
     await _configureProjectConfig(c);
     await _configureRenativeConfig(c);
-    await _configureEntryPoints(c);
+    await configureEntryPoints(c);
 };
 
 const _cleanProjectTemplateSync = (c) => {
@@ -244,7 +244,7 @@ const _configureRenativeConfig = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-const _configureEntryPoints = c => new Promise((resolve, reject) => {
+export const configureEntryPoints = c => new Promise((resolve, reject) => {
     logTask('configureEntryPoints');
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root

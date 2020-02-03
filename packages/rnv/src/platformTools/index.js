@@ -3,7 +3,6 @@
 import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
-import fs from 'fs';
 
 import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
@@ -11,6 +10,7 @@ import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync, removeDirs
 import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS, SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from './sdkManager';
+import { configureEntryPoints } from '../templateTools';
 
 export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
@@ -28,10 +28,15 @@ export const rnvPlatformConfigure = async (c) => {
     await _runCopyPlatforms(c, c.platform);
 };
 
-export const rnvPlatformSetup = async (c) => {
+const updateProjectPlatforms = (c, platforms) => {
     const { project: { config } } = c.paths;
-    const projectConfig = JSON.parse(fs.readFileSync(config).toString());
-    const { supportedPlatforms } = projectConfig.defaults;
+    const currentConfig = c.files.project.config;
+    currentConfig.defaults.supportedPlatforms = platforms;
+    writeFileSync(config, currentConfig);
+};
+
+export const rnvPlatformSetup = async (c) => {
+    const currentPlatforms = c.files.project.config.currentConfig.defaults.supportedPlatforms;
 
     const {
         inputSupportedPlatforms
@@ -41,12 +46,11 @@ export const rnvPlatformSetup = async (c) => {
         pageSize: 20,
         message: 'What platforms would you like to use?',
         validate: val => !!val.length || 'Please select at least a platform',
-        default: supportedPlatforms,
+        default: currentPlatforms,
         choices: SUPPORTED_PLATFORMS
     });
 
-    projectConfig.defaults.supportedPlatforms = inputSupportedPlatforms;
-    writeFileSync(config, projectConfig);
+    updateProjectPlatforms(c, inputSupportedPlatforms);
 };
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
@@ -229,7 +233,19 @@ export const isPlatformSupported = async (c) => {
 
     const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
     if (Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
-        throw new Error('Looks like you\'re trying to run a platform that is not enabled for this project. Please run `rnv platform setup` to add/remove platforms');
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: `Looks like platform ${c.platform} is not supported by your project. Would you like to enable it?`
+        });
+
+        if (confirm) {
+            const newPlatforms = [...configuredPlatforms, c.platform];
+            updateProjectPlatforms(c, newPlatforms);
+            c.buildConfig.defaults.supportedPlatforms = newPlatforms;
+            await configureEntryPoints(c);
+        } else {
+            throw new Error('User canceled');
+        }
     }
 
     // Check global SDKs
