@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -8,7 +7,7 @@ import ip from 'ip';
 import axios from 'axios';
 import colorString from 'color-string';
 import crypto from 'crypto';
-import { isSystemWin } from './utils';
+import { isSystemWin, replaceOverridesInString } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
@@ -291,10 +290,7 @@ export const writeCleanFile = (source, destination, overrides) => {
     const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
     if (overrides) {
-        overrides.forEach((v) => {
-            const regEx = new RegExp(v.pattern, 'g');
-            pFileClean = pFileClean.replace(regEx, v.override);
-        });
+        pFileClean = replaceOverridesInString(pFileClean, overrides);
     }
 
     fs.writeFileSync(destination, pFileClean, 'utf8');

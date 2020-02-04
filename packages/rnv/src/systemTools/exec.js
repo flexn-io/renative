@@ -1,15 +1,15 @@
-/* eslint-disable import/no-cycle */
+// /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
 import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
-import util from 'util';
 import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
+import { replaceOverridesInString } from '../utils';
 
 const { exec, execSync } = require('child_process');
 
@@ -59,8 +59,8 @@ const _execute = (c, command, opts = {}) => {
     let logMessage = cleanCommand;
     const { privateParams } = mergedOpts;
     if (privateParams && Array.isArray(privateParams)) {
-        logMessage = util.format(command, Array.from(privateParams, () => '*******'));
-        cleanCommand = util.format(command, ...privateParams);
+        logMessage = replaceOverridesInString(command, privateParams, '*******');
+        cleanCommand = replaceOverridesInString(command, privateParams);
     }
 
     logDebug(`_execute: ${logMessage}`);
