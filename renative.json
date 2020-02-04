@@ -87,5 +87,26 @@
             }
         }
     },
+    "publish": {
+        "changelog": {
+            "path": "docs/CHANGELOG.md",
+            "template": "source:rnv"
+        },
+        "schemes": {
+            "buildWebLocal": {
+                "command": "rnv build -p web",
+                "git": {
+                    "tagName": "v${version}",
+                    "requireCleanWorkingDir": false
+                },
+                "npm": {
+                    "publish": false
+                },
+                "hooks": {
+                    "before:git": "rnv pkg version ${version}"
+                }
+            }
+        }
+    },
     "currentTemplate": "renative-template-hello-world"
 }
