@@ -31,12 +31,13 @@ export const rnvPlatformConfigure = async (c) => {
 const updateProjectPlatforms = (c, platforms) => {
     const { project: { config } } = c.paths;
     const currentConfig = c.files.project.config;
+    currentConfig.defaults = currentConfig.defaults || {};
     currentConfig.defaults.supportedPlatforms = platforms;
     writeFileSync(config, currentConfig);
 };
 
 export const rnvPlatformSetup = async (c) => {
-    const currentPlatforms = c.files.project.config.currentConfig.defaults.supportedPlatforms;
+    const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
 
     const {
         inputSupportedPlatforms
