@@ -10,7 +10,7 @@ import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
-import { inquirerPrompt } from '../../dist/systemTools/prompt';
+import { inquirerPrompt } from './prompt';
 
 const { exec, execSync } = require('child_process');
 
