@@ -5,7 +5,7 @@ import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList, applyTemplate, checkIfTemplateInstalled } from '../templateTools';
 import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
 import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
-import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
+import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure, rnvPlatformSetup } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles, checkCrypto } from '../systemTools/crypto';
@@ -134,6 +134,9 @@ const COMMANDS = {
             },
             configure: {
                 fn: rnvPlatformConfigure
+            },
+            setup: {
+                fn: rnvPlatformSetup
             }
         }
     },
