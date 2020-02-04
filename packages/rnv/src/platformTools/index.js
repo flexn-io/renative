@@ -3,12 +3,14 @@
 import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
+
 import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync, removeDirs } from '../systemTools/fileutils';
 import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS, SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from './sdkManager';
+import { configureEntryPoints } from '../templateTools';
 
 export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
@@ -24,6 +26,32 @@ export const rnvPlatformConfigure = async (c) => {
     await cleanPlatformBuild(c, c.platform);
     await cleanPlaformAssets(c, c.platform);
     await _runCopyPlatforms(c, c.platform);
+};
+
+const updateProjectPlatforms = (c, platforms) => {
+    const { project: { config } } = c.paths;
+    const currentConfig = c.files.project.config;
+    currentConfig.defaults = currentConfig.defaults || {};
+    currentConfig.defaults.supportedPlatforms = platforms;
+    writeFileSync(config, currentConfig);
+};
+
+export const rnvPlatformSetup = async (c) => {
+    const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
+
+    const {
+        inputSupportedPlatforms
+    } = await inquirer.prompt({
+        name: 'inputSupportedPlatforms',
+        type: 'checkbox',
+        pageSize: 20,
+        message: 'What platforms would you like to use?',
+        validate: val => !!val.length || 'Please select at least a platform',
+        default: currentPlatforms,
+        choices: SUPPORTED_PLATFORMS
+    });
+
+    updateProjectPlatforms(c, inputSupportedPlatforms);
 };
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
@@ -203,6 +231,24 @@ export const isPlatformSupported = async (c) => {
 
         c.platform = platform;
     }
+
+    const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
+    if (Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: `Looks like platform ${c.platform} is not supported by your project. Would you like to enable it?`
+        });
+
+        if (confirm) {
+            const newPlatforms = [...configuredPlatforms, c.platform];
+            updateProjectPlatforms(c, newPlatforms);
+            c.buildConfig.defaults.supportedPlatforms = newPlatforms;
+            await configureEntryPoints(c);
+        } else {
+            throw new Error('User canceled');
+        }
+    }
+
     // Check global SDKs
     await checkAndConfigureSdks(c);
     return c.platform;

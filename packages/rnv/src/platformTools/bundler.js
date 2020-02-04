@@ -26,7 +26,7 @@ const poll = (fn, timeout = 10000, interval = 1000) => {
                 setTimeout(checkCondition, interval, resolve, reject);
             } else {
                 spinner.fail('Can\'t connect to bundler. Try restarting it.');
-                reject();
+                reject('Can\'t connect to bundler. Try restarting it.');
             }
         } catch (e) {
             spinner.fail('Can\'t connect to bundler. Try restarting it.');
