@@ -1,5 +1,5 @@
 import Common, { initializeBuilder } from './common';
-import { logComplete, logError } from './systemTools/logger';
+import Logger, { logComplete, logError } from './systemTools/logger';
 import CLI from './cli';
 import Constants from './constants';
 import Exec from './systemTools/exec';
@@ -24,7 +24,7 @@ const run = (cmd, subCmd, program, process) => {
 
 export {
     Constants, Common, Exec, FileUtils,
-    Doctor, PluginTools, SetupTools,
+    Doctor, PluginTools, SetupTools, Logger,
     run, CLI
 };
 
