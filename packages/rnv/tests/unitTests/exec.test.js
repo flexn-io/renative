@@ -13,7 +13,7 @@ describe('Testing exec functions', () => {
 
     it('should execute command with privateParams', async () => {
         expect.assertions(1);
-        await expect(executeAsync({ program: {} }, 'node %s', { privateParams: ['-v'] }).then(data => typeof data)).resolves.toBe('string');
+        await expect(executeAsync({ program: {} }, 'node -v 1234', { privateParams: ['1234'] }).then(data => typeof data)).resolves.toBe('string');
     });
 
     it('should execute with error', async () => {
