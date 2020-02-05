@@ -1,15 +1,15 @@
-/* eslint-disable import/no-cycle */
+// /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
 import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
-import util from 'util';
 import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
+import { replaceOverridesInString } from '../utils';
 
 const { exec, execSync } = require('child_process');
 
@@ -53,14 +53,14 @@ const _execute = (c, command, opts = {}) => {
     let interval;
     const intervalTimer = 30000; // 30s
     let timer = intervalTimer;
+    const privateMask = '*******';
 
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
     let logMessage = cleanCommand;
     const { privateParams } = mergedOpts;
     if (privateParams && Array.isArray(privateParams)) {
-        logMessage = util.format(command, Array.from(privateParams, () => '*******'));
-        cleanCommand = util.format(command, ...privateParams);
+        logMessage = replaceOverridesInString(command, privateParams, privateMask);
     }
 
     logDebug(`_execute: ${logMessage}`);
@@ -86,7 +86,7 @@ const _execute = (c, command, opts = {}) => {
     const printLastLine = (buffer) => {
         const text = Buffer.from(buffer).toString().trim();
         const lastLine = text.split('\n').pop();
-        spinner.text = lastLine.substring(0, MAX_OUTPUT_LENGTH);
+        spinner.text = replaceOverridesInString(lastLine.substring(0, MAX_OUTPUT_LENGTH), privateParams, privateMask);
         if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
     };
 
@@ -99,21 +99,23 @@ const _execute = (c, command, opts = {}) => {
     return child.then((res) => {
         spinner && child?.stdout?.off('data', printLastLine);
         !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
-        logDebug(res.all);
+        logDebug(replaceOverridesInString(res.all, privateParams, privateMask));
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
         spinner && child?.stdout?.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
-        logDebug(err.all);
+
+        logDebug(replaceOverridesInString(err.all, privateParams, privateMask));
         interval && clearInterval(interval);
         // logDebug(err);
         if (ignoreErrors && !silent && !mono) {
             spinner.succeed(`Executing: ${logMessage}`);
             return true;
         }
-        const errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
+        let errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
+        errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
         return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
