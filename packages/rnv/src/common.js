@@ -7,7 +7,7 @@ import ip from 'ip';
 import axios from 'axios';
 import colorString from 'color-string';
 import crypto from 'crypto';
-import { isSystemWin, replaceOverridesInString } from './utils';
+import { isSystemWin } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
@@ -290,7 +290,10 @@ export const writeCleanFile = (source, destination, overrides) => {
     const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
     if (overrides) {
-        pFileClean = replaceOverridesInString(pFileClean, overrides);
+        overrides.forEach((v) => {
+            const regEx = new RegExp(v.pattern, 'g');
+            pFileClean = pFileClean.replace(regEx, v.override);
+        });
     }
 
     fs.writeFileSync(destination, pFileClean, 'utf8');

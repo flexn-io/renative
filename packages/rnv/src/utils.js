@@ -7,10 +7,10 @@ export const isSystemWin = process.platform === 'win32';
 
 export const replaceOverridesInString = (string, overrides, mask) => {
     let replacedString = string;
-    if (overrides?.length) {
+    if (overrides?.length && replacedString?.replace) {
         overrides.forEach((v) => {
-            const regEx = new RegExp(v.pattern, 'g');
-            replacedString = replacedString.replace(regEx, mask || v.override);
+            const regEx = new RegExp(v, 'g');
+            replacedString = replacedString.replace(regEx, mask);
         });
     }
     return replacedString;

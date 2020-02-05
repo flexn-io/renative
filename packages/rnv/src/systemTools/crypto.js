@@ -49,7 +49,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k {{KEY}}`, { privateParams: [{ pattern: '{{KEY}}', override: key }] }))
+            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 fs.writeFileSync(`${dest}.timestamp`, timestamp);
@@ -109,7 +109,7 @@ export const rnvCryptoDecrypt = async (c) => {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
 
-        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k {{KEY}}`, { privateParams: [{ pattern: '{{KEY}}', override: key }] });
+        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
 
         await tar.x({
             file: destTemp,
