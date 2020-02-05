@@ -4,12 +4,14 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import {
-    logTask,
     getAppFolder,
-    isPlatformActive,
+} from '../common';
+import { isPlatformActive } from '../platformTools';
+import {
+    logTask,
     logWarning,
     logInfo,
-} from '../common';
+} from '../systemTools/logger';
 import {
     IOS,
     ANDROID,
@@ -29,7 +31,7 @@ import {
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject } from '../platformTools/android';
-import { configureTizenProject, configureTizenGlobal } from '../platformTools/tizen';
+import { configureTizenProject } from '../platformTools/tizen';
 import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
@@ -85,8 +87,7 @@ const _configurePlatform = async (c, p, platform, method) => {
         c.platform = platform;
         await method(c, platform);
     }
-    return;
-}
+};
 
 export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';

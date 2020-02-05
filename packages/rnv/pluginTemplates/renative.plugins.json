@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.17",
+            "version": "0.28.18",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -59,7 +59,6 @@
             "no-npm": true,
             "deprecated": "RCTPushNotification is DEPRECATED. use @react-native-community/push-notification-ios instead",
             "ios": {
-                "reactSubSpecs": ["RCTPushNotification"],
                 "appDelegateMethods": {
                     "application": {
                         "didReceiveRemoteNotification": [
@@ -89,7 +88,6 @@
         "RCTLinkingIOS": {
             "no-npm": true,
             "ios": {
-                "reactSubSpecs": ["RCTLinkingIOS"],
                 "appDelegateMethods": {
                     "application": {
                         "open": [
@@ -784,7 +782,7 @@
             }
         },
         "react-native-device-info": {
-            "version": "2.3.2",
+            "version": "5.4.1",
             "ios": {
                 "podName": "RNDeviceInfo"
             },
@@ -1222,9 +1220,12 @@
                         "maven { url 'https://maven.fabric.io/public' }"
                     ]
                 },
-                "skipImplementation": true,
+                "implementation": "implementation('com.crashlytics.sdk.android:crashlytics:2.8.0@aar') {\n transitive = true\n }",
                 "app/build.gradle": {
                     "apply": ["plugin: 'io.fabric'"]
+                },
+                "mainActivity": {
+                    "imports": ["io.fabric.sdk.android.Fabric"]
                 }
             }
         },

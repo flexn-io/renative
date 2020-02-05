@@ -1,34 +1,21 @@
 import path from 'path';
-import fs from 'fs';
-import chalk from 'chalk';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
-    isPlatformActive,
-    logDebug,
-    getAppVersion,
-    getAppTitle,
-    getEntryFile,
     writeCleanFile,
     getAppTemplateFolder,
-    getAppId,
     getConfigProp,
-    getIP,
-    getBuildFilePath,
-    logSuccess,
-    getBuildsFolder,
     getFlavouredProp
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import {
+    logTask,
+    logWarning
+} from '../../systemTools/logger';
+import { parsePlugins } from '../../pluginTools';
 
-export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
+export const parsePodFile = (c, platform) => new Promise((resolve) => {
     logTask(`parsePodFileSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const pluginSubspecs = '';
     let pluginInject = '';
 
     // PLUGINS
@@ -47,7 +34,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
         const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
         if (reactSubSpecs) {
-            logWarning('pluginSubspecs prop is deprecated. yoy can safely remove it');
+            logWarning('reactSubSpecs prop is deprecated. yoy can safely remove it');
         }
 
         const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');

@@ -5,7 +5,7 @@ import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList, applyTemplate, checkIfTemplateInstalled } from '../templateTools';
 import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
 import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
-import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
+import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure, rnvPlatformSetup } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
 import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles, checkCrypto } from '../systemTools/crypto';
@@ -13,6 +13,7 @@ import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
+import { isSystemWin } from '../utils';
 import { PLATFORMS, SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
 // import { getBinaryPath } from '../common';
@@ -134,6 +135,9 @@ const COMMANDS = {
             },
             configure: {
                 fn: rnvPlatformConfigure
+            },
+            setup: {
+                fn: rnvPlatformSetup
             }
         }
     },
@@ -477,18 +481,28 @@ const _execute = async (c, cmdFn, cmd) => {
             await _handleUnknownPlatform(c, requiredPlatforms);
             return;
         }
-        const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
-        if (requiredParams) {
-            for (let i = 0; i < requiredParams.length; i++) {
-                const requiredParam = requiredParams[i];
-                // TODO
-            }
-        }
+        // TODO: Required params
+        // const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
+        // if (requiredParams) {
+        //     for (let i = 0; i < requiredParams.length; i++) {
+        //         const requiredParam = requiredParams[i];
+        //
+        //     }
+        // }
     }
 
     c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
-    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command)
+    if (c.program.target !== true) c.runtime.target = c.program.target || c.files.workspace.config.defaultTargets[c.platform];
+    else c.runtime.target = c.program.target;
+    c.runtime.scheme = c.program.scheme || 'debug';
+    c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
+    // const { scheme } = c.program;
+    // if (scheme !== true) {
+    //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];
+    //     c.runtime.scheme = isSchemePresent ? scheme : undefined;
+    // }
 
+    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command);
     if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
     if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);

@@ -1,35 +1,27 @@
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import { isObject, isArray, isBool, isString } from '../../systemTools/objectUtils';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
-    isPlatformActive,
-    logDebug,
     getAppVersion,
     getAppTitle,
     getAppVersionCode,
-    getEntryFile,
     writeCleanFile,
-    getAppTemplateFolder,
-    getAppId,
     getConfigProp,
-    getIP,
     getBuildFilePath,
-    logSuccess,
-    getBuildsFolder,
     getFlavouredProp
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import {
+    logTask,
+    logError,
+    logWarning
+} from '../../systemTools/logger';
+import { parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects, sanitizeDynamicProps } from '../../systemTools/fileutils';
+import { readObjectSync, mergeObjects } from '../../systemTools/fileutils';
 
 
-export const parseExportOptionsPlist = (c, platform) => new Promise((resolve, reject) => {
+export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) => {
 // EXPORT OPTIONS
     const tId = getConfigProp(c, platform, 'teamID');
     const appFolder = getAppFolder(c, platform);
@@ -139,7 +131,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const plist = getFlavouredProp(c, pluginPlat, 'plist');
-        if (plist) {            
+        if (plist) {
             plistObj = mergeObjects(c, plistObj, plist, true, false);
         }
     });

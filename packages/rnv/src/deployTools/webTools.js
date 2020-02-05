@@ -6,12 +6,11 @@ import path from 'path';
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
 import {
-    logTask,
-    logComplete,
-    logError,
-    logInfo,
     importPackageFromProject
 } from '../common';
+import {
+    logInfo
+} from '../systemTools/logger';
 import { configureDeploymentIfRequired, configureExportIfRequired } from './configure';
 
 const DEPLOY_TARGET_DOCKER = 'docker';
@@ -21,31 +20,31 @@ const DEPLOY_TARGET_NONE = 'none';
 
 const _runDeployment = async (c, platform, deployType) => {
     switch (deployType) {
-    case DEPLOY_TARGET_FTP:
-        return deployToFtp(c, platform);
-    case DEPLOY_TARGET_NOW:
-        return deployToNow(c, platform);
-    case DEPLOY_TARGET_NONE:
-        return Promise.resolve();
-    case DEPLOY_TARGET_DOCKER:
-        const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
-        const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
-        deployToDocker.setRNVPath(rnvPath);
-        return deployToDocker.doDeploy();
-    default:
-        return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
+        case DEPLOY_TARGET_FTP:
+            return deployToFtp(c, platform);
+        case DEPLOY_TARGET_NOW:
+            return deployToNow(c, platform);
+        case DEPLOY_TARGET_NONE:
+            return Promise.resolve();
+        case DEPLOY_TARGET_DOCKER:
+            const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
+            const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
+            deployToDocker.setRNVPath(rnvPath);
+            return deployToDocker.doDeploy();
+        default:
+            return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
     }
 };
 
 const _runExport = (c, platform, deployType) => {
     switch (deployType) {
-    case DEPLOY_TARGET_DOCKER:
-        const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
-        const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
-        deployToDocker.setRNVPath(rnvPath);
-        return deployToDocker.doExport();
-    default:
-        return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
+        case DEPLOY_TARGET_DOCKER:
+            const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
+            const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
+            deployToDocker.setRNVPath(rnvPath);
+            return deployToDocker.doExport();
+        default:
+            return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
     }
 };
 

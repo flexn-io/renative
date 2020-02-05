@@ -1,36 +1,13 @@
 import path from 'path';
-import os from 'os';
-import fs from 'fs';
-import net from 'net';
-import chalk from 'chalk';
-import shell from 'shelljs';
-import child_process from 'child_process';
-import inquirer from 'inquirer';
-import xmlParser from 'xml2json';
 import {
-    logTask,
-    logError,
     getAppFolder,
-    isPlatformActive,
-    getAppVersion,
     getAppTitle,
-    getAppVersionCode,
     writeCleanFile,
-    getAppId,
-    getAppTemplateFolder,
     getBuildFilePath,
-    getEntryFile,
-    logWarning,
-    logDebug,
     getConfigProp,
-    logInfo,
-    logSuccess,
-    getBuildsFolder,
     sanitizeColor
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, writeFileSync } from '../../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { writeFileSync } from '../../systemTools/fileutils';
 
 export const parseValuesStringsSync = (c) => {
     const appFolder = getAppFolder(c, c.platform);

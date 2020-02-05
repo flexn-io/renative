@@ -7,15 +7,9 @@ import net from 'net';
 import parser from 'xml2json';
 
 import { execCLI } from '../../systemTools/exec';
-import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN, WEB_HOSTED_PLATFORMS } from '../../constants';
+import { RENATIVE_CONFIG_NAME, CLI_TIZEN_EMULATOR, CLI_TIZEN, CLI_SDB_TIZEN } from '../../constants';
 import {
-    logTask,
-    logError,
     getAppFolder,
-    isPlatformActive,
-    logWarning,
-    logDebug,
-    logSuccess,
     writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
@@ -24,11 +18,19 @@ import {
     checkPortInUse,
     confirmActiveBundler
 } from '../../common';
+import {
+    logTask,
+    logError,
+    logWarning,
+    logDebug,
+    logSuccess,
+    logToSummary
+} from '../../systemTools/logger';
+import { isPlatformActive } from '..';
 import { copyAssetsFolder, copyBuildsFolder } from '../../projectTools/projectParser';
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';
-import { logToSummary } from '../../systemTools/logger';
 
 const formatXMLObject = obj => ({
     ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
@@ -64,15 +66,14 @@ export const launchTizenSimulator = (c, name) => {
 };
 
 export const listTizenTargets = async (c, name) => {
-    const targets = await execCLI(c, CLI_TIZEN_EMULATOR, `list-vm`, { detached: true });    
+    const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', { detached: true });
     const targetArr = targets.split('\n');
-    let targetStr = ''
+    let targetStr = '';
     Object.keys(targetArr).forEach((i) => {
         targetStr += `[${i}]> ${targetArr[i]}\n`;
-    })
+    });
     logToSummary(`Tizen Targets:\n${targetStr}`);
-    
-}
+};
 
 export const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
@@ -142,7 +143,7 @@ const _getRunningDevices = async (c) => {
             let deviceInfo;
             let deviceType;
 
-            if (deviceInfoXML !== true && deviceInfoXML !== '') {                
+            if (deviceInfoXML !== true && deviceInfoXML !== '') {
                 // for some reason the tv does not connect through sdb
                 deviceInfo = formatXMLObject(parser.toJson(deviceInfoXML, { object: true, reversible: false }));
                 deviceType = deviceInfo['tizen.org/feature/profile'];
@@ -209,7 +210,7 @@ export const runTizen = async (c, platform, target) => {
             c.runtime.skipActiveServerCheck = true;
         }
     }
-    
+
 
     const askForEmulator = async () => {
         const { startEmulator } = await inquirer.prompt([{
@@ -363,7 +364,7 @@ export const configureTizenProject = async (c, platform) => {
 
     if (!isPlatformActive(c, platform)) return;
 
-    if(!_isGlobalConfigured) {
+    if (!_isGlobalConfigured) {
         _isGlobalConfigured = true;
         await configureTizenGlobal(c);
     }
