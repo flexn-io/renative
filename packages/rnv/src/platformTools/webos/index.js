@@ -69,7 +69,7 @@ const parseDevices = (c, devicesResponse) => {
             device,
             connection,
             profile,
-            isDevice: !device.includes('127.0.0.1'),
+            isDevice: !device.includes(c.runtime.localhost),
             active: !deviceInfo.includes('ERR!')
         };
     }));

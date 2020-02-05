@@ -26,7 +26,7 @@ import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectPa
 import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
-import { isSystemWin } from '../../utils';
+import { getValidLocalhost } from '../../utils';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -150,15 +150,11 @@ const _parseCssSync = (c, platform) => {
 const runWeb = async (c, platform, port) => {
     logTask(`runWeb:${platform}:${port}`);
 
-    let devServerHost = '0.0.0.0';
+    let devServerHost = c.runtime.localhost;
 
     if (platform === WEB) {
         const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-        if (extendConfig.devServerHost) devServerHost = extendConfig.devServerHost;
-    }
-
-    if (isSystemWin && devServerHost === '0.0.0.0') {
-        devServerHost = '127.0.0.1';
+        devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
     }
 
     const isPortActive = await checkPortInUse(c, platform, port);

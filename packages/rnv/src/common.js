@@ -7,7 +7,7 @@ import ip from 'ip';
 import axios from 'axios';
 import colorString from 'color-string';
 import crypto from 'crypto';
-import { isSystemWin } from './utils';
+import { getValidLocalhost } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
@@ -392,10 +392,7 @@ export const waitForWebpack = async (c) => {
     // const spinner = ora('Waiting for webpack to finish...').start();
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
-    if (isSystemWin && devServerHost === '0.0.0.0') {
-        devServerHost = '127.0.0.1';
-    }
+    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
     const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {

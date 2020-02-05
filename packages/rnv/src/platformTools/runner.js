@@ -63,7 +63,7 @@ import {
 } from './android';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
-import { isBundlerRunning, waitForBundler } from './bundler';
+import { isBundlerActive, waitForBundler } from './bundler';
 import { checkSdk } from './sdkManager';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
@@ -84,9 +84,8 @@ export const rnvStart = async (c) => {
     logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
 
     if (Config.isWebHostEnabled && hosted) {
-        const hostIp = isSystemWin ? '127.0.0.1' : '0.0.0.0';
         waitForWebpack(c, port)
-            .then(() => open(`http://${hostIp}:${port}/`))
+            .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
 
@@ -189,22 +188,24 @@ export const rnvLog = async (c) => {
 // ##########################################
 
 
-const _configureHostedIfRequired = async (c, platform) => {
+const _configureHostedIfRequired = async (c) => {
+    logTask(`_configureHostedIfRequired:${c.platform}`);
     if (Config.isWebHostEnabled) {
         logDebug('Running hosted build');
         const { project, rnv } = c.paths;
-        copyFolderContentsRecursiveSync(path.join(rnv.dir, 'supportFiles', 'appShell'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public'));
-        writeCleanFile(path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
+        copyFolderContentsRecursiveSync(path.join(rnv.dir, 'supportFiles', 'appShell'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${c.platform}`, 'public'));
+        writeCleanFile(path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${c.platform}`, 'public', 'index.html'), [
             { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.runtime.port}` },
         ]);
     }
 };
 
-const startBundlerIfRequired = async (c) => {
+const _startBundlerIfRequired = async (c) => {
+    logTask(`_startBundlerIfRequired:${c.platform}`);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
 
-    const isRunning = await isBundlerRunning(c);
+    const isRunning = await isBundlerActive(c);
     if (!isRunning) {
         rnvStart(c);
         keepRNVRunning = true;
@@ -229,16 +230,11 @@ const _rnvRunWithPlatform = async (c) => {
     const { target } = c.runtime;
     const { hosted } = c.program;
 
-    logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}`, chalk.grey);
-
-    const throwErr = (err) => {
-        throw err;
-    };
+    logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}:${hosted}`, chalk.grey);
 
     if (Config.isWebHostEnabled && hosted) {
         c.runtime.shouldOpenBrowser = true;
         return rnvStart(c);
-        // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
 
     Analytics.captureEvent({
@@ -254,7 +250,7 @@ const _rnvRunWithPlatform = async (c) => {
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await startBundlerIfRequired(c);
+                await _startBundlerIfRequired(c);
                 await runXcodeProject(c);
                 return waitForBundlerIfRequired(c);
             }
@@ -265,7 +261,7 @@ const _rnvRunWithPlatform = async (c) => {
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await startBundlerIfRequired(c);
+                await _startBundlerIfRequired(c);
                 if (getConfigProp(c, platform, 'bundleAssets') === true || platform === ANDROID_WEAR) {
                     await packageAndroid(c, platform);
                 }
@@ -293,14 +289,14 @@ const _rnvRunWithPlatform = async (c) => {
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await _configureHostedIfRequired(c, platform);
+                await _configureHostedIfRequired(c);
             }
             return runTizen(c, platform, target);
         case WEBOS:
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await _configureHostedIfRequired(c, platform);
+                await _configureHostedIfRequired(c);
             }
             return runWebOS(c, platform, target);
         case KAIOS:

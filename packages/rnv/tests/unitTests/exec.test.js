@@ -32,7 +32,7 @@ describe('Testing exec functions', () => {
 
     it('should fail telnet', async () => {
         expect.assertions(1);
-        await expect(executeTelnet(12345, 'node')).resolves.toBe('');
+        await expect(executeTelnet({ program: {}, runtime: { localhost: '1234' } }, 12345, 'node')).resolves.toBe('');
     });
 });
 

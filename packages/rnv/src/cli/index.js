@@ -13,6 +13,7 @@ import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
+import { isSystemWin } from '../utils';
 import { PLATFORMS, SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
 // import { getBinaryPath } from '../common';
@@ -494,6 +495,7 @@ const _execute = async (c, cmdFn, cmd) => {
     if (c.program.target !== true) c.runtime.target = c.program.target || c.files.workspace.config.defaultTargets[c.platform];
     else c.runtime.target = c.program.target;
     c.runtime.scheme = c.program.scheme || 'debug';
+    c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
     // const { scheme } = c.program;
     // if (scheme !== true) {
     //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];

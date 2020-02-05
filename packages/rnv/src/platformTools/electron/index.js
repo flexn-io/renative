@@ -57,7 +57,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     const appFolder = getAppFolder(c, platform);
     const templateFolder = getAppTemplateFolder(c, platform);
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(appFolder, 'electronConfig.json');
     const packagePath = path.join(appFolder, 'package.json');
@@ -97,9 +96,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     } else {
-        const ip = isSystemWin ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.runtime.port}` },
+            { pattern: '{{DEV_SERVER}}', override: `http://${c.runtime.localhost}:${c.runtime.port}` },
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     }
@@ -193,9 +191,9 @@ const runElectron = async (c, platform, port) => {
     }
 };
 
-const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runElectronSimulator:${platform}`);
-    const appFolder = getAppFolder(c, platform);
+const _runElectronSimulator = async (c) => {
+    logTask(`_runElectronSimulator:${c.platform}`);
+    const appFolder = getAppFolder(c, c.platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
     const child = spawn('node', [elc, path.join(appFolder, '/main.js')], {
@@ -207,8 +205,7 @@ const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => 
         .on('error', spawnError => console.error(spawnError));
 
     child.unref();
-    resolve();
-});
+};
 
 const runElectronDevServer = async (c, platform, port) => {
     logTask(`runElectronDevServer:${platform}`);

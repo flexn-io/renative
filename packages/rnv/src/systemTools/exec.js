@@ -174,13 +174,13 @@ const executeAsync = (c, cmd, opts) => {
  * @returns {Promise}
  *
  */
-const executeTelnet = (port, command) => new Promise((resolve) => {
+const executeTelnet = (c, port, command) => new Promise((resolve) => {
     const nc2 = new NClient();
     logDebug(`execTelnet: ${port} ${command}`);
 
     let output = '';
 
-    nc2.addr('127.0.0.1')
+    nc2.addr(c.runtime.localhost)
         .port(parseInt(port, 10))
         .connect()
         .send(`${command}\n`);

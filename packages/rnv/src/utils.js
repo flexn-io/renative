@@ -15,3 +15,15 @@ export const replaceOverridesInString = (string, overrides, mask) => {
     }
     return replacedString;
 };
+
+export const getValidLocalhost = (value, localhost) => {
+    if (!value) return localhost;
+    switch (value) {
+        case 'localhost':
+        case '0.0.0.0':
+        case '127.0.0.1':
+            return localhost;
+        default:
+            return value;
+    }
+};

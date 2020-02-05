@@ -107,7 +107,7 @@ export const getAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = f
         if (!skipAvds) {
             avdResult = await execCLI(c, CLI_ANDROID_EMULATOR, '-list-avds');
         }
-        return _parseDevicesResult(devicesResult, avdResult, deviceOnly, c);
+        return _parseDevicesResult(c, devicesResult, avdResult, deviceOnly);
     } catch (e) {
         return Promise.reject(e);
     }
@@ -308,11 +308,11 @@ const getAvdDetails = (c, deviceName) => {
     return results;
 };
 
-const getEmulatorName = async (words) => {
+const getEmulatorName = async (c, words) => {
     const emulator = words[0];
     const port = emulator.split('-')[1];
 
-    const emulatorReply = await executeTelnet(port, 'avd name');
+    const emulatorReply = await executeTelnet(c, port, 'avd name');
     const emulatorReplyArray = emulatorReply.split('OK');
     const emulatorName = emulatorReplyArray[emulatorReplyArray.length - 2].trim();
     return emulatorName;
@@ -325,7 +325,7 @@ export const connectToWifiDevice = async (c, ip) => {
     return false;
 };
 
-const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => {
+const _parseDevicesResult = async (c, devicesString, avdsString, deviceOnly) => {
     logDebug(`_parseDevicesResult:${devicesString}:${avdsString}:${deviceOnly}`);
     const devices = [];
     const { skipTargetCheck } = c.program;
@@ -347,7 +347,7 @@ const _parseDevicesResult = async (devicesString, avdsString, deviceOnly, c) => 
                     logDebug('_parseDevicesResult 4', { name });
                     if (!isDevice) {
                         await waitForEmulatorToBeReady(c, words[0]);
-                        name = await getEmulatorName(words);
+                        name = await getEmulatorName(c, words);
                         logDebug('_parseDevicesResult 5', { name });
                     }
                     logDebug('_parseDevicesResult 6', { deviceOnly, isDevice });

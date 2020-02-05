@@ -159,6 +159,7 @@ const _attemptAutoFix = async (c, engine) => {
 
 
 export const checkSdk = async (c) => {
+    logTask('checkSdk');
     if (!_isSdkInstalled(c)) {
         logWarning(`${c.platform} requires SDK to be installed. Your SDK path in ${chalk.white(c.paths.workspace.config)} does not exist: ${chalk.white(_getCurrentSdkPath(c))}`);
 
