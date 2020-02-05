@@ -94,17 +94,21 @@
         },
         "schemes": {
             "buildWebLocal": {
-                "command": "rnv build -p web",
-                "git": {
-                    "tagName": "v${version}",
-                    "requireCleanWorkingDir": false
-                },
-                "npm": {
-                    "publish": false
-                },
-                "hooks": {
-                    "before:git": "rnv pkg version ${version}"
-                }
+                "command": "rnv build -p web"
+            },
+            "export": {
+                "description": "exports binaries locally",
+                "command": "rnv export -p ios -s prod -r && rnv export -p android -s prod -r",
+                "tag": "alpha",
+                "bump": "minor"
+            },
+            "deploy": {
+                "description": "deploys binaries from local machine",
+                "command": "rnv deploy -p ios -s prod -r && rnv deploy -p android -s prod -r",
+                "bump": "major"
+            },
+            "ci": {
+                "description": "deploys binaries from CI server"
             }
         }
     },

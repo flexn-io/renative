@@ -48,6 +48,9 @@ program
     .option('--analyzer', 'Enable real-time bundle analyzer')
     .option('--xcodebuildArchiveArgs <value>', 'pass down custom xcodebuild arguments')
     .option('--xcodebuildExportArgs <value>', 'pass down custom xcodebuild arguments')
+    .option('--tag <value>', 'pass a tag for publishing (alpha/beta/rc)')
+    .option('--bump <value>', 'pass a version bump strategy for publishing (major/minor/patch)')
+    .option('--specificVersion <value>', 'pass a specific version to be set when publishing')
     .arguments('<cmd> [option]')
     .action((cmd, option) => {
         cmdValue = cmd;

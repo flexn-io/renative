@@ -5,95 +5,70 @@ import deepmerge from 'deepmerge';
 
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
-import { logWarning } from '../systemTools/logger';
-import { writeFileSync } from '../systemTools/fileutils';
+import { logError } from '../systemTools/logger';
+import { inquirerPrompt } from '../systemTools/prompt';
 
 /*
  *
  * Usage
  * rnv publish
- * rnv publish patch|minor|major
- * rnv publish patch|minor|major alpha|beta|rc
- * rnv publish 1.0.0
- * rnv publish 1.0.0-alpha.1
- * rnv publish ... --dry-run
- *
- * Basically the same as release-it documentation. The only difference is that you don't need to specify --preRelease=beta
- * if you are publishing a beta/alpha/rc. That is done automatically by checking if the second arg is alpha, beta, rc.
+ * rnv publish --bump major
+ * rnv publish --specificVersion 9.9.9
+ * rnv publish --tag alpha
  *
  */
-
-const includesPre = (version) => {
-    if (version.includes('alpha')) return 'alpha';
-    if (version.includes('beta')) return 'beta';
-    if (version.includes('rc')) return 'rc';
-    return false;
-};
 
 const rnvPublish = async () => {
     // make sure release-it is installed
     await Config.checkRequiredPackage('release-it', '12.4.3', 'devDependencies');
-    // make sure required object is present in package.json
-    // const pkgJson = Config.getProjectConfig().package;
-    // const existingPath = Config.getConfig().paths.project.package;
 
-    // if (!pkgJson['release-it']) {
-    //     pkgJson['release-it'] = {
-    //         git: {
-    //             // eslint-disable-next-line no-template-curly-in-string
-    //             tagName: 'v${version}',
-    //             requireCleanWorkingDir: false
-    //         },
-    //         npm: {
-    //             publish: false
-    //         },
-    //         hooks: {
-    //             // eslint-disable-next-line no-template-curly-in-string
-    //             'before:git': 'npx rnv pkg version ${version}'
-    //         }
-    //     };
-    //     writeFileSync(existingPath, pkgJson);
-    // }
+    const { program: { ci, scheme, tag, bump, specificVersion } } = Config.getConfig();
 
-    // // backwards compatibility and user change friendly
-    // if (!pkgJson['release-it']?.hooks?.['before:git']) {
-    //     if (!pkgJson['release-it'].hooks) {
-    //         pkgJson['release-it'].hooks = {};
-    //     }
-    //     // eslint-disable-next-line no-template-curly-in-string
-    //     pkgJson['release-it'].hooks['after:bump'] = 'npx rnv pkg version ${version}';
-    //     writeFileSync(existingPath, pkgJson);
-    // }
+    const publishConfig = Config.getConfig().buildConfig.publish;
+    if (!publishConfig) throw new Error('You have no publish schemes configured. Please check appConfig/base/renative.json->publish');
+    const { schemes } = publishConfig;
+    let chosenScheme = scheme;
 
-    // if (!pkgJson['release-it'].publish) {
-    //     pkgJson['release-it'].publish = 'local';
-    //     pkgJson['release-it'].skipRootPublish = true;
-    //     pkgJson['release-it'].rootPublishCommand = 'npx rnv deploy -p ios -s debug';
-    //     writeFileSync(existingPath, pkgJson);
-    // }
+    // scheme
+    if ((!scheme || !schemes[scheme]) && !ci) {
+        const { selected } = await inquirerPrompt({
+            type: 'list',
+            message: 'Please select your publish scheme',
+            name: 'selected',
+            choices: Object.keys(schemes).map(k => ({ value: k, name: `${k} ${schemes[k].description ? `(${schemes[k].description})` : ''}` }))
+        });
 
-    let args = [...Config.getConfig().program.rawArgs];
-    args = args.slice(3);
-
-    const maybeVersion = args[0];
-    const secondArg = args[1];
-    let preRelease = false;
-
-    // for handling `rnv publish patch alpha`
-    if (['alpha', 'beta', 'rc'].includes(secondArg)) {
-        preRelease = secondArg;
+        chosenScheme = selected;
     }
 
-    // for handling `rnv publish 1.0.0-alpha.1`
-    if (semver.valid(maybeVersion) && includesPre(maybeVersion)) {
-        preRelease = includesPre(maybeVersion);
-    }
+    if (!chosenScheme) throw new Error('No scheme selected or passed (-s)');
+    const currentScheme = schemes[chosenScheme];
 
+    let chosenBumpStrategy = bump || currentScheme.bump;
+
+    // bump strategy
+    if (specificVersion && semver.valid(specificVersion)) {
+        chosenBumpStrategy = specificVersion;
+    } else if (specificVersion) {
+        logError(`Chosen specific version ${specificVersion} is not a valid SemVer version`, false, true);
+    }
+    if (!chosenBumpStrategy && !ci) {
+        const { selected } = await inquirerPrompt({
+            type: 'list',
+            message: 'Please select your bump strategy',
+            name: 'selected',
+            choices: [{ value: 'major', name: 'major (1.1.0 -> 2.0.0)' }, { value: 'minor', name: 'minor (1.1.0 -> 1.2.0)' }, { value: 'patch', name: 'patch (1.1.0 -> 1.1.1)' }]
+        });
+
+        chosenBumpStrategy = selected;
+    }
+    if (!chosenBumpStrategy) throw new Error('No bump strategy selected or passed (--bump)');
+
+    // configure options
     const { dir } = Config.getConfig().paths.project;
-    const { publish, command, ...rest } = Config.buildConfig.release;
-
     const defaultOptions = {
         'dry-run': true,
+        increment: chosenBumpStrategy,
         git: {
             tagName: 'v${version}', // eslint-disable-line no-template-curly-in-string
             requireCleanWorkingDir: false
@@ -105,15 +80,18 @@ const rnvPublish = async () => {
             'after:bump': 'npx rnv pkg version ${version}' // eslint-disable-line no-template-curly-in-string
         }
     };
+    const options = deepmerge(defaultOptions, currentScheme);
 
-    const options = deepmerge(defaultOptions, rest);
-
+    // handle prerelease
+    const preRelease = tag || currentScheme.tag;
     if (preRelease) options.preRelease = preRelease;
+
+    const { command } = currentScheme;
 
     try {
         await release(options);
 
-        if (publish === 'local' && command) {
+        if (command) {
             await executeAsync(command, { interactive: true, env: process.env, cwd: dir });
         }
     } catch (e) {
