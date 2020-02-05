@@ -212,11 +212,10 @@ export const logErrorPlatform = (c, platform) => {
 
 export const PLATFORM_RUNS = {};
 
-export const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
+export const configureIfRequired = async (c, platform) => {
     logTask(`configureIfRequired:${platform}`);
 
     if (PLATFORM_RUNS[platform]) {
-        resolve();
         return;
     }
     PLATFORM_RUNS[platform] = true;
@@ -232,19 +231,15 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
     };
 
     if (c.program.reset) {
-        cleanPlatformBuild(c, platform)
-            .then(() => cleanPlaformAssets(c))
-            .then(() => createPlatformBuild(c, platform))
-            .then(() => CLI(c, nc))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        createPlatformBuild(c, platform)
-            .then(() => CLI(c, nc))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
+        await cleanPlatformBuild(c, platform);
     }
-});
+
+    if (c.program.resetHard) {
+        await cleanPlaformAssets(c);
+    }
+    await createPlatformBuild(c, platform);
+    await CLI(c, nc);
+};
 
 export const getBinaryPath = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -311,16 +306,12 @@ export const getBuildsFolder = (c, platform, customPath) => {
 
 export const getIP = () => ip.address();
 
-export const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
+export const cleanPlatformIfRequired = async (c, platform) => {
     if (c.program.reset) {
         logInfo(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
-        cleanPlatformBuild(c, platform)
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        resolve();
+        await cleanPlatformBuild(c, platform);
     }
-});
+};
 
 export const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     detectPort(port, (err, availablePort) => {

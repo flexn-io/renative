@@ -41,8 +41,7 @@ export const checkAndMigrateProject = async (c) => {
 
     if (fs.existsSync(paths.config)) {
         if (c.program.ci) {
-            throw 'Your project has been created with previous version of ReNative';
-            return;
+            return Promise.reject('Your project has been created with previous version of ReNative');
         }
         const { confirm } = await inquirer.prompt({
             name: 'confirm',
@@ -52,14 +51,16 @@ export const checkAndMigrateProject = async (c) => {
 
         if (confirm) {
             c.program.reset = true;
-            return _migrateProject(c, paths)
-                .then(() => _migrateProjectSoft(c, paths))
-                .then(() => rnvClean(c))
-                .then(() => configureNodeModules(c));
+            await _migrateProject(c, paths);
+            await _migrateProjectSoft(c, paths);
+            await rnvClean(c);
+            await configureNodeModules(c);
+            return true;
         }
     } else {
-        return _migrateProjectSoft(c, paths);
+        await _migrateProjectSoft(c, paths);
     }
+    return true;
 };
 
 const PATH_PROPS = [

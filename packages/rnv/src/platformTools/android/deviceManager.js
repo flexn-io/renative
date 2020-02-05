@@ -77,9 +77,21 @@ const _getDeviceString = (device, i) => {
     return ` [${i + 1}]> ${deviceString}\n`;
 };
 
-export const resetAdb = async (c) => {
-    await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
-    await execCLI(c, CLI_ANDROID_ADB, 'start-server');
+export const resetAdb = async (c, ranBefore) => {
+    try {
+        if (!ranBefore) await execCLI(c, CLI_ANDROID_ADB, 'kill-server');
+    } catch (e) {
+        logWarning(e);
+    }
+    try {
+        await execCLI(c, CLI_ANDROID_ADB, 'start-server');
+    } catch (e) {
+        if (ranBefore) {
+            return Promise.reject(e);
+        }
+        logWarning(`Got error:\n${e}\nWill attemnt again in 5 seconds`);
+        setTimeout(resetAdb, 5000, c, true);
+    }
 };
 
 export const getAndroidTargets = async (c, skipDevices, skipAvds, deviceOnly = false) => {
