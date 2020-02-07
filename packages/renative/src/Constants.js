@@ -274,7 +274,7 @@ export const PLATFORMS = {
         defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
     },
     chromecast: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 8095, icon: ICONS.TV, supportedOS: OS.ALL, isActive: true, requiresSharedConfig: true, sourceExts: []
     },
     chromeos: {
         defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []

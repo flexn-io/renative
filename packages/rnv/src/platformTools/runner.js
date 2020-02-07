@@ -38,6 +38,7 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    CHROMECAST,
 } from '../constants';
 import {
     runXcodeProject,
@@ -50,6 +51,7 @@ import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
+import { runChromecast } from './chromecast';
 import {
     runElectron,
     buildElectron, runElectronDevServer, configureElectronProject, exportElectron
@@ -67,7 +69,6 @@ import { isBundlerActive, waitForBundler } from './bundler';
 import { checkSdk } from './sdkManager';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-import { isSystemWin } from '../utils';
 
 let keepRNVRunning = false;
 
@@ -307,6 +308,13 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
             }
             return runFirefoxProject(c, platform);
+        case CHROMECAST:
+            if (!c.program.only) {
+                await cleanPlatformIfRequired(c, platform);
+                await configureIfRequired(c, platform);
+                await _configureHostedIfRequired(c);
+            }
+            return runChromecast(c, platform, target);
         default:
             return logErrorPlatform(c, platform);
     }

@@ -274,7 +274,16 @@ export const PLATFORMS = {
         defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
     },
     chromecast: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 8095,
+        icon: ICONS.TV,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: {
+            factors: ['chromecast.tv.js', 'web.tv.js', 'tv.js'],
+            platforms: ['chromecast.js'],
+            fallbacks: ['tv.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
+        }
     },
     chromeos: {
         defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
@@ -457,6 +466,7 @@ export const SUPPORTED_PLATFORMS = [
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    CHROMECAST
 ];
 export const SUPPORTED_PLATFORMS_MAC = [
     IOS,
