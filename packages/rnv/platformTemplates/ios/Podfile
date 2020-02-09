@@ -1,6 +1,7 @@
 {{PLUGIN_PODFILE_SOURCES}}
 platform :ios, '{{PLUGIN_DEPLOYMENT_TARGET}}'
-use_frameworks!
+# use_frameworks! cannot use this as some static frameworks like realm will fail to compile
+use_modular_headers!
 {{PLUGIN_WARNINGS}}
 
 # ReNative: To allow dynamic plugins via flavours autolinking has to be disabled
@@ -34,9 +35,9 @@ target 'RNVApp' do
   pod 'ReactCommon/turbomodule/core', :path => "../../node_modules/react-native/ReactCommon"
   pod 'Yoga', :path => '../../node_modules/react-native/ReactCommon/yoga'
 
-  pod 'DoubleConversion', :podspec => '../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../../node_modules/react-native/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => '../../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'DoubleConversion', :podspec => '../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec', :modular_headers => false
+  pod 'glog', :podspec => '../../node_modules/react-native/third-party-podspecs/glog.podspec', :modular_headers => false
+  pod 'Folly', :podspec => '../../node_modules/react-native/third-party-podspecs/Folly.podspec', :modular_headers => false
 
 {{PLUGIN_PATHS}}
 

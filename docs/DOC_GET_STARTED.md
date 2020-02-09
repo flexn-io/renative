@@ -9,7 +9,9 @@ sidebar_label: Installation
 
 ## Requirements
 
--   [Node](https://nodejs.org) `10.13.0` or newer
+-   [Node](https://nodejs.org) `10.19.0` (lts/dubnium)
+    - please note that newer versions of node (ie 12.x.x) might have issue with `node-pre-gyp` and `realm`. more info https://github.com/realm/realm-js/issues/2644
+    - it is recommended to use Node version managers like `nvm`
 -   [NPM](https://npmjs.com/) `6.4.1` or newer
 -   [Android Studio](https://developer.android.com/studio) (if you want to develop for Android)
 -   [Xcode](https://developer.apple.com/xcode/) (if you want to develop for iOS/tvOS)
