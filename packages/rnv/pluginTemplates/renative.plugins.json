@@ -2021,7 +2021,7 @@
             }
         },
         "detox": {
-            "version": "14.4.0",
+            "version": "15.1.3",
             "android": {
                 "implementation": "androidTestImplementation('com.wix:detox:+') { transitive = true }\nandroidTestImplementation 'junit:junit:4.12'",
                 "app/build.gradle": {
