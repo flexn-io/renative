@@ -4,9 +4,9 @@ import chalk from 'chalk';
 import fs from 'fs';
 import { logWarning, logError, logTask, logDebug, logSuccess } from './logger';
 import { isSystemMac } from '../utils';
-import { listAppConfigsFoldersSync, generateBuildConfig, setAppConfig } from '../configTools/configParser';
+import { listAppConfigsFoldersSync, setAppConfig } from '../configTools/configParser';
 import { IOS, TVOS } from '../constants';
-import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
+import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, writeFileSync } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
@@ -24,10 +24,32 @@ export const rnvCryptoUpdateProfile = async (c) => {
     await updateProfile(c);
 };
 
-export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
+const generateRandomKey = length => Array(length).fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*').map(x => x[Math.floor(Math.random() * x.length)]).join('');
+
+export const rnvCryptoEncrypt = async (c) => {
     logTask('rnvCryptoEncrypt');
 
     const source = `./${c.files.project.package.name}`;
+
+    // handle missing config
+    if (c.files.project.config && !c.files.project.config.crypto) {
+        const { location } = await inquirerPrompt({
+            type: 'input',
+            name: 'location',
+            message: 'Where would you like your secrets to be residing? (path relative to root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
+            default: 'secrets'
+        });
+        c.files.project.config.crypto = {
+            encrypt: {
+                dest: `PROJECT_HOME/${location}/privateConfigs.enc`
+            },
+            decrypt: {
+                source: `PROJECT_HOME/${location}/privateConfigs.enc`
+            }
+        };
+        writeFileSync(c.paths.project.config, c.files.project.config);
+    }
+
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
     const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
 
@@ -35,35 +57,55 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const timestamp = (new Date()).getTime();
-        const envVar = getEnvVar(c);
-        const key = c.program.key || c.process.env[envVar];
-        if (!key) {
-            reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
-            return;
+
+        // check if dest folder actually exists
+        const destFolder = path.join(dest, '../');
+        !fs.existsSync(destFolder) && mkdirSync(destFolder);
+
+        // check if src folder actually exists
+        const sourceFolder = path.join(c.paths.workspace.dir, source);
+        if (!fs.existsSync(sourceFolder)) {
+            mkdirSync(sourceFolder);
+            return logError(`It seems you are running encrypt for the first time. Directory ${sourceFolder} does not exist yet. We'll create it for you, make sure you add whatever you want encrypted in it and then run the command again`, true, true);
         }
-        tar.c(
+
+        const envVar = getEnvVar(c);
+        let key = c.program.key || c.process.env[envVar];
+        let keyGenerated = false;
+        if (!key) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: `You haven't passed a key with --key or set an env variable named ${chalk.yellow(envVar)} for the encryption key. Would you like to generate one?`
+            });
+            if (confirm) {
+                key = generateRandomKey(20);
+                keyGenerated = true;
+            } else {
+                throw new Error(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
+            }
+        }
+
+        await tar.c(
             {
                 gzip: true,
                 file: destTemp,
                 cwd: c.paths.workspace.dir
             },
             [source]
-        )
-            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`, { privateParams: [key] }))
-            .then(() => {
-                removeFilesSync([destTemp]);
-                fs.writeFileSync(`${dest}.timestamp`, timestamp);
-                fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
-                logSuccess(`Files succesfully encrypted into ${dest}`);
-                resolve();
-            }).catch((e) => {
-                reject(e);
-            });
+        );
+
+        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`, { privateParams: [key] });
+        removeFilesSync([destTemp]);
+        fs.writeFileSync(`${dest}.timestamp`, timestamp);
+        fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
+        logSuccess(`Files succesfully encrypted into ${dest}`);
+        if (keyGenerated) {
+            logSuccess(`The files were encrypted with key ${chalk.red(key)}. Make sure you keep it safe! Pass it with --key on decryption or set it as ${chalk.yellow(envVar)} env variable.`);
+        }
     } else {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
-        resolve();
     }
-});
+};
 
 export const rnvCryptoDecrypt = async (c) => {
     logTask('rnvCryptoDecrypt');
@@ -99,7 +141,6 @@ export const rnvCryptoDecrypt = async (c) => {
         } else {
             await cleanFolder(wsPath);
         }
-
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {

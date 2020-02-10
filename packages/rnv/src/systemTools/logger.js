@@ -156,7 +156,7 @@ export const logSummary = () => {
                 generateOptions(_c.buildConfig?.defaults?.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
                     if (_c.paths.project.platformTemplatesDirs) {
-                        isEjected = _c.paths.project.platformTemplatesDirs[obj].includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
+                        isEjected = _c.paths.project.platformTemplatesDirs[obj]?.includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
                     }
 
                     plats.push(`${defaultVal}${isEjected}`);
