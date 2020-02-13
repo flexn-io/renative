@@ -13,8 +13,10 @@ import {
     getAppFolder,
     getConfigProp,
     getIP,
-    generateChecksum
+    generateChecksum,
+    getFlavouredProp
 } from '../../common';
+import { parsePlugins } from '../../pluginTools';
 import { isPlatformActive } from '..';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync, writeFileSync } from '../../systemTools/fileutils';
@@ -43,7 +45,7 @@ const checkIfPodsIsRequired = async (c) => {
         return true;
     }
     logInfo('Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter');
-    return false;
+    return true;
 };
 
 const updatePodsChecksum = (c) => {
@@ -519,6 +521,7 @@ const configureXcodeProject = async (c, platform, ip, port) => {
         exportOptions: '',
         embeddedFonts: [],
         embeddedFontSources: [],
+        ignoreProjectFonts: [],
         pluginAppDelegateImports: '',
         pluginAppDelegateMethods: '',
         appDelegateMethods: {
@@ -541,6 +544,18 @@ const configureXcodeProject = async (c, platform, ip, port) => {
     };
 
     // FONTS
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        const ignoreProjectFonts = getFlavouredProp(c, pluginPlat, 'ignoreProjectFonts');
+
+        if (ignoreProjectFonts) {
+            ignoreProjectFonts.forEach((v) => {
+                if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
+                    logDebug(`Igonoring font: ${v}`);
+                    c.pluginConfigiOS.ignoreProjectFonts.push(v);
+                }
+            });
+        }
+    });
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
@@ -552,7 +567,10 @@ const configureXcodeProject = async (c, platform, ip, port) => {
                     mkdirSync(fontFolder);
                     const fontDest = path.join(fontFolder, font);
                     copyFileSync(fontSource, fontDest);
-                    c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                    if (!c.pluginConfigiOS.ignoreProjectFonts.includes(font)) {
+                        c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                    }
+
                     c.pluginConfigiOS.embeddedFonts.push(font);
                 } else {
                     logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);

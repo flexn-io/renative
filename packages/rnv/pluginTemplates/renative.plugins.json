@@ -708,10 +708,38 @@
         "react-native-vector-icons": {
             "version": "6.6.0",
             "ios": {
-                "podName": "RNVectorIcons"
+                "podName": "RNVectorIcons",
+                "ignoreProjectFonts": [
+                    "FontAwesome.ttf",
+                    "Feather.ttf",
+                    "AntDesign.ttf",
+                    "Entypo.ttf",
+                    "EvilIcons.ttf",
+                    "Foundation.ttf",
+                    "Ionicons.ttf",
+                    "MaterialCommunityIcons.ttf",
+                    "MaterialIcons.ttf",
+                    "Octicons.ttf",
+                    "SimpleLineIcons.ttf",
+                    "Zocial.ttf"
+                ]
             },
             "tvos": {
-                "podName": "RNVectorIcons"
+                "podName": "RNVectorIcons",
+                "ignoreProjectFonts": [
+                    "FontAwesome.ttf",
+                    "Feather.ttf",
+                    "AntDesign.ttf",
+                    "Entypo.ttf",
+                    "EvilIcons.ttf",
+                    "Foundation.ttf",
+                    "Ionicons.ttf",
+                    "MaterialCommunityIcons.ttf",
+                    "MaterialIcons.ttf",
+                    "Octicons.ttf",
+                    "SimpleLineIcons.ttf",
+                    "Zocial.ttf"
+                ]
             },
             "android": {
                 "package": "com.oblador.vectoricons.VectorIconsPackage"

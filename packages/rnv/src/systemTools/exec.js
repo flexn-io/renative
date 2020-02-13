@@ -114,8 +114,9 @@ const _execute = (c, command, opts = {}) => {
             spinner.succeed(`Executing: ${logMessage}`);
             return true;
         }
-        let errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
+        let errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stack || err.stderr || err.message;
         errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
+
         return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
