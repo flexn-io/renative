@@ -711,6 +711,9 @@
                 "podName": "RNVectorIcons",
                 "ignoreProjectFonts": [
                     "FontAwesome.ttf",
+                    "FontAwesome5_Solid.ttf",
+                    "FontAwesome5_Regular.ttf",
+                    "FontAwesome5_Brands.ttf",
                     "Feather.ttf",
                     "AntDesign.ttf",
                     "Entypo.ttf",
@@ -728,6 +731,9 @@
                 "podName": "RNVectorIcons",
                 "ignoreProjectFonts": [
                     "FontAwesome.ttf",
+                    "FontAwesome5_Solid.ttf",
+                    "FontAwesome5_Regular.ttf",
+                    "FontAwesome5_Brands.ttf",
                     "Feather.ttf",
                     "AntDesign.ttf",
                     "Entypo.ttf",
