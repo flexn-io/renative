@@ -222,7 +222,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     arr = arr.filter((v) => {
         if (v === '') return false;
         // Cleaner iOS reporting
-        if (v.includes('-Werror')) {
+        if (v.includes('-Werror') || v.includes('following modules are linked manually') || v.includes('warn ') || v.includes('note: ') || v.includes('warning: ') || v.includes('Could not find the following native modules') || v.includes('⚠️')) {
             return false;
         }
         // Cleaner Android reporting
