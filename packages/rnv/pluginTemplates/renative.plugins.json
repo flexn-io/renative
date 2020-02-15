@@ -876,7 +876,8 @@
             }
         },
         "react-native-photo-editor": {
-            "version": "0.0.7",
+            "version": "1.0.5",
+            "dependsOn": ["iOSPhotoEditor"],
             "ios": {
                 "podName": "RNPhotoEditor",
                 "path": "node_modules/react-native-photo-editor/ios"
@@ -995,12 +996,23 @@
                 "package": "com.swmansion.rnscreens.RNScreensPackage"
             }
         },
-        "ios-photo-editor": {
+        "iOSPhotoEditor": {
             "no-npm": true,
             "ios": {
                 "podName": "iOSPhotoEditor",
                 "git": "https://github.com/prscX/photo-editor",
-                "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8"
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "modular_headers": true
+            }
+        },
+        "ios-photo-editor": {
+            "deprecated": "ios-photo-editor is DEPRECATED. use iOSPhotoEditor instead",
+            "no-npm": true,
+            "ios": {
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8",
+                "modular_headers": true
             }
         },
         "google-maps": {
