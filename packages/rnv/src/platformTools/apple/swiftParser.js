@@ -1,31 +1,18 @@
 import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
 import {
-    logTask,
-    logError,
-    logWarning,
-    getAppFolder,
-    isPlatformActive,
-    logDebug,
-    getAppVersion,
-    getAppTitle,
     getEntryFile,
     writeCleanFile,
     getAppTemplateFolder,
-    getAppId,
     getConfigProp,
-    getIP,
-    getBuildFilePath,
-    logSuccess,
     getGetJsBundleFile,
-    getBuildsFolder,
     sanitizeColor,
     getFlavouredProp
 } from '../../common';
-import { PLATFORMS } from '../../constants';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import {
+    logTask
+} from '../../systemTools/logger';
+import { parsePlugins } from '../../pluginTools';
 
 export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port) => new Promise((resolve, reject) => {
     if (!port) port = c.runtime.port;

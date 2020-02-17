@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -8,66 +7,41 @@ import ip from 'ip';
 import axios from 'axios';
 import colorString from 'color-string';
 import crypto from 'crypto';
-
-import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
+import { getValidLocalhost } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
-    logWelcome, configureLogger, logError, logTask,
-    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo
+    configureLogger, logError, logTask,
+    logWarning, logInfo,
+    logInitialize
 } from './systemTools/logger';
 import {
     IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
-    WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
-    SDK_PLATFORMS,
-    PLATFORMS,
-    SUPPORTED_PLATFORMS
+    WEBOS, MACOS, WINDOWS,
+    PLATFORMS
 } from './constants';
 import { execCLI } from './systemTools/exec';
 import {
-    parseRenativeConfigs, createRnvConfig, updateConfig,
-    fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
+    createRnvConfig,
 } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import Config from './config';
 
-export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+export const initializeBuilder = async (cmd, subCmd, process, program) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
 
     configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
     logInitialize();
 
-    resolve(c);
-});
+    return c;
+};
 
 
 export const generateChecksum = (str, algorithm, encoding) => crypto
     .createHash(algorithm || 'md5')
     .update(str, 'utf8')
     .digest(encoding || 'hex');
-
-export const isPlatformSupportedSync = (platform, resolve, reject) => {
-    if (!platform) {
-        if (reject) {
-            reject(
-                chalk.red(
-                    `You didn't specify platform. make sure you add "${chalk.white.bold(
-                        '-p <PLATFORM>',
-                    )}" option to your command!`,
-                ),
-            );
-        }
-        return false;
-    }
-    if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        if (reject) reject(chalk.red(`Platform ${platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))} .`));
-        return false;
-    }
-    if (resolve) resolve();
-    return true;
-};
 
 export const getSourceExts = (c) => {
     const sExt = PLATFORMS[c.platform]?.sourceExts;
@@ -80,27 +54,6 @@ export const getSourceExts = (c) => {
 export const getSourceExtsAsString = (c) => {
     const sourceExts = getSourceExts(c);
     return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
-};
-
-export const isPlatformSupported = async (c) => {
-    logTask(`isPlatformSupported:${c.platform}`);
-    let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
-    if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
-    const opts = generateOptions(platformsAsObj);
-
-    if (!c.platform || c.platform === true || !SUPPORTED_PLATFORMS.includes(c.platform)) {
-        const { platform } = await inquirerPrompt({
-            name: 'platform',
-            type: 'list',
-            message: 'Pick one of available platforms',
-            choices: opts.keysAsArray,
-            logMessage: 'You need to specify platform'
-        });
-
-        c.platform = platform;
-        c.program.platform = platform;
-        return platform;
-    }
 };
 
 export const sanitizeColor = (val) => {
@@ -137,7 +90,7 @@ export const isBuildSchemeSupported = async (c) => {
 
     if (!buildSchemes) {
         logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
-        return;
+        return false;
     }
 
     const schemeDoesNotExist = scheme && !buildSchemes[scheme];
@@ -171,63 +124,9 @@ export const confirmActiveBundler = async (c) => {
 
     if (confirm) return true;
     return Promise.reject('Cancelled by user');
-}
-
-export const getCurrentSdkPath = (c, platform) => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]];
-
-export const isSdkInstalled = (c, platform) => {
-    logTask(`isSdkInstalled: ${platform}`);
-
-    const sdkPath = getCurrentSdkPath(c, platform);
-
-    return fs.existsSync(getRealPath(c, sdkPath));
-};
-
-export const checkSdk = (c, platform, reject) => {
-    if (!isSdkInstalled(c, platform)) {
-        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(getCurrentSdkPath(c, platform))}`;
-        if (reject) {
-            reject(err);
-        } else {
-            throw new Error(err);
-        }
-        return false;
-    }
-    return true;
 };
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
-
-export const getBinaryPath = (c, platform) => {
-    const appFolder = getAppFolder(c, platform);
-    const id = getConfigProp(c, platform, 'id');
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'debug');
-    const version = getAppVersion(c, platform);
-    const productName = 'ReNative - macos';
-    const appName = getConfigProp(c, platform, 'appName');
-
-    switch (platform) {
-        case IOS:
-        case TVOS:
-            return `${appFolder}/release/RNVApp.ipa`;
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
-        case WEB:
-            return `${appFolder}/public`;
-        case MACOS:
-        case WINDOWS:
-            return `${appFolder}/build/release/${productName}-${version}`;
-        case TIZEN:
-        case TIZEN_MOBILE:
-            return `${appFolder}/output/${appName}.wgt`;
-        case WEBOS:
-            return `${appFolder}/output/${id}_${version}_all.ipk`;
-    }
-
-    return appFolder;
-};
 
 export const getAppSubFolder = (c, platform) => {
     let subFolder = '';
@@ -237,8 +136,6 @@ export const getAppSubFolder = (c, platform) => {
 };
 
 export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-
-export const getAppConfigId = c => c.buildConfig.id;
 
 export const CLI_PROPS = [
     'provisioningStyle',
@@ -253,7 +150,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         return null;
     }
     const p = c.buildConfig.platforms[platform];
-    const ps = _getScheme(c);
+    const ps = c.runtime.scheme;
     let resultPlatforms;
     let scheme;
     if (p) {
@@ -313,27 +210,12 @@ export const logErrorPlatform = (c, platform) => {
     logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
 };
 
-export const isPlatformActive = (c, platform, resolve) => {
-    if (!c.buildConfig || !c.buildConfig.platforms) {
-        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
-        if (resolve) resolve();
-        return false;
-    }
-    if (!c.buildConfig.platforms[platform]) {
-        console.log(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
-        if (resolve) resolve();
-        return false;
-    }
-    return true;
-};
-
 export const PLATFORM_RUNS = {};
 
-export const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
+export const configureIfRequired = async (c, platform) => {
     logTask(`configureIfRequired:${platform}`);
 
     if (PLATFORM_RUNS[platform]) {
-        resolve();
         return;
     }
     PLATFORM_RUNS[platform] = true;
@@ -349,19 +231,46 @@ export const configureIfRequired = (c, platform) => new Promise((resolve, reject
     };
 
     if (c.program.reset) {
-        cleanPlatformBuild(c, platform)
-            .then(() => cleanPlaformAssets(c))
-            .then(() => createPlatformBuild(c, platform))
-            .then(() => CLI(c, nc))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        createPlatformBuild(c, platform)
-            .then(() => CLI(c, nc))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
+        await cleanPlatformBuild(c, platform);
     }
-});
+
+    if (c.program.resetHard) {
+        await cleanPlaformAssets(c);
+    }
+    await createPlatformBuild(c, platform);
+    await CLI(c, nc);
+};
+
+export const getBinaryPath = (c, platform) => {
+    const appFolder = getAppFolder(c, platform);
+    const id = getConfigProp(c, platform, 'id');
+    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'debug');
+    const version = getAppVersion(c, platform);
+    const productName = 'ReNative - macos';
+    const appName = getConfigProp(c, platform, 'appName');
+
+    switch (platform) {
+        case IOS:
+        case TVOS:
+            return `${appFolder}/release/RNVApp.ipa`;
+        case ANDROID:
+        case ANDROID_TV:
+        case ANDROID_WEAR:
+            return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
+        case WEB:
+            return `${appFolder}/public`;
+        case MACOS:
+        case WINDOWS:
+            return `${appFolder}/build/release/${productName}-${version}`;
+        case TIZEN:
+        case TIZEN_MOBILE:
+            return `${appFolder}/output/${appName}.wgt`;
+        case WEBOS:
+            return `${appFolder}/output/${id}_${version}_all.ipk`;
+        default:
+            return appFolder;
+    }
+};
 
 export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)
@@ -385,30 +294,24 @@ export const writeCleanFile = (source, destination, overrides) => {
     fs.writeFileSync(destination, pFileClean, 'utf8');
 };
 
-const _getScheme = c => c.program.scheme || 'debug';
-
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fs.existsSync(pp)) {
     //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
     // }
-    const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
+    const p = path.join(pp, `builds/${platform}@${c.runtime.scheme}`);
     if (fs.existsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
 };
 
 export const getIP = () => ip.address();
 
-export const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
+export const cleanPlatformIfRequired = async (c, platform) => {
     if (c.program.reset) {
         logInfo(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
-        cleanPlatformBuild(c, platform)
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        resolve();
+        await cleanPlatformBuild(c, platform);
     }
-});
+};
 
 export const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     detectPort(port, (err, availablePort) => {
@@ -416,7 +319,7 @@ export const checkPortInUse = (c, platform, port) => new Promise((resolve, rejec
             reject(err);
             return;
         }
-        resolve(port !== availablePort);
+        resolve(parseInt(port, 10) !== parseInt(availablePort, 10));
     });
 });
 
@@ -430,7 +333,7 @@ export const resolveNodeModulePath = (c, filePath) => {
 
 export const getFlavouredProp = (c, obj, key) => {
     if (!key) return null;
-    const val1 = obj[`${key}@${_getScheme(c)}`];
+    const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;
     return obj[key];
 };
@@ -449,7 +352,7 @@ export const getBuildFilePath = (c, platform, filePath) => {
 
 export const waitForEmulator = async (c, cli, command, callback) => {
     let attempts = 0;
-    const maxAttempts = 10;
+    const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
     const spinner = ora('Waiting for emulator to boot...').start();
@@ -489,10 +392,7 @@ export const waitForWebpack = async (c) => {
     // const spinner = ora('Waiting for webpack to finish...').start();
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
-    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
-        devServerHost = '127.0.0.1';
-    }
+    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
     const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
@@ -527,38 +427,14 @@ export const importPackageFromProject = (name) => {
     return pkg;
 };
 
-// TODO: remove this
-export {
-    logInfo,
-    logDebug,
-    logError,
-    logTask,
-    logEnd,
-    logWarning,
-    logSuccess,
-};
-
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    logWelcome,
-    isPlatformSupported,
     isBuildSchemeSupported,
-    isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
-    logTask,
-    logComplete,
-    logError,
     initializeBuilder,
-    logDebug,
-    logInfo,
     logErrorPlatform,
-    isPlatformActive,
-    isSdkInstalled,
-    checkSdk,
-    logEnd,
-    logWarning,
     configureIfRequired,
     getAppId,
     getAppTitle,
@@ -567,16 +443,13 @@ export default {
     writeCleanFile,
     getEntryFile,
     getGetJsBundleFile,
-    getAppConfigId,
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    logSuccess,
     getConfigProp,
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
     resolveNodeModulePath,
-    configureRnvGlobal,
     waitForEmulator
 };

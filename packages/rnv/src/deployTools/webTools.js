@@ -1,17 +1,15 @@
 import chalk from 'chalk';
 import minimist from 'minimist';
 import inquirer from 'inquirer';
-import path from 'path';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
 import {
-    logTask,
-    logComplete,
-    logError,
-    logInfo,
     importPackageFromProject
 } from '../common';
+import {
+    logInfo
+} from '../systemTools/logger';
 import { configureDeploymentIfRequired, configureExportIfRequired } from './configure';
 
 const DEPLOY_TARGET_DOCKER = 'docker';
@@ -43,13 +41,13 @@ const _runDeployment = async (c, platform, deployType) => {
 
 const _runExport = (c, platform, deployType) => {
     switch (deployType) {
-    case DEPLOY_TARGET_DOCKER:
-        const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
-        const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
-        deployToDocker.setRNVPath(rnvPath);
-        return deployToDocker.doExport();
-    default:
-        return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
+        case DEPLOY_TARGET_DOCKER:
+            const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
+            const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
+            deployToDocker.setRNVPath(rnvPath);
+            return deployToDocker.doExport();
+        default:
+            return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
     }
 };
 

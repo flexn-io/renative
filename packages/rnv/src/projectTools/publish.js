@@ -3,7 +3,7 @@ import semver from 'semver';
 
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
-import { logWarning } from '../common';
+import { logWarning } from '../systemTools/logger';
 import { writeFileSync } from '../systemTools/fileutils';
 
 /*

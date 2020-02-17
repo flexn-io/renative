@@ -385,7 +385,6 @@ IOS_PLUGIN_PROPS
 
 ```json
 {
-  "reactSubSpecs": [],
   "appDelegateMethods": {},
   "podName": "",
   "path": ""

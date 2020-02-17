@@ -327,3 +327,17 @@ export const printBoxStart = (str, str2) => {
 export const rnvStatus = async () => Promise.resolve();
 
 export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');
+
+export default {
+    logEnd,
+    logInfo,
+    logTask,
+    logError,
+    logDebug,
+    logAppInfo,
+    logWarning,
+    logSuccess,
+    logWelcome,
+    logComplete,
+    logInitialize
+};

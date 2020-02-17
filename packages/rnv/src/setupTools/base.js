@@ -3,12 +3,11 @@ import shell from 'shelljs';
 import inquirer from 'inquirer';
 
 import { commandExistsSync } from '../systemTools/exec';
-import { logInfo, logDebug } from '../common';
 import { configureRnvGlobal } from '../configTools/configParser';
 import { replaceHomeFolder, updateConfigFile } from '../systemTools/fileutils';
 import setupConfig from './config';
 import Config from '../config';
-import { logTask, logError } from '../systemTools/logger';
+import { logTask, logError, logInfo, logDebug } from '../systemTools/logger';
 
 class BasePlatformSetup {
     constructor(os, c) {

@@ -2,9 +2,10 @@ import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
 import fs from 'fs';
-import { logWarning, logInfo, logError, logTask, logDebug, logSuccess } from '../common';
+import { logWarning, logError, logTask, logDebug, logSuccess } from './logger';
+import { isSystemMac } from '../utils';
 import { listAppConfigsFoldersSync, generateBuildConfig, setAppConfig } from '../configTools/configParser';
-import { IOS, TVOS, RENATIVE_CONFIG_NAME } from '../constants';
+import { IOS, TVOS } from '../constants';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
@@ -48,7 +49,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
             },
             [source]
         )
-            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k %s`, { privateParams: [key] }))
+            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`, { privateParams: [key] }))
             .then(() => {
                 removeFilesSync([destTemp]);
                 fs.writeFileSync(`${dest}.timestamp`, timestamp);
@@ -59,7 +60,7 @@ export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
                 reject(e);
             });
     } else {
-        logWarning(`You don\'t have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
+        logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         resolve();
     }
 });
@@ -108,7 +109,7 @@ export const rnvCryptoDecrypt = async (c) => {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
 
-        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k %s`, { privateParams: [key] });
+        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
 
         await tar.x({
             file: destTemp,
@@ -127,11 +128,10 @@ export const rnvCryptoDecrypt = async (c) => {
 };
 
 const _getOpenSllPath = (c) => {
-
     const { process: { platform } } = c;
     let defaultOpenssl = 'openssl';
     // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
-    if (platform === 'darwin') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
+    if (isSystemMac) defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
     // if (fs.existsSync(defaultOpenssl)) {
     //     return defaultOpenssl;
     // }
