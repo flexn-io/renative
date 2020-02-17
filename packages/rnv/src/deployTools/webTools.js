@@ -15,6 +15,7 @@ import {
 import { configureDeploymentIfRequired, configureExportIfRequired } from './configure';
 
 const DEPLOY_TARGET_DOCKER = 'docker';
+const DEPLOY_TARGET_AWS = 'aws';
 const DEPLOY_TARGET_FTP = 'ftp';
 const DEPLOY_TARGET_NOW = 'now';
 const DEPLOY_TARGET_NONE = 'none';
@@ -28,10 +29,13 @@ const _runDeployment = async (c, platform, deployType) => {
     case DEPLOY_TARGET_NONE:
         return Promise.resolve();
     case DEPLOY_TARGET_DOCKER:
-        const rnvPath = process.mainModule.filename.split('/bin/index.js')[0];
         const deployToDocker = importPackageFromProject('@rnv/deploy-docker');
-        deployToDocker.setRNVPath(rnvPath);
+        deployToDocker.setRNVPath(process.mainModule.filename.split('/bin/index.js')[0]);
         return deployToDocker.doDeploy();
+    case DEPLOY_TARGET_AWS:
+        const deployerPackage = importPackageFromProject('@rnv/deploy-aws');
+        deployerPackage.setRNVPath(process.mainModule.filename.split('/bin/index.js')[0]);
+        return deployerPackage.doDeploy();
     default:
         return Promise.reject(new Error(`Deploy Type not supported ${deployType}`));
     }
@@ -76,7 +80,7 @@ const selectToolAndExecute = async ({
 const selectWebToolAndDeploy = (c, platform) => selectToolAndExecute({
     c,
     platform,
-    choices: [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE],
+    choices: [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_AWS, DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE],
     configFunction: configureDeploymentIfRequired,
     executeFunction: _runDeployment
 });
@@ -95,5 +99,6 @@ export {
     selectWebToolAndExport,
     DEPLOY_TARGET_FTP,
     DEPLOY_TARGET_NOW,
+    DEPLOY_TARGET_AWS,
     DEPLOY_TARGET_NONE
 };
