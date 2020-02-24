@@ -63,11 +63,11 @@ import {
 } from './android';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
-import { isBundlerActive, waitForBundler } from './bundler';
-import { checkSdk } from './sdkManager';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-import { isSystemWin } from '../utils';
+
+import { isBundlerActive, waitForBundler } from './bundler';
+import { checkSdk } from './sdkManager';
 
 let keepRNVRunning = false;
 
