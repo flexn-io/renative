@@ -84,7 +84,7 @@
         "test:rnv": "cd ./packages/rnv && npm run test:local",
         "test:rnv:unit": "cd ./packages/rnv && npm run test",
         "ut": "cd ./packages/rnv && npm run test",
-        "watch": "cd ./packages/rnv && npm run watch",
+        "watch": "lerna run watch",
         "website": "cd website && npm run start"
     },
     "dependencies": {
@@ -117,7 +117,8 @@
         "xcode": "2.0.0",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
         "renative-template-blank": "file:./packages/renative-template-blank",
-        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink"
+        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
+        "@rnv/deploy-aws": "latest"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"

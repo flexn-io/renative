@@ -46,7 +46,8 @@
             "tizenmobile",
             "kaios",
             "firefoxos",
-            "firefoxtv"
+            "firefoxtv",
+            "chromecast"
         ],
         "schemes": {
             "run": "debug",

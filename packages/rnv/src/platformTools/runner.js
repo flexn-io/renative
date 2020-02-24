@@ -51,7 +51,7 @@ import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
-import { runChromecast } from './chromecast';
+import { runChromecast, deployChromecast } from './chromecast';
 import {
     runElectron,
     buildElectron, runElectronDevServer, configureElectronProject, exportElectron
@@ -391,6 +391,11 @@ const _rnvDeployWithPlatform = async (c) => {
 
     switch (platform) {
         case WEB:
+            if (!c.program.only) {
+                await rnvBuild(c);
+            }
+            return deployWeb(c, platform);
+        case CHROMECAST:
             if (!c.program.only) {
                 await rnvBuild(c);
             }

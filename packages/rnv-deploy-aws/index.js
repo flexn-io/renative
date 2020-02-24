@@ -1,5 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require */
 import path from 'path';
+import { CHROMECAST, WEB } from '../rnv/src/constants';
 
 class Aws {
     setRNVPath(pth) {
@@ -97,43 +98,49 @@ class Aws {
     // }
 
     async doDeploy() {
-    // rnv paths
-        const config = require(path.join(this.rnvPath, 'dist/config')).default;
-        const { inquirerPrompt } = require(path.join(this.rnvPath, 'dist/systemTools/prompt'));
-        const { logInfo, logTask } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
-        const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
+        // rnv paths
+        const config = require(_path.default.join(this.rnvPath, 'dist/config'))
+            .default;
+
+        const { inquirerPrompt } = require(_path.default.join(
+            this.rnvPath,
+            'dist/systemTools/prompt'
+        ));
+
+        const { logInfo, logTask } = require(_path.default.join(
+            this.rnvPath,
+            'dist/systemTools/logger'
+        ));
+
+        const { executeAsync } = require(_path.default.join(
+            this.rnvPath,
+            'dist/systemTools/exec'
+        ));
 
         const { runtime, files } = config.getConfig();
 
-        await this.buildImage();
+        const { subdomain } = await inquirerPrompt({
+            name: 'client',
+            type: 'input',
+            message: 'The client name (will be used as subdomain)'
+        });
+        const { env } = await inquirerPrompt({
+            name: 'env',
+            type: 'list',
+            choices: [{ name: 'staging' }, { name: 'production' }]
+        });
 
-        let { DOCKERHUB_USER, DOCKERHUB_PASS } = process.env;
+        const { platform } = config.getConfig();
 
-        // ask for user/pass if not present in env
-        if (!DOCKERHUB_PASS || !DOCKERHUB_USER) {
-            const { confirm } = await inquirerPrompt({
-                type: 'confirm',
-                message: 'It seems you don\'t have the DOCKERHUB_USER and DOCKERHUB_PASS environment variables set. Do you want to enter them here?'
-            });
-
-            if (confirm) {
-                const { user } = await inquirerPrompt({
-                    name: 'user',
-                    type: 'input',
-                    message: 'DockerHub username',
-                    validate: i => !!i || 'No username provided'
-                });
-                DOCKERHUB_USER = user;
-                const { pass } = await inquirerPrompt({
-                    name: 'pass',
-                    type: 'password',
-                    message: 'DockerHub password',
-                    validate: i => !!i || 'No password provided'
-                });
-                DOCKERHUB_PASS = pass;
-            } else {
-                return logInfo('You chose to not publish the image on DockerHub. The Dockerfile is located in the root folder');
-            }
+        switch (platform) {
+            case CHROMECAST:
+                break;
+            case WEB:
+                break;
+            default:
+                throw new Error(
+                    `AWS deployment does not support platform: ${platform}`
+                );
         }
 
         const imageName = runtime.appId.toLowerCase();
@@ -141,11 +148,18 @@ class Aws {
         const appVersion = files.project.package.version;
 
         logTask('docker:Dockerfile:login');
-        await executeAsync(`echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin`, { interactive: true });
+        await executeAsync(
+            `echo "${DOCKERHUB_PASS}" | docker login -u "${DOCKERHUB_USER}" --password-stdin`,
+            { interactive: true }
+        );
         logTask('docker:Dockerfile:push');
         // tagging for versioning
-        await executeAsync(`docker tag ${imageName}:${appVersion} ${imageTag}:${appVersion}`);
-        await executeAsync(`docker tag ${imageName}:${appVersion} ${imageTag}:latest`);
+        await executeAsync(
+            `docker tag ${imageName}:${appVersion} ${imageTag}:${appVersion}`
+        );
+        await executeAsync(
+            `docker tag ${imageName}:${appVersion} ${imageTag}:latest`
+        );
         await executeAsync(`docker push ${imageTag}:${appVersion}`);
         await executeAsync(`docker push ${imageTag}:latest`);
         return true;
