@@ -2,7 +2,7 @@ import shell from 'shelljs';
 import path from 'path';
 
 import { commandExistsSync } from '../systemTools/exec';
-import { logInfo, logDebug } from '../common';
+import { logInfo, logDebug } from '../systemTools/logger';
 import BasePlatformSetup from './base';
 import { updateConfigFile, getRealPath } from '../systemTools/fileutils';
 import setupConfig from './config';

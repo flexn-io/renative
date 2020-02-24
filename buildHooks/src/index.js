@@ -2,12 +2,12 @@ import chalk from 'chalk';
 // import shelljs from 'shelljs';
 import path from 'path';
 import fs from 'fs';
-import { PlatformTools, FileUtils, Doctor, Constants } from 'rnv';
+import { PlatformTools, FileUtils, Doctor, Constants, Logger } from 'rnv';
 import { PLATFORMS } from '../../packages/rnv/dist/constants';
 
 const hooks = {
     hello: c => new Promise((resolve, reject) => {
-        console.log(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
+        Logger.logTask(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
         resolve();
     }),
     printExtensions: c => new Promise((resolve, reject) => {
@@ -38,7 +38,7 @@ const hooks = {
                 });
             }
         }
-        console.log(out);
+        Logger.logSuccess(out);
         resolve();
     }),
     convertPlugins: c => new Promise((resolve, reject) => {

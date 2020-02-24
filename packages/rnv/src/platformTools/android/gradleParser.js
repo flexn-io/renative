@@ -1,34 +1,20 @@
 import path from 'path';
-import os from 'os';
 import fs from 'fs';
-import net from 'net';
 import chalk from 'chalk';
-import shell from 'shelljs';
-import child_process from 'child_process';
-import inquirer from 'inquirer';
 import {
-    logTask,
-    logError,
     getAppFolder,
-    isPlatformActive,
     getAppVersion,
-    getAppTitle,
     getAppVersionCode,
     writeCleanFile,
     getAppId,
-    getAppTemplateFolder,
     getBuildFilePath,
-    getEntryFile,
-    logWarning,
-    logDebug,
-    getConfigProp,
-    logInfo,
-    logSuccess,
-    getBuildsFolder,
+    getConfigProp
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync } from '../../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import {
+    logTask,
+    logWarning,
+    logDebug
+} from '../../systemTools/logger';
 
 export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -193,9 +179,11 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
     targetCompatibility 1.8`;
 
     // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
-    const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
-    if (enableAndroidX === true) {
-        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.appcompat:appcompat:1.1.0"\n';
+    let enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', "androidx.appcompat:appcompat:1.1.0");
+    if(enableAndroidX === true) enableAndroidX = "androidx.appcompat:appcompat:1.1.0"
+
+    if (enableAndroidX !== false) {
+        c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation "${enableAndroidX}"\n`;
     } else {
         c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'com.android.support:appcompat-v7:27.0.2\'\n';
     }

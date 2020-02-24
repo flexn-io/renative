@@ -146,6 +146,10 @@ ReNative Allows you to perform reset commands if you facing unforeseen problems 
 
 `$ rnv configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
 
+##### -R , --resetHard
+
+Does everything what `-r` + reset platformAssets
+
 ##### --mono
 
 If you prefer having your logs clean (without color decorations). you can use `--mono` flag for any`$ rnv` command.

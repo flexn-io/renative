@@ -1,25 +1,15 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
-    isPlatformActive,
-    logDebug,
-    getAppVersion,
-    getAppTitle,
-    getEntryFile,
-    writeCleanFile,
-    getAppTemplateFolder,
     getAppId,
     getConfigProp,
-    getIP,
-    getBuildFilePath,
-    logSuccess,
-    getBuildsFolder,
     getFlavouredProp
 } from '../../common';
+import {
+    logTask,
+    logWarning
+} from '../../systemTools/logger';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';
 import { parsePlugins } from '../../pluginTools';

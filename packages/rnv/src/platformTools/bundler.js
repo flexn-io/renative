@@ -1,12 +1,25 @@
 import axios from 'axios';
 import ora from 'ora';
+import { getConfigProp } from '../common';
+import { logTask } from '../systemTools/logger';
 
-export const isBundlerRunning = async (c) => {
+const _isBundlerRunning = async (c) => {
+    logTask(`_isBundlerRunning:${c.platform}`);
     try {
-        const { data } = await axios.get(`http://127.0.0.1:${c.runtime.port}/index.${c.platform}.js`);
+        const { data } = await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`);
         if (data.includes('import')) return true;
         return false;
-    } catch {
+    } catch (e) {
+        return false;
+    }
+};
+
+export const isBundlerActive = async (c) => {
+    logTask(`isBundlerActive:${c.platform}`);
+    try {
+        await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}`);
+        return true;
+    } catch (e) {
         return false;
     }
 };
@@ -25,7 +38,7 @@ const poll = (fn, timeout = 10000, interval = 1000) => {
                 setTimeout(checkCondition, interval, resolve, reject);
             } else {
                 spinner.fail('Can\'t connect to bundler. Try restarting it.');
-                reject();
+                reject('Can\'t connect to bundler. Try restarting it.');
             }
         } catch (e) {
             spinner.fail('Can\'t connect to bundler. Try restarting it.');
@@ -36,4 +49,4 @@ const poll = (fn, timeout = 10000, interval = 1000) => {
     return new Promise(checkCondition);
 };
 
-export const waitForBundler = async c => poll(() => isBundlerRunning(c));
+export const waitForBundler = async c => poll(() => _isBundlerRunning(c));

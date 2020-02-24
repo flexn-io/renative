@@ -3,14 +3,14 @@
 import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
-import {
-    isPlatformSupportedSync, isPlatformSupported
-} from '../common';
+
 import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
-import { generateOptions } from '../systemTools/prompt';
+import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync, removeDirs } from '../systemTools/fileutils';
 import { cleanPlaformAssets } from '../projectTools/projectParser';
-import { PLATFORMS } from '../constants';
+import { PLATFORMS, SUPPORTED_PLATFORMS } from '../constants';
+import { checkAndConfigureSdks } from './sdkManager';
+import { configureEntryPoints } from '../templateTools';
 
 export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
@@ -19,13 +19,39 @@ export const rnvPlatformList = c => new Promise((resolve, reject) => {
 });
 
 export const rnvPlatformConfigure = async (c) => {
-    //c.platform = c.program.platform || 'all';
+    // c.platform = c.program.platform || 'all';
     logTask(`rnvPlatformConfigure:${c.platform}`);
 
     await isPlatformSupported(c);
     await cleanPlatformBuild(c, c.platform);
     await cleanPlaformAssets(c, c.platform);
     await _runCopyPlatforms(c, c.platform);
+};
+
+const updateProjectPlatforms = (c, platforms) => {
+    const { project: { config } } = c.paths;
+    const currentConfig = c.files.project.config;
+    currentConfig.defaults = currentConfig.defaults || {};
+    currentConfig.defaults.supportedPlatforms = platforms;
+    writeFileSync(config, currentConfig);
+};
+
+export const rnvPlatformSetup = async (c) => {
+    const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
+
+    const {
+        inputSupportedPlatforms
+    } = await inquirer.prompt({
+        name: 'inputSupportedPlatforms',
+        type: 'checkbox',
+        pageSize: 20,
+        message: 'What platforms would you like to use?',
+        validate: val => !!val.length || 'Please select at least a platform',
+        default: currentPlatforms,
+        choices: SUPPORTED_PLATFORMS
+    });
+
+    updateProjectPlatforms(c, inputSupportedPlatforms);
 };
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
@@ -135,13 +161,13 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     const copyPlatformTasks = [];
     if (platform === 'all') {
         for (const k in c.buildConfig.platforms) {
-            if (isPlatformSupportedSync(k)) {
+            if (_isPlatformSupportedSync(k)) {
                 const ptPath = path.join(c.paths.project.platformTemplatesDirs[k], `${k}`);
                 const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
             }
         }
-    } else if (isPlatformSupportedSync(platform)) {
+    } else if (_isPlatformSupportedSync(platform)) {
         const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
         const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
         copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
@@ -161,12 +187,12 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject)
 
     if (platform === 'all') {
         for (const k in c.buildConfig.platforms) {
-            if (isPlatformSupportedSync(k)) {
+            if (_isPlatformSupportedSync(k)) {
                 const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
                 cleanTasks.push(cleanFolder(pPath));
             }
         }
-    } else if (isPlatformSupportedSync(platform)) {
+    } else if (_isPlatformSupportedSync(platform)) {
         const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
         cleanTasks.push(cleanFolder(pPath));
     }
@@ -179,7 +205,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject)
 export const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     logTask(`createPlatformBuild:${platform}`);
 
-    if (!isPlatformSupportedSync(platform, null, reject)) return;
+    if (!_isPlatformSupportedSync(platform, null, reject)) return;
 
     const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
     const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
@@ -187,3 +213,78 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
 
     resolve();
 });
+
+export const isPlatformSupported = async (c) => {
+    logTask(`isPlatformSupported:${c.platform}`);
+    let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
+    if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
+    const opts = generateOptions(platformsAsObj);
+
+    if (!c.platform || c.platform === true || !SUPPORTED_PLATFORMS.includes(c.platform)) {
+        const { platform } = await inquirerPrompt({
+            name: 'platform',
+            type: 'list',
+            message: 'Pick one of available platforms',
+            choices: opts.keysAsArray,
+            logMessage: 'You need to specify platform'
+        });
+
+        c.platform = platform;
+    }
+
+    const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
+    if (Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: `Looks like platform ${c.platform} is not supported by your project. Would you like to enable it?`
+        });
+
+        if (confirm) {
+            const newPlatforms = [...configuredPlatforms, c.platform];
+            updateProjectPlatforms(c, newPlatforms);
+            c.buildConfig.defaults.supportedPlatforms = newPlatforms;
+            await configureEntryPoints(c);
+        } else {
+            throw new Error('User canceled');
+        }
+    }
+
+    // Check global SDKs
+    await checkAndConfigureSdks(c);
+    return c.platform;
+};
+
+const _isPlatformSupportedSync = (platform, resolve, reject) => {
+    if (!platform) {
+        if (reject) {
+            reject(
+                chalk.red(
+                    `You didn't specify platform. make sure you add "${chalk.white.bold(
+                        '-p <PLATFORM>',
+                    )}" option to your command!`,
+                ),
+            );
+        }
+        return false;
+    }
+    if (!SUPPORTED_PLATFORMS.includes(platform)) {
+        if (reject) reject(chalk.red(`Platform ${platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))} .`));
+        return false;
+    }
+    if (resolve) resolve();
+    return true;
+};
+
+export const isPlatformActive = (c, platform, resolve) => {
+    if (!c.buildConfig || !c.buildConfig.platforms) {
+        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
+        if (resolve) resolve();
+        return false;
+    }
+    if (!c.buildConfig.platforms[platform]) {
+        console.log(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
+        if (resolve) resolve();
+        return false;
+    }
+    return true;
+};

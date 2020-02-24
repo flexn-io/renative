@@ -3,9 +3,9 @@ import path from 'path';
 import fs from 'fs';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
-    logWelcome, logSummary, configureLogger, logAndSave, logError, logTask,
-    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo, getCurrentCommand, logToSummary
+    logTask,
+    logWarning, logDebug, logInfo,
+    logToSummary
 } from '../systemTools/logger';
 import { writeFileSync, mkdirSync } from '../systemTools/fileutils';
 

@@ -5,7 +5,8 @@ import inquirer from 'inquirer';
 import dotenv from 'dotenv';
 
 import { executeAsync } from '../systemTools/exec';
-import { logInfo, getAppFolder, getConfigProp } from '../common';
+import { getAppFolder, getConfigProp } from '../common';
+import { logInfo } from '../systemTools/logger';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     dotenv.config();
