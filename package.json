@@ -61,7 +61,7 @@
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "bootstrap": "npm run link && npx lerna bootstrap",
         "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && npm run bootstrap",
-        "link": "cd packages/rnv; npm link rnv",
+        "link": "cd packages/rnv; npm link",
         "postinstall": "lerna link --force-local && npx jetify",
         "prePublish": "rnv hooks run -x prePublish",
         "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",
