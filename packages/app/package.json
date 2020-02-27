@@ -77,7 +77,8 @@
         "renative": "latest",
         "renative-template-blank": "latest",
         "renative-template-hello-world": "latest",
-        "renative-template-kitchen-sink": "latest"
+        "renative-template-kitchen-sink": "latest",
+        "rnv": "latest"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

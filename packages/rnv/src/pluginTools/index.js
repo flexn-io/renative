@@ -341,7 +341,7 @@ const parsePlugins = (c, platform, pluginCallback) => {
 };
 
 const getLocalRenativePlugin = () => ({
-    version: 'file:./packages/renative',
+    version: 'file:../packages/renative',
     webpack: {
         modulePaths: [],
         moduleAliases: {

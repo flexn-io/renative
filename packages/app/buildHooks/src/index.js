@@ -2,8 +2,8 @@ import chalk from 'chalk';
 // import shelljs from 'shelljs';
 import path from 'path';
 import fs from 'fs';
-import { PlatformTools, FileUtils, Doctor, Constants, Logger } from 'rnv';
-import { PLATFORMS } from '../../rnv/dist/constants';
+import { PlatformTools, FileUtils, Doctor, Logger } from 'rnv';
+import { Constants } from '../../../rnv/dist/constants';
 
 const hooks = {
     hello: c => new Promise((resolve, reject) => {
