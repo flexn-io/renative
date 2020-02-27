@@ -39,6 +39,9 @@
     "bugs": {
         "url": "https://github.com/pavjacko/renative/issues"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "license": "MIT",
     "author": {
         "email": "i@pavjacko.com",

@@ -1,44 +1,13 @@
 {
-    "name": "renative-wrapper-app",
+    "name": "app",
     "version": "0.28.19-alpha.2",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
-    "keywords": [
-        "android tv",
-        "android wear",
-        "apple tv",
-        "boilerplate",
-        "cocoapods",
-        "cross-platform",
-        "desktop",
-        "electron",
-        "firefox tv",
-        "firefoxox",
-        "kaios",
-        "kit",
-        "kotlin",
-        "lg",
-        "macos",
-        "multiplatform",
-        "native",
-        "osx",
-        "react",
-        "react-native",
-        "smart tv",
-        "starter",
-        "swift",
-        "template",
-        "tizen",
-        "tizen mobile",
-        "tizen watch",
-        "tvos",
-        "watch",
-        "web",
-        "webos",
-        "windows"
-    ],
     "homepage": "https://github.com/pavjacko/renative#readme",
     "bugs": {
         "url": "https://github.com/pavjacko/renative/issues"
+    },
+    "publishConfig": {
+        "access": "protected"
     },
     "license": "MIT",
     "author": {
@@ -87,6 +56,26 @@
         "watch": "cd ./packages/rnv && npm run watch",
         "website": "cd website && npm run start"
     },
+    "dependencies": {
+        "@react-navigation/core": "3.4.2",
+        "@react-navigation/native": "3.5.0",
+        "@react-navigation/web": "1.0.0-alpha.9",
+        "husky": "3.0.5",
+        "raf": "3.4.1",
+        "react": "16.9.0",
+        "react-art": "16.9.0",
+        "react-dom": "16.9.0",
+        "react-native": "0.61.2",
+        "react-native-gesture-handler": "1.4.1",
+        "react-native-orientation-locker": "1.1.5",
+        "react-native-reanimated": "1.0.0-alpha.12",
+        "react-native-vector-icons": "6.6.0",
+        "react-native-web": "0.11.7",
+        "react-native-web-image-loader": "0.0.5",
+        "react-navigation": "3.9.2",
+        "react-navigation-tabs": "2.0.0-alpha.0",
+        "renative": "latest"
+    },
     "devDependencies": {
         "@babel/cli": "7.8.3",
         "@babel/core": "7.8.3",
@@ -107,28 +96,39 @@
         "babel-plugin-transform-object-rest-spread": "6.26.0",
         "babel-plugin-transform-runtime": "6.23.0",
         "babel-polyfill": "6.26.0",
-        "concurrently": "4.1.1",
-        "lerna": "3.16.4"
+        "electron": "7.0.0",
+        "electron-builder": "21.1.1",
+        "jetifier": "1.6.4",
+        "release-it": "12.4.3",
+        "xcode": "2.0.0"
     },
-    "optionalDependencies": {
-        "ios-deploy": "1.10.0"
+    "engines": {
+        "cocoapods": ">=1.5.3",
+        "node": ">=6.0.0",
+        "npm": ">=4.0.0",
+        "xcode": ">=8.0.0"
     },
     "private": true,
     "title": "ReNative",
     "codename": "Iron Ladybird",
-    "jest": {
-        "preset": "react-native",
-        "transform": {
-            "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-        },
-        "collectCoverage": true
-    },
     "husky": {
         "hooks": {
             "pre-commit": "pretty-quick --staged && npm run test:rnv:unit"
         }
     },
-    "workspaces": [
-        "packages/*"
-    ]
+    "release-it": {
+        "publish": "local",
+        "skipRootPublish": true,
+        "rootPublishCommand": "rnv deploy -p ios -s debug",
+        "git": {
+            "tagName": "v${version}",
+            "requireCleanWorkingDir": false
+        },
+        "npm": {
+            "publish": false
+        },
+        "hooks": {
+            "before:git": "rnv pkg version ${version}"
+        }
+    }
 }
