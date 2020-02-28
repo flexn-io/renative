@@ -9,15 +9,15 @@ const config = {
             /platformBuilds\/.*/,
             /buildHooks\/.*/,
             /projectConfig\/.*/,
-            /website\/.*/,
+            // /website\/.*/,
             /appConfigs\/.*/,
             /renative.local.*/,
             /metro.config.local.*/,
-            /packages\/rnv\/.*/,
-            /packages\/rnv-deploy-docker\/.*/,
-            /packages\/renative-template-hello-world\/.*/,
-            /packages\/renative-template-kitchen-sink\/.*/,
-            /packages\/renative-template-blank\/.*/
+            // /packages\/rnv\/.*/,
+            // /packages\/rnv-deploy-docker\/.*/,
+            // /packages\/renative-template-hello-world\/.*/,
+            // /packages\/renative-template-kitchen-sink\/.*/,
+            // /packages\/renative-template-blank\/.*/
         ])
     },
     projectRoot: path.resolve(__dirname),

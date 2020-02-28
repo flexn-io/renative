@@ -61,7 +61,7 @@
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-hello-world"
+                        "projectPath": "../renative-template-hello-world"
                     }
                 }
             }
@@ -71,7 +71,7 @@
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-blank"
+                        "projectPath": "../renative-template-blank"
                     }
                 }
             }
@@ -81,7 +81,7 @@
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-kitchen-sink"
+                        "projectPath": "../renative-template-kitchen-sink"
                     }
                 }
             }
