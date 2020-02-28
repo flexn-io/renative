@@ -131,6 +131,7 @@
         "netcat": "1.4.0",
         "node-fetch": "2.6.0",
         "node-machine-id": "^1.1.12",
+        "resolve": "^1.0.0",
         "shelljs": "0.8.2",
         "source-map-loader": "0.2.4",
         "source-map-support": "0.5.13",

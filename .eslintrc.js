@@ -20,6 +20,7 @@ module.exports = {
         'arrow-body-style': ['warn', 'as-needed'],
         camelcase: 'off',
         'class-methods-use-this': 'off',
+        'consistent-return': 0,
         indent: ['error', 4, { "SwitchCase": 1 }],
         'new-cap': ['error', { capIsNew: false }],
         'no-duplicate-imports': 'off',

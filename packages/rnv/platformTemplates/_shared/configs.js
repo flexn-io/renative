@@ -4,8 +4,19 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const resolve = require('resolve')
+
+function doResolve(aPath, config, mandatory = true) {
+    try {
+        return resolve.sync(aPath, {extensions: config.extensions.map(ext => `.${ext}`)}).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1]
+    } catch (err) {
+        // perhaps do some warning logging here..
+        if (mandatory) throw err;
+    }
+}
 
 function generateConfig(config) {
+console.log('config :', config);
     const projectDir = path.resolve(config.currentDir, '../../');
     const platformBuildsDir = path.resolve(config.currentDir, '../');
     const platformBuildsSharedDir = path.join(platformBuildsDir, '_shared');
@@ -15,71 +26,76 @@ function generateConfig(config) {
     const baseUrl = config.baseUrl || '';
     const devServerHost = config.devServerHost || '0.0.0.0';
 
-    const modulePaths = [
+    const relativeModules = [
         'index.webos.js',
         'index.tizen.js',
         'src',
-        'packages',
-        'node_modules/react-native-screens',
-        'node_modules/react-navigation-tabs',
-        'node_modules/react-navigation-stack',
-        'node_modules/react-navigation',
-        'node_modules/@react-navigation',
-        'node_modules/react-native-gesture-handler',
-        'node_modules/react-native-reanimated',
-        'node_modules/react-native-camera',
-        'node_modules/react-native-actionsheet',
-        'node_modules/react-native-root-toast',
-        'node_modules/react-native-root-siblings',
-        'node_modules/static-container',
-        'node_modules/react-native-material-dropdown',
-        'node_modules/react-native-material-buttons',
-        'node_modules/react-native-material-textfield',
-        'node_modules/react-native-material-ripple',
-        'node_modules/react-native-easy-grid',
-        'node_modules/native-base-shoutem-theme',
-        'node_modules/react-native-drawer',
-        'node_modules/react-native-safe-area-view',
-        'node_modules/react-native-vector-icons',
-        'node_modules/react-native-keyboard-aware-scroll-view',
-        'node_modules/react-native-tab-view',
-        'node_modules/query-string',
-        'node_modules/split-on-first',
-        'node_modules/strict-uri-encode',
-        'node_modules/@react-navigation/core',
-        'node_modules/@react-navigation/web',
-        'node_modules/react-native-animatable',
-        'node_modules/react-native-collapse-view',
-        'node_modules/react-native-color-picker',
-        'node_modules/react-native-ios-picker',
-        'node_modules/react-native-modal-datetime-picker',
-        'node_modules/react-native-modal',
-        'node_modules/react-native-paper',
-        'node_modules/react-native-animatable',
-        'node_modules/react-native-collapse-view',
-        'node_modules/react-native-color-picker',
-        'node_modules/react-native-ios-picker',
-        'node_modules/react-native-modal-datetime-picker/',
-        'node_modules/react-native-modal',
-        'node_modules/react-native-paper',
-        'node_modules/react-native-platform-touchable',
-        'node_modules/react-native-safe-area-view',
-        'node_modules/react-native-super-grid',
-        'node_modules/react-native-tab-view',
-        'node_modules/react-native-vector-icons',
-        'node_modules/react-native-simple-markdown',
-        'node_modules/react-native-swipe-gestures',
-        'node_modules/react-native-switch',
-        'node_modules/react-native-orientation-locker',
-        'node_modules/react-navigation',
-        'node_modules/@react-navigation/native',
-        'node_modules/rnv-platform-info'
-    ].concat(config.modulePaths);
+        // 'packages'
+    ].concat(config.modulePaths).map(p => path.resolve(projectDir, p));
+    const externalModules = [
+        'react-native-screens',
+        'react-navigation-tabs',
+        'react-navigation-stack',
+        'react-navigation',
+        '@react-navigation',
+        'react-native-gesture-handler',
+        'react-native-reanimated',
+        'react-native-camera',
+        'react-native-actionsheet',
+        'react-native-root-toast',
+        'react-native-root-siblings',
+        'static-container',
+        'react-native-material-dropdown',
+        'react-native-material-buttons',
+        'react-native-material-textfield',
+        'react-native-material-ripple',
+        'react-native-easy-grid',
+        'native-base-shoutem-theme',
+        'react-native-drawer',
+        'react-native-safe-area-view',
+        'react-native-vector-icons',
+        'react-native-keyboard-aware-scroll-view',
+        'react-native-tab-view',
+        'query-string',
+        'split-on-first',
+        'strict-uri-encode',
+        '@react-navigation/core',
+        '@react-navigation/web',
+        'react-native-animatable',
+        'react-native-collapse-view',
+        'react-native-color-picker',
+        'react-native-ios-picker',
+        'react-native-modal-datetime-picker',
+        'react-native-modal',
+        'react-native-paper',
+        'react-native-animatable',
+        'react-native-collapse-view',
+        'react-native-color-picker',
+        'react-native-ios-picker',
+        'react-native-modal-datetime-picker/',
+        'react-native-modal',
+        'react-native-paper',
+        'react-native-platform-touchable',
+        'react-native-safe-area-view',
+        'react-native-super-grid',
+        'react-native-tab-view',
+        'react-native-vector-icons',
+        'react-native-simple-markdown',
+        'react-native-swipe-gestures',
+        'react-native-switch',
+        'react-native-orientation-locker',
+        'react-navigation',
+        '@react-navigation/native',
+        'rnv-platform-info'].map(pkg => doResolve(pkg, config, false));
+    const modulePaths = [...relativeModules, ...externalModules].filter(Boolean);
+
+    console.log('modulePaths :', modulePaths);
 
     const rules = {};
     rules.babel = {
         test: /\.js$/,
-        include: modulePaths.map(v => path.resolve(projectDir, v)),
+        // include: modulePaths.map(v => path.resolve(projectDir, v)),
+        include: modulePaths,
         use: {
             loader: 'babel-loader',
             options: {
@@ -124,10 +140,10 @@ function generateConfig(config) {
     };
 
     const aliases = {
-        react: path.resolve(projectDir, 'node_modules/react'),
+        react: doResolve('react', config),
         'react-native': 'react-native-web',
         'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-        'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
+        'react-native-vector-icons': doResolve('react-native-vector-icons', config),
 
     };
 
