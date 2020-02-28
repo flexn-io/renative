@@ -8,7 +8,8 @@ import {
     writeCleanFile,
     getAppId,
     getBuildFilePath,
-    getConfigProp
+    getConfigProp,
+    doResolve
 } from '../../common';
 import {
     logTask,
@@ -34,7 +35,8 @@ export const parseBuildGradleSync = (c, platform) => {
         { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleAllProjectsRepositories },
         { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptRepositories },
         { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies },
-        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions }
+        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions },
+        { pattern: '{{PATH_REACT_NATIVE}}', override: doResolve('react-native') }
     ]);
 };
 
@@ -264,8 +266,10 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
         packageParams = plugin.packageParams.join(',');
     }
     const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
-    const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
-    const modulePath = `../../${pathFixed}`;
+    // const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
+    // const modulePath = `../../${pathFixed}`;
+    const pathAbsolute = plugin.path ? doResolve(plugin.path) : `${doResolve(key)}/android`;
+    // const modulePath = `../../${pathFixed}`;
 
     // APP/BUILD.GRADLE
     if (plugin.projectName) {
@@ -273,7 +277,8 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
             c.pluginConfigAndroid.pluginPaths += `project(':${
                 plugin.projectName
-            }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+            // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+            }').projectDir = new File(${pathAbsolute})\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
@@ -285,7 +290,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     } else {
         if (!plugin.skipLinking) {
             c.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
-            c.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {

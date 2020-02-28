@@ -16,7 +16,7 @@ function doResolve(aPath, config, mandatory = true) {
 }
 
 function generateConfig(config) {
-console.log('config :', config);
+
     const projectDir = path.resolve(config.currentDir, '../../');
     const platformBuildsDir = path.resolve(config.currentDir, '../');
     const platformBuildsSharedDir = path.join(platformBuildsDir, '_shared');

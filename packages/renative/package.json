@@ -60,11 +60,6 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {},
-    "dependencies": {
-        "react": "16.9.0",
-        "react-dom": "16.9.0",
-        "react-native": "0.61.2"
-    },
     "devDependencies": {
         "babel-eslint": "8.2.6",
         "eslint": "6.2.2",

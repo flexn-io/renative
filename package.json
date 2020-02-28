@@ -131,8 +131,11 @@
     "resolutions": {
         "@react-navigation/native": "3.5.0"
     },
-    "workspaces": [
-        "packages/*"
-    ],
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ],
+        "nohoist": []
+    },
     "dependencies": {}
 }
