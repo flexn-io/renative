@@ -550,14 +550,15 @@ const configureXcodeProject = async (c, platform, ip, port) => {
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const ignoreProjectFonts = getFlavouredProp(c, pluginPlat, 'ignoreProjectFonts');
 
-        if (ignoreProjectFonts) {
-            ignoreProjectFonts.forEach((v) => {
-                if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
-                    logDebug(`Igonoring font: ${v}`);
-                    c.pluginConfigiOS.ignoreProjectFonts.push(v);
-                }
-            });
-        }
+        // TODO: enable this once mmoved to modular_headers Podfile
+        // if (ignoreProjectFonts) {
+        //     ignoreProjectFonts.forEach((v) => {
+        //         if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
+        //             logDebug(`Igonoring font: ${v}`);
+        //             c.pluginConfigiOS.ignoreProjectFonts.push(v);
+        //         }
+        //     });
+        // }
     });
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
