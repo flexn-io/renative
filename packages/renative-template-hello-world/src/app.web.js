@@ -1,36 +1,27 @@
 import React from 'react';
+import { Router, createHistory, LocationProvider } from '@reach/router';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
 import ScreenModal from './screenModal';
 import Menu from './menu';
-import { Router, createHistory, LocationProvider } from "@reach/router";
 import '../platformAssets/runtime/fontManager';
 import createHashSource from 'hash-source';
 
 
 // listen to the browser history
-let source = createHashSource();
-let history = createHistory(source);
+const source = createHashSource();
+const history = createHistory(source);
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-        <LocationProvider history={history} >
-        <div >
+const App = () => (
+    <LocationProvider history={history}>
+        <div>
             <Menu />
             <Router>
-                <ScreenHome default path="/"/>
+                <ScreenHome default path="/" />
                 <ScreenMyPage path="my-page/*" />
-                <ScreenModal path="modal"/>
+                <ScreenModal path="modal" />
             </Router>
         </div>
-        </LocationProvider>)
-    }
-}
+    </LocationProvider>);
 
 export default App;
-

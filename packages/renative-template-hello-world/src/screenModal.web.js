@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { Icon } from 'renative';
-    import Theme from './theme';
+import Theme from './theme';
 
 const styles = StyleSheet.create({
     container: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const ScreenMyPage = (props) => (
+const ScreenMyPage = ({ navigate }) => (
     <View style={styles.container}>
         <View style={styles.header}>
             <Icon
@@ -45,7 +45,7 @@ const ScreenMyPage = (props) => (
                 iconColor={Theme.color3}
                 style={{ width: 40, height: 40, marginLeft: 10 }}
                 onPress={() => {
-                    props.navigate("/", { replace: false })
+                    navigate('/', { replace: false });
                 }}
             />
         </View>

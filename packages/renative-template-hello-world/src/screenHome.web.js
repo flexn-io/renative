@@ -68,7 +68,7 @@ class ScreenHome extends React.Component {
         const selectedStyle = isWear ? styles.appContainerView : styles.appContainerScroll;
         const styleButton = isWear ? styles.buttonWear : styles.button;
         const SelectedView = isWear ? View : ScrollView;
-        const title = `${config.common.title}!`;
+        const title = `${config.title}!`;
         return (
             <SelectedView
                 style={[selectedStyle, { backgroundColor: this.state.bgColor }]}
@@ -101,7 +101,7 @@ class ScreenHome extends React.Component {
                     title="Now Try Me!"
                     className="focusable"
                     onPress={() => {
-                        this.props.navigate("/my-page", { replace: false })
+                        this.props.navigate('/my-page', { replace: false });
                     }}
                 />
                 <View style={{ marginTop: 20, flexDirection: 'row' }}>

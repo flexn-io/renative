@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
+import { Router, Link, Redirect } from '@reach/router';
 import Theme from './theme';
-import { Router, Link, Redirect } from "@reach/router";
 
 const styles = StyleSheet.create({
     container: {
@@ -47,48 +47,56 @@ const Root = ({ children }) => (
     <div>
         <nav>
             <Text style={styles.link}>
-                <Link to="/my-page" style={{ color: 'inherit' }}>Sections</Link>
+                <Link to="/my-page" style={{ color: 'inherit' }}>
+Sections
+                </Link>
             </Text>
         </nav>
         {children}
     </div>
-)
+);
 
-const Sections = (props) => (
+const Sections = ({ children }) => (
     <div>
         <Text style={styles.textH2}>
-        <h3 >Submenu</h3>
-        <ul role='navigation'>
-            {sections.map(section => (
-                <li id={section.id}>
-                    <Link style={{ color: 'inherit' }} to={section.id}>{section.name}</Link>
-                </li>
-            ))}
-        </ul>
+            <h3>
+Submenu
+            </h3>
+            <ul role="navigation">
+                {sections.map(section => (
+                    <li id={section.id}>
+                        <Link style={{ color: 'inherit' }} to={section.id}>
+                            {section.name}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
         </Text>
-        {props.children}
+        {children}
     </div>
 );
 
 
-const Section = (props) => {
-    return (
+const Section = ({ sectionId }) => (
     <div>
         <Text style={styles.text}>
-            <h2>Section {props.sectionId}</h2>
+            <h2>
+Section
+                {sectionId}
+            </h2>
         </Text>
     </div>
-)};
+);
 
-const ScreenMyPage = (props) => (
+const ScreenMyPage = () => (
     <View style={styles.container}>
         <Text style={styles.textH2}>
             This is my Page!
         </Text>
         <Router>
-            <Root path ='/'>
-                <Section path='/:sectionId' />
-                <Sections path='/'/>
+            <Root path="/">
+                <Section path="/:sectionId" />
+                <Sections path="/" />
             </Root>
         </Router>
     </View>
