@@ -1,47 +1,52 @@
 import axios from 'axios';
 import ora from 'ora';
+import { getConfigProp } from '../common';
+import { logTask } from '../systemTools/logger';
 
-import Config from '../config';
-
-export const isBundlerRunning = async () => {
+const _isBundlerRunning = async (c) => {
+    logTask(`_isBundlerRunning:${c.platform}`);
     try {
-        const { data } = await axios.get(`http://127.0.0.1:${Config.currentPlatformDefaultPort}`);
-        if (data.includes('React Native')) return true;
+        const { data } = await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`);
+        if (data.includes('import')) return true;
         return false;
-    } catch {
+    } catch (e) {
         return false;
     }
 };
 
-export const waitForBundler = async () => {
-    let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 1000;
-    const spinner = ora('Waiting for emulator to boot...').start();
-
-    return new Promise((resolve, reject) => {
-        const interval = setInterval(async () => {
-            isBundlerRunning()
-                .then((running) => {
-                    if (running) {
-                        clearInterval(interval);
-                        spinner.succeed();
-                        return resolve(true);
-                    }
-                    attempts++;
-                    if (attempts === maxAttempts) {
-                        clearInterval(interval);
-                        spinner.fail('Can\'t connect to bundler. Try restarting it.');
-                        return reject('Can\'t connect to bundler. Try restarting it.');
-                    }
-                }).catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        spinner.fail('Can\'t connect to bundler. Try restarting it.');
-                        return reject('Can\'t connect to bundler. Try restarting it.');
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
+export const isBundlerActive = async (c) => {
+    logTask(`isBundlerActive:${c.platform}`);
+    try {
+        await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}`);
+        return true;
+    } catch (e) {
+        return false;
+    }
 };
+
+const poll = (fn, timeout = 10000, interval = 1000) => {
+    const endTime = Number(new Date()) + timeout;
+
+    const spinner = ora('Waiting for bundler to finish...').start();
+    const checkCondition = async (resolve, reject) => {
+        try {
+            const result = await fn();
+            if (result) {
+                spinner.succeed();
+                resolve();
+            } else if (Number(new Date()) < endTime) {
+                setTimeout(checkCondition, interval, resolve, reject);
+            } else {
+                spinner.fail('Can\'t connect to bundler. Try restarting it.');
+                reject('Can\'t connect to bundler. Try restarting it.');
+            }
+        } catch (e) {
+            spinner.fail('Can\'t connect to bundler. Try restarting it.');
+            reject(e);
+        }
+    };
+
+    return new Promise(checkCondition);
+};
+
+export const waitForBundler = async c => poll(() => _isBundlerRunning(c));

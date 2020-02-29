@@ -110,6 +110,28 @@ Emulator / Simulator / Device Management
 
 `$ rnv fastlane <commands>` - Run fastlane directly from rnv. Supports all fastlane commands. It installs fastlane automatically if it's not installed.
 
+##### rnv config
+
+`$ rnv config list` - will print out the current configurations, both global and per project
+
+`$ rnv config <key>` - will print out the current values for that key, both global and per project
+
+`$ rnv config <key> <value>` - will update the value for that key, project wise if `-G` or `--global` is not specified.
+
+*Project values take precedence over the global ones, basically you can have for example `analytics` disabled globally and enabled on one project*
+
+###### Current supported configs
+
+
+| Key           |Possible Values | Default Value  | Description |
+| ------------- |----------------|----------------|-------------|
+| analytics     |`true` / `false`|          `true`| Enabled by default, both globally and per project. Allows us to track RNV errors and metrics with Sentry in order to improve it  |
+
+
+##### rnv publish
+
+`$ rnv publish [patch|minor|major]` - Will help you bump the version, create a commit and a tag and push them. It uses [release-it](https://github.com/release-it/release-it) under the hood so you can configure it and pass whatever arguments that are supported by `release-it`. You can also run `rnv publish` without any arguments to enter interactive mode.
+
 ### Options
 
 You can combine most of the above commands with following extra arguments you can combine together
@@ -123,6 +145,10 @@ ReNative Allows you to perform reset commands if you facing unforeseen problems 
 `$ rnv run -p <PLATFORM> -r` - Reset specific platform of platformBuild project (fully recreate project based on provided template)
 
 `$ rnv configure -r` - Reset all platforms of platformBuild project (fully recreate projects based on provided template)
+
+##### -R , --resetHard
+
+Does everything what `-r` + reset platformAssets
 
 ##### --mono
 
@@ -181,3 +207,8 @@ sometimes you just want to run last command. `--only` ensures only top level com
 `$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME>` - run all dependant commands + deploy
 
 `$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME> --only` - run deploy only
+
+
+##### -g, --global
+
+Used for `rnv config` to modify the config value globally, not just in the current project

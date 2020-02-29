@@ -5,6 +5,7 @@
             "installation",
             "migrating_react_native",
             "features",
+            "customize",
             "architecture"
         ],
         "Guides": [
@@ -20,7 +21,8 @@
             "build_hooks",
             "runtime",
             "common_issues",
-            "develop"
+            "develop",
+            "analytics"
         ],
         "Platforms": [
             "platforms_overview",
@@ -64,6 +66,7 @@
             "rnv-new",
             "rnv-package",
             "rnv-platform",
+            "rnv-publish",
             "rnv-plugin",
             "rnv-run",
             "rnv-start",

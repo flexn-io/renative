@@ -1,15 +1,16 @@
-/* eslint-disable import/no-cycle */
+// /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
 import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
-import util from 'util';
 import Config from '../config';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
-import { removeDirs } from './fileutils';
+import { removeDirs, invalidatePodsChecksum } from './fileutils';
+import { inquirerPrompt } from './prompt';
+import { replaceOverridesInString } from '../utils';
 
 const { exec, execSync } = require('child_process');
 
@@ -53,14 +54,14 @@ const _execute = (c, command, opts = {}) => {
     let interval;
     const intervalTimer = 30000; // 30s
     let timer = intervalTimer;
+    const privateMask = '*******';
 
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
     let logMessage = cleanCommand;
     const { privateParams } = mergedOpts;
     if (privateParams && Array.isArray(privateParams)) {
-        logMessage = util.format(command, Array.from(privateParams, () => '*******'));
-        cleanCommand = util.format(command, ...privateParams);
+        logMessage = replaceOverridesInString(command, privateParams, privateMask);
     }
 
     logDebug(`_execute: ${logMessage}`);
@@ -86,7 +87,7 @@ const _execute = (c, command, opts = {}) => {
     const printLastLine = (buffer) => {
         const text = Buffer.from(buffer).toString().trim();
         const lastLine = text.split('\n').pop();
-        spinner.text = lastLine.substring(0, MAX_OUTPUT_LENGTH);
+        spinner.text = replaceOverridesInString(lastLine.substring(0, MAX_OUTPUT_LENGTH), privateParams, privateMask);
         if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
     };
 
@@ -99,21 +100,24 @@ const _execute = (c, command, opts = {}) => {
     return child.then((res) => {
         spinner && child?.stdout?.off('data', printLastLine);
         !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
-        logDebug(res.all);
+        logDebug(replaceOverridesInString(res.all, privateParams, privateMask));
         interval && clearInterval(interval);
         // logDebug(res);
         return res.stdout;
     }).catch((err) => {
         spinner && child?.stdout?.off('data', printLastLine);
         if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
-        logDebug(err.all);
+
+        logDebug(replaceOverridesInString(err.all, privateParams, privateMask));
         interval && clearInterval(interval);
         // logDebug(err);
         if (ignoreErrors && !silent && !mono) {
             spinner.succeed(`Executing: ${logMessage}`);
             return true;
         }
-        const errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
+        let errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stack || err.stderr || err.message;
+        errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
+
         return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
@@ -172,13 +176,13 @@ const executeAsync = (c, cmd, opts) => {
  * @returns {Promise}
  *
  */
-const executeTelnet = (port, command) => new Promise((resolve) => {
+const executeTelnet = (c, port, command) => new Promise((resolve) => {
     const nc2 = new NClient();
     logDebug(`execTelnet: ${port} ${command}`);
 
     let output = '';
 
-    nc2.addr('127.0.0.1')
+    nc2.addr(c.runtime.localhost)
         .port(parseInt(port, 10))
         .connect()
         .send(`${command}\n`);
@@ -218,7 +222,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     arr = arr.filter((v) => {
         if (v === '') return false;
         // Cleaner iOS reporting
-        if (v.includes('-Werror')) {
+        if (v.includes('-Werror') || v.includes('following modules are linked manually') || v.includes('warn ') || v.includes('note: ') || v.includes('warning: ') || v.includes('Could not find the following native modules') || v.includes('⚠️')) {
             return false;
         }
         // Cleaner Android reporting
@@ -236,11 +240,13 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         return false;
     });
 
-    arr = arr.map((v) => {
+    arr = arr.map((str) => {
+        const v = str.replace(/\s{2,}/g, ' ');
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
         return extractedError;
     });
+
     return arr.join('\n');
 };
 
@@ -399,8 +405,25 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
 
 export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
+    const c = Config.getConfig();
 
-    return executeAsync('npm install')
+    const isYarnInstalled = commandExistsSync('yarn');
+    const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
+    let command = 'npm install';
+    if (fs.existsSync(yarnLockPath)) {
+        command = 'yarn';
+    } else if (isYarnInstalled) {
+        const { packageManager } = await inquirerPrompt({
+            type: 'list',
+            name: 'packageManager',
+            message: 'What package manager would you like to use?',
+            choices: ['yarn', 'npm'],
+        });
+        if (packageManager === 'yarn') command = 'yarn';
+    }
+
+    return executeAsync(command)
+        .then(() => invalidatePodsChecksum(c))
         .catch((e) => {
             if (failOnError) {
                 return logError(e);

@@ -1,57 +1,45 @@
 import path from 'path';
-import fs from 'fs';
-import chalk from 'chalk';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
-    isPlatformActive,
-    logDebug,
-    getAppVersion,
-    getAppTitle,
-    getEntryFile,
     writeCleanFile,
     getAppTemplateFolder,
-    getAppId,
     getConfigProp,
-    getIP,
-    getBuildFilePath,
-    logSuccess,
-    getBuildsFolder
+    getFlavouredProp
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import {
+    logTask,
+    logWarning
+} from '../../systemTools/logger';
+import { parsePlugins } from '../../pluginTools';
 
-export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
+export const parsePodFile = (c, platform) => new Promise((resolve) => {
     logTask(`parsePodFileSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    let pluginSubspecs = '';
     let pluginInject = '';
 
     // PLUGINS
     c.pluginConfigiOS.podfileInject = '';
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        if (pluginPlat.podName) {
-            pluginInject += _injectPod(pluginPlat.podName, pluginPlat, plugin, key);
+        const podName = getFlavouredProp(c, pluginPlat, 'podName');
+        if (podName) {
+            pluginInject += _injectPod(podName, pluginPlat, plugin, key);
         }
-        if (pluginPlat.podNames) {
-            pluginPlat.podNames.forEach((v) => {
+        const podNames = getFlavouredProp(c, pluginPlat, 'podNames');
+        if (podNames) {
+            podNames.forEach((v) => {
                 pluginInject += _injectPod(v, pluginPlat, plugin, key);
             });
         }
 
-        if (pluginPlat.reactSubSpecs) {
-            pluginPlat.reactSubSpecs.forEach((v) => {
-                if (!pluginSubspecs.includes(`'${v}'`)) {
-                    pluginSubspecs += `  '${v}',\n`;
-                }
-            });
+        const reactSubSpecs = getFlavouredProp(c, pluginPlat, 'reactSubSpecs');
+        if (reactSubSpecs) {
+            logWarning('reactSubSpecs prop is deprecated. yoy can safely remove it');
         }
 
-        if (pluginPlat.Podfile) {
-            const { injectLines } = pluginPlat.Podfile;
+        const podfile = getFlavouredProp(c, pluginPlat, 'Podfile');
+        if (podfile) {
+            const { injectLines } = podfile;
             // INJECT LINES
             if (injectLines) {
                 injectLines.forEach((v) => {
@@ -67,7 +55,8 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     // SOURCES
     c.pluginConfigiOS.podfileSources = '';
-    const podfileSources = c.buildConfig?.platforms?.ios?.Podfile?.sources;
+    const podfileObj = getFlavouredProp(c, c.buildConfig?.platforms?.[platform], 'Podfile');
+    const podfileSources = podfileObj?.sources;
     if (podfileSources && podfileSources.length) {
         podfileSources.forEach((v) => {
             c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
@@ -80,7 +69,6 @@ export const parsePodFile = (c, platform) => new Promise((resolve, reject) => {
 
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), 'Podfile'), path.join(appFolder, 'Podfile'), [
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
-        { pattern: '{{PLUGIN_SUBSPECS}}', override: pluginSubspecs },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
         { pattern: '{{PLUGIN_PODFILE_SOURCES}}', override: c.pluginConfigiOS.podfileSources },

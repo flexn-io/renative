@@ -5,42 +5,40 @@ import { spawn } from 'child_process';
 import { createPlatformBuild } from '..';
 import { executeAsync } from '../../systemTools/exec';
 import {
-    isPlatformSupportedSync,
-    getConfig,
-    logTask,
-    logComplete,
-    logError,
     getAppFolder,
-    isPlatformActive,
-    configureIfRequired,
-    getAppConfigId,
     getAppVersion,
     getAppTitle,
-    getAppVersionCode,
     writeCleanFile,
     getAppId,
     getAppTemplateFolder,
-    getEntryFile,
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    logWarning,
-    logSuccess,
     getConfigProp,
     checkPortInUse,
-    logInfo,
     resolveNodeModulePath,
-    waitForWebpack
+    waitForWebpack,
+    confirmActiveBundler
 } from '../../common';
-import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
-import { MACOS, WINDOWS } from '../../constants';
-import { buildWeb, runWeb, configureCoreWebProject } from '../web';
 import {
-    cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync,
-    copyFileSync, mkdirSync, writeObjectSync, readObjectSync, removeDirs, removeDirsSync
+    logTask,
+    logError,
+    logWarning,
+    logSuccess,
+    logInfo
+} from '../../systemTools/logger';
+import { isPlatformActive } from '..';
+import { isSystemWin } from '../../utils';
+import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
+import { MACOS } from '../../constants';
+import {
+    buildWeb,
+    runWeb,
+    configureCoreWebProject
+} from '../web';
+import {
+    mkdirSync, writeFileSync, readObjectSync, removeDirs
 } from '../../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
 
 const configureElectronProject = async (c, platform) => {
     logTask(`configureElectronProject:${platform}`);
@@ -59,7 +57,6 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     const appFolder = getAppFolder(c, platform);
     const templateFolder = getAppTemplateFolder(c, platform);
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     const electronConfigPath = path.join(appFolder, 'electronConfig.json');
     const packagePath = path.join(appFolder, 'package.json');
@@ -77,7 +74,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     const pkgJson = path.join(templateFolder, 'package.json');
     const packageJson = readObjectSync(pkgJson);
 
-    packageJson.name = `${getAppConfigId(c, platform)}-${platform}`;
+    packageJson.name = `${c.runtime.appId}-${platform}`;
     packageJson.productName = `${getAppTitle(c, platform)}`;
     packageJson.version = `${getAppVersion(c, platform)}`;
     packageJson.description = `${getAppDescription(c, platform)}`;
@@ -85,7 +82,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     packageJson.license = `${getAppLicense(c, platform)}`;
     packageJson.main = './main.js';
 
-    writeObjectSync(packagePath, packageJson);
+    writeFileSync(packagePath, packageJson);
 
     let browserWindow = { width: 1200, height: 800, webPreferences: { nodeIntegration: true } };
     const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
@@ -99,9 +96,8 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     } else {
-        const ip = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
         writeCleanFile(path.join(templateFolder, '_privateConfig', 'main.dev.js'), path.join(appFolder, 'main.js'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://${ip}:${c.platformDefaults[platform].defaultPort}` },
+            { pattern: '{{DEV_SERVER}}', override: `http://${c.runtime.localhost}:${c.runtime.port}` },
             { pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}', override: browserWindowStr },
         ]);
     }
@@ -110,7 +106,14 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (platform === MACOS) {
         macConfig.mac = {
             entitlements: path.join(appFolder, 'entitlements.mac.plist'),
-            entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist')
+            entitlementsInherit: path.join(appFolder, 'entitlements.mac.plist'),
+            hardenedRuntime: true
+        };
+        macConfig.mas = {
+            entitlements: path.join(appFolder, 'entitlements.mas.plist'),
+            entitlementsInherit: path.join(appFolder, 'entitlements.mas.inherit.plist'),
+            provisioningProfile: path.join(appFolder, 'embedded.provisionprofile'),
+            hardenedRuntime: false
         };
     }
 
@@ -121,6 +124,9 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
             buildResources: path.join(appFolder, 'resources'),
             output: path.join(appFolder, 'build/release')
         },
+        files: [
+            '!build/release'
+        ],
     }, macConfig);
 
     const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
@@ -128,7 +134,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     if (electronConfigExt) {
         electronConfig = merge(electronConfig, electronConfigExt);
     }
-    writeObjectSync(electronConfigPath, electronConfig);
+    writeFileSync(electronConfigPath, electronConfig);
 
 
     resolve();
@@ -179,19 +185,15 @@ const runElectron = async (c, platform, port) => {
             // await _runElectronSimulator(c, platform);
             await runElectronDevServer(c, platform, port);
         } else {
-            logInfo(
-                `Looks like your ${chalk.white(platform)} devServer at port ${chalk.white(
-                    port
-                )} is already running. ReNative will use it!`
-            );
+            await confirmActiveBundler(c);
             await _runElectronSimulator(c, platform);
         }
     }
 };
 
-const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`_runElectronSimulator:${platform}`);
-    const appFolder = getAppFolder(c, platform);
+const _runElectronSimulator = async (c) => {
+    logTask(`_runElectronSimulator:${c.platform}`);
+    const appFolder = getAppFolder(c, c.platform);
     const elc = resolveNodeModulePath(c, 'electron/cli.js');
 
     const child = spawn('node', [elc, path.join(appFolder, '/main.js')], {
@@ -203,8 +205,7 @@ const _runElectronSimulator = (c, platform) => new Promise((resolve, reject) => 
         .on('error', spawnError => console.error(spawnError));
 
     child.unref();
-    resolve();
-});
+};
 
 const runElectronDevServer = async (c, platform, port) => {
     logTask(`runElectronDevServer:${platform}`);

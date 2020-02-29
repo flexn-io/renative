@@ -30,6 +30,7 @@ project.xcworkspace
 node_modules/
 npm-debug.log
 yarn-error.log
+yarn.lock
 
 index/
 
@@ -40,6 +41,7 @@ buck-out/
 # Visual Studio
 #
 .vscode/*
+.vscode
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json

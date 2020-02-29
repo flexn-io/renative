@@ -4,25 +4,28 @@ import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpd
 import { createNewProject } from '../projectTools/projectGenerator';
 import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList, applyTemplate, checkIfTemplateInstalled } from '../templateTools';
 import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
-import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, rnvLink, configurePlugins } from '../pluginTools';
-import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
+import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
+import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure, rnvPlatformSetup } from '../platformTools';
 import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
-import { rnvConfigure, rnvSwitch } from '../projectTools';
-import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles } from '../systemTools/crypto';
+import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
+import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles, checkCrypto } from '../systemTools/crypto';
 import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
 import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
-import { SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
+import { isSystemWin } from '../utils';
+import { PLATFORMS, SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
     WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
 // import { getBinaryPath } from '../common';
-import Config from '../config';
+import Config, { rnvConfigHandler } from '../config';
 import { checkAndMigrateProject } from '../projectTools/migrator';
 import {
     parseRenativeConfigs, createRnvConfig, updateConfig,
     fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
 } from '../configTools/configParser';
 import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
+import rnvPublish from '../projectTools/publish';
+import rnvPkg from '../projectTools/package';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -53,6 +56,7 @@ ${chalk.bold.white('OPTIONS:')}
 '-P, --port <value>', 'Custom Port'
 '-H, --help', 'Help'
 '-D, --debug', 'enable remote debugger'
+'-G, --global', 'Flag for setting a config value for all RNV projects'
 '--hosted', 'Run in a hosted environment (skip bundleAssets)'
 '--debugIp <value>', '(optional) overwrite the ip to which the remote debugger will connect'
 `);
@@ -62,6 +66,10 @@ const COMMANDS = {
     start: {
         fn: rnvStart,
         platforms: SUPPORTED_PLATFORMS
+    },
+    config: {
+        fn: rnvConfigHandler,
+        desc: 'Edit or display RNV configs',
     },
     run: {
         desc: 'Run your app on target device or emulator',
@@ -82,7 +90,7 @@ const COMMANDS = {
     },
     export: {
         desc: 'Export your app (ios only)',
-        platforms: [IOS, TVOS, MACOS, WINDOWS, WEB],
+        platforms: [IOS, TVOS, MACOS, WINDOWS, WEB, ANDROID, ANDROID_TV, ANDROID_WEAR],
         fn: rnvExport
     },
     log: {
@@ -127,6 +135,9 @@ const COMMANDS = {
             },
             configure: {
                 fn: rnvPlatformConfigure
+            },
+            setup: {
+                fn: rnvPlatformSetup
             }
         }
     },
@@ -241,87 +252,44 @@ const COMMANDS = {
         desc: 'Run fastlane commands on currectly active app/platform directly via rnv command',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvFastlane
+    },
+    publish: {
+        desc: 'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+        fn: rnvPublish
+    },
+    pkg: {
+        desc: 'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+        fn: rnvPkg
     }
 };
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'platform', 'help'];
-export const SKIP_APP_CONFIG_CHECK = ['crypto'];
+export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'help', 'config'];
+export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
 
+const _handleUnknownPlatform = async (c, platforms) => {
+    logTask('_handleUnknownPlatform');
+    const { platform } = await inquirerPrompt({
+        type: 'list',
+        name: 'platform',
+        message: 'pick one of the following',
+        choices: platforms,
+        logMessage: `cli: Command ${chalk.grey(c.command)} does not support platform ${chalk.grey(c.platform)}. `
+    });
 
-// ##########################################
-// PUBLIC API
-// ##########################################
-
-const run = async (c, spawnC, skipStartBuilder) => {
-    logTask('cli');
-
-    if (!skipStartBuilder) await _startBuilder(c);
-
-    let oldC;
-    if (spawnC) {
-        oldC = c;
-        c = _spawnCommand(c, spawnC);
-        Config.initializeConfig(c);
-    }
-
-    const cmd = COMMANDS[c.command];
-    const cmdFn = cmd?.fn;
-    const subCmd = cmd?.subCommands?.[c.subCommand];
-    const subCmdFn = subCmd?.fn;
-
-    if (cmd) {
-        if (c.subCommand === 'help') {
-            await _execCommandHep(c, cmd);
-        } else if (cmdFn) {
-            if (subCmdFn) {
-                await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
-            } else {
-                await _execute(c, cmdFn, cmd, c.command, c.subCommand);
-            }
-        } else if (subCmdFn) {
-            await _execute(c, subCmdFn, cmd, c.command, c.subCommand);
-        } else {
-            await _handleUnknownSubCommand(c);
-        }
-    } else {
-        await _handleUnknownCommand(c);
-    }
-    if (spawnC) Config.initializeConfig(oldC);
-};
-
-const _execute = async (c, cmdFn, cmd, command, subCommand) => {
-    if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
-        await _handleUnknownPlatform(c, cmd.platforms);
-        return;
-    }
-
-    let subCmd = '';
-    if (subCommand) {
-        subCmd = `:${c.subCommand}`;
-        const requiredPlatforms = cmd.subCommands?.[c.subCommand]?.platforms;
-        if (requiredPlatforms && !requiredPlatforms.includes(c.platform)) {
-            await _handleUnknownPlatform(c, requiredPlatforms);
-            return;
-        }
-        const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
-        if (requiredParams) {
-            for (let i = 0; i < requiredParams.length; i++) {
-                const requiredParam = requiredParams[i];
-                // TODO
-            }
-        }
-    }
-
-    await executePipe(c, `${c.command}${subCmd}:before`);
-    await cmdFn(c);
-    await executePipe(c, `${c.command}${subCmd}:after`);
+    c.platform = platform;
+    return run(c);
 };
 
 // ##########################################
 // PRIVATE API
 // ##########################################
 
+let _builderStarted = false;
 export const _startBuilder = async (c) => {
-    logTask('initializeBuilder');
+    logTask(`_startBuilder:${_builderStarted}`);
+
+    if (_builderStarted) return;
+
+    _builderStarted = true;
 
     await checkAndMigrateProject(c);
     await parseRenativeConfigs(c);
@@ -357,6 +325,7 @@ export const _startBuilder = async (c) => {
     await applyTemplate(c);
     await configurePlugins(c);
     await configureNodeModules(c);
+    await checkCrypto(c);
 
     if (!SKIP_APP_CONFIG_CHECK.includes(c.command)) {
         await updateConfig(c, c.runtime.appId);
@@ -409,9 +378,7 @@ const _handleUnknownSubCommand = async (c) => {
 const _handleUnknownCommand = async (c) => {
     logTask('_handleUnknownCommand');
 
-    c.program.scheme = '?';
-    c.program.appConfigID = '?';
-    c.runtime.appId = '?';
+    c.program.scheme = true;
 
     const { command } = await inquirerPrompt({
         type: 'list',
@@ -425,20 +392,6 @@ const _handleUnknownCommand = async (c) => {
     return run(c);
 };
 
-
-const _handleUnknownPlatform = async (c, platforms) => {
-    logTask('_handleUnknownPlatform');
-    const { platform } = await inquirerPrompt({
-        type: 'list',
-        name: 'platform',
-        message: 'pick one of the following',
-        choices: platforms,
-        logMessage: `cli: Command ${chalk.grey(c.command)} does not support platform ${chalk.grey(c.platform)}. `
-    });
-
-    c.platform = platform;
-    return run(c);
-};
 
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
@@ -471,7 +424,89 @@ export const _spawnCommand = (c, overrideParams) => {
 
 
 // ##########################################
-// PRIVATE
+// PUBLIC API
 // ##########################################
+
+const run = async (c, spawnC, skipStartBuilder) => {
+    logTask('cli');
+
+    if (!skipStartBuilder) await _startBuilder(c);
+
+    let oldC;
+    if (spawnC) {
+        oldC = c;
+        c = _spawnCommand(c, spawnC);
+        Config.initializeConfig(c);
+    }
+
+    const cmd = COMMANDS[c.command];
+    const cmdFn = cmd?.fn;
+    const subCmd = cmd?.subCommands?.[c.subCommand];
+    const subCmdFn = subCmd?.fn;
+
+    if (cmd) {
+        if (c.subCommand === 'help') {
+            await _execCommandHep(c, cmd);
+        } else if (cmdFn) {
+            if (subCmdFn) {
+                await _execute(c, subCmdFn, cmd);
+            } else {
+                // There is no subCommand function available so reset the key not to confuse pipe hooks
+                c.subCommand = null;
+                await _execute(c, cmdFn, cmd);
+            }
+        } else if (subCmdFn) {
+            await _execute(c, subCmdFn, cmd);
+        } else {
+            await _handleUnknownSubCommand(c);
+        }
+    } else {
+        await _handleUnknownCommand(c);
+    }
+    // if (spawnC) Config.initializeConfig(oldC);
+};
+
+const _execute = async (c, cmdFn, cmd) => {
+    logTask(`_execute:${c.command}:${c.subCommand}`);
+    if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
+        await _handleUnknownPlatform(c, cmd.platforms);
+        return;
+    }
+
+    let subCmd = '';
+    if (c.subCommand) {
+        subCmd = `:${c.subCommand}`;
+        const requiredPlatforms = cmd.subCommands?.[c.subCommand]?.platforms;
+        if (requiredPlatforms && !requiredPlatforms.includes(c.platform)) {
+            await _handleUnknownPlatform(c, requiredPlatforms);
+            return;
+        }
+        // TODO: Required params
+        // const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
+        // if (requiredParams) {
+        //     for (let i = 0; i < requiredParams.length; i++) {
+        //         const requiredParam = requiredParams[i];
+        //
+        //     }
+        // }
+    }
+
+    c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
+    if (c.program.target !== true) c.runtime.target = c.program.target || c.files.workspace.config.defaultTargets[c.platform];
+    else c.runtime.target = c.program.target;
+    c.runtime.scheme = c.program.scheme || 'debug';
+    c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
+    // const { scheme } = c.program;
+    // if (scheme !== true) {
+    //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];
+    //     c.runtime.scheme = isSchemePresent ? scheme : undefined;
+    // }
+
+    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command) && !SKIP_APP_CONFIG_CHECK.includes(c.command);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
+    await cmdFn(c);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);
+};
+
 
 export default run;

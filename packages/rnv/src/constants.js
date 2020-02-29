@@ -83,7 +83,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['browser.js'],
             platforms: ['web.js'],
-            fallbacks: ['js', 'tsx', 'ts']
+            fallbacks: ['mjs', 'js', 'tsx', 'ts']
         }
     },
     ios: {
@@ -143,7 +143,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['macos.desktop.js', 'desktop.js'],
             platforms: ['macos.js'],
-            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     tizen: {
@@ -155,7 +155,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['tizen.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['tizen.js'],
-            fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['tv.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     webos: {
@@ -167,7 +167,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['webos.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['webos.js'],
-            fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['tv.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     androidwear: {
@@ -191,7 +191,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['tizenwatch.watch.js', 'watch.js'],
             platforms: ['tizenwatch.js'],
-            fallbacks: ['watch.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['watch.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     tizenmobile: {
@@ -203,7 +203,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['tizenmobile.mobile.js', 'moblie.js'],
             platforms: ['tizenmobile.js'],
-            fallbacks: ['mobile.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['mobile.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     windows: {
@@ -215,7 +215,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['windows.desktop.js', 'desktop.js'],
             platforms: ['windows.js'],
-            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['desktop.web.js', 'electron.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     kaios: {
@@ -227,7 +227,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['kaios.mobile.js', 'mobile.js'],
             platforms: ['kaios.js'],
-            fallbacks: ['mobile.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['mobile.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     firefoxos: {
@@ -239,7 +239,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['firefoxos.mobile.js', 'mobile.js'],
             platforms: ['firefoxos.js'],
-            fallbacks: ['mobile.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['mobile.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     firefoxtv: {
@@ -251,7 +251,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: ['firefoxtv.tv.js', 'web.tv.js', 'tv.js'],
             platforms: ['firefoxtv.js'],
-            fallbacks: ['tv.web.js', 'web.js', 'js', 'tsx', 'ts']
+            fallbacks: ['tv.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }
     },
     // NON ACTIVE
@@ -500,3 +500,14 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
+
+export const configSchema = {
+    analytics: {
+        values: ['true', 'false'],
+        key: 'enableAnalytics',
+        default: true,
+    }
+};
+
+export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
+export const REDASH_KEY = 'zCYINQqMxvat1V41Hb9d69JMVBDNLyeQ4wICtdtD';

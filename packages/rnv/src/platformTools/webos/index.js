@@ -7,15 +7,18 @@ import inquirer from 'inquirer';
 import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
 import {
     getAppFolder,
-    isPlatformActive,
     getAppVersion,
     getAppTitle,
     writeCleanFile,
     getAppId,
     getAppTemplateFolder,
     getConfigProp,
-    waitForEmulator
+    waitForEmulator,
+    waitForWebpack,
+    checkPortInUse,
+    confirmActiveBundler
 } from '../../common';
+import { isPlatformActive } from '..';
 import { logToSummary, logTask, logInfo, logSuccess } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
@@ -28,19 +31,26 @@ import {
 } from '../../constants';
 import { getRealPath } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { rnvStart } from '../runner';
+import Config from '../../config';
+import { isSystemWin } from '../../utils';
 
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
-    const ePath = path.join(getRealPath(c, c.files.workspace.config.sdks.WEBOS_SDK), `Emulator/v4.0.0/LG_webOS_TV_Emulator${isRunningOnWindows ? '.exe' : '_RCU.app'}`);
+    const ePath = path.join(getRealPath(c, c.files.workspace.config.sdks.WEBOS_SDK), `Emulator/v4.0.0/LG_webOS_TV_Emulator${isSystemWin ? '.exe' : '_RCU.app'}`);
 
     if (!fs.existsSync(ePath)) {
         return Promise.reject(`Can't find emulator at path: ${ePath}`);
     }
-    if (isRunningOnWindows) return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
+    if (isSystemWin) return executeAsync(c, ePath, { detached: true, stdio: 'ignore' });
     return executeAsync(c, `${openCommand} ${ePath}`, { detached: true });
+};
+
+const startHostedServerIfRequired = (c) => {
+    if (Config.isWebHostEnabled) {
+        return rnvStart(c);
+    }
 };
 
 const parseDevices = (c, devicesResponse) => {
@@ -59,15 +69,30 @@ const parseDevices = (c, devicesResponse) => {
             device,
             connection,
             profile,
-            isDevice: !device.includes('127.0.0.1'),
+            isDevice: !device.includes(c.runtime.localhost),
             active: !deviceInfo.includes('ERR!')
         };
     }));
 };
 
 const installAndLaunchApp = async (c, target, appPath, tId) => {
-    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    try {
+        await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    } catch (e) {
+        // installing it again if it fails. For some reason webosCLI says that it can't connect to
+        // the device from time to time. Running it again works.
+        await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${target} ${appPath}`);
+    }
+    const { hosted } = c.program;
+    const { platform } = c;
+    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    let toReturn = true;
+    if (isHosted) {
+        toReturn = startHostedServerIfRequired(c);
+        await waitForWebpack(c);
+    }
     await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${target} ${tId}`);
+    return toReturn;
 };
 
 const buildDeviceChoices = devices => devices.map(device => ({
@@ -97,10 +122,9 @@ const waitForEmulatorToBeReady = async (c) => {
 const runWebOS = async (c, platform, target) => {
     logTask(`runWebOS:${platform}:${target}`);
 
-    const { device, hosted, maxErrorLength, debug } = c.program;
+    const { device, hosted } = c.program;
 
-    let isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
-    if (debug) isHosted = false;
+    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
@@ -112,6 +136,14 @@ const runWebOS = async (c, platform, target) => {
     const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
     const appPath = path.join(tOut, `${tId}_${cnfg.version}_all.ipk`);
+
+    if (isHosted) {
+        const isPortActive = await checkPortInUse(c, platform, c.runtime.port);
+        if (isPortActive) {
+            await confirmActiveBundler(c);
+            c.runtime.skipActiveServerCheck = true;
+        }
+    }
 
     // Start the fun
     !isHosted && await buildWeb(c, platform);
@@ -148,25 +180,23 @@ const runWebOS = async (c, platform, target) => {
                     const newDevice = actualDev[0];
                     // Oh boy, oh boy, I did it! I have a TV connected!
                     logInfo('Please enter the `Passphrase` from the TV\'s Developer Mode app');
-                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit', maxErrorLength });
-                    await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${newDevice.name} ${appPath}`);
-                    await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${newDevice.name} ${tId}`);
-                } else {
-                    // Yes, I said I would but I didn't
-                    // @todo handle user not setting up the device
+                    await execCLI(c, CLI_WEBOS_ARES_NOVACOM, `--device ${newDevice.name} --getkey`, { stdio: 'inherit' });
+                    return installAndLaunchApp(c, newDevice.name, appPath, tId);
                 }
+                // Yes, I said I would but I didn't
+                // @todo handle user not setting up the device
             }
         } else if (actualDevices.length === 1) {
             const tv = actualDevices[0];
-            await execCLI(c, CLI_WEBOS_ARES_INSTALL, `--device ${tv.name} ${appPath}`);
-            await execCLI(c, CLI_WEBOS_ARES_LAUNCH, `--device ${tv.name} ${tId}`);
+            return installAndLaunchApp(c, tv.name, appPath, tId);
         }
     } else if (!c.program.target) {
         // No target specified
         if (activeDevices.length === 1) {
             // One device present
-            await installAndLaunchApp(c, devices[0].name, appPath, tId);
-        } else if (activeDevices.length > 1) {
+            return installAndLaunchApp(c, devices[0].name, appPath, tId);
+        }
+        if (activeDevices.length > 1) {
             // More than one, choosing
             const choices = buildDeviceChoices(devices);
             const response = await inquirer.prompt([{
@@ -176,16 +206,16 @@ const runWebOS = async (c, platform, target) => {
                 choices
             }]);
             if (response.chosenDevice) {
-                await installAndLaunchApp(c, response.chosenDevice, appPath, tId);
+                return installAndLaunchApp(c, response.chosenDevice, appPath, tId);
             }
         } else {
             await launchWebOSimulator(c);
             await waitForEmulatorToBeReady(c);
-            await installAndLaunchApp(c, tSim, appPath, tId);
+            return installAndLaunchApp(c, tSim, appPath, tId);
         }
     } else {
         // Target specified, using that
-        await installAndLaunchApp(c, c.program.target, appPath, tId);
+        return installAndLaunchApp(c, c.program.target, appPath, tId);
     }
 };
 
@@ -223,7 +253,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     const configFile = 'public/appinfo.json';
     writeCleanFile(path.join(getAppTemplateFolder(c, platform), configFile), path.join(appFolder, configFile), [
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform).toLowerCase() },
         { pattern: '{{APP_TITLE}}', override: getAppTitle(c, platform) },
         { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) },
     ]);

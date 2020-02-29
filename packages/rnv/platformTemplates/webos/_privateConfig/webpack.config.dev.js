@@ -3,7 +3,7 @@ const Extend = require('./webpack.extend.js');
 
 const config = {
     currentDir: __dirname,
-    metaTags: { viewport: 'width=device-width, initial-scale=1, shrink-to-fit=no' },
+    metaTags: { viewport: 'content="width=device-width, initial-scale=1, shrink-to-fit=no"' },
     environment: 'development',
     buildFolder: 'public',
     customScripts: [],
@@ -13,7 +13,7 @@ const config = {
 };
 
 const C = Configs.generateConfig(config);
-const plugins = [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk];
+const plugins = [C.Plugins.webpack, C.Plugins.html, C.Plugins.harddisk, C.Plugins.css];
 if (config.analyzer) plugins.push(C.Plugins.analyzer);
 
 const conf = {

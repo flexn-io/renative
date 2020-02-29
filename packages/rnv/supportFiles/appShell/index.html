@@ -1,57 +1,32 @@
 <html>
 
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Droid+Sans+Mono' rel='stylesheet' type='text/css'>
   <meta charset="UTF-8">
-  <title>Redir</title>
+  <title>App Shell</title>
   <style>
     body {
       background-color: white;
     }
-
-    .parent {
-      margin-top: 20px;
-      text-align: center;
-    }
-
-    .parent>.child {
-      margin: 0 auto;
-      /*width: 900px;*/
-    }
-
-    /* Larger than Desktop HD and HD ready */
-    @media (min-width: 1200px) {
-      .logo {
-        font: 6px/3px monospace;
-      }
-    }
-
-    /* Full HD and Larger */
-    @media (min-width: 1900px) {
-      .logo {
-        font: 10px/5px monospace;
-      }
-    }
-
-    .content {
-      font-size: 30px;
-    }
   </style>
 </head>
 
-<body>
-  <div class="parent">
-    <div class="child">
-      <pre>
-        <span class="content">Loading build from {{DEV_SERVER}} in 5s...</span>
-      </pre>
-    </div>
-  </div>
+<body style="margin:0px;padding:0px;overflow:hidden">
+  <iframe style="margin:0px;padding:0px;overflow:hidden" id="iframe" height="100%" width="100%" frameborder="0"
+    scrolling="no" allowfullscreen="true" sandbox="allow-scripts allow-same-origin">
+  </iframe>
   <script>
-    var rand = String( Math.random() );
     var href = '{{DEV_SERVER}}';
 
-    setTimeout( function () { location.href = href }, 5000 );
+    setTimeout( function () {
+      var iframe = document.getElementById( 'iframe' );
+      iframe.src = href
+      iframe.onload = function () {
+        if ( typeof tizen !== "undefined" ) iframe.contentWindow.tizen = tizen;
+        if ( typeof webapis !== "undefined" ) iframe.contentWindow.webapis = webapis;
+        if ( typeof webOS !== "undefined" ) iframe.contentWindow.webOS = webOS;
+        if ( typeof webOSDev !== "undefined" ) iframe.contentWindow.webOSDev = webOSDev;
+      }
+    }, 5000 );
   </script>
 </body>
 

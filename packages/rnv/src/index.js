@@ -5,10 +5,14 @@ import Constants from './constants';
 import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
 import Doctor from './systemTools/doctor';
-import PlatformTools from './platformTools';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 import Config from './config';
+import Analytics from './systemTools/analytics';
+
+import 'source-map-support/register';
+
+Analytics.initialize();
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)
@@ -20,7 +24,7 @@ const run = (cmd, subCmd, program, process) => {
 
 export {
     Constants, Common, Exec, FileUtils,
-    PlatformTools, Doctor, PluginTools, SetupTools, Logger,
+    Doctor, PluginTools, SetupTools, Logger,
     run, CLI
 };
 

@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import { writeObjectSync, readObjectSync } from './fileutils';
+import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
-import { logWarning } from '../common';
+import { logWarning } from './logger';
 
 const getSortedObject = (obj) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
@@ -41,7 +41,7 @@ const fixPackageJson = (c, pkgPath) => new Promise((resolve, reject) => {
     const pth = pkgPath || c.paths.project.package;
     const pp = readObjectSync(pth);
     const output = fixPackageObject(pp);
-    writeObjectSync(pth, output, 4);
+    writeFileSync(pth, output, 4);
     resolve();
 });
 

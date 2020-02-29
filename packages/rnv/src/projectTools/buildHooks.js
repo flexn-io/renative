@@ -1,18 +1,11 @@
 import chalk from 'chalk';
-import path from 'path';
 import fs from 'fs';
-import child_process from 'child_process';
 import {
-    isPlatformSupportedSync, getConfig,
-    getAppFolder, resolveNodeModulePath
+    getConfig
 } from '../common';
-import { logToSummary, logTask, logComplete, logError, logWarning } from '../systemTools/logger';
+import { logToSummary, logTask } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
-import { executeAsync, execCLI } from '../systemTools/exec';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync } from '../systemTools/fileutils';
-
-const isRunningOnWindows = process.platform === 'win32';
+import { executeAsync } from '../systemTools/exec';
 
 // ##########################################
 // PUBLIC API
@@ -38,60 +31,51 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const executePipe = (c, key) => new Promise((resolve, reject) => {
+const executePipe = async (c, key) => {
     logTask(`executePipe:${key}`);
 
-    buildHooks(c)
-        .then(() => {
-            const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
-            if (Array.isArray(pipe)) {
-                const chain = pipe
-                    .reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve())
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-                return;
-            }
-            if (pipe) {
-                c.buildPipes[key](c)
-                    .then(() => resolve())
-                    .catch(e => reject(e));
-                return;
-            }
+    const pipesConfig = c.buildConfig?.pipes;
+    if (!pipesConfig || (pipesConfig && pipesConfig.includes(key))) {
+        await buildHooks(c);
+    }
 
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+    const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
-const buildHooks = c => new Promise((resolve, reject) => {
+    if (Array.isArray(pipe)) {
+        await pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve());
+    } else if (pipe) {
+        await pipe(c);
+    }
+};
+
+const buildHooks = async (c) => {
     logTask('buildHooks');
 
     if (fs.existsSync(c.paths.buildHooks.index)) {
         if (c.isBuildHooksReady) {
-            resolve();
-            return;
+            return true;
         }
 
-        executeAsync(c, `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, {
-            cwd: c.paths.buildHooks.dir
-        })
-            .then(() => {
-                const h = require(c.paths.buildHooks.dist.index);
-                c.buildHooks = h.hooks;
-                c.buildPipes = h.pipes;
-                c.isBuildHooksReady = true;
-                resolve();
-            })
-            .catch((e) => {
-                logWarning(`BUILD_HOOK Failed with error: ${e}`);
-                resolve();
+        try {
+            await executeAsync(c, `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, {
+                cwd: c.paths.buildHooks.dir
             });
-    } else {
-        // logWarning(`Your buildHook ${chalk.white(c.paths.buildHooks.index)} is missing!. Skipping operation`);
-        resolve();
+
+            const h = require(c.paths.buildHooks.dist.index);
+            c.buildHooks = h.hooks;
+            c.buildPipes = h.pipes;
+            c.isBuildHooksReady = true;
+            return true;
+        } catch (e) {
+            // logWarning(`BUILD_HOOK Failed with error: ${e}`);
+            // resolve();
+            // Fail Builds instead of warn when hook fails
+            return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
+        }
     }
-});
+    return true;
+};
 
 const rnvHooksList = c => new Promise((resolve, reject) => {
     logTask('rnvHooksList');

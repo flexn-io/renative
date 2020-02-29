@@ -1,5 +1,6 @@
 import _chalk from 'chalk';
 import { generateOptions } from './prompt';
+import Analytics from './analytics';
 
 const _chalkCols = {
     white: v => v,
@@ -142,8 +143,10 @@ export const logSummary = () => {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
             str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
         }
-        if (_c.buildConfig) {
+        if (_c.buildConfig?._meta?.currentAppConfigId) {
             str += printIntoBox(`App Config: ${_highlightColor(_c.buildConfig._meta?.currentAppConfigId)}`, 1);
+        }
+        if (_c.buildConfig?.workspaceID) {
             str += printIntoBox(`Workspace: ${_highlightColor(_c.buildConfig.workspaceID)}`, 1);
         }
         if (_c.files.project.config) {
@@ -153,7 +156,7 @@ export const logSummary = () => {
                 generateOptions(_c.buildConfig?.defaults?.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
                     if (_c.paths.project.platformTemplatesDirs) {
-                        isEjected = _c.paths.project.platformTemplatesDirs[obj].includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
+                        isEjected = _c.paths.project.platformTemplatesDirs[obj]?.includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
                     }
 
                     plats.push(`${defaultVal}${isEjected}`);
@@ -206,7 +209,7 @@ export const logTask = (task, customChalk) => {
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`\n⚠️  ${RNV} - WARNING: ${msg}\n`));
 };
 
 export const logInfo = (msg) => {
@@ -228,18 +231,27 @@ export const logSuccess = (msg) => {
     logAndSave(`✅ ${chalk.magenta(msg)}`);
 };
 
-export const logError = (e, isEnd = false) => {
-    if (e && e.message) {
-        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
-    } else {
-        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
+export const logError = (e, isEnd = false, skipAnalytics = false) => {
+    if (!skipAnalytics) {
+        Analytics.captureException(e);
     }
+
+    if (e && e.message) {
+        logAndSave(chalk.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
+    } else {
+        logAndSave(chalk.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
+    }
+
     if (isEnd) logEnd(1);
 };
 
 export const logEnd = (code) => {
     logSummary();
-    if (_currentProcess) _currentProcess.exit(code);
+    if (_currentProcess) {
+        Analytics.teardown().then(() => {
+            _currentProcess.exit(code);
+        });
+    }
 };
 
 
@@ -315,3 +327,17 @@ export const printBoxStart = (str, str2) => {
 export const rnvStatus = async () => Promise.resolve();
 
 export const printBoxEnd = () => _defaultColor('└──────────────────────────────────────────────────────────────────────────────┘');
+
+export default {
+    logEnd,
+    logInfo,
+    logTask,
+    logError,
+    logDebug,
+    logAppInfo,
+    logWarning,
+    logSuccess,
+    logWelcome,
+    logComplete,
+    logInitialize
+};
