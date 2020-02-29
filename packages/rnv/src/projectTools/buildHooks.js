@@ -35,13 +35,16 @@ const executePipe = async (c, key) => {
     logTask(`executePipe:${key}`);
 
 
+    const pipesConfig = c.buildConfig?.pipes;
+    if (!pipesConfig || (pipesConfig && pipesConfig.includes(key))) {
+        await buildHooks(c);
+    }
+
     const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
     if (Array.isArray(pipe)) {
-        await buildHooks(c);
         await pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve());
     } else if (pipe) {
-        await buildHooks(c);
         await pipe(c);
     }
 };

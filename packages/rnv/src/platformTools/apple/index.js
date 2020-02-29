@@ -276,7 +276,22 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
             }
         }
 
-        return Promise.reject(e);
+        return Promise.reject(`${e}
+
+${chalk.green('SUGGESTION:')}
+
+${chalk.yellow('STEP 1:')}
+Open xcode workspace at: ${chalk.white(`${appPath}/RNVApp.xcworkspace`)}
+
+${chalk.yellow('STEP 2:')}
+${chalk.white('Run app and observe any extra errors')}
+
+${chalk.yellow('IF ALL HOPE IS LOST:')}
+Raise new issue and copy this SUMMARY box output at:
+${chalk.white('https://github.com/pavjacko/renative/issues')}
+and we will try to help!
+
+`);
     }
 };
 

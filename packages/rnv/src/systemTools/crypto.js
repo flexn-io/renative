@@ -1,16 +1,19 @@
 import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
+import { promisify } from 'util';
 import fs from 'fs';
-import { logWarning, logError, logTask, logDebug, logSuccess } from './logger';
-import { isSystemMac } from '../utils';
-import { listAppConfigsFoldersSync, generateBuildConfig, setAppConfig } from '../configTools/configParser';
+import { logWarning, logError, logTask, logDebug, logSuccess, logInfo } from './logger';
+import { isSystemMac, isSystemWin } from '../utils';
+import { listAppConfigsFoldersSync, setAppConfig } from '../configTools/configParser';
 import { IOS, TVOS } from '../constants';
-import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, readObjectSync } from './fileutils';
+import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, writeFileSync } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
-import { cleanFolder } from '../systemTools/fileutils';
+import { cleanFolder } from './fileutils';
+
+const readdirAsync = promisify(fs.readdir);
 
 const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
@@ -24,46 +27,152 @@ export const rnvCryptoUpdateProfile = async (c) => {
     await updateProfile(c);
 };
 
-export const rnvCryptoEncrypt = c => new Promise((resolve, reject) => {
+const generateRandomKey = length => Array(length).fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*').map(x => x[Math.floor(Math.random() * x.length)]).join('');
+
+const _getEnvExportCmd = (envVar, key) => {
+    if (isSystemWin) {
+        return `${chalk.white(`setx ${envVar} "${key}"`)}`;
+    }
+    return `${chalk.white(`export ${envVar}="${key}"`)}`;
+};
+
+const _checkAndConfigureCrypto = async (c) => {
+    // handle missing config
+    const source = `./${c.files.project.package.name}`;
+
+    if (c.files.project.config && !c.files.project.config.crypto) {
+        const { location } = await inquirerPrompt({
+            type: 'input',
+            name: 'location',
+            message: 'Where would you like your secrets to be residing? (path relative to root, without leading or trailing slash. Ex. `myPrivateConfig/encrypt`)',
+            default: 'secrets'
+        });
+        c.files.project.config.crypto = {
+            encrypt: {
+                dest: `PROJECT_HOME/${location}/privateConfigs.enc`
+            },
+            decrypt: {
+                source: `PROJECT_HOME/${location}/privateConfigs.enc`
+            }
+        };
+        writeFileSync(c.paths.project.config, c.files.project.config);
+    }
+
+    // check if src folder actually exists
+    const sourceFolder = path.join(c.paths.workspace.dir, source);
+    if (!fs.existsSync(sourceFolder)) {
+        logInfo(`It seems you are running encrypt for the first time. Directory ${chalk.white(sourceFolder)} does not exist yet. We'll create it for you, make sure you add whatever you want encrypted in it and then run the command again`);
+
+        mkdirSync(sourceFolder);
+        mkdirSync(path.join(sourceFolder, 'certs'));
+        writeFileSync(path.join(sourceFolder, 'renative.private.json'), {});
+
+        const configDirs = await readdirAsync(c.paths.project.appConfigsDir);
+
+        configDirs.forEach((item) => {
+            const appConfigDir = path.join(sourceFolder, item);
+            mkdirSync(appConfigDir);
+            mkdirSync(path.join(appConfigDir, 'certs'));
+            writeFileSync(path.join(appConfigDir, 'renative.private.json'), {});
+        });
+
+        // writeFileSync(path.join(sourceFolder), c.files.project.config);
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: 'Once ready, Continue?',
+        });
+
+        if (confirm) return true;
+    }
+
+
+    const envVar = getEnvVar(c);
+    let key = c.program.key || c.process.env[envVar];
+    let keyGenerated = false;
+    if (!key) {
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: `You haven't passed a key with --key or set an env variable named ${chalk.yellow(envVar)} for the encryption key. Would you like to generate one?`
+        });
+        if (confirm) {
+            key = generateRandomKey(20);
+            keyGenerated = true;
+        } else {
+            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var defined:
+
+${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
+
+`);
+        }
+        if (keyGenerated) {
+            logSuccess(`The files were encrypted with key ${chalk.red(key)}. Make sure you keep it safe! Pass it with --key on decryption or set it as following env variable:
+
+${_getEnvExportCmd(envVar, key)}
+
+`);
+            c.process.env[envVar] = key;
+        }
+    }
+};
+
+export const rnvCryptoEncrypt = async (c) => {
     logTask('rnvCryptoEncrypt');
 
     const source = `./${c.files.project.package.name}`;
+
+    await _checkAndConfigureCrypto(c);
+
+
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
     const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
+    const envVar = getEnvVar(c);
+    const key = c.program.key || c.process.env[envVar];
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const timestamp = (new Date()).getTime();
-        const envVar = getEnvVar(c);
-        const key = c.program.key || c.process.env[envVar];
-        if (!key) {
-            reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
-            return;
-        }
-        tar.c(
+
+        // check if dest folder actually exists
+        const destFolder = path.join(dest, '../');
+        !fs.existsSync(destFolder) && mkdirSync(destFolder);
+
+        await tar.c(
             {
                 gzip: true,
                 file: destTemp,
                 cwd: c.paths.workspace.dir
             },
             [source]
-        )
-            .then(() => executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`, { privateParams: [key] }))
-            .then(() => {
-                removeFilesSync([destTemp]);
-                fs.writeFileSync(`${dest}.timestamp`, timestamp);
-                fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
-                logSuccess(`Files succesfully encrypted into ${dest}`);
-                resolve();
-            }).catch((e) => {
-                reject(e);
-            });
+        );
+
+        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`, { privateParams: [key] });
+        removeFilesSync([destTemp]);
+        fs.writeFileSync(`${dest}.timestamp`, timestamp);
+        fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
+        logSuccess(`Files succesfully encrypted into ${dest}`);
     } else {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
-        resolve();
     }
-});
+};
+
+const _unzipAndCopy = async (c, shouldCleanFolder, destTemp, wsPath, ts, destFolder) => {
+    if (shouldCleanFolder) {
+        await cleanFolder(wsPath);
+    }
+
+
+    await tar.x({
+        file: destTemp,
+        cwd: c.paths.workspace.dir
+    });
+
+    removeFilesSync([destTemp]);
+    if (fs.existsSync(ts)) {
+        copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
+    }
+    logSuccess(`Files succesfully extracted into ${destFolder}`);
+};
 
 export const rnvCryptoDecrypt = async (c) => {
     logTask('rnvCryptoDecrypt');
@@ -76,10 +185,11 @@ export const rnvCryptoDecrypt = async (c) => {
         const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
-
-
+        let shouldCleanFolder = false;
         const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
-        if (c.program.ci !== true && c.program.reset !== true) {
+        const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
+
+        if (c.program.ci !== true && !isCryptoReset) {
             const options = [
                 'Yes - override (recommended)',
                 'Yes - merge',
@@ -92,40 +202,59 @@ export const rnvCryptoDecrypt = async (c) => {
                 message: `How to decrypt to ${chalk.white(destFolder)} ?`
             });
             if (option === options[0]) {
-                await cleanFolder(wsPath);
+                shouldCleanFolder = true;
             } else if (option === options[2]) {
                 return true;
             }
         } else {
-            await cleanFolder(wsPath);
+            shouldCleanFolder = true;
         }
 
+        if (fs.existsSync(destTemp)) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: `Found existing decrypted file at ${chalk.white(destTemp)}. want to use it and skip decrypt ?`
+            });
+            if (confirm) {
+                await _unzipAndCopy(c, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
+                return true;
+            }
+        }
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
-            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
+            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var defined:
+
+${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
+
+`);
         }
         if (!fs.existsSync(source)) {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
 
-        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
+        try {
+            await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
+        } catch (e) {
+            const cmd1 = chalk.white(`openssl enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k $${envVar}`);
+            return Promise.reject(`${e}
 
-        await tar.x({
-            file: destTemp,
-            cwd: c.paths.workspace.dir
-        });
+${chalk.green('SUGGESTION:')}
 
-        removeFilesSync([destTemp]);
-        if (fs.existsSync(ts)) {
-            copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
+${chalk.yellow('STEP 1:')}
+${cmd1}
+
+${chalk.yellow('STEP 2:')}
+${chalk.white('run your previous command again and choose to skip openssl once asked')}`);
         }
-        logSuccess(`Files succesfully extracted into ${destFolder}`);
+
+        await _unzipAndCopy(c, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
     } else {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         return true;
     }
 };
+
 
 const _getOpenSllPath = (c) => {
     const { process: { platform } } = c;
@@ -253,7 +382,10 @@ export const checkCrypto = async (c) => {
                 }
 
                 if (tsProject > tsWorkspace) {
-                    logWarning(`Your ${tsWorkspacePath} is out of date. you should run decrypt`);
+                    logWarning(`Your ${tsWorkspacePath} is out of date.
+project timestamp: ${chalk.grey(`${tsProject} - ${new Date(tsProject)}`)}
+workspace timestamp: ${chalk.grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
+you should run decrypt`);
                     await rnvCryptoDecrypt(c);
                     return;
                 }
