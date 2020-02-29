@@ -10,7 +10,7 @@ import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync,
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
-import { cleanFolder } from '../systemTools/fileutils';
+import { cleanFolder } from './fileutils';
 
 const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
@@ -107,6 +107,24 @@ export const rnvCryptoEncrypt = async (c) => {
     }
 };
 
+const _unzipAndCopy = async (c, shouldCleanFolder, destTemp, wsPath, ts, destFolder) => {
+    if (shouldCleanFolder) {
+        await cleanFolder(wsPath);
+    }
+
+
+    await tar.x({
+        file: destTemp,
+        cwd: c.paths.workspace.dir
+    });
+
+    removeFilesSync([destTemp]);
+    if (fs.existsSync(ts)) {
+        copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
+    }
+    logSuccess(`Files succesfully extracted into ${destFolder}`);
+};
+
 export const rnvCryptoDecrypt = async (c) => {
     logTask('rnvCryptoDecrypt');
 
@@ -118,10 +136,11 @@ export const rnvCryptoDecrypt = async (c) => {
         const destFolder = path.join(c.paths.workspace.dir, c.files.project.package.name);
         const destTemp = `${path.join(c.paths.workspace.dir, c.files.project.package.name.replace('/', '-'))}.tgz`;
         const envVar = getEnvVar(c);
-
-
+        let shouldCleanFolder = false;
         const wsPath = path.join(c.paths.workspace.dir, c.files.project.package.name);
-        if (c.program.ci !== true && c.program.reset !== true) {
+        const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
+
+        if (c.program.ci !== true && !isCryptoReset) {
             const options = [
                 'Yes - override (recommended)',
                 'Yes - merge',
@@ -134,12 +153,23 @@ export const rnvCryptoDecrypt = async (c) => {
                 message: `How to decrypt to ${chalk.white(destFolder)} ?`
             });
             if (option === options[0]) {
-                await cleanFolder(wsPath);
+                shouldCleanFolder = true;
             } else if (option === options[2]) {
                 return true;
             }
         } else {
-            await cleanFolder(wsPath);
+            shouldCleanFolder = true;
+        }
+
+        if (fs.existsSync(destTemp)) {
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: `Found existing decrypted file at ${chalk.white(destTemp)}. want to use it and skip decrypt ?`
+            });
+            if (confirm) {
+                await _unzipAndCopy(c, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
+                return true;
+            }
         }
 
         const key = c.program.key || c.process.env[envVar];
@@ -150,23 +180,28 @@ export const rnvCryptoDecrypt = async (c) => {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
         }
 
-        await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
+        try {
+            await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5qq -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
+        } catch (e) {
+            const cmd1 = chalk.white(`openssl enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k $${envVar}`);
+            return Promise.reject(`${e}
 
-        await tar.x({
-            file: destTemp,
-            cwd: c.paths.workspace.dir
-        });
+${chalk.green('SUGGESTION:')}
 
-        removeFilesSync([destTemp]);
-        if (fs.existsSync(ts)) {
-            copyFileSync(ts, path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp'));
+${chalk.yellow('STEP 1:')}
+${cmd1}
+
+${chalk.yellow('STEP 2:')}
+${chalk.white('run your previous command again and choose to skip openssl once asked')}`);
         }
-        logSuccess(`Files succesfully extracted into ${destFolder}`);
+
+        await _unzipAndCopy(c, shouldCleanFolder, destTemp, wsPath, ts, destFolder);
     } else {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
         return true;
     }
 };
+
 
 const _getOpenSllPath = (c) => {
     const { process: { platform } } = c;
@@ -294,7 +329,10 @@ export const checkCrypto = async (c) => {
                 }
 
                 if (tsProject > tsWorkspace) {
-                    logWarning(`Your ${tsWorkspacePath} is out of date. you should run decrypt`);
+                    logWarning(`Your ${tsWorkspacePath} is out of date.
+project timestamp: ${chalk.grey(tsProject)}
+workspace timestamp: ${chalk.grey(tsWorkspace)}
+you should run decrypt`);
                     await rnvCryptoDecrypt(c);
                     return;
                 }
