@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.19-alpha.2",
+            "version": "0.28.19-alpha.3",
             "webpack": {
                 "modulePaths": ["node_modules/renative"],
                 "moduleAliases": {
@@ -708,10 +708,44 @@
         "react-native-vector-icons": {
             "version": "6.6.0",
             "ios": {
-                "podName": "RNVectorIcons"
+                "podName": "RNVectorIcons",
+                "ignoreProjectFonts": [
+                    "FontAwesome.ttf",
+                    "FontAwesome5_Solid.ttf",
+                    "FontAwesome5_Regular.ttf",
+                    "FontAwesome5_Brands.ttf",
+                    "Feather.ttf",
+                    "AntDesign.ttf",
+                    "Entypo.ttf",
+                    "EvilIcons.ttf",
+                    "Foundation.ttf",
+                    "Ionicons.ttf",
+                    "MaterialCommunityIcons.ttf",
+                    "MaterialIcons.ttf",
+                    "Octicons.ttf",
+                    "SimpleLineIcons.ttf",
+                    "Zocial.ttf"
+                ]
             },
             "tvos": {
-                "podName": "RNVectorIcons"
+                "podName": "RNVectorIcons",
+                "ignoreProjectFonts": [
+                    "FontAwesome.ttf",
+                    "FontAwesome5_Solid.ttf",
+                    "FontAwesome5_Regular.ttf",
+                    "FontAwesome5_Brands.ttf",
+                    "Feather.ttf",
+                    "AntDesign.ttf",
+                    "Entypo.ttf",
+                    "EvilIcons.ttf",
+                    "Foundation.ttf",
+                    "Ionicons.ttf",
+                    "MaterialCommunityIcons.ttf",
+                    "MaterialIcons.ttf",
+                    "Octicons.ttf",
+                    "SimpleLineIcons.ttf",
+                    "Zocial.ttf"
+                ]
             },
             "android": {
                 "package": "com.oblador.vectoricons.VectorIconsPackage"
@@ -842,7 +876,8 @@
             }
         },
         "react-native-photo-editor": {
-            "version": "0.0.7",
+            "version": "1.0.5",
+            "dependsOn": ["iOSPhotoEditor"],
             "ios": {
                 "podName": "RNPhotoEditor",
                 "path": "node_modules/react-native-photo-editor/ios"
@@ -961,12 +996,23 @@
                 "package": "com.swmansion.rnscreens.RNScreensPackage"
             }
         },
-        "ios-photo-editor": {
+        "iOSPhotoEditor": {
             "no-npm": true,
             "ios": {
                 "podName": "iOSPhotoEditor",
                 "git": "https://github.com/prscX/photo-editor",
-                "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8"
+                "commit": "4924e9ec984d25d03644e58aa148282642171de9",
+                "modular_headers": true
+            }
+        },
+        "ios-photo-editor": {
+            "deprecated": "ios-photo-editor is DEPRECATED. use iOSPhotoEditor instead",
+            "no-npm": true,
+            "ios": {
+                "podName": "iOSPhotoEditor",
+                "git": "https://github.com/prscX/photo-editor",
+                "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8",
+                "modular_headers": true
             }
         },
         "google-maps": {

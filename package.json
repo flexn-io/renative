@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.28.19-alpha.2",
+    "version": "0.28.19-alpha.3",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -136,7 +136,7 @@
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
         "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
-        "xcode": "2.0.0"
+        "xcode": "2.1.0"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"

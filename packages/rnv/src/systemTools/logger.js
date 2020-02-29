@@ -237,9 +237,9 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
     }
 
     if (e && e.message) {
-        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
+        logAndSave(chalk.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
-        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
+        logAndSave(chalk.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
     }
 
     if (isEnd) logEnd(1);

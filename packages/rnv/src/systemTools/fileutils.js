@@ -248,7 +248,7 @@ export const readObjectSync = (filePath, sanitize = false, c) => {
             }
         }
     } catch (e) {
-        logWarning(`readObjectSync: Parsing of ${chalk.white(filePath)} failed with ${e}`);
+        logError(`readObjectSync: Parsing of ${chalk.white(filePath)} failed with ${e}`);
         return null;
     }
     return obj;
