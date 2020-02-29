@@ -209,7 +209,7 @@ export const logTask = (task, customChalk) => {
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`\n⚠️  ${RNV} - WARNING: ${msg}\n`));
 };
 
 export const logInfo = (msg) => {

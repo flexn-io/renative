@@ -1,8 +1,9 @@
 import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
+import { promisify } from 'util';
 import fs from 'fs';
-import { logWarning, logError, logTask, logDebug, logSuccess } from './logger';
+import { logWarning, logError, logTask, logDebug, logSuccess, logInfo } from './logger';
 import { isSystemMac } from '../utils';
 import { listAppConfigsFoldersSync, setAppConfig } from '../configTools/configParser';
 import { IOS, TVOS } from '../constants';
@@ -11,6 +12,8 @@ import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
 import { cleanFolder } from './fileutils';
+
+const readdirAsync = promisify(fs.readdir);
 
 const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir.split('/').pop().replace('.', '');
@@ -26,12 +29,10 @@ export const rnvCryptoUpdateProfile = async (c) => {
 
 const generateRandomKey = length => Array(length).fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*').map(x => x[Math.floor(Math.random() * x.length)]).join('');
 
-export const rnvCryptoEncrypt = async (c) => {
-    logTask('rnvCryptoEncrypt');
-
+const _checkAndConfigureCrypto = async (c) => {
+    // handle missing config
     const source = `./${c.files.project.package.name}`;
 
-    // handle missing config
     if (c.files.project.config && !c.files.project.config.crypto) {
         const { location } = await inquirerPrompt({
             type: 'input',
@@ -50,6 +51,42 @@ export const rnvCryptoEncrypt = async (c) => {
         writeFileSync(c.paths.project.config, c.files.project.config);
     }
 
+    // check if src folder actually exists
+    const sourceFolder = path.join(c.paths.workspace.dir, source);
+    if (!fs.existsSync(sourceFolder)) {
+        logInfo(`It seems you are running encrypt for the first time. Directory ${chalk.white(sourceFolder)} does not exist yet. We'll create it for you, make sure you add whatever you want encrypted in it and then run the command again`);
+
+        mkdirSync(sourceFolder);
+        mkdirSync(path.join(sourceFolder, 'certs'));
+        writeFileSync(path.join(sourceFolder, 'renative.private.json'), {});
+
+        const configDirs = await readdirAsync(c.paths.project.appConfigsDir);
+
+        configDirs.forEach((item) => {
+            const appConfigDir = path.join(sourceFolder, item);
+            mkdirSync(appConfigDir);
+            mkdirSync(path.join(appConfigDir, 'certs'));
+            writeFileSync(path.join(appConfigDir, 'renative.private.json'), {});
+        });
+
+        // writeFileSync(path.join(sourceFolder), c.files.project.config);
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: 'Once ready, Continue?',
+        });
+
+        if (confirm) return true;
+    }
+};
+
+export const rnvCryptoEncrypt = async (c) => {
+    logTask('rnvCryptoEncrypt');
+
+    const source = `./${c.files.project.package.name}`;
+
+    await _checkAndConfigureCrypto(c);
+
+
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
     const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
 
@@ -62,12 +99,6 @@ export const rnvCryptoEncrypt = async (c) => {
         const destFolder = path.join(dest, '../');
         !fs.existsSync(destFolder) && mkdirSync(destFolder);
 
-        // check if src folder actually exists
-        const sourceFolder = path.join(c.paths.workspace.dir, source);
-        if (!fs.existsSync(sourceFolder)) {
-            mkdirSync(sourceFolder);
-            return logError(`It seems you are running encrypt for the first time. Directory ${sourceFolder} does not exist yet. We'll create it for you, make sure you add whatever you want encrypted in it and then run the command again`, true, true);
-        }
 
         const envVar = getEnvVar(c);
         let key = c.program.key || c.process.env[envVar];
@@ -181,7 +212,7 @@ export const rnvCryptoDecrypt = async (c) => {
         }
 
         try {
-            await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5qq -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
+            await executeAsync(c, `${_getOpenSllPath(c)} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`, { privateParams: [key] });
         } catch (e) {
             const cmd1 = chalk.white(`openssl enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k $${envVar}`);
             return Promise.reject(`${e}
@@ -330,8 +361,8 @@ export const checkCrypto = async (c) => {
 
                 if (tsProject > tsWorkspace) {
                     logWarning(`Your ${tsWorkspacePath} is out of date.
-project timestamp: ${chalk.grey(tsProject)}
-workspace timestamp: ${chalk.grey(tsWorkspace)}
+project timestamp: ${chalk.grey(`${tsProject} - ${new Date(tsProject)}`)}
+workspace timestamp: ${chalk.grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
                     await rnvCryptoDecrypt(c);
                     return;
