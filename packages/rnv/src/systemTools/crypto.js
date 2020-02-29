@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import { promisify } from 'util';
 import fs from 'fs';
 import { logWarning, logError, logTask, logDebug, logSuccess, logInfo } from './logger';
-import { isSystemMac } from '../utils';
+import { isSystemMac, isSystemWin } from '../utils';
 import { listAppConfigsFoldersSync, setAppConfig } from '../configTools/configParser';
 import { IOS, TVOS } from '../constants';
 import { getRealPath, removeFilesSync, getFileListSync, copyFileSync, mkdirSync, writeFileSync } from './fileutils';
@@ -28,6 +28,13 @@ export const rnvCryptoUpdateProfile = async (c) => {
 };
 
 const generateRandomKey = length => Array(length).fill('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*').map(x => x[Math.floor(Math.random() * x.length)]).join('');
+
+const _getEnvExportCmd = (envVar, key) => {
+    if (isSystemWin) {
+        return `${chalk.white(`setx ${envVar} "${key}"`)}`;
+    }
+    return `${chalk.white(`export ${envVar}="${key}"`)}`;
+};
 
 const _checkAndConfigureCrypto = async (c) => {
     // handle missing config
@@ -77,6 +84,35 @@ const _checkAndConfigureCrypto = async (c) => {
 
         if (confirm) return true;
     }
+
+
+    const envVar = getEnvVar(c);
+    let key = c.program.key || c.process.env[envVar];
+    let keyGenerated = false;
+    if (!key) {
+        const { confirm } = await inquirerPrompt({
+            type: 'confirm',
+            message: `You haven't passed a key with --key or set an env variable named ${chalk.yellow(envVar)} for the encryption key. Would you like to generate one?`
+        });
+        if (confirm) {
+            key = generateRandomKey(20);
+            keyGenerated = true;
+        } else {
+            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var defined:
+
+${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
+
+`);
+        }
+        if (keyGenerated) {
+            logSuccess(`The files were encrypted with key ${chalk.red(key)}. Make sure you keep it safe! Pass it with --key on decryption or set it as following env variable:
+
+${_getEnvExportCmd(envVar, key)}
+
+`);
+            c.process.env[envVar] = key;
+        }
+    }
 };
 
 export const rnvCryptoEncrypt = async (c) => {
@@ -89,6 +125,8 @@ export const rnvCryptoEncrypt = async (c) => {
 
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
     const tsWorkspacePath = path.join(c.paths.workspace.dir, c.files.project.package.name, 'timestamp');
+    const envVar = getEnvVar(c);
+    const key = c.program.key || c.process.env[envVar];
 
     if (destRaw) {
         const dest = `${getRealPath(c, destRaw, 'encrypt.dest')}`;
@@ -98,23 +136,6 @@ export const rnvCryptoEncrypt = async (c) => {
         // check if dest folder actually exists
         const destFolder = path.join(dest, '../');
         !fs.existsSync(destFolder) && mkdirSync(destFolder);
-
-
-        const envVar = getEnvVar(c);
-        let key = c.program.key || c.process.env[envVar];
-        let keyGenerated = false;
-        if (!key) {
-            const { confirm } = await inquirerPrompt({
-                type: 'confirm',
-                message: `You haven't passed a key with --key or set an env variable named ${chalk.yellow(envVar)} for the encryption key. Would you like to generate one?`
-            });
-            if (confirm) {
-                key = generateRandomKey(20);
-                keyGenerated = true;
-            } else {
-                throw new Error(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
-            }
-        }
 
         await tar.c(
             {
@@ -130,9 +151,6 @@ export const rnvCryptoEncrypt = async (c) => {
         fs.writeFileSync(`${dest}.timestamp`, timestamp);
         fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
         logSuccess(`Files succesfully encrypted into ${dest}`);
-        if (keyGenerated) {
-            logSuccess(`The files were encrypted with key ${chalk.red(key)}. Make sure you keep it safe! Pass it with --key on decryption or set it as ${chalk.yellow(envVar)} env variable.`);
-        }
     } else {
         logWarning(`You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(c.paths.projectConfig)}`);
     }
@@ -205,7 +223,11 @@ export const rnvCryptoDecrypt = async (c) => {
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
-            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var ${chalk.white(envVar)} defined`);
+            return Promise.reject(`encrypt: You must pass ${chalk.white('--key')} or have env var defined:
+
+${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
+
+`);
         }
         if (!fs.existsSync(source)) {
             return Promise.reject(`Can't decrypt. ${chalk.white(source)} is missing!`);
