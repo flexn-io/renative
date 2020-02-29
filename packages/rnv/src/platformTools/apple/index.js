@@ -13,8 +13,10 @@ import {
     getAppFolder,
     getConfigProp,
     getIP,
-    generateChecksum
+    generateChecksum,
+    getFlavouredProp
 } from '../../common';
+import { parsePlugins } from '../../pluginTools';
 import { isPlatformActive } from '..';
 import { copyAssetsFolder, copyBuildsFolder, parseFonts } from '../../projectTools/projectParser';
 import { copyFileSync, mkdirSync, writeFileSync } from '../../systemTools/fileutils';
@@ -43,7 +45,7 @@ const checkIfPodsIsRequired = async (c) => {
         return true;
     }
     logInfo('Pods do not seem like they need to be updated. If you want to update them manually run the same command with "-u" parameter');
-    return false;
+    return true;
 };
 
 const updatePodsChecksum = (c) => {
@@ -222,55 +224,58 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
         await executeAsync(c, cmd);
         return true;
     } catch (e) {
-        const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
-        if (isDeviceLocked) {
-            await inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' });
-            return executeAsync(c, cmd);
-        }
-        const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
-        if (isDeviceNotRegistered) {
-            logError(e);
-            logWarning(`${c.platform} DEVICE: ${chalk.white(c.runtime.target)} with UDID: ${chalk.white(c.runtime.targetUDID)} is not included in your provisionong profile in TEAM: ${chalk.white(getConfigProp(c, c.platform, 'teamID'))}`);
-            const { confirm } = await inquirer.prompt({
-                name: 'confirm',
-                message: 'Do you want to register it?',
-                type: 'confirm'
-            });
-            if (confirm) {
-                await registerDevice(c);
-                return Promise.reject('Updated. Re-run your last command');
-                // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
-                // await configureXcodeProject(c, c.platform);
-                // return runXcodeProject(c);
+        if (e && e.includes) {
+            const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
+            if (isDeviceLocked) {
+                await inquirer.prompt({ message: 'Unlock your device and press ENTER', type: 'confirm', name: 'confirm' });
+                return executeAsync(c, cmd);
+            }
+            const isDeviceNotRegistered = e.includes("doesn't include the currently selected device");
+            if (isDeviceNotRegistered) {
+                logError(e);
+                logWarning(`${c.platform} DEVICE: ${chalk.white(c.runtime.target)} with UDID: ${chalk.white(c.runtime.targetUDID)} is not included in your provisionong profile in TEAM: ${chalk.white(getConfigProp(c, c.platform, 'teamID'))}`);
+                const { confirm } = await inquirer.prompt({
+                    name: 'confirm',
+                    message: 'Do you want to register it?',
+                    type: 'confirm'
+                });
+                if (confirm) {
+                    await registerDevice(c);
+                    return Promise.reject('Updated. Re-run your last command');
+                    // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
+                    // await configureXcodeProject(c, c.platform);
+                    // return runXcodeProject(c);
+                }
+            }
+            const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
+            if (isDevelopmentTeamMissing) {
+                const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
+                logError(e);
+                logWarning(`You need specify the development team if you want to run app on ${c.platform} device. this can be set manually in ${chalk.white(loc)}
+  You can find correct teamID in the URL of your apple developer account: ${chalk.white('https://developer.apple.com/account/#/overview/YOUR-TEAM-ID')}`);
+                const { confirm } = await inquirer.prompt({
+                    name: 'confirm',
+                    message: `Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`,
+                    type: 'input'
+                });
+                if (confirm) {
+                    await _setDevelopmentTeam(c, confirm);
+                    return Promise.reject('Updated. Re-run your last command');
+                    // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
+                    // await configureXcodeProject(c, c.platform);
+                    // return runXcodeProject(c);
+                }
+            }
+            const isAutomaticSigningDisabled = e.includes('Automatic signing is disabled and unable to generate a profile');
+            if (isAutomaticSigningDisabled) {
+                return _handleProvisioningIssues(c, e, 'Your iOS App Development provisioning profiles don\'t match. under manual signing mode');
+            }
+            const isProvisioningMissing = e.includes('requires a provisioning profile');
+            if (isProvisioningMissing) {
+                return _handleProvisioningIssues(c, e, 'Your iOS App requires a provisioning profile');
             }
         }
-        const isDevelopmentTeamMissing = e.includes('requires a development team. Select a development team');
-        if (isDevelopmentTeamMissing) {
-            const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
-            logError(e);
-            logWarning(`You need specify the development team if you want to run app on ${c.platform} device. this can be set manually in ${chalk.white(loc)}
-You can find correct teamID in the URL of your apple developer account: ${chalk.white('https://developer.apple.com/account/#/overview/YOUR-TEAM-ID')}`);
-            const { confirm } = await inquirer.prompt({
-                name: 'confirm',
-                message: `Type in your Apple Team ID to be used (will be saved to ${c.paths.appConfig?.config})`,
-                type: 'input'
-            });
-            if (confirm) {
-                await _setDevelopmentTeam(c, confirm);
-                return Promise.reject('Updated. Re-run your last command');
-                // TODO: Tot picking up if re-run from here. forcing users to do it themselves for now
-                // await configureXcodeProject(c, c.platform);
-                // return runXcodeProject(c);
-            }
-        }
-        const isAutomaticSigningDisabled = e.includes('Automatic signing is disabled and unable to generate a profile');
-        if (isAutomaticSigningDisabled) {
-            return _handleProvisioningIssues(c, e, 'Your iOS App Development provisioning profiles don\'t match. under manual signing mode');
-        }
-        const isProvisioningMissing = e.includes('requires a provisioning profile');
-        if (isProvisioningMissing) {
-            return _handleProvisioningIssues(c, e, 'Your iOS App requires a provisioning profile');
-        }
+
         return Promise.reject(e);
     }
 };
@@ -519,6 +524,7 @@ const configureXcodeProject = async (c, platform, ip, port) => {
         exportOptions: '',
         embeddedFonts: [],
         embeddedFontSources: [],
+        ignoreProjectFonts: [],
         pluginAppDelegateImports: '',
         pluginAppDelegateMethods: '',
         appDelegateMethods: {
@@ -541,6 +547,19 @@ const configureXcodeProject = async (c, platform, ip, port) => {
     };
 
     // FONTS
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        const ignoreProjectFonts = getFlavouredProp(c, pluginPlat, 'ignoreProjectFonts');
+
+        // TODO: enable this once mmoved to modular_headers Podfile
+        // if (ignoreProjectFonts) {
+        //     ignoreProjectFonts.forEach((v) => {
+        //         if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
+        //             logDebug(`Igonoring font: ${v}`);
+        //             c.pluginConfigiOS.ignoreProjectFonts.push(v);
+        //         }
+        //     });
+        // }
+    });
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
@@ -552,7 +571,10 @@ const configureXcodeProject = async (c, platform, ip, port) => {
                     mkdirSync(fontFolder);
                     const fontDest = path.join(fontFolder, font);
                     copyFileSync(fontSource, fontDest);
-                    c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                    if (!c.pluginConfigiOS.ignoreProjectFonts.includes(font)) {
+                        c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                    }
+
                     c.pluginConfigiOS.embeddedFonts.push(font);
                 } else {
                     logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);

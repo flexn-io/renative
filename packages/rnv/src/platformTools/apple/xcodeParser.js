@@ -123,10 +123,6 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
         }
-        // FONTS
-        c.pluginConfigiOS.embeddedFontSources.forEach((v) => {
-            xcodeProj.addResourceFile(v);
-        });
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
@@ -184,6 +180,13 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 }
             }
         });
+
+        // FONTS
+        // Cocoapods take care of this
+        c.pluginConfigiOS.embeddedFontSources.forEach((v) => {
+            xcodeProj.addResourceFile(v, { variantGroup: false });
+        });
+
         fs.writeFileSync(projectPath, xcodeProj.writeSync());
         resolve();
     });
