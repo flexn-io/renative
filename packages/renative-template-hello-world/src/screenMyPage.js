@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import Theme, { themeStyles } from './theme';
+import { themeStyles } from './theme';
 
 const ScreenMyPage = () => (
     <View style={themeStyles.container}>

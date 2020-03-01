@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, PixelRatio } from 'react-native';
-import { Icon, Button, Api, getScaledValue, isWatch, useNavigate, isWeb } from 'renative';
+import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
+import { Icon, Button, Api, getScaledValue, useNavigate, isWeb } from 'renative';
+import Theme, { themeStyles } from './theme';
 import config from '../platformAssets/renative.runtime.json';
 import packageJson from '../package.json';
-import Theme, { themeStyles } from './theme';
+import icon from '../platformAssets/runtime/logo.png';
 
 const styles = StyleSheet.create({
     appContainerScroll: {
@@ -31,7 +32,7 @@ const ScreenHome = (props) => {
                 justifyContent: 'center'
             }}
         >
-            <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
+            <Image style={styles.image} source={icon} />
             <Text style={themeStyles.textH2}>
                 {config.welcomeMessage}
             </Text>

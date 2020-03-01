@@ -1,10 +1,9 @@
 
 import * as React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer, useIsFocused, useLinking, useNavigationState, DrawerActions } from '@react-navigation/native';
+import { NavigationContainer, DrawerActions } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NativeModules } from 'react-native';
 import { getScaledValue, Icon } from 'renative';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
@@ -35,15 +34,14 @@ const StackNavigator = ({ navigation }) => (
     <Stack.Navigator screenOptions={{
         headerTitleStyle: styles.headerTitle,
         headerStyle: styles.header,
-        headerTintColor: Theme.color3,
-        headerTitleStyle: styles.headerTitle
+        headerTintColor: Theme.color3
     }}
     >
         <Stack.Screen
             name="home"
             component={ScreenHome}
             options={{
-                headerLeft: n => (
+                headerLeft: () => (
                     <Icon
                         iconFont="ionicons"
                         iconName="md-menu"
@@ -68,9 +66,9 @@ const ModalNavigator = () => (
 );
 
 
-const App = props => (
+const App = () => (
     <NavigationContainer>
-        <Drawer.Navigator drawerContent={props => (<Menu {...props} />)}>
+        <Drawer.Navigator drawerContent={Menu}>
             <Drawer.Screen name="drawer" component={ModalNavigator} />
         </Drawer.Navigator>
     </NavigationContainer>
@@ -78,36 +76,3 @@ const App = props => (
 );
 
 export default App;
-
-
-// import React from 'react';
-// import { createApp, registerFocusManger, registerServiceWorker } from 'renative';
-// import { navStructure } from './nav';
-// import ScreenHome from './screenHome';
-// import ScreenMyPage from './screenMyPage';
-// import ScreenModal from './screenModal';
-// import Menu from './menu';
-//
-// import '../platformAssets/runtime/fontManager';
-//
-// registerFocusManger({ focused: 'opacity: 0.4' });
-// registerServiceWorker();
-//
-// // Flag to enable yellow warnings
-// console.disableYellowBox = true;
-//
-//
-// let AppContainer;
-//
-// class App extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         AppContainer = createApp(navStructure, { ScreenHome, ScreenMyPage, ScreenModal, Menu });
-//     }
-//
-//     render() {
-//         return AppContainer;
-//     }
-// }
-//
-// export default App;

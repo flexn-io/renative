@@ -6,6 +6,7 @@ const theme = {
     color2: '#62DBFB',
     color3: '#FB8D62',
     color4: '#FFFFFF',
+    color5: '#AAAAAA',
     primaryFontFamily: 'TimeBurner',
     iconSize: getScaledValue(40)
 };
@@ -17,6 +18,17 @@ export const themeStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: isWeb() ? '90vh' : '100%',
+    },
+    modalContainer: isWeb() ? {
+        position: 'absolute',
+        backgroundColor: theme.color1,
+        zIndex: 100,
+        top: 0,
+        height: '100vh',
+        width: '100%'
+    } : {
+        flex: 1,
+        backgroundColor: theme.color1
     },
     textH2: {
         fontFamily: theme.primaryFontFamily,

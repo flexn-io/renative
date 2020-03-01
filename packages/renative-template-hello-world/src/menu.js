@@ -1,10 +1,26 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Api, getScaledValue, useNavigate, isWeb } from 'renative';
+import { Api, Button, getScaledValue, useNavigate, isWeb } from 'renative';
 import { Link } from '@reach/router';
 import { isTopMenuBased } from './nav';
 import Theme, { themeStyles } from './theme';
-import Button from './linkButton';
+
+const LinkButton = isWeb() ? props => (
+    <Link
+        {...props}
+        getProps={({ isCurrent }) => ({
+            style: {
+                color: isCurrent ? 'white' : 'transparent'
+            }
+        })}
+    >
+        <Button {...props} />
+    </Link>
+) : props => (
+    <Button
+        {...props}
+    />
+);
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +32,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRightWidth: getScaledValue(isWeb() ? 0 : 1),
         borderBottomWidth: getScaledValue(isWeb() ? 1 : 0),
-        borderColor: '#AAAAAA',
+        borderColor: Theme.color5,
         flexDirection: isWeb() ? 'row' : 'column'
     },
     button: {
@@ -37,8 +53,7 @@ const Menu = (props) => {
             <Text style={themeStyles.text}>
                     Menu
             </Text>
-
-            <Button
+            <LinkButton
                 to="/"
                 title="Home"
                 iconFont="ionicons"
@@ -50,8 +65,7 @@ const Menu = (props) => {
                     navigate('home');
                 }}
             />
-
-            <Button
+            <LinkButton
                 to="my-page"
                 title="My Page"
                 iconFont="ionicons"
@@ -63,7 +77,7 @@ const Menu = (props) => {
                     navigate('my-page');
                 }}
             />
-            <Button
+            <LinkButton
                 to="modal"
                 title="My Modal"
                 iconFont="ionicons"

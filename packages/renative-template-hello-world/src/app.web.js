@@ -1,13 +1,13 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Router, createHistory, LocationProvider } from '@reach/router';
+import createHashSource from 'hash-source';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
 import ScreenModal from './screenModal';
 import Menu from './menu';
 import Theme from './theme';
 import '../platformAssets/runtime/fontManager';
-import createHashSource from 'hash-source';
 
 const styles = {
     app: { height: '100vh', backgroundColor: Theme.color1, flexDirection: 'column' }

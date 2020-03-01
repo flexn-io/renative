@@ -10,7 +10,7 @@ export function useNavigate(props) {
 
 export function usePop(props) {
     function pop() {
-
+        props.navigate('../', { replace: false });
     }
     return pop;
 }
