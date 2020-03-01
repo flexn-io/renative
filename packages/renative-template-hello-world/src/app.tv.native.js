@@ -12,7 +12,7 @@ const ModalStack = createStackNavigator();
 const TabStack = createMaterialTopTabNavigator();
 
 const TabNavigator = () => (
-    <TabStack.Navigator tabBarOptions={{}} tabBar={props => <Menu {...props} />}>
+    <TabStack.Navigator tabBar={props => <Menu {...props} />}>
         <TabStack.Screen name="home" component={ScreenHome} />
         <TabStack.Screen name="my-page" component={ScreenMyPage} />
     </TabStack.Navigator>
