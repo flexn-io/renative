@@ -1864,6 +1864,15 @@
         },
         "react-native-safe-area-context": {
             "version": "0.7.2",
+            "android": {
+                "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
+            },
+            "androidtv": {
+                "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
+            },
+            "androidwear": {
+                "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
+            },
             "ios": {
                 "path": "node_modules/react-native-safe-area-context",
                 "podName": "react-native-safe-area-context"
