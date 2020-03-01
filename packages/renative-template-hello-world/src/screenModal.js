@@ -1,14 +1,11 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Icon, getScaledValue, usePop } from 'renative';
-import Theme, { themeStyles } from './theme';
+import React, { useEffect } from 'react';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { getScaledValue, usePop } from 'renative';
+import { withFocusable } from '@noriginmedia/react-spatial-navigation';
+import Theme, { themeStyles, hasWebFocusableUI } from './theme';
+import Button from './button';
 
 const styles = StyleSheet.create({
-    containerIn: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
     header: {
         width: '100%',
         height: getScaledValue(80),
@@ -19,28 +16,42 @@ const styles = StyleSheet.create({
 
 const ScreenModal = (props) => {
     const pop = usePop(props);
+    if (hasWebFocusableUI) {
+        useEffect(() => {
+            props.setFocus('close');
+
+            return function cleanup() {
+                props.setFocus('menu');
+            };
+        }, []);
+    }
     return (
-        <View style={themeStyles.modalContainer}>
+        <View style={themeStyles.screenModal}>
             <View style={styles.header}>
-                <Icon
+                <Button
+                    focusKey="close"
                     iconFont="ionicons"
                     iconName="md-close-circle"
                     className="focusable"
                     iconColor={Theme.color3}
-                    size={Theme.iconSize}
+                    iconSize={Theme.iconSize}
                     style={themeStyles.icon}
+                    to="/"
+                    onEnterPress={() => {
+                        pop();
+                    }}
                     onPress={() => {
                         pop();
                     }}
                 />
             </View>
-            <View style={styles.containerIn}>
+            <ScrollView contentContainerStyle={themeStyles.container}>
                 <Text style={themeStyles.textH2}>
                         This is my Modal!
                 </Text>
-            </View>
+            </ScrollView>
         </View>
     );
 };
 
-export default ScreenModal;
+export default hasWebFocusableUI ? withFocusable()(ScreenModal) : ScreenModal;

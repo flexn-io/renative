@@ -1,4 +1,4 @@
-import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop } from 'renative';
+import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop, isFactorTv } from 'renative';
 import { StyleSheet } from 'react-native';
 
 const theme = {
@@ -8,32 +8,21 @@ const theme = {
     color4: '#FFFFFF',
     color5: '#AAAAAA',
     primaryFontFamily: 'TimeBurner',
-    iconSize: getScaledValue(40)
+    iconSize: getScaledValue(40),
+    menuHeight: getScaledValue(80)
 };
 
-export const isHorizontalMenu = !isFactorMobile && !isFactorDesktop;
+export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop;
+export const hasWebFocusableUI = isEngineWeb && isFactorTv;
 
 export const themeStyles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: theme.color1,
         justifyContent: 'center',
         alignItems: 'center',
-        minHeight: isEngineWeb ? '90vh' : '100%',
+        paddingVertical: getScaledValue(50),
+        minHeight: getScaledValue(300),
         alignSelf: 'stretch',
         width: '100%'
-    },
-    modalContainer: isEngineWeb ? {
-        position: 'absolute',
-        backgroundColor: theme.color1,
-        zIndex: 100,
-        top: 0,
-        left: 0,
-        height: '100vh',
-        width: '100%'
-    } : {
-        flex: 1,
-        backgroundColor: theme.color1
     },
     textH2: {
         fontFamily: theme.primaryFontFamily,
@@ -65,6 +54,28 @@ export const themeStyles = StyleSheet.create({
         width: getScaledValue(40),
         height: getScaledValue(40),
         margin: getScaledValue(10),
+    },
+    button: {
+        marginHorizontal: getScaledValue(20),
+        borderWidth: getScaledValue(2),
+        borderRadius: getScaledValue(25),
+        borderColor: '#62DBFB',
+        height: getScaledValue(50),
+        minWidth: getScaledValue(150),
+        maxWidth: getScaledValue(200),
+        marginTop: getScaledValue(20)
+
+    },
+    buttonText: {
+        fontFamily: 'TimeBurner',
+        color: '#62DBFB',
+        fontSize: getScaledValue(20),
+    },
+    screen: {
+        position: 'absolute', backgroundColor: theme.color1, top: 0, left: 0, right: 0, bottom: 0
+    },
+    screenModal: {
+        position: 'absolute', backgroundColor: theme.color1, top: -theme.menuHeight, left: 0, right: 0, bottom: 0
     }
 });
 

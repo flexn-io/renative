@@ -1,30 +1,45 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
 import { Router, createHistory, LocationProvider } from '@reach/router';
 import createHashSource from 'hash-source';
-import { isFactorDesktop } from 'renative';
+import { isFactorDesktop, isFactorTv, isFactorBrowser, registerFocusManger, registerServiceWorker } from 'renative';
 import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 import ScreenModal from '../screenModal';
 import Menu from '../menu';
-import Theme from '../theme';
+import Theme, { hasWebFocusableUI } from '../theme';
 import '../../platformAssets/runtime/fontManager';
+import { initNavigation, setKeyMap } from '@noriginmedia/react-spatial-navigation';
 
-const styles = {
-    app: { height: '100vh', width: '100vw', flexDirection: isFactorDesktop ? 'row' : 'column' },
-    container: { height: '100%', width: '100%', backgroundColor: Theme.color1 }
+// initNavigation();
+
+const styles = StyleSheet.create({
+    app: {
+        flexDirection: isFactorDesktop ? 'row' : 'column', position: 'absolute', top: 0, right: 0, left: 0, bottom: 0
+    }
+});
+
+const stylesWeb = {
+    container: {
+        position: 'absolute', top: Theme.menuHeight, right: 0, left: 0, bottom: 0
+    }
 };
 
 const source = createHashSource();
 const history = createHistory(source);
+// registerFocusManger({ focused: 'opacity: 0.4' });
+if (isFactorBrowser) registerServiceWorker();
+
+// Flag to enable yellow warnings
+console.disableYellowBox = true;
 
 const App = () => (
     <LocationProvider history={history}>
         <View style={styles.app}>
             <Router primary={false}>
-                <Menu path="*" />
+                <Menu path="*" focusKey="menu" />
             </Router>
-            <div style={styles.container}>
+            <div style={stylesWeb.container}>
                 <Router>
                     <ScreenHome default path="/" />
                     <ScreenMyPage path="my-page/*" />

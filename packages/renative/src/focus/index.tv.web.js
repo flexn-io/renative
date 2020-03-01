@@ -7,25 +7,7 @@ export default (style) => {
     spatialListener.type = 'text/javascript';
     spatialListener.innerHTML = `window.addEventListener('load', function() {
     SpatialNavigation.init();
-    SpatialNavigation.add({
-      selector: 'a, .focusable',
-      enterTo: 'last-focused'
-    });
-    SpatialNavigation.add({
-      selector: 'a, .focusable-action-btn',
-      leaveFor: {
-        down: '.focusable-straight',
-      }
-    });
-    SpatialNavigation.add({
-      selector: 'a, .focusable-straight',
-      straightOnly: true,
-      leaveFor: {
-        up: '.focusable-action-btn',
-      }
-    });
-    SpatialNavigation.makeFocusable();
-    SpatialNavigation.focus();
+
   });`;
     document.head.appendChild(spatialScript);
     document.head.appendChild(spatialListener);
@@ -33,7 +15,7 @@ export default (style) => {
     focusedStyle.type = 'text/css';
     focusedStyle.appendChild(
         document.createTextNode(`:focus {
-          ${style?.focused || 'border: 5px solid #04fff3; border-radius:5px;'}
+          ${'border: 5px solid #FF00FF; border-radius:5px; background-color: #00FFFF'}
     }
   `),
     );
