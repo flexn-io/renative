@@ -8,9 +8,10 @@ import ScreenModal from './screenModal';
 import Menu from './menu';
 import Theme from './theme';
 import '../platformAssets/runtime/fontManager';
+import { isFactorDesktop } from 'renative';
 
 const styles = {
-    app: { height: '100vh', backgroundColor: Theme.color1, flexDirection: 'column' }
+    app: { height: '100vh', width: '100vw', flexDirection: isFactorDesktop ? 'row' : 'column' }
 };
 
 // listen to the browser history
@@ -21,13 +22,15 @@ const App = () => (
     <LocationProvider history={history}>
         <View style={styles.app}>
             <Router primary={false}>
-                <Menu path="*" style={{ flexDirection: 'row' }} />
+                <Menu path="*" />
             </Router>
-            <Router>
-                <ScreenHome default path="/" />
-                <ScreenMyPage path="my-page/*" />
-                <ScreenModal path="modal" />
-            </Router>
+            <div style={{ backgroundColor: 'yellow', height: '100%', width: '100%' }}>
+                <Router>
+                    <ScreenHome default path="/" />
+                    <ScreenMyPage path="my-page/*" />
+                    <ScreenModal path="modal" />
+                </Router>
+            </div>
         </View>
     </LocationProvider>);
 

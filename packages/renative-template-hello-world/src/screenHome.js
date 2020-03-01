@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
-import { Icon, Button, Api, getScaledValue, useNavigate, isWeb } from 'renative';
+import { Icon, Button, Api, getScaledValue, useNavigate, isEngineWeb } from 'renative';
 import Theme, { themeStyles } from './theme';
 import config from '../platformAssets/renative.runtime.json';
 import packageJson from '../package.json';
@@ -9,7 +9,7 @@ import icon from '../platformAssets/runtime/logo.png';
 const styles = StyleSheet.create({
     appContainerScroll: {
         paddingTop: getScaledValue(50),
-        height: isWeb() ? '90vh' : '100%'
+        height: isEngineWeb ? '100vh' : '100%',
     },
     image: {
         marginBottom: getScaledValue(30),
@@ -17,7 +17,8 @@ const styles = StyleSheet.create({
         height: getScaledValue(97),
     },
     button: {
-        minWidth: getScaledValue(150)
+        minWidth: getScaledValue(150),
+        marginTop: getScaledValue(20)
     }
 });
 
@@ -70,6 +71,7 @@ v
                 <Icon iconFont="fontAwesome" className="focusable" iconName="twitter" iconColor={Theme.color3} size={Theme.iconSize} style={themeStyles.icon} />
             </View>
         </ScrollView>
+
     );
 };
 

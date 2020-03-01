@@ -61,7 +61,7 @@ const StackNavigator = ({ navigation }) => (
 const ModalNavigator = () => (
     <ModalStack.Navigator headerMode="none" mode="modal">
         <ModalStack.Screen name="stack" component={StackNavigator} />
-        <ModalStack.Screen name="my-modal" component={ScreenModal} />
+        <ModalStack.Screen name="modal" component={ScreenModal} />
     </ModalStack.Navigator>
 );
 

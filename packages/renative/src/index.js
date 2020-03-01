@@ -30,6 +30,13 @@ import {
     isMobile,
     isTv,
     isWatch,
+    isFactorBrowser,
+    isFactorDesktop,
+    isFactorMobile,
+    isFactorTv,
+    isFactorWatch,
+    // NEW
+    isEngineWeb
 } from './is';
 
 export {
@@ -46,6 +53,7 @@ export {
     createTabNavigator,
     getScaledValue,
     ANDROID, ANDROID_TV, ANDROID_WEAR, IOS, TVOS, WEB, WEBOS, TIZEN, TIZEN_WATCH, TIZEN_MOBILE, MACOS, WINDOWS, FIREFOX_OS, FIREFOX_TV, KAIOS,
+    // PLATFORM
     isAndroid,
     isAndroidtv,
     isAndroidwear,
@@ -61,13 +69,21 @@ export {
     isFirefoxos,
     isFirefoxtv,
     isKaios,
+    // FACTOR
     isBrowser,
     isDesktop,
     isMobile,
     isTv,
     isWatch,
+    isFactorBrowser,
+    isFactorDesktop,
+    isFactorMobile,
+    isFactorTv,
+    isFactorWatch,
     useNavigate,
-    usePop
+    usePop,
+    // ENGINE
+    isEngineWeb
 };
 //
 // export default {

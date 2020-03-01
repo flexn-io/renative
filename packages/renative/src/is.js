@@ -1,11 +1,11 @@
 import platform from './Api/platform';
 import factor from './Api/factor';
 import {
-  //PLATFORMS
-  ANDROID, ANDROID_TV, ANDROID_WEAR, IOS, TVOS, WEB, WEBOS, TIZEN, TIZEN_WATCH, TIZEN_MOBILE, MACOS, WINDOWS, FIREFOX_OS, FIREFOX_TV, KAIOS
-  //FACTORS
-  
- } from './Constants'
+    // PLATFORMS
+    ANDROID, ANDROID_TV, ANDROID_WEAR, IOS, TVOS, WEB, WEBOS, TIZEN, TIZEN_WATCH, TIZEN_MOBILE, MACOS, WINDOWS, FIREFOX_OS, FIREFOX_TV, KAIOS
+    // FACTORS
+
+} from './Constants';
 
 export const isAndroid = () => platform === ANDROID;
 export const isAndroidtv = () => platform === ANDROID_TV;
@@ -23,8 +23,17 @@ export const isFirefoxos = () => platform === FIREFOX_OS;
 export const isFirefoxtv = () => platform === FIREFOX_TV;
 export const isKaios = () => platform === KAIOS;
 
+export const isEngineWeb = platform === WEB || platform === TIZEN || platform === WEBOS || platform === MACOS;
+
+
 export const isBrowser = () => factor === 'browser';
 export const isDesktop = () => factor === 'desktop';
 export const isMobile = () => factor === 'mobile';
 export const isTv = () => factor === 'tv';
 export const isWatch = () => factor === 'watch';
+
+export const isFactorBrowser = factor === 'browser';
+export const isFactorDesktop = factor === 'desktop';
+export const isFactorMobile = factor === 'mobile';
+export const isFactorTv = factor === 'tv';
+export const isFactorWatch = factor === 'watch';

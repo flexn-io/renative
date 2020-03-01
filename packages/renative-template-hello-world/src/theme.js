@@ -1,4 +1,4 @@
-import { getScaledValue, isWeb } from 'renative';
+import { getScaledValue, isEngineWeb } from 'renative';
 import { StyleSheet } from 'react-native';
 
 const theme = {
@@ -17,13 +17,16 @@ export const themeStyles = StyleSheet.create({
         backgroundColor: theme.color1,
         justifyContent: 'center',
         alignItems: 'center',
-        height: isWeb() ? '90vh' : '100%',
+        height: isEngineWeb ? '100vh' : '100%',
+        alignSelf: 'stretch',
+        width: '100%'
     },
-    modalContainer: isWeb() ? {
+    modalContainer: isEngineWeb ? {
         position: 'absolute',
         backgroundColor: theme.color1,
         zIndex: 100,
         top: 0,
+        left: 0,
         height: '100vh',
         width: '100%'
     } : {

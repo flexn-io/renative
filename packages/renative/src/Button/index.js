@@ -7,7 +7,6 @@ const hasFocus = Api.formFactor === 'tv' && Api.platform !== 'tvos';
 
 const styles = StyleSheet.create({
     button: {
-        marginTop: getScaledValue(30),
         marginHorizontal: getScaledValue(20),
         borderWidth: getScaledValue(2),
         borderRadius: getScaledValue(25),
@@ -27,11 +26,11 @@ const styles = StyleSheet.create({
 });
 
 const stylesStatic = {
-  button: {
-    width: getScaledValue(30),
-    marginRight: getScaledValue(10),
-  }
-}
+    button: {
+        width: getScaledValue(30),
+        marginRight: getScaledValue(10),
+    }
+};
 
 const parallax = {
     enabled: true,

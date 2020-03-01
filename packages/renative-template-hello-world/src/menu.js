@@ -1,13 +1,13 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Api, Button, getScaledValue, useNavigate, isWeb } from 'renative';
+import { Api, Button, getScaledValue, useNavigate, isEngineWeb, isFactorMobile, isFactorDesktop } from 'renative';
 import { Link } from '@reach/router';
 import { isTopMenuBased } from './nav';
 import Theme, { themeStyles } from './theme';
 
-const LinkButton = isWeb() ? props => (
+const LinkButton = isEngineWeb ? props => (
     <Link
-        {...props}
+        to={props.to}
         getProps={({ isCurrent }) => ({
             style: {
                 color: isCurrent ? 'white' : 'transparent'
@@ -22,23 +22,28 @@ const LinkButton = isWeb() ? props => (
     />
 );
 
+const isHorizontal = !isFactorMobile && !isFactorDesktop;
+
+console.log('DKJHDKJDHDKHJ', isFactorMobile, isFactorDesktop);
+
 const styles = StyleSheet.create({
     container: {
-        paddingTop: getScaledValue(isWeb() ? 0 : 40),
-        paddingLeft: getScaledValue(isWeb() ? 40 : 20),
-        width: '100%',
+        paddingTop: getScaledValue(isHorizontal ? 20 : 40),
+        paddingLeft: getScaledValue(isHorizontal ? 40 : 40),
+        width: isHorizontal ? '100%' : 280,
         height: '100%',
         backgroundColor: Theme.color1,
-        alignItems: 'center',
-        borderRightWidth: getScaledValue(isWeb() ? 0 : 1),
-        borderBottomWidth: getScaledValue(isWeb() ? 1 : 0),
+        alignItems: 'flex-start',
+        borderRightWidth: getScaledValue(isHorizontal ? 0 : 1),
+        borderBottomWidth: getScaledValue(isHorizontal ? 1 : 0),
         borderColor: Theme.color5,
-        flexDirection: isWeb() ? 'row' : 'column'
+        flexDirection: isHorizontal ? 'row' : 'column'
     },
     button: {
         alignSelf: 'flex-start',
         justifyContent: 'flex-start',
-        marginHorizontal: getScaledValue(20),
+        marginHorizontal: isHorizontal ? getScaledValue(20) : 0,
+        marginTop: isHorizontal ? 0 : getScaledValue(20),
         maxWidth: getScaledValue(400),
         minWidth: getScaledValue(50),
         borderWidth: 0,
@@ -86,7 +91,7 @@ const Menu = (props) => {
                 iconColor={Theme.color3}
                 style={styles.button}
                 onPress={() => {
-                    navigate('my-modal');
+                    navigate('modal');
                 }}
             />
         </View>
