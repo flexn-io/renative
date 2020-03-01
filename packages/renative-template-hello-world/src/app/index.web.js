@@ -3,12 +3,12 @@ import { View } from 'react-native';
 import { Router, createHistory, LocationProvider } from '@reach/router';
 import createHashSource from 'hash-source';
 import { isFactorDesktop } from 'renative';
-import ScreenHome from './screenHome';
-import ScreenMyPage from './screenMyPage';
-import ScreenModal from './screenModal';
-import Menu from './menu';
-import Theme from './theme';
-import '../platformAssets/runtime/fontManager';
+import ScreenHome from '../screenHome';
+import ScreenMyPage from '../screenMyPage';
+import ScreenModal from '../screenModal';
+import Menu from '../menu';
+import Theme from '../theme';
+import '../../platformAssets/runtime/fontManager';
 
 const styles = {
     app: { height: '100vh', width: '100vw', flexDirection: isFactorDesktop ? 'row' : 'column' },

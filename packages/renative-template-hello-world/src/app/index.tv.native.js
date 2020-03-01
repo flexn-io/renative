@@ -3,10 +3,10 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ScreenHome from './screenHome';
-import ScreenMyPage from './screenMyPage';
-import ScreenModal from './screenModal';
-import Menu from './menu';
+import ScreenHome from '../screenHome';
+import ScreenMyPage from '../screenMyPage';
+import ScreenModal from '../screenModal';
+import Menu from '../menu';
 
 const ModalStack = createStackNavigator();
 const TabStack = createMaterialTopTabNavigator();

@@ -5,11 +5,11 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { getScaledValue } from 'renative';
-import ScreenHome from './screenHome';
-import ScreenMyPage from './screenMyPage';
-import ScreenModal from './screenModal';
-import Menu, { DrawerButton } from './menu';
-import Theme from './theme';
+import ScreenHome from '../screenHome';
+import ScreenMyPage from '../screenMyPage';
+import ScreenModal from '../screenModal';
+import Menu, { DrawerButton } from '../menu';
+import Theme from '../theme';
 
 
 const Stack = createStackNavigator();
