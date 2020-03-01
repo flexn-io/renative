@@ -967,6 +967,9 @@
             "ios": {
                 "podName": "RNReanimated"
             },
+            "tvos": {
+                "podName": "RNReanimated"
+            },
             "android": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
@@ -1862,6 +1865,10 @@
         "react-native-safe-area-context": {
             "version": "0.7.2",
             "ios": {
+                "path": "node_modules/react-native-safe-area-context",
+                "podName": "react-native-safe-area-context"
+            },
+            "tvos": {
                 "path": "node_modules/react-native-safe-area-context",
                 "podName": "react-native-safe-area-context"
             }
