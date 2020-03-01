@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, PixelRatio } from 'react-native';
-import { Icon, Button, Api, getScaledValue, isWatch, useNavigate } from 'renative';
+import { Icon, Button, Api, getScaledValue, isWatch, useNavigate, isWeb } from 'renative';
 import config from '../platformAssets/renative.runtime.json';
 import packageJson from '../package.json';
 import Theme, { themeStyles } from './theme';
 
 const styles = StyleSheet.create({
     appContainerScroll: {
-        paddingTop: getScaledValue(50)
+        paddingTop: getScaledValue(50),
+        height: isWeb() ? '90vh' : '100%'
     },
     image: {
         marginBottom: getScaledValue(30),

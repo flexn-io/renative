@@ -10,7 +10,7 @@ import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
 import ScreenModal from './screenModal';
 import Menu from './menu';
-import Theme from './theme';
+import Theme, { themeStyles } from './theme';
 
 
 const Stack = createStackNavigator();
@@ -18,11 +18,6 @@ const ModalStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const styles = StyleSheet.create({
-    menuIcon: {
-        width: getScaledValue(40),
-        height: getScaledValue(40),
-        marginLeft: getScaledValue(10),
-    },
     headerTitle: {
         color: Theme.color3,
         fontFamily: Theme.primaryFontFamily,
@@ -53,7 +48,7 @@ const StackNavigator = ({ navigation }) => (
                         iconFont="ionicons"
                         iconName="md-menu"
                         iconColor={Theme.color3}
-                        style={styles.menuIcon}
+                        style={themeStyles.icon}
                         onPress={() => {
                             navigation.dispatch(DrawerActions.openDrawer());
                         }}
@@ -75,7 +70,7 @@ const ModalNavigator = () => (
 
 const App = props => (
     <NavigationContainer>
-        <Drawer.Navigator drawerContent={Menu}>
+        <Drawer.Navigator drawerContent={props => (<Menu {...props} />)}>
             <Drawer.Screen name="drawer" component={ModalNavigator} />
         </Drawer.Navigator>
     </NavigationContainer>

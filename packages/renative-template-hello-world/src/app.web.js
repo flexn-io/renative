@@ -1,4 +1,5 @@
 import React from 'react';
+import { View } from 'react-native';
 import { Router, createHistory, LocationProvider } from '@reach/router';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
@@ -9,7 +10,7 @@ import '../platformAssets/runtime/fontManager';
 import createHashSource from 'hash-source';
 
 const styles = {
-    app: { height: '100vh', backgroundColor: Theme.color1 }
+    app: { height: '100vh', backgroundColor: Theme.color1, flexDirection: 'column' }
 };
 
 // listen to the browser history
@@ -18,14 +19,16 @@ const history = createHistory(source);
 
 const App = () => (
     <LocationProvider history={history}>
-        <div style={styles.app}>
-            <Menu />
+        <View style={styles.app}>
+            <Router primary={false}>
+                <Menu path="*" style={{ flexDirection: 'row' }} />
+            </Router>
             <Router>
                 <ScreenHome default path="/" />
                 <ScreenMyPage path="my-page/*" />
                 <ScreenModal path="modal" />
             </Router>
-        </div>
+        </View>
     </LocationProvider>);
 
 export default App;

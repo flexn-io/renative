@@ -1,39 +1,23 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Api, Button, getScaledValue, useNavigate } from 'renative';
+import { Api, getScaledValue, useNavigate, isWeb } from 'renative';
+import { Link } from '@reach/router';
 import { isTopMenuBased } from './nav';
-import Theme from './theme';
-
-let isTop;
+import Theme, { themeStyles } from './theme';
+import Button from './linkButton';
 
 const styles = StyleSheet.create({
-    containerVertical: {
-        paddingTop: getScaledValue(40),
-        paddingLeft: getScaledValue(20),
+    container: {
+        paddingTop: getScaledValue(isWeb() ? 0 : 40),
+        paddingLeft: getScaledValue(isWeb() ? 40 : 20),
         width: '100%',
         height: '100%',
         backgroundColor: Theme.color1,
         alignItems: 'center',
-        borderRightWidth: getScaledValue(1),
-        borderRightColor: '#AAAAAA',
-        flexDirection: 'column'
-    },
-    containerHorizontal: {
-        paddingLeft: getScaledValue(40),
-        width: '100%',
-        height: '100%',
-        backgroundColor: Theme.color1,
-        alignItems: 'center',
-        borderBottomWidth: getScaledValue(1),
-        borderBottomColor: '#AAAAAA',
-        flexDirection: 'row'
-    },
-    text: {
-        fontFamily: Theme.primaryFontFamily,
-        color: Theme.color4,
-        fontSize: getScaledValue(20),
-        marginTop: getScaledValue(10),
-        textAlign: 'left',
+        borderRightWidth: getScaledValue(isWeb() ? 0 : 1),
+        borderBottomWidth: getScaledValue(isWeb() ? 1 : 0),
+        borderColor: '#AAAAAA',
+        flexDirection: isWeb() ? 'row' : 'column'
     },
     button: {
         alignSelf: 'flex-start',
@@ -45,16 +29,17 @@ const styles = StyleSheet.create({
     },
 });
 
+
 const Menu = (props) => {
-    isTop = isTopMenuBased();
-    console.log('AHGFAHGFA', props);
     const navigate = useNavigate(props);
     return (
-        <View style={[isTop ? styles.containerHorizontal : styles.containerVertical, props.style]}>
-            <Text style={styles.text}>
+        <View style={styles.container}>
+            <Text style={themeStyles.text}>
                     Menu
             </Text>
+
             <Button
+                to="/"
                 title="Home"
                 iconFont="ionicons"
                 className="focusable"
@@ -65,7 +50,9 @@ const Menu = (props) => {
                     navigate('home');
                 }}
             />
+
             <Button
+                to="my-page"
                 title="My Page"
                 iconFont="ionicons"
                 iconName="md-book"
@@ -77,6 +64,7 @@ const Menu = (props) => {
                 }}
             />
             <Button
+                to="modal"
                 title="My Modal"
                 iconFont="ionicons"
                 className="focusable"

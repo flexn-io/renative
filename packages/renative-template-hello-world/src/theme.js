@@ -1,4 +1,4 @@
-import { getScaledValue } from 'renative';
+import { getScaledValue, isWeb } from 'renative';
 import { StyleSheet } from 'react-native';
 
 const theme = {
@@ -16,6 +16,7 @@ export const themeStyles = StyleSheet.create({
         backgroundColor: theme.color1,
         justifyContent: 'center',
         alignItems: 'center',
+        height: isWeb() ? '90vh' : '100%',
     },
     textH2: {
         fontFamily: theme.primaryFontFamily,
@@ -35,6 +36,13 @@ export const themeStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center'
+    },
+    text: {
+        fontFamily: theme.primaryFontFamily,
+        color: theme.color4,
+        fontSize: getScaledValue(20),
+        marginTop: getScaledValue(10),
+        textAlign: 'left',
     },
     icon: {
         width: getScaledValue(40),
