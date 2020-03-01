@@ -1,4 +1,4 @@
-import { getScaledValue, isEngineWeb } from 'renative';
+import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop } from 'renative';
 import { StyleSheet } from 'react-native';
 
 const theme = {
@@ -11,13 +11,15 @@ const theme = {
     iconSize: getScaledValue(40)
 };
 
+export const isHorizontalMenu = !isFactorMobile && !isFactorDesktop;
+
 export const themeStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: theme.color1,
         justifyContent: 'center',
         alignItems: 'center',
-        height: isEngineWeb ? '100vh' : '100%',
+        minHeight: isEngineWeb ? '90vh' : '100%',
         alignSelf: 'stretch',
         width: '100%'
     },

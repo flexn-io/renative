@@ -24,7 +24,7 @@ const App = () => (
             <Router primary={false}>
                 <Menu path="*" />
             </Router>
-            <div style={{ backgroundColor: 'yellow', height: '100%', width: '100%' }}>
+            <div style={{ height: '100%', width: '100%', backgroundColor: Theme.color1 }}>
                 <Router>
                     <ScreenHome default path="/" />
                     <ScreenMyPage path="my-page/*" />
