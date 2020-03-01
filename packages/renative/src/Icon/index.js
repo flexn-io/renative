@@ -23,12 +23,12 @@ export default class IconComponent extends React.PureComponent {
 
     render() {
         const {
-            iconFont, iconName, iconColor, onPress, style, className, testID
+            iconFont, iconName, iconColor, onPress, style, className, testID, size
         } = this.props;
         const IC = IconMap[iconFont];
         return (
             <TouchableOpacity style={style} onPress={onPress} className={className} testID={testID}>
-                <IC style={{ color: iconColor }} name={iconName} size={style.width || style.height} />
+                <IC style={{ color: iconColor }} name={iconName} size={size || style.width || style.height} />
             </TouchableOpacity>
         );
     }

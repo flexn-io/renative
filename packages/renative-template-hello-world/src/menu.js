@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Api, Button, getScaledValue } from 'renative';
+import { Api, Button, getScaledValue, useNavigate } from 'renative';
 import { isTopMenuBased } from './nav';
 import Theme from './theme';
 
@@ -45,58 +45,50 @@ const styles = StyleSheet.create({
     },
 });
 
-class Menu extends React.Component {
-    constructor(props) {
-        super(props);
-        isTop = isTopMenuBased();
-    }
-
-    render() {
-        return (
-            <View style={[isTop ? styles.containerHorizontal : styles.containerVertical, this.props.style]}>
-                <Text style={styles.text}>
+const Menu = (props) => {
+    isTop = isTopMenuBased();
+    console.log('AHGFAHGFA', props);
+    const navigate = useNavigate(props);
+    return (
+        <View style={[isTop ? styles.containerHorizontal : styles.containerVertical, props.style]}>
+            <Text style={styles.text}>
                     Menu
-                </Text>
-                <Button
-                    title="Home"
-                    iconFont="ionicons"
-                    className="focusable"
-                    iconName="md-home"
-                    iconColor={Theme.color3}
-                    style={styles.button}
-                    onPress={() => {
-                        Api.navigation.navigate('Home', {
-                            onSuccess: () => {
-
-                            }
-                        });
-                    }}
-                />
-                <Button
-                    title="My Page"
-                    iconFont="ionicons"
-                    iconName="md-book"
-                    className="focusable"
-                    iconColor={Theme.color3}
-                    style={styles.button}
-                    onPress={() => {
-                        Api.navigation.navigate('MyPage');
-                    }}
-                />
-                <Button
-                    title="My Modal"
-                    iconFont="ionicons"
-                    className="focusable"
-                    iconName="ios-albums"
-                    iconColor={Theme.color3}
-                    style={styles.button}
-                    onPress={() => {
-                        Api.navigation.navigate('MyModal');
-                    }}
-                />
-            </View>
-        );
-    }
-}
+            </Text>
+            <Button
+                title="Home"
+                iconFont="ionicons"
+                className="focusable"
+                iconName="md-home"
+                iconColor={Theme.color3}
+                style={styles.button}
+                onPress={() => {
+                    navigate('home');
+                }}
+            />
+            <Button
+                title="My Page"
+                iconFont="ionicons"
+                iconName="md-book"
+                className="focusable"
+                iconColor={Theme.color3}
+                style={styles.button}
+                onPress={() => {
+                    navigate('my-page');
+                }}
+            />
+            <Button
+                title="My Modal"
+                iconFont="ionicons"
+                className="focusable"
+                iconName="ios-albums"
+                iconColor={Theme.color3}
+                style={styles.button}
+                onPress={() => {
+                    navigate('my-modal');
+                }}
+            />
+        </View>
+    );
+};
 
 export default Menu;
