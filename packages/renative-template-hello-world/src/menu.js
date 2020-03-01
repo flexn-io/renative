@@ -1,8 +1,8 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Api, Button, getScaledValue, useNavigate, isEngineWeb } from 'renative';
+import { DrawerActions } from '@react-navigation/native';
+import { Button, Icon, getScaledValue, useNavigate, isEngineWeb } from 'renative';
 import { Link } from '@reach/router';
-import { isTopMenuBased } from './nav';
 import Theme, { themeStyles, isHorizontalMenu } from './theme';
 
 const LinkButton = isEngineWeb ? props => (
@@ -22,12 +22,24 @@ const LinkButton = isEngineWeb ? props => (
     />
 );
 
+export const DrawerButton = ({ navigation }) => (
+    <Icon
+        iconFont="ionicons"
+        iconName="md-menu"
+        iconColor={Theme.color3}
+        style={themeStyles.icon}
+        onPress={() => {
+            navigation.dispatch(DrawerActions.openDrawer());
+        }}
+    />
+);
+
 const styles = StyleSheet.create({
     container: {
         paddingTop: getScaledValue(isHorizontalMenu ? 20 : 40),
         paddingLeft: getScaledValue(isHorizontalMenu ? 40 : 40),
         width: isHorizontalMenu ? '100%' : 280,
-        height: '100%',
+        height: isHorizontalMenu ? getScaledValue(80) : '100%',
         backgroundColor: Theme.color1,
         alignItems: 'flex-start',
         borderRightWidth: getScaledValue(isHorizontalMenu ? 0 : 1),

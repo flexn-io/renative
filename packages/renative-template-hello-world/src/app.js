@@ -1,15 +1,15 @@
 
-import * as React from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer, DrawerActions } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { getScaledValue, Icon } from 'renative';
+import { getScaledValue } from 'renative';
 import ScreenHome from './screenHome';
 import ScreenMyPage from './screenMyPage';
 import ScreenModal from './screenModal';
-import Menu from './menu';
-import Theme, { themeStyles } from './theme';
+import Menu, { DrawerButton } from './menu';
+import Theme from './theme';
 
 
 const Stack = createStackNavigator();
@@ -41,17 +41,7 @@ const StackNavigator = ({ navigation }) => (
             name="home"
             component={ScreenHome}
             options={{
-                headerLeft: () => (
-                    <Icon
-                        iconFont="ionicons"
-                        iconName="md-menu"
-                        iconColor={Theme.color3}
-                        style={themeStyles.icon}
-                        onPress={() => {
-                            navigation.dispatch(DrawerActions.openDrawer());
-                        }}
-                    />
-                )
+                headerLeft: () => <DrawerButton navigation={navigation} />
             }}
         />
         <Stack.Screen name="my-page" component={ScreenMyPage} />

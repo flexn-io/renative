@@ -30,4 +30,4 @@ export const getScaledValue = (v) => {
     if (isTizen()) return v * 2;
     if (isWebos()) return v * 2;
     return v;
-}
+};
