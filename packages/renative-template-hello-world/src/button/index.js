@@ -28,7 +28,11 @@ const Button = ({
                 iconName={iconName}
                 iconColor={iconColor}
                 size={iconSize}
-                style={[styles.icon, { width: iconSize, height: iconSize, marginRight: title ? getScaledValue(20) : 0 }]}
+                style={[styles.icon, {
+                    width: iconSize,
+                    height: iconSize,
+                    marginRight: title ? getScaledValue(20) : 0
+                }]}
             />
         ) : null}
         { title ? (

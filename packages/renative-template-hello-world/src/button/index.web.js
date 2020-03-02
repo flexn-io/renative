@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Icon, getScaledValue } from 'renative';
 import { Link } from '@reach/router';
 
@@ -21,7 +21,8 @@ const Button = ({
 }) => {
     const Btn = () => (
         <TouchableOpacity
-            style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
+            style={[styles.button, style,
+                focused ? { opacity: 0.4 } : null]}
             onPress={onPress}
         >
             { iconName ? (

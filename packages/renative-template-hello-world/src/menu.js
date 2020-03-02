@@ -1,26 +1,10 @@
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
-import { Icon, getScaledValue, useNavigate, isEngineWeb, isFactorTv } from 'renative';
-import { Link } from '@reach/router';
-import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import { initNavigation, setKeyMap } from '@noriginmedia/react-spatial-navigation';
+import { Icon, getScaledValue, useNavigate } from 'renative';
+import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
 import MenuButton from './button';
-
-// if (hasWebFocusableUI) {
-//     initNavigation({
-//         debug: false,
-//         visualDebug: false,
-//         nativeMode: false
-//     });
-// }
-
-// const menuItems = [1, 2, 3, 4, 5];
-// const styles2 = {
-//     menuItem: { width: 100, height: 100, backgroundColor: 'yellow' },
-//     focused: { width: 100, height: 100, backgroundColor: 'blue' }
-// };
 
 if (hasWebFocusableUI) {
     initNavigation({
@@ -29,96 +13,6 @@ if (hasWebFocusableUI) {
         nativeMode: false
     });
 }
-
-
-// const LinkButton = isEngineWeb ? props => (
-//     <Link
-//         to={props.to}
-//         getProps={({ isCurrent }) => ({
-//             style: {
-//                 color: isCurrent ? 'white' : 'transparent'
-//             }
-//         })}
-//     >
-//         <Button {...props} />
-//     </Link>
-// ) : props => (
-//     <Button
-//         {...props}
-//     />
-// );
-//
-// const MenuItem1 = ({ focused, stealFocus }) => (
-//
-//     <View
-//         style={[styles2.menuItem, focused ? styles2.focused : null]}
-//
-//     >
-//         <TouchableOpacity
-//             onFocus={() => {
-//                 console.log('SKJSKJSHKJSHSJK22');
-//                 stealFocus();
-//             }}
-//             onPress={() => {
-//                 console.log('SKJSKJSHKJSHSJK');
-//             }}
-//         />
-//     </View>
-//
-// );
-//
-// const MenuItem = ({ focused, stealFocus, to, title }) => (
-//     <Link
-//         to={to}
-//         getProps={({ isCurrent }) => ({
-//             style: {
-//                 color: isCurrent ? 'white' : 'transparent'
-//             }
-//         })}
-//     >
-//         <View
-//             style={[styles2.menuItem, focused ? styles2.focused : null]}
-//         >
-//             <Text style={{}}>
-//                 {title}
-//             </Text>
-//         </View>
-//     </Link>
-// );
-// const MenuItemFocusable = withFocusable({ trackChildren: true })(MenuItem);
-//
-// const Menu = (props) => {
-//     useEffect(() => {
-//         props.setFocus('menukey');
-//     }, []);
-//     return (
-//         <View style={styles.menu}>
-//             <MenuItemFocusable
-//                 title="Hello"
-//                 to="/"
-//                 onEnterPress={() => {
-//                     console.log('SKJSKJSHKJSHSJKqqqqqq');
-//                 }}
-//             />
-//             <MenuItemFocusable to="/my-page" title="MyPage" />
-//             <MenuItemFocusable to="/modal" title="Modal" />
-//         </View>
-//     );
-// };
-// const MenuFocusable = withFocusable()(Menu);
-//
-// export default MenuFocusable;
-
-
-// const Component = ({ focused, stealFocus }) => (
-//     <TouchableOpacity>
-//         <View style={[{ width: 50, height: 50 }, focused ? { backgroundColor: 'red' } : { backgroundColor: 'blue' }]} />
-//     </TouchableOpacity>
-// );
-// const LinkButton = withFocusable({
-//     trackChildren: true,
-//     forgetLastFocusedChild: true
-// })(Component);
 
 export const DrawerButton = ({ navigation }) => (
     <Icon
