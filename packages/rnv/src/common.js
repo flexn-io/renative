@@ -242,6 +242,16 @@ export const configureIfRequired = async (c, platform) => {
     await CLI(c, nc);
 };
 
+export const isMonorepo = () => {
+    try {
+        fs.existsSync(path.resolve(__dirname, '../../../lerna.json'));
+        return true;
+    }
+    catch (_err) {
+        return false;
+    }
+}
+
 export const getBinaryPath = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const id = getConfigProp(c, platform, 'id');
@@ -273,8 +283,13 @@ export const getBinaryPath = (c, platform) => {
     }
 };
 
-export const doResolve = (aPath) => {
-    return resolve.sync(aPath).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1]
+export const doResolve = (aPath, mandatory = true) => {
+    try {
+        return resolve.sync(aPath).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
+    }
+    catch (err) {
+        if (mandatory) throw err;
+    }
 }
 
 export const writeCleanFile = (source, destination, overrides) => {
