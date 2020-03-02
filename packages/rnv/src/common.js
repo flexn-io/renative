@@ -5,7 +5,7 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
-import resolve from 'resolve'
+import reslve from 'resolve';
 import colorString from 'color-string';
 import crypto from 'crypto';
 import { getValidLocalhost } from './utils';
@@ -273,9 +273,15 @@ export const getBinaryPath = (c, platform) => {
     }
 };
 
-export const doResolve = (aPath) => {
-    return resolve.sync(aPath).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1]
-}
+export const doResolve = (aPath, mandatory = true) => {
+    try {
+        return reslve.sync(aPath).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
+    } catch (err) {
+        // perhaps do some warning logging here..
+        if (mandatory) throw err;
+        return false;
+    }
+};
 
 export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)

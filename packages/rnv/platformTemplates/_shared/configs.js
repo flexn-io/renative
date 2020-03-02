@@ -4,11 +4,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const resolve = require('resolve')
+const resolve = require('resolve');
 
 function doResolve(aPath, config, mandatory = true) {
     try {
-        return resolve.sync(aPath, {extensions: config.extensions.map(ext => `.${ext}`)}).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1]
+        return resolve.sync(aPath, { extensions: config.extensions.map(ext => `.${ext}`) }).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
     } catch (err) {
         // perhaps do some warning logging here..
         if (mandatory) throw err;
@@ -16,7 +16,6 @@ function doResolve(aPath, config, mandatory = true) {
 }
 
 function generateConfig(config) {
-
     const projectDir = path.resolve(config.currentDir, '../../');
     const platformBuildsDir = path.resolve(config.currentDir, '../');
     const platformBuildsSharedDir = path.join(platformBuildsDir, '_shared');

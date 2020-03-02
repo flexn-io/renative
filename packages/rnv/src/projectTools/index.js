@@ -4,7 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import {
-    getAppFolder,
+    getAppFolder, doResolve,
 } from '../common';
 import { isPlatformActive } from '../platformTools';
 import {
@@ -41,7 +41,6 @@ import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 import Config from '../config';
-import { commandExistsSync, executeAsync } from '../systemTools/exec';
 
 export const rnvConfigure = async (c) => {
     const p = c.platform || 'all';
@@ -175,12 +174,11 @@ const _checkAndCreatePlatforms = async (c, platform) => {
     }
 };
 
-const overridePlugins = (c, pluginsPath) => new Promise((resolve) => {
+const overridePlugins = async (c, pluginsPath) => {
     logTask(`overridePlugins:${pluginsPath}`, chalk.grey);
 
     if (!fs.existsSync(pluginsPath)) {
         logInfo(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
-        resolve();
         return;
     }
 
@@ -194,13 +192,12 @@ const overridePlugins = (c, pluginsPath) => new Promise((resolve) => {
             _overridePlugins(c, pluginsPath, dir);
         }
     });
-
-    resolve();
-});
+};
 
 const _overridePlugins = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
-    const dest = path.resolve(c.paths.project.dir, 'node_modules', dir);
+    const dest = doResolve(dir, false);
+    if (!dest) return;
 
     if (fs.existsSync(source)) {
         copyFolderContentsRecursiveSync(source, dest, false);
