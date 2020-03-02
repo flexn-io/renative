@@ -981,7 +981,11 @@
             },
             "webpack": {
                 "modulePaths": true,
-                "moduleAliases": true
+                "moduleAliases": {
+                    "react-native-reanimated": {
+                        "projectPath": "node_modules/react-native-reanimated/web/Animated.js"
+                    }
+                }
             }
         },
         "react-native-screens": {

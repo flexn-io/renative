@@ -10,7 +10,6 @@ import Menu from '../menu';
 
 const ModalStack = createStackNavigator();
 const TabStack = createMaterialTopTabNavigator();
-console.disableYellowBox = true;
 
 const TabNavigator = () => (
     <TabStack.Navigator tabBar={props => <Menu {...props} />} removeClippedSubviews swipeEnabled={false} animationEnabled={false}>

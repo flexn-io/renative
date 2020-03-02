@@ -23,7 +23,7 @@ export const isFirefoxos = () => platform === FIREFOX_OS;
 export const isFirefoxtv = () => platform === FIREFOX_TV;
 export const isKaios = () => platform === KAIOS;
 
-export const isEngineWeb = platform === WEB || platform === TIZEN || platform === WEBOS || platform === MACOS;
+export const isEngineWeb = platform === WEB || platform === TIZEN || platform === WEBOS || platform === MACOS || platform === TIZEN_MOBILE || platform === TIZEN_WATCH;
 
 
 export const isBrowser = () => factor === 'browser';

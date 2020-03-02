@@ -2,7 +2,8 @@
 
 export function useNavigate(props) {
     function navigate(route, opts, params) {
-        props.navigate(route, opts);
+        if (props.navigate) props.navigate(route, opts);
+        else props.navigation.navigate(route, params);
     }
     return navigate;
 }
@@ -10,7 +11,8 @@ export function useNavigate(props) {
 
 export function usePop(props) {
     function pop() {
-        props.navigate('../', { replace: false });
+        if (props.navigate) props.navigate('../', { replace: false });
+        props.navigation.pop();
     }
     return pop;
 }

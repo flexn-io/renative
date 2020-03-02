@@ -1,1 +1,1 @@
-export default 'androidwear';
+export default 'rn';

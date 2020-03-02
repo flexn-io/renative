@@ -2,7 +2,9 @@ import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop, isFactorT
 import { StyleSheet } from 'react-native';
 
 export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop;
+export const hasMobileWebUI = isFactorMobile && isEngineWeb;
 export const hasWebFocusableUI = isEngineWeb && isFactorTv;
+console.disableYellowBox = true;
 
 const theme = {
     color1: '#222222',
@@ -12,7 +14,7 @@ const theme = {
     color5: '#AAAAAA',
     primaryFontFamily: 'TimeBurner',
     iconSize: getScaledValue(40),
-    menuWidth: hasHorizontalMenu ? '100%' : 280,
+    menuWidth: hasHorizontalMenu || hasMobileWebUI ? '100%' : 280,
     menuHeight: hasHorizontalMenu ? getScaledValue(80) : '100%'
 };
 

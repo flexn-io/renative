@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
-import { Icon, getScaledValue, useNavigate } from 'renative';
+import { Icon, getScaledValue, useNavigate, isEngineWeb } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
 import MenuButton from './button';
@@ -19,9 +19,11 @@ export const DrawerButton = ({ navigation }) => (
         iconFont="ionicons"
         iconName="md-menu"
         iconColor={Theme.color3}
+        size={Theme.iconSize}
         style={themeStyles.icon}
         onPress={() => {
-            navigation.dispatch(DrawerActions.openDrawer());
+            console.log('KJDHDKJHD', isEngineWeb);
+            isEngineWeb ? navigation.navigate('Drawer') : navigation.dispatch(DrawerActions.openDrawer());
         }}
     />
 );

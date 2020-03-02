@@ -6,7 +6,6 @@ import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 
 const Stack = createStackNavigator();
-console.disableYellowBox = true;
 
 const App = () => (
     <NavigationContainer>
