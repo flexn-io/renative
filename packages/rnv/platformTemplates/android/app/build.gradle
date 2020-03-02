@@ -15,7 +15,7 @@ project.ext.react = [
     root: "../../../",
 ]
 
-apply from: "../../../node_modules/react-native/react.gradle"
+apply from: "{{PATH_REACT_NATIVE}}/react.gradle"
 
 def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false
