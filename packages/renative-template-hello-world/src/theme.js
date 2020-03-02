@@ -1,6 +1,9 @@
 import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop, isFactorTv } from 'renative';
 import { StyleSheet } from 'react-native';
 
+export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop;
+export const hasWebFocusableUI = isEngineWeb && isFactorTv;
+
 const theme = {
     color1: '#222222',
     color2: '#62DBFB',
@@ -9,11 +12,9 @@ const theme = {
     color5: '#AAAAAA',
     primaryFontFamily: 'TimeBurner',
     iconSize: getScaledValue(40),
-    menuHeight: getScaledValue(80)
+    menuWidth: hasHorizontalMenu ? '100%' : 280,
+    menuHeight: hasHorizontalMenu ? getScaledValue(80) : '100%'
 };
-
-export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop;
-export const hasWebFocusableUI = isEngineWeb && isFactorTv;
 
 export const themeStyles = StyleSheet.create({
     container: {
@@ -23,6 +24,18 @@ export const themeStyles = StyleSheet.create({
         minHeight: getScaledValue(300),
         alignSelf: 'stretch',
         width: '100%'
+    },
+    modalContainer: isEngineWeb ? {
+        position: 'absolute',
+        backgroundColor: theme.color1,
+        zIndex: 100,
+        top: 0,
+        left: 0,
+        height: '100vh',
+        width: '100%'
+    } : {
+        flex: 1,
+        backgroundColor: theme.color1
     },
     textH2: {
         fontFamily: theme.primaryFontFamily,
@@ -59,7 +72,7 @@ export const themeStyles = StyleSheet.create({
         marginHorizontal: getScaledValue(20),
         borderWidth: getScaledValue(2),
         borderRadius: getScaledValue(25),
-        borderColor: '#62DBFB',
+        borderColor: theme.color2,
         height: getScaledValue(50),
         minWidth: getScaledValue(150),
         maxWidth: getScaledValue(200),
@@ -67,15 +80,25 @@ export const themeStyles = StyleSheet.create({
 
     },
     buttonText: {
-        fontFamily: 'TimeBurner',
-        color: '#62DBFB',
+        fontFamily: theme.primaryFontFamily,
+        color: theme.color2,
         fontSize: getScaledValue(20),
     },
     screen: {
-        position: 'absolute', backgroundColor: theme.color1, top: 0, left: 0, right: 0, bottom: 0
+        position: 'absolute',
+        backgroundColor: theme.color1,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
     },
     screenModal: {
-        position: 'absolute', backgroundColor: theme.color1, top: -theme.menuHeight, left: 0, right: 0, bottom: 0
+        position: 'absolute',
+        backgroundColor: theme.color1,
+        top: hasHorizontalMenu && isEngineWeb ? -theme.menuHeight : 0,
+        left: 0,
+        right: 0,
+        bottom: 0
     }
 });
 

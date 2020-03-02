@@ -15,6 +15,7 @@ import Theme from '../theme';
 const Stack = createStackNavigator();
 const ModalStack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+console.disableYellowBox = true;
 
 const styles = StyleSheet.create({
     headerTitle: {

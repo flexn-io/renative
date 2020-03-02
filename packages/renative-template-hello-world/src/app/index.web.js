@@ -7,11 +7,9 @@ import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 import ScreenModal from '../screenModal';
 import Menu from '../menu';
-import Theme, { hasWebFocusableUI } from '../theme';
+import Theme, { hasWebFocusableUI, hasHorizontalMenu } from '../theme';
 import '../../platformAssets/runtime/fontManager';
 import { initNavigation, setKeyMap } from '@noriginmedia/react-spatial-navigation';
-
-// initNavigation();
 
 const styles = StyleSheet.create({
     app: {
@@ -21,17 +19,17 @@ const styles = StyleSheet.create({
 
 const stylesWeb = {
     container: {
-        position: 'absolute', top: Theme.menuHeight, right: 0, left: 0, bottom: 0
+        position: 'absolute',
+        top: hasHorizontalMenu ? Theme.menuHeight : 0,
+        right: 0,
+        left: hasHorizontalMenu ? 0 : Theme.menuWidth,
+        bottom: 0
     }
 };
 
 const source = createHashSource();
 const history = createHistory(source);
-// registerFocusManger({ focused: 'opacity: 0.4' });
 if (isFactorBrowser) registerServiceWorker();
-
-// Flag to enable yellow warnings
-console.disableYellowBox = true;
 
 const App = () => (
     <LocationProvider history={history}>

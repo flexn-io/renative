@@ -22,11 +22,13 @@ import MenuButton from './button';
 //     focused: { width: 100, height: 100, backgroundColor: 'blue' }
 // };
 
-initNavigation({
-    debug: false,
-    visualDebug: false,
-    nativeMode: false
-});
+if (hasWebFocusableUI) {
+    initNavigation({
+        debug: false,
+        visualDebug: false,
+        nativeMode: false
+    });
+}
 
 
 // const LinkButton = isEngineWeb ? props => (
@@ -134,8 +136,8 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: getScaledValue(hasHorizontalMenu ? 20 : 40),
         paddingLeft: getScaledValue(hasHorizontalMenu ? 40 : 40),
-        width: hasHorizontalMenu ? '100%' : 280,
-        height: hasHorizontalMenu ? getScaledValue(80) : '100%',
+        width: Theme.menuWidth,
+        height: Theme.menuHeight,
         backgroundColor: Theme.color1,
         alignItems: 'flex-start',
         borderRightWidth: getScaledValue(hasHorizontalMenu ? 0 : 1),

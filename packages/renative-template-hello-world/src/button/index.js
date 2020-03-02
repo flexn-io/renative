@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { DrawerActions } from '@react-navigation/native';
-import { Icon, getScaledValue, useNavigate, isEngineWeb, isFactorTv } from 'renative';
-import { Link } from '@reach/router';
-import { withFocusable } from '@noriginmedia/react-spatial-navigation';
-import { initNavigation, setKeyMap } from '@noriginmedia/react-spatial-navigation';
+import React from 'react';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon, getScaledValue } from 'renative';
 
 const styles = StyleSheet.create({
     button: {
@@ -18,18 +14,28 @@ const styles = StyleSheet.create({
     }
 });
 
-
 const Button = ({
-    focused, stealFocus, to, title, iconFont, iconName, iconColor, iconSize, style, textStyle, selectedStyle, onPress
+    focused, stealFocus, to, title, iconFont, iconName, iconColor,
+    iconSize, style, textStyle, selectedStyle, onPress
 }) => (
     <TouchableOpacity
         style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
         onPress={onPress}
     >
-        <Icon iconFont={iconFont} iconName={iconName} iconColor={iconColor} size={iconSize} style={styles.icon} />
-        <Text style={textStyle}>
-            {title}
-        </Text>
+        { iconName ? (
+            <Icon
+                iconFont={iconFont}
+                iconName={iconName}
+                iconColor={iconColor}
+                size={iconSize}
+                style={[styles.icon, { width: iconSize, height: iconSize, marginRight: title ? getScaledValue(20) : 0 }]}
+            />
+        ) : null}
+        { title ? (
+            <Text style={textStyle}>
+                {title}
+            </Text>
+        ) : null}
     </TouchableOpacity>
 );
 

@@ -26,10 +26,12 @@ const Button = ({
         style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
         onPress={onPress}
     >
-        <Icon iconFont={iconFont} iconName={iconName} iconColor={iconColor} size={iconSize} style={styles.icon} />
-        <Text style={textStyle}>
-            {title}
-        </Text>
+        { iconName ? (<Icon iconFont={iconFont} iconName={iconName} iconColor={iconColor} size={iconSize} style={[styles.icon, { width: iconSize, height: iconSize, marginRight: title ? getScaledValue(20) : 0 }]} />) : null}
+        { title ? (
+            <Text style={textStyle}>
+                {title}
+            </Text>
+        ) : null}
     </TouchableOpacity>
 );
 
