@@ -96,7 +96,7 @@ export const themeStyles = StyleSheet.create({
         position: 'absolute',
         backgroundColor: theme.color1,
         top: hasHorizontalMenu && isEngineWeb ? -theme.menuHeight : 0,
-        left: 0,
+        left: hasHorizontalMenu && isEngineWeb ? 0 : -theme.menuWidth,
         right: 0,
         bottom: 0
     }

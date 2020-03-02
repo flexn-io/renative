@@ -1,7 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import { Icon, getScaledValue } from 'renative';
 import { Link } from '@reach/router';
+import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 
 const styles = StyleSheet.create({
     button: {
@@ -17,12 +18,11 @@ const styles = StyleSheet.create({
 
 const Button = ({
     focused, stealFocus, to, title, iconFont, iconName,
-    iconColor, iconSize, style, textStyle, selectedStyle, onPress
+    iconColor, iconSize, style, textStyle, selectedStyle
 }) => {
     const Btn = () => (
-        <TouchableOpacity
+        <View
             style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
-            onPress={onPress}
         >
             { iconName ? (
                 <Icon
@@ -38,7 +38,7 @@ const Button = ({
                     {title}
                 </Text>
             ) : null}
-        </TouchableOpacity>
+        </View>
     );
     if (to) {
         return (
@@ -57,4 +57,4 @@ const Button = ({
     return (<Btn />);
 };
 
-export default Button;
+export default withFocusable()(Button);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
 import { Icon, Api, getScaledValue, useNavigate, isEngineWeb } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
@@ -20,10 +20,23 @@ const styles = StyleSheet.create({
     }
 });
 
+const FocusableView = withFocusable()(View);
+
 const ScreenHome = (props) => {
     const [bgColor, setBgColor] = useState(Theme.color1);
     const navigate = useNavigate(props);
+    let scrollRef;
+    let handleFocus;
+    let handleUp;
+
     if (hasWebFocusableUI) {
+        scrollRef = useRef(null);
+        handleFocus = ({ y }) => {
+            scrollRef.current.scrollTo({ y });
+        };
+        handleUp = (direction) => {
+            if (direction === 'up') scrollRef.current.scrollTo({ y: 0 });
+        };
         useEffect(() => function cleanup() {
             props.setFocus('menu');
         }, []);
@@ -32,6 +45,7 @@ const ScreenHome = (props) => {
         <View style={themeStyles.screen}>
             <ScrollView
                 style={{ backgroundColor: bgColor }}
+                ref={scrollRef}
                 contentContainerStyle={themeStyles.container}
             >
                 <Image style={styles.image} source={icon} />
@@ -62,6 +76,8 @@ v
                     onEnterPress={() => {
                         setBgColor(bgColor === '#666666' ? Theme.color1 : '#666666');
                     }}
+                    onBecameFocused={handleFocus}
+                    onArrowPress={handleUp}
                 />
                 <Button
                     style={themeStyles.button}
@@ -74,11 +90,13 @@ v
                     onEnterPress={() => {
                         navigate('my-page', { replace: false });
                     }}
+                    onBecameFocused={handleFocus}
                 />
-                <View style={{ marginTop: 20, flexDirection: 'row' }}>
+                <FocusableView style={{ marginTop: 20, flexDirection: 'row' }} onBecameFocused={handleFocus}>
                     <Button
                         iconFont="fontAwesome"
                         className="focusable"
+                        focusKey="github"
                         iconName="github"
                         iconColor={Theme.color3}
                         iconSize={Theme.iconSize}
@@ -88,11 +106,12 @@ v
                         iconFont="fontAwesome"
                         className="focusable"
                         iconName="twitter"
+                        focusKey="twitter"
                         iconColor={Theme.color3}
                         iconSize={Theme.iconSize}
                         style={themeStyles.icon}
                     />
-                </View>
+                </FocusableView>
             </ScrollView>
         </View>
     );
