@@ -4,11 +4,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const resolve = require('resolve')
+const resolve = require('resolve');
 
 function doResolve(aPath, config, mandatory = true) {
     try {
-        return resolve.sync(aPath, {extensions: config.extensions.map(ext => `.${ext}`)}).match(new RegExp(`(^.*node_modules/${aPath})/?`))[1]
+        return resolve
+            .sync(aPath, {
+                extensions: config.extensions.map(ext => `.${ext}`)
+            })
+            .match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
     } catch (err) {
         // perhaps do some warning logging here..
         if (mandatory) throw err;
@@ -16,12 +20,14 @@ function doResolve(aPath, config, mandatory = true) {
 }
 
 function generateConfig(config) {
-
     const projectDir = path.resolve(config.currentDir, '../../');
     const platformBuildsDir = path.resolve(config.currentDir, '../');
     const platformBuildsSharedDir = path.join(platformBuildsDir, '_shared');
     const appBuildDir = path.resolve(config.currentDir);
-    const appBuildPublicDir = path.resolve(config.currentDir, config.buildFolder || 'public');
+    const appBuildPublicDir = path.resolve(
+        config.currentDir,
+        config.buildFolder || 'public'
+    );
 
     const baseUrl = config.baseUrl || '';
     const devServerHost = config.devServerHost || '0.0.0.0';
@@ -29,9 +35,11 @@ function generateConfig(config) {
     const relativeModules = [
         'index.webos.js',
         'index.tizen.js',
-        'src',
+        'src'
         // 'packages'
-    ].concat(config.modulePaths).map(p => path.resolve(projectDir, p));
+    ]
+        .concat(config.modulePaths)
+        .map(p => path.resolve(projectDir, p));
     const externalModules = [
         'react-native-screens',
         'react-navigation-tabs',
@@ -86,8 +94,11 @@ function generateConfig(config) {
         'react-native-orientation-locker',
         'react-navigation',
         '@react-navigation/native',
-        'rnv-platform-info'].map(pkg => doResolve(pkg, config, false));
-    const modulePaths = [...relativeModules, ...externalModules].filter(Boolean);
+        'rnv-platform-info'
+    ].map(pkg => doResolve(pkg, config, false));
+    const modulePaths = [...relativeModules, ...externalModules].filter(
+        Boolean
+    );
 
     console.log('modulePaths :', modulePaths);
 
@@ -101,35 +112,41 @@ function generateConfig(config) {
             options: {
                 babelrc: false,
                 plugins: ['@babel/plugin-proposal-class-properties'],
-                presets: ['module:metro-react-native-babel-preset', ['@babel/preset-env', {
-                    forceAllTransforms: true,
-                    targets: 'Samsung 4',
-                    spec: true,
-                }]],
-            },
-        },
+                presets: [
+                    'module:metro-react-native-babel-preset',
+                    [
+                        '@babel/preset-env',
+                        {
+                            forceAllTransforms: true,
+                            targets: 'Samsung 4',
+                            spec: true
+                        }
+                    ]
+                ]
+            }
+        }
     };
 
     rules.css = {
         test: /\.css$/,
         use: ['css-hot-loader'].concat(
             {
-                loader: MiniCssExtractPlugin.loader,
+                loader: MiniCssExtractPlugin.loader
             },
-            'css-loader',
-        ),
+            'css-loader'
+        )
     };
 
     rules.image = {
         test: /\.(gif|jpe?g|png|svg)$/,
         use: {
-            loader: 'react-native-web-image-loader',
-        },
+            loader: 'react-native-web-image-loader'
+        }
     };
 
     rules.fonts = {
         test: /\.(woff|woff2|eot|ttf|otf)(\?[\s\S]+)?$/,
-        use: 'file-loader',
+        use: 'file-loader'
     };
 
     rules.sourcemap = {
@@ -142,9 +159,12 @@ function generateConfig(config) {
     const aliases = {
         react: doResolve('react', config),
         'react-native': 'react-native-web',
-        'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-        'react-native-vector-icons': doResolve('react-native-vector-icons', config),
-
+        'react-native/Libraries/Renderer/shims/ReactNativePropRegistry':
+            'react-native-web/dist/modules/ReactNativePropRegistry',
+        'react-native-vector-icons': doResolve(
+            'react-native-vector-icons',
+            config
+        )
     };
 
     if (config.moduleAliases) {
@@ -152,7 +172,10 @@ function generateConfig(config) {
             if (typeof config.moduleAliases[key] === 'string') {
                 aliases[key] = config.moduleAliases[key];
             } else {
-                aliases[key] = path.resolve(projectDir, config.moduleAliases[key].projectPath);
+                aliases[key] = path.resolve(
+                    projectDir,
+                    config.moduleAliases[key].projectPath
+                );
             }
         }
     }
@@ -161,7 +184,7 @@ function generateConfig(config) {
 
     plugins.webpack = new webpack.DefinePlugin({
         'process.env.NODE_ENV': JSON.stringify(config.environment),
-        __DEV__: config.environment === 'production' || true,
+        __DEV__: config.environment === 'production' || true
     });
 
     plugins.html = new HtmlWebpackPlugin({
@@ -174,8 +197,8 @@ function generateConfig(config) {
             debug: process.env.DEBUG,
             debugIp: process.env.DEBUG_IP,
             platform: process.env.PLATFORM,
-            environment: config.environment,
-        },
+            environment: config.environment
+        }
     });
 
     plugins.harddisk = new HtmlWebpackHarddiskPlugin();
@@ -189,17 +212,17 @@ function generateConfig(config) {
     const output = {
         filename: '[name].js',
         publicPath: `${baseUrl}assets/`,
-        path: path.join(appBuildPublicDir, 'assets'),
+        path: path.join(appBuildPublicDir, 'assets')
     };
 
     const devServer = {
-        host: devServerHost,
+        host: devServerHost
     };
 
     const entry = {
         fetch: 'whatwg-fetch',
         polyfill: 'babel-polyfill',
-        bundle: path.resolve(projectDir, `${config.entryFile}.js`),
+        bundle: path.resolve(projectDir, `${config.entryFile}.js`)
     };
 
     return {
@@ -214,10 +237,10 @@ function generateConfig(config) {
         platformBuildsDir,
         appBuildDir,
         appBuildPublicDir,
-        platformBuildsSharedDir,
+        platformBuildsSharedDir
     };
 }
 
 module.exports = {
-    generateConfig,
+    generateConfig
 };

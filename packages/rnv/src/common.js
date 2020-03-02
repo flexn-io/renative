@@ -339,6 +339,7 @@ export const doResolve = (aPath, mandatory = true) => {
             .match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
     } catch (err) {
         if (mandatory) throw err;
+        return false;
     }
 };
 
