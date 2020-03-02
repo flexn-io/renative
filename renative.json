@@ -46,7 +46,8 @@
             "tizenmobile",
             "kaios",
             "firefoxos",
-            "firefoxtv"
+            "firefoxtv",
+            "web-next"
         ],
         "schemes": {
             "run": "debug",

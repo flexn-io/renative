@@ -37,6 +37,7 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    WEB_NEXT,
 } from '../constants';
 import {
     runXcodeProject,
@@ -46,6 +47,7 @@ import {
     runAppleLog
 } from './apple';
 import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
+import { runWebNext } from './web/webNext';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -306,6 +308,13 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
             }
             return runFirefoxProject(c, platform);
+        case WEB_NEXT:
+            if (!c.program.only) {
+                await cleanPlatformIfRequired(c, platform);
+                await configureIfRequired(c, platform);
+            }
+            c.runtime.shouldOpenBrowser = true;
+            return runWebNext(c, platform, port, true);
         default:
             return logErrorPlatform(c, platform);
     }

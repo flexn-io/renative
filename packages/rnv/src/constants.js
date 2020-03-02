@@ -47,6 +47,7 @@ export const WP10 = 'wp10';
 export const WP8 = 'wp8';
 export const XBOX = 'xbox';
 export const XBOX360 = 'xbox360';
+export const WEB_NEXT = 'web-next';
 // Kodi, Boxee, HorizonTV, Mediaroom(Ericsson), YahooSmartTV, Slingbox, Hololens, Occulus, GearVR, WebVR
 
 export const ICONS = {
@@ -76,6 +77,18 @@ export const PLATFORMS = {
     // ACTIVE
     web: {
         defaultPort: 8080,
+        icon: ICONS.BROWSER,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: {
+            factors: ['browser.js'],
+            platforms: ['web.js'],
+            fallbacks: ['mjs', 'js', 'tsx', 'ts']
+        }
+    },
+    'web-next': {
+        defaultPort: 8100,
         icon: ICONS.BROWSER,
         supportedOS: OS.ALL,
         isActive: true,
@@ -447,6 +460,7 @@ export const SUPPORTED_PLATFORMS = [
     ANDROID_TV,
     ANDROID_WEAR,
     WEB,
+    WEB_NEXT,
     TIZEN,
     TIZEN_MOBILE,
     TVOS,

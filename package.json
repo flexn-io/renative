@@ -105,7 +105,11 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative"
+        "renative": "file:./packages/renative",
+        "@zeit/next-css": "1.0.1",
+        "next": "9.2.1",
+        "next-routes": "1.4.2",
+        "react-native-screens": "^1.0.0-alpha.15"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
