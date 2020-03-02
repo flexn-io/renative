@@ -7,6 +7,7 @@ import registerServiceWorker from './serviceWorker';
 import registerFocusManger from './focus';
 import platform from './Api/platform';
 import factor from './Api/factor';
+import engine from './Api/engine';
 import { useNavigate, usePop } from './hooks/navigation';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR, IOS, TVOS, WEB, WEBOS, TIZEN, TIZEN_WATCH, TIZEN_MOBILE, MACOS, WINDOWS, FIREFOX_OS, FIREFOX_TV, KAIOS } from './Constants';
 import {
@@ -83,7 +84,8 @@ export {
     useNavigate,
     usePop,
     // ENGINE
-    isEngineWeb
+    isEngineWeb,
+    engine
 };
 //
 // export default {

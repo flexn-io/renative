@@ -57,7 +57,7 @@ v
                     {packageJson.version}
                 </Text>
                 <Text style={themeStyles.textH3}>
-                    {`platform: ${Api.platform}, factor: ${Api.formFactor}`}
+                    {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
                 </Text>
                 <Text style={themeStyles.textH3}>
                     {`hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`}
