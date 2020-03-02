@@ -333,7 +333,10 @@ export const doResolve = (aPath, mandatory = true) => {
             .sync(aPath, {
                 extensions: ['.js', '.json'],
                 packageFilter: (pkg, _pkgfile) => {
-                    pkg.main = 'package.json';
+                    if (typeof pkg.main === 'undefined') {
+                        pkg.main = 'package.json';
+                    }
+                    return pkg;
                 }
             })
             .match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
