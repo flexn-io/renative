@@ -6,11 +6,17 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const resolve = require('resolve');
 
-function doResolve(aPath, config, mandatory = true) {
+function doResolve(aPath, mandatory = true) {
     try {
         return resolve
             .sync(aPath, {
-                extensions: config.extensions.map(ext => `.${ext}`)
+                extensions: ['.js', '.json'],
+                packageFilter: pkg => {
+                    if (typeof pkg.main === 'undefined') {
+                        pkg.main = 'package.json';
+                    }
+                    return pkg;
+                }
             })
             .match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
     } catch (err) {
@@ -95,7 +101,7 @@ function generateConfig(config) {
         'react-navigation',
         '@react-navigation/native',
         'rnv-platform-info'
-    ].map(pkg => doResolve(pkg, config, false));
+    ].map(pkg => doResolve(pkg, false));
     const modulePaths = [...relativeModules, ...externalModules].filter(
         Boolean
     );
@@ -157,14 +163,11 @@ function generateConfig(config) {
     };
 
     const aliases = {
-        react: doResolve('react', config),
+        react: doResolve('react'),
         'react-native': 'react-native-web',
         'react-native/Libraries/Renderer/shims/ReactNativePropRegistry':
             'react-native-web/dist/modules/ReactNativePropRegistry',
-        'react-native-vector-icons': doResolve(
-            'react-native-vector-icons',
-            config
-        )
+        'react-native-vector-icons': doResolve('react-native-vector-icons')
     };
 
     if (config.moduleAliases) {

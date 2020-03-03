@@ -327,23 +327,39 @@ export const getBinaryPath = (c, platform) => {
     }
 };
 
-export const doResolve = (aPath, mandatory = true) => {
+export const doResolve = (aPath, mandatory = true, options = {}) => {
     try {
+        if (aPath.startsWith('file:')) {
+            const fileRelPath = `${
+                options.basedir
+                    ? `${options.basedir}/`.replace(/.*\/+$/, '/')
+                    : ''
+            }${aPath.replace('file:', '')}`;
+            if (!fs.existsSync(fileRelPath))
+                throw new Error(
+                    `Explicit filepath ${aPath} does not resolve to dir or file`
+                );
+        }
         return resolve
             .sync(aPath, {
-                extensions: ['.js', '.json'],
-                packageFilter: (pkg, _pkgfile) => {
+                packageFilter: pkg => {
                     if (typeof pkg.main === 'undefined') {
                         pkg.main = 'package.json';
                     }
                     return pkg;
-                }
+                },
+                ...options,
+                extensions: ['.js', '.json'].concat(options.extensions ?? [])
             })
             .match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
     } catch (err) {
+        // perhaps do some warning logging here..
         if (mandatory) throw err;
-        return false;
     }
+};
+
+export const areNodeModulesInstalled = () => {
+    return !!doResolve('react', false);
 };
 
 export const writeCleanFile = (source, destination, overrides) => {
@@ -404,13 +420,13 @@ export const checkPortInUse = (c, platform, port) =>
         });
     });
 
-export const resolveNodeModulePath = (c, filePath) => {
-    let pth = path.join(c.paths.rnv.nodeModulesDir, filePath);
-    if (!fs.existsSync(pth)) {
-        pth = path.join(c.paths.project.nodeModulesDir, filePath);
-    }
-    return pth;
-};
+// export const resolveNodeModulePath = (c, filePath) => {
+//     let pth = path.join(c.paths.rnv.nodeModulesDir, filePath);
+//     if (!fs.existsSync(pth)) {
+//         pth = path.join(c.paths.project.nodeModulesDir, filePath);
+//     }
+//     return pth;
+// };
 
 export const getFlavouredProp = (c, obj, key) => {
     if (!key) return null;
@@ -528,8 +544,9 @@ export const waitForWebpack = async c => {
 };
 export const importPackageFromProject = name => {
     const c = Config.getConfig();
-    // eslint-disable-next-line global-require, import/no-dynamic-require
-    const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
+    // const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const pkg = require(doResolve(name));
     if (pkg.default) return pkg.default;
     return pkg;
 };
@@ -557,6 +574,6 @@ export default {
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
-    resolveNodeModulePath,
+    // resolveNodeModulePath,
     waitForEmulator
 };
