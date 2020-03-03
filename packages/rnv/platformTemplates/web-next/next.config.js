@@ -6,6 +6,7 @@ const modulePaths = [
     'index.tizen.js',
     'src',
     'packages',
+    'node_modules/renative',
     'node_modules/react-native-screens',
     'node_modules/react-navigation-tabs',
     'node_modules/react-navigation-stack',
