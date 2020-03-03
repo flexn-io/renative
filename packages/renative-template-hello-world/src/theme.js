@@ -1,12 +1,17 @@
-import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop, isFactorTv, isEngineNative } from 'renative';
+import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop,
+    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker } from 'renative';
 import { StyleSheet } from 'react-native';
 import '../platformAssets/runtime/fontManager';
+
+if (isFactorBrowser) registerServiceWorker();
 
 export const hasMobileWebUI = isFactorMobile && isEngineWeb;
 export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop && !hasMobileWebUI;
 export const hasFullScreenMenu = hasMobileWebUI;
 export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isEngineWeb && isFactorTv;
+
+// Disable yellow warnings UI
 console.disableYellowBox = true;
 
 const theme = {
@@ -22,6 +27,9 @@ const theme = {
 };
 
 export const themeStyles = StyleSheet.create({
+    app: {
+        flexDirection: isFactorDesktop ? 'row' : 'column', position: 'absolute', top: 0, right: 0, left: 0, bottom: 0
+    },
     container: {
         justifyContent: 'center',
         alignItems: 'center',

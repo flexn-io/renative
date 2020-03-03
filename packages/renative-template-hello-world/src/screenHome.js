@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
-import { Icon, Api, getScaledValue, useNavigate, isEngineWeb } from 'renative';
+import { Api, Button, getScaledValue, useNavigate } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasWebFocusableUI } from './theme';
 import config from '../platformAssets/renative.runtime.json';
 import packageJson from '../package.json';
 import icon from '../platformAssets/runtime/logo.png';
-import Button from './button';
 
 const styles = StyleSheet.create({
     appContainerScroll: {

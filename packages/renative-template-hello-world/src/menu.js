@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
-import { Icon, getScaledValue, useNavigate, isEngineWeb } from 'renative';
+import { Icon, Button, getScaledValue, useNavigate, isEngineWeb } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
-import MenuButton from './button';
 
 if (hasWebFocusableUI) {
     initNavigation({
@@ -67,7 +66,7 @@ const Menu = (props) => {
             <Text style={themeStyles.text}>
                     Menu
             </Text>
-            <MenuButton
+            <Button
                 to="/"
                 title="Home"
                 iconFont="ionicons"
@@ -84,7 +83,7 @@ const Menu = (props) => {
                     navigate('/');
                 }}
             />
-            <MenuButton
+            <Button
                 to="my-page"
                 title="My Page"
                 iconFont="ionicons"
@@ -101,7 +100,7 @@ const Menu = (props) => {
                     navigate('my-page');
                 }}
             />
-            <MenuButton
+            <Button
                 to="modal"
                 title="My Modal"
                 iconFont="ionicons"

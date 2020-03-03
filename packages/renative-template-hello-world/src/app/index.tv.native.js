@@ -12,7 +12,12 @@ const ModalStack = createStackNavigator();
 const TabStack = createMaterialTopTabNavigator();
 
 const TabNavigator = () => (
-    <TabStack.Navigator tabBar={props => <Menu {...props} />} removeClippedSubviews swipeEnabled={false} animationEnabled={false}>
+    <TabStack.Navigator
+        tabBar={props => <Menu {...props} />}
+        removeClippedSubviews
+        swipeEnabled={false}
+        animationEnabled={false}
+    >
         <TabStack.Screen name="home" component={ScreenHome} />
         <TabStack.Screen name="my-page" component={ScreenMyPage} />
     </TabStack.Navigator>

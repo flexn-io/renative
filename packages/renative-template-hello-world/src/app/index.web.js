@@ -1,22 +1,14 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import { Router, createHistory, LocationProvider } from '@reach/router';
 import createHashSource from 'hash-source';
-import { isFactorDesktop, isFactorTv, isFactorBrowser, registerFocusManger, registerServiceWorker } from 'renative';
-import { initNavigation, setKeyMap } from '@noriginmedia/react-spatial-navigation';
 import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 import ScreenModal from '../screenModal';
 import Menu from '../menu';
-import Theme, { hasWebFocusableUI, hasHorizontalMenu } from '../theme';
+import Theme, { hasHorizontalMenu, themeStyles } from '../theme';
 
-const styles = StyleSheet.create({
-    app: {
-        flexDirection: isFactorDesktop ? 'row' : 'column', position: 'absolute', top: 0, right: 0, left: 0, bottom: 0
-    }
-});
-
-const stylesWeb = {
+const styles = {
     container: {
         position: 'absolute',
         top: hasHorizontalMenu ? Theme.menuHeight : 0,
@@ -28,15 +20,14 @@ const stylesWeb = {
 
 const source = createHashSource();
 const history = createHistory(source);
-if (isFactorBrowser) registerServiceWorker();
 
 const App = () => (
     <LocationProvider history={history}>
-        <View style={styles.app}>
+        <View style={themeStyles.app}>
             <Router primary={false}>
                 <Menu path="*" focusKey="menu" />
             </Router>
-            <div style={stylesWeb.container}>
+            <div style={styles.container}>
                 <Router>
                     <ScreenHome default path="/" />
                     <ScreenMyPage path="my-page/*" />
