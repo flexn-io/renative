@@ -9,6 +9,7 @@ import platform from './Api/platform';
 import factor from './Api/factor';
 import engine from './Api/engine';
 import { useNavigate, usePop } from './hooks/navigation';
+import { useOpenURL } from './hooks/linking';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR, IOS, TVOS, WEB, WEBOS, TIZEN, TIZEN_WATCH, TIZEN_MOBILE, MACOS, WINDOWS, FIREFOX_OS, FIREFOX_TV, KAIOS } from './Constants';
 import {
     isAndroid,
@@ -82,12 +83,14 @@ export {
     isFactorMobile,
     isFactorTv,
     isFactorWatch,
-    useNavigate,
-    usePop,
     // ENGINE
     isEngineWeb,
     isEngineNative,
-    engine
+    // HOOKS
+    engine,
+    useNavigate,
+    usePop,
+    useOpenURL
 };
 //
 // export default {

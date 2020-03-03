@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
-import { Api, Button, getScaledValue, useNavigate } from 'renative';
+import { Text, Image, View, StyleSheet, ScrollView, PixelRatio, Linking } from 'react-native';
+import { Api, Button, getScaledValue, useNavigate, useOpenURL } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasWebFocusableUI } from './theme';
 import config from '../platformAssets/renative.runtime.json';
@@ -24,6 +24,7 @@ const FocusableView = withFocusable()(View);
 const ScreenHome = (props) => {
     const [bgColor, setBgColor] = useState(Theme.color1);
     const navigate = useNavigate(props);
+    const openURL = useOpenURL();
     let scrollRef;
     let handleFocus;
     let handleUp;
@@ -100,6 +101,9 @@ v
                         iconColor={Theme.color3}
                         iconSize={Theme.iconSize}
                         style={themeStyles.icon}
+                        onPress={() => {
+                            openURL('https://github.com/pavjacko/renative');
+                        }}
                     />
                     <Button
                         iconFont="fontAwesome"
@@ -109,6 +113,9 @@ v
                         iconColor={Theme.color3}
                         iconSize={Theme.iconSize}
                         style={themeStyles.icon}
+                        onPress={() => {
+                            openURL('https://twitter.com/renative');
+                        }}
                     />
                 </FocusableView>
             </ScrollView>
