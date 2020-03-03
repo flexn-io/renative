@@ -2,11 +2,14 @@ import { DrawerActions } from 'react-navigation';
 import { getNavigation } from '../Navigation';
 import platform from './platform';
 import factor from './factor';
+import engine from './engine';
 import { isTizenmobile, isTizenwatch, isTvos, isTizen, isWebos } from '../is';
 
 export default {
     platform,
     formFactor: factor,
+    factor,
+    engine,
     navigation: {
         openDrawer: () => {
             const nav = getNavigation();
@@ -30,4 +33,4 @@ export const getScaledValue = (v) => {
     if (isTizen()) return v * 2;
     if (isWebos()) return v * 2;
     return v;
-}
+};

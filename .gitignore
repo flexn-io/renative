@@ -63,6 +63,11 @@ release-configs.gradle
 rnv-config.local.json
 metro.config.local.js
 
+# fix some trash files PR
+rnv-cli/dist
+test/*
+.idea
+
 # ONLY FOR ReNative WRAPPER PROJECT
 
 /appConfigs

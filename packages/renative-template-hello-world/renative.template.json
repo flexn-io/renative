@@ -1,57 +1,65 @@
 {
-  "plugins": {
-      "renative": "source:rnv",
-      "react": "source:rnv",
-      "react-art": "source:rnv",
-      "react-dom": "source:rnv",
-      "react-native": "source:rnv",
-      "react-native-web": "source:rnv",
-      "react-native-web-image-loader": "source:rnv",
-      "react-native-gesture-handler": "source:rnv",
-      "react-navigation": "source:rnv",
-      "react-navigation-tabs": "source:rnv",
-      "react-native-reanimated": "source:rnv",
-      "react-native-vector-icons": "source:rnv"
-  },
-  "platforms": {
-    "android": {
-        "gradle.properties": {
-            "android.useDeprecatedNdk": true
+    "plugins": {
+        "renative": "source:rnv",
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv",
+        "react-native-web-image-loader": "source:rnv",
+        "react-native-gesture-handler": "source:rnv",
+        "react-navigation-tabs": "source:rnv",
+        "react-native-reanimated": "source:rnv",
+        "react-native-vector-icons": "source:rnv",
+        "@reach/router": "1.2.1",
+        "hash-source": "1.0.4",
+        "@react-navigation": "source:rnv",
+        "react-native-safe-area-context": "source:rnv",
+        "react-native-safe-area-view": "source:rnv"
+    },
+    "platforms": {
+        "android": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                    {
+                        "tag": "application",
+                        "android:name": ".MainApplication",
+                        "android:usesCleartextTraffic": true,
+                        "tools:targetApi": 28
+                    }
+                ]
+            }
         },
-        "AndroidManifest": {
-            "children": [{
-                "tag": "application",
-                "android:name": ".MainApplication",
-                "android:usesCleartextTraffic": true,
-                "tools:targetApi": 28
-            }]
+        "androidtv": {
+            "gradle.properties": {
+                "android.useDeprecatedNdk": true
+            },
+            "AndroidManifest": {
+                "children": [
+                    {
+                        "tag": "application",
+                        "android:name": ".MainApplication",
+                        "android:usesCleartextTraffic": true,
+                        "tools:targetApi": 28
+                    }
+                ]
+            }
         }
     },
-    "androidtv": {
-        "gradle.properties": {
-            "android.useDeprecatedNdk": true
-        },
-        "AndroidManifest": {
-            "children": [{
-                "tag": "application",
-                "android:name": ".MainApplication",
-                "android:usesCleartextTraffic": true,
-                "tools:targetApi": 28
-            }]
+    "permissions": {
+        "ios": {},
+        "android": {
+            "INTERNET": {
+                "key": "android.permission.INTERNET",
+                "security": "normal"
+            },
+            "SYSTEM_ALERT_WINDOW": {
+                "key": "android.permission.SYSTEM_ALERT_WINDOW",
+                "security": "signature"
+            }
         }
     }
-  },
-  "permissions": {
-      "ios": {},
-      "android": {
-          "INTERNET": {
-              "key": "android.permission.INTERNET",
-              "security": "normal"
-          },
-          "SYSTEM_ALERT_WINDOW": {
-              "key": "android.permission.SYSTEM_ALERT_WINDOW",
-              "security": "signature"
-          }
-      }
-  }
 }

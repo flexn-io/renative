@@ -93,5 +93,8 @@
         "hooks": {
             "pre-commit": "pretty-quick --staged"
         }
+    },
+    "dependencies": {
+        "history": "^4.9.0"
     }
 }
