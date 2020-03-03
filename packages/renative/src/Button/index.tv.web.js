@@ -1,8 +1,11 @@
 import React from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Icon, getScaledValue } from 'renative';
+// import { Icon, getScaledValue } from 'renative';
 import { Link } from '@reach/router';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
+
+import { getScaledValue } from '../Api';
+import Icon from '../Icon';
 
 const styles = StyleSheet.create({
     button: {
