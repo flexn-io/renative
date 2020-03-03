@@ -3,13 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { Router, createHistory, LocationProvider } from '@reach/router';
 import createHashSource from 'hash-source';
 import { isFactorDesktop, isFactorTv, isFactorBrowser, registerFocusManger, registerServiceWorker } from 'renative';
+import { initNavigation, setKeyMap } from '@noriginmedia/react-spatial-navigation';
 import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 import ScreenModal from '../screenModal';
 import Menu from '../menu';
 import Theme, { hasWebFocusableUI, hasHorizontalMenu } from '../theme';
-import '../../platformAssets/runtime/fontManager';
-import { initNavigation, setKeyMap } from '@noriginmedia/react-spatial-navigation';
 
 const styles = StyleSheet.create({
     app: {

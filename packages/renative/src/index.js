@@ -36,8 +36,9 @@ import {
     isFactorMobile,
     isFactorTv,
     isFactorWatch,
-    // NEW
-    isEngineWeb
+    // ENGINE
+    isEngineWeb,
+    isEngineNative
 } from './is';
 
 export {
@@ -85,6 +86,7 @@ export {
     usePop,
     // ENGINE
     isEngineWeb,
+    isEngineNative,
     engine
 };
 //

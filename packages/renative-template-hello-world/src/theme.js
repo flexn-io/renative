@@ -1,8 +1,11 @@
-import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop, isFactorTv } from 'renative';
+import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop, isFactorTv, isEngineNative } from 'renative';
 import { StyleSheet } from 'react-native';
+import '../platformAssets/runtime/fontManager';
 
-export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop;
 export const hasMobileWebUI = isFactorMobile && isEngineWeb;
+export const hasHorizontalMenu = !isFactorMobile && !isFactorDesktop && !hasMobileWebUI;
+export const hasFullScreenMenu = hasMobileWebUI;
+export const hasVerticalMenu = !hasHorizontalMenu && !hasFullScreenMenu;
 export const hasWebFocusableUI = isEngineWeb && isFactorTv;
 console.disableYellowBox = true;
 
@@ -14,7 +17,7 @@ const theme = {
     color5: '#AAAAAA',
     primaryFontFamily: 'TimeBurner',
     iconSize: getScaledValue(40),
-    menuWidth: hasHorizontalMenu || hasMobileWebUI ? '100%' : 280,
+    menuWidth: hasHorizontalMenu || hasFullScreenMenu ? '100%' : 280,
     menuHeight: hasHorizontalMenu ? getScaledValue(80) : '100%'
 };
 
@@ -98,7 +101,7 @@ export const themeStyles = StyleSheet.create({
         position: 'absolute',
         backgroundColor: theme.color1,
         top: hasHorizontalMenu && isEngineWeb ? -theme.menuHeight : 0,
-        left: hasHorizontalMenu && isEngineWeb ? 0 : -theme.menuWidth,
+        left: hasHorizontalMenu || hasFullScreenMenu || isEngineNative ? 0 : -theme.menuWidth,
         right: 0,
         bottom: 0
     }

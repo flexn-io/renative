@@ -22,7 +22,6 @@ export const DrawerButton = ({ navigation }) => (
         size={Theme.iconSize}
         style={themeStyles.icon}
         onPress={() => {
-            console.log('KJDHDKJHD', isEngineWeb);
             isEngineWeb ? navigation.navigate('Drawer') : navigation.dispatch(DrawerActions.openDrawer());
         }}
     />
@@ -60,9 +59,7 @@ const styles = StyleSheet.create({
 const Menu = (props) => {
     const navigate = useNavigate(props);
     if (hasWebFocusableUI) {
-        useEffect(() => {
-            props.setFocus();
-        }, []);
+        useEffect(() => { props.setFocus(); }, []);
     }
 
     return (
