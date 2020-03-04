@@ -28,7 +28,6 @@ List of available config props injected into hooks methods:
 {
   rnv: {
       dir: '',
-      nodeModulesDir: '',
       platformTemplates: {
           dir: ''
       },

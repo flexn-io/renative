@@ -287,15 +287,6 @@ export const configureIfRequired = async (c, platform) => {
     await CLI(c, nc);
 };
 
-export const isMonorepo = () => {
-    try {
-        fs.existsSync(path.resolve(__dirname, '../../../lerna.json'));
-        return true;
-    } catch (_err) {
-        return false;
-    }
-};
-
 export const getBinaryPath = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const id = getConfigProp(c, platform, 'id');
@@ -324,6 +315,21 @@ export const getBinaryPath = (c, platform) => {
             return `${appFolder}/output/${id}_${version}_all.ipk`;
         default:
             return appFolder;
+    }
+};
+
+export const isMonorepo = () => {
+    try {
+        fs.existsSync(path.resolve(__dirname, '../../../lerna.json'));
+        return true;
+    } catch (_err) {
+        return false;
+    }
+};
+
+export const getMonorepoRoot = () => {
+    if (isMonorepo()) {
+        return path.resolve(__dirname, '../../..'
     }
 };
 

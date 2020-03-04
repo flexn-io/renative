@@ -32,7 +32,7 @@ import {
     generateLocalConfig,
     updateConfig
 } from '../configTools/configParser';
-import { doResolve } from '../common';
+import { doResolve, isMonorepo, getMonorepoRoot } from '../common';
 
 // let templateName = c.buildConfig.currentTemplate;
 // if (!templateName) {
@@ -185,9 +185,10 @@ const _applyTemplate = async c => {
 
     if (c.runtime.selectedTemplate) {
         _cleanProjectTemplateSync(c);
-        if (c.runtime.isWrapper) {
+        if (isMonorepo()) {
+            // @todo - have the templates report their absolute locations
             c.paths.template.dir = path.join(
-                c.paths.project.dir,
+                getMonorepoRoot(),
                 'packages',
                 c.runtime.selectedTemplate
             );
