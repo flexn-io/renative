@@ -435,7 +435,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     const packagePath = plugin.nodePackageName ?? `${key}/android`;
     let pathAbsolute;
     try {
-        pathAbsolute = plugin.nodePackageName ? doResolve(packagePath, true, { keepSuffix: true }) : doResolve(packagePath, true);
+        pathAbsolute = plugin.nodePackageName ? doResolve(packagePath, true, { keepSuffix: true }) : doResolve(packagePath, true, { keepSuffix: true });
     } catch (err) {
         logWarning(`GradleParser: plugin ${packagePath} not resolvable and has been skipped`);
         return;
@@ -448,9 +448,9 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             c.pluginConfigAndroid.pluginIncludes += `, ':${
                 plugin.projectName
             }'`;
+            // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
             c.pluginConfigAndroid.pluginPaths += `project(':${
                 plugin.projectName
-                // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
             }').projectDir = new File(${pathAbsolute})\n`;
         }
         if (!plugin.skipImplementation) {

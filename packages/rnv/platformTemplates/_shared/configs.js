@@ -8,17 +8,13 @@ const resolve = require('resolve');
 
 function doResolve(aPath, mandatory = true) {
     try {
-        return resolve
-            .sync(aPath, {
-                extensions: ['.js', '.json'],
-                packageFilter: pkg => {
-                    if (typeof pkg.main === 'undefined') {
-                        pkg.main = 'package.json';
-                    }
-                    return pkg;
-                }
-            })
-            .match(new RegExp(`(^.*node_modules/${aPath})/?`))[1];
+        return resolve.sync(aPath, {
+            packageFilter: (pkg) => {
+                pkg.main = 'package.json';
+                return pkg;
+            },
+            extensions: ['.js', '.json']
+        }).replace(/\/package.json$/, '');
     } catch (err) {
         // perhaps do some warning logging here..
         if (mandatory) throw err;
