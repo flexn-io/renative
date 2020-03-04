@@ -1,5 +1,7 @@
 const withCSS = require('@zeit/next-css');
 const path = require('path');
+const getSourceExt = require('rnv/dist/common').getSourceExts;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const modulePaths = [
     'index.webos.js',
@@ -11,6 +13,7 @@ const modulePaths = [
     'node_modules/react-navigation-tabs',
     'node_modules/react-navigation-stack',
     'node_modules/react-navigation',
+    'node_modules/react-navigation/node_modules/react-navigation-tabs',
     'node_modules/@react-navigation',
     'node_modules/react-native-gesture-handler',
     'node_modules/react-native-reanimated',
@@ -60,24 +63,26 @@ const modulePaths = [
     'node_modules/react-native-orientation-locker',
     'node_modules/react-navigation',
     'node_modules/@react-navigation/native',
-    'node_modules/rnv-platform-info'
+    'node_modules/rnv-platform-info',
+    'node_modules/react-native',
+    'node_modules/react-native-web'
 ];
 
-const projectDir = path.join(__dirname, '../');
+const projectDir = path.join(__dirname);
+const extensions = getSourceExt({ platform: 'web-next' });
 
 module.exports = withCSS({
     // With CSS modules:
     assetPrefix: '',
     webpack: (config, options) => {
         config.resolve.alias = {
-            ...config.resolve.alias,
-            react: path.resolve(projectDir, 'node_modules/react'),
+            // react: path.resolve('react'),
             'react-native': 'react-native-web',
             'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-            'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
-            'react-native-screens': path.resolve(projectDir, 'node_modules/react-native-screens'),
+            ...config.resolve.alias,
+            // 'react-native-screens': resolve.sync('react-native-screens'),
         };
-        config.module.rules.push({
+        config.module.rules.unshift({
             test: /\.js$/,
             include: modulePaths.map(v => path.resolve(projectDir, v)),
             use: {
@@ -93,9 +98,38 @@ module.exports = withCSS({
                 },
             },
         });
-        console.log('&&&&&', projectDir);
-        // console.log(config);
-        // console.log('opts', options);
+        config.module.rules.push({
+            test: /\.css$/,
+            use: ['css-hot-loader'].concat(
+                {
+                    loader: MiniCssExtractPlugin.loader,
+                },
+                'css-loader',
+            ),
+        });
+
+        config.module.rules.push({
+            test: /\.(gif|jpe?g|png|svg)$/,
+            use: {
+                loader: 'react-native-web-image-loader',
+            },
+        });
+
+        config.module.rules.push({
+            test: /\.(woff|woff2|eot|ttf|otf)(\?[\s\S]+)?$/,
+            use: 'file-loader',
+        });
+
+        config.module.rules.push({
+            test: /\.js$/,
+            use: ['source-map-loader'],
+            enforce: 'pre',
+            exclude: [/node_modules/, /build/, /__test__/]
+        });
+        config.resolve.extensions = [...config.resolve.extensions, ...extensions.map(ext => `.${ext}`)]; // add our extensions. Will be duplicates!
+        console.log(JSON.stringify(config, null, 3));
+        console.log('ext', extensions);
+        console.log('opts', JSON.stringify(options, null, 3));
         return config;
     }
 });
