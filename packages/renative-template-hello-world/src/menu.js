@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { DrawerActions } from '@react-navigation/native';
+// import { DrawerActions } from '@react-navigation/native';
 import { Icon, Button, getScaledValue, useNavigate, isEngineWeb } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
@@ -21,7 +21,7 @@ export const DrawerButton = ({ navigation }) => (
         size={Theme.iconSize}
         style={themeStyles.icon}
         onPress={() => {
-            isEngineWeb ? navigation.navigate('Drawer') : navigation.dispatch(DrawerActions.openDrawer());
+            isEngineWeb ? navigation.navigate('Drawer') : navigation.navigate('Drawer') //navigation.dispatch(DrawerActions.openDrawer());
         }}
     />
 );

@@ -1,7 +1,7 @@
 // const cleanAliases = require('./platforms/common/pathAliases');
 
 module.exports = {
-    presets: ['module:metro-react-native-babel-preset'],
+    presets: ['@expo/next-adapter/babel'],
     plugins: [
         [
             require.resolve('babel-plugin-module-resolver'),
