@@ -135,7 +135,8 @@
         "packages": [
             "packages/*"
         ],
-        "nohoist": []
+        "nohoist": [
+        ]
     },
     "dependencies": {}
 }
