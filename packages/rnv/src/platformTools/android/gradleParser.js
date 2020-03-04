@@ -432,10 +432,10 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
     const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     // const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     // const modulePath = `../../${pathFixed}`;
-    const packagePath = plugin.nodePackageName ?? `${key}/android`
+    const packagePath = plugin.nodePackageName ?? `${key}/android`;
     let pathAbsolute;
     try {
-        pathAbsolute = doResolve(packagePath, true, { keepSuffix: true });
+        pathAbsolute = plugin.nodePackageName ? doResolve(packagePath, true, { keepSuffix: true }) : doResolve(packagePath, true);
     } catch (err) {
         logWarning(`GradleParser: plugin ${packagePath} not resolvable and has been skipped`);
         return;

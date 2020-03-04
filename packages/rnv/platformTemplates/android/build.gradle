@@ -13,7 +13,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.2.0'
         {{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}
-        {{INJECT_RNV_PROP.common.title}}
     }
 }
 

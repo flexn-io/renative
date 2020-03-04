@@ -1,4 +1,5 @@
 import resolve from 'resolve';
+import fs from 'fs';
 
 /**
  * An attempt at drying out filesystem references to [external packages](https://tinyurl.com/mao2dy6).
@@ -29,7 +30,7 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
     }
 };
 
-export const isScopedPackagePath = aPath => {
+export const isScopedPackagePath = (aPath) => {
     if (aPath.startsWith('@')) {
         if (!aPath.includes('/'))
             throw new Error(
@@ -39,7 +40,7 @@ export const isScopedPackagePath = aPath => {
     }
 };
 
-const _getPackagePathParts = aPath => {
+const _getPackagePathParts = (aPath) => {
     let parts = [];
     if (isScopedPackagePath(aPath)) {
         parts = aPath.match(/^([^/]+\/[^/]+)\/(.*)/);
@@ -71,14 +72,12 @@ const _doResolveExternalPackage = (aPath, options) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
     const resolvedPath = resolve.sync(packageBase, {
         packageFilter: (pkg) => {
-            if (typeof pkg.main === 'undefined') {
-                pkg.main = 'package.json';
-            }
+            pkg.main = 'package.json';
             return pkg;
         },
         ...options,
         extensions: ['.js', '.json'].concat(options.extensions ?? [])
-    });
+    }).replace(/\/package.json$/, '');
     return options.keepSuffix ?? false
         ? `${resolvedPath}/${packageSuffix}`
         : resolvedPath;
