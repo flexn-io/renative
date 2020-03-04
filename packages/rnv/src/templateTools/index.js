@@ -192,16 +192,12 @@ const _applyTemplate = async c => {
                 c.runtime.selectedTemplate
             );
         } else {
-            c.paths.template.dir = path.join(
-                c.paths.project.nodeModulesDir,
-                c.runtime.selectedTemplate
-            );
+            c.paths.template.dir = doResolve(c.runtime.selectedTemplate);
+            // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.runtime.selectedTemplate);
         }
     } else {
-        c.paths.template.dir = path.join(
-            c.paths.project.nodeModulesDir,
-            c.buildConfig.currentTemplate
-        );
+        c.paths.template.dir = doResolve(c.buildConfig.currentTemplate);
+        // c.paths.template.dir = path.join(c.paths.project.nodeModulesDir, c.buildConfig.currentTemplate);
     }
 
     c.paths.template.configTemplate = path.join(
