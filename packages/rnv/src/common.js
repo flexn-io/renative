@@ -329,7 +329,7 @@ export const isMonorepo = () => {
 
 export const getMonorepoRoot = () => {
     if (isMonorepo()) {
-        return path.resolve(__dirname, '../../..'
+        return path.resolve(__dirname, '../../..');
     }
 };
 

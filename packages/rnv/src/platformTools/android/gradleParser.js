@@ -501,7 +501,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             c.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${v}\n`;
         });
     }
-    _fixAndroidLegacy(c, pathFixed);
+    _fixAndroidLegacy(c, pathAbsolute);
 
     // BUILD.GRADLE
     const buildGradle = plugin.BuildGradle;
