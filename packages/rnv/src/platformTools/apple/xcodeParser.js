@@ -4,9 +4,9 @@ import {
     getAppFolder,
     getAppId,
     getConfigProp,
-    getFlavouredProp,
-    doResolve
+    getFlavouredProp
 } from '../../common';
+import {doResolve} from '../../resolve'
 import { logTask, logWarning } from '../../systemTools/logger';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';

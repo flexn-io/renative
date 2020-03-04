@@ -32,7 +32,8 @@ import {
     generateLocalConfig,
     updateConfig
 } from '../configTools/configParser';
-import { doResolve, isMonorepo, getMonorepoRoot } from '../common';
+import { isMonorepo, getMonorepoRoot } from '../common';
+import { doResolve } from '../resolve';
 
 // let templateName = c.buildConfig.currentTemplate;
 // if (!templateName) {

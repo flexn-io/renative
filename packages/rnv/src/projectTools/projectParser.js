@@ -6,9 +6,9 @@ import {
     getAppFolder,
     getAppSubFolder,
     getBuildsFolder,
-    doResolve,
     areNodeModulesInstalled
 } from '../common';
+import {doResolve} from '../resolve';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,

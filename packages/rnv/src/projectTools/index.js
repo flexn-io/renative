@@ -3,7 +3,8 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { getAppFolder, doResolve } from '../common';
+import { getAppFolder } from '../common';
+import { doResolve } from '../resolve';
 import { isPlatformActive } from '../platformTools';
 import { logTask, logWarning, logInfo } from '../systemTools/logger';
 import {

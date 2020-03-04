@@ -17,9 +17,9 @@ import {
     getConfigProp,
     checkPortInUse,
     waitForWebpack,
-    confirmActiveBundler,
-    doResolve
+    confirmActiveBundler
 } from '../../common';
+import {doResolve} from '../../resolve';
 import {
     logTask,
     logError,

@@ -32,7 +32,8 @@ import {
     sanitizeDynamicProps,
     mergeObjects
 } from '../systemTools/fileutils';
-import { getSourceExtsAsString, getConfigProp, doResolve } from '../common';
+import { getSourceExtsAsString, getConfigProp } from '../common';
+import { doResolve } from '../resolve';
 import { getWorkspaceDirPath } from '../projectTools/workspace';
 import {
     logError,

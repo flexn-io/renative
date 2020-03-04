@@ -12,6 +12,7 @@ import {
 import {
     logWarning
 } from '../../systemTools/logger';
+// import { doResolve } from '../../resolve';
 
 const JS_BUNDLE_DEFAULTS = {
     android: '"super.getJSBundleFile()"',
@@ -84,8 +85,17 @@ export const parseSplashActivitySync = (c, platform) => {
 };
 
 export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
-    const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
-    const modulePath = `../../${pathFixed}`;
+    // const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
+    // const modulePath = `../../${pathFixed}`;
+
+    // const packagePath = plugin.nodePackageName ?? `${key}/android`;
+    // let pathAbsolute;
+    // try {
+    //     pathAbsolute = doResolve(packagePath, true, { keepSuffix: true });
+    // } catch (err) {
+    //     logWarning(`KotlinParser: plugin ${packagePath} not resolvable and has been skipped`);
+    //     return;
+    // }
 
     if (plugin.activityImports instanceof Array) {
         plugin.activityImports.forEach((activityImport) => {

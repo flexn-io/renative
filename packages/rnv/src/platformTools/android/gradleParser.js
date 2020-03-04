@@ -8,9 +8,9 @@ import {
     writeCleanFile,
     getAppId,
     getBuildFilePath,
-    getConfigProp,
-    doResolve
+    getConfigProp
 } from '../../common';
+import {doResolve} from '../../resolve';
 import { logTask, logWarning, logDebug } from '../../systemTools/logger';
 
 export const parseBuildGradleSync = (c, platform) => {
@@ -424,17 +424,22 @@ export const parseGradlePropertiesSync = (c, platform) => {
 };
 
 export const injectPluginGradleSync = (c, plugin, key, pkg) => {
-    const className = pkg ? pkg.split('.').pop() : null;
-    let packageParams = '';
-    if (plugin.packageParams) {
-        packageParams = plugin.packageParams.join(',');
-    }
+    // const className = pkg ? pkg.split('.').pop() : null;
+    // let packageParams = '';
+    // if (plugin.packageParams) {
+    //     packageParams = plugin.packageParams.join(',');
+    // }
     const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     // const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     // const modulePath = `../../${pathFixed}`;
-    const pathAbsolute = plugin.path
-        ? doResolve(plugin.path)
-        : `${doResolve(key)}/android`;
+    const packagePath = plugin.nodePackageName ?? `${key}/android`
+    let pathAbsolute;
+    try {
+        pathAbsolute = doResolve(packagePath, true, { keepSuffix: true });
+    } catch (err) {
+        logWarning(`GradleParser: plugin ${packagePath} not resolvable and has been skipped`);
+        return;
+    }
     // const modulePath = `../../${pathFixed}`;
 
     // APP/BUILD.GRADLE

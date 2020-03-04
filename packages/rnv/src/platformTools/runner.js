@@ -14,9 +14,9 @@ import {
     getConfigProp,
     waitForWebpack,
     getSourceExts,
-    confirmActiveBundler,
-    doResolve,
+    confirmActiveBundler
 } from '../common';
+import {doResolve} from '../resolve';
 import { isPlatformSupported } from './index';
 import {
     logTask,

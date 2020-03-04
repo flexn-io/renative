@@ -11,7 +11,8 @@ import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
 import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
-import { doResolve, isMonorepo } from '../common';
+import { isMonorepo } from '../common';
+import { doResolve } from '../resolve';
 
 const { exec, execSync } = require('child_process');
 
