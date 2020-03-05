@@ -16,7 +16,7 @@ const TabNavigator = () => (
         tabBar={props => <Menu {...props} />}
         removeClippedSubviews
         swipeEnabled={false}
-        animationEnabled={false}
+        timingConfig={{ duration: 0.001 }}
     >
         <TabStack.Screen name="home" component={ScreenHome} />
         <TabStack.Screen name="my-page" component={ScreenMyPage} />
