@@ -126,11 +126,39 @@ export const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 const configureNextIfRequired = async (c) => {
     const { srcDir, platformTemplatesDirs } = c.paths.project;
     const pagesDir = path.join(srcDir, 'pages');
+    const publicDir = path.join(srcDir, 'public');
+    const baseFontsDir = c.paths.appConfig.fontDirs[0];
+    const stylesDir = path.join(srcDir, 'styles');
+
     const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], c.platform);
     copyFolderContentsRecursiveSync(platformTemplateDir, srcDir); // move to projectTemplates
-    !fs.existsSync(pagesDir) && fs.mkdirSync(pagesDir);
+
+    // pages hardcoded for helloworld
     !fs.existsSync(path.join(pagesDir, 'index.js')) && fs.symlinkSync(path.join(srcDir, 'app/index.web.js'), path.join(pagesDir, 'index.js')); // move to projectTemplates
     !fs.existsSync(path.join(pagesDir, 'my-page.js')) && fs.symlinkSync(path.join(srcDir, 'screenMyPage.js'), path.join(pagesDir, 'my-page.js'));
+
+    // handle fonts
+    !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);
+    !fs.existsSync(path.join(publicDir, 'fonts')) && fs.symlinkSync(baseFontsDir, path.join(publicDir, 'fonts'));
+
+    // create styles dir and global fonts.css file
+    if (!fs.existsSync(stylesDir)) {
+        fs.mkdirSync(stylesDir);
+        let cssOutput = '';
+
+        const fontFiles = fs.readdirSync(baseFontsDir);
+        fontFiles.forEach((file) => {
+            cssOutput += `
+                @font-face {
+                    font-family: '${file.split('.')[0]}';
+                    src: url('/fonts/${file}');
+                }
+
+            `;
+        });
+
+        fs.writeFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
+    }
 };
 
 export const runWebNext = async (c, platform, port) => {

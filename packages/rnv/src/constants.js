@@ -95,8 +95,8 @@ export const PLATFORMS = {
         requiresSharedConfig: true,
         sourceExts: {
             factors: ['browser.js'],
-            platforms: ['web.js'],
-            fallbacks: ['mjs', 'js', 'tsx', 'ts']
+            platforms: ['next.js'],
+            fallbacks: ['web.js', 'mjs', 'js', 'jsx', 'json', 'wasm', 'tsx', 'ts']
         }
     },
     ios: {
