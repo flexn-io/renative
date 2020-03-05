@@ -9,7 +9,7 @@ const config = {
     projectRoot: path.resolve(__dirname, '../'),
     webpack: (cfg) => {
         cfg.resolve.extensions = getSourceExt({ platform: 'web-next' }).map(e => `.${e}`);
-        // console.log(JSON.stringify(cfg, null, 3));
+        cfg.resolve.modules.unshift(path.resolve(__dirname));
         return cfg;
     },
 };

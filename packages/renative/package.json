@@ -60,7 +60,8 @@
     "dependencies": {
         "react": "16.9.0",
         "react-dom": "16.9.0",
-        "react-native": "0.61.2"
+        "react-native": "0.61.2",
+        "history": "^4.9.0"
     },
     "devDependencies": {
         "babel-eslint": "8.2.6",
@@ -93,8 +94,5 @@
         "hooks": {
             "pre-commit": "pretty-quick --staged"
         }
-    },
-    "dependencies": {
-        "history": "^4.9.0"
     }
 }

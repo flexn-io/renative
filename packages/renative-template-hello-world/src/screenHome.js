@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, Image, View, StyleSheet, ScrollView, PixelRatio, Linking } from 'react-native';
+import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
 import { Api, Button, getScaledValue, useNavigate, useOpenURL } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasWebFocusableUI } from './theme';
@@ -31,6 +31,7 @@ const ScreenHome = (props) => {
 
     if (hasWebFocusableUI) {
         scrollRef = useRef(null);
+        const { setFocus } = props;
         handleFocus = ({ y }) => {
             scrollRef.current.scrollTo({ y });
         };
@@ -38,7 +39,7 @@ const ScreenHome = (props) => {
             if (direction === 'up') scrollRef.current.scrollTo({ y: 0 });
         };
         useEffect(() => function cleanup() {
-            props.setFocus('menu');
+            setFocus('menu');
         }, []);
     }
     return (

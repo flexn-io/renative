@@ -13,3 +13,10 @@ export function usePop(props) {
     }
     return pop;
 }
+
+export function useOpenDrawer(props) {
+    function openDrawer() {
+        props.navigation.dispatch({ type: 'OPEN_DRAWER' });
+    }
+    return openDrawer;
+}

@@ -12,7 +12,15 @@ export function useNavigate(props) {
 export function usePop(props) {
     function pop() {
         if (props.navigate) props.navigate('../', { replace: false });
-        props.navigation.pop();
+        else props.navigation.pop();
     }
     return pop;
+}
+
+export function useOpenDrawer(props) {
+    function openDrawer(drawerName) {
+        if (props.navigate) props.navigate(drawerName || 'Drawer');
+        else props.navigation.dispatch({ type: 'OPEN_DRAWER' });
+    }
+    return openDrawer;
 }
