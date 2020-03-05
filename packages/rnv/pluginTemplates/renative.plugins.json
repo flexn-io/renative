@@ -989,7 +989,7 @@
             }
         },
         "react-native-screens": {
-            "version": "1.0.0-alpha.22",
+            "version": "2.2.0",
             "ios": {
                 "podName": "RNScreens"
             },
@@ -1848,20 +1848,20 @@
         },
         "@react-navigation": {
             "npm": {
-                "@react-navigation/core": "5.1.4",
-                "@react-navigation/drawer": "5.0.5",
-                "@react-navigation/native-stack": "5.0.5",
-                "@react-navigation/bottom-tabs": "5.0.5",
-                "@react-navigation/material-bottom-tabs": "5.0.5",
-                "@react-navigation/native": "5.0.5",
-                "@react-navigation/stack": "5.0.5",
-                "@react-navigation/routers": "5.0.3",
-                "@react-navigation/material-top-tabs": "5.0.5",
+                "@react-navigation/core": "5.2.1",
+                "@react-navigation/drawer": "5.1.1",
+                "@react-navigation/bottom-tabs": "5.1.1",
+                "@react-navigation/material-bottom-tabs": "5.1.1",
+                "@react-navigation/native": "5.0.9",
+                "@react-navigation/stack": "5.1.1",
+                "@react-navigation/routers": "5.1.0",
+                "@react-navigation/material-top-tabs": "5.1.1",
                 "@react-navigation/web": "1.0.0-alpha.9",
                 "@react-native-community/masked-view": "0.1.6",
                 "react-native-safe-area-context": "0.7.2"
             },
             "dependsOn": [
+                "react-native-screens",
                 "react-native-safe-area-context",
                 "react-native-safe-area-view"
             ]
@@ -1924,7 +1924,7 @@
             }
         },
         "react-native-tab-view": {
-            "version": "2.5.0",
+            "version": "2.13.0",
             "webpack": {
                 "modulePaths": true
             }

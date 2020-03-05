@@ -2,6 +2,7 @@ const { withExpo } = require('@expo/next-adapter');
 const withImages = require('next-images');
 const withFonts = require('next-fonts');
 const withOffline = require('next-offline');
+const path = require('path');
 
 const modulePaths = [
     'src',
@@ -70,17 +71,17 @@ const config = {
         /* next-offline */
         globPatterns: ['static/**/*'],
         globDirectory: '.',
-        webpack: (config, { dev, isServer, defaultLoaders, webpack }) => {
-            config.resolve.alias = {
+        webpack: (cfg, { defaultLoaders }) => {
+            cfg.resolve.alias = {
                 ...(config.resolve.alias || {})
-              }
-              config.module.rules.push({
-                  test: /\.+(js|jsx)$/,
-                  use: defaultLoaders.babel,
-                  include: modulePaths.map(v => path.resolve(v)),
-              });
-              //return config
-            },
+            };
+            cfg.module.rules.push({
+                test: /\.+(js|jsx)$/,
+                use: defaultLoaders.babel,
+                include: modulePaths.map(v => path.resolve(v)),
+            });
+            // return config
+        },
         runtimeCaching: [
             {
                 urlPattern: /^https?.*/,
@@ -94,8 +95,7 @@ const config = {
             },
         ],
     },
-}
-
+};
 
 
 module.exports = withExpo(withOffline(withFonts(withImages(config))));

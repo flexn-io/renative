@@ -130,6 +130,7 @@ const configureNextIfRequired = async (c) => {
     copyFolderContentsRecursiveSync(platformTemplateDir, srcDir); // move to projectTemplates
     !fs.existsSync(pagesDir) && fs.mkdirSync(pagesDir);
     !fs.existsSync(path.join(pagesDir, 'index.js')) && fs.symlinkSync(path.join(srcDir, 'app/index.web.js'), path.join(pagesDir, 'index.js')); // move to projectTemplates
+    !fs.existsSync(path.join(pagesDir, 'my-page.js')) && fs.symlinkSync(path.join(srcDir, 'screenMyPage.js'), path.join(pagesDir, 'my-page.js'));
 };
 
 export const runWebNext = async (c, platform, port) => {

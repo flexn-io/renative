@@ -79,3 +79,4 @@ test/*
 /packages/**/coverage
 /packages/**/dist
 .expo
+.next
