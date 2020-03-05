@@ -76,7 +76,7 @@ class ScreenHome extends React.Component {
                 }}
             >
                 <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
-                {/* <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} /> */}
+                <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
                 <Text style={styles.textH2}>
                     {config.welcomeMessage}
                 </Text>

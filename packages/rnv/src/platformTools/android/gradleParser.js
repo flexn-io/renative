@@ -361,7 +361,11 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
             {
                 pattern: '{{PATH_REACT_NATIVE}}',
                 override: doResolve('react-native')
-            }
+            },
+            {
+                pattern: '{{PATH_HERMES_ENGINE}}',
+                override: doResolve('hermes-engine')
+            },
         ]
     );
 };

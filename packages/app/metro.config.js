@@ -1,22 +1,21 @@
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
-// const resolve = require('resolve')
-const metroConfigHelper = require('react-native-monorepo-helper').metroConfigHelper;
+const resolve = require('resolve');
+const metroConfigHelper = require('react-native-monorepo-helper')
+    .metroConfigHelper;
 const sourceExts = require('./metro.config.local');
 
-
-
-// function doResolve(aPath, options) {
-//     return resolve
-//         .sync(aPath, {
-//             packageFilter: (pkg) => {
-//                 pkg.main = 'package.json';
-//                 return pkg;
-//             },
-//             ...options,
-//         })
-//         .replace(/\/package.json$/, '');
-// }
+function doResolve(aPath, options) {
+    return resolve
+        .sync(aPath, {
+            packageFilter: pkg => {
+                pkg.main = 'package.json';
+                return pkg;
+            },
+            ...options
+        })
+        .replace(/\/package.json$/, '');
+}
 
 const defaultConfig = {
     resolver: {
@@ -28,13 +27,18 @@ const defaultConfig = {
             // /website\/.*/,
             /appConfigs\/.*/,
             /renative.local.*/,
-            /metro.config.local.*/,
+            /metro.config.local.*/
             // /packages\/rnv\/.*/,
             // /packages\/rnv-deploy-docker\/.*/,
             // /packages\/renative-template-hello-world\/.*/,
             // /packages\/renative-template-kitchen-sink\/.*/,
             // /packages\/renative-template-blank\/.*/
         ]),
+        extraNodeModules: {
+            'react-native': doResolve('react-native')
+            // 'react-native/Libraries/Image/AssetRegistry': doResolve('react-native/Libraries/Image/AssetRegistry'),
+        }
+
         // resolveRequest: (metro, moduleName, _platform) => {
         //     // const context: IResolverContext = {
         //     //     metro,
@@ -54,6 +58,12 @@ const defaultConfig = {
         //     // return resolution;
         // },
     },
+    assetRegistryPath: doResolve('react-native/Libraries/Image/AssetRegistry')
+    // watchFolders: [
+    //     path.resolve(__dirname, '../../node_modules'),
+    //     path.resolve(__dirname, './node_modules'),
+    //     path.resolve(__dirname, './'),
+    // ],
     // transformer: {
     //     enableBabelRuntime: true,
     // },
@@ -61,4 +71,6 @@ const defaultConfig = {
 };
 
 // module.exports = config;
-module.exports = metroConfigHelper(path.resolve(__dirname)).defaultConfig(defaultConfig).generate();
+module.exports = metroConfigHelper(path.resolve(__dirname))
+    .defaultConfig(defaultConfig)
+    .generate();

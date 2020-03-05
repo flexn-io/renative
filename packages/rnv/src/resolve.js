@@ -18,6 +18,7 @@ import fs from 'fs';
  * @param {*} options - docs - https://tinyurl.com/r9sfpf7 && {keepSuffix: boolean}
  */
 export const doResolve = (aPath, mandatory = true, options = {}) => {
+    options.basedir = options.basedir ?? process.cwd();
     try {
         if (aPath.startsWith('file:')) {
             return _doResolveFSPath(aPath, options);
