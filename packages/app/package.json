@@ -25,8 +25,7 @@
         "type": "git",
         "url": "git://github.com/pavjacko/renative.git"
     },
-    "scripts": {
-    },
+    "scripts": {},
     "dependencies": {
         "@react-navigation/core": "3.4.2",
         "@react-navigation/native": "3.5.0",
@@ -105,5 +104,8 @@
         "hooks": {
             "before:git": "rnv pkg version ${version}"
         }
+    },
+    "optionalDependencies": {
+        "ios-deploy": "1.10.0"
     }
 }

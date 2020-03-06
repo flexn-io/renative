@@ -110,9 +110,6 @@
         "concurrently": "4.1.1",
         "lerna": "3.16.4"
     },
-    "optionalDependencies": {
-        "ios-deploy": "1.10.0"
-    },
     "private": true,
     "title": "ReNative",
     "codename": "Iron Ladybird",

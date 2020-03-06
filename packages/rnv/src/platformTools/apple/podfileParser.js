@@ -11,6 +11,7 @@ import {
     logWarning
 } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
+import { doResolve } from '../../resolve';
 
 export const parsePodFile = (c, platform) => new Promise((resolve) => {
     logTask(`parsePodFileSync:${platform}`);
@@ -72,7 +73,8 @@ export const parsePodFile = (c, platform) => new Promise((resolve) => {
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
         { pattern: '{{PLUGIN_PODFILE_SOURCES}}', override: c.pluginConfigiOS.podfileSources },
-        { pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}', override: c.pluginConfigiOS.deploymentTarget }
+        { pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}', override: c.pluginConfigiOS.deploymentTarget },
+        { pattern: '{{PATH_REACT_NATIVE}}', override: doResolve('react-native') },
     ]);
     resolve();
 });
@@ -81,7 +83,8 @@ const _injectPod = (podName, pluginPlat, plugin, key) => {
     let pluginInject = '';
     const isNpm = plugin['no-npm'] !== true;
     if (isNpm) {
-        const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+        // const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
+        const podPath = doResolve(pluginPlat.path ?? key);
         pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
     } else if (pluginPlat.git) {
         const commit = pluginPlat.commit ? `, :commit => '${pluginPlat.commit}'` : '';
