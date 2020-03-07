@@ -135,10 +135,8 @@ function generateConfig(config) {
         for (const key in config.moduleAliases) {
             if (typeof config.moduleAliases[key] === 'string') {
                 aliases[key] = config.moduleAliases[key];
-                console.log('adding', key, config.moduleAliases[key]);
             } else {
                 aliases[key] = path.resolve(projectDir, config.moduleAliases[key].projectPath);
-                console.log('adding', key, aliases[key]);
             }
         }
     }
