@@ -133,12 +133,20 @@ export const parseAndroidManifestSync = (c, platform) => {
 
         // appConfigs/base/plugins.json PLUGIN CONFIG ROOT OVERRIDES
         const pluginConfigAndroid = getFlavouredProp(c, c.buildConfig?.platforms?.[platform], 'AndroidManifest');
+        const pluginConfigAndroidSchemed = getFlavouredProp(c, c.buildConfig?.platforms?.[platform]?.buildSchemes?.[c.runtime.scheme], 'AndroidManifest');
 
         if (pluginConfigAndroid) {
             const applicationExt = _findChildNode('application', '.MainApplication', pluginConfigAndroid);
             _mergeNodeParameters(application, applicationExt);
             if (applicationExt.children) {
                 _mergeNodeChildren(application, applicationExt.children);
+            }
+        }
+        if (pluginConfigAndroidSchemed) {
+            const applicationExt2 = _findChildNode('application', '.MainApplication', pluginConfigAndroidSchemed);
+            _mergeNodeParameters(application, applicationExt2);
+            if (applicationExt2.children) {
+                _mergeNodeChildren(application, applicationExt2.children);
             }
         }
 
