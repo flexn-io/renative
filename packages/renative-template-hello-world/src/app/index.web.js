@@ -1,12 +1,18 @@
 import React from 'react';
 import { View } from 'react-native';
 import { Router } from '@reach/router';
+import { Api } from 'renative';
 
 import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 import ScreenModal from '../screenModal';
 import Menu from '../menu';
 import { themeStyles } from '../theme';
+
+if (Api.engine !== 'next') {
+    // bootstrap fonts for web
+    require('../../platformAssets/runtime/fontManager');
+}
 
 const styles = {
     container: {
