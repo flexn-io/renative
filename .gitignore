@@ -51,6 +51,7 @@ buck-out/
 # RENATIVE
 #-------------------------------
 
+.expo
 platformBuilds/
 platformAssets/
 package-lock.json
