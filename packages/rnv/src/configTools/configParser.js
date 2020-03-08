@@ -26,7 +26,7 @@ import {
     copyFileSync, mkdirSync, writeFileSync, readObjectSync,
     getRealPath, sanitizeDynamicRefs, sanitizeDynamicProps, mergeObjects
 } from '../systemTools/fileutils';
-import { getSourceExtsAsString, getConfigProp } from '../common';
+import { getConfigProp } from '../common';
 import { getWorkspaceDirPath } from '../projectTools/workspace';
 import {
     logError, logTask,

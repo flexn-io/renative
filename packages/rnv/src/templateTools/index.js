@@ -12,7 +12,7 @@ import {
 import { logToSummary, logError, logInfo, logWarning, logTask } from '../systemTools/logger';
 import { getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
-import { getSourceExtsAsString } from '../common';
+import { getSourceExts } from '../common';
 import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig, updateConfig } from '../configTools/configParser';
 
 
@@ -271,16 +271,21 @@ export const configureEntryPoints = async (c) => {
     return true;
 };
 
+const _getSourceExtsAsString = (c, p) => {
+    const sourceExts = getSourceExts(c, p);
+    return sourceExts.length ? `['${sourceExts.join('\', \'')}']` : '[]';
+};
+
 const _configureMetroConfigs = async (c) => {
-    _parseSupportedPlatforms(c, (platform) => {
-        const dest = path.join(c.paths.project.dir, `metro.config.${platform}.js`);
+    _parseSupportedPlatforms(c, (p) => {
+        const dest = path.join(c.paths.project.dir, `metro.config.${p}.js`);
         if (!fs.existsSync(dest)) {
             writeFileSync(dest, `const config = require('./metro.config');
 
-  const sourceExts = ${getSourceExtsAsString(c)};
-  config.resolver.sourceExts = sourceExts;
-  module.exports = config;
-  `);
+const sourceExts = ${_getSourceExtsAsString(c, p)};
+config.resolver.sourceExts = sourceExts;
+module.exports = config;
+`);
         }
     });
 };

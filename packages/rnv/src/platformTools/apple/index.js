@@ -219,7 +219,7 @@ export const runXcodeProject = async (c) => {
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
     logTask(`_checkLockAndExec:${scheme}:${runScheme}`);
-    const cmd = `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p} --config=metro.config.${c.platform}.js`;
+    const cmd = `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     try {
         await executeAsync(c, cmd);
         return true;
