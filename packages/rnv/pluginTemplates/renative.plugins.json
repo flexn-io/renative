@@ -967,6 +967,9 @@
             "ios": {
                 "podName": "RNReanimated"
             },
+            "tvos": {
+                "podName": "RNReanimated"
+            },
             "android": {
                 "package": "com.swmansion.reanimated.ReanimatedPackage"
             },
@@ -978,11 +981,15 @@
             },
             "webpack": {
                 "modulePaths": true,
-                "moduleAliases": true
+                "moduleAliases": {
+                    "react-native-reanimated": {
+                        "projectPath": "node_modules/react-native-reanimated/web/Animated.js"
+                    }
+                }
             }
         },
         "react-native-screens": {
-            "version": "1.0.0-alpha.22",
+            "version": "2.2.0",
             "ios": {
                 "podName": "RNScreens"
             },
@@ -1832,6 +1839,53 @@
                 "moduleAliases": true
             }
         },
+        "react-navigation-drawer": {
+            "version": "2.3.3",
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
+            }
+        },
+        "@react-navigation": {
+            "npm": {
+                "@react-navigation/core": "5.2.1",
+                "@react-navigation/drawer": "5.1.1",
+                "@react-navigation/bottom-tabs": "5.1.1",
+                "@react-navigation/material-bottom-tabs": "5.1.1",
+                "@react-navigation/native": "5.0.9",
+                "@react-navigation/stack": "5.1.1",
+                "@react-navigation/routers": "5.1.0",
+                "@react-navigation/material-top-tabs": "5.1.1",
+                "@react-navigation/web": "1.0.0-alpha.9",
+                "@react-native-community/masked-view": "0.1.6",
+                "react-native-safe-area-context": "0.7.2"
+            },
+            "dependsOn": [
+                "react-native-screens",
+                "react-native-safe-area-context",
+                "react-native-safe-area-view"
+            ]
+        },
+        "react-native-safe-area-context": {
+            "version": "0.7.2",
+            "android": {
+                "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
+            },
+            "androidtv": {
+                "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
+            },
+            "androidwear": {
+                "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
+            },
+            "ios": {
+                "path": "node_modules/react-native-safe-area-context",
+                "podName": "react-native-safe-area-context"
+            },
+            "tvos": {
+                "path": "node_modules/react-native-safe-area-context",
+                "podName": "react-native-safe-area-context"
+            }
+        },
         "react-native-easy-grid": {
             "version": "0.2.1",
             "webpack": {
@@ -1870,7 +1924,7 @@
             }
         },
         "react-native-tab-view": {
-            "version": "2.5.0",
+            "version": "2.13.0",
             "webpack": {
                 "modulePaths": true
             }

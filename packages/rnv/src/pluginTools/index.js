@@ -139,6 +139,7 @@ export const rnvPluginAdd = async (c) => {
 };
 
 const _checkAndAddDependantPlugins = (c, plugin) => {
+    logTask('_checkAndAddDependantPlugins');
     if (plugin.dependsOn) {
         plugin.dependsOn.forEach((v) => {
             Object.keys(c.files.rnv.pluginTemplates.configs).forEach((p) => {
@@ -186,17 +187,22 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
     let origPlugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
-        const scope = plugin.split(':').pop();
+        if (plugin.startsWith('source:')) {
+            const scope = plugin.split(':').pop();
 
-        origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[key];
-        if (origPlugin) {
-            if (rnvPlugin && !origPlugin?.skipMerge) {
-                origPlugin = _getMergedPlugin(c, rnvPlugin, origPlugin, true, true);
+            origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[key];
+            if (origPlugin) {
+                if (rnvPlugin && !origPlugin?.skipMerge) {
+                    origPlugin = _getMergedPlugin(c, rnvPlugin, origPlugin, true, true);
+                }
+                return origPlugin;
             }
-            return origPlugin;
+            logWarning(`Plugin ${key} is not recognized plugin in ${plugin} scope`);
+            return null;
         }
-        logWarning(`Plugin ${key} is not recognized plugin in ${plugin} scope`);
-        return null;
+        return {
+            version: plugin
+        };
     }
 
     if (plugin) {
@@ -234,7 +240,7 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
 
     let hasPackageChanged = false;
 
-    for (const k in c.buildConfig.plugins) {
+    Object.keys(c.buildConfig.plugins).forEach((k) => {
         const { dependencies } = c.files.project.package;
         const { devDependencies } = c.files.project.package;
         const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
@@ -250,9 +256,9 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
                 } else {
                     logWarning(
                         `Version mismatch of dependency ${chalk.white(k)} between:
-  ${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
-  ${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(plugin.version)}).
-  package.json will be overriden`
+${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
+${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(plugin.version)}).
+package.json will be overriden`
                     );
 
                     hasPackageChanged = true;
@@ -271,27 +277,34 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
             }
         } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
             // Dependency does not exists
-            logWarning(
-                `Missing dependency ${chalk.white(k)} v(${chalk.red(
-                    plugin.version,
-                )}) in package.json. package.json will be overriden`,
-            );
+            if (plugin.version) {
+                logWarning(
+                    `Missing dependency ${chalk.white(k)} v(${chalk.red(
+                        plugin.version,
+                    )}) in package.json. package.json will be overriden`,
+                );
 
-            hasPackageChanged = true;
-            dependencies[k] = plugin.version;
+                hasPackageChanged = true;
+                dependencies[k] = plugin.version;
+            }
         }
 
         if (plugin && plugin.npm) {
-            for (const npmKey in plugin.npm) {
+            Object.keys(plugin.npm).forEach((npmKey) => {
                 const npmDep = plugin.npm[npmKey];
-                if (dependencies[npmKey] !== npmDep) {
+                if (!dependencies[npmKey]) {
                     logWarning(`Plugin ${chalk.white(k)} requires npm dependency ${chalk.white(npmKey)} .Adding missing npm dependency to you package.json`);
                     dependencies[npmKey] = npmDep;
                     hasPackageChanged = true;
+                } else if (dependencies[npmKey] !== npmDep) {
+                    logWarning(`Plugin ${chalk.white(k)} dependency mismatch (${chalk.red(dependencies[npmKey])}) => (${chalk.green(npmDep)}) .updating npm dependency in your package.json`);
+                    dependencies[npmKey] = npmDep;
+                    hasPackageChanged = true;
                 }
-            }
+            });
         }
-    }
+    });
+
 
     logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
     versionCheck(c)

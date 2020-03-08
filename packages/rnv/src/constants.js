@@ -201,7 +201,7 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['tizenmobile.mobile.js', 'moblie.js'],
+            factors: ['tizenmobile.mobile.js', 'mobile.js'],
             platforms: ['tizenmobile.js'],
             fallbacks: ['mobile.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
         }

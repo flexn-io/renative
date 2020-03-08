@@ -83,7 +83,7 @@ const selectWebToolAndDeploy = (c, platform) => selectToolAndExecute({
 const selectWebToolAndExport = (c, platform) => selectToolAndExecute({
     c,
     platform,
-    choices: [DEPLOY_TARGET_DOCKER],
+    choices: [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_NONE],
     configFunction: configureExportIfRequired,
     executeFunction: _runExport,
     isDeploy: false

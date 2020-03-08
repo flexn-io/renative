@@ -28,7 +28,7 @@ sidebar_label: Tizen Mobile
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `tizenmobile.mobile.js` | `form factor` | 1 |
-| `moblie.js` | `form factor` | 2 |
+| `mobile.js` | `form factor` | 2 |
 | `tizenmobile.js` | `platform` | 3 |
 | `mobile.web.js` | `fallback` | 4 |
 | `web.js` | `fallback` | 5 |
