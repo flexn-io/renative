@@ -1,3 +1,4 @@
+#!/bin/bash
 OUTPUT=$(npm run publish:alpha | tail -1)
 VERSION="$(cut -d'@' -f2 <<< $OUTPUT)"
 if [ $VERSION != "" ]
