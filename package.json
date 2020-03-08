@@ -130,7 +130,7 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative"
+        "renative": "0.29.0-alpha.13"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
