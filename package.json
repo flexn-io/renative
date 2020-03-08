@@ -85,7 +85,8 @@
         "test:rnv:unit": "cd ./packages/rnv && npm run test",
         "ut": "cd ./packages/rnv && npm run test",
         "watch": "cd ./packages/rnv && npm run watch",
-        "website": "cd website && npm run start"
+        "website": "cd website && npm run start",
+        "rnpa": "./scripts/publishAlpha.sh"
     },
     "dependencies": {
         "@expo/next-adapter": "^2.0.5",
