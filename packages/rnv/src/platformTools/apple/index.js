@@ -219,7 +219,7 @@ export const runXcodeProject = async (c) => {
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
     logTask(`_checkLockAndExec:${scheme}:${runScheme}`);
-    const cmd = `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    const cmd = `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p} --config=metro.config.${c.platform}.js`;
     try {
         await executeAsync(c, cmd);
         return true;
@@ -492,7 +492,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync(c, `react-native ${args.join(' ')}`);
+    return executeAsync(c, `react-native ${args.join(' ')} --config=metro.config.${c.platform}.js`);
 };
 
 export const getAppFolderName = (c, platform) => {

@@ -53,7 +53,7 @@ export const getSourceExts = (c) => {
 
 export const getSourceExtsAsString = (c) => {
     const sourceExts = getSourceExts(c);
-    return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
+    return sourceExts.length ? `['${sourceExts.join('\', \'')}']` : '[]';
 };
 
 export const sanitizeColor = (val) => {

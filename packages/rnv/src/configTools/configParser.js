@@ -354,15 +354,16 @@ export const generateBuildConfig = (c) => {
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);
     }
-    if (Config.isRenativeProject) {
-        const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
-
-        if (c.platform) {
-            fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
-        } else if (!fs.existsSync(localMetroPath)) {
-            fs.writeFileSync(localMetroPath, 'module.exports = []');
-        }
-    }
+    // DEPRECATED
+    // if (Config.isRenativeProject) {
+    //     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
+    //
+    //     if (c.platform) {
+    //         fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
+    //     } else if (!fs.existsSync(localMetroPath)) {
+    //         fs.writeFileSync(localMetroPath, 'module.exports = []');
+    //     }
+    // }
 };
 
 const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
