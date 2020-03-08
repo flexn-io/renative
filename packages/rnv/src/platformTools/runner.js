@@ -109,7 +109,7 @@ export const rnvStart = async (c) => {
             }
     }
 
-    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --port ${c.runtime.port} --config=metro.config.js`;
+    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --port ${c.runtime.port} --config=metro.config.${c.platform}.js`;
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }

@@ -492,7 +492,7 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync(c, `react-native ${args.join(' ')}`);
+    return executeAsync(c, `react-native ${args.join(' ')} --config=metro.config.${c.platform}.js`);
 };
 
 export const getAppFolderName = (c, platform) => {

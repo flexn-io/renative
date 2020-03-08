@@ -43,17 +43,13 @@ export const generateChecksum = (str, algorithm, encoding) => crypto
     .update(str, 'utf8')
     .digest(encoding || 'hex');
 
-export const getSourceExts = (c) => {
-    const sExt = PLATFORMS[c.platform]?.sourceExts;
+export const getSourceExts = (c, platform) => {
+    const p = platform || c.platform;
+    const sExt = PLATFORMS[p]?.sourceExts;
     if (sExt) {
         return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
     }
     return [];
-};
-
-export const getSourceExtsAsString = (c) => {
-    const sourceExts = getSourceExts(c);
-    return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
 };
 
 export const sanitizeColor = (val) => {

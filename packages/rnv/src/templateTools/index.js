@@ -12,6 +12,7 @@ import {
 import { logToSummary, logError, logInfo, logWarning, logTask } from '../systemTools/logger';
 import { getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
+import { getSourceExts } from '../common';
 import { setAppConfig, listAppConfigsFoldersSync, generateBuildConfig, generateLocalConfig, updateConfig } from '../configTools/configParser';
 
 
@@ -67,34 +68,6 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
 
     resolve();
 });
-
-export const applyTemplate = async (c, selectedTemplate) => {
-    logTask(`applyTemplate:${c.buildConfig.currentTemplate}=>${selectedTemplate}:`);
-    c.runtime.selectedTemplate = selectedTemplate;
-
-    if (!c.buildConfig.currentTemplate) {
-        logWarning('You don\'t have any current template selected');
-        const opts = getInstalledTemplateOptions(c);
-
-        const { template } = await inquirer.prompt({
-            type: 'list',
-            name: 'template',
-            message: 'Pick which template to apply',
-            choices: opts.keysAsArray
-        });
-
-        c.buildConfig.currentTemplate = template;
-        c.files.project.config.currentTemplate = template;
-        _writeObjectSync(c, c.paths.project.config, c.files.project.config);
-    }
-
-    await _applyTemplate(c);
-    await _configureSrc(c);
-    await _configureAppConfigs(c);
-    await _configureProjectConfig(c);
-    await _configureRenativeConfig(c);
-    await configureEntryPoints(c);
-};
 
 const _cleanProjectTemplateSync = (c) => {
     logTask('_cleanProjectTemplateSync');
@@ -244,53 +217,78 @@ const _configureRenativeConfig = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const configureEntryPoints = c => new Promise((resolve, reject) => {
+const _parseSupportedPlatforms = (c, callback) => {
+    const p = Object.keys(c.buildConfig.platforms);
+    const pLen = p.length;
+    const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;
+    for (let i = 0; i < pLen; i++) {
+        const k = p[i];
+
+        if (supportedPlatforms && supportedPlatforms.includes(k) || !supportedPlatforms) {
+            const plat = c.buildConfig.platforms[k];
+            callback(k, plat);
+        } else {
+            logWarning(`Extra platform ${chalk.white(k)} will be ignored because it's not configured in your ${chalk.white('./renative.json: { defaults.supportedPlatforms }')} object.`);
+        }
+    }
+};
+
+export const configureEntryPoints = async (c) => {
     logTask('configureEntryPoints');
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
     // logTask('configureProject:check entry');
     // if (!fs.existsSync(c.paths.entryDir)) {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
-    //     copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryDir);
+    copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, 'entry'), c.paths.entryDir);
     // }
 
     try {
         if (!fs.existsSync(c.paths.appConfig.config)) {
             logWarning(`ERROR: c.paths.appConfig.config: ${c.paths.appConfig.config} does not exist`);
-            resolve();
-            return;
+            return true;
         }
-        let plat;
-        const p = c.buildConfig.platforms;
-        const supportedPlatforms = c.buildConfig.defaults?.supportedPlatforms;
-        for (const k in p) {
-            if (supportedPlatforms && supportedPlatforms.includes(k) || !supportedPlatforms) {
-                plat = p[k];
-                const source = path.join(c.paths.template.dir, `${plat.entryFile}.js`);
-                const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
-                const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
-                if (!fs.existsSync(dest)) {
-                    if (!plat.entryFile) {
-                        logWarning(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
-                    } else if (!fs.existsSync(source)) {
-                        logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
-                        copyFileSync(backupSource, dest);
-                    } else {
-                        logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
-                        copyFileSync(source, dest);
-                    }
+        _parseSupportedPlatforms(c, (platform, plat) => {
+            const source = path.join(c.paths.template.dir, `${plat.entryFile}.js`);
+            const backupSource = path.join(c.paths.rnv.projectTemplate.dir, 'entry', `${plat.entryFile}.js`);
+            const dest = path.join(c.paths.project.dir, `${plat.entryFile}.js`);
+            if (!fs.existsSync(dest)) {
+                if (!plat.entryFile) {
+                    logWarning(`You missing entryFile for ${chalk.white(k)} platform in your ${chalk.white(c.paths.appConfig.config)}.`);
+                } else if (!fs.existsSync(source)) {
+                    logInfo(`You missing entry file ${chalk.white(source)} in your template. ReNative Will use default backup entry from ${chalk.white(backupSource)}!`);
+                    copyFileSync(backupSource, dest);
+                } else {
+                    logInfo(`You missing entry file ${chalk.white(plat.entryFile)} in your project. let's create one for you!`);
+                    copyFileSync(source, dest);
                 }
-            } else {
-                logWarning(`Extra platform ${chalk.white(k)} will be ignored because it's not configured in your ${chalk.white('./renative.json: { defaults.supportedPlatforms }')} object.`);
             }
-        }
+        });
     } catch (e) {
-        reject();
-        return;
+        return Promise.reject(e);
     }
 
-    resolve();
-});
+    return true;
+};
+
+const _getSourceExtsAsString = (c, p) => {
+    const sourceExts = getSourceExts(c, p);
+    return sourceExts.length ? `['${sourceExts.join('\', \'')}']` : '[]';
+};
+
+const _configureMetroConfigs = async (c) => {
+    _parseSupportedPlatforms(c, (p) => {
+        const dest = path.join(c.paths.project.dir, `metro.config.${p}.js`);
+        if (!fs.existsSync(dest)) {
+            writeFileSync(dest, `const config = require('./metro.config');
+
+const sourceExts = ${_getSourceExtsAsString(c, p)};
+config.resolver.sourceExts = sourceExts;
+module.exports = config;
+`);
+        }
+    });
+};
 
 const _writeObjectSync = (c, p, s) => {
     writeFileSync(p, s);
@@ -332,6 +330,36 @@ export const rnvTemplateAdd = async (c) => {
     });
 
     addTemplate(c, template);
+};
+
+export const applyTemplate = async (c, selectedTemplate) => {
+    logTask(`applyTemplate:${c.buildConfig.currentTemplate}=>${selectedTemplate}:`);
+    c.runtime.selectedTemplate = selectedTemplate;
+
+    if (!c.buildConfig.currentTemplate) {
+        logWarning('You don\'t have any current template selected');
+        const opts = getInstalledTemplateOptions(c);
+
+        const { template } = await inquirer.prompt({
+            type: 'list',
+            name: 'template',
+            message: 'Pick which template to apply',
+            choices: opts.keysAsArray
+        });
+
+        c.buildConfig.currentTemplate = template;
+        c.files.project.config.currentTemplate = template;
+        _writeObjectSync(c, c.paths.project.config, c.files.project.config);
+    }
+
+    await _applyTemplate(c);
+    await _configureSrc(c);
+    await _configureAppConfigs(c);
+    await _configureProjectConfig(c);
+    await _configureRenativeConfig(c);
+    await configureEntryPoints(c);
+    // TODO: will move this to engine
+    await _configureMetroConfigs(c);
 };
 
 export const rnvTemplateApply = async (c) => {
