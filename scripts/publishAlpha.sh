@@ -7,7 +7,7 @@ then
     git add -A
     git commit -nm "release $VERSION"
     git tag -a $VERSION -m "release $VERSION"
-    ggp && git push origin $VERSION
+    git push origin $(git rev-parse --abbrev-ref HEAD) && git push origin $VERSION
 else
     echo "Can't get version"
     exit 100
