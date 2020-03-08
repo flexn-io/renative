@@ -1,6 +1,5 @@
 import { getScaledValue, isEngineWeb, isFactorMobile, isFactorDesktop,
-    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker } from 'renative';
-import { StyleSheet } from 'react-native';
+    isFactorTv, isEngineNative, isFactorBrowser, registerServiceWorker, StyleSheet } from 'renative';
 // import '../platformAssets/runtime/fontManager';
 
 if (isFactorBrowser) registerServiceWorker();

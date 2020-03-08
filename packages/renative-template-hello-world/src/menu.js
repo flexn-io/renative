@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer } from 'renative';
+import { Text, View } from 'react-native';
+import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
 
