@@ -33,11 +33,11 @@ const defaultConfig = {
             // /packages\/renative-template-hello-world\/.*/,
             // /packages\/renative-template-kitchen-sink\/.*/,
             // /packages\/renative-template-blank\/.*/
-        ]),
-        extraNodeModules: {
-            'react-native': doResolve('react-native')
-            // 'react-native/Libraries/Image/AssetRegistry': doResolve('react-native/Libraries/Image/AssetRegistry'),
-        }
+        ])
+        // extraNodeModules: {
+        //     'react-native': doResolve('react-native')
+        // //     // 'react-native/Libraries/Image/AssetRegistry': doResolve('react-native/Libraries/Image/AssetRegistry'),
+        // }
 
         // resolveRequest: (metro, moduleName, _platform) => {
         //     // const context: IResolverContext = {
@@ -57,8 +57,8 @@ const defaultConfig = {
 
         //     // return resolution;
         // },
-    },
-    assetRegistryPath: doResolve('react-native/Libraries/Image/AssetRegistry')
+    }
+    // assetRegistryPath: doResolve('react-native/Libraries/Image/AssetRegistry')
     // watchFolders: [
     //     path.resolve(__dirname, '../../node_modules'),
     //     path.resolve(__dirname, './node_modules'),
@@ -70,7 +70,7 @@ const defaultConfig = {
     // projectRoot: path.resolve(__dirname),
 };
 
-// module.exports = config;
+// module.exports = defaultConfig;
 module.exports = metroConfigHelper(path.resolve(__dirname))
     .defaultConfig(defaultConfig)
     .generate();
