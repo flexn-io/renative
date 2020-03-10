@@ -87,5 +87,6 @@
                 }
             }
         }
-    }
+    },
+    "currentTemplate": "renative-template-hello-world"
 }
