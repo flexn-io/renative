@@ -352,18 +352,18 @@ const parsePlugins = (c, platform, pluginCallback) => {
     }
 };
 
-const getLocalRenativePlugin = () => ({
-    version: 'file:./packages/renative',
-    webpack: {
-        modulePaths: [],
-        moduleAliases: {
-            renative: {
-                projectPath: 'packages/renative'
-            }
-        }
-    }
-});
+// const getLocalRenativePlugin = () => ({
+//     version: 'file:./packages/renative',
+//     webpack: {
+//         modulePaths: [],
+//         moduleAliases: {
+//             renative: {
+//                 projectPath: 'packages/renative'
+//             }
+//         }
+//     }
+// });
 
-export { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
+export { getMergedPlugin, parsePlugins };
 
-export default { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
+export default { getMergedPlugin, parsePlugins };

@@ -196,7 +196,7 @@ const _configureRenativeConfig = c => new Promise((resolve, reject) => {
     // renative.json
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logTask('configureProject:check renative.json', chalk.grey);
-    if (!c.runtime.isWrapper) {
+    //if (!c.runtime.isWrapper) {
         if (c.runtime.selectedTemplate || c.runtime.requiresForcedTemplateApply || c.files.project.config.isNew) {
             logWarning(
                 `Looks like your ${c.paths.project.config} need to be updated with ${c.paths.template.configTemplate}`,
@@ -208,12 +208,12 @@ const _configureRenativeConfig = c => new Promise((resolve, reject) => {
             c.files.project.config = mergedObj;
             _writeObjectSync(c, c.paths.project.config, mergedObj);
         }
-    } else {
-        if (templateConfig.plugins.renative) {
-            templateConfig.plugins.renative = getLocalRenativePlugin();
-        }
-        _writeObjectSync(c, c.paths.project.configLocal, templateConfig);
-    }
+    // } else {
+    //     if (templateConfig.plugins.renative) {
+    //         templateConfig.plugins.renative = getLocalRenativePlugin();
+    //     }
+    //     _writeObjectSync(c, c.paths.project.configLocal, templateConfig);
+    // }
     resolve();
 });
 

@@ -57,15 +57,15 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "bootstrap": "npm run link && npx lerna bootstrap",
-        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && npm run bootstrap",
+        "bootstrap": "yarn link && npx lerna bootstrap",
+        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
-        "link": "cd packages/rnv; npm link",
+        "link": "cd packages/rnv; yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
         "prePublish": "rnv hooks run -x prePublish",
-        "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",
-        "publish:alpha": "npm run prePublish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
+        "publish": "yarn prePublish && yarn publish:rnv && yarn publish:renative && yarn publish:hello && yarn publish:blank && yarn publish:sink",
+        "publish:alpha": "yarn prePublish && yarn publish:rnv:alpha && yarn publish:renative:alpha && yarn publish:hello:alpha && yarn publish:blank:alpha && yarn publish:sink:alpha",
         "publish:blank": "cd packages/renative-template-blank && npm publish",
         "publish:blank:alpha": "cd packages/renative-template-blank && npm publish --tag alpha",
         "publish:hello": "cd packages/renative-template-hello-world && npm publish",
@@ -76,17 +76,17 @@
         "publish:rnv:alpha": "cd packages/rnv && npm publish --tag alpha",
         "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
         "publish:sink:alpha": "cd packages/renative-template-kitchen-sink && npm publish --tag alpha",
-        "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages",
-        "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && npm run watch",
+        "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
+        "rambo": "rnv clean && yarn && rnv template apply --template renative-template-hello-world && yarn watch",
         "rnpa": "./scripts/publishAlpha.sh",
         "run:apps": "ttab rnv run -p web --ci && ttab rnv run -p ios -t 'iPhone 8' --ci && ttab rnv run -p android -t Pixel_2_API_28 --ci && ttab rnv run -p androidtv -t Android_TV_1080p_API_28 --ci && ttab rnv run -p tvos --ci && ttab rnv run -p macos --ci && ttab rnv run -p tizen -t T-samsung-5.5-x86 --ci && ttab rnv run -p webos --ci && ttab rnv run -p androidwear -t Android_Wear_Round_API_28 --ci && ttab rnv run -p tizenwatch -t W-5.5-circle-x86 --ci && ttab rnv run -p tizenmobile -t M-5.5-x86 --ci",
-        "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloWorld --ci && npm run run:apps",
+        "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloWorld --ci && yarn run:apps",
         "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
-        "test:rnv": "cd ./packages/rnv && npm run test:local",
-        "test:rnv:unit": "cd ./packages/rnv && npm run test",
-        "ut": "cd ./packages/rnv && npm run test",
-        "watch": "cd ./packages/rnv && npm run watch",
-        "website": "cd website && npm run start"
+        "test:rnv": "cd ./packages/rnv && yarn test:local",
+        "test:rnv:unit": "cd ./packages/rnv && yarn test",
+        "ut": "cd ./packages/rnv && yarn test",
+        "watch": "cd ./packages/rnv && yarn watch",
+        "website": "cd website && yarn start"
     },
     "dependencies": {
         "@expo/next-adapter": "^2.0.5",
@@ -159,10 +159,10 @@
         "jetifier": "1.6.4",
         "lerna": "3.16.4",
         "release-it": "12.4.3",
-        "renative-template-blank": "file:./packages/renative-template-blank",
-        "renative-template-hello-world": "file:./packages/renative-template-hello-world",
-        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
-        "xcode": "2.1.0"
+        "xcode": "2.1.0",
+        "renative-template-hello-world": "0.29.0-alpha.16",
+        "renative-template-blank": "0.29.0-alpha.16",
+        "renative-template-kitchen-sink": "0.29.0-alpha.16"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"
@@ -185,7 +185,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged && npm run test:rnv:unit"
+            "pre-commit": "pretty-quick --staged && yarn test:rnv:unit"
         }
     },
     "workspaces": [
