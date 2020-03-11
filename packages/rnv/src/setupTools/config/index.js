@@ -1,4 +1,3 @@
-// import { replaceHomeFolder } from '../../systemTools/fileutils';
 import { isSystemWin } from '../../utils';
 
 let androidPlatform = 'linux';
