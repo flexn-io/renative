@@ -83,7 +83,6 @@ const _injectPod = (podName, pluginPlat, plugin, key) => {
     let pluginInject = '';
     const isNpm = plugin['no-npm'] !== true;
     if (isNpm) {
-        // const podPath = pluginPlat.path ? `../../${pluginPlat.path}` : `../../node_modules/${key}`;
         const podPath = doResolve(pluginPlat.path ?? key);
         pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
     } else if (pluginPlat.git) {
