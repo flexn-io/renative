@@ -44,10 +44,11 @@ export const isScopedPackagePath = (aPath) => {
 const _getPackagePathParts = (aPath) => {
     let parts = [];
     if (isScopedPackagePath(aPath)) {
-        parts = aPath.match(/^([^/]+\/[^/]+)\/(.*)/);
+        parts = aPath.match(/^([^/]+\/[^/]+)(?:\/?(.*))/);
     } else {
         parts = aPath.match(/^([^/]+)\/?(.*)/);
     }
+    if (!Array.isArray(parts)) throw new Error(`Unsuitable path for resolving: ${aPath}`)
     return parts.slice(1);
 };
 

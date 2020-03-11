@@ -15,10 +15,10 @@
         "renative": {
             "version": "0.28.19-alpha.2",
             "webpack": {
-                "modulePaths": ["node_modules/renative"],
+                "modulePaths": ["renative"],
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "node_modules/renative"
+                        "nodePackageName": "renative"
                     }
                 }
             }
@@ -314,11 +314,11 @@
             "version": "1.8.0",
             "webpack": {
                 "modulePaths": [
-                    "node_modules/@monterosa/react-native-parallax-scroll"
+                    "@monterosa/react-native-parallax-scroll"
                 ],
                 "moduleAliases": {
                     "@monterosa/react-native-parallax-scroll": {
-                        "projectPath": "node_modules/@monterosa/react-native-parallax-scroll"
+                        "nodePackageName": "@monterosa/react-native-parallax-scroll"
                     }
                 }
             }
@@ -1757,8 +1757,8 @@
             "version": "3.9.2",
             "webpack": {
                 "modulePaths": [
-                    "node_modules/react-navigation",
-                    "node_modules/@react-navigation"
+                    "react-navigation",
+                    "@react-navigation/core"
                 ]
             },
             "dependsOn": [
@@ -1896,7 +1896,7 @@
                 "modulePaths": true,
                 "moduleAliases": {
                     "@react-native-community/netinfo": {
-                        "projectPath": "node_modules/@react-native-community/netinfo/web"
+                        "nodePackageName": "@react-native-community/netinfo/web"
                     }
                 }
             }

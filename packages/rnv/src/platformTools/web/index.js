@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
@@ -27,6 +28,7 @@ import { copyFileSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
 import { getValidLocalhost } from '../../utils';
+import { doResolve } from '../../resolve';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -37,34 +39,35 @@ const _generateWebpackConfigs = (c, platform) => {
     let moduleAliasesString = '';
     const moduleAliases = {};
 
+    // eslint-disable-next-line guard-for-in, no-unused-vars
     for (const key in plugins) {
         const plugin = getMergedPlugin(c, key, plugins);
         if (!plugin) {
-
+            // naffin
         } else if (plugin.webpack) {
             if (plugin.webpack.modulePaths) {
                 if (plugin.webpack.modulePaths === true) {
-                    modulePaths.push(`node_modules/${key}`);
+                    // modulePaths.push(`node_modules/${key}`);
+                    modulePaths.push(doResolve(key));
                 } else {
-                    modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
+                    modulePaths = modulePaths.concat(plugin.webpack.modulePaths.map(aPath => doResolve(aPath)));
                 }
             }
             if (plugin.webpack.moduleAliases) {
                 if (plugin.webpack.moduleAliases === true) {
                     moduleAliasesString += `'${key}': {
-                  projectPath: 'node_modules/${key}'
+                  nodePackageName: '${key}'
                 },`;
-                    moduleAliases[key] = { projectPath: `node_modules/${key}` };
+                    moduleAliases[key] = { nodePackageName: key };
                 } else {
+                    // eslint-disable-next-line no-restricted-syntax, no-unused-vars
                     for (const aKey in plugin.webpack.moduleAliases) {
                         if (typeof plugin.webpack.moduleAliases[aKey] === 'string') {
                             moduleAliasesString += `'${aKey}': '${plugin.webpack.moduleAliases[aKey]}',`;
                             moduleAliases[key] = plugin.webpack.moduleAliases[aKey];
-                        } else {
-                            moduleAliasesString += `'${aKey}': {projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'},`;
-                            if (plugin.webpack.moduleAliases[aKey].projectPath) {
-                                moduleAliases[key] = { projectPath: plugin.webpack.moduleAliases[aKey].projectPath };
-                            }
+                        } else if (plugin.webpack.moduleAliases[aKey].nodePackageName) {
+                            moduleAliasesString += `'${aKey}': {nodePackageName: '${plugin.webpack.moduleAliases[aKey].nodePackageName}'},`;
+                            moduleAliases[key] = { nodePackageName: plugin.webpack.moduleAliases[aKey].nodePackageName };
                         }
                     }
                 }

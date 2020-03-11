@@ -16,15 +16,6 @@ function generateConfig(config) {
         config.buildFolder || 'public'
     );
 
-    console.log(
-        'config',
-        require('util').inspect(config, {
-            showHidden: false,
-            depth: undefined,
-            colors: true
-        })
-    );
-
     const baseUrl = config.baseUrl || '';
     const devServerHost = config.devServerHost || '0.0.0.0';
 
@@ -90,13 +81,12 @@ function generateConfig(config) {
         'react-native-orientation-locker',
         'react-navigation',
         '@react-navigation/native',
-        'rnv-platform-info'
+        'rnv-platform-info',
+        'renative'
     ].map(pkg => doResolve(pkg, false));
     const modulePaths = [...relativeModules, ...externalModules].filter(
         Boolean
     );
-
-    console.log('modulePaths :', modulePaths);
 
     const rules = {};
     rules.babel = {
@@ -158,17 +148,22 @@ function generateConfig(config) {
         renative: doResolve('renative'),
         'react-native/Libraries/Renderer/shims/ReactNativePropRegistry':
             'react-native-web/dist/modules/ReactNativePropRegistry',
-        'react-native-vector-icons': doResolve('react-native-vector-icons')
+        'react-native-vector-icons': doResolve('react-native-vector-icons'),
     };
 
     if (config.moduleAliases) {
+        // eslint-disable-next-line no-restricted-syntax, no-unused-vars
         for (const key in config.moduleAliases) {
             if (typeof config.moduleAliases[key] === 'string') {
-                aliases[key] = config.moduleAliases[key];
+                // aliases[key] = config.moduleAliases[key];
+                aliases[key] = doResolve(config.moduleAliases[key]);
             } else {
-                aliases[key] = path.resolve(
-                    projectDir,
-                    config.moduleAliases[key].projectPath
+                // aliases[key] = path.resolve(
+                //     projectDir,
+                //     config.moduleAliases[key].projectPath
+                // );
+                aliases[key] = doResolve(
+                    config.moduleAliases[key].nodePackageName
                 );
             }
         }

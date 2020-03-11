@@ -16,7 +16,8 @@ const defaultConfig = {
         ]),
         extraNodeModules: {
             'react-native': doResolve('react-native'),
-            'react-navigation': doResolve('react-navigation')
+            'react-navigation': doResolve('react-navigation'),
+            renative: doResolve('renative'),
         }
     },
     watchFolders: [
