@@ -44,8 +44,8 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "latest",
-        "rnv": "latest"
+        "renative": "0.28.19-alpha.2",
+        "rnv": "0.28.19-alpha.2"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

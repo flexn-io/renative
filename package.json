@@ -57,35 +57,25 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "bootstrap": "npm run link && npx lerna bootstrap",
-        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && npm run bootstrap",
+        "bootstrap": "yarn run link && npx lerna bootstrap",
+        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "link": "cd packages/rnv; yarn unlink 2> /dev/null; yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
         "prePublish": "rnv hooks run -x prePublish",
-        "publish": "npm run prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",
-        "publish:alpha": "npm run prePublish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
-        "publish:blank": "cd packages/renative-template-blank && npm publish",
-        "publish:blank:alpha": "cd packages/renative-template-blank && npm publish --tag alpha",
-        "publish:hello": "cd packages/renative-template-hello-world && npm publish",
-        "publish:hello:alpha": "cd packages/renative-template-hello-world && npm publish --tag alpha",
-        "publish:renative": "cd packages/renative && npm publish",
-        "publish:renative:alpha": "cd packages/renative && npm publish --tag alpha",
-        "publish:rnv": "cd packages/rnv && npm publish",
-        "publish:rnv:alpha": "cd packages/rnv && npm publish --tag alpha",
-        "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
-        "publish:sink:alpha": "cd packages/renative-template-kitchen-sink && npm publish --tag alpha",
-        "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true npm run publish-gh-pages",
-        "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && npm run watch",
+        "publish": "yarn prePublish && lerna run --parallel --concurrency 1 publish",
+        "publish:alpha": "yarn prePublish && lerna run --parallel --concurrency 1 publish:alpha",
+        "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
+        "rambo": "rnv clean && yarn && rnv template apply --template renative-template-hello-world && yarn watch",
         "run:apps": "ttab rnv run -p web --ci && ttab rnv run -p ios -t 'iPhone 8' --ci && ttab rnv run -p android -t Pixel_2_API_28 --ci && ttab rnv run -p androidtv -t Android_TV_1080p_API_28 --ci && ttab rnv run -p tvos --ci && ttab rnv run -p macos --ci && ttab rnv run -p tizen -t T-samsung-5.5-x86 --ci && ttab rnv run -p webos --ci && ttab rnv run -p androidwear -t Android_Wear_Round_API_28 --ci && ttab rnv run -p tizenwatch -t W-5.5-circle-x86 --ci && ttab rnv run -p tizenmobile -t M-5.5-x86 --ci",
-        "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloWorld --ci && npm run run:apps",
+        "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloWorld --ci && yarn run:apps",
         "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
-        "test:rnv": "cd ./packages/rnv && npm run test:local",
-        "test:rnv:unit": "cd ./packages/rnv && npm run test",
-        "ut": "cd ./packages/rnv && npm run test",
-        "watch": "cd ./packages/rnv && npm run watch",
-        "website": "cd website && npm run start"
+        "test:rnv": "lerna run test:local --stream --scope rnv",
+        "test:rnv:unit": "lerna run test --stream --scope rnv",
+        "ut": "lerna run test --stream --scope rnv",
+        "watch": "lerna run --parallel --concurrency 1 watch",
+        "website": "cd website && yarn start"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -122,7 +112,7 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged && npm run test:rnv:unit"
+            "pre-commit": "pretty-quick --staged && yarn test:rnv:unit"
         }
     },
     "resolutions": {
@@ -132,10 +122,7 @@
         "packages": [
             "packages/*"
         ],
-        "nohoist": [
-            "**/react-native",
-            "**/react-nativigation-stack"
-        ]
+        "nohoist": []
     },
     "dependencies": {}
 }

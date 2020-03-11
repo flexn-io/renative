@@ -4,22 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const resolve = require('resolve');
-
-function doResolve(aPath, mandatory = true) {
-    try {
-        return resolve.sync(aPath, {
-            packageFilter: (pkg) => {
-                pkg.main = 'package.json';
-                return pkg;
-            },
-            extensions: ['.js', '.json']
-        }).replace(/\/package.json$/, '');
-    } catch (err) {
-        // perhaps do some warning logging here..
-        if (mandatory) throw err;
-    }
-}
+const { doResolve } = require('rnv');
 
 function generateConfig(config) {
     const projectDir = path.resolve(config.currentDir, '../../');
@@ -29,6 +14,15 @@ function generateConfig(config) {
     const appBuildPublicDir = path.resolve(
         config.currentDir,
         config.buildFolder || 'public'
+    );
+
+    console.log(
+        'config',
+        require('util').inspect(config, {
+            showHidden: false,
+            depth: undefined,
+            colors: true
+        })
     );
 
     const baseUrl = config.baseUrl || '';
@@ -47,7 +41,7 @@ function generateConfig(config) {
         'react-navigation-tabs',
         'react-navigation-stack',
         'react-navigation',
-        '@react-navigation',
+        // '@react-navigation',
         'react-native-gesture-handler',
         'react-native-reanimated',
         'react-native-camera',
@@ -160,7 +154,8 @@ function generateConfig(config) {
 
     const aliases = {
         react: doResolve('react'),
-        'react-native': 'react-native-web',
+        'react-native': doResolve('react-native-web'),
+        renative: doResolve('renative'),
         'react-native/Libraries/Renderer/shims/ReactNativePropRegistry':
             'react-native-web/dist/modules/ReactNativePropRegistry',
         'react-native-vector-icons': doResolve('react-native-vector-icons')
