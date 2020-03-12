@@ -7,6 +7,8 @@ jobs:
           language: node_js
           node_js: 10.15.3
           install:
+              - curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+              - yarn --version
               - yarn bootstrap
               - mkdir /home/travis/.rnv
               - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
@@ -28,6 +30,8 @@ jobs:
           before_install:
               - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
               - sudo apt-get install -y nodejs
+              - curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+              - yarn --version
               - yarn bootstrap
               - cd packages/rnv
               - yarn build:dev
@@ -42,7 +46,8 @@ jobs:
           os: osx
           osx_image: xcode10.2
           before_install:
-              - npm install lerna yarn -g
+              - curl --compressed -o- -L https://yarnpkg.com/install.sh | bash
+              - yarn --version
               - yarn bootstrap
           install:
               - mkdir /Users/travis/.rnv
