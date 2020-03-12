@@ -1,121 +1,144 @@
-import React from 'react';
-import { Text, Image, View, TouchableOpacity, StyleSheet, ScrollView, PixelRatio } from 'react-native';
-import { Icon, Button, Api, getScaledValue, isWatch } from 'renative';
+import React, { useState, useEffect, useRef } from 'react';
+import {
+    Text,
+    Image,
+    View,
+    StyleSheet,
+    ScrollView,
+    PixelRatio
+} from 'react-native';
+import { Api, Button, getScaledValue, useNavigate, useOpenURL } from 'renative';
+import { withFocusable } from '@noriginmedia/react-spatial-navigation';
+import Theme, { themeStyles, hasWebFocusableUI } from './theme';
 import config from '../platformAssets/renative.runtime.json';
 import packageJson from '../package.json';
-import Theme from './theme';
+import icon from '../platformAssets/runtime/logo.png';
 
 const styles = StyleSheet.create({
     appContainerScroll: {
-        flex: 1,
-        paddingTop: getScaledValue(50)
-    },
-    appContainerView: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: getScaledValue(30),
-    },
-    textH2: {
-        fontFamily: Theme.primaryFontFamily,
-        fontSize: getScaledValue(20),
-        marginHorizontal: getScaledValue(20),
-        color: Theme.color4,
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center'
-    },
-    textH3: {
-        fontFamily: Theme.primaryFontFamily,
-        fontSize: getScaledValue(15),
-        marginHorizontal: getScaledValue(20),
-        marginTop: getScaledValue(5),
-        color: Theme.color2,
-        justifyContent: 'center',
-        alignItems: 'center',
-        textAlign: 'center'
+        paddingTop: getScaledValue(50),
+        flex: 1
     },
     image: {
         marginBottom: getScaledValue(30),
         width: getScaledValue(83),
-        height: getScaledValue(97),
-    },
-    buttonWear: {
-        minWidth: getScaledValue(130)
-    },
-    button: {
-        minWidth: getScaledValue(150)
+        height: getScaledValue(97)
     }
 });
 
-const stylesObbj = {
-    icon: {
-        width: getScaledValue(40),
-        height: getScaledValue(40),
-        margin: getScaledValue(10),
-    }
-};
+const FocusableView = withFocusable()(View);
 
-class ScreenHome extends React.Component {
-    constructor() {
-        super();
-        this.state = { bgColor: Theme.color1 };
-    }
+const ScreenHome = props => {
+    const [bgColor, setBgColor] = useState(Theme.color1);
+    const navigate = useNavigate(props);
+    const openURL = useOpenURL();
+    let scrollRef;
+    let handleFocus;
+    let handleUp;
 
-    render() {
-        const isWear = isWatch();
-        const selectedStyle = isWear ? styles.appContainerView : styles.appContainerScroll;
-        const styleButton = isWear ? styles.buttonWear : styles.button;
-        const SelectedView = isWear ? View : ScrollView;
-        return (
-            <SelectedView
-                style={[selectedStyle, { backgroundColor: this.state.bgColor }]}
-                contentContainerStyle={{
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                }}
+    if (hasWebFocusableUI) {
+        scrollRef = useRef(null);
+        const { setFocus } = props;
+        handleFocus = ({ y }) => {
+            scrollRef.current.scrollTo({ y });
+        };
+        handleUp = direction => {
+            if (direction === 'up') scrollRef.current.scrollTo({ y: 0 });
+        };
+        useEffect(
+            () =>
+                function cleanup() {
+                    setFocus('menu');
+                },
+            []
+        );
+    }
+    return (
+        <View style={themeStyles.screen}>
+            <ScrollView
+                style={{ backgroundColor: bgColor }}
+                ref={scrollRef}
+                contentContainerStyle={themeStyles.container}
             >
-                <TouchableOpacity style={{ alignSelf: 'stretch', height: 1 }} />
-                <Image style={styles.image} source={require('../platformAssets/runtime/logo.png')} />
-                <Text style={styles.textH2}>
-                    {config.welcomeMessage}
+                <Image style={styles.image} source={icon} />
+                <Text style={themeStyles.textH2}>{config.welcomeMessage}</Text>
+                <Text style={themeStyles.textH2}>v{packageJson.version}</Text>
+                <Text style={themeStyles.textH3}>
+                    {`platform: ${Api.platform}, factor: ${
+                        Api.formFactor
+                    }, engine: ${Api.engine}`}
                 </Text>
-                <Text style={styles.textH2}>
-v
-                    {packageJson.version}
+                <Text style={themeStyles.textH3}>
+                    {`hermes: ${
+                        global.HermesInternal === undefined ? 'no' : 'yes'
+                    }`}
                 </Text>
-                <Text style={styles.textH3}>
-                    {`platform: ${Api.platform}, factor: ${Api.formFactor}`}
-                </Text>
-                <Text style={styles.textH3}>
-                    {`hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`}
-                </Text>
-                <Text style={styles.textH3}>
+                <Text style={themeStyles.textH3}>
                     {`pixelRatio: ${PixelRatio.get()}, ${PixelRatio.getFontScale()}`}
                 </Text>
                 <Button
-                    style={styleButton}
+                    style={themeStyles.button}
+                    textStyle={themeStyles.buttonText}
                     title="Try Me!"
                     className="focusable"
                     onPress={() => {
-                        this.setState({ bgColor: this.state.bgColor === '#666666' ? Theme.color1 : '#666666' });
+                        setBgColor(
+                            bgColor === '#666666' ? Theme.color1 : '#666666'
+                        );
                     }}
+                    onEnterPress={() => {
+                        setBgColor(
+                            bgColor === '#666666' ? Theme.color1 : '#666666'
+                        );
+                    }}
+                    onBecameFocused={handleFocus}
+                    onArrowPress={handleUp}
                 />
                 <Button
-                    style={styleButton}
+                    style={themeStyles.button}
+                    textStyle={themeStyles.buttonText}
                     title="Now Try Me!"
                     className="focusable"
                     onPress={() => {
-                        Api.navigation.navigate('MyPage2');
+                        navigate('my-page', { replace: false });
                     }}
+                    onEnterPress={() => {
+                        navigate('my-page', { replace: false });
+                    }}
+                    onBecameFocused={handleFocus}
                 />
-                <View style={{ marginTop: 20, flexDirection: 'row' }}>
-                    <Icon iconFont="fontAwesome" className="focusable" iconName="github" iconColor={Theme.color3} style={stylesObbj.icon} />
-                    <Icon iconFont="fontAwesome" className="focusable" iconName="twitter" iconColor={Theme.color3} style={stylesObbj.icon} />
-                </View>
-            </SelectedView>
-        );
-    }
-}
+                <FocusableView
+                    style={{ marginTop: 20, flexDirection: 'row' }}
+                    onBecameFocused={handleFocus}
+                >
+                    <Button
+                        iconFont="fontAwesome"
+                        className="focusable"
+                        focusKey="github"
+                        iconName="github"
+                        iconColor={Theme.color3}
+                        iconSize={Theme.iconSize}
+                        style={themeStyles.icon}
+                        onPress={() => {
+                            openURL('https://github.com/pavjacko/renative');
+                        }}
+                    />
+                    <Button
+                        iconFont="fontAwesome"
+                        className="focusable"
+                        iconName="twitter"
+                        focusKey="twitter"
+                        iconColor={Theme.color3}
+                        iconSize={Theme.iconSize}
+                        style={themeStyles.icon}
+                        onPress={() => {
+                            openURL('https://twitter.com/renative');
+                        }}
+                    />
+                </FocusableView>
+            </ScrollView>
+        </View>
+    );
+};
 
-export default ScreenHome;
+export default (hasWebFocusableUI ? withFocusable()(ScreenHome) : ScreenHome);

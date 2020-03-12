@@ -6,7 +6,7 @@ import {
     getConfigProp,
     getFlavouredProp
 } from '../../common';
-import {doResolve} from '../../resolve'
+import { doResolve } from '../../resolve';
 import { logTask, logWarning } from '../../systemTools/logger';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';
@@ -159,6 +159,8 @@ const _parseXcodeProject = (c, platform) =>
                     `"${provisionProfileSpecifier}"`
                 );
             }
+            // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
+            xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
 
             xcodeProj.updateBuildProperty(
                 'CODE_SIGN_IDENTITY',
@@ -246,6 +248,7 @@ const _parseXcodeProject = (c, platform) =>
                         });
                     }
                     if (xcodeprojObj.frameworks) {
+                        // eslint-disable-next-line guard-for-in, no-restricted-syntax
                         for (const k in xcodeprojObj.frameworks) {
                             let fPath;
                             let opts;
@@ -272,6 +275,7 @@ const _parseXcodeProject = (c, platform) =>
                         }
                     }
                     if (xcodeprojObj.buildSettings) {
+                        // eslint-disable-next-line guard-for-in, no-restricted-syntax
                         for (const k in xcodeprojObj.buildSettings) {
                             xcodeProj.addToBuildSettings(
                                 k,
@@ -284,4 +288,13 @@ const _parseXcodeProject = (c, platform) =>
             fs.writeFileSync(projectPath, xcodeProj.writeSync());
             resolve();
         });
+
+        // FONTS
+        // Cocoapods take care of this
+        c.pluginConfigiOS.embeddedFontSources.forEach(v => {
+            xcodeProj.addResourceFile(v, { variantGroup: false });
+        });
+
+        fs.writeFileSync(projectPath, xcodeProj.writeSync());
+        resolve();
     });

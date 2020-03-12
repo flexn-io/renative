@@ -6,7 +6,7 @@ import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
 // import resolve from 'resolve';
-import {doResolve} from './resolve'
+import { doResolve } from './resolve';
 import colorString from 'color-string';
 import crypto from 'crypto';
 import { getValidLocalhost } from './utils';
@@ -486,7 +486,7 @@ export const checkPortInUse = (c, platform, port) =>
 // };
 
 export const getFlavouredProp = (c, obj, key) => {
-    if (!key) return null;
+    if (!key || !obj) return null;
     const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;
     return obj[key];

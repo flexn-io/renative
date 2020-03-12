@@ -8,7 +8,7 @@ import {
     getBuildsFolder,
     areNodeModulesInstalled
 } from '../common';
-import {doResolve} from '../resolve';
+import { doResolve } from '../resolve';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
@@ -127,10 +127,9 @@ export const copyRuntimeAssets = c =>
                         if (font) {
                             const fontSource = path.join(dir, font);
 
-                            let relativePath = dir.replace(
-                                c.paths.project.dir,
-                                ''
-                            );
+                            let relativePath = dir.includes(c.paths.project.dir)
+                                ? `../..${dir.replace(c.paths.project.dir, '')}`
+                                : dir;
                             if (isSystemWin)
                                 relativePath = relativePath.replace(/\\/g, '/'); // strings don't like windows backslashes
                             if (fs.existsSync(fontSource)) {
@@ -140,7 +139,7 @@ export const copyRuntimeAssets = c =>
                                 // copyFileSync(fontSource, fontDest);
                                 fontsObj += `{
                               fontFamily: '${key}',
-                              file: require('../..${relativePath}/${font}'),
+                              file: require('${relativePath}/${font}'),
                           },`;
                             } else {
                                 logWarning(

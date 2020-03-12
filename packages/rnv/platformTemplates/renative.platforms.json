@@ -3,7 +3,7 @@
         "ios": {
             "npm": {
                 "devDependencies": {
-                    "xcode": "2.0.0"
+                    "xcode": "2.1.0"
                 },
                 "optionalDependencies": {
                     "ios-deploy": "1.10.0"
@@ -13,7 +13,7 @@
         "tvos": {
             "npm": {
                 "devDependencies": {
-                    "xcode": "2.0.0"
+                    "xcode": "2.1.0"
                 },
                 "optionalDependencies": {
                     "ios-deploy": "1.10.0"

@@ -137,6 +137,7 @@ const _execute = (c, command, opts = {}) => {
             }
             let errMessage =
                 parseErrorMessage(err.all, maxErrorLength) ||
+                err.stack ||
                 err.stderr ||
                 err.message;
             errMessage = replaceOverridesInString(
@@ -144,6 +145,7 @@ const _execute = (c, command, opts = {}) => {
                 privateParams,
                 privateMask
             );
+
             return Promise.reject(
                 `COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`
             ); // parseErrorMessage will return false if nothing is found, default to previous implementation
@@ -259,7 +261,15 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     arr = arr.filter(v => {
         if (v === '') return false;
         // Cleaner iOS reporting
-        if (v.includes('-Werror')) {
+        if (
+            v.includes('-Werror') ||
+            v.includes('following modules are linked manually') ||
+            v.includes('warn ') ||
+            v.includes('note: ') ||
+            v.includes('warning: ') ||
+            v.includes('Could not find the following native modules') ||
+            v.includes('⚠️')
+        ) {
             return false;
         }
         // Cleaner Android reporting

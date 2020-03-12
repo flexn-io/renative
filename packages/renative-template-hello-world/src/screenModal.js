@@ -1,60 +1,55 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Icon, Api, getScaledValue } from 'renative';
-import Theme from './theme';
+import React, { useEffect } from 'react';
+import { Text, View, StyleSheet, ScrollView } from 'react-native';
+import { Button, getScaledValue, usePop } from 'renative';
+import { withFocusable } from '@noriginmedia/react-spatial-navigation';
+import Theme, { themeStyles, hasWebFocusableUI } from './theme';
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: Theme.color1,
-    },
-    containerIn: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
     header: {
         width: '100%',
-        height: getScaledValue(50),
+        height: getScaledValue(80),
         alignItems: 'flex-end',
-        paddingRight: getScaledValue(40),
         paddingTop: getScaledValue(20)
-    },
-    textH2: {
-        fontFamily: Theme.primaryFontFamily,
-        fontSize: getScaledValue(20),
-        marginHorizontal: getScaledValue(20),
-        color: Theme.color4,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    icon: {
-        width: getScaledValue(40),
-        height: getScaledValue(40),
-        marginLeft: getScaledValue(10)
     }
 });
 
-const ScreenMyPage = () => (
-    <View style={styles.container}>
-        <View style={styles.header}>
-            <Icon
-                iconFont="ionicons"
-                iconName="md-close-circle"
-                className="focusable"
-                iconColor={Theme.color3}
-                style={styles.icon}
-                onPress={() => {
-                    Api.navigation.pop();
-                }}
-            />
-        </View>
-        <View style={styles.containerIn}>
-            <Text style={styles.textH2}>
-                        This is my Modal!
-            </Text>
-        </View>
-    </View>
-);
+const ScreenModal = props => {
+    const pop = usePop(props);
+    if (hasWebFocusableUI) {
+        useEffect(() => {
+            const { setFocus } = props;
+            setFocus('close');
 
-export default ScreenMyPage;
+            return function cleanup() {
+                setFocus('menu');
+            };
+        }, []);
+    }
+    return (
+        <View style={themeStyles.screenModal}>
+            <View style={styles.header}>
+                <Button
+                    focusKey="close"
+                    iconFont="ionicons"
+                    iconName="md-close-circle"
+                    className="focusable"
+                    iconColor={Theme.color3}
+                    iconSize={Theme.iconSize}
+                    style={themeStyles.icon}
+                    to="/"
+                    onEnterPress={() => {
+                        pop();
+                    }}
+                    onPress={() => {
+                        pop();
+                    }}
+                />
+            </View>
+            <ScrollView contentContainerStyle={themeStyles.container}>
+                <Text style={themeStyles.textH2}>This is my Modal!</Text>
+            </ScrollView>
+        </View>
+    );
+};
+
+export default (hasWebFocusableUI ? withFocusable()(ScreenModal) : ScreenModal);
