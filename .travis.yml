@@ -29,7 +29,7 @@ jobs:
           before_install:
               - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
               - sudo apt-get install -y nodejs
-              - sudo npm uninstall --global yarn
+              - sudo npm uninstall --global yarn; sudo rm /usr/local/bin/yarn
               - npm config set prefix ~/.npm
               - export PATH=$PATH:~/.npm/bin
               - rm -rf ~/.yarn/bin/yarn || true && npm install --global yarn && yarn --version; which yarn
