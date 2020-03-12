@@ -77,7 +77,7 @@ const hooks = {
             const v = {
                 version: c.files.project.package.version
             };
-            const pkgFolder = path.join(c.paths.project.dir, 'packages');
+            const pkgFolder = path.join(c.paths.project.dir, '../../packages');
             _updatePackageJson(c, c.paths.project.package, v);
             _updatePackageJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
             _updatePackageJson(
@@ -107,13 +107,13 @@ const hooks = {
                 v
             );
             FileUtils.copyFileSync(
-                path.join(c.paths.project.dir, 'README.md'),
+                path.join(c.paths.project.dir, '../../README.md'),
                 path.join(pkgFolder, 'renative/README.md')
             );
-            FileUtils.copyFileSync(
-                path.join(c.paths.project.dir, 'README.md'),
-                path.join(pkgFolder, 'renative/README.md')
-            );
+            // FileUtils.copyFileSync(
+            //     path.join(c.paths.project.dir, 'README.md'),
+            //     path.join(pkgFolder, 'renative/README.md')
+            // );
             FileUtils.updateObjectSync(c.paths.rnv.pluginTemplates.config, {
                 pluginTemplates: {
                     renative: {

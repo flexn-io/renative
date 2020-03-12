@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.19-alpha.5",
+            "version": "0.28.19-alpha.2",
             "webpack": {
                 "modulePaths": ["renative"],
                 "moduleAliases": {
@@ -1815,8 +1815,8 @@
                 "react-native-reanimated"
             ],
             "npm": {
-                "@react-navigation/core": "3.4.2",
-                "@react-navigation/native": "3.5.0",
+                "@react-navigation/core": "5.2.1",
+                "@react-navigation/native": "5.0.9",
                 "@react-navigation/web": "1.0.0-alpha.9"
             }
         },

@@ -57,7 +57,7 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn run link && npx lerna bootstrap",
+        "bootstrap": "yarn run link && npx lerna bootstrap && yarn build",
         "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
@@ -105,7 +105,7 @@
         }
     },
     "resolutions": {
-        "@react-navigation/native": "3.5.0"
+        "@react-navigation/native": "5.0.9"
     },
     "workspaces": {
         "packages": [
