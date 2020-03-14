@@ -1,5 +1,5 @@
 ---
-id: api-rnv
+id: api-cli
 title: rnv
 sidebar_label: rnv
 ---

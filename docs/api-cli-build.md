@@ -1,31 +1,31 @@
 ---
-id: api-rnv-package
-title: rnv package
-sidebar_label: package
+id: api-cli-build
+title: rnv build
+sidebar_label: build
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-> packages javascript into bundle on selected platform.
+> runs build / archive commands on selected platform
 
 ## Task Order
 
-🔥 `configure` ➡️ `package`  ✅
+🔥 `configure` ➡️ `package` ➡️ `build`  ✅
 
-## package
+## build
 
-Get interactive options for package
+Get interactive options for build
 
 ```bash
-rnv package
+rnv build
 ```
 
 ### help
 
-Display package help
+Display build help
 
 ```bash
-rnv package help
+rnv build help
 ```
 
 ## Options
@@ -43,5 +43,11 @@ rnv package help
 `-i`, `--info` - Show full stack trace
 
 `--analyzer` - Show app size analysis report
+
+`--xcodebuildArchiveArgs` - Pass down standard xcodebuild arguments (`ios`, `tvos` only)
+
+Example:
+
+`--xcodebuildArchiveArgs "CODE_SIGN_IDENTITY=iPhone\ Distribution\ (XXX) OTHER_CODE_SIGN_FLAGS=--keychain SOME_PATH_TO_KEYCHAIN"`
 
 `--mono` - Monochromatic output to terminal (no colors)

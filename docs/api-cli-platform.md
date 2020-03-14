@@ -1,5 +1,5 @@
 ---
-id: api-rnv-platform
+id: api-cli-platform
 title: rnv platform
 sidebar_label: platform
 ---

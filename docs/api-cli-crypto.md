@@ -1,5 +1,5 @@
 ---
-id: api-rnv-crypto
+id: api-cli-crypto
 title: rnv crypto
 sidebar_label: crypto
 ---

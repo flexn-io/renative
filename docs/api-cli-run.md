@@ -1,5 +1,5 @@
 ---
-id: api-rnv-run
+id: api-cli-run
 title: rnv run
 sidebar_label: run
 ---

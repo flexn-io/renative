@@ -1,5 +1,5 @@
 ---
-id: api-rnv-log
+id: api-cli-log
 title: rnv log
 sidebar_label: log
 ---

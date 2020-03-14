@@ -1,5 +1,5 @@
 ---
-id: api-rnv-target
+id: api-cli-target
 title: rnv target
 sidebar_label: target
 ---

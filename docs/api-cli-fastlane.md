@@ -1,5 +1,5 @@
 ---
-id: api-rnv-fastlane
+id: api-cli-fastlane
 title: rnv fastlane
 sidebar_label: fastlane
 ---

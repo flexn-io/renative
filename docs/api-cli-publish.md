@@ -1,5 +1,5 @@
 ---
-id: api-rnv-publish
+id: api-cli-publish
 title: rnv publish
 sidebar_label: publish
 ---

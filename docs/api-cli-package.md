@@ -1,31 +1,31 @@
 ---
-id: api-rnv-configure
-title: rnv configure
-sidebar_label: configure
+id: api-cli-package
+title: rnv package
+sidebar_label: package
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-> Configures your project to selected appConfig
+> packages javascript into bundle on selected platform.
 
 ## Task Order
 
-🔥 `configure`  ✅
+🔥 `configure` ➡️ `package`  ✅
 
-## configure
+## package
 
-Configure all platforms of current app config
+Get interactive options for package
 
 ```bash
-rnv configure
+rnv package
 ```
 
 ### help
 
-Display configure help
+Display package help
 
 ```bash
-rnv configure help
+rnv package help
 ```
 
 ## Options
@@ -36,8 +36,12 @@ rnv configure help
 
 `-p`, `--platform` - Specify platform
 
+`-s`, `--scheme` - Specify build scheme
+
 `-r`, `--reset` - Clean project beforehand
 
 `-i`, `--info` - Show full stack trace
+
+`--analyzer` - Show app size analysis report
 
 `--mono` - Monochromatic output to terminal (no colors)

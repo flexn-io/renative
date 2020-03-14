@@ -1,5 +1,5 @@
 ---
-id: api-rnv-plugin
+id: api-cli-plugin
 title: rnv plugin
 sidebar_label: plugin
 ---

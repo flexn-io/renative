@@ -1,5 +1,5 @@
 ---
-id: api-rnv-clean
+id: api-cli-clean
 title: rnv clean
 sidebar_label: clean
 ---

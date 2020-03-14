@@ -1,31 +1,31 @@
 ---
-id: api-rnv-deploy
-title: rnv deploy
-sidebar_label: deploy
+id: api-cli-export
+title: rnv export
+sidebar_label: export
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-> runs deploy commands on selected platform
+> runs export commands on selected platform
 
 ## Task Order
 
-🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ➡️ `deploy`  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export`  ✅
 
-## deploy
+## export
 
-Get interactive options for deploy
+Get interactive options for export
 
 ```bash
-rnv deploy
+rnv export
 ```
 
 ### help
 
-Display deploy help
+Display export help
 
 ```bash
-rnv deploy help
+rnv export help
 ```
 
 ## Options
@@ -41,6 +41,8 @@ rnv deploy help
 `-r`, `--reset` - Clean project beforehand
 
 `-i`, `--info` - Show full stack trace
+
+`-o`, `--only` - Run only export task
 
 `--xcodebuildArchiveArgs` - Pass down standard xcodebuild arguments (`ios`, `tvos` only)
 

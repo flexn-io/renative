@@ -1,5 +1,5 @@
 ---
-id: api-rnv-workspace
+id: api-cli-workspace
 title: rnv workspace
 sidebar_label: workspace
 ---

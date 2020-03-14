@@ -1,5 +1,5 @@
 ---
-id: api-rnv-status
+id: api-cli-status
 title: rnv status
 sidebar_label: status
 ---

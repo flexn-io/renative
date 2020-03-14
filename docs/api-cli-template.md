@@ -1,5 +1,5 @@
 ---
-id: api-rnv-template
+id: api-cli-template
 title: rnv template
 sidebar_label: template
 ---

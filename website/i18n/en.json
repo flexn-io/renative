@@ -11,6 +11,86 @@
             "_DOC_SANITY": {
                 "title": "_DOC_SANITY"
             },
+            "api-cli-build": {
+                "title": "rnv build",
+                "sidebar_label": "build"
+            },
+            "api-cli-clean": {
+                "title": "rnv clean",
+                "sidebar_label": "clean"
+            },
+            "api-cli-configure": {
+                "title": "rnv configure",
+                "sidebar_label": "configure"
+            },
+            "api-cli-crypto": {
+                "title": "rnv crypto",
+                "sidebar_label": "crypto"
+            },
+            "api-cli-deploy": {
+                "title": "rnv deploy",
+                "sidebar_label": "deploy"
+            },
+            "api-cli-export": {
+                "title": "rnv export",
+                "sidebar_label": "export"
+            },
+            "api-cli-fastlane": {
+                "title": "rnv fastlane",
+                "sidebar_label": "fastlane"
+            },
+            "api-cli-log": {
+                "title": "rnv log",
+                "sidebar_label": "log"
+            },
+            "api-cli-new": {
+                "title": "rnv new",
+                "sidebar_label": "new"
+            },
+            "api-cli-package": {
+                "title": "rnv package",
+                "sidebar_label": "package"
+            },
+            "api-cli-platform": {
+                "title": "rnv platform",
+                "sidebar_label": "platform"
+            },
+            "api-cli-plugin": {
+                "title": "rnv plugin",
+                "sidebar_label": "plugin"
+            },
+            "api-cli-publish": {
+                "title": "rnv publish",
+                "sidebar_label": "publish"
+            },
+            "api-cli-run": {
+                "title": "rnv run",
+                "sidebar_label": "run"
+            },
+            "api-cli-start": {
+                "title": "rnv start",
+                "sidebar_label": "start"
+            },
+            "api-cli-status": {
+                "title": "rnv status",
+                "sidebar_label": "status"
+            },
+            "api-cli-target": {
+                "title": "rnv target",
+                "sidebar_label": "target"
+            },
+            "api-cli-template": {
+                "title": "rnv template",
+                "sidebar_label": "template"
+            },
+            "api-cli-workspace": {
+                "title": "rnv workspace",
+                "sidebar_label": "workspace"
+            },
+            "api-cli": {
+                "title": "rnv",
+                "sidebar_label": "rnv"
+            },
             "api-config": {
                 "title": "renative.json API Reference",
                 "sidebar_label": "renative.json"
@@ -18,86 +98,6 @@
             "api-renative": {
                 "title": "renative",
                 "sidebar_label": "renative"
-            },
-            "api-rnv-build": {
-                "title": "rnv build",
-                "sidebar_label": "build"
-            },
-            "api-rnv-clean": {
-                "title": "rnv clean",
-                "sidebar_label": "clean"
-            },
-            "api-rnv-configure": {
-                "title": "rnv configure",
-                "sidebar_label": "configure"
-            },
-            "api-rnv-crypto": {
-                "title": "rnv crypto",
-                "sidebar_label": "crypto"
-            },
-            "api-rnv-deploy": {
-                "title": "rnv deploy",
-                "sidebar_label": "deploy"
-            },
-            "api-rnv-export": {
-                "title": "rnv export",
-                "sidebar_label": "export"
-            },
-            "api-rnv-fastlane": {
-                "title": "rnv fastlane",
-                "sidebar_label": "fastlane"
-            },
-            "api-rnv-log": {
-                "title": "rnv log",
-                "sidebar_label": "log"
-            },
-            "api-rnv-new": {
-                "title": "rnv new",
-                "sidebar_label": "new"
-            },
-            "api-rnv-package": {
-                "title": "rnv package",
-                "sidebar_label": "package"
-            },
-            "api-rnv-platform": {
-                "title": "rnv platform",
-                "sidebar_label": "platform"
-            },
-            "api-rnv-plugin": {
-                "title": "rnv plugin",
-                "sidebar_label": "plugin"
-            },
-            "api-rnv-publish": {
-                "title": "rnv publish",
-                "sidebar_label": "publish"
-            },
-            "api-rnv-run": {
-                "title": "rnv run",
-                "sidebar_label": "run"
-            },
-            "api-rnv-start": {
-                "title": "rnv start",
-                "sidebar_label": "start"
-            },
-            "api-rnv-status": {
-                "title": "rnv status",
-                "sidebar_label": "status"
-            },
-            "api-rnv-target": {
-                "title": "rnv target",
-                "sidebar_label": "target"
-            },
-            "api-rnv-template": {
-                "title": "rnv template",
-                "sidebar_label": "template"
-            },
-            "api-rnv-workspace": {
-                "title": "rnv workspace",
-                "sidebar_label": "workspace"
-            },
-            "api-rnv": {
-                "title": "rnv",
-                "sidebar_label": "rnv"
             },
             "guide-analytics": {
                 "title": "Analytics",
