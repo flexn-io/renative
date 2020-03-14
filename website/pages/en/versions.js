@@ -50,7 +50,7 @@ Current version (Stable)
                                     <a
                                         href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${
                                             props.language ? `${props.language}/` : ''
-                                        }quickstart`}
+                                        }intro-quickstart`}
                                     >
                     Documentation
                                     </a>
@@ -82,7 +82,7 @@ master
                                     <a
                                         href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${
                                             props.language ? `${props.language}/` : ''
-                                        }next/quickstart`}
+                                        }next/intro-quickstart`}
                                     >
                     Documentation
                                     </a>
@@ -118,7 +118,7 @@ Here you can find previous versions of the documentation.
                                             <a
                                                 href={`${siteConfig.baseUrl}${siteConfig.docsUrl}/${
                                                     props.language ? `${props.language}/` : ''
-                                                }${version}/quickstart`}
+                                                }${version}/intro-quickstart`}
                                             >
                           Documentation
                                             </a>
