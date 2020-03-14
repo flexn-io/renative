@@ -122,7 +122,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformAndroidtv } from 'renative'
 ```
 
 ### isPlatformAndroidwear
@@ -130,7 +130,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformAndroidwear } from 'renative'
 ```
 
 ### isPlatformIos
@@ -138,7 +138,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformIos } from 'renative'
 ```
 
 ### isPlatformTvos
@@ -146,7 +146,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformTvos } from 'renative'
 ```
 
 ### isPlatformWeb
@@ -154,7 +154,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformWeb } from 'renative'
 ```
 
 ### isPlatformWebos
@@ -162,7 +162,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformWebos } from 'renative'
 ```
 
 ### isPlatformTizen
@@ -170,7 +170,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformTizen } from 'renative'
 ```
 
 ### isPlatformTizenwatch
@@ -178,7 +178,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformTizenwatch } from 'renative'
 ```
 
 ### isPlatformTizenmobile
@@ -186,7 +186,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformTizenmobile } from 'renative'
 ```
 
 ### isPlatformMacos
@@ -194,7 +194,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformMacos } from 'renative'
 ```
 
 ### isPlatformWindows
@@ -202,7 +202,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformWindows } from 'renative'
 ```
 
 ### isPlatformFirefoxos
@@ -210,7 +210,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformFirefoxos } from 'renative'
 ```
 
 ### isPlatformFirefoxtv
@@ -218,7 +218,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformFirefoxtv } from 'renative'
 ```
 
 ### isPlatformKaios
@@ -226,7 +226,7 @@ import { isPlatformAndroid } from 'renative'
 type: `bool`
 
 ```
-import { isPlatformAndroid } from 'renative'
+import { isPlatformKaios } from 'renative'
 ```
 
 ## isEngine...
