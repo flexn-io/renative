@@ -99,6 +99,10 @@
                 "title": "renative API Reference",
                 "sidebar_label": "renative"
             },
+            "api-rnv-config": {
+                "title": "rnv Config Object Reference",
+                "sidebar_label": "rnv Config"
+            },
             "api-rnv": {
                 "title": "rnv API Reference",
                 "sidebar_label": "rnv"
@@ -135,10 +139,6 @@
                 "title": "File Extensions",
                 "sidebar_label": "File Extensions"
             },
-            "guide-integrations": {
-                "title": "Integrations",
-                "sidebar_label": "Integrations"
-            },
             "guide-plugins": {
                 "title": "Plugins",
                 "sidebar_label": "Plugins"
@@ -146,10 +146,6 @@
             "guide-runtime": {
                 "title": "ReNative Runtime",
                 "sidebar_label": "Runtime"
-            },
-            "guide-rnv_config": {
-                "title": "RNV Config Object",
-                "sidebar_label": "RNV Config"
             },
             "guide-templates": {
                 "title": "Templates",

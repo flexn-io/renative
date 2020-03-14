@@ -30,6 +30,12 @@ rnv template apply
 #### Windows development
 Requirements: Python 2.7, Visual Studio installed or install `windows-build-tools`(https://www.npmjs.com/package/windows-build-tools). **Please make sure you follow the package's instructions, especially running it in PowerShell as Administrator**
 
-## RNV C Object
+## Documentation
 
-[Documentation for RNV Runtime Config](docs/DOC_RNV_CONFIG.md)
+[Documentation for CLI](api-cli.md)
+
+[Documentation for RNV](api-rnv.md)
+
+[Documentation for Config](api-config.md)
+
+[Documentation for Runtime](api-renative.md)

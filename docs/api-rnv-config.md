@@ -1,13 +1,22 @@
 ---
-id: guide-rnv_config
-title: RNV Config Object
-sidebar_label: RNV Config
+id: api-rnv-config
+title: rnv Config Object Reference
+sidebar_label: rnv Config
 ---
 
 
-List of available config props injected into hooks methods:
+List of available config props injected into [Build Hooks](guide-build-hooks.md) via method parameter
 
-## `c` Object
+```
+// buildHooks/src/index.js
+const hooks = {
+    hello: async c => {
+        // c Object contains all the info about the current rnv session
+    }
+```
+
+
+## root
 
 ```
 {
@@ -21,7 +30,7 @@ List of available config props injected into hooks methods:
 
 ```
 
-## `c.paths` Object
+## c.paths
 
 ```
 {
@@ -81,7 +90,7 @@ List of available config props injected into hooks methods:
 }
 ```
 
-## `c.files` Object
+## c.files
 
 ```
 {

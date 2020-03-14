@@ -12,10 +12,8 @@
             "guide-cli",
             "guide-plugins",
             "guide-templates",
-            "guide-integrations",
             "guide-workspaces",
             "guide-config",
-            "guide-rnv_config",
             "guide-file_extensions",
             "guide-config_folders",
             "guide-build_hooks",
@@ -78,6 +76,6 @@
         ],
         "Config": ["api-config"],
         "Runtime": ["api-renative"],
-        "RNV": ["api-rnv"]
+        "RNV": ["api-rnv", "api-rnv-config"]
     }
 }
