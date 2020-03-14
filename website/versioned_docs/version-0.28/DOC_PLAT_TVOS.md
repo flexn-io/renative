@@ -73,4 +73,4 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ## App Config
 
-<a href="#apple-based-config">see: Apple based config</a>
+[see: iOS based config](DOC_RENATIVE_CONFIG.md#ios-props)

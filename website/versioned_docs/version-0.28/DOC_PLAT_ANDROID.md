@@ -66,6 +66,28 @@ You can create variety of emulators via Android Studio IDE
   </tr>
 </table>
 
+
+## Run on Simulator
+
+```
+rnv run -p android
+```
+
+## Run on Device
+
+```
+rnv run -p android -d
+```
+
+## Deploy on Device
+
+This will run production version on your device (not connected to metro bundler)
+You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+
+```
+rnv run -p android -s release -d
+```
+
 ## Android X support
 
 androidX is enabled by default
@@ -83,29 +105,6 @@ make sure you have this piece of script in package.json
 Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.android.enableHermes`
 or `renative.json:platforms.android.buildSchemes.[SCHEME].enableHermes`
 
-## Run on Simulator
-
-```
-rnv start
-rnv run -p android
-```
-
-## Run on Device
-
-```
-rnv start
-rnv run -p android -d
-```
-
-## Deploy on Device
-
-This will run production version on your device (not connected to metro bundler)
-You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
-
-```
-rnv start
-rnv run -p android -s release -d
-```
 
 ## Advanced
 
@@ -159,4 +158,4 @@ rnv log -p android -f com.myapp
 
 ## App Config
 
-<a href="#android-based-config">see: Android based config</a>
+[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)

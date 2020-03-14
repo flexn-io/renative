@@ -98,3 +98,7 @@ Launch with specific Tizen Watch simulator:
 ```
 rnv run -p tizenwatch -t W-5.0-circle-x86
 ```
+
+## App Config
+
+[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)

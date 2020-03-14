@@ -52,13 +52,44 @@ original_id: androidwear
 | Kotlin         | `1.3.20` |
 | Target SDK     |   `27`   |
 
-## Run
-
-NOTE: make sure you have 1 android wear device connected or 1 wear emulator running
+## Run on Simulator
 
 ```
 rnv run -p androidwear
 ```
+
+## Run on Device
+
+```
+rnv run -p androidwear -d
+```
+
+## Deploy on Device
+
+This will run production version on your device (not connected to metro bundler)
+You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+
+```
+rnv run -p androidwear -s release -d
+```
+
+## Android X support
+
+androidX is enabled by default
+
+make sure you have this piece of script in package.json
+
+```
+"scripts" : {
+  "postinstall": "jetify"
+}
+```
+
+## Hermes support
+
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidwear.enableHermes`
+or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
+
 
 NOTE: There is a bug in RN. for now you must NOT have running bundler (`$ rnv start`) in order for wear sim to work
 
@@ -95,4 +126,4 @@ or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
 
 ## App Config
 
-<a href="#android-based-config">see: Android based config</a>
+[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)

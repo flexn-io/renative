@@ -163,4 +163,4 @@ rnv log -p android -f com.myapp
 
 ## App Config
 
-<a href="#android-based-config">see: Android based config</a>
+[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)

@@ -100,3 +100,7 @@ Launch with specific Tizen simulator:
 ```
 rnv run -p tizenmobile -t M-5.0-x86
 ```
+
+## App Config
+
+[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)

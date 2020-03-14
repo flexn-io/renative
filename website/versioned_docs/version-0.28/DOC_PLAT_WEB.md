@@ -90,4 +90,4 @@ rnv run -p web --port 9999
 
 ## App Config
 
-<a href="##web-based-config">see: Web based config</a>
+[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)

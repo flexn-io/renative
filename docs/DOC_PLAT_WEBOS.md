@@ -82,3 +82,7 @@ Run in Browser
 ```
 rnv run -p webos --hosted
 ```
+
+## App Config
+
+[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)

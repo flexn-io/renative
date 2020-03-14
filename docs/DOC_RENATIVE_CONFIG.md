@@ -356,7 +356,7 @@ Following props are only accepted per specific platform
 
 ## iOS Props
 
-IOS_COMMON_PROPS
+### iOS Common Props
 
 
 ```json
@@ -381,7 +381,7 @@ IOS_COMMON_PROPS
 }
 ```
 
-IOS_PLUGIN_PROPS
+### iOS Plugin Props
 
 ```json
 {
@@ -391,7 +391,7 @@ IOS_PLUGIN_PROPS
 }
 ```
 
-IOS_CONFIG_PROPS
+### iOS Config Props
 
 ```json
 {
@@ -410,7 +410,7 @@ IOS_CONFIG_PROPS
 
 ## Android Props
 
-ANDROID_COMMON_PROPS
+### Android Common Props
 
 ```json
 {
@@ -422,7 +422,7 @@ ANDROID_COMMON_PROPS
 }
 ```
 
-ANDROID_PLUGIN_PROPS
+### Android Plugin Props
 
 ```json
 {
@@ -431,7 +431,7 @@ ANDROID_PLUGIN_PROPS
 }
 ```
 
-ANDROID_CONFIG_PROPS
+### Android Config Props
 
 ```json
 {
@@ -450,7 +450,7 @@ ANDROID_CONFIG_PROPS
 
 ## Web Props
 
-WEB_COMMON_PROPS
+### Web Common Props
 
 ```json
 {
@@ -458,7 +458,7 @@ WEB_COMMON_PROPS
 }
 ```
 
-WEB_PLUGIN_PROPS
+### Web Plugin Props
 
 ```json
 {
@@ -466,7 +466,7 @@ WEB_PLUGIN_PROPS
 }
 ```
 
-WEB_CONFIG_PROPS
+### Web Config Props
 
 ```json
 {
@@ -481,7 +481,7 @@ WEB_CONFIG_PROPS
 
 ## Tizen Props
 
-TIZEN_COMMON_PROPS
+### Tizen Common Props
 
 ```json
 {
@@ -489,7 +489,7 @@ TIZEN_COMMON_PROPS
 }
 ```
 
-TIZEN_PLUGIN_PROPS
+### Tizen Plugin Props
 
 ```json
 {
@@ -497,7 +497,7 @@ TIZEN_PLUGIN_PROPS
 }
 ```
 
-TIZEN_CONFIG_PROPS
+### Tizen Config Props
 
 ```json
 {

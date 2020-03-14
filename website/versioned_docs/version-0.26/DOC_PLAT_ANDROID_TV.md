@@ -63,4 +63,4 @@ rnv target launch -p androidtv -t Android_TV_720p_API_22
 
 ## App Config
 
-<a href="#android-based-config">see: Android based config</a>
+[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)

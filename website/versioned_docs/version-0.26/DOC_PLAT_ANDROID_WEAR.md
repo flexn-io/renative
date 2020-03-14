@@ -64,4 +64,4 @@ rnv target launch -p androidwear -t Android_Wear_Round_API_28
 
 ## App Config
 
-<a href="#android-based-config">see: Android based config</a>
+[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)

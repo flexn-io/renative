@@ -247,3 +247,7 @@ Adding new props to plist:
   }
 }
 ```
+
+## App Config
+
+[see: iOS based config](DOC_RENATIVE_CONFIG.md#ios-props)

@@ -121,4 +121,4 @@ rnv log -p ios -f com.myapp
 
 ## App Config
 
-<a href="#apple-based-config">see: Apple based config</a>
+[see: iOS based config](DOC_RENATIVE_CONFIG.md#ios-props)

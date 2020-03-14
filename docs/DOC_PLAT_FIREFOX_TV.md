@@ -67,3 +67,7 @@ Run in Browser
 ```
 rnv run -p firefoxtv --hosted
 ```
+
+## App Config
+
+[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)

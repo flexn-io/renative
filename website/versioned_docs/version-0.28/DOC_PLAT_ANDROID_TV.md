@@ -52,13 +52,45 @@ original_id: androidtv
 | Kotlin         | `1.3.20` |
 | Target SDK     |   `27`   |
 
-## Run
 
+## Run on Simulator
 
 ```
-rnv start
 rnv run -p androidtv
 ```
+
+## Run on Device
+
+```
+rnv run -p androidtv -d
+```
+
+## Deploy on Device
+
+This will run production version on your device (not connected to metro bundler)
+You can configure each `buildScheme` ie `-s release` in your config file `./appConfigs/<YOUR_APP_CONFIG>/renative.json`
+
+```
+rnv run -p androidtv -s release -d
+```
+
+## Android X support
+
+androidX is enabled by default
+
+make sure you have this piece of script in package.json
+
+```
+"scripts" : {
+  "postinstall": "jetify"
+}
+```
+
+## Hermes support
+
+Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidtv.enableHermes`
+or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
+
 
 ## Advanced
 
@@ -93,4 +125,4 @@ or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
 
 ## App Config
 
-<a href="#android-based-config">see: Android based config</a>
+[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)

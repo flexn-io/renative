@@ -77,3 +77,7 @@ rnv run -p macos -s release
 ```
 rnv export -p macos -s release
 ```
+
+## App Config
+
+[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)

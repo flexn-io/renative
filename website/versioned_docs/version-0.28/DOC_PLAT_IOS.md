@@ -231,3 +231,7 @@ Create IPA:
 ```
 rnv export -p ios -s appstore
 ```
+
+## App Config
+
+[see: iOS based config](DOC_RENATIVE_CONFIG.md#ios-props)
