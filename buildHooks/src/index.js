@@ -10,6 +10,38 @@ const hooks = {
         Logger.logTask(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
         resolve();
     }),
+    generateDocs: async (c) => {
+        let out = `---
+id: plugins
+title: Plugins Overview
+sidebar_label: Plugins Overview
+---
+`;
+        const temps = FileUtils.readObjectSync(c.paths.rnv.pluginTemplates.config);
+        Object.keys(temps.pluginTemplates).forEach((key, i) => {
+            const plugin = temps.pluginTemplates[key];
+            const npm = plugin.version ? `Npm: https://www.npmjs.com/package/${key}` : '';
+            const version = plugin.version ? `Version: \`${plugin.version}\`` : '';
+            const platforms = Object.keys(plugin).map(v => (Constants.SUPPORTED_PLATFORMS.includes(v) ? v : null)).filter(v => v);
+            const supPlats = platforms.length ? platforms : Constants.SUPPORTED_PLATFORMS;
+            out += `\n\n## ${key}
+
+${version}
+
+Platforms: ${supPlats.map(v => `\`${v}\``)}
+
+${npm}
+
+Installation:
+
+\`\`\`
+rnv plugin add ${key}
+\`\`\`
+`;
+        });
+
+        FileUtils.writeFileSync(path.join(c.paths.project.dir, 'docs/plugin.md'), out);
+    },
     printExtensions: c => new Promise((resolve, reject) => {
         let out = '';
 

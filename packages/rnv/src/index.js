@@ -1,7 +1,7 @@
 import Common, { initializeBuilder } from './common';
 import Logger, { logComplete, logError } from './systemTools/logger';
 import CLI from './cli';
-import Constants from './constants';
+import * as Constants from './constants';
 import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
 import Doctor from './systemTools/doctor';
