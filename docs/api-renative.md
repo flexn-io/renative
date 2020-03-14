@@ -1,6 +1,6 @@
 ---
 id: api-renative
-title: renative
+title: renative API Reference
 sidebar_label: renative
 ---
 

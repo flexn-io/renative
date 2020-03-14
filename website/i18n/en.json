@@ -96,8 +96,12 @@
                 "sidebar_label": "renative.json"
             },
             "api-renative": {
-                "title": "renative",
+                "title": "renative API Reference",
                 "sidebar_label": "renative"
+            },
+            "api-rnv": {
+                "title": "rnv API Reference",
+                "sidebar_label": "rnv"
             },
             "guide-analytics": {
                 "title": "Analytics",
@@ -289,8 +293,9 @@
             "Plugins": "Plugins",
             "Integrations": "Integrations",
             "CLI": "CLI",
+            "Config": "Config",
             "Runtime": "Runtime",
-            "Config": "Config"
+            "RNV": "RNV"
         }
     },
     "pages-strings": {

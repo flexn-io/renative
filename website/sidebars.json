@@ -76,7 +76,8 @@
             "api-cli-template",
             "api-cli-workspace"
         ],
+        "Config": ["api-config"],
         "Runtime": ["api-renative"],
-        "Config": ["api-config"]
+        "RNV": ["api-rnv"]
     }
 }
