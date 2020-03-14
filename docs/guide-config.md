@@ -119,7 +119,7 @@ Following is the order of merges of various renative configs (if present) produc
 
 - `./platformAssets/renative.runtime.json` - (subset of renative config available at runtime and packaged with final app)
 
-[Full API Reference]('api-config.md')
+[Full API Reference](api-config.md)
 
 
 ## Config Values Overrides

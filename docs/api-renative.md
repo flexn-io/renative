@@ -4,6 +4,105 @@ title: renative
 sidebar_label: renative
 ---
 
+## getScaledValue
+
+Help to render UI with unified relative scaled factor
+
+type: `function`
+
+```
+import { getScaledValue } from 'renative'
+
+StyleSheet.create({
+    view: {
+      width: getScaledValue(50),
+      height: getScaledValue(50)
+    }
+})
+```
+
+## useOpenURL
+
+Cross-platform hook to open external URLs
+
+type: `function`
+
+```
+import { useOpenURL } from 'renative'
+
+const openURL = useOpenURL();
+openURL('https://renative.org')
+```
+
+## useNavigate
+
+Cross-platform hook to navigate to specific section of app
+
+type: `function`
+
+```
+import { useNavigate } from 'renative'
+
+const navigate = useNavigate();
+navigate(route, opts, params)
+```
+
+## usePop
+
+Cross-platform hook to navigate back to previous screen
+
+type: `function`
+
+```
+import { usePop } from 'renative'
+
+const pop = usePop();
+pop()
+```
+
+## useOpenDrawer
+
+Cross-platform hook to open drawer
+
+type: `function`
+
+```
+import { useOpenDrawer } from 'renative'
+
+const openDrawer = useOpenDrawer();
+openDrawer(drawerName)
+```
+
+## platform
+
+Returns string representing current platform
+
+type: `string`
+
+```
+import { platform } from 'renative'
+```
+
+## factor
+
+Returns string representing current form factor
+
+type: `string`
+
+```
+import { factor } from 'renative'
+```
+
+## engine
+
+Returns string representing current core engine
+
+type: `string`
+
+```
+import { engine } from 'renative'
+```
+
 ## isPlatform...
 
 Built-time platform checks for renative target platform
