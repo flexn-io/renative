@@ -1,5 +1,5 @@
 ---
-id: platform
+id: platforms
 title: Overview
 sidebar_label: Overview
 ---

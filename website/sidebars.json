@@ -23,7 +23,7 @@
             "guide-analytics"
         ],
         "Platforms": [
-            "platform",
+            "platforms",
             "platform-android",
             "platform-androidtv",
             "platform-androidwear",

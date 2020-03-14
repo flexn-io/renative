@@ -130,7 +130,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
 
     const PlatformItem = ({ url, title }) => (
         <div>
-            <a className="platformItemText" href={`${baseUrl}docs/${url}`}>
+            <a className="platformItemText" href={`${baseUrl}docs/platform-${url}`}>
                 {title}
             </a>
             <img src={`${baseUrl}img/rnv_${url}.gif`} className="platformItem" />
@@ -173,7 +173,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
             {[
                 {
                     content:
-              `[Target all platforms with single React Native framework](${baseUrl}docs/platforms_overview)`,
+              `[Target all platforms with single React Native framework](${baseUrl}docs/platforms)`,
                     image: `${baseUrl}img/undraw_react_y7wq.svg`,
                     imageAlign: 'left',
                     title: 'React Native on Steroids',
@@ -187,7 +187,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
             {[
                 {
                     content:
-              `[Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.](${baseUrl}docs/templates)`,
+              `[Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.](${baseUrl}docs/guide-templates)`,
                     image: `${baseUrl}img/undraw_online_page_cq94.svg`,
                     imageAlign: 'left',
                     title: 'Templates',
@@ -215,7 +215,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
             {[
                 {
                     content:
-              `[ReNative supports integration for various services and deployment infrastructures for your apps](${baseUrl}docs/integrations)`,
+              `[ReNative supports integration for various services and deployment infrastructures for your apps](${baseUrl}docs/integration_docker)`,
                     image: `${baseUrl}img/undraw_mobile_marketing_iqbr.svg`,
                     imageAlign: 'right',
                     title: 'Integrations',
@@ -229,7 +229,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
             {[
                 {
                     content:
-                        `[Tired of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running](${baseUrl}docs/config)`,
+                        `[Tired of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running](${baseUrl}docs/guide-config)`,
                     image: `${baseUrl}img/undraw_preferences_uuo2.svg`,
                     imageAlign: 'left',
                     title: 'Configurations',
@@ -257,7 +257,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
             {[
                 {
                     content:
-              `[ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms](${baseUrl}docs/runtime)`,
+              `[ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms](${baseUrl}docs/guide-runtime)`,
                     image: `${baseUrl}img/undraw_web_devices_ad58.svg`,
                     imageAlign: 'left',
                     title: 'Runtime',
@@ -272,7 +272,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
             {[
                 {
                     content:
-              `[One CLI to do it all. rnv is your entry point and control centre to building multi-platform apps with just a few commands to learn](${baseUrl}docs/cli)`,
+              `[One CLI to do it all. rnv is your entry point and control centre to building multi-platform apps with just a few commands to learn](${baseUrl}docs/guide-cli)`,
                     image: `${baseUrl}img/rnv_cli.gif`,
                     imageAlign: 'right',
                     title: 'CLI',

@@ -267,7 +267,7 @@
                 "title": "Windows Platform",
                 "sidebar_label": "Windows"
             },
-            "platform": {
+            "platforms": {
                 "title": "Overview",
                 "sidebar_label": "Overview"
             },
