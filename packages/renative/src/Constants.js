@@ -256,100 +256,260 @@ export const PLATFORMS = {
     },
     // NON ACTIVE
     watchos: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     androidauto: {
-        defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 8081,
+        icon: ICONS.AUTO,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     alexa: {
-        defaultPort: 999999, icon: ICONS.VOICE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.VOICE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     appleauto: {
-        defaultPort: 8081, icon: ICONS.AUTO, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 8081,
+        icon: ICONS.AUTO,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     astian: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     blackberry: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     chromecast: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     chromeos: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     fireos: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     firetv: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     hbbtv: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     meego: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     netcast: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     occulus: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     orsay: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     ps4: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     roku: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     sailfish: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     tivo: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     ubuntu: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     ubuntutouch: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     unity: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     vewd: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     vieraconnect: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     vizio: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     webnext: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     webian: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     wii: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     wp10: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     wp8: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     xbox: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
     xbox360: {
-        defaultPort: 999999, icon: ICONS.PHONE, supportedOS: OS.ALL, isActive: false, requiresSharedConfig: true, sourceExts: []
+        defaultPort: 999999,
+        icon: ICONS.PHONE,
+        supportedOS: OS.ALL,
+        isActive: false,
+        requiresSharedConfig: true,
+        sourceExts: []
     },
 };
 
