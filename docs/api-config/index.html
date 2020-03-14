@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>renative.json API Reference · ReNative</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="## Config Spec"/><meta name="docsearch:version" content="0.28"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="renative.json API Reference · ReNative"/><meta property="og:type" content="website"/><meta property="og:url" content="https://renative.org/"/><meta property="og:description" content="## Config Spec"/><meta property="og:image" content="https://renative.org/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://renative.org/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="ReNative"/><h2 class="headerTitleWithLogo">ReNative</h2></a><a href="/versions"><h3>0.28</h3></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/docs/intro-quickstart" target="_self">Docs</a></li><li class="siteNavGroupActive"><a href="/docs/api-cli" target="_self">API</a></li><li class=""><a href="https://twitter.com/renative" target="_self">Twitter</a></li><li class=""><a href="https://github.com/pavjacko/renative" target="_self">Github</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Config</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">CLI<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/api-cli">rnv</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-build">build</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-crypto">crypto</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-clean">clean</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-configure">configure</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-deploy">deploy</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-fastlane">fastlane</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-log">log</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-new">new</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-package">package</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-platform">platform</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-publish">publish</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-plugin">plugin</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-run">run</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-start">start</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-status">status</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-target">target</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-template">template</a></li><li class="navListItem"><a class="navItem" href="/docs/api-cli-workspace">workspace</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Config<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem navListItemActive"><a class="navItem" href="/docs/api-config">renative.json</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Runtime<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/api-renative">renative</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">RNV<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/api-rnv">rnv</a></li><li class="navListItem"><a class="navItem" href="/docs/api-rnv-config">rnv Config</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">renative.json API Reference</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="config-spec"></a><a href="#config-spec" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Config Spec</h2>
+<p>CONFIG_ROOT</p>
+<pre><code class="hljs css language-json">{
+  "env": {},
+  "hidden": false,
+  "definitions": {},
+  "sdks": {
+    ...SDK_PROPS
+  },
+  "paths": {
+    ...PATH_PROPS
+  },
+  "defaults": {
+    ...DEFAULTS_PROPS
+  },
+  "plugins": {
+    "[PLUGIN_KEY]": {
+      ...PLUGIN_PROPS
+    }
+  },
+  "permissions": {
+    "[PLATFORM]": {}
+  },
+  "common": {
+    ...COMMON_PROPS
+    ...BUILD_SCHEME_PROPS
+  },
+  "platforms": {
+    "[PLATFORM]": {
+      ...COMMON_PROPS
+      ...[PLATFORM]_COMMON_PROPS
+      ...BUILD_SCHEME_PROPS
+    }
+  },
+  "runtime": {}
+}
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="env"></a><a href="#env" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>env</h4>
+<p>Define environment variables</p>
+<h4><a class="anchor" aria-hidden="true" id="hidden"></a><a href="#hidden" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hidden</h4>
+<p>Hide app config from available options in CLI. Used mostly to hide base configs other would inherit from</p>
+<h4><a class="anchor" aria-hidden="true" id="definitions"></a><a href="#definitions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>definitions</h4>
+<p>Define injectable props to be reused across config file</p>
+<h4><a class="anchor" aria-hidden="true" id="sdks"></a><a href="#sdks" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sdks</h4>
+<p>Define paths to your SDK Configurations</p>
+<h4><a class="anchor" aria-hidden="true" id="workspaceid"></a><a href="#workspaceid" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workspaceID</h4>
+<p>Current workspace this project belongs to</p>
+<h4><a class="anchor" aria-hidden="true" id="paths"></a><a href="#paths" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>paths</h4>
+<p>Define custom paths for RNV to look into</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"paths"</span>: {
+        <span class="hljs-attr">"entryDir"</span>: <span class="hljs-string">"./"</span>,
+        <span class="hljs-attr">"platformAssetsDir"</span>: <span class="hljs-string">"./platformAssets"</span>,
+        <span class="hljs-attr">"platformBuildsDir"</span>: <span class="hljs-string">"./platformBuilds"</span>
+    }
+}
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="defaults"></a><a href="#defaults" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>defaults</h4>
+<p>Default system config for this project</p>
+<pre><code class="hljs css language-json">{
+      <span class="hljs-attr">"defaults"</span>: {
+        <span class="hljs-attr">"supportedPlatforms"</span>: [
+            <span class="hljs-string">"ios"</span>,
+            <span class="hljs-string">"android"</span>,
+            <span class="hljs-string">"androidtv"</span>,
+            <span class="hljs-string">"web"</span>,
+            <span class="hljs-string">"macos"</span>,
+            <span class="hljs-string">"tvos"</span>,
+            <span class="hljs-string">"androidwear"</span>
+        ]
+    },
+}
+</code></pre>
+<h4><a class="anchor" aria-hidden="true" id="enableanalytics"></a><a href="#enableanalytics" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>enableAnalytics</h4>
+<p>Enable or disable sending analytics to improve ReNative</p>
+<h4><a class="anchor" aria-hidden="true" id="plugins"></a><a href="#plugins" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>plugins</h4>
+<p>Plugin configurations</p>
+<h4><a class="anchor" aria-hidden="true" id="permissions"></a><a href="#permissions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>permissions</h4>
+<p>Define list of permissions to be used in project</p>
+<h4><a class="anchor" aria-hidden="true" id="common"></a><a href="#common" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>common</h4>
+<p>Common properties inherited for every platform</p>
+<h4><a class="anchor" aria-hidden="true" id="platforms"></a><a href="#platforms" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>platforms</h4>
+<p>Platform specififc configurations</p>
+<h4><a class="anchor" aria-hidden="true" id="runtime"></a><a href="#runtime" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>runtime</h4>
+<p>Special runtime injection object to be available for runtime code via <code>platformAssets/runtime.json</code></p>
+<h2><a class="anchor" aria-hidden="true" id="common-props"></a><a href="#common-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Common Props</h2>
+<p>PLUGIN_PROPS</p>
+<pre><code class="hljs css language-json">{
+  "version": "",
+  "no-npm": false,
+  "enabled": true,
+  "[PLATFORM]": {
+    ...[PLATFORM]_PLUGIN_PROPS
+    ...[PLATFORM]_COMMON_PROPS
+  },
+  "webpack": {
+    "modulePaths": false,
+    "moduleAliases": {}
+  }
+}
+</code></pre>
+<p>COMMON_PROPS</p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"id"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"author"</span>: {
+      <span class="hljs-attr">"name"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"email"</span>: <span class="hljs-string">""</span>,
+      <span class="hljs-attr">"url"</span>: <span class="hljs-string">""</span>
+  },
+  <span class="hljs-attr">"license"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"runScheme"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"bundleAssets"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"entryFile"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"scheme"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"bundleAssets"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"bundleIsDev"</span>: <span class="hljs-literal">true</span>,
+  <span class="hljs-attr">"includedPlugins"</span>: [],
+  <span class="hljs-attr">"excludedPlugins"</span>: [],
+  <span class="hljs-attr">"includedPermissions"</span>: [],
+  <span class="hljs-attr">"excludedPermissions"</span>: [],
+  <span class="hljs-attr">"includedFonts"</span>: [],
+  <span class="hljs-attr">"excludedFonts"</span>: [],
+  <span class="hljs-attr">"backgroundColor"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"port"</span>: <span class="hljs-number">1111</span>,
+  <span class="hljs-attr">"versionCodeOffset"</span>: <span class="hljs-number">0</span>,
+  <span class="hljs-attr">"runtime"</span>: {}
+}
+</code></pre>
+<p>BUILD_SCHEME_PROPS</p>
+<pre><code class="hljs css language-json">{
+  "buildSchemes": {
+    "[BUILD_SCHEME_KEY]": {
+      "[PLATFORM]": {
+        ...COMMON_PROPS
+        ...[PLATFORM]_COMMON_PROPS
+      }
+    }
+  }
+}
+</code></pre>
+<p>PATH_PROPS</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"appConfigsDir"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"appConfigsDirs"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"platformTemplatesDir"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"entryDir"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"platformAssetsDir"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"platformBuildsDir"</span>: <span class="hljs-string">""</span>
+}
+</code></pre>
+<p>SDK_PROPS</p>
+<pre><code class="hljs css language-json">{
+    <span class="hljs-attr">"ANDROID_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"ANDROID_NDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"IOS_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"TIZEN_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"WEBOS_SDK"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"KAIOS_SDK"</span>: <span class="hljs-string">""</span>
+}
+</code></pre>
+<p>DEFAULTS_PROPS</p>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"template"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"supportedPlatforms"</span>: [<span class="hljs-string">"[PLATFORM]"</span>],
+  <span class="hljs-attr">"schemes"</span>: {},
+  <span class="hljs-attr">"targets"</span>: {
+    <span class="hljs-attr">"[PLATFORM]"</span>: <span class="hljs-string">""</span>
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="platform-specific-props"></a><a href="#platform-specific-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Platform Specific Props</h2>
+<p>Following props are only accepted per specific platform</p>
+<h2><a class="anchor" aria-hidden="true" id="ios-props"></a><a href="#ios-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iOS Props</h2>
+<h3><a class="anchor" aria-hidden="true" id="ios-common-props"></a><a href="#ios-common-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iOS Common Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"appDelegateImports"</span>: [],
+  <span class="hljs-attr">"appDelegateMethods"</span>: {},
+  <span class="hljs-attr">"Podfile"</span>: {
+    <span class="hljs-attr">"sources"</span>: []
+  },
+  <span class="hljs-attr">"plist"</span>: {},
+  <span class="hljs-attr">"xcodeproj"</span>: {},
+  <span class="hljs-attr">"appDelegateApplicationMethods"</span>: {
+    <span class="hljs-attr">"didFinishLaunchingWithOptions"</span>: [],
+    <span class="hljs-attr">"open"</span>: [],
+    <span class="hljs-attr">"supportedInterfaceOrientationsFor"</span>: [],
+    <span class="hljs-attr">"didReceiveRemoteNotification"</span>: [],
+    <span class="hljs-attr">"didFailToRegisterForRemoteNotificationsWithError"</span>: [],
+    <span class="hljs-attr">"didReceive"</span>: [],
+    <span class="hljs-attr">"didRegister"</span>: [],
+    <span class="hljs-attr">"didRegisterForRemoteNotificationsWithDeviceToken"</span>: []
+  }
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="ios-plugin-props"></a><a href="#ios-plugin-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iOS Plugin Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"appDelegateMethods"</span>: {},
+  <span class="hljs-attr">"podName"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"path"</span>: <span class="hljs-string">""</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="ios-config-props"></a><a href="#ios-config-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>iOS Config Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"teamID"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"deploymentTarget"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"provisioningStyle"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"systemCapabilities"</span>: {},
+  <span class="hljs-attr">"scheme"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"entitlements"</span>: {},
+  <span class="hljs-attr">"orientationSupport"</span>: {
+    <span class="hljs-attr">"phone"</span>: [],
+    <span class="hljs-attr">"tab"</span>: []
+  },
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="android-props"></a><a href="#android-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Android Props</h2>
+<h3><a class="anchor" aria-hidden="true" id="android-common-props"></a><a href="#android-common-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Android Common Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"gradle.properties"</span>: {},
+  <span class="hljs-attr">"AndroidManifest"</span>: {},
+  <span class="hljs-attr">"BuildGradle"</span>: {},
+  <span class="hljs-attr">"AppBuildGradle"</span>: {},
+  <span class="hljs-attr">"implementation"</span>: <span class="hljs-string">""</span>,
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="android-plugin-props"></a><a href="#android-plugin-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Android Plugin Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"path"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"package"</span>: <span class="hljs-string">""</span>
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="android-config-props"></a><a href="#android-config-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Android Config Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"universalApk"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"multipleAPKs"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"minSdkVersion"</span>: <span class="hljs-number">21</span>,
+  <span class="hljs-attr">"signingConfig"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"aab"</span>: <span class="hljs-literal">false</span>,
+  <span class="hljs-attr">"storeFile"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"storePassword"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"keyAlias"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"keyPassword"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"enableHermes"</span>: <span class="hljs-literal">false</span>
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="web-props"></a><a href="#web-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Web Props</h2>
+<h3><a class="anchor" aria-hidden="true" id="web-common-props"></a><a href="#web-common-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Web Common Props</h3>
+<pre><code class="hljs css language-json">{
+
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="web-plugin-props"></a><a href="#web-plugin-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Web Plugin Props</h3>
+<pre><code class="hljs css language-json">{
+
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="web-config-props"></a><a href="#web-config-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Web Config Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"environment"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"webpackConfig"</span>: {
+    <span class="hljs-attr">"devServerHost"</span>: <span class="hljs-string">""</span>,
+    <span class="hljs-attr">"customScripts"</span>: []
+  }
+}
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="tizen-props"></a><a href="#tizen-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tizen Props</h2>
+<h3><a class="anchor" aria-hidden="true" id="tizen-common-props"></a><a href="#tizen-common-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tizen Common Props</h3>
+<pre><code class="hljs css language-json">{
+
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="tizen-plugin-props"></a><a href="#tizen-plugin-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tizen Plugin Props</h3>
+<pre><code class="hljs css language-json">{
+
+}
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="tizen-config-props"></a><a href="#tizen-config-props" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tizen Config Props</h3>
+<pre><code class="hljs css language-json">{
+  <span class="hljs-attr">"appName"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"package"</span>: <span class="hljs-string">""</span>,
+  <span class="hljs-attr">"certificateProfile"</span>: <span class="hljs-string">""</span>
+}
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/api-cli-workspace"><span class="arrow-prev">← </span><span>workspace</span></a><a class="docs-next button" href="/docs/api-renative"><span>renative</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#config-spec">Config Spec</a></li><li><a href="#common-props">Common Props</a></li><li><a href="#platform-specific-props">Platform Specific Props</a></li><li><a href="#ios-props">iOS Props</a><ul class="toc-headings"><li><a href="#ios-common-props">iOS Common Props</a></li><li><a href="#ios-plugin-props">iOS Plugin Props</a></li><li><a href="#ios-config-props">iOS Config Props</a></li></ul></li><li><a href="#android-props">Android Props</a><ul class="toc-headings"><li><a href="#android-common-props">Android Common Props</a></li><li><a href="#android-plugin-props">Android Plugin Props</a></li><li><a href="#android-config-props">Android Config Props</a></li></ul></li><li><a href="#web-props">Web Props</a><ul class="toc-headings"><li><a href="#web-common-props">Web Common Props</a></li><li><a href="#web-plugin-props">Web Plugin Props</a></li><li><a href="#web-config-props">Web Config Props</a></li></ul></li><li><a href="#tizen-props">Tizen Props</a><ul class="toc-headings"><li><a href="#tizen-common-props">Tizen Common Props</a></li><li><a href="#tizen-plugin-props">Tizen Plugin Props</a></li><li><a href="#tizen-config-props">Tizen Config Props</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"><img src="/img/logo.png" alt="ReNative" width="66" height="58"/></a><div><h5>Docs</h5><a href="/docs/intro-installation">Getting Started</a><a href="/docs/platform">Platforms</a><a href="/docs/guide-cli">Guides</a></div><div><h5>Community</h5><a href="https://spectrum.chat/renative">Project Chat</a><a href="https://twitter.com/renative" target="_blank" rel="noreferrer noopener">Twitter</a><a href="/help">Contributors</a></div><div><h5>More</h5><a href="https://github.com/pavjacko/renative">GitHub</a><a class="github-button" href="https://github.com/pavjacko/renative" data-icon="octicon-star" data-count-href="/pavjacko/renative/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a><div class="social"><a href="https://twitter.com/renative" class="twitter-follow-button">Follow @renative</a></div></div></section><section class="copyright"></section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>window.twttr=(function(d,s, id){var js,fjs=d.getElementsByTagName(s)[0],t=window.twttr||{};if(d.getElementById(id))return t;js=d.createElement(s);js.id=id;js.src='https://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js, fjs);t._e = [];t.ready = function(f) {t._e.push(f);};return t;}(document, 'script', 'twitter-wjs'));</script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: 'ce70fa21a21dad8ee49ed142a8a63b67',
+                indexName: 'renative',
+                inputSelector: '#search_input_react',
+                algoliaOptions: {}
+              });
+            </script></body></html>
