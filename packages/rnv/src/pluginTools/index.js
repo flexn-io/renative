@@ -86,20 +86,30 @@ const _getPluginList = (c, isUpdate = false) => {
 export const rnvPluginAdd = async (c) => {
     logTask('rnvPluginAdd');
 
+    const selPluginKey = c.program.rawArgs[4];
+
     const o = _getPluginList(c);
 
-    const { plugin } = await inquirer.prompt({
-        name: 'plugin',
-        type: 'rawlist',
-        message: 'Select the plugins you want to add',
-        choices: o.asArray,
-        pageSize: 50
-    });
-
-    const installMessage = [];
+    const selPlugin = selPluginKey && o.allPlugins[selPluginKey];
     const selectedPlugins = {};
-    selectedPlugins[plugin] = o.allPlugins[plugin];
-    installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.allPlugins[plugin].version)})`);
+    const installMessage = [];
+
+    if (!selPlugin) {
+        const { plugin } = await inquirer.prompt({
+            name: 'plugin',
+            type: 'rawlist',
+            message: 'Select the plugins you want to add',
+            choices: o.asArray,
+            pageSize: 50
+        });
+
+        selectedPlugins[plugin] = o.allPlugins[plugin];
+        installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.allPlugins[plugin].version)})`);
+    } else {
+        selectedPlugins[selPluginKey] = selPlugin;
+        installMessage.push(`${chalk.white(selPluginKey)} v(${chalk.green(selPlugin.version)})`);
+    }
+
 
     const questionPlugins = {};
 
