@@ -1,5 +1,5 @@
 ---
-id: webos
+id: platform-webos
 title: LG WebOS Platform
 sidebar_label: LG WebOS
 ---
@@ -85,4 +85,4 @@ rnv run -p webos --hosted
 
 ## App Config
 
-[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)
+[see: Web based config](api-config.md#web-props)

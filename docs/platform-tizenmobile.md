@@ -1,5 +1,5 @@
 ---
-id: tizenmobile
+id: platform-tizenmobile
 title: Tizen Mobile Platform
 sidebar_label: Tizen Mobile
 ---
@@ -103,4 +103,4 @@ rnv run -p tizenmobile -t M-5.0-x86
 
 ## App Config
 
-[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)
+[see: Web based config](api-config.md#web-props)

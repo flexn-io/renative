@@ -1,5 +1,5 @@
 ---
-id: androidwear
+id: platform-androidwear
 title: Android Wear Platform
 sidebar_label: Android Wear
 ---
@@ -125,4 +125,4 @@ or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
 
 ## App Config
 
-[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)
+[see: Android based config](api-config.md#android-props)

@@ -1,5 +1,5 @@
 ---
-id: tizenwatch
+id: platform-tizenwatch
 title: Tizen Watch Platform
 sidebar_label: Tizen Watch
 ---
@@ -100,4 +100,4 @@ rnv run -p tizenwatch -t W-5.0-circle-x86
 
 ## App Config
 
-[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)
+[see: Web based config](api-config.md#web-props)

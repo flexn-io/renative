@@ -1,5 +1,5 @@
 ---
-id: tizen
+id: platform-tizen
 title: Tizen TV Platform
 sidebar_label: Tizen TV
 ---
@@ -113,4 +113,4 @@ rnv run -p tizen -d -t <IP>
 
 ## App Config
 
-[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)
+[see: Web based config](api-config.md#web-props)

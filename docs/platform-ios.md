@@ -1,5 +1,5 @@
 ---
-id: ios
+id: platform-ios
 title: iOS Platform
 sidebar_label: iOS
 ---
@@ -250,4 +250,4 @@ Adding new props to plist:
 
 ## App Config
 
-[see: iOS based config](DOC_RENATIVE_CONFIG.md#ios-props)
+[see: iOS based config](api-config.md#ios-props)

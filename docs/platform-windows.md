@@ -1,5 +1,5 @@
 ---
-id: windows
+id: platform-windows
 title: Windows Platform
 sidebar_label: Windows
 ---
@@ -65,4 +65,4 @@ rnv run -p windows --hosted
 
 ## App Config
 
-[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)
+[see: Web based config](api-config.md#web-props)

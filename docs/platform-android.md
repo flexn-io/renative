@@ -1,5 +1,5 @@
 ---
-id: android
+id: platform-android
 title: Android Platform
 sidebar_label: Android
 ---
@@ -157,4 +157,4 @@ rnv log -p android -f com.myapp
 
 ## App Config
 
-[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)
+[see: Android based config](api-config.md#android-props)

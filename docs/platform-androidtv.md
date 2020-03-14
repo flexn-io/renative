@@ -1,5 +1,5 @@
 ---
-id: androidtv
+id: platform-androidtv
 title: Android TV Platform
 sidebar_label: Android TV
 ---
@@ -124,4 +124,4 @@ or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
 
 ## App Config
 
-[see: Android based config](DOC_RENATIVE_CONFIG.md#android-props)
+[see: Android based config](api-config.md#android-props)

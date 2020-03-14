@@ -1,5 +1,5 @@
 ---
-id: macos
+id: platform-macos
 title: macOS Platform
 sidebar_label: macOS
 ---
@@ -79,4 +79,4 @@ rnv export -p macos -s release
 
 ## App Config
 
-[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)
+[see: Web based config](api-config.md#web-props)

@@ -5,8 +5,14 @@
         "previous": "Previous",
         "tagline": "Build universal cross-platform apps with react native",
         "docs": {
+            "_CHANGELOG": {
+                "title": "_CHANGELOG"
+            },
+            "_DOC_SANITY": {
+                "title": "_DOC_SANITY"
+            },
             "api-config": {
-                "title": "renative.json",
+                "title": "renative.json API Reference",
                 "sidebar_label": "renative.json"
             },
             "api-renative": {
@@ -92,15 +98,6 @@
             "api-rnv": {
                 "title": "rnv",
                 "sidebar_label": "rnv"
-            },
-            "CHANGELOG": {
-                "title": "CHANGELOG"
-            },
-            "CONTRIBUTING": {
-                "title": "CONTRIBUTING"
-            },
-            "DOC_SANITY": {
-                "title": "DOC_SANITY"
             },
             "guide-analytics": {
                 "title": "Analytics",
@@ -210,69 +207,73 @@
                 "title": "Quick Start",
                 "sidebar_label": "Quick Start"
             },
-            "android": {
+            "platform-android": {
                 "title": "Android Platform",
                 "sidebar_label": "Android"
             },
-            "androidtv": {
+            "platform-androidtv": {
                 "title": "Android TV Platform",
                 "sidebar_label": "Android TV"
             },
-            "androidwear": {
+            "platform-androidwear": {
                 "title": "Android Wear Platform",
                 "sidebar_label": "Android Wear"
             },
-            "firefoxos": {
+            "platform-firefoxos": {
                 "title": "Firefox OS Platform",
                 "sidebar_label": "Firefox OS"
             },
-            "firefoxtv": {
+            "platform-firefoxtv": {
                 "title": "Firefox TV Platform",
                 "sidebar_label": "Firefox TV"
             },
-            "ios": {
+            "platform-ios": {
                 "title": "iOS Platform",
                 "sidebar_label": "iOS"
             },
-            "kaios": {
+            "platform-kaios": {
                 "title": "KaiOS Platform",
                 "sidebar_label": "KaiOS"
             },
-            "macos": {
+            "platform-macos": {
                 "title": "macOS Platform",
                 "sidebar_label": "macOS"
             },
-            "tizen": {
+            "platform-tizen": {
                 "title": "Tizen TV Platform",
                 "sidebar_label": "Tizen TV"
             },
-            "tizenmobile": {
+            "platform-tizenmobile": {
                 "title": "Tizen Mobile Platform",
                 "sidebar_label": "Tizen Mobile"
             },
-            "tizenwatch": {
+            "platform-tizenwatch": {
                 "title": "Tizen Watch Platform",
                 "sidebar_label": "Tizen Watch"
             },
-            "tvos": {
+            "platform-tvos": {
                 "title": "tvOS Platform",
                 "sidebar_label": "tvOS"
             },
-            "web": {
+            "platform-web": {
                 "title": "Web Platform",
                 "sidebar_label": "Web"
             },
-            "webos": {
+            "platform-webos": {
                 "title": "LG WebOS Platform",
                 "sidebar_label": "LG WebOS"
             },
-            "windows": {
+            "platform-windows": {
                 "title": "Windows Platform",
                 "sidebar_label": "Windows"
             },
-            "platforms_overview": {
+            "platform": {
                 "title": "Overview",
                 "sidebar_label": "Overview"
+            },
+            "plugins": {
+                "title": "Plugins Overview",
+                "sidebar_label": "Plugins Overview"
             }
         },
         "links": {
@@ -285,10 +286,11 @@
             "Getting Started": "Getting Started",
             "Guides": "Guides",
             "Platforms": "Platforms",
+            "Plugins": "Plugins",
             "Integrations": "Integrations",
-            "Renative CLI": "Renative CLI",
-            "Renative Runtime": "Renative Runtime",
-            "Renative Config": "Renative Config"
+            "CLI": "CLI",
+            "Runtime": "Runtime",
+            "Config": "Config"
         }
     },
     "pages-strings": {

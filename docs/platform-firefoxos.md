@@ -1,5 +1,5 @@
 ---
-id: firefoxos
+id: platform-firefoxos
 title: Firefox OS Platform
 sidebar_label: Firefox OS
 ---
@@ -69,4 +69,4 @@ rnv run -p firefoxos --hosted
 
 ## App Config
 
-[see: Web based config](DOC_RENATIVE_CONFIG.md#web-props)
+[see: Web based config](api-config.md#web-props)

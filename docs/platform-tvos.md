@@ -1,5 +1,5 @@
 ---
-id: tvos
+id: platform-tvos
 title: tvOS Platform
 sidebar_label: tvOS
 ---
@@ -72,4 +72,4 @@ rnv run -p tvos -t "Apple TV 4K"
 
 ## App Config
 
-[see: iOS based config](DOC_RENATIVE_CONFIG.md#ios-props)
+[see: iOS based config](api-config.md#ios-props)
