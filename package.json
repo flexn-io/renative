@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.29.0-alpha.16",
+    "version": "0.29.0-alpha.17",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -47,10 +47,10 @@
         "url": "https://github.com/pavjacko"
     },
     "contributors": [
-        "Mihai Blaga <https://github.com/mihaiblaga89>",
         "Aurimas Mickys <https://github.com/aurimas535>",
         "Daniel Marino Ruiz <https://github.com/CHaNGeTe>",
         "David Rielo <https://github.com/davidrielo>",
+        "Mihai Blaga <https://github.com/mihaiblaga89>",
         "Sander Looijenga <https://github.com/sanderlooijenga>"
     ],
     "repository": {
@@ -66,7 +66,7 @@
         "postinstall": "lerna link --force-local && npx jetify",
         "prePublish": "rnv hooks run -x prePublish",
         "publish": "yarn prePublish && yarn publish:rnv && yarn publish:renative && yarn publish:hello && yarn publish:blank && yarn publish:sink",
-        "publish:alpha": "yarn prePublish && yarn publish:rnv:alpha && yarn publish:renative:alpha && yarn publish:hello:alpha && yarn publish:blank:alpha && yarn publish:sink:alpha",
+        "publish:alpha": "yarn prePublish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
         "publish:blank": "cd packages/renative-template-blank && npm publish",
         "publish:blank:alpha": "cd packages/renative-template-blank && npm publish --tag alpha",
         "publish:hello": "cd packages/renative-template-hello-world && npm publish",
@@ -160,10 +160,10 @@
         "jetifier": "1.6.4",
         "lerna": "3.16.4",
         "release-it": "12.4.3",
-        "xcode": "2.1.0",
-        "renative-template-hello-world": "0.29.0-alpha.16",
         "renative-template-blank": "0.29.0-alpha.16",
-        "renative-template-kitchen-sink": "0.29.0-alpha.16"
+        "renative-template-hello-world": "0.29.0-alpha.16",
+        "renative-template-kitchen-sink": "0.29.0-alpha.16",
+        "xcode": "2.1.0"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"
