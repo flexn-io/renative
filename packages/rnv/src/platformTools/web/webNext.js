@@ -20,7 +20,7 @@ import {
     confirmActiveBundler
 } from '../../common';
 import { isPlatformActive } from '..';
-import { logTask, logInfo, logDebug, logSuccess, logWarning } from '../../systemTools/logger';
+import { logTask, logInfo, logDebug, logError, logSuccess, logWarning } from '../../systemTools/logger';
 import { WEB } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync, copyFolderContentsRecursiveSync } from '../../systemTools/fileutils';
@@ -127,15 +127,11 @@ const configureNextIfRequired = async (c) => {
     const { srcDir, platformTemplatesDirs } = c.paths.project;
     const pagesDir = path.join(srcDir, 'pages');
     const publicDir = path.join(srcDir, 'public');
-    const baseFontsDir = c.paths.appConfig.fontDirs[0];
+    const baseFontsDir = c.paths.appConfig.fontDirs?.[0];
     const stylesDir = path.join(srcDir, 'styles');
 
     const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], c.platform);
     copyFolderContentsRecursiveSync(platformTemplateDir, srcDir); // move to projectTemplates
-
-    // pages hardcoded for helloworld
-    !fs.existsSync(path.join(pagesDir, 'index.js')) && fs.symlinkSync(path.join(srcDir, 'app/index.web.js'), path.join(pagesDir, 'index.js')); // move to projectTemplates
-    !fs.existsSync(path.join(pagesDir, 'my-page.js')) && fs.symlinkSync(path.join(srcDir, 'screenMyPage.js'), path.join(pagesDir, 'my-page.js'));
 
     // handle fonts
     !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);

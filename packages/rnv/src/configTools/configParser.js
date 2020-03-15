@@ -383,7 +383,6 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
         extendAppId = fileObj.configPrivate.extend || extendAppId;
         result = true;
     }
-
     if (extendAppId && extendDir) {
         pathObj.configBase = path.join(extendDir, extendAppId, 'renative.json');
         pathObj.dirs = [
@@ -395,6 +394,8 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
             path.join(pathObj.dirs[1], 'fonts')
         ];
         loadFile(fileObj, pathObj, 'configBase');
+    } else {
+        pathObj.fontDirs = c.paths.project.projectConfig.fontsDirs;
     }
 
 
@@ -902,6 +903,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'appConfigs', 'base');
     c.paths.project.projectConfig.pluginsDir = path.join(c.paths.project.projectConfig.dir, 'plugins');
     c.paths.project.projectConfig.fontsDir = path.join(c.paths.project.projectConfig.dir, 'fonts');
+    c.paths.project.projectConfig.fontsDirs = [c.paths.project.projectConfig.fontsDir];
     c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
     c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
     c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_RUNTIME_NAME);
