@@ -146,7 +146,7 @@
         "concurrently": "4.1.1",
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
-        "jetifier": "1.6.4",
+        "jetifier": "1.6.5",
         "lerna": "3.16.4",
         "release-it": "12.4.3",
         "renative-template-blank": "file:./packages/renative-template-blank",
