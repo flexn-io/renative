@@ -132,7 +132,7 @@ const pipes = {
     'configure:before': hooks.hello,
 };
 
-const _updatePackageJson = (c, pPath, updateObj) => {
+const _updateJson = (c, pPath, updateObj) => {
     const pObj = FileUtils.readObjectSync(pPath);
 
     const merge = require('deepmerge');
