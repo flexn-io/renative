@@ -87,18 +87,16 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     // FONTS
     let fontsObj = 'export default [';
 
-
+    const duplicateFontCheck = [];
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
             const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
             if (includedFonts) {
                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
-                    if (font) {
+                    if (font && !duplicateFontCheck.includes(font)) {
+                        duplicateFontCheck.push(font);
                         const fontSource = path.join(dir, font);
-
-                        let relativePath = dir.includes(c.paths.project.dir) ? `../..${dir.replace(c.paths.project.dir, '')}` : dir;
-                        if (isSystemWin) relativePath = relativePath.replace(/\\/g, '/'); // strings don't like windows backslashes
                         if (fs.existsSync(fontSource)) {
                             // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                             // mkdirSync(fontFolder);
@@ -106,7 +104,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                             // copyFileSync(fontSource, fontDest);
                             fontsObj += `{
                               fontFamily: '${key}',
-                              file: require('${relativePath}/${font}'),
+                              file: require('${fontSource}'),
                           },`;
                         } else {
                             logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
