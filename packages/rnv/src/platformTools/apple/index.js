@@ -575,10 +575,11 @@ const configureXcodeProject = async (c, platform, ip, port) => {
         //     });
         // }
     });
+    const embeddedFontSourcesCheck = [];
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const { includedFonts } = c.buildConfig.common;
+            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
             if (includedFonts && (includedFonts.includes('*') || includedFonts.includes(key))) {
                 const fontSource = path.join(dir, font);
                 if (fs.existsSync(fontSource)) {
@@ -586,11 +587,15 @@ const configureXcodeProject = async (c, platform, ip, port) => {
                     mkdirSync(fontFolder);
                     const fontDest = path.join(fontFolder, font);
                     copyFileSync(fontSource, fontDest);
-                    if (!c.pluginConfigiOS.ignoreProjectFonts.includes(font)) {
+
+                    if (!c.pluginConfigiOS.ignoreProjectFonts.includes(font) && !embeddedFontSourcesCheck.includes(font)) {
                         c.pluginConfigiOS.embeddedFontSources.push(fontSource);
+                        embeddedFontSourcesCheck.push(font);
                     }
 
-                    c.pluginConfigiOS.embeddedFonts.push(font);
+                    if (!c.pluginConfigiOS.embeddedFonts.includes(font)) {
+                        c.pluginConfigiOS.embeddedFonts.push(font);
+                    }
                 } else {
                     logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
                 }

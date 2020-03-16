@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import {
     WEB_HOSTED_PLATFORMS,
 } from '../constants';
-import { getAppFolder, getAppSubFolder, getBuildsFolder } from '../common';
+import { getAppFolder, getAppSubFolder, getBuildsFolder, getConfigProp } from '../common';
 import {
     cleanFolder, copyFolderContentsRecursiveSync,
     copyFileSync, mkdirSync, writeFileSync
@@ -91,7 +91,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const { includedFonts } = c.buildConfig.common;
+            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
             if (includedFonts) {
                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
                     if (font) {

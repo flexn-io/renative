@@ -446,7 +446,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const { includedFonts } = c.buildConfig.common;
+            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
             if (includedFonts) {
                 if (includedFonts.includes('*') || includedFonts.includes(key)) {
                     if (font) {
