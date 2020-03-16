@@ -103,21 +103,23 @@ rnv plugin add ${key}
             version: c.files.project.package.version,
         };
         const pkgFolder = path.join(c.paths.project.dir, 'packages');
-        _updatePackageJson(c, c.paths.project.package, v);
-        _updatePackageJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-blank/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-kitchen-sink/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative/package.json'), v);
-        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
-        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
-        FileUtils.updateObjectSync(c.paths.rnv.pluginTemplates.config, {
-            pluginTemplates: {
+        _updateJson(c, c.paths.project.package, v);
+        _updateJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative-template-blank/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative-template-kitchen-sink/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'rnv/pluginTemplates/renative.plugins.json'), {
+            plugins: {
                 renative: {
                     version: c.files.project.package.version
                 }
             }
         });
+
+        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
+        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
 
         resolve();
     }),
