@@ -2244,7 +2244,7 @@
     },
     "plugins": {
         "renative": {
-            "version": "0.28.19-alpha.8"
+            "version": "0.28.19-alpha.9"
         }
     }
 }
