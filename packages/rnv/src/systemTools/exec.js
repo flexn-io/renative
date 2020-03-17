@@ -6,6 +6,7 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import Config from '../config';
+import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
@@ -403,6 +404,7 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
     ]).then(() => resolve()).catch(e => reject(e));
 });
 
+const hasJetified = false;
 export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
     const c = Config.getConfig();
@@ -422,17 +424,30 @@ export const npmInstall = async (failOnError = false) => {
         if (packageManager === 'yarn') command = 'yarn';
     }
 
-    return executeAsync(command)
-        .then(() => invalidatePodsChecksum(c))
-        .catch((e) => {
-            if (failOnError) {
-                return logError(e);
-            }
-            logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
-            return cleanNodeModules(Config.getConfig())
-                .then(() => npmInstall(true))
-                .catch(f => logError(f));
-        });
+    try {
+        await executeAsync(command);
+        await invalidatePodsChecksum(c);
+    } catch (e) {
+        if (failOnError) {
+            return logError(e);
+        }
+        logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
+        try {
+            await cleanNodeModules(Config.getConfig());
+            await npmInstall(true);
+        } catch (npmErr) {
+            return logError(npmErr);
+        }
+    }
+    try {
+        const plats = c.files.project.config?.defaults?.supportedPlatforms;
+        if (Array.isArray(plats) && (plats.includes(ANDROID) || plats.includes(ANDROID_TV) || plats.includes(ANDROID_WEAR))) {
+            await executeAsync('npx jetify');
+        }
+        return true;
+    } catch (jetErr) {
+        return logError(jetErr);
+    }
 };
 
 // eslint-disable-next-line no-nested-ternary
