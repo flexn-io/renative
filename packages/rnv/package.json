@@ -164,7 +164,8 @@
         "react-dev-utils": "9.0.3",
         "rimraf": "2.6.2",
         "schedule": "0.4.0",
-        "semver": "5.5.0"
+        "semver": "5.5.0",
+        "crypto-js": "4.0.0"
     },
     "peerDependencies": {
         "now": "15.3.0"
