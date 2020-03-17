@@ -6,9 +6,11 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import Config from '../config';
+import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
+import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
 
 const { exec, execSync } = require('child_process');
@@ -114,8 +116,9 @@ const _execute = (c, command, opts = {}) => {
             spinner.succeed(`Executing: ${logMessage}`);
             return true;
         }
-        let errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
+        let errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stack || err.stderr || err.message;
         errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
+
         return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
     });
 };
@@ -220,7 +223,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     arr = arr.filter((v) => {
         if (v === '') return false;
         // Cleaner iOS reporting
-        if (v.includes('-Werror')) {
+        if (v.includes('-Werror') || v.includes('following modules are linked manually') || v.includes('warn ') || v.includes('note: ') || v.includes('warning: ') || v.includes('Could not find the following native modules') || v.includes('⚠️')) {
             return false;
         }
         // Cleaner Android reporting
@@ -401,21 +404,50 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
     ]).then(() => resolve()).catch(e => reject(e));
 });
 
+const hasJetified = false;
 export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
     const c = Config.getConfig();
 
-    return executeAsync('npm install')
-        .then(() => invalidatePodsChecksum(c))
-        .catch((e) => {
-            if (failOnError) {
-                return logError(e);
-            }
-            logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
-            return cleanNodeModules(Config.getConfig())
-                .then(() => npmInstall(true))
-                .catch(f => logError(f));
+    const isYarnInstalled = commandExistsSync('yarn');
+    const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
+    let command = 'npm install';
+    if (fs.existsSync(yarnLockPath)) {
+        command = 'yarn';
+    } else if (isYarnInstalled) {
+        const { packageManager } = await inquirerPrompt({
+            type: 'list',
+            name: 'packageManager',
+            message: 'What package manager would you like to use?',
+            choices: ['yarn', 'npm'],
         });
+        if (packageManager === 'yarn') command = 'yarn';
+    }
+
+    try {
+        await executeAsync(command);
+        await invalidatePodsChecksum(c);
+    } catch (e) {
+        if (failOnError) {
+            return logError(e);
+        }
+        logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
+        try {
+            await cleanNodeModules(Config.getConfig());
+            await npmInstall(true);
+        } catch (npmErr) {
+            return logError(npmErr);
+        }
+    }
+    try {
+        const plats = c.files.project.config?.defaults?.supportedPlatforms;
+        if (Array.isArray(plats) && (plats.includes(ANDROID) || plats.includes(ANDROID_TV) || plats.includes(ANDROID_WEAR))) {
+            await executeAsync('npx jetify');
+        }
+        return true;
+    } catch (jetErr) {
+        return logError(jetErr);
+    }
 };
 
 // eslint-disable-next-line no-nested-ternary

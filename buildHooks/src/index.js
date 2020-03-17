@@ -10,6 +10,45 @@ const hooks = {
         Logger.logTask(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
         resolve();
     }),
+    generateDocs: async (c) => {
+        let out = `---
+id: plugins
+title: Plugins Overview
+sidebar_label: Plugins Overview
+---
+`;
+        const temps = FileUtils.readObjectSync(c.paths.rnv.pluginTemplates.config);
+        const ptk = Object.keys(temps.pluginTemplates).sort();
+        ptk.forEach((key, i) => {
+            const plugin = temps.pluginTemplates[key];
+            const npm = plugin.version ? `Npm: https://www.npmjs.com/package/${key}` : '';
+            const version = plugin.version ? `Version: \`${plugin.version}\`` : '';
+            const platforms = Object.keys(plugin).map(v => (Constants.SUPPORTED_PLATFORMS.includes(v) ? v : null)).filter(v => v);
+            const supPlats = platforms.length ? platforms : Constants.SUPPORTED_PLATFORMS;
+            const deprecated = plugin.deprecated ? `> ${plugin.deprecated}` : '';
+            const props = plugin.props ? `Props: ${Object.keys(plugin.props).map(v => `\`${v}\``)}` : '';
+
+            out += `\n\n## ${key}
+${deprecated}
+
+${version}
+
+Platforms: ${supPlats.map(v => `\`${v}\``)}
+
+${props}
+
+${npm}
+
+Installation:
+
+\`\`\`
+rnv plugin add ${key}
+\`\`\`
+`;
+        });
+
+        FileUtils.writeFileSync(path.join(c.paths.project.dir, 'docs/plugin.md'), out);
+    },
     printExtensions: c => new Promise((resolve, reject) => {
         let out = '';
 
@@ -64,21 +103,23 @@ const hooks = {
             version: c.files.project.package.version,
         };
         const pkgFolder = path.join(c.paths.project.dir, 'packages');
-        _updatePackageJson(c, c.paths.project.package, v);
-        _updatePackageJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-blank/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative-template-kitchen-sink/package.json'), v);
-        _updatePackageJson(c, path.join(pkgFolder, 'renative/package.json'), v);
-        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
-        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
-        FileUtils.updateObjectSync(c.paths.rnv.pluginTemplates.config, {
-            pluginTemplates: {
+        _updateJson(c, c.paths.project.package, v);
+        _updateJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative-template-hello-world/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative-template-blank/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative-template-kitchen-sink/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'renative/package.json'), v);
+        _updateJson(c, path.join(pkgFolder, 'rnv/pluginTemplates/renative.plugins.json'), {
+            plugins: {
                 renative: {
                     version: c.files.project.package.version
                 }
             }
         });
+
+        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
+        FileUtils.copyFileSync(path.join(c.paths.project.dir, 'README.md'), path.join(pkgFolder, 'renative/README.md'));
 
         resolve();
     }),
@@ -91,7 +132,7 @@ const pipes = {
     'configure:before': hooks.hello,
 };
 
-const _updatePackageJson = (c, pPath, updateObj) => {
+const _updateJson = (c, pPath, updateObj) => {
     const pObj = FileUtils.readObjectSync(pPath);
 
     const merge = require('deepmerge');

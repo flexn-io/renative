@@ -34,7 +34,11 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
 const executePipe = async (c, key) => {
     logTask(`executePipe:${key}`);
 
-    await buildHooks(c);
+
+    const pipesConfig = c.buildConfig?.pipes;
+    if (!pipesConfig || (pipesConfig && pipesConfig.includes(key))) {
+        await buildHooks(c);
+    }
 
     const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
@@ -45,36 +49,33 @@ const executePipe = async (c, key) => {
     }
 };
 
-const buildHooks = c => new Promise((resolve, reject) => {
+const buildHooks = async (c) => {
     logTask('buildHooks');
 
     if (fs.existsSync(c.paths.buildHooks.index)) {
         if (c.isBuildHooksReady) {
-            resolve();
-            return;
+            return true;
         }
 
-        executeAsync(c, `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, {
-            cwd: c.paths.buildHooks.dir
-        })
-            .then(() => {
-                const h = require(c.paths.buildHooks.dist.index);
-                c.buildHooks = h.hooks;
-                c.buildPipes = h.pipes;
-                c.isBuildHooksReady = true;
-                resolve();
-            })
-            .catch((e) => {
-                // logWarning(`BUILD_HOOK Failed with error: ${e}`);
-                // resolve();
-                // Fail Builds instead of warn when hook fails
-                reject(`BUILD_HOOK Failed with error: ${e}`);
+        try {
+            await executeAsync(c, `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, {
+                cwd: c.paths.buildHooks.dir
             });
-    } else {
-        // logWarning(`Your buildHook ${chalk.white(c.paths.buildHooks.index)} is missing!. Skipping operation`);
-        resolve();
+
+            const h = require(c.paths.buildHooks.dist.index);
+            c.buildHooks = h.hooks;
+            c.buildPipes = h.pipes;
+            c.isBuildHooksReady = true;
+            return true;
+        } catch (e) {
+            // logWarning(`BUILD_HOOK Failed with error: ${e}`);
+            // resolve();
+            // Fail Builds instead of warn when hook fails
+            return Promise.reject(`BUILD_HOOK Failed with error: ${e}`);
+        }
     }
-});
+    return true;
+};
 
 const rnvHooksList = c => new Promise((resolve, reject) => {
     logTask('rnvHooksList');

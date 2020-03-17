@@ -3,17 +3,38 @@
         "ios": {
             "npm": {
                 "devDependencies": {
-                    "xcode": "2.0.0"
+                    "xcode": "2.1.0"
                 },
                 "optionalDependencies": {
                     "ios-deploy": "1.10.0"
                 }
             }
         },
+        "android": {
+            "npm": {
+                "devDependencies": {
+                    "jetifier": "1.6.5"
+                }
+            }
+        },
+        "androidwear": {
+            "npm": {
+                "devDependencies": {
+                    "jetifier": "1.6.5"
+                }
+            }
+        },
+        "androidtv": {
+            "npm": {
+                "devDependencies": {
+                    "jetifier": "1.6.5"
+                }
+            }
+        },
         "tvos": {
             "npm": {
                 "devDependencies": {
-                    "xcode": "2.0.0"
+                    "xcode": "2.1.0"
                 },
                 "optionalDependencies": {
                     "ios-deploy": "1.10.0"

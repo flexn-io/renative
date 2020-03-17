@@ -13,7 +13,6 @@ import {
     writeCleanFile,
     getConfigProp,
     waitForWebpack,
-    getSourceExts,
     confirmActiveBundler
 } from '../common';
 import { isPlatformSupported } from './index';
@@ -63,11 +62,11 @@ import {
 } from './android';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
-import { isBundlerActive, waitForBundler } from './bundler';
-import { checkSdk } from './sdkManager';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-import { isSystemWin } from '../utils';
+
+import { isBundlerActive, waitForBundler } from './bundler';
+import { checkSdk } from './sdkManager';
 
 let keepRNVRunning = false;
 
@@ -108,7 +107,7 @@ export const rnvStart = async (c) => {
             }
     }
 
-    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --sourceExts ${getSourceExts(c).join(',')} --port ${c.runtime.port} --config=metro.config.js`;
+    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --port ${c.runtime.port} --config=metro.config.js`;
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }

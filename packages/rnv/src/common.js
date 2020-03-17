@@ -332,7 +332,7 @@ export const resolveNodeModulePath = (c, filePath) => {
 };
 
 export const getFlavouredProp = (c, obj, key) => {
-    if (!key) return null;
+    if (!key || !obj) return null;
     const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;
     return obj[key];

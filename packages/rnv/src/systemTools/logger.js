@@ -156,7 +156,7 @@ export const logSummary = () => {
                 generateOptions(_c.buildConfig?.defaults?.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
                     let isEjected = '';
                     if (_c.paths.project.platformTemplatesDirs) {
-                        isEjected = _c.paths.project.platformTemplatesDirs[obj].includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
+                        isEjected = _c.paths.project.platformTemplatesDirs[obj]?.includes(_c.paths.rnv.platformTemplates.dir) ? '' : '(ejected)';
                     }
 
                     plats.push(`${defaultVal}${isEjected}`);
@@ -209,7 +209,7 @@ export const logTask = (task, customChalk) => {
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`\n⚠️  ${RNV} - WARNING: ${msg}\n`));
 };
 
 export const logInfo = (msg) => {
@@ -237,9 +237,9 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
     }
 
     if (e && e.message) {
-        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
+        logAndSave(chalk.red(`🛑  ${RNV} - ERRROR! ${e.message}\n${e.stack}`), isEnd);
     } else {
-        logAndSave(chalk.bold.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
+        logAndSave(chalk.red(`🛑  ${RNV} - ERRROR! ${e}`), isEnd);
     }
 
     if (isEnd) logEnd(1);
