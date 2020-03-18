@@ -10,7 +10,7 @@ import { isSystemWin } from '../utils';
 
 import { logDebug, logError, logWarning, logInfo } from './logger';
 
-export const copyFileSync = (source, target) => {
+export const copyFileSync = (source, target, skipOverride) => {
     logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
@@ -22,6 +22,7 @@ export const copyFileSync = (source, target) => {
         }
     }
     if (fs.existsSync(targetFile)) {
+        if (skipOverride) return;
         const src = fs.readFileSync(source);
         const dst = fs.readFileSync(targetFile);
 
@@ -71,7 +72,7 @@ export const copyFolderRecursiveSync = (source, target, convertSvg = true, skipP
     }
 };
 
-export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths) => {
+export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
     if (!fs.existsSync(source)) return;
     let files = [];
@@ -85,9 +86,9 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
-                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipPaths);
+                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipPaths, skipOverride);
                 } else {
-                    copyFileSync(curSource, targetFolder);
+                    copyFileSync(curSource, targetFolder, skipOverride);
                 }
             }
         });
