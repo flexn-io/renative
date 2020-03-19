@@ -234,7 +234,7 @@ $ npm install rnv -g
 $ rnv new
 ```
 
-[Get Started (with more in-depth info)](https://renative.org/docs/installation)
+[Get Started (with more in-depth info)](https://renative.org/docs/intro-installation)
 
 ---
 
@@ -251,7 +251,7 @@ $ rnv new
 - Deploy
 
 
-[Explore ReNative Features](https://renative.org/docs/features)
+[Explore ReNative Features](https://renative.org/docs/intro-features)
 
 ---
 
@@ -261,7 +261,7 @@ $ rnv new
 
 Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.
 
-[Documentation for ReNative Templates and Starters](https://renative.org/docs/templates)
+[Documentation for ReNative Templates and Starters](https://renative.org/docs/guide-templates)
 
 
 ---
@@ -272,7 +272,7 @@ Too lazy to build your idea from scratch? use one of the predefined & community 
 
 ReNative supports standard community driven react-native plugins you can use to enhance the functionality of your apps:
 
-[Documentation for ReNative Plugins](https://renative.org/docs/plugins)
+[Documentation for ReNative Plugins](https://renative.org/docs/guide-plugins)
 
 ---
 
@@ -282,7 +282,7 @@ ReNative supports standard community driven react-native plugins you can use to 
 
 ReNative supports integration for various services and deployment infrastructures for your apps
 
-[Documentation for ReNative Integrations](https://renative.org/docs/integrations)
+[Documentation for ReNative Integrations](https://renative.org/docs/integration-fastlane)
 
 
 ---
@@ -314,7 +314,7 @@ ReNative offers flexible and scalable folder override & injection features to cr
 
 Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you.
 
-[Documentation for ReNative Build Hooks](https://renative.org/docs/build_hooks)
+[Documentation for ReNative Build Hooks](https://renative.org/docs/guide-build_hooks)
 
 
 ---
@@ -325,7 +325,7 @@ Sometimes you need to extend CLI functionality with custom build scripts. ReNati
 
 ReNative runtime is an NPM dependency used abstract away some of the complexities of building UI interfaces and features for large number of target platforms
 
-[Documentation for ReNative Runtime](https://renative.org/docs/runtime)
+[Documentation for ReNative Runtime](https://renative.org/docs/guide-renative-runtime)
 
 
 ---
@@ -336,7 +336,7 @@ ReNative runtime is an NPM dependency used abstract away some of the complexitie
 
 One CLI to do it all. `rnv` is your entry point and control centre to building multi-platform apps with just a few commands to learn
 
-[Documentation for RNV CLI](https://renative.org/docs/cli)
+[Documentation for RNV CLI](https://renative.org/docs/guide-cli)
 
 
 ---
@@ -347,7 +347,7 @@ One CLI to do it all. `rnv` is your entry point and control centre to building m
 
 More in-depth explanation how ReNative internals work
 
-[Documentation for ReNative Architecture](https://renative.org/docs/platforms_overview)
+[Documentation for ReNative Architecture](https://renative.org/docs/platform)
 
 <!--
 # Platforms
@@ -380,7 +380,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p ios`
 
-[Documentation for iOS Platform](https://renative.org/docs/ios)
+[Documentation for iOS Platform](https://renative.org/docs/platform-ios)
 
 ---
 
@@ -390,7 +390,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p android`
 
-[Documentation for Android Platform](https://renative.org/docs/android)
+[Documentation for Android Platform](https://renative.org/docs/platform-android)
 
 ---
 
@@ -400,7 +400,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tvos`
 
-[Documentation for tvOS Platform](https://renative.org/docs/tvos)
+[Documentation for tvOS Platform](https://renative.org/docs/platform-tvos)
 
 ---
 
@@ -410,7 +410,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p androidtv`
 
-[Documentation for Android TV Platform](https://renative.org/docs/androidtv)
+[Documentation for Android TV Platform](https://renative.org/docs/platform-androidtv)
 
 ---
 
@@ -420,7 +420,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p web`
 
-[Documentation for Web Platform](https://renative.org/docs/web)
+[Documentation for Web Platform](https://renative.org/docs/platform-web)
 
 ---
 
@@ -430,7 +430,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tizen`
 
-[Documentation for Tizen TV Platform](https://renative.org/docs/tizen)
+[Documentation for Tizen TV Platform](https://renative.org/docs/platform-tizen)
 
 ---
 
@@ -440,7 +440,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tizenwatch`
 
-[Documentation for Tizen Watch Platform](https://renative.org/docs/tizenwatch)
+[Documentation for Tizen Watch Platform](https://renative.org/docs/platform-tizenwatch)
 
 ---
 
@@ -450,7 +450,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p webos`
 
-[Documentation for LG WebOS Platform](https://renative.org/docs/webos)
+[Documentation for LG WebOS Platform](https://renative.org/docs/platform-webos)
 
 ---
 
@@ -460,7 +460,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p tizenmobile`
 
-[Documentation for Tizen Mobile Platform](https://renative.org/docs/tizenmobile)
+[Documentation for Tizen Mobile Platform](https://renative.org/docs/platform-tizenmobile)
 
 ---
 
@@ -470,7 +470,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p macos`
 
-[Documentation for macOS Platform](https://renative.org/docs/macos)
+[Documentation for macOS Platform](https://renative.org/docs/platform-macos)
 
 ---
 
@@ -480,7 +480,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p windows`
 
-[Documentation for Windows Platform](https://renative.org/docs/windows)
+[Documentation for Windows Platform](https://renative.org/docs/platform-windows)
 
 ---
 
@@ -490,7 +490,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p androidwear`
 
-[Documentation for Android Wear Platform](https://renative.org/docs/androidwear)
+[Documentation for Android Wear Platform](https://renative.org/docs/platform-androidwear)
 
 ---
 
@@ -500,7 +500,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p kaios`
 
-[Documentation for KaiOS Platform](https://renative.org/docs/kaios)
+[Documentation for KaiOS Platform](https://renative.org/docs/platform-kaios)
 
 ---
 
@@ -510,7 +510,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p firefoxos`
 
-[Documentation for Firefox OS Platform](https://renative.org/docs/firefoxos)
+[Documentation for Firefox OS Platform](https://renative.org/docs/platform-firefoxos)
 
 ---
 
@@ -520,7 +520,7 @@ More in-depth explanation how ReNative internals work
 
 `rnv run -p firefoxtv`
 
-[Documentation for Firefox TV Platform](https://renative.org/docs/firefoxtv)
+[Documentation for Firefox TV Platform](https://renative.org/docs/platform-firefoxtv)
 
 ---
 
@@ -530,7 +530,7 @@ More in-depth explanation how ReNative internals work
 
 If you need full control over whole ReNative build or want to contribute, you can clone and develop ReNative locally
 
-[Documentation for Developing ReNative](https://renative.org/docs/develop)
+[Documentation for Developing ReNative](https://renative.org/docs/guide-develop)
 
 
 ---
@@ -541,7 +541,7 @@ If you need full control over whole ReNative build or want to contribute, you ca
 
 If you face unexpected issues always good to check if there is a quick solution for it
 
-[List of common problems and how to solve them](https://renative.org/docs/common_issues)
+[List of common problems and how to solve them](https://renative.org/docs/guide-common_issues)
 
 ---
 

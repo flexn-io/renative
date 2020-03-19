@@ -27,11 +27,26 @@ export const composeDevicesString = (devices, returnArray) => {
     return `\n${devicesArray.join('')}`;
 };
 
-export const launchAndroidSimulator = (c, platform, target, isIndependentThread = false) => {
+export const launchAndroidSimulator = async (c, platform, target, isIndependentThread = false) => {
     logTask(`launchAndroidSimulator:${platform}:${target}:${isIndependentThread}`);
+    let newTarget = target;
+    if (target === true) {
+        const { program: { device } } = c;
+        const list = await getAndroidTargets(c, false, device, device);
 
-    if (target) {
-        const actualTarget = target.name || target;
+        const devicesString = composeDevicesString(list, true);
+        const choices = devicesString;
+        const response = await inquirer.prompt([{
+            name: 'chosenEmulator',
+            type: 'list',
+            message: 'What emulator would you like to start?',
+            choices
+        }]);
+        newTarget = response.chosenEmulator;
+    }
+
+    if (newTarget) {
+        const actualTarget = newTarget.name || newTarget;
         if (isIndependentThread) {
             execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, { detached: isIndependentThread }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
