@@ -194,9 +194,9 @@ export async function release(task) {
 
 // notification helper
 function notify(msg) {
-    return notifier.notify({
-        title: '▲ Next',
-        message: msg,
-        icon: false,
-    });
+    // return notifier.notify({
+    //     title: '▲ Next',
+    //     message: msg,
+    //     icon: false,
+    // });
 }

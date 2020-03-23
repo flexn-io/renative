@@ -1,20 +1,16 @@
 import http from 'http'
-import path from 'path'
 import next from '../next'
-import { setPagesDir } from '../../lib/find-pages-dir'
 
 export default async function start(
   serverOptions: any,
   port?: number,
   hostname?: string,
-  pagesDir?: string,
 ) {
   const app = next({
     ...serverOptions,
     customServer: false,
   })
 
-  pagesDir && setPagesDir(path.join(serverOptions.dir, pagesDir));
   const srv = http.createServer(app.getRequestHandler())
   await new Promise((resolve, reject) => {
     // This code catches EADDRINUSE error if the port is already in use

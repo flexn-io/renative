@@ -1,11 +1,12 @@
 #!/usr/bin/env node
-import { resolve } from 'path'
+import { resolve, join } from 'path'
 import arg from '@rnv/next/dist/compiled/arg/index.js'
 import { existsSync } from 'fs'
 import startServer from '../server/lib/start-server'
 import { printAndExit } from '../server/lib/utils'
 import { startedDevelopmentServer } from '../build/output'
 import { cliCommand } from '../bin/rnv-next'
+import { setPagesDir } from '../lib/find-pages-dir'
 
 const nextDev: cliCommand = argv => {
   const args = arg(
@@ -14,6 +15,7 @@ const nextDev: cliCommand = argv => {
       '--help': Boolean,
       '--port': Number,
       '--hostname': String,
+      '--pagesDir': String,
 
       // Aliases
       '-h': '--help',
@@ -48,6 +50,8 @@ const nextDev: cliCommand = argv => {
 
   const dir = resolve(args._[0] || '.')
 
+  args['--pagesDir'] && setPagesDir(join(dir, args['--pagesDir']));
+
   // Check if pages dir exists and warn if not
   if (!existsSync(dir)) {
     printAndExit(`> No such directory exists as the project root: ${dir}`)
@@ -62,7 +66,6 @@ const nextDev: cliCommand = argv => {
     { dir, dev: true, isNextDevCommand: true },
     port,
     args['--hostname'],
-    args['--pagesDir'],
   )
     .then(async app => {
       await app.prepare()
