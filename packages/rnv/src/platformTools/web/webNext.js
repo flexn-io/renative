@@ -124,14 +124,13 @@ export const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const configureNextIfRequired = async (c) => {
-    const { srcDir, platformTemplatesDirs } = c.paths.project;
-    const pagesDir = path.join(srcDir, 'pages');
-    const publicDir = path.join(srcDir, 'public');
+    const { platformTemplatesDirs, dir } = c.paths.project;
+    const publicDir = path.join(dir, 'public');
     const baseFontsDir = c.paths.appConfig.fontDirs?.[0];
-    const stylesDir = path.join(srcDir, 'styles');
+    const stylesDir = path.join(dir, 'styles');
 
     const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], c.platform);
-    copyFolderContentsRecursiveSync(platformTemplateDir, srcDir); // move to projectTemplates
+    copyFolderContentsRecursiveSync(platformTemplateDir, dir); // move to projectTemplates
 
     // handle fonts
     !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);

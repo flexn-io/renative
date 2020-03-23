@@ -142,7 +142,7 @@ function generateConfig(config) {
     }
 
 
-    console.log('******', config.moduleAliases);
+    // console.log('******', config.moduleAliases);
 
     const plugins = {};
 
