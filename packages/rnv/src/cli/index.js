@@ -26,6 +26,7 @@ import {
 import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
 import rnvPublish from '../projectTools/publish';
 import rnvPkg from '../projectTools/package';
+import { rnvApiAdd, rnvApiDeploy } from '../backendTools';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -74,6 +75,19 @@ const COMMANDS = {
     run: {
         desc: 'Run your app on target device or emulator',
         fn: rnvRun
+    },
+    api: {
+        desc: 'Do serverless things',
+        subCommands: {
+            add: {
+                fn: rnvApiAdd,
+                desc: 'Add api scaffolding',
+            },
+            deploy: {
+                fn: rnvApiDeploy,
+                desc: 'Make it fly',
+            },
+        }
     },
     package: {
         desc: 'Package JS Code',

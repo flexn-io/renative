@@ -59,7 +59,7 @@
     },
     "scripts": {
         "bootstrap": "yarn link && npx lerna bootstrap",
-        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap:clean": "rm -rf ./node_modules; rm yarn.lock; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "link": "cd packages/rnv; npm link",
@@ -124,15 +124,15 @@
         "renative": "file:./packages/renative"
     },
     "devDependencies": {
-        "@babel/cli": "7.8.3",
-        "@babel/core": "7.8.3",
+        "@babel/cli": "7.8.4",
+        "@babel/core": "7.8.7",
         "@babel/plugin-proposal-class-properties": "7.8.3",
         "@babel/plugin-proposal-decorators": "7.8.3",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/plugin-transform-runtime": "7.8.3",
-        "@babel/preset-env": "7.8.3",
-        "@babel/runtime": "7.8.3",
+        "@babel/preset-env": "7.8.7",
+        "@babel/runtime": "7.8.7",
         "babel-eslint": "8.2.6",
         "babel-jest": "24.9.0",
         "babel-loader": "8.0.5",
