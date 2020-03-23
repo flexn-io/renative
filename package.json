@@ -152,7 +152,13 @@
         "renative-template-blank": "file:./packages/renative-template-blank",
         "renative-template-hello-world": "file:./packages/renative-template-hello-world",
         "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
-        "xcode": "2.1.0"
+        "xcode": "2.1.0",
+        "serverless": "1.67.0",
+        "serverless-webpack": "5.3.1",
+        "serverless-pseudo-parameters": "2.5.0",
+        "serverless-dotenv-plugin": "2.3.2",
+        "serverless-offline": "6.0.0",
+        "webpack-node-externals": "1.7.2"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"

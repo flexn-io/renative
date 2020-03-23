@@ -26,7 +26,7 @@ import {
 import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
 import rnvPublish from '../projectTools/publish';
 import rnvPkg from '../projectTools/package';
-import { rnvApiAdd, rnvApiDeploy } from '../backendTools';
+import { rnvApiAdd, rnvApiDeploy, rnvApiOffline } from '../backendTools';
 
 export const rnvHelp = () => {
     let cmdsString = '';
@@ -86,6 +86,10 @@ const COMMANDS = {
             deploy: {
                 fn: rnvApiDeploy,
                 desc: 'Make it fly',
+            },
+            'run-offline': {
+                fn: rnvApiOffline,
+                desc: 'Make it fly, but offline',
             },
         }
     },
