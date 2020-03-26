@@ -1,0 +1,22 @@
+{
+    "name": "api",
+    "version": "1.0.0",
+    "description": "",
+    "main": "handler.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "serverless": "1.67.0",
+        "serverless-dotenv-plugin": "2.3.2",
+        "serverless-offline": "6.0.0",
+        "serverless-pseudo-parameters": "2.5.0",
+        "serverless-webpack": "5.3.1",
+        "webpack-node-externals": "1.7.2"
+    },
+    "dependencies": {
+        "serverless-plugin-existing-s3": "^2.4.0"
+    }
+}

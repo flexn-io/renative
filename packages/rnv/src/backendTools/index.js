@@ -14,12 +14,10 @@ export const rnvApiAdd = async () => {
     await Config.checkRequiredPackage('webpack-node-externals', '1.7.2', 'devDependencies', true);
     const { paths, buildConfig } = Config.getConfig();
 
-    console.log('[', buildConfig);
     const slsPath = path.join(paths.project.dir, 'serverless.json');
     const webpackConfigPath = path.join(paths.project.dir, 'webpack.serverless.config.js');
     const apiDirPath = path.join(paths.project.dir, 'src/api');
     const defaultHandlerPath = path.join(apiDirPath, 'handler.js');
-    // throw new Error('asd');
 
     if (!fs.existsSync(slsPath)) {
         writeCleanFile(path.join(paths.rnv.dir, 'src/backendTools/template/serverless.json'), slsPath, [
@@ -37,8 +35,6 @@ export const rnvApiAdd = async () => {
     }
 };
 
-export const rnvApiDeploy = () => {
-    throw new Error('not implemented');
-};
+export const rnvApiDeploy = () => executeAsync('npx serverless deploy', { interactive: true });
 
 export const rnvApiOffline = () => executeAsync('npx serverless offline', { interactive: true });

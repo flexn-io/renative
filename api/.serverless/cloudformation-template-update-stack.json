@@ -1,0 +1,478 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "The AWS CloudFormation template for this Serverless application",
+    "Resources": {
+        "ServerlessDeploymentBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketEncryption": {
+                    "ServerSideEncryptionConfiguration": [
+                        {
+                            "ServerSideEncryptionByDefault": {
+                                "SSEAlgorithm": "AES256"
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "ServerlessDeploymentBucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "Properties": {
+                "Bucket": {
+                    "Ref": "ServerlessDeploymentBucket"
+                },
+                "PolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": "s3:*",
+                            "Effect": "Deny",
+                            "Principal": "*",
+                            "Resource": [
+                                {
+                                    "Fn::Join": [
+                                        "",
+                                        [
+                                            "arn:",
+                                            {
+                                                "Ref": "AWS::Partition"
+                                            },
+                                            ":s3:::",
+                                            {
+                                                "Ref": "ServerlessDeploymentBucket"
+                                            },
+                                            "/*"
+                                        ]
+                                    ]
+                                }
+                            ],
+                            "Condition": {
+                                "Bool": {
+                                    "aws:SecureTransport": false
+                                }
+                            }
+                        }
+                    ]
+                }
+            }
+        },
+        "HandlerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+                "LogGroupName": "/aws/lambda/helloWorld-dev-handler"
+            }
+        },
+        "IngressLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+                "LogGroupName": "/aws/lambda/helloWorld-dev-ingress"
+            }
+        },
+        "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": ["lambda.amazonaws.com"]
+                            },
+                            "Action": ["sts:AssumeRole"]
+                        }
+                    ]
+                },
+                "Policies": [
+                    {
+                        "PolicyName": {
+                            "Fn::Join": ["-", ["helloWorld-dev", "lambda"]]
+                        },
+                        "PolicyDocument": {
+                            "Version": "2012-10-17",
+                            "Statement": [
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "logs:CreateLogStream",
+                                        "logs:CreateLogGroup"
+                                    ],
+                                    "Resource": [
+                                        {
+                                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/helloWorld-dev*:*"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": ["logs:PutLogEvents"],
+                                    "Resource": [
+                                        {
+                                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/helloWorld-dev*:*:*"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "Effect": "Allow",
+                                    "Action": [
+                                        "s3:GetBucketNotification",
+                                        "s3:PutBucketNotification"
+                                    ],
+                                    "Resource": {
+                                        "Fn::Join": ["", ["*"]]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "Path": "/",
+                "RoleName": {
+                    "Fn::Join": [
+                        "-",
+                        [
+                            "helloWorld-dev",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            "lambdaRole"
+                        ]
+                    ]
+                }
+            }
+        },
+        "HandlerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "ServerlessDeploymentBucket"
+                    },
+                    "S3Key": "serverless/helloWorld/dev/1585175176505-2020-03-25T22:26:16.505Z/helloWorld.zip"
+                },
+                "FunctionName": "helloWorld-dev-handler",
+                "Handler": "handler.handler",
+                "MemorySize": 1024,
+                "Role": {
+                    "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+                },
+                "Runtime": "nodejs12.x",
+                "Timeout": 20,
+                "Environment": {
+                    "Variables": {
+                        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
+                        "STAGE": "dev"
+                    }
+                }
+            },
+            "DependsOn": ["HandlerLogGroup", "IamRoleLambdaExecution"]
+        },
+        "HandlerLambdaVersionWV7KR6QGrcgNSZ59HPVt3V146k2rgw2Lg8AE0Z01vY": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "HandlerLambdaFunction"
+                },
+                "CodeSha256": "xavisDA9cbQIfDv8vs/G3NNjdQwkyAGtYzDxJXwrk/Q="
+            }
+        },
+        "IngressLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+                "Code": {
+                    "S3Bucket": {
+                        "Ref": "ServerlessDeploymentBucket"
+                    },
+                    "S3Key": "serverless/helloWorld/dev/1585175176505-2020-03-25T22:26:16.505Z/helloWorld.zip"
+                },
+                "FunctionName": "helloWorld-dev-ingress",
+                "Handler": "ingress.handler",
+                "MemorySize": 1024,
+                "Role": {
+                    "Fn::GetAtt": ["IamRoleLambdaExecution", "Arn"]
+                },
+                "Runtime": "nodejs12.x",
+                "Timeout": 20,
+                "Environment": {
+                    "Variables": {
+                        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": 1,
+                        "STAGE": "dev"
+                    }
+                }
+            },
+            "DependsOn": ["IngressLogGroup", "IamRoleLambdaExecution"]
+        },
+        "IngressLambdaVersion8s0TiHFV16175FxXK3lalhoklJAVP1lylEg1q3GU": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+                "FunctionName": {
+                    "Ref": "IngressLambdaFunction"
+                },
+                "CodeSha256": "xavisDA9cbQIfDv8vs/G3NNjdQwkyAGtYzDxJXwrk/Q="
+            }
+        },
+        "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+                "Name": "dev-helloWorld",
+                "EndpointConfiguration": {
+                    "Types": ["EDGE"]
+                },
+                "Policy": "",
+                "MinimumCompressionSize": 1024
+            }
+        },
+        "ApiGatewayResourceTest": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+                "ParentId": {
+                    "Fn::GetAtt": ["ApiGatewayRestApi", "RootResourceId"]
+                },
+                "PathPart": "test",
+                "RestApiId": {
+                    "Ref": "ApiGatewayRestApi"
+                }
+            }
+        },
+        "ApiGatewayMethodTestGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+                "HttpMethod": "GET",
+                "RequestParameters": {},
+                "ResourceId": {
+                    "Ref": "ApiGatewayResourceTest"
+                },
+                "RestApiId": {
+                    "Ref": "ApiGatewayRestApi"
+                },
+                "ApiKeyRequired": false,
+                "AuthorizationType": "NONE",
+                "Integration": {
+                    "IntegrationHttpMethod": "POST",
+                    "Type": "AWS_PROXY",
+                    "Uri": {
+                        "Fn::Join": [
+                            "",
+                            [
+                                "arn:",
+                                {
+                                    "Ref": "AWS::Partition"
+                                },
+                                ":apigateway:",
+                                {
+                                    "Ref": "AWS::Region"
+                                },
+                                ":lambda:path/2015-03-31/functions/",
+                                {
+                                    "Fn::GetAtt": [
+                                        "HandlerLambdaFunction",
+                                        "Arn"
+                                    ]
+                                },
+                                "/invocations"
+                            ]
+                        ]
+                    }
+                },
+                "MethodResponses": []
+            }
+        },
+        "ApiGatewayDeployment1585175170342": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+                "RestApiId": {
+                    "Ref": "ApiGatewayRestApi"
+                },
+                "StageName": "dev"
+            },
+            "DependsOn": ["ApiGatewayMethodTestGet"]
+        },
+        "HandlerLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+                "FunctionName": {
+                    "Fn::GetAtt": ["HandlerLambdaFunction", "Arn"]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                    "Fn::Join": [
+                        "",
+                        [
+                            "arn:",
+                            {
+                                "Ref": "AWS::Partition"
+                            },
+                            ":execute-api:",
+                            {
+                                "Ref": "AWS::Region"
+                            },
+                            ":",
+                            {
+                                "Ref": "AWS::AccountId"
+                            },
+                            ":",
+                            {
+                                "Ref": "ApiGatewayRestApi"
+                            },
+                            "/*/*"
+                        ]
+                    ]
+                }
+            }
+        },
+        "InputBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "CorsConfiguration": {
+                    "CorsRules": [
+                        {
+                            "AllowedOrigins": ["*"],
+                            "AllowedHeaders": ["*"],
+                            "AllowedMethods": [
+                                "GET",
+                                "PUT",
+                                "POST",
+                                "DELETE",
+                                "HEAD"
+                            ],
+                            "MaxAge": 3000
+                        }
+                    ]
+                }
+            }
+        },
+        "OutputBucket": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "CorsConfiguration": {
+                    "CorsRules": [
+                        {
+                            "AllowedOrigins": ["*"],
+                            "AllowedHeaders": ["*"],
+                            "AllowedMethods": [
+                                "GET",
+                                "PUT",
+                                "POST",
+                                "DELETE",
+                                "HEAD"
+                            ],
+                            "MaxAge": 3000
+                        }
+                    ]
+                }
+            }
+        },
+        "MediaConvert": {
+            "Type": "AWS::MediaConvert::JobTemplate",
+            "Properties": {
+                "Category": "1080p",
+                "Description": "1080p",
+                "Name": "1080p",
+                "SettingsJson": {
+                    "OutputGroups": [
+                        {
+                            "CustomName": "1080p",
+                            "Name": "Apple HLS",
+                            "Outputs": [
+                                {
+                                    "Preset": "System-Avc_16x9_1080p_29_97fps_8500kbps",
+                                    "NameModifier": "1080p"
+                                }
+                            ],
+                            "OutputGroupSettings": {
+                                "Type": "HLS_GROUP_SETTINGS",
+                                "HlsGroupSettings": {
+                                    "ManifestDurationFormat": "INTEGER",
+                                    "SegmentLength": 10,
+                                    "TimedMetadataId3Period": 10,
+                                    "CaptionLanguageSetting": "OMIT",
+                                    "Destination": "s3://petfriendly-deployments-mobilehub-728935053/",
+                                    "TimedMetadataId3Frame": "PRIV",
+                                    "CodecSpecification": "RFC_4281",
+                                    "OutputSelection": "MANIFESTS_AND_SEGMENTS",
+                                    "ProgramDateTimePeriod": 600,
+                                    "MinSegmentLength": 0,
+                                    "MinFinalSegmentLength": 0,
+                                    "DirectoryStructure": "SINGLE_DIRECTORY",
+                                    "ProgramDateTime": "EXCLUDE",
+                                    "SegmentControl": "SEGMENTED_FILES",
+                                    "ManifestCompression": "NONE",
+                                    "ClientCache": "ENABLED",
+                                    "StreamInfResolution": "INCLUDE"
+                                }
+                            }
+                        }
+                    ],
+                    "AdAvailOffset": 0,
+                    "Inputs": [
+                        {
+                            "AudioSelectors": {
+                                "Audio Selector 1": {
+                                    "Offset": 0,
+                                    "DefaultSelection": "DEFAULT",
+                                    "ProgramSelection": 1
+                                }
+                            },
+                            "VideoSelector": {
+                                "ColorSpace": "FOLLOW",
+                                "Rotate": "DEGREE_0",
+                                "AlphaBehavior": "DISCARD"
+                            },
+                            "FilterEnable": "AUTO",
+                            "PsiControl": "USE_PSI",
+                            "FilterStrength": 0,
+                            "DeblockFilter": "DISABLED",
+                            "DenoiseFilter": "DISABLED",
+                            "TimecodeSource": "EMBEDDED"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "ServerlessDeploymentBucketName": {
+            "Value": {
+                "Ref": "ServerlessDeploymentBucket"
+            }
+        },
+        "HandlerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+                "Ref": "HandlerLambdaVersionWV7KR6QGrcgNSZ59HPVt3V146k2rgw2Lg8AE0Z01vY"
+            }
+        },
+        "IngressLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+                "Ref": "IngressLambdaVersion8s0TiHFV16175FxXK3lalhoklJAVP1lylEg1q3GU"
+            }
+        },
+        "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+                "Fn::Join": [
+                    "",
+                    [
+                        "https://",
+                        {
+                            "Ref": "ApiGatewayRestApi"
+                        },
+                        ".execute-api.",
+                        {
+                            "Ref": "AWS::Region"
+                        },
+                        ".",
+                        {
+                            "Ref": "AWS::URLSuffix"
+                        },
+                        "/dev"
+                    ]
+                ]
+            }
+        }
+    }
+}
