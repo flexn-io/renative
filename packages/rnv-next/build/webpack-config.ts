@@ -1096,7 +1096,7 @@ export default async function getBaseWebpackConfig(
                     ? '@zeit/next-less'
                     : isStylus
                     ? '@zeit/next-stylus'
-                    : 'next'
+                    : '@rnv/next'
                 )
           )
 

@@ -1,4 +1,3 @@
-const notifier = require('node-notifier');
 const { relative } = require('path');
 
 // eslint-disable-next-line camelcase
