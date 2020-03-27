@@ -5,17 +5,19 @@
     "custom": {
         "webpack": {
             "webpackConfig": "./webpack.serverless.config.js",
-            "includeModules": true
+            "includeModules": {
+                "forceExclude": ["aws-sdk"]
+            }
         },
         "defaultStage": "dev",
-        "currentStage": "${opt:stage, self:custom.defaultStage}"
+        "currentStage": "${opt:stage, self:custom.defaultStage}",
+        "MEDIA_CONVERT_TEMPLATE": "1080p"
     },
     "plugins": [
         "serverless-webpack",
         "serverless-offline",
         "serverless-dotenv-plugin",
-        "serverless-pseudo-parameters",
-        "serverless-plugin-existing-s3"
+        "serverless-pseudo-parameters"
     ],
     "provider": {
         "name": "aws",
@@ -57,13 +59,19 @@
         },
         "ingress": {
             "handler": "ingress.handler",
+            "role": "IngressRole",
+            "environment": {
+                "MEDIA_CONVERT_ROLE": {
+                    "Fn::GetAtt": ["MediaConvertRole", "Arn"]
+                },
+                "MEDIA_CONVERT_TEMPLATE": "${self:custom.MEDIA_CONVERT_TEMPLATE}"
+            },
             "events": [
                 {
-                    "existingS3": {
-                        "bucket": {
-                            "Ref": "InputBucket"
-                        },
-                        "events": ["s3:ObjectCreated:*"]
+                    "s3": {
+                        "bucket": "#{AWS::AccountId}-${self:custom.currentStage}-video-input",
+                        "event": "s3:ObjectCreated:*",
+                        "existing": true
                     }
                 }
             ]
@@ -74,6 +82,7 @@
             "InputBucket": {
                 "Type": "AWS::S3::Bucket",
                 "Properties": {
+                    "BucketName": "#{AWS::AccountId}-${self:custom.currentStage}-video-input",
                     "CorsConfiguration": {
                         "CorsRules": [
                             {
@@ -95,6 +104,7 @@
             "OutputBucket": {
                 "Type": "AWS::S3::Bucket",
                 "Properties": {
+                    "BucketName": "#{AWS::AccountId}-${self:custom.currentStage}-video-output",
                     "CorsConfiguration": {
                         "CorsRules": [
                             {
@@ -118,66 +128,120 @@
                 "Properties": {
                     "Category": "1080p",
                     "Description": "1080p",
-                    "Name": "1080p",
-                    "SettingsJson": {
-                        "OutputGroups": [
+                    "Name": "${self:custom.MEDIA_CONVERT_TEMPLATE}",
+                    "SettingsJson": "${file(mediaConvertTemplate.js):settings}"
+                }
+            },
+            "IngressRole": {
+                "Type": "AWS::IAM::Role",
+                "Properties": {
+                    "RoleName": "${self:service.name}-${self:custom.currentStage}-ingressRole",
+                    "AssumeRolePolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
                             {
-                                "CustomName": "1080p",
-                                "Name": "Apple HLS",
-                                "Outputs": [
-                                    {
-                                        "Preset": "System-Avc_16x9_1080p_29_97fps_8500kbps",
-                                        "NameModifier": "1080p"
-                                    }
-                                ],
-                                "OutputGroupSettings": {
-                                    "Type": "HLS_GROUP_SETTINGS",
-                                    "HlsGroupSettings": {
-                                        "ManifestDurationFormat": "INTEGER",
-                                        "SegmentLength": 10,
-                                        "TimedMetadataId3Period": 10,
-                                        "CaptionLanguageSetting": "OMIT",
-                                        "Destination": "s3://petfriendly-deployments-mobilehub-728935053/",
-                                        "TimedMetadataId3Frame": "PRIV",
-                                        "CodecSpecification": "RFC_4281",
-                                        "OutputSelection": "MANIFESTS_AND_SEGMENTS",
-                                        "ProgramDateTimePeriod": 600,
-                                        "MinSegmentLength": 0,
-                                        "MinFinalSegmentLength": 0,
-                                        "DirectoryStructure": "SINGLE_DIRECTORY",
-                                        "ProgramDateTime": "EXCLUDE",
-                                        "SegmentControl": "SEGMENTED_FILES",
-                                        "ManifestCompression": "NONE",
-                                        "ClientCache": "ENABLED",
-                                        "StreamInfResolution": "INCLUDE"
-                                    }
-                                }
-                            }
-                        ],
-                        "AdAvailOffset": 0,
-                        "Inputs": [
-                            {
-                                "AudioSelectors": {
-                                    "Audio Selector 1": {
-                                        "Offset": 0,
-                                        "DefaultSelection": "DEFAULT",
-                                        "ProgramSelection": 1
-                                    }
+                                "Effect": "Allow",
+                                "Principal": {
+                                    "Service": ["lambda.amazonaws.com"]
                                 },
-                                "VideoSelector": {
-                                    "ColorSpace": "FOLLOW",
-                                    "Rotate": "DEGREE_0",
-                                    "AlphaBehavior": "DISCARD"
-                                },
-                                "FilterEnable": "AUTO",
-                                "PsiControl": "USE_PSI",
-                                "FilterStrength": 0,
-                                "DeblockFilter": "DISABLED",
-                                "DenoiseFilter": "DISABLED",
-                                "TimecodeSource": "EMBEDDED"
+                                "Action": "sts:AssumeRole"
                             }
                         ]
-                    }
+                    },
+                    "Policies": [
+                        {
+                            "PolicyName": "${self:service.name}-${self:custom.currentStage}-ingressRole-Policy",
+                            "PolicyDocument": {
+                                "Version": "2012-10-17",
+                                "Statement": [
+                                    {
+                                        "Action": [
+                                            "logs:CreateLogStream",
+                                            "logs:CreateLogGroup",
+                                            "logs:PutLogEvents"
+                                        ],
+                                        "Resource": "*",
+                                        "Effect": "Allow"
+                                    },
+                                    {
+                                        "Action": [
+                                            "s3:GetBucketNotification",
+                                            "s3:PutBucketNotification"
+                                        ],
+                                        "Resource": "*",
+                                        "Effect": "Allow"
+                                    },
+                                    {
+                                        "Effect": "Allow",
+                                        "Action": [
+                                            "iam:GetRole",
+                                            "iam:PassRole"
+                                        ],
+                                        "Resource": "*"
+                                    },
+                                    {
+                                        "Effect": "Allow",
+                                        "Action": ["mediaconvert:*"],
+                                        "Resource": ["*"]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            },
+            "MediaConvertRole": {
+                "Type": "AWS::IAM::Role",
+                "Properties": {
+                    "RoleName": "${self:service.name}-${self:custom.currentStage}-MediaConvertRole",
+                    "AssumeRolePolicyDocument": {
+                        "Version": "2012-10-17",
+                        "Statement": [
+                            {
+                                "Effect": "Allow",
+                                "Principal": {
+                                    "Service": [
+                                        "mediaconvert.amazonaws.com",
+                                        "mediaconvert.us-east-1.amazonaws.com",
+                                        "mediaconvert.ap-northeast-1.amazonaws.com",
+                                        "mediaconvert.ap-southeast-1.amazonaws.com",
+                                        "mediaconvert.ap-southeast-2.amazonaws.com",
+                                        "mediaconvert.eu-central-1.amazonaws.com",
+                                        "mediaconvert.eu-west-1.amazonaws.com",
+                                        "mediaconvert.us-east-1.amazonaws.com",
+                                        "mediaconvert.us-west-1.amazonaws.com",
+                                        "mediaconvert.us-west-2.amazonaws.com"
+                                    ]
+                                },
+                                "Action": ["sts:AssumeRole"]
+                            }
+                        ]
+                    },
+                    "Policies": [
+                        {
+                            "PolicyName": "${self:service.name}-${self:custom.currentStage}-MediaConvertPolicy",
+                            "PolicyDocument": {
+                                "Version": "2012-10-17",
+                                "Statement": [
+                                    {
+                                        "Effect": "Allow",
+                                        "Action": ["s3:*"],
+                                        "Resource": ["*"]
+                                    },
+                                    {
+                                        "Effect": "Allow",
+                                        "Action": [
+                                            "autoscaling:Describe*",
+                                            "cloudwatch:*",
+                                            "logs:*",
+                                            "sns:*"
+                                        ],
+                                        "Resource": ["*"]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
                 }
             }
         }

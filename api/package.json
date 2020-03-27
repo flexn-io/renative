@@ -17,6 +17,7 @@
         "webpack-node-externals": "1.7.2"
     },
     "dependencies": {
+        "aws-sdk": "^2.647.0",
         "serverless-plugin-existing-s3": "^2.4.0"
     }
 }

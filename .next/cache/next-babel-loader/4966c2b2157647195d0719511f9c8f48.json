@@ -1,0 +1,59 @@
+{
+    "ast": null,
+    "code": "\"use strict\";var _interopRequireDefault=require(\"@babel/runtime/helpers/interopRequireDefault\");var _interopRequireWildcard=require(\"@babel/runtime/helpers/interopRequireWildcard\");var next=_interopRequireWildcard(require(\"./\"));var _eventSourcePolyfill=_interopRequireDefault(require(\"./dev/event-source-polyfill\"));var _onDemandEntriesClient=_interopRequireDefault(require(\"./dev/on-demand-entries-client\"));var _webpackHotMiddlewareClient=_interopRequireDefault(require(\"./dev/webpack-hot-middleware-client\"));var _devBuildWatcher=_interopRequireDefault(require(\"./dev/dev-build-watcher\"));var _prerenderIndicator=_interopRequireDefault(require(\"./dev/prerender-indicator\"));var _fouc=require(\"./dev/fouc\");import(\"./dev/noop\");;if(!window.EventSource){window.EventSource=_eventSourcePolyfill[\"default\"];}var _window=window,assetPrefix=_window.__NEXT_DATA__.assetPrefix;var prefix=assetPrefix||'';var webpackHMR=(0,_webpackHotMiddlewareClient[\"default\"])({assetPrefix:prefix});window.next=next;(0,next[\"default\"])({webpackHMR:webpackHMR}).then(function(_ref){var emitter=_ref.emitter,renderCtx=_ref.renderCtx,render=_ref.render;(0,_onDemandEntriesClient[\"default\"])({assetPrefix:prefix});if(process.env.__NEXT_BUILD_INDICATOR)(0,_devBuildWatcher[\"default\"])();if(process.env.__NEXT_PRERENDER_INDICATOR&&!(typeof process!=='undefined'&&'electron'in process.versions)){(0,_prerenderIndicator[\"default\"])();}(0,_fouc.displayContent)(function(){render(renderCtx);});var lastScroll;emitter.on('before-reactdom-render',function(_ref2){var Component=_ref2.Component,ErrorComponent=_ref2.ErrorComponent;if(!lastScroll&&Component===ErrorComponent){var _window2=window,pageXOffset=_window2.pageXOffset,pageYOffset=_window2.pageYOffset;lastScroll={x:pageXOffset,y:pageYOffset};}});emitter.on('after-reactdom-render',function(_ref3){var Component=_ref3.Component,ErrorComponent=_ref3.ErrorComponent;if(lastScroll&&Component!==ErrorComponent){var _lastScroll=lastScroll,x=_lastScroll.x,y=_lastScroll.y;window.scroll(x,y);lastScroll=null;}});})[\"catch\"](function(err){console.error('Error was not caught',err);});",
+    "map": {
+        "version": 3,
+        "sources": [
+            "/Users/lego/work/renative/node_modules/next/dist/client/next-dev.js"
+        ],
+        "names": [
+            "_interopRequireDefault",
+            "require",
+            "_interopRequireWildcard",
+            "next",
+            "_eventSourcePolyfill",
+            "_onDemandEntriesClient",
+            "_webpackHotMiddlewareClient",
+            "_devBuildWatcher",
+            "_prerenderIndicator",
+            "_fouc",
+            "window",
+            "EventSource",
+            "assetPrefix",
+            "__NEXT_DATA__",
+            "prefix",
+            "webpackHMR",
+            "then",
+            "_ref",
+            "emitter",
+            "renderCtx",
+            "render",
+            "process",
+            "env",
+            "__NEXT_BUILD_INDICATOR",
+            "__NEXT_PRERENDER_INDICATOR",
+            "versions",
+            "displayContent",
+            "lastScroll",
+            "on",
+            "_ref2",
+            "Component",
+            "ErrorComponent",
+            "pageXOffset",
+            "pageYOffset",
+            "x",
+            "y",
+            "_ref3",
+            "scroll",
+            "err",
+            "console",
+            "error"
+        ],
+        "mappings": "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",
+        "sourcesContent": [
+            "\"use strict\";var _interopRequireDefault=require(\"@babel/runtime/helpers/interopRequireDefault\");var _interopRequireWildcard=require(\"@babel/runtime/helpers/interopRequireWildcard\");var next=_interopRequireWildcard(require(\"./\"));var _eventSourcePolyfill=_interopRequireDefault(require(\"./dev/event-source-polyfill\"));var _onDemandEntriesClient=_interopRequireDefault(require(\"./dev/on-demand-entries-client\"));var _webpackHotMiddlewareClient=_interopRequireDefault(require(\"./dev/webpack-hot-middleware-client\"));var _devBuildWatcher=_interopRequireDefault(require(\"./dev/dev-build-watcher\"));var _prerenderIndicator=_interopRequireDefault(require(\"./dev/prerender-indicator\"));var _fouc=require(\"./dev/fouc\");/* globals import('./dev/noop'); */ // Temporary workaround for the issue described here:\n// https://github.com/zeit/next.js/issues/3775#issuecomment-407438123\n// The runtimeChunk doesn't have dynamic import handling code when there hasn't been a dynamic import\n// The runtimeChunk can't hot reload itself currently to correct it when adding pages using on-demand-entries\n// eslint-disable-next-line no-unused-expressions\nimport('./dev/noop');;// Support EventSource on Internet Explorer 11\nif(!window.EventSource){window.EventSource=_eventSourcePolyfill.default;}var{__NEXT_DATA__:{assetPrefix}}=window;var prefix=assetPrefix||'';var webpackHMR=(0,_webpackHotMiddlewareClient.default)({assetPrefix:prefix});window.next=next;(0,next.default)({webpackHMR}).then((_ref)=>{var{emitter,renderCtx,render}=_ref;(0,_onDemandEntriesClient.default)({assetPrefix:prefix});if(process.env.__NEXT_BUILD_INDICATOR)(0,_devBuildWatcher.default)();if(process.env.__NEXT_PRERENDER_INDICATOR&&// disable by default in electron\n!(typeof process!=='undefined'&&'electron'in process.versions)){(0,_prerenderIndicator.default)();}// delay rendering until after styles have been applied in development\n(0,_fouc.displayContent)(()=>{render(renderCtx);});var lastScroll;emitter.on('before-reactdom-render',(_ref2)=>{var{Component,ErrorComponent}=_ref2;// Remember scroll when ErrorComponent is being rendered to later restore it\nif(!lastScroll&&Component===ErrorComponent){var{pageXOffset,pageYOffset}=window;lastScroll={x:pageXOffset,y:pageYOffset};}});emitter.on('after-reactdom-render',(_ref3)=>{var{Component,ErrorComponent}=_ref3;if(lastScroll&&Component!==ErrorComponent){// Restore scroll after ErrorComponent was replaced with a page component by HMR\nvar{x,y}=lastScroll;window.scroll(x,y);lastScroll=null;}});}).catch(err=>{console.error('Error was not caught',err);});"
+        ]
+    },
+    "metadata": {},
+    "sourceType": "script"
+}
