@@ -79,4 +79,4 @@ test/*
 # Testing
 /packages/**/coverage
 /packages/**/dist
-*/**/.serverless
+.serverless

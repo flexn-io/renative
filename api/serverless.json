@@ -6,12 +6,14 @@
         "webpack": {
             "webpackConfig": "./webpack.serverless.config.js",
             "includeModules": {
-                "forceExclude": ["aws-sdk"]
+                "forceExclude": [
+                    "aws-sdk"
+                ]
             }
         },
         "defaultStage": "dev",
         "currentStage": "${opt:stage, self:custom.defaultStage}",
-        "MEDIA_CONVERT_TEMPLATE": "1080p"
+        "MEDIA_CONVERT_TEMPLATE": "TranscodeMyShit"
     },
     "plugins": [
         "serverless-webpack",
@@ -40,7 +42,12 @@
                     "s3:PutBucketNotification"
                 ],
                 "Resource": {
-                    "Fn::Join": ["", ["*"]]
+                    "Fn::Join": [
+                        "",
+                        [
+                            "*"
+                        ]
+                    ]
                 }
             }
         ]
@@ -62,7 +69,10 @@
             "role": "IngressRole",
             "environment": {
                 "MEDIA_CONVERT_ROLE": {
-                    "Fn::GetAtt": ["MediaConvertRole", "Arn"]
+                    "Fn::GetAtt": [
+                        "MediaConvertRole",
+                        "Arn"
+                    ]
                 },
                 "MEDIA_CONVERT_TEMPLATE": "${self:custom.MEDIA_CONVERT_TEMPLATE}"
             },
@@ -86,8 +96,12 @@
                     "CorsConfiguration": {
                         "CorsRules": [
                             {
-                                "AllowedOrigins": ["*"],
-                                "AllowedHeaders": ["*"],
+                                "AllowedOrigins": [
+                                    "*"
+                                ],
+                                "AllowedHeaders": [
+                                    "*"
+                                ],
                                 "AllowedMethods": [
                                     "GET",
                                     "PUT",
@@ -105,11 +119,16 @@
                 "Type": "AWS::S3::Bucket",
                 "Properties": {
                     "BucketName": "#{AWS::AccountId}-${self:custom.currentStage}-video-output",
+                    "AccessControl": "PublicRead",
                     "CorsConfiguration": {
                         "CorsRules": [
                             {
-                                "AllowedOrigins": ["*"],
-                                "AllowedHeaders": ["*"],
+                                "AllowedOrigins": [
+                                    "*"
+                                ],
+                                "AllowedHeaders": [
+                                    "*"
+                                ],
                                 "AllowedMethods": [
                                     "GET",
                                     "PUT",
@@ -132,6 +151,54 @@
                     "SettingsJson": "${file(mediaConvertTemplate.js):settings}"
                 }
             },
+            "CFDistribution": {
+                "Type": "AWS::CloudFront::Distribution",
+                "DependsOn": "OutputBucket",
+                "Properties": {
+                    "DistributionConfig": {
+                        "Origins": [
+                            {
+                                "DomainName": {
+                                    "Fn::GetAtt": [
+                                        "OutputBucket",
+                                        "DomainName"
+                                    ]
+                                },
+                                "Id": "myS3Origin",
+                                "CustomOriginConfig": {
+                                    "HTTPPort": "80",
+                                    "HTTPSPort": "443",
+                                    "OriginProtocolPolicy": "http-only"
+                                }
+                            }
+                        ],
+                        "Enabled": "true",
+                        "Comment": "Some comment",
+                        "DefaultCacheBehavior": {
+                            "AllowedMethods": [
+                                "DELETE",
+                                "GET",
+                                "HEAD",
+                                "OPTIONS",
+                                "PATCH",
+                                "POST",
+                                "PUT"
+                            ],
+                            "TargetOriginId": "myS3Origin",
+                            "ForwardedValues": {
+                                "QueryString": "false",
+                                "Cookies": {
+                                    "Forward": "none"
+                                }
+                            },
+                            "ViewerProtocolPolicy": "allow-all"
+                        },
+                        "ViewerCertificate": {
+                            "CloudFrontDefaultCertificate": "true"
+                        }
+                    }
+                }
+            },
             "IngressRole": {
                 "Type": "AWS::IAM::Role",
                 "Properties": {
@@ -142,7 +209,9 @@
                             {
                                 "Effect": "Allow",
                                 "Principal": {
-                                    "Service": ["lambda.amazonaws.com"]
+                                    "Service": [
+                                        "lambda.amazonaws.com"
+                                    ]
                                 },
                                 "Action": "sts:AssumeRole"
                             }
@@ -181,8 +250,12 @@
                                     },
                                     {
                                         "Effect": "Allow",
-                                        "Action": ["mediaconvert:*"],
-                                        "Resource": ["*"]
+                                        "Action": [
+                                            "mediaconvert:*"
+                                        ],
+                                        "Resource": [
+                                            "*"
+                                        ]
                                     }
                                 ]
                             }
@@ -213,7 +286,9 @@
                                         "mediaconvert.us-west-2.amazonaws.com"
                                     ]
                                 },
-                                "Action": ["sts:AssumeRole"]
+                                "Action": [
+                                    "sts:AssumeRole"
+                                ]
                             }
                         ]
                     },
@@ -225,8 +300,12 @@
                                 "Statement": [
                                     {
                                         "Effect": "Allow",
-                                        "Action": ["s3:*"],
-                                        "Resource": ["*"]
+                                        "Action": [
+                                            "s3:*"
+                                        ],
+                                        "Resource": [
+                                            "*"
+                                        ]
                                     },
                                     {
                                         "Effect": "Allow",
@@ -236,7 +315,9 @@
                                             "logs:*",
                                             "sns:*"
                                         ],
-                                        "Resource": ["*"]
+                                        "Resource": [
+                                            "*"
+                                        ]
                                     }
                                 ]
                             }

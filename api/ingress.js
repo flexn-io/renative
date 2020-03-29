@@ -21,8 +21,38 @@ export const handler = async (event) => {
                 {
                     FileInput
                 }
+            ],
+            OutputGroups: [
+                {
+                    OutputGroupSettings: {
+                        HlsGroupSettings: {
+                            Destination: `s3://712353861994-dev-video-output/${event.Records[0].s3.object.key}/`,
+                            DestinationSettings: {
+                                S3Settings: {
+                                    AccessControl: {
+                                        CannedAcl: 'PUBLIC_READ'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    OutputGroupSettings: {
+                        HlsGroupSettings: {
+                            Destination: `s3://712353861994-dev-video-output/${event.Records[0].s3.object.key}/`,
+                            DestinationSettings: {
+                                S3Settings: {
+                                    AccessControl: {
+                                        CannedAcl: 'PUBLIC_READ'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             ]
-        }
+        },
     };
     return client.createJob(params).promise();
 };
