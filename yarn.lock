@@ -5055,6 +5055,11 @@ crypto-browserify@^3.11.0:
     randombytes "^2.0.0"
     randomfill "^1.0.3"
 
+crypto-js@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
+  integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
+
 crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
@@ -8961,7 +8966,7 @@ jetifier@1.6.4:
   resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-1.6.4.tgz#6159db8e275d97980d26162897a0648b6d4a3222"
   integrity sha512-+f/4OLeqY8RAmXnonI1ffeY1DR8kMNJPhv5WMFehchf7U71cjMQVKkOz1n6asz6kfVoAqKNWJz1A/18i18AcXA==
 
-jetifier@^1.6.2:
+jetifier@1.6.5, jetifier@^1.6.2:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-1.6.5.tgz#ea87324a4230bef20a9651178ecab978ee54a8cb"
   integrity sha512-T7yzBSu9PR+DqjYt+I0KVO1XTb1QhAfHnXV5Nd3xpbXM6Xg4e3vP60Q4qkNU8Fh6PHC2PivPUNN3rY7G2MxcDQ==
@@ -10321,6 +10326,11 @@ minimist@1.2.0, minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
   integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
+
+minimist@1.2.5:
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
+  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
 
 minimist@~0.0.1:
   version "0.0.10"
@@ -12831,14 +12841,23 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
-"renative-template-blank@file:packages/renative-template-blank":
-  version "0.28.19-alpha.2"
+"renative-template-blank@file:./packages/renative-template-blank", "renative-template-blank@file:packages/renative-template-blank":
+  version "0.28.21"
 
-"renative-template-hello-world@file:packages/renative-template-hello-world":
-  version "0.28.19-alpha.2"
+"renative-template-hello-world@file:./packages/renative-template-hello-world", "renative-template-hello-world@file:packages/renative-template-hello-world":
+  version "0.28.21"
 
-"renative-template-kitchen-sink@file:packages/renative-template-kitchen-sink":
+"renative-template-kitchen-sink@file:./packages/renative-template-kitchen-sink", "renative-template-kitchen-sink@file:packages/renative-template-kitchen-sink":
+  version "0.28.21"
+
+renative@0.28.19-alpha.2:
   version "0.28.19-alpha.2"
+  resolved "https://registry.yarnpkg.com/renative/-/renative-0.28.19-alpha.2.tgz#c487e2f2e3217b4a111fed2f5ea09c2fea2a0da6"
+  integrity sha512-Cy5/BIrbS2zVSmtWp2wdMJwWs0w2W7g3I5XsTECU8dpL3qthIJYgvJKZW3THwONr5rALnUhDwG+yFR19O+tmzg==
+  dependencies:
+    react "16.9.0"
+    react-dom "16.9.0"
+    react-native "0.61.2"
 
 renderkid@^2.0.1:
   version "2.0.3"
@@ -13068,6 +13087,79 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rnv@0.28.19-alpha.2:
+  version "0.28.19-alpha.2"
+  resolved "https://registry.yarnpkg.com/rnv/-/rnv-0.28.19-alpha.2.tgz#84867534282b7c80fc4cae8bd4f5c23150f264bd"
+  integrity sha512-ngY7Xu914DTAwFwL/ygeA//fk7SQlv25g1H3DbJU1xov9Ynxe86mNjk92lVUmHz58VHqvAS1lYak1n5rsWv3Gg==
+  dependencies:
+    "@babel/cli" "7.8.3"
+    "@babel/core" "7.8.3"
+    "@babel/plugin-proposal-class-properties" "7.8.3"
+    "@babel/plugin-proposal-decorators" "7.8.3"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "7.8.3"
+    "@babel/plugin-proposal-optional-chaining" "7.8.3"
+    "@babel/plugin-transform-runtime" "7.8.3"
+    "@babel/preset-env" "7.8.3"
+    "@babel/runtime" "7.8.3"
+    "@sentry/integrations" "5.10.2"
+    "@sentry/node" "5.10.2"
+    axios "0.19.0"
+    babel-eslint "8.2.6"
+    babel-jest "24.9.0"
+    babel-loader "8.0.5"
+    babel-plugin-module-resolver "3.2.0"
+    babel-plugin-react-native-web "0.8.9"
+    babel-plugin-transform-decorators-legacy "1.3.4"
+    babel-plugin-transform-imports "1.4.1"
+    babel-plugin-transform-object-rest-spread "6.26.0"
+    babel-plugin-transform-runtime "6.23.0"
+    babel-polyfill "6.26.0"
+    better-opn "1.0.0"
+    color-string "1.5.3"
+    commander "^3.0.1"
+    console-table-printer "1.1.10"
+    copy-webpack-plugin "4.6.0"
+    cross-env "5.2.0"
+    css-hot-loader "1.4.2"
+    css-loader "3.2.0"
+    deepmerge "3.2.0"
+    detect-port "1.3.0"
+    dotenv "8.1.0"
+    execa "2.0.4"
+    file-loader "1.1.11"
+    ftp-deploy "2.3.3"
+    get-installed-path "4.0.8"
+    html-webpack-harddisk-plugin "0.2.0"
+    html-webpack-plugin "3.2.0"
+    icon-toolkit "0.0.9"
+    inquirer "6.3.1"
+    ios-mobileprovision-finder "1.0.11"
+    ip "1.1.5"
+    metro-react-native-babel-preset "0.51.1"
+    metro-resolver "0.48.3"
+    mini-css-extract-plugin "0.8.0"
+    minimist "1.2.0"
+    modclean "3.0.0-beta.1"
+    natives "1.1.6"
+    ncp "2.0.0"
+    netcat "1.4.0"
+    node-fetch "2.6.0"
+    node-machine-id "^1.1.12"
+    shelljs "0.8.2"
+    source-map-loader "0.2.4"
+    source-map-support "0.5.13"
+    style-loader "0.19.0"
+    svg2js "0.0.4-alpha1"
+    tar "4.4.10"
+    url-loader "1.1.1"
+    webpack "4.20.2"
+    webpack-bundle-analyzer "3.5.1"
+    webpack-cli "3.1.2"
+    webpack-dev-server "3.2.1"
+    webpack-merge "4.1.4"
+    write-json-webpack-plugin "1.1.0"
+    xml2json "0.11.2"
 
 roarr@^2.15.2:
   version "2.15.2"
@@ -15360,7 +15452,7 @@ xcode@2.0.0:
     simple-plist "^1.0.0"
     uuid "^3.3.2"
 
-xcode@^2.0.0:
+xcode@2.1.0, xcode@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/xcode/-/xcode-2.1.0.tgz#bab64a7e954bb50ca8d19da7e09531c65a43ecfe"
   integrity sha512-uCrmPITrqTEzhn0TtT57fJaNaw8YJs1aCzs+P/QqxsDbvPZSv7XMPPwXrKvHtD6pLjBM/NaVwraWJm8q83Y4iQ==
