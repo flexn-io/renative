@@ -97,16 +97,7 @@
         "concurrently": "4.1.1",
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
-        "jetifier": "1.6.5",
-        "lerna": "3.16.4",
-        "release-it": "12.4.3",
-        "renative-template-blank": "file:./packages/renative-template-blank",
-        "renative-template-hello-world": "file:./packages/renative-template-hello-world",
-        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
-        "xcode": "2.1.0"
-    },
-    "optionalDependencies": {
-        "ios-deploy": "1.10.0"
+        "lerna": "3.16.4"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

@@ -86,12 +86,12 @@
         "babel-polyfill": "6.26.0",
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
-        "jetifier": "1.6.4",
+        "jetifier": "1.6.5",
         "release-it": "12.4.3",
         "renative-template-blank": "file:../renative-template-blank",
         "renative-template-hello-world": "file:../renative-template-hello-world",
         "renative-template-kitchen-sink": "file:../renative-template-kitchen-sink",
-        "xcode": "2.0.0"
+        "xcode": "2.1.0"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"

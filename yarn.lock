@@ -8961,11 +8961,6 @@ jest@24.9.0:
     import-local "^2.0.0"
     jest-cli "^24.9.0"
 
-jetifier@1.6.4:
-  version "1.6.4"
-  resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-1.6.4.tgz#6159db8e275d97980d26162897a0648b6d4a3222"
-  integrity sha512-+f/4OLeqY8RAmXnonI1ffeY1DR8kMNJPhv5WMFehchf7U71cjMQVKkOz1n6asz6kfVoAqKNWJz1A/18i18AcXA==
-
 jetifier@1.6.5, jetifier@^1.6.2:
   version "1.6.5"
   resolved "https://registry.yarnpkg.com/jetifier/-/jetifier-1.6.5.tgz#ea87324a4230bef20a9651178ecab978ee54a8cb"
@@ -12841,13 +12836,13 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
-"renative-template-blank@file:./packages/renative-template-blank", "renative-template-blank@file:packages/renative-template-blank":
+"renative-template-blank@file:packages/renative-template-blank":
   version "0.28.21"
 
-"renative-template-hello-world@file:./packages/renative-template-hello-world", "renative-template-hello-world@file:packages/renative-template-hello-world":
+"renative-template-hello-world@file:packages/renative-template-hello-world":
   version "0.28.21"
 
-"renative-template-kitchen-sink@file:./packages/renative-template-kitchen-sink", "renative-template-kitchen-sink@file:packages/renative-template-kitchen-sink":
+"renative-template-kitchen-sink@file:packages/renative-template-kitchen-sink":
   version "0.28.21"
 
 renative@0.28.19-alpha.2:
@@ -15443,14 +15438,6 @@ ws@^6.0.0:
   integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
   dependencies:
     async-limiter "~1.0.0"
-
-xcode@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/xcode/-/xcode-2.0.0.tgz#134f1f94c26fbfe8a9aaa9724bfb2772419da1a2"
-  integrity sha512-5xF6RCjAdDEiEsbbZaS/gBRt3jZ/177otZcpoLCjGN/u1LrfgH7/Sgeeavpr/jELpyDqN2im3AKosl2G2W8hfw==
-  dependencies:
-    simple-plist "^1.0.0"
-    uuid "^3.3.2"
 
 xcode@2.1.0, xcode@^2.0.0:
   version "2.1.0"
