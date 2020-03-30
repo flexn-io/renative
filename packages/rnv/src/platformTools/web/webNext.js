@@ -130,7 +130,7 @@ const configureNextIfRequired = async (c) => {
     const stylesDir = path.join(dir, 'styles');
 
     const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], c.platform);
-    copyFolderContentsRecursiveSync(platformTemplateDir, dir); // move to projectTemplates
+    copyFolderContentsRecursiveSync(platformTemplateDir, dir, true, false, true); // move to projectTemplates
 
     // handle fonts
     !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);
