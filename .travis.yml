@@ -34,7 +34,7 @@ jobs:
         #       - npm config set prefix ~/.npm
         #       - export PATH=$PATH:~/.npm/bin
         #       - rm -rf ~/.yarn/bin/yarn || true && npm install --global yarn && yarn --version; which yarn
-        #       - yarn bootstrap:clean
+        #       - yarn bootstrap-clean
         #       - cd packages/rnv
         #       - yarn build:dev
         #       # - npm link --unsafe-perm

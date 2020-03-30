@@ -13,7 +13,7 @@ If you need full control over whole ReNative build you can clone and develop it 
 ```
 1) clone git@github.com:pavjacko/renative.git
 2) cd renative
-3) yarn bootstrap:clean
+3) yarn bootstrap-clean
 4) yarn watch
 ```
 

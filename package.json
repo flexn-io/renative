@@ -59,7 +59,7 @@
     },
     "scripts": {
         "bootstrap": "yarn run link && npx lerna bootstrap && yarn build",
-        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "link": "cd packages/rnv; yarn unlink 2> /dev/null; yarn link",
