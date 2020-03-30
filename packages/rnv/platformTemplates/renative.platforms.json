@@ -10,6 +10,27 @@
                 }
             }
         },
+        "android": {
+            "npm": {
+                "devDependencies": {
+                    "jetifier": "1.6.5"
+                }
+            }
+        },
+        "androidwear": {
+            "npm": {
+                "devDependencies": {
+                    "jetifier": "1.6.5"
+                }
+            }
+        },
+        "androidtv": {
+            "npm": {
+                "devDependencies": {
+                    "jetifier": "1.6.5"
+                }
+            }
+        },
         "tvos": {
             "npm": {
                 "devDependencies": {

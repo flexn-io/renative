@@ -13,7 +13,7 @@
             }
         },
         "renative": {
-            "version": "0.28.19-alpha.2",
+            "version": "0.28.19-alpha.6",
             "webpack": {
                 "modulePaths": ["renative"],
                 "moduleAliases": {
@@ -2232,11 +2232,14 @@
                     ]
                 }
             }
+        },
+        "@noriginmedia/react-spatial-navigation": {
+            "version": "2.10.0"
         }
     },
     "plugins": {
         "renative": {
-            "version": "0.27.0-alpha.2"
+            "version": "0.28.21"
         }
     }
 }

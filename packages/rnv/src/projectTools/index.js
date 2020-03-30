@@ -39,6 +39,8 @@ import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 import Config from '../config';
+import { getMergedPlugin } from '../pluginTools';
+import { commandExistsSync, executeAsync } from '../systemTools/exec';
 
 export const rnvConfigure = async c => {
     const p = c.platform || 'all';
@@ -218,7 +220,20 @@ const _overridePlugins = (c, pluginsPath, dir) => {
     const dest = doResolve(dir, false);
     if (!dest) return;
 
-    if (fs.existsSync(source)) {
+    const plugin = getMergedPlugin(c, dir, c.buildConfig.plugins);
+
+    let flavourSource;
+    if (plugin) {
+        flavourSource = path.resolve(
+            pluginsPath,
+            dir,
+            `overrides@${plugin.version}`
+        );
+    }
+
+    if (flavourSource && fs.existsSync(flavourSource)) {
+        copyFolderContentsRecursiveSync(flavourSource, dest, false);
+    } else if (fs.existsSync(source)) {
         copyFolderContentsRecursiveSync(source, dest, false);
         // fs.readdirSync(pp).forEach((dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
