@@ -60,7 +60,11 @@ export const rnvConfigure = async (c) => {
         await overridePlugins(c, ptDirs[i]);
     }
     // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
-    await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
+    const ptDirs2 = c.paths.appConfig.pluginDirs;
+    for (let i = 0; i < ptDirs2.length; i++) {
+        await overridePlugins(c, ptDirs2[i]);
+    }
+    // await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
 
     const originalPlatform = c.platform;
 
@@ -204,6 +208,8 @@ const _overridePlugins = (c, pluginsPath, dir) => {
     const dest = path.resolve(c.paths.project.dir, 'node_modules', dir);
 
     const plugin = getMergedPlugin(c, dir, c.buildConfig.plugins);
+
+    console.log('BABABABA', pluginsPath);
 
     let flavourSource;
     if (plugin) {

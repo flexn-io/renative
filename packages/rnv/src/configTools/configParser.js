@@ -393,6 +393,10 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
             path.join(pathObj.dirs[0], 'fonts'),
             path.join(pathObj.dirs[1], 'fonts')
         ];
+        pathObj.pluginDirs = [
+            path.join(pathObj.dirs[0], 'plugins'),
+            path.join(pathObj.dirs[1], 'plugins')
+        ];
         loadFile(fileObj, pathObj, 'configBase');
     }
 
