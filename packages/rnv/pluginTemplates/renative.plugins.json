@@ -1873,11 +1873,11 @@
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },
             "ios": {
-                "path": "node_modules/react-native-safe-area-context",
+                "nodePackageName": "react-native-safe-area-context",
                 "podName": "react-native-safe-area-context"
             },
             "tvos": {
-                "path": "node_modules/react-native-safe-area-context",
+                "nodePackageName": "react-native-safe-area-context",
                 "podName": "react-native-safe-area-context"
             }
         },
@@ -2239,7 +2239,7 @@
     },
     "plugins": {
         "renative": {
-            "version": "0.28.21"
+            "version": "0.28.19-alpha.2"
         }
     }
 }

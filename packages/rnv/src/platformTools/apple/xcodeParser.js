@@ -109,6 +109,7 @@ const _parseXcodeProject = (c, platform) =>
         logTask('_parseXcodeProject');
         // eslint-disable-next-line global-require, import/no-dynamic-require
         const xcode = require(doResolve('xcode'));
+        // const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
         const appFolder = getAppFolder(c, platform);
         const appFolderName = getAppFolderName(c, platform);
         const projectPath = path.join(
@@ -159,8 +160,6 @@ const _parseXcodeProject = (c, platform) =>
                     `"${provisionProfileSpecifier}"`
                 );
             }
-            // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
-            xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
 
             xcodeProj.updateBuildProperty(
                 'CODE_SIGN_IDENTITY',
@@ -193,10 +192,6 @@ const _parseXcodeProject = (c, platform) =>
                 // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
                 xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
             }
-            // FONTS
-            c.pluginConfigiOS.embeddedFontSources.forEach(v => {
-                xcodeProj.addResourceFile(v);
-            });
 
             // PLUGINS
             parsePlugins(c, platform, (plugin, pluginPlat, key) => {
@@ -248,7 +243,6 @@ const _parseXcodeProject = (c, platform) =>
                         });
                     }
                     if (xcodeprojObj.frameworks) {
-                        // eslint-disable-next-line guard-for-in, no-restricted-syntax
                         for (const k in xcodeprojObj.frameworks) {
                             let fPath;
                             let opts;
@@ -275,7 +269,6 @@ const _parseXcodeProject = (c, platform) =>
                         }
                     }
                     if (xcodeprojObj.buildSettings) {
-                        // eslint-disable-next-line guard-for-in, no-restricted-syntax
                         for (const k in xcodeprojObj.buildSettings) {
                             xcodeProj.addToBuildSettings(
                                 k,
@@ -285,16 +278,14 @@ const _parseXcodeProject = (c, platform) =>
                     }
                 }
             });
+
+            // FONTS
+            // Cocoapods take care of this
+            c.pluginConfigiOS.embeddedFontSources.forEach(v => {
+                xcodeProj.addResourceFile(v, { variantGroup: false });
+            });
+
             fs.writeFileSync(projectPath, xcodeProj.writeSync());
             resolve();
         });
-
-        // FONTS
-        // Cocoapods take care of this
-        c.pluginConfigiOS.embeddedFontSources.forEach(v => {
-            xcodeProj.addResourceFile(v, { variantGroup: false });
-        });
-
-        fs.writeFileSync(projectPath, xcodeProj.writeSync());
-        resolve();
     });

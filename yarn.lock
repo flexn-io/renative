@@ -2069,10 +2069,10 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@noriginmedia/react-spatial-navigation@^2.10.0":
-  version "2.11.0"
-  resolved "https://registry.yarnpkg.com/@noriginmedia/react-spatial-navigation/-/react-spatial-navigation-2.11.0.tgz#2efb02562d69e27e9d0fb62b85cb3e96f57e2906"
-  integrity sha512-KdlrhA2pgosuJm2Wjggdn6NQixMuHkXO6Msd9a19ArnPAoelHE5LrkQpuhgU1N0brHoS0AHx3ODhC5SZHnaEvQ==
+"@noriginmedia/react-spatial-navigation@2.10.0":
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/@noriginmedia/react-spatial-navigation/-/react-spatial-navigation-2.10.0.tgz#f892e7a82b7e08e238be086190243a79c3631782"
+  integrity sha512-+1oylNofBC7FIvW6tlq6Q9P+HUCSxp6Fvs7UCHBCukQyBlugE/5rhYDjPGYUK2A96pHut/J0VFamZ5hetxWJOQ==
   dependencies:
     lodash "^4.17.13"
     prop-types "^15.6.2"
@@ -10317,15 +10317,15 @@ minimist@0.0.8:
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-0.0.8.tgz#857fcabfc3397d2625b8228262e86aa7a011b05d"
   integrity sha1-hX/Kv8M5fSYluCKCYuhqp6ARsF0=
 
-minimist@1.2.0, minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
-  integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
-
 minimist@1.2.5:
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+
+minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
+  integrity sha1-o1AIsg9BOD7sH7kU9M1d95omQoQ=
 
 minimist@~0.0.1:
   version "0.0.10"
@@ -12837,22 +12837,20 @@ remove-trailing-separator@^1.0.1:
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
 "renative-template-blank@file:packages/renative-template-blank":
-  version "0.28.21"
+  version "0.28.19-alpha.2"
 
 "renative-template-hello-world@file:packages/renative-template-hello-world":
-  version "0.28.21"
+  version "0.28.19-alpha.2"
 
 "renative-template-kitchen-sink@file:packages/renative-template-kitchen-sink":
-  version "0.28.21"
-
-renative@0.28.19-alpha.2:
   version "0.28.19-alpha.2"
-  resolved "https://registry.yarnpkg.com/renative/-/renative-0.28.19-alpha.2.tgz#c487e2f2e3217b4a111fed2f5ea09c2fea2a0da6"
-  integrity sha512-Cy5/BIrbS2zVSmtWp2wdMJwWs0w2W7g3I5XsTECU8dpL3qthIJYgvJKZW3THwONr5rALnUhDwG+yFR19O+tmzg==
+
+renative@0.28.21:
+  version "0.28.21"
+  resolved "https://registry.yarnpkg.com/renative/-/renative-0.28.21.tgz#fe3d978734ae08ebd2ad91fefc6437f3ef800309"
+  integrity sha512-IQFhLuQH0Pn5jWSkRhmTMUQRH7hSZhmCG/knuclwFCxzPyCvE5B0EupD89JadSR5MuNfktAwpYrkOtRjhgCF9w==
   dependencies:
-    react "16.9.0"
-    react-dom "16.9.0"
-    react-native "0.61.2"
+    history "^4.9.0"
 
 renderkid@^2.0.1:
   version "2.0.3"
@@ -13083,10 +13081,10 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
     hash-base "^3.0.0"
     inherits "^2.0.1"
 
-rnv@0.28.19-alpha.2:
-  version "0.28.19-alpha.2"
-  resolved "https://registry.yarnpkg.com/rnv/-/rnv-0.28.19-alpha.2.tgz#84867534282b7c80fc4cae8bd4f5c23150f264bd"
-  integrity sha512-ngY7Xu914DTAwFwL/ygeA//fk7SQlv25g1H3DbJU1xov9Ynxe86mNjk92lVUmHz58VHqvAS1lYak1n5rsWv3Gg==
+rnv@0.28.21:
+  version "0.28.21"
+  resolved "https://registry.yarnpkg.com/rnv/-/rnv-0.28.21.tgz#29d98212f17afd786996f23926989376d17c4aa4"
+  integrity sha512-xISlzWl358EuebbeQrNq5Pg7tx/+f/MhRLm23SMOtTugWCc/JWjbc4EzlHZDg65qCQJoRkCNQlqeiDnuk0a1QA==
   dependencies:
     "@babel/cli" "7.8.3"
     "@babel/core" "7.8.3"
@@ -13134,7 +13132,7 @@ rnv@0.28.19-alpha.2:
     metro-react-native-babel-preset "0.51.1"
     metro-resolver "0.48.3"
     mini-css-extract-plugin "0.8.0"
-    minimist "1.2.0"
+    minimist "1.2.5"
     modclean "3.0.0-beta.1"
     natives "1.1.6"
     ncp "2.0.0"

@@ -133,7 +133,7 @@ rnv plugin add ${key}
             const v = {
                 version: c.files.project.package.version
             };
-            const pkgFolder = path.join(c.paths.project.dir, 'packages');
+            const pkgFolder = path.join(c.paths.project.dir, '/../');
             _updateJson(c, c.paths.project.package, v);
             _updateJson(c, path.join(pkgFolder, 'rnv/package.json'), v);
             _updateJson(
@@ -175,13 +175,13 @@ rnv plugin add ${key}
             );
 
             FileUtils.copyFileSync(
-                path.join(c.paths.project.dir, 'README.md'),
+                path.join(c.paths.project.dir, '/../../README.md'),
                 path.join(pkgFolder, 'renative/README.md')
             );
-            FileUtils.copyFileSync(
-                path.join(c.paths.project.dir, 'README.md'),
-                path.join(pkgFolder, 'renative/README.md')
-            );
+            // FileUtils.copyFileSync(
+            //     path.join(c.paths.project.dir, 'README.md'),
+            //     path.join(pkgFolder, 'renative/README.md')
+            // );
 
             resolve();
         }),
@@ -197,6 +197,11 @@ const pipes = {
 
 const _updateJson = (c, pPath, updateObj) => {
     const pObj = FileUtils.readObjectSync(pPath);
+
+    if (!pObj)
+        throw new Error(
+            `_updateJson called with unresolveable package.json path '${pPath}'`
+        );
 
     const merge = require('deepmerge');
     let obj;
