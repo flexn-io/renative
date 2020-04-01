@@ -47,6 +47,12 @@ export const parsePodFile = (c, platform) => new Promise((resolve) => {
                 });
             }
         }
+        const isStatic = getFlavouredProp(c, pluginPlat, 'isStatic');
+        if (isStatic === true) {
+            if (!c.pluginConfigiOS.staticFrameworks.includes(podName)) {
+                c.pluginConfigiOS.staticFrameworks.push(`'${podName}'`);
+            }
+        }
     });
 
     // WARNINGS
@@ -71,6 +77,7 @@ export const parsePodFile = (c, platform) => new Promise((resolve) => {
         { pattern: '{{PLUGIN_PATHS}}', override: pluginInject },
         { pattern: '{{PLUGIN_WARNINGS}}', override: podWarnings },
         { pattern: '{{PLUGIN_PODFILE_INJECT}}', override: c.pluginConfigiOS.podfileInject },
+        { pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}', override: c.pluginConfigiOS.staticFrameworks.join(',') },
         { pattern: '{{PLUGIN_PODFILE_SOURCES}}', override: c.pluginConfigiOS.podfileSources },
         { pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}', override: c.pluginConfigiOS.deploymentTarget }
     ]);
