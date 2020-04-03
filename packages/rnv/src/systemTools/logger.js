@@ -139,6 +139,7 @@ export const logSummary = (header = 'SUMMARY') => {
 
     let str = printBoxStart(`🚀  ${header} ${timeString}`, getCurrentCommand());
     if (_c) {
+        str += printIntoBox(`ReNative Version: ${_highlightColor(_c.rnvVersion)}`, 1);
         if (_c.files.project.package) {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
             str += printIntoBox(`Project Version: ${_highlightColor(_c.files.project.package.version)}`, 1);
@@ -168,7 +169,7 @@ export const logSummary = (header = 'SUMMARY') => {
             }
         }
         if (_c.process) {
-            const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node} | rnv v${_c.rnvVersion}`;
+            const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node}`;
             str += printIntoBox(`Env Info: ${chalk.gray(envString)}`, 1);
         }
 
