@@ -121,7 +121,7 @@ export const logToSummary = (v) => {
     _messages.push(`\n${v}`);
 };
 
-export const logSummary = () => {
+export const logSummary = (header = 'SUMMARY') => {
     let logContent = printIntoBox('All good as 🦄 ');
     if (_messages && _messages.length) {
         logContent = '';
@@ -137,7 +137,7 @@ export const logSummary = () => {
         timeString = `| ${_c.timeEnd.toLocaleString()}`;
     }
 
-    let str = printBoxStart(`🚀  SUMMARY ${timeString}`, getCurrentCommand());
+    let str = printBoxStart(`🚀  ${header} ${timeString}`, getCurrentCommand());
     if (_c) {
         if (_c.files.project.package) {
             str += printIntoBox(`Project Name: ${_highlightColor(_c.files.project.package.name)}`, 1);
@@ -180,7 +180,7 @@ export const logSummary = () => {
     }
 
     str += printIntoBox('');
-    str += logContent;
+    str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
     str += printIntoBox('');
     str += printBoxEnd();
 
@@ -209,7 +209,7 @@ export const logTask = (task, customChalk) => {
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`\n⚠️  ${RNV} - WARNING: ${msg}\n`));
+    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
 };
 
 export const logInfo = (msg) => {

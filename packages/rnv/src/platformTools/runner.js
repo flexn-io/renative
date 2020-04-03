@@ -19,7 +19,8 @@ import { isPlatformSupported } from './index';
 import {
     logTask,
     logError,
-    logDebug
+    logDebug,
+    logSummary
 } from '../systemTools/logger';
 import {
     IOS,
@@ -111,7 +112,7 @@ export const rnvStart = async (c) => {
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }
-
+    // logSummary('BUNDLER STARTED');
     await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
 };
 
@@ -251,6 +252,7 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
                 await _startBundlerIfRequired(c);
                 await runXcodeProject(c);
+                logSummary('BUNDLER STARTED');
                 return waitForBundlerIfRequired(c);
             }
             return runXcodeProject(c);
@@ -265,6 +267,7 @@ const _rnvRunWithPlatform = async (c) => {
                     await packageAndroid(c, platform);
                 }
                 await runAndroid(c, platform, target);
+                logSummary('BUNDLER STARTED');
                 return waitForBundlerIfRequired(c);
             }
             return runAndroid(c, platform, target);
