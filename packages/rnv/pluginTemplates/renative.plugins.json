@@ -2244,7 +2244,7 @@
     },
     "plugins": {
         "renative": {
-            "version": "0.28.22-alpha.1"
+            "version": "0.28.22-alpha.2"
         }
     }
 }
