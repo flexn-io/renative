@@ -131,6 +131,7 @@ const configureNextIfRequired = async (c) => {
     const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
     const _appFile = path.join(pagesDir, '_app.js');
     const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], `_${c.platform}`);
+    const configFile = path.join(dir, 'next.config.js');
 
     // handle fonts
     !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);
@@ -158,6 +159,18 @@ const configureNextIfRequired = async (c) => {
     // add wrapper _app
     if (!fs.existsSync(_appFile)) {
         writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')) }]);
+    }
+
+    // add config
+    if (!fs.existsSync(configFile)) {
+        writeCleanFile(path.join(platformTemplateDir, 'next.config.js'), configFile);
+    }
+
+    // add/replace babel
+    if (!fs.existsSync(path.join(dir, 'babel.config.js'))) fs.copyFileSync(path.join(platformTemplateDir, 'babel.config.js'), path.join(dir, 'babel.config.js'));
+    const currentBabel = require(path.join(dir, 'babel.config.js'));
+    if (currentBabel.plugins?.[0]?.[1]?.alias?.renative !== './node_modules/renative') {
+        fs.copyFileSync(path.join(platformTemplateDir, 'babel.config.js'), path.join(dir, 'babel.config.js'));
     }
 };
 
