@@ -1,6 +1,6 @@
 import React from 'react';
 
-import '../styles/fonts.css';
+import '{{FONTS_CSS}}';
 
 export default function MyApp({ Component, pageProps }) {
     return <Component {...pageProps} />;

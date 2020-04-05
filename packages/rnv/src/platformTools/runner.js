@@ -47,7 +47,7 @@ import {
     runAppleLog
 } from './apple';
 import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
-import { runWebNext } from './web/webNext';
+import { runWebNext, buildWebNext } from './web/webNext';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -85,7 +85,7 @@ export const rnvStart = async (c) => {
     logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
 
     if (Config.isWebHostEnabled && hosted) {
-        waitForWebpack(c, port)
+        waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
@@ -450,6 +450,11 @@ const _rnvBuildWithPlatform = async (c) => {
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWeb(c, platform);
+            return;
+        case WEB_NEXT:
+            await cleanPlatformIfRequired(c, platform);
+            await configureIfRequired(c, platform);
+            await buildWebNext(c);
             return;
         case KAIOS:
         case FIREFOX_OS:

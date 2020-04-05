@@ -9,10 +9,11 @@ const getSourceExt = require('rnv/dist/common').getSourceExts;
 
 const config = {
     projectRoot: path.resolve(__dirname),
+    pageExtensionsRnv: getSourceExt({ platform: 'web-next' }),
     webpack: (cfg) => {
         cfg.resolve.extensions = getSourceExt({ platform: 'web-next' }).map(e => `.${e}`);
         cfg.resolve.modules.unshift(path.resolve(__dirname));
-        cfg.module.rules[0].include.unshift(path.resolve(__dirname, '../node_modules/renative/src'));
+        // cfg.module.rules[0].include.unshift(path.resolve(__dirname, '../node_modules/renative/src'));
         cfg.module.rules[0].test = /\.(tsx|ts|js|mjs|jsx|web.js)$/;
         return cfg;
     },

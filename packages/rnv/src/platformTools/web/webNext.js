@@ -128,9 +128,9 @@ const configureNextIfRequired = async (c) => {
     const publicDir = path.join(dir, 'public');
     const baseFontsDir = c.paths.appConfig.fontDirs?.[0];
     const stylesDir = path.join(dir, 'styles');
-
-    const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], c.platform);
-    copyFolderContentsRecursiveSync(platformTemplateDir, dir, true, false, true); // move to projectTemplates
+    const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
+    const _appFile = path.join(pagesDir, '_app.js');
+    const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], `_${c.platform}`);
 
     // handle fonts
     !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);
@@ -153,6 +153,11 @@ const configureNextIfRequired = async (c) => {
         });
 
         fs.writeFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
+    }
+
+    // add wrapper _app
+    if (!fs.existsSync(_appFile)) {
+        writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')) }]);
     }
 };
 
@@ -181,7 +186,7 @@ export const runWebNext = async (c, platform, port) => {
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
     logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`);
     if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForWebpack(c, port)
+    const wait = waitForWebpack(c, 'next')
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })
@@ -192,37 +197,23 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
+export const buildWebNext = async (c) => {
+    logTask('buildWebNext');
+    const env = getConfigProp(c, c.platform, 'environment');
+    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
+
+    await executeAsync(c, `npx next build ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
+    return executeAsync(c, `npx next export ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
+};
+
 export const runWebDevServer = (c, platform, port) => {
     logTask(`runWebDevServer:${platform}`);
+    const env = getConfigProp(c, platform, 'environment');
+    const pagesDir = getConfigProp(c, platform, 'pagesDir');
+    if (!pagesDir) logWarning(`You're missing ${platform}.pagesDir config. Defaulting to 'src/app'`);
 
-    const { srcDir, builds: { dir } } = c.paths.project;
-    // const platformBuildDir = path.join(dir, `${c.runtime.appId}_${c.platform}`);
-
-    return executeAsync(c, `npx next ${srcDir} --port ${port}`);
-
-    // const { debug, debugIp } = c.program;
-
-    // const appFolder = getAppFolder(c, platform);
-    // const wpPublic = path.join(appFolder, 'public');
-    // const wpConfig = path.join(appFolder, 'webpack.config.js');
-
-    // let debugVariables = '';
-
-    // if (debug) {
-    //     logInfo(`Starting a remote debugger build with ip ${debugIp || ip.address()}. If this IP is not correct, you can always override it with --debugIp`);
-    //     debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
-    // }
-
-    // const command = `npx cross-env PLATFORM=${platform} ${debugVariables} webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
-    // executeAsync(c, command, { stdio: 'inherit', silent: true })
-    //     .then(() => {
-    //         logDebug('runWebDevServer: running');
-    //         resolve();
-    //     })
-    //     .catch((e) => {
-    //         logDebug(e);
-    //         resolve();
-    //     });
+    return executeAsync(c, `npx next --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
 };
 
 export const deployWeb = (c, platform) => {

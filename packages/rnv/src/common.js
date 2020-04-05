@@ -380,7 +380,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
-export const waitForWebpack = async (c) => {
+export const waitForWebpack = async (c, engine) => {
     logTask(`waitForWebpack:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
@@ -389,7 +389,10 @@ export const waitForWebpack = async (c) => {
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
-    const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
+    let url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
+
+    if (engine === 'next') url = `http://${devServerHost}:${c.runtime.port}`;
+
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
             axios.get(url).then((res) => {

@@ -179,7 +179,7 @@ const runElectron = async (c, platform, port) => {
                     port
                 )} is not running. Starting it up for you...`
             );
-            waitForWebpack(c, port)
+            waitForWebpack(c)
                 .then(() => _runElectronSimulator(c, platform))
                 .catch(logError);
             // await _runElectronSimulator(c, platform);
