@@ -16,11 +16,9 @@ const rnvClean = async (c, skipQuestion = false) => {
         'node_modules'
     );
     const pkgLock = path.join(c.paths.project.dir, 'package-lock.json');
-    // if (fs.existsSync(c.paths.project.nodeModulesDir)) pathsToRemove.push(c.paths.project.nodeModulesDir);
     if (fs.existsSync(immediateNodeModuleDir))
         pathsToRemove.push(immediateNodeModuleDir);
     if (fs.existsSync(pkgLock)) pathsToRemove.push(pkgLock);
-    // let msg = chalk.red(`${c.paths.project.nodeModulesDir}\n${pkgLock}\n`);
     let msg = chalk.red(`${pkgLock}\n${immediateNodeModuleDir}`);
     const packagesFolder = path.join(c.paths.project.dir, 'packages');
     if (fs.existsSync(packagesFolder)) {

@@ -73,7 +73,6 @@ export const checkIfTemplateInstalled = c =>
         }
 
         for (const k in c.buildConfig.templates) {
-            // let t = k;
             const obj = c.buildConfig.templates[k];
             if (
                 !doResolve(k.version, false, { basedir: '../' }) &&
@@ -86,16 +85,6 @@ export const checkIfTemplateInstalled = c =>
                 );
                 c._requiresNpmInstall = true;
             }
-            // if (k.version && k.version.startsWith('file:')) {
-            //     t = `../${k.version.replace('file:', '')}`;
-            // }
-            // const templateFolder = path.join(c.paths.project.nodeModulesDir, k);
-            // if (!fs.existsSync(templateFolder)) {
-            //     logWarning(`Your ${chalk.white(templateFolder)} template is not installed. ReNative will install it for you`);
-            //     // npmInstall(c).then(() => resolve()).catch(e => reject(e));
-            //     // return;
-            //     c._requiresNpmInstall = true;
-            // }
             if (c.files.project.package.devDependencies) {
                 c.files.project.package.devDependencies[k] = obj.version;
             }
@@ -104,35 +93,6 @@ export const checkIfTemplateInstalled = c =>
 
         resolve();
     });
-// export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
-//     logTask('checkIfTemplateInstalled');
-//     if (!c.buildConfig.templates) {
-//         logWarning(`Your ${chalk.white(c.paths.project.config)} does not contain ${chalk.white('templates')} object. ReNative will skip template generation`);
-//         resolve();
-//         return;
-//     }
-
-//     for (const k in c.buildConfig.templates) {
-//         let t = k;
-//         const obj = c.buildConfig.templates[k];
-//         if (k.version && k.version.startsWith('file:')) {
-//             t = `../${k.version.replace('file:', '')}`;
-//         }
-//         const templateFolder = path.join(c.paths.project.nodeModulesDir, k);
-//         if (!fs.existsSync(templateFolder)) {
-//             logWarning(`Your ${chalk.white(templateFolder)} template is not installed. ReNative will install it for you`);
-//             // npmInstall(c).then(() => resolve()).catch(e => reject(e));
-//             // return;
-//             c._requiresNpmInstall = true;
-//         }
-//         if (c.files.project.package.devDependencies) {
-//             c.files.project.package.devDependencies[k] = obj.version;
-//         }
-//     }
-//     _writeObjectSync(c, c.paths.project.package, c.files.project.package);
-
-//     resolve();
-// });
 
 export const applyTemplate = async (c, selectedTemplate) => {
     logTask(

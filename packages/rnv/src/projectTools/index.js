@@ -57,7 +57,6 @@ export const rnvConfigure = async c => {
     for (let i = 0; i < ptDirs.length; i++) {
         await overridePlugins(c, ptDirs[i]);
     }
-    // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
     await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
 
     const originalPlatform = c.platform;
@@ -107,10 +106,8 @@ export const rnvLink = c =>
                 fs.readFileSync(c.paths.project.npmLinkPolyfill).toString()
             );
             Object.keys(l).forEach(key => {
-                // console.log('COPY', key, l[key]);
                 const source = path.resolve(l[key]);
                 const nm = path.join(source, 'node_modules');
-                // const dest = path.join(c.paths.project.nodeModulesDir, key);
                 const dest = doResolve(key);
                 if (fs.existsSync(source)) {
                     copyFolderContentsRecursiveSync(source, dest, false, [nm]);
