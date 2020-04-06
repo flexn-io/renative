@@ -1,1 +1,5 @@
-alias gradleDebug="echo 'must be in ./platformBuilds/%PROJECT_DIR%'; ./gradlew assembleDebug -x bundleReleaseJsAndAssets"
+function gradleDebug() {
+	if [ -z "${1}" ]; then echo "must be in one of $(ls ./platformBuilds)"; fi;
+	./gradlew assembleDebug -x bundleReleaseJsAndAssets
+	popd
+}
