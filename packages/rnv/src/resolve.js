@@ -1,6 +1,6 @@
 import resolve from 'resolve';
 import fs from 'fs';
-
+import path from 'path';
 /**
  * An attempt at drying out filesystem references to [external packages](https://tinyurl.com/mao2dy6).
  *
@@ -23,7 +23,6 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
         if (aPath.startsWith('file:')) {
             return _doResolveFSPath(aPath, options);
         }
-
         return _doResolveExternalPackage(aPath, options);
     } catch (err) {
         // perhaps do some warning logging here..
@@ -31,12 +30,31 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
     }
 };
 
+export const doResolvePath = (aPath, mandatory = true, options = {}) => {
+    options.basedir = options.basedir ?? process.cwd();
+    try {
+        if (aPath.startsWith('node_modules/')) {
+            aPath = aPath.replace('node_modules/', '');
+        }
+        const pathArr = aPath.split('/');
+        pathArr.shift();
+        if (aPath.startsWith('@')) {
+            pathArr.shift();
+        }
+        const realPath = doResolve(aPath, mandatory, options);
+        return path.join(realPath, ...pathArr);
+    } catch (err) {
+        if (mandatory) throw err;
+    }
+};
+
 export const isScopedPackagePath = aPath => {
     if (aPath.startsWith('@')) {
-        if (!aPath.includes('/'))
+        if (!aPath.includes('/')) {
             throw new Error(
                 `Scoped packages must include subpackage portion e.g. '@aScope/subpackage'. Supplied path: ${aPath}`
             );
+        }
         return true;
     }
 };
@@ -48,8 +66,9 @@ const _getPackagePathParts = aPath => {
     } else {
         parts = aPath.match(/^([^/]+)\/?(.*)/);
     }
-    if (!Array.isArray(parts))
+    if (!Array.isArray(parts)) {
         throw new Error(`Unsuitable path for resolving: ${aPath}`);
+    }
     return parts.slice(1);
 };
 

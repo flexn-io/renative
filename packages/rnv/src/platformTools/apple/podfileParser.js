@@ -8,7 +8,7 @@ import {
 } from '../../common';
 import { logTask, logWarning } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
-import { doResolve } from '../../resolve';
+import { doResolve, doResolvePath } from '../../resolve';
 
 export const parsePodFile = (c, platform) =>
     new Promise(resolve => {
@@ -112,7 +112,7 @@ const _injectPod = (podName, pluginPlat, plugin, key) => {
     let pluginInject = '';
     const isNpm = plugin['no-npm'] !== true;
     if (isNpm) {
-        const podPath = doResolve(pluginPlat.path ?? key);
+        const podPath = doResolvePath(pluginPlat.path ?? key);
         pluginInject += `  pod '${podName}', :path => '${podPath}'\n`;
     } else if (pluginPlat.git) {
         const commit = pluginPlat.commit
