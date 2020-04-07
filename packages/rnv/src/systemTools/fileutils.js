@@ -190,10 +190,19 @@ export const removeDirSync = (dir, rmSelf) => {
     try { files = fs.readdirSync(dir); } catch (e) { logDebug('!Oops, directory not exist.'); return; }
     if (files.length > 0) {
         files.forEach((x, i) => {
-            if (fs.statSync(dir + x).isDirectory()) {
-                removeDirSync(dir + x);
-            } else {
-                fs.unlinkSync(dir + x);
+            try {
+                if (fs.statSync(dir + x).isDirectory()) {
+                    removeDirSync(dir + x);
+                } else {
+                    fs.unlinkSync(dir + x);
+                }
+            } catch (e) {
+                console.log(`removeDirSync error:${e}. will try to unlink`);
+                try {
+                    fs.unlinkSync(dir + x);
+                } catch (e2) {
+                    console.log(`removeDirSync error:${e}`);
+                }
             }
         });
     }
