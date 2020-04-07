@@ -317,7 +317,6 @@ export const configurePlugins = c =>
         Object.keys(c.buildConfig.plugins).forEach(k => {
             const { dependencies } = c.files.project.package;
             const { devDependencies } = c.files.project.package;
-            console.log('DGHDJGDHG', k, c.buildConfig.plugins[k]);
             const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
             if (!plugin) {

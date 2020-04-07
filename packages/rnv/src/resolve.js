@@ -33,27 +33,19 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
 export const doResolvePath = (aPath, mandatory = true, options = {}) => {
     options.basedir = options.basedir ?? process.cwd();
     try {
-        // if (aPath.startsWith('node_modules/')) {
-        //     aPath = aPath.replace('node_modules/', '');
-        // }
         const pathArr = aPath.split('/');
         // Take care of scenario when someone wrote: "/node_modules/.." instead of "node_modules/..."
-        console.log('CBCBCB1', pathArr[0], pathArr[0] === '');
         if (pathArr[0] === '') {
             pathArr.shift();
         }
         if (pathArr[0] === 'node_modules') {
-            console.log('YAY');
             pathArr.shift();
         }
-
         const cleanPath = pathArr.join('/');
-        console.log('CBCBCB2', pathArr, cleanPath);
-        pathArr.shift();
-        if (aPath.startsWith('@')) {
+        if (pathArr[0].startsWith('@')) {
             pathArr.shift();
         }
-        console.log('CBCBCB3', aPath, cleanPath, pathArr);
+        pathArr.shift();
         const realPath = doResolve(cleanPath, mandatory, options);
         return path.join(realPath, ...pathArr);
     } catch (err) {
