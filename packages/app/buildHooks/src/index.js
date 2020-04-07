@@ -130,8 +130,11 @@ rnv plugin add ${key}
         }),
     prePublish: c =>
         new Promise((resolve, reject) => {
+            const rootPackage = FileUtils.readObjectSync(
+                path.join(c.paths.project.dir, '/../../', 'package.json')
+            );
             const v = {
-                version: c.files.project.package.version
+                version: rootPackage.version
             };
             const pkgFolder = path.join(c.paths.project.dir, '/../');
             _updateJson(c, c.paths.project.package, v);
@@ -198,10 +201,11 @@ const pipes = {
 const _updateJson = (c, pPath, updateObj) => {
     const pObj = FileUtils.readObjectSync(pPath);
 
-    if (!pObj)
+    if (!pObj) {
         throw new Error(
             `_updateJson called with unresolveable package.json path '${pPath}'`
         );
+    }
 
     const merge = require('deepmerge');
     let obj;
