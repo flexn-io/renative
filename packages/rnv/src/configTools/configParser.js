@@ -79,10 +79,11 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
     logWarning(
         `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
     );
-    if (c.program.ci === true)
+    if (c.program.ci === true) {
         throw new Error(
             'You cannot continue if you set --ci flag. please fix above error first'
         );
+    }
     const { choice } = await inquirer.prompt({
         type: 'list',
         name: 'choice',
@@ -104,8 +105,9 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
         ]
     });
 
-    if (choice === 'manually')
+    if (choice === 'manually') {
         throw new Error('Please do the changes and rerun the command');
+    }
 
     if (choice === 'keepID') {
         fs.renameSync(path.join(basePath, dir), path.join(basePath, id));
@@ -148,22 +150,25 @@ const matchAppConfigID = async (c, appConfigID) => {
                 const id = conf.id.toLowerCase();
                 const dir = conf.dir.toLowerCase();
                 // find mismatches
-                if (id !== dir)
+                if (id !== dir) {
                     await askUserAboutConfigs(
                         c,
                         conf.dir,
                         conf.id,
                         appConfigsDir
                     );
-                if (ids.includes(id))
+                }
+                if (ids.includes(id)) {
                     throw new Error(
                         `AppConfig error - You have 2 duplicate app configs with ID ${id}. Keep in mind that ID is case insensitive. Please edit one of them in /appConfigs/<folder>/renative.json`
                     );
+                }
                 ids.push(id);
-                if (dirs.includes(dir))
+                if (dirs.includes(dir)) {
                     throw new Error(
                         `AppConfig error - You have 2 duplicate app config folders named ${dir}. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
                     );
+                }
                 dirs.push(dir);
             })
         );
@@ -483,7 +488,6 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
         extendAppId = fileObj.configPrivate.extend || extendAppId;
         result = true;
     }
-
     if (extendAppId && extendDir) {
         pathObj.configBase = path.join(extendDir, extendAppId, 'renative.json');
         pathObj.dirs = [path.join(extendDir, extendAppId), pathObj.dir];
@@ -693,8 +697,9 @@ const _loadWorkspacesSync = c => {
 
         if (!c.files.rnv.configWorkspaces) c.files.rnv.configWorkspaces = {};
 
-        if (!c.files.rnv.configWorkspaces?.workspaces)
+        if (!c.files.rnv.configWorkspaces?.workspaces) {
             c.files.rnv.configWorkspaces.workspaces = {};
+        }
         if (Object.keys(c.files.rnv.configWorkspaces.workspaces).length === 0) {
             logWarning(
                 `No workspace found in ${
@@ -1153,8 +1158,9 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         RENATIVE_CONFIG_WORKSPACES_NAME
     );
 
-    if (!fs.existsSync(c.paths.GLOBAL_RNV_DIR))
+    if (!fs.existsSync(c.paths.GLOBAL_RNV_DIR)) {
         mkdirSync(c.paths.GLOBAL_RNV_DIR);
+    }
 
     _generateConfigPaths(c.paths.project, base);
 

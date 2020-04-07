@@ -61,8 +61,10 @@ export const rnvConfigure = async c => {
     await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
 
     const ptDirs2 = c.paths.appConfig.pluginDirs;
-    for (let i = 0; i < ptDirs2.length; i++) {
-        await overridePlugins(c, ptDirs2[i]);
+    if (ptDirs2) {
+        for (let i = 0; i < ptDirs2.length; i++) {
+            await overridePlugins(c, ptDirs2[i]);
+        }
     }
 
     const originalPlatform = c.platform;
