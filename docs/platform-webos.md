@@ -17,24 +17,23 @@ sidebar_label: LG WebOS
 
 <img src="https://renative.org/img/rnv_webos.gif" height="250"/>
 
-
 ## Overview
 
 -   Latest LG webOS Project
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `webos.tv.js` | `form factor` | 1 |
-| `web.tv.js` | `form factor` | 2 |
-| `tv.js` | `form factor` | 3 |
-| `webos.js` | `platform` | 4 |
-| `tv.web.js` | `fallback` | 5 |
-| `web.js` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
+| Extension     | Type          | Priority |
+| ------------- | ------------- | :------: |
+| `webos.tv.js` | `form factor` |    1     |
+| `web.tv.js`   | `form factor` |    2     |
+| `tv.js`       | `form factor` |    3     |
+| `webos.js`    | `platform`    |    4     |
+| `tv.web.js`   | `fallback`    |    5     |
+| `web.js`      | `fallback`    |    6     |
+| `js`          | `fallback`    |    7     |
+| `tsx`         | `fallback`    |    8     |
+| `ts`          | `fallback`    |    9     |
 
 ## Requirements
 

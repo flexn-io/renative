@@ -10,7 +10,7 @@ sidebar_label: deploy
 
 ## Task Order
 
-🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ➡️ `deploy`  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ➡️ `deploy` ✅
 
 ## deploy
 

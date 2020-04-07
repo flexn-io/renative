@@ -5,7 +5,6 @@ sidebar_label: rnv Config
 original_id: api-rnv-config
 ---
 
-
 List of available config props injected into [Build Hooks](guide-build-hooks.md) via method parameter
 
 ```
@@ -15,7 +14,6 @@ const hooks = {
         // c Object contains all the info about the current rnv session
     }
 ```
-
 
 ## root
 
@@ -37,7 +35,6 @@ const hooks = {
 {
   rnv: {
       dir: '',
-      nodeModulesDir: '',
       platformTemplates: {
           dir: ''
       },

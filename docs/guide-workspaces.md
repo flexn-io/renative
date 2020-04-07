@@ -16,19 +16,16 @@ Workspace `myOrganisation`
 
 `~/.myOrganisation`
 
-
 Workspace `myOtherOrganisation`
 
 `~/.myOtherOrganisation`
-
-
 
 run `rnv run workspaces list` to check your workspace list.
 
 ## Custom Workspaces
 
+NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`
 
-NOTE: `[WORKSPACE_PATH]` folder path can be customised in `~/.rnv/renative.workspaces.json`  
 ```
 {
     "workspaces": {

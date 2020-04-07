@@ -11,7 +11,7 @@ original_id: api-cli-template
 
 ## Task Order
 
-🔥 `template`  ✅
+🔥 `template` ✅
 
 ## template
 

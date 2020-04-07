@@ -11,7 +11,7 @@ original_id: api-cli-build
 
 ## Task Order
 
-🔥 `configure` ➡️ `package` ➡️ `build`  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ✅
 
 ## build
 

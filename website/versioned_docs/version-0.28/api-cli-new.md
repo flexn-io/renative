@@ -11,7 +11,7 @@ original_id: api-cli-new
 
 ## Task Order
 
-🔥 `new`  ✅
+🔥 `new` ✅
 
 ## new
 

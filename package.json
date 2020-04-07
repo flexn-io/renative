@@ -58,70 +58,21 @@
         "url": "git://github.com/pavjacko/renative.git"
     },
     "scripts": {
-        "bootstrap": "yarn link && npx lerna bootstrap",
-        "bootstrap:clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
+        "bootstrap": "yarn run link && npx lerna bootstrap && yarn build",
+        "bootstrap-clean": "rm -rf ./node_modules; npx lerna clean --yes && yarn bootstrap",
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
-        "link": "cd packages/rnv; npm link",
-        "postinstall": "lerna link --force-local",
-        "prePublish": "rnv hooks run -x prePublish",
-        "publish": "yarn prePublish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",
-        "publish:alpha": "yarn prePublish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
-        "publish:blank": "cd packages/renative-template-blank && npm publish",
-        "publish:blank:alpha": "cd packages/renative-template-blank && npm publish --tag alpha",
-        "publish:hello": "cd packages/renative-template-hello-world && npm publish",
-        "publish:hello:alpha": "cd packages/renative-template-hello-world && npm publish --tag alpha",
-        "publish:renative": "cd packages/renative && npm publish",
-        "publish:renative:alpha": "cd packages/renative && npm publish --tag alpha",
-        "publish:rnv": "cd packages/rnv && npm publish",
-        "publish:rnv:alpha": "cd packages/rnv && npm publish --tag alpha",
-        "publish:sink": "cd packages/renative-template-kitchen-sink && npm publish",
-        "publish:sink:alpha": "cd packages/renative-template-kitchen-sink && npm publish --tag alpha",
+        "link": "cd packages/rnv; yarn unlink 2> /dev/null; yarn link",
+        "postinstall": "lerna link --force-local && npx jetify",
+        "publish": "lerna run --parallel --concurrency 1 publish",
+        "publish:alpha": "lerna run --parallel --concurrency 1 publish -- --tag alpha",
         "publish:website": "cd website && GIT_USER=pavjacko CURRENT_BRANCH=master USE_SSH=true yarn publish-gh-pages",
-        "rambo": "rnv clean && npm i && rnv template apply --template renative-template-hello-world && yarn watch",
-        "run:apps": "ttab rnv run -p web --ci && ttab rnv run -p ios -t 'iPhone 8' --ci && ttab rnv run -p android -t Pixel_2_API_28 --ci && ttab rnv run -p androidtv -t Android_TV_1080p_API_28 --ci && ttab rnv run -p tvos --ci && ttab rnv run -p macos --ci && ttab rnv run -p tizen -t T-samsung-5.5-x86 --ci && ttab rnv run -p webos --ci && ttab rnv run -p androidwear -t Android_Wear_Round_API_28 --ci && ttab rnv run -p tizenwatch -t W-5.5-circle-x86 --ci && ttab rnv run -p tizenmobile -t M-5.5-x86 --ci",
-        "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloWorld --ci && yarn run:apps",
-        "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
-        "test:rnv": "cd ./packages/rnv && yarn test:local",
-        "test:rnv:unit": "cd ./packages/rnv && yarn test",
-        "ut": "cd ./packages/rnv && yarn test",
-        "watch": "cd ./packages/rnv && yarn watch",
+        "start": "yarn build && lerna run start --stream --scope app",
+        "test:rnv": "lerna run test:local --stream --scope rnv",
+        "test:rnv:unit": "lerna run test --stream --scope rnv",
+        "ut": "lerna run test --stream --scope rnv",
+        "watch": "lerna run --parallel --concurrency 1 watch",
         "website": "cd website && yarn start"
-    },
-    "dependencies": {
-        "@noriginmedia/react-spatial-navigation": "2.10.0",
-        "@reach/router": "1.2.1",
-        "@react-native-community/masked-view": "0.1.6",
-        "@react-native-community/viewpager": "2.0.1",
-        "@react-navigation/bottom-tabs": "5.1.1",
-        "@react-navigation/core": "5.2.1",
-        "@react-navigation/drawer": "5.1.1",
-        "@react-navigation/material-bottom-tabs": "5.1.1",
-        "@react-navigation/material-top-tabs": "5.1.1",
-        "@react-navigation/native": "5.0.9",
-        "@react-navigation/routers": "5.1.0",
-        "@react-navigation/stack": "5.1.1",
-        "@react-navigation/web": "1.0.0-alpha.9",
-        "hash-source": "1.0.4",
-        "husky": "3.0.5",
-        "raf": "3.4.1",
-        "react": "16.9.0",
-        "react-art": "16.9.0",
-        "react-dom": "16.9.0",
-        "react-native": "0.61.2",
-        "react-native-gesture-handler": "1.4.1",
-        "react-native-orientation-locker": "1.1.5",
-        "react-native-reanimated": "1.0.0-alpha.12",
-        "react-native-safe-area-context": "0.7.2",
-        "react-native-safe-area-view": "0.14.5",
-        "react-native-screens": "2.2.0",
-        "react-native-tab-view": "2.13.0",
-        "react-native-vector-icons": "6.6.0",
-        "react-native-web": "0.11.7",
-        "react-native-web-image-loader": "0.0.5",
-        "react-navigation": "3.9.2",
-        "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "file:./packages/renative"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -131,7 +82,7 @@
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
         "@babel/plugin-transform-runtime": "7.8.3",
-        "@babel/preset-env": "7.8.3",
+        "@babel/preset-env": "7.8.7",
         "@babel/runtime": "7.8.3",
         "babel-eslint": "8.2.6",
         "babel-jest": "24.9.0",
@@ -146,16 +97,7 @@
         "concurrently": "4.1.1",
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
-        "jetifier": "1.6.5",
-        "lerna": "3.16.4",
-        "release-it": "12.4.3",
-        "renative-template-blank": "file:./packages/renative-template-blank",
-        "renative-template-hello-world": "file:./packages/renative-template-hello-world",
-        "renative-template-kitchen-sink": "file:./packages/renative-template-kitchen-sink",
-        "xcode": "2.1.0"
-    },
-    "optionalDependencies": {
-        "ios-deploy": "1.10.0"
+        "lerna": "3.16.4"
     },
     "engines": {
         "cocoapods": ">=1.5.3",
@@ -166,34 +108,19 @@
     "private": true,
     "title": "ReNative",
     "codename": "Iron Ladybird",
-    "jest": {
-        "preset": "react-native",
-        "transform": {
-            "^.+\\.js$": "<rootDir>/node_modules/react-native/jest/preprocessor.js"
-        },
-        "collectCoverage": true
-    },
     "husky": {
         "hooks": {
             "pre-commit": "pretty-quick --staged && yarn test:rnv:unit"
         }
     },
-    "workspaces": [
-        "packages/*"
-    ],
-    "release-it": {
-        "publish": "local",
-        "skipRootPublish": true,
-        "rootPublishCommand": "rnv deploy -p ios -s debug",
-        "git": {
-            "tagName": "v${version}",
-            "requireCleanWorkingDir": false
-        },
-        "npm": {
-            "publish": false
-        },
-        "hooks": {
-            "before:git": "rnv pkg version ${version}"
-        }
-    }
+    "resolutions": {
+        "@react-navigation/native": "5.0.9"
+    },
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ],
+        "nohoist": []
+    },
+    "dependencies": {}
 }

@@ -19,16 +19,25 @@ const styles = StyleSheet.create({
 });
 
 const Button = ({
-    focused, stealFocus, to, title, iconFont, iconName,
-    iconColor, iconSize, style, textStyle, selectedStyle, onPress
+    focused,
+    stealFocus,
+    to,
+    title,
+    iconFont,
+    iconName,
+    iconColor,
+    iconSize,
+    style,
+    textStyle,
+    selectedStyle,
+    onPress
 }) => {
     const Btn = () => (
         <TouchableOpacity
-            style={[styles.button, style,
-                focused ? { opacity: 0.4 } : null]}
+            style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
             onPress={onPress}
         >
-            { iconName ? (
+            {iconName ? (
                 <Icon
                     iconFont={iconFont}
                     iconName={iconName}
@@ -37,11 +46,7 @@ const Button = ({
                     style={styles.icon}
                 />
             ) : null}
-            { title ? (
-                <Text style={textStyle}>
-                    {title}
-                </Text>
-            ) : null}
+            {title ? <Text style={textStyle}>{title}</Text> : null}
         </TouchableOpacity>
     );
     if (to) {
@@ -58,7 +63,7 @@ const Button = ({
             </Link>
         );
     }
-    return (<Btn />);
+    return <Btn />;
 };
 
 export default Button;

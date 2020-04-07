@@ -54,6 +54,9 @@
     "dependencies": {},
     "devDependencies": {},
     "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
     "title": "Kitchen Sink ReNative Template",
     "codename": "Hairy Goblin"
 }

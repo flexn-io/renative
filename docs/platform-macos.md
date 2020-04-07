@@ -24,17 +24,17 @@ sidebar_label: macOS
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `macos.desktop.js` | `form factor` | 1 |
-| `desktop.js` | `form factor` | 2 |
-| `macos.js` | `platform` | 3 |
-| `desktop.web.js` | `fallback` | 4 |
-| `electron.js` | `fallback` | 5 |
-| `web.js` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
+| Extension          | Type          | Priority |
+| ------------------ | ------------- | :------: |
+| `macos.desktop.js` | `form factor` |    1     |
+| `desktop.js`       | `form factor` |    2     |
+| `macos.js`         | `platform`    |    3     |
+| `desktop.web.js`   | `fallback`    |    4     |
+| `electron.js`      | `fallback`    |    5     |
+| `web.js`           | `fallback`    |    6     |
+| `js`               | `fallback`    |    7     |
+| `tsx`              | `fallback`    |    8     |
+| `ts`               | `fallback`    |    9     |
 
 #### Requirements
 

@@ -10,7 +10,7 @@ sidebar_label: target
 
 ## Task Order
 
-🔥 `target`  ✅
+🔥 `target` ✅
 
 ## target
 

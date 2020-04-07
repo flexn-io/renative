@@ -1,58 +1,63 @@
 # 2
 
 jobs:
-  include:
-    - stage: test
-      dist: trusty
-      language: node_js
-      node_js: 10.15.3
-      install:
-        - npm run bootstrap:clean
-        - mkdir /home/travis/.rnv
-        - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
-        - cd packages/rnv
-        - npm run build:dev
-        - npm link
-      script: npm run test:setup
-    - language: android
-      sudo: required
-      jdk: oraclejdk8
-      android:
-        components:
-          - tools
-          - build-tools-28.0.3
-          - extra-google-m2repository
-          - extra-android-m2repository
-          - platform-tools
-          - android-28
-          - sys-img-x86-android-28
-      before_install:
-        - curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-        - sudo apt-get install -y nodejs
-        - npm run bootstrap:clean
-        - cd packages/rnv
-        - npm run build:dev
-        - sudo npm link --unsafe-perm
-        - mkdir /home/travis/.rnv
-        - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/renative.json
-        - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
-        - yes | sdkmanager "emulator"
-      script: npm run test:integration
-    - language: node_js
-      node_js: 10.15.3
-      os: osx
-      osx_image: xcode10.2
-      before_install:
-        - npm install lerna yarn -g
-        - lerna bootstrap
-      install:
-        - mkdir /Users/travis/.rnv
-        - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
-        - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
-        - cd packages/rnv
-        - npm run build:dev
-        - npm link --unsafe-perm
-      script: npm run test:ios
+    include:
+        - stage: test
+          dist: trusty
+          language: node_js
+          node_js: 10.15.3
+          install:
+              - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+              - yarn bootstrap
+              - mkdir /home/travis/.rnv
+              - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
+              - cd packages/rnv
+              - yarn build:dev
+          script: npm run test:setup
+        # !! Has Travis.io a later version of their sdk version? - https://amino24i.slack.com/archives/CMFGL6VPS/p1585560840004900
+        # - language: android
+        #   sudo: required
+        #   jdk: oraclejdk8
+        #   android:
+        #       components:
+        #           - tools
+        #           - build-tools-28.0.3
+        #           - extra-google-m2repository
+        #           - extra-android-m2repository
+        #           - platform-tools
+        #           - android-28
+        #           - sys-img-x86-android-28
+        #   before_install:
+        #       - curl -sL https://deb.nodesource.com/setup_10.x | bash -
+        #       - apt-get install -y nodejs
+        #       - npm uninstall --global yarn; rm /usr/local/bin/yarn
+        #       - npm config set prefix ~/.npm
+        #       - export PATH=$PATH:~/.npm/bin
+        #       - rm -rf ~/.yarn/bin/yarn || true && npm install --global yarn && yarn --version; which yarn
+        #       - yarn bootstrap-clean
+        #       - cd packages/rnv
+        #       - yarn build:dev
+        #       # - npm link --unsafe-perm
+        #       - mkdir /home/travis/.rnv
+        #       - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/renative.json
+        #       - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
+        #       - yes | sdkmanager "emulator"
+        #   script: yarn test:integration
+        - language: node_js
+          node_js: 10.15.3
+          os: osx
+          osx_image: xcode10.2
+          before_install:
+              - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+              - yarn bootstrap
+          install:
+              - mkdir /Users/travis/.rnv
+              - echo '{"sdks":{},"defaultTargets":{}}' > /Users/travis/.rnv/renative.json
+              - echo '{"workspaces":{"rnv":{"path":"/Users/travis/.rnv"}}}' > /Users/travis/.rnv/renative.workspaces.json
+              - cd packages/rnv
+              - yarn build:dev
+              # - npm link --unsafe-perm
+          script: yarn test:ios
 
 stages:
-  - test
+    - test

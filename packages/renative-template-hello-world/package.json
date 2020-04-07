@@ -53,5 +53,8 @@
     "scripts": {},
     "dependencies": {},
     "devDependencies": {},
-    "private": false
+    "private": false,
+    "publishConfig": {
+        "access": "public"
+    }
 }

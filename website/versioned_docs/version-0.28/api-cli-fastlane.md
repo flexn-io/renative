@@ -7,11 +7,11 @@ original_id: api-cli-fastlane
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
-> Runs standard fastlane commands on selected platform 
+> Runs standard fastlane commands on selected platform
 
 ## Task Order
 
-🔥 `configure` ➡️ `fastlane`  ✅
+🔥 `configure` ➡️ `fastlane` ✅
 
 ## fastlane
 

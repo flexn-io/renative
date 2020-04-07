@@ -8,10 +8,13 @@ const entypo = require('react-native-vector-icons/Entypo').default;
 const evilIcons = require('react-native-vector-icons/EvilIcons').default;
 const foundation = require('react-native-vector-icons/Foundation').default;
 const ionicons = require('react-native-vector-icons/Ionicons').default;
-const materialCommunityIcons = require('react-native-vector-icons/MaterialCommunityIcons').default;
-const materialIcons = require('react-native-vector-icons/MaterialIcons').default;
+const materialCommunityIcons = require('react-native-vector-icons/MaterialCommunityIcons')
+    .default;
+const materialIcons = require('react-native-vector-icons/MaterialIcons')
+    .default;
 const octicons = require('react-native-vector-icons/Octicons').default;
-const simpleLineIcons = require('react-native-vector-icons/SimpleLineIcons').default;
+const simpleLineIcons = require('react-native-vector-icons/SimpleLineIcons')
+    .default;
 const zocial = require('react-native-vector-icons/Zocial').default;
 
 const IconMap = {
@@ -30,19 +33,39 @@ const IconMap = {
 };
 
 const IconComponent = ({
-    iconFont, iconName, iconColor, onPress, style, className, testID, size
+    iconFont,
+    iconName,
+    iconColor,
+    onPress,
+    style,
+    className,
+    testID,
+    size
 }) => {
     const IC = IconMap[iconFont];
     if (onPress) {
         return (
-            <TouchableOpacity style={style} onPress={onPress} className={className} testID={testID}>
-                <IC style={{ color: iconColor }} name={iconName} size={size || style.width || style.height} />
+            <TouchableOpacity
+                style={style}
+                onPress={onPress}
+                className={className}
+                testID={testID}
+            >
+                <IC
+                    style={{ color: iconColor }}
+                    name={iconName}
+                    size={size || style.width || style.height}
+                />
             </TouchableOpacity>
         );
     }
     return (
         <View style={style} className={className} testID={testID}>
-            <IC style={{ color: iconColor }} name={iconName} size={size || style.width || style.height} />
+            <IC
+                style={{ color: iconColor }}
+                name={iconName}
+                size={size || style.width || style.height}
+            />
         </View>
     );
 };

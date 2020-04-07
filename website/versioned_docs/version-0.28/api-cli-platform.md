@@ -11,7 +11,7 @@ original_id: api-cli-platform
 
 ## Task Order
 
-🔥 `platform`  ✅
+🔥 `platform` ✅
 
 ## platform
 

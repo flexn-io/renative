@@ -17,7 +17,6 @@ sidebar_label: Tizen Watch
 
 <img src="https://renative.org/img/rnv_tizenwatch.gif" height="250"/>
 
-
 ## Overview
 
 -   Latest Tizen project
@@ -25,17 +24,16 @@ sidebar_label: Tizen Watch
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `tizenwatch.watch.js` | `form factor` | 1 |
-| `watch.js` | `form factor` | 2 |
-| `tizenwatch.js` | `platform` | 3 |
-| `watch.web.js` | `fallback` | 4 |
-| `web.js` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
-
+| Extension             | Type          | Priority |
+| --------------------- | ------------- | :------: |
+| `tizenwatch.watch.js` | `form factor` |    1     |
+| `watch.js`            | `form factor` |    2     |
+| `tizenwatch.js`       | `platform`    |    3     |
+| `watch.web.js`        | `fallback`    |    4     |
+| `web.js`              | `fallback`    |    5     |
+| `js`                  | `fallback`    |    6     |
+| `tsx`                 | `fallback`    |    7     |
+| `ts`                  | `fallback`    |    8     |
 
 ## Requirements
 

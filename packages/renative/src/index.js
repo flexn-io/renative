@@ -9,9 +9,4 @@ export * from './Constants';
 export * from './is';
 export * from './hooks/navigation';
 
-export {
-    Icon,
-    Button,
-    Api,
-    registerServiceWorker,
-};
+export { Icon, Button, Api, registerServiceWorker };

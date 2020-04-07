@@ -20,14 +20,21 @@ const styles = StyleSheet.create({
 });
 
 const Button = ({
-    focused, stealFocus, to, title, iconFont, iconName,
-    iconColor, iconSize, style, textStyle, selectedStyle
+    focused,
+    stealFocus,
+    to,
+    title,
+    iconFont,
+    iconName,
+    iconColor,
+    iconSize,
+    style,
+    textStyle,
+    selectedStyle
 }) => {
     const Btn = () => (
-        <View
-            style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
-        >
-            { iconName ? (
+        <View style={[styles.button, style, focused ? { opacity: 0.4 } : null]}>
+            {iconName ? (
                 <Icon
                     iconFont={iconFont}
                     iconName={iconName}
@@ -36,11 +43,7 @@ const Button = ({
                     style={styles.icon}
                 />
             ) : null}
-            { title ? (
-                <Text style={textStyle}>
-                    {title}
-                </Text>
-            ) : null}
+            {title ? <Text style={textStyle}>{title}</Text> : null}
         </View>
     );
     if (to) {
@@ -57,7 +60,7 @@ const Button = ({
             </Link>
         );
     }
-    return (<Btn />);
+    return <Btn />;
 };
 
 export default withFocusable()(Button);

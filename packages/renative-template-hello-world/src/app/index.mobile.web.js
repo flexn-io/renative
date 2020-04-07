@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -22,17 +21,17 @@ const styles = StyleSheet.create({
     header: {
         backgroundColor: Theme.color1,
         borderBottomWidth: 1,
-        height: getScaledValue(70),
+        height: getScaledValue(70)
     }
 });
 
-
 const StackNavigator = ({ navigation }) => (
-    <Stack.Navigator screenOptions={{
-        headerTitleStyle: styles.headerTitle,
-        headerStyle: styles.header,
-        headerTintColor: Theme.color3
-    }}
+    <Stack.Navigator
+        screenOptions={{
+            headerTitleStyle: styles.headerTitle,
+            headerStyle: styles.header,
+            headerTintColor: Theme.color3
+        }}
     >
         <Stack.Screen
             name="home"
@@ -53,7 +52,6 @@ const App = () => (
             <ModalStack.Screen name="Drawer" component={Menu} />
         </ModalStack.Navigator>
     </NavigationContainer>
-
 );
 
 export default App;

@@ -11,7 +11,7 @@ original_id: api-cli-export
 
 ## Task Order
 
-🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export`  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ✅
 
 ## export
 

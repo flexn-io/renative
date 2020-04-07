@@ -1,6 +1,5 @@
 module.exports = {
     collectCoverage: true,
-    transform: {
-        '^.+\\.js$': '<rootDir>/../../node_modules/react-native/jest/preprocessor.js'
-    },
+    preset: 'react-native',
+    verbose: true
 };

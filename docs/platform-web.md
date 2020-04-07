@@ -17,21 +17,19 @@ sidebar_label: Web
 
 <img src="https://renative.org/img/rnv_web.gif" height="250"/>
 
-
 ## Overview
 
 -   Supports Chrome, Safari, Firefox, IE10+
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `browser.js` | `form factor` | 1 |
-| `web.js` | `platform` | 2 |
-| `js` | `fallback` | 3 |
-| `tsx` | `fallback` | 4 |
-| `ts` | `fallback` | 5 |
-
+| Extension    | Type          | Priority |
+| ------------ | ------------- | :------: |
+| `browser.js` | `form factor` |    1     |
+| `web.js`     | `platform`    |    2     |
+| `js`         | `fallback`    |    3     |
+| `tsx`        | `fallback`    |    4     |
+| `ts`         | `fallback`    |    5     |
 
 ## Requirements
 
@@ -88,8 +86,8 @@ rnv run -p web --port 9999
 ```
 
 ## Modifying index.html
-In order for you to do that you'll need to run the project first, so it generates the files you need first. Then you can copy `platformBuilds/_shared/template.js` to `platformConfig/builds/_shared/template.js` and modify it. If `platformConfig` or other folders do not exist manually create them.
 
+In order for you to do that you'll need to run the project first, so it generates the files you need first. Then you can copy `platformBuilds/_shared/template.js` to `platformConfig/builds/_shared/template.js` and modify it. If `platformConfig` or other folders do not exist manually create them.
 
 ## App Config
 

@@ -8,6 +8,7 @@ import Doctor from './systemTools/doctor';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 import Config from './config';
+import { doResolve } from './resolve';
 import Analytics from './systemTools/analytics';
 
 import 'source-map-support/register';
@@ -23,9 +24,17 @@ const run = (cmd, subCmd, program, process) => {
 };
 
 export {
-    Constants, Common, Exec, FileUtils,
-    Doctor, PluginTools, SetupTools, Logger,
-    run, CLI
+    Constants,
+    Common,
+    Exec,
+    FileUtils,
+    Doctor,
+    PluginTools,
+    SetupTools,
+    Logger,
+    run,
+    CLI,
+    doResolve
 };
 
 export default { run, Config };

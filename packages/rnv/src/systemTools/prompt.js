@@ -1,11 +1,11 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from './logger';
+import { logWarning, logTask } from './logger';
 import Config from '../config';
 
 const highlight = chalk.grey.bold;
 
-export const inquirerPrompt = async (params) => {
+export const inquirerPrompt = async params => {
     const c = Config.getConfig();
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
@@ -22,7 +22,12 @@ export const inquirerPrompt = async (params) => {
     return result;
 };
 
-export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
+export const generateOptions = (
+    inputData,
+    isMultiChoice = false,
+    mapping,
+    renderMethod
+) => {
     let asString = '';
     const valuesAsObject = {};
     const valuesAsArray = [];
@@ -87,4 +92,5 @@ const _sort = (a, b) => {
     return com;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) => ` [${highlight(i + 1)}]> ${highlight(mapping ? '' : defaultVal)} \n`;
+const _generateOptionString = (i, obj, mapping, defaultVal) =>
+    ` [${highlight(i + 1)}]> ${highlight(mapping ? '' : defaultVal)} \n`;

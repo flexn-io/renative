@@ -1,8 +1,21 @@
 import React, { useEffect } from 'react';
 import { Text, View, StyleSheet } from 'react-native';
-import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer } from 'renative';
-import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
-import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
+import {
+    Icon,
+    Button,
+    getScaledValue,
+    useNavigate,
+    useOpenDrawer
+} from 'renative';
+import {
+    initNavigation,
+    withFocusable
+} from '@noriginmedia/react-spatial-navigation';
+import Theme, {
+    themeStyles,
+    hasHorizontalMenu,
+    hasWebFocusableUI
+} from './theme';
 
 if (hasWebFocusableUI) {
     initNavigation({
@@ -12,7 +25,7 @@ if (hasWebFocusableUI) {
     });
 }
 
-export const DrawerButton = (props) => {
+export const DrawerButton = props => {
     const openDrawer = useOpenDrawer(props);
     return (
         <Icon
@@ -21,7 +34,9 @@ export const DrawerButton = (props) => {
             iconColor={Theme.color3}
             size={Theme.iconSize}
             style={themeStyles.icon}
-            onPress={() => { openDrawer('Drawer'); }}
+            onPress={() => {
+                openDrawer('Drawer');
+            }}
         />
     );
 };
@@ -46,26 +61,26 @@ const styles = StyleSheet.create({
         marginTop: hasHorizontalMenu ? 0 : getScaledValue(20),
         maxWidth: getScaledValue(400),
         minWidth: getScaledValue(50),
-        borderWidth: 0,
+        borderWidth: 0
     },
     buttonText: {
         fontFamily: 'TimeBurner',
         color: '#62DBFB',
-        fontSize: getScaledValue(20),
+        fontSize: getScaledValue(20)
     }
 });
 
-const Menu = (props) => {
+const Menu = props => {
     const navigate = useNavigate(props);
     if (hasWebFocusableUI) {
-        useEffect(() => { props.setFocus(); }, []);
+        useEffect(() => {
+            props.setFocus();
+        }, []);
     }
 
     return (
         <View style={styles.container}>
-            <Text style={themeStyles.text}>
-                    Menu
-            </Text>
+            <Text style={themeStyles.text}>Menu</Text>
             <Button
                 to="/"
                 title="Home"
@@ -121,4 +136,4 @@ const Menu = (props) => {
     );
 };
 
-export default hasWebFocusableUI ? withFocusable()(Menu) : Menu;
+export default (hasWebFocusableUI ? withFocusable()(Menu) : Menu);

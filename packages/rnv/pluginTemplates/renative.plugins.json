@@ -15,10 +15,10 @@
         "renative": {
             "version": "0.28.19-alpha.6",
             "webpack": {
-                "modulePaths": ["node_modules/renative"],
+                "modulePaths": ["renative"],
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "node_modules/renative"
+                        "nodePackageName": "renative"
                     }
                 }
             }
@@ -27,7 +27,7 @@
             "version": "1.0.2",
             "ios": {
                 "podName": "RNCPushNotificationIOS",
-                "path": "node_modules/@react-native-community/push-notification-ios",
+                "nodePackageName": "@react-native-community/push-notification-ios",
                 "appDelegateImports": ["RNCPushNotificationIOS"],
                 "appDelegateMethods": {
                     "application": {
@@ -101,14 +101,14 @@
             "version": "1.4.1",
             "ios": {
                 "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "nodePackageName": "react-native-gesture-handler"
             },
             "tvos": {
                 "podName": "RNGestureHandler",
-                "path": "node_modules/react-native-gesture-handler"
+                "nodePackageName": "react-native-gesture-handler"
             },
             "android": {
-                "path": "node_modules/react-native-gesture-handler/android",
+                "nodePackageName": "react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage",
                 "mainActivity": {
                     "imports": [
@@ -124,11 +124,11 @@
                 }
             },
             "androidtv": {
-                "path": "node_modules/react-native-gesture-handler/android",
+                "nodePackageName": "react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             },
             "androidwear": {
-                "path": "node_modules/react-native-gesture-handler/android",
+                "nodePackageName": "react-native-gesture-handler/android",
                 "package": "com.swmansion.gesturehandler.react.RNGestureHandlerPackage"
             },
             "webpack": {
@@ -266,10 +266,10 @@
             "version": "2.0.1",
             "ios": {
                 "podName": "react-native-viewpager",
-                "path": "node_modules/@react-native-community/viewpager"
+                "nodePackageName": "@react-native-community/viewpager"
             },
             "android": {
-                "path": "node_modules/@react-native-community/viewpager/android",
+                "nodePackageName": "@react-native-community/viewpager/android",
                 "package": "com.reactnativecommunity.viewpager.RNCViewPagerPackage"
             }
         },
@@ -291,7 +291,7 @@
         "react-native-idle-timer": {
             "version": "2.1.5",
             "ios": {
-                "path": "node_modules/react-native-idle-timer",
+                "nodePackageName": "react-native-idle-timer",
                 "podName": "react-native-idle-timer"
             },
             "android": {
@@ -313,12 +313,10 @@
         "@monterosa/react-native-parallax-scroll": {
             "version": "1.8.0",
             "webpack": {
-                "modulePaths": [
-                    "node_modules/@monterosa/react-native-parallax-scroll"
-                ],
+                "modulePaths": ["@monterosa/react-native-parallax-scroll"],
                 "moduleAliases": {
                     "@monterosa/react-native-parallax-scroll": {
-                        "projectPath": "node_modules/@monterosa/react-native-parallax-scroll"
+                        "nodePackageName": "@monterosa/react-native-parallax-scroll"
                     }
                 }
             }
@@ -326,11 +324,11 @@
         "react-native-dominant-color": {
             "version": "1.0.0",
             "android": {
-                "path": "node_modules/react-native-dominant-color/android",
+                "nodePackageName": "react-native-dominant-color/android",
                 "package": "cl.hasaezs.rndominantcolor.RNDominantColorPackage"
             },
             "androidtv": {
-                "path": "node_modules/react-native-dominant-color/android",
+                "nodePackageName": "react-native-dominant-color/android",
                 "package": "cl.hasaezs.rndominantcolor.RNDominantColorPackage"
             }
         },
@@ -338,11 +336,11 @@
             "version": "github:kasinskas/react-native-extract-color",
             "ios": {
                 "podName": "RNExtractColor",
-                "path": "node_modules/react-native-extract-color/ios"
+                "nodePackageName": "react-native-extract-color/ios"
             },
             "tvos": {
                 "podName": "RNExtractColor",
-                "path": "node_modules/react-native-extract-color/ios"
+                "nodePackageName": "react-native-extract-color/ios"
             }
         },
         "react-native-uri-scheme": {
@@ -496,7 +494,7 @@
             "version": "1.2.2",
             "ios": {
                 "podName": "react-native-nfc-manager",
-                "path": "node_modules/react-native-nfc-manager"
+                "nodePackageName": "react-native-nfc-manager"
             },
             "android": {
                 "package": "community.revteltech.nfc.NfcManagerPackage"
@@ -518,7 +516,7 @@
             "version": "2.6.0",
             "ios": {
                 "podName": "ReactNativeExceptionHandler",
-                "path": "node_modules/react-native-exception-handler/ios"
+                "nodePackageName": "react-native-exception-handler/ios"
             },
             "android": {
                 "package": "com.masteratul.exceptionhandler.ReactNativeExceptionHandlerPackage"
@@ -622,12 +620,12 @@
         "@react-native-community/geolocation": {
             "version": "2.0.2",
             "android": {
-                "path": "/node_modules/@react-native-community/geolocation/android",
+                "nodePackageName": "@react-native-community/geolocation/android",
                 "package": "com.reactnativecommunity.geolocation.GeolocationPackage"
             },
             "ios": {
                 "podName": "react-native-geolocation",
-                "path": "node_modules/@react-native-community/geolocation"
+                "nodePackageName": "@react-native-community/geolocation"
             }
         },
         "react-native-keep-awake": {
@@ -850,13 +848,13 @@
             "android": {
                 "projectName": "mapbox-react-native-mapbox-gl",
                 "package": "com.mapbox.rctmgl.RCTMGLPackage",
-                "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
+                "nodePackageName": "@mapbox/react-native-mapbox-gl/android/rctmgl",
                 "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }"
             },
             "androidtv": {
                 "projectName": "mapbox-react-native-mapbox-gl",
                 "package": "com.mapbox.rctmgl.RCTMGLPackage",
-                "path": "node_modules/@mapbox/react-native-mapbox-gl/android/rctmgl",
+                "nodePackageName": "@mapbox/react-native-mapbox-gl/android/rctmgl",
                 "implementation": "  implementation (project(':mapbox-react-native-mapbox-gl')) {\n    implementation ('com.squareup.okhttp3:okhttp:3.6.0') {\n      force = true\n    }\n  }"
             }
         },
@@ -880,7 +878,7 @@
             "dependsOn": ["iOSPhotoEditor"],
             "ios": {
                 "podName": "RNPhotoEditor",
-                "path": "node_modules/react-native-photo-editor/ios"
+                "nodePackageName": "react-native-photo-editor/ios"
             },
             "android": {
                 "package": "ui.photoeditor.RNPhotoEditorPackage"
@@ -892,20 +890,20 @@
         "react-native-sqlite-storage": {
             "version": "3.3.11",
             "android": {
-                "path": "/node_modules/react-native-sqlite-storage/src/android",
+                "nodePackageName": "react-native-sqlite-storage/src/android",
                 "package": "org.pgsqlite.SQLitePluginPackage"
             },
             "androidtv": {
-                "path": "/node_modules/react-native-sqlite-storage/src/android",
+                "nodePackageName": "react-native-sqlite-storage/src/android",
                 "package": "org.pgsqlite.SQLitePluginPackage"
             },
             "ios": {
                 "podName": "react-native-sqlite-storage",
-                "path": "node_modules/react-native-sqlite-storage"
+                "nodePackageName": "react-native-sqlite-storage"
             },
             "tvos": {
                 "podName": "react-native-sqlite-storage",
-                "path": "node_modules/react-native-sqlite-storage"
+                "nodePackageName": "react-native-sqlite-storage"
             }
         },
         "react-native-signature-capture": {
@@ -1370,11 +1368,11 @@
             },
             "android": {
                 "package": "com.airbnb.android.react.lottie.LottiePackage",
-                "path": "node_modules/lottie-react-native/src/android"
+                "nodePackageName": "lottie-react-native/src/android"
             },
             "androidtv": {
                 "package": "com.airbnb.android.react.lottie.LottiePackage",
-                "path": "node_modules/lottie-react-native/src/android"
+                "nodePackageName": "lottie-react-native/src/android"
             }
         },
         "react-native-get-real-path": {
@@ -1390,7 +1388,7 @@
             "version": "github:cjrorvik/react-native-simple-compass.git#9c133bd0922204bb78e5fc0b2d85dfd5a647732d",
             "ios": {
                 "podName": "react-native-simple-compass",
-                "path": "node_modules/react-native-simple-compass"
+                "nodePackageName": "react-native-simple-compass"
             },
             "android": {
                 "package": "com.reactlibrary.RNSimpleCompassPackage"
@@ -1445,14 +1443,14 @@
             "version": "1.75.2",
             "ios": {
                 "podName": "react-native-webrtc",
-                "path": "node_modules/react-native-webrtc"
+                "nodePackageName": "react-native-webrtc"
             },
             "android": {
-                "path": "node_modules/react-native-webrtc/android",
+                "nodePackageName": "react-native-webrtc/android",
                 "package": "com.oney.WebRTCModule.WebRTCModulePackage"
             },
             "androidtv": {
-                "path": "node_modules/react-native-webrtc/android",
+                "nodePackageName": "react-native-webrtc/android",
                 "package": "com.oney.WebRTCModule.WebRTCModulePackage"
             }
         },
@@ -1464,7 +1462,7 @@
             },
             "ios": {
                 "podName": "RNFirebase",
-                "path": "node_modules/react-native-firebase/ios",
+                "nodePackageName": "react-native-firebase/ios",
                 "xcodeproj": {
                     "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
                 },
@@ -1809,10 +1807,7 @@
         "react-navigation": {
             "version": "3.9.2",
             "webpack": {
-                "modulePaths": [
-                    "node_modules/react-navigation",
-                    "node_modules/@react-navigation"
-                ]
+                "modulePaths": ["react-navigation", "@react-navigation/core"]
             },
             "dependsOn": [
                 "react-navigation-stack",
@@ -1820,8 +1815,8 @@
                 "react-native-reanimated"
             ],
             "npm": {
-                "@react-navigation/core": "3.4.2",
-                "@react-navigation/native": "3.5.0",
+                "@react-navigation/core": "5.2.1",
+                "@react-navigation/native": "5.0.9",
                 "@react-navigation/web": "1.0.0-alpha.9"
             }
         },
@@ -1878,11 +1873,11 @@
                 "package": "com.th3rdwave.safeareacontext.SafeAreaContextPackage"
             },
             "ios": {
-                "path": "node_modules/react-native-safe-area-context",
+                "nodePackageName": "react-native-safe-area-context",
                 "podName": "react-native-safe-area-context"
             },
             "tvos": {
-                "path": "node_modules/react-native-safe-area-context",
+                "nodePackageName": "react-native-safe-area-context",
                 "podName": "react-native-safe-area-context"
             }
         },
@@ -1950,7 +1945,7 @@
         "react-native-airplay-ios": {
             "version": "github:CHaNGeTe/react-native-airplay-ios#feature/cocoapods-support",
             "ios": {
-                "path": "node_modules/react-native-airplay-ios/ios",
+                "nodePackageName": "react-native-airplay-ios/ios",
                 "podName": "RNAirplay"
             }
         },
@@ -1996,7 +1991,7 @@
                 "modulePaths": true,
                 "moduleAliases": {
                     "@react-native-community/netinfo": {
-                        "projectPath": "node_modules/@react-native-community/netinfo/web"
+                        "nodePackageName": "@react-native-community/netinfo/web"
                     }
                 }
             }
@@ -2004,7 +1999,7 @@
         "react-native-system-setting": {
             "version": "1.7.2",
             "ios": {
-                "path": "node_modules/react-native-system-setting",
+                "nodePackageName": "react-native-system-setting",
                 "podName": "RCTSystemSetting"
             },
             "android": {
@@ -2023,20 +2018,20 @@
         "@react-native-community/masked-view": {
             "version": "0.1.1",
             "ios": {
-                "path": "node_modules/@react-native-community/masked-view",
+                "nodePackageName": "@react-native-community/masked-view",
                 "podName": "RNCMaskedView"
             },
             "tvos": {
-                "path": "node_modules/@react-native-community/masked-view",
+                "nodePackageName": "@react-native-community/masked-view",
                 "podName": "RNCMaskedView"
             },
             "android": {
-                "path": "node_modules/@react-native-community/masked-view/android",
+                "nodePackageName": "@react-native-community/masked-view/android",
                 "projectName": "react-native-community-masked-view",
                 "package": "org.reactnative.maskedview.RNCMaskedViewPackage"
             },
             "androidtv": {
-                "path": "node_modules/@react-native-community/masked-view/android",
+                "nodePackageName": "@react-native-community/masked-view/android",
                 "projectName": "react-native-community-masked-view",
                 "package": "org.reactnative.maskedview.RNCMaskedViewPackage"
             }
@@ -2044,20 +2039,20 @@
         "@react-native-community/blur": {
             "version": "3.3.1",
             "ios": {
-                "path": "node_modules/@react-native-community/blur",
+                "nodePackageName": "@react-native-community/blur",
                 "podName": "react-native-blur"
             },
             "tvos": {
-                "path": "node_modules/@react-native-community/blur",
+                "nodePackageName": "@react-native-community/blur",
                 "podName": "react-native-blur"
             },
             "android": {
-                "path": "node_modules/@react-native-community/blur/android",
+                "nodePackageName": "@react-native-community/blur/android",
                 "projectName": "react-native-community-blur",
                 "package": "com.cmcewen.blurview.BlurViewPackage"
             },
             "androidtv": {
-                "path": "node_modules/@react-native-community/blur/android",
+                "nodePackageName": "@react-native-community/blur/android",
                 "projectName": "react-native-community-blur",
                 "package": "com.cmcewen.blurview.BlurViewPackage"
             }
@@ -2143,7 +2138,7 @@
             "version": "github:hosek/react-native-google-cast#feat/custom-cast-dialog-support",
             "ios": {
                 "podName": "react-native-google-cast",
-                "path": "node_modules/react-native-google-cast/ios",
+                "nodePackageName": "react-native-google-cast/ios",
                 "appDelegateImports": ["GoogleCast"],
                 "appDelegateMethods": {
                     "application": {
@@ -2193,7 +2188,7 @@
             "dependsOn": ["RCTLinkingIOS"],
             "ios": {
                 "podName": "A0Auth0",
-                "path": "node_modules/react-native-auth0/ios",
+                "nodePackageName": "react-native-auth0/ios",
                 "plist": {
                     "CFBundleURLTypes": [
                         {
@@ -2208,7 +2203,7 @@
             },
             "android": {
                 "package": "com.auth0.react.A0Auth0Package",
-                "path": "node_modules/react-native-auth0/android",
+                "nodePackageName": "react-native-auth0/android",
                 "AndroidManifest": {
                     "children": [
                         {

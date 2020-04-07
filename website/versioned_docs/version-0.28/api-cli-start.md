@@ -11,7 +11,7 @@ original_id: api-cli-start
 
 ## Task Order
 
-🔥 `configure` ➡️ `start`  ✅
+🔥 `configure` ➡️ `start` ✅
 
 ## start
 

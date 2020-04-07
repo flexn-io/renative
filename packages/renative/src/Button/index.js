@@ -17,31 +17,40 @@ const styles = StyleSheet.create({
 });
 
 const Button = ({
-    focused, stealFocus, to, title, iconFont, iconName, iconColor,
-    iconSize, style, textStyle, selectedStyle, onPress
+    focused,
+    stealFocus,
+    to,
+    title,
+    iconFont,
+    iconName,
+    iconColor,
+    iconSize,
+    style,
+    textStyle,
+    selectedStyle,
+    onPress
 }) => (
     <TouchableOpacity
         style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
         onPress={onPress}
     >
-        { iconName ? (
+        {iconName ? (
             <Icon
                 iconFont={iconFont}
                 iconName={iconName}
                 iconColor={iconColor}
                 size={iconSize}
-                style={[styles.icon, {
-                    width: iconSize,
-                    height: iconSize,
-                    marginRight: title ? getScaledValue(20) : 0
-                }]}
+                style={[
+                    styles.icon,
+                    {
+                        width: iconSize,
+                        height: iconSize,
+                        marginRight: title ? getScaledValue(20) : 0
+                    }
+                ]}
             />
         ) : null}
-        { title ? (
-            <Text style={textStyle}>
-                {title}
-            </Text>
-        ) : null}
+        {title ? <Text style={textStyle}>{title}</Text> : null}
     </TouchableOpacity>
 );
 

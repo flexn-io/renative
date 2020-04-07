@@ -10,7 +10,7 @@ sidebar_label: start
 
 ## Task Order
 
-🔥 `configure` ➡️ `start`  ✅
+🔥 `configure` ➡️ `start` ✅
 
 ## start
 
