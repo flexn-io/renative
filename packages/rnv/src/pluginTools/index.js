@@ -50,8 +50,9 @@ const _getPluginList = (c, isUpdate = false) => {
             SUPPORTED_PLATFORMS.forEach(v => {
                 if (p[v]) platforms += `${v}, `;
             });
-            if (platforms.length)
+            if (platforms.length) {
                 platforms = platforms.slice(0, platforms.length - 2);
+            }
             const installedPlugin =
                 c.buildConfig &&
                 c.buildConfig.plugins &&
@@ -316,6 +317,7 @@ export const configurePlugins = c =>
         Object.keys(c.buildConfig.plugins).forEach(k => {
             const { dependencies } = c.files.project.package;
             const { devDependencies } = c.files.project.package;
+            console.log('DGHDJGDHG', k, c.buildConfig.plugins[k]);
             const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
             if (!plugin) {
@@ -468,8 +470,9 @@ const parsePlugins = (c, platform, pluginCallback) => {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);
                                     }
-                                    if (pluginCallback)
+                                    if (pluginCallback) {
                                         pluginCallback(plugin, pluginPlat, key);
+                                    }
                                 } else {
                                     logWarning(
                                         `Plugin ${key} is marked disabled. skipping.`

@@ -10,7 +10,7 @@ import {
     getBuildFilePath,
     getConfigProp
 } from '../../common';
-import { doResolve } from '../../resolve';
+import { doResolve, doResolvePath } from '../../resolve';
 import { logTask, logWarning, logDebug } from '../../systemTools/logger';
 
 export const parseBuildGradleSync = (c, platform) => {
@@ -257,8 +257,9 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
         'enableAndroidX',
         'androidx.appcompat:appcompat:1.1.0'
     );
-    if (enableAndroidX === true)
+    if (enableAndroidX === true) {
         enableAndroidX = 'androidx.appcompat:appcompat:1.1.0';
+    }
 
     if (enableAndroidX !== false) {
         c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation "${enableAndroidX}"\n`;
@@ -427,39 +428,52 @@ export const parseGradlePropertiesSync = (c, platform) => {
     );
 };
 
-export const injectPluginGradleSync = (c, plugin, key, pkg) => {
-    // const className = pkg ? pkg.split('.').pop() : null;
-    // let packageParams = '';
-    // if (plugin.packageParams) {
-    //     packageParams = plugin.packageParams.join(',');
+export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
+    // const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
+    // const packagePath = plugin.path ?? `${key}/android`;
+    // let pathAbsolute;
+    // try {
+    //     pathAbsolute = plugin.path
+    //         ? doResolvePath(packagePath, true, { keepSuffix: true })
+    //         : doResolvePath(packagePath, true, { keepSuffix: true });
+    // } catch (err) {
+    //     logWarning(
+    //         `GradleParser: plugin ${packagePath} not resolvable and has been skipped`
+    //     );
+    //     return;
     // }
-    const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
-    // const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
     // const modulePath = `../../${pathFixed}`;
-    const packagePath = plugin.nodePackageName ?? `${key}/android`;
-    let pathAbsolute;
-    try {
-        pathAbsolute = plugin.nodePackageName
-            ? doResolve(packagePath, true, { keepSuffix: true })
-            : doResolve(packagePath, true, { keepSuffix: true });
-    } catch (err) {
-        logWarning(
-            `GradleParser: plugin ${packagePath} not resolvable and has been skipped`
-        );
-        return;
+
+    const className = pkg ? pkg.split('.').pop() : null;
+    let packageParams = '';
+    if (plugin.packageParams) {
+        packageParams = plugin.packageParams.join(',');
     }
-    // const modulePath = `../../${pathFixed}`;
+    const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
+    const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
+    console.log(
+        'SJKHSKSJ',
+        pathFixed,
+        plugin.skipLinking,
+        pluginRoot['no-npm']
+    );
+    const skipPathResolutions = pluginRoot['no-npm'];
+    let pathAbsolute;
+
+    if (!skipPathResolutions) {
+        pathAbsolute = doResolvePath(pathFixed);
+    }
 
     // APP/BUILD.GRADLE
     if (plugin.projectName) {
-        if (!plugin.skipLinking) {
+        if (!plugin.skipLinking && !skipPathResolutions) {
             c.pluginConfigAndroid.pluginIncludes += `, ':${
                 plugin.projectName
             }'`;
             // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
             c.pluginConfigAndroid.pluginPaths += `project(':${
                 plugin.projectName
-            }').projectDir = new File(${pathAbsolute})\n`;
+            }').projectDir = new File('${pathAbsolute}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
@@ -473,7 +487,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             }
         }
     } else {
-        if (!plugin.skipLinking) {
+        if (!plugin.skipLinking && !skipPathResolutions) {
             c.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
             c.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }
@@ -514,7 +528,9 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             c.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${v}\n`;
         });
     }
-    _fixAndroidLegacy(c, pathAbsolute);
+    if (!skipPathResolutions) {
+        _fixAndroidLegacy(c, pathAbsolute);
+    }
 
     // BUILD.GRADLE
     const buildGradle = plugin.BuildGradle;

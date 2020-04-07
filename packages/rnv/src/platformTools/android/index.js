@@ -465,12 +465,13 @@ const _runGradleApp = async (c, platform, device) => {
         }
     }
 
-    if (!outputAab)
+    if (!outputAab) {
         await execCLI(
             c,
             CLI_ANDROID_ADB,
             `-s ${device.udid} shell am start -n ${bundleId}/.MainActivity`
         );
+    }
 };
 
 export const buildAndroid = (c, platform) =>
@@ -612,10 +613,34 @@ export const configureProject = (c, platform) =>
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            injectPluginGradleSync(c, pluginPlat, key, pluginPlat.package);
-            injectPluginKotlinSync(c, pluginPlat, key, pluginPlat.package);
-            injectPluginManifestSync(c, pluginPlat, key, pluginPlat.package);
-            injectPluginXmlValuesSync(c, pluginPlat, key, pluginPlat.package);
+            injectPluginGradleSync(
+                c,
+                pluginPlat,
+                key,
+                pluginPlat.package,
+                plugin
+            );
+            injectPluginKotlinSync(
+                c,
+                pluginPlat,
+                key,
+                pluginPlat.package,
+                plugin
+            );
+            injectPluginManifestSync(
+                c,
+                pluginPlat,
+                key,
+                pluginPlat.package,
+                plugin
+            );
+            injectPluginXmlValuesSync(
+                c,
+                pluginPlat,
+                key,
+                pluginPlat.package,
+                plugin
+            );
         });
 
         c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(
