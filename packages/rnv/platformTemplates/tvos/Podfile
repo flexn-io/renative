@@ -88,4 +88,19 @@ pre_install do |installer|
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
 end
 
+static_frameworks = [{{PLUGIN_STATIC_FRAMEWORKS}}]
+
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if static_frameworks.include?(pod.name)
+      def pod.static_framework?;
+        true
+      end
+      def pod.build_type;
+        Pod::Target::BuildType.static_library
+      end
+    end
+  end
+end
+
 {{PLUGIN_PODFILE_INJECT}}

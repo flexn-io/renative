@@ -30,7 +30,12 @@ export const parsePodFile = (c, platform) =>
                     pluginInject += _injectPod(v, pluginPlat, plugin, key);
                 });
             }
-
+            const isStatic = getFlavouredProp(c, pluginPlat, 'isStatic');
+            if (isStatic === true) {
+                if (!c.pluginConfigiOS.staticFrameworks.includes(podName)) {
+                    c.pluginConfigiOS.staticFrameworks.push(`'${podName}'`);
+                }
+            }
             const reactSubSpecs = getFlavouredProp(
                 c,
                 pluginPlat,
@@ -98,6 +103,10 @@ export const parsePodFile = (c, platform) =>
                 {
                     pattern: '{{PLUGIN_DEPLOYMENT_TARGET}}',
                     override: c.pluginConfigiOS.deploymentTarget
+                },
+                {
+                    pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}',
+                    override: c.pluginConfigiOS.staticFrameworks.join(',')
                 },
                 {
                     pattern: '{{PATH_REACT_NATIVE}}',

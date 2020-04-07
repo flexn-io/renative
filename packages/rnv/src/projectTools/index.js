@@ -58,11 +58,12 @@ export const rnvConfigure = async c => {
         await overridePlugins(c, ptDirs[i]);
     }
     // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
+    await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
+
     const ptDirs2 = c.paths.appConfig.pluginDirs;
     for (let i = 0; i < ptDirs2.length; i++) {
         await overridePlugins(c, ptDirs2[i]);
     }
-    // await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
 
     const originalPlatform = c.platform;
 
@@ -223,9 +224,6 @@ const _overridePlugins = (c, pluginsPath, dir) => {
     if (!dest) return;
 
     const plugin = getMergedPlugin(c, dir, c.buildConfig.plugins);
-
-    console.log('BABABABA', pluginsPath);
-
     let flavourSource;
     if (plugin) {
         flavourSource = path.resolve(
@@ -250,13 +248,14 @@ const _overridePlugins = (c, pluginsPath, dir) => {
         );
     }
 
+    const overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
     const overrideConfig = readObjectSync(
         path.resolve(pluginsPath, dir, 'overrides.json')
     );
     if (overrideConfig?.overrides) {
-        for (const k in overrideConfig.overrides) {
+        Object.keys(overrideConfig.overrides).forEach((k, i) => {
             const override = overrideConfig.overrides[k];
-            ovDir = path.join(dest, k);
+            const ovDir = path.join(dest, k);
             if (fs.existsSync(ovDir)) {
                 if (fs.lstatSync(ovDir).isDirectory()) {
                     logWarning(
@@ -264,15 +263,21 @@ const _overridePlugins = (c, pluginsPath, dir) => {
                     );
                 } else {
                     let fileToFix = fs.readFileSync(ovDir).toString();
-                    for (const fk in override) {
-                        fileToFix = fileToFix.replace(
-                            new RegExp(fk, 'g'),
-                            override[fk]
-                        );
-                    }
+                    Object.keys(override).forEach(fk => {
+                        const regEx = new RegExp(fk, 'g');
+                        const count = (fileToFix.match(regEx) || []).length;
+                        if (!count) {
+                            logWarning(`No Match found in ${chalk.red(
+                                ovDir
+                            )} for expression: ${chalk.red(fk)}.
+Consider update or removal of ${chalk.white(overridePath)}`);
+                        } else {
+                            fileToFix = fileToFix.replace(regEx, override[fk]);
+                        }
+                    });
                     fs.writeFileSync(ovDir, fileToFix);
                 }
             }
-        }
+        });
     }
 };

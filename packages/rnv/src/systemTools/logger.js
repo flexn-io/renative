@@ -64,10 +64,11 @@ export const logWelcome = () => {
     str += printIntoBox(`      ${chalk.grey('https://renative.org')}`, 1);
     str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      ${getCurrentCommand()}`);
-    if (_c?.timeStart)
+    if (_c?.timeStart) {
         str += printIntoBox(
             `      Start Time: ${_c.timeStart.toLocaleString()}`
         );
+    }
     str += printIntoBox('');
     str += printBoxEnd();
     str += '\n';
@@ -144,7 +145,7 @@ export const logToSummary = v => {
     _messages.push(`\n${v}`);
 };
 
-export const logSummary = () => {
+export const logSummary = (header = 'SUMMARY') => {
     let logContent = printIntoBox('All good as 🦄 ');
     if (_messages && _messages.length) {
         logContent = '';
@@ -159,8 +160,12 @@ export const logSummary = () => {
         timeString = `| ${_c.timeEnd.toLocaleString()}`;
     }
 
-    let str = printBoxStart(`🚀  SUMMARY ${timeString}`, getCurrentCommand());
+    let str = printBoxStart(`🚀  ${header} ${timeString}`, getCurrentCommand());
     if (_c) {
+        str += printIntoBox(
+            `ReNative Version: ${_highlightColor(_c.rnvVersion)}`,
+            1
+        );
         if (_c.files.project.package) {
             str += printIntoBox(
                 `Project Name: ${_highlightColor(
@@ -224,17 +229,19 @@ export const logSummary = () => {
         if (_c.process) {
             const envString = `${_c.process.platform} | ${
                 _c.process.arch
-            } | node v${_c.process.versions?.node} | rnv v${_c.rnvVersion}`;
+            } | node v${_c.process.versions?.node}`;
             str += printIntoBox(`Env Info: ${chalk.gray(envString)}`, 1);
         }
 
-        if (_c.program.scheme)
+        if (_c.program.scheme) {
             str += printIntoBox(
                 `Build Scheme: ${_highlightColor(_c.program.scheme)}`,
                 1
             );
-        if (_c.platform)
+        }
+        if (_c.platform) {
             str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
+        }
         if (_c.timeEnd) {
             str += printIntoBox(
                 `Executed Time: ${chalk.yellow(
@@ -246,7 +253,7 @@ export const logSummary = () => {
     }
 
     str += printIntoBox('');
-    str += logContent;
+    str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
     str += printIntoBox('');
     str += printBoxEnd();
 
@@ -275,7 +282,7 @@ export const logTask = (task, customChalk) => {
 };
 
 export const logWarning = msg => {
-    logAndSave(chalk.yellow(`\n⚠️  ${RNV} - WARNING: ${msg}\n`));
+    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
 };
 
 export const logInfo = msg => {
