@@ -648,7 +648,6 @@ export const loadPluginTemplates = c => {
 
     const customPluginTemplates =
         c.files.project.config?.paths?.pluginTemplates;
-    console.log('SJKSKJSHKSJHSKJS', customPluginTemplates);
     if (customPluginTemplates) {
         Object.keys(customPluginTemplates).forEach(k => {
             const val = customPluginTemplates[k];
@@ -667,7 +666,7 @@ export const loadPluginTemplates = c => {
                         );
                     } else {
                         // ptPath = path.join(c.paths.project.nodeModulesDir, val.npm, val.path || '');
-                        ptPath = `${doResolve(val.npm)}/val.path`;
+                        ptPath = `${doResolve(val.npm)}/${val.path}`;
                     }
 
                     const ptConfig = path.join(
