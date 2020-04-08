@@ -248,7 +248,7 @@ export const runTizen = async (c, platform, target) => {
     const platformConfig = c.buildConfig.platforms[platform];
     const { hosted, debug } = c.program;
 
-    const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+    const isHosted = hosted ?? !getConfigProp(c, platform, 'bundleAssets');
     // if (debug) isHosted = false;
 
     if (!platformConfig) {
@@ -273,7 +273,7 @@ export const runTizen = async (c, platform, target) => {
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
     const gwt = `${platformConfig.appName}.wgt`;
-    const certProfile = platformConfig.certificateProfile;
+    const certProfile = platformConfig.certificateProfile ?? 'RNVanillaCert';
 
     let deviceID;
 
@@ -457,7 +457,7 @@ export const buildTizenProject = (c, platform) => new Promise((resolve, reject) 
     const tDir = getAppFolder(c, platform);
     const tOut = path.join(tDir, 'output');
     const tBuild = path.join(tDir, 'build');
-    const certProfile = platformConfig.certificateProfile;
+    const certProfile = platformConfig.certificateProfile ?? 'RNVanillaCert';
 
     buildWeb(c, platform)
         .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
