@@ -8,7 +8,7 @@ import Doctor from './systemTools/doctor';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 import Config from './config';
-import { doResolve } from './resolve';
+import { doResolve, doResolvePath } from './resolve';
 import Analytics from './systemTools/analytics';
 
 import 'source-map-support/register';
@@ -34,7 +34,8 @@ export {
     Logger,
     run,
     CLI,
-    doResolve
+    doResolve,
+    doResolvePath
 };
 
 export default { run, Config };
