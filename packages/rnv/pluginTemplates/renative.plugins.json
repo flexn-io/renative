@@ -1812,10 +1812,7 @@
         "react-navigation": {
             "version": "3.9.2",
             "webpack": {
-                "modulePaths": [
-                    "node_modules/react-navigation",
-                    "node_modules/@react-navigation"
-                ]
+                "modulePaths": ["node_modules/react-navigation"]
             },
             "dependsOn": [
                 "react-navigation-stack",
