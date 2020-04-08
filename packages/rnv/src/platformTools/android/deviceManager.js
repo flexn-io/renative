@@ -36,9 +36,7 @@ const currentDeviceProps = {};
 export const composeDevicesString = (devices, returnArray) => {
     logTask(`composeDevicesString:${devices ? devices.length : null}`);
     const devicesArray = [];
-    devices.forEach((v, i) =>
-        devicesArray.push(_getDeviceString(v, !returnArray ? i : null))
-    );
+    devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, !returnArray ? i : null)));
     if (returnArray) return devicesArray;
     return `\n${devicesArray.join('')}`;
 };
@@ -77,7 +75,7 @@ export const launchAndroidSimulator = async (
         if (isIndependentThread) {
             execCLI(c, CLI_ANDROID_EMULATOR, `-avd "${actualTarget}"`, {
                 detached: isIndependentThread
-            }).catch(err => {
+            }).catch((err) => {
                 if (err.includes && err.includes('WHPX')) {
                     logWarning(err);
                     return logError(
@@ -96,7 +94,7 @@ export const launchAndroidSimulator = async (
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listAndroidTargets = async c => {
+export const listAndroidTargets = async (c) => {
     logTask('listAndroidTargets');
     const {
         program: { device }
@@ -106,8 +104,7 @@ export const listAndroidTargets = async c => {
     const list = await getAndroidTargets(c, false, device, device);
     const devices = await composeDevicesString(list);
     logToSummary(`Android Targets:\n${devices}`);
-    if (devices.trim() === '')
-        logToSummary('Android Targets: No devices found');
+    if (devices.trim() === '') { logToSummary('Android Targets: No devices found'); }
     return devices;
 };
 
@@ -127,8 +124,7 @@ const _getDeviceString = (device, i) => {
     if (isTablet) deviceIcon = 'Tablet 💊 ';
     if (isTV) deviceIcon = 'TV 📺 ';
     if (isWear) deviceIcon = 'Wear ⌚ ';
-    if (!deviceIcon && (udid !== 'unknown' || avdConfig))
-        deviceIcon = 'Phone 📱 ';
+    if (!deviceIcon && (udid !== 'unknown' || avdConfig)) { deviceIcon = 'Phone 📱 '; }
 
     const deviceString = `${chalk.white(
         name
@@ -136,8 +132,7 @@ const _getDeviceString = (device, i) => {
         isDevice ? chalk.red(' (device)') : ''
     } ${isActive ? chalk.magenta(' (active)') : ''}`;
 
-    if (i === null)
-        return { key: name, name: deviceString, value: name, icon: deviceIcon };
+    if (i === null) { return { key: name, name: deviceString, value: name, icon: deviceIcon }; }
 
     return ` [${i + 1}]> ${deviceString}\n`;
 };
@@ -166,9 +161,7 @@ export const getAndroidTargets = async (
     deviceOnly = false
 ) => {
     logTask(
-        `getAndroidTargets:${
-            c.platform
-        }:${skipDevices}:${skipAvds}:${deviceOnly}`
+        `getAndroidTargets:${c.platform}:${skipDevices}:${skipAvds}:${deviceOnly}`
     );
 
     try {
@@ -208,7 +201,7 @@ const getRunningDeviceProp = async (c, udid, prop) => {
     const reg = /\[.+\]: \[.*\n?[^\[]*\]/gm;
     const lines = rawProps.match(reg);
 
-    lines.forEach(line => {
+    lines.forEach((line) => {
         const words = line.split(']: [');
         const key = words[0].slice(1);
         const value = words[1].slice(0, words[1].length - 1);
@@ -254,7 +247,7 @@ const decideIfTVRunning = async (c, device) => {
 
     let isTV = false;
     [mod, name, flavor, clientIdBase, description, model, product].forEach(
-        string => {
+        (string) => {
             if (string && string.toLowerCase().includes('tv')) isTV = true;
         }
     );
@@ -286,7 +279,7 @@ const decideIfWearRunning = async (c, device) => {
 
     let isWear = false;
     [fingerprint, name, mod, flavor, description, model, product].forEach(
-        string => {
+        (string) => {
             if (string && string.toLowerCase().includes('wear')) isWear = true;
         }
     );
@@ -345,10 +338,9 @@ const getDeviceType = async (device, c) => {
                 density
             );
             screenProps = { ...screenProps, diagonalInches };
-            device.isTablet =
-                !device.isTV &&
-                diagonalInches > IS_TABLET_ABOVE_INCH &&
-                diagonalInches <= 15;
+            device.isTablet = !device.isTV
+                && diagonalInches > IS_TABLET_ABOVE_INCH
+                && diagonalInches <= 15;
             device.isWear = await decideIfWearRunning(c, device);
         }
 
@@ -373,7 +365,7 @@ const getDeviceType = async (device, c) => {
         const deviceName = device.avdConfig['hw.device.name'];
 
         device.isWear = false;
-        [sysdir, tagId, tagDisplay, deviceName].forEach(string => {
+        [sysdir, tagId, tagDisplay, deviceName].forEach((string) => {
             if (string && string.includes('wear')) device.isWear = true;
         });
 
@@ -383,9 +375,8 @@ const getDeviceType = async (device, c) => {
         const image = device.avdConfig['image.sysdir.1'];
 
         device.isTV = false;
-        [avdId, name, skin, image].forEach(string => {
-            if (string && string.toLowerCase().includes('tv'))
-                device.isTV = true;
+        [avdId, name, skin, image].forEach((string) => {
+            if (string && string.toLowerCase().includes('tv')) { device.isTV = true; }
         });
 
         const diagonalInches = calculateDeviceDiagonal(width, height, density);
@@ -411,17 +402,17 @@ const getAvdDetails = (c, deviceName) => {
 
     const results = {};
 
-    avdConfigPaths.forEach(cPath => {
+    avdConfigPaths.forEach((cPath) => {
         if (fs.existsSync(cPath)) {
             const filesPath = fs.readdirSync(cPath);
 
-            filesPath.forEach(fName => {
+            filesPath.forEach((fName) => {
                 const fPath = path.join(cPath, fName);
                 const dirent = fs.lstatSync(fPath);
                 if (!dirent.isDirectory() && fName === `${deviceName}.ini`) {
                     const avdData = fs.readFileSync(fPath).toString();
                     const lines = avdData.trim().split(/\r?\n/);
-                    lines.forEach(line => {
+                    lines.forEach((line) => {
                         const [key, value] = line.split('=');
                         if (key === 'path') {
                             const initData = fs
@@ -429,7 +420,7 @@ const getAvdDetails = (c, deviceName) => {
                                 .toString();
                             const initLines = initData.trim().split(/\r?\n/);
                             const avdConfig = {};
-                            initLines.forEach(initLine => {
+                            initLines.forEach((initLine) => {
                                 const [iniKey, iniValue] = initLine.split('=');
                                 // also remove the white space
                                 avdConfig[iniKey.trim()] = iniValue.trim();
@@ -484,7 +475,7 @@ const _parseDevicesResult = async (
         logDebug('_parseDevicesResult 2', { lines });
         if (lines.length !== 0) {
             await Promise.all(
-                lines.map(async line => {
+                lines.map(async (line) => {
                     const words = line.split(/[ ,\t]+/).filter(w => w !== '');
                     if (words.length === 0) return;
                     logDebug('_parseDevicesResult 3', { words });
@@ -526,7 +517,7 @@ const _parseDevicesResult = async (
         logDebug('_parseDevicesResult 7', { avdLines });
 
         await Promise.all(
-            avdLines.map(async line => {
+            avdLines.map(async (line) => {
                 let avdDetails;
 
                 try {
@@ -565,24 +556,22 @@ const _parseDevicesResult = async (
     logDebug('_parseDevicesResult 10', { devices });
 
     return Promise.all(devices.map(device => getDeviceType(device, c))).then(
-        devicesArray =>
-            devicesArray.filter(device => {
-                // filter devices based on selected platform
-                const { platform } = c;
-                if (skipTargetCheck) return true; // return everything if skipTargetCheck is used
-                if (device.isNotEligibleAndroid) return false;
-                const matches =
-                    (platform === ANDROID && device.isTablet) ||
-                    (platform === ANDROID_WEAR && device.isWear) ||
-                    (platform === ANDROID_TV && device.isTV) ||
-                    (platform === ANDROID && device.isMobile);
-                logDebug('getDeviceType - filter', {
-                    device,
-                    matches,
-                    platform
-                });
-                return matches;
-            })
+        devicesArray => devicesArray.filter((device) => {
+            // filter devices based on selected platform
+            const { platform } = c;
+            if (skipTargetCheck) return true; // return everything if skipTargetCheck is used
+            if (device.isNotEligibleAndroid) return false;
+            const matches = (platform === ANDROID && device.isTablet)
+                    || (platform === ANDROID_WEAR && device.isWear)
+                    || (platform === ANDROID_TV && device.isTV)
+                    || (platform === ANDROID && device.isMobile);
+            logDebug('getDeviceType - filter', {
+                device,
+                matches,
+                platform
+            });
+            return matches;
+        })
     );
 };
 
@@ -609,17 +598,26 @@ export const askForNewEmulator = async (c, platform) => {
     if (confirm) {
         switch (platform) {
             case 'android':
-                return _createEmulator(c, '28', 'google_apis', emuName).then(
-                    () => launchAndroidSimulator(c, platform, emuName, true)
-                );
+                return _createEmulator(
+                    c,
+                    '28',
+                    'google_apis',
+                    emuName
+                ).then(() => launchAndroidSimulator(c, platform, emuName, true));
             case 'androidtv':
-                return _createEmulator(c, '28', 'android-tv', emuName).then(
-                    () => launchAndroidSimulator(c, platform, emuName, true)
-                );
+                return _createEmulator(
+                    c,
+                    '28',
+                    'android-tv',
+                    emuName
+                ).then(() => launchAndroidSimulator(c, platform, emuName, true));
             case 'androidwear':
-                return _createEmulator(c, '28', 'android-wear', emuName).then(
-                    () => launchAndroidSimulator(c, platform, emuName, true)
-                );
+                return _createEmulator(
+                    c,
+                    '28',
+                    'android-wear',
+                    emuName
+                ).then(() => launchAndroidSimulator(c, platform, emuName, true));
             default:
                 return Promise.reject(
                     'Cannot find any active or created emulators'
@@ -637,70 +635,66 @@ const _createEmulator = (c, apiVersion, emuPlatform, emuName) => {
         CLI_ANDROID_SDKMANAGER,
         `"system-images;android-${apiVersion};${emuPlatform};x86"`
     )
-        .then(() =>
-            execCLI(
-                c,
-                CLI_ANDROID_AVDMANAGER,
-                `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`
-            )
-        )
+        .then(() => execCLI(
+            c,
+            CLI_ANDROID_AVDMANAGER,
+            `create avd -n ${emuName} -k "system-images;android-${apiVersion};${emuPlatform};x86"`
+        ))
         .catch(e => logError(e, true));
 };
 
-const waitForEmulatorToBeReady = (c, emulator) =>
-    waitForEmulator(
-        c,
-        CLI_ANDROID_ADB,
-        `-s ${emulator} shell getprop init.svc.bootanim`,
-        res => res.includes('stopped')
-    );
+const waitForEmulatorToBeReady = (c, emulator) => waitForEmulator(
+    c,
+    CLI_ANDROID_ADB,
+    `-s ${emulator} shell getprop init.svc.bootanim`,
+    res => res.includes('stopped')
+);
 
-export const checkForActiveEmulator = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`checkForActiveEmulator:${platform}`);
-        let attempts = 1;
-        const maxAttempts = isSystemWin ? 20 : 10;
-        let running = false;
-        const poll = setInterval(() => {
-            // Prevent the interval from running until enough promises return to make it stop or we get a result
-            if (!running) {
-                running = true;
-                getAndroidTargets(c, false, true, false)
-                    .then(async v => {
-                        logDebug('Available devices after filtering', v);
-                        if (v.length > 0) {
-                            logSuccess(
-                                `Found active emulator! ${chalk.white(
-                                    v[0].udid
-                                )}. Will use it`
-                            );
-                            clearInterval(poll);
-                            resolve(v[0]);
-                        } else {
-                            console.log(
-                                `looking for active emulators: attempt ${attempts}/${maxAttempts}`
-                            );
-                            attempts++;
-                            if (
-                                [ANDROID_TV, ANDROID_WEAR].includes(platform) &&
-                                attempts === 2
-                            ) {
-                                await resetAdb(c); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
-                            }
-                            if (attempts > maxAttempts) {
-                                clearInterval(poll);
-                                reject('Could not find any active emulatros');
-                                // TODO: Asking for new emulator is worng as it diverts
-                                // user from underlying failure of not being able to connect
-                                // return _askForNewEmulator(c, platform);
-                            }
-                            running = false;
-                        }
-                    })
-                    .catch(e => {
+export const checkForActiveEmulator = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`checkForActiveEmulator:${platform}`);
+    let attempts = 1;
+    const maxAttempts = isSystemWin ? 20 : 10;
+    let running = false;
+    const poll = setInterval(() => {
+        // Prevent the interval from running until enough promises return to make it stop or we get a result
+        if (!running) {
+            running = true;
+            getAndroidTargets(c, false, true, false)
+                .then(async (v) => {
+                    logDebug('Available devices after filtering', v);
+                    if (v.length > 0) {
+                        logSuccess(
+                            `Found active emulator! ${chalk.white(
+                                v[0].udid
+                            )}. Will use it`
+                        );
                         clearInterval(poll);
-                        logError(e);
-                    });
-            }
-        }, CHECK_INTEVAL);
-    });
+                        resolve(v[0]);
+                    } else {
+                        console.log(
+                            `looking for active emulators: attempt ${attempts}/${maxAttempts}`
+                        );
+                        attempts++;
+                        if (
+                            [ANDROID_TV, ANDROID_WEAR].includes(platform)
+                                && attempts === 2
+                        ) {
+                            await resetAdb(c); // from time to time adb reports a recently started atv emu as being offline. Restarting adb fixes it
+                        }
+                        if (attempts > maxAttempts) {
+                            clearInterval(poll);
+                            reject('Could not find any active emulatros');
+                            // TODO: Asking for new emulator is worng as it diverts
+                            // user from underlying failure of not being able to connect
+                            // return _askForNewEmulator(c, platform);
+                        }
+                        running = false;
+                    }
+                })
+                .catch((e) => {
+                    clearInterval(poll);
+                    logError(e);
+                });
+        }
+    }, CHECK_INTEVAL);
+});

@@ -5,7 +5,9 @@ import Config from '../config';
 
 export default (c) => {
     if (!c) c = Config.getConfig();
-    const { process: { platform } } = c;
+    const {
+        process: { platform }
+    } = c;
     if (platform === 'linux') return new LinuxPlatformSetup(c);
     if (platform === 'win32') return new WindowsPlatformSetup(c);
     if (platform === 'darwin') return new DarwinPlatformSetup();

@@ -15,7 +15,7 @@ if (process.platform === 'darwin') {
     tizenExtension = 'dmg';
 }
 
-export const replaceHomeFolder = p => {
+export const replaceHomeFolder = (p) => {
     if (isSystemWin) return p.replace('~', process.env.USERPROFILE);
     return p.replace('~', process.env.HOME);
 };

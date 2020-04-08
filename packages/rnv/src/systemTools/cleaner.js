@@ -16,13 +16,12 @@ const rnvClean = async (c, skipQuestion = false) => {
         'node_modules'
     );
     const pkgLock = path.join(c.paths.project.dir, 'package-lock.json');
-    if (fs.existsSync(immediateNodeModuleDir))
-        pathsToRemove.push(immediateNodeModuleDir);
+    if (fs.existsSync(immediateNodeModuleDir)) { pathsToRemove.push(immediateNodeModuleDir); }
     if (fs.existsSync(pkgLock)) pathsToRemove.push(pkgLock);
     let msg = chalk.red(`${pkgLock}\n${immediateNodeModuleDir}`);
     const packagesFolder = path.join(c.paths.project.dir, 'packages');
     if (fs.existsSync(packagesFolder)) {
-        fs.readdirSync(packagesFolder).forEach(dir => {
+        fs.readdirSync(packagesFolder).forEach((dir) => {
             if (dir === '.DS_Store') {
                 const pth = path.join(packagesFolder, dir);
 
@@ -51,10 +50,8 @@ const rnvClean = async (c, skipQuestion = false) => {
     }
 
     const buildDirs = [];
-    if (fs.existsSync(c.paths.project.builds.dir))
-        buildDirs.push(c.paths.project.builds.dir);
-    if (fs.existsSync(c.paths.project.assets.dir))
-        buildDirs.push(c.paths.project.assets.dir);
+    if (fs.existsSync(c.paths.project.builds.dir)) { buildDirs.push(c.paths.project.builds.dir); }
+    if (fs.existsSync(c.paths.project.assets.dir)) { buildDirs.push(c.paths.project.assets.dir); }
 
     const answers = {
         modules: false,

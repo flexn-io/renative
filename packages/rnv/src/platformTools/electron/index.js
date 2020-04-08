@@ -56,133 +56,129 @@ const configureElectronProject = async (c, platform) => {
 };
 const merge = require('deepmerge');
 
-const configureProject = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`configureProject:${platform}`);
+const configureProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`configureProject:${platform}`);
 
-        if (!isPlatformActive(c, platform, resolve)) return;
+    if (!isPlatformActive(c, platform, resolve)) return;
 
-        const appFolder = getAppFolder(c, platform);
-        const templateFolder = getAppTemplateFolder(c, platform);
-        const bundleAssets =
-            getConfigProp(c, platform, 'bundleAssets') === true;
-        const electronConfigPath = path.join(appFolder, 'electronConfig.json');
-        const packagePath = path.join(appFolder, 'package.json');
-        const appId = getAppId(c, platform);
+    const appFolder = getAppFolder(c, platform);
+    const templateFolder = getAppTemplateFolder(c, platform);
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    const electronConfigPath = path.join(appFolder, 'electronConfig.json');
+    const packagePath = path.join(appFolder, 'package.json');
+    const appId = getAppId(c, platform);
 
-        if (!fs.existsSync(packagePath)) {
-            logWarning(
-                `Looks like your ${chalk.white(
-                    platform
-                )} platformBuild is misconfigured!. let's repair it.`
-            );
-            createPlatformBuild(c, platform)
-                .then(() => configureElectronProject(c, platform))
-                .then(() => resolve(c))
-                .catch(e => reject(e));
-            return;
-        }
-
-        const pkgJson = path.join(templateFolder, 'package.json');
-        const packageJson = readObjectSync(pkgJson);
-
-        packageJson.name = `${c.runtime.appId}-${platform}`;
-        packageJson.productName = `${getAppTitle(c, platform)}`;
-        packageJson.version = `${getAppVersion(c, platform)}`;
-        packageJson.description = `${getAppDescription(c, platform)}`;
-        packageJson.author = getAppAuthor(c, platform);
-        packageJson.license = `${getAppLicense(c, platform)}`;
-        packageJson.main = './main.js';
-
-        writeFileSync(packagePath, packageJson);
-
-        let browserWindow = {
-            width: 1200,
-            height: 800,
-            webPreferences: { nodeIntegration: true }
-        };
-        const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
-        if (browserWindowExt) {
-            browserWindow = merge(browserWindow, browserWindowExt);
-        }
-        const browserWindowStr = JSON.stringify(browserWindow, null, 2);
-
-        if (bundleAssets) {
-            writeCleanFile(
-                path.join(templateFolder, '_privateConfig', 'main.js'),
-                path.join(appFolder, 'main.js'),
-                [
-                    {
-                        pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
-                        override: browserWindowStr
-                    }
-                ]
-            );
-        } else {
-            writeCleanFile(
-                path.join(templateFolder, '_privateConfig', 'main.dev.js'),
-                path.join(appFolder, 'main.js'),
-                [
-                    {
-                        pattern: '{{DEV_SERVER}}',
-                        override: `http://${c.runtime.localhost}:${
-                            c.runtime.port
-                        }`
-                    },
-                    {
-                        pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
-                        override: browserWindowStr
-                    }
-                ]
-            );
-        }
-
-        const macConfig = {};
-        if (platform === MACOS) {
-            macConfig.mac = {
-                entitlements: path.join(appFolder, 'entitlements.mac.plist'),
-                entitlementsInherit: path.join(
-                    appFolder,
-                    'entitlements.mac.plist'
-                ),
-                hardenedRuntime: true
-            };
-            macConfig.mas = {
-                entitlements: path.join(appFolder, 'entitlements.mas.plist'),
-                entitlementsInherit: path.join(
-                    appFolder,
-                    'entitlements.mas.inherit.plist'
-                ),
-                provisioningProfile: path.join(
-                    appFolder,
-                    'embedded.provisionprofile'
-                ),
-                hardenedRuntime: false
-            };
-        }
-
-        let electronConfig = merge(
-            {
-                appId,
-                directories: {
-                    app: appFolder,
-                    buildResources: path.join(appFolder, 'resources'),
-                    output: path.join(appFolder, 'build/release')
-                },
-                files: ['!build/release']
-            },
-            macConfig
+    if (!fs.existsSync(packagePath)) {
+        logWarning(
+            `Looks like your ${chalk.white(
+                platform
+            )} platformBuild is misconfigured!. let's repair it.`
         );
+        createPlatformBuild(c, platform)
+            .then(() => configureElectronProject(c, platform))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
 
-        const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
+    const pkgJson = path.join(templateFolder, 'package.json');
+    const packageJson = readObjectSync(pkgJson);
 
-        if (electronConfigExt) {
-            electronConfig = merge(electronConfig, electronConfigExt);
-        }
-        writeFileSync(electronConfigPath, electronConfig);
+    packageJson.name = `${c.runtime.appId}-${platform}`;
+    packageJson.productName = `${getAppTitle(c, platform)}`;
+    packageJson.version = `${getAppVersion(c, platform)}`;
+    packageJson.description = `${getAppDescription(c, platform)}`;
+    packageJson.author = getAppAuthor(c, platform);
+    packageJson.license = `${getAppLicense(c, platform)}`;
+    packageJson.main = './main.js';
 
-        resolve();
-    });
+    writeFileSync(packagePath, packageJson);
+
+    let browserWindow = {
+        width: 1200,
+        height: 800,
+        webPreferences: { nodeIntegration: true }
+    };
+    const browserWindowExt = getConfigProp(c, platform, 'BrowserWindow');
+    if (browserWindowExt) {
+        browserWindow = merge(browserWindow, browserWindowExt);
+    }
+    const browserWindowStr = JSON.stringify(browserWindow, null, 2);
+
+    if (bundleAssets) {
+        writeCleanFile(
+            path.join(templateFolder, '_privateConfig', 'main.js'),
+            path.join(appFolder, 'main.js'),
+            [
+                {
+                    pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
+                    override: browserWindowStr
+                }
+            ]
+        );
+    } else {
+        writeCleanFile(
+            path.join(templateFolder, '_privateConfig', 'main.dev.js'),
+            path.join(appFolder, 'main.js'),
+            [
+                {
+                    pattern: '{{DEV_SERVER}}',
+                    override: `http://${c.runtime.localhost}:${c.runtime.port}`
+                },
+                {
+                    pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
+                    override: browserWindowStr
+                }
+            ]
+        );
+    }
+
+    const macConfig = {};
+    if (platform === MACOS) {
+        macConfig.mac = {
+            entitlements: path.join(appFolder, 'entitlements.mac.plist'),
+            entitlementsInherit: path.join(
+                appFolder,
+                'entitlements.mac.plist'
+            ),
+            hardenedRuntime: true
+        };
+        macConfig.mas = {
+            entitlements: path.join(appFolder, 'entitlements.mas.plist'),
+            entitlementsInherit: path.join(
+                appFolder,
+                'entitlements.mas.inherit.plist'
+            ),
+            provisioningProfile: path.join(
+                appFolder,
+                'embedded.provisionprofile'
+            ),
+            hardenedRuntime: false
+        };
+    }
+
+    let electronConfig = merge(
+        {
+            appId,
+            directories: {
+                app: appFolder,
+                buildResources: path.join(appFolder, 'resources'),
+                output: path.join(appFolder, 'build/release')
+            },
+            files: ['!build/release']
+        },
+        macConfig
+    );
+
+    const electronConfigExt = getConfigProp(c, platform, 'electronConfig');
+
+    if (electronConfigExt) {
+        electronConfig = merge(electronConfig, electronConfigExt);
+    }
+    writeFileSync(electronConfigPath, electronConfig);
+
+    resolve();
+});
 
 const buildElectron = (c, platform) => {
     logTask(`buildElectron:${platform}`);
@@ -247,7 +243,7 @@ const runElectron = async (c, platform, port) => {
     }
 };
 
-const _runElectronSimulator = async c => {
+const _runElectronSimulator = async (c) => {
     logTask(`_runElectronSimulator:${c.platform}`);
     const appFolder = getAppFolder(c, c.platform);
     const elc = `${doResolve('electron')}/cli.js`;
@@ -269,51 +265,50 @@ const runElectronDevServer = async (c, platform, port) => {
     return runWeb(c, platform, port);
 };
 
-const _generateICNS = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`_generateICNS:${platform}`);
+const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`_generateICNS:${platform}`);
 
-        let source;
+    let source;
 
-        if (c.paths.appConfig.dirs) {
-            c.paths.appConfig.dirs.forEach(v => {
-                const pf = path.join(v, `assets/${platform}/AppIcon.iconset`);
-                if (fs.existsSync(pf)) {
-                    source = pf;
-                }
-            });
-        } else if (c.paths.appConfig.dir) {
-            source = path.join(
-                c.paths.appConfig.dir,
-                `assets/${platform}/AppIcon.iconset`
-            );
-        }
-
-        const dest = path.join(
-            getAppFolder(c, platform),
-            'resources/icon.icns'
+    if (c.paths.appConfig.dirs) {
+        c.paths.appConfig.dirs.forEach((v) => {
+            const pf = path.join(v, `assets/${platform}/AppIcon.iconset`);
+            if (fs.existsSync(pf)) {
+                source = pf;
+            }
+        });
+    } else if (c.paths.appConfig.dir) {
+        source = path.join(
+            c.paths.appConfig.dir,
+            `assets/${platform}/AppIcon.iconset`
         );
+    }
 
-        if (!fs.existsSync(source)) {
-            logWarning(
-                `Your app config is missing ${chalk.white(
-                    source
-                )}. icon.icns will not be generated!`
-            );
-            resolve();
-            return;
-        }
+    const dest = path.join(
+        getAppFolder(c, platform),
+        'resources/icon.icns'
+    );
 
-        mkdirSync(path.join(getAppFolder(c, platform), 'resources'));
+    if (!fs.existsSync(source)) {
+        logWarning(
+            `Your app config is missing ${chalk.white(
+                source
+            )}. icon.icns will not be generated!`
+        );
+        resolve();
+        return;
+    }
 
-        const p = ['--convert', 'icns', source, '--output', dest];
-        try {
-            executeAsync(c, `iconutil ${p.join(' ')}`);
-            resolve();
-        } catch (e) {
-            reject(e);
-        }
-    });
+    mkdirSync(path.join(getAppFolder(c, platform), 'resources'));
+
+    const p = ['--convert', 'icns', source, '--output', dest];
+    try {
+        executeAsync(c, `iconutil ${p.join(' ')}`);
+        resolve();
+    } catch (e) {
+        reject(e);
+    }
+});
 
 export {
     configureElectronProject,

@@ -1,16 +1,23 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import child_process from 'child_process';
-import {
-    getAppFolder,
-} from '../../common';
+import { getAppFolder } from '../../common';
 import { logToSummary, logTask, logWarning } from '../../systemTools/logger';
 import { IOS, TVOS } from '../../constants';
 import { executeAsync } from '../../systemTools/exec';
 
-export const getAppleDevices = async (c, platform, ignoreDevices, ignoreSimulators) => {
-    logTask(`getAppleDevices:${platform},ignoreDevices:${ignoreDevices},ignoreSimulators${ignoreSimulators}`);
-    const { program: { skipTargetCheck } } = c;
+export const getAppleDevices = async (
+    c,
+    platform,
+    ignoreDevices,
+    ignoreSimulators
+) => {
+    logTask(
+        `getAppleDevices:${platform},ignoreDevices:${ignoreDevices},ignoreSimulators${ignoreSimulators}`
+    );
+    const {
+        program: { skipTargetCheck }
+    } = c;
     // const devices = child_process.execFileSync('xcrun', ['instruments', '-s'], {
     //     encoding: 'utf8',
     // });
@@ -21,12 +28,27 @@ export const getAppleDevices = async (c, platform, ignoreDevices, ignoreSimulato
     Object.keys(simctl.devices).forEach((runtime) => {
         console.log('runtime', runtime);
         simctl.devices[runtime].forEach((device) => {
-            if (device.isAvailable) availableSims.push({ ...device, version: runtime.split('.').pop() });
+            if (device.isAvailable) {
+                availableSims.push({
+                    ...device,
+                    version: runtime.split('.').pop()
+                });
+            }
         });
     });
 
-    const devicesArr = _parseIOSDevicesList(devicesAndSims, platform, ignoreDevices, ignoreSimulators);
-    const simulatorsArr = _parseIOSDevicesList(availableSims, platform, ignoreDevices, ignoreSimulators);
+    const devicesArr = _parseIOSDevicesList(
+        devicesAndSims,
+        platform,
+        ignoreDevices,
+        ignoreSimulators
+    );
+    const simulatorsArr = _parseIOSDevicesList(
+        availableSims,
+        platform,
+        ignoreDevices,
+        ignoreSimulators
+    );
     let allDevices = [...devicesArr, ...simulatorsArr];
 
     if (!skipTargetCheck) {
@@ -34,7 +56,10 @@ export const getAppleDevices = async (c, platform, ignoreDevices, ignoreSimulato
         allDevices = allDevices.filter(d => !d.version.includes('watchOS'));
         // filter other platforms
         allDevices = allDevices.filter((d) => {
-            if (platform === IOS && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))) return true;
+            if (
+                platform === IOS
+                && (d.icon?.includes('Phone') || d.icon?.includes('Tablet'))
+            ) { return true; }
             if (platform === TVOS && d.icon?.includes('TV')) return true;
             return false;
         });
@@ -42,20 +67,33 @@ export const getAppleDevices = async (c, platform, ignoreDevices, ignoreSimulato
     return allDevices;
 };
 
-const _parseIOSDevicesList = (rawDevices, platform, ignoreDevices = false, ignoreSimulators = false) => {
+const _parseIOSDevicesList = (
+    rawDevices,
+    platform,
+    ignoreDevices = false,
+    ignoreSimulators = false
+) => {
     const devices = [];
     const decideIcon = (device) => {
         const { name, isDevice } = device;
         switch (platform) {
             case IOS:
-                if (name.includes('iPhone') || name.includes('iPad') || name.includes('iPod')) {
+                if (
+                    name.includes('iPhone')
+                    || name.includes('iPad')
+                    || name.includes('iPod')
+                ) {
                     let icon = 'Phone 📱';
                     if (name.includes('iPad')) icon = 'Tablet 💊';
                     return icon;
                 }
                 return null;
             case TVOS:
-                if ((name.includes('TV')) && !name.includes('iPhone') && !name.includes('iPad')) {
+                if (
+                    name.includes('TV')
+                    && !name.includes('iPhone')
+                    && !name.includes('iPad')
+                ) {
                     return 'TV 📺';
                 }
                 return null;
@@ -122,8 +160,17 @@ export const launchAppleSimulator = async (c, platform, target) => {
         return selectedDevice.name;
     }
 
-    logWarning(`Your specified simulator target ${chalk.white(target)} doesn't exists`);
-    const devices = devicesArr.map(v => ({ name: `${v.name} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${v.isDevice ? chalk.red(' (device)') : ''}`, value: v }));
+    logWarning(
+        `Your specified simulator target ${chalk.white(target)} doesn't exists`
+    );
+    const devices = devicesArr.map(v => ({
+        name: `${v.name} | ${v.icon} | v: ${chalk.green(
+            v.version
+        )} | udid: ${chalk.grey(v.udid)}${
+            v.isDevice ? chalk.red(' (device)') : ''
+        }`,
+        value: v
+    }));
 
     const { sim } = await inquirer.prompt({
         name: 'sim',
@@ -141,7 +188,11 @@ export const launchAppleSimulator = async (c, platform, target) => {
 
 const _launchSimulator = (selectedDevice) => {
     try {
-        child_process.spawnSync('xcrun', ['instruments', '-w', selectedDevice.udid]);
+        child_process.spawnSync('xcrun', [
+            'instruments',
+            '-w',
+            selectedDevice.udid
+        ]);
     } catch (e) {
         // instruments always fail with 255 because it expects more arguments,
         // but we want it to only launch the simulator
@@ -154,7 +205,9 @@ export const listAppleDevices = async (c, platform) => {
     const devicesArr = await getAppleDevices(c, platform);
     let devicesString = '';
     devicesArr.forEach((v, i) => {
-        devicesString += ` [${i + 1}]> ${chalk.bold(v.name)} | ${v.icon} | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${
+        devicesString += ` [${i + 1}]> ${chalk.bold(v.name)} | ${
+            v.icon
+        } | v: ${chalk.green(v.version)} | udid: ${chalk.grey(v.udid)}${
             v.isDevice ? chalk.red(' (device)') : ''
         }\n`;
     });

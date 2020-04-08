@@ -32,7 +32,7 @@ import { cleanFolder } from './fileutils';
 
 const readdirAsync = promisify(fs.readdir);
 
-const getEnvVar = c => {
+const getEnvVar = (c) => {
     const p1 = c.paths.workspace.dir
         .split('/')
         .pop()
@@ -46,17 +46,16 @@ const getEnvVar = c => {
     return envVar;
 };
 
-export const rnvCryptoUpdateProfile = async c => {
+export const rnvCryptoUpdateProfile = async (c) => {
     await updateProfile(c);
 };
 
-const generateRandomKey = length =>
-    Array(length)
-        .fill(
-            '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*'
-        )
-        .map(x => x[Math.floor(Math.random() * x.length)])
-        .join('');
+const generateRandomKey = length => Array(length)
+    .fill(
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$%^&*'
+    )
+    .map(x => x[Math.floor(Math.random() * x.length)])
+    .join('');
 
 const _getEnvExportCmd = (envVar, key) => {
     if (isSystemWin) {
@@ -65,7 +64,7 @@ const _getEnvExportCmd = (envVar, key) => {
     return `${chalk.white(`export ${envVar}="${key}"`)}`;
 };
 
-const _checkAndConfigureCrypto = async c => {
+const _checkAndConfigureCrypto = async (c) => {
     // handle missing config
     const source = `./${c.files.project.package.name}`;
 
@@ -103,7 +102,7 @@ const _checkAndConfigureCrypto = async c => {
 
         const configDirs = await readdirAsync(c.paths.project.appConfigsDir);
 
-        configDirs.forEach(item => {
+        configDirs.forEach((item) => {
             const appConfigDir = path.join(sourceFolder, item);
             mkdirSync(appConfigDir);
             mkdirSync(path.join(appConfigDir, 'certs'));
@@ -154,7 +153,7 @@ ${_getEnvExportCmd(envVar, key)}
     }
 };
 
-export const rnvCryptoEncrypt = async c => {
+export const rnvCryptoEncrypt = async (c) => {
     logTask('rnvCryptoEncrypt');
 
     const source = `./${c.files.project.package.name}`;
@@ -242,7 +241,7 @@ const _unzipAndCopy = async (
     logSuccess(`Files succesfully extracted into ${destFolder}`);
 };
 
-export const rnvCryptoDecrypt = async c => {
+export const rnvCryptoDecrypt = async (c) => {
     logTask('rnvCryptoDecrypt');
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
@@ -264,8 +263,7 @@ export const rnvCryptoDecrypt = async c => {
             c.paths.workspace.dir,
             c.files.project.package.name
         );
-        const isCryptoReset =
-            c.command === 'crypto' && c.program.reset === true;
+        const isCryptoReset = c.command === 'crypto' && c.program.reset === true;
 
         if (c.program.ci !== true && !isCryptoReset) {
             const options = [
@@ -345,8 +343,8 @@ ${cmd1}
 
 ${chalk.yellow('STEP 2:')}
 ${chalk.white(
-    'run your previous command again and choose to skip openssl once asked'
-)}`);
+        'run your previous command again and choose to skip openssl once asked'
+    )}`);
         }
 
         await _unzipAndCopy(
@@ -367,14 +365,13 @@ ${chalk.white(
     }
 };
 
-const _getOpenSllPath = c => {
+const _getOpenSllPath = (c) => {
     const {
         process: { platform }
     } = c;
     let defaultOpenssl = 'openssl';
     // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
-    if (isSystemMac)
-        defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx');
+    if (isSystemMac) { defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx'); }
     // if (fs.existsSync(defaultOpenssl)) {
     //     return defaultOpenssl;
     // }
@@ -383,77 +380,71 @@ const _getOpenSllPath = c => {
     return defaultOpenssl;
 };
 
-export const rnvCryptoInstallProfiles = c =>
-    new Promise((resolve, reject) => {
-        logTask('rnvCryptoInstallProfiles');
-        if (c.platform !== 'ios') {
-            logError(
-                `rnvCryptoInstallProfiles: platform ${c.platform} not supported`
-            );
-            resolve();
-            return;
-        }
-
-        const ppFolder = path.join(
-            c.paths.home.dir,
-            'Library/MobileDevice/Provisioning Profiles'
+export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoInstallProfiles');
+    if (c.platform !== 'ios') {
+        logError(
+            `rnvCryptoInstallProfiles: platform ${c.platform} not supported`
         );
-
-        if (!fs.existsSync(ppFolder)) {
-            logWarning(`folder ${ppFolder} does not exist!`);
-            mkdirSync(ppFolder);
-        }
-
-        const list = getFileListSync(c.paths.workspace.project.dir);
-        const mobileprovisionArr = list.filter(v =>
-            v.endsWith('.mobileprovision')
-        );
-
-        try {
-            mobileprovisionArr.forEach(v => {
-                console.log(`rnvCryptoInstallProfiles: Installing: ${v}`);
-                copyFileSync(v, ppFolder);
-            });
-        } catch (e) {
-            logError(e);
-        }
-
         resolve();
-    });
+        return;
+    }
 
-export const rnvCryptoInstallCerts = c =>
-    new Promise((resolve, reject) => {
-        logTask('rnvCryptoInstallCerts');
-        const { maxErrorLength } = c.program;
+    const ppFolder = path.join(
+        c.paths.home.dir,
+        'Library/MobileDevice/Provisioning Profiles'
+    );
 
-        if (c.platform !== 'ios') {
-            logError(`_installTempCerts: platform ${c.platform} not supported`);
+    if (!fs.existsSync(ppFolder)) {
+        logWarning(`folder ${ppFolder} does not exist!`);
+        mkdirSync(ppFolder);
+    }
+
+    const list = getFileListSync(c.paths.workspace.project.dir);
+    const mobileprovisionArr = list.filter(v => v.endsWith('.mobileprovision'));
+
+    try {
+        mobileprovisionArr.forEach((v) => {
+            console.log(`rnvCryptoInstallProfiles: Installing: ${v}`);
+            copyFileSync(v, ppFolder);
+        });
+    } catch (e) {
+        logError(e);
+    }
+
+    resolve();
+});
+
+export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
+    logTask('rnvCryptoInstallCerts');
+    const { maxErrorLength } = c.program;
+
+    if (c.platform !== 'ios') {
+        logError(`_installTempCerts: platform ${c.platform} not supported`);
+        resolve();
+        return;
+    }
+    const kChain = c.program.keychain || 'ios-build.keychain';
+    const kChainPath = path.join(
+        c.paths.home.dir,
+        'Library/Keychains',
+        kChain
+    );
+    const list = getFileListSync(c.paths.workspace.project.dir);
+    const cerPromises = [];
+    const cerArr = list.filter(v => v.endsWith('.cer'));
+
+    Promise.all(
+        cerArr.map(v => executeAsync(c, `security import ${v} -k ${kChain} -A`))
+    )
+        .then(() => resolve())
+        .catch((e) => {
+            logWarning(e);
             resolve();
-            return;
-        }
-        const kChain = c.program.keychain || 'ios-build.keychain';
-        const kChainPath = path.join(
-            c.paths.home.dir,
-            'Library/Keychains',
-            kChain
-        );
-        const list = getFileListSync(c.paths.workspace.project.dir);
-        const cerPromises = [];
-        const cerArr = list.filter(v => v.endsWith('.cer'));
+        });
+});
 
-        Promise.all(
-            cerArr.map(v =>
-                executeAsync(c, `security import ${v} -k ${kChain} -A`)
-            )
-        )
-            .then(() => resolve())
-            .catch(e => {
-                logWarning(e);
-                resolve();
-            });
-    });
-
-export const rnvCryptoUpdateProfiles = async c => {
+export const rnvCryptoUpdateProfiles = async (c) => {
     logTask('rnvCryptoUpdateProfiles');
     switch (c.platform) {
         case IOS:
@@ -469,28 +460,26 @@ export const rnvCryptoUpdateProfiles = async c => {
     );
 };
 
-const _updateProfiles = c => {
+const _updateProfiles = (c) => {
     logTask('_updateProfiles', chalk.grey);
     const acList = listAppConfigsFoldersSync(c, true);
     const fullList = [];
     const currentAppId = c.runtime.appId;
 
     return acList.reduce(
-        (previousPromise, v) =>
-            previousPromise.then(() => _updateProfile(c, v)),
+        (previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)),
         Promise.resolve()
     );
 };
 
-const _updateProfile = (c, v) =>
-    new Promise((resolve, reject) => {
-        logTask(`_updateProfile:${v}`, chalk.grey);
-        updateProfile(c, v)
-            .then(() => resolve())
-            .catch(e => reject(e));
-    });
+const _updateProfile = (c, v) => new Promise((resolve, reject) => {
+    logTask(`_updateProfile:${v}`, chalk.grey);
+    updateProfile(c, v)
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
 
-export const checkCrypto = async c => {
+export const checkCrypto = async (c) => {
     logTask('checkCrypto');
 
     if (c.program.ci) return;

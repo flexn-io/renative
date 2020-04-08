@@ -73,8 +73,7 @@ const _execute = (c, command, opts = {}) => {
 
     logDebug(`_execute: ${logMessage}`);
     const { silent, mono, maxErrorLength, ignoreErrors } = mergedOpts;
-    const spinner =
-        !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
+    const spinner = !silent && !mono && ora({ text: `Executing: ${logMessage}` }).start();
 
     if (mono) {
         interval = setInterval(() => {
@@ -92,7 +91,7 @@ const _execute = (c, command, opts = {}) => {
 
     const MAX_OUTPUT_LENGTH = 200;
 
-    const printLastLine = buffer => {
+    const printLastLine = (buffer) => {
         const text = Buffer.from(buffer)
             .toString()
             .trim();
@@ -112,7 +111,7 @@ const _execute = (c, command, opts = {}) => {
     }
 
     return child
-        .then(res => {
+        .then((res) => {
             spinner && child?.stdout?.off('data', printLastLine);
             !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
             logDebug(
@@ -122,10 +121,9 @@ const _execute = (c, command, opts = {}) => {
             // logDebug(res);
             return res.stdout;
         })
-        .catch(err => {
+        .catch((err) => {
             spinner && child?.stdout?.off('data', printLastLine);
-            if (!silent && !mono && !ignoreErrors)
-                spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
+            if (!silent && !mono && !ignoreErrors) { spinner.fail(`FAILED: ${logMessage}`); } // parseErrorMessage will return false if nothing is found, default to previous implementation
 
             logDebug(
                 replaceOverridesInString(err.all, privateParams, privateMask)
@@ -136,11 +134,10 @@ const _execute = (c, command, opts = {}) => {
                 spinner.succeed(`Executing: ${logMessage}`);
                 return true;
             }
-            let errMessage =
-                parseErrorMessage(err.all, maxErrorLength) ||
-                err.stack ||
-                err.stderr ||
-                err.message;
+            let errMessage = parseErrorMessage(err.all, maxErrorLength)
+                || err.stack
+                || err.stderr
+                || err.message;
             errMessage = replaceOverridesInString(
                 errMessage,
                 privateParams,
@@ -165,10 +162,11 @@ const _execute = (c, command, opts = {}) => {
  *
  */
 const execCLI = (c, cli, command, opts = {}) => {
-    if (!c.program)
+    if (!c.program) {
         return Promise.reject(
             'You need to pass c object as first parameter to execCLI()'
         );
+    }
     const p = c.cli[cli];
 
     if (!fs.existsSync(p)) {
@@ -201,8 +199,7 @@ const executeAsync = (c, cmd, opts) => {
         cmd = c;
         c = Config.getConfig();
     }
-    if (cmd.includes('npm') && process.platform === 'win32')
-        cmd.replace('npm', 'npm.cmd');
+    if (cmd.includes('npm') && process.platform === 'win32') { cmd.replace('npm', 'npm.cmd'); }
     return _execute(c, cmd, opts);
 };
 
@@ -215,24 +212,23 @@ const executeAsync = (c, cmd, opts) => {
  * @returns {Promise}
  *
  */
-const executeTelnet = (c, port, command) =>
-    new Promise(resolve => {
-        const nc2 = new NClient();
-        logDebug(`execTelnet: ${port} ${command}`);
+const executeTelnet = (c, port, command) => new Promise((resolve) => {
+    const nc2 = new NClient();
+    logDebug(`execTelnet: ${port} ${command}`);
 
-        let output = '';
+    let output = '';
 
-        nc2.addr(c.runtime.localhost)
-            .port(parseInt(port, 10))
-            .connect()
-            .send(`${command}\n`);
-        nc2.on('data', data => {
-            const resp = Buffer.from(data).toString();
-            output += resp;
-            if (output.includes('OK')) nc2.close();
-        });
-        nc2.on('close', () => resolve(output));
+    nc2.addr(c.runtime.localhost)
+        .port(parseInt(port, 10))
+        .connect()
+        .send(`${command}\n`);
+    nc2.on('data', (data) => {
+        const resp = Buffer.from(data).toString();
+        output += resp;
+        if (output.includes('OK')) nc2.close();
     });
+    nc2.on('close', () => resolve(output));
+});
 
 // Legacy error parser
 // export const parseErrorMessage = (text, maxErrorLength = 800) => {
@@ -259,30 +255,30 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     let arr = text.split('\n');
 
     let errFound = 0;
-    arr = arr.filter(v => {
+    arr = arr.filter((v) => {
         if (v === '') return false;
         // Cleaner iOS reporting
         if (
-            v.includes('-Werror') ||
-            v.includes('following modules are linked manually') ||
-            v.includes('warn ') ||
-            v.includes('note: ') ||
-            v.includes('warning: ') ||
-            v.includes('Could not find the following native modules') ||
-            v.includes('⚠️')
+            v.includes('-Werror')
+            || v.includes('following modules are linked manually')
+            || v.includes('warn ')
+            || v.includes('note: ')
+            || v.includes('warning: ')
+            || v.includes('Could not find the following native modules')
+            || v.includes('⚠️')
         ) {
             return false;
         }
         // Cleaner Android reporting
         if (
-            v.includes('[DEBUG]') ||
-            v.includes('[INFO]') ||
-            v.includes('[LIFECYCLE]') ||
-            v.includes('[WARN]') ||
-            v.includes(':+HeapDumpOnOutOfMemoryError') ||
-            v.includes('.errors.') ||
-            v.includes('-exception-') ||
-            v.includes('error_prone_annotations')
+            v.includes('[DEBUG]')
+            || v.includes('[INFO]')
+            || v.includes('[LIFECYCLE]')
+            || v.includes('[WARN]')
+            || v.includes(':+HeapDumpOnOutOfMemoryError')
+            || v.includes('.errors.')
+            || v.includes('-exception-')
+            || v.includes('error_prone_annotations')
         ) {
             return false;
         }
@@ -297,7 +293,7 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
         return false;
     });
 
-    arr = arr.map(str => {
+    arr = arr.map((str) => {
         const v = str.replace(/\s{2,}/g, ' ');
         let extractedError = v.substring(0, maxErrorLength);
         if (extractedError.length === maxErrorLength) extractedError += '...';
@@ -310,12 +306,12 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
 const isUsingWindows = process.platform === 'win32';
 
 const fileNotExists = (commandName, callback) => {
-    access(commandName, constants.F_OK, err => {
+    access(commandName, constants.F_OK, (err) => {
         callback(!err);
     });
 };
 
-const fileNotExistsSync = commandName => {
+const fileNotExistsSync = (commandName) => {
     try {
         accessSync(commandName, constants.F_OK);
         return false;
@@ -325,12 +321,12 @@ const fileNotExistsSync = commandName => {
 };
 
 const localExecutable = (commandName, callback) => {
-    access(commandName, constants.F_OK | constants.X_OK, err => {
+    access(commandName, constants.F_OK | constants.X_OK, (err) => {
         callback(null, !err);
     });
 };
 
-const localExecutableSync = commandName => {
+const localExecutableSync = (commandName) => {
     try {
         accessSync(commandName, constants.F_OK | constants.X_OK);
         return true;
@@ -340,11 +336,11 @@ const localExecutableSync = commandName => {
 };
 
 const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
-    fileNotExists(commandName, isFile => {
+    fileNotExists(commandName, (isFile) => {
         if (!isFile) {
             exec(
-                `command -v ${cleanedCommandName} 2>/dev/null` +
-                    ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
+                `command -v ${cleanedCommandName} 2>/dev/null`
+                    + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
                 (error, stdout) => {
                     callback(null, !!stdout);
                 }
@@ -361,7 +357,7 @@ const commandExistsWindows = (commandName, cleanedCommandName, callback) => {
         callback(null, false);
         return;
     }
-    exec(`where ${cleanedCommandName}`, error => {
+    exec(`where ${cleanedCommandName}`, (error) => {
         if (error !== null) {
             callback(null, false);
         } else {
@@ -374,8 +370,8 @@ const commandExistsUnixSync = (commandName, cleanedCommandName) => {
     if (fileNotExistsSync(commandName)) {
         try {
             const stdout = execSync(
-                `command -v ${cleanedCommandName} 2>/dev/null` +
-                    ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
+                `command -v ${cleanedCommandName} 2>/dev/null`
+                    + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
             );
             return !!stdout;
         } catch (error) {
@@ -397,7 +393,7 @@ const commandExistsWindowsSync = (commandName, cleanedCommandName) => {
     }
 };
 
-let cleanInput = s => {
+let cleanInput = (s) => {
     if (/[^A-Za-z0-9_\/:=-]/.test(s)) {
         s = `'${s.replace(/'/g, "'\\''")}'`;
         s = s
@@ -408,7 +404,7 @@ let cleanInput = s => {
 };
 
 if (isUsingWindows) {
-    cleanInput = s => {
+    cleanInput = (s) => {
         const isPathName = /[\\]/.test(s);
         if (isPathName) {
             const dirname = `"${path.dirname(s)}"`;
@@ -439,7 +435,7 @@ const commandExists = (commandName, callback) => {
     }
 };
 
-const commandExistsSync = commandName => {
+const commandExistsSync = (commandName) => {
     const cleanedCommandName = cleanInput(commandName);
     if (isUsingWindows) {
         return commandExistsWindowsSync(commandName, cleanedCommandName);
@@ -447,43 +443,41 @@ const commandExistsSync = commandName => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-export const cleanNodeModules = c =>
-    new Promise((resolve, reject) => {
-        logTask(`cleanNodeModules`);
-        const dirs = [
-            'react-native-safe-area-view/.git',
-            '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
-            'react-navigation/node_modules/react-native-safe-area-view/.git',
-            'react-native-safe-area-view/.git',
-            '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
-            'react-navigation/node_modules/react-native-safe-area-view/.git'
-        ].reduce((acc, dir) => {
-            const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
-            const resolved = doResolve(aPackage, false);
-            if (resolved) {
-                acc.push(`${resolved}/${aPath}`);
-            }
-            return acc;
-        }, []);
-        removeDirs(dirs)
-            .then(() => resolve())
-            .catch(e => reject(e));
-        // removeDirs([
-        //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-        // ]).then(() => resolve()).catch(e => reject(e));
-    });
+export const cleanNodeModules = c => new Promise((resolve, reject) => {
+    logTask('cleanNodeModules');
+    const dirs = [
+        'react-native-safe-area-view/.git',
+        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
+        'react-navigation/node_modules/react-native-safe-area-view/.git',
+        'react-native-safe-area-view/.git',
+        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
+        'react-navigation/node_modules/react-native-safe-area-view/.git'
+    ].reduce((acc, dir) => {
+        const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
+        const resolved = doResolve(aPackage, false);
+        if (resolved) {
+            acc.push(`${resolved}/${aPath}`);
+        }
+        return acc;
+    }, []);
+    removeDirs(dirs)
+        .then(() => resolve())
+        .catch(e => reject(e));
+    // removeDirs([
+    //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
+    //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+    //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+    //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
+    //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+    //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+    // ]).then(() => resolve()).catch(e => reject(e));
+});
 
 const hasJetified = false;
 export const npmInstall = async (failOnError = false) => {
     const c = Config.getConfig();
 
-    const isYarnInstalled =
-        commandExistsSync('yarn') || doResolve('yarn', false);
+    const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
     const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
     let command = 'npm install';
     if (isMonorepo() || fs.existsSync(yarnLockPath)) {
@@ -519,10 +513,10 @@ export const npmInstall = async (failOnError = false) => {
     try {
         const plats = c.files.project.config?.defaults?.supportedPlatforms;
         if (
-            Array.isArray(plats) &&
-            (plats.includes(ANDROID) ||
-                plats.includes(ANDROID_TV) ||
-                plats.includes(ANDROID_WEAR))
+            Array.isArray(plats)
+            && (plats.includes(ANDROID)
+                || plats.includes(ANDROID_TV)
+                || plats.includes(ANDROID_WEAR))
         ) {
             await executeAsync('npx jetify');
         }
@@ -533,10 +527,9 @@ export const npmInstall = async (failOnError = false) => {
 };
 
 // eslint-disable-next-line no-nested-ternary
-const openCommand =
-    process.platform === 'darwin'
-        ? 'open'
-        : process.platform === 'win32'
+const openCommand = process.platform === 'darwin'
+    ? 'open'
+    : process.platform === 'win32'
         ? 'start'
         : 'xdg-open';
 

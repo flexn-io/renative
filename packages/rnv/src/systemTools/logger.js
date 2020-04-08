@@ -125,7 +125,7 @@ export const getCurrentCommand = (excludeDollar = false) => {
     const argArr = _c.process.argv.slice(2);
     let hideNext = false;
     const output = argArr
-        .map(v => {
+        .map((v) => {
             if (hideNext) {
                 hideNext = false;
                 return '********';
@@ -141,7 +141,7 @@ export const getCurrentCommand = (excludeDollar = false) => {
     return `${dollar}rnv ${output}`;
 };
 
-export const logToSummary = v => {
+export const logToSummary = (v) => {
     _messages.push(`\n${v}`);
 };
 
@@ -149,7 +149,7 @@ export const logSummary = (header = 'SUMMARY') => {
     let logContent = printIntoBox('All good as 🦄 ');
     if (_messages && _messages.length) {
         logContent = '';
-        _messages.forEach(m => {
+        _messages.forEach((m) => {
             logContent += `│ ${m}\n`;
         });
     }
@@ -227,9 +227,7 @@ export const logSummary = (header = 'SUMMARY') => {
             }
         }
         if (_c.process) {
-            const envString = `${_c.process.platform} | ${
-                _c.process.arch
-            } | node v${_c.process.versions?.node}`;
+            const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node}`;
             str += printIntoBox(`Env Info: ${chalk.gray(envString)}`, 1);
         }
 
@@ -260,7 +258,7 @@ export const logSummary = (header = 'SUMMARY') => {
     console.log(str);
 };
 
-const _msToTime = s => {
+const _msToTime = (s) => {
     const ms = s % 1000;
     s = (s - ms) / 1000;
     const secs = s % 60;
@@ -271,7 +269,7 @@ const _msToTime = s => {
     return `${hrs}h:${mins}m:${secs}s:${ms}ms`;
 };
 
-export const setCurrentJob = job => {
+export const setCurrentJob = (job) => {
     _currentCommand = job;
 };
 
@@ -281,11 +279,11 @@ export const logTask = (task, customChalk) => {
     console.log(ch(`${RNV} - ${task}${postMsg}`));
 };
 
-export const logWarning = msg => {
+export const logWarning = (msg) => {
     logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
 };
 
-export const logInfo = msg => {
+export const logInfo = (msg) => {
     console.log(chalk.magenta(`ℹ️  ${RNV} - NOTE: ${msg}`));
 };
 
@@ -300,7 +298,7 @@ export const logComplete = (isEnd = false) => {
     if (isEnd) logEnd(0);
 };
 
-export const logSuccess = msg => {
+export const logSuccess = (msg) => {
     logAndSave(`✅ ${chalk.magenta(msg)}`);
 };
 
@@ -321,7 +319,7 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
     if (isEnd) logEnd(1);
 };
 
-export const logEnd = code => {
+export const logEnd = (code) => {
     logSummary();
     if (_currentProcess) {
         Analytics.teardown().then(() => {
@@ -337,18 +335,17 @@ export const logInitialize = () => {
     // );
 };
 
-export const logAppInfo = c =>
-    new Promise((resolve, reject) => {
-        console.log(
-            chalk.gray(
-                `\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(
-                    c.buildConfig.id
-                )}\n${LINE2}`
-            )
-        );
+export const logAppInfo = c => new Promise((resolve, reject) => {
+    console.log(
+        chalk.gray(
+            `\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(
+                c.buildConfig.id
+            )}\n${LINE2}`
+        )
+    );
 
-        resolve();
-    });
+    resolve();
+});
 
 export const printIntoBox = (str2, chalkIntend = 0) => {
     let output = _defaultColor('│  ');
@@ -363,8 +360,8 @@ export const printIntoBox = (str2, chalkIntend = 0) => {
     for (let i = 0; i < chalkIntend + intend; i++) {
         endLine += '          ';
     }
-    endLine +=
-        '                                                                               │\n';
+    endLine
+        += '                                                                               │\n';
     output += _defaultColor(str2);
     const l = output.length - endLine.length;
     output += _defaultColor(endLine.slice(l));
@@ -375,7 +372,7 @@ export const printArrIntoBox = (arr, prefix = '') => {
     let output = '';
     let stringArr = '';
     let i = 0;
-    arr.forEach(v => {
+    arr.forEach((v) => {
         const l = i === 0 ? 60 - _defaultColor(prefix).length : 60;
         if (stringArr.length > l) {
             if (i === 0 && prefix.length) {
@@ -419,10 +416,9 @@ export const printBoxStart = (str, str2) => {
 
 export const rnvStatus = async () => Promise.resolve();
 
-export const printBoxEnd = () =>
-    _defaultColor(
-        '└──────────────────────────────────────────────────────────────────────────────┘'
-    );
+export const printBoxEnd = () => _defaultColor(
+    '└──────────────────────────────────────────────────────────────────────────────┘'
+);
 
 export default {
     logEnd,

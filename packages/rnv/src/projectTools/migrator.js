@@ -25,7 +25,7 @@ import { RN_CLI_CONFIG_NAME } from '../constants';
 import { configureNodeModules } from './projectParser';
 import { inquirerPrompt } from '../systemTools/prompt';
 
-export const checkAndMigrateProject = async c => {
+export const checkAndMigrateProject = async (c) => {
     logTask('checkAndMigrateProject');
     const prjDir = c.paths.project.dir;
 
@@ -103,7 +103,7 @@ const _migrateProjectSoft = async (c, paths) => {
         };
 
         if (files.configNew?.paths) {
-            PATH_PROPS.forEach(v => {
+            PATH_PROPS.forEach((v) => {
                 if (files.configNew.paths[v.oldKey]) {
                     logWarning(
                         `You use old key ${chalk.white(
@@ -112,8 +112,7 @@ const _migrateProjectSoft = async (c, paths) => {
                             v.newKey
                         )}. ReNative will try to fix it for you!`
                     );
-                    files.configNew.paths[v.newKey] =
-                        files.configNew.paths[v.oldKey];
+                    files.configNew.paths[v.newKey] = files.configNew.paths[v.oldKey];
                     delete files.configNew.paths[v.oldKey];
                     requiresSave = true;
                 }
@@ -130,11 +129,7 @@ const _migrateProjectSoft = async (c, paths) => {
 
         if (fs.existsSync(paths.metroConfig)) {
             logWarning(
-                `Found deprecated metro config ${
-                    paths.metroConfig
-                } and it needs to be migrated to ${
-                    paths.metroConfigNew
-                }. ReNative will try to fix it for you!`
+                `Found deprecated metro config ${paths.metroConfig} and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`
             );
             const metroConfig = fs.readFileSync(paths.metroConfig).toString();
             fs.writeFileSync(paths.metroConfigNew, metroConfig);
@@ -254,108 +249,106 @@ const _migrateFile = (oldPath, newPath) => {
     }
 };
 
-const _migrateProject = (c, paths) =>
-    new Promise((resolve, reject) => {
-        logTask('MIGRATION STARTED');
+const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
+    logTask('MIGRATION STARTED');
 
-        if (!fs.existsSync(c.paths.workspace.config)) {
-            if (fs.existsSync(paths.globalConfig)) {
-                copyFileSync(paths.globalConfig, c.paths.workspace.config);
-            }
+    if (!fs.existsSync(c.paths.workspace.config)) {
+        if (fs.existsSync(paths.globalConfig)) {
+            copyFileSync(paths.globalConfig, c.paths.workspace.config);
+        }
+    }
+
+    const files = {
+        config: readObjectSync(paths.config),
+        package: readObjectSync(paths.package),
+        plugins: readObjectSync(paths.plugins),
+        permissions: readObjectSync(paths.permissions)
+    };
+
+    logDebug(`paths to migrate: \n ${paths}`);
+
+    const newConfig = {};
+
+    if (files.package) {
+        newConfig.projectName = files.package.name;
+    }
+
+    if (files.config) {
+        newConfig.defaults = {};
+
+        if (files.config.defaultProjectConfigs) {
+            newConfig.defaults = mergeObjects(
+                c,
+                newConfig.defaults,
+                files.config.defaultProjectConfigs
+            );
+        }
+        newConfig.currentTemplate = newConfig.defaults.template || 'renative-template-hello-world';
+
+        newConfig.templates = {};
+
+        if (newConfig.defaults.template) {
+            newConfig.templates[newConfig.defaults.template] = {
+                version: c.files.rnv.package.version
+            };
         }
 
-        const files = {
-            config: readObjectSync(paths.config),
-            package: readObjectSync(paths.package),
-            plugins: readObjectSync(paths.plugins),
-            permissions: readObjectSync(paths.permissions)
-        };
+        delete newConfig.defaults.template;
 
-        logDebug(`paths to migrate: \n ${paths}`);
-
-        const newConfig = {};
-
-        if (files.package) {
-            newConfig.projectName = files.package.name;
-        }
-
-        if (files.config) {
-            newConfig.defaults = {};
-
-            if (files.config.defaultProjectConfigs) {
-                newConfig.defaults = mergeObjects(
-                    c,
-                    newConfig.defaults,
-                    files.config.defaultProjectConfigs
-                );
-            }
-            newConfig.currentTemplate =
-                newConfig.defaults.template || 'renative-template-hello-world';
-
-            newConfig.templates = {};
-
-            if (newConfig.defaults.template) {
-                newConfig.templates[newConfig.defaults.template] = {
-                    version: c.files.rnv.package.version
-                };
-            }
-
-            delete newConfig.defaults.template;
-
-            newConfig.paths = {};
-            PATH_PROPS.forEach(v => {
-                if (files.config[v.oldKey]) {
-                    newConfig.paths[v.newKey] = files.config[v.oldKey];
-                }
-            });
-            newConfig.paths.appConfigDirs = [newConfig.paths.appConfigDir];
-            delete newConfig.paths.appConfigDir;
-
-            if (files.config.defaultPorts) {
-                newConfig.defaults.ports = files.config.defaultPorts;
-            }
-
-            if (files.config.crypto) {
-                newConfig.crypto = files.config.crypto;
-            }
-        }
-
-        if (!newConfig.platforms) newConfig.platforms = {};
-
-        if (files.plugins) {
-            newConfig.plugins = files.plugins.plugins;
-
-            if (files.plugins.android) {
-                newConfig.platforms.android = files.plugins.android;
-            }
-            if (files.plugins.ios) {
-                newConfig.platforms.ios = files.plugins.ios;
-            }
-        }
-
-        if (files.permissions) {
-            newConfig.permissions = files.permissions.permissions;
-        }
-
-        const pathsToDelete = [
-            paths.config,
-            paths.plugins,
-            paths.permissions
-        ].concat(paths.appConfigDirs);
-
-        paths.appConfigDirs.forEach(v => {
-            if (fs.existsSync(v)) {
-                copyFileSync(v, v.replace('/config.json', '/renative.json'));
+        newConfig.paths = {};
+        PATH_PROPS.forEach((v) => {
+            if (files.config[v.oldKey]) {
+                newConfig.paths[v.newKey] = files.config[v.oldKey];
             }
         });
+        newConfig.paths.appConfigDirs = [newConfig.paths.appConfigDir];
+        delete newConfig.paths.appConfigDir;
 
-        writeFileSync(c.paths.project.config, newConfig);
+        if (files.config.defaultPorts) {
+            newConfig.defaults.ports = files.config.defaultPorts;
+        }
 
-        logDebug(`Paths to delete, ${pathsToDelete.join('\n')}`);
+        if (files.config.crypto) {
+            newConfig.crypto = files.config.crypto;
+        }
+    }
 
-        removeFilesSync(pathsToDelete);
+    if (!newConfig.platforms) newConfig.platforms = {};
 
-        logSuccess('Migration Complete!');
+    if (files.plugins) {
+        newConfig.plugins = files.plugins.plugins;
 
-        resolve();
+        if (files.plugins.android) {
+            newConfig.platforms.android = files.plugins.android;
+        }
+        if (files.plugins.ios) {
+            newConfig.platforms.ios = files.plugins.ios;
+        }
+    }
+
+    if (files.permissions) {
+        newConfig.permissions = files.permissions.permissions;
+    }
+
+    const pathsToDelete = [
+        paths.config,
+        paths.plugins,
+        paths.permissions
+    ].concat(paths.appConfigDirs);
+
+    paths.appConfigDirs.forEach((v) => {
+        if (fs.existsSync(v)) {
+            copyFileSync(v, v.replace('/config.json', '/renative.json'));
+        }
     });
+
+    writeFileSync(c.paths.project.config, newConfig);
+
+    logDebug(`Paths to delete, ${pathsToDelete.join('\n')}`);
+
+    removeFilesSync(pathsToDelete);
+
+    logSuccess('Migration Complete!');
+
+    resolve();
+});

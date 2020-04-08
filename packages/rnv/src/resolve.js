@@ -53,7 +53,7 @@ export const doResolvePath = (aPath, mandatory = true, options = {}) => {
     }
 };
 
-export const isScopedPackagePath = aPath => {
+export const isScopedPackagePath = (aPath) => {
     if (aPath.startsWith('@')) {
         if (!aPath.includes('/')) {
             throw new Error(
@@ -64,7 +64,7 @@ export const isScopedPackagePath = aPath => {
     }
 };
 
-const _getPackagePathParts = aPath => {
+const _getPackagePathParts = (aPath) => {
     let parts = [];
     if (isScopedPackagePath(aPath)) {
         parts = aPath.match(/^([^/]+\/[^/]+)(?:\/?(.*))/);
@@ -99,7 +99,7 @@ const _doResolveExternalPackage = (aPath, options) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
     const resolvedPath = resolve
         .sync(packageBase, {
-            packageFilter: pkg => {
+            packageFilter: (pkg) => {
                 pkg.main = 'package.json';
                 return pkg;
             },

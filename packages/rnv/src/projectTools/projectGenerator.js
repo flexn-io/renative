@@ -26,7 +26,7 @@ import Analytics from '../systemTools/analytics';
 
 const highlight = chalk.green;
 
-const configureGit = async c => {
+const configureGit = async (c) => {
     const projectPath = c.paths.project.dir;
     logTask(`configureGit:${projectPath}`);
 
@@ -66,9 +66,7 @@ const _generateProject = async (c, data) => {
     const templates = {};
 
     logTask(
-        `_generateProject:${data.optionTemplates.selectedOption}:${
-            data.optionTemplates.selectedVersion
-        }`,
+        `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
         chalk.grey
     );
 
@@ -121,9 +119,7 @@ const _prepareProjectOverview = (c, data) => {
         ? data.inputAppID.replace(/\s+/g, '-').toLowerCase()
         : data.appID;
     data.version = data.inputVersion || data.defaultVersion;
-    const tempString = `${data.optionTemplates.selectedOption}@${
-        data.optionTemplates.selectedVersion
-    }`;
+    const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
 
     let str = printBoxStart('🚀  ReNative Project Generator');
     str += printIntoBox('');
@@ -167,7 +163,7 @@ const _prepareProjectOverview = (c, data) => {
     data.confirmString = str;
 };
 
-export const createNewProject = async c => {
+export const createNewProject = async (c) => {
     logTask('createNewProject');
     const { args } = c.program;
 
@@ -220,18 +216,16 @@ export const createNewProject = async c => {
                     .toLowerCase()}`;
                 return data.appID;
             },
-            validate: id =>
-                !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/) ||
-                'Please enter a valid appID (com.test.app)',
+            validate: id => !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/)
+                || 'Please enter a valid appID (com.test.app)',
             message: "What's your App ID?"
         },
         {
             name: 'inputVersion',
             type: 'input',
             default: data.defaultVersion,
-            validate: v =>
-                !!semver.valid(semver.coerce(v)) ||
-                'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+            validate: v => !!semver.valid(semver.coerce(v))
+                || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
             message: "What's your Version?"
         },
         {
