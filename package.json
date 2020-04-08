@@ -63,6 +63,7 @@
         "build": "lerna run --parallel --concurrency 1 build",
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "link": "cd packages/rnv; yarn unlink 2> /dev/null; yarn link",
+        "lint": "eslint .",
         "postinstall": "lerna link --force-local && npx jetify",
         "publish": "lerna run --parallel --concurrency 1 publish",
         "prepublish": "cd packages/app && yarn prepublish",
@@ -121,7 +122,7 @@
     "codename": "Iron Ladybird",
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged && yarn test:rnv:unit"
+            "pre-commit": "yarn test:rnv:unit"
         }
     },
     "resolutions": {

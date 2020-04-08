@@ -30,7 +30,6 @@ const LINE2 = chalk.gray(
 );
 
 export const logWelcome = () => {
-    // prettier-ignore
     let str = _defaultColor(`
     ┌──────────────────────────────────────────────────────────────────────────────┐
     │                                                                              │
