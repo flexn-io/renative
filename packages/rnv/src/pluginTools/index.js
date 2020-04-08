@@ -241,6 +241,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
                 c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[
                     key
                 ];
+
             if (origPlugin) {
                 if (rnvPlugin && !origPlugin?.skipMerge) {
                     origPlugin = _getMergedPlugin(
@@ -253,6 +254,12 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
                 }
                 return origPlugin;
             }
+            console.log(
+                'DGDGDG',
+                scope,
+                key,
+                c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates
+            );
             logWarning(
                 `Plugin ${key} is not recognized plugin in ${plugin} scope`
             );

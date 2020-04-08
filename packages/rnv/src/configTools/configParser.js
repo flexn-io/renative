@@ -376,6 +376,10 @@ export const generateBuildConfig = c => {
 
     let pluginTemplates = [];
     if (c.files.rnv.pluginTemplates.configs) {
+        console.log(
+            'DJHDKJHD',
+            Object.keys(c.files.rnv.pluginTemplates.configs)
+        );
         pluginTemplates = Object.keys(c.files.rnv.pluginTemplates.configs).map(
             v => c.files.rnv.pluginTemplates.configs[v]
         );
@@ -631,6 +635,7 @@ export const loadProjectTemplates = c => {
 };
 
 export const loadPluginTemplates = c => {
+    logTask('loadPluginTemplates');
     c.files.rnv.pluginTemplates.config = readObjectSync(
         c.paths.rnv.pluginTemplates.config
     );
@@ -643,7 +648,7 @@ export const loadPluginTemplates = c => {
 
     const customPluginTemplates =
         c.files.project.config?.paths?.pluginTemplates;
-
+    console.log('SJKSKJSHKSJHSKJS', customPluginTemplates);
     if (customPluginTemplates) {
         Object.keys(customPluginTemplates).forEach(k => {
             const val = customPluginTemplates[k];
