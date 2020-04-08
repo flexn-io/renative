@@ -18,7 +18,8 @@ import {
     logTask,
     logWarning,
     logInfo,
-    logInitialize
+    logInitialize,
+    logDebug
 } from './systemTools/logger';
 import {
     IOS,
@@ -525,5 +526,21 @@ export default {
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
-    waitForEmulator
+    waitForEmulator,
+    logTask: (val) => {
+        logError('DEPRECATED: Common.logTask() has been removed. use Logger.logTask() instead');
+        logTask(val);
+    },
+    logWarning: (val) => {
+        logError('DEPRECATED: Common.logWarning() has been removed. use Logger.logWarning() instead');
+        logWarning(val);
+    },
+    logError: (val) => {
+        logError('DEPRECATED: Common.logError() has been removed. use Logger.logError() instead');
+        logError(val);
+    },
+    logDebug: (val) => {
+        logError('DEPRECATED: Common.logDebug() has been removed. use Logger.logDebug() instead');
+        logDebug(val);
+    }
 };
