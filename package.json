@@ -121,7 +121,7 @@
     "codename": "Iron Ladybird",
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged && yarn test:rnv:unit"
+            "pre-commit": "yarn test:rnv:unit"
         }
     },
     "resolutions": {
