@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-const { doResolve } = require('rnv');
+const { doResolve, doResolvePath } = require('rnv');
 
 function generateConfig(config) {
     const projectDir = path.resolve(config.currentDir, '../../');
@@ -162,9 +162,7 @@ function generateConfig(config) {
                 //     projectDir,
                 //     config.moduleAliases[key].projectPath
                 // );
-                aliases[key] = doResolve(
-                    config.moduleAliases[key].nodePackageName
-                );
+                aliases[key] = doResolvePath(config.moduleAliases[key].path);
             }
         }
     }

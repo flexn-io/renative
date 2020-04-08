@@ -376,10 +376,6 @@ export const generateBuildConfig = c => {
 
     let pluginTemplates = [];
     if (c.files.rnv.pluginTemplates.configs) {
-        console.log(
-            'DJHDKJHD',
-            Object.keys(c.files.rnv.pluginTemplates.configs)
-        );
         pluginTemplates = Object.keys(c.files.rnv.pluginTemplates.configs).map(
             v => c.files.rnv.pluginTemplates.configs[v]
         );

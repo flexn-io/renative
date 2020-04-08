@@ -10,7 +10,6 @@ import {
     getAppFolder,
     getAppTemplateFolder,
     checkPortInUse,
-    resolveNodeModulePath,
     getConfigProp,
     waitForWebpack,
     writeCleanFile,
@@ -40,7 +39,7 @@ import {
     selectWebToolAndExport
 } from '../../deployTools/webTools';
 import { getValidLocalhost } from '../../utils';
-import { doResolve } from '../../resolve';
+import { doResolve, doResolvePath } from '../../resolve';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -63,7 +62,7 @@ const _generateWebpackConfigs = (c, platform) => {
                 } else {
                     modulePaths = modulePaths.concat(
                         plugin.webpack.modulePaths.map(aPath =>
-                            doResolve(aPath)
+                            doResolvePath(aPath)
                         )
                     );
                 }
@@ -71,9 +70,9 @@ const _generateWebpackConfigs = (c, platform) => {
             if (plugin.webpack.moduleAliases) {
                 if (plugin.webpack.moduleAliases === true) {
                     moduleAliasesString += `'${key}': {
-                  nodePackageName: '${key}'
+                  path: '${key}'
                 },`;
-                    moduleAliases[key] = { nodePackageName: key };
+                    moduleAliases[key] = { path: key };
                 } else {
                     // eslint-disable-next-line no-restricted-syntax, no-unused-vars
                     for (const aKey in plugin.webpack.moduleAliases) {
@@ -86,17 +85,12 @@ const _generateWebpackConfigs = (c, platform) => {
                             }',`;
                             moduleAliases[key] =
                                 plugin.webpack.moduleAliases[aKey];
-                        } else if (
-                            plugin.webpack.moduleAliases[aKey].nodePackageName
-                        ) {
-                            moduleAliasesString += `'${aKey}': {nodePackageName: '${
-                                plugin.webpack.moduleAliases[aKey]
-                                    .nodePackageName
+                        } else if (plugin.webpack.moduleAliases[aKey].path) {
+                            moduleAliasesString += `'${aKey}': {path: '${
+                                plugin.webpack.moduleAliases[aKey].path
                             }'},`;
                             moduleAliases[key] = {
-                                nodePackageName:
-                                    plugin.webpack.moduleAliases[aKey]
-                                        .nodePackageName
+                                path: plugin.webpack.moduleAliases[aKey].path
                             };
                         }
                     }
