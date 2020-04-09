@@ -64,6 +64,29 @@ export const isScopedPackagePath = aPath => {
     }
 };
 
+/**
+ * Interrogates the currently running rnv binary and returns path to base of package.
+ * Note that this is safe for use with 'npm link' et al.
+ */
+export const getCurrentPackagePath = () =>
+    process.mainModule.filename.replace('/bin/index.js', '');
+
+/**
+ * Naive alg to determine if the current process is rnv and has been npm/yarn link'd
+ * For normal global installations, install location will be for example:
+ *  - npm: /usr/local/bin/rnv/../lib/node_modules/rnv/bin/index.js
+ *  - yarn: /usr/local/bin/rnv/../../../Users/mattpenrice/.config/yarn/global/node_modules/.bin/rnv
+ * For normal installations, install location will be for example:
+ *  - ./node_modules/.bin/rnv / ../node_modules/.bin/rnv
+ */
+export const isCliLinked = (realBinaryPath = process.mainModule.filename) => {
+    if (!realBinaryPath.endsWith('rnv'))
+        throw new Error(
+            `Is this suitable for use with other binaries than rnv? Real binary path found: ${realBinaryPath}`
+        );
+    return !realBinaryPath.includes('node_modules/');
+};
+
 const _getPackagePathParts = aPath => {
     let parts = [];
     if (isScopedPackagePath(aPath)) {

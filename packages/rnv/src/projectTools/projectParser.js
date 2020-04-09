@@ -9,7 +9,7 @@ import {
     areNodeModulesInstalled,
     getConfigProp
 } from '../common';
-import { doResolve } from '../resolve';
+import { doResolve, getCurrentPackagePath } from '../resolve';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
@@ -244,7 +244,14 @@ export const copySharedPlatforms = c =>
                     c.paths.project.platformTemplatesDirs[c.platform],
                     '_shared'
                 ),
-                path.resolve(c.paths.project.builds.dir, '_shared')
+                path.resolve(c.paths.project.builds.dir, '_shared'),
+                true,
+                undefined,
+                content =>
+                    content.replace(
+                        /{{RNV_PACKAGE_BASE}}/g,
+                        getCurrentPackagePath()
+                    )
             );
         }
 
