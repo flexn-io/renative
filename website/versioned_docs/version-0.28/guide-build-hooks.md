@@ -5,7 +5,6 @@ sidebar_label: Build Hooks
 original_id: guide-build_hooks
 ---
 
-
 <img src="https://renative.org/img/ic_hooks.png" width=50 height=50 />
 
 ## Build Hooks
@@ -22,7 +21,7 @@ const hooks = {
         new Promise((resolve, reject) => {
             console.log(`\n${chalk.yellow('HELLO FROM BUILD HOOKS!')}\n`);
             resolve();
-        }),
+        })
 };
 
 const pipes = {};
@@ -48,9 +47,19 @@ You can utilize RNV CLI functionality inside of build hooks by simply importing 
 
 ```js
 import {
-    Constants, Runner, App, Platform, Target, Common, Exec,
-    PlatformTools, Doctor, PluginTools, SetupTools, FileUtils
-} from 'rnv'
+    Constants,
+    Runner,
+    App,
+    Platform,
+    Target,
+    Common,
+    Exec,
+    PlatformTools,
+    Doctor,
+    PluginTools,
+    SetupTools,
+    FileUtils
+} from 'rnv';
 ```
 
 ## Build Pipes
@@ -65,7 +74,7 @@ You can connect your hook method to one of predefined pipes in your `./buildHook
 
 ```js
 const pipes = {
-    'configure:before': hooks.hello,
+    'configure:before': hooks.hello
 };
 ```
 
@@ -75,7 +84,7 @@ Example code above will execute `hooks.hello()` before every time you run `$ rnv
 
 ```js
 const pipes = {
-    'configure:before': [hooks.hello, hooks.someOtherHook],
+    'configure:before': [hooks.hello, hooks.someOtherHook]
 };
 ```
 

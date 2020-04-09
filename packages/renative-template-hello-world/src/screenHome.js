@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
+import {
+    Text,
+    Image,
+    View,
+    StyleSheet,
+    ScrollView,
+    PixelRatio
+} from 'react-native';
 import { Api, Button, getScaledValue, useNavigate, useOpenURL } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasWebFocusableUI } from './theme';
@@ -15,13 +22,13 @@ const styles = StyleSheet.create({
     image: {
         marginBottom: getScaledValue(30),
         width: getScaledValue(83),
-        height: getScaledValue(97),
+        height: getScaledValue(97)
     }
 });
 
 const FocusableView = withFocusable()(View);
 
-const ScreenHome = (props) => {
+const ScreenHome = props => {
     const [bgColor, setBgColor] = useState(Theme.color1);
     const navigate = useNavigate(props);
     const openURL = useOpenURL();
@@ -35,12 +42,16 @@ const ScreenHome = (props) => {
         handleFocus = ({ y }) => {
             scrollRef.current.scrollTo({ y });
         };
-        handleUp = (direction) => {
+        handleUp = direction => {
             if (direction === 'up') scrollRef.current.scrollTo({ y: 0 });
         };
-        useEffect(() => function cleanup() {
-            setFocus('menu');
-        }, []);
+        useEffect(
+            () =>
+                function cleanup() {
+                    setFocus('menu');
+                },
+            []
+        );
     }
     return (
         <View style={themeStyles.screen}>
@@ -50,18 +61,17 @@ const ScreenHome = (props) => {
                 contentContainerStyle={themeStyles.container}
             >
                 <Image style={styles.image} source={icon} />
-                <Text style={themeStyles.textH2}>
-                    {config.welcomeMessage}
-                </Text>
-                <Text style={themeStyles.textH2}>
-v
-                    {packageJson.version}
+                <Text style={themeStyles.textH2}>{config.welcomeMessage}</Text>
+                <Text style={themeStyles.textH2}>v{packageJson.version}</Text>
+                <Text style={themeStyles.textH3}>
+                    {`platform: ${Api.platform}, factor: ${
+                        Api.formFactor
+                    }, engine: ${Api.engine}`}
                 </Text>
                 <Text style={themeStyles.textH3}>
-                    {`platform: ${Api.platform}, factor: ${Api.formFactor}, engine: ${Api.engine}`}
-                </Text>
-                <Text style={themeStyles.textH3}>
-                    {`hermes: ${global.HermesInternal === undefined ? 'no' : 'yes'}`}
+                    {`hermes: ${
+                        global.HermesInternal === undefined ? 'no' : 'yes'
+                    }`}
                 </Text>
                 <Text style={themeStyles.textH3}>
                     {`pixelRatio: ${PixelRatio.get()}, ${PixelRatio.getFontScale()}`}
@@ -72,10 +82,14 @@ v
                     title="Try Me!"
                     className="focusable"
                     onPress={() => {
-                        setBgColor(bgColor === '#666666' ? Theme.color1 : '#666666');
+                        setBgColor(
+                            bgColor === '#666666' ? Theme.color1 : '#666666'
+                        );
                     }}
                     onEnterPress={() => {
-                        setBgColor(bgColor === '#666666' ? Theme.color1 : '#666666');
+                        setBgColor(
+                            bgColor === '#666666' ? Theme.color1 : '#666666'
+                        );
                     }}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}
@@ -93,7 +107,10 @@ v
                     }}
                     onBecameFocused={handleFocus}
                 />
-                <FocusableView style={{ marginTop: 20, flexDirection: 'row' }} onBecameFocused={handleFocus}>
+                <FocusableView
+                    style={{ marginTop: 20, flexDirection: 'row' }}
+                    onBecameFocused={handleFocus}
+                >
                     <Button
                         iconFont="fontAwesome"
                         className="focusable"
@@ -124,4 +141,4 @@ v
     );
 };
 
-export default hasWebFocusableUI ? withFocusable()(ScreenHome) : ScreenHome;
+export default (hasWebFocusableUI ? withFocusable()(ScreenHome) : ScreenHome);

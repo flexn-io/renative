@@ -10,7 +10,7 @@ sidebar_label: platform
 
 ## Task Order
 
-🔥 `platform`  ✅
+🔥 `platform` ✅
 
 ## platform
 

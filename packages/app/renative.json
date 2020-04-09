@@ -57,31 +57,31 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "file:./packages/renative-template-hello-world",
+            "version": "file:../renative-template-hello-world",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-hello-world"
+                        "projectPath": "../renative-template-hello-world"
                     }
                 }
             }
         },
         "renative-template-blank": {
-            "version": "file:./packages/renative-template-blank",
+            "version": "file:../renative-template-blank",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-blank"
+                        "projectPath": "../renative-template-blank"
                     }
                 }
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "file:./packages/renative-template-kitchen-sink",
+            "version": "file:../renative-template-kitchen-sink",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-kitchen-sink"
+                        "projectPath": "../renative-template-kitchen-sink"
                     }
                 }
             }

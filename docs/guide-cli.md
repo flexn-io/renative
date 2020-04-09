@@ -4,7 +4,6 @@ title: ReNative CLI
 sidebar_label: ReNative CLI
 ---
 
-
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
 ## ReNative CLI
@@ -118,15 +117,13 @@ Emulator / Simulator / Device Management
 
 `$ rnv config <key> <value>` - will update the value for that key, project wise if `-G` or `--global` is not specified.
 
-*Project values take precedence over the global ones, basically you can have for example `analytics` disabled globally and enabled on one project*
+_Project values take precedence over the global ones, basically you can have for example `analytics` disabled globally and enabled on one project_
 
 ###### Current supported configs
 
-
-| Key           |Possible Values | Default Value  | Description |
-| ------------- |----------------|----------------|-------------|
-| analytics     |`true` / `false`|          `true`| Enabled by default, both globally and per project. Allows us to track RNV errors and metrics with Sentry in order to improve it  |
-
+| Key       | Possible Values  | Default Value | Description                                                                                                                     |
+| --------- | ---------------- | ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| analytics | `true` / `false` | `true`        | Enabled by default, both globally and per project. Allows us to track RNV errors and metrics with Sentry in order to improve it |
 
 ##### rnv publish
 
@@ -207,7 +204,6 @@ sometimes you just want to run last command. `--only` ensures only top level com
 `$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME>` - run all dependant commands + deploy
 
 `$ rnv deploy -p <PLATFORM> -s <BUILD_SCHEME> --only` - run deploy only
-
 
 ##### -g, --global
 

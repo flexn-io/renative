@@ -25,17 +25,17 @@ sidebar_label: Android TV
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `androidtv.tv.js` | `form factor` | 1 |
-| `tv.js` | `form factor` | 2 |
-| `androidtv.js` | `platform` | 3 |
-| `android.js` | `platform` | 4 |
-| `tv.native.js` | `fallback` | 5 |
-| `native.js` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
+| Extension         | Type          | Priority |
+| ----------------- | ------------- | :------: |
+| `androidtv.tv.js` | `form factor` |    1     |
+| `tv.js`           | `form factor` |    2     |
+| `androidtv.js`    | `platform`    |    3     |
+| `android.js`      | `platform`    |    4     |
+| `tv.native.js`    | `fallback`    |    5     |
+| `native.js`       | `fallback`    |    6     |
+| `js`              | `fallback`    |    7     |
+| `tsx`             | `fallback`    |    8     |
+| `ts`              | `fallback`    |    9     |
 
 ## Requirements
 
@@ -50,7 +50,6 @@ sidebar_label: Android TV
 | Android Gradle | `3.3.1`  |
 | Kotlin         | `1.3.20` |
 | Target SDK     |   `27`   |
-
 
 ## Run on Simulator
 
@@ -89,7 +88,6 @@ make sure you have this piece of script in package.json
 
 Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidtv.enableHermes`
 or `renative.json:platforms.androidtv.buildSchemes.[SCHEME].enableHermes`
-
 
 ## Advanced
 

@@ -35,6 +35,7 @@ const App = () => (
                 </Router>
             </div>
         </View>
-    </LocationProvider>);
+    </LocationProvider>
+);
 
 export default App;

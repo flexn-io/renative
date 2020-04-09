@@ -5,7 +5,6 @@ sidebar_label: Runtime
 original_id: guide-runtime
 ---
 
-
 <img src="https://renative.org/img/ic_runtime.png" width=50 height=50 />
 
 ## Runtime
@@ -14,8 +13,13 @@ ReNative provides runtime SDK library to support multi-platform development
 
 ```js
 import {
-  Button, Icon, isPlatformTizen, isFactorTv, engine, platform
-} from 'renative'
+    Button,
+    Icon,
+    isPlatformTizen,
+    isFactorTv,
+    engine,
+    platform
+} from 'renative';
 
 <Button
     style={themeStyles.button}
@@ -30,7 +34,7 @@ import {
     }}
     onBecameFocused={handleFocus}
     onArrowPress={handleUp}
-/>
+/>;
 ```
 
 [Full API Reference](api-renative.md)

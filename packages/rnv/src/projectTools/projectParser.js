@@ -1,45 +1,53 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import { WEB_HOSTED_PLATFORMS } from '../constants';
 import {
-    WEB_HOSTED_PLATFORMS,
-} from '../constants';
-import { getAppFolder, getAppSubFolder, getBuildsFolder, getConfigProp } from '../common';
+    getAppFolder,
+    getAppSubFolder,
+    getBuildsFolder,
+    areNodeModulesInstalled,
+    getConfigProp
+} from '../common';
+import { doResolve } from '../resolve';
 import {
-    cleanFolder, copyFolderContentsRecursiveSync,
-    copyFileSync, mkdirSync, writeFileSync
+    cleanFolder,
+    copyFolderContentsRecursiveSync,
+    copyFileSync,
+    mkdirSync,
+    writeFileSync
 } from '../systemTools/fileutils';
 import { isPlatformActive } from '../platformTools';
 import { npmInstall } from '../systemTools/exec';
-import {
-    logTask,
-    logWarning, logDebug, logInfo
-} from '../systemTools/logger';
+import { logTask, logWarning, logDebug, logInfo } from '../systemTools/logger';
 import { getMergedPlugin, parsePlugins } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 import { inquirerPrompt } from '../systemTools/prompt';
 import { isSystemWin } from '../utils';
 
-
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     logTask('checkAndCreateProjectPackage');
 
     if (!fs.existsSync(c.paths.project.package)) {
-        logInfo(`Looks like your ${c.paths.project.package} is missing. Let's create one for you!`);
+        logInfo(
+            `Looks like your ${c.paths.project.package} is missing. Let's create one for you!`
+        );
 
-        const packageName = c.files.project.config.projectName || c.paths.project.dir.split('/').pop();
+        const packageName = c.files.project.config.projectName
+                || c.paths.project.dir.split('/').pop();
         const version = c.files.project.config.defaults?.package?.version || '0.1.0';
-        const templateName = c.files.project.config.defaults?.template || 'renative-template-hello-world';
+        const templateName = c.files.project.config.defaults?.template
+                || 'renative-template-hello-world';
         const rnvVersion = c.files.rnv.package.version;
 
         const pkgJson = {};
         pkgJson.name = packageName;
         pkgJson.version = version;
         pkgJson.dependencies = {
-            renative: rnvVersion,
+            renative: rnvVersion
         };
         pkgJson.devDependencies = {
-            rnv: rnvVersion,
+            rnv: rnvVersion
         };
         pkgJson.devDependencies[templateName] = rnvVersion;
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
@@ -55,9 +63,14 @@ export const checkAndCreateGitignore = (c) => {
     logTask('checkAndCreateGitignore');
     const ignrPath = path.join(c.paths.project.dir, '.gitignore');
     if (!fs.existsSync(ignrPath)) {
-        logInfo("Looks like your .gitignore is missing. Let's create one for you!");
+        logInfo(
+            "Looks like your .gitignore is missing. Let's create one for you!"
+        );
 
-        copyFileSync(path.join(c.paths.rnv.dir, 'supportFiles/gitignore-template'), ignrPath);
+        copyFileSync(
+            path.join(c.paths.rnv.dir, 'supportFiles/gitignore-template'),
+            ignrPath
+        );
     }
 };
 
@@ -73,13 +86,22 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
             copyFolderContentsRecursiveSync(sourcePath, destPath);
         });
     } else {
-        const sourcePath = path.join(c.paths.appConfig.dir, 'assets/runtime');
+        const sourcePath = path.join(
+            c.paths.appConfig.dir,
+            'assets/runtime'
+        );
         copyFolderContentsRecursiveSync(sourcePath, destPath);
     }
 
     if (c.buildConfig) {
         if (!c.buildConfig.common) {
-            reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ common: {} }')} object at root`);
+            reject(
+                `Your ${chalk.white(
+                    c.paths.appConfig.config
+                )} is missconfigured. (Maybe you have older version?). Missing ${chalk.white(
+                    '{ common: {} }'
+                )} object at root`
+            );
             return;
         }
     }
@@ -91,9 +113,16 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {
             const key = font.split('.')[0];
-            const includedFonts = getConfigProp(c, c.platform, 'includedFonts');
+            const includedFonts = getConfigProp(
+                c,
+                c.platform,
+                'includedFonts'
+            );
             if (includedFonts) {
-                if (includedFonts.includes('*') || includedFonts.includes(key)) {
+                if (
+                    includedFonts.includes('*')
+                        || includedFonts.includes(key)
+                ) {
                     if (font && !duplicateFontCheck.includes(font)) {
                         duplicateFontCheck.push(font);
                         const fontSource = path.join(dir, font);
@@ -107,7 +136,11 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                               file: require('${fontSource}'),
                           },`;
                         } else {
-                            logWarning(`Font ${chalk.white(fontSource)} doesn't exist! Skipping.`);
+                            logWarning(
+                                `Font ${chalk.white(
+                                    fontSource
+                                )} doesn't exist! Skipping.`
+                            );
                         }
                     }
                 }
@@ -115,12 +148,15 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         }
     });
 
-
     fontsObj += '];';
     if (!fs.existsSync(c.paths.project.assets.runtimeDir)) {
         mkdirSync(c.paths.project.assets.runtimeDir);
     }
-    const fontJsPath = path.join(c.paths.project.assets.dir, 'runtime', 'fonts.js');
+    const fontJsPath = path.join(
+        c.paths.project.assets.dir,
+        'runtime',
+        'fonts.js'
+    );
     if (fs.existsSync(fontJsPath)) {
         const existingFileContents = fs.readFileSync(fontJsPath).toString();
 
@@ -136,16 +172,23 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');
     copyFileSync(
         path.resolve(supportFiles, 'fontManager.js'),
-        path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.js'),
+        path.resolve(
+            c.paths.project.assets.dir,
+            'runtime',
+            'fontManager.js'
+        )
     );
     copyFileSync(
         path.resolve(supportFiles, 'fontManager.web.js'),
-        path.resolve(c.paths.project.assets.dir, 'runtime', 'fontManager.web.js'),
+        path.resolve(
+            c.paths.project.assets.dir,
+            'runtime',
+            'fontManager.web.js'
+        )
     );
 
     resolve();
 });
-
 
 export const parseFonts = (c, callback) => {
     logTask('parseFonts');
@@ -153,9 +196,11 @@ export const parseFonts = (c, callback) => {
     if (c.buildConfig) {
         // FONTS - PROJECT CONFIG
         if (fs.existsSync(c.paths.project.projectConfig.fontsDir)) {
-            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach((font) => {
-                if (callback) callback(font, c.paths.project.projectConfig.fontsDir);
-            });
+            fs.readdirSync(c.paths.project.projectConfig.fontsDir).forEach(
+                (font) => {
+                    if (callback) { callback(font, c.paths.project.projectConfig.fontsDir); }
+                }
+            );
         }
         // FONTS - APP CONFIG
         if (c.paths.appConfig.fontsDirs) {
@@ -174,16 +219,23 @@ export const parseFonts = (c, callback) => {
     }
 };
 
-
 export const copySharedPlatforms = c => new Promise((resolve) => {
     logTask(`_copySharedPlatform:${c.platform}`);
 
     if (c.platform) {
-        mkdirSync(path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'));
+        mkdirSync(
+            path.resolve(
+                c.paths.project.platformTemplatesDirs[c.platform],
+                '_shared'
+            )
+        );
 
         copyFolderContentsRecursiveSync(
-            path.resolve(c.paths.project.platformTemplatesDirs[c.platform], '_shared'),
-            path.resolve(c.paths.project.builds.dir, '_shared'),
+            path.resolve(
+                c.paths.project.platformTemplatesDirs[c.platform],
+                '_shared'
+            ),
+            path.resolve(c.paths.project.builds.dir, '_shared')
         );
     }
 
@@ -217,20 +269,30 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
         return customFn(c, platform);
     }
 
-    const destPath = path.join(getAppSubFolder(c, platform), ASSET_PATH_ALIASES[platform]);
+    const destPath = path.join(
+        getAppSubFolder(c, platform),
+        ASSET_PATH_ALIASES[platform]
+    );
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
         const hasAssetFolder = c.paths.appConfig.dirs.filter(v => fs.existsSync(path.join(v, `assets/${platform}`))).length;
         if (!hasAssetFolder) {
-            await generateDefaultAssets(c, platform, path.join(c.paths.appConfig.dirs[0], `assets/${platform}`));
+            await generateDefaultAssets(
+                c,
+                platform,
+                path.join(c.paths.appConfig.dirs[0], `assets/${platform}`)
+            );
         }
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${platform}`);
             copyFolderContentsRecursiveSync(sourcePath, destPath);
         });
     } else {
-        const sourcePath = path.join(c.paths.appConfig.dir, `assets/${platform}`);
+        const sourcePath = path.join(
+            c.paths.appConfig.dir,
+            `assets/${platform}`
+        );
         if (!fs.existsSync(sourcePath)) {
             await generateDefaultAssets(c, platform, sourcePath);
         }
@@ -244,13 +306,18 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
     if (c.program.ci === false) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
-            message: `It seems you don't have assets configured in ${chalk.white(sourcePath)} do you want generate default ones?`
+            message: `It seems you don't have assets configured in ${chalk.white(
+                sourcePath
+            )} do you want generate default ones?`
         });
         confirmAssets = confirm;
     }
 
     if (confirmAssets) {
-        copyFolderContentsRecursiveSync(path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`), sourcePath);
+        copyFolderContentsRecursiveSync(
+            path.join(c.paths.rnv.dir, `projectTemplate/assets/${platform}`),
+            sourcePath
+        );
     }
 };
 
@@ -261,48 +328,93 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     const destPath = path.join(getAppFolder(c, platform));
 
     // FOLDER MERGERS PROJECT CONFIG
-    const sourcePath1 = getBuildsFolder(c, platform, c.paths.project.projectConfig.dir);
+    const sourcePath1 = getBuildsFolder(
+        c,
+        platform,
+        c.paths.project.projectConfig.dir
+    );
     copyFolderContentsRecursiveSync(sourcePath1, destPath);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
-    const sourcePath1sec = getBuildsFolder(c, platform, c.paths.workspace.project.projectConfig.dir);
+    const sourcePath1sec = getBuildsFolder(
+        c,
+        platform,
+        c.paths.workspace.project.projectConfig.dir
+    );
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath);
 
     if (WEB_HOSTED_PLATFORMS.includes(platform)) {
         // FOLDER MERGERS _SHARED
-        const sourcePathShared = path.join(c.paths.project.projectConfig.dir, 'builds/_shared');
-        copyFolderContentsRecursiveSync(sourcePathShared, path.join(c.paths.project.builds.dir, '_shared'));
+        const sourcePathShared = path.join(
+            c.paths.project.projectConfig.dir,
+            'builds/_shared'
+        );
+        copyFolderContentsRecursiveSync(
+            sourcePathShared,
+            path.join(c.paths.project.builds.dir, '_shared')
+        );
     }
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
         c.paths.appConfig.dirs.forEach((v) => {
             const sourceV = getBuildsFolder(c, platform, v);
-            copyFolderContentsRecursiveSync(sourceV, destPath, c.paths.appConfig.dir);
+            copyFolderContentsRecursiveSync(
+                sourceV,
+                destPath,
+                c.paths.appConfig.dir
+            );
         });
     } else {
-        copyFolderContentsRecursiveSync(getBuildsFolder(c, platform, c.paths.appConfig.dir), destPath, c.paths.appConfig.dir);
+        copyFolderContentsRecursiveSync(
+            getBuildsFolder(c, platform, c.paths.appConfig.dir),
+            destPath,
+            c.paths.appConfig.dir
+        );
     }
 
     // FOLDER MERGERS FROM APP CONFIG (PRIVATE)
-    const sourcePath0sec = getBuildsFolder(c, platform, c.paths.workspace.appConfig.dir);
+    const sourcePath0sec = getBuildsFolder(
+        c,
+        platform,
+        c.paths.workspace.appConfig.dir
+    );
     copyFolderContentsRecursiveSync(sourcePath0sec, destPath);
 
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
-        const sourcePath3 = getBuildsFolder(c, platform, path.join(c.paths.project.projectConfig.dir, `plugins/${key}`));
+        const sourcePath3 = getBuildsFolder(
+            c,
+            platform,
+            path.join(c.paths.project.projectConfig.dir, `plugins/${key}`)
+        );
         copyFolderContentsRecursiveSync(sourcePath3, destPath);
 
         // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
-        const sourcePath3sec = getBuildsFolder(c, platform, path.join(c.paths.workspace.project.projectConfig.dir, `plugins/${key}`));
+        const sourcePath3sec = getBuildsFolder(
+            c,
+            platform,
+            path.join(
+                c.paths.workspace.project.projectConfig.dir,
+                `plugins/${key}`
+            )
+        );
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN
-        const sourcePath2 = getBuildsFolder(c, platform, path.join(c.paths.appConfig.dir, `plugins/${key}`));
+        const sourcePath2 = getBuildsFolder(
+            c,
+            platform,
+            path.join(c.paths.appConfig.dir, `plugins/${key}`)
+        );
         copyFolderContentsRecursiveSync(sourcePath2, destPath);
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
-        const sourcePath2sec = getBuildsFolder(c, platform, path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`));
+        const sourcePath2sec = getBuildsFolder(
+            c,
+            platform,
+            path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`)
+        );
         copyFolderContentsRecursiveSync(sourcePath2sec, destPath);
     });
 
@@ -330,8 +442,8 @@ export const upgradeProjectDependencies = (c, version) => {
 
     writeFileSync(c.paths.project.package, c.files.project.package);
 
-    if (c.files.project.config?.templates?.[thw]?.version) c.files.project.config.templates[thw].version = version;
-    if (c.files.project.config?.templates?.[tb]?.version) c.files.project.config.templates[tb].version = version;
+    if (c.files.project.config?.templates?.[thw]?.version) { c.files.project.config.templates[thw].version = version; }
+    if (c.files.project.config?.templates?.[tb]?.version) { c.files.project.config.templates[tb].version = version; }
 
     c._requiresNpmInstall = true;
 
@@ -341,18 +453,27 @@ export const upgradeProjectDependencies = (c, version) => {
 export const configureNodeModules = c => new Promise((resolve, reject) => {
     logTask('configureNodeModules');
     // Check node_modules
-    if (!fs.existsSync(c.paths.project.nodeModulesDir) || c._requiresNpmInstall && !c.runtime.skipPackageUpdate) {
-        if (!fs.existsSync(c.paths.project.nodeModulesDir)) {
+    if (
+        !areNodeModulesInstalled()
+            || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)
+    ) {
+        if (!areNodeModulesInstalled()) {
             logWarning(
-                `Looks like your node_modules folder ${chalk.white(c.paths.project.nodeModulesDir)} is missing! Let's run ${chalk.white(
-                    'npm install',
-                )} first!`,
+                `Looks like your node_modules folder is missing! Let's run ${chalk.white(
+                    'npm install'
+                )} first!`
             );
         } else {
-            logWarning(`Looks like your node_modules out of date! Let's run ${chalk.white('npm install')} first!`);
+            logWarning(
+                `Looks like your node_modules out of date! Let's run ${chalk.white(
+                    'npm install'
+                )} first!`
+            );
         }
         c._requiresNpmInstall = false;
-        npmInstall().then(() => resolve()).catch(e => reject(e));
+        npmInstall()
+            .then(() => resolve())
+            .catch(e => reject(e));
     } else {
         resolve();
     }

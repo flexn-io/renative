@@ -17,7 +17,6 @@ sidebar_label: Tizen TV
 
 <img src="https://renative.org/img/rnv_tizen.gif" height="250"/>
 
-
 ## Overview
 
 -   Latest Tizen project
@@ -25,18 +24,17 @@ sidebar_label: Tizen TV
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `tizen.tv.js` | `form factor` | 1 |
-| `web.tv.js` | `form factor` | 2 |
-| `tv.js` | `form factor` | 3 |
-| `tizen.js` | `platform` | 4 |
-| `tv.web.js` | `fallback` | 5 |
-| `web.js` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
-
+| Extension     | Type          | Priority |
+| ------------- | ------------- | :------: |
+| `tizen.tv.js` | `form factor` |    1     |
+| `web.tv.js`   | `form factor` |    2     |
+| `tv.js`       | `form factor` |    3     |
+| `tizen.js`    | `platform`    |    4     |
+| `tv.web.js`   | `fallback`    |    5     |
+| `web.js`      | `fallback`    |    6     |
+| `js`          | `fallback`    |    7     |
+| `tsx`         | `fallback`    |    8     |
+| `ts`          | `fallback`    |    9     |
 
 ## Requirements
 
@@ -80,7 +78,8 @@ rnv run -p tizen
 ```
 rnv run -p tizen -d
 ```
-*Before you run on a physical device, make sure you have enabled `Dev Mode` and you set your IP correctly, otherwise the connection will fail. For more informations about `Dev Mode` consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device*
+
+_Before you run on a physical device, make sure you have enabled `Dev Mode` and you set your IP correctly, otherwise the connection will fail. For more informations about `Dev Mode` consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device_
 
 ##### Run in Browser
 
@@ -108,8 +107,7 @@ rnv run -p tizen -t T-samsung-5.0-x86
 rnv run -p tizen -d -t <IP>
 ```
 
-*Before you run on a physical device, make sure you have enabled `Dev Mode` and you set your IP correctly, otherwise the connection will fail. For more informations about `Dev Mode` consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device*
-
+_Before you run on a physical device, make sure you have enabled `Dev Mode` and you set your IP correctly, otherwise the connection will fail. For more informations about `Dev Mode` consult https://developer.samsung.com/tv/develop/getting-started/using-sdk/tv-device_
 
 ## App Config
 

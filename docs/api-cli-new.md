@@ -10,7 +10,7 @@ sidebar_label: new
 
 ## Task Order
 
-🔥 `new`  ✅
+🔥 `new` ✅
 
 ## new
 

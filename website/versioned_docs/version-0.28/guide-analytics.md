@@ -11,7 +11,6 @@ original_id: guide-analytics
 
 To improve stability of the platform and help us fine-tune the most used features, ReNative collects anonymous crash logs via https://sentry.io/
 
-
 If you do not wish to send any anonymous logs you can disable it globally or per project.
 
 Easiest way to do so is by using `rnv config` command.
@@ -32,7 +31,7 @@ add following property to `~/.rnv/renative.json` file:
 
 ```json
 {
-  "enableAnalytics": false
+    "enableAnalytics": false
 }
 ```
 
@@ -42,6 +41,6 @@ add following property to `PATH_TO_YOUR_PROJECT/renative.json` file:
 
 ```json
 {
-  "enableAnalytics": false
+    "enableAnalytics": false
 }
 ```

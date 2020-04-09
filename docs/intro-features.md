@@ -10,13 +10,13 @@ sidebar_label: Features
 
 Build app blazingly fast with built-in features:
 
-* Standard react-native community plugins
-* React-Navigation Support
-* Embedded 0 configuration custom font support
-* SVG Icon Support
-* Hot-reload development / debugging
-* Deployment Ready project
-* Generated projects can be opened and profiled in standard IDEs like Xcode, Android Studio, Tizen IDE etc  
+-   Standard react-native community plugins
+-   React-Navigation Support
+-   Embedded 0 configuration custom font support
+-   SVG Icon Support
+-   Hot-reload development / debugging
+-   Deployment Ready project
+-   Generated projects can be opened and profiled in standard IDEs like Xcode, Android Studio, Tizen IDE etc
 
 #### Supported OS
 

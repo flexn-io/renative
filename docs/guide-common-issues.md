@@ -4,7 +4,6 @@ title: Common Issues
 sidebar_label: Common Issues
 ---
 
-
 <img src="https://renative.org/img/ic_issues.png" width=50 height=50 />
 
 If you encounter unexpected error / issue it is always good to perform basic sanity steps:
@@ -37,14 +36,11 @@ If above does not help either you can raise new question/bug on repo https://git
 
 Provide at least `SUMMARY` box from your console
 
-
 #### Common Errors:
-
 
 ⚠️`linker command failed with exit code 1 (use -v to see invocation)`
 
 Make sure your Xcode version is `10.2` or newer
-
 
 ⚠️`Description: Invalid runtime: com.apple.CoreSimulator.SimRuntime.iOS-.......`
 
@@ -53,6 +49,7 @@ try to run
 ```bash
 sudo killall -9 com.apple.CoreSimulator.CoreSimulatorService
 ```
+
 and then
 
 `rnv run ...`
@@ -60,7 +57,6 @@ and then
 ⚠️`Could not create service of type ScriptPluginFactory using BuildScopeServices.createScriptPluginFactory()`
 
 Try killing all `gradle` processes and running the build again, that should help
-
 
 ⚠️`> Execution of compression failed.`
 

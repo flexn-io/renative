@@ -220,13 +220,11 @@ Contributing
 
 > The universal development SDK to build multi-platform projects with [react native](https://facebook.github.io/react-native/). Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `Firefox OS` and `Firefox TV` platforms
 
-
 ---
 
 <img src="https://renative.org/img/ic_quickstart.png" width=50 height=50 />
 
 ## Quick Start
-
 
 ```bash
 $ npm install rnv -g
@@ -242,14 +240,13 @@ $ rnv new
 
 ## Features
 
-- Learn
-- Write
-- Build
-- Integrate
-- Debug
-- Test
-- Deploy
-
+-   Learn
+-   Write
+-   Build
+-   Integrate
+-   Debug
+-   Test
+-   Deploy
 
 [Explore ReNative Features](https://renative.org/docs/intro-features)
 
@@ -262,7 +259,6 @@ $ rnv new
 Too lazy to build your idea from scratch? use one of the predefined & community templates to get you started in no time.
 
 [Documentation for ReNative Templates and Starters](https://renative.org/docs/guide-templates)
-
 
 ---
 
@@ -284,7 +280,6 @@ ReNative supports integration for various services and deployment infrastructure
 
 [Documentation for ReNative Integrations](https://renative.org/docs/integration-fastlane)
 
-
 ---
 
 <img src="https://renative.org/img/ic_configuration.png" width=50 height=50 />
@@ -294,7 +289,6 @@ ReNative supports integration for various services and deployment infrastructure
 Tire of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running
 
 [Documentation for ReNative JSON Config](https://renative.org/docs/config)
-
 
 ---
 
@@ -316,7 +310,6 @@ Sometimes you need to extend CLI functionality with custom build scripts. ReNati
 
 [Documentation for ReNative Build Hooks](https://renative.org/docs/guide-build_hooks)
 
-
 ---
 
 <img src="https://renative.org/img/ic_runtime.png" width=50 height=50 />
@@ -327,7 +320,6 @@ ReNative runtime is an NPM dependency used abstract away some of the complexitie
 
 [Documentation for ReNative Runtime](https://renative.org/docs/guide-renative-runtime)
 
-
 ---
 
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
@@ -337,7 +329,6 @@ ReNative runtime is an NPM dependency used abstract away some of the complexitie
 One CLI to do it all. `rnv` is your entry point and control centre to building multi-platform apps with just a few commands to learn
 
 [Documentation for RNV CLI](https://renative.org/docs/guide-cli)
-
 
 ---
 
@@ -369,8 +360,6 @@ More in-depth explanation how ReNative internals work
 <img src="https://renative.org/img/ic_firefoxtv.png" width=50 height=50 />
 </p>
  -->
-
-
 
 ---
 
@@ -531,7 +520,6 @@ More in-depth explanation how ReNative internals work
 If you need full control over whole ReNative build or want to contribute, you can clone and develop ReNative locally
 
 [Documentation for Developing ReNative](https://renative.org/docs/guide-develop)
-
 
 ---
 

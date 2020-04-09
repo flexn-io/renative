@@ -10,7 +10,7 @@ sidebar_label: template
 
 ## Task Order
 
-🔥 `template`  ✅
+🔥 `template` ✅
 
 ## template
 

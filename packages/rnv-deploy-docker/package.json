@@ -7,7 +7,7 @@
         "build": "babel index.js --out-dir dist",
         "build:clean": "rm -rf dist || true",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "yarn build"
     },
     "repository": {
         "type": "git",
@@ -23,6 +23,9 @@
     "bugs": {
         "url": "https://github.com/pavjacko/renative/issues"
     },
+    "publishConfig": {
+        "access": "public"
+    },
     "homepage": "https://github.com/pavjacko/renative#readme",
     "peerDependencies": {
         "rnv": "latest"
@@ -33,7 +36,7 @@
         "@babel/node": "7.8.3",
         "@babel/plugin-proposal-nullish-coalescing-operator": "7.8.3",
         "@babel/plugin-proposal-optional-chaining": "7.8.3",
-        "@babel/preset-env": "7.8.3"
+        "@babel/preset-env": "7.8.7"
     },
     "dependencies": {
         "get-installed-path": "^4.0.8"

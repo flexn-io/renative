@@ -15,12 +15,9 @@ import {
     waitForWebpack,
     confirmActiveBundler
 } from '../common';
+import { doResolve } from '../resolve';
 import { isPlatformSupported } from './index';
-import {
-    logTask,
-    logError,
-    logDebug
-} from '../systemTools/logger';
+import { logTask, logError, logDebug, logSummary } from '../systemTools/logger';
 import {
     IOS,
     TVOS,
@@ -36,7 +33,7 @@ import {
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
-    FIREFOX_TV,
+    FIREFOX_TV
 } from '../constants';
 import {
     runXcodeProject,
@@ -51,7 +48,10 @@ import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
 import {
     runElectron,
-    buildElectron, runElectronDevServer, configureElectronProject, exportElectron
+    buildElectron,
+    runElectronDevServer,
+    configureElectronProject,
+    exportElectron
 } from './electron';
 import {
     packageAndroid,
@@ -74,13 +74,14 @@ let keepRNVRunning = false;
 // PUBLIC API
 // ##########################################
 
-
 export const rnvStart = async (c) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
 
-    logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
+    logTask(
+        `rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`
+    );
 
     if (Config.isWebHostEnabled && hosted) {
         waitForWebpack(c, port)
@@ -103,15 +104,22 @@ export const rnvStart = async (c) => {
             return runWeb(c, platform, port);
         default:
             if (hosted) {
-                return logError('This platform does not support hosted mode', true);
+                return logError(
+                    'This platform does not support hosted mode',
+                    true
+                );
             }
     }
 
-    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --port ${c.runtime.port} --config=metro.config.js`;
+    let startCmd = `node ${doResolve(
+        'react-native'
+    )}/local-cli/cli.js start --port ${
+        c.runtime.port
+    } --config=metro.config.js`;
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }
-
+    // logSummary('BUNDLER STARTED');
     await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
 };
 
@@ -124,7 +132,6 @@ export const rnvDebug = async (c) => {
     await isBuildSchemeSupported(c);
     await runWeinre(c);
 };
-
 
 export const rnvRun = async (c) => {
     logTask(`rnvRun:${c.platform}`);
@@ -186,16 +193,36 @@ export const rnvLog = async (c) => {
 // PRIVATE
 // ##########################################
 
-
 const _configureHostedIfRequired = async (c) => {
     logTask(`_configureHostedIfRequired:${c.platform}`);
     if (Config.isWebHostEnabled) {
         logDebug('Running hosted build');
         const { project, rnv } = c.paths;
-        copyFolderContentsRecursiveSync(path.join(rnv.dir, 'supportFiles', 'appShell'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${c.platform}`, 'public'));
-        writeCleanFile(path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${c.platform}`, 'public', 'index.html'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.runtime.port}` },
-        ]);
+        copyFolderContentsRecursiveSync(
+            path.join(rnv.dir, 'supportFiles', 'appShell'),
+            path.join(
+                project.dir,
+                'platformBuilds',
+                `${c.runtime.appId}_${c.platform}`,
+                'public'
+            )
+        );
+        writeCleanFile(
+            path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'),
+            path.join(
+                project.dir,
+                'platformBuilds',
+                `${c.runtime.appId}_${c.platform}`,
+                'public',
+                'index.html'
+            ),
+            [
+                {
+                    pattern: '{{DEV_SERVER}}',
+                    override: `http://${ip.address()}:${c.runtime.port}`
+                }
+            ]
+        );
     }
 };
 
@@ -229,7 +256,10 @@ const _rnvRunWithPlatform = async (c) => {
     const { target } = c.runtime;
     const { hosted } = c.program;
 
-    logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}:${hosted}`, chalk.grey);
+    logTask(
+        `_rnvRunWithPlatform:${platform}:${port}:${target}:${hosted}`,
+        chalk.grey
+    );
 
     if (Config.isWebHostEnabled && hosted) {
         c.runtime.shouldOpenBrowser = true;
@@ -238,7 +268,7 @@ const _rnvRunWithPlatform = async (c) => {
 
     Analytics.captureEvent({
         type: 'runProject',
-        platform,
+        platform
     });
 
     await checkSdk(c);
@@ -251,6 +281,7 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
                 await _startBundlerIfRequired(c);
                 await runXcodeProject(c);
+                logSummary('BUNDLER STARTED');
                 return waitForBundlerIfRequired(c);
             }
             return runXcodeProject(c);
@@ -261,10 +292,14 @@ const _rnvRunWithPlatform = async (c) => {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await _startBundlerIfRequired(c);
-                if (getConfigProp(c, platform, 'bundleAssets') === true || platform === ANDROID_WEAR) {
+                if (
+                    getConfigProp(c, platform, 'bundleAssets') === true
+                    || platform === ANDROID_WEAR
+                ) {
                     await packageAndroid(c, platform);
                 }
                 await runAndroid(c, platform, target);
+                logSummary('BUNDLER STARTED');
                 return waitForBundlerIfRequired(c);
             }
             return runAndroid(c, platform, target);
@@ -330,13 +365,17 @@ const _rnvPackageWithPlatform = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await configureGradleProject(c, platform);
             }
-            return packageAndroid(c, platform, target, platform === ANDROID_WEAR);
+            return packageAndroid(
+                c,
+                platform,
+                target,
+                platform === ANDROID_WEAR
+            );
         default:
             logErrorPlatform(c, platform);
             return false;

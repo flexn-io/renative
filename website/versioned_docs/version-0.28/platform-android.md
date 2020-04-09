@@ -5,7 +5,6 @@ sidebar_label: Android
 original_id: platform-android
 ---
 
-
 <table>
   <tr>
   <td>
@@ -21,23 +20,22 @@ original_id: platform-android
 
 ## Overview
 
-
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `android.mobile.js` | `form factor` | 1 |
-| `mobile.js` | `form factor` | 2 |
-| `android.js` | `platform` | 3 |
-| `mobile.native.js` | `fallback` | 4 |
-| `native.js` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
+| Extension           | Type          | Priority |
+| ------------------- | ------------- | :------: |
+| `android.mobile.js` | `form factor` |    1     |
+| `mobile.js`         | `form factor` |    2     |
+| `android.js`        | `platform`    |    3     |
+| `mobile.native.js`  | `fallback`    |    4     |
+| `native.js`         | `fallback`    |    5     |
+| `js`                | `fallback`    |    6     |
+| `tsx`               | `fallback`    |    7     |
+| `ts`                | `fallback`    |    8     |
 
 ## Requirements
 
@@ -65,7 +63,6 @@ You can create variety of emulators via Android Studio IDE
     </th>
   </tr>
 </table>
-
 
 ## Run on Simulator
 
@@ -104,7 +101,6 @@ make sure you have this piece of script in package.json
 
 Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.android.enableHermes`
 or `renative.json:platforms.android.buildSchemes.[SCHEME].enableHermes`
-
 
 ## Advanced
 

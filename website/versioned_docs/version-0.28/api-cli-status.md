@@ -11,7 +11,7 @@ original_id: api-cli-status
 
 ## Task Order
 
-🔥 `status`  ✅
+🔥 `status` ✅
 
 ## status
 

@@ -10,7 +10,7 @@ sidebar_label: plugin
 
 ## Task Order
 
-🔥 `plugin`  ✅
+🔥 `plugin` ✅
 
 ## plugin
 

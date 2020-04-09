@@ -11,10 +11,11 @@ const config = {
             /appConfigs\/.*/,
             /renative.local.*/,
             /packages\/rnv\/.*/,
-            /node_modules\/.*\/node_modules\/react-native\/.*/,
+            /metro.config.local.*/
+            /node_modules\/.*\/node_modules\/react-native\/.*/
         ])
     },
-    projectRoot: path.resolve(__dirname),
+    projectRoot: path.resolve(__dirname)
 };
 
 module.exports = config;

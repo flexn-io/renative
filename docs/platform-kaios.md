@@ -19,16 +19,16 @@ sidebar_label: KaiOS
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `kaios.mobile.js` | `form factor` | 1 |
-| `mobile.js` | `form factor` | 2 |
-| `kaios.js` | `platform` | 3 |
-| `mobile.web.js` | `fallback` | 4 |
-| `web.js` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
+| Extension         | Type          | Priority |
+| ----------------- | ------------- | :------: |
+| `kaios.mobile.js` | `form factor` |    1     |
+| `mobile.js`       | `form factor` |    2     |
+| `kaios.js`        | `platform`    |    3     |
+| `mobile.web.js`   | `fallback`    |    4     |
+| `web.js`          | `fallback`    |    5     |
+| `js`              | `fallback`    |    6     |
+| `tsx`             | `fallback`    |    7     |
+| `ts`              | `fallback`    |    8     |
 
 ## Requirements
 
@@ -45,7 +45,6 @@ After installation you can launch it via Applications:
 </table>
 
 ## Run
-
 
 Run on Simulator
 

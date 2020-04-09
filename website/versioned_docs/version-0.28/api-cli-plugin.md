@@ -11,7 +11,7 @@ original_id: api-cli-plugin
 
 ## Task Order
 
-🔥 `plugin`  ✅
+🔥 `plugin` ✅
 
 ## plugin
 
