@@ -58,7 +58,7 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "file:../renative-template-hello-world",
+            "version": "0.29.0-alpha.26",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
@@ -68,7 +68,7 @@
             }
         },
         "renative-template-blank": {
-            "version": "file:../renative-template-blank",
+            "version": "0.29.0-alpha.26",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
@@ -78,7 +78,7 @@
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "file:../renative-template-kitchen-sink",
+            "version": "0.29.0-alpha.26",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
