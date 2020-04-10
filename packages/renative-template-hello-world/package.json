@@ -52,7 +52,7 @@
     },
     "scripts": {},
     "dependencies": {
-        "@noriginmedia/react-spatial-navigation": "^2.10.0"
+        "@noriginmedia/react-spatial-navigation": "2.12.1"
     },
     "devDependencies": {},
     "private": false,

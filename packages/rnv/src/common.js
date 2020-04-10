@@ -63,6 +63,8 @@ export const generateChecksum = (str, algorithm, encoding) => crypto
     .digest(encoding || 'hex');
 
 export const getSourceExts = (c, p) => {
+    // IMPORTANT: do not replace "p" with c.platform as this has to
+    // be injected from above to generate multiple configs
     const sExt = PLATFORMS[p]?.sourceExts;
     if (sExt) {
         return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
@@ -70,8 +72,8 @@ export const getSourceExts = (c, p) => {
     return [];
 };
 
-export const getSourceExtsAsString = (c) => {
-    const sourceExts = getSourceExts(c);
+export const getSourceExtsAsString = (c, p) => {
+    const sourceExts = getSourceExts(c, p);
     return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
 };
 

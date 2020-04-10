@@ -113,7 +113,7 @@ const _generateWebpackConfigs = (c, platform) => {
         analyzer,
         entryFile,
         title,
-        extensions: getSourceExts(c),
+        extensions: getSourceExts(c, platform),
         ...extendConfig
     };
 
