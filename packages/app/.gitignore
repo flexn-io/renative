@@ -73,3 +73,5 @@ metro.config.local.js
 # Testing
 /packages/**/coverage
 /packages/**/dist
+/public/fonts
+/styles
