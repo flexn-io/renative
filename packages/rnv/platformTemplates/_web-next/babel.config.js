@@ -1,5 +1,3 @@
-// const cleanAliases = require('./platforms/common/pathAliases');
-
 module.exports = {
     retainLines: true,
     presets: ['module:metro-react-native-babel-preset'],
@@ -7,10 +5,7 @@ module.exports = {
         [
             require.resolve('babel-plugin-module-resolver'),
             {
-                root: ['.'],
-                alias: {
-                    renative: './node_modules/renative'
-                }
+                root: ['..']
             },
         ],
     ],
