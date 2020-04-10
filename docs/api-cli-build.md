@@ -10,7 +10,7 @@ sidebar_label: build
 
 ## Task Order
 
-🔥 `configure` ➡️ `package` ➡️ `build`  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ✅
 
 ## build
 

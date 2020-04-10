@@ -1,8 +1,21 @@
 import platform from './Api/platform';
 import factor from './Api/factor';
 import {
-    ANDROID, ANDROID_TV, ANDROID_WEAR, IOS, TVOS, WEB, WEBOS, TIZEN,
-    TIZEN_WATCH, TIZEN_MOBILE, MACOS, WINDOWS, FIREFOX_OS, FIREFOX_TV, KAIOS
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    IOS,
+    TVOS,
+    WEB,
+    WEBOS,
+    TIZEN,
+    TIZEN_WATCH,
+    TIZEN_MOBILE,
+    MACOS,
+    WINDOWS,
+    FIREFOX_OS,
+    FIREFOX_TV,
+    KAIOS
 } from './Constants';
 
 // PLATFORM DEPRECATED
@@ -47,10 +60,19 @@ export const isPlatformFirefoxtv = platform === FIREFOX_TV;
 export const isPlatformKaios = platform === KAIOS;
 
 // ENGINE
-export const isEngineWeb = platform === WEB || platform === TIZEN
-|| platform === WEBOS || platform === MACOS || platform === TIZEN_MOBILE || platform === TIZEN_WATCH;
-export const isEngineNative = platform === ANDROID || platform === ANDROID_TV
-|| platform === ANDROID_WEAR || platform === IOS || platform === TVOS;
+export const isEngineWeb =
+    platform === WEB ||
+    platform === TIZEN ||
+    platform === WEBOS ||
+    platform === MACOS ||
+    platform === TIZEN_MOBILE ||
+    platform === TIZEN_WATCH;
+export const isEngineNative =
+    platform === ANDROID ||
+    platform === ANDROID_TV ||
+    platform === ANDROID_WEAR ||
+    platform === IOS ||
+    platform === TVOS;
 
 // FACTOR
 export const isFactorBrowser = factor === 'browser';

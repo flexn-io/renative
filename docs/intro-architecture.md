@@ -6,7 +6,6 @@ sidebar_label: Architecture
 
 <img src="https://renative.org/img/ic_arch.png" width=50 height=50 />
 
-
 ## Build Process
 
 <table>
@@ -32,7 +31,6 @@ Folder Structure (Generated Project)
     ├── platformBuilds              # Generated platform app projects
     ├── src                         # Source files
     └── renative.json           # React Native Plugins configuration
-
 
 ## Override Mechanism
 

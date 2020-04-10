@@ -1,8 +1,6 @@
 import chalk from 'chalk';
 import fs from 'fs';
-import {
-    getConfig
-} from '../common';
+import { getConfig } from '../common';
 import { logToSummary, logTask } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
 import { executeAsync } from '../systemTools/exec';
@@ -25,7 +23,11 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
                     .then(() => resolve())
                     .catch(e => reject(e));
             } else {
-                reject(`Method name ${chalk.white(c.program.exeMethod)} does not exists in your buildHooks!`);
+                reject(
+                    `Method name ${chalk.white(
+                        c.program.exeMethod
+                    )} does not exists in your buildHooks!`
+                );
             }
         })
         .catch(e => reject(e));
@@ -33,7 +35,6 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
 
 const executePipe = async (c, key) => {
     logTask(`executePipe:${key}`);
-
 
     const pipesConfig = c.buildConfig?.pipes;
     if (!pipesConfig || (pipesConfig && pipesConfig.includes(key))) {
@@ -43,7 +44,10 @@ const executePipe = async (c, key) => {
     const pipe = c.buildPipes ? c.buildPipes[key] : null;
 
     if (Array.isArray(pipe)) {
-        await pipe.reduce((accumulatorPromise, next) => accumulatorPromise.then(() => next(c)), Promise.resolve());
+        await pipe.reduce(
+            (accumulatorPromise, next) => accumulatorPromise.then(() => next(c)),
+            Promise.resolve()
+        );
     } else if (pipe) {
         await pipe(c);
     }
@@ -58,9 +62,13 @@ const buildHooks = async (c) => {
         }
 
         try {
-            await executeAsync(c, `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`, {
-                cwd: c.paths.buildHooks.dir
-            });
+            await executeAsync(
+                c,
+                `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`,
+                {
+                    cwd: c.paths.buildHooks.dir
+                }
+            );
 
             const h = require(c.paths.buildHooks.dist.index);
             c.buildHooks = h.hooks;
@@ -106,7 +114,8 @@ const rnvHooksPipes = c => new Promise((resolve, reject) => {
         .then(() => {
             const pipeOpts = generateOptions(c.buildPipes);
             console.log(`Pipes:\n${pipeOpts.asString}`);
-        }).catch(e => reject(e));
+        })
+        .catch(e => reject(e));
 });
 
 export { buildHooks, rnvHooksList, rnvHooksRun, executePipe, rnvHooksPipes };

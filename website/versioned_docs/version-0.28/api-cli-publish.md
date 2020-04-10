@@ -11,7 +11,7 @@ original_id: api-cli-publish
 
 ## Task Order
 
-🔥 `platform`  ✅
+🔥 `platform` ✅
 
 ## platform
 

@@ -2,29 +2,26 @@
 
 ## [v0.28.0]
 
-- Migration to React Native 0.61.2
-- Support for Hermes Engine
-- AndroidX Support
+-   Migration to React Native 0.61.2
+-   Support for Hermes Engine
+-   AndroidX Support
 
-- Migrated 30+ plugins
+-   Migrated 30+ plugins
 
-- RN Camera
-- Local Storage
-- NetInfo
+-   RN Camera
+-   Local Storage
+-   NetInfo
 -
 
 ## [v0.26.0]
 
-- new config system
+-   new config system
 
 BREAKING CHANGES:
-
-
 
 ## [v0.25.0 ]
 
 TODO
-
 
 ## [v0.21.7]
 
@@ -39,10 +36,7 @@ rnv run
 
 -   fix infinite `_listAndroidTargets`
 
-
-
 ## [v0.21.6]
-
 
 ### Optional Platforms Support
 

@@ -18,7 +18,6 @@ original_id: platform-windows
 
 <img src="https://renative.org/img/rnv_windows.gif" height="250"/>
 
-
 ## Overview
 
 -   support for Windows 10+
@@ -26,17 +25,17 @@ original_id: platform-windows
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `windows.desktop.js` | `form factor` | 1 |
-| `desktop.js` | `form factor` | 2 |
-| `windows.js` | `platform` | 3 |
-| `desktop.web.js` | `fallback` | 4 |
-| `electron.js` | `fallback` | 5 |
-| `web.js` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
+| Extension            | Type          | Priority |
+| -------------------- | ------------- | :------: |
+| `windows.desktop.js` | `form factor` |    1     |
+| `desktop.js`         | `form factor` |    2     |
+| `windows.js`         | `platform`    |    3     |
+| `desktop.web.js`     | `fallback`    |    4     |
+| `electron.js`        | `fallback`    |    5     |
+| `web.js`             | `fallback`    |    6     |
+| `js`                 | `fallback`    |    7     |
+| `tsx`                | `fallback`    |    8     |
+| `ts`                 | `fallback`    |    9     |
 
 ## Requirements
 

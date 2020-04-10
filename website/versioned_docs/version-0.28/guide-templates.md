@@ -5,7 +5,6 @@ sidebar_label: Templates
 original_id: guide-templates
 ---
 
-
 <img src="https://renative.org/img/ic_templates.png" width=50 height=50 />
 
 ## Templates / Starters
@@ -25,7 +24,6 @@ https://www.npmjs.com/package/renative-template-blank
 Chat App:
 
 https://www.npmjs.com/package/@reactseals/renative-template-chat
-
 
 ## CLI
 

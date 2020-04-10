@@ -1,5 +1,3 @@
-
-
 export function useNavigate(props) {
     function navigate(route, opts, params) {
         if (props?.navigate) props.navigate(route, opts);
@@ -7,7 +5,6 @@ export function useNavigate(props) {
     }
     return navigate;
 }
-
 
 export function usePop(props) {
     function pop() {

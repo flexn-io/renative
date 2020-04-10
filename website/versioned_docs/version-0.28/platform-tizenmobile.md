@@ -18,7 +18,6 @@ original_id: platform-tizenmobile
 
 <img src="https://renative.org/img/rnv_tizenmobile.gif" height="250"/>
 
-
 ## Overview
 
 -   Latest Tizen project
@@ -26,16 +25,16 @@ original_id: platform-tizenmobile
 
 ## File Extension Support
 
-| Extension | Type    | Priority  |
-| --------- | --------- | :-------: |
-| `tizenmobile.mobile.js` | `form factor` | 1 |
-| `mobile.js` | `form factor` | 2 |
-| `tizenmobile.js` | `platform` | 3 |
-| `mobile.web.js` | `fallback` | 4 |
-| `web.js` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
+| Extension               | Type          | Priority |
+| ----------------------- | ------------- | :------: |
+| `tizenmobile.mobile.js` | `form factor` |    1     |
+| `mobile.js`             | `form factor` |    2     |
+| `tizenmobile.js`        | `platform`    |    3     |
+| `mobile.web.js`         | `fallback`    |    4     |
+| `web.js`                | `fallback`    |    5     |
+| `js`                    | `fallback`    |    6     |
+| `tsx`                   | `fallback`    |    7     |
+| `ts`                    | `fallback`    |    8     |
 
 ## Requirements
 

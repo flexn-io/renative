@@ -5,7 +5,6 @@ sidebar_label: Plugins
 original_id: guide-plugins
 ---
 
-
 <img src="https://renative.org/img/ic_plugins.png" width=50 height=50 />
 
 ## Plugins
@@ -48,18 +47,18 @@ Example:
 ```json
 {
     "plugins": {
-      "renative": "source:rnv",
-      "react": "source:rnv",
-      "react-art": "source:rnv",
-      "react-dom": "source:rnv",
-      "react-native": "source:rnv",
-      "react-native-web": "source:rnv",
-      "react-native-web-image-loader": "source:rnv",
-      "react-native-gesture-handler": "source:rnv",
-      "react-navigation": "source:rnv",
-      "react-navigation-tabs": "source:rnv",
-      "react-native-reanimated": "source:rnv",
-      "react-native-vector-icons": "source:rnv"
+        "renative": "source:rnv",
+        "react": "source:rnv",
+        "react-art": "source:rnv",
+        "react-dom": "source:rnv",
+        "react-native": "source:rnv",
+        "react-native-web": "source:rnv",
+        "react-native-web-image-loader": "source:rnv",
+        "react-native-gesture-handler": "source:rnv",
+        "react-navigation": "source:rnv",
+        "react-navigation-tabs": "source:rnv",
+        "react-native-reanimated": "source:rnv",
+        "react-native-vector-icons": "source:rnv"
     }
 }
 ```
@@ -88,16 +87,16 @@ Plugin Spec:
 
 ```json
 {
-  "plugin-name": {
-      "version": "",
-      "enabled": true,
-      "ios": {},
-      "android": {},
-      "webpack": {
-          "modulePaths": [],
-          "moduleAliases": []
-      }
-  }
+    "plugin-name": {
+        "version": "",
+        "enabled": true,
+        "ios": {},
+        "android": {},
+        "webpack": {
+            "modulePaths": [],
+            "moduleAliases": []
+        }
+    }
 }
 ```
 

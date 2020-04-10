@@ -1,6 +1,6 @@
 {
     "name": "rnv",
-    "version": "0.29.0-alpha.20",
+    "version": "0.29.0-alpha.26",
     "description": "💻 CLI for ReNative (https://www.npmjs.com/package/renative). Supports `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV`",
     "keywords": [
         "android tv",
@@ -63,16 +63,16 @@
     "scripts": {
         "build": "babel src -d dist --source-maps",
         "build:clean": "rm -rf dist || true",
-        "build:dev": "npm run build -retainLines",
+        "build:dev": "yarn build --retain-lines",
         "fix": "rm -rf node_modules/@react-navigation/native/node_modules/react-native-safe-area-view/.git && rm -rf node_modules/react-native-safe-area-view/.git",
-        "prepare": "npm run build",
-        "prepublishOnly": "npm run build",
+        "prepare": "yarn build",
+        "prepublishOnly": "yarn build",
         "test": "jest -c jest.config.unit.js",
         "test:integration": "jest -c jest.config.integrations.js",
         "test:ios": "jest -c jest.config.ios.js",
         "test:local": "./scripts/test.sh",
         "test:setup": "jest -c jest.config.setup.js",
-        "watch": "nodemon --watch src --exec npm run build:dev"
+        "watch": "nodemon --watch src --exec yarn build:dev"
     },
     "dependencies": {
         "@babel/cli": "7.8.3",
@@ -128,6 +128,7 @@
         "netcat": "1.4.0",
         "node-fetch": "2.6.0",
         "node-machine-id": "^1.1.12",
+        "resolve": "^1.0.0",
         "shelljs": "0.8.2",
         "source-map-loader": "0.2.4",
         "source-map-support": "0.5.13",
@@ -177,6 +178,9 @@
         "xcode": ">=8.0.0"
     },
     "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
     "jest": {
         "preset": "react-native",
         "collectCoverage": true

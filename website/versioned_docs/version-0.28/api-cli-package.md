@@ -11,7 +11,7 @@ original_id: api-cli-package
 
 ## Task Order
 
-🔥 `configure` ➡️ `package`  ✅
+🔥 `configure` ➡️ `package` ✅
 
 ## package
 

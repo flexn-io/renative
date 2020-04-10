@@ -8,25 +8,34 @@ module.exports = {
         browser: true,
         es6: true,
         jest: true,
-        mocha: true,
+        mocha: true
     },
     parserOptions: {
         ecmaFeatures: {
-            experimentalObjectRestSpread: true,
-        },
+            experimentalObjectRestSpread: true
+        }
     },
     plugins: ['jest', 'detox', 'mocha'],
     rules: {
         'arrow-body-style': ['warn', 'as-needed'],
         camelcase: 'off',
         'class-methods-use-this': 'off',
-        indent: ['error', 4, { "SwitchCase": 1 }],
+        'consistent-return': 0,
+        indent: ['error', 4, { SwitchCase: 1 }],
         'new-cap': ['error', { capIsNew: false }],
         'no-duplicate-imports': 'off',
-        'no-param-reassign': ['error', { ignorePropertyModificationsFor: ['el', 'ref', 'event'] }],
+        'no-param-reassign': [
+            'error',
+            { ignorePropertyModificationsFor: ['el', 'ref', 'event'] }
+        ],
         'no-plusplus': 'off',
-        'no-shadow': ['error', { builtinGlobals: false, hoist: 'functions', allow: ['describe'] }],
-        'no-unused-expressions': ['error', { 'allowShortCircuit': true }],
+        'no-shadow': [
+            'error',
+            { builtinGlobals: false, hoist: 'functions', allow: ['describe'] }
+        ],
+        'no-use-before-define': 0,
+        'no-unused-expressions': ['error', { allowShortCircuit: true }],
+        'nonblock-statement-body-position': 0,
         'react/jsx-filename-extension': ['error', { extensions: ['.js'] }],
         'react/jsx-indent': ['error', 4],
         'react/jsx-indent-props': ['error', 4],
@@ -42,16 +51,24 @@ module.exports = {
                     '/^(get|set)(?!(InitialState$|DefaultProps$|ChildContext$)).+$/',
                     'everything-else',
                     '/^render.+$/',
-                    'render',
-                ],
-            },
+                    'render'
+                ]
+            }
         ],
         'object-curly-newline': [
             'error',
             {
-                ObjectExpression: { minProperties: 6, multiline: true, consistent: true },
-                ObjectPattern: { minProperties: 6, multiline: true, consistent: true },
-            },
+                ObjectExpression: {
+                    minProperties: 6,
+                    multiline: true,
+                    consistent: true
+                },
+                ObjectPattern: {
+                    minProperties: 6,
+                    multiline: true,
+                    consistent: true
+                }
+            }
         ],
         'import/prefer-default-export': 'off',
         'import/no-extraneous-dependencies': 'off',
@@ -66,8 +83,11 @@ module.exports = {
         'comma-dangle': ['error', 'only-multiline'],
         'no-underscore-dangle': 'off',
         'mocha/no-exclusive-tests': 'error',
-        "prefer-destructuring": ["error", {"object": true, "array": false}],
-        "prefer-promise-reject-errors": "off",
-        "max-len": ["warn", { "code": 120, "ignoreComments": true, "ignoreStrings": true}]
-    },
+        'prefer-destructuring': ['error', { object: true, array: false }],
+        'prefer-promise-reject-errors': 'off',
+        'max-len': [
+            'warn',
+            { code: 120, ignoreComments: true, ignoreStrings: true }
+        ]
+    }
 };

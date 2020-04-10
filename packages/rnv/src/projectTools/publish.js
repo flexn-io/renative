@@ -30,7 +30,11 @@ const includesPre = (version) => {
 
 const rnvPublish = async () => {
     // make sure release-it is installed
-    await Config.checkRequiredPackage('release-it', '12.4.3', 'devDependencies');
+    await Config.checkRequiredPackage(
+        'release-it',
+        '12.4.3',
+        'devDependencies'
+    );
     // make sure required object is present in package.json
     const pkgJson = Config.getProjectConfig().package;
     const existingPath = Config.getConfig().paths.project.package;
@@ -97,20 +101,39 @@ const rnvPublish = async () => {
     const rootPublishIfNecessary = async () => {
         await executeAsync('npx rnv pkg publish', execCommonOpts);
         if (!skipRootPublish) {
-            if (!rootPublishCommand) throw new Error('You don\'t have a rootPublishCommand specified in package.json');
+            if (!rootPublishCommand) {
+                throw new Error(
+                    "You don't have a rootPublishCommand specified in package.json"
+                );
+            }
             return executeAsync(rootPublishCommand, execCommonOpts);
         }
     };
 
-    const releaseIt = () => executeAsync(`npx release-it ${args.join(' ')} ${prereleaseMark}`, execCommonOpts).catch((e) => {
-        if (e.includes('SIGINT')) return Promise.resolve();
-        if (e.includes('--no-git.requireUpstream')) return Promise.reject(new Error('Seems like you have no upstream configured for current branch. Run `git push -u <origin> <your_branch>` to fix it then try again.'));
-        return Promise.reject(e);
-    }).then(rootPublishIfNecessary);
+    const releaseIt = () => executeAsync(
+        `npx release-it ${args.join(' ')} ${prereleaseMark}`,
+        execCommonOpts
+    )
+        .catch((e) => {
+            if (e.includes('SIGINT')) return Promise.resolve();
+            if (e.includes('--no-git.requireUpstream')) {
+                return Promise.reject(
+                    new Error(
+                        'Seems like you have no upstream configured for current branch. Run `git push -u <origin> <your_branch>` to fix it then try again.'
+                    )
+                );
+            }
+            return Promise.reject(e);
+        })
+        .then(rootPublishIfNecessary);
 
     // we have a ci flag, checking if the project is configured for ci releases to do a bumpless deploy
     if (ci) {
-        if (publishMode !== 'ci') return logWarning('You are running publish with --ci flag but this project is set for local deployments. Check package.json release-it.publish property');
+        if (publishMode !== 'ci') {
+            return logWarning(
+                'You are running publish with --ci flag but this project is set for local deployments. Check package.json release-it.publish property'
+            );
+        }
         return rootPublishIfNecessary();
     }
 

@@ -58,31 +58,31 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "0.29.0-alpha.16",
+            "version": "file:../renative-template-hello-world",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-hello-world"
+                        "projectPath": "../renative-template-hello-world"
                     }
                 }
             }
         },
         "renative-template-blank": {
-            "version": "0.29.0-alpha.16",
+            "version": "file:../renative-template-blank",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-blank"
+                        "projectPath": "../renative-template-blank"
                     }
                 }
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "0.29.0-alpha.16",
+            "version": "file:../renative-template-kitchen-sink",
             "webpack": {
                 "moduleAliases": {
                     "renative": {
-                        "projectPath": "packages/renative-template-kitchen-sink"
+                        "projectPath": "../renative-template-kitchen-sink"
                     }
                 }
             }

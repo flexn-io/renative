@@ -5,11 +5,18 @@ import semver from 'semver';
 
 import Config from '../config';
 import { executeAsync } from '../systemTools/exec';
-import { writeObjectSync, copyFileSync, updateObjectSync } from '../systemTools/fileutils';
+import {
+    writeObjectSync,
+    copyFileSync,
+    updateObjectSync
+} from '../systemTools/fileutils';
 import { logError } from '../systemTools/logger';
 
 const bumpVersions = (version) => {
-    const { project: { dir }, rnv: { pluginTemplates } } = Config.getConfig().paths;
+    const {
+        project: { dir },
+        rnv: { pluginTemplates }
+    } = Config.getConfig().paths;
     // check for packages to bump
     const packagesDir = path.join(dir, 'packages');
     if (fs.existsSync(packagesDir)) {
@@ -17,7 +24,10 @@ const bumpVersions = (version) => {
         packages.forEach((name) => {
             const pkgPath = path.join(packagesDir, name);
             const pkgJsonPath = path.join(pkgPath, 'package.json');
-            if (fs.lstatSync(pkgPath).isDirectory() && fs.existsSync(pkgJsonPath)) {
+            if (
+                fs.lstatSync(pkgPath).isDirectory()
+                && fs.existsSync(pkgJsonPath)
+            ) {
                 // we found a packaaaage, fist-bumpin' it
                 const existingPkgJson = require(pkgJsonPath);
                 existingPkgJson.version = version;
@@ -27,7 +37,10 @@ const bumpVersions = (version) => {
         // check if it's our turf and do some extra magic
         const renativePkgPath = path.join(packagesDir, 'renative');
         if (fs.existsSync(renativePkgPath)) {
-            copyFileSync(path.join(dir, 'README.md'), path.join(renativePkgPath, 'README.md'));
+            copyFileSync(
+                path.join(dir, 'README.md'),
+                path.join(renativePkgPath, 'README.md')
+            );
             updateObjectSync(pluginTemplates.config, {
                 pluginTemplates: {
                     renative: {
@@ -40,14 +53,18 @@ const bumpVersions = (version) => {
 };
 
 const publishAll = () => {
-    const { project: { dir } } = Config.getConfig().paths;
+    const {
+        project: { dir }
+    } = Config.getConfig().paths;
     const packagesDir = path.join(dir, 'packages');
     if (fs.existsSync(packagesDir)) {
         const packages = fs.readdirSync(packagesDir);
-        return Promise.all(packages.map((name) => {
-            const pkgPath = path.join(packagesDir, name);
-            return executeAsync('npm i', { cwd: pkgPath });
-        }));
+        return Promise.all(
+            packages.map((name) => {
+                const pkgPath = path.join(packagesDir, name);
+                return executeAsync('npm i', { cwd: pkgPath });
+            })
+        );
     }
     return true;
 };
@@ -62,8 +79,14 @@ const rnvPkg = async () => {
     switch (firstArg) {
         case 'version':
             // sets the given version to all of the packages, if there are any
-            if (!secondArg) return logError('No version specified', false, true);
-            if (!semver.valid(secondArg)) return logError(`Invalid version specified ${secondArg}`, false, true);
+            if (!secondArg) { return logError('No version specified', false, true); }
+            if (!semver.valid(secondArg)) {
+                return logError(
+                    `Invalid version specified ${secondArg}`,
+                    false,
+                    true
+                );
+            }
             return bumpVersions(secondArg);
         case 'publish':
             return publishAll();

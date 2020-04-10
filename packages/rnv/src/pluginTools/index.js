@@ -1,14 +1,21 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import ora from 'ora';
-import { mergeObjects, writeFileSync, sanitizeDynamicProps } from '../systemTools/fileutils';
+import {
+    mergeObjects,
+    writeFileSync,
+    sanitizeDynamicProps
+} from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
 import { versionCheck } from '../configTools/configParser';
 
 import { SUPPORTED_PLATFORMS } from '../constants';
 import {
     logSuccess,
-    logTask, logWarning, logError, logToSummary
+    logTask,
+    logWarning,
+    logError,
+    logToSummary
 } from '../systemTools/logger';
 import { executePipe } from '../projectTools/buildHooks';
 
@@ -42,25 +49,45 @@ const _getPluginList = (c, isUpdate = false) => {
             SUPPORTED_PLATFORMS.forEach((v) => {
                 if (p[v]) platforms += `${v}, `;
             });
-            if (platforms.length) platforms = platforms.slice(0, platforms.length - 2);
-            const installedPlugin = c.buildConfig && c.buildConfig.plugins && c.buildConfig.plugins[k];
-            const installedString = installedPlugin ? chalk.yellow('installed') : chalk.green('not installed');
+            if (platforms.length) {
+                platforms = platforms.slice(0, platforms.length - 2);
+            }
+            const installedPlugin = c.buildConfig
+                && c.buildConfig.plugins
+                && c.buildConfig.plugins[k];
+            const installedString = installedPlugin
+                ? chalk.yellow('installed')
+                : chalk.green('not installed');
             if (isUpdate && installedPlugin) {
                 output.plugins.push(k);
                 let versionString;
                 if (installedPlugin.version !== p.version) {
-                    versionString = `(${chalk.yellow(installedPlugin.version)}) => (${chalk.green(p.version)})`;
+                    versionString = `(${chalk.yellow(
+                        installedPlugin.version
+                    )}) => (${chalk.green(p.version)})`;
                 } else {
                     versionString = `(${chalk.green(installedPlugin.version)})`;
                 }
-                output.asString += ` [${i}]> ${chalk.bold(k)} ${versionString}\n`;
-                output.asArray.push({ name: `${k} ${versionString}`, value: k });
+                output.asString += ` [${i}]> ${chalk.bold(
+                    k
+                )} ${versionString}\n`;
+                output.asArray.push({
+                    name: `${k} ${versionString}`,
+                    value: k
+                });
                 output.allPlugins[k] = p; // this is used by rnvPluginAdd
                 i++;
             } else if (!isUpdate) {
                 output.plugins.push(k);
-                output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}\n`;
-                output.asArray.push({ name: `${k} (${chalk.grey(p.version)}) [${platforms}] - ${installedString}`, value: k });
+                output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(
+                    p.version
+                )}) [${platforms}] - ${installedString}\n`;
+                output.asArray.push({
+                    name: `${k} (${chalk.grey(
+                        p.version
+                    )}) [${platforms}] - ${installedString}`,
+                    value: k
+                });
                 output.allPlugins[k] = p; // this is used by rnvPluginAdd
 
                 i++;
@@ -78,7 +105,6 @@ const _getPluginList = (c, isUpdate = false) => {
             });
         });
     });
-
 
     return output;
 };
@@ -104,12 +130,17 @@ export const rnvPluginAdd = async (c) => {
         });
 
         selectedPlugins[plugin] = o.allPlugins[plugin];
-        installMessage.push(`${chalk.white(plugin)} v(${chalk.green(o.allPlugins[plugin].version)})`);
+        installMessage.push(
+            `${chalk.white(plugin)} v(${chalk.green(
+                o.allPlugins[plugin].version
+            )})`
+        );
     } else {
         selectedPlugins[selPluginKey] = selPlugin;
-        installMessage.push(`${chalk.white(selPluginKey)} v(${chalk.green(selPlugin.version)})`);
+        installMessage.push(
+            `${chalk.white(selPluginKey)} v(${chalk.green(selPlugin.version)})`
+        );
     }
-
 
     const questionPlugins = {};
 
@@ -173,7 +204,7 @@ export const rnvPluginUpdate = async (c) => {
     const { confirm } = await inquirer.prompt({
         name: 'confirm',
         type: 'confirm',
-        message: 'Above installed plugins will be updated with RNV',
+        message: 'Above installed plugins will be updated with RNV'
     });
 
     if (confirm) {
@@ -200,14 +231,31 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
         if (plugin.startsWith('source:')) {
             const scope = plugin.split(':').pop();
 
-            origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[key];
+            origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[
+                    key
+                ];
+
             if (origPlugin) {
                 if (rnvPlugin && !origPlugin?.skipMerge) {
-                    origPlugin = _getMergedPlugin(c, rnvPlugin, origPlugin, true, true);
+                    origPlugin = _getMergedPlugin(
+                        c,
+                        rnvPlugin,
+                        origPlugin,
+                        true,
+                        true
+                    );
                 }
                 return origPlugin;
             }
-            logWarning(`Plugin ${key} is not recognized plugin in ${plugin} scope`);
+            console.log(
+                'DGDGDG',
+                scope,
+                key,
+                c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates
+            );
+            logWarning(
+                `Plugin ${key} is not recognized plugin in ${plugin} scope`
+            );
             return null;
         }
         return {
@@ -217,18 +265,30 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
     if (plugin) {
         if (plugin.source) {
-            origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]?.pluginTemplates?.[key];
+            origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]
+                    ?.pluginTemplates?.[key];
             if (rnvPlugin && !origPlugin?.skipMerge) {
-                origPlugin = _getMergedPlugin(c, rnvPlugin, origPlugin, true, true);
+                origPlugin = _getMergedPlugin(
+                    c,
+                    rnvPlugin,
+                    origPlugin,
+                    true,
+                    true
+                );
             }
         } else {
             origPlugin = rnvPlugin;
         }
     }
 
-
     if (origPlugin) {
-        const mergedPlugin = _getMergedPlugin(c, origPlugin, plugin, true, true);
+        const mergedPlugin = _getMergedPlugin(
+            c,
+            origPlugin,
+            plugin,
+            true,
+            true
+        );
         return mergedPlugin;
     }
 
@@ -236,10 +296,12 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 };
 
 const _getMergedPlugin = (c, obj1, obj2) => {
-    const obj = sanitizeDynamicProps(mergeObjects(c, obj1, obj2, true, true), c.buildConfig?._refs);
+    const obj = sanitizeDynamicProps(
+        mergeObjects(c, obj1, obj2, true, true),
+        c.buildConfig?._refs
+    );
     return sanitizeDynamicProps(obj, obj.props);
 };
-
 
 export const configurePlugins = c => new Promise((resolve, reject) => {
     logTask('configurePlugins');
@@ -256,18 +318,32 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
         const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
         if (!plugin) {
-            logWarning(`Plugin with name ${
-                chalk.white(k)} does not exists in ReNative source:rnv scope. you need to define it manually here: ${
-                chalk.white(c.paths.project.builds.config)}`);
+            logWarning(
+                `Plugin with name ${chalk.white(
+                    k
+                )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk.white(
+                    c.paths.project.builds.config
+                )}`
+            );
         } else if (dependencies && dependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && dependencies[k] !== plugin.version) {
+            if (
+                plugin['no-active'] !== true
+                    && plugin['no-npm'] !== true
+                    && dependencies[k] !== plugin.version
+            ) {
                 if (k === 'renative' && c.runtime.isWrapper) {
-                    logWarning('You\'re in ReNative wrapper mode. plugin renative will stay as local dep!');
+                    logWarning(
+                        "You're in ReNative wrapper mode. plugin renative will stay as local dep!"
+                    );
                 } else {
                     logWarning(
-                        `Version mismatch of dependency ${chalk.white(k)} between:
+                        `Version mismatch of dependency ${chalk.white(
+                            k
+                        )} between:
 ${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
-${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(plugin.version)}).
+${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(
+    plugin.version
+)}).
 package.json will be overriden`
                     );
 
@@ -276,22 +352,33 @@ package.json will be overriden`
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
-            if (plugin['no-active'] !== true && plugin['no-npm'] !== true && devDependencies[k] !== plugin.version) {
+            if (
+                plugin['no-active'] !== true
+                    && plugin['no-npm'] !== true
+                    && devDependencies[k] !== plugin.version
+            ) {
                 logWarning(
-                    `Version mismatch of devDependency ${chalk.white(k)} between package.json: v(${chalk.red(
-                        devDependencies[k],
-                    )}) and plugins.json: v(${chalk.red(plugin.version)}). package.json will be overriden`,
+                    `Version mismatch of devDependency ${chalk.white(
+                        k
+                    )} between package.json: v(${chalk.red(
+                        devDependencies[k]
+                    )}) and plugins.json: v(${chalk.red(
+                        plugin.version
+                    )}). package.json will be overriden`
                 );
                 hasPackageChanged = true;
                 devDependencies[k] = plugin.version;
             }
-        } else if (plugin['no-active'] !== true && plugin['no-npm'] !== true) {
+        } else if (
+            plugin['no-active'] !== true
+                && plugin['no-npm'] !== true
+        ) {
             // Dependency does not exists
             if (plugin.version) {
                 logWarning(
                     `Missing dependency ${chalk.white(k)} v(${chalk.red(
-                        plugin.version,
-                    )}) in package.json. package.json will be overriden`,
+                        plugin.version
+                    )}) in package.json. package.json will be overriden`
                 );
 
                 hasPackageChanged = true;
@@ -303,11 +390,25 @@ package.json will be overriden`
             Object.keys(plugin.npm).forEach((npmKey) => {
                 const npmDep = plugin.npm[npmKey];
                 if (!dependencies[npmKey]) {
-                    logWarning(`Plugin ${chalk.white(k)} requires npm dependency ${chalk.white(npmKey)} .Adding missing npm dependency to you package.json`);
+                    logWarning(
+                        `Plugin ${chalk.white(
+                            k
+                        )} requires npm dependency ${chalk.white(
+                            npmKey
+                        )} .Adding missing npm dependency to you package.json`
+                    );
                     dependencies[npmKey] = npmDep;
                     hasPackageChanged = true;
                 } else if (dependencies[npmKey] !== npmDep) {
-                    logWarning(`Plugin ${chalk.white(k)} dependency mismatch (${chalk.red(dependencies[npmKey])}) => (${chalk.green(npmDep)}) .updating npm dependency in your package.json`);
+                    logWarning(
+                        `Plugin ${chalk.white(
+                            k
+                        )} dependency mismatch (${chalk.red(
+                            dependencies[npmKey]
+                        )}) => (${chalk.green(
+                            npmDep
+                        )}) .updating npm dependency in your package.json`
+                    );
                     dependencies[npmKey] = npmDep;
                     hasPackageChanged = true;
                 }
@@ -315,65 +416,100 @@ package.json will be overriden`
         }
     });
 
-
     logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
     versionCheck(c)
         .then(() => {
             if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
-                writeFileSync(c.paths.project.package, c.files.project.package);
+                writeFileSync(
+                    c.paths.project.package,
+                    c.files.project.package
+                );
                 c._requiresNpmInstall = true;
             }
             resolve();
-        }).catch(e => reject(e));
+        })
+        .catch(e => reject(e));
 });
 
 const parsePlugins = (c, platform, pluginCallback) => {
     logTask(`parsePlugins:${platform}`);
     if (c.buildConfig) {
-        const includedPlugins = getConfigProp(c, platform, 'includedPlugins', []);
-        const excludedPlugins = getConfigProp(c, platform, 'excludedPlugins', []);
+        const includedPlugins = getConfigProp(
+            c,
+            platform,
+            'includedPlugins',
+            []
+        );
+        const excludedPlugins = getConfigProp(
+            c,
+            platform,
+            'excludedPlugins',
+            []
+        );
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
                 Object.keys(plugins).forEach((key) => {
-                    if ((includedPlugins.includes('*') || includedPlugins.includes(key)) && !excludedPlugins.includes(key)) {
+                    if (
+                        (includedPlugins.includes('*')
+                            || includedPlugins.includes(key))
+                        && !excludedPlugins.includes(key)
+                    ) {
                         const plugin = getMergedPlugin(c, key, plugins);
                         if (plugin) {
                             const pluginPlat = plugin[platform];
                             if (pluginPlat) {
-                                if (plugin['no-active'] !== true && plugin.enabled !== false && pluginPlat.enabled !== false) {
+                                if (
+                                    plugin['no-active'] !== true
+                                    && plugin.enabled !== false
+                                    && pluginPlat.enabled !== false
+                                ) {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);
                                     }
-                                    if (pluginCallback) pluginCallback(plugin, pluginPlat, key);
+                                    if (pluginCallback) {
+                                        pluginCallback(plugin, pluginPlat, key);
+                                    }
                                 } else {
-                                    logWarning(`Plugin ${key} is marked disabled. skipping.`);
+                                    logWarning(
+                                        `Plugin ${key} is marked disabled. skipping.`
+                                    );
                                 }
                             }
                         }
                     }
                 });
             } else {
-                logError(`You have no plugins defined in ${chalk.white(c.paths.project.builds.config)}`);
+                logError(
+                    `You have no plugins defined in ${chalk.white(
+                        c.paths.project.builds.config
+                    )}`
+                );
             }
         } else {
-            logWarning(`You haven't included any ${chalk.white('{ common: { includedPlugins: [] }}')} in your ${chalk.white(c.paths.appConfig.config)}. Your app might not work correctly`);
+            logWarning(
+                `You haven't included any ${chalk.white(
+                    '{ common: { includedPlugins: [] }}'
+                )} in your ${chalk.white(
+                    c.paths.appConfig.config
+                )}. Your app might not work correctly`
+            );
         }
     }
 };
 
-// const getLocalRenativePlugin = () => ({
-//     version: 'file:./packages/renative',
-//     webpack: {
-//         modulePaths: [],
-//         moduleAliases: {
-//             renative: {
-//                 projectPath: 'packages/renative'
-//             }
-//         }
-//     }
-// });
+const getLocalRenativePlugin = () => ({
+    version: 'file:../packages/renative',
+    webpack: {
+        modulePaths: [],
+        moduleAliases: {
+            renative: {
+                projectPath: 'packages/renative'
+            }
+        }
+    }
+});
 
-export { getMergedPlugin, parsePlugins };
+export { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
 
-export default { getMergedPlugin, parsePlugins };
+export default { getMergedPlugin, parsePlugins, getLocalRenativePlugin };

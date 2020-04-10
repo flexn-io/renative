@@ -13,14 +13,16 @@ const styles = StyleSheet.create({
     }
 });
 
-const ScreenModal = (props) => {
+const ScreenModal = props => {
     const pop = usePop(props);
     if (hasWebFocusableUI) {
         useEffect(() => {
             const { setFocus } = props;
             setFocus('close');
 
-            return function cleanup() { setFocus('menu'); };
+            return function cleanup() {
+                setFocus('menu');
+            };
         }, []);
     }
     return (
@@ -44,12 +46,10 @@ const ScreenModal = (props) => {
                 />
             </View>
             <ScrollView contentContainerStyle={themeStyles.container}>
-                <Text style={themeStyles.textH2}>
-                        This is my Modal!
-                </Text>
+                <Text style={themeStyles.textH2}>This is my Modal!</Text>
             </ScrollView>
         </View>
     );
 };
 
-export default hasWebFocusableUI ? withFocusable()(ScreenModal) : ScreenModal;
+export default (hasWebFocusableUI ? withFocusable()(ScreenModal) : ScreenModal);

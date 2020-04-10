@@ -7,7 +7,7 @@
         "build": "babel index.js --out-dir dist",
         "build:clean": "rm -rf dist || true",
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "yarn build"
     },
     "repository": {
         "type": "git",
@@ -22,6 +22,9 @@
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/pavjacko/renative/issues"
+    },
+    "publishConfig": {
+        "access": "public"
     },
     "homepage": "https://github.com/pavjacko/renative#readme",
     "peerDependencies": {

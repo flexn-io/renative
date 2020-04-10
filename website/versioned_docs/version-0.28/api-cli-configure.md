@@ -11,7 +11,7 @@ original_id: api-cli-configure
 
 ## Task Order
 
-🔥 `configure`  ✅
+🔥 `configure` ✅
 
 ## configure
 
