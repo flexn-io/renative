@@ -84,7 +84,8 @@ function generateConfig(config) {
         'rnv-platform-info',
         'renative'
     ].map(pkg => doResolve(pkg, false));
-    const modulePaths = [...relativeModules, ...externalModules].filter(
+    const linkedPackages = [path.resolve(projectDir, '../renative')];
+    const modulePaths = [...relativeModules, ...externalModules, ...linkedPackages].filter(
         Boolean
     );
 
