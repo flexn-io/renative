@@ -71,8 +71,7 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "0.29.0-alpha.22",
-        "rnv": "0.29.0-alpha.22"
+        "renative": "file:../renative"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -101,6 +100,7 @@
         "renative-template-blank": "file:../renative-template-blank",
         "renative-template-hello-world": "file:../renative-template-hello-world",
         "renative-template-kitchen-sink": "file:../renative-template-kitchen-sink",
+        "rnv": "file:../rnv",
         "xcode": "2.1.0"
     },
     "optionalDependencies": {
