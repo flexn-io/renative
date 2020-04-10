@@ -62,8 +62,8 @@ export const generateChecksum = (str, algorithm, encoding) => crypto
     .update(str, 'utf8')
     .digest(encoding || 'hex');
 
-export const getSourceExts = (c) => {
-    const sExt = PLATFORMS[c.platform]?.sourceExts;
+export const getSourceExts = (c, p) => {
+    const sExt = PLATFORMS[p]?.sourceExts;
     if (sExt) {
         return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
     }

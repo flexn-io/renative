@@ -360,9 +360,10 @@ const _configureMetroConfigs = async (c) => {
     _parseSupportedPlatforms(c, (p) => {
         const dest = path.join(c.paths.project.dir, `metro.config.${p}.js`);
         if (!fs.existsSync(dest)) {
+            const exts = _getSourceExtsAsString(c, p);
             writeFileSync(dest, `const config = require('./metro.config');
 
-const sourceExts = ${_getSourceExtsAsString(c, p)};
+const sourceExts = ${exts};
 config.resolver.sourceExts = sourceExts;
 module.exports = config;
 `);
