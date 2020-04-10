@@ -155,7 +155,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
     const fontJsPath = path.join(
         c.paths.project.assets.dir,
         'runtime',
-        'fonts.js'
+        'fonts.web.js'
     );
     if (fs.existsSync(fontJsPath)) {
         const existingFileContents = fs.readFileSync(fontJsPath).toString();
