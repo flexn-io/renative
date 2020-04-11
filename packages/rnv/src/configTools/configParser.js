@@ -228,7 +228,7 @@ export const fixRenativeConfigsSync = async (c) => {
             )} is missing! Let's create one for you.`
         );
         copyFileSync(
-            path.join(c.paths.rnv.dir, RN_BABEL_CONFIG_NAME),
+            path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
             c.paths.project.babelConfig
         );
     }

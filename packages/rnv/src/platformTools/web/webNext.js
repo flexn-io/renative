@@ -21,7 +21,7 @@ import {
 } from '../../common';
 import { isPlatformActive } from '..';
 import { logTask, logInfo, logDebug, logError, logSuccess, logWarning } from '../../systemTools/logger';
-import { WEB } from '../../constants';
+import { WEB, RN_BABEL_CONFIG_NAME, NEXT_CONFIG_NAME } from '../../constants';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import { copyFileSync, copyFolderContentsRecursiveSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
@@ -131,7 +131,7 @@ const configureNextIfRequired = async (c) => {
     const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
     const _appFile = path.join(pagesDir, '_app.js');
     const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], `_${c.platform}`);
-    const configFile = path.join(dir, 'next.config.js');
+    const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     // handle fonts
     !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);
@@ -163,14 +163,7 @@ const configureNextIfRequired = async (c) => {
 
     // add config
     if (!fs.existsSync(configFile)) {
-        writeCleanFile(path.join(platformTemplateDir, 'next.config.js'), configFile);
-    }
-
-    // add/replace babel
-    if (!fs.existsSync(path.join(dir, 'babel.config.js'))) fs.copyFileSync(path.join(platformTemplateDir, 'babel.config.js'), path.join(dir, 'babel.config.js'));
-    const currentBabel = require(path.join(dir, 'babel.config.js'));
-    if (currentBabel.plugins?.[0]?.[1]?.alias?.renative !== './node_modules/renative') {
-        fs.copyFileSync(path.join(platformTemplateDir, 'babel.config.js'), path.join(dir, 'babel.config.js'));
+        writeCleanFile(path.join(platformTemplateDir, NEXT_CONFIG_NAME), configFile);
     }
 };
 
