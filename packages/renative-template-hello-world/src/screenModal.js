@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet, ScrollView } from 'react-native';
-import { Button, getScaledValue, usePop } from 'renative';
+import { Text, View, ScrollView } from 'react-native';
+import { Button, getScaledValue, usePop, StyleSheet } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasWebFocusableUI } from './theme';
 

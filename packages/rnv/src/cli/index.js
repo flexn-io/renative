@@ -588,6 +588,12 @@ const run = async (c, spawnC, skipStartBuilder) => {
 
 const _execute = async (c, cmdFn, cmd) => {
     logTask(`_execute:${c.command}:${c.subCommand}`);
+
+    // engine handling
+    if (c.program.engine && !c.platform.includes('-')) { // avoid multiple iterations over platform (web-next-next-next...)
+        c.platform = `${c.platform}-${c.program.engine}`;
+    }
+
     if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;

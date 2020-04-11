@@ -33,7 +33,8 @@ import {
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
-    FIREFOX_TV
+    FIREFOX_TV,
+    WEB_NEXT,
 } from '../constants';
 import {
     runXcodeProject,
@@ -43,6 +44,7 @@ import {
     runAppleLog
 } from './apple';
 import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
+import { runWebNext, buildWebNext } from './web/webNext';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -84,7 +86,7 @@ export const rnvStart = async (c) => {
     );
 
     if (Config.isWebHostEnabled && hosted) {
-        waitForWebpack(c, port)
+        waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
@@ -111,11 +113,7 @@ export const rnvStart = async (c) => {
             }
     }
 
-    let startCmd = `node ${doResolve(
-        'react-native'
-    )}/local-cli/cli.js start --port ${
-        c.runtime.port
-    } --config=metro.config.js`;
+    let startCmd = `node ${doResolve('react-native')}/local-cli/cli.js start --port ${c.runtime.port} --config=configs/metro.config.${c.platform}.js`;
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }
@@ -341,6 +339,13 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
             }
             return runFirefoxProject(c, platform);
+        case WEB_NEXT:
+            if (!c.program.only) {
+                await cleanPlatformIfRequired(c, platform);
+                await configureIfRequired(c, platform);
+            }
+            c.runtime.shouldOpenBrowser = true;
+            return runWebNext(c, platform, port, true);
         default:
             return logErrorPlatform(c, platform);
     }
@@ -480,6 +485,11 @@ const _rnvBuildWithPlatform = async (c) => {
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWeb(c, platform);
+            return;
+        case WEB_NEXT:
+            await cleanPlatformIfRequired(c, platform);
+            await configureIfRequired(c, platform);
+            await buildWebNext(c);
             return;
         case KAIOS:
         case FIREFOX_OS:

@@ -113,7 +113,7 @@ const _generateWebpackConfigs = (c, platform) => {
         analyzer,
         entryFile,
         title,
-        extensions: getSourceExts(c),
+        extensions: getSourceExts(c, platform),
         ...extendConfig
     };
 
@@ -228,7 +228,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
         `_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`
     );
     if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForWebpack(c, port)
+    const wait = waitForWebpack(c)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })

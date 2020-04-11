@@ -1,41 +1,38 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Router, createHistory, LocationProvider } from '@reach/router';
-import createHashSource from 'hash-source';
+import { Router } from '@reach/router';
+import { Api } from 'renative';
+
 import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 import ScreenModal from '../screenModal';
 import Menu from '../menu';
-import Theme, { hasHorizontalMenu, themeStyles } from '../theme';
+import { themeStyles } from '../theme';
+
+if (Api.engine !== 'next') {
+    // bootstrap fonts for web
+    require('../../platformAssets/runtime/fontManager');
+}
 
 const styles = {
     container: {
-        position: 'absolute',
-        top: hasHorizontalMenu ? Theme.menuHeight : 0,
-        right: 0,
-        left: hasHorizontalMenu ? 0 : Theme.menuWidth,
-        bottom: 0
+        width: '100%',
+        height: '100%',
+        position: 'relative'
     }
 };
 
-const source = createHashSource();
-const history = createHistory(source);
-
 const App = () => (
-    <LocationProvider history={history}>
-        <View style={themeStyles.app}>
-            <Router primary={false}>
-                <Menu path="*" focusKey="menu" />
+    <View style={[themeStyles.app]}>
+        <Menu focusKey="menu" />
+        <View style={styles.container}>
+            <Router>
+                <ScreenHome path="/" />
+                <ScreenMyPage path="my-page" />
+                <ScreenModal path="modal" />
             </Router>
-            <div style={styles.container}>
-                <Router>
-                    <ScreenHome default path="/" />
-                    <ScreenMyPage path="my-page/*" />
-                    <ScreenModal path="modal" />
-                </Router>
-            </div>
         </View>
-    </LocationProvider>
+    </View>
 );
 
 export default App;

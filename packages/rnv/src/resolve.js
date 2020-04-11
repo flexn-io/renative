@@ -41,6 +41,9 @@ export const doResolvePath = (aPath, mandatory = true, options = {}) => {
         if (pathArr[0] === 'node_modules') {
             pathArr.shift();
         }
+        if (pathArr[0] === 'packages') {
+            pathArr.shift();
+        }
         const cleanPath = pathArr.join('/');
         if (pathArr[0].startsWith('@')) {
             pathArr.shift();
@@ -97,6 +100,7 @@ const _doResolveFSPath = (aPath, options) => {
  */
 const _doResolveExternalPackage = (aPath, options) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
+
     const resolvedPath = resolve
         .sync(packageBase, {
             packageFilter: (pkg) => {

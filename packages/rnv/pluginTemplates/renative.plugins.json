@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.28.19-alpha.6",
+            "version": "0.29.0-alpha.17",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -270,7 +270,7 @@
             }
         },
         "@react-native-community/viewpager": {
-            "version": "2.0.1",
+            "version": "2.0.2",
             "ios": {
                 "podName": "react-native-viewpager",
                 "path": "node_modules/@react-native-community/viewpager"
@@ -716,6 +716,36 @@
                 "svgs"
             ]
         },
+        "react-native-snap-scrollview": {
+            "version": "github:reactseals/react-native-snap-scrollview#master",
+            "ios": {
+                "podName": "react-native-snap-scrollview"
+            },
+            "tvos": {
+                "podName": "react-native-snap-scrollview"
+            },
+            "androidtv": {
+                "package": "com.reactlibrary.SnapScrollviewPackage"
+            },
+            "android": {
+                "package": "com.reactlibrary.SnapScrollviewPackage"
+            }
+        },
+        "react-native-parallax-view": {
+            "version": "github:reactseals/react-native-parallax-view#master",
+            "ios": {
+                "podName": "react-native-parallax-view"
+            },
+            "tvos": {
+                "podName": "react-native-parallax-view"
+            },
+            "androidtv": {
+                "package": "com.reactlibrary.ParallaxViewPackage"
+            },
+            "android": {
+                "package": "com.reactlibrary.ParallaxViewPackage"
+            }
+        },
         "react-native-android-open-settings": {
             "version": "1.3.0",
             "android": {
@@ -833,7 +863,7 @@
             }
         },
         "react-native-device-info": {
-            "version": "5.4.1",
+            "version": "5.4.3",
             "ios": {
                 "podName": "RNDeviceInfo"
             },
@@ -848,6 +878,16 @@
             },
             "androidwear": {
                 "package": "com.learnium.RNDeviceInfo.RNDeviceInfo"
+            },
+            "webpack": {
+                "modulePaths": [
+                    "node_modules/react-native-device-info"
+                ],
+                "moduleAliases": {
+                    "react-native-device-info": {
+                        "projectPath": "node_modules/react-native-device-info"
+                    }
+                }
             }
         },
         "react-native-material-dialog": {
@@ -2315,12 +2355,12 @@
             }
         },
         "@noriginmedia/react-spatial-navigation": {
-            "version": "2.10.0"
+            "version": "2.12.1"
         }
     },
     "plugins": {
         "renative": {
-            "version": "0.29.0-alpha.26"
+            "version": "0.29.0-alpha.28"
         }
     }
 }

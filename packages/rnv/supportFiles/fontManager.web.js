@@ -21,6 +21,6 @@ function registerFont(fontFamily, ttf) {
     }
 }
 
-const fonts = registerFonts(require('./fonts.js').default);
+const fonts = registerFonts(require('./fonts.web.js').default);
 
 export default fonts;

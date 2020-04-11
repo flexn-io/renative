@@ -228,7 +228,7 @@ export const fixRenativeConfigsSync = async (c) => {
             )} is missing! Let's create one for you.`
         );
         copyFileSync(
-            path.join(c.paths.rnv.dir, RN_BABEL_CONFIG_NAME),
+            path.join(c.paths.rnv.projectTemplate.dir, RN_BABEL_CONFIG_NAME),
             c.paths.project.babelConfig
         );
     }
@@ -441,21 +441,16 @@ export const generateBuildConfig = (c) => {
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);
     }
-    if (Config.isRenativeProject) {
-        const localMetroPath = path.join(
-            c.paths.project.dir,
-            'metro.config.local.js'
-        );
-
-        if (c.platform) {
-            fs.writeFileSync(
-                localMetroPath,
-                `module.exports = ${getSourceExtsAsString(c)}`
-            );
-        } else if (!fs.existsSync(localMetroPath)) {
-            fs.writeFileSync(localMetroPath, 'module.exports = []');
-        }
-    }
+    // DEPRECATED
+    // if (Config.isRenativeProject) {
+    //     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
+    //
+    //     if (c.platform) {
+    //         fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
+    //     } else if (!fs.existsSync(localMetroPath)) {
+    //         fs.writeFileSync(localMetroPath, 'module.exports = []');
+    //     }
+    // }
 };
 
 const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
@@ -487,6 +482,8 @@ const _loadConfigFiles = (c, fileObj, pathObj, extendDir) => {
             path.join(pathObj.dirs[1], 'plugins')
         ];
         loadFile(fileObj, pathObj, 'configBase');
+    } else {
+        pathObj.fontDirs = c.paths.project.projectConfig.fontsDirs;
     }
 
     generateBuildConfig(c);
@@ -1158,51 +1155,18 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         'appConfigs'
     );
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.rnCliConfig = path.join(
-        c.paths.project.dir,
-        RN_CLI_CONFIG_NAME
-    );
-    c.paths.project.babelConfig = path.join(
-        c.paths.project.dir,
-        RN_BABEL_CONFIG_NAME
-    );
-    c.paths.project.npmLinkPolyfill = path.join(
-        c.paths.project.dir,
-        'npm_link_polyfill.json'
-    );
-    c.paths.project.projectConfig.dir = path.join(
-        c.paths.project.dir,
-        'appConfigs',
-        'base'
-    );
-    c.paths.project.projectConfig.pluginsDir = path.join(
-        c.paths.project.projectConfig.dir,
-        'plugins'
-    );
-    c.paths.project.projectConfig.fontsDir = path.join(
-        c.paths.project.projectConfig.dir,
-        'fonts'
-    );
-    c.paths.project.assets.dir = path.join(
-        c.paths.project.dir,
-        'platformAssets'
-    );
-    c.paths.project.assets.runtimeDir = path.join(
-        c.paths.project.assets.dir,
-        'runtime'
-    );
-    c.paths.project.assets.config = path.join(
-        c.paths.project.assets.dir,
-        RENATIVE_CONFIG_RUNTIME_NAME
-    );
-    c.paths.project.builds.dir = path.join(
-        c.paths.project.dir,
-        'platformBuilds'
-    );
-    c.paths.project.builds.config = path.join(
-        c.paths.project.builds.dir,
-        RENATIVE_CONFIG_BUILD_NAME
-    );
+    c.paths.project.rnCliConfig = path.join(c.paths.project.dir, RN_CLI_CONFIG_NAME);
+    c.paths.project.babelConfig = path.join(c.paths.project.dir, RN_BABEL_CONFIG_NAME);
+    c.paths.project.npmLinkPolyfill = path.join(c.paths.project.dir, 'npm_link_polyfill.json');
+    c.paths.project.projectConfig.dir = path.join(c.paths.project.dir, 'appConfigs', 'base');
+    c.paths.project.projectConfig.pluginsDir = path.join(c.paths.project.projectConfig.dir, 'plugins');
+    c.paths.project.projectConfig.fontsDir = path.join(c.paths.project.projectConfig.dir, 'fonts');
+    c.paths.project.projectConfig.fontsDirs = [c.paths.project.projectConfig.fontsDir];
+    c.paths.project.assets.dir = path.join(c.paths.project.dir, 'platformAssets');
+    c.paths.project.assets.runtimeDir = path.join(c.paths.project.assets.dir, 'runtime');
+    c.paths.project.assets.config = path.join(c.paths.project.assets.dir, RENATIVE_CONFIG_RUNTIME_NAME);
+    c.paths.project.builds.dir = path.join(c.paths.project.dir, 'platformBuilds');
+    c.paths.project.builds.config = path.join(c.paths.project.builds.dir, RENATIVE_CONFIG_BUILD_NAME);
 
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
 

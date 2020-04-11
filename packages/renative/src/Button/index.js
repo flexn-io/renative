@@ -1,6 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, TouchableOpacity } from 'react-native';
-// import { Icon, getScaledValue } from 'renative';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { getScaledValue } from '../Api';
 import Icon from '../Icon';
 

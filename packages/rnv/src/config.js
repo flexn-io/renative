@@ -78,13 +78,7 @@ class Config {
         return this.config.files.project;
     }
 
-    async checkRequiredPackage(
-        pkg,
-        version = false,
-        type,
-        skipAsking = false,
-        skipInstall = false
-    ) {
+    async checkRequiredPackage(pkg, version = false, type, skipAsking = false, skipInstall = false, skipVersionCheck = false) {
         if (!pkg) return false;
         const projectConfig = this.getProjectConfig();
 
@@ -102,7 +96,7 @@ class Config {
 
             if (confirm) {
                 let latestVersion = 'latest';
-                if (!version) {
+                if (!version && !skipVersionCheck) {
                     try {
                         latestVersion = await executeAsync(
                             `npm show ${pkg} version`

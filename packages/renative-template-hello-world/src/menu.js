@@ -1,21 +1,8 @@
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import {
-    Icon,
-    Button,
-    getScaledValue,
-    useNavigate,
-    useOpenDrawer
-} from 'renative';
-import {
-    initNavigation,
-    withFocusable
-} from '@noriginmedia/react-spatial-navigation';
-import Theme, {
-    themeStyles,
-    hasHorizontalMenu,
-    hasWebFocusableUI
-} from './theme';
+import { Text, View } from 'react-native';
+import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet } from 'renative';
+import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
+import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
 
 if (hasWebFocusableUI) {
     initNavigation({
@@ -25,7 +12,7 @@ if (hasWebFocusableUI) {
     });
 }
 
-export const DrawerButton = props => {
+export const DrawerButton = (props) => {
     const openDrawer = useOpenDrawer(props);
     return (
         <Icon
@@ -70,7 +57,7 @@ const styles = StyleSheet.create({
     }
 });
 
-const Menu = props => {
+const Menu = (props) => {
     const navigate = useNavigate(props);
     if (hasWebFocusableUI) {
         useEffect(() => {
@@ -80,7 +67,9 @@ const Menu = props => {
 
     return (
         <View style={styles.container}>
-            <Text style={themeStyles.text}>Menu</Text>
+            <Text style={themeStyles.text}>
+Menu
+            </Text>
             <Button
                 to="/"
                 title="Home"

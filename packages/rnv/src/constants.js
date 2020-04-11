@@ -47,6 +47,7 @@ export const WP10 = 'wp10';
 export const WP8 = 'wp8';
 export const XBOX = 'xbox';
 export const XBOX360 = 'xbox360';
+export const WEB_NEXT = 'web-next';
 // Kodi, Boxee, HorizonTV, Mediaroom(Ericsson), YahooSmartTV, Slingbox, Hololens, Occulus, GearVR, WebVR
 
 export const ICONS = {
@@ -84,6 +85,18 @@ export const PLATFORMS = {
             factors: ['browser.js'],
             platforms: ['web.js'],
             fallbacks: ['mjs', 'js', 'tsx', 'ts']
+        }
+    },
+    'web-next': {
+        defaultPort: 8100,
+        icon: ICONS.BROWSER,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: {
+            factors: ['browser.js'],
+            platforms: ['next.js'],
+            fallbacks: ['web.js', 'mjs', 'js', 'jsx', 'json', 'wasm', 'tsx', 'ts']
         }
     },
     ios: {
@@ -581,6 +594,7 @@ export const RENATIVE_CONFIG_TEMPLATES_NAME = 'renative.templates.json';
 export const RENATIVE_CONFIG_PLATFORMS_NAME = 'renative.platforms.json';
 export const RN_CLI_CONFIG_NAME = 'metro.config.js';
 export const RN_BABEL_CONFIG_NAME = 'babel.config.js';
+export const NEXT_CONFIG_NAME = 'next.config.js';
 export const SAMPLE_APP_ID = 'helloWorld';
 
 export const IS_TABLET_ABOVE_INCH = 6.5;
@@ -623,6 +637,7 @@ export const SUPPORTED_PLATFORMS = [
     ANDROID_TV,
     ANDROID_WEAR,
     WEB,
+    WEB_NEXT,
     TIZEN,
     TIZEN_MOBILE,
     TVOS,
