@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import fs from 'fs';
+import fs, { mkdirSync } from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 
@@ -357,8 +357,12 @@ const _getSourceExtsAsString = (c, p) => {
 };
 
 const _configureMetroConfigs = async (c) => {
+    const configDir = path.join(c.paths.project.dir, 'configs');
+    if (!fs.existsSync(configDir)) {
+        mkdirSync(configDir);
+    }
     _parseSupportedPlatforms(c, (p) => {
-        const dest = path.join(c.paths.project.dir, `configs/metro.config.${p}.js`);
+        const dest = path.join(configDir, `metro.config.${p}.js`);
         if (!fs.existsSync(dest)) {
             const exts = _getSourceExtsAsString(c, p);
             writeFileSync(dest, `const config = require('../metro.config');
