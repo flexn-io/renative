@@ -110,7 +110,7 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
     }
 
     console.log('ANDROID PACKAGE STARTING...');
-    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle --config=metro.config.${c.platform}.js`)
+    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle --config=configs/metro.config.${c.platform}.js`)
         .then(() => {
             console.log('ANDROID PACKAGE FINISHED');
             return resolve();
