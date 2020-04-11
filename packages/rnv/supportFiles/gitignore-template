@@ -63,3 +63,6 @@ metro.config.local.js
 
 #now
 now.json
+
+.next
+.expo
