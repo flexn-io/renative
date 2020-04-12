@@ -6,11 +6,14 @@ import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import Config from '../config';
+import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
 import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
 import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
+import { isMonorepo } from '../common';
+import { doResolve } from '../resolve';
 
 const { exec, execSync } = require('child_process');
 
@@ -39,7 +42,7 @@ const _execute = (c, command, opts = {}) => {
         preferLocal: true,
         all: true,
         maxErrorLength: c.program?.maxErrorLength,
-        mono: c.program?.mono,
+        mono: c.program?.mono
     };
 
     if (opts.interactive) {
@@ -61,7 +64,11 @@ const _execute = (c, command, opts = {}) => {
     let logMessage = cleanCommand;
     const { privateParams } = mergedOpts;
     if (privateParams && Array.isArray(privateParams)) {
-        logMessage = replaceOverridesInString(command, privateParams, privateMask);
+        logMessage = replaceOverridesInString(
+            command,
+            privateParams,
+            privateMask
+        );
     }
 
     logDebug(`_execute: ${logMessage}`);
@@ -85,9 +92,15 @@ const _execute = (c, command, opts = {}) => {
     const MAX_OUTPUT_LENGTH = 200;
 
     const printLastLine = (buffer) => {
-        const text = Buffer.from(buffer).toString().trim();
+        const text = Buffer.from(buffer)
+            .toString()
+            .trim();
         const lastLine = text.split('\n').pop();
-        spinner.text = replaceOverridesInString(lastLine.substring(0, MAX_OUTPUT_LENGTH), privateParams, privateMask);
+        spinner.text = replaceOverridesInString(
+            lastLine.substring(0, MAX_OUTPUT_LENGTH),
+            privateParams,
+            privateMask
+        );
         if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
     };
 
@@ -97,28 +110,44 @@ const _execute = (c, command, opts = {}) => {
         child?.stdout?.on('data', printLastLine);
     }
 
-    return child.then((res) => {
-        spinner && child?.stdout?.off('data', printLastLine);
-        !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
-        logDebug(replaceOverridesInString(res.all, privateParams, privateMask));
-        interval && clearInterval(interval);
-        // logDebug(res);
-        return res.stdout;
-    }).catch((err) => {
-        spinner && child?.stdout?.off('data', printLastLine);
-        if (!silent && !mono && !ignoreErrors) spinner.fail(`FAILED: ${logMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
+    return child
+        .then((res) => {
+            spinner && child?.stdout?.off('data', printLastLine);
+            !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
+            logDebug(
+                replaceOverridesInString(res.all, privateParams, privateMask)
+            );
+            interval && clearInterval(interval);
+            // logDebug(res);
+            return res.stdout;
+        })
+        .catch((err) => {
+            spinner && child?.stdout?.off('data', printLastLine);
+            if (!silent && !mono && !ignoreErrors) { spinner.fail(`FAILED: ${logMessage}`); } // parseErrorMessage will return false if nothing is found, default to previous implementation
 
-        logDebug(replaceOverridesInString(err.all, privateParams, privateMask));
-        interval && clearInterval(interval);
-        // logDebug(err);
-        if (ignoreErrors && !silent && !mono) {
-            spinner.succeed(`Executing: ${logMessage}`);
-            return true;
-        }
-        let errMessage = parseErrorMessage(err.all, maxErrorLength) || err.stderr || err.message;
-        errMessage = replaceOverridesInString(errMessage, privateParams, privateMask);
-        return Promise.reject(`COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`); // parseErrorMessage will return false if nothing is found, default to previous implementation
-    });
+            logDebug(
+                replaceOverridesInString(err.all, privateParams, privateMask)
+            );
+            interval && clearInterval(interval);
+            // logDebug(err);
+            if (ignoreErrors && !silent && !mono) {
+                spinner.succeed(`Executing: ${logMessage}`);
+                return true;
+            }
+            let errMessage = parseErrorMessage(err.all, maxErrorLength)
+                || err.stack
+                || err.stderr
+                || err.message;
+            errMessage = replaceOverridesInString(
+                errMessage,
+                privateParams,
+                privateMask
+            );
+
+            return Promise.reject(
+                `COMMAND: \n\n${logMessage} \n\nFAILED with ERROR: \n\n${errMessage}`
+            ); // parseErrorMessage will return false if nothing is found, default to previous implementation
+        });
 };
 
 /**
@@ -133,14 +162,22 @@ const _execute = (c, command, opts = {}) => {
  *
  */
 const execCLI = (c, cli, command, opts = {}) => {
-    if (!c.program) return Promise.reject('You need to pass c object as first parameter to execCLI()');
+    if (!c.program) {
+        return Promise.reject(
+            'You need to pass c object as first parameter to execCLI()'
+        );
+    }
     const p = c.cli[cli];
 
     if (!fs.existsSync(p)) {
         logDebug('execCLI error', cli, command);
-        return Promise.reject(`Location of your cli ${chalk.white(p)} does not exists. check your ${chalk.white(
-            c.paths.globalConfigPath
-        )} file if you SDK path is correct`);
+        return Promise.reject(
+            `Location of your cli ${chalk.white(
+                p
+            )} does not exists. check your ${chalk.white(
+                c.paths.globalConfigPath
+            )} file if you SDK path is correct`
+        );
     }
 
     return _execute(c, `${p} ${command}`, { ...opts, shell: true });
@@ -162,7 +199,7 @@ const executeAsync = (c, cmd, opts) => {
         cmd = c;
         c = Config.getConfig();
     }
-    if (cmd.includes('npm') && process.platform === 'win32') cmd.replace('npm', 'npm.cmd');
+    if (cmd.includes('npm') && process.platform === 'win32') { cmd.replace('npm', 'npm.cmd'); }
     return _execute(c, cmd, opts);
 };
 
@@ -221,11 +258,28 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     arr = arr.filter((v) => {
         if (v === '') return false;
         // Cleaner iOS reporting
-        if (v.includes('-Werror')) {
+        if (
+            v.includes('-Werror')
+            || v.includes('following modules are linked manually')
+            || v.includes('warn ')
+            || v.includes('note: ')
+            || v.includes('warning: ')
+            || v.includes('Could not find the following native modules')
+            || v.includes('⚠️')
+        ) {
             return false;
         }
         // Cleaner Android reporting
-        if (v.includes('[DEBUG]') || v.includes('[INFO]') || v.includes('[LIFECYCLE]') || v.includes('[WARN]') || v.includes(':+HeapDumpOnOutOfMemoryError') || v.includes('.errors.') || v.includes('-exception-') || v.includes('error_prone_annotations')) {
+        if (
+            v.includes('[DEBUG]')
+            || v.includes('[INFO]')
+            || v.includes('[LIFECYCLE]')
+            || v.includes('[WARN]')
+            || v.includes(':+HeapDumpOnOutOfMemoryError')
+            || v.includes('.errors.')
+            || v.includes('-exception-')
+            || v.includes('error_prone_annotations')
+        ) {
             return false;
         }
         if (v.search(toSearch) !== -1) {
@@ -249,14 +303,12 @@ export const parseErrorMessage = (text, maxErrorLength = 800) => {
     return arr.join('\n');
 };
 
-
 const isUsingWindows = process.platform === 'win32';
 
 const fileNotExists = (commandName, callback) => {
-    access(commandName, constants.F_OK,
-        (err) => {
-            callback(!err);
-        });
+    access(commandName, constants.F_OK, (err) => {
+        callback(!err);
+    });
 };
 
 const fileNotExistsSync = (commandName) => {
@@ -269,10 +321,9 @@ const fileNotExistsSync = (commandName) => {
 };
 
 const localExecutable = (commandName, callback) => {
-    access(commandName, constants.F_OK | constants.X_OK,
-        (err) => {
-            callback(null, !err);
-        });
+    access(commandName, constants.F_OK | constants.X_OK, (err) => {
+        callback(null, !err);
+    });
 };
 
 const localExecutableSync = (commandName) => {
@@ -287,12 +338,13 @@ const localExecutableSync = (commandName) => {
 const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
     fileNotExists(commandName, (isFile) => {
         if (!isFile) {
-            exec(`command -v ${cleanedCommandName
-            } 2>/dev/null`
-                  + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
-            (error, stdout) => {
-                callback(null, !!stdout);
-            });
+            exec(
+                `command -v ${cleanedCommandName} 2>/dev/null`
+                    + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`,
+                (error, stdout) => {
+                    callback(null, !!stdout);
+                }
+            );
             return;
         }
 
@@ -305,22 +357,22 @@ const commandExistsWindows = (commandName, cleanedCommandName, callback) => {
         callback(null, false);
         return;
     }
-    exec(`where ${cleanedCommandName}`,
-        (error) => {
-            if (error !== null) {
-                callback(null, false);
-            } else {
-                callback(null, true);
-            }
-        });
+    exec(`where ${cleanedCommandName}`, (error) => {
+        if (error !== null) {
+            callback(null, false);
+        } else {
+            callback(null, true);
+        }
+    });
 };
 
 const commandExistsUnixSync = (commandName, cleanedCommandName) => {
     if (fileNotExistsSync(commandName)) {
         try {
-            const stdout = execSync(`command -v ${cleanedCommandName
-            } 2>/dev/null`
-              + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`);
+            const stdout = execSync(
+                `command -v ${cleanedCommandName} 2>/dev/null`
+                    + ` && { echo >&1 ${cleanedCommandName}; exit 0; }`
+            );
             return !!stdout;
         } catch (error) {
             return false;
@@ -344,7 +396,8 @@ const commandExistsWindowsSync = (commandName, cleanedCommandName) => {
 let cleanInput = (s) => {
     if (/[^A-Za-z0-9_\/:=-]/.test(s)) {
         s = `'${s.replace(/'/g, "'\\''")}'`;
-        s = s.replace(/^(?:'')+/g, '') // unduplicate single-quote at the beginning
+        s = s
+            .replace(/^(?:'')+/g, '') // unduplicate single-quote at the beginning
             .replace(/\\'''/g, "\\'"); // remove non-escaped single-quote if there are enclosed between 2 escaped
     }
     return s;
@@ -365,7 +418,7 @@ if (isUsingWindows) {
 const commandExists = (commandName, callback) => {
     const cleanedCommandName = cleanInput(commandName);
     if (!callback && typeof Promise !== 'undefined') {
-        return new Promise(((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             commandExists(commandName, (error, output) => {
                 if (output) {
                     resolve(commandName);
@@ -373,7 +426,7 @@ const commandExists = (commandName, callback) => {
                     reject(error);
                 }
             });
-        }));
+        });
     }
     if (isUsingWindows) {
         commandExistsWindows(commandName, cleanedCommandName, callback);
@@ -391,53 +444,103 @@ const commandExistsSync = (commandName) => {
 };
 
 export const cleanNodeModules = c => new Promise((resolve, reject) => {
-    logTask(`cleanNodeModules:${c.paths.project.nodeModulesDir}`);
-    removeDirs([
-        path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
-        path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
-    ]).then(() => resolve()).catch(e => reject(e));
+    logTask('cleanNodeModules');
+    const dirs = [
+        'react-native-safe-area-view/.git',
+        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
+        'react-navigation/node_modules/react-native-safe-area-view/.git',
+        'react-native-safe-area-view/.git',
+        '@react-navigation/native/node_modules/react-native-safe-area-view/.git',
+        'react-navigation/node_modules/react-native-safe-area-view/.git'
+    ].reduce((acc, dir) => {
+        const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
+        const resolved = doResolve(aPackage, false);
+        if (resolved) {
+            acc.push(`${resolved}/${aPath}`);
+        }
+        return acc;
+    }, []);
+    removeDirs(dirs)
+        .then(() => resolve())
+        .catch(e => reject(e));
+    // removeDirs([
+    //     path.join(c.paths.project.nodeModulesDir, 'react-native-safe-area-view/.git'),
+    //     path.join(c.paths.project.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+    //     path.join(c.paths.project.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git'),
+    //     path.join(c.paths.rnv.nodeModulesDir, 'react-native-safe-area-view/.git'),
+    //     path.join(c.paths.rnv.nodeModulesDir, '@react-navigation/native/node_modules/react-native-safe-area-view/.git'),
+    //     path.join(c.paths.rnv.nodeModulesDir, 'react-navigation/node_modules/react-native-safe-area-view/.git')
+    // ]).then(() => resolve()).catch(e => reject(e));
 });
 
+const hasJetified = false;
 export const npmInstall = async (failOnError = false) => {
-    logTask('npmInstall');
     const c = Config.getConfig();
 
-    const isYarnInstalled = commandExistsSync('yarn');
+    const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
     const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
     let command = 'npm install';
-    if (fs.existsSync(yarnLockPath)) {
+    if (isMonorepo() || fs.existsSync(yarnLockPath)) {
         command = 'yarn';
     } else if (isYarnInstalled) {
         const { packageManager } = await inquirerPrompt({
             type: 'list',
             name: 'packageManager',
             message: 'What package manager would you like to use?',
-            choices: ['yarn', 'npm'],
+            choices: ['yarn', 'npm']
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
+    logTask(`npmInstall (${command})`);
 
-    return executeAsync(command)
-        .then(() => invalidatePodsChecksum(c))
-        .catch((e) => {
-            if (failOnError) {
-                return logError(e);
-            }
-            logWarning(`${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`);
-            return cleanNodeModules(Config.getConfig())
-                .then(() => npmInstall(true))
-                .catch(f => logError(f));
-        });
+    try {
+        await executeAsync(command);
+        await invalidatePodsChecksum(c);
+    } catch (e) {
+        if (failOnError) {
+            return logError(e);
+        }
+        logWarning(
+            `${e}\n Seems like your node_modules is corrupted by other libs. ReNative will try to fix it for you`
+        );
+        try {
+            await cleanNodeModules(Config.getConfig());
+            await npmInstall(true);
+        } catch (npmErr) {
+            return logError(npmErr);
+        }
+    }
+    try {
+        const plats = c.files.project.config?.defaults?.supportedPlatforms;
+        if (
+            Array.isArray(plats)
+            && (plats.includes(ANDROID)
+                || plats.includes(ANDROID_TV)
+                || plats.includes(ANDROID_WEAR))
+        ) {
+            await executeAsync('npx jetify');
+        }
+        return true;
+    } catch (jetErr) {
+        return logError(jetErr);
+    }
 };
 
 // eslint-disable-next-line no-nested-ternary
-const openCommand = process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'start' : 'xdg-open';
+const openCommand = process.platform === 'darwin'
+    ? 'open'
+    : process.platform === 'win32'
+        ? 'start'
+        : 'xdg-open';
 
-export { executeAsync, execCLI, commandExists, commandExistsSync, openCommand, executeTelnet };
+export {
+    executeAsync,
+    execCLI,
+    commandExists,
+    commandExistsSync,
+    openCommand,
+    executeTelnet
+};
 
 export default {
     executeAsync,

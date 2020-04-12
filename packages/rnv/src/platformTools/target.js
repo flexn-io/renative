@@ -3,10 +3,22 @@ import chalk from 'chalk';
 import { isPlatformSupported } from './index';
 import { logTask, logError } from '../systemTools/logger';
 import { checkSdk } from './sdkManager';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
+import {
+    IOS,
+    ANDROID,
+    TVOS,
+    TIZEN,
+    WEBOS,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    KAIOS
+} from '../constants';
 import { launchTizenSimulator, listTizenTargets } from './tizen';
 import { launchWebOSimulator, listWebOSTargets } from './webos';
-import { listAndroidTargets, launchAndroidSimulator } from './android/deviceManager';
+import {
+    listAndroidTargets,
+    launchAndroidSimulator
+} from './android/deviceManager';
 import { listAppleDevices, launchAppleSimulator } from './apple/deviceManager';
 import { launchKaiOSSimulator } from './firefox';
 
@@ -67,6 +79,10 @@ export const rnvTargetList = async (c) => {
         case WEBOS:
             return listWebOSTargets(c);
         default:
-            return Promise.reject(`"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`);
+            return Promise.reject(
+                `"target list" command does not support ${chalk.white.bold(
+                    platform
+                )} platform yet. Working on it!`
+            );
     }
 };

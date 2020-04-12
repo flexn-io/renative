@@ -16,8 +16,8 @@ const users = [
         // if it is not '/', like: '/test-site/img/image.jpg'.
         image: '/img/undraw_open_source.svg',
         infoLink: 'https://www.facebook.com',
-        pinned: true,
-    },
+        pinned: true
+    }
 ];
 
 const siteConfig = {
@@ -38,13 +38,13 @@ const siteConfig = {
 
     // For no header links in the top nav bar -> headerLinks: [],
     headerLinks: [
-        { doc: 'quickstart', label: 'Docs' },
-        { doc: 'rnv', label: 'API' },
+        { doc: 'intro-quickstart', label: 'Docs' },
+        { doc: 'api-cli', label: 'API' },
         // { doc: 'doc4', label: 'API' },
         // { page: 'help', label: 'Help' },
         // { blog: true, label: 'Blog' },
         { href: 'https://twitter.com/renative', label: 'Twitter' },
-        { href: 'https://github.com/pavjacko/renative', label: 'Github' },
+        { href: 'https://github.com/pavjacko/renative', label: 'Github' }
     ],
 
     // If you have users set above, you add it here:
@@ -58,7 +58,7 @@ const siteConfig = {
     /* Colors for website */
     colors: {
         primaryColor: '#20232a',
-        secondaryColor: '#20232a',
+        secondaryColor: '#20232a'
     },
     algolia: {
         apiKey: 'ce70fa21a21dad8ee49ed142a8a63b67',
@@ -84,8 +84,8 @@ const siteConfig = {
     // copyright: `Copyright © ${new Date().getFullYear()} Your Name or Your Company Name`,
     twitterUsername: 'renative',
     highlight: {
-    // Highlight.js theme to use for syntax highlighting in code blocks.
-        theme: 'default',
+        // Highlight.js theme to use for syntax highlighting in code blocks.
+        theme: 'default'
     },
 
     // Add custom scripts here that would be placed in <script> tags.
@@ -112,7 +112,7 @@ const siteConfig = {
 
     // You may provide arbitrary config keys to be used as needed by your
     // template. For example, if you need your repo's URL...
-    repoUrl: 'https://github.com/pavjacko/renative',
+    repoUrl: 'https://github.com/pavjacko/renative'
 };
 
 module.exports = siteConfig;

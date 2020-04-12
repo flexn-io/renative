@@ -10,11 +10,8 @@ import {
     getBuildFilePath,
     getConfigProp
 } from '../../common';
-import {
-    logTask,
-    logWarning,
-    logDebug
-} from '../../systemTools/logger';
+import { doResolve, doResolvePath } from '../../resolve';
+import { logTask, logWarning, logDebug } from '../../systemTools/logger';
 
 export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -27,15 +24,44 @@ export const parseBuildGradleSync = (c, platform) => {
         }`;
     }
 
-    writeCleanFile(getBuildFilePath(c, platform, 'build.gradle'), path.join(appFolder, 'build.gradle'), [
-        { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
-        { pattern: '{{SUPPORT_LIB_VERSION}}', override: c.pluginConfigAndroid.supportLibVersion },
-        { pattern: '{{BUILD_TOOLS_VERSION}}', override: c.pluginConfigAndroid.buildToolsVersion },
-        { pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleAllProjectsRepositories },
-        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptRepositories },
-        { pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}', override: c.pluginConfigAndroid.buildGradleBuildScriptDependencies },
-        { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions }
-    ]);
+    writeCleanFile(
+        getBuildFilePath(c, platform, 'build.gradle'),
+        path.join(appFolder, 'build.gradle'),
+        [
+            {
+                pattern: '{{COMPILE_SDK_VERSION}}',
+                override: c.pluginConfigAndroid.compileSdkVersion
+            },
+            {
+                pattern: '{{SUPPORT_LIB_VERSION}}',
+                override: c.pluginConfigAndroid.supportLibVersion
+            },
+            {
+                pattern: '{{BUILD_TOOLS_VERSION}}',
+                override: c.pluginConfigAndroid.buildToolsVersion
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}',
+                override:
+                    c.pluginConfigAndroid.buildGradleAllProjectsRepositories
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_REPOSITORIES}}',
+                override:
+                    c.pluginConfigAndroid.buildGradleBuildScriptRepositories
+            },
+            {
+                pattern: '{{PLUGIN_INJECT_BUILDSCRIPT_DEPENDENCIES}}',
+                override:
+                    c.pluginConfigAndroid.buildGradleBuildScriptDependencies
+            },
+            { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions },
+            {
+                pattern: '{{PATH_REACT_NATIVE}}',
+                override: doResolve('react-native')
+            }
+        ]
+    );
 };
 
 export const parseAppBuildGradleSync = (c, platform) => {
@@ -43,11 +69,36 @@ export const parseAppBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
 
     // ANDROID PROPS
-    c.pluginConfigAndroid.minSdkVersion = getConfigProp(c, platform, 'minSdkVersion', 21);
-    c.pluginConfigAndroid.targetSdkVersion = getConfigProp(c, platform, 'targetSdkVersion', 28);
-    c.pluginConfigAndroid.compileSdkVersion = getConfigProp(c, platform, 'compileSdkVersion', 28);
-    c.pluginConfigAndroid.supportLibVersion = getConfigProp(c, platform, 'supportLibVersion', '28.0.0');
-    c.pluginConfigAndroid.buildToolsVersion = getConfigProp(c, platform, 'buildToolsVersion', '28.0.0');
+    c.pluginConfigAndroid.minSdkVersion = getConfigProp(
+        c,
+        platform,
+        'minSdkVersion',
+        21
+    );
+    c.pluginConfigAndroid.targetSdkVersion = getConfigProp(
+        c,
+        platform,
+        'targetSdkVersion',
+        28
+    );
+    c.pluginConfigAndroid.compileSdkVersion = getConfigProp(
+        c,
+        platform,
+        'compileSdkVersion',
+        28
+    );
+    c.pluginConfigAndroid.supportLibVersion = getConfigProp(
+        c,
+        platform,
+        'supportLibVersion',
+        '28.0.0'
+    );
+    c.pluginConfigAndroid.buildToolsVersion = getConfigProp(
+        c,
+        platform,
+        'buildToolsVersion',
+        '28.0.0'
+    );
 
     // SIGNING CONFIGS
     const debugSigning = `
@@ -63,12 +114,18 @@ export const parseAppBuildGradleSync = (c, platform) => {
     c.pluginConfigAndroid.localProperties = '';
     // c.files.workspace.appConfig.configPrivate = _getPrivateConfig(c, platform);
 
-    if (c.files.workspace.appConfig.configPrivate && c.files.workspace.appConfig.configPrivate[platform]) {
+    if (
+        c.files.workspace.appConfig.configPrivate
+        && c.files.workspace.appConfig.configPrivate[platform]
+    ) {
         const keystorePath = c.files.workspace.appConfig.configPrivate[platform].storeFile;
         let keystorePathFull;
         if (keystorePath) {
             if (keystorePath.startsWith('./')) {
-                keystorePathFull = path.join(c.paths.workspace.appConfig.dir, keystorePath);
+                keystorePathFull = path.join(
+                    c.paths.workspace.appConfig.dir,
+                    keystorePath
+                );
             } else {
                 keystorePathFull = keystorePath;
             }
@@ -76,11 +133,14 @@ export const parseAppBuildGradleSync = (c, platform) => {
 
         if (fs.existsSync(keystorePathFull)) {
             const genPropsPath = path.join(appFolder, 'keystore.properties');
-            fs.writeFileSync(genPropsPath, `# auto generated by ReNative
+            fs.writeFileSync(
+                genPropsPath,
+                `# auto generated by ReNative
 storeFile=${keystorePathFull}
 keyAlias=${c.files.workspace.appConfig.configPrivate[platform].keyAlias}
 storePassword=${c.files.workspace.appConfig.configPrivate[platform].storePassword}
-keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`);
+keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
+            );
 
             c.pluginConfigAndroid.appBuildGradleSigningConfigs = `${debugSigning}
             release {
@@ -96,7 +156,9 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
           keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         } else {
             logWarning(
-                `Your ${chalk.white(keystorePathFull)} does not exist. You won't be able to make production releases without it!`,
+                `Your ${chalk.white(
+                    keystorePathFull
+                )} does not exist. You won't be able to make production releases without it!`
             );
         }
     }
@@ -118,9 +180,13 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
         ${releaseBuildTypes.join('\n        ')}
     }`;
 
-
     // MULTI APK
-    const versionCodeOffset = getConfigProp(c, platform, 'versionCodeOffset', 0);
+    const versionCodeOffset = getConfigProp(
+        c,
+        platform,
+        'versionCodeOffset',
+        0
+    );
     const isMultiApk = getConfigProp(c, platform, 'multipleAPKs', false) === true;
     c.pluginConfigAndroid.multiAPKs = '';
     if (isMultiApk) {
@@ -153,7 +219,6 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
 `;
     }
 
-
     // PACKAGING OPTIONS
     c.pluginConfigAndroid.packagingOptions = `
     exclude 'META-INF/DEPENDENCIES.txt'
@@ -179,56 +244,143 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`)
     targetCompatibility 1.8`;
 
     // TODO This is temporary ANDROIDX support. whole gradle parser will be refactored in the near future
-    let enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', "androidx.appcompat:appcompat:1.1.0");
-    if(enableAndroidX === true) enableAndroidX = "androidx.appcompat:appcompat:1.1.0"
+    let enableAndroidX = getConfigProp(
+        c,
+        platform,
+        'enableAndroidX',
+        'androidx.appcompat:appcompat:1.1.0'
+    );
+    if (enableAndroidX === true) {
+        enableAndroidX = 'androidx.appcompat:appcompat:1.1.0';
+    }
 
     if (enableAndroidX !== false) {
         c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation "${enableAndroidX}"\n`;
     } else {
-        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'com.android.support:appcompat-v7:27.0.2\'\n';
+        c.pluginConfigAndroid.appBuildGradleImplementations
+            += "    implementation 'com.android.support:appcompat-v7:27.0.2'\n";
     }
 
-    c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
+    c.pluginConfigAndroid.appBuildGradleImplementations
+        += '    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02"\n';
     // ENABLE HERMES
     const enableHermes = getConfigProp(c, platform, 'enableHermes', false);
 
     if (enableHermes) {
-        c.pluginConfigAndroid.appBuildGradleImplementations += '    debugImplementation files("../../../node_modules/hermes-engine/android/hermes-debug.aar")\n';
-        c.pluginConfigAndroid.appBuildGradleImplementations += '    releaseImplementation files("../../../node_modules/hermes-engine/android/hermes-release.aar")\n';
+        c.pluginConfigAndroid.appBuildGradleImplementations += `    debugImplementation files("${doResolve(
+            'hermes-engine'
+        )}/android/hermes-debug.aar")\n`;
+        c.pluginConfigAndroid.appBuildGradleImplementations += `    releaseImplementation files("${doResolve(
+            'hermes-engine'
+        )}/android/hermes-release.aar")\n`;
     } else {
-        c.pluginConfigAndroid.appBuildGradleImplementations += '    implementation \'org.webkit:android-jsc:+\'\n';
+        c.pluginConfigAndroid.appBuildGradleImplementations
+            += "    implementation 'org.webkit:android-jsc:+'\n";
     }
     c.pluginConfigAndroid.enableHermes = `    enableHermes: ${enableHermes},`;
 
-    writeCleanFile(getBuildFilePath(c, platform, 'app/build.gradle'), path.join(appFolder, 'app/build.gradle'), [
-        { pattern: '{{PLUGIN_APPLY}}', override: c.pluginConfigAndroid.applyPlugin },
-        { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
-        { pattern: '{{VERSION_CODE}}', override: getAppVersionCode(c, platform) },
-        { pattern: '{{VERSION_NAME}}', override: getAppVersion(c, platform) },
-        { pattern: '{{PLUGIN_IMPLEMENTATIONS}}', override: c.pluginConfigAndroid.appBuildGradleImplementations },
-        { pattern: '{{PLUGIN_AFTER_EVALUATE}}', override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate },
-        { pattern: '{{PLUGIN_SIGNING_CONFIGS}}', override: c.pluginConfigAndroid.appBuildGradleSigningConfigs },
-        { pattern: '{{PLUGIN_SPLITS}}', override: c.pluginConfigAndroid.splits },
-        { pattern: '{{PLUGIN_ANDROID_DEFAULT_CONFIG}}', override: c.pluginConfigAndroid.defaultConfig },
-        { pattern: '{{PLUGIN_PACKAGING_OPTIONS}}', override: c.pluginConfigAndroid.packagingOptions },
-        { pattern: '{{PLUGIN_BUILD_TYPES}}', override: c.pluginConfigAndroid.buildTypes },
-        { pattern: '{{PLUGIN_MULTI_APKS}}', override: c.pluginConfigAndroid.multiAPKs },
-        { pattern: '{{MIN_SDK_VERSION}}', override: c.pluginConfigAndroid.minSdkVersion },
-        { pattern: '{{TARGET_SDK_VERSION}}', override: c.pluginConfigAndroid.targetSdkVersion },
-        { pattern: '{{COMPILE_SDK_VERSION}}', override: c.pluginConfigAndroid.compileSdkVersion },
-        { pattern: '{{PLUGIN_COMPILE_OPTIONS}}', override: c.pluginConfigAndroid.compileOptions },
-        { pattern: '{{PLUGIN_LOCAL_PROPERTIES}}', override: c.pluginConfigAndroid.localProperties },
-        { pattern: '{{PLUGIN_ENABLE_HERMES}}', override: c.pluginConfigAndroid.enableHermes }
-    ]);
+    writeCleanFile(
+        getBuildFilePath(c, platform, 'app/build.gradle'),
+        path.join(appFolder, 'app/build.gradle'),
+        [
+            {
+                pattern: '{{PLUGIN_APPLY}}',
+                override: c.pluginConfigAndroid.applyPlugin
+            },
+            { pattern: '{{APPLICATION_ID}}', override: getAppId(c, platform) },
+            {
+                pattern: '{{VERSION_CODE}}',
+                override: getAppVersionCode(c, platform)
+            },
+            {
+                pattern: '{{VERSION_NAME}}',
+                override: getAppVersion(c, platform)
+            },
+            {
+                pattern: '{{PLUGIN_IMPLEMENTATIONS}}',
+                override: c.pluginConfigAndroid.appBuildGradleImplementations
+            },
+            {
+                pattern: '{{PLUGIN_AFTER_EVALUATE}}',
+                override: c.pluginConfigAndroid.appBuildGradleAfterEvaluate
+            },
+            {
+                pattern: '{{PLUGIN_SIGNING_CONFIGS}}',
+                override: c.pluginConfigAndroid.appBuildGradleSigningConfigs
+            },
+            {
+                pattern: '{{PLUGIN_SPLITS}}',
+                override: c.pluginConfigAndroid.splits
+            },
+            {
+                pattern: '{{PLUGIN_ANDROID_DEFAULT_CONFIG}}',
+                override: c.pluginConfigAndroid.defaultConfig
+            },
+            {
+                pattern: '{{PLUGIN_PACKAGING_OPTIONS}}',
+                override: c.pluginConfigAndroid.packagingOptions
+            },
+            {
+                pattern: '{{PLUGIN_BUILD_TYPES}}',
+                override: c.pluginConfigAndroid.buildTypes
+            },
+            {
+                pattern: '{{PLUGIN_MULTI_APKS}}',
+                override: c.pluginConfigAndroid.multiAPKs
+            },
+            {
+                pattern: '{{MIN_SDK_VERSION}}',
+                override: c.pluginConfigAndroid.minSdkVersion
+            },
+            {
+                pattern: '{{TARGET_SDK_VERSION}}',
+                override: c.pluginConfigAndroid.targetSdkVersion
+            },
+            {
+                pattern: '{{COMPILE_SDK_VERSION}}',
+                override: c.pluginConfigAndroid.compileSdkVersion
+            },
+            {
+                pattern: '{{PLUGIN_COMPILE_OPTIONS}}',
+                override: c.pluginConfigAndroid.compileOptions
+            },
+            {
+                pattern: '{{PLUGIN_LOCAL_PROPERTIES}}',
+                override: c.pluginConfigAndroid.localProperties
+            },
+            {
+                pattern: '{{PLUGIN_ENABLE_HERMES}}',
+                override: c.pluginConfigAndroid.enableHermes
+            },
+            {
+                pattern: '{{PATH_REACT_NATIVE}}',
+                override: doResolve('react-native')
+            },
+            {
+                pattern: '{{PATH_HERMES_ENGINE}}',
+                override: doResolve('hermes-engine')
+            }
+        ]
+    );
 };
 
 export const parseSettingsGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
 
-    writeCleanFile(getBuildFilePath(c, platform, 'settings.gradle'), path.join(appFolder, 'settings.gradle'), [
-        { pattern: '{{PLUGIN_INCLUDES}}', override: c.pluginConfigAndroid.pluginIncludes },
-        { pattern: '{{PLUGIN_PATHS}}', override: c.pluginConfigAndroid.pluginPaths },
-    ]);
+    writeCleanFile(
+        getBuildFilePath(c, platform, 'settings.gradle'),
+        path.join(appFolder, 'settings.gradle'),
+        [
+            {
+                pattern: '{{PLUGIN_INCLUDES}}',
+                override: c.pluginConfigAndroid.pluginIncludes
+            },
+            {
+                pattern: '{{PLUGIN_PATHS}}',
+                override: c.pluginConfigAndroid.pluginPaths
+            }
+        ]
+    );
 };
 
 export const parseGradlePropertiesSync = (c, platform) => {
@@ -240,7 +392,12 @@ export const parseGradlePropertiesSync = (c, platform) => {
     const gradleProps = pluginConfigAndroid['gradle.properties'];
 
     if (gradleProps) {
-        const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
+        const enableAndroidX = getConfigProp(
+            c,
+            platform,
+            'enableAndroidX',
+            true
+        );
         if (enableAndroidX === true) {
             gradleProps['android.useAndroidX'] = true;
             gradleProps['android.enableJetifier'] = true;
@@ -252,28 +409,54 @@ export const parseGradlePropertiesSync = (c, platform) => {
     }
 
     const gradleProperties = 'gradle.properties';
-    writeCleanFile(getBuildFilePath(c, platform, gradleProperties), path.join(appFolder, gradleProperties), [
-        { pattern: '{{PLUGIN_GRADLE_PROPERTIES}}', override: pluginGradleProperties }
-    ]);
+    writeCleanFile(
+        getBuildFilePath(c, platform, gradleProperties),
+        path.join(appFolder, gradleProperties),
+        [
+            {
+                pattern: '{{PLUGIN_GRADLE_PROPERTIES}}',
+                override: pluginGradleProperties
+            }
+        ]
+    );
 };
 
-export const injectPluginGradleSync = (c, plugin, key, pkg) => {
+export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
+    // const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
+    // const packagePath = plugin.path ?? `${key}/android`;
+    // let pathAbsolute;
+    // try {
+    //     pathAbsolute = plugin.path
+    //         ? doResolvePath(packagePath, true, { keepSuffix: true })
+    //         : doResolvePath(packagePath, true, { keepSuffix: true });
+    // } catch (err) {
+    //     logWarning(
+    //         `GradleParser: plugin ${packagePath} not resolvable and has been skipped`
+    //     );
+    //     return;
+    // }
+    // const modulePath = `../../${pathFixed}`;
+
     const className = pkg ? pkg.split('.').pop() : null;
     let packageParams = '';
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
     }
     const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
-    const pathFixed = plugin.path ? `${plugin.path}` : `node_modules/${key}/android`;
-    const modulePath = `../../${pathFixed}`;
+    const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
+    const skipPathResolutions = pluginRoot['no-npm'];
+    let pathAbsolute;
+
+    if (!skipPathResolutions) {
+        pathAbsolute = doResolvePath(pathFixed);
+    }
 
     // APP/BUILD.GRADLE
     if (plugin.projectName) {
-        if (!plugin.skipLinking) {
+        if (!plugin.skipLinking && !skipPathResolutions) {
             c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
-            c.pluginConfigAndroid.pluginPaths += `project(':${
-                plugin.projectName
-            }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+            // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${plugin.projectName}').projectDir = new File('${pathAbsolute}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
@@ -283,9 +466,9 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             }
         }
     } else {
-        if (!plugin.skipLinking) {
+        if (!plugin.skipLinking && !skipPathResolutions) {
             c.pluginConfigAndroid.pluginIncludes += `, ':${keyFixed}'`;
-            c.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${keyFixed}').projectDir = new File('${pathAbsolute}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
@@ -322,7 +505,9 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
             c.pluginConfigAndroid.appBuildGradleAfterEvaluate += ` ${v}\n`;
         });
     }
-    _fixAndroidLegacy(c, pathFixed);
+    if (!skipPathResolutions) {
+        _fixAndroidLegacy(c, pathAbsolute);
+    }
 
     // BUILD.GRADLE
     const buildGradle = plugin.BuildGradle;
@@ -364,7 +549,11 @@ export const injectPluginGradleSync = (c, plugin, key, pkg) => {
 };
 
 const _fixAndroidLegacy = (c, modulePath) => {
-    const buildGradle = path.join(c.paths.project.dir, modulePath, 'build.gradle');
+    const buildGradle = path.join(
+        c.paths.project.dir,
+        modulePath,
+        'build.gradle'
+    );
 
     if (fs.existsSync(buildGradle)) {
         logDebug('FIX:', buildGradle);
@@ -374,7 +563,10 @@ const _fixAndroidLegacy = (c, modulePath) => {
             { pattern: ' testCompile "', override: '  testImplementation "' },
             { pattern: " provided '", override: "  compileOnly '" },
             { pattern: ' provided "', override: '  compileOnly "' },
-            { pattern: ' compile fileTree', override: '  implementation fileTree' },
+            {
+                pattern: ' compile fileTree',
+                override: '  implementation fileTree'
+            }
         ]);
     }
 };

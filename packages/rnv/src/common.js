@@ -5,25 +5,39 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
+// import resolve from 'resolve';
 import colorString from 'color-string';
 import crypto from 'crypto';
+import { doResolve } from './resolve';
 import { getValidLocalhost } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
-    configureLogger, logError, logTask,
-    logWarning, logInfo,
-    logInitialize
+    configureLogger,
+    logError,
+    logTask,
+    logWarning,
+    logInfo,
+    logInitialize,
+    logDebug,
+    logSuccess
 } from './systemTools/logger';
 import {
-    IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
-    WEBOS, MACOS, WINDOWS,
+    IOS,
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    WEB,
+    TIZEN,
+    TIZEN_MOBILE,
+    TVOS,
+    WEBOS,
+    MACOS,
+    WINDOWS,
     PLATFORMS
 } from './constants';
 import { execCLI } from './systemTools/exec';
-import {
-    createRnvConfig,
-} from './configTools/configParser';
+import { createRnvConfig } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import Config from './config';
@@ -31,34 +45,43 @@ import Config from './config';
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
 
-    configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
+    configureLogger(
+        c,
+        c.process,
+        c.command,
+        c.subCommand,
+        program.info === true
+    );
     logInitialize();
 
     return c;
 };
-
 
 export const generateChecksum = (str, algorithm, encoding) => crypto
     .createHash(algorithm || 'md5')
     .update(str, 'utf8')
     .digest(encoding || 'hex');
 
-export const getSourceExts = (c) => {
-    const sExt = PLATFORMS[c.platform]?.sourceExts;
+export const getSourceExts = (c, p) => {
+    // IMPORTANT: do not replace "p" with c.platform as this has to
+    // be injected from above to generate multiple configs
+    const sExt = PLATFORMS[p]?.sourceExts;
     if (sExt) {
         return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
     }
     return [];
 };
 
-export const getSourceExtsAsString = (c) => {
-    const sourceExts = getSourceExts(c);
-    return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
+export const getSourceExtsAsString = (c, p) => {
+    const sourceExts = getSourceExts(c, p);
+    return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
 };
 
 export const sanitizeColor = (val) => {
     if (!val) {
-        logWarning('sanitizeColor: passed null. will use default #FFFFFF instead');
+        logWarning(
+            'sanitizeColor: passed null. will use default #FFFFFF instead'
+        );
         return {
             rgb: [255, 255, 255, 1],
             rgbDecimal: [1, 1, 1, 1],
@@ -87,9 +110,12 @@ export const isBuildSchemeSupported = async (c) => {
 
     const { buildSchemes } = c.buildConfig.platforms[c.platform];
 
-
     if (!buildSchemes) {
-        logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
+        logWarning(
+            `Your appConfig for platform ${
+                c.platform
+            } has no buildSchemes. Will continue with defaults`
+        );
         return false;
     }
 
@@ -119,7 +145,9 @@ export const confirmActiveBundler = async (c) => {
     const { confirm } = await inquirerPrompt({
         type: 'confirm',
         message: 'It will be used for this session. Continue?',
-        warningMessage: `Another ${c.platform} server at port ${c.runtime.port} already running`
+        warningMessage: `Another ${c.platform} server at port ${
+            c.runtime.port
+        } already running`
     });
 
     if (confirm) return true;
@@ -155,7 +183,11 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     let scheme;
     if (p) {
         scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
-        resultPlatforms = getFlavouredProp(c, c.buildConfig.platforms[platform], key);
+        resultPlatforms = getFlavouredProp(
+            c,
+            c.buildConfig.platforms[platform],
+            key
+        );
     }
 
     scheme = scheme || {};
@@ -163,7 +195,12 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     const resultScheme = scheme[key];
     const resultCommon = getFlavouredProp(c, c.buildConfig.common, key);
 
-    let result = Config.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+    let result = Config.getValueOrMergedObject(
+        resultCli,
+        resultScheme,
+        resultPlatforms,
+        resultCommon
+    );
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
@@ -188,7 +225,8 @@ export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]
 
 export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
 
-export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description') || c.files.project.package?.description;
+export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description')
+    || c.files.project.package?.description;
 
 export const getAppVersionCode = (c, platform) => {
     const versionCode = getConfigProp(c, platform, 'versionCode');
@@ -207,7 +245,11 @@ export const getAppVersionCode = (c, platform) => {
 };
 
 export const logErrorPlatform = (c, platform) => {
-    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
+    logError(
+        `Platform: ${chalk.white(
+            platform
+        )} doesn't support command: ${chalk.white(c.command)}`
+    );
 };
 
 export const PLATFORM_RUNS = {};
@@ -272,6 +314,23 @@ export const getBinaryPath = (c, platform) => {
     }
 };
 
+export const isMonorepo = () => {
+    try {
+        fs.existsSync(path.resolve(__dirname, '../../../lerna.json'));
+        return true;
+    } catch (_err) {
+        return false;
+    }
+};
+
+export const getMonorepoRoot = () => {
+    if (isMonorepo()) {
+        return path.resolve(__dirname, '../../..');
+    }
+};
+
+export const areNodeModulesInstalled = () => !!doResolve('react', false);
+
 export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)
     if (!fs.existsSync(source)) {
@@ -279,7 +338,9 @@ export const writeCleanFile = (source, destination, overrides) => {
         return;
     }
     if (!fs.existsSync(destination)) {
-        logWarning(`destination path doesn't exists: ${destination}. will create new one`);
+        logWarning(
+            `destination path doesn't exists: ${destination}. will create new one`
+        );
         // return;
     }
     const pFile = fs.readFileSync(source, 'utf8');
@@ -308,7 +369,11 @@ export const getIP = () => ip.address();
 
 export const cleanPlatformIfRequired = async (c, platform) => {
     if (c.program.reset) {
-        logInfo(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
+        logInfo(
+            `You passed ${chalk.white('-r')} argument. paltform ${chalk.white(
+                platform
+            )} will be cleaned up first!`
+        );
         await cleanPlatformBuild(c, platform);
     }
 };
@@ -323,16 +388,8 @@ export const checkPortInUse = (c, platform, port) => new Promise((resolve, rejec
     });
 });
 
-export const resolveNodeModulePath = (c, filePath) => {
-    let pth = path.join(c.paths.rnv.nodeModulesDir, filePath);
-    if (!fs.existsSync(pth)) {
-        pth = path.join(c.paths.project.nodeModulesDir, filePath);
-    }
-    return pth;
-};
-
 export const getFlavouredProp = (c, obj, key) => {
-    if (!key) return null;
+    if (!key || !obj) return null;
     const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;
     return obj[key];
@@ -342,7 +399,10 @@ export const getBuildFilePath = (c, platform, filePath) => {
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
     // P2 => appConfigs/base + @buildSchemes
-    const sp2 = path.join(getBuildsFolder(c, platform, c.paths.project.projectConfig.dir), filePath);
+    const sp2 = path.join(
+        getBuildsFolder(c, platform, c.paths.project.projectConfig.dir),
+        filePath
+    );
     if (fs.existsSync(sp2)) sp = sp2;
     // P3 => appConfigs + @buildSchemes
     const sp3 = path.join(getBuildsFolder(c, platform), filePath);
@@ -359,7 +419,11 @@ export const waitForEmulator = async (c, cli, command, callback) => {
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            execCLI(c, cli, command, { silent: true, timeout: 10000, maxErrorLength })
+            execCLI(c, cli, command, {
+                silent: true,
+                timeout: 10000,
+                maxErrorLength
+            })
                 .then((resp) => {
                     if (callback(resp)) {
                         clearInterval(interval);
@@ -369,22 +433,31 @@ export const waitForEmulator = async (c, cli, command, callback) => {
                     attempts++;
                     if (attempts === maxAttempts) {
                         clearInterval(interval);
-                        spinner.fail('Can\'t connect to the running emulator. Try restarting it.');
-                        return reject('Can\'t connect to the running emulator. Try restarting it.');
+                        spinner.fail(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
+                        return reject(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
                     }
-                }).catch(() => {
+                })
+                .catch(() => {
                     attempts++;
                     if (attempts > maxAttempts) {
                         clearInterval(interval);
-                        spinner.fail('Can\'t connect to the running emulator. Try restarting it.');
-                        return reject('Can\'t connect to the running emulator. Try restarting it.');
+                        spinner.fail(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
+                        return reject(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
                     }
                 });
         }, CHECK_INTEVAL);
     });
 };
 
-export const waitForWebpack = async (c) => {
+export const waitForWebpack = async (c, engine) => {
     logTask(`waitForWebpack:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
@@ -393,36 +466,46 @@ export const waitForWebpack = async (c) => {
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
     const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
-    const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
+    let url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
+
+    if (engine === 'next') url = `http://${devServerHost}:${c.runtime.port}`;
+
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            axios.get(url).then((res) => {
-                if (res.status === 200) {
-                    clearInterval(interval);
-                    // spinner.succeed();
-                    return resolve(true);
-                }
-                attempts++;
-                if (attempts === maxAttempts) {
-                    clearInterval(interval);
-                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                    return reject('Can\'t connect to webpack. Try restarting it.');
-                }
-            }).catch(() => {
-                attempts++;
-                if (attempts > maxAttempts) {
-                    clearInterval(interval);
-                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                    return reject('Can\'t connect to webpack. Try restarting it.');
-                }
-            });
+            axios
+                .get(url)
+                .then((res) => {
+                    if (res.status === 200) {
+                        clearInterval(interval);
+                        // spinner.succeed();
+                        return resolve(true);
+                    }
+                    attempts++;
+                    if (attempts === maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                })
+                .catch(() => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                });
         }, CHECK_INTEVAL);
     });
 };
 export const importPackageFromProject = (name) => {
     const c = Config.getConfig();
-    // eslint-disable-next-line global-require, import/no-dynamic-require
-    const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const pkg = require(doResolve(name));
     if (pkg.default) return pkg.default;
     return pkg;
 };
@@ -450,6 +533,35 @@ export default {
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
-    resolveNodeModulePath,
-    waitForEmulator
+    waitForEmulator,
+    logTask: (val) => {
+        logError(
+            'DEPRECATED: Common.logTask() has been removed. use Logger.logTask() instead'
+        );
+        logTask(val);
+    },
+    logWarning: (val) => {
+        logError(
+            'DEPRECATED: Common.logWarning() has been removed. use Logger.logWarning() instead'
+        );
+        logWarning(val);
+    },
+    logError: (val) => {
+        logError(
+            'DEPRECATED: Common.logError() has been removed. use Logger.logError() instead'
+        );
+        logError(val);
+    },
+    logSuccess: (val) => {
+        logError(
+            'DEPRECATED: Common.logError() has been removed. use Logger.logError() instead'
+        );
+        logSuccess(val);
+    },
+    logDebug: (val) => {
+        logError(
+            'DEPRECATED: Common.logDebug() has been removed. use Logger.logDebug() instead'
+        );
+        logDebug(val);
+    }
 };

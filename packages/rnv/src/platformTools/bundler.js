@@ -6,7 +6,13 @@ import { logTask } from '../systemTools/logger';
 const _isBundlerRunning = async (c) => {
     logTask(`_isBundlerRunning:${c.platform}`);
     try {
-        const { data } = await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(c, c.platform, 'entryFile')}.js`);
+        const { data } = await axios.get(
+            `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(
+                c,
+                c.platform,
+                'entryFile'
+            )}.js`
+        );
         if (data.includes('import')) return true;
         return false;
     } catch (e) {
@@ -37,11 +43,11 @@ const poll = (fn, timeout = 10000, interval = 1000) => {
             } else if (Number(new Date()) < endTime) {
                 setTimeout(checkCondition, interval, resolve, reject);
             } else {
-                spinner.fail('Can\'t connect to bundler. Try restarting it.');
-                reject('Can\'t connect to bundler. Try restarting it.');
+                spinner.fail("Can't connect to bundler. Try restarting it.");
+                reject("Can't connect to bundler. Try restarting it.");
             }
         } catch (e) {
-            spinner.fail('Can\'t connect to bundler. Try restarting it.');
+            spinner.fail("Can't connect to bundler. Try restarting it.");
             reject(e);
         }
     };
