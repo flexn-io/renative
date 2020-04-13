@@ -22,7 +22,8 @@ import {
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
-    FIREFOX_TV
+    FIREFOX_TV,
+    CHROMECAST
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject } from '../platformTools/android';
@@ -41,6 +42,7 @@ import { generateRuntimeConfig } from '../configTools/configParser';
 import Config from '../config';
 import { getMergedPlugin } from '../pluginTools';
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
+import { configureChromecastProject } from '../platformTools/chromecast';
 
 export const rnvConfigure = async (c) => {
     const p = c.platform || 'all';
@@ -84,6 +86,7 @@ export const rnvConfigure = async (c) => {
     await _configurePlatform(c, p, FIREFOX_TV, configureKaiOSProject);
     await _configurePlatform(c, p, IOS, configureXcodeProject);
     await _configurePlatform(c, p, TVOS, configureXcodeProject);
+    await _configurePlatform(c, p, CHROMECAST, configureChromecastProject);
 
     c.platform = originalPlatform;
 };

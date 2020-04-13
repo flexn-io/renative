@@ -257,7 +257,8 @@ const ASSET_PATH_ALIASES = {
     firefoxos: '',
     windows: '',
     macos: '',
-    web: 'public'
+    web: 'public',
+    chromecast: 'public'
 };
 
 export const copyAssetsFolder = async (c, platform, customFn) => {
