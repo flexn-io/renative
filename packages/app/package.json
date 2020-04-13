@@ -83,6 +83,7 @@
         "@babel/plugin-transform-runtime": "7.8.3",
         "@babel/preset-env": "7.8.7",
         "@babel/runtime": "7.8.3",
+        "@rnv/deploy-docker": "^0.2.0",
         "babel-eslint": "8.2.6",
         "babel-jest": "24.9.0",
         "babel-loader": "8.0.5",
@@ -97,11 +98,10 @@
         "electron-builder": "21.1.1",
         "jetifier": "1.6.5",
         "release-it": "12.4.3",
-        "rnv": "^0.28.0",
         "renative-template-blank": "^0.28.0",
         "renative-template-hello-world": "^0.28.0",
         "renative-template-kitchen-sink": "^0.28.0",
-        "@rnv/deploy-docker": "^0.2.0",
+        "rnv": "^0.28.0",
         "xcode": "2.1.0"
     },
     "optionalDependencies": {
