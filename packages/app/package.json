@@ -71,8 +71,7 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "0.29.0-alpha.22",
-        "rnv": "0.29.0-alpha.22"
+        "renative": "^0.28.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
@@ -98,9 +97,11 @@
         "electron-builder": "21.1.1",
         "jetifier": "1.6.5",
         "release-it": "12.4.3",
-        "renative-template-blank": "file:../renative-template-blank",
-        "renative-template-hello-world": "file:../renative-template-hello-world",
-        "renative-template-kitchen-sink": "file:../renative-template-kitchen-sink",
+        "rnv": "^0.28.0",
+        "renative-template-blank": "^0.28.0",
+        "renative-template-hello-world": "^0.28.0",
+        "renative-template-kitchen-sink": "^0.28.0",
+        "@rnv/deploy-docker": "^0.2.0",
         "xcode": "2.1.0"
     },
     "optionalDependencies": {
