@@ -108,8 +108,7 @@
         "concurrently": "4.1.1",
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
-        "lerna": "3.16.4",
-        "@rnv/deploy-aws": "latest"
+        "lerna": "3.16.4"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

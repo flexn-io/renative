@@ -1,6 +1,6 @@
 {
     "name": "@rnv/deploy-aws",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "Gives RNV the possibility to deploy artifacts to an AWS hosting stack",
     "main": "dist/index.js",
     "scripts": {
