@@ -72,7 +72,9 @@
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
         "renative": "0.29.0-alpha.22",
-        "rnv": "0.29.0-alpha.22"
+        "rnv": "0.29.0-alpha.22",
+        "html-webpack-harddisk-plugin": "0.2.0",
+        "html-webpack-plugin": "3.2.0"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",
