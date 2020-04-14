@@ -248,7 +248,8 @@ export const logErrorPlatform = (c, platform) => {
     logError(
         `Platform: ${chalk.white(
             platform
-        )} doesn't support command: ${chalk.white(c.command)}`
+        )} doesn't support command: ${chalk.white(c.command)}`,
+        true // kill it if we're not supporting this
     );
 };
 

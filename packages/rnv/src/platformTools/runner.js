@@ -496,6 +496,7 @@ const _rnvBuildWithPlatform = async (c) => {
             await archiveXcodeProject(c, platform);
             return;
         case WEB:
+        case CHROMECAST:
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWeb(c, platform);
