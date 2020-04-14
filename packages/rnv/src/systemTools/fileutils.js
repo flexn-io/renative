@@ -115,7 +115,7 @@ export const copyFolderContentsRecursiveSync = (
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
-                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipPaths, skipOverride);
+                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipPaths, transform);
                 } else {
                     copyFileSync(curSource, targetFolder, transform);
                 }
