@@ -71,7 +71,8 @@
         "react-native-web-image-loader": "0.0.5",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "^0.28.0"
+        "renative": "^0.28.0",
+        "react-native-google-cast": "github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e"
     },
     "devDependencies": {
         "@babel/cli": "7.8.3",

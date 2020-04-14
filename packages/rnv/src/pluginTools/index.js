@@ -148,6 +148,7 @@ export const rnvPluginAdd = async (c) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
         const plugin = selectedPlugins[key];
         if (plugin.props) questionPlugins[key] = plugin;
+
         c.files.project.config.plugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];

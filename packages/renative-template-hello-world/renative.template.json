@@ -27,6 +27,11 @@
         "react-native-safe-area-view": "source:rnv",
         "react-native-screens": "source:rnv",
         "react-native-tab-view": "source:rnv",
+        "react-native-google-cast": {
+            "props": {
+                "applicationID": "1E14597A"
+            }
+        },
         "@noriginmedia/react-spatial-navigation": "source:rnv"
     },
     "platforms": {
