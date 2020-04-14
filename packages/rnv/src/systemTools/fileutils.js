@@ -36,6 +36,80 @@ export const copyFileSync = (source, target, skipOverride) => {
     }
 };
 
+export const writeCleanFile = (source, destination, overrides) => {
+    // logTask(`writeCleanFile`)
+    if (!fs.existsSync(source)) {
+        logError(`Cannot write file. source path doesn't exists: ${source}`);
+        return;
+    }
+    if (!fs.existsSync(destination)) {
+        logWarning(
+            `destination path doesn't exists: ${destination}. will create new one`
+        );
+        // return;
+    }
+    const pFile = fs.readFileSync(source, 'utf8');
+    let pFileClean = pFile;
+    if (overrides) {
+        overrides.forEach((v) => {
+            const regEx = new RegExp(v.pattern, 'g');
+            pFileClean = pFileClean.replace(regEx, v.override);
+        });
+    }
+
+    fs.writeFileSync(destination, pFileClean, 'utf8');
+};
+
+export const readCleanFile = (source, overrides) => {
+    // logTask(`writeCleanFile`)
+    if (!fs.existsSync(source)) {
+        logError(`Cannot write file. source path doesn't exists: ${source}`);
+        return;
+    }
+
+    const pFile = fs.readFileSync(source, 'utf8');
+    let pFileClean = pFile;
+    if (overrides) {
+        overrides.forEach((v) => {
+            const regEx = new RegExp(v.pattern, 'g');
+            pFileClean = pFileClean.replace(regEx, v.override);
+        });
+    }
+
+    return Buffer.from(pFileClean, 'utf8');
+};
+
+export const copyFileWithInjectSync = (source, target, skipOverride, injectObject) => {
+    logDebug('copyFileWithInjectSync', source);
+
+    let targetFile = target;
+    // if target is a directory a new file with the same name will be created
+    if (source.indexOf('.DS_Store') !== -1) return;
+
+    if (fs.existsSync(target)) {
+        if (fs.lstatSync(target).isDirectory()) {
+            targetFile = path.join(target, path.basename(source));
+        }
+    }
+    if (fs.existsSync(targetFile)) {
+        if (skipOverride) return;
+        const src = readCleanFile(source, injectObject);
+        const dst = fs.readFileSync(targetFile);
+
+        if (Buffer.compare(src, dst) === 0) return;
+    }
+    logDebug('copyFileSync', source, targetFile, 'executed');
+    try {
+        writeCleanFile(
+            source,
+            targetFile,
+            injectObject
+        );
+    } catch (e) {
+        console.log('copyFileSync', e);
+    }
+};
+
 export const invalidatePodsChecksum = (c) => {
     const appFolder = path.join(
         c.paths.project.builds.dir,
@@ -51,7 +125,8 @@ export const copyFolderRecursiveSync = (
     source,
     target,
     convertSvg = true,
-    skipPaths
+    skipOverride,
+    injectObject = null
 ) => {
     logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
@@ -68,7 +143,7 @@ export const copyFolderRecursiveSync = (
         files.forEach((file) => {
             const curSource = path.join(source, file);
             if (fs.lstatSync(curSource).isDirectory()) {
-                copyFolderRecursiveSync(curSource, targetFolder);
+                copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject);
             } else if (
                 path.extname(curSource) === '.svg'
                 && convertSvg === true
@@ -81,6 +156,8 @@ export const copyFolderRecursiveSync = (
                     `file ${curSource} is svg and convertSvg is set to true. converitng to ${jsDest}`
                 );
                 saveAsJs(curSource, jsDest);
+            } else if (injectObject !== null) {
+                copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject);
             } else {
                 copyFileSync(curSource, targetFolder);
             }
@@ -88,8 +165,10 @@ export const copyFolderRecursiveSync = (
     }
 };
 
-export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride) => {
+export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
+
+
     if (!fs.existsSync(source)) return;
     let files = [];
     const targetFolder = path.join(target);
@@ -102,7 +181,9 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
-                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipPaths, skipOverride);
+                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject);
+                } else if (injectObject !== null) {
+                    copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject);
                 } else {
                     copyFileSync(curSource, targetFolder, skipOverride);
                 }
@@ -386,37 +467,48 @@ export const sanitizeDynamicRefs = (c, obj) => {
     return obj;
 };
 
-export const sanitizeDynamicProps = (obj, props) => {
+export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
     if (!obj || !props) return obj;
     if (Array.isArray(obj)) {
-        obj.forEach((v) => {
+        obj.forEach((v, i) => {
+            let val = v;
             if (typeof val === 'string') {
                 Object.keys(props).forEach((pk) => {
                     val = val
                         .replace(`@${pk}@`, props[pk])
                         .replace(`{{props.${pk}}}`, props[pk]);
-                    obj[key] = val;
+                    obj[i] = val;
+                });
+                Object.keys(configProps).forEach((pk2) => {
+                    val = val.replace(`{{configProps.${pk2}}}`, props[pk2]);
+                    obj[i] = val;
                 });
             } else {
-                sanitizeDynamicProps(v, props);
+                sanitizeDynamicProps(v, props, configProps);
+            }
+        });
+    } else if (typeof obj === 'object') {
+        Object.keys(obj).forEach((key) => {
+            let val = obj[key];
+            if (val) {
+                if (typeof val === 'string') {
+                    Object.keys(props).forEach((pk) => {
+                        val = val
+                            .replace(`@${pk}@`, props[pk])
+                            .replace(`{{props.${pk}}}`, props[pk]);
+                        obj[key] = val;
+                    });
+                    Object.keys(configProps).forEach((pk2) => {
+                        val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
+                        obj[key] = val;
+                    });
+                } else {
+                    sanitizeDynamicProps(val, props, configProps);
+                }
             }
         });
     }
-    Object.keys(obj).forEach((key) => {
-        let val = obj[key];
-        if (val) {
-            if (typeof val === 'string') {
-                Object.keys(props).forEach((pk) => {
-                    val = val
-                        .replace(`@${pk}@`, props[pk])
-                        .replace(`{{props.${pk}}}`, props[pk]);
-                    obj[key] = val;
-                });
-            } else {
-                sanitizeDynamicProps(val, props);
-            }
-        }
-    });
+
     return obj;
 };
 
