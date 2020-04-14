@@ -299,7 +299,8 @@ const _getMergedPlugin = (c, obj1, obj2) => {
         mergeObjects(c, obj1, obj2, true, true),
         c.buildConfig?._refs
     );
-    return sanitizeDynamicProps(obj, obj.props, configPropsInject);
+    const plugin = sanitizeDynamicProps(obj, obj.props, configPropsInject);
+    return plugin;
 };
 
 export const configurePlugins = c => new Promise((resolve, reject) => {

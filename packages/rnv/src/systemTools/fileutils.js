@@ -471,15 +471,16 @@ export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
     if (!obj || !props) return obj;
     if (Array.isArray(obj)) {
         obj.forEach((v, i) => {
+            let val = v;
             if (typeof val === 'string') {
                 Object.keys(props).forEach((pk) => {
-                    const val = val
+                    val = val
                         .replace(`@${pk}@`, props[pk])
                         .replace(`{{props.${pk}}}`, props[pk]);
                     obj[i] = val;
                 });
                 Object.keys(configProps).forEach((pk2) => {
-                    const val = val.replace(`{{configProps.${pk2}}}`, props[pk2]);
+                    val = val.replace(`{{configProps.${pk2}}}`, props[pk2]);
                     obj[i] = val;
                 });
             } else {
