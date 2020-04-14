@@ -97,6 +97,7 @@
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
         "jetifier": "1.6.5",
+        "mock-require": "3.0.3",
         "release-it": "12.4.3",
         "renative-template-blank": "^0.28.0",
         "renative-template-hello-world": "^0.28.0",

@@ -35,7 +35,8 @@ export const copyFileSync = (
     try {
         fs.writeFileSync(
             targetFile,
-            transform(fs.readFileSync(source, 'utf8'))
+            fs.readFileSync(source, 'utf8')
+            // transform(fs.readFileSync(source, 'utf8'))
         );
     } catch (e) {
         console.log('copyFileSync', e);
