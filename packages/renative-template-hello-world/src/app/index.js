@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, StatusBar } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -55,12 +55,17 @@ const ModalNavigator = () => (
     </ModalStack.Navigator>
 );
 
-const App = () => (
-    <NavigationContainer>
-        <Drawer.Navigator drawerContent={Menu}>
-            <Drawer.Screen name="drawer" component={ModalNavigator} />
-        </Drawer.Navigator>
-    </NavigationContainer>
-);
+const App = () => {
+    React.useEffect(() => {
+        StatusBar.setBarStyle(Theme.statusBar);
+    }, []);
+    return (
+        <NavigationContainer>
+            <Drawer.Navigator drawerContent={Menu}>
+                <Drawer.Screen name="drawer" component={ModalNavigator} />
+            </Drawer.Navigator>
+        </NavigationContainer>
+    );
+};
 
 export default App;
