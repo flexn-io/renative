@@ -77,7 +77,7 @@ const _createConfigFiles = async (
 };
 
 const deployToNow = c => new Promise((resolve, reject) => {
-    const nowConfigPath = path.resolve(c.paths.project.dir, 'now.json');
+    const nowConfigPath = path.resolve(c.paths.project.dir, 'configs', `now.${c.platform}.json`);
     const envConfigPath = path.resolve(c.paths.project.dir, '.env');
 
     let envContent;
