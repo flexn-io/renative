@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { CastButton } from 'react-native-google-cast';
 import { getScaledValue } from 'renative';
 import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
@@ -39,7 +40,8 @@ const StackNavigator = ({ navigation }) => (
             name="home"
             component={ScreenHome}
             options={{
-                headerLeft: () => <DrawerButton navigation={navigation} />
+                headerLeft: () => <DrawerButton navigation={navigation} />,
+                headerRight: () => <CastButton style={{ width: Theme.iconSize, height: Theme.iconSize, tintColor: Theme.color3 }} />
             }}
         />
         <Stack.Screen name="my-page" component={ScreenMyPage} />

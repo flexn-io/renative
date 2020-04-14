@@ -29,7 +29,7 @@
         "react-native-tab-view": "source:rnv",
         "react-native-google-cast": {
             "props": {
-                "applicationID": "1E14597A"
+                "applicationID": "CC1AD845"
             }
         },
         "@noriginmedia/react-spatial-navigation": "source:rnv"

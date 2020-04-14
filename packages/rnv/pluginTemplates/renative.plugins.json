@@ -2180,7 +2180,7 @@
         "react-native-google-cast": {
             "version": "github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e",
             "props": {
-                "applicationID": "",
+                "applicationID": "CC1AD845",
                 "optionProvider": "com.reactnative.googlecast.GoogleCastOptionsProvider"
             },
             "ios": {
@@ -2191,7 +2191,7 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "let criteria = GCKDiscoveryCriteria(applicationID:\"{{applicationID}}\")",
+                            "let criteria = GCKDiscoveryCriteria(applicationID:\"{{props.applicationID}}\")",
                             "let options = GCKCastOptions(discoveryCriteria: criteria)",
                             "GCKCastContext.setSharedInstanceWith(options)"
                         ]
