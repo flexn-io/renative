@@ -69,8 +69,8 @@ const selectToolAndExecute = async ({
     const targetConfig = c.buildConfig.platforms[platform];
 
     if (
-        type ||
-        (targetConfig && targetConfig.deploy && targetConfig.deploy.type)
+        type
+        || (targetConfig && targetConfig.deploy && targetConfig.deploy.type)
     ) {
         await configFunction(type || targetConfig.deploy.type);
         return executeFunction(c, platform, type || targetConfig.deploy.type);
@@ -96,29 +96,27 @@ const selectToolAndExecute = async ({
     return executeFunction(c, platform, selectedTarget);
 };
 
-const selectWebToolAndDeploy = (c, platform) =>
-    selectToolAndExecute({
-        c,
-        platform,
-        choices: [
-            DEPLOY_TARGET_DOCKER,
-            DEPLOY_TARGET_FTP,
-            DEPLOY_TARGET_NOW,
-            DEPLOY_TARGET_NONE
-        ],
-        configFunction: configureDeploymentIfRequired,
-        executeFunction: _runDeployment
-    });
+const selectWebToolAndDeploy = (c, platform) => selectToolAndExecute({
+    c,
+    platform,
+    choices: [
+        DEPLOY_TARGET_DOCKER,
+        DEPLOY_TARGET_FTP,
+        DEPLOY_TARGET_NOW,
+        DEPLOY_TARGET_NONE
+    ],
+    configFunction: configureDeploymentIfRequired,
+    executeFunction: _runDeployment
+});
 
-const selectWebToolAndExport = (c, platform) =>
-    selectToolAndExecute({
-        c,
-        platform,
-        choices: [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_NONE],
-        configFunction: configureExportIfRequired,
-        executeFunction: _runExport,
-        isDeploy: false
-    });
+const selectWebToolAndExport = (c, platform) => selectToolAndExecute({
+    c,
+    platform,
+    choices: [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_NONE],
+    configFunction: configureExportIfRequired,
+    executeFunction: _runExport,
+    isDeploy: false
+});
 
 export {
     selectWebToolAndDeploy,

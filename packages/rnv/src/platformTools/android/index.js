@@ -75,7 +75,7 @@ import {
     connectToWifiDevice
 } from './deviceManager';
 
-const _getEntryOutputName = c => {
+const _getEntryOutputName = (c) => {
     // CRAPPY BUT Android Wear does not support webview required for connecting to packager. this is hack to prevent RN connectiing to running bundler
     const { entryFile } = c.buildConfig.platforms[c.platform];
     // TODO Android PROD Crashes if not using this hardcoded one
@@ -88,45 +88,38 @@ const _getEntryOutputName = c => {
     return outputFile;
 };
 
-export const packageAndroid = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`packageAndroid:${platform}`);
+export const packageAndroid = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`packageAndroid:${platform}`);
 
-        const bundleAssets =
-            getConfigProp(c, platform, 'bundleAssets', false) === true;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets', false) === true;
 
-        if (!bundleAssets && platform !== ANDROID_WEAR) {
-            resolve();
-            return;
-        }
+    if (!bundleAssets && platform !== ANDROID_WEAR) {
+        resolve();
+        return;
+    }
 
-        const outputFile = _getEntryOutputName(c);
+    const outputFile = _getEntryOutputName(c);
 
-        const appFolder = getAppFolder(c, platform);
-        let reactNative = 'react-native';
+    const appFolder = getAppFolder(c, platform);
+    let reactNative = 'react-native';
 
-        if (isSystemWin) {
-            reactNative = path.normalize(
-                `${process.cwd()}/node_modules/.bin/react-native.cmd`
-            );
-        }
+    if (isSystemWin) {
+        reactNative = path.normalize(
+            `${process.cwd()}/node_modules/.bin/react-native.cmd`
+        );
+    }
 
-        console.log('ANDROID PACKAGE STARTING...');
-        executeAsync(
-            c,
-            `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${
-                c.buildConfig.platforms[c.platform]?.entryFile
-            }.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle`
-        )
-            .then(() => {
-                console.log('ANDROID PACKAGE FINISHED');
-                return resolve();
-            })
-            .catch(e => {
-                console.log('ANDROID PACKAGE FAILED');
-                return reject(e);
-            });
-    });
+    console.log('ANDROID PACKAGE STARTING...');
+    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle --config=configs/metro.config.${c.platform}.js`)
+        .then(() => {
+            console.log('ANDROID PACKAGE FINISHED');
+            return resolve();
+        })
+        .catch((e) => {
+            console.log('ANDROID PACKAGE FAILED');
+            return reject(e);
+        });
+});
 
 export const runAndroid = async (c, platform, defaultTarget) => {
     const { target } = c.program;
@@ -230,8 +223,7 @@ export const runAndroid = async (c, platform, defaultTarget) => {
         // neither a target nor an active device is found, revert to default target if available
         logDebug('Default target used', defaultTarget);
         const foundDevice = devicesAndEmulators.find(
-            d =>
-                d.udid.includes(defaultTarget) || d.name.includes(defaultTarget)
+            d => d.udid.includes(defaultTarget) || d.name.includes(defaultTarget)
         );
         if (!foundDevice) {
             logDebug('Target not provided, asking where to run');
@@ -248,7 +240,7 @@ export const runAndroid = async (c, platform, defaultTarget) => {
     }
 };
 
-const _checkSigningCerts = async c => {
+const _checkSigningCerts = async (c) => {
     logTask('_checkSigningCerts');
     const signingConfig = getConfigProp(
         c,
@@ -257,8 +249,7 @@ const _checkSigningCerts = async c => {
         'Debug'
     );
     const isRelease = signingConfig === 'Release';
-    const privateConfig =
-        c.files.workspace.appConfig.configPrivate?.[c.platform];
+    const privateConfig = c.files.workspace.appConfig.configPrivate?.[c.platform];
 
     if (isRelease && !privateConfig) {
         logWarning(
@@ -287,7 +278,7 @@ const _checkSigningCerts = async c => {
             if (c.files.workspace.appConfig.configPrivate) {
                 const platCandidates = [ANDROID_WEAR, ANDROID_TV, ANDROID];
 
-                platCandidates.forEach(v => {
+                platCandidates.forEach((v) => {
                     if (c.files.workspace.appConfig.configPrivate[v]) {
                         platCandidate = v;
                     }
@@ -303,8 +294,7 @@ const _checkSigningCerts = async c => {
             }
 
             if (confirmCopy) {
-                c.files.workspace.appConfig.configPrivate[c.platform] =
-                    c.files.workspace.appConfig.configPrivate[platCandidate];
+                c.files.workspace.appConfig.configPrivate[c.platform] = c.files.workspace.appConfig.configPrivate[platCandidate];
             } else {
                 let storeFile;
 
@@ -344,9 +334,7 @@ const _checkSigningCerts = async c => {
                 ]);
 
                 if (confirmNewKeystore) {
-                    const keystorePath = `${
-                        c.paths.workspace.appConfig.dir
-                    }/release.keystore`;
+                    const keystorePath = `${c.paths.workspace.appConfig.dir}/release.keystore`;
                     mkdirSync(c.paths.workspace.appConfig.dir);
                     const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
                     await executeAsync(c, keytoolCmd, {
@@ -440,8 +428,8 @@ const _runGradleApp = async (c, platform, device) => {
         );
     } catch (e) {
         if (
-            e?.includes('INSTALL_FAILED') ||
-            e?.message?.includes('INSTALL_FAILED')
+            e?.includes('INSTALL_FAILED')
+            || e?.message?.includes('INSTALL_FAILED')
         ) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
@@ -474,73 +462,68 @@ const _runGradleApp = async (c, platform, device) => {
     }
 };
 
-export const buildAndroid = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`buildAndroid:${platform}`);
+export const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`buildAndroid:${platform}`);
 
-        const appFolder = getAppFolder(c, platform);
-        const signingConfig = getConfigProp(
+    const appFolder = getAppFolder(c, platform);
+    const signingConfig = getConfigProp(
+        c,
+        platform,
+        'signingConfig',
+        'Debug'
+    );
+
+    shell.cd(`${appFolder}`);
+
+    _checkSigningCerts(c)
+        .then(() => executeAsync(
             c,
-            platform,
-            'signingConfig',
-            'Debug'
-        );
+            `${
+                isSystemWin ? 'gradlew.bat' : './gradlew'
+            } assemble${signingConfig} -x bundleReleaseJsAndAssets`
+        ))
+        .then(() => {
+            logSuccess(
+                `Your APK is located in ${chalk.white(
+                    path.join(
+                        appFolder,
+                        `app/build/outputs/apk/${signingConfig.toLowerCase()}`
+                    )
+                )} .`
+            );
+            resolve();
+        })
+        .catch(e => reject(e));
+});
 
-        shell.cd(`${appFolder}`);
+export const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
+    logTask(`configureAndroidProperties:${platform}`);
 
-        _checkSigningCerts(c)
-            .then(() =>
-                executeAsync(
-                    c,
-                    `${
-                        isSystemWin ? 'gradlew.bat' : './gradlew'
-                    } assemble${signingConfig} -x bundleReleaseJsAndAssets`
-                )
-            )
-            .then(() => {
-                logSuccess(
-                    `Your APK is located in ${chalk.white(
-                        path.join(
-                            appFolder,
-                            `app/build/outputs/apk/${signingConfig.toLowerCase()}`
-                        )
-                    )} .`
-                );
-                resolve();
-            })
-            .catch(e => reject(e));
-    });
+    const appFolder = getAppFolder(c, platform);
 
-export const configureAndroidProperties = (c, platform) =>
-    new Promise(resolve => {
-        logTask(`configureAndroidProperties:${platform}`);
+    const addNDK = c.files.workspace.config.sdks.ANDROID_NDK
+            && !c.files.workspace.config.sdks.ANDROID_NDK.includes('<USER>');
+    const ndkString = `ndk.dir=${getRealPath(
+        c,
+        c.files.workspace.config.sdks.ANDROID_NDK
+    )}`;
+    let sdkDir = getRealPath(c, c.files.workspace.config.sdks.ANDROID_SDK);
 
-        const appFolder = getAppFolder(c, platform);
+    if (isSystemWin) {
+        sdkDir = sdkDir.replace(/\\/g, '/');
+    }
 
-        const addNDK =
-            c.files.workspace.config.sdks.ANDROID_NDK &&
-            !c.files.workspace.config.sdks.ANDROID_NDK.includes('<USER>');
-        const ndkString = `ndk.dir=${getRealPath(
-            c,
-            c.files.workspace.config.sdks.ANDROID_NDK
-        )}`;
-        let sdkDir = getRealPath(c, c.files.workspace.config.sdks.ANDROID_SDK);
-
-        if (isSystemWin) {
-            sdkDir = sdkDir.replace(/\\/g, '/');
-        }
-
-        fs.writeFileSync(
-            path.join(appFolder, 'local.properties'),
-            `#Generated by ReNative (https://renative.org)
+    fs.writeFileSync(
+        path.join(appFolder, 'local.properties'),
+        `#Generated by ReNative (https://renative.org)
 ${addNDK ? ndkString : ''}
 sdk.dir=${sdkDir}`
-        );
+    );
 
-        resolve();
-    });
+    resolve();
+});
 
-export const configureGradleProject = async c => {
+export const configureGradleProject = async (c) => {
     const { platform } = c;
     logTask(`configureGradleProject:${platform}`);
 
@@ -552,158 +535,157 @@ export const configureGradleProject = async c => {
     return copyBuildsFolder(c, platform);
 };
 
-export const configureProject = (c, platform) =>
-    new Promise((resolve, reject) => {
-        logTask(`configureProject:${platform}`);
+export const configureProject = (c, platform) => new Promise((resolve, reject) => {
+    logTask(`configureProject:${platform}`);
 
-        const appFolder = getAppFolder(c, platform);
-        const appTemplateFolder = getAppTemplateFolder(c, platform);
+    const appFolder = getAppFolder(c, platform);
+    const appTemplateFolder = getAppTemplateFolder(c, platform);
 
-        const gradlew = path.join(appFolder, 'gradlew');
+    const gradlew = path.join(appFolder, 'gradlew');
 
-        if (!fs.existsSync(gradlew)) {
-            logWarning(
-                `Looks like your ${chalk.white(
-                    platform
-                )} platformBuild is misconfigured!. let's repair it.`
-            );
-            createPlatformBuild(c, platform)
-                .then(() => configureGradleProject(c, platform))
-                .then(() => resolve(c))
-                .catch(e => reject(e));
-            return;
-        }
-
-        const outputFile = _getEntryOutputName(c);
-
-        mkdirSync(path.join(appFolder, 'app/src/main/assets'));
-        fs.writeFileSync(
-            path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`),
-            '{}'
+    if (!fs.existsSync(gradlew)) {
+        logWarning(
+            `Looks like your ${chalk.white(
+                platform
+            )} platformBuild is misconfigured!. let's repair it.`
         );
-        fs.chmodSync(gradlew, '755');
+        createPlatformBuild(c, platform)
+            .then(() => configureGradleProject(c, platform))
+            .then(() => resolve(c))
+            .catch(e => reject(e));
+        return;
+    }
 
-        // INJECTORS
-        c.pluginConfigAndroid = {
-            pluginIncludes: "include ':app'",
-            pluginPaths: '',
-            pluginImports: '',
-            pluginPackages: 'MainReactPackage(),\n',
-            pluginActivityImports: '',
-            pluginActivityMethods: '',
-            pluginApplicationImports: '',
-            pluginApplicationMethods: '',
-            pluginApplicationCreateMethods: '',
-            pluginApplicationDebugServer: '',
-            applyPlugin: '',
-            defaultConfig: '',
-            pluginActivityCreateMethods: '',
-            pluginActivityResultMethods: '',
-            pluginSplashActivityImports: '',
-            manifestApplication: '',
-            buildGradleAllProjectsRepositories: '',
-            buildGradleBuildScriptRepositories: '',
-            buildGradleBuildScriptDependencies: '',
-            buildGradleBuildScriptDexOptions: '',
-            appBuildGradleSigningConfigs: '',
-            appBuildGradleImplementations: '',
-            resourceStrings: [],
-            appBuildGradleAfterEvaluate: ''
-        };
+    const outputFile = _getEntryOutputName(c);
 
-        // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            injectPluginGradleSync(
-                c,
-                pluginPlat,
-                key,
-                pluginPlat.package,
-                plugin
-            );
-            injectPluginKotlinSync(
-                c,
-                pluginPlat,
-                key,
-                pluginPlat.package,
-                plugin
-            );
-            injectPluginManifestSync(
-                c,
-                pluginPlat,
-                key,
-                pluginPlat.package,
-                plugin
-            );
-            injectPluginXmlValuesSync(
-                c,
-                pluginPlat,
-                key,
-                pluginPlat.package,
-                plugin
-            );
-        });
+    mkdirSync(path.join(appFolder, 'app/src/main/assets'));
+    fs.writeFileSync(
+        path.join(appFolder, `app/src/main/assets/${outputFile}.bundle`),
+        '{}'
+    );
+    fs.chmodSync(gradlew, '755');
 
-        c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(
-            0,
-            c.pluginConfigAndroid.pluginPackages.length - 2
+    // INJECTORS
+    c.pluginConfigAndroid = {
+        pluginIncludes: "include ':app'",
+        pluginPaths: '',
+        pluginImports: '',
+        pluginPackages: 'MainReactPackage(),\n',
+        pluginActivityImports: '',
+        pluginActivityMethods: '',
+        pluginApplicationImports: '',
+        pluginApplicationMethods: '',
+        pluginApplicationCreateMethods: '',
+        pluginApplicationDebugServer: '',
+        applyPlugin: '',
+        defaultConfig: '',
+        pluginActivityCreateMethods: '',
+        pluginActivityResultMethods: '',
+        pluginSplashActivityImports: '',
+        manifestApplication: '',
+        buildGradleAllProjectsRepositories: '',
+        buildGradleBuildScriptRepositories: '',
+        buildGradleBuildScriptDependencies: '',
+        buildGradleBuildScriptDexOptions: '',
+        appBuildGradleSigningConfigs: '',
+        appBuildGradleImplementations: '',
+        resourceStrings: [],
+        appBuildGradleAfterEvaluate: ''
+    };
+
+    // PLUGINS
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        injectPluginGradleSync(
+            c,
+            pluginPlat,
+            key,
+            pluginPlat.package,
+            plugin
         );
+        injectPluginKotlinSync(
+            c,
+            pluginPlat,
+            key,
+            pluginPlat.package,
+            plugin
+        );
+        injectPluginManifestSync(
+            c,
+            pluginPlat,
+            key,
+            pluginPlat.package,
+            plugin
+        );
+        injectPluginXmlValuesSync(
+            c,
+            pluginPlat,
+            key,
+            pluginPlat.package,
+            plugin
+        );
+    });
 
-        // FONTS
-        parseFonts(c, (font, dir) => {
-            if (font.includes('.ttf') || font.includes('.otf')) {
-                const key = font.split('.')[0];
-                const { includedFonts } = c.buildConfig.common;
-                if (includedFonts) {
-                    if (
-                        includedFonts.includes('*') ||
-                        includedFonts.includes(key)
-                    ) {
-                        if (font) {
-                            const fontSource = path.join(dir, font);
-                            if (fs.existsSync(fontSource)) {
-                                const fontFolder = path.join(
-                                    appFolder,
-                                    'app/src/main/assets/fonts'
-                                );
-                                mkdirSync(fontFolder);
-                                const fontDest = path.join(fontFolder, font);
-                                copyFileSync(fontSource, fontDest);
-                            } else {
-                                logWarning(
-                                    `Font ${chalk.white(
-                                        fontSource
-                                    )} doesn't exist! Skipping.`
-                                );
-                            }
+    c.pluginConfigAndroid.pluginPackages = c.pluginConfigAndroid.pluginPackages.substring(
+        0,
+        c.pluginConfigAndroid.pluginPackages.length - 2
+    );
+
+    // FONTS
+    parseFonts(c, (font, dir) => {
+        if (font.includes('.ttf') || font.includes('.otf')) {
+            const key = font.split('.')[0];
+            const { includedFonts } = c.buildConfig.common;
+            if (includedFonts) {
+                if (
+                    includedFonts.includes('*')
+                        || includedFonts.includes(key)
+                ) {
+                    if (font) {
+                        const fontSource = path.join(dir, font);
+                        if (fs.existsSync(fontSource)) {
+                            const fontFolder = path.join(
+                                appFolder,
+                                'app/src/main/assets/fonts'
+                            );
+                            mkdirSync(fontFolder);
+                            const fontDest = path.join(fontFolder, font);
+                            copyFileSync(fontSource, fontDest);
+                        } else {
+                            logWarning(
+                                `Font ${chalk.white(
+                                    fontSource
+                                )} doesn't exist! Skipping.`
+                            );
                         }
                     }
                 }
             }
-        });
-
-        parseSettingsGradleSync(c, platform);
-        parseAppBuildGradleSync(c, platform);
-        parseBuildGradleSync(c, platform);
-        parseMainActivitySync(c, platform);
-        parseMainApplicationSync(c, platform);
-        parseSplashActivitySync(c, platform);
-        parseValuesStringsSync(c, platform);
-        parseValuesColorsSync(c, platform);
-        parseAndroidManifestSync(c, platform);
-        parseGradlePropertiesSync(c, platform);
-
-        resolve();
+        }
     });
 
+    parseSettingsGradleSync(c, platform);
+    parseAppBuildGradleSync(c, platform);
+    parseBuildGradleSync(c, platform);
+    parseMainActivitySync(c, platform);
+    parseMainApplicationSync(c, platform);
+    parseSplashActivitySync(c, platform);
+    parseValuesStringsSync(c, platform);
+    parseValuesColorsSync(c, platform);
+    parseAndroidManifestSync(c, platform);
+    parseGradlePropertiesSync(c, platform);
+
+    resolve();
+});
+
 // Resolve or reject will not be called so this will keep running
-export const runAndroidLog = async c => {
+export const runAndroidLog = async (c) => {
     logTask('runAndroidLog');
     const filter = c.program.filter || '';
     const child = execa.command(`${c.cli[CLI_ANDROID_ADB]} logcat`);
     // use event hooks to provide a callback to execute when data are available:
-    child.stdout.on('data', data => {
+    child.stdout.on('data', (data) => {
         const d = data.toString().split('\n');
-        d.forEach(v => {
+        d.forEach((v) => {
             if (v.includes(' E ') && v.includes(filter)) {
                 console.log(chalk.red(v));
             } else if (v.includes(' W ') && v.includes(filter)) {

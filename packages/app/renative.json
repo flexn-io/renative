@@ -46,7 +46,8 @@
             "tizenmobile",
             "kaios",
             "firefoxos",
-            "firefoxtv"
+            "firefoxtv",
+            "web-next"
         ],
         "schemes": {
             "run": "debug",
@@ -57,33 +58,23 @@
     },
     "templates": {
         "renative-template-hello-world": {
-            "version": "file:../renative-template-hello-world",
+            "version": "^0.28.0",
             "webpack": {
                 "moduleAliases": {
-                    "renative": {
-                        "projectPath": "../renative-template-hello-world"
-                    }
+                    "renative": true
                 }
             }
         },
         "renative-template-blank": {
-            "version": "file:../renative-template-blank",
+            "version": "^0.28.0",
             "webpack": {
-                "moduleAliases": {
-                    "renative": {
-                        "projectPath": "../renative-template-blank"
-                    }
-                }
+                "moduleAliases": true
             }
         },
         "renative-template-kitchen-sink": {
-            "version": "file:../renative-template-kitchen-sink",
+            "version": "^0.28.0",
             "webpack": {
-                "moduleAliases": {
-                    "renative": {
-                        "projectPath": "../renative-template-kitchen-sink"
-                    }
-                }
+                "moduleAliases": true
             }
         }
     },

@@ -42,7 +42,7 @@ import Config from '../config';
 import { getMergedPlugin } from '../pluginTools';
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
 
-export const rnvConfigure = async c => {
+export const rnvConfigure = async (c) => {
     const p = c.platform || 'all';
     logTask(`rnvConfigure:${c.platform}:${p}`);
 
@@ -95,47 +95,43 @@ const _configurePlatform = async (c, p, platform, method) => {
     }
 };
 
-export const rnvSwitch = c =>
-    new Promise((resolve, reject) => {
-        const p = c.program.platform || 'all';
-        logTask(`rnvSwitch:${p}`);
+export const rnvSwitch = c => new Promise((resolve, reject) => {
+    const p = c.program.platform || 'all';
+    logTask(`rnvSwitch:${p}`);
 
-        copyRuntimeAssets(c)
-            .then(() => copySharedPlatforms(c))
-            .then(() => generateRuntimeConfig(c))
-            .then(() => resolve())
-            .catch(e => reject(e));
-    });
+    copyRuntimeAssets(c)
+        .then(() => copySharedPlatforms(c))
+        .then(() => generateRuntimeConfig(c))
+        .then(() => resolve())
+        .catch(e => reject(e));
+});
 
-export const rnvLink = c =>
-    new Promise(resolve => {
-        if (fs.existsSync(c.paths.project.npmLinkPolyfill)) {
-            const l = JSON.parse(
-                fs.readFileSync(c.paths.project.npmLinkPolyfill).toString()
-            );
-            Object.keys(l).forEach(key => {
-                const source = path.resolve(l[key]);
-                const nm = path.join(source, 'node_modules');
-                const dest = doResolve(key);
-                if (fs.existsSync(source)) {
-                    copyFolderContentsRecursiveSync(source, dest, false, [nm]);
-                } else {
-                    logWarning(`Source: ${source} doesn't exists!`);
-                }
-            });
-        } else {
-            logWarning(
-                `${
-                    c.paths.project.npmLinkPolyfill
-                } file not found. nothing to link!`
-            );
-            resolve();
-        }
-    });
+export const rnvLink = c => new Promise((resolve) => {
+    if (fs.existsSync(c.paths.project.npmLinkPolyfill)) {
+        const l = JSON.parse(
+            fs.readFileSync(c.paths.project.npmLinkPolyfill).toString()
+        );
+        Object.keys(l).forEach((key) => {
+            const source = path.resolve(l[key]);
+            const nm = path.join(source, 'node_modules');
+            const dest = doResolve(key);
+            if (fs.existsSync(source)) {
+                copyFolderContentsRecursiveSync(source, dest, false, [nm]);
+            } else {
+                logWarning(`Source: ${source} doesn't exists!`);
+            }
+        });
+    } else {
+        logWarning(
+            `${c.paths.project.npmLinkPolyfill} file not found. nothing to link!`
+        );
+        resolve();
+    }
+});
 
 const _isOK = (c, p, list) => {
     let result = false;
-    list.forEach(v => {
+    list.forEach((v) => {
         if (isPlatformActive(c, v) && (p === v || p === 'all')) result = true;
     });
     return result;
@@ -208,10 +204,10 @@ const overridePlugins = async (c, pluginsPath) => {
         return;
     }
 
-    fs.readdirSync(pluginsPath).forEach(dir => {
+    fs.readdirSync(pluginsPath).forEach((dir) => {
         if (dir.startsWith('@')) {
             const pluginsPathNested = path.join(pluginsPath, dir);
-            fs.readdirSync(pluginsPathNested).forEach(subDir => {
+            fs.readdirSync(pluginsPathNested).forEach((subDir) => {
                 _overridePlugins(c, pluginsPath, `${dir}/${subDir}`);
             });
         } else {
@@ -265,7 +261,7 @@ const _overridePlugins = (c, pluginsPath, dir) => {
                     );
                 } else {
                     let fileToFix = fs.readFileSync(ovDir).toString();
-                    Object.keys(override).forEach(fk => {
+                    Object.keys(override).forEach((fk) => {
                         const regEx = new RegExp(fk, 'g');
                         const count = (fileToFix.match(regEx) || []).length;
                         if (!count) {

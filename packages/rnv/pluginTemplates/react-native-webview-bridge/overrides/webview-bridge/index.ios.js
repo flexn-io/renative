@@ -58,7 +58,7 @@ const NavigationType = {
     other: RCTWebViewBridgeManager.NavigationType.Other,
 };
 
-const JSNavigationScheme = RCTWebViewBridgeManager.JSNavigationScheme;
+const { JSNavigationScheme } = RCTWebViewBridgeManager;
 
 type ErrorEvent = {
   domain: any;
@@ -174,7 +174,7 @@ const WebViewBridge = createReactClass({
         const onBridgeMessage = (event: Event) => {
             const onBridgeMessageCallback = this.props.onBridgeMessage;
             if (onBridgeMessageCallback) {
-                const messages = event.nativeEvent.messages;
+                const { messages } = event.nativeEvent;
                 if (messages && typeof messages.forEach === 'function') {
                     messages.forEach((message) => {
                         onBridgeMessageCallback(message);
@@ -253,7 +253,7 @@ const WebViewBridge = createReactClass({
     },
 
     onLoadingStart(event: Event) {
-        const onLoadStart = this.props.onLoadStart;
+        const { onLoadStart } = this.props;
         onLoadStart && onLoadStart(event);
         this.updateNavigationState(event);
     },

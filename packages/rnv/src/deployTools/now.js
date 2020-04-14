@@ -22,21 +22,34 @@ const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) =
         .catch(error => reject(error));
 });
 
-const _createConfigFiles = async (configFilePath, envConfigPath, nowParamsExists = false, envContent = '') => {
+const _createConfigFiles = async (
+    configFilePath,
+    envConfigPath,
+    nowParamsExists = false,
+    envContent = ''
+) => {
     if (!fs.existsSync(configFilePath)) {
         const content = { public: true, version: 2 };
-        logInfo(`${chalk.white('now.json')} file does not exist. Creating one for you`);
+        logInfo(
+            `${chalk.white(
+                'now.json'
+            )} file does not exist. Creating one for you`
+        );
 
-        const { name } = await inquirer.prompt([{
-            type: 'input',
-            name: 'name',
-            message: 'What is your project name?',
-            validate: i => !!i || 'Please enter a name'
-        }, {
-            type: 'input',
-            name: 'token',
-            message: 'Do you have now token? If no leave empty and you will be asked to create one'
-        }]);
+        const { name } = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'name',
+                message: 'What is your project name?',
+                validate: i => !!i || 'Please enter a name'
+            },
+            {
+                type: 'input',
+                name: 'token',
+                message:
+                    'Do you have now token? If no leave empty and you will be asked to create one'
+            }
+        ]);
 
         content.name = name;
 
@@ -44,15 +57,22 @@ const _createConfigFiles = async (configFilePath, envConfigPath, nowParamsExists
             const { token } = await inquirer.prompt({
                 type: 'input',
                 name: 'token',
-                message: 'Do you have now token? If no leave empty and you will be asked to create one'
+                message:
+                    'Do you have now token? If no leave empty and you will be asked to create one'
             });
             if (token) {
                 envContent += `NOW_TOKEN=${token}\n`;
                 fs.writeFileSync(envConfigPath, envContent);
             }
-            return fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
+            return fs.writeFileSync(
+                configFilePath,
+                JSON.stringify(content, null, 2)
+            );
         }
-        return fs.writeFileSync(configFilePath, JSON.stringify(content, null, 2));
+        return fs.writeFileSync(
+            configFilePath,
+            JSON.stringify(content, null, 2)
+        );
     }
 };
 
@@ -68,20 +88,27 @@ const deployToNow = c => new Promise((resolve, reject) => {
     }
 
     let matched = false;
-    envContent.split('\n').map(line => line.split('=')).forEach(([key]) => {
-        if (['NOW_TOKEN'].indexOf(key) > -1) {
-            matched = true;
-        }
-    });
-
-    _createConfigFiles(nowConfigPath, envConfigPath, matched, envContent)
-        .then(() => {
-            _runDeploymentTask(c, nowConfigPath)
-                .then(() => {
-                    resolve();
-                })
-                .catch(err => reject(err));
+    envContent
+        .split('\n')
+        .map(line => line.split('='))
+        .forEach(([key]) => {
+            if (['NOW_TOKEN'].indexOf(key) > -1) {
+                matched = true;
+            }
         });
+
+    _createConfigFiles(
+        nowConfigPath,
+        envConfigPath,
+        matched,
+        envContent
+    ).then(() => {
+        _runDeploymentTask(c, nowConfigPath)
+            .then(() => {
+                resolve();
+            })
+            .catch(err => reject(err));
+    });
 });
 
 export { deployToNow };

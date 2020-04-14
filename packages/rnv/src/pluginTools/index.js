@@ -19,17 +19,16 @@ import {
 } from '../systemTools/logger';
 import { executePipe } from '../projectTools/buildHooks';
 
-export const rnvPluginList = c =>
-    new Promise(resolve => {
-        logTask('_runList');
+export const rnvPluginList = c => new Promise((resolve) => {
+    logTask('_runList');
 
-        const o = _getPluginList(c);
+    const o = _getPluginList(c);
 
-        // console.log(o.asString);
-        logToSummary(`Plugins:\n\n${o.asString}`);
+    // console.log(o.asString);
+    logToSummary(`Plugins:\n\n${o.asString}`);
 
-        resolve();
-    });
+    resolve();
+});
 
 const _getPluginList = (c, isUpdate = false) => {
     const output = {
@@ -41,22 +40,21 @@ const _getPluginList = (c, isUpdate = false) => {
 
     let i = 1;
 
-    Object.keys(c.files.rnv.pluginTemplates.configs).forEach(pk => {
+    Object.keys(c.files.rnv.pluginTemplates.configs).forEach((pk) => {
         const plugins = c.files.rnv.pluginTemplates.configs[pk].pluginTemplates;
-        Object.keys(plugins).forEach(k => {
+        Object.keys(plugins).forEach((k) => {
             const p = plugins[k];
 
             let platforms = '';
-            SUPPORTED_PLATFORMS.forEach(v => {
+            SUPPORTED_PLATFORMS.forEach((v) => {
                 if (p[v]) platforms += `${v}, `;
             });
             if (platforms.length) {
                 platforms = platforms.slice(0, platforms.length - 2);
             }
-            const installedPlugin =
-                c.buildConfig &&
-                c.buildConfig.plugins &&
-                c.buildConfig.plugins[k];
+            const installedPlugin = c.buildConfig
+                && c.buildConfig.plugins
+                && c.buildConfig.plugins[k];
             const installedString = installedPlugin
                 ? chalk.yellow('installed')
                 : chalk.green('not installed');
@@ -111,7 +109,7 @@ const _getPluginList = (c, isUpdate = false) => {
     return output;
 };
 
-export const rnvPluginAdd = async c => {
+export const rnvPluginAdd = async (c) => {
     logTask('rnvPluginAdd');
 
     const selPluginKey = c.program.rawArgs[4];
@@ -146,7 +144,7 @@ export const rnvPluginAdd = async c => {
 
     const questionPlugins = {};
 
-    Object.keys(selectedPlugins).forEach(key => {
+    Object.keys(selectedPlugins).forEach((key) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
         const plugin = selectedPlugins[key];
         if (plugin.props) questionPlugins[key] = plugin;
@@ -166,9 +164,7 @@ export const rnvPluginAdd = async c => {
             const { propValue } = await inquirer.prompt({
                 name: 'propValue',
                 type: 'input',
-                message: `${pluginKey}: Add value for ${
-                    pluginProps[i2]
-                } (You can do this later in ./renative.json file)`
+                message: `${pluginKey}: Add value for ${pluginProps[i2]} (You can do this later in ./renative.json file)`
             });
             finalProps[pluginProps[i2]] = propValue;
         }
@@ -186,10 +182,9 @@ export const rnvPluginAdd = async c => {
 const _checkAndAddDependantPlugins = (c, plugin) => {
     logTask('_checkAndAddDependantPlugins');
     if (plugin.dependsOn) {
-        plugin.dependsOn.forEach(v => {
-            Object.keys(c.files.rnv.pluginTemplates.configs).forEach(p => {
-                const templatePlugins =
-                    c.files.rnv.pluginTemplates.configs[p].pluginTemplates;
+        plugin.dependsOn.forEach((v) => {
+            Object.keys(c.files.rnv.pluginTemplates.configs).forEach((p) => {
+                const templatePlugins = c.files.rnv.pluginTemplates.configs[p].pluginTemplates;
                 if (templatePlugins[v]) {
                     console.log(`Added dependant plugin ${v}`);
                     c.buildConfig.plugins[v] = templatePlugins[v];
@@ -199,7 +194,7 @@ const _checkAndAddDependantPlugins = (c, plugin) => {
     }
 };
 
-export const rnvPluginUpdate = async c => {
+export const rnvPluginUpdate = async (c) => {
     logTask('rnvPluginUpdate');
 
     const o = _getPluginList(c, true);
@@ -214,7 +209,7 @@ export const rnvPluginUpdate = async c => {
 
     if (confirm) {
         const { plugins } = c.buildConfig;
-        Object.keys(plugins).forEach(key => {
+        Object.keys(plugins).forEach((key) => {
             // c.buildConfig.plugins[key] = o.json[key];
             c.files.project.config.plugins[key] = o.json[key];
         });
@@ -229,16 +224,14 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
     const plugin = plugins[key];
 
     // const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
-    const rnvPlugin =
-        c.files.rnv.pluginTemplates.configs?.rnv?.pluginTemplates?.[key];
+    const rnvPlugin = c.files.rnv.pluginTemplates.configs?.rnv?.pluginTemplates?.[key];
 
     let origPlugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
         if (plugin.startsWith('source:')) {
             const scope = plugin.split(':').pop();
 
-            origPlugin =
-                c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[
+            origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[
                     key
                 ];
 
@@ -272,8 +265,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
     if (plugin) {
         if (plugin.source) {
-            origPlugin =
-                c.files.rnv.pluginTemplates.configs[plugin.source]
+            origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]
                     ?.pluginTemplates?.[key];
             if (rnvPlugin && !origPlugin?.skipMerge) {
                 origPlugin = _getMergedPlugin(
@@ -311,134 +303,133 @@ const _getMergedPlugin = (c, obj1, obj2) => {
     return sanitizeDynamicProps(obj, obj.props);
 };
 
-export const configurePlugins = c =>
-    new Promise((resolve, reject) => {
-        logTask('configurePlugins');
+export const configurePlugins = c => new Promise((resolve, reject) => {
+    logTask('configurePlugins');
 
-        if (!c.files.project.package.dependencies) {
-            c.files.project.package.dependencies = {};
-        }
+    if (!c.files.project.package.dependencies) {
+        c.files.project.package.dependencies = {};
+    }
 
-        let hasPackageChanged = false;
+    let hasPackageChanged = false;
 
-        Object.keys(c.buildConfig.plugins).forEach(k => {
-            const { dependencies } = c.files.project.package;
-            const { devDependencies } = c.files.project.package;
-            const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
+    Object.keys(c.buildConfig.plugins).forEach((k) => {
+        const { dependencies } = c.files.project.package;
+        const { devDependencies } = c.files.project.package;
+        const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
-            if (!plugin) {
-                logWarning(
-                    `Plugin with name ${chalk.white(
-                        k
-                    )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk.white(
-                        c.paths.project.builds.config
-                    )}`
-                );
-            } else if (dependencies && dependencies[k]) {
-                if (
-                    plugin['no-active'] !== true &&
-                    plugin['no-npm'] !== true &&
-                    dependencies[k] !== plugin.version
-                ) {
-                    if (k === 'renative' && c.runtime.isWrapper) {
-                        logWarning(
-                            "You're in ReNative wrapper mode. plugin renative will stay as local dep!"
-                        );
-                    } else {
-                        logWarning(
-                            `Version mismatch of dependency ${chalk.white(
-                                k
-                            )} between:
+        if (!plugin) {
+            logWarning(
+                `Plugin with name ${chalk.white(
+                    k
+                )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk.white(
+                    c.paths.project.builds.config
+                )}`
+            );
+        } else if (dependencies && dependencies[k]) {
+            if (
+                plugin['no-active'] !== true
+                    && plugin['no-npm'] !== true
+                    && dependencies[k] !== plugin.version
+            ) {
+                if (k === 'renative' && c.runtime.isWrapper) {
+                    logWarning(
+                        "You're in ReNative wrapper mode. plugin renative will stay as local dep!"
+                    );
+                } else {
+                    logWarning(
+                        `Version mismatch of dependency ${chalk.white(
+                            k
+                        )} between:
 ${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
 ${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(
-                                plugin.version
-                            )}).
+    plugin.version
+)}).
 package.json will be overriden`
-                        );
-
-                        hasPackageChanged = true;
-                        dependencies[k] = plugin.version;
-                    }
-                }
-            } else if (devDependencies && devDependencies[k]) {
-                if (
-                    plugin['no-active'] !== true &&
-                    plugin['no-npm'] !== true &&
-                    devDependencies[k] !== plugin.version
-                ) {
-                    logWarning(
-                        `Version mismatch of devDependency ${chalk.white(
-                            k
-                        )} between package.json: v(${chalk.red(
-                            devDependencies[k]
-                        )}) and plugins.json: v(${chalk.red(
-                            plugin.version
-                        )}). package.json will be overriden`
-                    );
-                    hasPackageChanged = true;
-                    devDependencies[k] = plugin.version;
-                }
-            } else if (
-                plugin['no-active'] !== true &&
-                plugin['no-npm'] !== true
-            ) {
-                // Dependency does not exists
-                if (plugin.version) {
-                    logWarning(
-                        `Missing dependency ${chalk.white(k)} v(${chalk.red(
-                            plugin.version
-                        )}) in package.json. package.json will be overriden`
                     );
 
                     hasPackageChanged = true;
                     dependencies[k] = plugin.version;
                 }
             }
-
-            if (plugin && plugin.npm) {
-                Object.keys(plugin.npm).forEach(npmKey => {
-                    const npmDep = plugin.npm[npmKey];
-                    if (!dependencies[npmKey]) {
-                        logWarning(
-                            `Plugin ${chalk.white(
-                                k
-                            )} requires npm dependency ${chalk.white(
-                                npmKey
-                            )} .Adding missing npm dependency to you package.json`
-                        );
-                        dependencies[npmKey] = npmDep;
-                        hasPackageChanged = true;
-                    } else if (dependencies[npmKey] !== npmDep) {
-                        logWarning(
-                            `Plugin ${chalk.white(
-                                k
-                            )} dependency mismatch (${chalk.red(
-                                dependencies[npmKey]
-                            )}) => (${chalk.green(
-                                npmDep
-                            )}) .updating npm dependency in your package.json`
-                        );
-                        dependencies[npmKey] = npmDep;
-                        hasPackageChanged = true;
-                    }
-                });
+        } else if (devDependencies && devDependencies[k]) {
+            if (
+                plugin['no-active'] !== true
+                    && plugin['no-npm'] !== true
+                    && devDependencies[k] !== plugin.version
+            ) {
+                logWarning(
+                    `Version mismatch of devDependency ${chalk.white(
+                        k
+                    )} between package.json: v(${chalk.red(
+                        devDependencies[k]
+                    )}) and plugins.json: v(${chalk.red(
+                        plugin.version
+                    )}). package.json will be overriden`
+                );
+                hasPackageChanged = true;
+                devDependencies[k] = plugin.version;
             }
-        });
+        } else if (
+            plugin['no-active'] !== true
+                && plugin['no-npm'] !== true
+        ) {
+            // Dependency does not exists
+            if (plugin.version) {
+                logWarning(
+                    `Missing dependency ${chalk.white(k)} v(${chalk.red(
+                        plugin.version
+                    )}) in package.json. package.json will be overriden`
+                );
 
-        logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
-        versionCheck(c)
-            .then(() => {
-                if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
-                    writeFileSync(
-                        c.paths.project.package,
-                        c.files.project.package
+                hasPackageChanged = true;
+                dependencies[k] = plugin.version;
+            }
+        }
+
+        if (plugin && plugin.npm) {
+            Object.keys(plugin.npm).forEach((npmKey) => {
+                const npmDep = plugin.npm[npmKey];
+                if (!dependencies[npmKey]) {
+                    logWarning(
+                        `Plugin ${chalk.white(
+                            k
+                        )} requires npm dependency ${chalk.white(
+                            npmKey
+                        )} .Adding missing npm dependency to you package.json`
                     );
-                    c._requiresNpmInstall = true;
+                    dependencies[npmKey] = npmDep;
+                    hasPackageChanged = true;
+                } else if (dependencies[npmKey] !== npmDep) {
+                    logWarning(
+                        `Plugin ${chalk.white(
+                            k
+                        )} dependency mismatch (${chalk.red(
+                            dependencies[npmKey]
+                        )}) => (${chalk.green(
+                            npmDep
+                        )}) .updating npm dependency in your package.json`
+                    );
+                    dependencies[npmKey] = npmDep;
+                    hasPackageChanged = true;
                 }
-                resolve();
-            })
-            .catch(e => reject(e));
+            });
+        }
     });
+
+    logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
+    versionCheck(c)
+        .then(() => {
+            if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
+                writeFileSync(
+                    c.paths.project.package,
+                    c.files.project.package
+                );
+                c._requiresNpmInstall = true;
+            }
+            resolve();
+        })
+        .catch(e => reject(e));
+});
 
 const parsePlugins = (c, platform, pluginCallback) => {
     logTask(`parsePlugins:${platform}`);
@@ -458,20 +449,20 @@ const parsePlugins = (c, platform, pluginCallback) => {
         if (includedPlugins) {
             const { plugins } = c.buildConfig;
             if (plugins) {
-                Object.keys(plugins).forEach(key => {
+                Object.keys(plugins).forEach((key) => {
                     if (
-                        (includedPlugins.includes('*') ||
-                            includedPlugins.includes(key)) &&
-                        !excludedPlugins.includes(key)
+                        (includedPlugins.includes('*')
+                            || includedPlugins.includes(key))
+                        && !excludedPlugins.includes(key)
                     ) {
                         const plugin = getMergedPlugin(c, key, plugins);
                         if (plugin) {
                             const pluginPlat = plugin[platform];
                             if (pluginPlat) {
                                 if (
-                                    plugin['no-active'] !== true &&
-                                    plugin.enabled !== false &&
-                                    pluginPlat.enabled !== false
+                                    plugin['no-active'] !== true
+                                    && plugin.enabled !== false
+                                    && pluginPlat.enabled !== false
                                 ) {
                                     if (plugin.deprecated) {
                                         logWarning(plugin.deprecated);

@@ -29,18 +29,15 @@ export const parseMainApplicationSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const applicationPath = 'app/src/main/java/rnv/MainApplication.kt';
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
-    const bundleFile =
-        getGetJsBundleFile(c, platform) || bundleAssets
-            ? JS_BUNDLE_DEFAULTS_BUNDLED[platform]
-            : JS_BUNDLE_DEFAULTS[platform];
+    const bundleFile = getGetJsBundleFile(c, platform) || bundleAssets
+        ? JS_BUNDLE_DEFAULTS_BUNDLED[platform]
+        : JS_BUNDLE_DEFAULTS[platform];
     // const host = getConfigProp(c, platform, 'host', '10.0.2.2');
     const bundlerIp = getIP() || '10.0.2.2';
     if (!bundleAssets) {
-        c.pluginConfigAndroid.pluginApplicationDebugServer +=
-            '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
-        c.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${
-            c.runtime.port
-        }").apply()\n`;
+        c.pluginConfigAndroid.pluginApplicationDebugServer
+            += '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
+        c.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${c.runtime.port}").apply()\n`;
     }
 
     writeCleanFile(
@@ -109,11 +106,11 @@ export const parseSplashActivitySync = (c, platform) => {
     // TODO This is temporary ANDROIDX support. whole kotlin parser will be refactored in the near future
     const enableAndroidX = getConfigProp(c, platform, 'enableAndroidX', true);
     if (enableAndroidX === true) {
-        c.pluginConfigAndroid.pluginSplashActivityImports +=
-            'import androidx.appcompat.app.AppCompatActivity\n';
+        c.pluginConfigAndroid.pluginSplashActivityImports
+            += 'import androidx.appcompat.app.AppCompatActivity\n';
     } else {
-        c.pluginConfigAndroid.pluginSplashActivityImports +=
-            'import android.support.v7.app.AppCompatActivity\n';
+        c.pluginConfigAndroid.pluginSplashActivityImports
+            += 'import android.support.v7.app.AppCompatActivity\n';
     }
 
     writeCleanFile(
@@ -131,7 +128,7 @@ export const parseSplashActivitySync = (c, platform) => {
 
 export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     if (plugin.activityImports instanceof Array) {
-        plugin.activityImports.forEach(activityImport => {
+        plugin.activityImports.forEach((activityImport) => {
             // Avoid duplicate imports
             if (
                 c.pluginConfigAndroid.pluginActivityImports.indexOf(
@@ -167,7 +164,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         }
 
         if (mainActivity.imports instanceof Array) {
-            mainActivity.imports.forEach(v => {
+            mainActivity.imports.forEach((v) => {
                 c.pluginConfigAndroid.pluginActivityImports += `import ${v}\n`;
             });
         }
@@ -181,7 +178,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
     }
 
     if (plugin.imports) {
-        plugin.imports.forEach(v => {
+        plugin.imports.forEach((v) => {
             c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
         });
     }
@@ -190,7 +187,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     if (plugin.MainApplication) {
         if (plugin.MainApplication.packages) {
-            plugin.MainApplication.packages.forEach(v => {
+            plugin.MainApplication.packages.forEach((v) => {
                 _injectPackage(c, plugin, v);
             });
         }
@@ -206,7 +203,7 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
         }
 
         if (mainApplication.imports instanceof Array) {
-            mainApplication.imports.forEach(v => {
+            mainApplication.imports.forEach((v) => {
                 c.pluginConfigAndroid.pluginApplicationImports += `import ${v}\n`;
             });
         }
@@ -221,29 +218,21 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     if (plugin.mainApplicationMethods) {
         logWarning(
-            `Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${
-                c.platform
-            }": { MainApplicationMethods }. Use "${
-                c.platform
-            }": { "mainApplication": { "methods": []}} instead`
+            `Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${c.platform}": { MainApplicationMethods }. Use "${c.platform}": { "mainApplication": { "methods": []}} instead`
         );
-        c.pluginConfigAndroid.pluginApplicationMethods += `\n${
-            plugin.mainApplicationMethods
-        }\n`;
+        c.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }
 };
 
 const _injectPackage = (c, plugin, pkg) => {
-    if (pkg)
-        c.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`;
+    if (pkg) { c.pluginConfigAndroid.pluginApplicationImports += `import ${pkg}\n`; }
     let packageParams = '';
     if (plugin.packageParams) {
         packageParams = plugin.packageParams.join(',');
     }
 
     const className = _extractClassName(pkg);
-    if (className)
-        c.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`;
+    if (className) { c.pluginConfigAndroid.pluginPackages += `${className}(${packageParams}),\n`; }
 };
 
 const _extractClassName = pkg => (pkg ? pkg.split('.').pop() : null);

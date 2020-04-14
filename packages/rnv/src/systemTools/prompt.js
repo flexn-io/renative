@@ -5,7 +5,7 @@ import Config from '../config';
 
 const highlight = chalk.grey.bold;
 
-export const inquirerPrompt = async params => {
+export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
@@ -92,5 +92,4 @@ const _sort = (a, b) => {
     return com;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) =>
-    ` [${highlight(i + 1)}]> ${highlight(mapping ? '' : defaultVal)} \n`;
+const _generateOptionString = (i, obj, mapping, defaultVal) => ` [${highlight(i + 1)}]> ${highlight(mapping ? '' : defaultVal)} \n`;

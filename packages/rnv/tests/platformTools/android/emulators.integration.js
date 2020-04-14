@@ -4,7 +4,7 @@ describe('It deals with Android emulators correctly', () => {
     const { DOCKER } = process.env;
     // for some reason, adding an avd here does not work for docker
     if (DOCKER !== 'true') {
-        beforeAll(async done => {
+        beforeAll(async (done) => {
             await shell.exec(
                 'echo no | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"'
             );

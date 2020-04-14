@@ -1,4 +1,3 @@
-
 export const isSystemMac = process.platform === 'darwin';
 
 export const isSystemLinux = process.platform === 'linux';

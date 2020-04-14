@@ -1,15 +1,20 @@
 const blacklist = require('metro-config/src/defaults/blacklist');
 const path = require('path');
 const { doResolve } = require('rnv');
-const sourceExts = require('./metro.config.local');
 
 const defaultConfig = {
     resolver: {
-        sourceExts,
         blacklistRE: blacklist([
             /platformBuilds\/.*/,
             /buildHooks\/.*/,
             /projectConfig\/.*/,
+            /appConfigs\/.*/,
+            /renative.local.*/,
+            /metro.config.local.*/,
+            /platformBuilds\/.*/,
+            /buildHooks\/.*/,
+            /projectConfig\/.*/,
+            /website\/.*/,
             /appConfigs\/.*/,
             /renative.local.*/,
             /metro.config.local.*/

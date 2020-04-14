@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.29.0-alpha.23",
+    "version": "0.29.0-alpha.29",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS` and `Firefox TV` platforms",
     "keywords": [
         "android tv",
@@ -65,8 +65,8 @@
         "link": "cd packages/rnv; yarn unlink 2> /dev/null; yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
         "publish": "lerna run --parallel --concurrency 1 publish",
-        "prePublish": "cd packages/app && yarn prepublish",
-        "publish:alpha": "npm run prepublish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
+        "pre-publish": "cd packages/app && yarn pre-publish",
+        "publish:alpha": "npm run pre-publish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
         "publish:blank": "cd packages/renative-template-blank && npm publish",
         "publish:blank:alpha": "cd packages/renative-template-blank && npm publish --tag alpha",
         "publish:hello": "cd packages/renative-template-hello-world && npm publish",
@@ -121,7 +121,7 @@
     "codename": "Iron Ladybird",
     "husky": {
         "hooks": {
-            "pre-commit": "pretty-quick --staged && yarn test:rnv:unit"
+            "pre-commit": "yarn test:rnv:unit"
         }
     },
     "resolutions": {

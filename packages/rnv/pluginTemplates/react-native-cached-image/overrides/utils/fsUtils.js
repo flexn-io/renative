@@ -1,4 +1,4 @@
-'use strict';
+
 
 const _ = require('lodash');
 
@@ -21,20 +21,20 @@ function getDirPath(path) {
 function ensurePath(path) {
     const dirPath = getDirPath(path);
     return fs.isDir(dirPath)
-        .then(isDir => {
+        .then((isDir) => {
             if (!isDir) {
                 return fs.mkdir(dirPath)
                     // check if dir has indeed been created because
                     // there's no exception on incorrect user-defined paths (?)...
                     .then(() => fs.isDir(dirPath))
-                    .then(isDir => {
+                    .then((isDir) => {
                         if (!isDir) {
                             throw new Error('Invalid cacheLocation');
                         }
-                    })
+                    });
             }
         })
-        .catch(err => {
+        .catch((err) => {
             // ignore folder already exists errors
             if (err.message.includes('folder already exists')) {
                 return;
@@ -50,16 +50,12 @@ function collectFilesInfo(basePath) {
                 return [info];
             }
             return fs.ls(basePath)
-                .then(files => {
-                    const promises = _.map(files, file => {
-                        return collectFilesInfo(`${basePath}/${file}`);
-                    });
+                .then((files) => {
+                    const promises = _.map(files, file => collectFilesInfo(`${basePath}/${file}`));
                     return Promise.all(promises);
                 });
         })
-        .catch(err => {
-            return [];
-        });
+        .catch(err => []);
 }
 
 /**
@@ -72,7 +68,7 @@ module.exports = {
      * @returns {String}
      */
     getCacheDir() {
-        return fs.dirs.CacheDir + '/imagesCacheDir';
+        return `${fs.dirs.CacheDir}/imagesCacheDir`;
     },
 
     /**
@@ -89,7 +85,7 @@ module.exports = {
         // use toFile as the key as is was created using the cacheKey
         if (!_.has(activeDownloads, toFile)) {
             // using a temporary file, if the download is accidentally interrupted, it will not produce a disabled file
-            const tmpFile = toFile + '.tmp';
+            const tmpFile = `${toFile}.tmp`;
             // create an active download for this file
             activeDownloads[toFile] = ensurePath(toFile)
                 .then(() => RNFetchBlob
@@ -97,18 +93,18 @@ module.exports = {
                         path: tmpFile
                     })
                     .fetch('GET', fromUrl, headers)
-                    .then(res => {
+                    .then((res) => {
                         if (res.respInfo.status === 304) {
                             return Promise.resolve(toFile);
                         }
-                        let status = Math.floor(res.respInfo.status / 100);
+                        const status = Math.floor(res.respInfo.status / 100);
                         if (status !== 2) {
                             // TODO - log / return error?
                             return Promise.reject();
                         }
 
                         return RNFetchBlob.fs.stat(tmpFile)
-                            .then(fileStats => {
+                            .then((fileStats) => {
                                 // Verify if the content was fully downloaded!
                                 if (res.respInfo.headers['Content-Length'] && res.respInfo.headers['Content-Length'] != fileStats.size) {
                                     return Promise.reject();
@@ -117,10 +113,8 @@ module.exports = {
                                 // the download is complete and rename the temporary file
                                 return fs.mv(tmpFile, toFile);
                             });
-
-
                     })
-                    .catch(error => {
+                    .catch((error) => {
                         // cleanup. will try re-download on next CachedImage mount.
                         this.deleteFile(tmpFile);
                         delete activeDownloads[toFile];
@@ -131,8 +125,7 @@ module.exports = {
                         this.deleteFile(tmpFile);
                         delete activeDownloads[toFile];
                         return toFile;
-                    })
-                );
+                    }));
         }
         return activeDownloads[toFile];
     },
@@ -182,14 +175,13 @@ module.exports = {
      */
     getDirInfo(dirPath) {
         return fs.isDir(dirPath)
-            .then(isDir => {
+            .then((isDir) => {
                 if (isDir) {
                     return collectFilesInfo(dirPath);
-                } else {
-                    throw new Error('Dir does not exists');
                 }
+                throw new Error('Dir does not exists');
             })
-            .then(filesInfo => {
+            .then((filesInfo) => {
                 const files = _.flattenDeep(filesInfo);
                 const size = _.sumBy(files, 'size');
                 return {

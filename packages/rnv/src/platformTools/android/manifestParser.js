@@ -24,10 +24,9 @@ const _findChildNode = (tag, name, node) => {
         const ch = node.children[i];
         if (ch.tag === tag) {
             if (
-                ch['android:name'] === name ||
-                PROHIBITED_DUPLICATE_TAGS.includes(tag)
-            )
-                return ch;
+                ch['android:name'] === name
+                || PROHIBITED_DUPLICATE_TAGS.includes(tag)
+            ) { return ch; }
         }
     }
     return null;
@@ -43,7 +42,7 @@ const _parseNode = (n, level) => {
     }
 
     let nodeKeysCount = 0;
-    Object.keys(n).forEach(v => {
+    Object.keys(n).forEach((v) => {
         if (!SYSTEM_TAGS.includes(v)) nodeKeysCount++;
     });
     const isSingleLine = nodeKeysCount < 2;
@@ -74,7 +73,7 @@ const _parseNode = (n, level) => {
         }
 
         const nextLevel = (level += 1);
-        n.children.forEach(v => {
+        n.children.forEach((v) => {
             output += _parseNode(v, nextLevel);
         });
         output += `${space}</${n.tag}>\n`;
@@ -106,7 +105,7 @@ const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
         return;
     }
     if (!node.children) node.children = [];
-    nodeChildrenExt.forEach(v => {
+    nodeChildrenExt.forEach((v) => {
         const nameExt = v['android:name'];
         if (v.tag) {
             const childNode = _findChildNode(v.tag, nameExt, node);
@@ -207,9 +206,8 @@ export const parseAndroidManifestSync = (c, platform) => {
         let prms = '';
         const configPermissions = c.buildConfig?.permissions;
 
-        const includedPermissions =
-            getConfigProp(c, platform, 'includedPermissions') ||
-            getConfigProp(c, platform, 'permissions');
+        const includedPermissions = getConfigProp(c, platform, 'includedPermissions')
+            || getConfigProp(c, platform, 'permissions');
         const excludedPermissions = getConfigProp(
             c,
             platform,
@@ -222,13 +220,11 @@ export const parseAndroidManifestSync = (c, platform) => {
                 for (const k in pc) {
                     if (
                         !(
-                            excludedPermissions &&
-                            excludedPermissions.includes(k)
+                            excludedPermissions
+                            && excludedPermissions.includes(k)
                         )
                     ) {
-                        prms += `\n   <uses-permission android:name="${
-                            pc[k].key
-                        }" />`;
+                        prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
                         const key = pc[k].key || k;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
@@ -237,11 +233,9 @@ export const parseAndroidManifestSync = (c, platform) => {
                     }
                 }
             } else {
-                includedPermissions.forEach(v => {
+                includedPermissions.forEach((v) => {
                     if (pc[v]) {
-                        prms += `\n   <uses-permission android:name="${
-                            pc[v].key
-                        }" />`;
+                        prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
                         const key = pc[v].key || k;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
@@ -255,7 +249,7 @@ export const parseAndroidManifestSync = (c, platform) => {
         // appConfig FEATURES OVERRIDES
         const includedFeatures = getConfigProp(c, platform, 'includedFeatures');
         if (includedFeatures) {
-            includedFeatures.forEach(key => {
+            includedFeatures.forEach((key) => {
                 baseManifestFile.children.push({
                     tag: 'uses-feature',
                     'android:name': key,
@@ -266,7 +260,7 @@ export const parseAndroidManifestSync = (c, platform) => {
 
         const excludedFeatures = getConfigProp(c, platform, 'excludedFeatures');
         if (excludedFeatures) {
-            excludedFeatures.forEach(key => {
+            excludedFeatures.forEach((key) => {
                 baseManifestFile.children.push({
                     tag: 'uses-feature',
                     'android:name': key,

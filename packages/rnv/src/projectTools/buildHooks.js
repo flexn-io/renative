@@ -9,30 +9,29 @@ import { executeAsync } from '../systemTools/exec';
 // PUBLIC API
 // ##########################################
 
-const rnvHooksRun = c =>
-    new Promise((resolve, reject) => {
-        logTask('rnvHooksRun');
+const rnvHooksRun = c => new Promise((resolve, reject) => {
+    logTask('rnvHooksRun');
 
-        buildHooks(c)
-            .then(() => {
-                if (!c.buildHooks) {
-                    reject('Build hooks have not been compiled properly!');
-                    return;
-                }
-                if (c.buildHooks[(c.program?.exeMethod)]) {
-                    c.buildHooks[(c.program?.exeMethod)](c)
-                        .then(() => resolve())
-                        .catch(e => reject(e));
-                } else {
-                    reject(
-                        `Method name ${chalk.white(
-                            c.program.exeMethod
-                        )} does not exists in your buildHooks!`
-                    );
-                }
-            })
-            .catch(e => reject(e));
-    });
+    buildHooks(c)
+        .then(() => {
+            if (!c.buildHooks) {
+                reject('Build hooks have not been compiled properly!');
+                return;
+            }
+            if (c.buildHooks[c.program?.exeMethod]) {
+                c.buildHooks[c.program?.exeMethod](c)
+                    .then(() => resolve())
+                    .catch(e => reject(e));
+            } else {
+                reject(
+                    `Method name ${chalk.white(
+                        c.program.exeMethod
+                    )} does not exists in your buildHooks!`
+                );
+            }
+        })
+        .catch(e => reject(e));
+});
 
 const executePipe = async (c, key) => {
     logTask(`executePipe:${key}`);
@@ -46,8 +45,7 @@ const executePipe = async (c, key) => {
 
     if (Array.isArray(pipe)) {
         await pipe.reduce(
-            (accumulatorPromise, next) =>
-                accumulatorPromise.then(() => next(c)),
+            (accumulatorPromise, next) => accumulatorPromise.then(() => next(c)),
             Promise.resolve()
         );
     } else if (pipe) {
@@ -55,7 +53,7 @@ const executePipe = async (c, key) => {
     }
 };
 
-const buildHooks = async c => {
+const buildHooks = async (c) => {
     logTask('buildHooks');
 
     if (fs.existsSync(c.paths.buildHooks.index)) {
@@ -66,9 +64,7 @@ const buildHooks = async c => {
         try {
             await executeAsync(
                 c,
-                `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${
-                    c.paths.buildHooks.dir
-                } -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`,
+                `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`,
                 {
                     cwd: c.paths.buildHooks.dir
                 }
@@ -89,39 +85,37 @@ const buildHooks = async c => {
     return true;
 };
 
-const rnvHooksList = c =>
-    new Promise((resolve, reject) => {
-        logTask('rnvHooksList');
+const rnvHooksList = c => new Promise((resolve, reject) => {
+    logTask('rnvHooksList');
 
-        buildHooks(c)
-            .then(() => {
-                if (c.buildHooks) {
-                    const hookOpts = generateOptions(c.buildHooks);
-                    let hooksAsString = `\n${'Hooks:'}\n${hookOpts.asString}`;
+    buildHooks(c)
+        .then(() => {
+            if (c.buildHooks) {
+                const hookOpts = generateOptions(c.buildHooks);
+                let hooksAsString = `\n${'Hooks:'}\n${hookOpts.asString}`;
 
-                    if (c.buildPipes) {
-                        const pipeOpts = generateOptions(c.buildPipes);
-                        hooksAsString += `\n${'Pipes:'}\n${pipeOpts.asString}`;
-                    }
-                    logToSummary(hooksAsString);
-                    resolve();
-                } else {
-                    reject('Your buildHooks object is empty!');
+                if (c.buildPipes) {
+                    const pipeOpts = generateOptions(c.buildPipes);
+                    hooksAsString += `\n${'Pipes:'}\n${pipeOpts.asString}`;
                 }
-            })
-            .catch(e => reject(e));
-    });
+                logToSummary(hooksAsString);
+                resolve();
+            } else {
+                reject('Your buildHooks object is empty!');
+            }
+        })
+        .catch(e => reject(e));
+});
 
-const rnvHooksPipes = c =>
-    new Promise((resolve, reject) => {
-        logTask('rnvHooksPipes');
+const rnvHooksPipes = c => new Promise((resolve, reject) => {
+    logTask('rnvHooksPipes');
 
-        buildHooks(c)
-            .then(() => {
-                const pipeOpts = generateOptions(c.buildPipes);
-                console.log(`Pipes:\n${pipeOpts.asString}`);
-            })
-            .catch(e => reject(e));
-    });
+    buildHooks(c)
+        .then(() => {
+            const pipeOpts = generateOptions(c.buildPipes);
+            console.log(`Pipes:\n${pipeOpts.asString}`);
+        })
+        .catch(e => reject(e));
+});
 
 export { buildHooks, rnvHooksList, rnvHooksRun, executePipe, rnvHooksPipes };

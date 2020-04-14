@@ -53,4 +53,6 @@ buck-out/
 # Testing
 /packages/**/coverage
 /packages/**/dist
+.expo
+.next
 coverage

@@ -41,6 +41,9 @@ export const doResolvePath = (aPath, mandatory = true, options = {}) => {
         if (pathArr[0] === 'node_modules') {
             pathArr.shift();
         }
+        if (pathArr[0] === 'packages') {
+            pathArr.shift();
+        }
         const cleanPath = pathArr.join('/');
         if (pathArr[0].startsWith('@')) {
             pathArr.shift();
@@ -53,7 +56,7 @@ export const doResolvePath = (aPath, mandatory = true, options = {}) => {
     }
 };
 
-export const isScopedPackagePath = aPath => {
+export const isScopedPackagePath = (aPath) => {
     if (aPath.startsWith('@')) {
         if (!aPath.includes('/')) {
             throw new Error(
@@ -87,7 +90,7 @@ export const isCliLinked = (realBinaryPath = process.mainModule.filename) => {
     return !realBinaryPath.includes('node_modules/');
 };
 
-const _getPackagePathParts = aPath => {
+const _getPackagePathParts = (aPath) => {
     let parts = [];
     if (isScopedPackagePath(aPath)) {
         parts = aPath.match(/^([^/]+\/[^/]+)(?:\/?(.*))/);
@@ -120,9 +123,10 @@ const _doResolveFSPath = (aPath, options) => {
  */
 const _doResolveExternalPackage = (aPath, options) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
+
     const resolvedPath = resolve
         .sync(packageBase, {
-            packageFilter: pkg => {
+            packageFilter: (pkg) => {
                 pkg.main = 'package.json';
                 return pkg;
             },
