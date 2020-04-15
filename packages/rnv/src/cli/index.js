@@ -83,7 +83,8 @@ import {
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
-    FIREFOX_TV
+    FIREFOX_TV,
+    WEB_NEXT
 } from '../constants';
 // import { getBinaryPath } from '../common';
 import Config, { rnvConfigHandler } from '../config';
@@ -175,7 +176,8 @@ const COMMANDS = {
             WEB,
             ANDROID,
             ANDROID_TV,
-            ANDROID_WEAR
+            ANDROID_WEAR,
+            WEB_NEXT
         ],
         fn: rnvExport
     },

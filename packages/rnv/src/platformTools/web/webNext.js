@@ -122,14 +122,13 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-export const buildWebNext = async (c) => {
+export const buildWebNext = (c) => {
     logTask('buildWebNext');
     const env = getConfigProp(c, c.platform, 'environment');
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
 
-    await executeAsync(c, `npx next build ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
-    return executeAsync(c, `npx next export ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
+    return executeAsync(c, `npx next build ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
 };
 
 export const runWebDevServer = (c, platform, port) => {
@@ -146,7 +145,11 @@ export const deployWeb = (c, platform) => {
     return selectWebToolAndDeploy(c, platform);
 };
 
-export const exportWeb = (c, platform) => {
-    logTask(`exportWeb:${platform}`);
-    return selectWebToolAndExport(c, platform);
+export const exportWebNext = (c) => {
+    logTask('exportWebNext');
+    const env = getConfigProp(c, c.platform, 'environment');
+    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
+
+    return executeAsync(c, `npx next export ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
 };

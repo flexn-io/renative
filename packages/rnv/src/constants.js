@@ -38,7 +38,6 @@ export const VIERACONNECT = 'vieraconnect';
 export const VIZIO = 'vizio';
 export const WATCHOS = 'watchos';
 export const WEB = 'web';
-export const WEBNEXT = 'webnext';
 export const WEBOS = 'webos';
 export const WEBIAN = 'webian';
 export const WII = 'wii';
@@ -481,14 +480,6 @@ export const PLATFORMS = {
         sourceExts: []
     },
     vizio: {
-        defaultPort: 999999,
-        icon: ICONS.PHONE,
-        supportedOS: OS.ALL,
-        isActive: false,
-        requiresSharedConfig: true,
-        sourceExts: []
-    },
-    webnext: {
         defaultPort: 999999,
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,

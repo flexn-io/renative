@@ -38,7 +38,6 @@ export const VIERACONNECT = 'vieraconnect';
 export const VIZIO = 'vizio';
 export const WATCHOS = 'watchos';
 export const WEB = 'web';
-export const WEBNEXT = 'webnext';
 export const WEBOS = 'webos';
 export const WEBIAN = 'webian';
 export const WII = 'wii';
@@ -47,6 +46,7 @@ export const WP10 = 'wp10';
 export const WP8 = 'wp8';
 export const XBOX = 'xbox';
 export const XBOX360 = 'xbox360';
+export const WEB_NEXT = 'web-next';
 
 // PLATFORM GROUP
 export const PLATFORM_GROUP_SMARTTV = 'smarttv';

@@ -45,11 +45,11 @@ import {
     runAppleLog
 } from './apple';
 import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
-import { runWebNext, buildWebNext } from './web/webNext';
+import { runWebNext, buildWebNext, exportWebNext } from './web/webNext';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
-import { runChromecast, deployChromecast } from './chromecast';
+import { runChromecast } from './chromecast';
 import {
     runElectron,
     buildElectron,
@@ -405,6 +405,11 @@ const _rnvExportWithPlatform = async (c) => {
                 await rnvBuild(c);
             }
             return exportWeb(c, platform);
+        case WEB_NEXT:
+            if (!c.program.only) {
+                await rnvBuild(c);
+            }
+            return exportWebNext(c);
         case IOS:
         case TVOS:
             if (!c.program.only) {
