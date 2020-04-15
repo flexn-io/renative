@@ -135,6 +135,9 @@ class BasePlatformSetup {
             case 'docker':
                 await this.installDocker();
                 break;
+            case 'aws':
+                await this.installAws();
+                break;
             default:
                 break;
         }
@@ -169,6 +172,12 @@ class BasePlatformSetup {
     async installDocker() {
         // to be overwritten
         logError('Install docker not supported yet');
+        return true;
+    }
+
+    async installAws() {
+        // to be overwritten
+        logError('Install aws not supported yet. Follow https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html to install it manually (version 1 required)');
         return true;
     }
 

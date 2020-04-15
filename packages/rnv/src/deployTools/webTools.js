@@ -1,7 +1,6 @@
 import chalk from 'chalk';
 import minimist from 'minimist';
 import inquirer from 'inquirer';
-import path from 'path';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
@@ -13,6 +12,7 @@ import {
 } from './configure';
 
 const DEPLOY_TARGET_DOCKER = 'docker';
+const DEPLOY_TARGET_AWS = 'aws';
 const DEPLOY_TARGET_FTP = 'ftp';
 const DEPLOY_TARGET_NOW = 'now';
 const DEPLOY_TARGET_NONE = 'none';
@@ -34,6 +34,10 @@ const _runDeployment = async (c, platform, deployType) => {
             );
             deployToDocker.setRNVPath(rnvPath);
             return deployToDocker.doDeploy();
+        case DEPLOY_TARGET_AWS:
+            const deployerPackage = importPackageFromProject('@rnv/deploy-aws');
+            deployerPackage.setRNVPath(process.mainModule.filename.split('/bin/index.js')[0]);
+            return deployerPackage.doDeploy();
         default:
             return Promise.reject(
                 new Error(`Deploy Type not supported ${deployType}`)
@@ -102,12 +106,7 @@ const selectToolAndExecute = async ({
 const selectWebToolAndDeploy = (c, platform) => selectToolAndExecute({
     c,
     platform,
-    choices: [
-        DEPLOY_TARGET_DOCKER,
-        DEPLOY_TARGET_FTP,
-        DEPLOY_TARGET_NOW,
-        DEPLOY_TARGET_NONE
-    ],
+    choices: [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_AWS, DEPLOY_TARGET_FTP, DEPLOY_TARGET_NOW, DEPLOY_TARGET_NONE],
     configFunction: configureDeploymentIfRequired,
     executeFunction: _runDeployment
 });
@@ -126,5 +125,6 @@ export {
     selectWebToolAndExport,
     DEPLOY_TARGET_FTP,
     DEPLOY_TARGET_NOW,
+    DEPLOY_TARGET_AWS,
     DEPLOY_TARGET_NONE
 };

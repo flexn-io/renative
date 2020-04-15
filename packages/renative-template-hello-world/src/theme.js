@@ -22,7 +22,8 @@ const theme = {
     primaryFontFamily: 'TimeBurner',
     iconSize: getScaledValue(40),
     menuWidth: hasHorizontalMenu || hasFullScreenMenu ? '100%' : 280,
-    menuHeight: hasHorizontalMenu ? getScaledValue(80) : '100%'
+    menuHeight: hasHorizontalMenu ? getScaledValue(80) : '100%',
+    statusBar: 'light-content'
 };
 
 export const themeStyles = StyleSheet.create({

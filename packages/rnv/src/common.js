@@ -179,6 +179,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     }
     const p = c.buildConfig.platforms[platform];
     const ps = c.runtime.scheme;
+
     let resultPlatforms;
     let scheme;
     if (p) {
@@ -203,7 +204,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     );
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-    logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+    logDebug(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
     return result;
 };
 
@@ -248,7 +249,8 @@ export const logErrorPlatform = (c, platform) => {
     logError(
         `Platform: ${chalk.white(
             platform
-        )} doesn't support command: ${chalk.white(c.command)}`
+        )} doesn't support command: ${chalk.white(c.command)}`,
+        true // kill it if we're not supporting this
     );
 };
 
@@ -331,6 +333,7 @@ export const getMonorepoRoot = () => {
 
 export const areNodeModulesInstalled = () => !!doResolve('react', false);
 
+// TODO: remove and use fileutils one
 export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)
     if (!fs.existsSync(source)) {

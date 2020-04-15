@@ -139,7 +139,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
+    const wbp = doResolvePath('webpack/bin/webpack.js');
 
     executeAsync(
         c,

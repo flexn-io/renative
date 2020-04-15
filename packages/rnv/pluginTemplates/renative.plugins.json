@@ -2248,8 +2248,12 @@
             }
         },
         "react-native-google-cast": {
-            "version": "github:hosek/react-native-google-cast#feat/custom-cast-dialog-support",
+            "version": "github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e",
+            "props": {
+                "applicationID": "CC1AD845"
+            },
             "ios": {
+                "isStatic": true,
                 "podName": "react-native-google-cast",
                 "path": "node_modules/react-native-google-cast/ios",
                 "appDelegateImports": [
@@ -2258,7 +2262,7 @@
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
-                            "let criteria = GCKDiscoveryCriteria(applicationID: kGCKDefaultMediaReceiverApplicationID)",
+                            "let criteria = GCKDiscoveryCriteria(applicationID:\"{{props.applicationID}}\")",
                             "let options = GCKCastOptions(discoveryCriteria: criteria)",
                             "GCKCastContext.setSharedInstanceWith(options)"
                         ]
@@ -2291,7 +2295,7 @@
                                 {
                                     "tag": "meta-data",
                                     "android:name": "com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME",
-                                    "android:value": "com.reactnative.googlecast.GoogleCastOptionsProvider"
+                                    "android:value": "{{configProps.id}}.CastOptionsProvider"
                                 }
                             ]
                         }

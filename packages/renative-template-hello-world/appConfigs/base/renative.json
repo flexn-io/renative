@@ -8,12 +8,8 @@
             "url": "https://github.com/pavjacko"
         },
         "license": "MIT",
-        "includedPlugins": [
-            "*"
-        ],
-        "includedFonts": [
-            "*"
-        ],
+        "includedPlugins": ["*"],
+        "includedFonts": ["*"],
         "defaultSchemes": {
             "run": "debug",
             "build": "release",
@@ -58,9 +54,7 @@
                 "com.apple.iCloud": false
             },
             "entitlements": {},
-            "permissions": [
-                "*"
-            ],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
@@ -78,9 +72,7 @@
             "teamID": "",
             "provisioningStyle": "Manual",
             "entitlements": {},
-            "permissions": [
-                "*"
-            ],
+            "permissions": ["*"],
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
@@ -101,9 +93,7 @@
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
-            "permissions": [
-                "*"
-            ],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -123,9 +113,7 @@
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 21,
-            "permissions": [
-                "*"
-            ],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -145,9 +133,7 @@
             "universalApk": true,
             "multipleAPKs": false,
             "minSdkVersion": 23,
-            "permissions": [
-                "*"
-            ],
+            "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
                     "signingConfig": "Debug",
@@ -304,6 +290,15 @@
                     "bundleAssets": true,
                     "bundleIsDev": false
                 }
+            }
+        },
+        "chromecast": {
+            "entryFile": "index.chromecast",
+            "webpackConfig": {
+                "customScripts": [
+                    "www.gstatic.com/cast/sdk/libs/caf_receiver/v3/cast_receiver_framework.js",
+                    "www.gstatic.com/cast/sdk/libs/devtools/debug_layer/caf_receiver_logger.js"
+                ]
             }
         }
     }
