@@ -11,7 +11,7 @@ import {
     getConfigProp
 } from '../../common';
 import { doResolve, doResolvePath } from '../../resolve';
-import { logTask, logWarning, logDebug } from '../../systemTools/logger';
+import { logTask, logWarning, logDebug, logError } from '../../systemTools/logger';
 
 export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
