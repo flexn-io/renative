@@ -3,7 +3,8 @@ import {
     logTask,
     rnvStatus,
     logToSummary,
-    logAppInfo
+    logAppInfo,
+    logError
 } from '../systemTools/logger';
 import {
     rnvWorkspaceList,
@@ -620,6 +621,11 @@ const _execute = async (c, cmdFn, cmd) => {
     }
 
     setDefaults(c);
+
+    const { plugins } = c.buildConfig;
+    if (!plugins || (plugins && Object.keys(plugins).length < 2)) {
+        logError(`No plugins were injected into your app. your app will most likely fail. did you run ${chalk.white('rnv template apply')} ?`);
+    }
 
     const pipeEnabled = !NO_OP_COMMANDS.includes(c.command)
         && !SKIP_APP_CONFIG_CHECK.includes(c.command);
