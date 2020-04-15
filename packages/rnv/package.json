@@ -142,7 +142,8 @@
         "webpack-dev-server": "3.2.1",
         "webpack-merge": "4.1.4",
         "write-json-webpack-plugin": "1.1.0",
-        "xml2json": "0.11.2"
+        "xml2json": "0.11.2",
+        "iocane": "4.0.0"
     },
     "devDependencies": {
         "crypto-js": "4.0.0",

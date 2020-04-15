@@ -11,7 +11,7 @@ import { REDASH_KEY, REDASH_URL } from '../constants';
 // deal with useless duplicate errors on sentry because of different error texts
 const sanitizeError = (err) => {
     if (err) {
-        if (err.includes('file if you SDK path is correct.')) {
+        if (err.includes('file if your SDK path is correct.')) {
             return err.toLowerCase().split('. check your ')[0];
         }
         if (err.includes('AppConfig error - ')) {
