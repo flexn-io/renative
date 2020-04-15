@@ -10759,6 +10759,13 @@ invert-kv@^2.0.0:
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
 
+iocane@4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/iocane/-/iocane-4.0.0.tgz#1a626aff4437df628374ea08e9bbf2191d99d6d3"
+  integrity sha512-NMm0IZ/rxWgrIQbRxli0fddL9t4XbssIviljBdZfPUVEMt23fbedHqbCUAN88/R+HFAM8xy40VqQV2j0fEJlkw==
+  dependencies:
+    pbkdf2 "~3.0.17"
+
 ios-deploy@1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/ios-deploy/-/ios-deploy-1.10.0.tgz#ecca74c2d88ce36a1f59bbcf1562d4486db6ce1f"
@@ -14891,7 +14898,7 @@ path-type@^4.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
   integrity sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
 
-pbkdf2@^3.0.3:
+pbkdf2@^3.0.3, pbkdf2@~3.0.17:
   version "3.0.17"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.0.17.tgz#976c206530617b14ebb32114239f7b09336e93a6"
   integrity sha512-U/il5MsrZp7mGg3mSQfn742na2T+1/vHDCG5/iTI3X9MKUuYUZVLQhyRsg06mCgDBTd57TxzgZt7P+fYfjRLtA==

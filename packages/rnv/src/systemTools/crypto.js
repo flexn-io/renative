@@ -30,6 +30,8 @@ import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
 import { cleanFolder } from './fileutils';
 
+const iocane = require('iocane');
+
 const readdirAsync = promisify(fs.readdir);
 
 const getEnvVar = (c) => {
@@ -190,13 +192,20 @@ export const rnvCryptoEncrypt = async (c) => {
             [source]
         );
 
-        await executeAsync(
-            c,
-            `${_getOpenSllPath(
-                c
-            )} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`,
-            { privateParams: [key] }
-        );
+
+        const data = await iocane.createSession()
+            .use('cbc')
+            .encrypt(fs.readFileSync(destTemp), key);
+
+        fs.writeFileSync(dest, data);
+
+        // await executeAsync(
+        //     c,
+        //     `${_getOpenSllPath(
+        //         c
+        //     )} enc -aes-256-cbc -md md5 -salt -in ${destTemp} -out ${dest} -k ${key}`,
+        //     { privateParams: [key] }
+        // );
         removeFilesSync([destTemp]);
         fs.writeFileSync(`${dest}.timestamp`, timestamp);
         fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
@@ -322,30 +331,36 @@ ${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
             );
         }
 
-        try {
-            await executeAsync(
-                c,
-                `${_getOpenSllPath(
-                    c
-                )} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`,
-                { privateParams: [key] }
-            );
-        } catch (e) {
-            const cmd1 = chalk.white(
-                `openssl enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k $${envVar}`
-            );
-            return Promise.reject(`${e}
+        const data = await iocane.createSession()
+            .use('cbc')
+            .decrypt(fs.readFileSync(source), key);
 
-${chalk.green('SUGGESTION:')}
+        fs.writeFileSync(destTemp, data);
 
-${chalk.yellow('STEP 1:')}
-${cmd1}
+        //         try {
+        //             await executeAsync(
+        //                 c,
+        //                 `${_getOpenSllPath(
+        //                     c
+        //                 )} enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k ${key}`,
+        //                 { privateParams: [key] }
+        //             );
+        //         } catch (e) {
+        //             const cmd1 = chalk.white(
+        //                 `openssl enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k $${envVar}`
+        //             );
+        //             return Promise.reject(`${e}
 
-${chalk.yellow('STEP 2:')}
-${chalk.white(
-        'run your previous command again and choose to skip openssl once asked'
-    )}`);
-        }
+        // ${chalk.green('SUGGESTION:')}
+
+        // ${chalk.yellow('STEP 1:')}
+        // ${cmd1}
+
+        // ${chalk.yellow('STEP 2:')}
+        // ${chalk.white(
+        //         'run your previous command again and choose to skip openssl once asked'
+        //     )}`);
+        //         }
 
         await _unzipAndCopy(
             c,
@@ -365,20 +380,20 @@ ${chalk.white(
     }
 };
 
-const _getOpenSllPath = (c) => {
-    const {
-        process: { platform }
-    } = c;
-    let defaultOpenssl = 'openssl';
-    // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
-    if (isSystemMac) { defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx'); }
-    // if (fs.existsSync(defaultOpenssl)) {
-    //     return defaultOpenssl;
-    // }
-    // logWarning(`${defaultOpenssl} is missing. will use default one`);
+// const _getOpenSllPath = (c) => {
+//     const {
+//         process: { platform }
+//     } = c;
+//     let defaultOpenssl = 'openssl';
+//     // if (platform === 'linux') defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-linux');
+//     if (isSystemMac) { defaultOpenssl = path.join(c.paths.rnv.dir, 'bin/openssl-osx'); }
+//     // if (fs.existsSync(defaultOpenssl)) {
+//     //     return defaultOpenssl;
+//     // }
+//     // logWarning(`${defaultOpenssl} is missing. will use default one`);
 
-    return defaultOpenssl;
-};
+//     return defaultOpenssl;
+// };
 
 export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
     logTask('rnvCryptoInstallProfiles');

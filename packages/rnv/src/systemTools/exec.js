@@ -176,7 +176,7 @@ const execCLI = (c, cli, command, opts = {}) => {
                 p
             )} does not exists. check your ${chalk.white(
                 c.paths.globalConfigPath
-            )} file if you SDK path is correct`
+            )} file if your SDK path is correct`
         );
     }
 
