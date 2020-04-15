@@ -186,5 +186,8 @@
         "collectCoverage": true
     },
     "title": "ReNative CLI",
-    "codename": "Iron Ladybird"
+    "codename": "Iron Ladybird",
+    "workspaces": {
+        "nohoist": ["execa"]
+    }
 }
