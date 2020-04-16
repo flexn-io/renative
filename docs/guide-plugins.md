@@ -99,6 +99,23 @@ Plugin Spec:
 }
 ```
 
+## Support for static frameworks (iOS/tvOS only)
+
+Some cocoapod dependecies required library to be imported as static one. you can configure it for each plugin separately
+
+```json
+{
+    "plugin-name": {
+        "ios": {
+            "isStatic": true
+        },
+        "tvos": {
+            "isStatic": true
+        }
+    }
+}
+```
+
 ## Adapt 3rd party plugins to support rnv
 
 You can adapt existing plugin to support rnv projects

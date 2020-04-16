@@ -51,22 +51,30 @@ const HomeSplash = ({ siteConfig, language = '' }) => {
     const SplashContainer = ({ children }) => (
         <div className="homeContainer">
             <div className="homeSplashFade">
-                <div className="wrapper homeWrapper">{children}</div>
+                <div className="wrapper homeWrapper">
+                    {children}
+                </div>
             </div>
         </div>
     );
 
     const ProjectTitle = () => (
         <div className="projectTitle">
-            <h1 className="headerTitle">ReNative</h1>
-            <small>{siteConfig.tagline}</small>
+            <h1 className="headerTitle">
+ReNative
+            </h1>
+            <small>
+                {siteConfig.tagline}
+            </small>
         </div>
     );
 
     const PromoSection = props => (
         <div className="section promoSection">
             <div className="promoRow">
-                <div className="pluginRowBlock">{props.children}</div>
+                <div className="pluginRowBlock">
+                    {props.children}
+                </div>
             </div>
         </div>
     );
@@ -89,7 +97,7 @@ const HomeSplash = ({ siteConfig, language = '' }) => {
                 />
 
                 <PromoSection>
-                    <Button href={docUrl('quickstart')} className="buttonDark">
+                    <Button href={docUrl('intro-quickstart')} className="buttonDark">
                         Try It Out
                     </Button>
                 </PromoSection>
@@ -109,11 +117,11 @@ const Index = ({ config: siteConfig, language = '' }) => {
         </Container>
     );
 
-    const PlatformItem = ({ url, title }) => (
+    const PlatformItem = ({ url, title, next = '' }) => (
         <div>
             <a
                 className="platformItemText"
-                href={`${baseUrl}docs/platform-${url}`}
+                href={`${baseUrl}docs/${next}platform-${url}`}
             >
                 {title}
             </a>
@@ -139,7 +147,8 @@ const Index = ({ config: siteConfig, language = '' }) => {
         { title: 'macOS / OSX', url: 'macos' },
         { title: 'Android Wear', url: 'androidwear' },
         { title: 'Firefox TV', url: 'firefoxtv' },
-        { title: 'KaiOS', url: 'kaios' }
+        { title: 'KaiOS', url: 'kaios' },
+        { title: 'Chromecast', url: 'chromecast', next: 'next/' }
     ];
 
     const Platforms = ({ id, background }) => (
