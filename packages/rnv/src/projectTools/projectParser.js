@@ -238,10 +238,8 @@ export const copySharedPlatforms = c => new Promise((resolve) => {
             path.resolve(c.paths.project.builds.dir, '_shared'),
             true,
             undefined,
-            content => content.replace(
-                /{{RNV_PACKAGE_BASE}}/g,
-                getCurrentPackagePath()
-            )
+            undefined,
+            [{ pattern: /{{RNV_PACKAGE_BASE}}/g, override: getCurrentPackagePath() }]
         );
     }
 

@@ -170,6 +170,15 @@ export const copyFolderRecursiveSync = (
     }
 };
 
+/**
+ * Copies contents of source folder to destination with optional parameter expansion.
+ * @param string source
+ * @param string target
+ * @param boolean convertSvg
+ * @param boolean skipPaths
+ * @param boolean skipOverride
+ * @param {pattern: Regex|string, overridge: string}[] injectObject - e.g. https://github.com/pavjacko/renative/blob/d2459aeb992adefb5cf546bbbf51e87cb0e9fdbf/packages/rnv/src/platformTools/web/index.js#L183
+ */
 export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
 
