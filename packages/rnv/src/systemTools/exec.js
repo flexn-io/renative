@@ -480,7 +480,7 @@ export const npmInstall = async (failOnError = false) => {
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
     const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
     let command = 'npm install';
-    if (isMonorepo() || fs.existsSync(yarnLockPath)) {
+    if (fs.existsSync(yarnLockPath)) {
         command = 'yarn';
     } else if (isYarnInstalled) {
         const { packageManager } = await inquirerPrompt({
