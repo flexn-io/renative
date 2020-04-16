@@ -12,7 +12,6 @@ import { logDebug, logTask, logError, logWarning } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
 import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
-import { isMonorepo } from '../common';
 import { doResolve } from '../resolve';
 
 const { exec, execSync } = require('child_process');
@@ -480,7 +479,7 @@ export const npmInstall = async (failOnError = false) => {
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
     const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
     let command = 'npm install';
-    if (isMonorepo() || fs.existsSync(yarnLockPath)) {
+    if (fs.existsSync(yarnLockPath)) {
         command = 'yarn';
     } else if (isYarnInstalled) {
         const { packageManager } = await inquirerPrompt({
