@@ -3,7 +3,8 @@ import {
     logTask,
     rnvStatus,
     logToSummary,
-    logAppInfo
+    logAppInfo,
+    logError
 } from '../systemTools/logger';
 import {
     rnvWorkspaceList,
@@ -83,7 +84,8 @@ import {
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
-    FIREFOX_TV
+    FIREFOX_TV,
+    WEB_NEXT
 } from '../constants';
 // import { getBinaryPath } from '../common';
 import Config, { rnvConfigHandler } from '../config';
@@ -175,7 +177,8 @@ const COMMANDS = {
             WEB,
             ANDROID,
             ANDROID_TV,
-            ANDROID_WEAR
+            ANDROID_WEAR,
+            WEB_NEXT
         ],
         fn: rnvExport
     },
@@ -550,8 +553,8 @@ export const _spawnCommand = (c, overrideParams) => {
 const run = async (c, spawnC, skipStartBuilder) => {
     logTask('cli');
 
+    setDefaults(c);
     if (!skipStartBuilder) await _startBuilder(c);
-
     let oldC;
     if (spawnC) {
         oldC = c;
@@ -617,12 +620,27 @@ const _execute = async (c, cmdFn, cmd) => {
         // }
     }
 
+    setDefaults(c);
+
+    const { plugins } = c.buildConfig;
+    if (!plugins || (plugins && Object.keys(plugins).length < 2)) {
+        logError(`No plugins were injected into your app. your app will most likely fail. did you run ${chalk.white('rnv template apply')} ?`);
+    }
+
+    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command)
+        && !SKIP_APP_CONFIG_CHECK.includes(c.command);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
+    await cmdFn(c);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);
+};
+
+const setDefaults = (c) => {
     c.runtime.port = c.program.port
-        || c.buildConfig?.defaults?.ports?.[c.platform]
-        || PLATFORMS[c.platform]?.defaultPort;
+    || c.buildConfig?.defaults?.ports?.[c.platform]
+    || PLATFORMS[c.platform]?.defaultPort;
     if (c.program.target !== true) {
         c.runtime.target = c.program.target
-            || c.files.workspace.config.defaultTargets[c.platform];
+        || c.files.workspace.config?.defaultTargets?.[c.platform];
     } else c.runtime.target = c.program.target;
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
@@ -631,12 +649,6 @@ const _execute = async (c, cmdFn, cmd) => {
     //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];
     //     c.runtime.scheme = isSchemePresent ? scheme : undefined;
     // }
-
-    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command)
-        && !SKIP_APP_CONFIG_CHECK.includes(c.command);
-    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
-    await cmdFn(c);
-    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);
 };
 
 export default run;

@@ -161,7 +161,7 @@ rnv plugin add ${key}
                 'rnv/pluginTemplates/renative.plugins.json'
             ),
             {
-                plugins: {
+                pluginTemplates: {
                     renative: {
                         version: c.files.project.package.version
                     }

@@ -10,14 +10,14 @@ import { logInfo } from '../systemTools/logger';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     dotenv.config();
-    const defaultBuildFolder = path.join(getAppFolder(c, 'web'), 'public');
+    const defaultBuildFolder = path.join(getAppFolder(c, c.platform), c.platform.includes('next') ? 'out' : 'public');
     const params = [defaultBuildFolder, '-A', nowConfigPath];
     if (process.env.NOW_TOKEN) params.push('-t', process.env.NOW_TOKEN);
     const nowIsProduction = getConfigProp(c, c.platform, 'nowIsProduction', false) === true;
 
     if (nowIsProduction) params.push('--prod');
 
-    executeAsync(c, `now ${params.join(' ')}`)
+    executeAsync(c, `now ${params.join(' ')}`, { interactive: true })
         .then(() => resolve())
         .catch(error => reject(error));
 });
@@ -77,7 +77,7 @@ const _createConfigFiles = async (
 };
 
 const deployToNow = c => new Promise((resolve, reject) => {
-    const nowConfigPath = path.resolve(c.paths.project.dir, 'now.json');
+    const nowConfigPath = path.resolve(c.paths.project.dir, 'configs', `now.${c.platform}.json`);
     const envConfigPath = path.resolve(c.paths.project.dir, '.env');
 
     let envContent;

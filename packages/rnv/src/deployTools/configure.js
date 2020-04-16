@@ -14,6 +14,13 @@ const configureDeploymentIfRequired = async (deploymentTarget) => {
             await setupInstance.askToInstallSDK('docker');
         }
     }
+    if (deploymentTarget === 'aws') {
+        await Config.checkRequiredPackage('@rnv/deploy-aws', false, 'devDependencies');
+        if (!commandExistsSync('aws')) {
+            const setupInstance = PlatformSetup();
+            await setupInstance.askToInstallSDK('aws');
+        }
+    }
 };
 
 const configureExportIfRequired = async (exportTarget) => {

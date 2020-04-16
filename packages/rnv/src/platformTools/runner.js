@@ -34,7 +34,8 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    WEB_NEXT,
+    CHROMECAST,
+    WEB_NEXT
 } from '../constants';
 import {
     runXcodeProject,
@@ -44,10 +45,11 @@ import {
     runAppleLog
 } from './apple';
 import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
-import { runWebNext, buildWebNext } from './web/webNext';
+import { runWebNext, buildWebNext, exportWebNext } from './web/webNext';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
+import { runChromecast } from './chromecast';
 import {
     runElectron,
     buildElectron,
@@ -339,6 +341,13 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
             }
             return runFirefoxProject(c, platform);
+        case CHROMECAST:
+            if (!c.program.only) {
+                await cleanPlatformIfRequired(c, platform);
+                await configureIfRequired(c, platform);
+                await _configureHostedIfRequired(c);
+            }
+            return runChromecast(c, platform, target);
         case WEB_NEXT:
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
@@ -396,6 +405,11 @@ const _rnvExportWithPlatform = async (c) => {
                 await rnvBuild(c);
             }
             return exportWeb(c, platform);
+        case WEB_NEXT:
+            if (!c.program.only) {
+                await rnvBuild(c);
+            }
+            return exportWebNext(c);
         case IOS:
         case TVOS:
             if (!c.program.only) {
@@ -426,6 +440,11 @@ const _rnvDeployWithPlatform = async (c) => {
 
     switch (platform) {
         case WEB:
+            if (!c.program.only) {
+                await rnvBuild(c);
+            }
+            return deployWeb(c, platform);
+        case CHROMECAST:
             if (!c.program.only) {
                 await rnvBuild(c);
             }
@@ -482,6 +501,7 @@ const _rnvBuildWithPlatform = async (c) => {
             await archiveXcodeProject(c, platform);
             return;
         case WEB:
+        case CHROMECAST:
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWeb(c, platform);

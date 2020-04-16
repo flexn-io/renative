@@ -38,7 +38,6 @@ export const VIERACONNECT = 'vieraconnect';
 export const VIZIO = 'vizio';
 export const WATCHOS = 'watchos';
 export const WEB = 'web';
-export const WEBNEXT = 'webnext';
 export const WEBOS = 'webos';
 export const WEBIAN = 'webian';
 export const WII = 'wii';
@@ -333,12 +332,16 @@ export const PLATFORMS = {
         sourceExts: []
     },
     chromecast: {
-        defaultPort: 999999,
-        icon: ICONS.PHONE,
+        defaultPort: 8095,
+        icon: ICONS.TV,
         supportedOS: OS.ALL,
-        isActive: false,
+        isActive: true,
         requiresSharedConfig: true,
-        sourceExts: []
+        sourceExts: {
+            factors: ['chromecast.tv.js', 'web.tv.js', 'tv.js'],
+            platforms: ['chromecast.js'],
+            fallbacks: ['tv.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts']
+        }
     },
     chromeos: {
         defaultPort: 999999,
@@ -477,14 +480,6 @@ export const PLATFORMS = {
         sourceExts: []
     },
     vizio: {
-        defaultPort: 999999,
-        icon: ICONS.PHONE,
-        supportedOS: OS.ALL,
-        isActive: false,
-        requiresSharedConfig: true,
-        sourceExts: []
-    },
-    webnext: {
         defaultPort: 999999,
         icon: ICONS.PHONE,
         supportedOS: OS.ALL,
@@ -647,7 +642,8 @@ export const SUPPORTED_PLATFORMS = [
     TIZEN_WATCH,
     KAIOS,
     FIREFOX_OS,
-    FIREFOX_TV
+    FIREFOX_TV,
+    CHROMECAST
 ];
 export const SUPPORTED_PLATFORMS_MAC = [
     IOS,
@@ -699,6 +695,9 @@ export const configSchema = {
         default: true
     }
 };
+
+export const INJECTABLE_CONFIG_PROPS = ['id', 'title', 'entryFile', 'backgroundColor', 'scheme',
+    'teamID', 'provisioningStyle', 'bundleAssets', 'enableHermes', 'universalApk', 'multipleAPKs', 'pagesDir'];
 
 export const REDASH_URL = 'https://rnv.nxg.staging.24imedia.com/events';
 export const REDASH_KEY = 'zCYINQqMxvat1V41Hb9d69JMVBDNLyeQ4wICtdtD';

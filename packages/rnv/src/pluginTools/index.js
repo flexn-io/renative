@@ -9,7 +9,7 @@ import {
 import { getConfigProp } from '../common';
 import { versionCheck } from '../configTools/configParser';
 
-import { SUPPORTED_PLATFORMS } from '../constants';
+import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
 import {
     logSuccess,
     logTask,
@@ -148,6 +148,7 @@ export const rnvPluginAdd = async (c) => {
         // c.buildConfig.plugins[key] = 'source:rnv';
         const plugin = selectedPlugins[key];
         if (plugin.props) questionPlugins[key] = plugin;
+
         c.files.project.config.plugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];
@@ -247,12 +248,6 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
                 }
                 return origPlugin;
             }
-            console.log(
-                'DGDGDG',
-                scope,
-                key,
-                c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates
-            );
             logWarning(
                 `Plugin ${key} is not recognized plugin in ${plugin} scope`
             );
@@ -296,11 +291,16 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 };
 
 const _getMergedPlugin = (c, obj1, obj2) => {
+    const configPropsInject = {};
+    INJECTABLE_CONFIG_PROPS.forEach((v) => {
+        configPropsInject[v] = getConfigProp(c, c.platform, v);
+    });
     const obj = sanitizeDynamicProps(
         mergeObjects(c, obj1, obj2, true, true),
         c.buildConfig?._refs
     );
-    return sanitizeDynamicProps(obj, obj.props);
+    const plugin = sanitizeDynamicProps(obj, obj.props, configPropsInject);
+    return plugin;
 };
 
 export const configurePlugins = c => new Promise((resolve, reject) => {

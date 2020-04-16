@@ -93,7 +93,7 @@ const _generateProject = async (c, data) => {
         templates,
         currentTemplate: data.optionTemplates.selectedOption,
         isNew: true,
-        isMonorepo: true
+        isMonorepo: false
     };
 
     writeFileSync(c.paths.project.config, config);
