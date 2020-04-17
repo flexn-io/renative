@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import {
     getAppFolder,
     getAppId,
@@ -185,6 +186,27 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             }
             // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
+        }
+
+        const xcodeprojObj1 = getConfigProp(
+            c,
+            c.platform,
+            'xcodeproj'
+        );
+
+        if (xcodeprojObj1?.sourceFiles) {
+            xcodeprojObj1.sourceFiles.forEach((v) => {
+                const filePath = path.join(appFolder, v);
+                if (fs.existsSync(filePath)) {
+                    xcodeProj.addSourceFile(
+                        filePath,
+                        null,
+                        '200132F21F6BF9CF00450340'
+                    );
+                } else {
+                    logWarning(`You are trying to inject native file which does not exists: ${chalk.red(filePath)}. Skipping.`);
+                }
+            });
         }
 
         // PLUGINS
