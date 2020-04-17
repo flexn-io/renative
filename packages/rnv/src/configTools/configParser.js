@@ -218,7 +218,7 @@ export const fixRenativeConfigsSync = async (c) => {
             path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
             c.paths.project.rnCliConfig,
             false,
-            [{ pattern: /{{METRO_WATCH_FOLDERS}}/, override: isMonorepo() ? `path.resolve(__dirname, 'node_modules'), path.resolve('../../node_modules')` : '' }]
+            [{ pattern: /{{METRO_WATCH_FOLDERS}}/, override: isMonorepo() ? `path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, '../../node_modules')` : '' }]
         );
     }
 
