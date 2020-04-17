@@ -30,9 +30,10 @@ import {
     getRealPath,
     sanitizeDynamicRefs,
     sanitizeDynamicProps,
-    mergeObjects
+    mergeObjects,
+    copyFileWithInjectSync
 } from '../systemTools/fileutils';
-import { getSourceExtsAsString, getConfigProp } from '../common';
+import { getSourceExtsAsString, getConfigProp, isMonorepo } from '../common';
 import { doResolve } from '../resolve';
 import { getWorkspaceDirPath } from '../projectTools/workspace';
 import {
@@ -213,9 +214,11 @@ export const fixRenativeConfigsSync = async (c) => {
                 c.paths.project.rnCliConfig
             )} is missing! Let's create one for you.`
         );
-        copyFileSync(
+        copyFileWithInjectSync(
             path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
-            c.paths.project.rnCliConfig
+            c.paths.project.rnCliConfig,
+            false,
+            [{ pattern: /{{METRO_WATCH_FOLDERS}}/, override: isMonorepo() ? `path.resolve(__dirname, 'node_modules'), path.resolve('../../node_modules')` : '' }]
         );
     }
 

@@ -12,7 +12,8 @@ const config = {
             /metro.config.local.*/
         ])
     },
-    projectRoot: path.resolve(__dirname)
+    projectRoot: path.resolve(__dirname),
+    watchFolders: [{{METRO_WATCH_FOLDERS}}]
 };
 
 module.exports = config;
