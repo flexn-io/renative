@@ -20,6 +20,30 @@ Get interactive options for plugin
 rnv plugin
 ```
 
+### list
+
+list all available plugins
+
+```bash
+rnv plugin list`
+```
+
+### add
+
+Add new plugin to your project
+
+```bash
+rnv plugin add
+```
+
+### update
+
+Update existing plugin
+
+```bash
+rnv plugin update
+```
+
 ### help
 
 Display plugin help

@@ -36,6 +36,14 @@ Update your current plugins with latest ones from ReNative
 
 and follow the command prompt steps
 
+## Plugin CLI Reference
+
+[see: CLI API Reference](api-cli-plugin.md)
+
+## Plugin Renative Config Reference
+
+[see: Config API Reference](api-config.md#plugins)
+
 ## Custom Plugin Support
 
 You can configure multiple React Native plugins without need to update project blueprints.
@@ -82,23 +90,6 @@ You can also customise default plugin configuration:
 }
 ```
 
-Plugin Spec:
-
-```json
-{
-    "plugin-name": {
-        "version": "",
-        "enabled": true,
-        "ios": {},
-        "android": {},
-        "webpack": {
-            "modulePaths": [],
-            "moduleAliases": []
-        }
-    }
-}
-```
-
 ## Support for static frameworks (iOS/tvOS only)
 
 Some cocoapod dependecies required library to be imported as static one. you can configure it for each plugin separately
@@ -121,7 +112,7 @@ Some cocoapod dependecies required library to be imported as static one. you can
 You can adapt existing plugin to support rnv projects
 
 ```json
-"example": {
+"some-plugin": {
             "version": "0.1.0",
             "no-npm": true,
             "androidtv": {
