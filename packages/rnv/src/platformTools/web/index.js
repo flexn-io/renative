@@ -32,14 +32,14 @@ import {
     copyBuildsFolder,
     copyAssetsFolder
 } from '../../projectTools/projectParser';
-import { copyFileSync } from '../../systemTools/fileutils';
+import { copyFileSync, readObjectSync } from '../../systemTools/fileutils';
 import { getMergedPlugin } from '../../pluginTools';
 import {
     selectWebToolAndDeploy,
     selectWebToolAndExport
 } from '../../deployTools/webTools';
 import { getValidLocalhost } from '../../utils';
-import { doResolve, doResolvePath } from '../../resolve';
+import { doResolvePath } from '../../resolve';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -47,8 +47,18 @@ const _generateWebpackConfigs = (c, platform) => {
 
     const { plugins } = c.buildConfig;
     let modulePaths = [];
-    let moduleAliasesString = '';
     const moduleAliases = {};
+
+    const modulePath = path.join(c.paths.project.builds.dir, '_shared', 'modules.json');
+    let externalModulePaths = [];
+    let localModulePaths = [];
+    if (fs.existsSync(modulePath)) {
+        const modules = readObjectSync(modulePath);
+        externalModulePaths = modules.external;
+        localModulePaths = modules.local;
+        // const modules = eval(fs.readFileSync(modulePath));
+    }
+
 
     // eslint-disable-next-line guard-for-in, no-unused-vars
     for (const key in plugins) {
@@ -58,32 +68,32 @@ const _generateWebpackConfigs = (c, platform) => {
         } else if (plugin.webpack) {
             if (plugin.webpack.modulePaths) {
                 if (plugin.webpack.modulePaths === true) {
-                    modulePaths.push(doResolve(key));
+                    // modulePaths.push(doResolve(key));
+                    modulePaths.push(`node_modules/${key}`);
                 } else {
                     modulePaths = modulePaths.concat(
-                        plugin.webpack.modulePaths.map(aPath => doResolvePath(aPath))
+                        // plugin.webpack.modulePaths.map(aPath => doResolvePath(aPath))
+                        plugin.webpack.modulePaths.map(aPath => `${aPath}`)
                     );
                 }
             }
             if (plugin.webpack.moduleAliases) {
                 if (plugin.webpack.moduleAliases === true) {
-                    moduleAliasesString += `'${key}': {
-                  path: '${key}'
-                },`;
-                    moduleAliases[key] = { path: key };
+                    moduleAliases[key] = { projectPath: `node_modules/${key}` };
                 } else {
                     // eslint-disable-next-line no-restricted-syntax, no-unused-vars
                     for (const aKey in plugin.webpack.moduleAliases) {
                         if (
-                            typeof plugin.webpack.moduleAliases[aKey]
-                            === 'string'
+                            typeof plugin.webpack.moduleAliases[aKey] === 'string'
                         ) {
-                            moduleAliasesString += `'${aKey}': '${plugin.webpack.moduleAliases[aKey]}',`;
                             moduleAliases[key] = plugin.webpack.moduleAliases[aKey];
                         } else if (plugin.webpack.moduleAliases[aKey].path) {
-                            moduleAliasesString += `'${aKey}': {path: '${plugin.webpack.moduleAliases[aKey].path}'},`;
                             moduleAliases[key] = {
-                                path: plugin.webpack.moduleAliases[aKey].path
+                                projectPath: plugin.webpack.moduleAliases[aKey].path
+                            };
+                        } else if (plugin.webpack.moduleAliases[aKey].projectPath) {
+                            moduleAliases[key] = {
+                                projectPath: plugin.webpack.moduleAliases[aKey].projectPath
                             };
                         }
                     }
@@ -91,6 +101,11 @@ const _generateWebpackConfigs = (c, platform) => {
             }
         }
     }
+
+    modulePaths = modulePaths
+        .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
+        .concat(externalModulePaths.map(v => doResolvePath(v, true, {}, c.paths.project.nodeModulesDir)))
+        .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)));
 
     const env = getConfigProp(c, platform, 'environment');
     const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});
@@ -106,6 +121,8 @@ const _generateWebpackConfigs = (c, platform) => {
         ),
         path.join(appFolder, 'webpack.config.js')
     );
+
+    // const externalModulesResolved = externalModules.map(v => doResolve(v))
 
     const obj = {
         modulePaths,

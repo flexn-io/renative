@@ -19,6 +19,7 @@ import path from 'path';
  */
 export const doResolve = (aPath, mandatory = true, options = {}) => {
     options.basedir = options.basedir ?? process.cwd();
+    console.log('DJHDKJHD1', aPath);
     try {
         if (aPath.startsWith('file:')) {
             return _doResolveFSPath(aPath, options);
@@ -30,8 +31,10 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
     }
 };
 
-export const doResolvePath = (aPath, mandatory = true, options = {}) => {
+export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBase = '') => {
     options.basedir = options.basedir ?? process.cwd();
+    console.log('DJHDKJHD3', aPath);
+
     try {
         const pathArr = aPath.split('/');
         // Take care of scenario when someone wrote: "/node_modules/.." instead of "node_modules/..."
@@ -50,7 +53,10 @@ export const doResolvePath = (aPath, mandatory = true, options = {}) => {
         }
         pathArr.shift();
         const realPath = doResolve(cleanPath, mandatory, options);
-        return path.join(realPath, ...pathArr);
+        if (realPath) {
+            return path.join(realPath, ...pathArr);
+        }
+        return path.join(fallbackBase, aPath);
     } catch (err) {
         if (mandatory) throw err;
     }
@@ -84,6 +90,8 @@ const _getPackagePathParts = (aPath) => {
  * We support path linking using 'file:' protocol (not part of official node resolution alg.)
  */
 const _doResolveFSPath = (aPath, options) => {
+    console.log('DJHDKJHD', aPath);
+
     const fileRelPath = `${
         options.basedir ? `${options.basedir}/`.replace(/.*\/+$/, '/') : ''
     }${aPath.replace('file:', '')}`;
@@ -101,17 +109,21 @@ const _doResolveFSPath = (aPath, options) => {
 const _doResolveExternalPackage = (aPath, options) => {
     const [packageBase, packageSuffix] = _getPackagePathParts(aPath);
 
-    const resolvedPath = resolve
-        .sync(packageBase, {
-            packageFilter: (pkg) => {
-                pkg.main = 'package.json';
-                return pkg;
-            },
-            ...options,
-            extensions: ['.js', '.json'].concat(options.extensions ?? [])
-        })
-        .replace(/\/package.json$/, '');
-    return options.keepSuffix ?? false
-        ? `${resolvedPath}/${packageSuffix}`
-        : resolvedPath;
+    try {
+        const resolvedPath = resolve
+            .sync(packageBase, {
+                packageFilter: (pkg) => {
+                    pkg.main = 'package.json';
+                    return pkg;
+                },
+                ...options,
+                extensions: ['.js', '.json'].concat(options.extensions ?? [])
+            })
+            .replace(/\/package.json$/, '');
+        return options.keepSuffix ?? false
+            ? `${resolvedPath}/${packageSuffix}`
+            : resolvedPath;
+    } catch (e) {
+        return null;
+    }
 };
