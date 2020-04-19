@@ -19,7 +19,6 @@ import path from 'path';
  */
 export const doResolve = (aPath, mandatory = true, options = {}) => {
     options.basedir = options.basedir ?? process.cwd();
-    console.log('DJHDKJHD1', aPath);
     try {
         if (aPath.startsWith('file:')) {
             return _doResolveFSPath(aPath, options);
@@ -33,7 +32,6 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
 
 export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBase = '') => {
     options.basedir = options.basedir ?? process.cwd();
-    console.log('DJHDKJHD3', aPath);
 
     try {
         const pathArr = aPath.split('/');
@@ -90,8 +88,6 @@ const _getPackagePathParts = (aPath) => {
  * We support path linking using 'file:' protocol (not part of official node resolution alg.)
  */
 const _doResolveFSPath = (aPath, options) => {
-    console.log('DJHDKJHD', aPath);
-
     const fileRelPath = `${
         options.basedir ? `${options.basedir}/`.replace(/.*\/+$/, '/') : ''
     }${aPath.replace('file:', '')}`;

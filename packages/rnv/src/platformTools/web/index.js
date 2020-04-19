@@ -33,7 +33,7 @@ import {
     copyAssetsFolder
 } from '../../projectTools/projectParser';
 import { copyFileSync, readObjectSync } from '../../systemTools/fileutils';
-import { getMergedPlugin } from '../../pluginTools';
+import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 import {
     selectWebToolAndDeploy,
     selectWebToolAndExport
@@ -45,62 +45,51 @@ const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const templateFolder = getAppTemplateFolder(c, platform);
 
-    const { plugins } = c.buildConfig;
     let modulePaths = [];
-    const moduleAliases = {};
+    let moduleAliases = {};
 
     const modulePath = path.join(c.paths.project.builds.dir, '_shared', 'modules.json');
     let externalModulePaths = [];
     let localModulePaths = [];
     if (fs.existsSync(modulePath)) {
         const modules = readObjectSync(modulePath);
-        externalModulePaths = modules.external;
-        localModulePaths = modules.local;
-        // const modules = eval(fs.readFileSync(modulePath));
+        externalModulePaths = modules.externalPaths;
+        localModulePaths = modules.localPaths;
+        moduleAliases = modules.aliases;
     }
 
-
-    // eslint-disable-next-line guard-for-in, no-unused-vars
-    for (const key in plugins) {
-        const plugin = getMergedPlugin(c, key, plugins);
-        if (!plugin) {
-            // naffin
-        } else if (plugin.webpack) {
+    // PLUGINS
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        if (plugin.webpack) {
             if (plugin.webpack.modulePaths) {
                 if (plugin.webpack.modulePaths === true) {
-                    // modulePaths.push(doResolve(key));
                     modulePaths.push(`node_modules/${key}`);
                 } else {
                     modulePaths = modulePaths.concat(
-                        // plugin.webpack.modulePaths.map(aPath => doResolvePath(aPath))
                         plugin.webpack.modulePaths.map(aPath => `${aPath}`)
                     );
                 }
             }
             if (plugin.webpack.moduleAliases) {
                 if (plugin.webpack.moduleAliases === true) {
-                    moduleAliases[key] = { projectPath: `node_modules/${key}` };
+                    // moduleAliases[key] = path.join(c.paths.project.dir, 'node_modules', key);
+                    moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
                 } else {
-                    // eslint-disable-next-line no-restricted-syntax, no-unused-vars
-                    for (const aKey in plugin.webpack.moduleAliases) {
-                        if (
-                            typeof plugin.webpack.moduleAliases[aKey] === 'string'
-                        ) {
-                            moduleAliases[key] = plugin.webpack.moduleAliases[aKey];
-                        } else if (plugin.webpack.moduleAliases[aKey].path) {
-                            moduleAliases[key] = {
-                                projectPath: plugin.webpack.moduleAliases[aKey].path
-                            };
-                        } else if (plugin.webpack.moduleAliases[aKey].projectPath) {
-                            moduleAliases[key] = {
-                                projectPath: plugin.webpack.moduleAliases[aKey].projectPath
-                            };
+                    Object.keys(plugin.webpack.moduleAliases).forEach((aKey) => {
+                        const mAlias = plugin.webpack.moduleAliases[aKey];
+                        if (typeof mAlias === 'string') {
+                            // moduleAliases[key] = path.join(c.paths.project.dir, mAlias) ;
+                            moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
+                        } else if (mAlias.path) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
+                        } else if (mAlias.projectPath) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
                         }
-                    }
+                    });
                 }
             }
         }
-    }
+    }, true);
 
     modulePaths = modulePaths
         .map(v => doResolvePath(v, true, {}, c.paths.project.dir))

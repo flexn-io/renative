@@ -62,26 +62,6 @@ function generateConfig(config) {
         exclude: [/node_modules/, /build/, /__test__/]
     };
 
-    const aliases = {
-        react: path.resolve(projectDir, 'node_modules/react'),
-        'react-native': 'react-native-web',
-        'react-native/Libraries/Renderer/shims/ReactNativePropRegistry': 'react-native-web/dist/modules/ReactNativePropRegistry',
-        'react-native-vector-icons': path.resolve(projectDir, 'node_modules/react-native-vector-icons'),
-
-    };
-
-    if (config.moduleAliases) {
-        for (const key in config.moduleAliases) {
-            if (typeof config.moduleAliases[key] === 'string') {
-                aliases[key] = config.moduleAliases[key];
-            } else {
-                aliases[key] = path.resolve(projectDir, config.moduleAliases[key].projectPath);
-            }
-        }
-    }
-
-    console.log('SHJGSJHSG2', aliases);
-
     const plugins = {};
 
     plugins.webpack = new webpack.DefinePlugin({
@@ -131,7 +111,7 @@ function generateConfig(config) {
         Rules: rules,
         Plugins: plugins,
         extensions,
-        aliases,
+        aliases: config.moduleAliases,
         entry,
         devServer,
         output,
