@@ -33,7 +33,7 @@ import {
     copyAssetsFolder
 } from '../../projectTools/projectParser';
 import { copyFileSync, readObjectSync } from '../../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { parsePlugins } from '../../pluginTools';
 import {
     selectWebToolAndDeploy,
     selectWebToolAndExport
@@ -46,6 +46,7 @@ const _generateWebpackConfigs = (c, platform) => {
     const templateFolder = getAppTemplateFolder(c, platform);
 
     let modulePaths = [];
+    const doNotResolveModulePaths = [];
     let moduleAliases = {};
 
     const modulePath = path.join(c.paths.project.builds.dir, '_shared', 'modules.json');
@@ -60,25 +61,31 @@ const _generateWebpackConfigs = (c, platform) => {
 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        if (plugin.webpack) {
-            if (plugin.webpack.modulePaths) {
-                if (plugin.webpack.modulePaths === true) {
+        const webpackConfig = plugin.webpack || plugin.webpackConfig;
+
+        if (webpackConfig) {
+            if (webpackConfig.modulePaths) {
+                if (webpackConfig.modulePaths === false) {
+                    // ignore
+                } else if (webpackConfig.modulePaths === true) {
                     modulePaths.push(`node_modules/${key}`);
                 } else {
-                    modulePaths = modulePaths.concat(
-                        plugin.webpack.modulePaths.map(aPath => `${aPath}`)
-                    );
+                    webpackConfig.modulePaths.forEach((v) => {
+                        if (typeof v === 'string') {
+                            modulePaths.push(v);
+                        } else if (v?.projectPath) {
+                            doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
+                        }
+                    });
                 }
             }
-            if (plugin.webpack.moduleAliases) {
-                if (plugin.webpack.moduleAliases === true) {
-                    // moduleAliases[key] = path.join(c.paths.project.dir, 'node_modules', key);
+            if (webpackConfig.moduleAliases) {
+                if (webpackConfig.moduleAliases === true) {
                     moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
                 } else {
-                    Object.keys(plugin.webpack.moduleAliases).forEach((aKey) => {
-                        const mAlias = plugin.webpack.moduleAliases[aKey];
+                    Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
+                        const mAlias = webpackConfig.moduleAliases[aKey];
                         if (typeof mAlias === 'string') {
-                            // moduleAliases[key] = path.join(c.paths.project.dir, mAlias) ;
                             moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
                         } else if (mAlias.path) {
                             moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
@@ -94,7 +101,9 @@ const _generateWebpackConfigs = (c, platform) => {
     modulePaths = modulePaths
         .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
         .concat(externalModulePaths.map(v => doResolvePath(v, true, {}, c.paths.project.nodeModulesDir)))
-        .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)));
+        .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)))
+        .concat(doNotResolveModulePaths)
+        .filter(Boolean);
 
     const env = getConfigProp(c, platform, 'environment');
     const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});

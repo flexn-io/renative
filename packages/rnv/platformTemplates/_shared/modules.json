@@ -1,5 +1,6 @@
 {
     "externalPaths": [
+        "react-native",
         "react-native-screens",
         "react-navigation-tabs",
         "react-navigation-stack",
@@ -52,8 +53,7 @@
         "react-native-orientation-locker",
         "react-navigation",
         "@react-navigation/native",
-        "rnv-platform-info",
-        "renative"
+        "rnv-platform-info"
     ],
     "localPaths": ["index.webos.js", "index.tizen.js", "src", "packages"],
     "aliases": {
