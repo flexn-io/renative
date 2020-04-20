@@ -36,6 +36,7 @@ export const copyFileSync = (source, target, skipOverride) => {
     }
 };
 
+const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg'];
 export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)
     if (!fs.existsSync(source)) {
@@ -48,16 +49,20 @@ export const writeCleanFile = (source, destination, overrides) => {
         );
         // return;
     }
-    const pFile = fs.readFileSync(source, 'utf8');
-    let pFileClean = pFile;
-    if (overrides) {
-        overrides.forEach((v) => {
-            const regEx = new RegExp(v.pattern, 'g');
-            pFileClean = pFileClean.replace(regEx, v.override);
-        });
+    const ext = path.extname(source);
+    if (SKIP_INJECT_EXTENSIONS.includes(ext)) {
+        fs.copyFileSync(source, destination);
+    } else {
+        const pFile = fs.readFileSync(source, 'utf8');
+        let pFileClean = pFile;
+        if (overrides) {
+            overrides.forEach((v) => {
+                const regEx = new RegExp(v.pattern, 'g');
+                pFileClean = pFileClean.replace(regEx, v.override);
+            });
+        }
+        fs.writeFileSync(destination, pFileClean, 'utf8');
     }
-
-    fs.writeFileSync(destination, pFileClean, 'utf8');
 };
 
 export const readCleanFile = (source, overrides) => {
