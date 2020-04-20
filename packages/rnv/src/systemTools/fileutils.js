@@ -30,7 +30,7 @@ export const copyFileSync = (source, target, skipOverride) => {
     }
     logDebug('copyFileSync', source, targetFile, 'executed');
     try {
-        fs.writeFileSync(targetFile, fs.readFileSync(source));
+        fs.copyFileSync(source, targetFile);
     } catch (e) {
         console.log('copyFileSync', e);
     }
