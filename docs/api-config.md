@@ -68,6 +68,22 @@ Default system config for this project
 }
 ```
 
+## pipes
+
+To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks
+
+```json
+{
+    "pipes": [
+        "configure:after",
+        "start:before",
+        "deploy:after",
+        "export:before",
+        "export:after"
+    ]
+}
+```
+
 ## enableAnalytics
 
 Enable or disable sending analytics to improve ReNative
