@@ -11,7 +11,7 @@
     
  ## I have tested my changes on:
  
- ReNative project directly
+ ReNative project directly:
  
 * [ ] ios simulator
 * [ ] ios device
@@ -35,7 +35,7 @@
 * [ ] windows
 * [ ] chromecast device
 
-New project
+New project:
  
 * [ ] ios simulator
 * [ ] ios device
@@ -59,9 +59,7 @@ New project
 * [ ] windows
 * [ ] chromecast device
 
-Existing Project created with previous version of renative
-
-ReNative project directly
+Existing Project created with previous version of renative:
  
 * [ ] ios simulator
 * [ ] ios device
