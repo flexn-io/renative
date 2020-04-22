@@ -1592,7 +1592,13 @@
                 "isStatic": true,
                 "podName": "RNFBCrashlytics",
                 "xcodeproj": {
-                    "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
+                    "resourceFiles": ["RNVApp/GoogleService-Info.plist"],
+                    "buildPhases": [
+                        {
+                            "shellPath": "/bin/sh",
+                            "shellScript": "\"${PODS_ROOT}/Fabric/run\""
+                        }
+                    ]
                 },
                 "appDelegateImports": ["Firebase"],
                 "appDelegateMethods": {
@@ -1604,12 +1610,52 @@
                 }
             },
             "android": {
-                "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage",
-                "projectName": "@react-native-firebase_crashlytics"
+                "package": "io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsPackage",
+                "projectName": "@react-native-firebase_crashlytics",
+                "BuildGradle": {
+                    "buildscript": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        },
+                        "dependencies": {
+                            "classpath 'io.fabric.tools:gradle:1.28.1'": true
+                        }
+                    },
+                    "allprojects": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    }
+                },
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'io.fabric'"
+                    ]
+                }
             },
             "androidtv": {
-                "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage",
-                "projectName": "@react-native-firebase_crashlytics"
+                "package": "io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsPackage",
+                "projectName": "@react-native-firebase_crashlytics",
+                "BuildGradle": {
+                    "buildscript": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        },
+                        "dependencies": {
+                            "classpath 'io.fabric.tools:gradle:1.28.1'": true
+                        }
+                    },
+                    "allprojects": {
+                        "repositories": {
+                            "maven { url 'https://maven.fabric.io/public' }": true
+                        }
+                    }
+                },
+                "app/build.gradle": {
+                    "apply": [
+                        "plugin: 'io.fabric'"
+                    ]
+                }
             }
         },
         "@react-native-community/cameraroll": {
