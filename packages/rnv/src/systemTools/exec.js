@@ -13,6 +13,7 @@ import { removeDirs, invalidatePodsChecksum } from './fileutils';
 import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
 import { doResolve } from '../resolve';
+import { isMonorepo } from '../../dist/common';
 
 const { exec, execSync } = require('child_process');
 
@@ -477,7 +478,7 @@ export const npmInstall = async (failOnError = false) => {
     const c = Config.getConfig();
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
-    const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
+    const yarnLockPath = isMonorepo() ? path.join(Config.projectPath, '/../../yarn.lock') : path.join(Config.projectPath, 'yarn.lock');
     let command = 'npm install';
     if (fs.existsSync(yarnLockPath)) {
         command = 'yarn';
