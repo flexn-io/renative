@@ -1524,8 +1524,9 @@
             }
         },
         "@react-native-firebase/app": {
-            "version": "6.1.0",
+            "version": "6.4.1",
             "ios": {
+                "isStatic": true,
                 "podName": "RNFBApp"
             },
             "android": {
@@ -1558,9 +1559,10 @@
             }
         },
         "@react-native-firebase/analytics": {
-            "version": "6.1.0",
+            "version": "6.4.1",
             "dependsOn": ["@react-native-firebase/app"],
             "ios": {
+                "isStatic": true,
                 "podName": "RNFBAnalytics",
                 "xcodeproj": {
                     "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
@@ -1581,6 +1583,33 @@
             "androidtv": {
                 "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage",
                 "projectName": "@react-native-firebase_analytics"
+            }
+        },
+        "@react-native-firebase/crashlytics": {
+            "version": "6.4.1",
+            "dependsOn": ["@react-native-firebase/crashlytics"],
+            "ios": {
+                "isStatic": true,
+                "podName": "RNFBCrashlytics",
+                "xcodeproj": {
+                    "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
+                },
+                "appDelegateImports": ["Firebase"],
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "FirebaseApp.configure()"
+                        ]
+                    }
+                }
+            },
+            "android": {
+                "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage",
+                "projectName": "@react-native-firebase_crashlytics"
+            },
+            "androidtv": {
+                "package": "io.invertase.firebase.analytics.ReactNativeFirebaseAnalyticsPackage",
+                "projectName": "@react-native-firebase_crashlytics"
             }
         },
         "@react-native-community/cameraroll": {
