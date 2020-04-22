@@ -32,7 +32,8 @@
                 "applicationID": "CC1AD845"
             }
         },
-        "@noriginmedia/react-spatial-navigation": "source:rnv"
+        "@noriginmedia/react-spatial-navigation": "source:rnv",
+        "renative": "source:rnv"
     },
     "platforms": {
         "android": {

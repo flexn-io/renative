@@ -455,20 +455,17 @@ const _rnvDeployWithPlatform = async (c) => {
                 return _rnvExportWithPlatform(c);
             }
             return;
-        // case WEBOS:
-        case TIZEN:
-            if (!c.program.only) {
-                await rnvBuild(c);
-            }
-            return;
         case ANDROID_TV:
+        case ANDROID_WEAR:
         case ANDROID:
             if (!c.program.only) {
                 return _rnvBuildWithPlatform(c);
             }
             return;
         default:
-            logErrorPlatform(c, platform);
+            if (!c.program.only) {
+                await rnvExport(c);
+            }
     }
 };
 

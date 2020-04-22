@@ -431,7 +431,7 @@ package.json will be overriden`
         .catch(e => reject(e));
 });
 
-const parsePlugins = (c, platform, pluginCallback) => {
+const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCheck) => {
     logTask(`parsePlugins:${platform}`);
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(
@@ -458,7 +458,9 @@ const parsePlugins = (c, platform, pluginCallback) => {
                         const plugin = getMergedPlugin(c, key, plugins);
                         if (plugin) {
                             const pluginPlat = plugin[platform];
-                            if (pluginPlat) {
+                            if (ignorePlatformObjectCheck) {
+                                pluginCallback(plugin, pluginPlat, key);
+                            } else if (pluginPlat) {
                                 if (
                                     plugin['no-active'] !== true
                                     && plugin.enabled !== false
