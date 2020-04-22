@@ -9,7 +9,7 @@ export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
-        if (params.choices && params.default && typeof params.choices[params.default] !== 'undefined') return { [params.name]: params.choices[params.default] };
+        if (Array.isArray(params.choices) && typeof params.default !== 'undefined' && typeof params.choices[params.default] !== 'undefined') return { [params.name]: params.choices[params.default] };
         throw new Error(`--ci option does not allow prompts: ${msg}. Consider adding a default to the question`);
     }
     if (msg && params.logMessage) logTask(msg, chalk.grey);
