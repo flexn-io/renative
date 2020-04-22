@@ -1,43 +1,22 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { execCLI } from '../../systemTools/exec';
 import {
-    isPlatformSupportedSync,
-    getConfig,
-    logTask,
-    logComplete,
-    logError,
     getAppFolder,
-    isPlatformActive,
-    configureIfRequired,
-    getAppConfigId,
-    getAppVersion,
     getAppTitle,
-    getAppVersionCode,
-    writeCleanFile,
-    getAppId,
     getAppTemplateFolder,
-    getEntryFile,
     getAppDescription,
     getAppAuthor,
-    getAppLicense,
-    getConfigProp,
+    getConfigProp
 } from '../../common';
-import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
+import { logTask } from '../../systemTools/logger';
+import { isPlatformActive } from '..';
 import {
-    CLI_ANDROID_EMULATOR,
-    CLI_ANDROID_ADB,
-    CLI_TIZEN_EMULATOR,
-    CLI_TIZEN,
-    CLI_WEBOS_ARES,
-    CLI_KAIOS_EMULATOR,
-    CLI_WEBOS_ARES_PACKAGE,
-    CLI_WEBOS_ARES_INSTALL,
-    CLI_WEBOS_ARES_LAUNCH,
-    KAIOS_SDK,
-} from '../../constants';
-import { cleanFolder, copyFolderContentsRecursiveSync, copyFolderRecursiveSync, copyFileSync, mkdirSync, getRealPath } from '../../systemTools/fileutils';
+    copyBuildsFolder,
+    copyAssetsFolder
+} from '../../projectTools/projectParser';
+import { KAIOS_SDK } from '../../constants';
+import { getRealPath } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
@@ -45,14 +24,18 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
 
     if (!c.files.workspace.config.sdks.KAIOS_SDK) {
         reject(
-            `${KAIOS_SDK} is not configured in your ${c.paths.workspace.config} file. Make sure you add location to your Kaiosrt App path similar to: ${chalk.white.bold(
+            `${KAIOS_SDK} is not configured in your ${
+                c.paths.workspace.config
+            } file. Make sure you add location to your Kaiosrt App path similar to: ${chalk.white.bold(
                 '"KAIOS_SDK": "/Applications/Kaiosrt.app"'
             )}`
         );
         return;
     }
 
-    const ePath = getRealPath(path.join(c.files.workspace.config.sdks.KAIOS_SDK));
+    const ePath = getRealPath(
+        path.join(c.files.workspace.config.sdks.KAIOS_SDK)
+    );
 
     if (!fs.existsSync(ePath)) {
         reject(`Can't find emulator at path: ${ePath}`);
@@ -98,7 +81,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     manifestFile.description = `${getAppDescription(c, platform)}`;
     manifestFile.developer = getAppAuthor(c, platform);
 
-    fs.writeFileSync(manifestFilePath2, JSON.stringify(manifestFile, null, 2));
+    fs.writeFileSync(
+        manifestFilePath2,
+        JSON.stringify(manifestFile, null, 2)
+    );
 
     resolve();
 });
@@ -120,4 +106,9 @@ const buildFirefoxProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-export { launchKaiOSSimulator, configureKaiOSProject, runFirefoxProject, buildFirefoxProject };
+export {
+    launchKaiOSSimulator,
+    configureKaiOSProject,
+    runFirefoxProject,
+    buildFirefoxProject
+};

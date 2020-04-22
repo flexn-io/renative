@@ -4,34 +4,60 @@ import path from 'path';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import semver from 'semver';
-import {
-    logTask,
-    logSuccess
-} from '../common';
+import fs from 'fs';
 import { generateOptions } from '../systemTools/prompt';
-import {
-    RENATIVE_CONFIG_NAME,
-    SUPPORTED_PLATFORMS
-} from '../constants';
+import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS } from '../constants';
 import { getTemplateOptions } from '../templateTools';
-import { configureGit } from '../projectTools';
 import { mkdirSync, writeFileSync } from '../systemTools/fileutils';
-import { executeAsync } from '../systemTools/exec';
-import { printIntoBox, printBoxStart, printBoxEnd, printArrIntoBox } from '../systemTools/logger';
+import { executeAsync, commandExistsSync } from '../systemTools/exec';
+import {
+    printIntoBox,
+    printBoxStart,
+    printBoxEnd,
+    printArrIntoBox,
+    logTask,
+    logSuccess,
+    logInfo,
+    logWarning
+} from '../systemTools/logger';
 import { getWorkspaceOptions } from './workspace';
 import { parseRenativeConfigs } from '../configTools/configParser';
 import Analytics from '../systemTools/analytics';
 
 const highlight = chalk.green;
 
+const configureGit = async (c) => {
+    const projectPath = c.paths.project.dir;
+    logTask(`configureGit:${projectPath}`);
+
+    if (!fs.existsSync(path.join(projectPath, '.git'))) {
+        logInfo('Your project does not have a git repo. Creating one...');
+        if (commandExistsSync('git')) {
+            await executeAsync('git init', { cwd: projectPath });
+            await executeAsync('git add -A', { cwd: projectPath });
+            await executeAsync('git commit -m "Initial"', { cwd: projectPath });
+        } else {
+            logWarning(
+                "We tried to create a git repo inside your project but you don't seem to have git installed"
+            );
+        }
+    }
+};
+
 const _generateProject = async (c, data) => {
     logTask('_generateProject');
 
     const base = path.resolve('.');
 
-    c.paths.project.dir = path.join(base, data.projectName.replace(/(\s+)/g, '_'));
+    c.paths.project.dir = path.join(
+        base,
+        data.projectName.replace(/(\s+)/g, '_')
+    );
     c.paths.project.package = path.join(c.paths.project.dir, 'package.json');
-    c.paths.project.config = path.join(c.paths.project.dir, RENATIVE_CONFIG_NAME);
+    c.paths.project.config = path.join(
+        c.paths.project.dir,
+        RENATIVE_CONFIG_NAME
+    );
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
 
@@ -39,8 +65,10 @@ const _generateProject = async (c, data) => {
 
     const templates = {};
 
-
-    logTask(`_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`, chalk.grey);
+    logTask(
+        `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
+        chalk.grey
+    );
 
     templates[data.optionTemplates.selectedOption] = {
         version: data.optionTemplates.selectedVersion
@@ -64,7 +92,8 @@ const _generateProject = async (c, data) => {
         },
         templates,
         currentTemplate: data.optionTemplates.selectedOption,
-        isNew: true
+        isNew: true,
+        isMonorepo: false
     };
 
     writeFileSync(c.paths.project.config, config);
@@ -72,11 +101,13 @@ const _generateProject = async (c, data) => {
     if (data.gitEnabled) {
         await configureGit(c);
     }
-    
+
     logSuccess(
-        `Your project is ready! navigate to project ${chalk.white(`cd ${data.projectName}`)} and run ${chalk.white(
-            `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`,
-        )} to see magic happen!`,
+        `Your project is ready! navigate to project ${chalk.white(
+            `cd ${data.projectName}`
+        )} and run ${chalk.white(
+            `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`
+        )} to see magic happen!`
     );
 };
 
@@ -84,14 +115,22 @@ const _prepareProjectOverview = (c, data) => {
     data.projectName = data.inputProjectName;
     data.appTitle = data.inputAppTitle || data.defaultAppTitle;
     data.teamID = '';
-    data.appID = data.inputAppID ? data.inputAppID.replace(/\s+/g, '-').toLowerCase() : data.appID;
+    data.appID = data.inputAppID
+        ? data.inputAppID.replace(/\s+/g, '-').toLowerCase()
+        : data.appID;
     data.version = data.inputVersion || data.defaultVersion;
     const tempString = `${data.optionTemplates.selectedOption}@${data.optionTemplates.selectedVersion}`;
 
     let str = printBoxStart('🚀  ReNative Project Generator');
     str += printIntoBox('');
-    str += printIntoBox(`Project Name (folder): ${highlight(data.projectName)}`, 1);
-    str += printIntoBox(`Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`, 1);
+    str += printIntoBox(
+        `Project Name (folder): ${highlight(data.projectName)}`,
+        1
+    );
+    str += printIntoBox(
+        `Workspace: ${highlight(data.optionWorkspaces.selectedOption)}`,
+        1
+    );
     str += printIntoBox(`Project Title: ${highlight(data.appTitle)}`, 1);
     str += printIntoBox(`Project Version: ${highlight(data.version)}`, 1);
     str += printIntoBox(`App ID: ${highlight(data.appID)}`, 1);
@@ -149,50 +188,61 @@ export const createNewProject = async (c) => {
             name: 'inputProjectName',
             type: 'input',
             validate: value => !!value,
-            message: "What's your project Name? (no spaces, folder based on ID will be created in this directory)"
+            message:
+                "What's your project Name? (no spaces, folder based on ID will be created in this directory)"
         });
         inputProjectName = inputProjectNameObj.inputProjectName;
     }
 
     const {
-        inputAppTitle, inputAppID, inputVersion, inputWorkspace
-    } = await inquirer.prompt([{
-        name: 'inputAppTitle',
-        type: 'input',
-        default: data.defaultAppTitle,
-        validate: val => !!val || 'Please enter a title',
-        message: 'What\'s your project Title?'
-    }, {
-        name: 'inputAppID',
-        type: 'input',
-        default: () => {
-            data.appID = `com.mycompany.${inputProjectName.replace(/\s+/g, '').toLowerCase()}`;
-            return data.appID;
+        inputAppTitle,
+        inputAppID,
+        inputVersion,
+        inputWorkspace
+    } = await inquirer.prompt([
+        {
+            name: 'inputAppTitle',
+            type: 'input',
+            default: data.defaultAppTitle,
+            validate: val => !!val || 'Please enter a title',
+            message: "What's your project Title?"
         },
-        validate: id => !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/) || 'Please enter a valid appID (com.test.app)',
-        message: 'What\'s your App ID?'
-    }, {
-        name: 'inputVersion',
-        type: 'input',
-        default: data.defaultVersion,
-        validate: v => !!semver.valid(semver.coerce(v)) || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
-        message: 'What\'s your Version?'
-    }, {
-        name: 'inputWorkspace',
-        type: 'list',
-        message: 'What workspace to use?',
-        default: data.defaultWorkspace,
-        choices: data.optionWorkspaces.keysAsArray
-    }]);
+        {
+            name: 'inputAppID',
+            type: 'input',
+            default: () => {
+                data.appID = `com.mycompany.${inputProjectName
+                    .replace(/\s+/g, '')
+                    .toLowerCase()}`;
+                return data.appID;
+            },
+            validate: id => !!id.match(/[a-z]+\.[a-z0-9]+\.[a-z0-9]+/)
+                || 'Please enter a valid appID (com.test.app)',
+            message: "What's your App ID?"
+        },
+        {
+            name: 'inputVersion',
+            type: 'input',
+            default: data.defaultVersion,
+            validate: v => !!semver.valid(semver.coerce(v))
+                || 'Please enter a valid semver version (1.0.0, 42.6.7.9.3-alpha, etc.)',
+            message: "What's your Version?"
+        },
+        {
+            name: 'inputWorkspace',
+            type: 'list',
+            message: 'What workspace to use?',
+            default: data.defaultWorkspace,
+            choices: data.optionWorkspaces.keysAsArray
+        }
+    ]);
     data.optionWorkspaces.selectedOption = inputWorkspace;
 
     c.runtime.selectedWorkspace = inputWorkspace;
-    parseRenativeConfigs(c);
+    await parseRenativeConfigs(c);
     data.optionTemplates = getTemplateOptions(c);
 
-    const {
-        inputTemplate
-    } = await inquirer.prompt({
+    const { inputTemplate } = await inquirer.prompt({
         name: 'inputTemplate',
         type: 'list',
         message: 'What template to use?',
@@ -201,25 +251,37 @@ export const createNewProject = async (c) => {
     });
     data.optionTemplates.selectedOption = inputTemplate;
 
-    const templateVersionsStr = await executeAsync(c, `npm view ${data.optionTemplates.selectedOption} versions`);
-    const versionArr = templateVersionsStr.replace(/\r?\n|\r|\s|'|\[|\]/g, '').split(',').reverse();
+    const templateVersionsStr = await executeAsync(
+        c,
+        `npm view ${data.optionTemplates.selectedOption} versions`
+    );
+    const versionArr = templateVersionsStr
+        .replace(/\r?\n|\r|\s|'|\[|\]/g, '')
+        .split(',')
+        .reverse();
+    const { rnvVersion } = c;
+
+    // filter greater versions than rnv
+    const validVersions = versionArr
+        .filter(version => semver.lte(version, rnvVersion))
+        .map(v => ({ name: v, value: v }));
+    if (validVersions[0].name === rnvVersion) {
+        // mark the same versions as recommended
+        validVersions[0].name = `${validVersions[0].name} (recommended)`;
+    }
+
     data.optionTemplates.selectedVersion = versionArr[0];
 
-    const {
-        inputTemplateVersion
-    } = await inquirer.prompt({
+    const { inputTemplateVersion } = await inquirer.prompt({
         name: 'inputTemplateVersion',
         type: 'list',
         message: 'What version of template to use?',
         default: data.optionTemplates.selectedVersion,
-        choices: versionArr
+        choices: validVersions
     });
     data.optionTemplates.selectedVersion = inputTemplateVersion;
 
-
-    const {
-        inputSupportedPlatforms
-    } = await inquirer.prompt({
+    const { inputSupportedPlatforms } = await inquirer.prompt({
         name: 'inputSupportedPlatforms',
         type: 'checkbox',
         pageSize: 20,
@@ -229,19 +291,24 @@ export const createNewProject = async (c) => {
         choices: data.optionPlatforms.keysAsArray
     });
 
-    const {
-        gitEnabled
-    } = await inquirer.prompt({
+    const { gitEnabled } = await inquirer.prompt({
         name: 'gitEnabled',
         type: 'confirm',
         message: 'Do you want to set-up git in your new project?'
     });
 
     data = {
-        ...data, inputProjectName, inputAppTitle, inputAppID, inputVersion, inputTemplate, inputSupportedPlatforms, inputWorkspace, gitEnabled
+        ...data,
+        inputProjectName,
+        inputAppTitle,
+        inputAppID,
+        inputVersion,
+        inputTemplate,
+        inputSupportedPlatforms,
+        inputWorkspace,
+        gitEnabled
     };
     data.optionPlatforms.selectedOptions = inputSupportedPlatforms;
-
 
     _prepareProjectOverview(c, data);
 

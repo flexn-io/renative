@@ -1,12 +1,25 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
-import { logTask, logError, isPlatformSupported, checkSdk } from '../common';
-import PlatformSetup from '../setupTools';
-import { IOS, ANDROID, TVOS, TIZEN, WEBOS, ANDROID_TV, ANDROID_WEAR, KAIOS } from '../constants';
+import { isPlatformSupported } from './index';
+import { logTask, logError } from '../systemTools/logger';
+import { checkSdk } from './sdkManager';
+import {
+    IOS,
+    ANDROID,
+    TVOS,
+    TIZEN,
+    WEBOS,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    KAIOS
+} from '../constants';
 import { launchTizenSimulator, listTizenTargets } from './tizen';
 import { launchWebOSimulator, listWebOSTargets } from './webos';
-import { listAndroidTargets, launchAndroidSimulator } from './android/deviceManager';
-import { listAppleDevices, launchAppleSimulator } from './apple';
+import {
+    listAndroidTargets,
+    launchAndroidSimulator
+} from './android/deviceManager';
+import { listAppleDevices, launchAppleSimulator } from './apple/deviceManager';
 import { launchKaiOSSimulator } from './firefox';
 
 export const rnvTargetLaunch = async (c) => {
@@ -51,14 +64,12 @@ export const rnvTargetList = async (c) => {
         throw err;
     };
 
+    await checkSdk(c);
+
     switch (platform) {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            if (!checkSdk(c, platform, logError)) {
-                const setupInstance = PlatformSetup(c);
-                await setupInstance.askToInstallSDK('android');
-            }
             return listAndroidTargets(c, platform);
         case IOS:
         case TVOS:
@@ -66,9 +77,12 @@ export const rnvTargetList = async (c) => {
         case TIZEN:
             return listTizenTargets(c, platform);
         case WEBOS:
-            if (!checkSdk(c, platform, throwError)) return;
             return listWebOSTargets(c);
         default:
-            return Promise.reject(`"target list" command does not support ${chalk.white.bold(platform)} platform yet. Working on it!`);
+            return Promise.reject(
+                `"target list" command does not support ${chalk.white.bold(
+                    platform
+                )} platform yet. Working on it!`
+            );
     }
 };

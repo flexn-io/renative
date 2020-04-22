@@ -1,25 +1,14 @@
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import {
-    logTask,
-    logError,
-    logWarning,
     getAppFolder,
-    isPlatformActive,
-    logDebug,
-    getAppVersion,
-    getAppTitle,
-    getEntryFile,
-    writeCleanFile,
-    getAppTemplateFolder,
     getAppId,
     getConfigProp,
-    getIP,
-    getBuildFilePath,
-    logSuccess,
-    getBuildsFolder,
     getFlavouredProp
 } from '../../common';
+import { doResolve } from '../../resolve';
+import { logTask, logWarning } from '../../systemTools/logger';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
@@ -31,17 +20,43 @@ export const parseXcodeProject = async (c, platform) => {
     logTask('parseXcodeProject');
     // PROJECT
     c.runtime.xcodeProj = {};
-    c.runtime.xcodeProj.provisioningStyle = getConfigProp(c, platform, 'provisioningStyle', 'Automatic');
-    c.runtime.xcodeProj.deploymentTarget = getConfigProp(c, platform, 'deploymentTarget', '10.0');
-    c.runtime.xcodeProj.provisionProfileSpecifier = getConfigProp(c, platform, 'provisionProfileSpecifier');
-    c.runtime.xcodeProj.codeSignIdentity = getConfigProp(c, platform, 'codeSignIdentity', 'iPhone Developer');
-    c.runtime.xcodeProj.systemCapabilities = getConfigProp(c, platform, 'systemCapabilities');
+    c.runtime.xcodeProj.provisioningStyle = getConfigProp(
+        c,
+        platform,
+        'provisioningStyle',
+        'Automatic'
+    );
+    c.runtime.xcodeProj.deploymentTarget = getConfigProp(
+        c,
+        platform,
+        'deploymentTarget',
+        '10.0'
+    );
+    c.runtime.xcodeProj.provisionProfileSpecifier = getConfigProp(
+        c,
+        platform,
+        'provisionProfileSpecifier'
+    );
+    c.runtime.xcodeProj.codeSignIdentity = getConfigProp(
+        c,
+        platform,
+        'codeSignIdentity',
+        'iPhone Developer'
+    );
+    c.runtime.xcodeProj.systemCapabilities = getConfigProp(
+        c,
+        platform,
+        'systemCapabilities'
+    );
     c.runtime.xcodeProj.runScheme = getConfigProp(c, platform, 'runScheme');
     c.runtime.xcodeProj.teamID = getConfigProp(c, platform, 'teamID');
     c.runtime.xcodeProj.id = getConfigProp(c, platform, 'id');
     c.runtime.xcodeProj.appId = getAppId(c, platform);
 
-    if (c.runtime.xcodeProj.provisioningStyle !== 'Automatic' && !c.runtime.xcodeProj.provisionProfileSpecifier) {
+    if (
+        c.runtime.xcodeProj.provisioningStyle !== 'Automatic'
+        && !c.runtime.xcodeProj.provisionProfileSpecifier
+    ) {
         const result = await parseProvisioningProfiles(c);
 
         let eligibleProfile;
@@ -49,7 +64,10 @@ export const parseXcodeProject = async (c, platform) => {
         result.eligable.forEach((v) => {
             const bundleId = v.Entitlements['application-identifier'];
 
-            if (bundleId === `${c.runtime.xcodeProj.teamID}.${c.runtime.xcodeProj.id}`) {
+            if (
+                bundleId
+                === `${c.runtime.xcodeProj.teamID}.${c.runtime.xcodeProj.id}`
+            ) {
                 eligibleProfile = v;
             }
         });
@@ -59,15 +77,23 @@ export const parseXcodeProject = async (c, platform) => {
                 type: 'confirm',
                 name: 'autoFix',
                 message: `Found following eligible provisioning profile on your system: ${eligibleProfile.Entitlements['application-identifier']}. Do you want ReNative to fix your app confing?`,
-                warningMessage: 'No provisionProfileSpecifier configured in appConfig despite setting provisioningStyle to manual'
+                warningMessage:
+                    'No provisionProfileSpecifier configured in appConfig despite setting provisioningStyle to manual'
             });
             if (autoFix) {
                 c.runtime.xcodeProj.provisionProfileSpecifier = eligibleProfile.Name;
-                c.files.appConfig.config.platforms[platform].buildSchemes[c.program.scheme].provisionProfileSpecifier = eligibleProfile.Name;
-                writeFileSync(c.paths.appConfig.config, c.files.appConfig.config);
+                c.files.appConfig.config.platforms[platform].buildSchemes[
+                    c.program.scheme
+                ].provisionProfileSpecifier = eligibleProfile.Name;
+                writeFileSync(
+                    c.paths.appConfig.config,
+                    c.files.appConfig.config
+                );
             }
         } else {
-            logWarning(`Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`);
+            logWarning(
+                `Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`
+            );
         }
     }
 
@@ -77,15 +103,25 @@ export const parseXcodeProject = async (c, platform) => {
 const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
     logTask('_parseXcodeProject');
     // eslint-disable-next-line global-require, import/no-dynamic-require
-    const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
+    const xcode = require(doResolve('xcode'));
+    // const xcode = require(`${c.paths.project.nodeModulesDir}/xcode`);
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
-    const projectPath = path.join(appFolder, `${appFolderName}.xcodeproj/project.pbxproj`);
+    const projectPath = path.join(
+        appFolder,
+        `${appFolderName}.xcodeproj/project.pbxproj`
+    );
     const xcodeProj = xcode.project(projectPath);
     xcodeProj.parse(() => {
         const {
-            provisioningStyle, deploymentTarget,
-            provisionProfileSpecifier, codeSignIdentity, systemCapabilities, runScheme, teamID, appId
+            provisioningStyle,
+            deploymentTarget,
+            provisionProfileSpecifier,
+            codeSignIdentity,
+            systemCapabilities,
+            runScheme,
+            teamID,
+            appId
         } = c.runtime.xcodeProj;
 
         if (c.runtime.xcodeProj.teamID) {
@@ -94,22 +130,40 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             xcodeProj.updateBuildProperty('DEVELOPMENT_TEAM', '""');
         }
 
-        xcodeProj.addTargetAttribute('ProvisioningStyle', provisioningStyle);
+        xcodeProj.addTargetAttribute(
+            'ProvisioningStyle',
+            provisioningStyle
+        );
         xcodeProj.addBuildProperty('CODE_SIGN_STYLE', provisioningStyle);
         xcodeProj.updateBuildProperty('PRODUCT_BUNDLE_IDENTIFIER', appId);
 
         if (platform === IOS) {
-            xcodeProj.updateBuildProperty('IPHONEOS_DEPLOYMENT_TARGET', deploymentTarget);
+            xcodeProj.updateBuildProperty(
+                'IPHONEOS_DEPLOYMENT_TARGET',
+                deploymentTarget
+            );
         } else if (platform === TVOS) {
-            xcodeProj.updateBuildProperty('TVOS_DEPLOYMENT_TARGET', deploymentTarget);
+            xcodeProj.updateBuildProperty(
+                'TVOS_DEPLOYMENT_TARGET',
+                deploymentTarget
+            );
         }
 
         if (provisionProfileSpecifier) {
-            xcodeProj.updateBuildProperty('PROVISIONING_PROFILE_SPECIFIER', `"${provisionProfileSpecifier}"`);
+            xcodeProj.updateBuildProperty(
+                'PROVISIONING_PROFILE_SPECIFIER',
+                `"${provisionProfileSpecifier}"`
+            );
         }
 
-        xcodeProj.updateBuildProperty('CODE_SIGN_IDENTITY', `"${codeSignIdentity}"`);
-        xcodeProj.updateBuildProperty('"CODE_SIGN_IDENTITY[sdk=iphoneos*]"', `"${codeSignIdentity}"`);
+        xcodeProj.updateBuildProperty(
+            'CODE_SIGN_IDENTITY',
+            `"${codeSignIdentity}"`
+        );
+        xcodeProj.updateBuildProperty(
+            '"CODE_SIGN_IDENTITY[sdk=iphoneos*]"',
+            `"${codeSignIdentity}"`
+        );
 
         // if (codeSignIdentity) {
         //     const bc = xcodeProj.pbxXCBuildConfigurationSection();
@@ -133,14 +187,35 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
         }
-        // FONTS
-        c.pluginConfigiOS.embeddedFontSources.forEach((v) => {
-            xcodeProj.addResourceFile(v);
-        });
+
+        const xcodeprojObj1 = getConfigProp(
+            c,
+            c.platform,
+            'xcodeproj'
+        );
+
+        if (xcodeprojObj1?.sourceFiles) {
+            xcodeprojObj1.sourceFiles.forEach((v) => {
+                const filePath = path.join(appFolder, v);
+                if (fs.existsSync(filePath)) {
+                    xcodeProj.addSourceFile(
+                        filePath,
+                        null,
+                        '200132F21F6BF9CF00450340'
+                    );
+                } else {
+                    logWarning(`You are trying to inject native file which does not exists: ${chalk.red(filePath)}. Skipping.`);
+                }
+            });
+        }
 
         // PLUGINS
         parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-            const xcodeprojObj = getFlavouredProp(c, pluginPlat, 'xcodeproj');
+            const xcodeprojObj = getFlavouredProp(
+                c,
+                pluginPlat,
+                'xcodeproj'
+            );
             if (xcodeprojObj) {
                 if (xcodeprojObj.resourceFiles) {
                     xcodeprojObj.resourceFiles.forEach((v) => {
@@ -150,21 +225,37 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 if (xcodeprojObj.sourceFiles) {
                     xcodeprojObj.sourceFiles.forEach((v) => {
                         // const group = xcodeProj.hash.project.objects.PBXGroup['200132F21F6BF9CF00450340'];
-                        xcodeProj.addSourceFile(v, null, '200132F21F6BF9CF00450340');
+                        xcodeProj.addSourceFile(
+                            v,
+                            null,
+                            '200132F21F6BF9CF00450340'
+                        );
                     });
                 }
                 if (xcodeprojObj.headerFiles) {
                     xcodeprojObj.headerFiles.forEach((v) => {
-                        xcodeProj.addHeaderFile(v, null, '200132F21F6BF9CF00450340');
+                        xcodeProj.addHeaderFile(
+                            v,
+                            null,
+                            '200132F21F6BF9CF00450340'
+                        );
                     });
                 }
                 if (xcodeprojObj.buildPhases) {
                     xcodeprojObj.buildPhases.forEach((v) => {
-                        xcodeProj.addBuildPhase([], 'PBXShellScriptBuildPhase', 'ShellScript', null, {
-                            shellPath: v.shellPath || '/bin/sh',
-                            shellScript: v.shellScript,
-                            inputPaths: v.inputPaths || ['"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"']
-                        });
+                        xcodeProj.addBuildPhase(
+                            [],
+                            'PBXShellScriptBuildPhase',
+                            'ShellScript',
+                            null,
+                            {
+                                shellPath: v.shellPath || '/bin/sh',
+                                shellScript: v.shellScript,
+                                inputPaths: v.inputPaths || [
+                                    '"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)"'
+                                ]
+                            }
+                        );
                     });
                 }
                 if (xcodeprojObj.frameworks) {
@@ -172,14 +263,20 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         let fPath;
                         let opts;
                         if (k.startsWith('./')) {
-                            fPath = path.join(appFolder, k.replace('./', ''));
+                            fPath = path.join(
+                                appFolder,
+                                k.replace('./', '')
+                            );
                             opts = {
                                 customFramework: true,
                                 embed: true,
-                                link: true,
+                                link: true
                             };
                         } else {
-                            fPath = path.join('System/Library/Frameworks', k);
+                            fPath = path.join(
+                                'System/Library/Frameworks',
+                                k
+                            );
                             opts = {
                                 embed: true
                             };
@@ -189,11 +286,21 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                 }
                 if (xcodeprojObj.buildSettings) {
                     for (const k in xcodeprojObj.buildSettings) {
-                        xcodeProj.addToBuildSettings(k, xcodeprojObj.buildSettings[k]);
+                        xcodeProj.addToBuildSettings(
+                            k,
+                            xcodeprojObj.buildSettings[k]
+                        );
                     }
                 }
             }
         });
+
+        // FONTS
+        // Cocoapods take care of this
+        c.pluginConfigiOS.embeddedFontSources.forEach((v) => {
+            xcodeProj.addResourceFile(v, { variantGroup: false });
+        });
+
         fs.writeFileSync(projectPath, xcodeProj.writeSync());
         resolve();
     });

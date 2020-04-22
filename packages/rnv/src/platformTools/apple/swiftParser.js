@@ -1,33 +1,26 @@
 import path from 'path';
-import fs from 'fs';
 import chalk from 'chalk';
 import {
-    logTask,
-    logError,
-    logWarning,
-    getAppFolder,
-    isPlatformActive,
-    logDebug,
-    getAppVersion,
-    getAppTitle,
     getEntryFile,
     writeCleanFile,
     getAppTemplateFolder,
-    getAppId,
     getConfigProp,
-    getIP,
-    getBuildFilePath,
-    logSuccess,
     getGetJsBundleFile,
-    getBuildsFolder,
     sanitizeColor,
     getFlavouredProp
 } from '../../common';
-import { PLATFORMS } from '../../constants';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { logTask } from '../../systemTools/logger';
+import { parsePlugins } from '../../pluginTools';
 
-export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundled = false, ip = 'localhost', port) => new Promise((resolve, reject) => {
+export const parseAppDelegate = (
+    c,
+    platform,
+    appFolder,
+    appFolderName,
+    isBundled = false,
+    ip = 'localhost',
+    port
+) => new Promise((resolve, reject) => {
     if (!port) port = c.runtime.port;
     logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
     const appDelegate = 'AppDelegate.swift';
@@ -61,13 +54,15 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
     //     }
     // }
 
-    const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).rgbDecimal;
+    const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'))
+        .rgbDecimal;
     const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
     const methods = {
         application: {
             didFinishLaunchingWithOptions: {
                 isRequired: true,
-                func: 'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
+                func:
+                        'func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {',
                 begin: `
         self.window = UIWindow(frame: UIScreen.main.bounds)
         let vc = UIViewController()
@@ -84,68 +79,69 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         UNUserNotificationCenter.current().delegate = self
                 `,
                 render: v => `${v}`,
-                end: 'return true',
-
+                end: 'return true'
             },
             applicationDidBecomeActive: {
-                func: 'func applicationDidBecomeActive(_ application: UIApplication) {',
+                func:
+                        'func applicationDidBecomeActive(_ application: UIApplication) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null,
+                end: null
             },
             open: {
-                func: 'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
+                func:
+                        'func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {',
                 begin: 'var handled = false',
                 render: v => `if(!handled) { handled = ${v} }`,
-                end: 'return handled',
-
+                end: 'return handled'
             },
             supportedInterfaceOrientationsFor: {
-                func: 'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
+                func:
+                        'func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {',
                 begin: null,
                 render: v => `return ${v}`,
-                end: null,
-
+                end: null
             },
             didReceiveRemoteNotification: {
-                func: 'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
+                func:
+                        'func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null,
-
+                end: null
             },
             didFailToRegisterForRemoteNotificationsWithError: {
-                func: 'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
+                func:
+                        'func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null,
-
+                end: null
             },
             didReceive: {
-                func: 'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
+                func:
+                        'func application(_ application: UIApplication, didReceive notification: UILocalNotification) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null,
-
+                end: null
             },
             didRegister: {
-                func: 'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
+                func:
+                        'func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null,
-
+                end: null
             },
             didRegisterForRemoteNotificationsWithDeviceToken: {
-                func: 'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
+                func:
+                        'func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {',
                 begin: null,
                 render: v => `${v}`,
-                end: null,
-
+                end: null
             }
         },
         userNotificationCenter: {
             willPresent: {
-                func: 'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
+                func:
+                        'func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {',
                 begin: null,
                 render: v => `${v}`,
                 end: null
@@ -171,12 +167,19 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
         const method = methods[key];
         for (const key2 in method) {
             const f = method[key2];
-            c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(c.pluginConfigiOS.appDelegateMethods[key][key2], f);
+            c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(
+                c.pluginConfigiOS.appDelegateMethods[key][key2],
+                f
+            );
         }
     }
 
     writeCleanFile(
-        path.join(getAppTemplateFolder(c, platform), appFolderName, appDelegate),
+        path.join(
+            getAppTemplateFolder(c, platform),
+            appFolderName,
+            appDelegate
+        ),
         path.join(appFolder, appFolderName, appDelegate),
         [
             { pattern: '{{BUNDLE}}', override: bundle },
@@ -186,25 +189,33 @@ export const parseAppDelegate = (c, platform, appFolder, appFolderName, isBundle
             { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
             {
                 pattern: '{{APPDELEGATE_IMPORTS}}',
-                override: c.pluginConfigiOS.pluginAppDelegateImports,
+                override: c.pluginConfigiOS.pluginAppDelegateImports
             },
             {
                 pattern: '{{APPDELEGATE_METHODS}}',
-                override: c.pluginConfigiOS.pluginAppDelegateMethods,
-            },
-        ],
+                override: c.pluginConfigiOS.pluginAppDelegateMethods
+            }
+        ]
     );
     resolve();
 });
 
 export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
     logTask(`injectPluginSwiftSync:${c.platform}:${key}`, chalk.grey);
-    const appDelegateImports = getFlavouredProp(c, plugin, 'appDelegateImports');
+    const appDelegateImports = getFlavouredProp(
+        c,
+        plugin,
+        'appDelegateImports'
+    );
     if (appDelegateImports instanceof Array) {
         appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
             logTask('appDelegateImports add', chalk.grey);
-            if (c.pluginConfigiOS.pluginAppDelegateImports.indexOf(appDelegateImport) === -1) {
+            if (
+                c.pluginConfigiOS.pluginAppDelegateImports.indexOf(
+                    appDelegateImport
+                ) === -1
+            ) {
                 logTask('appDelegateImports add ok', chalk.grey);
                 c.pluginConfigiOS.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
             }
@@ -214,7 +225,11 @@ export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
     //     c.pluginConfigiOS.pluginAppDelegateMethods += `${plugin.appDelegateMethods.join('\n    ')}`;
     // }
 
-    const appDelegateMethods = getFlavouredProp(c, plugin, 'appDelegateMethods');
+    const appDelegateMethods = getFlavouredProp(
+        c,
+        plugin,
+        'appDelegateMethods'
+    );
     if (appDelegateMethods) {
         for (const key in appDelegateMethods) {
             for (const key2 in appDelegateMethods[key]) {

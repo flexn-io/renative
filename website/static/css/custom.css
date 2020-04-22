@@ -1,7 +1,7 @@
 /* your custom css */
 
 .wrapper {
-  max-width: 900px;
+    max-width: 900px;
 }
 
 /* .navigationSlider {
@@ -9,30 +9,30 @@
 } */
 
 .darkBackground {
-background-color: #282c34
+    background-color: #282c34;
 }
 
 .darkBackground a {
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
 .projectLogo {
-  justify-content: center;
+    justify-content: center;
 }
 
 .homeContainer {
-    background-color: #282c34
+    background-color: #282c34;
 }
 
 .fixedHeaderContainer {
-  background-color: #20232a;
-  min-height: 60px;
-  padding: 13px 0;
+    background-color: #20232a;
+    min-height: 60px;
+    padding: 13px 0;
 }
 
 .headerTitle {
-  font-size: 72px;
-  margin-top: 1em
+    font-size: 72px;
+    margin-top: 1em;
 }
 
 .platformsWrapper {
@@ -43,24 +43,23 @@ background-color: #282c34
 }
 
 .platformItem {
-  height: 180px;
-  margin: 20px;
+    height: 180px;
+    margin: 20px;
 }
 
 .platformItemText {
-  justify-content: center;
-  font-weight: 600;
-  text-align: center;
-  display: block;
+    justify-content: center;
+    font-weight: 600;
+    text-align: center;
+    display: block;
 }
 
 .projectTitle {
-    color: #FFFFFF;
-
+    color: #ffffff;
 }
 
 .logoImage {
-  width: 200px;
+    width: 200px;
 }
 
 .imageAlignSide .blockImage {
@@ -68,9 +67,9 @@ background-color: #282c34
 }
 
 .buttonDark {
-    border: 1px solid #FFFFFF;
+    border: 1px solid #ffffff;
     border-radius: 3px;
-    color: #FFFFFF;
+    color: #ffffff;
     display: inline-block;
     font-size: 14px;
     font-weight: 400;
@@ -82,32 +81,35 @@ background-color: #282c34
 }
 
 .buttonDark:hover {
-    color: #FB8E62;
+    color: #fb8e62;
+}
+
+a {
+    color: #fb8e62;
 }
 
 a:hover {
-  color: #FB8E62;
+    color: #eb6e42;
 }
 
 .beta {
-  position: absolute;
-  top: 60px;
-  right: 0px;
+    position: absolute;
+    top: 60px;
+    right: 0px;
 }
 
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 
 @media only screen and (min-width: 1024px) {
-
 }
 
 @media only screen and (max-width: 1023px) {
-  .beta {
-    position: absolute;
-    top: 100px;
-    right: 0px;
-  }
+    .beta {
+        position: absolute;
+        top: 100px;
+        right: 0px;
+    }
 }
 
 @media only screen and (min-width: 1400px) {

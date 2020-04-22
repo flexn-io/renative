@@ -1,15 +1,15 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { logWarning, logTask, rnvStatus, logEnd, logToSummary } from './logger';
+import { logWarning, logTask } from './logger';
 import Config from '../config';
 
 const highlight = chalk.grey.bold;
 
 export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
-    const msg = params.logMessage || params.warningMessage;
+    const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
-        throw msg || '--ci option does not allow prompts';
+        throw new Error(`--ci option does not allow prompts: ${msg}`);
     }
     if (msg && params.logMessage) logTask(msg, chalk.grey);
     if (msg && params.warningMessage) logWarning(msg);
@@ -22,7 +22,12 @@ export const inquirerPrompt = async (params) => {
     return result;
 };
 
-export const generateOptions = (inputData, isMultiChoice = false, mapping, renderMethod) => {
+export const generateOptions = (
+    inputData,
+    isMultiChoice = false,
+    mapping,
+    renderMethod
+) => {
     let asString = '';
     const valuesAsObject = {};
     const valuesAsArray = [];
@@ -69,8 +74,10 @@ const _sort = (a, b) => {
     let aStr = '';
     let bStr = '';
     if (typeof a === 'string') {
-        aStr = a.toLowerCase();
-        bStr = b.toLowerCase();
+        // TODO: temp fix for weird issue when a/b are marked as string
+        // but toLowerCase() is undefined. need to investigate
+        aStr = a.toLowerCase ? a.toLowerCase() : a;
+        bStr = b.toLowerCase ? b.toLowerCase() : b;
     } else {
         if (a && a.name) aStr = a.name.toLowerCase();
         if (b && b.name) bStr = b.name.toLowerCase();

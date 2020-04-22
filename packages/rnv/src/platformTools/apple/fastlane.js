@@ -1,17 +1,43 @@
 import path from 'path';
 import chalk from 'chalk';
-import {
-    logTask,
-    logWarning,
-    logSuccess,
-    getConfigProp,
-    getAppId
-} from '../../common';
+import { getConfigProp, getAppId } from '../../common';
+import { logTask, logWarning, logSuccess } from '../../systemTools/logger';
 import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
 import { setAppConfig } from '../../configTools/configParser';
 
-export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) => {
+export const registerDevice = async (c) => {
+    logTask(`registerDevice:${c.platform}`);
+
+    const teamID = getConfigProp(c, c.platform, 'teamID');
+    const udid = c.runtime.targetUDID;
+    const deviceName = c.runtime.target;
+
+    const args = [
+        'run',
+        'register_device',
+        `team_id:"${teamID}"`,
+        `udid:"${udid}"`,
+        `name:"${deviceName}"`
+    ];
+
+    try {
+        await executeAsync(c, `fastlane ${args.join(' ')}`, {
+            shell: true,
+            stdio: 'inherit',
+            silent: true
+        });
+        logSuccess(
+            `Succesfully registered device ${deviceName}:${udid}:${teamID}`
+        );
+        return true;
+    } catch (e) {
+        logWarning(e);
+        return true;
+    }
+};
+
+export const updateProfile = async (c, appConfigId) => {
     logTask(`updateProfile:${appConfigId}`, chalk.grey);
 
     // TODO: run trough all schemes
@@ -21,14 +47,14 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
     //   c.program.scheme = k
     // }
 
-    if (appConfigId) setAppConfig(c, appConfigId);
+    if (appConfigId) await setAppConfig(c, appConfigId);
 
     if (c.platform !== IOS && c.platform !== TVOS) {
-        reject(`updateProfile:platform ${c.platform} not supported`);
-        return;
+        return Promise.reject(
+            `updateProfile:platform ${c.platform} not supported`
+        );
     }
     const { scheme } = c.program;
-
 
     const { platform } = c;
 
@@ -40,7 +66,7 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
     const runScheme = getConfigProp(c, platform, 'runScheme');
     let provisioning;
     if (pMethod === 'ad-hoc') provisioning = 'adhoc';
-    if (pMethod === 'development' || runScheme === 'Debug') provisioning = 'development';
+    if (pMethod === 'development' || runScheme === 'Debug') { provisioning = 'development'; }
 
     const certsPath = path.join(c.paths.workspace.appConfig.dir, 'certs');
 
@@ -66,14 +92,18 @@ export const updateProfile = (c, appConfigId) => new Promise((resolve, reject) =
         args.push(`--${provisioning}`);
     }
 
-    executeAsync(c, `fastlane ${args.join(' ')}`, { shell: true, stdio: 'inherit', silent: true })
-        .then(() => {
-            logSuccess(`Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`);
-
-            resolve();
-        })
-        .catch((e) => {
-            logWarning(e);
-            resolve();
+    try {
+        await executeAsync(c, `fastlane ${args.join(' ')}`, {
+            shell: true,
+            stdio: 'inherit',
+            silent: true
         });
-});
+        logSuccess(
+            `Succesfully updated provisioning profile for ${appId}:${scheme}:${id}`
+        );
+        return true;
+    } catch (e) {
+        logWarning(e);
+        return true;
+    }
+};

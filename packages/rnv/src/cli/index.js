@@ -1,28 +1,108 @@
 import chalk from 'chalk';
-import { logTask, rnvStatus, logToSummary, logAppInfo } from '../systemTools/logger';
-import { rnvWorkspaceList, rnvWorkspaceAdd, rnvWorkspaceConnect, rnvWorkspaceUpdate } from '../projectTools/workspace';
+import {
+    logTask,
+    rnvStatus,
+    logToSummary,
+    logAppInfo,
+    logError
+} from '../systemTools/logger';
+import {
+    rnvWorkspaceList,
+    rnvWorkspaceAdd,
+    rnvWorkspaceConnect,
+    rnvWorkspaceUpdate
+} from '../projectTools/workspace';
 import { createNewProject } from '../projectTools/projectGenerator';
-import { rnvTemplateAdd, rnvTemplateApply, rnvTemplateList, applyTemplate, checkIfTemplateInstalled } from '../templateTools';
-import { targetCreate, rnvTargetLaunch, rnvTargetList } from '../platformTools/target';
-import { rnvPluginAdd, rnvPluginList, rnvPluginUpdate, configurePlugins } from '../pluginTools';
-import { rnvPlatformEject, rnvPlatformList, rnvPlatformConnect, rnvPlatformConfigure } from '../platformTools';
-import { executePipe, rnvHooksList, rnvHooksRun, rnvHooksPipes } from '../projectTools/buildHooks';
+import {
+    rnvTemplateAdd,
+    rnvTemplateApply,
+    rnvTemplateList,
+    applyTemplate,
+    checkIfTemplateInstalled
+} from '../templateTools';
+import {
+    targetCreate,
+    rnvTargetLaunch,
+    rnvTargetList
+} from '../platformTools/target';
+import {
+    rnvPluginAdd,
+    rnvPluginList,
+    rnvPluginUpdate,
+    configurePlugins
+} from '../pluginTools';
+import {
+    rnvPlatformEject,
+    rnvPlatformList,
+    rnvPlatformConnect,
+    rnvPlatformConfigure,
+    rnvPlatformSetup
+} from '../platformTools';
+import {
+    executePipe,
+    rnvHooksList,
+    rnvHooksRun,
+    rnvHooksPipes
+} from '../projectTools/buildHooks';
 import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
-import { rnvCryptoDecrypt, rnvCryptoEncrypt, rnvCryptoInstallCerts, rnvCryptoUpdateProfile, rnvCryptoUpdateProfiles, rnvCryptoInstallProfiles, checkCrypto } from '../systemTools/crypto';
+import {
+    rnvCryptoDecrypt,
+    rnvCryptoEncrypt,
+    rnvCryptoInstallCerts,
+    rnvCryptoUpdateProfile,
+    rnvCryptoUpdateProfiles,
+    rnvCryptoInstallProfiles,
+    checkCrypto
+} from '../systemTools/crypto';
 import { rnvFastlane } from '../deployTools/fastlane';
 import { rnvClean } from '../systemTools/cleaner';
 import { inquirerPrompt } from '../systemTools/prompt';
-import { rnvRun, rnvBuild, rnvPackage, rnvExport, rnvLog, rnvDeploy, rnvStart } from '../platformTools/runner';
-import { PLATFORMS, SUPPORTED_PLATFORMS, IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
-    WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV } from '../constants';
+import {
+    rnvRun,
+    rnvBuild,
+    rnvPackage,
+    rnvExport,
+    rnvLog,
+    rnvDeploy,
+    rnvStart
+} from '../platformTools/runner';
+import { isSystemWin } from '../utils';
+import {
+    PLATFORMS,
+    SUPPORTED_PLATFORMS,
+    IOS,
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    WEB,
+    TIZEN,
+    TIZEN_MOBILE,
+    TVOS,
+    WEBOS,
+    MACOS,
+    WINDOWS,
+    TIZEN_WATCH,
+    KAIOS,
+    FIREFOX_OS,
+    FIREFOX_TV,
+    WEB_NEXT
+} from '../constants';
 // import { getBinaryPath } from '../common';
 import Config, { rnvConfigHandler } from '../config';
 import { checkAndMigrateProject } from '../projectTools/migrator';
 import {
-    parseRenativeConfigs, createRnvConfig, updateConfig,
-    fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
+    parseRenativeConfigs,
+    createRnvConfig,
+    updateConfig,
+    fixRenativeConfigsSync,
+    configureRnvGlobal,
+    checkIsRenativeProject
 } from '../configTools/configParser';
-import { configureNodeModules, checkAndCreateProjectPackage, cleanPlaformAssets } from '../projectTools/projectParser';
+import {
+    configureNodeModules,
+    checkAndCreateProjectPackage,
+    cleanPlaformAssets
+} from '../projectTools/projectParser';
 import rnvPublish from '../projectTools/publish';
 import rnvPkg from '../projectTools/package';
 
@@ -68,7 +148,7 @@ const COMMANDS = {
     },
     config: {
         fn: rnvConfigHandler,
-        desc: 'Edit or display RNV configs',
+        desc: 'Edit or display RNV configs'
     },
     run: {
         desc: 'Run your app on target device or emulator',
@@ -89,7 +169,17 @@ const COMMANDS = {
     },
     export: {
         desc: 'Export your app (ios only)',
-        platforms: [IOS, TVOS, MACOS, WINDOWS, WEB, ANDROID, ANDROID_TV, ANDROID_WEAR],
+        platforms: [
+            IOS,
+            TVOS,
+            MACOS,
+            WINDOWS,
+            WEB,
+            ANDROID,
+            ANDROID_TV,
+            ANDROID_WEAR,
+            WEB_NEXT
+        ],
         fn: rnvExport
     },
     log: {
@@ -134,12 +224,25 @@ const COMMANDS = {
             },
             configure: {
                 fn: rnvPlatformConfigure
+            },
+            setup: {
+                fn: rnvPlatformSetup
             }
         }
     },
     target: {
         desc: 'Manages simulators and emulators',
-        platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TIZEN, TIZEN_MOBILE, TVOS, WEBOS, TIZEN_WATCH],
+        platforms: [
+            IOS,
+            ANDROID,
+            ANDROID_TV,
+            ANDROID_WEAR,
+            TIZEN,
+            TIZEN_MOBILE,
+            TVOS,
+            WEBOS,
+            TIZEN_WATCH
+        ],
         subCommands: {
             launch: {
                 fn: rnvTargetLaunch
@@ -164,7 +267,8 @@ const COMMANDS = {
         }
     },
     hooks: {
-        desc: 'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
+        desc:
+            'Manages project based build hooks. This allows you to extend functionality of RNV CLI',
         subCommands: {
             run: {
                 fn: rnvHooksRun
@@ -182,7 +286,8 @@ const COMMANDS = {
         fn: rnvStatus
     },
     clean: {
-        desc: 'Automatically removes all node_modules and lock in your project and its dependencies',
+        desc:
+            'Automatically removes all node_modules and lock in your project and its dependencies',
         fn: rnvClean
     },
     template: {
@@ -200,7 +305,8 @@ const COMMANDS = {
         }
     },
     crypto: {
-        desc: 'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
+        desc:
+            'Utility to manage encrytped files in your project, provisioning profiles, kestores and other sensitive information',
         subCommands: {
             encrypt: {
                 fn: rnvCryptoEncrypt
@@ -245,20 +351,33 @@ const COMMANDS = {
         }
     },
     fastlane: {
-        desc: 'Run fastlane commands on currectly active app/platform directly via rnv command',
+        desc:
+            'Run fastlane commands on currectly active app/platform directly via rnv command',
         platforms: [IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, TVOS],
         fn: rnvFastlane
     },
     publish: {
-        desc: 'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+        desc:
+            'Provides help deploying a new version, like tagging a commit, pushing it, etc',
         fn: rnvPublish
     },
     pkg: {
-        desc: 'Provides help deploying a new version, like tagging a commit, pushing it, etc',
+        desc:
+            'Provides help deploying a new version, like tagging a commit, pushing it, etc',
         fn: rnvPkg
     }
 };
-export const NO_OP_COMMANDS = ['fix', 'clean', 'tool', 'status', 'log', 'new', 'target', 'help', 'config'];
+export const NO_OP_COMMANDS = [
+    'fix',
+    'clean',
+    'tool',
+    'status',
+    'log',
+    'new',
+    'target',
+    'help',
+    'config'
+];
 export const SKIP_APP_CONFIG_CHECK = ['crypto', 'config'];
 
 const _handleUnknownPlatform = async (c, platforms) => {
@@ -268,7 +387,9 @@ const _handleUnknownPlatform = async (c, platforms) => {
         name: 'platform',
         message: 'pick one of the following',
         choices: platforms,
-        logMessage: `cli: Command ${chalk.grey(c.command)} does not support platform ${chalk.grey(c.platform)}. `
+        logMessage: `cli: Command ${chalk.grey(
+            c.command
+        )} does not support platform ${chalk.grey(c.platform)}. `
     });
 
     c.platform = platform;
@@ -299,7 +420,8 @@ export const _startBuilder = async (c) => {
                 message: 'Pick a command',
                 choices: NO_OP_COMMANDS.sort(),
                 pageSize: 15,
-                logMessage: 'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
+                logMessage:
+                    'You need to tell rnv what to do. NOTE: your current directory is not ReNative project. RNV options will be limited'
             });
             c.command = command;
         }
@@ -364,7 +486,9 @@ const _handleUnknownSubCommand = async (c) => {
         name: 'subCommand',
         message: 'Pick a subCommand',
         choices: Object.keys(cmds),
-        logMessage: `cli: Command ${chalk.bold(c.command)} does not support method ${chalk.bold(c.subCommand)}!`
+        logMessage: `cli: Command ${chalk.bold(
+            c.command
+        )} does not support method ${chalk.bold(c.subCommand)}!`
     });
 
     c.subCommand = subCommand;
@@ -388,14 +512,16 @@ const _handleUnknownCommand = async (c) => {
     return run(c);
 };
 
-
 const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
 
 export const _spawnCommand = (c, overrideParams) => {
     const newCommand = {};
 
     Object.keys(c).forEach((k) => {
-        if (typeof newCommand[k] === 'object' && !(newCommand[k] instanceof 'String')) {
+        if (
+            typeof newCommand[k] === 'object'
+            && !(newCommand[k] instanceof 'String')
+        ) {
             newCommand[k] = { ...c[k] };
         } else {
             newCommand[k] = c[k];
@@ -406,7 +532,9 @@ export const _spawnCommand = (c, overrideParams) => {
 
     Object.keys(overrideParams).forEach((k) => {
         if (newCommand[k] && typeof overrideParams[k] === 'object') {
-            newCommand[k] = merge(newCommand[k], overrideParams[k], { arrayMerge: _arrayMergeOverride });
+            newCommand[k] = merge(newCommand[k], overrideParams[k], {
+                arrayMerge: _arrayMergeOverride
+            });
         } else {
             newCommand[k] = overrideParams[k];
         }
@@ -418,7 +546,6 @@ export const _spawnCommand = (c, overrideParams) => {
     return newCommand;
 };
 
-
 // ##########################################
 // PUBLIC API
 // ##########################################
@@ -426,8 +553,8 @@ export const _spawnCommand = (c, overrideParams) => {
 const run = async (c, spawnC, skipStartBuilder) => {
     logTask('cli');
 
+    setDefaults(c);
     if (!skipStartBuilder) await _startBuilder(c);
-
     let oldC;
     if (spawnC) {
         oldC = c;
@@ -447,7 +574,7 @@ const run = async (c, spawnC, skipStartBuilder) => {
             if (subCmdFn) {
                 await _execute(c, subCmdFn, cmd);
             } else {
-                //There is no subCommand function available so reset the key not to confuse pipe hooks
+                // There is no subCommand function available so reset the key not to confuse pipe hooks
                 c.subCommand = null;
                 await _execute(c, cmdFn, cmd);
             }
@@ -463,7 +590,13 @@ const run = async (c, spawnC, skipStartBuilder) => {
 };
 
 const _execute = async (c, cmdFn, cmd) => {
-    logTask(`_execute:${c.command}:${c.subCommand}`)
+    logTask(`_execute:${c.command}:${c.subCommand}`);
+
+    // engine handling
+    if (c.program.engine && !c.platform.includes('-')) { // avoid multiple iterations over platform (web-next-next-next...)
+        c.platform = `${c.platform}-${c.program.engine}`;
+    }
+
     if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
         await _handleUnknownPlatform(c, cmd.platforms);
         return;
@@ -477,21 +610,45 @@ const _execute = async (c, cmdFn, cmd) => {
             await _handleUnknownPlatform(c, requiredPlatforms);
             return;
         }
-        const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
-        if (requiredParams) {
-            for (let i = 0; i < requiredParams.length; i++) {
-                const requiredParam = requiredParams[i];
-                // TODO
-            }
-        }
+        // TODO: Required params
+        // const requiredParams = cmd.subCommands?.[c.subCommand]?.requiredParams;
+        // if (requiredParams) {
+        //     for (let i = 0; i < requiredParams.length; i++) {
+        //         const requiredParam = requiredParams[i];
+        //
+        //     }
+        // }
     }
 
-    c.runtime.port = c.program.port || c.buildConfig?.defaults?.ports?.[c.platform] || PLATFORMS[c.platform]?.defaultPort;
+    setDefaults(c);
 
-    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:before`);
+    const { plugins } = c.buildConfig;
+    if (!plugins || (plugins && Object.keys(plugins).length < 2)) {
+        logError(`No plugins were injected into your app. your app will most likely fail. did you run ${chalk.white('rnv template apply')} ?`);
+    }
+
+    const pipeEnabled = !NO_OP_COMMANDS.includes(c.command)
+        && !SKIP_APP_CONFIG_CHECK.includes(c.command);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
     await cmdFn(c);
-    if (!NO_OP_COMMANDS.includes(c.command)) await executePipe(c, `${c.command}${subCmd}:after`);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);
 };
 
+const setDefaults = (c) => {
+    c.runtime.port = c.program.port
+    || c.buildConfig?.defaults?.ports?.[c.platform]
+    || PLATFORMS[c.platform]?.defaultPort;
+    if (c.program.target !== true) {
+        c.runtime.target = c.program.target
+        || c.files.workspace.config?.defaultTargets?.[c.platform];
+    } else c.runtime.target = c.program.target;
+    c.runtime.scheme = c.program.scheme || 'debug';
+    c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
+    // const { scheme } = c.program;
+    // if (scheme !== true) {
+    //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];
+    //     c.runtime.scheme = isSchemePresent ? scheme : undefined;
+    // }
+};
 
 export default run;

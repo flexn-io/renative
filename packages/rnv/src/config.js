@@ -59,7 +59,12 @@ class Config {
         return argsCopy.filter(arg => !!arg);
     }
 
-    async injectProjectDependency(dependency, version, type, skipInstall = false) {
+    async injectProjectDependency(
+        dependency,
+        version,
+        type,
+        skipInstall = false
+    ) {
         const currentPackage = this.config.files.project.package;
         const existingPath = this.config.paths.project.package;
         if (!currentPackage[type]) currentPackage[type] = {};
@@ -73,7 +78,7 @@ class Config {
         return this.config.files.project;
     }
 
-    async checkRequiredPackage(pkg, version = false, type, skipAsking = false, skipInstall = false) {
+    async checkRequiredPackage(pkg, version = false, type, skipAsking = false, skipInstall = false, skipVersionCheck = false) {
         if (!pkg) return false;
         const projectConfig = this.getProjectConfig();
 
@@ -91,13 +96,20 @@ class Config {
 
             if (confirm) {
                 let latestVersion = 'latest';
-                if (!version) {
+                if (!version && !skipVersionCheck) {
                     try {
-                        latestVersion = await executeAsync(`npm show ${pkg} version`);
+                        latestVersion = await executeAsync(
+                            `npm show ${pkg} version`
+                        );
                         // eslint-disable-next-line no-empty
                     } catch (e) {}
                 }
-                return this.injectProjectDependency(pkg, version || latestVersion, type, skipInstall);
+                return this.injectProjectDependency(
+                    pkg,
+                    version || latestVersion,
+                    type,
+                    skipInstall
+                );
             }
         } else if (!version) {
             // package exists, checking version only if version is not
@@ -128,7 +140,12 @@ class Config {
                     }
 
                     if (confirm) {
-                        return this.injectProjectDependency(pkg, latestVersion, type, skipInstall);
+                        return this.injectProjectDependency(
+                            pkg,
+                            latestVersion,
+                            type,
+                            skipInstall
+                        );
                     }
                 }
             }
@@ -138,19 +155,31 @@ class Config {
     }
 
     async injectPlatformDependencies(platform) {
-        const npmDeps = this.config.files?.rnv?.platformTemplates?.config?.platforms?.[platform]?.npm;
+        const npmDeps = this.config.files?.rnv?.platformTemplates?.config
+            ?.platforms?.[platform]?.npm;
 
         if (npmDeps) {
-            const promises = Object.keys(npmDeps).reduce((acc, type) => { // iterate over dependencies, devDepencencies or optionalDependencies
-                Object.keys(npmDeps[type]).forEach((dep) => { // iterate over deps
-                    acc.push(this.checkRequiredPackage(dep, npmDeps[type][dep], type, true, true));
+            const promises = Object.keys(npmDeps).reduce((acc, type) => {
+                // iterate over dependencies, devDepencencies or optionalDependencies
+                Object.keys(npmDeps[type]).forEach((dep) => {
+                    // iterate over deps
+                    acc.push(
+                        this.checkRequiredPackage(
+                            dep,
+                            npmDeps[type][dep],
+                            type,
+                            true,
+                            true
+                        )
+                    );
                 });
                 return acc;
             }, []);
 
             const installed = await Promise.all(promises);
 
-            if (installed.some(i => i === true)) { // do npm i only if something new is added
+            if (installed.some(i => i === true)) {
+                // do npm i only if something new is added
                 await npmInstall();
             }
         }
@@ -179,7 +208,9 @@ class Config {
         const { paths } = this.config;
 
         if (!global && !fs.existsSync(paths.project.config)) return 'N/A'; // string because there might be a setting where we will use null
-        const cfg = global ? require(paths.GLOBAL_RNV_CONFIG) : require(paths.project.config);
+        const cfg = global
+            ? require(paths.GLOBAL_RNV_CONFIG)
+            : require(paths.project.config);
 
         const value = cfg[configSchema[key].key];
         if (value === undefined) return 'N/A';
@@ -189,7 +220,7 @@ class Config {
 
     getMergedConfigValue(key) {
         let value = this.config.buildConfig?.[configSchema[key].key];
-        if (value === undefined && configSchema[key].default) value = configSchema[key].default;
+        if (value === undefined && configSchema[key].default) { value = configSchema[key].default; }
         return value;
     }
 
@@ -197,14 +228,15 @@ class Config {
         let localVal = this.getConfigValueSeparate(key).toString();
         let globalVal = this.getConfigValueSeparate(key, true).toString();
 
-        if (globalVal === 'N/A' && configSchema[key].default) globalVal = configSchema[key].default;
+        if (globalVal === 'N/A' && configSchema[key].default) { globalVal = configSchema[key].default; }
         if (localVal === 'N/A') localVal = globalVal;
 
-        const table = [{
-            Key: key,
-            'Global Value': globalVal
-        }];
-
+        const table = [
+            {
+                Key: key,
+                'Global Value': globalVal
+            }
+        ];
 
         if (localVal !== 'N/A') {
             table[0]['Project Value'] = localVal;
@@ -221,7 +253,11 @@ class Config {
         }
 
         if (keySchema.values && !keySchema.values.includes(value)) {
-            logWarning(`Unsupported value provided for ${key}. Correct values are ${keySchema.values.join(', ')}`);
+            logWarning(
+                `Unsupported value provided for ${key}. Correct values are ${keySchema.values.join(
+                    ', '
+                )}`
+            );
             return false;
         }
 
@@ -229,10 +265,15 @@ class Config {
     }
 
     setConfigValue(key, value) {
-        const { program: { global }, paths } = this.config;
+        const {
+            program: { global },
+            paths
+        } = this.config;
 
         if (this.isConfigValueValid(key, value)) {
-            const configPath = global ? paths.GLOBAL_RNV_CONFIG : paths.project.config;
+            const configPath = global
+                ? paths.GLOBAL_RNV_CONFIG
+                : paths.project.config;
             const config = require(configPath);
 
             if (['true', 'false'].includes(value)) value = value === 'true'; // convert string to bool if it matches a bool value
@@ -244,27 +285,34 @@ class Config {
         return false;
     }
 
-    getScheme() {
-        return this.config?.program?.scheme || 'debug';
-    }
-
-    getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon) {
+    getValueOrMergedObject(
+        resultCli,
+        resultScheme,
+        resultPlatforms,
+        resultCommon
+    ) {
         if (resultCli !== undefined) {
             return resultCli;
         }
         if (resultScheme !== undefined) {
-            if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') return resultScheme;
-            const val = Object.assign(resultCommon || {}, resultPlatforms || {}, resultScheme);
+            if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') { return resultScheme; }
+            const val = Object.assign(
+                resultCommon || {},
+                resultPlatforms || {},
+                resultScheme
+            );
             return val;
         }
         if (resultPlatforms !== undefined) {
-            if (Array.isArray(resultPlatforms) || typeof resultPlatforms !== 'object') return resultPlatforms;
+            if (
+                Array.isArray(resultPlatforms)
+                || typeof resultPlatforms !== 'object'
+            ) { return resultPlatforms; }
             return Object.assign(resultCommon || {}, resultPlatforms);
         }
         if (resultPlatforms === null) return null;
         return resultCommon;
     }
-
 
     getConfigProp(c, platform, key, defaultVal) {
         if (!c.buildConfig) {
@@ -272,7 +320,7 @@ class Config {
             return null;
         }
         const p = c.buildConfig.platforms[platform];
-        const ps = this.getScheme(c);
+        const ps = c.runtime.scheme;
         let resultPlatforms;
         let scheme;
         if (p) {
@@ -285,7 +333,12 @@ class Config {
         const resultScheme = scheme[key];
         const resultCommon = c.buildConfig.common?.[key];
 
-        let result = this.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
+        let result = this.getValueOrMergedObject(
+            resultCli,
+            resultScheme,
+            resultPlatforms,
+            resultCommon
+        );
 
         if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
         logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
@@ -295,8 +348,15 @@ class Config {
     get isWebHostEnabled() {
         const { hosted } = this.config.program;
         // if (debug) return false;
-        const bundleAssets = this.getConfigProp(this.config, this.platform, 'bundleAssets');
-        return (hosted || !bundleAssets) && WEB_HOSTED_PLATFORMS.includes(this.platform);
+        const bundleAssets = this.getConfigProp(
+            this.config,
+            this.platform,
+            'bundleAssets'
+        );
+        return (
+            (hosted || !bundleAssets)
+            && WEB_HOSTED_PLATFORMS.includes(this.platform)
+        );
     }
 
     get isAnalyticsEnabled() {
@@ -344,10 +404,10 @@ class Config {
 
     //     get target() {}
 
-//     set target(newTarget) {
-//         this.config.target = newTarget;
-//         this.initializeConfig();
-//     }
+    //     set target(newTarget) {
+    //         this.config.target = newTarget;
+    //         this.initializeConfig();
+    //     }
 }
 
 const Conf = new Config();
@@ -363,7 +423,8 @@ const rnvConfigHandler = () => {
     }
 
     // validate args
-    if (!key) { // @todo add inquirer with list of options
+    if (!key) {
+        // @todo add inquirer with list of options
         logWarning('Please specify a config');
         return true;
     }
@@ -375,7 +436,7 @@ const rnvConfigHandler = () => {
     if (!value) {
         // list the value
         printTable(Conf.listConfigValue(key));
-    } else if (Conf.setConfigValue(key, value)) printTable(Conf.listConfigValue(key));
+    } else if (Conf.setConfigValue(key, value)) { printTable(Conf.listConfigValue(key)); }
 
     return true;
 };

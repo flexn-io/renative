@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -6,106 +5,83 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
+// import resolve from 'resolve';
 import colorString from 'color-string';
 import crypto from 'crypto';
-
-import { isRunningOnWindows, getRealPath } from './systemTools/fileutils';
+import { doResolve } from './resolve';
+import { getValidLocalhost } from './utils';
 import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
 import CLI from './cli';
 import {
-    logWelcome, configureLogger, logError, logTask,
-    logWarning, logDebug, logInfo, logComplete, logSuccess, logEnd,
-    logInitialize, logAppInfo
+    configureLogger,
+    logError,
+    logTask,
+    logWarning,
+    logInfo,
+    logInitialize,
+    logDebug,
+    logSuccess
 } from './systemTools/logger';
 import {
-    IOS, ANDROID, ANDROID_TV, ANDROID_WEAR, WEB, TIZEN, TIZEN_MOBILE, TVOS,
-    WEBOS, MACOS, WINDOWS, TIZEN_WATCH, KAIOS, FIREFOX_OS, FIREFOX_TV,
-    SDK_PLATFORMS,
-    PLATFORMS,
-    SUPPORTED_PLATFORMS
+    IOS,
+    ANDROID,
+    ANDROID_TV,
+    ANDROID_WEAR,
+    WEB,
+    TIZEN,
+    TIZEN_MOBILE,
+    TVOS,
+    WEBOS,
+    MACOS,
+    WINDOWS,
+    PLATFORMS
 } from './constants';
 import { execCLI } from './systemTools/exec';
-import {
-    parseRenativeConfigs, createRnvConfig, updateConfig,
-    fixRenativeConfigsSync, configureRnvGlobal, checkIsRenativeProject
-} from './configTools/configParser';
+import { createRnvConfig } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import Config from './config';
 
-export const initializeBuilder = (cmd, subCmd, process, program) => new Promise((resolve, reject) => {
+export const initializeBuilder = async (cmd, subCmd, process, program) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
 
-    configureLogger(c, c.process, c.command, c.subCommand, program.info === true);
+    configureLogger(
+        c,
+        c.process,
+        c.command,
+        c.subCommand,
+        program.info === true
+    );
     logInitialize();
 
-    resolve(c);
-});
-
+    return c;
+};
 
 export const generateChecksum = (str, algorithm, encoding) => crypto
     .createHash(algorithm || 'md5')
     .update(str, 'utf8')
     .digest(encoding || 'hex');
 
-export const isPlatformSupportedSync = (platform, resolve, reject) => {
-    if (!platform) {
-        if (reject) {
-            reject(
-                chalk.red(
-                    `You didn't specify platform. make sure you add "${chalk.white.bold(
-                        '-p <PLATFORM>',
-                    )}" option to your command!`,
-                ),
-            );
-        }
-        return false;
-    }
-    if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        if (reject) reject(chalk.red(`Platform ${platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))} .`));
-        return false;
-    }
-    if (resolve) resolve();
-    return true;
-};
-
-export const getSourceExts = (c) => {
-    const sExt = PLATFORMS[c.platform]?.sourceExts;
+export const getSourceExts = (c, p) => {
+    // IMPORTANT: do not replace "p" with c.platform as this has to
+    // be injected from above to generate multiple configs
+    const sExt = PLATFORMS[p]?.sourceExts;
     if (sExt) {
         return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
     }
     return [];
 };
 
-export const getSourceExtsAsString = (c) => {
-    const sourceExts = getSourceExts(c);
-    return sourceExts.length ? `['${sourceExts.join('\',\'')}']` : '[]';
-};
-
-export const isPlatformSupported = async (c) => {
-    logTask(`isPlatformSupported:${c.platform}`);
-    let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
-    if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
-    const opts = generateOptions(platformsAsObj);
-
-    if (!c.platform || c.platform === true || !SUPPORTED_PLATFORMS.includes(c.platform)) {
-        const { platform } = await inquirerPrompt({
-            name: 'platform',
-            type: 'list',
-            message: 'Pick one of available platforms',
-            choices: opts.keysAsArray,
-            logMessage: 'You need to specify platform'
-        });
-
-        c.platform = platform;
-        c.program.platform = platform;
-        return platform;
-    }
+export const getSourceExtsAsString = (c, p) => {
+    const sourceExts = getSourceExts(c, p);
+    return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
 };
 
 export const sanitizeColor = (val) => {
     if (!val) {
-        logWarning('sanitizeColor: passed null. will use default #FFFFFF instead');
+        logWarning(
+            'sanitizeColor: passed null. will use default #FFFFFF instead'
+        );
         return {
             rgb: [255, 255, 255, 1],
             rgbDecimal: [1, 1, 1, 1],
@@ -134,10 +110,13 @@ export const isBuildSchemeSupported = async (c) => {
 
     const { buildSchemes } = c.buildConfig.platforms[c.platform];
 
-
     if (!buildSchemes) {
-        logWarning(`Your appConfig for platform ${c.platform} has no buildSchemes. Will continue with defaults`);
-        return;
+        logWarning(
+            `Your appConfig for platform ${
+                c.platform
+            } has no buildSchemes. Will continue with defaults`
+        );
+        return false;
     }
 
     const schemeDoesNotExist = scheme && !buildSchemes[scheme];
@@ -166,37 +145,145 @@ export const confirmActiveBundler = async (c) => {
     const { confirm } = await inquirerPrompt({
         type: 'confirm',
         message: 'It will be used for this session. Continue?',
-        warningMessage: `Another ${c.platform} server at port ${c.runtime.port} already running`
+        warningMessage: `Another ${c.platform} server at port ${
+            c.runtime.port
+        } already running`
     });
 
     if (confirm) return true;
     return Promise.reject('Cancelled by user');
-}
-
-export const getCurrentSdkPath = (c, platform) => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[platform]];
-
-export const isSdkInstalled = (c, platform) => {
-    logTask(`isSdkInstalled: ${platform}`);
-
-    const sdkPath = getCurrentSdkPath(c, platform);
-
-    return fs.existsSync(getRealPath(c, sdkPath));
-};
-
-export const checkSdk = (c, platform, reject) => {
-    if (!isSdkInstalled(c, platform)) {
-        const err = `${platform} requires SDK to be installed. check your ${chalk.white(c.paths.workspace.config)} file if you SDK path is correct. current value is ${chalk.white(getCurrentSdkPath(c, platform))}`;
-        if (reject) {
-            reject(err);
-        } else {
-            throw new Error(err);
-        }
-        return false;
-    }
-    return true;
 };
 
 export const getAppFolder = (c, platform) => path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+
+export const getAppSubFolder = (c, platform) => {
+    let subFolder = '';
+    if (platform === IOS) subFolder = 'RNVApp';
+    else if (platform === TVOS) subFolder = 'RNVAppTVOS';
+    return path.join(getAppFolder(c, platform), subFolder);
+};
+
+export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+
+export const CLI_PROPS = [
+    'provisioningStyle',
+    'codeSignIdentity',
+    'provisionProfileSpecifier'
+];
+
+// We need to slowly move this to Config and refactor everything to use it from there
+export const getConfigProp = (c, platform, key, defaultVal) => {
+    if (!c.buildConfig) {
+        logError('getConfigProp: c.buildConfig is undefined!');
+        return null;
+    }
+    const p = c.buildConfig.platforms[platform];
+    const ps = c.runtime.scheme;
+
+    let resultPlatforms;
+    let scheme;
+    if (p) {
+        scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
+        resultPlatforms = getFlavouredProp(
+            c,
+            c.buildConfig.platforms[platform],
+            key
+        );
+    }
+
+    scheme = scheme || {};
+    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
+    const resultScheme = scheme[key];
+    const resultCommon = getFlavouredProp(c, c.buildConfig.common, key);
+
+    let result = Config.getValueOrMergedObject(
+        resultCli,
+        resultScheme,
+        resultPlatforms,
+        resultCommon
+    );
+
+    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
+    logDebug(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+    return result;
+};
+
+export const getAppId = (c, platform) => {
+    const id = getConfigProp(c, platform, 'id');
+    const idSuffix = getConfigProp(c, platform, 'idSuffix');
+    return idSuffix ? `${id}${idSuffix}` : id;
+};
+
+export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
+
+export const getAppVersion = (c, platform) => getConfigProp(c, platform, 'version') || c.files.project.package?.version;
+
+export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
+
+export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
+
+export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
+
+export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
+
+export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description')
+    || c.files.project.package?.description;
+
+export const getAppVersionCode = (c, platform) => {
+    const versionCode = getConfigProp(c, platform, 'versionCode');
+    if (versionCode) return versionCode;
+
+    const version = getAppVersion(c, platform);
+
+    let vc = '';
+    version
+        .split('-')[0]
+        .split('.')
+        .forEach((v) => {
+            vc += v.length > 1 ? v : `0${v}`;
+        });
+    return Number(vc).toString();
+};
+
+export const logErrorPlatform = (c, platform) => {
+    logError(
+        `Platform: ${chalk.white(
+            platform
+        )} doesn't support command: ${chalk.white(c.command)}`,
+        true // kill it if we're not supporting this
+    );
+};
+
+export const PLATFORM_RUNS = {};
+
+export const configureIfRequired = async (c, platform) => {
+    logTask(`configureIfRequired:${platform}`);
+
+    if (PLATFORM_RUNS[platform]) {
+        return;
+    }
+    PLATFORM_RUNS[platform] = true;
+    const { device } = c.program;
+    const nc = {
+        command: 'configure',
+        program: {
+            appConfig: c.id,
+            update: false,
+            platform,
+            device
+        }
+    };
+
+    if (c.program.reset) {
+        await cleanPlatformBuild(c, platform);
+    }
+
+    if (c.program.resetHard) {
+        await cleanPlaformAssets(c);
+    }
+    await createPlatformBuild(c, platform);
+    await CLI(c, nc);
+};
 
 export const getBinaryPath = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
@@ -224,145 +311,29 @@ export const getBinaryPath = (c, platform) => {
             return `${appFolder}/output/${appName}.wgt`;
         case WEBOS:
             return `${appFolder}/output/${id}_${version}_all.ipk`;
+        default:
+            return appFolder;
     }
-
-    return appFolder;
 };
 
-export const getAppSubFolder = (c, platform) => {
-    let subFolder = '';
-    if (platform === IOS) subFolder = 'RNVApp';
-    else if (platform === TVOS) subFolder = 'RNVAppTVOS';
-    return path.join(getAppFolder(c, platform), subFolder);
-};
-
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-
-export const getAppConfigId = c => c.buildConfig.id;
-
-export const CLI_PROPS = [
-    'provisioningStyle',
-    'codeSignIdentity',
-    'provisionProfileSpecifier'
-];
-
-// We need to slowly move this to Config and refactor everything to use it from there
-export const getConfigProp = (c, platform, key, defaultVal) => {
-    if (!c.buildConfig) {
-        logError('getConfigProp: c.buildConfig is undefined!');
-        return null;
-    }
-    const p = c.buildConfig.platforms[platform];
-    const ps = _getScheme(c);
-    let resultPlatforms;
-    let scheme;
-    if (p) {
-        scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
-        resultPlatforms = getFlavouredProp(c, c.buildConfig.platforms[platform], key);
-    }
-
-    scheme = scheme || {};
-    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
-    const resultScheme = scheme[key];
-    const resultCommon = getFlavouredProp(c, c.buildConfig.common, key);
-
-    let result = Config.getValueOrMergedObject(resultCli, resultScheme, resultPlatforms, resultCommon);
-
-    if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-    logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
-    return result;
-};
-
-export const getAppId = (c, platform) => {
-    const id = getConfigProp(c, platform, 'id');
-    const idSuffix = getConfigProp(c, platform, 'idSuffix');
-    return idSuffix ? `${id}${idSuffix}` : id;
-};
-
-export const getAppTitle = (c, platform) => getConfigProp(c, platform, 'title');
-
-export const getAppVersion = (c, platform) => getConfigProp(c, platform, 'version') || c.files.project.package?.version;
-
-export const getAppAuthor = (c, platform) => getConfigProp(c, platform, 'author') || c.files.project.package?.author;
-
-export const getAppLicense = (c, platform) => getConfigProp(c, platform, 'license') || c.files.project.package?.license;
-
-export const getEntryFile = (c, platform) => c.buildConfig.platforms?.[platform]?.entryFile;
-
-export const getGetJsBundleFile = (c, platform) => getConfigProp(c, platform, 'getJsBundleFile');
-
-export const getAppDescription = (c, platform) => getConfigProp(c, platform, 'description') || c.files.project.package?.description;
-
-export const getAppVersionCode = (c, platform) => {
-    const versionCode = getConfigProp(c, platform, 'versionCode');
-    if (versionCode) return versionCode;
-
-    const version = getAppVersion(c, platform);
-
-    let vc = '';
-    version
-        .split('-')[0]
-        .split('.')
-        .forEach((v) => {
-            vc += v.length > 1 ? v : `0${v}`;
-        });
-    return Number(vc).toString();
-};
-
-export const logErrorPlatform = (c, platform) => {
-    logError(`Platform: ${chalk.white(platform)} doesn't support command: ${chalk.white(c.command)}`);
-};
-
-export const isPlatformActive = (c, platform, resolve) => {
-    if (!c.buildConfig || !c.buildConfig.platforms) {
-        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
-        if (resolve) resolve();
+export const isMonorepo = () => {
+    try {
+        fs.existsSync(path.resolve(__dirname, '../../../lerna.json'));
+        return true;
+    } catch (_err) {
         return false;
     }
-    if (!c.buildConfig.platforms[platform]) {
-        console.log(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
-        if (resolve) resolve();
-        return false;
-    }
-    return true;
 };
 
-export const PLATFORM_RUNS = {};
-
-export const configureIfRequired = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`configureIfRequired:${platform}`);
-
-    if (PLATFORM_RUNS[platform]) {
-        resolve();
-        return;
+export const getMonorepoRoot = () => {
+    if (isMonorepo()) {
+        return path.resolve(__dirname, '../../..');
     }
-    PLATFORM_RUNS[platform] = true;
-    const { device } = c.program;
-    const nc = {
-        command: 'configure',
-        program: {
-            appConfig: c.id,
-            update: false,
-            platform,
-            device
-        }
-    };
+};
 
-    if (c.program.reset) {
-        cleanPlatformBuild(c, platform)
-            .then(() => cleanPlaformAssets(c))
-            .then(() => createPlatformBuild(c, platform))
-            .then(() => CLI(c, nc))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        createPlatformBuild(c, platform)
-            .then(() => CLI(c, nc))
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    }
-});
+export const areNodeModulesInstalled = () => !!doResolve('react', false);
 
+// TODO: remove and use fileutils one
 export const writeCleanFile = (source, destination, overrides) => {
     // logTask(`writeCleanFile`)
     if (!fs.existsSync(source)) {
@@ -370,7 +341,9 @@ export const writeCleanFile = (source, destination, overrides) => {
         return;
     }
     if (!fs.existsSync(destination)) {
-        logWarning(`destination path doesn't exists: ${destination}. will create new one`);
+        logWarning(
+            `destination path doesn't exists: ${destination}. will create new one`
+        );
         // return;
     }
     const pFile = fs.readFileSync(source, 'utf8');
@@ -385,30 +358,28 @@ export const writeCleanFile = (source, destination, overrides) => {
     fs.writeFileSync(destination, pFileClean, 'utf8');
 };
 
-const _getScheme = c => c.program.scheme || 'debug';
-
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fs.existsSync(pp)) {
     //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
     // }
-    const p = path.join(pp, `builds/${platform}@${_getScheme(c)}`);
+    const p = path.join(pp, `builds/${platform}@${c.runtime.scheme}`);
     if (fs.existsSync(p)) return p;
     return path.join(pp, `builds/${platform}`);
 };
 
 export const getIP = () => ip.address();
 
-export const cleanPlatformIfRequired = (c, platform) => new Promise((resolve, reject) => {
+export const cleanPlatformIfRequired = async (c, platform) => {
     if (c.program.reset) {
-        logInfo(`You passed ${chalk.white('-r')} argument. paltform ${chalk.white(platform)} will be cleaned up first!`);
-        cleanPlatformBuild(c, platform)
-            .then(() => resolve(c))
-            .catch(e => reject(e));
-    } else {
-        resolve();
+        logInfo(
+            `You passed ${chalk.white('-r')} argument. paltform ${chalk.white(
+                platform
+            )} will be cleaned up first!`
+        );
+        await cleanPlatformBuild(c, platform);
     }
-});
+};
 
 export const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     detectPort(port, (err, availablePort) => {
@@ -416,21 +387,13 @@ export const checkPortInUse = (c, platform, port) => new Promise((resolve, rejec
             reject(err);
             return;
         }
-        resolve(port !== availablePort);
+        resolve(parseInt(port, 10) !== parseInt(availablePort, 10));
     });
 });
 
-export const resolveNodeModulePath = (c, filePath) => {
-    let pth = path.join(c.paths.rnv.nodeModulesDir, filePath);
-    if (!fs.existsSync(pth)) {
-        pth = path.join(c.paths.project.nodeModulesDir, filePath);
-    }
-    return pth;
-};
-
 export const getFlavouredProp = (c, obj, key) => {
-    if (!key) return null;
-    const val1 = obj[`${key}@${_getScheme(c)}`];
+    if (!key || !obj) return null;
+    const val1 = obj[`${key}@${c.runtime.scheme}`];
     if (val1) return val1;
     return obj[key];
 };
@@ -439,7 +402,10 @@ export const getBuildFilePath = (c, platform, filePath) => {
     // P1 => platformTemplates
     let sp = path.join(getAppTemplateFolder(c, platform), filePath);
     // P2 => appConfigs/base + @buildSchemes
-    const sp2 = path.join(getBuildsFolder(c, platform, c.paths.project.projectConfig.dir), filePath);
+    const sp2 = path.join(
+        getBuildsFolder(c, platform, c.paths.project.projectConfig.dir),
+        filePath
+    );
     if (fs.existsSync(sp2)) sp = sp2;
     // P3 => appConfigs + @buildSchemes
     const sp3 = path.join(getBuildsFolder(c, platform), filePath);
@@ -449,14 +415,18 @@ export const getBuildFilePath = (c, platform, filePath) => {
 
 export const waitForEmulator = async (c, cli, command, callback) => {
     let attempts = 0;
-    const maxAttempts = 10;
+    const maxAttempts = 30;
     const CHECK_INTEVAL = 2000;
     const { maxErrorLength } = c.program;
     const spinner = ora('Waiting for emulator to boot...').start();
 
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            execCLI(c, cli, command, { silent: true, timeout: 10000, maxErrorLength })
+            execCLI(c, cli, command, {
+                silent: true,
+                timeout: 10000,
+                maxErrorLength
+            })
                 .then((resp) => {
                     if (callback(resp)) {
                         clearInterval(interval);
@@ -466,22 +436,31 @@ export const waitForEmulator = async (c, cli, command, callback) => {
                     attempts++;
                     if (attempts === maxAttempts) {
                         clearInterval(interval);
-                        spinner.fail('Can\'t connect to the running emulator. Try restarting it.');
-                        return reject('Can\'t connect to the running emulator. Try restarting it.');
+                        spinner.fail(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
+                        return reject(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
                     }
-                }).catch(() => {
+                })
+                .catch(() => {
                     attempts++;
                     if (attempts > maxAttempts) {
                         clearInterval(interval);
-                        spinner.fail('Can\'t connect to the running emulator. Try restarting it.');
-                        return reject('Can\'t connect to the running emulator. Try restarting it.');
+                        spinner.fail(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
+                        return reject(
+                            "Can't connect to the running emulator. Try restarting it."
+                        );
                     }
                 });
         }, CHECK_INTEVAL);
     });
 };
 
-export const waitForWebpack = async (c) => {
+export const waitForWebpack = async (c, engine) => {
     logTask(`waitForWebpack:${c.runtime.port}`);
     let attempts = 0;
     const maxAttempts = 10;
@@ -489,76 +468,59 @@ export const waitForWebpack = async (c) => {
     // const spinner = ora('Waiting for webpack to finish...').start();
 
     const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    let devServerHost = extendConfig.devServerHost || '0.0.0.0';
-    if (isRunningOnWindows && devServerHost === '0.0.0.0') {
-        devServerHost = '127.0.0.1';
-    }
-    const url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
+    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
+    let url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
+
+    if (engine === 'next') url = `http://${devServerHost}:${c.runtime.port}`;
+
     return new Promise((resolve, reject) => {
         const interval = setInterval(() => {
-            axios.get(url).then((res) => {
-                if (res.status === 200) {
-                    clearInterval(interval);
-                    // spinner.succeed();
-                    return resolve(true);
-                }
-                attempts++;
-                if (attempts === maxAttempts) {
-                    clearInterval(interval);
-                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                    return reject('Can\'t connect to webpack. Try restarting it.');
-                }
-            }).catch(() => {
-                attempts++;
-                if (attempts > maxAttempts) {
-                    clearInterval(interval);
-                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                    return reject('Can\'t connect to webpack. Try restarting it.');
-                }
-            });
+            axios
+                .get(url)
+                .then((res) => {
+                    if (res.status === 200) {
+                        clearInterval(interval);
+                        // spinner.succeed();
+                        return resolve(true);
+                    }
+                    attempts++;
+                    if (attempts === maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                })
+                .catch(() => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                });
         }, CHECK_INTEVAL);
     });
 };
 export const importPackageFromProject = (name) => {
     const c = Config.getConfig();
-    // eslint-disable-next-line global-require, import/no-dynamic-require
-    const pkg = require(path.join(c.paths.project.nodeModulesDir, `/${name}`));
+    // eslint-disable-next-line import/no-dynamic-require, global-require
+    const pkg = require(doResolve(name));
     if (pkg.default) return pkg.default;
     return pkg;
-};
-
-// TODO: remove this
-export {
-    logInfo,
-    logDebug,
-    logError,
-    logTask,
-    logEnd,
-    logWarning,
-    logSuccess,
 };
 
 export default {
     getBuildFilePath,
     getBuildsFolder,
-    logWelcome,
-    isPlatformSupported,
     isBuildSchemeSupported,
-    isPlatformSupportedSync,
     getAppFolder,
     getAppTemplateFolder,
-    logTask,
-    logComplete,
-    logError,
     initializeBuilder,
-    logDebug,
-    logInfo,
     logErrorPlatform,
-    isPlatformActive,
-    isSdkInstalled,
-    checkSdk,
-    logEnd,
-    logWarning,
     configureIfRequired,
     getAppId,
     getAppTitle,
@@ -567,16 +529,42 @@ export default {
     writeCleanFile,
     getEntryFile,
     getGetJsBundleFile,
-    getAppConfigId,
     getAppDescription,
     getAppAuthor,
     getAppLicense,
-    logSuccess,
     getConfigProp,
     getIP,
     cleanPlatformIfRequired,
     checkPortInUse,
-    resolveNodeModulePath,
-    configureRnvGlobal,
-    waitForEmulator
+    waitForEmulator,
+    logTask: (val) => {
+        logError(
+            'DEPRECATED: Common.logTask() has been removed. use Logger.logTask() instead'
+        );
+        logTask(val);
+    },
+    logWarning: (val) => {
+        logError(
+            'DEPRECATED: Common.logWarning() has been removed. use Logger.logWarning() instead'
+        );
+        logWarning(val);
+    },
+    logError: (val) => {
+        logError(
+            'DEPRECATED: Common.logError() has been removed. use Logger.logError() instead'
+        );
+        logError(val);
+    },
+    logSuccess: (val) => {
+        logError(
+            'DEPRECATED: Common.logError() has been removed. use Logger.logError() instead'
+        );
+        logSuccess(val);
+    },
+    logDebug: (val) => {
+        logError(
+            'DEPRECATED: Common.logDebug() has been removed. use Logger.logDebug() instead'
+        );
+        logDebug(val);
+    }
 };

@@ -1,36 +1,28 @@
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
-import { isObject, isArray, isBool, isString } from '../../systemTools/objectUtils';
 import {
-    logTask,
-    logError,
-    logWarning,
+    isObject,
+    isArray,
+    isBool,
+    isString
+} from '../../systemTools/objectUtils';
+import {
     getAppFolder,
-    isPlatformActive,
-    logDebug,
     getAppVersion,
     getAppTitle,
     getAppVersionCode,
-    getEntryFile,
     writeCleanFile,
-    getAppTemplateFolder,
-    getAppId,
     getConfigProp,
-    getIP,
     getBuildFilePath,
-    logSuccess,
-    getBuildsFolder,
     getFlavouredProp
 } from '../../common';
-import { copyBuildsFolder } from '../../projectTools/projectParser';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { logTask, logError, logWarning } from '../../systemTools/logger';
+import { parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
-import { copyFolderContentsRecursiveSync, copyFileSync, mkdirSync, readObjectSync, mergeObjects, sanitizeDynamicProps } from '../../systemTools/fileutils';
+import { readObjectSync, mergeObjects } from '../../systemTools/fileutils';
 
-
-export const parseExportOptionsPlist = (c, platform) => new Promise((resolve, reject) => {
-// EXPORT OPTIONS
+export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) => {
+    // EXPORT OPTIONS
     const tId = getConfigProp(c, platform, 'teamID');
     const appFolder = getAppFolder(c, platform);
     const exportOptions = getConfigProp(c, platform, 'exportOptions') || {};
@@ -41,14 +33,19 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve, re
     if (exportOptions.provisioningProfiles) {
         const expProvProfile = exportOptions.provisioningProfiles[id];
         if (!expProvProfile) {
-            logError(`Your exportOptions.provisionProfiles object in ${c.paths.appConfig.config} does not include id ${id}!`);
+            logError(
+                `Your exportOptions.provisionProfiles object in ${c.paths.appConfig.config} does not include id ${id}!`
+            );
         }
     }
 
     const bPath = getBuildFilePath(c, platform, 'exportOptions.plist');
     writeCleanFile(bPath, path.join(appFolder, 'exportOptions.plist'), [
         { pattern: '{{TEAM_ID}}', override: tId },
-        { pattern: '{{PLUGIN_EXPORT_OPTIONS}}', override: c.pluginConfigiOS.exportOptions },
+        {
+            pattern: '{{PLUGIN_EXPORT_OPTIONS}}',
+            override: c.pluginConfigiOS.exportOptions
+        }
     ]);
     resolve();
 });
@@ -58,11 +55,19 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, rej
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
-    const entitlementsPath = path.join(appFolder, `${appFolderName}/${appFolderName}.entitlements`);
-    // PLUGIN ENTITLEMENTS
+    const entitlementsPath = path.join(
+        appFolder,
+        `${appFolderName}/${appFolderName}.entitlements`
+    );
+        // PLUGIN ENTITLEMENTS
     let pluginsEntitlementsObj = getConfigProp(c, platform, 'entitlements');
     if (!pluginsEntitlementsObj) {
-        pluginsEntitlementsObj = readObjectSync(path.join(c.paths.rnv.dir, 'src/platformTools/apple/supportFiles/entitlements.json'));
+        pluginsEntitlementsObj = readObjectSync(
+            path.join(
+                c.paths.rnv.dir,
+                'src/platformTools/apple/supportFiles/entitlements.json'
+            )
+        );
     }
 
     saveObjToPlistSync(c, entitlementsPath, pluginsEntitlementsObj);
@@ -79,7 +84,12 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     const plistPath = path.join(appFolder, `${appFolderName}/Info.plist`);
 
     // PLIST
-    let plistObj = readObjectSync(path.join(c.paths.rnv.dir, `src/platformTools/apple/supportFiles/info.plist.${platform}.json`));
+    let plistObj = readObjectSync(
+        path.join(
+            c.paths.rnv.dir,
+            `src/platformTools/apple/supportFiles/info.plist.${platform}.json`
+        )
+    );
     plistObj.CFBundleDisplayName = getAppTitle(c, platform);
     plistObj.CFBundleShortVersionString = getAppVersion(c, platform);
     plistObj.CFBundleVersion = getAppVersionCode(c, platform);
@@ -89,7 +99,8 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     }
     // PERMISSIONS
     const pluginPermissions = '';
-    const includedPermissions = getConfigProp(c, platform, 'includedPermissions') || getConfigProp(c, platform, 'permissions');
+    const includedPermissions = getConfigProp(c, platform, 'includedPermissions')
+            || getConfigProp(c, platform, 'permissions');
     if (includedPermissions && c.buildConfig.permissions) {
         const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
         const pc = c.buildConfig.permissions[plat];
@@ -112,17 +123,23 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
         if (orientationSupport.phone) {
             plistObj.UISupportedInterfaceOrientations = orientationSupport.phone;
         } else {
-            plistObj.UISupportedInterfaceOrientations = ['UIInterfaceOrientationPortrait'];
+            plistObj.UISupportedInterfaceOrientations = [
+                'UIInterfaceOrientationPortrait'
+            ];
         }
         if (orientationSupport.tab) {
             plistObj['UISupportedInterfaceOrientations~ipad'] = orientationSupport.tab;
         } else {
-            plistObj['UISupportedInterfaceOrientations~ipad'] = ['UIInterfaceOrientationPortrait'];
+            plistObj['UISupportedInterfaceOrientations~ipad'] = [
+                'UIInterfaceOrientationPortrait'
+            ];
         }
     }
     // URL_SCHEMES (LEGACY)
     if (urlScheme) {
-        logWarning('urlScheme is DEPRECATED. use "plist:{ CFBundleURLTypes: []}" object instead');
+        logWarning(
+            'urlScheme is DEPRECATED. use "plist:{ CFBundleURLTypes: []}" object instead'
+        );
         plistObj.CFBundleURLTypes.push({
             CFBundleTypeRole: 'Editor',
             CFBundleURLName: urlScheme,
@@ -139,7 +156,7 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     // PLUGINS
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const plist = getFlavouredProp(c, pluginPlat, 'plist');
-        if (plist) {            
+        if (plist) {
             plistObj = mergeObjects(c, plistObj, plist, true, false);
         }
     });
@@ -193,8 +210,4 @@ const saveObjToPlistSync = (c, filePath, obj) => {
     fs.writeFileSync(filePath, objToPlist(obj));
 };
 
-
-export {
-    objToPlist,
-    saveObjToPlistSync
-};
+export { objToPlist, saveObjToPlistSync };

@@ -6,21 +6,18 @@ import ip from 'ip';
 import path from 'path';
 
 import {
-    isPlatformSupported,
     isBuildSchemeSupported,
-    logTask,
-    logError,
-    checkSdk,
     logErrorPlatform,
     configureIfRequired,
     cleanPlatformIfRequired,
-    logDebug,
     writeCleanFile,
     getConfigProp,
     waitForWebpack,
-    getSourceExts,
     confirmActiveBundler
 } from '../common';
+import { doResolve } from '../resolve';
+import { isPlatformSupported } from './index';
+import { logTask, logError, logDebug, logSummary } from '../systemTools/logger';
 import {
     IOS,
     TVOS,
@@ -37,8 +34,8 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
-    WEB_HOSTED_PLATFORMS,
-    PLATFORMS
+    CHROMECAST,
+    WEB_NEXT
 } from '../constants';
 import {
     runXcodeProject,
@@ -48,14 +45,18 @@ import {
     runAppleLog
 } from './apple';
 import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
+import { runWebNext, buildWebNext, exportWebNext } from './web/webNext';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
+import { runChromecast } from './chromecast';
 import {
     runElectron,
-    buildElectron, runElectronDevServer, configureElectronProject, exportElectron
+    buildElectron,
+    runElectronDevServer,
+    configureElectronProject,
+    exportElectron
 } from './electron';
-import PlatformSetup from '../setupTools';
 import {
     packageAndroid,
     runAndroid,
@@ -65,13 +66,11 @@ import {
 } from './android';
 import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
-import { isBundlerRunning, waitForBundler } from './bundler';
-import { logInfo } from '../systemTools/logger';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
-import { inquirerPrompt } from '../../dist/systemTools/prompt';
 
-const isRunningOnWindows = process.platform === 'win32';
+import { isBundlerActive, waitForBundler } from './bundler';
+import { checkSdk } from './sdkManager';
 
 let keepRNVRunning = false;
 
@@ -79,18 +78,18 @@ let keepRNVRunning = false;
 // PUBLIC API
 // ##########################################
 
-
 export const rnvStart = async (c) => {
     const { platform } = c;
-    const port = c.runtime.port
+    const { port } = c.runtime;
     const { hosted } = c.program;
 
-    logTask(`rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`);
+    logTask(
+        `rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`
+    );
 
     if (Config.isWebHostEnabled && hosted) {
-        const hostIp = isRunningOnWindows ? '127.0.0.1' : '0.0.0.0';
-        waitForWebpack(c, port)
-            .then(() => open(`http://${hostIp}:${port}/`))
+        waitForWebpack(c)
+            .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
     }
 
@@ -109,15 +108,18 @@ export const rnvStart = async (c) => {
             return runWeb(c, platform, port);
         default:
             if (hosted) {
-                return logError('This platform does not support hosted mode', true);
+                return logError(
+                    'This platform does not support hosted mode',
+                    true
+                );
             }
     }
 
-    let startCmd = `node ./node_modules/react-native/local-cli/cli.js start --sourceExts ${getSourceExts(c).join(',')} --port ${c.runtime.port} --config=metro.config.js`;
+    let startCmd = `node ${doResolve('react-native')}/local-cli/cli.js start --port ${c.runtime.port} --config=configs/metro.config.${c.platform}.js`;
     if (c.program.reset) {
         startCmd += ' --reset-cache';
     }
-
+    // logSummary('BUNDLER STARTED');
     await executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
 };
 
@@ -130,7 +132,6 @@ export const rnvDebug = async (c) => {
     await isBuildSchemeSupported(c);
     await runWeinre(c);
 };
-
 
 export const rnvRun = async (c) => {
     logTask(`rnvRun:${c.platform}`);
@@ -192,23 +193,45 @@ export const rnvLog = async (c) => {
 // PRIVATE
 // ##########################################
 
-
-const _configureHostedIfRequired = async (c, platform) => {
+const _configureHostedIfRequired = async (c) => {
+    logTask(`_configureHostedIfRequired:${c.platform}`);
     if (Config.isWebHostEnabled) {
         logDebug('Running hosted build');
         const { project, rnv } = c.paths;
-        copyFolderContentsRecursiveSync(path.join(rnv.dir, 'supportFiles', 'appShell'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public'));
-        writeCleanFile(path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'), path.join(project.dir, 'platformBuilds', `${c.runtime.appId}_${platform}`, 'public', 'index.html'), [
-            { pattern: '{{DEV_SERVER}}', override: `http://${ip.address()}:${c.runtime.port}` },
-        ]);
+        copyFolderContentsRecursiveSync(
+            path.join(rnv.dir, 'supportFiles', 'appShell'),
+            path.join(
+                project.dir,
+                'platformBuilds',
+                `${c.runtime.appId}_${c.platform}`,
+                'public'
+            )
+        );
+        writeCleanFile(
+            path.join(rnv.dir, 'supportFiles', 'appShell', 'index.html'),
+            path.join(
+                project.dir,
+                'platformBuilds',
+                `${c.runtime.appId}_${c.platform}`,
+                'public',
+                'index.html'
+            ),
+            [
+                {
+                    pattern: '{{DEV_SERVER}}',
+                    override: `http://${ip.address()}:${c.runtime.port}`
+                }
+            ]
+        );
     }
 };
 
-const startBundlerIfRequired = async (c) => {
+const _startBundlerIfRequired = async (c) => {
+    logTask(`_startBundlerIfRequired:${c.platform}`);
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
 
-    const isRunning = await isBundlerRunning(c);
+    const isRunning = await isBundlerActive(c);
     if (!isRunning) {
         rnvStart(c);
         keepRNVRunning = true;
@@ -229,26 +252,26 @@ const waitForBundlerIfRequired = async (c) => {
 const _rnvRunWithPlatform = async (c) => {
     logTask(`_rnvRunWithPlatform:${c.platform}`);
     const { platform } = c;
-    const port = c.runtime.port
-    const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
+    const { port } = c.runtime;
+    const { target } = c.runtime;
     const { hosted } = c.program;
 
-    logTask(`_rnvRunWithPlatform:${platform}:${port}:${target}`, chalk.grey);
-
-    const throwErr = (err) => {
-        throw err;
-    };
+    logTask(
+        `_rnvRunWithPlatform:${platform}:${port}:${target}:${hosted}`,
+        chalk.grey
+    );
 
     if (Config.isWebHostEnabled && hosted) {
         c.runtime.shouldOpenBrowser = true;
         return rnvStart(c);
-        // logWarning(`Platform ${platform} does not support --hosted mode. Ignoring`);
     }
 
     Analytics.captureEvent({
         type: 'runProject',
-        platform,
+        platform
     });
+
+    await checkSdk(c);
 
     switch (platform) {
         case IOS:
@@ -256,26 +279,27 @@ const _rnvRunWithPlatform = async (c) => {
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await startBundlerIfRequired(c);
-                await runXcodeProject(c, platform, target);
+                await _startBundlerIfRequired(c);
+                await runXcodeProject(c);
+                logSummary('BUNDLER STARTED');
                 return waitForBundlerIfRequired(c);
             }
-            return runXcodeProject(c, platform, target);
+            return runXcodeProject(c);
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            if (!checkSdk(c, platform, logError)) {
-                const setupInstance = PlatformSetup(c);
-                await setupInstance.askToInstallSDK('android');
-            }
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await startBundlerIfRequired(c);
-                if (getConfigProp(c, platform, 'bundleAssets') === true || platform === ANDROID_WEAR) {
+                await _startBundlerIfRequired(c);
+                if (
+                    getConfigProp(c, platform, 'bundleAssets') === true
+                    || platform === ANDROID_WEAR
+                ) {
                     await packageAndroid(c, platform);
                 }
                 await runAndroid(c, platform, target);
+                logSummary('BUNDLER STARTED');
                 return waitForBundlerIfRequired(c);
             }
             return runAndroid(c, platform, target);
@@ -296,36 +320,41 @@ const _rnvRunWithPlatform = async (c) => {
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            if (!checkSdk(c, platform, logError)) {
-                const setupInstance = PlatformSetup(c);
-                await setupInstance.askToInstallSDK('tizen');
-            }
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await _configureHostedIfRequired(c, platform);
+                await _configureHostedIfRequired(c);
             }
             return runTizen(c, platform, target);
         case WEBOS:
-            if (!checkSdk(c, platform, logError)) {
-                const setupInstance = PlatformSetup(c);
-                await setupInstance.askToInstallSDK('webos');
-            }
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
-                await _configureHostedIfRequired(c, platform);
+                await _configureHostedIfRequired(c);
             }
             return runWebOS(c, platform, target);
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            if (platform === KAIOS && !checkSdk(c, platform, throwErr)) return;
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
             return runFirefoxProject(c, platform);
+        case CHROMECAST:
+            if (!c.program.only) {
+                await cleanPlatformIfRequired(c, platform);
+                await configureIfRequired(c, platform);
+                await _configureHostedIfRequired(c);
+            }
+            return runChromecast(c, platform, target);
+        case WEB_NEXT:
+            if (!c.program.only) {
+                await cleanPlatformIfRequired(c, platform);
+                await configureIfRequired(c, platform);
+            }
+            c.runtime.shouldOpenBrowser = true;
+            return runWebNext(c, platform, port, true);
         default:
             return logErrorPlatform(c, platform);
     }
@@ -336,6 +365,8 @@ const _rnvPackageWithPlatform = async (c) => {
     const { platform } = c;
 
     const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
+
+    await checkSdk(c);
 
     switch (platform) {
         case IOS:
@@ -348,16 +379,21 @@ const _rnvPackageWithPlatform = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            checkSdk(c, platform);
             if (!c.program.only) {
                 await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await configureGradleProject(c, platform);
             }
-            return packageAndroid(c, platform, target, platform === ANDROID_WEAR);
+            return packageAndroid(
+                c,
+                platform,
+                target,
+                platform === ANDROID_WEAR
+            );
+        default:
+            logErrorPlatform(c, platform);
+            return false;
     }
-
-    logErrorPlatform(c, platform);
 };
 
 const _rnvExportWithPlatform = async (c) => {
@@ -369,6 +405,11 @@ const _rnvExportWithPlatform = async (c) => {
                 await rnvBuild(c);
             }
             return exportWeb(c, platform);
+        case WEB_NEXT:
+            if (!c.program.only) {
+                await rnvBuild(c);
+            }
+            return exportWebNext(c);
         case IOS:
         case TVOS:
             if (!c.program.only) {
@@ -388,9 +429,9 @@ const _rnvExportWithPlatform = async (c) => {
                 await buildElectron(c, platform);
             }
             return exportElectron(c, platform);
+        default:
+            logErrorPlatform(c, platform);
     }
-
-    logErrorPlatform(c, platform);
 };
 
 const _rnvDeployWithPlatform = async (c) => {
@@ -399,6 +440,11 @@ const _rnvDeployWithPlatform = async (c) => {
 
     switch (platform) {
         case WEB:
+            if (!c.program.only) {
+                await rnvBuild(c);
+            }
+            return deployWeb(c, platform);
+        case CHROMECAST:
             if (!c.program.only) {
                 await rnvBuild(c);
             }
@@ -455,9 +501,15 @@ const _rnvBuildWithPlatform = async (c) => {
             await archiveXcodeProject(c, platform);
             return;
         case WEB:
+        case CHROMECAST:
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWeb(c, platform);
+            return;
+        case WEB_NEXT:
+            await cleanPlatformIfRequired(c, platform);
+            await configureIfRequired(c, platform);
+            await buildWebNext(c);
             return;
         case KAIOS:
         case FIREFOX_OS:
@@ -469,18 +521,16 @@ const _rnvBuildWithPlatform = async (c) => {
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            checkSdk(c, platform);
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildTizenProject(c, platform);
             return;
         case WEBOS:
-            checkSdk(c, platform);
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWebOSProject(c, platform);
             return;
+        default:
+            logErrorPlatform(c, platform);
     }
-
-    logErrorPlatform(c, platform);
 };

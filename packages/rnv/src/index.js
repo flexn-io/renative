@@ -1,13 +1,14 @@
 import Common, { initializeBuilder } from './common';
-import { logComplete, logError } from './systemTools/logger';
+import Logger, { logComplete, logError } from './systemTools/logger';
 import CLI from './cli';
-import Constants from './constants';
+import * as Constants from './constants';
 import Exec from './systemTools/exec';
 import FileUtils from './systemTools/fileutils';
 import Doctor from './systemTools/doctor';
 import PluginTools from './pluginTools';
 import SetupTools from './setupTools';
 import Config from './config';
+import { doResolve, doResolvePath } from './resolve';
 import Analytics from './systemTools/analytics';
 
 import 'source-map-support/register';
@@ -23,9 +24,18 @@ const run = (cmd, subCmd, program, process) => {
 };
 
 export {
-    Constants, Common, Exec, FileUtils,
-    Doctor, PluginTools, SetupTools,
-    run, CLI
+    Constants,
+    Common,
+    Exec,
+    FileUtils,
+    Doctor,
+    PluginTools,
+    SetupTools,
+    Logger,
+    run,
+    CLI,
+    doResolve,
+    doResolvePath
 };
 
 export default { run, Config };

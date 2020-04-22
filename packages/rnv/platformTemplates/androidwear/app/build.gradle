@@ -10,12 +10,12 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.androidwear.js",
 {{PLUGIN_ENABLE_HERMES}}
-    hermesCommand: "../../../node_modules/hermes-engine/%OS-BIN%/hermes",
+    hermesCommand: "{{PATH_HERMES_ENGINE}}/%OS-BIN%/hermes",
     inputExcludes: ["platformBuilds/**"],
     root: "../../../",
 ]
 
-apply from: "../../../node_modules/react-native/react.gradle"
+apply from: "{{PATH_REACT_NATIVE}}/react.gradle"
 
 def enableSeparateBuildPerCPUArchitecture = false
 def enableProguardInReleaseBuilds = false

@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
-import { logWarning } from '../common';
+import { logWarning } from './logger';
 
 const getSortedObject = (obj) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
@@ -13,11 +13,11 @@ const getSortedObject = (obj) => {
                 newObj[v] = obj[v];
                 addedKeys[v] = true;
             } else {
-
             }
         });
         return newObj;
-    } if (Array.isArray(obj)) {
+    }
+    if (Array.isArray(obj)) {
         return obj.sort();
     }
     return obj;
@@ -29,7 +29,11 @@ const checkForDuplicates = (arr) => {
         if (v) {
             for (const k in v) {
                 if (dupCheck[k]) {
-                    logWarning(`Key ${chalk.white(k)} is duplicated in your package.json`);
+                    logWarning(
+                        `Key ${chalk.white(
+                            k
+                        )} is duplicated in your package.json`
+                    );
                 }
                 dupCheck[k] = true;
             }
@@ -48,6 +52,7 @@ const fixPackageJson = (c, pkgPath) => new Promise((resolve, reject) => {
 const fixPackageObject = (pp) => {
     const output = {};
     const usedKeys = {};
+
     PACKAGE_JSON_FILEDS.forEach((v) => {
         if (pp[v] !== null) {
             output[v] = getSortedObject(pp[v]);
@@ -66,5 +71,6 @@ const fixPackageObject = (pp) => {
 
 export { fixPackageJson, fixPackageObject };
 export default {
-    fixPackageJson, fixPackageObject
+    fixPackageJson,
+    fixPackageObject
 };
