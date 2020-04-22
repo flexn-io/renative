@@ -271,7 +271,8 @@ export const versionCheck = async (c) => {
                     c.runtime.rnvVersionRunner
                 )} against project built with rnv v${chalk.red(
                     c.runtime.rnvVersionProject
-                )}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json.`
+                )}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json.`,
+                default: actionNoUpdate
             });
 
             c.runtime.versionCheckCompleted = true;
