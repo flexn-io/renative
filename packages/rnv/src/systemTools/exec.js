@@ -478,7 +478,7 @@ export const npmInstall = async (failOnError = false) => {
     const c = Config.getConfig();
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
-    const yarnLockPath = isMonorepo() ? path.join(Config.projectPath, '/../../yarn.lock') : path.join(Config.projectPath, 'yarn.lock');
+    const yarnLockPath = path.join(Config.projectPath, 'yarn.lock');
     let command = 'npm install';
     if (fs.existsSync(yarnLockPath)) {
         command = 'yarn';
