@@ -623,7 +623,7 @@ const _execute = async (c, cmdFn, cmd) => {
     setDefaults(c);
 
     const { plugins } = c.buildConfig;
-    if (!plugins || (plugins && Object.keys(plugins).length < 2)) {
+    if ((!plugins || (plugins && Object.keys(plugins).length < 2)) && !NO_OP_COMMANDS.includes(c.command)) {
         logError(`No plugins were injected into your app. your app will most likely fail. did you run ${chalk.white('rnv template apply')} ?`);
     }
 
