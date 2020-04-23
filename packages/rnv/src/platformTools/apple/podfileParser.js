@@ -108,9 +108,13 @@ export const parsePodFile = (c, platform) => new Promise((resolve) => {
                 override: c.pluginConfigiOS.staticFrameworks.join(',')
             },
             {
+                pattern: '{{PATH_JSC_ANDROID}}',
+                override: doResolve('jsc-android')
+            },
+            {
                 pattern: '{{PATH_REACT_NATIVE}}',
                 override: doResolve('react-native')
-            }
+            },
         ]
     );
     resolve();

@@ -115,8 +115,15 @@ export const rnvStart = async (c) => {
             }
     }
 
-    let startCmd = `node ${doResolve('react-native')}/local-cli/cli.js start --port ${c.runtime.port} --config=configs/metro.config.${c.platform}.js`;
-    if (c.program.reset) {
+    let startCmd = `node ${doResolve(
+        'react-native'
+    )}/local-cli/cli.js start --port ${
+        c.runtime.port
+    } --config=configs/metro.config.${c.platform}.js`;
+
+    if (c.program.resetHard) {
+        startCmd += ' --reset-cache';
+    } else if (c.program.reset && c.command === 'start') {
         startCmd += ' --reset-cache';
     }
     // logSummary('BUNDLER STARTED');

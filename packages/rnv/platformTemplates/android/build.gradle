@@ -23,7 +23,7 @@ allprojects {
         mavenCentral()
         maven { url "{{PATH_REACT_NATIVE}}/android" }
         maven { url "https://jitpack.io" }
-        maven { url("$rootDir/../../node_modules/jsc-android/dist") }
+        maven { url("{{PATH_JSC_ANDROID}}/dist") }
         {{PLUGIN_INJECT_ALLPROJECTS_REPOSITORIES}}
     }
 }
