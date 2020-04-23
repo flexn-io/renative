@@ -97,7 +97,7 @@ pre_install do |installer|
         true
       end
       def pod.build_type;
-        Pod::Target::BuildType.static_library
+        {{PLUGIN_STATIC_POD_DEFINITION}}
       end
     end
   end

@@ -676,6 +676,7 @@ const configureXcodeProject = async (c, platform, ip, port) => {
     c.pluginConfigiOS = {
         podfileInject: '',
         staticFrameworks: [],
+        staticPodDefinition: '',
         exportOptions: '',
         embeddedFonts: [],
         embeddedFontSources: [],
