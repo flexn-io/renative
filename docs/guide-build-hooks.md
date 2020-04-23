@@ -96,6 +96,7 @@ List of available pipe hooks:
 'package:before', 'package:after',
 'package:before', 'package:after',
 'build:before', 'build:after',
+'export:before', 'export:after',
 'deploy:before', 'deploy:after',
 'configure:before', 'configure:after',
 'platform:configure:before', 'platform:configure:after'

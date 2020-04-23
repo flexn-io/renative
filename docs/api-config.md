@@ -4,57 +4,6 @@ title: renative.json API Reference
 sidebar_label: renative.json
 ---
 
-# Config Spec
-
-```json
-{
-  "env": {},
-  "hidden": false,
-  "definitions": {},
-  "sdks": {
-    ...SDK_PROPS
-  },
-  "paths": {
-    ...PATH_PROPS
-  },
-  "defaults": {
-    ...DEFAULTS_PROPS
-  },
-  "plugins": {
-    "[PLUGIN_KEY]": {
-      ...PLUGIN_PROPS
-    }
-  },
-  "permissions": {
-    "[PLATFORM]": {}
-  },
-  "common": {
-    ...COMMON_PROPS
-    ...BUILD_SCHEME_PROPS
-  },
-  "platforms": {
-    "[PLATFORM]": {
-      ...COMMON_PROPS
-      ...[PLATFORM]_COMMON_PROPS
-      ...BUILD_SCHEME_PROPS
-    }
-  },
-  "runtime": {}
-}
-```
-
-## env
-
-Define environment variables
-
-## hidden
-
-Hide app config from available options in CLI. Used mostly to hide base configs other would inherit from
-
-## definitions
-
-Define injectable props to be reused across config file
-
 ## sdks
 
 Define paths to your SDK Configurations
@@ -119,6 +68,22 @@ Default system config for this project
 }
 ```
 
+## pipes
+
+To avoid rnv building `buildHooks/src` every time you can specify which specific pipes should trigger recompile of buildHooks
+
+```json
+{
+    "pipes": [
+        "configure:after",
+        "start:before",
+        "deploy:after",
+        "export:before",
+        "export:after"
+    ]
+}
+```
+
 ## enableAnalytics
 
 Enable or disable sending analytics to improve ReNative
@@ -158,6 +123,21 @@ Plugin configurations
                 "appDelegateMethods": {},
                 "podName": "",
                 "path": ""
+            }
+        }
+    }
+}
+```
+
+### android
+
+```json
+{
+    "plugins": {
+        "plugin-name": {
+            "ios": {
+                "path": "",
+                "package": ""
             }
         }
     }
@@ -332,6 +312,16 @@ Platform specififc configurations
 {
     "platforms": {
         "ios": {
+            "teamID": "",
+            "deploymentTarget": "",
+            "provisioningStyle": "",
+            "systemCapabilities": {},
+            "scheme": "",
+            "entitlements": {},
+            "orientationSupport": {
+                "phone": [],
+                "tab": []
+            },
             "appDelegateImports": [],
             "appDelegateMethods": {},
             "Podfile": {
@@ -354,13 +344,57 @@ Platform specififc configurations
 }
 ```
 
-### buildSchemes
+### android
 
 ```json
 {
-    "[PLATFORM]": {
-        "buildSchemes": {
-            "[BUILD_SCHEME_KEY]": {}
+    "platforms": {
+        "android": {
+            "gradle.properties": {},
+            "AndroidManifest": {},
+            "BuildGradle": {},
+            "AppBuildGradle": {},
+            "implementation": "",
+            "universalApk": false,
+            "multipleAPKs": false,
+            "minSdkVersion": 21,
+            "signingConfig": "",
+            "aab": false,
+            "storeFile": "",
+            "storePassword": "",
+            "keyAlias": "",
+            "keyPassword": "",
+            "enableHermes": false
+        }
+    }
+}
+```
+
+### web
+
+```json
+{
+    "platforms": {
+        "web": {
+            "environment": "",
+            "webpackConfig": {
+                "devServerHost": "",
+                "customScripts": []
+            }
+        }
+    }
+}
+```
+
+### tizen
+
+```json
+{
+    "platforms": {
+        "tizen": {
+            "appName": "",
+            "package": "",
+            "certificateProfile": ""
         }
     }
 }
@@ -378,79 +412,18 @@ Special runtime injection object to be available for runtime code via `platformA
 }
 ```
 
-### iOS Config Props
+v
+
+## buildSchemes
 
 ```json
 {
-    "teamID": "",
-    "deploymentTarget": "",
-    "provisioningStyle": "",
-    "systemCapabilities": {},
-    "scheme": "",
-    "entitlements": {},
-    "orientationSupport": {
-        "phone": [],
-        "tab": []
+    "platforms": {
+        "[PLATFORM]": {
+            "buildSchemes": {
+                "[BUILD_SCHEME_KEY]": {}
+            }
+        }
     }
-}
-```
-
-## \*.android
-
-```json
-{
-    "gradle.properties": {},
-    "AndroidManifest": {},
-    "BuildGradle": {},
-    "AppBuildGradle": {},
-    "implementation": ""
-}
-```
-
-## plugins.android
-
-```json
-{
-    "path": "",
-    "package": ""
-}
-```
-
-## platforms.android
-
-```json
-{
-    "universalApk": false,
-    "multipleAPKs": false,
-    "minSdkVersion": 21,
-    "signingConfig": "",
-    "aab": false,
-    "storeFile": "",
-    "storePassword": "",
-    "keyAlias": "",
-    "keyPassword": "",
-    "enableHermes": false
-}
-```
-
-## platforms.web
-
-```json
-{
-    "environment": "",
-    "webpackConfig": {
-        "devServerHost": "",
-        "customScripts": []
-    }
-}
-```
-
-## platforms.tizen
-
-```json
-{
-    "appName": "",
-    "package": "",
-    "certificateProfile": ""
 }
 ```

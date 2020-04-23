@@ -295,6 +295,21 @@ const _configureRenativeConfig = async (c) => {
         // if (templateConfig.plugins.renative) {
         //     templateConfig.plugins.renative = getLocalRenativePlugin();
         // }
+        templateConfig.plugins.renative = {
+            webpack: {
+                modulePaths: [
+                    {
+                        projectPath: '../../packages/renative'
+                    }
+                ],
+                moduleAliases: {
+                    renative: {
+                        projectPath: '../../packages/renative'
+                    }
+                }
+            }
+        };
+
         _writeObjectSync(c, c.paths.project.configLocal, templateConfig);
     }
     return true;
