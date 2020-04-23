@@ -486,7 +486,8 @@ export const npmInstall = async (failOnError = false) => {
             type: 'list',
             name: 'packageManager',
             message: 'What package manager would you like to use?',
-            choices: ['yarn', 'npm']
+            choices: ['yarn', 'npm'],
+            default: 'npm'
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
