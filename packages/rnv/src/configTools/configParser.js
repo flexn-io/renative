@@ -1148,7 +1148,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         c.paths.buildHooks.dist.dir,
         'index.js'
     );
-    // c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
+    c.paths.project.nodeModulesDir = path.join(c.paths.project.dir, 'node_modules');
     c.paths.project.srcDir = path.join(c.paths.project.dir, 'src');
     c.paths.project.appConfigsDir = path.join(
         c.paths.project.dir,

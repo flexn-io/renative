@@ -61,9 +61,7 @@
         "renative-template-hello-world": {
             "version": "^0.28.0",
             "webpack": {
-                "moduleAliases": {
-                    "renative": true
-                }
+                "moduleAliases": true
             }
         },
         "renative-template-blank": {
