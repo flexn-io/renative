@@ -13,7 +13,6 @@ import { removeDirs, invalidatePodsChecksum } from './fileutils';
 import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
 import { doResolve } from '../resolve';
-import { isMonorepo } from '../../dist/common';
 
 const { exec, execSync } = require('child_process');
 
@@ -488,7 +487,7 @@ export const npmInstall = async (failOnError = false) => {
             name: 'packageManager',
             message: 'What package manager would you like to use?',
             choices: ['yarn', 'npm'],
-            default: 'yarn'
+            default: 'npm'
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
