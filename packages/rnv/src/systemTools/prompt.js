@@ -9,7 +9,10 @@ export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
-        throw new Error(`--ci option does not allow prompts: ${msg}`);
+        if (Array.isArray(params.choices) && typeof params.default !== 'undefined' && params.choices.includes(params.default)) {
+            return Promise.resolve({ [params.name]: params.default });
+        }
+        return Promise.reject(`--ci option does not allow prompts. question: ${msg}.`);
     }
     if (msg && params.logMessage) logTask(msg, chalk.grey);
     if (msg && params.warningMessage) logWarning(msg);
@@ -18,8 +21,7 @@ export const inquirerPrompt = async (params) => {
     const { type, name } = params;
     if (type === 'confirm' && !name) params.name = 'confirm';
 
-    const result = await inquirer.prompt(params);
-    return result;
+    return inquirer.prompt(params);
 };
 
 export const generateOptions = (
