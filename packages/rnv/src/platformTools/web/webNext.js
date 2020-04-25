@@ -54,29 +54,42 @@ const configureNextIfRequired = async (c) => {
 
     // handle fonts
     !fs.existsSync(publicDir) && fs.mkdirSync(publicDir);
-    !fs.existsSync(path.join(publicDir, 'fonts')) && fs.symlinkSync(baseFontsDir, path.join(publicDir, 'fonts'));
+    const fontsSymLinkPath = path.join(publicDir, 'fonts');
 
-    // create styles dir and global fonts.css file
-    if (!fs.existsSync(stylesDir)) {
-        fs.mkdirSync(stylesDir);
-        let cssOutput = '';
+    if (fs.existsSync(baseFontsDir)) {
+        if (!fs.existsSync(fontsSymLinkPath)) {
+            const xxx = fs.readlinkSync(fontsSymLinkPath);
+            const yyy = fs.lstatSync(fontsSymLinkPath);
+            console.log('AGAGGA', fontsSymLinkPath, xxx, yyy);
+            fs.symlinkSync(baseFontsDir, fontsSymLinkPath);
+        }
 
-        const fontFiles = fs.readdirSync(baseFontsDir);
-        fontFiles.forEach((file) => {
-            cssOutput += `
-                @font-face {
-                    font-family: '${file.split('.')[0]}';
-                    src: url('/fonts/${file}');
-                }
+        // create styles dir and global fonts.css file
+        if (!fs.existsSync(stylesDir)) {
+            fs.mkdirSync(stylesDir);
+            let cssOutput = '';
 
-            `;
-        });
+            const fontFiles = fs.readdirSync(baseFontsDir);
+            fontFiles.forEach((file) => {
+                cssOutput += `
+                  @font-face {
+                      font-family: '${file.split('.')[0]}';
+                      src: url('/fonts/${file}');
+                  }
 
-        fs.writeFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
+              `;
+            });
+
+            fs.writeFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
+        }
     }
+
 
     // add wrapper _app
     if (!fs.existsSync(_appFile)) {
+        if (!fs.existsSync(pagesDir)) {
+            fs.mkdirSync(pagesDir);
+        }
         writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')) }]);
     }
 
