@@ -27,7 +27,7 @@ export const parsePodFile = async (c, platform) => {
         }
         const podNames = getFlavouredProp(c, pluginPlat, 'podNames');
         if (podNames) {
-            podNames.forEach(v => {
+            podNames.forEach((v) => {
                 pluginInject += _injectPod(v, pluginPlat, plugin, key);
             });
         }
@@ -49,7 +49,7 @@ export const parsePodFile = async (c, platform) => {
             const { injectLines } = podfile;
             // INJECT LINES
             if (injectLines) {
-                injectLines.forEach(v => {
+                injectLines.forEach((v) => {
                     c.pluginConfigiOS.podfileInject += `${v}\n`;
                 });
             }
@@ -69,7 +69,7 @@ export const parsePodFile = async (c, platform) => {
     );
     const podfileSources = podfileObj?.sources;
     if (podfileSources && podfileSources.length) {
-        podfileSources.forEach(v => {
+        podfileSources.forEach((v) => {
             c.pluginConfigiOS.podfileSources += `source '${v}'\n`;
         });
     }
@@ -89,8 +89,7 @@ export const parsePodFile = async (c, platform) => {
         const podVersion = await executeAsync(c, 'pod --version');
         const isPodOld = compareVersions(podVersion, '1.9') < 0;
         if (isPodOld) {
-            c.pluginConfigiOS.staticPodDefinition =
-                'Pod::Target::BuildType.static_library';
+            c.pluginConfigiOS.staticPodDefinition = 'Pod::Target::BuildType.static_library';
         }
     } catch (e) {
         // Ignore
@@ -117,6 +116,10 @@ export const parsePodFile = async (c, platform) => {
             {
                 pattern: '{{PLUGIN_STATIC_FRAMEWORKS}}',
                 override: c.pluginConfigiOS.staticFrameworks.join(',')
+            },
+            {
+                pattern: '{{PATH_JSC_ANDROID}}',
+                override: doResolve('jsc-android')
             },
             {
                 pattern: '{{PATH_REACT_NATIVE}}',

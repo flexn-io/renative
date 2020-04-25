@@ -57,9 +57,13 @@ export const parseBuildGradleSync = (c, platform) => {
             },
             { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions },
             {
+                pattern: '{{PATH_JSC_ANDROID}}',
+                override: doResolve('jsc-android')
+            },
+            {
                 pattern: '{{PATH_REACT_NATIVE}}',
                 override: doResolve('react-native')
-            }
+            },
         ]
     );
 };
@@ -351,6 +355,10 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
             {
                 pattern: '{{PLUGIN_ENABLE_HERMES}}',
                 override: c.pluginConfigAndroid.enableHermes
+            },
+            {
+                pattern: '{{PATH_JSC_ANDROID}}',
+                override: doResolve('jsc-android')
             },
             {
                 pattern: '{{PATH_REACT_NATIVE}}',
