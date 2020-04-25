@@ -25,17 +25,21 @@ sidebar_label: Android Wear
 
 ## File Extension Support
 
-| Extension              | Type          | Priority |
-| ---------------------- | ------------- | :------: |
-| `androidwear.watch.js` | `form factor` |    1     |
-| `watch.js`             | `form factor` |    2     |
-| `androidwear.js`       | `platform`    |    3     |
-| `android.js`           | `platform`    |    4     |
-| `watch.native.js`      | `fallback`    |    5     |
-| `native.js`            | `fallback`    |    6     |
-| `js`                   | `fallback`    |    7     |
-| `tsx`                  | `fallback`    |    8     |
-| `ts`                   | `fallback`    |    9     |
+<!--EXTENSION_SUPPORT_START-->
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `androidwear.watch.js` | `form factor` | 1 |
+| `watch.js` | `form factor` | 2 |
+| `androidwear.js` | `platform` | 3 |
+| `android.js` | `platform` | 4 |
+| `watch.native.js` | `fallback` | 5 |
+| `native.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 

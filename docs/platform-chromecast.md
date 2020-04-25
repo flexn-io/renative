@@ -23,16 +23,22 @@ sidebar_label: Chromecast
 
 ## File Extension Support
 
-| Extension          | Type          | Priority |
-| ------------------ | ------------- | :------: |
-| `chromecast.tv.js` | `form factor` |    1     |
-| `tv.js`            | `form factor` |    2     |
-| `chromecast.js`    | `platform`    |    3     |
-| `web.js`           | `fallback`    |    4     |
-| `tv.web.js`        | `fallback`    |    5     |
-| `js`               | `fallback`    |    6     |
-| `tsx`              | `fallback`    |    7     |
-| `ts`               | `fallback`    |    8     |
+<!--EXTENSION_SUPPORT_START-->
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `chromecast.tv.js` | `form factor` | 1 |
+| `web.tv.js` | `form factor` | 2 |
+| `tv.js` | `form factor` | 3 |
+| `chromecast.js` | `platform` | 4 |
+| `tv.web.js` | `fallback` | 5 |
+| `web.js` | `fallback` | 6 |
+| `mjs` | `fallback` | 7 |
+| `js` | `fallback` | 8 |
+| `tsx` | `fallback` | 9 |
+| `ts` | `fallback` | 10 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 

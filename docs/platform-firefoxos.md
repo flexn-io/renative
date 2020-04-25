@@ -19,16 +19,21 @@ sidebar_label: Firefox OS
 
 ## File Extension Support
 
-| Extension             | Type          | Priority |
-| --------------------- | ------------- | :------: |
-| `firefoxos.mobile.js` | `form factor` |    1     |
-| `mobile.js`           | `form factor` |    2     |
-| `firefoxos.js`        | `platform`    |    3     |
-| `mobile.web.js`       | `fallback`    |    4     |
-| `web.js`              | `fallback`    |    5     |
-| `js`                  | `fallback`    |    6     |
-| `tsx`                 | `fallback`    |    7     |
-| `ts`                  | `fallback`    |    8     |
+<!--EXTENSION_SUPPORT_START-->
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `firefoxos.mobile.js` | `form factor` | 1 |
+| `mobile.js` | `form factor` | 2 |
+| `firefoxos.js` | `platform` | 3 |
+| `mobile.web.js` | `fallback` | 4 |
+| `web.js` | `fallback` | 5 |
+| `mjs` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 

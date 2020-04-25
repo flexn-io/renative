@@ -4,8 +4,6 @@ import fs from 'fs';
 import { PLATFORMS } from '../../../rnv/dist/constants';
 
 export const updateMdFiles = async (c) => {
-    console.log('SKJSHKJSKJH');
-
     const docsPath = path.join(c.paths.project.dir, '../../docs');
 
 

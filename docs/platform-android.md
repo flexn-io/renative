@@ -25,16 +25,20 @@ sidebar_label: Android
 
 ## File Extension Support
 
-| Extension           | Type          | Priority |
-| ------------------- | ------------- | :------: |
-| `android.mobile.js` | `form factor` |    1     |
-| `mobile.js`         | `form factor` |    2     |
-| `android.js`        | `platform`    |    3     |
-| `mobile.native.js`  | `fallback`    |    4     |
-| `native.js`         | `fallback`    |    5     |
-| `js`                | `fallback`    |    6     |
-| `tsx`               | `fallback`    |    7     |
-| `ts`                | `fallback`    |    8     |
+<!--EXTENSION_SUPPORT_START-->
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `android.mobile.js` | `form factor` | 1 |
+| `mobile.js` | `form factor` | 2 |
+| `android.js` | `platform` | 3 |
+| `mobile.native.js` | `fallback` | 4 |
+| `native.js` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 

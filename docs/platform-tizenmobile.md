@@ -24,16 +24,21 @@ sidebar_label: Tizen Mobile
 
 ## File Extension Support
 
-| Extension               | Type          | Priority |
-| ----------------------- | ------------- | :------: |
-| `tizenmobile.mobile.js` | `form factor` |    1     |
-| `mobile.js`             | `form factor` |    2     |
-| `tizenmobile.js`        | `platform`    |    3     |
-| `mobile.web.js`         | `fallback`    |    4     |
-| `web.js`                | `fallback`    |    5     |
-| `js`                    | `fallback`    |    6     |
-| `tsx`                   | `fallback`    |    7     |
-| `ts`                    | `fallback`    |    8     |
+<!--EXTENSION_SUPPORT_START-->
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `tizenmobile.mobile.js` | `form factor` | 1 |
+| `mobile.js` | `form factor` | 2 |
+| `tizenmobile.js` | `platform` | 3 |
+| `mobile.web.js` | `fallback` | 4 |
+| `web.js` | `fallback` | 5 |
+| `mjs` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 

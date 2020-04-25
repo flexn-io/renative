@@ -23,13 +23,18 @@ sidebar_label: Web
 
 ## File Extension Support
 
-| Extension    | Type          | Priority |
-| ------------ | ------------- | :------: |
-| `browser.js` | `form factor` |    1     |
-| `web.js`     | `platform`    |    2     |
-| `js`         | `fallback`    |    3     |
-| `tsx`        | `fallback`    |    4     |
-| `ts`         | `fallback`    |    5     |
+<!--EXTENSION_SUPPORT_START-->
+
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `browser.js` | `form factor` | 1 |
+| `web.js` | `platform` | 2 |
+| `mjs` | `fallback` | 3 |
+| `js` | `fallback` | 4 |
+| `tsx` | `fallback` | 5 |
+| `ts` | `fallback` | 6 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 

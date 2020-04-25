@@ -27,17 +27,17 @@ sidebar_label: Android TV
 
 <!--EXTENSION_SUPPORT_START-->
 
-| Extension         | Type          | Priority |
-| ----------------- | ------------- | :------: |
-| `androidtv.tv.js` | `form factor` |    1     |
-| `tv.js`           | `form factor` |    2     |
-| `androidtv.js`    | `platform`    |    3     |
-| `android.js`      | `platform`    |    4     |
-| `tv.native.js`    | `fallback`    |    5     |
-| `native.js`       | `fallback`    |    6     |
-| `js`              | `fallback`    |    7     |
-| `tsx`             | `fallback`    |    8     |
-| `ts`              | `fallback`    |    9     |
+| Extension | Type    | Priority  |
+| --------- | --------- | :-------: |
+| `androidtv.tv.js` | `form factor` | 1 |
+| `tv.js` | `form factor` | 2 |
+| `androidtv.js` | `platform` | 3 |
+| `android.js` | `platform` | 4 |
+| `tv.native.js` | `fallback` | 5 |
+| `native.js` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
 
 <!--EXTENSION_SUPPORT_END-->
 
