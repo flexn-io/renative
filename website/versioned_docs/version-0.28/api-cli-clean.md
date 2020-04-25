@@ -11,7 +11,7 @@ original_id: api-cli-clean
 
 ## Task Order
 
-🔥 `clean`  ✅
+🔥 `clean` ✅
 
 ## clean
 

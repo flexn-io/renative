@@ -2,10 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import inquirer from 'inquirer';
 
-import {
-    logInfo,
-    logTask,
-} from '../systemTools/logger';
+import { logInfo, logTask } from '../systemTools/logger';
 import { writeFileSync } from '../systemTools/fileutils';
 import { DEPLOY_TARGET_FTP } from './webTools';
 
@@ -24,23 +21,37 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
             });
         });
     }
-    promise.then((envContent) => {
-        let matches = 0;
-        const targetMatches = 2;
-        envContent.split('\n').map(line => line.split('=')).forEach(([key, val]) => {
-            if (['RNV_DEPLOY_WEB_FTP_SERVER', 'RNV_DEPLOY_WEB_FTP_USER'].indexOf(key) > -1) {
-                matches++;
+    promise
+        .then((envContent) => {
+            let matches = 0;
+            const targetMatches = 2;
+            envContent
+                .split('\n')
+                .map(line => line.split('='))
+                .forEach(([key, val]) => {
+                    if (
+                        [
+                            'RNV_DEPLOY_WEB_FTP_SERVER',
+                            'RNV_DEPLOY_WEB_FTP_USER'
+                        ].indexOf(key) > -1
+                    ) {
+                        matches++;
+                    }
+                });
+            let envPromise;
+            if (matches >= targetMatches) {
+                envPromise = Promise.resolve();
+            } else {
+                logInfo(
+                    '.env file does not contain all needed FTP config, helping you to set it up'
+                );
+                envPromise = _createEnvFtpConfig(
+                    envPath,
+                    `${envContent}\n`
+                );
             }
-        });
-        let envPromise;
-        if (matches >= targetMatches) {
-            envPromise = Promise.resolve();
-        } else {
-            logInfo('.env file does not contain all needed FTP config, helping you to set it up');
-            envPromise = _createEnvFtpConfig(envPath, `${envContent}\n`);
-        }
-        return envPromise;
-    })
+            return envPromise;
+        })
         .then(() => {
             require('dotenv').config();
             const config = {
@@ -48,11 +59,25 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
                 password: process.env.RNV_DEPLOY_WEB_FTP_PASSWORD, // optional, prompted if none given
                 host: process.env.RNV_DEPLOY_WEB_FTP_SERVER,
                 port: process.env.RNV_DEPLOY_WEB_FTP_PORT || 21,
-                localRoot: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].localRoot,
-                remoteRoot: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].remoteRoot || '/',
-                include: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].include || ['*', '**/*'], // this would upload everything except dot files
-                exclude: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude || [], // e.g. exclude sourcemaps - ** exclude: [] if nothing to exclude **
-                deleteRemote: c.buildConfig.platforms[platform].deploy[DEPLOY_TARGET_FTP].exclude.deleteRemote || false, // delete ALL existing files at destination before uploading, if true
+                localRoot:
+                        c.buildConfig.platforms[platform].deploy[
+                            DEPLOY_TARGET_FTP
+                        ].localRoot,
+                remoteRoot:
+                        c.buildConfig.platforms[platform].deploy[
+                            DEPLOY_TARGET_FTP
+                        ].remoteRoot || '/',
+                include: c.buildConfig.platforms[platform].deploy[
+                    DEPLOY_TARGET_FTP
+                ].include || ['*', '**/*'], // this would upload everything except dot files
+                exclude:
+                        c.buildConfig.platforms[platform].deploy[
+                            DEPLOY_TARGET_FTP
+                        ].exclude || [], // e.g. exclude sourcemaps - ** exclude: [] if nothing to exclude **
+                deleteRemote:
+                        c.buildConfig.platforms[platform].deploy[
+                            DEPLOY_TARGET_FTP
+                        ].exclude.deleteRemote || false, // delete ALL existing files at destination before uploading, if true
                 forcePasv: true // Passive mode is forced (EPSV command is not sent)
             };
             return config;
@@ -61,7 +86,8 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
             const FtpDeploy = require('ftp-deploy');
             const ftpDeploy = new FtpDeploy();
             return ftpDeploy.deploy(config);
-        }).catch(reject);
+        })
+        .catch(reject);
 });
 
 const _createEnvFtpConfig = async (configFilePath, previousContent = '') => {
@@ -89,9 +115,10 @@ const _createEnvFtpConfig = async (configFilePath, previousContent = '') => {
         },
         {
             name: 'password',
-            message: 'Type your FTP password (or press ENTER for prompting every time)',
-            type: 'password',
-        },
+            message:
+                'Type your FTP password (or press ENTER for prompting every time)',
+            type: 'password'
+        }
     ]);
 
     envContent += `RNV_DEPLOY_WEB_FTP_SERVER=${host}\n`;
@@ -111,24 +138,34 @@ const _createDeployConfig = async (c, platform) => {
     deploy[DEPLOY_TARGET_FTP] = {};
     deploy[DEPLOY_TARGET_FTP].type = DEPLOY_TARGET_FTP;
 
-    deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
-    const { remoteRoot, deleteRemote, include, exclude, excludeSourcemaps } = await inquirer.prompt([
+    deploy[DEPLOY_TARGET_FTP].localRoot = path.resolve(
+        c.paths.project.builds.dir,
+        `${c.runtime.appId}_${platform}`
+    );
+    const {
+        remoteRoot,
+        deleteRemote,
+        include,
+        exclude,
+        excludeSourcemaps
+    } = await inquirer.prompt([
         {
             name: 'remoteRoot',
             type: 'input',
             message: 'Folder on the ftp to upload the project',
-            default: '/',
+            default: '/'
         },
         {
             name: 'deleteRemote',
             type: 'confirm',
-            message: 'Delete all contents of that folder when deploying versions?',
+            message:
+                'Delete all contents of that folder when deploying versions?'
         },
         {
             name: 'include',
             type: 'input',
             message: 'Included files pattern, comma separated',
-            default: '\'*\',\'**/*\''
+            default: "'*','**/*'"
         },
         {
             name: 'exclude',
@@ -139,15 +176,19 @@ const _createDeployConfig = async (c, platform) => {
         {
             name: 'excludeSourcemaps',
             type: 'confirm',
-            message: 'Exclude sourcemaps?',
-        },
+            message: 'Exclude sourcemaps?'
+        }
     ]);
 
     deploy[DEPLOY_TARGET_FTP].remoteRoot = remoteRoot || '/';
     deploy[DEPLOY_TARGET_FTP].deleteRemote = deleteRemote;
-    deploy[DEPLOY_TARGET_FTP].include = include ? include.split(',') : ['*', '**/*'];
+    deploy[DEPLOY_TARGET_FTP].include = include
+        ? include.split(',')
+        : ['*', '**/*'];
     deploy[DEPLOY_TARGET_FTP].exclude = exclude ? exclude.split(',') : [];
-    deploy[DEPLOY_TARGET_FTP].exclude = deploy[DEPLOY_TARGET_FTP].exclude.concat(excludeSourcemaps ? ['**/*.map'] : []);
+    deploy[DEPLOY_TARGET_FTP].exclude = deploy[
+        DEPLOY_TARGET_FTP
+    ].exclude.concat(excludeSourcemaps ? ['**/*.map'] : []);
 
     logInfo(`Setting your appconfig for ${platform} to include deploy type: ${DEPLOY_TARGET_FTP}
                     on ${c.paths.appConfig.config}

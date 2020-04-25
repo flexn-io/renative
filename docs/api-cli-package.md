@@ -10,7 +10,7 @@ sidebar_label: package
 
 ## Task Order
 
-🔥 `configure` ➡️ `package`  ✅
+🔥 `configure` ➡️ `package` ✅
 
 ## package
 

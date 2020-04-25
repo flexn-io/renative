@@ -10,72 +10,72 @@ target 'RNVApp' do
   # Pods for RNVApp
   platform :ios, '9.0'
 
-  pod 'FBLazyVector', :path => "../../node_modules/react-native/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => "../../node_modules/react-native/Libraries/FBReactNativeSpec"
-  pod 'RCTRequired', :path => "../../node_modules/react-native/Libraries/RCTRequired"
-  pod 'RCTTypeSafety', :path => "../../node_modules/react-native/Libraries/TypeSafety"
-  pod 'React', :path => '../../node_modules/react-native/'
-  pod 'React-Core', :path => '../../node_modules/react-native/'
-  pod 'React-CoreModules', :path => '../../node_modules/react-native/React/CoreModules'
-  pod 'React-Core/DevSupport', :path => '../../node_modules/react-native/'
-  # pod 'React-RCTActionSheet', :path => '../../node_modules/react-native/Libraries/ActionSheetIOS'
-  pod 'React-RCTAnimation', :path => '../../node_modules/react-native/Libraries/NativeAnimation'
-  pod 'React-RCTBlob', :path => '../../node_modules/react-native/Libraries/Blob'
-  pod 'React-RCTImage', :path => '../../node_modules/react-native/Libraries/Image'
-  pod 'React-RCTLinking', :path => '../../node_modules/react-native/Libraries/LinkingIOS'
-  pod 'React-RCTNetwork', :path => '../../node_modules/react-native/Libraries/Network'
-  pod 'React-RCTSettings', :path => '../../node_modules/react-native/Libraries/Settings'
-  pod 'React-RCTText', :path => '../../node_modules/react-native/Libraries/Text'
-  # pod 'React-RCTVibration', :path => '../../node_modules/react-native/Libraries/Vibration'
-  pod 'React-Core/RCTWebSocket', :path => '../../node_modules/react-native/'
+  pod 'FBLazyVector', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBLazyVector"
+  pod 'FBReactNativeSpec', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBReactNativeSpec"
+  pod 'RCTRequired', :path => "{{PATH_REACT_NATIVE}}/Libraries/RCTRequired"
+  pod 'RCTTypeSafety', :path => "{{PATH_REACT_NATIVE}}/Libraries/TypeSafety"
+  pod 'React', :path => '{{PATH_REACT_NATIVE}}/'
+  pod 'React-Core', :path => '{{PATH_REACT_NATIVE}}/'
+  pod 'React-CoreModules', :path => '{{PATH_REACT_NATIVE}}/React/CoreModules'
+  pod 'React-Core/DevSupport', :path => '{{PATH_REACT_NATIVE}}/'
+  # pod 'React-RCTActionSheet', :path => '{{PATH_REACT_NATIVE}}/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '{{PATH_REACT_NATIVE}}/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '{{PATH_REACT_NATIVE}}/Libraries/Blob'
+  pod 'React-RCTImage', :path => '{{PATH_REACT_NATIVE}}/Libraries/Image'
+  pod 'React-RCTLinking', :path => '{{PATH_REACT_NATIVE}}/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '{{PATH_REACT_NATIVE}}/Libraries/Network'
+  pod 'React-RCTSettings', :path => '{{PATH_REACT_NATIVE}}/Libraries/Settings'
+  pod 'React-RCTText', :path => '{{PATH_REACT_NATIVE}}/Libraries/Text'
+  # pod 'React-RCTVibration', :path => '{{PATH_REACT_NATIVE}}/Libraries/Vibration'
+  pod 'React-Core/RCTWebSocket', :path => '{{PATH_REACT_NATIVE}}/'
 
-  pod 'React-cxxreact', :path => '../../node_modules/react-native/ReactCommon/cxxreact'
-  pod 'React-jsi', :path => '../../node_modules/react-native/ReactCommon/jsi'
-  pod 'React-jsiexecutor', :path => '../../node_modules/react-native/ReactCommon/jsiexecutor'
-  pod 'React-jsinspector', :path => '../../node_modules/react-native/ReactCommon/jsinspector'
-  pod 'ReactCommon/jscallinvoker', :path => "../../node_modules/react-native/ReactCommon"
-  pod 'ReactCommon/turbomodule/core', :path => "../../node_modules/react-native/ReactCommon"
-  pod 'Yoga', :path => '../../node_modules/react-native/ReactCommon/yoga'
+  pod 'React-cxxreact', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsinspector'
+  pod 'ReactCommon/jscallinvoker', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
+  pod 'ReactCommon/turbomodule/core', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
+  pod 'Yoga', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/yoga'
 
-  pod 'DoubleConversion', :podspec => '../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../../node_modules/react-native/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => '../../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'DoubleConversion', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/Folly.podspec'
 
 end
 
 target 'RNVAppTVOS' do
 
 
-  pod 'FBLazyVector', :path => "../../node_modules/react-native/Libraries/FBLazyVector"
-  pod 'FBReactNativeSpec', :path => "../../node_modules/react-native/Libraries/FBReactNativeSpec"
-  pod 'RCTRequired', :path => "../../node_modules/react-native/Libraries/RCTRequired"
-  pod 'RCTTypeSafety', :path => "../../node_modules/react-native/Libraries/TypeSafety"
-  pod 'React', :path => '../../node_modules/react-native/'
-  pod 'React-Core', :path => '../../node_modules/react-native/'
-  pod 'React-CoreModules', :path => '../../node_modules/react-native/React/CoreModules'
-  pod 'React-Core/DevSupport', :path => '../../node_modules/react-native/'
-  # pod 'React-RCTActionSheet', :path => '../../node_modules/react-native/Libraries/ActionSheetIOS'
-  pod 'React-RCTAnimation', :path => '../../node_modules/react-native/Libraries/NativeAnimation'
-  pod 'React-RCTBlob', :path => '../../node_modules/react-native/Libraries/Blob'
-  pod 'React-RCTImage', :path => '../../node_modules/react-native/Libraries/Image'
-  pod 'React-RCTLinking', :path => '../../node_modules/react-native/Libraries/LinkingIOS'
-  pod 'React-RCTNetwork', :path => '../../node_modules/react-native/Libraries/Network'
-  pod 'React-RCTSettings', :path => '../../node_modules/react-native/Libraries/Settings'
-  pod 'React-RCTText', :path => '../../node_modules/react-native/Libraries/Text'
-  # pod 'React-RCTVibration', :path => '../../node_modules/react-native/Libraries/Vibration'
-  pod 'React-Core/RCTWebSocket', :path => '../../node_modules/react-native/'
+  pod 'FBLazyVector', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBLazyVector"
+  pod 'FBReactNativeSpec', :path => "{{PATH_REACT_NATIVE}}/Libraries/FBReactNativeSpec"
+  pod 'RCTRequired', :path => "{{PATH_REACT_NATIVE}}/Libraries/RCTRequired"
+  pod 'RCTTypeSafety', :path => "{{PATH_REACT_NATIVE}}/Libraries/TypeSafety"
+  pod 'React', :path => '{{PATH_REACT_NATIVE}}/'
+  pod 'React-Core', :path => '{{PATH_REACT_NATIVE}}/'
+  pod 'React-CoreModules', :path => '{{PATH_REACT_NATIVE}}/React/CoreModules'
+  pod 'React-Core/DevSupport', :path => '{{PATH_REACT_NATIVE}}/'
+  # pod 'React-RCTActionSheet', :path => '{{PATH_REACT_NATIVE}}/Libraries/ActionSheetIOS'
+  pod 'React-RCTAnimation', :path => '{{PATH_REACT_NATIVE}}/Libraries/NativeAnimation'
+  pod 'React-RCTBlob', :path => '{{PATH_REACT_NATIVE}}/Libraries/Blob'
+  pod 'React-RCTImage', :path => '{{PATH_REACT_NATIVE}}/Libraries/Image'
+  pod 'React-RCTLinking', :path => '{{PATH_REACT_NATIVE}}/Libraries/LinkingIOS'
+  pod 'React-RCTNetwork', :path => '{{PATH_REACT_NATIVE}}/Libraries/Network'
+  pod 'React-RCTSettings', :path => '{{PATH_REACT_NATIVE}}/Libraries/Settings'
+  pod 'React-RCTText', :path => '{{PATH_REACT_NATIVE}}/Libraries/Text'
+  # pod 'React-RCTVibration', :path => '{{PATH_REACT_NATIVE}}/Libraries/Vibration'
+  pod 'React-Core/RCTWebSocket', :path => '{{PATH_REACT_NATIVE}}/'
 
-  pod 'React-cxxreact', :path => '../../node_modules/react-native/ReactCommon/cxxreact'
-  pod 'React-jsi', :path => '../../node_modules/react-native/ReactCommon/jsi'
-  pod 'React-jsiexecutor', :path => '../../node_modules/react-native/ReactCommon/jsiexecutor'
-  pod 'React-jsinspector', :path => '../../node_modules/react-native/ReactCommon/jsinspector'
-  pod 'ReactCommon/jscallinvoker', :path => "../../node_modules/react-native/ReactCommon"
-  pod 'ReactCommon/turbomodule/core', :path => "../../node_modules/react-native/ReactCommon"
-  pod 'Yoga', :path => '../../node_modules/react-native/ReactCommon/yoga'
+  pod 'React-cxxreact', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/cxxreact'
+  pod 'React-jsi', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsi'
+  pod 'React-jsiexecutor', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsiexecutor'
+  pod 'React-jsinspector', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/jsinspector'
+  pod 'ReactCommon/jscallinvoker', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
+  pod 'ReactCommon/turbomodule/core', :path => "{{PATH_REACT_NATIVE}}/ReactCommon"
+  pod 'Yoga', :path => '{{PATH_REACT_NATIVE}}/ReactCommon/yoga'
 
-  pod 'DoubleConversion', :podspec => '../../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../../node_modules/react-native/third-party-podspecs/glog.podspec'
-  pod 'Folly', :podspec => '../../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  pod 'DoubleConversion', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '{{PATH_REACT_NATIVE}}/third-party-podspecs/Folly.podspec'
 
  {{PLUGIN_PATHS}}
 
@@ -86,6 +86,21 @@ end
 pre_install do |installer|
   # workaround for https://github.com/CocoaPods/CocoaPods/issues/3289
   Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+end
+
+static_frameworks = [{{PLUGIN_STATIC_FRAMEWORKS}}]
+
+pre_install do |installer|
+  installer.pod_targets.each do |pod|
+    if static_frameworks.include?(pod.name)
+      def pod.static_framework?;
+        true
+      end
+      def pod.build_type;
+        {{PLUGIN_STATIC_POD_DEFINITION}}
+      end
+    end
+  end
 end
 
 {{PLUGIN_PODFILE_INJECT}}

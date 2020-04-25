@@ -10,7 +10,7 @@ sidebar_label: plugin
 
 ## Task Order
 
-🔥 `plugin`  ✅
+🔥 `plugin` ✅
 
 ## plugin
 
@@ -18,6 +18,30 @@ Get interactive options for plugin
 
 ```bash
 rnv plugin
+```
+
+### list
+
+list all available plugins
+
+```bash
+rnv plugin list`
+```
+
+### add
+
+Add new plugin to your project
+
+```bash
+rnv plugin add
+```
+
+### update
+
+Update existing plugin
+
+```bash
+rnv plugin update
 ```
 
 ### help

@@ -11,7 +11,7 @@ original_id: api-cli-deploy
 
 ## Task Order
 
-🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ➡️ `deploy`  ✅
+🔥 `configure` ➡️ `package` ➡️ `build` ➡️ `export` ➡️ `deploy` ✅
 
 ## deploy
 

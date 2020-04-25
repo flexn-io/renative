@@ -10,7 +10,7 @@ sidebar_label: log
 
 ## Task Order
 
-🔥 `log`  ✅
+🔥 `log` ✅
 
 ## log
 

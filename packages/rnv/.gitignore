@@ -48,3 +48,4 @@ buck-out/
 package-lock.json
 
 dist/
+!pluginTemplates/**/dist

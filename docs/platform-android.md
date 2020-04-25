@@ -4,7 +4,6 @@ title: Android Platform
 sidebar_label: Android
 ---
 
-
 <table>
   <tr>
   <td>
@@ -20,12 +19,13 @@ sidebar_label: Android
 
 ## Overview
 
-
 -   Latest Android project
 -   Kotlin Support
 -   Support for Gradle 4.9
 
 ## File Extension Support
+
+<!--EXTENSION_SUPPORT_START-->
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
@@ -37,6 +37,8 @@ sidebar_label: Android
 | `js` | `fallback` | 6 |
 | `tsx` | `fallback` | 7 |
 | `ts` | `fallback` | 8 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 
@@ -64,7 +66,6 @@ You can create variety of emulators via Android Studio IDE
     </th>
   </tr>
 </table>
-
 
 ## Run on Simulator
 
@@ -103,7 +104,6 @@ make sure you have this piece of script in package.json
 
 Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.android.enableHermes`
 or `renative.json:platforms.android.buildSchemes.[SCHEME].enableHermes`
-
 
 ## Advanced
 

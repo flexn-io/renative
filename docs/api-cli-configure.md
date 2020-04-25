@@ -10,7 +10,7 @@ sidebar_label: configure
 
 ## Task Order
 
-🔥 `configure`  ✅
+🔥 `configure` ✅
 
 ## configure
 

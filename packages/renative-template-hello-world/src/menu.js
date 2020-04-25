@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer } from 'renative';
+import { Text, View } from 'react-native';
+import { Icon, Button, getScaledValue, useNavigate, useOpenDrawer, StyleSheet } from 'renative';
 import { initNavigation, withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasHorizontalMenu, hasWebFocusableUI } from './theme';
 
@@ -21,7 +21,9 @@ export const DrawerButton = (props) => {
             iconColor={Theme.color3}
             size={Theme.iconSize}
             style={themeStyles.icon}
-            onPress={() => { openDrawer('Drawer'); }}
+            onPress={() => {
+                openDrawer('Drawer');
+            }}
         />
     );
 };
@@ -46,25 +48,27 @@ const styles = StyleSheet.create({
         marginTop: hasHorizontalMenu ? 0 : getScaledValue(20),
         maxWidth: getScaledValue(400),
         minWidth: getScaledValue(50),
-        borderWidth: 0,
+        borderWidth: 0
     },
     buttonText: {
         fontFamily: 'TimeBurner',
         color: '#62DBFB',
-        fontSize: getScaledValue(20),
+        fontSize: getScaledValue(20)
     }
 });
 
 const Menu = (props) => {
     const navigate = useNavigate(props);
     if (hasWebFocusableUI) {
-        useEffect(() => { props.setFocus(); }, []);
+        useEffect(() => {
+            props.setFocus();
+        }, []);
     }
 
     return (
         <View style={styles.container}>
             <Text style={themeStyles.text}>
-                    Menu
+Menu
             </Text>
             <Button
                 to="/"
@@ -121,4 +125,4 @@ const Menu = (props) => {
     );
 };
 
-export default hasWebFocusableUI ? withFocusable()(Menu) : Menu;
+export default (hasWebFocusableUI ? withFocusable()(Menu) : Menu);

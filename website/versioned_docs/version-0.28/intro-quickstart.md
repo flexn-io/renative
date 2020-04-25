@@ -5,7 +5,6 @@ sidebar_label: Quick Start
 original_id: intro-quickstart
 ---
 
-
 <img src="https://renative.org/img/ic_quickstart.png" width=50 height=50 />
 
 Install rnv

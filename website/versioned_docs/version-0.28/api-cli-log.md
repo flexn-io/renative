@@ -11,7 +11,7 @@ original_id: api-cli-log
 
 ## Task Order
 
-🔥 `log`  ✅
+🔥 `log` ✅
 
 ## log
 

@@ -19,12 +19,13 @@ sidebar_label: iOS
 
 ## Overview
 
-
 -   Latest swift based Xcode project
 -   Cocoapods Workspace ready
 -   Swift 4.1 Support
 
 ## File Extension Support
+
+<!--EXTENSION_SUPPORT_START-->
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
@@ -36,6 +37,8 @@ sidebar_label: iOS
 | `js` | `fallback` | 6 |
 | `tsx` | `fallback` | 7 |
 | `ts` | `fallback` | 8 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 
@@ -64,19 +67,19 @@ IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
 
 ```json
 {
-  "platforms": {
-    "ios": {
-      "buildSchemes": {
-        "ad-hoc": {
-            "teamID": "YOUR_APPLE_TEAM_ID",
-            "provisioningStyle": "Automatic",
-            "runScheme": "Release",
-            "bundleAssets": true,
-            "bundleIsDev": false
+    "platforms": {
+        "ios": {
+            "buildSchemes": {
+                "ad-hoc": {
+                    "teamID": "YOUR_APPLE_TEAM_ID",
+                    "provisioningStyle": "Automatic",
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false
+                }
+            }
         }
-      }
     }
-  }
 }
 ```
 
@@ -84,18 +87,18 @@ IMPORTANT: before you run ReNative app on the actual iOS device you MUST:
 
 ```json
 {
-  "platforms": {
-    "ios": {
-      "buildSchemes": {
-        "ad-hoc": {
-            "teamID": "YOUR_APPLE_TEAM_ID",
-            "provisioningStyle": "Manual",
-            "codeSignIdentity": "iPhone Developer",
-            "provisionProfileSpecifier": "YOUR_PROVISIONING_PROFILE_NAME"
+    "platforms": {
+        "ios": {
+            "buildSchemes": {
+                "ad-hoc": {
+                    "teamID": "YOUR_APPLE_TEAM_ID",
+                    "provisioningStyle": "Manual",
+                    "codeSignIdentity": "iPhone Developer",
+                    "provisionProfileSpecifier": "YOUR_PROVISIONING_PROFILE_NAME"
+                }
+            }
         }
-      }
     }
-  }
 }
 ```
 
@@ -170,26 +173,26 @@ rnv log -p ios -f com.myapp
 
 ```json
 {
-  "platforms": {
-    "ios": {
-      "buildSchemes": {
-        "appstore": {
-            "teamID": "YOUR_APPLE_TEAM_ID",
-            "runScheme": "Release",
-            "bundleAssets": true,
-            "bundleIsDev": false,
-            "exportOptions": {
-                "method": "app-store",
-                "uploadBitcode": true,
-                "compileBitcode": false,
-                "uploadSymbols": true,
-                "signingStyle": "automatic",
-                "signingCertificate": "iPhone Distribution"
+    "platforms": {
+        "ios": {
+            "buildSchemes": {
+                "appstore": {
+                    "teamID": "YOUR_APPLE_TEAM_ID",
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "bundleIsDev": false,
+                    "exportOptions": {
+                        "method": "app-store",
+                        "uploadBitcode": true,
+                        "compileBitcode": false,
+                        "uploadSymbols": true,
+                        "signingStyle": "automatic",
+                        "signingCertificate": "iPhone Distribution"
+                    }
+                }
             }
         }
-      }
     }
-  }
 }
 ```
 
@@ -197,31 +200,31 @@ rnv log -p ios -f com.myapp
 
 ```json
 {
-  "platforms": {
-    "ios": {
-      "buildSchemes": {
-        "appstore": {
-            "teamID": "YOUR_APPLE_TEAM_ID",
-            "runScheme": "Release",
-            "bundleAssets": true,
-            "provisioningStyle": "Manual",
-            "codeSignIdentity": "iPhone Distribution",
-            "provisionProfileSpecifier": "YOUR_PROVISIONING_PROFILE_NAME",
-            "exportOptions": {
-                "method": "app-store",
-                "uploadBitcode": true,
-                "compileBitcode": false,
-                "uploadSymbols": true,
-                "signingStyle": "manual",
-                "signingCertificate": "iPhone Distribution",
-                "provisioningProfiles": {
-                  "YOUR_BUNDLE_ID": "YOUR_PROVISIONING_PROFILE_NAME"
+    "platforms": {
+        "ios": {
+            "buildSchemes": {
+                "appstore": {
+                    "teamID": "YOUR_APPLE_TEAM_ID",
+                    "runScheme": "Release",
+                    "bundleAssets": true,
+                    "provisioningStyle": "Manual",
+                    "codeSignIdentity": "iPhone Distribution",
+                    "provisionProfileSpecifier": "YOUR_PROVISIONING_PROFILE_NAME",
+                    "exportOptions": {
+                        "method": "app-store",
+                        "uploadBitcode": true,
+                        "compileBitcode": false,
+                        "uploadSymbols": true,
+                        "signingStyle": "manual",
+                        "signingCertificate": "iPhone Distribution",
+                        "provisioningProfiles": {
+                            "YOUR_BUNDLE_ID": "YOUR_PROVISIONING_PROFILE_NAME"
+                        }
+                    }
                 }
             }
         }
-      }
     }
-  }
 }
 ```
 
@@ -231,20 +234,20 @@ Create IPA:
 rnv export -p ios -s appstore
 ```
 
-
 ## Advanced configuration examples
 
 Adding new props to plist:
+
 ```json
 {
-  "platforms": {
-    "ios": {
-      "plist": {
-        "UIBackgroundModes": ["audio", "remote-notification"],
-        "ITSAppUsesNonExemptEncryption": false
-      }
+    "platforms": {
+        "ios": {
+            "plist": {
+                "UIBackgroundModes": ["audio", "remote-notification"],
+                "ITSAppUsesNonExemptEncryption": false
+            }
+        }
     }
-  }
 }
 ```
 

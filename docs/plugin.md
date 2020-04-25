@@ -28,7 +28,7 @@ rnv plugin add @mapbox/react-native-mapbox-gl
 
 Version: `1.8.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -38,6 +38,24 @@ Installation:
 
 ```
 rnv plugin add @monterosa/react-native-parallax-scroll
+```
+
+
+## @noriginmedia/react-spatial-navigation
+
+
+Version: `2.12.1`
+
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/@noriginmedia/react-spatial-navigation
+
+Installation:
+
+```
+rnv plugin add @noriginmedia/react-spatial-navigation
 ```
 
 
@@ -100,7 +118,7 @@ rnv plugin add @react-native-community/cameraroll
 
 Version: `2.1.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -190,7 +208,7 @@ rnv plugin add @react-native-community/push-notification-ios
 
 Version: `2.0.2`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -206,7 +224,7 @@ rnv plugin add @react-native-community/slider
 ## @react-native-community/viewpager
 
 
-Version: `2.0.1`
+Version: `2.0.2`
 
 Platforms: `ios`,`android`
 
@@ -226,7 +244,7 @@ rnv plugin add @react-native-community/viewpager
 
 
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -514,7 +532,7 @@ rnv plugin add lottie-react-native
 
 Version: `2.12.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -532,7 +550,7 @@ rnv plugin add native-base
 
 Version: `0.2.3`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -550,7 +568,7 @@ rnv plugin add native-base-shoutem-theme
 
 Version: `16.9.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -568,7 +586,7 @@ rnv plugin add react
 
 Version: `16.9.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -586,7 +604,7 @@ rnv plugin add react-art
 
 Version: `16.9.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -604,7 +622,7 @@ rnv plugin add react-dom
 
 Version: `4.3.12`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -640,7 +658,7 @@ rnv plugin add react-native
 
 Version: `2.3.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -694,7 +712,7 @@ rnv plugin add react-native-android-open-settings
 
 Version: `1.2.4`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -748,7 +766,7 @@ rnv plugin add react-native-auth0
 
 Version: `4.1.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -802,7 +820,7 @@ rnv plugin add react-native-ble-manager
 
 Version: `1.4.3`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -856,7 +874,7 @@ rnv plugin add react-native-camera
 
 Version: `1.3.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -892,7 +910,7 @@ rnv plugin add react-native-contacts
 
 Version: `1.7.2`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -908,7 +926,7 @@ rnv plugin add react-native-datepicker
 ## react-native-device-info
 
 
-Version: `5.4.1`
+Version: `5.4.3`
 
 Platforms: `ios`,`tvos`,`android`,`androidtv`,`androidwear`
 
@@ -928,7 +946,7 @@ rnv plugin add react-native-device-info
 
 Version: `5.6.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -982,7 +1000,7 @@ rnv plugin add react-native-dominant-color
 
 Version: `1.1.7`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1000,7 +1018,7 @@ rnv plugin add react-native-draggable-flatlist
 
 Version: `0.14.4`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1018,7 +1036,7 @@ rnv plugin add react-native-drawer
 
 Version: `0.2.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1054,7 +1072,7 @@ rnv plugin add react-native-exception-handler
 
 Version: `0.8.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1250,11 +1268,11 @@ rnv plugin add react-native-get-real-path
 ## react-native-google-cast
 
 
-Version: `github:hosek/react-native-google-cast#feat/custom-cast-dialog-support`
+Version: `github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e`
 
 Platforms: `ios`,`android`
 
-
+Props: `applicationID`
 
 Npm: https://www.npmjs.com/package/react-native-google-cast
 
@@ -1288,7 +1306,7 @@ rnv plugin add react-native-idle-timer
 
 Version: `1.0.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1378,7 +1396,7 @@ rnv plugin add react-native-keep-awake
 
 Version: `0.9.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1396,7 +1414,7 @@ rnv plugin add react-native-keyboard-aware-scroll-view
 
 Version: `0.4.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1450,7 +1468,7 @@ rnv plugin add react-native-linear-gradient
 
 Version: `2.2.4`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1504,7 +1522,7 @@ rnv plugin add react-native-maps
 
 Version: `3.2.8`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1522,7 +1540,7 @@ rnv plugin add react-native-markdown-renderer
 
 Version: `0.7.6`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1540,7 +1558,7 @@ rnv plugin add react-native-material-dialog
 
 Version: `0.11.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1558,7 +1576,7 @@ rnv plugin add react-native-material-dropdown
 
 Version: `7.0.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1612,7 +1630,7 @@ rnv plugin add react-native-nfc-manager
 
 Version: `0.0.7`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1643,6 +1661,24 @@ rnv plugin add react-native-orientation-locker
 ```
 
 
+## react-native-parallax-view
+
+
+Version: `github:reactseals/react-native-parallax-view#master`
+
+Platforms: `ios`,`tvos`,`androidtv`,`android`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-parallax-view
+
+Installation:
+
+```
+rnv plugin add react-native-parallax-view
+```
+
+
 ## react-native-pdf
 
 
@@ -1666,7 +1702,7 @@ rnv plugin add react-native-pdf
 
 Version: `0.3.2`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1738,7 +1774,7 @@ rnv plugin add react-native-picker
 
 Version: `6.3.3`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1756,7 +1792,7 @@ rnv plugin add react-native-picker-select
 
 Version: `3.5.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1810,7 +1846,7 @@ rnv plugin add react-native-reanimated
 
 Version: `4.1.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1828,7 +1864,7 @@ rnv plugin add react-native-render-html
 
 Version: `2.2.1`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1864,7 +1900,7 @@ rnv plugin add react-native-safe-area-context
 
 Version: `0.14.5`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1954,7 +1990,7 @@ rnv plugin add react-native-simple-compass
 
 Version: `2.7.3`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -1990,7 +2026,7 @@ rnv plugin add react-native-simple-shadow-view
 
 Version: `3.7.5`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2000,6 +2036,24 @@ Installation:
 
 ```
 rnv plugin add react-native-snap-carousel
+```
+
+
+## react-native-snap-scrollview
+
+
+Version: `github:reactseals/react-native-snap-scrollview#master`
+
+Platforms: `ios`,`tvos`,`androidtv`,`android`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-snap-scrollview
+
+Installation:
+
+```
+rnv plugin add react-native-snap-scrollview
 ```
 
 
@@ -2062,7 +2116,7 @@ rnv plugin add react-native-svg
 
 Version: `5.3.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2080,7 +2134,7 @@ rnv plugin add react-native-svg-charts
 
 Version: `2.3.3`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2116,7 +2170,7 @@ rnv plugin add react-native-system-setting
 
 Version: `2.13.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2206,7 +2260,7 @@ rnv plugin add react-native-view-overflow
 
 Version: `0.2.13`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2224,7 +2278,7 @@ rnv plugin add react-native-viewpager
 
 Version: `0.11.7`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2242,7 +2296,7 @@ rnv plugin add react-native-web
 
 Version: `0.0.5`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2350,7 +2404,7 @@ rnv plugin add react-native-zss-rich-text-editor
 
 Version: `3.9.2`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2368,7 +2422,7 @@ rnv plugin add react-navigation
 
 Version: `2.3.3`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2386,7 +2440,7 @@ rnv plugin add react-navigation-drawer
 
 Version: `1.4.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2404,7 +2458,7 @@ rnv plugin add react-navigation-stack
 
 Version: `2.0.0-alpha.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2422,7 +2476,7 @@ rnv plugin add react-navigation-tabs
 
 Version: `1.0.2`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2438,9 +2492,9 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.28.19-alpha.5`
+Version: `0.29.0-alpha.38`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2476,7 +2530,7 @@ rnv plugin add rn-fetch-blob
 
 Version: `1.3.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 
@@ -2494,7 +2548,7 @@ rnv plugin add static-container
 
 Version: `4.1.0`
 
-Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
 
 

@@ -7,11 +7,11 @@ sidebar_label: run
 <img src="https://renative.org/img/ic_cli.png" width=50 height=50 />
 
 > runs app on emulator / device on selected platform.
-This command also triggers concurrent server / bundler is configured
+> This command also triggers concurrent server / bundler is configured
 
 ## Task Order
 
-🔥 `configure` ➡️ `package` ➡️ `compile` ➡️ `run` ➡️ `install` ➡️ `launch`  ✅
+🔥 `configure` ➡️ `package` ➡️ `compile` ➡️ `run` ➡️ `install` ➡️ `launch` ✅
 
 ## run
 

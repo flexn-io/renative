@@ -3,15 +3,10 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import {
-    getAppFolder,
-} from '../common';
+import { getAppFolder } from '../common';
+import { doResolve } from '../resolve';
 import { isPlatformActive } from '../platformTools';
-import {
-    logTask,
-    logWarning,
-    logInfo,
-} from '../systemTools/logger';
+import { logTask, logWarning, logInfo } from '../systemTools/logger';
 import {
     IOS,
     ANDROID,
@@ -28,6 +23,7 @@ import {
     KAIOS,
     FIREFOX_OS,
     FIREFOX_TV,
+    CHROMECAST
 } from '../constants';
 import { configureXcodeProject } from '../platformTools/apple';
 import { configureGradleProject } from '../platformTools/android';
@@ -36,13 +32,17 @@ import { configureWebOSProject } from '../platformTools/webos';
 import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
-import { copyFolderContentsRecursiveSync, readObjectSync } from '../systemTools/fileutils';
+import {
+    copyFolderContentsRecursiveSync,
+    readObjectSync
+} from '../systemTools/fileutils';
 import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 import Config from '../config';
 import { getMergedPlugin } from '../pluginTools';
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
+import { configureChromecastProject } from '../platformTools/chromecast';
 
 export const rnvConfigure = async (c) => {
     const p = c.platform || 'all';
@@ -62,6 +62,13 @@ export const rnvConfigure = async (c) => {
     // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
     await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
 
+    const ptDirs2 = c.paths.appConfig.pluginDirs;
+    if (ptDirs2) {
+        for (let i = 0; i < ptDirs2.length; i++) {
+            await overridePlugins(c, ptDirs2[i]);
+        }
+    }
+
     const originalPlatform = c.platform;
 
     await _configurePlatform(c, p, ANDROID, configureGradleProject);
@@ -79,6 +86,7 @@ export const rnvConfigure = async (c) => {
     await _configurePlatform(c, p, FIREFOX_TV, configureKaiOSProject);
     await _configurePlatform(c, p, IOS, configureXcodeProject);
     await _configurePlatform(c, p, TVOS, configureXcodeProject);
+    await _configurePlatform(c, p, CHROMECAST, configureChromecastProject);
 
     c.platform = originalPlatform;
 };
@@ -94,7 +102,6 @@ export const rnvSwitch = c => new Promise((resolve, reject) => {
     const p = c.program.platform || 'all';
     logTask(`rnvSwitch:${p}`);
 
-
     copyRuntimeAssets(c)
         .then(() => copySharedPlatforms(c))
         .then(() => generateRuntimeConfig(c))
@@ -104,12 +111,13 @@ export const rnvSwitch = c => new Promise((resolve, reject) => {
 
 export const rnvLink = c => new Promise((resolve) => {
     if (fs.existsSync(c.paths.project.npmLinkPolyfill)) {
-        const l = JSON.parse(fs.readFileSync(c.paths.project.npmLinkPolyfill).toString());
+        const l = JSON.parse(
+            fs.readFileSync(c.paths.project.npmLinkPolyfill).toString()
+        );
         Object.keys(l).forEach((key) => {
-            // console.log('COPY', key, l[key]);
             const source = path.resolve(l[key]);
             const nm = path.join(source, 'node_modules');
-            const dest = path.join(c.paths.project.nodeModulesDir, key);
+            const dest = doResolve(key);
             if (fs.existsSync(source)) {
                 copyFolderContentsRecursiveSync(source, dest, false, [nm]);
             } else {
@@ -117,7 +125,9 @@ export const rnvLink = c => new Promise((resolve) => {
             }
         });
     } else {
-        logWarning(`${c.paths.project.npmLinkPolyfill} file not found. nothing to link!`);
+        logWarning(
+            `${c.paths.project.npmLinkPolyfill} file not found. nothing to link!`
+        );
         resolve();
     }
 });
@@ -129,7 +139,6 @@ const _isOK = (c, p, list) => {
     });
     return result;
 };
-
 
 const _checkAndCreatePlatforms = async (c, platform) => {
     logTask(`_checkAndCreatePlatforms:${platform}`);
@@ -146,7 +155,9 @@ const _checkAndCreatePlatforms = async (c, platform) => {
     if (platform) {
         const appFolder = getAppFolder(c, platform);
         if (!fs.existsSync(appFolder)) {
-            logWarning(`Platform ${platform} not created yet. creating them for you at ${appFolder}`);
+            logWarning(
+                `Platform ${platform} not created yet. creating them for you at ${appFolder}`
+            );
             await CLI(c, {
                 command: 'platform',
                 subCommand: 'configure',
@@ -156,7 +167,13 @@ const _checkAndCreatePlatforms = async (c, platform) => {
     } else {
         const { platforms } = c.buildConfig;
         if (!platforms) {
-            reject(`Your ${chalk.white(c.paths.appConfig.config)} is missconfigured. (Maybe you have older version?). Missing ${chalk.white('{ platforms: {} }')} object at root`);
+            reject(
+                `Your ${chalk.white(
+                    c.paths.appConfig.config
+                )} is missconfigured. (Maybe you have older version?). Missing ${chalk.white(
+                    '{ platforms: {} }'
+                )} object at root`
+            );
             return;
         }
         const ks = Object.keys(platforms);
@@ -164,7 +181,9 @@ const _checkAndCreatePlatforms = async (c, platform) => {
             const k = ks[i];
             const appFolder = getAppFolder(c, k);
             if (!fs.existsSync(appFolder)) {
-                logWarning(`Platform ${k} not created yet. creating one for you at ${appFolder}`);
+                logWarning(
+                    `Platform ${k} not created yet. creating one for you at ${appFolder}`
+                );
                 await CLI(c, {
                     command: 'platform',
                     subCommand: 'configure',
@@ -176,12 +195,15 @@ const _checkAndCreatePlatforms = async (c, platform) => {
     }
 };
 
-const overridePlugins = (c, pluginsPath) => new Promise((resolve) => {
+const overridePlugins = async (c, pluginsPath) => {
     logTask(`overridePlugins:${pluginsPath}`, chalk.grey);
 
     if (!fs.existsSync(pluginsPath)) {
-        logInfo(`Your project plugin folder ${chalk.white(pluginsPath)} does not exists. skipping plugin configuration`);
-        resolve();
+        logInfo(
+            `Your project plugin folder ${chalk.white(
+                pluginsPath
+            )} does not exists. skipping plugin configuration`
+        );
         return;
     }
 
@@ -195,19 +217,21 @@ const overridePlugins = (c, pluginsPath) => new Promise((resolve) => {
             _overridePlugins(c, pluginsPath, dir);
         }
     });
-
-    resolve();
-});
+};
 
 const _overridePlugins = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
-    const dest = path.resolve(c.paths.project.dir, 'node_modules', dir);
+    const dest = doResolve(dir, false);
+    if (!dest) return;
 
     const plugin = getMergedPlugin(c, dir, c.buildConfig.plugins);
-
     let flavourSource;
     if (plugin) {
-        flavourSource = path.resolve(pluginsPath, dir, `overrides@${plugin.version}`);
+        flavourSource = path.resolve(
+            pluginsPath,
+            dir,
+            `overrides@${plugin.version}`
+        );
     }
 
     if (flavourSource && fs.existsSync(flavourSource)) {
@@ -218,25 +242,43 @@ const _overridePlugins = (c, pluginsPath, dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
         // });
     } else {
-        logInfo(`Your plugin configuration has no override path ${chalk.white(source)}. skipping folder override action`);
+        logInfo(
+            `Your plugin configuration has no override path ${chalk.white(
+                source
+            )}. skipping folder override action`
+        );
     }
 
-    const overrideConfig = readObjectSync(path.resolve(pluginsPath, dir, 'overrides.json'));
+    const overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
+    const overrideConfig = readObjectSync(
+        path.resolve(pluginsPath, dir, 'overrides.json')
+    );
     if (overrideConfig?.overrides) {
-        for (const k in overrideConfig.overrides) {
+        Object.keys(overrideConfig.overrides).forEach((k, i) => {
             const override = overrideConfig.overrides[k];
-            ovDir = path.join(dest, k);
+            const ovDir = path.join(dest, k);
             if (fs.existsSync(ovDir)) {
                 if (fs.lstatSync(ovDir).isDirectory()) {
-                    logWarning('overrides.json: Directories not supported yet. specify path to actual file');
+                    logWarning(
+                        'overrides.json: Directories not supported yet. specify path to actual file'
+                    );
                 } else {
                     let fileToFix = fs.readFileSync(ovDir).toString();
-                    for (const fk in override) {
-                        fileToFix = fileToFix.replace(new RegExp(fk, 'g'), override[fk]);
-                    }
+                    Object.keys(override).forEach((fk) => {
+                        const regEx = new RegExp(fk, 'g');
+                        const count = (fileToFix.match(regEx) || []).length;
+                        if (!count) {
+                            logWarning(`No Match found in ${chalk.red(
+                                ovDir
+                            )} for expression: ${chalk.red(fk)}.
+Consider update or removal of ${chalk.white(overridePath)}`);
+                        } else {
+                            fileToFix = fileToFix.replace(regEx, override[fk]);
+                        }
+                    });
                     fs.writeFileSync(ovDir, fileToFix);
                 }
             }
-        }
+        });
     }
 };

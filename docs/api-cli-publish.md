@@ -10,7 +10,7 @@ sidebar_label: publish
 
 ## Task Order
 
-🔥 `platform`  ✅
+🔥 `platform` ✅
 
 ## platform
 

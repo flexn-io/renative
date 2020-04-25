@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
@@ -9,7 +10,6 @@ import {
     getAppFolder,
     getAppTemplateFolder,
     checkPortInUse,
-    resolveNodeModulePath,
     getConfigProp,
     waitForWebpack,
     writeCleanFile,
@@ -20,57 +20,90 @@ import {
     confirmActiveBundler
 } from '../../common';
 import { isPlatformActive } from '..';
-import { logTask, logInfo, logDebug, logSuccess, logWarning } from '../../systemTools/logger';
+import {
+    logTask,
+    logInfo,
+    logDebug,
+    logSuccess,
+    logWarning
+} from '../../systemTools/logger';
 import { WEB } from '../../constants';
-import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
-import { copyFileSync } from '../../systemTools/fileutils';
-import { getMergedPlugin } from '../../pluginTools';
-import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
+import {
+    copyBuildsFolder,
+    copyAssetsFolder
+} from '../../projectTools/projectParser';
+import { copyFileSync, readObjectSync } from '../../systemTools/fileutils';
+import { parsePlugins } from '../../pluginTools';
+import {
+    selectWebToolAndDeploy,
+    selectWebToolAndExport
+} from '../../deployTools/webTools';
 import { getValidLocalhost } from '../../utils';
+import { doResolvePath } from '../../resolve';
 
 const _generateWebpackConfigs = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const templateFolder = getAppTemplateFolder(c, platform);
 
-    const { plugins } = c.buildConfig;
     let modulePaths = [];
-    let moduleAliasesString = '';
-    const moduleAliases = {};
+    const doNotResolveModulePaths = [];
+    let moduleAliases = {};
 
-    for (const key in plugins) {
-        const plugin = getMergedPlugin(c, key, plugins);
-        if (!plugin) {
+    const modulePath = path.join(c.paths.project.builds.dir, '_shared', 'modules.json');
+    let externalModulePaths = [];
+    let localModulePaths = [];
+    if (fs.existsSync(modulePath)) {
+        const modules = readObjectSync(modulePath);
+        externalModulePaths = modules.externalPaths;
+        localModulePaths = modules.localPaths;
+        moduleAliases = modules.aliases;
+    }
 
-        } else if (plugin.webpack) {
-            if (plugin.webpack.modulePaths) {
-                if (plugin.webpack.modulePaths === true) {
+    // PLUGINS
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        const webpackConfig = plugin.webpack || plugin.webpackConfig;
+
+        if (webpackConfig) {
+            if (webpackConfig.modulePaths) {
+                if (webpackConfig.modulePaths === false) {
+                    // ignore
+                } else if (webpackConfig.modulePaths === true) {
                     modulePaths.push(`node_modules/${key}`);
                 } else {
-                    modulePaths = modulePaths.concat(plugin.webpack.modulePaths);
+                    webpackConfig.modulePaths.forEach((v) => {
+                        if (typeof v === 'string') {
+                            modulePaths.push(v);
+                        } else if (v?.projectPath) {
+                            doNotResolveModulePaths.push(path.join(c.paths.project.dir, v.projectPath));
+                        }
+                    });
                 }
             }
-            if (plugin.webpack.moduleAliases) {
-                if (plugin.webpack.moduleAliases === true) {
-                    moduleAliasesString += `'${key}': {
-                  projectPath: 'node_modules/${key}'
-                },`;
-                    moduleAliases[key] = { projectPath: `node_modules/${key}` };
+            if (webpackConfig.moduleAliases) {
+                if (webpackConfig.moduleAliases === true) {
+                    moduleAliases[key] = doResolvePath(key, true, {}, c.paths.project.nodeModulesDir);
                 } else {
-                    for (const aKey in plugin.webpack.moduleAliases) {
-                        if (typeof plugin.webpack.moduleAliases[aKey] === 'string') {
-                            moduleAliasesString += `'${aKey}': '${plugin.webpack.moduleAliases[aKey]}',`;
-                            moduleAliases[key] = plugin.webpack.moduleAliases[aKey];
-                        } else {
-                            moduleAliasesString += `'${aKey}': {projectPath: '${plugin.webpack.moduleAliases[aKey].projectPath}'},`;
-                            if (plugin.webpack.moduleAliases[aKey].projectPath) {
-                                moduleAliases[key] = { projectPath: plugin.webpack.moduleAliases[aKey].projectPath };
-                            }
+                    Object.keys(webpackConfig.moduleAliases).forEach((aKey) => {
+                        const mAlias = webpackConfig.moduleAliases[aKey];
+                        if (typeof mAlias === 'string') {
+                            moduleAliases[key] = doResolvePath(mAlias, true, {}, c.paths.project.nodeModulesDir);
+                        } else if (mAlias.path) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.path);
+                        } else if (mAlias.projectPath) {
+                            moduleAliases[key] = path.join(c.paths.project.dir, mAlias.projectPath);
                         }
-                    }
+                    });
                 }
             }
         }
-    }
+    }, true);
+
+    modulePaths = modulePaths
+        .map(v => doResolvePath(v, true, {}, c.paths.project.dir))
+        .concat(externalModulePaths.map(v => doResolvePath(v, true, {}, c.paths.project.nodeModulesDir)))
+        .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)))
+        .concat(doNotResolveModulePaths)
+        .filter(Boolean);
 
     const env = getConfigProp(c, platform, 'environment');
     const extendConfig = getConfigProp(c, platform, 'webpackConfig', {});
@@ -79,9 +112,15 @@ const _generateWebpackConfigs = (c, platform) => {
     const analyzer = getConfigProp(c, platform, 'analyzer') || c.program.analyzer;
 
     copyFileSync(
-        path.join(templateFolder, '_privateConfig', env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'),
+        path.join(
+            templateFolder,
+            '_privateConfig',
+            env === 'production' ? 'webpack.config.js' : 'webpack.config.dev.js'
+        ),
         path.join(appFolder, 'webpack.config.js')
     );
+
+    // const externalModulesResolved = externalModules.map(v => doResolve(v))
 
     const obj = {
         modulePaths,
@@ -89,7 +128,7 @@ const _generateWebpackConfigs = (c, platform) => {
         analyzer,
         entryFile,
         title,
-        extensions: getSourceExts(c),
+        extensions: getSourceExts(c, platform),
         ...extendConfig
     };
 
@@ -108,15 +147,25 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
     let debugVariables = '';
 
     if (debug) {
-        logInfo(`Starting a remote debugger build with ip ${debugIp || ip.address()}. If this IP is not correct, you can always override it with --debugIp`);
+        logInfo(
+            `Starting a remote debugger build with ip ${debugIp
+                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
+        );
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    const wbp = resolveNodeModulePath(c, 'webpack/bin/webpack.js');
+    const wbp = doResolvePath('webpack/bin/webpack.js');
 
-    executeAsync(c, `npx cross-env PLATFORM=${platform} NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`)
+    executeAsync(
+        c,
+        `npx cross-env PLATFORM=${platform} NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`
+    )
         .then(() => {
-            logSuccess(`Your Build is located in ${chalk.white(path.join(appFolder, 'public'))} .`);
+            logSuccess(
+                `Your Build is located in ${chalk.white(
+                    path.join(appFolder, 'public')
+                )} .`
+            );
             resolve();
         })
         .catch(e => reject(e));
@@ -142,9 +191,18 @@ export const configureCoreWebProject = async (c, platform) => {
 const _parseCssSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const stringsPath = 'public/app.css';
-    writeCleanFile(getBuildFilePath(c, platform, stringsPath), path.join(appFolder, stringsPath), [
-        { pattern: '{{PLUGIN_COLORS_BG}}', override: sanitizeColor(getConfigProp(c, platform, 'backgroundColor')).hex },
-    ]);
+    writeCleanFile(
+        getBuildFilePath(c, platform, stringsPath),
+        path.join(appFolder, stringsPath),
+        [
+            {
+                pattern: '{{PLUGIN_COLORS_BG}}',
+                override: sanitizeColor(
+                    getConfigProp(c, platform, 'backgroundColor')
+                ).hex
+            }
+        ]
+    );
 };
 
 const runWeb = async (c, platform, port) => {
@@ -154,14 +212,21 @@ const runWeb = async (c, platform, port) => {
 
     if (platform === WEB) {
         const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-        devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
+        devServerHost = getValidLocalhost(
+            extendConfig.devServerHost,
+            c.runtime.localhost
+        );
     }
 
     const isPortActive = await checkPortInUse(c, platform, port);
 
     if (!isPortActive) {
         logInfo(
-            `Looks like your ${chalk.white(platform)} devServerHost ${chalk.white(devServerHost)} at port ${chalk.white(
+            `Looks like your ${chalk.white(
+                platform
+            )} devServerHost ${chalk.white(
+                devServerHost
+            )} at port ${chalk.white(
                 port
             )} is not running. Starting it up for you...`
         );
@@ -174,9 +239,11 @@ const runWeb = async (c, platform, port) => {
 };
 
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
-    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`);
+    logTask(
+        `_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`
+    );
     if (!c.runtime.shouldOpenBrowser) return resolve();
-    const wait = waitForWebpack(c, port)
+    const wait = waitForWebpack(c)
         .then(() => {
             open(`http://${devServerHost}:${port}/`);
         })
@@ -198,7 +265,10 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
     let debugVariables = '';
 
     if (debug) {
-        logInfo(`Starting a remote debugger build with ip ${debugIp || ip.address()}. If this IP is not correct, you can always override it with --debugIp`);
+        logInfo(
+            `Starting a remote debugger build with ip ${debugIp
+                    || ip.address()}. If this IP is not correct, you can always override it with --debugIp`
+        );
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 

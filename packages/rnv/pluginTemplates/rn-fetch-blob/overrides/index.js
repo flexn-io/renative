@@ -42,9 +42,9 @@ const {
     cp,
 } = fs;
 
-const Blob = polyfill.Blob;
+const { Blob } = polyfill;
 const emitter = DeviceEventEmitter;
-const RNFetchBlob = NativeModules.RNFetchBlob;
+const { RNFetchBlob } = NativeModules;
 
 // when app resumes, check if there's any expired network task and trigger
 // their .expire event
@@ -134,43 +134,43 @@ function fetchFile(options = {}, method, url, headers = {}, body):Promise {
         _stateChange;
 
     switch (method.toLowerCase()) {
-    case 'post':
-        break;
+        case 'post':
+            break;
 
-    case 'put':
-        break;
+        case 'put':
+            break;
 
-    // read data from file system
-    default:
-        promise = fs.stat(url)
-            .then((stat) => {
-                total = stat.size;
-                return fs.readStream(url,
-                    headers.encoding || 'utf8',
-                    Math.floor(headers.bufferSize) || 409600,
-                    Math.floor(headers.interval) || 100);
-            })
-            .then(stream => new Promise((resolve, reject) => {
-                stream.open();
-                info = {
-                    state: '2',
-                    headers: { source: 'system-fs' },
-                    status: 200,
-                    respType: 'text',
-                    rnfbEncode: headers.encoding || 'utf8',
-                };
-                _stateChange(info);
-                stream.onData((chunk) => {
-                    _progress && _progress(cursor, total, chunk);
-                    if (headers.noCache) return;
-                    cacheData += chunk;
-                });
-                stream.onError((err) => { reject(err); });
-                stream.onEnd(() => {
-                    resolve(new FetchBlobResponse(null, info, cacheData));
-                });
-            }));
-        break;
+            // read data from file system
+        default:
+            promise = fs.stat(url)
+                .then((stat) => {
+                    total = stat.size;
+                    return fs.readStream(url,
+                        headers.encoding || 'utf8',
+                        Math.floor(headers.bufferSize) || 409600,
+                        Math.floor(headers.interval) || 100);
+                })
+                .then(stream => new Promise((resolve, reject) => {
+                    stream.open();
+                    info = {
+                        state: '2',
+                        headers: { source: 'system-fs' },
+                        status: 200,
+                        respType: 'text',
+                        rnfbEncode: headers.encoding || 'utf8',
+                    };
+                    _stateChange(info);
+                    stream.onData((chunk) => {
+                        _progress && _progress(cursor, total, chunk);
+                        if (headers.noCache) return;
+                        cacheData += chunk;
+                    });
+                    stream.onError((err) => { reject(err); });
+                    stream.onEnd(() => {
+                        resolve(new FetchBlobResponse(null, info, cacheData));
+                    });
+                }));
+            break;
     }
 
     promise.progress = (fn) => {
@@ -413,15 +413,15 @@ class FetchBlobResponse {
           const cType = info.headers['Content-Type'] || info.headers['content-type'];
           return new Promise((resolve, reject) => {
               switch (this.type) {
-              case 'base64':
+                  case 'base64':
                   // TODO : base64 to array buffer
-                  break;
-              case 'path':
-                  fs.readFile(this.data, 'ascii').then(resolve);
-                  break;
-              default:
+                      break;
+                  case 'path':
+                      fs.readFile(this.data, 'ascii').then(resolve);
+                      break;
+                  default:
                   // TODO : text to array buffer
-                  break;
+                      break;
               }
           });
       };
@@ -431,19 +431,19 @@ class FetchBlobResponse {
      * @return {Promise<Blob>} Return a promise resolves Blob object.
      */
       this.blob = ():Promise<Blob> => {
-          const Blob = polyfill.Blob;
+          const { Blob } = polyfill;
           const cType = info.headers['Content-Type'] || info.headers['content-type'];
           return new Promise((resolve, reject) => {
               switch (this.type) {
-              case 'base64':
-                  Blob.build(this.data, { type: `${cType};BASE64` }).then(resolve);
-                  break;
-              case 'path':
-                  polyfill.Blob.build(wrap(this.data), { type: cType }).then(resolve);
-                  break;
-              default:
-                  polyfill.Blob.build(this.data, { type: 'text/plain' }).then(resolve);
-                  break;
+                  case 'base64':
+                      Blob.build(this.data, { type: `${cType};BASE64` }).then(resolve);
+                      break;
+                  case 'path':
+                      polyfill.Blob.build(wrap(this.data), { type: cType }).then(resolve);
+                      break;
+                  default:
+                      polyfill.Blob.build(this.data, { type: 'text/plain' }).then(resolve);
+                      break;
               }
           });
       };
@@ -454,12 +454,12 @@ class FetchBlobResponse {
       this.text = ():string | Promise<any> => {
           const res = this.data;
           switch (this.type) {
-          case 'base64':
-              return base64.decode(this.data);
-          case 'path':
-              return fs.readFile(this.data, 'base64').then(b64 => Promise.resolve(base64.decode(b64)));
-          default:
-              return this.data;
+              case 'base64':
+                  return base64.decode(this.data);
+              case 'path':
+                  return fs.readFile(this.data, 'base64').then(b64 => Promise.resolve(base64.decode(b64)));
+              default:
+                  return this.data;
           }
       };
       /**
@@ -468,13 +468,13 @@ class FetchBlobResponse {
      */
       this.json = ():any => {
           switch (this.type) {
-          case 'base64':
-              return JSON.parse(base64.decode(this.data));
-          case 'path':
-              return fs.readFile(this.data, 'utf8')
-                  .then(text => Promise.resolve(JSON.parse(text)));
-          default:
-              return JSON.parse(this.data);
+              case 'base64':
+                  return JSON.parse(base64.decode(this.data));
+              case 'path':
+                  return fs.readFile(this.data, 'utf8')
+                      .then(text => Promise.resolve(JSON.parse(text)));
+              default:
+                  return JSON.parse(this.data);
           }
       };
       /**
@@ -483,12 +483,12 @@ class FetchBlobResponse {
      */
       this.base64 = ():string | Promise<any> => {
           switch (this.type) {
-          case 'base64':
-              return this.data;
-          case 'path':
-              return fs.readFile(this.data, 'base64');
-          default:
-              return base64.encode(this.data);
+              case 'base64':
+                  return this.data;
+              case 'path':
+                  return fs.readFile(this.data, 'base64');
+              default:
+                  return base64.encode(this.data);
           }
       };
       /**

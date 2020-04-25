@@ -30,7 +30,9 @@ project.xcworkspace
 node_modules/
 npm-debug.log
 yarn-error.log
-yarn.lock
+
+
+lerna-debug.log
 
 index/
 
@@ -47,35 +49,10 @@ buck-out/
 !.vscode/launch.json
 !.vscode/extensions.json
 
-#-------------------------------
-# RENATIVE
-#-------------------------------
-
-.expo
-platformBuilds/
-platformAssets/
-package-lock.json
-buildHooks/dist
-renative.local.json
-renative.private.json
-renative.build.json
-renative.runtime.json
-release-configs.gradle
-rnv-config.local.json
-metro.config.local.js
-
-# fix some trash files PR
-rnv-cli/dist
-test/*
-.idea
-
-# ONLY FOR ReNative WRAPPER PROJECT
-
-/appConfigs
-/projectConfig
-/src
-/index.*.js
 
 # Testing
 /packages/**/coverage
 /packages/**/dist
+.expo
+.next
+coverage

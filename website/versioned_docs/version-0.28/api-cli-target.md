@@ -11,7 +11,7 @@ original_id: api-cli-target
 
 ## Task Order
 
-🔥 `target`  ✅
+🔥 `target` ✅
 
 ## target
 

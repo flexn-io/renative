@@ -4,7 +4,6 @@ title: Firefox TV Platform
 sidebar_label: Firefox TV
 ---
 
-
 <table>
   <tr>
   <td>
@@ -20,6 +19,8 @@ sidebar_label: Firefox TV
 
 ## File Extension Support
 
+<!--EXTENSION_SUPPORT_START-->
+
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `firefoxtv.tv.js` | `form factor` | 1 |
@@ -28,9 +29,12 @@ sidebar_label: Firefox TV
 | `firefoxtv.js` | `platform` | 4 |
 | `tv.web.js` | `fallback` | 5 |
 | `web.js` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
+| `mjs` | `fallback` | 7 |
+| `js` | `fallback` | 8 |
+| `tsx` | `fallback` | 9 |
+| `ts` | `fallback` | 10 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 #### Requirements
 

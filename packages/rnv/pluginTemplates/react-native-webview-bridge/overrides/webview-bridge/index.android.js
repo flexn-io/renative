@@ -74,7 +74,7 @@ var WebViewBridge = createReactClass({
     componentWillMount() {
         DeviceEventEmitter.addListener('webViewBridgeMessage', (body) => {
             const { onBridgeMessage } = this.props;
-            const message = body.message;
+            const { message } = body;
             if (onBridgeMessage) {
                 onBridgeMessage(message);
             }
@@ -196,7 +196,7 @@ var WebViewBridge = createReactClass({
     },
 
     onLoadingStart(event) {
-        const onLoadStart = this.props.onLoadStart;
+        const { onLoadStart } = this.props;
         onLoadStart && onLoadStart(event);
         this.updateNavigationState(event);
     },

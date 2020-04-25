@@ -30,7 +30,6 @@ Lists all available workspaces
 rnv workspace list
 ```
 
-
 ### update
 
 Updates workspace (if connected to remote)

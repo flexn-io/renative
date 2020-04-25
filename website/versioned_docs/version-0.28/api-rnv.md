@@ -7,7 +7,6 @@ original_id: api-rnv
 
 This reference helps you to extend RNV build infrastructure ie via [Build Hooks](guide-build-hooks.md)
 
-
 ## Constants
 
 ```

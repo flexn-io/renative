@@ -25,6 +25,8 @@ sidebar_label: Android Wear
 
 ## File Extension Support
 
+<!--EXTENSION_SUPPORT_START-->
+
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `androidwear.watch.js` | `form factor` | 1 |
@@ -36,6 +38,8 @@ sidebar_label: Android Wear
 | `js` | `fallback` | 7 |
 | `tsx` | `fallback` | 8 |
 | `ts` | `fallback` | 9 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 
@@ -88,7 +92,6 @@ make sure you have this piece of script in package.json
 
 Hermes can be enabled or disabled with `enableHermes` prop in `renative.json:platforms.androidwear.enableHermes`
 or `renative.json:platforms.androidwear.buildSchemes.[SCHEME].enableHermes`
-
 
 NOTE: There is a bug in RN. for now you must NOT have running bundler (`$ rnv start`) in order for wear sim to work
 

@@ -16,8 +16,6 @@ Let's imagine you want to override one of the files generated in `./platformBuil
 
 you can override any file via `./appConfigs/base/builds/[PLATFORM]/[FILE_PATH]`
 
-
-
 ## Example 1
 
 Webpack config file of your web app:
@@ -27,7 +25,6 @@ Webpack config file of your web app:
 Will be overridden with:
 
 `./appConfigs/base/builds/web/webpack.config.js`
-
 
 ## Example 2
 

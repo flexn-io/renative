@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, Image, View, StyleSheet, ScrollView, PixelRatio } from 'react-native';
-import { Api, Button, getScaledValue, useNavigate, useOpenURL } from 'renative';
+import { Text, Image, View, ScrollView, PixelRatio } from 'react-native';
+import { Api, Button, getScaledValue, useNavigate, useOpenURL, StyleSheet } from 'renative';
 import { withFocusable } from '@noriginmedia/react-spatial-navigation';
 import Theme, { themeStyles, hasWebFocusableUI } from './theme';
 import config from '../platformAssets/renative.runtime.json';

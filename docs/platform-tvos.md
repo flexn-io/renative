@@ -25,6 +25,8 @@ sidebar_label: tvOS
 
 ## File Extension Support
 
+<!--EXTENSION_SUPPORT_START-->
+
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `tvos.tv.js` | `form factor` | 1 |
@@ -36,6 +38,8 @@ sidebar_label: tvOS
 | `js` | `fallback` | 7 |
 | `tsx` | `fallback` | 8 |
 | `ts` | `fallback` | 9 |
+
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 

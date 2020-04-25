@@ -11,7 +11,7 @@ original_id: api-cli-crypto
 
 ## Task Order
 
-🔥 `crypto`  ✅
+🔥 `crypto` ✅
 
 ## crypto
 

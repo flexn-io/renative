@@ -10,7 +10,7 @@ sidebar_label: status
 
 ## Task Order
 
-🔥 `status`  ✅
+🔥 `status` ✅
 
 ## status
 

@@ -17,13 +17,14 @@ sidebar_label: Tizen Watch
 
 <img src="https://renative.org/img/rnv_tizenwatch.gif" height="250"/>
 
-
 ## Overview
 
 -   Latest Tizen project
 -   Support for Tizen 5.0
 
 ## File Extension Support
+
+<!--EXTENSION_SUPPORT_START-->
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
@@ -32,10 +33,12 @@ sidebar_label: Tizen Watch
 | `tizenwatch.js` | `platform` | 3 |
 | `watch.web.js` | `fallback` | 4 |
 | `web.js` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
+| `mjs` | `fallback` | 6 |
+| `js` | `fallback` | 7 |
+| `tsx` | `fallback` | 8 |
+| `ts` | `fallback` | 9 |
 
+<!--EXTENSION_SUPPORT_END-->
 
 ## Requirements
 
