@@ -412,8 +412,6 @@ Special runtime injection object to be available for runtime code via `platformA
 }
 ```
 
-v
-
 ## buildSchemes
 
 ```json

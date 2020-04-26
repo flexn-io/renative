@@ -231,7 +231,7 @@ const Index = ({ config: siteConfig, language = '' }) => {
         <Block background="light">
             {[
                 {
-                    content: `[Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you](${baseUrl}docs/build_hooks)`,
+                    content: `[Sometimes you need to extend CLI functionality with custom build scripts. ReNative makes this easy for you](${baseUrl}docs/guide-build_hooks)`,
                     image: `${baseUrl}img/undraw_convert_2gjv.svg`,
                     imageAlign: 'right',
                     title: 'Build Hooks'

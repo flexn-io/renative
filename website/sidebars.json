@@ -20,6 +20,7 @@
             "guide-runtime",
             "guide-common_issues",
             "guide-develop",
+            "guide-engines",
             "guide-analytics"
         ],
         "Platforms": [
