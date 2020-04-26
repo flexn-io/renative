@@ -9,8 +9,8 @@ const React = require('react');
 
 const CompLibrary = require('../../core/CompLibrary.js');
 
-const Container = CompLibrary.Container;
-const GridBlock = CompLibrary.GridBlock;
+const { Container } = CompLibrary;
+const { GridBlock } = CompLibrary;
 
 function Help(props) {
     const { config: siteConfig, language = '' } = props;
@@ -22,7 +22,7 @@ function Help(props) {
     const supportLinks = [
         {
             content: `Learn more using the [documentation on this site.](${docUrl(
-                'installation',
+                'intro-installation',
             )})`,
             title: 'Browse Docs',
         },

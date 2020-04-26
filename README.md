@@ -513,6 +513,16 @@ More in-depth explanation how ReNative internals work
 
 ---
 
+<img src="https://renative.org/img/ic_chromecast.png" width=50 height=50 />
+
+## Chromecast
+
+`rnv run -p chromecast`
+
+[Documentation for Chromecast Platform](https://renative.org/docs/platform-chromecast)
+
+---
+
 <img src="https://renative.org/img/ic_construction.png" width=50 height=50 />
 
 ## Developing ReNative
