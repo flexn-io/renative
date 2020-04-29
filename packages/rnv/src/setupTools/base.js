@@ -40,17 +40,26 @@ class BasePlatformSetup {
     async postInstall(sdk) {
         if (sdk === 'android') {
             const { location } = setupConfig.android;
-            await updateConfigFile({ androidSdk: location }, this.globalConfigPath);
+            await updateConfigFile(
+                { androidSdk: location },
+                this.globalConfigPath
+            );
             await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'tizen') {
-            await updateConfigFile({ tizenSdk: this.tizenSdkPath }, this.globalConfigPath);
+            await updateConfigFile(
+                { tizenSdk: this.tizenSdkPath },
+                this.globalConfigPath
+            );
             await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
         }
 
         if (sdk === 'webos') {
-            await updateConfigFile({ webosSdk: this.webosSdkPath }, this.globalConfigPath);
+            await updateConfigFile(
+                { webosSdk: this.webosSdkPath },
+                this.globalConfigPath
+            );
             await configureRnvGlobal(this.c); // trigger the configure to update the paths for clis
         }
     }
@@ -58,7 +67,9 @@ class BasePlatformSetup {
     async downloadSdk(sdk) {
         const downloader = this.availableDownloader;
         if (!downloader) throw new Error('Wget or cURL not installed!');
-        logDebug(`Downloading ${sdk} SDK to ${setupConfig[sdk].downloadLocation} using ${downloader}`);
+        logDebug(
+            `Downloading ${sdk} SDK to ${setupConfig[sdk].downloadLocation} using ${downloader}`
+        );
         // remove the file if existing first
         await shell.rm(setupConfig[sdk].downloadLocation);
 
@@ -81,22 +92,30 @@ class BasePlatformSetup {
     }
 
     async unzipSdk(sdk) {
-        logDebug(`Unzipping from ${setupConfig[sdk].downloadLocation} to ${setupConfig[sdk].location}`);
-        if (!commandExistsSync('unzip')) throw new Error('unzip is not installed');
-        await shell.exec(`unzip -qq -o ${setupConfig[sdk].downloadLocation} -d ${setupConfig[sdk].location}`);
+        logDebug(
+            `Unzipping from ${setupConfig[sdk].downloadLocation} to ${setupConfig[sdk].location}`
+        );
+        if (!commandExistsSync('unzip')) { throw new Error('unzip is not installed'); }
+        await shell.exec(
+            `unzip -qq -o ${setupConfig[sdk].downloadLocation} -d ${setupConfig[sdk].location}`
+        );
     }
 
     async installSdksAndEmulator() {
         logDebug('Accepting licenses');
-        await shell.exec(`yes | ${setupConfig.android.location}/tools/bin/sdkmanager --licenses > /dev/null`);
+        await shell.exec(
+            `yes | ${setupConfig.android.location}/tools/bin/sdkmanager --licenses > /dev/null`
+        );
         logDebug('Installing SDKs', this.sdksToInstall);
-        await shell.exec(`${setupConfig.android.location}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`);
+        await shell.exec(
+            `${setupConfig.android.location}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`
+        );
     }
 
     async installSdk(sdk, skipPrereq) {
         logTask(`installSdk:${sdk}`);
         !skipPrereq && this.checkPrereqs();
-        !skipPrereq && await this.installPrereqs();
+        !skipPrereq && (await this.installPrereqs());
 
         switch (sdk) {
             case 'android':
@@ -116,6 +135,9 @@ class BasePlatformSetup {
             case 'docker':
                 await this.installDocker();
                 break;
+            case 'aws':
+                await this.installAws();
+                break;
             default:
                 break;
         }
@@ -125,19 +147,25 @@ class BasePlatformSetup {
 
     async installTizenSdk() {
         // to be overwritten
-        logError('Install webos sdk not supported yet. Follow https://developer.tizen.org/development/tizen-studio/download to install it manually');
+        logError(
+            'Install webos sdk not supported yet. Follow https://developer.tizen.org/development/tizen-studio/download to install it manually'
+        );
         return true;
     }
 
     async installWebosSdk() {
         // to be overwritten
-        logError('Install webos sdk not supported yet. Follow http://webostv.developer.lge.com/sdk/installation/ to install it manually');
+        logError(
+            'Install webos sdk not supported yet. Follow http://webostv.developer.lge.com/sdk/installation/ to install it manually'
+        );
         return true;
     }
 
     async installFastlane() {
         // to be overwritten
-        logError('Install fastlane not supported yet. Follow https://docs.fastlane.tools/getting-started/ios/setup/ to install it manually');
+        logError(
+            'Install fastlane not supported yet. Follow https://docs.fastlane.tools/getting-started/ios/setup/ to install it manually'
+        );
         return true;
     }
 
@@ -147,14 +175,22 @@ class BasePlatformSetup {
         return true;
     }
 
+    async installAws() {
+        // to be overwritten
+        logError('Install aws not supported yet. Follow https://docs.aws.amazon.com/cli/latest/userguide/install-macos.html to install it manually (version 1 required)');
+        return true;
+    }
+
     async askToInstallSDK(sdk) {
         let sdkInstall;
         if (!this.c.program.ci) {
-            const response = await inquirer.prompt([{
-                name: 'sdkInstall',
-                type: 'confirm',
-                message: `Do you want to install ${sdk} SDK?`,
-            }]);
+            const response = await inquirer.prompt([
+                {
+                    name: 'sdkInstall',
+                    type: 'confirm',
+                    message: `Do you want to install ${sdk} SDK?`
+                }
+            ]);
             // eslint-disable-next-line prefer-destructuring
             sdkInstall = response.sdkInstall;
         }
@@ -162,7 +198,9 @@ class BasePlatformSetup {
         if (this.c.program.ci || sdkInstall) {
             await this.installSdk(sdk, ['fastlane', 'docker'].includes(sdk)); // no prereqs needed for fastlane
         } else {
-            throw new Error(`You can't run the project on this platform without ${sdk} sdk installed`);
+            throw new Error(
+                `You can't run the project on this platform without ${sdk} sdk installed`
+            );
         }
     }
 }

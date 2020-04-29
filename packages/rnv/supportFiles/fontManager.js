@@ -2,6 +2,6 @@ function registerFonts(fonts) {
     return {};
 }
 
-let fonts = registerFonts(null);
+const fonts = registerFonts(null);
 
 export default fonts;

@@ -1,35 +1,73 @@
 import React from 'react';
-import { View, Text, TouchableHighlight, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+
+const fontAwesome = require('react-native-vector-icons/FontAwesome').default;
+const feather = require('react-native-vector-icons/Feather').default;
+const antDesign = require('react-native-vector-icons/AntDesign').default;
+const entypo = require('react-native-vector-icons/Entypo').default;
+const evilIcons = require('react-native-vector-icons/EvilIcons').default;
+const foundation = require('react-native-vector-icons/Foundation').default;
+const ionicons = require('react-native-vector-icons/Ionicons').default;
+const materialCommunityIcons = require('react-native-vector-icons/MaterialCommunityIcons')
+    .default;
+const materialIcons = require('react-native-vector-icons/MaterialIcons')
+    .default;
+const octicons = require('react-native-vector-icons/Octicons').default;
+const simpleLineIcons = require('react-native-vector-icons/SimpleLineIcons')
+    .default;
+const zocial = require('react-native-vector-icons/Zocial').default;
 
 const IconMap = {
-    fontAwesome: require('react-native-vector-icons/FontAwesome').default,
-    feather: require('react-native-vector-icons/Feather').default,
-    antDesign: require('react-native-vector-icons/AntDesign').default,
-    entypo: require('react-native-vector-icons/Entypo').default,
-    evilIcons: require('react-native-vector-icons/EvilIcons').default,
-    foundation: require('react-native-vector-icons/Foundation').default,
-    ionicons: require('react-native-vector-icons/Ionicons').default,
-    materialCommunityIcons: require('react-native-vector-icons/MaterialCommunityIcons').default,
-    materialIcons: require('react-native-vector-icons/MaterialIcons').default,
-    octicons: require('react-native-vector-icons/Octicons').default,
-    simpleLineIcons: require('react-native-vector-icons/SimpleLineIcons').default,
-    zocial: require('react-native-vector-icons/Zocial').default,
+    fontAwesome,
+    feather,
+    antDesign,
+    entypo,
+    evilIcons,
+    foundation,
+    ionicons,
+    materialCommunityIcons,
+    materialIcons,
+    octicons,
+    simpleLineIcons,
+    zocial
 };
 
-export default class IconComponent extends React.PureComponent {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        const {
-            iconFont, iconName, iconColor, onPress, style, className, testID
-        } = this.props;
-        const IC = IconMap[iconFont];
+const IconComponent = ({
+    iconFont,
+    iconName,
+    iconColor,
+    onPress,
+    style,
+    className,
+    testID,
+    size
+}) => {
+    const IC = IconMap[iconFont];
+    if (onPress) {
         return (
-            <TouchableOpacity style={style} onPress={onPress} className={className} testID={testID}>
-                <IC style={{ color: iconColor }} name={iconName} size={style.width || style.height} />
+            <TouchableOpacity
+                style={style}
+                onPress={onPress}
+                className={className}
+                testID={testID}
+            >
+                <IC
+                    style={{ color: iconColor }}
+                    name={iconName}
+                    size={size || style.width || style.height}
+                />
             </TouchableOpacity>
         );
     }
-}
+    return (
+        <View style={style} className={className} testID={testID}>
+            <IC
+                style={{ color: iconColor }}
+                name={iconName}
+                size={size || style.width || style.height}
+            />
+        </View>
+    );
+};
+
+export default IconComponent;

@@ -29,7 +29,10 @@ class Footer extends React.Component {
                     <a href={this.props.config.baseUrl} className="nav-home">
                         {this.props.config.footerIcon && (
                             <img
-                                src={this.props.config.baseUrl + this.props.config.footerIcon}
+                                src={
+                                    this.props.config.baseUrl +
+                                    this.props.config.footerIcon
+                                }
                                 alt={this.props.config.title}
                                 width="66"
                                 height="58"
@@ -37,45 +40,37 @@ class Footer extends React.Component {
                         )}
                     </a>
                     <div>
-                        <h5>
-Docs
-                        </h5>
-                        <a href={this.docUrl('installation', language)}>
-              Getting Started
+                        <h5>Docs</h5>
+                        <a href={this.docUrl('intro-installation', language)}>
+                            Getting Started
                         </a>
-                        <a href={this.docUrl('platforms_overview', language)}>
-              Platforms
+                        <a href={this.docUrl('platform', language)}>
+                            Platforms
                         </a>
-                        <a href={this.docUrl('plugins', language)}>
-              Guides
-                        </a>
+                        <a href={this.docUrl('guide-cli', language)}>Guides</a>
                     </div>
                     <div>
-                        <h5>
-Community
-                        </h5>
+                        <h5>Community</h5>
 
                         <a href="https://spectrum.chat/renative">
-Project Chat
+                            Project Chat
                         </a>
                         <a
                             href="https://twitter.com/renative"
                             target="_blank"
                             rel="noreferrer noopener"
                         >
-              Twitter
+                            Twitter
                         </a>
                         <a href={`${this.props.config.baseUrl}help`}>
-              Contributors
+                            Contributors
                         </a>
                     </div>
                     <div>
-                        <h5>
-More
-                        </h5>
+                        <h5>More</h5>
 
                         <a href="https://github.com/pavjacko/renative">
-GitHub
+                            GitHub
                         </a>
                         <a
                             className="github-button"
@@ -86,7 +81,7 @@ GitHub
                             data-count-aria-label="# stargazers on GitHub"
                             aria-label="Star this project on GitHub"
                         >
-              Star
+                            Star
                         </a>
                         {this.props.config.twitterUsername && (
                             <div className="social">
@@ -96,8 +91,7 @@ GitHub
                                     }`}
                                     className="twitter-follow-button"
                                 >
-                  Follow @
-                                    {this.props.config.twitterUsername}
+                                    Follow @{this.props.config.twitterUsername}
                                 </a>
                             </div>
                         )}
@@ -116,7 +110,6 @@ GitHub
                         )}
                     </div>
                 </section>
-
 
                 <section className="copyright">
                     {this.props.config.copyright}

@@ -169,12 +169,12 @@ const getConfig = (s) => {
 
     argArray.forEach((v, i) => {
         switch (v) {
-        case '-p':
-            c.platform = argArray[i + 1];
-            break;
-        case '-t':
-            c.target = argArray[i + 1];
-            break;
+            case '-p':
+                c.platform = argArray[i + 1];
+                break;
+            case '-t':
+                c.target = argArray[i + 1];
+                break;
         }
     });
 

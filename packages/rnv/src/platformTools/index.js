@@ -6,7 +6,12 @@ import inquirer from 'inquirer';
 
 import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
-import { cleanFolder, copyFolderContentsRecursiveSync, writeFileSync, removeDirs } from '../systemTools/fileutils';
+import {
+    cleanFolder,
+    copyFolderContentsRecursiveSync,
+    writeFileSync,
+    removeDirs
+} from '../systemTools/fileutils';
 import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS, SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from './sdkManager';
@@ -29,7 +34,9 @@ export const rnvPlatformConfigure = async (c) => {
 };
 
 const updateProjectPlatforms = (c, platforms) => {
-    const { project: { config } } = c.paths;
+    const {
+        project: { config }
+    } = c.paths;
     const currentConfig = c.files.project.config;
     currentConfig.defaults = currentConfig.defaults || {};
     currentConfig.defaults.supportedPlatforms = platforms;
@@ -39,9 +46,7 @@ const updateProjectPlatforms = (c, platforms) => {
 export const rnvPlatformSetup = async (c) => {
     const currentPlatforms = c.files.project.config.defaults?.supportedPlatforms || [];
 
-    const {
-        inputSupportedPlatforms
-    } = await inquirer.prompt({
+    const { inputSupportedPlatforms } = await inquirer.prompt({
         name: 'inputSupportedPlatforms',
         type: 'checkbox',
         pageSize: 20,
@@ -55,8 +60,18 @@ export const rnvPlatformSetup = async (c) => {
 };
 
 const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.map((platform) => {
-    const isConnected = c.paths.project.platformTemplatesDirs[platform].includes(c.paths.rnv.platformTemplates.dir);
-    return { name: `${platform} - ${isConnected ? chalk.green('(connected)') : chalk.yellow('(ejected)')}`, value: platform, isConnected };
+    const isConnected = c.paths.project.platformTemplatesDirs[
+        platform
+    ].includes(c.paths.rnv.platformTemplates.dir);
+    return {
+        name: `${platform} - ${
+            isConnected
+                ? chalk.green('(connected)')
+                : chalk.yellow('(ejected)')
+        }`,
+        value: platform,
+        isConnected
+    };
 });
 
 export const rnvPlatformEject = async (c) => {
@@ -64,9 +79,13 @@ export const rnvPlatformEject = async (c) => {
 
     const { ejectedPlatforms } = await inquirer.prompt({
         name: 'ejectedPlatforms',
-        message: 'This will copy platformTemplates folders from ReNative managed directly to your project Select platforms you would like to connect',
+        message:
+            'This will copy platformTemplates folders from ReNative managed directly to your project Select platforms you would like to connect',
         type: 'checkbox',
-        choices: _generatePlatformChoices(c).map(choice => ({ ...choice, disabled: !choice.isConnected }))
+        choices: _generatePlatformChoices(c).map(choice => ({
+            ...choice,
+            disabled: !choice.isConnected
+        }))
     });
 
     if (ejectedPlatforms.length) {
@@ -81,31 +100,52 @@ export const rnvPlatformEject = async (c) => {
                 copyShared = true;
             }
 
-            copyFolderContentsRecursiveSync(path.join(rptf, platform), path.join(prf, ptfn, platform));
+            copyFolderContentsRecursiveSync(
+                path.join(rptf, platform),
+                path.join(prf, ptfn, platform)
+            );
 
             if (copyShared) {
-                copyFolderContentsRecursiveSync(path.join(rptf, '_shared'), path.join(prf, ptfn, '_shared'));
+                copyFolderContentsRecursiveSync(
+                    path.join(rptf, '_shared'),
+                    path.join(prf, ptfn, '_shared')
+                );
             }
 
             c.files.project.config.platformTemplatesDirs = c.files.project.config.platformTemplatesDirs || {};
-            c.files.project.config.platformTemplatesDirs[platform] = `./${ptfn}`;
+            c.files.project.config.platformTemplatesDirs[
+                platform
+            ] = `./${ptfn}`;
 
             writeFileSync(c.paths.project.config, c.files.project.config);
         });
     }
 
     logSuccess(
-        `${chalk.white(ejectedPlatforms.join(','))} platform templates are located in ${chalk.white(
+        `${chalk.white(
+            ejectedPlatforms.join(',')
+        )} platform templates are located in ${chalk.white(
             c.files.project.config.platformTemplatesDirs[ejectedPlatforms[0]]
         )} now. You can edit them directly!`
     );
 };
 
 const _genPlatOptions = (c) => {
-    const opts = generateOptions(c.buildConfig.defaults.supportedPlatforms, true, null, (i, obj, mapping, defaultVal) => {
-        const isEjected = c.paths.project.platformTemplatesDirs[obj].includes(c.paths.rnv.platformTemplates.dir) ? chalk.green('(connected)') : chalk.yellow('(ejected)');
-        return ` [${chalk.white(i + 1)}]> ${chalk.bold(defaultVal)} - ${isEjected} \n`;
-    });
+    const opts = generateOptions(
+        c.buildConfig.defaults.supportedPlatforms,
+        true,
+        null,
+        (i, obj, mapping, defaultVal) => {
+            const isEjected = c.paths.project.platformTemplatesDirs[
+                obj
+            ].includes(c.paths.rnv.platformTemplates.dir)
+                ? chalk.green('(connected)')
+                : chalk.yellow('(ejected)');
+            return ` [${chalk.white(i + 1)}]> ${chalk.bold(
+                defaultVal
+            )} - ${isEjected} \n`;
+        }
+    );
     return opts;
 };
 
@@ -114,11 +154,14 @@ export const rnvPlatformConnect = async (c) => {
 
     const { connectedPlatforms } = await inquirer.prompt({
         name: 'connectedPlatforms',
-        message: 'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
+        message:
+            'This will point platformTemplates folders from your local project to ReNative managed one. Select platforms you would like to connect',
         type: 'checkbox',
-        choices: _generatePlatformChoices(c).map(choice => ({ ...choice, disabled: choice.isConnected }))
+        choices: _generatePlatformChoices(c).map(choice => ({
+            ...choice,
+            disabled: choice.isConnected
+        }))
     });
-
 
     if (connectedPlatforms.length) {
         connectedPlatforms.forEach((platform) => {
@@ -126,7 +169,10 @@ export const rnvPlatformConnect = async (c) => {
                 delete c.files.project.config.platformTemplatesDirs[platform];
             }
 
-            if (!Object.keys(c.files.project.config.platformTemplatesDirs).length) {
+            if (
+                !Object.keys(c.files.project.config.platformTemplatesDirs)
+                    .length
+            ) {
                 delete c.files.project.config.platformTemplatesDirs; // also cleanup the empty object
             }
 
@@ -137,13 +183,19 @@ export const rnvPlatformConnect = async (c) => {
     const { deletePlatformFolder } = await inquirer.prompt({
         name: 'deletePlatformFolder',
         type: 'confirm',
-        message: 'Would you also like to delete the previously used platform folder?'
+        message:
+            'Would you also like to delete the previously used platform folder?'
     });
 
     if (deletePlatformFolder) {
         const pathsToRemove = [];
         connectedPlatforms.forEach((platform) => {
-            pathsToRemove.push(path.join(c.paths.project.platformTemplatesDirs[platform], platform));
+            pathsToRemove.push(
+                path.join(
+                    c.paths.project.platformTemplatesDirs[platform],
+                    platform
+                )
+            );
         });
 
         // TODO: Remove shared folders as well
@@ -152,7 +204,11 @@ export const rnvPlatformConnect = async (c) => {
     }
 
     logSuccess(
-        `${chalk.white(connectedPlatforms.join(','))} now using ReNative platformTemplates located in ${chalk.white(c.paths.rnv.platformTemplates.dir)} now!`
+        `${chalk.white(
+            connectedPlatforms.join(',')
+        )} now using ReNative platformTemplates located in ${chalk.white(
+            c.paths.rnv.platformTemplates.dir
+        )} now!`
     );
 };
 
@@ -162,17 +218,39 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     if (platform === 'all') {
         for (const k in c.buildConfig.platforms) {
             if (_isPlatformSupportedSync(k)) {
-                const ptPath = path.join(c.paths.project.platformTemplatesDirs[k], `${k}`);
-                const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
-                copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
+                const ptPath = path.join(
+                    c.paths.project.platformTemplatesDirs[k],
+                    `${k}`
+                );
+                const pPath = path.join(
+                    c.paths.project.builds.dir,
+                    `${c.runtime.appId}_${k}`
+                );
+                copyPlatformTasks.push(
+                    copyFolderContentsRecursiveSync(ptPath, pPath)
+                );
             }
         }
     } else if (_isPlatformSupportedSync(platform)) {
-        const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-        const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
-        copyPlatformTasks.push(copyFolderContentsRecursiveSync(ptPath, pPath));
+        const ptPath = path.join(
+            c.paths.project.platformTemplatesDirs[platform],
+            `${platform}`
+        );
+        const pPath = path.join(
+            c.paths.project.builds.dir,
+            `${c.runtime.appId}_${platform}`
+        );
+        copyPlatformTasks.push(
+            copyFolderContentsRecursiveSync(ptPath, pPath)
+        );
     } else {
-        logWarning(`Your platform ${chalk.white(platform)} config is not present. Check ${chalk.white(c.paths.appConfig.config)}`);
+        logWarning(
+            `Your platform ${chalk.white(
+                platform
+            )} config is not present. Check ${chalk.white(
+                c.paths.appConfig.config
+            )}`
+        );
     }
 
     Promise.all(copyPlatformTasks).then((values) => {
@@ -188,12 +266,18 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject)
     if (platform === 'all') {
         for (const k in c.buildConfig.platforms) {
             if (_isPlatformSupportedSync(k)) {
-                const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${k}`);
+                const pPath = path.join(
+                    c.paths.project.builds.dir,
+                    `${c.runtime.appId}_${k}`
+                );
                 cleanTasks.push(cleanFolder(pPath));
             }
         }
     } else if (_isPlatformSupportedSync(platform)) {
-        const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
+        const pPath = path.join(
+            c.paths.project.builds.dir,
+            `${c.runtime.appId}_${platform}`
+        );
         cleanTasks.push(cleanFolder(pPath));
     }
 
@@ -207,20 +291,34 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
 
     if (!_isPlatformSupportedSync(platform, null, reject)) return;
 
-    const pPath = path.join(c.paths.project.builds.dir, `${c.runtime.appId}_${platform}`);
-    const ptPath = path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
-    copyFolderContentsRecursiveSync(ptPath, pPath, false, [path.join(ptPath, '_privateConfig')]);
+    const pPath = path.join(
+        c.paths.project.builds.dir,
+        `${c.runtime.appId}_${platform}`
+    );
+    const ptPath = path.join(
+        c.paths.project.platformTemplatesDirs[platform],
+        `${platform}`
+    );
+    copyFolderContentsRecursiveSync(ptPath, pPath, false, [
+        path.join(ptPath, '_privateConfig')
+    ]);
 
     resolve();
 });
 
 export const isPlatformSupported = async (c) => {
     logTask(`isPlatformSupported:${c.platform}`);
-    let platformsAsObj = c.buildConfig ? c.buildConfig.platforms : c.supportedPlatforms;
+    let platformsAsObj = c.buildConfig
+        ? c.buildConfig.platforms
+        : c.supportedPlatforms;
     if (!platformsAsObj) platformsAsObj = SUPPORTED_PLATFORMS;
     const opts = generateOptions(platformsAsObj);
 
-    if (!c.platform || c.platform === true || !SUPPORTED_PLATFORMS.includes(c.platform)) {
+    if (
+        !c.platform
+        || c.platform === true
+        || !SUPPORTED_PLATFORMS.includes(c.platform)
+    ) {
         const { platform } = await inquirerPrompt({
             name: 'platform',
             type: 'list',
@@ -233,7 +331,10 @@ export const isPlatformSupported = async (c) => {
     }
 
     const configuredPlatforms = c.files.project.config?.defaults?.supportedPlatforms;
-    if (Array.isArray(configuredPlatforms) && !configuredPlatforms.includes(c.platform)) {
+    if (
+        Array.isArray(configuredPlatforms)
+        && !configuredPlatforms.includes(c.platform)
+    ) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
             message: `Looks like platform ${c.platform} is not supported by your project. Would you like to enable it?`
@@ -260,15 +361,23 @@ const _isPlatformSupportedSync = (platform, resolve, reject) => {
             reject(
                 chalk.red(
                     `You didn't specify platform. make sure you add "${chalk.white.bold(
-                        '-p <PLATFORM>',
-                    )}" option to your command!`,
-                ),
+                        '-p <PLATFORM>'
+                    )}" option to your command!`
+                )
             );
         }
         return false;
     }
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
-        if (reject) reject(chalk.red(`Platform ${platform} is not supported. Use one of the following: ${chalk.white(SUPPORTED_PLATFORMS.join(', '))} .`));
+        if (reject) {
+            reject(
+                chalk.red(
+                    `Platform ${platform} is not supported. Use one of the following: ${chalk.white(
+                        SUPPORTED_PLATFORMS.join(', ')
+                    )} .`
+                )
+            );
+        }
         return false;
     }
     if (resolve) resolve();
@@ -277,12 +386,18 @@ const _isPlatformSupportedSync = (platform, resolve, reject) => {
 
 export const isPlatformActive = (c, platform, resolve) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
-        logError(`Looks like your appConfigFile is not configured properly! check ${chalk.white(c.paths.appConfig.config)} location.`);
+        logError(
+            `Looks like your appConfigFile is not configured properly! check ${chalk.white(
+                c.paths.appConfig.config
+            )} location.`
+        );
         if (resolve) resolve();
         return false;
     }
     if (!c.buildConfig.platforms[platform]) {
-        console.log(`Platform ${platform} not configured for ${c.runtime.appId}. skipping.`);
+        console.log(
+            `Platform ${platform} not configured for ${c.runtime.appId}. skipping.`
+        );
         if (resolve) resolve();
         return false;
     }

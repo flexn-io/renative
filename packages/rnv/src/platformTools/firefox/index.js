@@ -7,16 +7,15 @@ import {
     getAppTemplateFolder,
     getAppDescription,
     getAppAuthor,
-    getConfigProp,
+    getConfigProp
 } from '../../common';
-import {
-    logTask
-} from '../../systemTools/logger';
+import { logTask } from '../../systemTools/logger';
 import { isPlatformActive } from '..';
-import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
 import {
-    KAIOS_SDK,
-} from '../../constants';
+    copyBuildsFolder,
+    copyAssetsFolder
+} from '../../projectTools/projectParser';
+import { KAIOS_SDK } from '../../constants';
 import { getRealPath } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 
@@ -25,14 +24,18 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
 
     if (!c.files.workspace.config.sdks.KAIOS_SDK) {
         reject(
-            `${KAIOS_SDK} is not configured in your ${c.paths.workspace.config} file. Make sure you add location to your Kaiosrt App path similar to: ${chalk.white.bold(
+            `${KAIOS_SDK} is not configured in your ${
+                c.paths.workspace.config
+            } file. Make sure you add location to your Kaiosrt App path similar to: ${chalk.white.bold(
                 '"KAIOS_SDK": "/Applications/Kaiosrt.app"'
             )}`
         );
         return;
     }
 
-    const ePath = getRealPath(path.join(c.files.workspace.config.sdks.KAIOS_SDK));
+    const ePath = getRealPath(
+        path.join(c.files.workspace.config.sdks.KAIOS_SDK)
+    );
 
     if (!fs.existsSync(ePath)) {
         reject(`Can't find emulator at path: ${ePath}`);
@@ -78,7 +81,10 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     manifestFile.description = `${getAppDescription(c, platform)}`;
     manifestFile.developer = getAppAuthor(c, platform);
 
-    fs.writeFileSync(manifestFilePath2, JSON.stringify(manifestFile, null, 2));
+    fs.writeFileSync(
+        manifestFilePath2,
+        JSON.stringify(manifestFile, null, 2)
+    );
 
     resolve();
 });
@@ -100,4 +106,9 @@ const buildFirefoxProject = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-export { launchKaiOSSimulator, configureKaiOSProject, runFirefoxProject, buildFirefoxProject };
+export {
+    launchKaiOSSimulator,
+    configureKaiOSProject,
+    runFirefoxProject,
+    buildFirefoxProject
+};

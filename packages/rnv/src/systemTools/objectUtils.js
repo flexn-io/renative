@@ -1,4 +1,3 @@
-
 const isObject = value => value && typeof value === 'object' && value.constructor === Object;
 
 const isArray = value => value && typeof value === 'object' && value.constructor === Array;
@@ -26,6 +25,17 @@ const isSymbol = value => typeof value === 'symbol';
 const isLikeNull = value => isNull(value) || isUndefined(value);
 
 export {
-    isObject, isArray, isString, isNumber, isFunction, isBool, isNull,
-    isUndefined, isLikeNull, isRegExp, isError, isDate, isSymbol
+    isObject,
+    isArray,
+    isString,
+    isNumber,
+    isFunction,
+    isBool,
+    isNull,
+    isUndefined,
+    isLikeNull,
+    isRegExp,
+    isError,
+    isDate,
+    isSymbol
 };
