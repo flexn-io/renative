@@ -158,7 +158,7 @@ export const copyFolderRecursiveSync = (
                     `${path.basename(curSource)}.js`
                 );
                 logDebug(
-                    `file ${curSource} is svg and convertSvg is set to true. converitng to ${jsDest}`
+                    `file ${curSource} is svg and convertSvg is set to true. converting to ${jsDest}`
                 );
                 saveAsJs(curSource, jsDest);
             } else if (injectObject !== null) {
