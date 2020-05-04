@@ -115,7 +115,7 @@ const _doResolveExternalPackage = (aPath, options) => {
                 ...options,
                 extensions: ['.js', '.json'].concat(options.extensions ?? [])
             })
-            .replace(/\/package.json$/, '');
+            .replace(/(\\|\/)package.json$/, '');
         return options.keepSuffix ?? false
             ? `${resolvedPath}/${packageSuffix}`
             : resolvedPath;
