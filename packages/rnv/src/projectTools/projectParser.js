@@ -125,7 +125,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                 ) {
                     if (font && !duplicateFontCheck.includes(font)) {
                         duplicateFontCheck.push(font);
-                        const fontSource = path.join(dir, font);
+                        const fontSource = path.join(dir, font).replace(/\\/g, '\\\\');
                         if (fs.existsSync(fontSource)) {
                             // const fontFolder = path.join(appFolder, 'app/src/main/assets/fonts');
                             // mkdirSync(fontFolder);

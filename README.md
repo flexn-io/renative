@@ -278,7 +278,7 @@ ReNative supports standard community driven react-native plugins you can use to 
 
 ReNative supports integration for various services and deployment infrastructures for your apps
 
-[Documentation for ReNative Integrations](https://renative.org/docs/integration-fastlane)
+[Documentation for ReNative Integrations](https://renative.org/docs/integration_fastlane)
 
 ---
 
@@ -288,7 +288,7 @@ ReNative supports integration for various services and deployment infrastructure
 
 Tire of setting up and managing countless of various projects? you can go as simple as most basic json config file to get yourself up and running
 
-[Documentation for ReNative JSON Config](https://renative.org/docs/config)
+[Documentation for ReNative JSON Config](https://renative.org/docs/guide-config)
 
 ---
 
@@ -298,7 +298,7 @@ Tire of setting up and managing countless of various projects? you can go as sim
 
 ReNative offers flexible and scalable folder override & injection features to create numerous flavours, A/B features, dynamic plugin switches and more
 
-[Documentation for ReNative Folder Configurations](https://renative.org/docs/config_folders)
+[Documentation for ReNative Folder Configurations](https://renative.org/docs/guide-config_folders)
 
 ---
 
