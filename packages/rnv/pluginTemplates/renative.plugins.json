@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.29.0-alpha.38",
+            "version": "0.29.1-alpha.1",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -1540,7 +1540,9 @@
                     }
                 },
                 "app/build.gradle": {
-                    "apply": ["plugin: 'com.google.gms.google-services'"]
+                    "apply": [
+                        "plugin: 'com.google.gms.google-services'"
+                    ]
                 }
             },
             "androidtv": {
@@ -1554,20 +1556,28 @@
                     }
                 },
                 "app/build.gradle": {
-                    "apply": ["plugin: 'com.google.gms.google-services'"]
+                    "apply": [
+                        "plugin: 'com.google.gms.google-services'"
+                    ]
                 }
             }
         },
         "@react-native-firebase/analytics": {
             "version": "6.4.1",
-            "dependsOn": ["@react-native-firebase/app"],
+            "dependsOn": [
+                "@react-native-firebase/app"
+            ],
             "ios": {
                 "isStatic": true,
                 "podName": "RNFBAnalytics",
                 "xcodeproj": {
-                    "resourceFiles": ["RNVApp/GoogleService-Info.plist"]
+                    "resourceFiles": [
+                        "RNVApp/GoogleService-Info.plist"
+                    ]
                 },
-                "appDelegateImports": ["Firebase"],
+                "appDelegateImports": [
+                    "Firebase"
+                ],
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [
@@ -1587,12 +1597,16 @@
         },
         "@react-native-firebase/crashlytics": {
             "version": "6.4.1",
-            "dependsOn": ["@react-native-firebase/analytics"],
+            "dependsOn": [
+                "@react-native-firebase/analytics"
+            ],
             "ios": {
                 "isStatic": true,
                 "podName": "RNFBCrashlytics",
                 "xcodeproj": {
-                    "resourceFiles": ["RNVApp/GoogleService-Info.plist"],
+                    "resourceFiles": [
+                        "RNVApp/GoogleService-Info.plist"
+                    ],
                     "buildPhases": [
                         {
                             "shellPath": "/bin/sh",
@@ -1600,7 +1614,9 @@
                         }
                     ]
                 },
-                "appDelegateImports": ["Firebase"],
+                "appDelegateImports": [
+                    "Firebase"
+                ],
                 "appDelegateMethods": {
                     "application": {
                         "didFinishLaunchingWithOptions": [

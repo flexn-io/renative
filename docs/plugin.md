@@ -239,6 +239,60 @@ rnv plugin add @react-native-community/viewpager
 ```
 
 
+## @react-native-firebase/analytics
+
+
+Version: `6.4.1`
+
+Platforms: `ios`,`android`,`androidtv`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-firebase/analytics
+
+Installation:
+
+```
+rnv plugin add @react-native-firebase/analytics
+```
+
+
+## @react-native-firebase/app
+
+
+Version: `6.4.1`
+
+Platforms: `ios`,`android`,`androidtv`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-firebase/app
+
+Installation:
+
+```
+rnv plugin add @react-native-firebase/app
+```
+
+
+## @react-native-firebase/crashlytics
+
+
+Version: `6.4.1`
+
+Platforms: `ios`,`android`,`androidtv`
+
+
+
+Npm: https://www.npmjs.com/package/@react-native-firebase/crashlytics
+
+Installation:
+
+```
+rnv plugin add @react-native-firebase/crashlytics
+```
+
+
 ## @react-navigation
 
 
@@ -2492,7 +2546,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.29.0-alpha.38`
+Version: `0.29.1-alpha.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
