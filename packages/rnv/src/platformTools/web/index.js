@@ -17,7 +17,8 @@ import {
     getAppTitle,
     getSourceExts,
     sanitizeColor,
-    confirmActiveBundler
+    confirmActiveBundler,
+    getAppVersion
 } from '../../common';
 import { isPlatformActive } from '..';
 import {
@@ -121,6 +122,11 @@ const _generateWebpackConfigs = (c, platform) => {
     );
 
     // const externalModulesResolved = externalModules.map(v => doResolve(v))
+    let assetVersion = '';
+    const versionedAssets = getConfigProp(c, platform, 'versionedAssets', false);
+    if (versionedAssets) {
+        assetVersion = `-${getAppVersion(c, platform)}`;
+    }
 
     const obj = {
         modulePaths,
@@ -128,6 +134,7 @@ const _generateWebpackConfigs = (c, platform) => {
         analyzer,
         entryFile,
         title,
+        assetVersion,
         extensions: getSourceExts(c, platform),
         ...extendConfig
     };
