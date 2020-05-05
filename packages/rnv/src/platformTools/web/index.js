@@ -127,6 +127,10 @@ const _generateWebpackConfigs = (c, platform) => {
     if (versionedAssets) {
         assetVersion = `-${getAppVersion(c, platform)}`;
     }
+    const timestampAssets = getConfigProp(c, platform, 'timestampAssets', false);
+    if (timestampAssets) {
+        assetVersion = `-${Date.now()}`;
+    }
 
     const obj = {
         modulePaths,
