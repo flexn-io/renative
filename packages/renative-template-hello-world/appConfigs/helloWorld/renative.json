@@ -16,37 +16,28 @@
     "platforms": {
         "android": {
             "buildSchemes": {
-                "debug": {
-                    "id": "renative.helloworld.debug"
-                }
+                "debug": {}
             }
         },
         "androidtv": {
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.helloworld.debug"
                 }
             }
         },
         "androidwear": {
             "buildSchemes": {
-                "debug": {
-                    "id": "renative.helloworld.debug"
-                }
+                "debug": {}
             }
         },
         "ios": {
             "buildSchemes": {
-                "debug": {
-                    "id": "renative.helloworld.debug"
-                }
+                "debug": {}
             }
         },
         "tvos": {
             "buildSchemes": {
-                "debug": {
-                    "id": "renative.helloworld.debug"
-                }
+                "debug": {}
             }
         },
         "tizen": {
