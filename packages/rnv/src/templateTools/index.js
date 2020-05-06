@@ -379,8 +379,8 @@ export const configureEntryPoints = async (c) => {
             if (!fs.existsSync(dest)) {
                 if (!plat.entryFile) {
                     logWarning(
-                        `You missing entryFile for ${chalk.white(
-                            k
+                        `You missing entryFile key for ${chalk.white(
+                            platform
                         )} platform in your ${chalk.white(
                             c.paths.appConfig.config
                         )}.`
