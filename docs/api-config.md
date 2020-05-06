@@ -112,6 +112,74 @@ Plugin configurations
 }
 ```
 
+### skipMerge
+
+Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)
+
+NOTE: if set to `true` you need to configure your plugin object fully
+
+```json
+{
+    "plugins": {
+        "plugin-name": {
+            "skipMerge": true
+        }
+    }
+}
+```
+
+### source
+
+Will define custom scope for your plugin config to extend from
+
+```json
+{
+    "plugins": {
+        "plugin-name": {
+            "source": "rnv"
+        }
+    }
+}
+```
+
+custom scopes can be defined via:
+
+```json
+{
+  "paths": {
+      "pluginTemplates": {
+          "myCustomScope": {
+              "npm": "some-renative-template-package",
+              "path": "./pluginTemplates"
+          }
+      }
+   }
+}
+
+those will allow you to use direct pointer to preconfigured plugin:
+
+```json
+{
+    "plugins": {
+        "plugin-name": "source:myCustomScope"
+    }
+}
+```
+
+NOTE: by default every plugin you define with scope will also merge any files defined in overrides automatically to your project
+To skip file overrides coming from source plugin you need to detach it from the scope:
+
+```json
+{
+    "plugins": {
+        "plugin-name": {
+            "source": ""
+        }
+    }
+}
+```
+
+
 ### ios
 
 ```json

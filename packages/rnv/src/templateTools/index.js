@@ -111,7 +111,7 @@ const _cleanProjectTemplateSync = (c) => {
 };
 
 const _applyTemplate = async (c) => {
-    logTask(`_applyTemplate:${c.runtime.selectedTemplate}`);
+    logTask(`_applyTemplate | current:${c.buildConfig.currentTemplate} | selected:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
         _cleanProjectTemplateSync(c);

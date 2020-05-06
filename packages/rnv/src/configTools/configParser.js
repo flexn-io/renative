@@ -48,6 +48,7 @@ import {
     upgradeProjectDependencies
 } from '../projectTools/projectParser';
 import { inquirerPrompt } from '../systemTools/prompt';
+import { loadPluginTemplates } from '../pluginTools';
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -614,55 +615,6 @@ export const loadProjectTemplates = (c) => {
     c.files.rnv.projectTemplates.config = readObjectSync(
         c.paths.rnv.projectTemplates.config
     );
-};
-
-export const loadPluginTemplates = (c) => {
-    logTask('loadPluginTemplates');
-    c.files.rnv.pluginTemplates.config = readObjectSync(
-        c.paths.rnv.pluginTemplates.config
-    );
-
-    c.files.rnv.pluginTemplates.configs = {
-        rnv: c.files.rnv.pluginTemplates.config
-    };
-
-    c.paths.rnv.pluginTemplates.dirs = [c.paths.rnv.pluginTemplates.dir];
-
-    const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
-    if (customPluginTemplates) {
-        Object.keys(customPluginTemplates).forEach((k) => {
-            const val = customPluginTemplates[k];
-            if (val.npm) {
-                const npmDep = c.files.project.package?.dependencies[val.npm]
-                    || c.files.project.package?.devDependencies[val.npm];
-
-                if (npmDep) {
-                    let ptPath;
-                    if (npmDep.startsWith('file:')) {
-                        ptPath = path.join(
-                            c.paths.project.dir,
-                            npmDep.replace('file:', ''),
-                            val.path || ''
-                        );
-                    } else {
-                        // ptPath = path.join(c.paths.project.nodeModulesDir, val.npm, val.path || '');
-                        ptPath = `${doResolve(val.npm)}/${val.path}`;
-                    }
-
-                    const ptConfig = path.join(
-                        ptPath,
-                        RENATIVE_CONFIG_PLUGINS_NAME
-                    );
-                    c.paths.rnv.pluginTemplates.dirs.push(ptPath);
-                    if (fs.existsSync(ptConfig)) {
-                        c.files.rnv.pluginTemplates.configs[k] = readObjectSync(
-                            ptConfig
-                        );
-                    }
-                }
-            }
-        });
-    }
 };
 
 export const loadPlatformTemplates = (c) => {

@@ -1,23 +1,30 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
+import fs from 'fs';
+import path from 'path';
 import ora from 'ora';
 import {
     mergeObjects,
     writeFileSync,
-    sanitizeDynamicProps
+    sanitizeDynamicProps,
+    readObjectSync,
+    copyFolderContentsRecursiveSync
 } from '../systemTools/fileutils';
-import { getConfigProp } from '../common';
+import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
 import { versionCheck } from '../configTools/configParser';
 
-import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
+import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import {
     logSuccess,
     logTask,
     logWarning,
     logError,
-    logToSummary
+    logToSummary,
+    logInfo,
+    logDebug
 } from '../systemTools/logger';
 import { executePipe } from '../projectTools/buildHooks';
+import { doResolve } from '../resolve';
 
 export const rnvPluginList = c => new Promise((resolve) => {
     logTask('_runList');
@@ -187,7 +194,7 @@ const _checkAndAddDependantPlugins = (c, plugin) => {
             Object.keys(c.files.rnv.pluginTemplates.configs).forEach((p) => {
                 const templatePlugins = c.files.rnv.pluginTemplates.configs[p].pluginTemplates;
                 if (templatePlugins[v]) {
-                    console.log(`Added dependant plugin ${v}`);
+                    logDebug(`Added dependant plugin ${v}`);
                     c.buildConfig.plugins[v] = templatePlugins[v];
                 }
             });
@@ -200,7 +207,7 @@ export const rnvPluginUpdate = async (c) => {
 
     const o = _getPluginList(c, true);
 
-    console.log(o.asString);
+    // console.log(o.asString);
 
     const { confirm } = await inquirer.prompt({
         name: 'confirm',
@@ -226,6 +233,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
     // const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
     const rnvPlugin = c.files.rnv.pluginTemplates.configs?.rnv?.pluginTemplates?.[key];
+    if (rnvPlugin) rnvPlugin.source = 'rnv';
 
     let origPlugin;
     if (typeof plugin === 'string' || plugin instanceof String) {
@@ -237,6 +245,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
                 ];
 
             if (origPlugin) {
+                origPlugin.source = scope;
                 if (rnvPlugin && !origPlugin?.skipMerge) {
                     origPlugin = _getMergedPlugin(
                         c,
@@ -254,7 +263,8 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
             return null;
         }
         return {
-            version: plugin
+            version: plugin,
+            source: 'rnv'
         };
     }
 
@@ -498,6 +508,229 @@ const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCheck) =>
             );
         }
     }
+};
+
+export const loadPluginTemplates = (c) => {
+    logTask('loadPluginTemplates');
+    c.files.rnv.pluginTemplates.config = readObjectSync(
+        c.paths.rnv.pluginTemplates.config
+    );
+
+    c.files.rnv.pluginTemplates.configs = {
+        rnv: c.files.rnv.pluginTemplates.config
+    };
+
+    c.paths.rnv.pluginTemplates.dirs = { rnv: c.paths.rnv.pluginTemplates.dir };
+
+    const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
+    if (customPluginTemplates) {
+        Object.keys(customPluginTemplates).forEach((k) => {
+            const val = customPluginTemplates[k];
+            if (val.npm) {
+                const npmDep = c.files.project.package?.dependencies[val.npm]
+                    || c.files.project.package?.devDependencies[val.npm];
+
+                if (npmDep) {
+                    let ptPath;
+                    if (npmDep.startsWith('file:')) {
+                        ptPath = path.join(
+                            c.paths.project.dir,
+                            npmDep.replace('file:', ''),
+                            val.path || ''
+                        );
+                    } else {
+                        // ptPath = path.join(c.paths.project.nodeModulesDir, val.npm, val.path || '');
+                        ptPath = `${doResolve(val.npm)}/${val.path}`;
+                    }
+
+                    const ptConfig = path.join(
+                        ptPath,
+                        RENATIVE_CONFIG_PLUGINS_NAME
+                    );
+                    c.paths.rnv.pluginTemplates.dirs[k] = ptPath;
+                    if (fs.existsSync(ptConfig)) {
+                        c.files.rnv.pluginTemplates.configs[k] = readObjectSync(
+                            ptConfig
+                        );
+                    }
+                }
+            }
+        });
+    }
+};
+
+const overridePlugins = async (c, pluginsPath) => {
+    logTask(`overridePlugins:${pluginsPath}`, chalk.grey);
+
+    if (!fs.existsSync(pluginsPath)) {
+        logInfo(
+            `Your project plugin folder ${chalk.white(
+                pluginsPath
+            )} does not exists. skipping plugin configuration`
+        );
+        return;
+    }
+
+    fs.readdirSync(pluginsPath).forEach((dir) => {
+        if (dir.startsWith('@')) {
+            const pluginsPathNested = path.join(pluginsPath, dir);
+            fs.readdirSync(pluginsPathNested).forEach((subDir) => {
+                _overridePlugins(c, pluginsPath, `${dir}/${subDir}`);
+            });
+        } else {
+            _overridePlugins(c, pluginsPath, dir);
+        }
+    });
+};
+
+const _overridePlugins = (c, pluginsPath, dir) => {
+    const source = path.resolve(pluginsPath, dir, 'overrides');
+    const dest = doResolve(dir, false);
+    if (!dest) return;
+
+    const plugin = getMergedPlugin(c, dir, c.buildConfig.plugins);
+    let flavourSource;
+    if (plugin) {
+        flavourSource = path.resolve(
+            pluginsPath,
+            dir,
+            `overrides@${plugin.version}`
+        );
+    }
+
+    if (flavourSource && fs.existsSync(flavourSource)) {
+        copyFolderContentsRecursiveSync(flavourSource, dest, false);
+    } else if (fs.existsSync(source)) {
+        copyFolderContentsRecursiveSync(source, dest, false);
+        // fs.readdirSync(pp).forEach((dir) => {
+        //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
+        // });
+    } else {
+        logInfo(
+            `Your plugin configuration has no override path ${chalk.white(
+                source
+            )}. skipping folder override action`
+        );
+    }
+
+    const overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
+    const overrideConfig = readObjectSync(
+        path.resolve(pluginsPath, dir, 'overrides.json')
+    );
+    if (overrideConfig?.overrides) {
+        Object.keys(overrideConfig.overrides).forEach((k) => {
+            const override = overrideConfig.overrides[k];
+            const ovDir = path.join(dest, k);
+            if (fs.existsSync(ovDir)) {
+                if (fs.lstatSync(ovDir).isDirectory()) {
+                    logWarning(
+                        'overrides.json: Directories not supported yet. specify path to actual file'
+                    );
+                } else {
+                    let fileToFix = fs.readFileSync(ovDir).toString();
+                    Object.keys(override).forEach((fk) => {
+                        const regEx = new RegExp(fk, 'g');
+                        const count = (fileToFix.match(regEx) || []).length;
+                        if (!count) {
+                            logWarning(`No Match found in ${chalk.red(
+                                ovDir
+                            )} for expression: ${chalk.red(fk)}.
+Consider update or removal of ${chalk.white(overridePath)}`);
+                        } else {
+                            fileToFix = fileToFix.replace(regEx, override[fk]);
+                        }
+                    });
+                    fs.writeFileSync(ovDir, fileToFix);
+                }
+            }
+        });
+    }
+};
+
+
+export const overrideTemplatePlugins = async (c) => {
+    logTask('overrideTemplatePlugins');
+
+    const templatePlugins = {};
+    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
+        templatePlugins[key] = plugin;
+    });
+    const ptDirs = c.paths.rnv.pluginTemplates.dirs;
+    const ptPlugins = Object.keys(templatePlugins);
+    for (let i = 0; i < ptPlugins.length; i++) {
+        const key = ptPlugins[i];
+        const pluginOverridePath = ptDirs[templatePlugins[key].source];
+        if (pluginOverridePath) {
+            await overridePlugins(c, pluginOverridePath);
+        }
+    }
+    await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
+
+    const ptDirs2 = c.paths.appConfig.pluginDirs;
+    if (ptDirs2) {
+        for (let i = 0; i < ptDirs2.length; i++) {
+            await overridePlugins(c, ptDirs2[i]);
+        }
+    }
+};
+
+export const copyTemplatePluginsSync = (c, platform) => {
+    logTask(`copyTemplatePluginsSync:${platform}`);
+
+    const destPath = path.join(getAppFolder(c, platform));
+    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        const objectInject = [...c.runtime.configPropsInject];
+        if (plugin.props) {
+            Object.keys(plugin.props).forEach((v) => {
+                objectInject.push({
+                    pattern: `{{props.${v}}}`,
+                    override: plugin.props[v]
+                });
+            });
+        }
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
+        const sourcePathRnvPlugin = getBuildsFolder(
+            c,
+            platform,
+            path.join(c.paths.rnv.pluginTemplates.dir, key)
+        );
+        copyFolderContentsRecursiveSync(sourcePathRnvPlugin, destPath, true, false, false, objectInject);
+
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN
+        const sourcePath3 = getBuildsFolder(
+            c,
+            platform,
+            path.join(c.paths.project.projectConfig.dir, `plugins/${key}`)
+        );
+        copyFolderContentsRecursiveSync(sourcePath3, destPath, true, false, false, objectInject);
+
+        // FOLDER MERGES FROM PROJECT CONFIG PLUGIN (PRIVATE)
+        const sourcePath3sec = getBuildsFolder(
+            c,
+            platform,
+            path.join(
+                c.paths.workspace.project.projectConfig.dir,
+                `plugins/${key}`
+            )
+        );
+        copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, false, false, objectInject);
+
+        // FOLDER MERGES FROM APP CONFIG PLUGIN
+        const sourcePath2 = getBuildsFolder(
+            c,
+            platform,
+            path.join(c.paths.appConfig.dir, `plugins/${key}`)
+        );
+        copyFolderContentsRecursiveSync(sourcePath2, destPath, true, false, false, objectInject);
+
+        // FOLDER MERGES FROM APP CONFIG PLUGIN (PRIVATE)
+        const sourcePath2sec = getBuildsFolder(
+            c,
+            platform,
+            path.join(c.paths.workspace.appConfig.dir, `plugins/${key}`)
+        );
+        copyFolderContentsRecursiveSync(sourcePath2sec, destPath, true, false, false, objectInject);
+    });
 };
 
 const getLocalRenativePlugin = () => ({
