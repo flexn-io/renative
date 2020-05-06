@@ -240,9 +240,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
         if (plugin.startsWith('source:')) {
             const scope = plugin.split(':').pop();
 
-            origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[
-                    key
-                ];
+            origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[key];
 
             if (origPlugin) {
                 origPlugin.source = scope;
@@ -270,8 +268,7 @@ const getMergedPlugin = (c, key, plugins, noMerge = false) => {
 
     if (plugin) {
         if (plugin.source) {
-            origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]
-                    ?.pluginTemplates?.[key];
+            origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]?.pluginTemplates?.[key];
             if (rnvPlugin && !origPlugin?.skipMerge) {
                 origPlugin = _getMergedPlugin(
                     c,
@@ -560,7 +557,7 @@ export const loadPluginTemplates = (c) => {
 };
 
 const overridePlugins = async (c, pluginsPath) => {
-    logTask(`overridePlugins:${pluginsPath}`, chalk.grey);
+    logDebug(`overridePlugins:${pluginsPath}`, chalk.grey);
 
     if (!fs.existsSync(pluginsPath)) {
         logInfo(
