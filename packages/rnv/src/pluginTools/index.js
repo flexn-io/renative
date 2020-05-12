@@ -582,7 +582,6 @@ export const loadPluginTemplates = (c) => {
 
 const _overridePlugin = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
-    console.log('DHDKDJ', source);
     const dest = doResolve(dir, false);
     if (!dest) return;
 

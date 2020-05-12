@@ -209,7 +209,8 @@ const _parseCssSync = (c, platform) => {
             {
                 pattern: '{{PLUGIN_COLORS_BG}}',
                 override: sanitizeColor(
-                    getConfigProp(c, platform, 'backgroundColor')
+                    getConfigProp(c, platform, 'backgroundColor'),
+                    'backgroundColor'
                 ).hex
             }
         ]

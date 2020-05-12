@@ -77,10 +77,10 @@ export const getSourceExtsAsString = (c, p) => {
     return sourceExts.length ? `['${sourceExts.join("','")}']` : '[]';
 };
 
-export const sanitizeColor = (val) => {
+export const sanitizeColor = (val, key) => {
     if (!val) {
         logWarning(
-            'sanitizeColor: passed null. will use default #FFFFFF instead'
+            `You are missing ${chalk.white(key)} in your renative config. will use default #FFFFFF instead`
         );
         return {
             rgb: [255, 255, 255, 1],
