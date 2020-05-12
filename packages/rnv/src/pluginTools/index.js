@@ -652,28 +652,21 @@ export const overrideTemplatePlugins = async (c) => {
     const appPluginDirs = c.paths.appConfig.pluginDirs;
     const appBasePluginDir = c.paths.project.projectConfig.pluginsDir;
 
-    const templatePlugins = {};
     parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        templatePlugins[key] = plugin;
-    });
-    const ptPlugins = Object.keys(templatePlugins);
-
-    for (let i = 0; i < ptPlugins.length; i++) {
-        const key = ptPlugins[i];
-        const plugin = templatePlugins[key];
         const pluginOverridePath = rnvPluginsDirs[plugin.source];
         if (pluginOverridePath) {
-            await _overridePlugin(c, pluginOverridePath, key);
+            _overridePlugin(c, pluginOverridePath, key);
         }
         if (appBasePluginDir) {
-            await _overridePlugin(c, appBasePluginDir, key);
+            _overridePlugin(c, appBasePluginDir, key);
         }
         if (appPluginDirs) {
-            for (let k = 0; i < appPluginDirs.length; k++) {
-                await _overridePlugin(c, appPluginDirs[i], key);
+            for (let k = 0; k < appPluginDirs.length; k++) {
+                _overridePlugin(c, appPluginDirs[k], key);
             }
         }
-    }
+    });
+    return true;
 };
 
 export const copyTemplatePluginsSync = (c, platform) => {
