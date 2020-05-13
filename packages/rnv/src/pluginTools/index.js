@@ -665,7 +665,7 @@ export const overrideTemplatePlugins = async (c) => {
                 _overridePlugin(c, appPluginDirs[k], key);
             }
         }
-    });
+    }, true);
     return true;
 };
 
