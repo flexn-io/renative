@@ -13,10 +13,11 @@ class Docker {
         const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
         const { copyFolderRecursiveSync, cleanFolder } = require(path.join(this.rnvPath, 'dist/systemTools/fileutils'));
 
-        const { paths, runtime, platform, files } = config.getConfig();
+        const { paths, runtime, platform, files, program } = config.getConfig();
         const projectBuilds = paths.project.builds.dir;
         const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);
         const dockerDestination = path.join(projectBuildWeb, 'export', 'docker');
+        const buildDir = program.engine === 'next' ? 'out' : 'public';
 
         const dockerFile = path.join(__dirname, '../Dockerfile');
         const nginxConfFile = path.join(__dirname, '../nginx/default.conf');
@@ -24,7 +25,7 @@ class Docker {
         const dockerComposeFile = path.join(__dirname, '../docker-compose.yml');
 
         await cleanFolder(path.join(dockerDestination));
-        copyFolderRecursiveSync(path.join(projectBuildWeb, 'public'), dockerDestination);
+        copyFolderRecursiveSync(path.join(projectBuildWeb, buildDir), dockerDestination);
 
         const copiedDockerFile = path.join(dockerDestination, 'Dockerfile');
         const copiedNginxConfFile = path.join(dockerDestination, 'nginx.default.conf');
@@ -46,6 +47,7 @@ class Docker {
         }
 
         writeCleanFile(dockerFile, copiedDockerFile, [
+            { pattern: '{{BUILD_FOLDER}}', override: buildDir },
             { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: additionalCommands }
         ]);
 

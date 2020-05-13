@@ -45,8 +45,8 @@ const _runDeployment = async (c, platform, deployType) => {
     }
 };
 
-const _runExport = (c, platform, deployType) => {
-    switch (deployType) {
+const _runExport = (c, platform, exportType) => {
+    switch (exportType) {
         case DEPLOY_TARGET_DOCKER:
             const rnvPath = process.mainModule.filename.split(
                 '/bin/index.js'
@@ -56,9 +56,11 @@ const _runExport = (c, platform, deployType) => {
             );
             deployToDocker.setRNVPath(rnvPath);
             return deployToDocker.doExport();
+        case DEPLOY_TARGET_NONE:
+            return Promise.resolve();
         default:
             return Promise.reject(
-                new Error(`Deploy Type not supported ${deployType}`)
+                new Error(`Export Type not supported ${exportType}`)
             );
     }
 };
