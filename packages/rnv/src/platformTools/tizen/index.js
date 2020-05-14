@@ -509,7 +509,7 @@ export const configureProject = (c, platform) => new Promise((resolve) => {
             { pattern: '{{PACKAGE}}', override: p.package },
             { pattern: '{{ID}}', override: p.id },
             { pattern: '{{APP_NAME}}', override: p.appName },
-            { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform))
+            { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) }
         ]
     );
 
