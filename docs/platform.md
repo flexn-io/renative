@@ -114,7 +114,7 @@ sidebar_label: Overview
     </th><th>
     <img src="https://renative.org/img/ic_xbox.png" width=20 height=20 />
     </br>
-    <a href="https://renative.org/docs/platform-xbox">Xbox</a>
+    <a>Xbox</a>
     </th>
   </tr>
   <tr>
