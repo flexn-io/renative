@@ -341,6 +341,7 @@ const _parseSupportedPlatforms = async (c, callback) => {
             );
         }
     }
+    return true;
 };
 
 export const configureEntryPoints = async (c) => {

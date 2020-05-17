@@ -20,6 +20,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
+import { rnvTemplateApply } from '../templateTools';
 
 import {
     copyFolderContentsRecursiveSync,
@@ -772,22 +773,17 @@ export const updateConfig = async (c, appConfigId) => {
                 return true;
             }
         }
+
         const { conf } = await inquirerPrompt({
             name: 'conf',
             type: 'confirm',
-            message: `Do you want ReNative to create new sample appConfig (${chalk.white(
-                appConfigId
-            )}) for you?`,
-            warningMessage: 'No app configs found for this project'
+            message: `Do you want ReNative to create new sample appConfig for you?`,
+            warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk.white('rnv template apply')} ?`
         });
 
         if (conf) {
-            await setAppConfig(c, SAMPLE_APP_ID);
-            copyFolderContentsRecursiveSync(
-                path.join(c.paths.rnv.dir, 'appConfigs', SAMPLE_APP_ID),
-                path.join(c.paths.appConfig.dir)
-            );
-            return true;
+            await rnvTemplateApply(c);
+            await setAppConfig(c);
         }
     }
     return true;

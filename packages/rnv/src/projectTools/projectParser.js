@@ -93,18 +93,17 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         copyFolderContentsRecursiveSync(sourcePath, destPath);
     }
 
-    if (c.buildConfig) {
-        if (!c.buildConfig.common) {
-            reject(
-                `Your ${chalk.white(
-                    c.paths.appConfig.config
-                )} is missconfigured. (Maybe you have older version?). Missing ${chalk.white(
-                    '{ common: {} }'
-                )} object at root`
-            );
-            return;
-        }
+    if (!c.buildConfig?.common) {
+        reject(
+            `Your ${chalk.white(
+                c.paths.appConfig.config
+            )} is missconfigured. (Maybe you have older version?). Missing ${chalk.white(
+                '{ common: {} }'
+            )} object at root`
+        );
+        return;
     }
+
 
     // FONTS
     let fontsObj = 'export default [';
