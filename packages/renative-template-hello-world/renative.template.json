@@ -9,6 +9,7 @@
         "react-native-gesture-handler": "source:rnv",
         "react-native-reanimated": "source:rnv",
         "react-native-vector-icons": "source:rnv",
+        "next": "9.3.1",
         "@reach/router": "1.2.1",
         "hash-source": "1.0.4",
         "@react-navigation": "source:rnv",

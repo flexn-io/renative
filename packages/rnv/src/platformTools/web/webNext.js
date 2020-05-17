@@ -58,9 +58,6 @@ const configureNextIfRequired = async (c) => {
 
     if (fs.existsSync(baseFontsDir)) {
         if (!fs.existsSync(fontsSymLinkPath)) {
-            const xxx = fs.readlinkSync(fontsSymLinkPath);
-            const yyy = fs.lstatSync(fontsSymLinkPath);
-            console.log('AGAGGA', fontsSymLinkPath, xxx, yyy);
             fs.symlinkSync(baseFontsDir, fontsSymLinkPath);
         }
 
