@@ -538,8 +538,18 @@ export const generateLocalConfig = (c, resetAppId) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    const pt = c.buildConfig.platformTemplatesDirs || {};
-    const originalPath = c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
+    if(!c.buildConfig.paths) {
+       logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
+       c.buildConfig.paths = {};
+    }
+    if(c.buildConfig.platformTemplatesDirs) {
+      logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    }
+    if(c.buildConfig.platformTemplatesDir) {
+      logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    }
+    const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
+    const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {
