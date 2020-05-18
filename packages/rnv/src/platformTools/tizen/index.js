@@ -2,6 +2,7 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
+import semver from 'semver';
 import inquirer from 'inquirer';
 import net from 'net';
 
@@ -14,6 +15,7 @@ import {
 } from '../../constants';
 import {
     getAppFolder,
+    getAppVersion,
     writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
@@ -506,7 +508,8 @@ export const configureProject = (c, platform) => new Promise((resolve) => {
         [
             { pattern: '{{PACKAGE}}', override: p.package },
             { pattern: '{{ID}}', override: p.id },
-            { pattern: '{{APP_NAME}}', override: p.appName }
+            { pattern: '{{APP_NAME}}', override: p.appName },
+            { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) }
         ]
     );
 
