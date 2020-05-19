@@ -90,7 +90,7 @@ const selectToolAndExecute = async ({
         choices,
         message: `Which type of ${
             isDeploy ? 'deploy' : 'export'
-        } option would you like to use for ${chalk.white(platform)}?`
+        } option would you like to use for ${chalk.white(c.platform)}?`
     });
 
     await configFunction(selectedTarget);

@@ -1,5 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require */
 import path from 'path';
+import chalk from 'chalk';
 
 class Docker {
     setRNVPath(pth) {
@@ -67,7 +68,7 @@ class Docker {
         const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
         const config = require(path.join(this.rnvPath, 'dist/config')).default;
         const { runtime, files, paths, platform, program: { scheme = 'debug' } } = config.getConfig();
-        const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
+        const { logTask, logInfo, logSuccess } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
         const { executeAsync, commandExistsSync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
         const imageName = runtime.appId.toLowerCase();
         const appVersion = files.project.package.version;
@@ -79,8 +80,8 @@ class Docker {
 
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
-        logInfo(`${imageName}_${appVersion}.tar file has been saved in ${dockerDestination}. You can import it on another machine by running 'docker load -i ${imageName}_${appVersion}.tar'`);
-        logInfo(`You can also test it locally by running the following command: 'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}' and then opening http://localhost:8081`);
+        logSuccess(`${imageName}_${appVersion}.tar file has been saved in ${chalk.white(dockerDestination)}. You can import it on another machine by running ${chalk.white(`'docker load -i ${imageName}_${appVersion}.tar'`)}`);
+        logSuccess(`You can also test it locally by running the following command: ${chalk.white(`'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}'`)} and then opening ${chalk.white('http://localhost:8081')}`);
 
         const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
         const zipImage = deployOptions?.docker?.zipImage;
