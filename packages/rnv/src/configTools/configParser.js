@@ -20,6 +20,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
+import { rnvTemplateApply } from '../templateTools';
 
 import {
     copyFolderContentsRecursiveSync,
@@ -537,8 +538,18 @@ export const generateLocalConfig = (c, resetAppId) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    const pt = c.buildConfig.platformTemplatesDirs || {};
-    const originalPath = c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
+    if(!c.buildConfig.paths) {
+       logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
+       c.buildConfig.paths = {};
+    }
+    if(c.buildConfig.platformTemplatesDirs) {
+      logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    }
+    if(c.buildConfig.platformTemplatesDir) {
+      logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    }
+    const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
+    const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {
@@ -772,22 +783,17 @@ export const updateConfig = async (c, appConfigId) => {
                 return true;
             }
         }
+
         const { conf } = await inquirerPrompt({
             name: 'conf',
             type: 'confirm',
-            message: `Do you want ReNative to create new sample appConfig (${chalk.white(
-                appConfigId
-            )}) for you?`,
-            warningMessage: 'No app configs found for this project'
+            message: `Do you want ReNative to create new sample appConfig for you?`,
+            warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk.white('rnv template apply')} ?`
         });
 
         if (conf) {
-            await setAppConfig(c, SAMPLE_APP_ID);
-            copyFolderContentsRecursiveSync(
-                path.join(c.paths.rnv.dir, 'appConfigs', SAMPLE_APP_ID),
-                path.join(c.paths.appConfig.dir)
-            );
-            return true;
+            await rnvTemplateApply(c);
+            await setAppConfig(c);
         }
     }
     return true;

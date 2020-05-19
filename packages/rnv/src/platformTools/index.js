@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { logToSummary, logTask, logSuccess } from '../systemTools/logger';
+import { logToSummary, logTask, logSuccess, logInfo, logError } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
     cleanFolder,
@@ -80,7 +80,7 @@ export const rnvPlatformEject = async (c) => {
     const { ejectedPlatforms } = await inquirer.prompt({
         name: 'ejectedPlatforms',
         message:
-            'This will copy platformTemplates folders from ReNative managed directly to your project Select platforms you would like to connect',
+            'This will copy platformTemplates folders from ReNative managed directly to your project Select platforms you would like to connect (use SPACE key)',
         type: 'checkbox',
         choices: _generatePlatformChoices(c).map(choice => ({
             ...choice,
@@ -99,7 +99,6 @@ export const rnvPlatformEject = async (c) => {
             if (PLATFORMS[platform].requiresSharedConfig) {
                 copyShared = true;
             }
-
             copyFolderContentsRecursiveSync(
                 path.join(rptf, platform),
                 path.join(prf, ptfn, platform)
@@ -112,22 +111,24 @@ export const rnvPlatformEject = async (c) => {
                 );
             }
 
-            c.files.project.config.platformTemplatesDirs = c.files.project.config.platformTemplatesDirs || {};
-            c.files.project.config.platformTemplatesDirs[
+            c.files.project.config.paths.platformTemplatesDirs = c.files.project.config.paths.platformTemplatesDirs || {};
+            c.files.project.config.paths.platformTemplatesDirs[
                 platform
             ] = `./${ptfn}`;
-
             writeFileSync(c.paths.project.config, c.files.project.config);
         });
+
+        logSuccess(
+            `${chalk.white(
+                ejectedPlatforms.join(',')
+            )} platform templates are located in ${chalk.white(
+                c.files.project.config.paths.platformTemplatesDirs[ejectedPlatforms[0]]
+            )} now. You can edit them directly!`
+        );
+    } else {
+      logError(`You haven't selected any platform to eject.\n TIP: You can select options with ${chalk.white('SPACE')} key before pressing ENTER!`)
     }
 
-    logSuccess(
-        `${chalk.white(
-            ejectedPlatforms.join(',')
-        )} platform templates are located in ${chalk.white(
-            c.files.project.config.platformTemplatesDirs[ejectedPlatforms[0]]
-        )} now. You can edit them directly!`
-    );
 };
 
 const _genPlatOptions = (c) => {
@@ -165,15 +166,15 @@ export const rnvPlatformConnect = async (c) => {
 
     if (connectedPlatforms.length) {
         connectedPlatforms.forEach((platform) => {
-            if (c.files.project.config.platformTemplatesDirs?.[platform]) {
-                delete c.files.project.config.platformTemplatesDirs[platform];
+            if (c.files.project.config.paths.platformTemplatesDirs?.[platform]) {
+                delete c.files.project.config.paths.platformTemplatesDirs[platform];
             }
 
             if (
-                !Object.keys(c.files.project.config.platformTemplatesDirs)
+                !Object.keys(c.files.project.config.paths.platformTemplatesDirs)
                     .length
             ) {
-                delete c.files.project.config.platformTemplatesDirs; // also cleanup the empty object
+                delete c.files.project.config.paths.platformTemplatesDirs; // also cleanup the empty object
             }
 
             writeFileSync(c.paths.project.config, c.files.project.config);

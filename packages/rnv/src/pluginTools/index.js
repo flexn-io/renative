@@ -556,31 +556,31 @@ export const loadPluginTemplates = (c) => {
     }
 };
 
-const overridePlugins = async (c, pluginsPath) => {
-    logDebug(`overridePlugins:${pluginsPath}`, chalk.grey);
+// const overridePlugins = async (c, pluginsPath) => {
+//     logDebug(`overridePlugins:${pluginsPath}`, chalk.grey);
+//
+//     if (!fs.existsSync(pluginsPath)) {
+//         logInfo(
+//             `Your project plugin folder ${chalk.white(
+//                 pluginsPath
+//             )} does not exists. skipping plugin configuration`
+//         );
+//         return;
+//     }
+//
+//     fs.readdirSync(pluginsPath).forEach((dir) => {
+//         if (dir.startsWith('@')) {
+//             const pluginsPathNested = path.join(pluginsPath, dir);
+//             fs.readdirSync(pluginsPathNested).forEach((subDir) => {
+//                 _overridePlugin(c, pluginsPath, `${dir}/${subDir}`);
+//             });
+//         } else {
+//             _overridePlugin(c, pluginsPath, dir);
+//         }
+//     });
+// };
 
-    if (!fs.existsSync(pluginsPath)) {
-        logInfo(
-            `Your project plugin folder ${chalk.white(
-                pluginsPath
-            )} does not exists. skipping plugin configuration`
-        );
-        return;
-    }
-
-    fs.readdirSync(pluginsPath).forEach((dir) => {
-        if (dir.startsWith('@')) {
-            const pluginsPathNested = path.join(pluginsPath, dir);
-            fs.readdirSync(pluginsPathNested).forEach((subDir) => {
-                _overridePlugins(c, pluginsPath, `${dir}/${subDir}`);
-            });
-        } else {
-            _overridePlugins(c, pluginsPath, dir);
-        }
-    });
-};
-
-const _overridePlugins = (c, pluginsPath, dir) => {
+const _overridePlugin = (c, pluginsPath, dir) => {
     const source = path.resolve(pluginsPath, dir, 'overrides');
     const dest = doResolve(dir, false);
     if (!dest) return;
@@ -603,7 +603,7 @@ const _overridePlugins = (c, pluginsPath, dir) => {
         //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
         // });
     } else {
-        logInfo(
+        logDebug(
             `Your plugin configuration has no override path ${chalk.white(
                 source
             )}. skipping folder override action`
@@ -648,27 +648,25 @@ Consider update or removal of ${chalk.white(overridePath)}`);
 export const overrideTemplatePlugins = async (c) => {
     logTask('overrideTemplatePlugins');
 
-    const templatePlugins = {};
-    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        templatePlugins[key] = plugin;
-    });
-    const ptDirs = c.paths.rnv.pluginTemplates.dirs;
-    const ptPlugins = Object.keys(templatePlugins);
-    for (let i = 0; i < ptPlugins.length; i++) {
-        const key = ptPlugins[i];
-        const pluginOverridePath = ptDirs[templatePlugins[key].source];
-        if (pluginOverridePath) {
-            await overridePlugins(c, pluginOverridePath);
-        }
-    }
-    await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
+    const rnvPluginsDirs = c.paths.rnv.pluginTemplates.dirs;
+    const appPluginDirs = c.paths.appConfig.pluginDirs;
+    const appBasePluginDir = c.paths.project.projectConfig.pluginsDir;
 
-    const ptDirs2 = c.paths.appConfig.pluginDirs;
-    if (ptDirs2) {
-        for (let i = 0; i < ptDirs2.length; i++) {
-            await overridePlugins(c, ptDirs2[i]);
+    parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
+        const pluginOverridePath = rnvPluginsDirs[plugin.source];
+        if (pluginOverridePath) {
+            _overridePlugin(c, pluginOverridePath, key);
         }
-    }
+        if (appBasePluginDir) {
+            _overridePlugin(c, appBasePluginDir, key);
+        }
+        if (appPluginDirs) {
+            for (let k = 0; k < appPluginDirs.length; k++) {
+                _overridePlugin(c, appPluginDirs[k], key);
+            }
+        }
+    }, true);
+    return true;
 };
 
 export const copyTemplatePluginsSync = (c, platform) => {
