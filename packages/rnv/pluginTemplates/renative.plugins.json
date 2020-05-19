@@ -2511,6 +2511,9 @@
         },
         "@noriginmedia/react-spatial-navigation": {
             "version": "2.12.1"
+        },
+        "next": {
+            "version": "9.3.1"
         }
     }
 }

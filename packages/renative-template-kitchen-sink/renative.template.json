@@ -11,7 +11,7 @@
         "react-navigation-tabs": "source:rnv",
         "react-native-reanimated": "source:rnv",
         "react-native-vector-icons": "source:rnv",
-        "next": "9.3.1",
+        "next": "source:rnv",
         "react-native-cached-image": "source:rnv",
         "react-native-video": "source:rnv",
         "react-native-languages": "source:rnv",
