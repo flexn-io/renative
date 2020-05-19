@@ -1,6 +1,6 @@
 FROM alpine
 EXPOSE 80 443
-COPY public /var/www/localhost/htdocs
+COPY {{BUILD_FOLDER}} /var/www/localhost/htdocs
 RUN apk add nginx && \
     apk add openssl && \
     openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=QC/O=STL" -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt && \

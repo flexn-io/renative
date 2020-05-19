@@ -45,7 +45,7 @@ import {
     runAppleLog
 } from './apple';
 import { buildWeb, runWeb, deployWeb, exportWeb } from './web';
-import { runWebNext, buildWebNext, exportWebNext } from './web/webNext';
+import { runWebNext, buildWebNext, exportWebNext, deployWebNext } from './web/webNext';
 import { runTizen, buildTizenProject } from './tizen';
 import { runWebOS, buildWebOSProject } from './webos';
 import { runFirefoxProject, buildFirefoxProject } from './firefox';
@@ -451,6 +451,11 @@ const _rnvDeployWithPlatform = async (c) => {
                 await rnvBuild(c);
             }
             return deployWeb(c, platform);
+        case WEB_NEXT:
+            if (!c.program.only) {
+                await buildWebNext(c);
+            }
+            return deployWebNext(c, platform);
         case CHROMECAST:
             if (!c.program.only) {
                 await rnvBuild(c);
