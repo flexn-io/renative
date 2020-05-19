@@ -105,8 +105,9 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const exportNext = (c) => {
+const exportNext = async (c) => {
     logTask('exportWebNext');
+    await configureNextIfRequired(c);
     const env = getConfigProp(c, c.platform, 'environment');
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
@@ -116,6 +117,7 @@ const exportNext = (c) => {
 
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
+    await configureNextIfRequired(c);
     const env = getConfigProp(c, c.platform, 'environment');
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);

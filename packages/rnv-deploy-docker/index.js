@@ -80,6 +80,7 @@ class Docker {
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
         logInfo(`${imageName}_${appVersion}.tar file has been saved in ${dockerDestination}. You can import it on another machine by running 'docker load -i ${imageName}_${appVersion}.tar'`);
+        logInfo(`You can also test it locally by running the following command: 'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}' and then opening http://localhost:8081`);
 
         const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
         const zipImage = deployOptions?.docker?.zipImage;
