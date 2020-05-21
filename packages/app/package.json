@@ -124,7 +124,7 @@
         "react-native-zip-archive": "4.0.2",
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
-        "renative": "^0.28.0",
+        "renative": "^0.29.1-alpha.9",
         "rn-fetch-blob": "0.11.2"
     },
     "devDependencies": {
@@ -153,10 +153,10 @@
         "electron-builder": "21.1.1",
         "jetifier": "1.6.5",
         "release-it": "12.4.3",
-        "renative-template-blank": "^0.28.0",
-        "renative-template-hello-world": "^0.28.0",
-        "renative-template-kitchen-sink": "^0.28.0",
-        "rnv": "^0.28.0",
+        "renative-template-blank": "^0.29.1-alpha.9",
+        "renative-template-hello-world": "^0.29.1-alpha.9",
+        "renative-template-kitchen-sink": "^0.29.1-alpha.9",
+        "rnv": "^0.29.1-alpha.9",
         "xcode": "2.1.0"
     },
     "optionalDependencies": {
