@@ -112,6 +112,74 @@ Plugin configurations
 }
 ```
 
+### skipMerge
+
+Will not attempt to merge with existing plugin configuration (ie. coming form renative pluginTemplates)
+
+NOTE: if set to `true` you need to configure your plugin object fully
+
+```json
+{
+    "plugins": {
+        "plugin-name": {
+            "skipMerge": true
+        }
+    }
+}
+```
+
+### source
+
+Will define custom scope for your plugin config to extend from
+
+```json
+{
+    "plugins": {
+        "plugin-name": {
+            "source": "rnv"
+        }
+    }
+}
+```
+
+custom scopes can be defined via:
+
+```json
+{
+  "paths": {
+      "pluginTemplates": {
+          "myCustomScope": {
+              "npm": "some-renative-template-package",
+              "path": "./pluginTemplates"
+          }
+      }
+   }
+}
+
+those will allow you to use direct pointer to preconfigured plugin:
+
+```json
+{
+    "plugins": {
+        "plugin-name": "source:myCustomScope"
+    }
+}
+```
+
+NOTE: by default every plugin you define with scope will also merge any files defined in overrides automatically to your project
+To skip file overrides coming from source plugin you need to detach it from the scope:
+
+```json
+{
+    "plugins": {
+        "plugin-name": {
+            "source": ""
+        }
+    }
+}
+```
+
+
 ### ios
 
 ```json
@@ -352,8 +420,8 @@ Platform specififc configurations
         "android": {
             "gradle.properties": {},
             "AndroidManifest": {},
-            "BuildGradle": {},
-            "AppBuildGradle": {},
+            "build.gradle": {},
+            "app/build.gradle": {},
             "implementation": "",
             "universalApk": false,
             "multipleAPKs": false,
@@ -364,11 +432,125 @@ Platform specififc configurations
             "storePassword": "",
             "keyAlias": "",
             "keyPassword": "",
-            "enableHermes": false
+            "enableHermes": false,
+            "timestampAssets": false,
+            "versionedAssets": false
         }
     }
 }
 ```
+
+#### gradle.properties
+
+Overrides values in `gradle.properties` file of generated android based project
+
+Example:
+
+```json
+{
+    "platforms": {
+        "android": {
+            "gradle.properties": {
+                "android.debug.obsoleteApi": true,
+                "debug.keystore": "debug.keystore",
+                "org.gradle.daemon": true,
+                "org.gradle.parallel": true,
+                "org.gradle.configureondemand": true
+            }
+        }
+     }
+}
+```
+
+#### AndroidManifest
+
+Injects / Overrides values in `AndroidManifest.xml` file of generated android based project
+
+*IMPORTANT*: always ensure that your object contains `tag` and `android:name` to target correct tag to merge into
+
+Example:
+
+```json
+{
+    "platforms": {
+        "android": {
+            "AndroidManifest": {
+              "children": [
+                   {
+                       "tag": "application",
+                       "android:name": ".MainApplication",
+                       "android:allowBackup": true,
+                       "android:largeHeap": true,
+                       "android:usesCleartextTraffic": true,
+                       "tools:targetApi": 28
+                   }
+               ]
+            }
+        }
+    }
+}
+```
+
+#### build.gradle
+
+Overrides values in `build.gradle` file of generated android based project
+
+```json
+{
+    "platforms": {
+        "android": {
+            "BuildGradle": {
+                "allprojects": {
+                    "repositories": {
+                        "maven { url \"https://dl.bintray.com/onfido/maven\" }": true
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+#### app/build.gradle
+
+Overrides values in `app/build.gradle` file of generated android based project
+
+Example:
+
+```json
+{
+    "platforms": {
+        "android": {
+            "app/build.gradle": {
+                "apply": [
+                    "plugin: 'io.fabric'"
+                ]
+            }
+        }
+    }
+}
+```
+
+
+
+Example:
+
+```json
+{
+    "platforms": {
+        "android": {
+            "gradle.properties": {
+                "android.debug.obsoleteApi": true,
+                "debug.keystore": "debug.keystore",
+                "org.gradle.daemon": true,
+                "org.gradle.parallel": true,
+                "org.gradle.configureondemand": true
+            }
+        }
+     }
+}
+```
+
 
 ### web
 
@@ -381,6 +563,36 @@ Platform specififc configurations
                 "devServerHost": "",
                 "customScripts": []
             }
+        }
+    }
+}
+```
+
+#### timestampAssets
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-12345678.js) every new build.
+This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new build you deploy
+
+```json
+{
+    "platforms": {
+        "web": {
+            "timestampAssets": true
+        }
+    }
+}
+```
+
+#### versionedAssets
+
+If set to `true` generated js (bundle.js) files will be timestamped and named (bundle-1.0.0.js) every new version.
+This is useful if you want to enforce invalidate cache agains standard CDN cache policies every new version you deploy
+
+```json
+{
+    "platforms": {
+        "web": {
+            "versionedAssets": true
         }
     }
 }
@@ -411,8 +623,6 @@ Special runtime injection object to be available for runtime code via `platformA
     }
 }
 ```
-
-v
 
 ## buildSchemes
 

@@ -40,7 +40,7 @@ import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 import Config from '../config';
-import { getMergedPlugin } from '../pluginTools';
+import { getMergedPlugin, overrideTemplatePlugins } from '../pluginTools';
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
 import { configureChromecastProject } from '../platformTools/chromecast';
 
@@ -55,19 +55,7 @@ export const rnvConfigure = async (c) => {
     await copyRuntimeAssets(c);
     await copySharedPlatforms(c);
     await generateRuntimeConfig(c);
-    const ptDirs = c.paths.rnv.pluginTemplates.dirs;
-    for (let i = 0; i < ptDirs.length; i++) {
-        await overridePlugins(c, ptDirs[i]);
-    }
-    // await overridePlugins(c, c.paths.rnv.pluginTemplates.dir);
-    await overridePlugins(c, c.paths.project.projectConfig.pluginsDir);
-
-    const ptDirs2 = c.paths.appConfig.pluginDirs;
-    if (ptDirs2) {
-        for (let i = 0; i < ptDirs2.length; i++) {
-            await overridePlugins(c, ptDirs2[i]);
-        }
-    }
+    await overrideTemplatePlugins(c);
 
     const originalPlatform = c.platform;
 
@@ -192,93 +180,5 @@ const _checkAndCreatePlatforms = async (c, platform) => {
                 });
             }
         }
-    }
-};
-
-const overridePlugins = async (c, pluginsPath) => {
-    logTask(`overridePlugins:${pluginsPath}`, chalk.grey);
-
-    if (!fs.existsSync(pluginsPath)) {
-        logInfo(
-            `Your project plugin folder ${chalk.white(
-                pluginsPath
-            )} does not exists. skipping plugin configuration`
-        );
-        return;
-    }
-
-    fs.readdirSync(pluginsPath).forEach((dir) => {
-        if (dir.startsWith('@')) {
-            const pluginsPathNested = path.join(pluginsPath, dir);
-            fs.readdirSync(pluginsPathNested).forEach((subDir) => {
-                _overridePlugins(c, pluginsPath, `${dir}/${subDir}`);
-            });
-        } else {
-            _overridePlugins(c, pluginsPath, dir);
-        }
-    });
-};
-
-const _overridePlugins = (c, pluginsPath, dir) => {
-    const source = path.resolve(pluginsPath, dir, 'overrides');
-    const dest = doResolve(dir, false);
-    if (!dest) return;
-
-    const plugin = getMergedPlugin(c, dir, c.buildConfig.plugins);
-    let flavourSource;
-    if (plugin) {
-        flavourSource = path.resolve(
-            pluginsPath,
-            dir,
-            `overrides@${plugin.version}`
-        );
-    }
-
-    if (flavourSource && fs.existsSync(flavourSource)) {
-        copyFolderContentsRecursiveSync(flavourSource, dest, false);
-    } else if (fs.existsSync(source)) {
-        copyFolderContentsRecursiveSync(source, dest, false);
-        // fs.readdirSync(pp).forEach((dir) => {
-        //     copyFileSync(path.resolve(pp, file), path.resolve(c.paths.project.dir, 'node_modules', dir));
-        // });
-    } else {
-        logInfo(
-            `Your plugin configuration has no override path ${chalk.white(
-                source
-            )}. skipping folder override action`
-        );
-    }
-
-    const overridePath = path.resolve(pluginsPath, dir, 'overrides.json');
-    const overrideConfig = readObjectSync(
-        path.resolve(pluginsPath, dir, 'overrides.json')
-    );
-    if (overrideConfig?.overrides) {
-        Object.keys(overrideConfig.overrides).forEach((k, i) => {
-            const override = overrideConfig.overrides[k];
-            const ovDir = path.join(dest, k);
-            if (fs.existsSync(ovDir)) {
-                if (fs.lstatSync(ovDir).isDirectory()) {
-                    logWarning(
-                        'overrides.json: Directories not supported yet. specify path to actual file'
-                    );
-                } else {
-                    let fileToFix = fs.readFileSync(ovDir).toString();
-                    Object.keys(override).forEach((fk) => {
-                        const regEx = new RegExp(fk, 'g');
-                        const count = (fileToFix.match(regEx) || []).length;
-                        if (!count) {
-                            logWarning(`No Match found in ${chalk.red(
-                                ovDir
-                            )} for expression: ${chalk.red(fk)}.
-Consider update or removal of ${chalk.white(overridePath)}`);
-                        } else {
-                            fileToFix = fileToFix.replace(regEx, override[fk]);
-                        }
-                    });
-                    fs.writeFileSync(ovDir, fileToFix);
-                }
-            }
-        });
     }
 };

@@ -111,7 +111,7 @@ const _cleanProjectTemplateSync = (c) => {
 };
 
 const _applyTemplate = async (c) => {
-    logTask(`_applyTemplate:${c.runtime.selectedTemplate}`);
+    logTask(`_applyTemplate | current:${c.buildConfig.currentTemplate} | selected:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
         _cleanProjectTemplateSync(c);
@@ -341,6 +341,7 @@ const _parseSupportedPlatforms = async (c, callback) => {
             );
         }
     }
+    return true;
 };
 
 export const configureEntryPoints = async (c) => {
@@ -379,8 +380,8 @@ export const configureEntryPoints = async (c) => {
             if (!fs.existsSync(dest)) {
                 if (!plat.entryFile) {
                     logWarning(
-                        `You missing entryFile for ${chalk.white(
-                            k
+                        `You missing entryFile key for ${chalk.white(
+                            platform
                         )} platform in your ${chalk.white(
                             c.paths.appConfig.config
                         )}.`

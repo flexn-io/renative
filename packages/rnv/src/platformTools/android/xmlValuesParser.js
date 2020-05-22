@@ -34,7 +34,8 @@ export const parseValuesColorsSync = (c) => {
             {
                 pattern: '{{PLUGIN_COLORS_BG}}',
                 override: sanitizeColor(
-                    getConfigProp(c, c.platform, 'backgroundColor')
+                    getConfigProp(c, c.platform, 'backgroundColor'),
+                    'backgroundColor'
                 ).hex
             }
         ]

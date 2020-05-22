@@ -20,6 +20,7 @@ import {
     PLATFORMS,
     SUPPORTED_PLATFORMS
 } from '../constants';
+import { rnvTemplateApply } from '../templateTools';
 
 import {
     copyFolderContentsRecursiveSync,
@@ -48,6 +49,7 @@ import {
     upgradeProjectDependencies
 } from '../projectTools/projectParser';
 import { inquirerPrompt } from '../systemTools/prompt';
+import { loadPluginTemplates } from '../pluginTools';
 
 const base = path.resolve('.');
 const homedir = require('os').homedir();
@@ -536,8 +538,18 @@ export const generateLocalConfig = (c, resetAppId) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    const pt = c.buildConfig.platformTemplatesDirs || {};
-    const originalPath = c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
+    if(!c.buildConfig.paths) {
+       logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
+       c.buildConfig.paths = {};
+    }
+    if(c.buildConfig.platformTemplatesDirs) {
+      logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    }
+    if(c.buildConfig.platformTemplatesDir) {
+      logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    }
+    const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
+    const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
     const result = {};
     SUPPORTED_PLATFORMS.forEach((v) => {
         if (!pt[v]) {
@@ -614,55 +626,6 @@ export const loadProjectTemplates = (c) => {
     c.files.rnv.projectTemplates.config = readObjectSync(
         c.paths.rnv.projectTemplates.config
     );
-};
-
-export const loadPluginTemplates = (c) => {
-    logTask('loadPluginTemplates');
-    c.files.rnv.pluginTemplates.config = readObjectSync(
-        c.paths.rnv.pluginTemplates.config
-    );
-
-    c.files.rnv.pluginTemplates.configs = {
-        rnv: c.files.rnv.pluginTemplates.config
-    };
-
-    c.paths.rnv.pluginTemplates.dirs = [c.paths.rnv.pluginTemplates.dir];
-
-    const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
-    if (customPluginTemplates) {
-        Object.keys(customPluginTemplates).forEach((k) => {
-            const val = customPluginTemplates[k];
-            if (val.npm) {
-                const npmDep = c.files.project.package?.dependencies[val.npm]
-                    || c.files.project.package?.devDependencies[val.npm];
-
-                if (npmDep) {
-                    let ptPath;
-                    if (npmDep.startsWith('file:')) {
-                        ptPath = path.join(
-                            c.paths.project.dir,
-                            npmDep.replace('file:', ''),
-                            val.path || ''
-                        );
-                    } else {
-                        // ptPath = path.join(c.paths.project.nodeModulesDir, val.npm, val.path || '');
-                        ptPath = `${doResolve(val.npm)}/${val.path}`;
-                    }
-
-                    const ptConfig = path.join(
-                        ptPath,
-                        RENATIVE_CONFIG_PLUGINS_NAME
-                    );
-                    c.paths.rnv.pluginTemplates.dirs.push(ptPath);
-                    if (fs.existsSync(ptConfig)) {
-                        c.files.rnv.pluginTemplates.configs[k] = readObjectSync(
-                            ptConfig
-                        );
-                    }
-                }
-            }
-        });
-    }
 };
 
 export const loadPlatformTemplates = (c) => {
@@ -820,22 +783,17 @@ export const updateConfig = async (c, appConfigId) => {
                 return true;
             }
         }
+
         const { conf } = await inquirerPrompt({
             name: 'conf',
             type: 'confirm',
-            message: `Do you want ReNative to create new sample appConfig (${chalk.white(
-                appConfigId
-            )}) for you?`,
-            warningMessage: 'No app configs found for this project'
+            message: `Do you want ReNative to create new sample appConfig for you?`,
+            warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk.white('rnv template apply')} ?`
         });
 
         if (conf) {
-            await setAppConfig(c, SAMPLE_APP_ID);
-            copyFolderContentsRecursiveSync(
-                path.join(c.paths.rnv.dir, 'appConfigs', SAMPLE_APP_ID),
-                path.join(c.paths.appConfig.dir)
-            );
-            return true;
+            await rnvTemplateApply(c);
+            await setAppConfig(c);
         }
     }
     return true;

@@ -1,5 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require */
 import path from 'path';
+import chalk from 'chalk';
 
 class Docker {
     setRNVPath(pth) {
@@ -13,10 +14,11 @@ class Docker {
         const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
         const { copyFolderRecursiveSync, cleanFolder } = require(path.join(this.rnvPath, 'dist/systemTools/fileutils'));
 
-        const { paths, runtime, platform, files } = config.getConfig();
+        const { paths, runtime, platform, files, program } = config.getConfig();
         const projectBuilds = paths.project.builds.dir;
         const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);
         const dockerDestination = path.join(projectBuildWeb, 'export', 'docker');
+        const buildDir = program.engine === 'next' ? 'out' : 'public';
 
         const dockerFile = path.join(__dirname, '../Dockerfile');
         const nginxConfFile = path.join(__dirname, '../nginx/default.conf');
@@ -24,7 +26,7 @@ class Docker {
         const dockerComposeFile = path.join(__dirname, '../docker-compose.yml');
 
         await cleanFolder(path.join(dockerDestination));
-        copyFolderRecursiveSync(path.join(projectBuildWeb, 'public'), dockerDestination);
+        copyFolderRecursiveSync(path.join(projectBuildWeb, buildDir), dockerDestination);
 
         const copiedDockerFile = path.join(dockerDestination, 'Dockerfile');
         const copiedNginxConfFile = path.join(dockerDestination, 'nginx.default.conf');
@@ -46,6 +48,7 @@ class Docker {
         }
 
         writeCleanFile(dockerFile, copiedDockerFile, [
+            { pattern: '{{BUILD_FOLDER}}', override: buildDir },
             { pattern: '{{DOCKER_ADDITIONAL_COMMANDS}}', override: additionalCommands }
         ]);
 
@@ -65,7 +68,7 @@ class Docker {
         const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
         const config = require(path.join(this.rnvPath, 'dist/config')).default;
         const { runtime, files, paths, platform, program: { scheme = 'debug' } } = config.getConfig();
-        const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
+        const { logTask, logInfo, logSuccess } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
         const { executeAsync, commandExistsSync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
         const imageName = runtime.appId.toLowerCase();
         const appVersion = files.project.package.version;
@@ -77,7 +80,8 @@ class Docker {
 
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker save -o ${dockerSaveFile} ${imageName}:${appVersion}`);
-        logInfo(`${imageName}_${appVersion}.tar file has been saved in ${dockerDestination}. You can import it on another machine by running 'docker load -i ${imageName}_${appVersion}.tar'`);
+        logSuccess(`${imageName}_${appVersion}.tar file has been saved in ${chalk.white(dockerDestination)}. You can import it on another machine by running ${chalk.white(`'docker load -i ${imageName}_${appVersion}.tar'`)}`);
+        logSuccess(`You can also test it locally by running the following command: ${chalk.white(`'docker run -d --rm -p 8081:80 -p 8443:443 ${imageName}:${appVersion}'`)} and then opening ${chalk.white('http://localhost:8081')}`);
 
         const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
         const zipImage = deployOptions?.docker?.zipImage;

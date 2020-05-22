@@ -54,7 +54,7 @@ export const parseAppDelegate = (
     //     }
     // }
 
-    const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'))
+    const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor')
         .rgbDecimal;
     const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
     const methods = {

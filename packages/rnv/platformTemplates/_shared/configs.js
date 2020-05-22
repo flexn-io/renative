@@ -92,7 +92,7 @@ function generateConfig(config) {
     const extensions = config.extensions.map(v => `.${v}`);
 
     const output = {
-        filename: '[name].js',
+        filename: `[name]${config.assetVersion}.js`,
         publicPath: `${baseUrl}assets/`,
         path: path.join(appBuildPublicDir, 'assets'),
     };

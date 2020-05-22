@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import { removeDirs } from './fileutils';
-import { logTask, logToSummary } from './logger';
+import { logTask, logToSummary, logDebug } from './logger';
 import { executeAsync } from './exec';
 
 const rnvClean = async (c, skipQuestion = false) => {
@@ -114,7 +114,12 @@ const rnvClean = async (c, skipQuestion = false) => {
         await removeDirs(buildDirs);
     }
     if (answers.cache) {
-        await executeAsync(c, 'watchman watch-del-all');
+        try {
+          await executeAsync(c, 'watchman watch-del-all');
+        } catch (e) {
+          logDebug(`watchman not installed. skipping`)
+        }
+
         await executeAsync(
             c,
             'rm -rf $TMPDIR/metro-* && rm -rf $TMPDIR/react-* && rm -rf $TMPDIR/haste-*'

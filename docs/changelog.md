@@ -1,0 +1,19 @@
+# Changelog
+
+## v0.29.1-alpha.7 (2020-5-18)
+
+### Fixed
+
+- fix next overrides
+- fix missing watchman error
+- fix doc links
+- fix missing appConfig
+- fix links
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none

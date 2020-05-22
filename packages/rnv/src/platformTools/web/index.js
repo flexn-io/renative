@@ -17,7 +17,8 @@ import {
     getAppTitle,
     getSourceExts,
     sanitizeColor,
-    confirmActiveBundler
+    confirmActiveBundler,
+    getAppVersion
 } from '../../common';
 import { isPlatformActive } from '..';
 import {
@@ -121,6 +122,15 @@ const _generateWebpackConfigs = (c, platform) => {
     );
 
     // const externalModulesResolved = externalModules.map(v => doResolve(v))
+    let assetVersion = '';
+    const versionedAssets = getConfigProp(c, platform, 'versionedAssets', false);
+    if (versionedAssets) {
+        assetVersion = `-${getAppVersion(c, platform)}`;
+    }
+    const timestampAssets = getConfigProp(c, platform, 'timestampAssets', false);
+    if (timestampAssets) {
+        assetVersion = `-${Date.now()}`;
+    }
 
     const obj = {
         modulePaths,
@@ -128,6 +138,7 @@ const _generateWebpackConfigs = (c, platform) => {
         analyzer,
         entryFile,
         title,
+        assetVersion,
         extensions: getSourceExts(c, platform),
         ...extendConfig
     };
@@ -198,7 +209,8 @@ const _parseCssSync = (c, platform) => {
             {
                 pattern: '{{PLUGIN_COLORS_BG}}',
                 override: sanitizeColor(
-                    getConfigProp(c, platform, 'backgroundColor')
+                    getConfigProp(c, platform, 'backgroundColor'),
+                    'backgroundColor'
                 ).hex
             }
         ]

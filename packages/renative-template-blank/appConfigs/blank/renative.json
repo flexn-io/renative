@@ -26,7 +26,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -43,7 +42,6 @@
             "scheme": "RNVAppTVOS",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "runScheme": "Debug",
                     "bundleAssets": false
                 },
@@ -61,7 +59,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -78,7 +75,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -95,7 +91,6 @@
             "permissions": ["*"],
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
@@ -110,7 +105,6 @@
             "entryFile": "index.macos",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "bundleAssets": false,
                     "environment": "development"
                 },
@@ -122,16 +116,23 @@
             }
         },
         "tizen": {
-            "appName": "RNVanillaTV",
+            "appName": "ReNativeTV",
             "package": "NkVRhWHJST",
-            "id": "NkVRhWHJST.RNVanillaTV",
+            "id": "NkVRhWHJST.ReNativeTV",
             "entryFile": "index.tizen",
             "certificateProfile": "RNVanillaCert"
         },
         "tizenwatch": {
-            "appName": "RNVanillaWatch",
+            "appName": "ReNativeWatch",
             "package": "cHIP2fIRQZ",
-            "id": "cHIP2fIRQZ.RNVanillaWatch",
+            "id": "cHIP2fIRQZ.ReNativeWatch",
+            "entryFile": "index.tizenwatch",
+            "certificateProfile": "RNVanillaCert"
+        },
+        "tizenmobile": {
+            "appName": "RenativeMobile",
+            "package": "PauodvCU2r",
+            "id": "PauodvCU2r.ReNativeMobile",
             "entryFile": "index.tizenwatch",
             "certificateProfile": "RNVanillaCert"
         },
@@ -139,7 +140,6 @@
             "entryFile": "index.web",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "bundleAssets": false,
                     "environment": "developement"
                 },
@@ -159,7 +159,6 @@
             "entryFile": "index.kaios",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -172,7 +171,6 @@
             "entryFile": "index.firefoxos",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {
@@ -185,7 +183,6 @@
             "entryFile": "index.firefoxtv",
             "buildSchemes": {
                 "debug": {
-                    "id": "renative.blank.debug",
                     "bundleAssets": false
                 },
                 "release": {
