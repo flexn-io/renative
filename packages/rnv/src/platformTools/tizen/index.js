@@ -5,7 +5,6 @@ import chalk from 'chalk';
 import semver from 'semver';
 import inquirer from 'inquirer';
 import net from 'net';
-import parser from 'xml2json';
 
 import { execCLI } from '../../systemTools/exec';
 import {
@@ -41,6 +40,9 @@ import {
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';
+
+const xml2js = require('xml2js');
+const parser = new xml2js.Parser();
 
 const formatXMLObject = obj => ({
     ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
@@ -196,12 +198,10 @@ const _getRunningDevices = async (c) => {
 
                 if (deviceInfoXML !== true && deviceInfoXML !== '') {
                     // for some reason the tv does not connect through sdb
-                    deviceInfo = formatXMLObject(
-                        parser.toJson(deviceInfoXML, {
-                            object: true,
-                            reversible: false
-                        })
-                    );
+
+                    const parseObj = await parser.parseStringPromise(deviceInfoXML);
+
+                    deviceInfo = formatXMLObject(parseObj);
                     deviceType = deviceInfo['tizen.org/feature/profile'];
                 }
 

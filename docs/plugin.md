@@ -617,6 +617,24 @@ rnv plugin add native-base-shoutem-theme
 ```
 
 
+## next
+
+
+Version: `9.3.1`
+
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+Npm: https://www.npmjs.com/package/next
+
+Installation:
+
+```
+rnv plugin add next
+```
+
+
 ## react
 
 
@@ -2546,7 +2564,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.29.1-alpha.7`
+Version: `0.29.1-alpha.8`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
