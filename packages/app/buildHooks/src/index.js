@@ -12,6 +12,9 @@ const hooks = {
         await updateVersions(c);
         await generatePlugins(c);
         await updateMdFiles(c);
+        await generateChangelog(c);
+        await generateCombinedChangelog(c);
+        return true;
     },
     changelog: generateChangelog,
     changelogCombined: generateCombinedChangelog,
