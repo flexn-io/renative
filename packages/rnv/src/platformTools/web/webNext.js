@@ -11,7 +11,7 @@ import {
     writeCleanFile,
     confirmActiveBundler
 } from '../../common';
-import { logTask, logInfo, logWarning } from '../../systemTools/logger';
+import { logTask, logInfo, logWarning, logDebug } from '../../systemTools/logger';
 import { NEXT_CONFIG_NAME } from '../../constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
 
@@ -31,6 +31,11 @@ const configureNextIfRequired = async (c) => {
 
     if (fs.existsSync(baseFontsDir)) {
         if (!fs.existsSync(fontsSymLinkPath)) {
+            try {
+                fs.unlinkSync(fontsSymLinkPath);
+            } catch (e) {
+                logDebug(e);
+            }
             fs.symlinkSync(baseFontsDir, fontsSymLinkPath);
         }
 

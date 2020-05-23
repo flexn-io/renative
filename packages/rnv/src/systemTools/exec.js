@@ -212,21 +212,24 @@ const executeAsync = (c, cmd, opts) => {
  *
  */
 const executeTelnet = (c, port, command) => new Promise((resolve) => {
-    const nc2 = new NClient();
     logDebug(`execTelnet: ${port} ${command}`);
-
-    let output = '';
-
-    nc2.addr(c.runtime.localhost)
-        .port(parseInt(port, 10))
-        .connect()
-        .send(`${command}\n`);
-    nc2.on('data', (data) => {
-        const resp = Buffer.from(data).toString();
-        output += resp;
-        if (output.includes('OK')) nc2.close();
-    });
-    nc2.on('close', () => resolve(output));
+    try {
+        let output = '';
+        const nc2 = new NClient();
+        nc2.addr(c.runtime.localhost)
+            .port(parseInt(port, 10))
+            .connect()
+            .send(`${command}\n`);
+        nc2.on('data', (data) => {
+            const resp = Buffer.from(data).toString();
+            output += resp;
+            if (output.includes('OK')) nc2.close();
+        });
+        nc2.on('close', () => resolve(output));
+    } catch (e) {
+        logError(e);
+        resolve();
+    }
 });
 
 // Legacy error parser
