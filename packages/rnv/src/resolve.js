@@ -21,13 +21,20 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
     options.basedir = options.basedir ?? process.cwd();
     try {
         if (aPath.startsWith('file:')) {
-            return _doResolveFSPath(aPath, options).replace(/\\/g, '/');
+            return _withPathFix(_doResolveFSPath(aPath, options));
         }
-        return _doResolveExternalPackage(aPath, options).replace(/\\/g, '/');
+        return _withPathFix(_doResolveExternalPackage(aPath, options));
     } catch (err) {
         // perhaps do some warning logging here..
         if (mandatory) throw err;
     }
+};
+
+const _withPathFix = (p) => {
+    if (p) {
+        return p.replace(/\\/g, '/');
+    }
+    return p;
 };
 
 export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBase = '') => {
@@ -52,9 +59,9 @@ export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBas
         pathArr.shift();
         const realPath = doResolve(cleanPath, mandatory, options);
         if (realPath) {
-            return path.join(realPath, ...pathArr).replace(/\\/g, '/');
+            return _withPathFix(path.join(realPath, ...pathArr));
         }
-        return path.join(fallbackBase, aPath).replace(/\\/g, '/');
+        return _withPathFix(path.join(fallbackBase, aPath));
     } catch (err) {
         if (mandatory) throw err;
     }
@@ -115,7 +122,7 @@ const _doResolveExternalPackage = (aPath, options) => {
                 ...options,
                 extensions: ['.js', '.json'].concat(options.extensions ?? [])
             })
-            .replace(/(\\|\/)package.json$/, '')
+            .replace(/(\\|\/)package.json$/, '');
         return options.keepSuffix ?? false
             ? `${resolvedPath}/${packageSuffix}`
             : resolvedPath;
