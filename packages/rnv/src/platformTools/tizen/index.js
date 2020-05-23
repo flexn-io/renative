@@ -42,14 +42,24 @@ import { rnvStart } from '../runner';
 import Config from '../../config';
 
 const xml2js = require('xml2js');
+
 const parser = new xml2js.Parser();
 
-const formatXMLObject = obj => ({
-    ...obj['model-config'].platform.key.reduce((acc, cur, i) => {
-        acc[cur.name] = cur.$t;
-        return acc;
-    }, {})
-});
+
+const formatXMLObject = (obj) => {
+    const platArr = obj['model-config']?.platform;
+    const platKeyArr = platArr?.[0]?.key || platArr?.key;
+    if (platKeyArr) {
+        return {
+            ...platKeyArr.reduce((acc, cur) => {
+                acc[cur.name] = cur.$t;
+                return acc;
+            }, {})
+        };
+    }
+    logWarning('Invalid object received from shell cat /etc/config/model-config.xml');
+    return {};
+};
 
 export const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
