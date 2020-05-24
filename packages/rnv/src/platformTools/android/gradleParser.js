@@ -58,11 +58,11 @@ export const parseBuildGradleSync = (c, platform) => {
             { pattern: '{{PLUGIN_INJECT_DEXOPTIONS}}', override: dexOptions },
             {
                 pattern: '{{PATH_JSC_ANDROID}}',
-                override: doResolve('jsc-android')
+                override: doResolve('jsc-android', true, { forceForwardPaths: true })
             },
             {
                 pattern: '{{PATH_REACT_NATIVE}}',
-                override: doResolve('react-native')
+                override: doResolve('react-native', true, { forceForwardPaths: true })
             },
         ]
     );
@@ -272,10 +272,10 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
 
     if (enableHermes) {
         c.pluginConfigAndroid.appBuildGradleImplementations += `    debugImplementation files("${doResolve(
-            'hermes-engine'
+            'hermes-engine', true, { forceForwardPaths: true }
         )}/android/hermes-debug.aar")\n`;
         c.pluginConfigAndroid.appBuildGradleImplementations += `    releaseImplementation files("${doResolve(
-            'hermes-engine'
+            'hermes-engine', true, { forceForwardPaths: true }
         )}/android/hermes-release.aar")\n`;
     } else {
         c.pluginConfigAndroid.appBuildGradleImplementations
@@ -358,15 +358,15 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
             },
             {
                 pattern: '{{PATH_JSC_ANDROID}}',
-                override: doResolve('jsc-android')
+                override: doResolve('jsc-android', true, { forceForwardPaths: true })
             },
             {
                 pattern: '{{PATH_REACT_NATIVE}}',
-                override: doResolve('react-native')
+                override: doResolve('react-native', true, { forceForwardPaths: true })
             },
             {
                 pattern: '{{PATH_HERMES_ENGINE}}',
-                override: doResolve('hermes-engine')
+                override: doResolve('hermes-engine', true, { forceForwardPaths: true })
             }
         ]
     );
@@ -456,7 +456,7 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
     let pathAbsolute;
 
     if (!skipPathResolutions) {
-        pathAbsolute = doResolvePath(pathFixed);
+        pathAbsolute = doResolvePath(pathFixed, true, { forceForwardPaths: true });
     }
 
     // APP/BUILD.GRADLE
