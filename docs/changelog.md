@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.29.1-alpha.12 (2020-5-24)
+
+### Fixed
+
+- Merge pull request #509 from pavjacko/fix/windows-chores
+- stalebot you fascist dictator I'm giving you a doze of valium
+- fix doResolve gradle edge cases
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.11 (2020-5-23)
 
 ### Fixed
