@@ -21,13 +21,20 @@ export const doResolve = (aPath, mandatory = true, options = {}) => {
     options.basedir = options.basedir ?? process.cwd();
     try {
         if (aPath.startsWith('file:')) {
-            return _doResolveFSPath(aPath, options);
+            return _withPathFix(_doResolveFSPath(aPath, options), options?.forceForwardPaths);
         }
-        return _doResolveExternalPackage(aPath, options);
+        return _withPathFix(_doResolveExternalPackage(aPath, options), options?.forceForwardPaths);
     } catch (err) {
         // perhaps do some warning logging here..
         if (mandatory) throw err;
     }
+};
+
+const _withPathFix = (p, forceForwardPaths) => {
+    if (p && forceForwardPaths) {
+        return p.replace(/\\/g, '/');
+    }
+    return p;
 };
 
 export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBase = '') => {
@@ -52,9 +59,9 @@ export const doResolvePath = (aPath, mandatory = true, options = {}, fallbackBas
         pathArr.shift();
         const realPath = doResolve(cleanPath, mandatory, options);
         if (realPath) {
-            return path.join(realPath, ...pathArr);
+            return _withPathFix(path.join(realPath, ...pathArr), options?.forceForwardPaths);
         }
-        return path.join(fallbackBase, aPath);
+        return _withPathFix(path.join(fallbackBase, aPath), options?.forceForwardPaths);
     } catch (err) {
         if (mandatory) throw err;
     }
