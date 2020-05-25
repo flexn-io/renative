@@ -43,7 +43,7 @@ export const updateVersions = async (c) => {
         {
             pluginTemplates: {
                 renative: {
-                    version: c.files.project.package.version
+                    version: v
                 }
             }
         }
