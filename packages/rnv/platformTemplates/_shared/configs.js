@@ -120,6 +120,11 @@ function generateConfig(config) {
         appBuildDir,
         appBuildPublicDir,
         platformBuildsSharedDir,
+        linkTags: [
+            '<link rel="manifest" href="manifest.json" />',
+            `<link rel="shortcut icon" href="favicon${config.assetVersion}.ico" />`,
+            `<link rel="stylesheet" href="app${config.assetVersion}.css" />`
+        ]
     };
 }
 

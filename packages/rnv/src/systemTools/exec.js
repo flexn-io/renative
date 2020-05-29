@@ -494,7 +494,7 @@ export const npmInstall = async (failOnError = false) => {
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
-    logTask(`npmInstall (${command})`);
+    logTask(`package manager used: (${command})`);
 
     try {
         await executeAsync(command);

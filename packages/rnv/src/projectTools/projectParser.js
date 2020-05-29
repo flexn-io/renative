@@ -7,7 +7,8 @@ import {
     getAppSubFolder,
     getBuildsFolder,
     areNodeModulesInstalled,
-    getConfigProp
+    getConfigProp,
+    getTimestampPathsConfig
 } from '../common';
 import { doResolve } from '../resolve';
 import {
@@ -274,6 +275,8 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
         ASSET_PATH_ALIASES[platform]
     );
 
+    const tsPathsConfig = getTimestampPathsConfig(c, platform);
+
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
         const hasAssetFolder = c.paths.appConfig.dirs.filter(v => fs.existsSync(path.join(v, `assets/${platform}`))).length;
@@ -286,7 +289,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
         }
         c.paths.appConfig.dirs.forEach((v) => {
             const sourcePath = path.join(v, `assets/${platform}`);
-            copyFolderContentsRecursiveSync(sourcePath, destPath);
+            copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
         });
     } else {
         const sourcePath = path.join(
@@ -296,7 +299,7 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
         if (!fs.existsSync(sourcePath)) {
             await generateDefaultAssets(c, platform, sourcePath);
         }
-        copyFolderContentsRecursiveSync(sourcePath, destPath);
+        copyFolderContentsRecursiveSync(sourcePath, destPath, true, false, false, null, tsPathsConfig);
     }
 };
 
@@ -327,6 +330,10 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
 
     const destPath = path.join(getAppFolder(c, platform));
 
+    const tsPathsConfig = getTimestampPathsConfig(c, platform);
+
+    console.log('DJDKJDHDK', tsPathsConfig);
+
     const configPropsInject = [];
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
         configPropsInject.push({
@@ -342,7 +349,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
         platform,
         c.paths.project.projectConfig.dir
     );
-    copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, configPropsInject);
+    copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, configPropsInject, tsPathsConfig);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
     const sourcePath1sec = getBuildsFolder(
@@ -350,7 +357,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
         platform,
         c.paths.workspace.project.projectConfig.dir
     );
-    copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, configPropsInject);
+    copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
 
     if (WEB_HOSTED_PLATFORMS.includes(platform)) {
         // FOLDER MERGERS _SHARED
@@ -372,14 +379,14 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
             copyFolderContentsRecursiveSync(
                 sourceV,
                 destPath,
-                true, false, false, configPropsInject
+                true, false, false, configPropsInject, tsPathsConfig
             );
         });
     } else {
         copyFolderContentsRecursiveSync(
             getBuildsFolder(c, platform, c.paths.appConfig.dir),
             destPath,
-            true, false, false, configPropsInject
+            true, false, false, configPropsInject, tsPathsConfig
         );
     }
 
@@ -389,7 +396,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
         platform,
         c.paths.workspace.appConfig.dir
     );
-    copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, configPropsInject);
+    copyFolderContentsRecursiveSync(sourcePath0sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
 
     copyTemplatePluginsSync(c, platform);
 

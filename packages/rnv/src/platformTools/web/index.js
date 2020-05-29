@@ -129,7 +129,7 @@ const _generateWebpackConfigs = (c, platform) => {
     }
     const timestampAssets = getConfigProp(c, platform, 'timestampAssets', false);
     if (timestampAssets) {
-        assetVersion = `-${Date.now()}`;
+        assetVersion = `-${c.runtime.timestamp}`;
     }
 
     const obj = {

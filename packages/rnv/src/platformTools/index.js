@@ -16,6 +16,7 @@ import { cleanPlaformAssets } from '../projectTools/projectParser';
 import { PLATFORMS, SUPPORTED_PLATFORMS } from '../constants';
 import { checkAndConfigureSdks } from './sdkManager';
 import { configureEntryPoints } from '../templateTools';
+import { getTimestampPathsConfig } from '../common';
 
 export const rnvPlatformList = c => new Promise((resolve, reject) => {
     const opts = _genPlatOptions(c);
@@ -126,9 +127,8 @@ export const rnvPlatformEject = async (c) => {
             )} now. You can edit them directly!`
         );
     } else {
-      logError(`You haven't selected any platform to eject.\n TIP: You can select options with ${chalk.white('SPACE')} key before pressing ENTER!`)
+        logError(`You haven't selected any platform to eject.\n TIP: You can select options with ${chalk.white('SPACE')} key before pressing ENTER!`);
     }
-
 };
 
 const _genPlatOptions = (c) => {
@@ -216,8 +216,9 @@ export const rnvPlatformConnect = async (c) => {
 const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_runCopyPlatforms:${platform}`);
     const copyPlatformTasks = [];
+
     if (platform === 'all') {
-        for (const k in c.buildConfig.platforms) {
+        Object.keys(c.buildConfig.platforms).forEach((k) => {
             if (_isPlatformSupportedSync(k)) {
                 const ptPath = path.join(
                     c.paths.project.platformTemplatesDirs[k],
@@ -228,10 +229,10 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
                     `${c.runtime.appId}_${k}`
                 );
                 copyPlatformTasks.push(
-                    copyFolderContentsRecursiveSync(ptPath, pPath)
+                    copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, null, getTimestampPathsConfig(c, platform))
                 );
             }
-        }
+        });
     } else if (_isPlatformSupportedSync(platform)) {
         const ptPath = path.join(
             c.paths.project.platformTemplatesDirs[platform],
@@ -242,7 +243,7 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
             `${c.runtime.appId}_${platform}`
         );
         copyPlatformTasks.push(
-            copyFolderContentsRecursiveSync(ptPath, pPath)
+            copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, null, getTimestampPathsConfig(c, platform))
         );
     } else {
         logWarning(
@@ -265,7 +266,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject)
     const cleanTasks = [];
 
     if (platform === 'all') {
-        for (const k in c.buildConfig.platforms) {
+        Object.keys(c.buildConfig.platforms).forEach((k) => {
             if (_isPlatformSupportedSync(k)) {
                 const pPath = path.join(
                     c.paths.project.builds.dir,
@@ -273,7 +274,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject)
                 );
                 cleanTasks.push(cleanFolder(pPath));
             }
-        }
+        });
     } else if (_isPlatformSupportedSync(platform)) {
         const pPath = path.join(
             c.paths.project.builds.dir,
@@ -300,9 +301,10 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
         c.paths.project.platformTemplatesDirs[platform],
         `${platform}`
     );
+
     copyFolderContentsRecursiveSync(ptPath, pPath, false, [
         path.join(ptPath, '_privateConfig')
-    ]);
+    ], false, null, getTimestampPathsConfig(c, platform));
 
     resolve();
 });

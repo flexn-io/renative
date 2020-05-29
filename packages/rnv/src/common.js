@@ -57,6 +57,21 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
     return c;
 };
 
+export const getTimestampPathsConfig = (c, platform) => {
+    let timestampBuildFiles;
+    const pPath = path.join(
+        c.paths.project.builds.dir,
+        `${c.runtime.appId}_${platform}`
+    );
+    if (platform === 'web') {
+        timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v => path.join(pPath, v)));
+    }
+    if (timestampBuildFiles.length) {
+        return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
+    }
+    return null;
+};
+
 export const generateChecksum = (str, algorithm, encoding) => crypto
     .createHash(algorithm || 'md5')
     .update(str, 'utf8')

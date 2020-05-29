@@ -644,6 +644,7 @@ const setDefaults = (c) => {
     } else c.runtime.target = c.program.target;
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
+    c.runtime.timestamp = Date.now();
     // const { scheme } = c.program;
     // if (scheme !== true) {
     //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];

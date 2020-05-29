@@ -5,6 +5,7 @@ const DEFAULT_CONFIG = {
     docType: '<!DOCTYPE html>',
     htmlTag: '<html lang="en">',
     contentType: '',
+    linkTags: [],
     metaTags: {
         viewport: 'content="width=1280"',
         'theme-color': 'content="#000000"',
@@ -22,14 +23,15 @@ const constructMetaTags = tags => Object.keys(tags).map(tag => `<meta name="${ta
 const htmlTemp = (options) => {
     const config = merge(DEFAULT_CONFIG, options);
     const {
-        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment
+        docType, title, metaTags, htmlTag, contentType, isDebug, debug, debugIp, platform, environment, linkTags
     } = config;
 
-    const linkTags = [
-        '<link rel="manifest" href="manifest.json" />',
-        '<link rel="shortcut icon" href="favicon.ico" />',
-        '<link rel="stylesheet" href="app.css" />',
-    ];
+    // Moved to dynamic config
+    // const linkTags = [
+    //     '<link rel="manifest" href="manifest.json" />',
+    //     '<link rel="shortcut icon" href="favicon.ico" />',
+    //     '<link rel="stylesheet" href="app.css" />',
+    // ];
 
     const titleTag = `<title>${title}</title>`;
 
