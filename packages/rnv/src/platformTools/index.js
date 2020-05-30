@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { logToSummary, logTask, logSuccess, logInfo, logError } from '../systemTools/logger';
+import { logToSummary, logTask, logSuccess, logInfo, logError, logDebug } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
     cleanFolder,
@@ -398,7 +398,7 @@ export const isPlatformActive = (c, platform, resolve) => {
         return false;
     }
     if (!c.buildConfig.platforms[platform]) {
-        console.log(
+        logDebug(
             `Platform ${platform} not configured for ${c.runtime.appId}. skipping.`
         );
         if (resolve) resolve();

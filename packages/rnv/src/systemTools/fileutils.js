@@ -64,13 +64,13 @@ export const copyFileSync = (source, target, skipOverride, timestampPathsConfig)
 const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg'];
 export const writeCleanFile = (source, destination, overrides, timestampPathsConfig) => {
     // logTask(`writeCleanFile`)
-    console.log('writeCleanFile', destination);
+    // console.log('writeCleanFile', destination);
     if (!fs.existsSync(source)) {
         logError(`Cannot write file. source path doesn't exists: ${source}`);
         return;
     }
     if (!fs.existsSync(destination)) {
-        logWarning(
+        logDebug(
             `destination path doesn't exists: ${destination}. will create new one`
         );
         // return;
@@ -118,7 +118,7 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
 
 export const readCleanFile = (source, overrides) => {
     // logTask(`writeCleanFile`)
-    console.log('readCleanFile', source);
+    // console.log('readCleanFile', source);
     if (!fs.existsSync(source)) {
         logError(`Cannot write file. source path doesn't exists: ${source}`);
         return;
