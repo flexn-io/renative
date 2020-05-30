@@ -1,5 +1,25 @@
 # Changelog
 
+## v0.29.1-alpha.13 (2020-5-30)
+
+### Fixed
+
+- bump up iOS targets
+- log cleanup
+- migrate writeCleanFile
+- runtime file injections
+- asset timestamp
+- fix version updater. thx @hosek
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.12 (2020-5-24)
 
 ### Fixed
