@@ -329,10 +329,7 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) =
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const destPath = path.join(getAppFolder(c, platform));
-
     const tsPathsConfig = getTimestampPathsConfig(c, platform);
-
-    console.log('DJDKJDHDK', tsPathsConfig);
 
     const configPropsInject = [];
     INJECTABLE_CONFIG_PROPS.forEach((v) => {

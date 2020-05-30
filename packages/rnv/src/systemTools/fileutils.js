@@ -11,7 +11,7 @@ import { isSystemWin } from '../utils';
 import { logDebug, logError, logWarning, logInfo } from './logger';
 
 const _getSanitizedPath = (origPath, timestampPathsConfig) => {
-    console.log('BVABAABA', origPath, timestampPathsConfig?.paths?.length, new Error());
+    // console.log('BVABAABA', origPath, timestampPathsConfig?.paths?.length, new Error());
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
         const pths = timestampPathsConfig.paths;
         if (pths.includes(origPath)) {
@@ -19,7 +19,7 @@ const _getSanitizedPath = (origPath, timestampPathsConfig) => {
             const fileName = path.basename(origPath, ext);
             const dirPath = path.dirname(origPath);
             const newPath = path.join(dirPath, `${fileName}-${timestampPathsConfig.timestamp}${ext}`);
-            console.log('SUCCCESSSSSS', newPath);
+            // console.log('SUCCCESSSSSS', newPath);
             return newPath;
         }
         // console.log('WOWOWOWO', origPath, new Error());
@@ -90,6 +90,31 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
         fs.writeFileSync(_getSanitizedPath(destination, timestampPathsConfig), pFileClean, 'utf8');
     }
 };
+
+// TODO: remove and use fileutils one
+// export const writeCleanFile = (source, destination, overrides) => {
+//     // logTask(`writeCleanFile`)
+//     if (!fs.existsSync(source)) {
+//         logError(`Cannot write file. source path doesn't exists: ${source}`);
+//         return;
+//     }
+//     if (!fs.existsSync(destination)) {
+//         logWarning(
+//             `destination path doesn't exists: ${destination}. will create new one`
+//         );
+//         // return;
+//     }
+//     const pFile = fs.readFileSync(source, 'utf8');
+//     let pFileClean = pFile;
+//     if (overrides) {
+//         overrides.forEach((v) => {
+//             const regEx = new RegExp(v.pattern, 'g');
+//             pFileClean = pFileClean.replace(regEx, v.override);
+//         });
+//     }
+//
+//     fs.writeFileSync(destination, pFileClean, 'utf8');
+// };
 
 export const readCleanFile = (source, overrides) => {
     // logTask(`writeCleanFile`)
@@ -212,7 +237,6 @@ export const copyFolderRecursiveSync = (
 
 export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
-
     if (!fs.existsSync(source)) return;
     let files = [];
     const targetFolder = path.join(target);
@@ -222,12 +246,12 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
     if (fs.lstatSync(source).isDirectory()) {
         files = fs.readdirSync(source);
         files.forEach((file) => {
-            console.log('BAAAAALLLL', file);
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
                     copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject, timestampPathsConfig);
                 } else if (injectObject !== null) {
+                    // console.log('BAAA', targetFolder);
                     copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig);
                 } else if (path.extname(curSource) === '.svg' && convertSvg === true) {
                     const jsDest = path.join(
@@ -521,8 +545,11 @@ export const sanitizeDynamicRefs = (c, obj) => {
     return obj;
 };
 
-export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
-    if (!obj || !props) return obj;
+export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeProps = {}) => {
+    if (!obj) {
+        return obj;
+    }
+
     if (Array.isArray(obj)) {
         obj.forEach((v, i) => {
             let val = v;
@@ -534,11 +561,15 @@ export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
                     obj[i] = val;
                 });
                 Object.keys(configProps).forEach((pk2) => {
-                    val = val.replace(`{{configProps.${pk2}}}`, props[pk2]);
+                    val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
+                    obj[i] = val;
+                });
+                Object.keys(runtimeProps).forEach((pk3) => {
+                    val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
                     obj[i] = val;
                 });
             } else {
-                sanitizeDynamicProps(v, props, configProps);
+                sanitizeDynamicProps(v, props, configProps, runtimeProps);
             }
         });
     } else if (typeof obj === 'object') {
@@ -556,8 +587,12 @@ export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
                         val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
                         obj[key] = val;
                     });
+                    Object.keys(runtimeProps).forEach((pk3) => {
+                        val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
+                        obj[key] = val;
+                    });
                 } else {
-                    sanitizeDynamicProps(val, props, configProps);
+                    sanitizeDynamicProps(val, props, configProps, runtimeProps);
                 }
             }
         });

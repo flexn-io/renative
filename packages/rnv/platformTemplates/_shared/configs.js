@@ -12,6 +12,12 @@ function generateConfig(config) {
     const appBuildDir = path.resolve(config.currentDir);
     const appBuildPublicDir = path.resolve(config.currentDir, config.buildFolder || 'public');
 
+    config.linkTags = [
+        '<link rel="manifest" href="manifest.json" />',
+        `<link rel="shortcut icon" href="favicon${config.assetVersion}.ico" />`,
+        `<link rel="stylesheet" href="app${config.assetVersion}.css" />`
+    ];
+
     const baseUrl = config.baseUrl || '';
     const devServerHost = config.devServerHost || '0.0.0.0';
 
@@ -119,12 +125,7 @@ function generateConfig(config) {
         platformBuildsDir,
         appBuildDir,
         appBuildPublicDir,
-        platformBuildsSharedDir,
-        linkTags: [
-            '<link rel="manifest" href="manifest.json" />',
-            `<link rel="shortcut icon" href="favicon${config.assetVersion}.ico" />`,
-            `<link rel="stylesheet" href="app${config.assetVersion}.css" />`
-        ]
+        platformBuildsSharedDir
     };
 }
 

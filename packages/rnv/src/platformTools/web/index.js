@@ -12,13 +12,13 @@ import {
     checkPortInUse,
     getConfigProp,
     waitForWebpack,
-    writeCleanFile,
     getBuildFilePath,
     getAppTitle,
     getSourceExts,
     sanitizeColor,
     confirmActiveBundler,
-    getAppVersion
+    getAppVersion,
+    getTimestampPathsConfig
 } from '../../common';
 import { isPlatformActive } from '..';
 import {
@@ -33,7 +33,7 @@ import {
     copyBuildsFolder,
     copyAssetsFolder
 } from '../../projectTools/projectParser';
-import { copyFileSync, readObjectSync } from '../../systemTools/fileutils';
+import { copyFileSync, readObjectSync, writeCleanFile } from '../../systemTools/fileutils';
 import { parsePlugins } from '../../pluginTools';
 import {
     selectWebToolAndDeploy,
@@ -202,6 +202,7 @@ export const configureCoreWebProject = async (c, platform) => {
 const _parseCssSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const stringsPath = 'public/app.css';
+    const timestampPathsConfig = getTimestampPathsConfig(c, platform);
     writeCleanFile(
         getBuildFilePath(c, platform, stringsPath),
         path.join(appFolder, stringsPath),
@@ -213,9 +214,11 @@ const _parseCssSync = (c, platform) => {
                     'backgroundColor'
                 ).hex
             }
-        ]
+        ],
+        timestampPathsConfig
     );
 };
+
 
 const runWeb = async (c, platform, port) => {
     logTask(`runWeb:${platform}:${port}`);
@@ -228,6 +231,16 @@ const runWeb = async (c, platform, port) => {
             extendConfig.devServerHost,
             c.runtime.localhost
         );
+
+        // if (extendConfig.customScripts) {
+        //     const timestampBuildFiles = getConfigProp(c, c.platform, 'timestampBuildFiles', []);
+        //     if (timestampBuildFiles.length) {
+        //         const sanitisedCustomScripts = [];
+        //         extendConfig.customScripts.forEach((customScript) => {
+        //             console.log('ABBAAB', customScript, timestampBuildFiles.includes(customScript));
+        //         });
+        //     }
+        // }
     }
 
     const isPortActive = await checkPortInUse(c, platform, port);

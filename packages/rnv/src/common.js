@@ -40,6 +40,7 @@ import { execCLI } from './systemTools/exec';
 import { createRnvConfig } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
+import { writeCleanFile } from './systemTools/fileutils';
 import Config from './config';
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
@@ -347,31 +348,6 @@ export const getMonorepoRoot = () => {
 };
 
 export const areNodeModulesInstalled = () => !!doResolve('react', false);
-
-// TODO: remove and use fileutils one
-export const writeCleanFile = (source, destination, overrides) => {
-    // logTask(`writeCleanFile`)
-    if (!fs.existsSync(source)) {
-        logError(`Cannot write file. source path doesn't exists: ${source}`);
-        return;
-    }
-    if (!fs.existsSync(destination)) {
-        logWarning(
-            `destination path doesn't exists: ${destination}. will create new one`
-        );
-        // return;
-    }
-    const pFile = fs.readFileSync(source, 'utf8');
-    let pFileClean = pFile;
-    if (overrides) {
-        overrides.forEach((v) => {
-            const regEx = new RegExp(v.pattern, 'g');
-            pFileClean = pFileClean.replace(regEx, v.override);
-        });
-    }
-
-    fs.writeFileSync(destination, pFileClean, 'utf8');
-};
 
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;

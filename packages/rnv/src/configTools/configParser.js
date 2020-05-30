@@ -441,7 +441,7 @@ export const generateBuildConfig = (c) => {
         }`
     );
     c.buildConfig = sanitizeDynamicRefs(c, out);
-    c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
+    c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
 
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);
@@ -538,15 +538,15 @@ export const generateLocalConfig = (c, resetAppId) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    if(!c.buildConfig.paths) {
-       logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
-       c.buildConfig.paths = {};
+    if (!c.buildConfig.paths) {
+        logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
+        c.buildConfig.paths = {};
     }
-    if(c.buildConfig.platformTemplatesDirs) {
-      logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    if (c.buildConfig.platformTemplatesDirs) {
+        logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
     }
-    if(c.buildConfig.platformTemplatesDir) {
-      logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    if (c.buildConfig.platformTemplatesDir) {
+        logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
@@ -787,7 +787,7 @@ export const updateConfig = async (c, appConfigId) => {
         const { conf } = await inquirerPrompt({
             name: 'conf',
             type: 'confirm',
-            message: `Do you want ReNative to create new sample appConfig for you?`,
+            message: 'Do you want ReNative to create new sample appConfig for you?',
             warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk.white('rnv template apply')} ?`
         });
 
