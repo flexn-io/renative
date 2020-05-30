@@ -9,7 +9,6 @@ import {
     getAppFolder,
     getAppVersion,
     getAppTitle,
-    writeCleanFile,
     getAppId,
     getAppTemplateFolder,
     getConfigProp,
@@ -37,7 +36,7 @@ import {
     CLI_WEBOS_ARES_NOVACOM,
     CLI_WEBOS_ARES_SETUP_DEVICE
 } from '../../constants';
-import { getRealPath } from '../../systemTools/fileutils';
+import { getRealPath, writeCleanFile } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';

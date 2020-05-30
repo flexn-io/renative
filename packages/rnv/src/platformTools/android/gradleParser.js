@@ -5,13 +5,13 @@ import {
     getAppFolder,
     getAppVersion,
     getAppVersionCode,
-    writeCleanFile,
     getAppId,
     getBuildFilePath,
     getConfigProp
 } from '../../common';
 import { doResolve, doResolvePath } from '../../resolve';
 import { logTask, logWarning, logDebug, logError } from '../../systemTools/logger';
+import { writeCleanFile } from '../../systemTools/fileutils';
 
 export const parseBuildGradleSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);

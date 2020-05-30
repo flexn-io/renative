@@ -2,7 +2,6 @@ import path from 'path';
 import compareVersions from 'compare-versions';
 import {
     getAppFolder,
-    writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
     getFlavouredProp
@@ -11,6 +10,7 @@ import { logTask, logWarning } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
 import { doResolve, doResolvePath } from '../../resolve';
 import { executeAsync } from '../../systemTools/exec';
+import { writeCleanFile } from '../../systemTools/fileutils';
 
 export const parsePodFile = async (c, platform) => {
     logTask(`parsePodFileSync:${platform}`);

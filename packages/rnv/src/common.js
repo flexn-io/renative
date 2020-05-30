@@ -67,7 +67,7 @@ export const getTimestampPathsConfig = (c, platform) => {
     if (platform === 'web') {
         timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v => path.join(pPath, v)));
     }
-    if (timestampBuildFiles.length) {
+    if (timestampBuildFiles?.length) {
         return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
     }
     return null;

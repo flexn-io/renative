@@ -1,14 +1,13 @@
 import path from 'path';
 import {
     getAppFolder,
-    writeCleanFile,
     getAppId,
     getBuildFilePath,
     getConfigProp,
     getFlavouredProp
 } from '../../common';
 import { logTask, logError, logWarning } from '../../systemTools/logger';
-import { readObjectSync } from '../../systemTools/fileutils';
+import { readObjectSync, writeCleanFile } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];

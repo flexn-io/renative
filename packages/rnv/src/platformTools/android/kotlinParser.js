@@ -1,7 +1,6 @@
 import path from 'path';
 import {
     getAppFolder,
-    writeCleanFile,
     getAppId,
     getBuildFilePath,
     getEntryFile,
@@ -10,6 +9,7 @@ import {
     getIP
 } from '../../common';
 import { logWarning } from '../../systemTools/logger';
+import { writeCleanFile } from '../../systemTools/fileutils';
 // import { doResolve } from '../../resolve';
 
 const JS_BUNDLE_DEFAULTS = {

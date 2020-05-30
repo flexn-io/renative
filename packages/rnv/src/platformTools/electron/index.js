@@ -8,7 +8,6 @@ import {
     getAppFolder,
     getAppVersion,
     getAppTitle,
-    writeCleanFile,
     getAppId,
     getAppTemplateFolder,
     getAppDescription,
@@ -39,7 +38,8 @@ import {
     mkdirSync,
     writeFileSync,
     readObjectSync,
-    removeDirs
+    removeDirs,
+    writeCleanFile
 } from '../../systemTools/fileutils';
 
 const configureElectronProject = async (c, platform) => {

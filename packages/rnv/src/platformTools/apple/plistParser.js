@@ -11,7 +11,6 @@ import {
     getAppVersion,
     getAppTitle,
     getAppVersionCode,
-    writeCleanFile,
     getConfigProp,
     getBuildFilePath,
     getFlavouredProp
@@ -19,7 +18,7 @@ import {
 import { logTask, logError, logWarning } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
-import { readObjectSync, mergeObjects } from '../../systemTools/fileutils';
+import { readObjectSync, mergeObjects, writeCleanFile } from '../../systemTools/fileutils';
 
 export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) => {
     // EXPORT OPTIONS

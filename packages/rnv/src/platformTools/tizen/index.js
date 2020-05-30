@@ -16,7 +16,6 @@ import {
 import {
     getAppFolder,
     getAppVersion,
-    writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator,
@@ -40,6 +39,7 @@ import {
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';
+import { writeCleanFile } from '../../systemTools/fileutils';
 
 const xml2js = require('xml2js');
 
