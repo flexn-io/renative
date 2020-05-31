@@ -347,7 +347,7 @@ export const getMonorepoRoot = () => {
     }
 };
 
-export const areNodeModulesInstalled = () => !!doResolve('react', false);
+export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;

@@ -430,12 +430,9 @@ export const upgradeProjectDependencies = (c, version) => {
 };
 
 export const configureNodeModules = c => new Promise((resolve, reject) => {
-    logTask('configureNodeModules');
+    logTask(`configureNodeModules:${c._requiresNpmInstall}:${c.runtime.skipPackageUpdate}`);
     // Check node_modules
-    if (
-        !areNodeModulesInstalled()
-            || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)
-    ) {
+    if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
         if (!areNodeModulesInstalled()) {
             logWarning(
                 `Looks like your node_modules folder is missing! Let's run ${chalk.white(
