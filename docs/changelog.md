@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.29.1-alpha.14 (2020-5-31)
+
+### Fixed
+
+- fix renative versioning bug
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.13 (2020-5-30)
 
 ### Fixed
