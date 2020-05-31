@@ -290,22 +290,21 @@ const runWebOS = async (c, platform, target) => {
     }
 };
 
-const buildWebOSProject = (c, platform) => new Promise((resolve, reject) => {
+const buildWebOSProject = async (c, platform) => {
     logTask(`buildWebOSProject:${platform}`);
 
-    const tDir = path.join(getAppFolder(c, platform), 'public');
-    const tOut = path.join(getAppFolder(c, platform), 'output');
+    await buildWeb(c, platform);
 
-    buildWeb(c, platform)
-        .then(() => execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`))
-        .then(() => {
-            logSuccess(
-                `Your IPK package is located in ${chalk.white(tOut)} .`
-            );
-            return resolve();
-        })
-        .catch(reject);
-});
+    if (!c.program.hosted) {
+        const tDir = path.join(getAppFolder(c, platform), 'public');
+        const tOut = path.join(getAppFolder(c, platform), 'output');
+        await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
+
+        logSuccess(
+            `Your IPK package is located in ${chalk.white(tOut)} .`
+        );
+    }
+};
 
 const configureWebOSProject = async (c, platform) => {
     logTask('configureWebOSProject');

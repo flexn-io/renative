@@ -203,6 +203,7 @@ const _parseCssSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const stringsPath = 'public/app.css';
     const timestampPathsConfig = getTimestampPathsConfig(c, platform);
+    const backgroundColor = getConfigProp(c, platform, 'backgroundColor');
     writeCleanFile(
         getBuildFilePath(c, platform, stringsPath),
         path.join(appFolder, stringsPath),
@@ -210,7 +211,7 @@ const _parseCssSync = (c, platform) => {
             {
                 pattern: '{{PLUGIN_COLORS_BG}}',
                 override: sanitizeColor(
-                    getConfigProp(c, platform, 'backgroundColor'),
+                    backgroundColor,
                     'backgroundColor'
                 ).hex
             }
