@@ -278,7 +278,7 @@ export const parseAndroidManifestSync = (c, platform) => {
                     pattern: '{{APPLICATION_ID}}',
                     override: baseManifestFile.package
                 }
-            ]
+            ], null, c
         );
 
         return;

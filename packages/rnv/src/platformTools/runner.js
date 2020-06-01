@@ -227,7 +227,7 @@ const _configureHostedIfRequired = async (c) => {
                     pattern: '{{DEV_SERVER}}',
                     override: `http://${ip.address()}:${c.runtime.port}`
                 }
-            ]
+            ], null, c
         );
     }
 };

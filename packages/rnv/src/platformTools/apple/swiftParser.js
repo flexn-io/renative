@@ -195,7 +195,7 @@ export const parseAppDelegate = (
                 pattern: '{{APPDELEGATE_METHODS}}',
                 override: c.pluginConfigiOS.pluginAppDelegateMethods
             }
-        ]
+        ], null, c
     );
     resolve();
 });

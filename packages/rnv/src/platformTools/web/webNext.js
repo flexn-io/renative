@@ -65,12 +65,12 @@ const configureNextIfRequired = async (c) => {
         if (!fs.existsSync(pagesDir)) {
             fs.mkdirSync(pagesDir);
         }
-        writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }]);
+        writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }], null, c);
     }
 
     // add config
     if (!fs.existsSync(configFile)) {
-        writeCleanFile(path.join(platformTemplateDir, NEXT_CONFIG_NAME), configFile);
+        writeCleanFile(path.join(platformTemplateDir, NEXT_CONFIG_NAME), configFile, null, null, c);
     }
 };
 

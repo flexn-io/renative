@@ -216,7 +216,7 @@ const _parseCssSync = (c, platform) => {
                 ).hex
             }
         ],
-        timestampPathsConfig
+        timestampPathsConfig, c
     );
 };
 

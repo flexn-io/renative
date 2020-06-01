@@ -114,7 +114,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                     pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
                     override: browserWindowStr
                 }
-            ]
+            ], null, c
         );
     } else {
         writeCleanFile(
@@ -129,7 +129,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                     pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
                     override: browserWindowStr
                 }
-            ]
+            ], null, c
         );
     }
 

@@ -45,7 +45,7 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
             pattern: '{{PLUGIN_EXPORT_OPTIONS}}',
             override: c.pluginConfigiOS.exportOptions
         }
-    ]);
+    ], null, c);
     resolve();
 });
 

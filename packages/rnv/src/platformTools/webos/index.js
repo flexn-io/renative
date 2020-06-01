@@ -339,7 +339,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                 pattern: '{{APP_VERSION}}',
                 override: semver.coerce(getAppVersion(c, platform))
             }
-        ]
+        ], null, c
     );
 
     resolve();

@@ -37,7 +37,7 @@ export const parseValuesColorsSync = (c) => {
                     'backgroundColor'
                 ).hex
             }
-        ]
+        ], null, c
     );
 };
 

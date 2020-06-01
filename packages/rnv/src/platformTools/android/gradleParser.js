@@ -64,7 +64,7 @@ export const parseBuildGradleSync = (c, platform) => {
                 pattern: '{{PATH_REACT_NATIVE}}',
                 override: doResolve('react-native', true, { forceForwardPaths: true })
             },
-        ]
+        ], null, c
     );
 };
 
@@ -368,7 +368,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
                 pattern: '{{PATH_HERMES_ENGINE}}',
                 override: doResolve('hermes-engine', true, { forceForwardPaths: true })
             }
-        ]
+        ], null, c
     );
 };
 
@@ -387,7 +387,7 @@ export const parseSettingsGradleSync = (c, platform) => {
                 pattern: '{{PLUGIN_PATHS}}',
                 override: c.pluginConfigAndroid.pluginPaths
             }
-        ]
+        ], null, c
     );
 };
 
@@ -425,7 +425,7 @@ export const parseGradlePropertiesSync = (c, platform) => {
                 pattern: '{{PLUGIN_GRADLE_PROPERTIES}}',
                 override: pluginGradleProperties
             }
-        ]
+        ], null, c
     );
 };
 
@@ -575,7 +575,7 @@ const _fixAndroidLegacy = (c, modulePath) => {
                 pattern: ' compile fileTree',
                 override: '  implementation fileTree'
             }
-        ]);
+        ], null, c);
     }
 };
 

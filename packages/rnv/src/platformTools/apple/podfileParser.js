@@ -129,7 +129,7 @@ export const parsePodFile = async (c, platform) => {
                 pattern: '{{PLUGIN_STATIC_POD_DEFINITION}}',
                 override: c.pluginConfigiOS.staticPodDefinition
             }
-        ]
+        ], null, c
     );
     return true;
 };

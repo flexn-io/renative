@@ -44,6 +44,6 @@ export const parseXcscheme = async (c, platform) => {
         [
             { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
             { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId }
-        ]
+        ], null, c
     );
 };

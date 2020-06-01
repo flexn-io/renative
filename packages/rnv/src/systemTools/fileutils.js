@@ -9,6 +9,7 @@ import ncp from 'ncp';
 import { isSystemWin } from '../utils';
 
 import { logDebug, logError, logWarning, logInfo } from './logger';
+import { getConfigProp } from '../common';
 
 const _getSanitizedPath = (origPath, timestampPathsConfig) => {
     // console.log('BVABAABA', origPath, timestampPathsConfig?.paths?.length, new Error());
@@ -62,7 +63,7 @@ export const copyFileSync = (source, target, skipOverride, timestampPathsConfig)
 };
 
 const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg'];
-export const writeCleanFile = (source, destination, overrides, timestampPathsConfig) => {
+export const writeCleanFile = (source, destination, overrides, timestampPathsConfig, c) => {
     // logTask(`writeCleanFile`)
     // console.log('writeCleanFile', destination);
     if (!fs.existsSync(source)) {
@@ -87,6 +88,19 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
                 pFileClean = pFileClean.replace(regEx, v.override);
             });
         }
+        if (c) {
+            const regEx = /{{configProps.([\s\S]*?)}}/g;
+            const occurences = pFileClean.match(regEx);
+            if (occurences) {
+                occurences.forEach((occ) => {
+                    const val = occ.replace('{{configProps.', '').replace('}}', '');
+                    const configVal = getConfigProp(c, c.platform, val, '');
+                    pFileClean = pFileClean.replace(occ, configVal);
+                });
+            }
+        }
+
+
         fs.writeFileSync(_getSanitizedPath(destination, timestampPathsConfig), pFileClean, 'utf8');
     }
 };
@@ -136,7 +150,7 @@ export const readCleanFile = (source, overrides) => {
     return Buffer.from(pFileClean, 'utf8');
 };
 
-export const copyFileWithInjectSync = (source, target, skipOverride, injectObject, timestampPathsConfig) => {
+export const copyFileWithInjectSync = (source, target, skipOverride, injectObject, timestampPathsConfig, c) => {
     logDebug('copyFileWithInjectSync', source);
 
     let targetFile = target;
@@ -161,7 +175,8 @@ export const copyFileWithInjectSync = (source, target, skipOverride, injectObjec
             source,
             targetFile,
             injectObject,
-            timestampPathsConfig
+            timestampPathsConfig,
+            c
         );
     } catch (e) {
         console.log('copyFileSync', e);
