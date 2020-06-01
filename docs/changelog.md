@@ -1,5 +1,20 @@
 # Changelog
 
+## v0.29.1-alpha.16 (2020-6-2)
+
+### Fixed
+
+- dynamic props injectors
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.15 (2020-5-31)
 
 ### Fixed
