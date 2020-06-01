@@ -11,8 +11,18 @@ import { isSystemWin } from '../utils';
 import { logDebug, logError, logWarning, logInfo } from './logger';
 import { getConfigProp } from '../common';
 
+export const fsWriteFileSync = (dest, data, encoding) => {
+    // console.log('FS_WRITE', dest);
+    fs.writeFileSync(dest, data, encoding);
+};
+
+export const fsCopyFileSync = (source, dest) => {
+    // console.log('FS_COPY', source);
+    fs.copyFileSync(source, dest);
+};
+
+
 const _getSanitizedPath = (origPath, timestampPathsConfig) => {
-    // console.log('BVABAABA', origPath, timestampPathsConfig?.paths?.length, new Error());
     if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
         const pths = timestampPathsConfig.paths;
         if (pths.includes(origPath)) {
@@ -20,10 +30,8 @@ const _getSanitizedPath = (origPath, timestampPathsConfig) => {
             const fileName = path.basename(origPath, ext);
             const dirPath = path.dirname(origPath);
             const newPath = path.join(dirPath, `${fileName}-${timestampPathsConfig.timestamp}${ext}`);
-            // console.log('SUCCCESSSSSS', newPath);
             return newPath;
         }
-        // console.log('WOWOWOWO', origPath, new Error());
     }
     return origPath;
 };
@@ -56,7 +64,7 @@ export const copyFileSync = (source, target, skipOverride, timestampPathsConfig)
     }
     logDebug('copyFileSync', source, targetFile, 'executed');
     try {
-        fs.copyFileSync(source, _getSanitizedPath(targetFile, timestampPathsConfig));
+        fsCopyFileSync(source, _getSanitizedPath(targetFile, timestampPathsConfig));
     } catch (e) {
         console.log('copyFileSync', e);
     }
@@ -78,11 +86,11 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
     }
     const ext = path.extname(source);
     if (SKIP_INJECT_EXTENSIONS.includes(ext)) {
-        fs.copyFileSync(source, _getSanitizedPath(destination, timestampPathsConfig));
+        fsCopyFileSync(source, _getSanitizedPath(destination, timestampPathsConfig));
     } else {
         const pFile = fs.readFileSync(source, 'utf8');
         let pFileClean = pFile;
-        if (overrides) {
+        if (overrides?.foreach) {
             overrides.forEach((v) => {
                 const regEx = new RegExp(v.pattern, 'g');
                 pFileClean = pFileClean.replace(regEx, v.override);
@@ -101,7 +109,7 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
         }
 
 
-        fs.writeFileSync(_getSanitizedPath(destination, timestampPathsConfig), pFileClean, 'utf8');
+        fsWriteFileSync(_getSanitizedPath(destination, timestampPathsConfig), pFileClean, 'utf8');
     }
 };
 
@@ -127,7 +135,7 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
 //         });
 //     }
 //
-//     fs.writeFileSync(destination, pFileClean, 'utf8');
+//     fsWriteFileSync(destination, pFileClean, 'utf8');
 // };
 
 export const readCleanFile = (source, overrides) => {
@@ -170,6 +178,7 @@ export const copyFileWithInjectSync = (source, target, skipOverride, injectObjec
         if (Buffer.compare(src, dst) === 0) return;
     }
     logDebug('copyFileSync', source, targetFile, 'executed');
+
     try {
         writeCleanFile(
             source,
@@ -200,7 +209,8 @@ export const copyFolderRecursiveSync = (
     convertSvg = true,
     skipOverride,
     injectObject = null,
-    timestampPathsConfig = null
+    timestampPathsConfig = null,
+    c
 ) => {
     logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
@@ -217,7 +227,7 @@ export const copyFolderRecursiveSync = (
         files.forEach((file) => {
             const curSource = path.join(source, file);
             if (fs.lstatSync(curSource).isDirectory()) {
-                copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject, timestampPathsConfig);
+                copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject, timestampPathsConfig, c);
             } else if (
                 path.extname(curSource) === '.svg'
                 && convertSvg === true
@@ -231,7 +241,7 @@ export const copyFolderRecursiveSync = (
                 );
                 saveAsJs(curSource, jsDest);
             } else if (injectObject !== null) {
-                copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig);
+                copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig, c);
             } else {
                 copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
             }
@@ -250,7 +260,7 @@ export const copyFolderRecursiveSync = (
 // return path.join(pPath, newPath)
 // }));
 
-export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null) => {
+export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
     if (!fs.existsSync(source)) return;
     let files = [];
@@ -264,10 +274,10 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
-                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject, timestampPathsConfig);
+                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject, timestampPathsConfig, c);
                 } else if (injectObject !== null) {
                     // console.log('BAAA', targetFolder);
-                    copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig);
+                    copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig, c);
                 } else if (path.extname(curSource) === '.svg' && convertSvg === true) {
                     const jsDest = path.join(
                         targetFolder,
@@ -426,7 +436,7 @@ export const writeFileSync = (filePath, obj, spaces, addNewLine = true) => {
         if (fs.readFileSync(filePath).toString() === output) return;
     }
     logDebug('writeFileSync', filePath, 'executed');
-    fs.writeFileSync(filePath, output);
+    fsWriteFileSync(filePath, output);
 };
 
 export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
@@ -654,7 +664,7 @@ export const updateConfigFile = async (update, globalConfigPath) => {
         )}`
     );
 
-    fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
+    fsWriteFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
 
 export const replaceHomeFolder = (p) => {

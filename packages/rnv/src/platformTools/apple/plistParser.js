@@ -18,7 +18,7 @@ import {
 import { logTask, logError, logWarning } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
-import { readObjectSync, mergeObjects, writeCleanFile } from '../../systemTools/fileutils';
+import { readObjectSync, mergeObjects, writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 
 export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) => {
     // EXPORT OPTIONS
@@ -205,8 +205,8 @@ const _parseObject = (obj, level) => {
 };
 
 const saveObjToPlistSync = (c, filePath, obj) => {
-    // fs.writeFileSync(filePath, objToPlist(sanitizeDynamicProps(obj, c.buildConfig?._refs)));
-    fs.writeFileSync(filePath, objToPlist(obj));
+    // fsWriteFileSync(filePath, objToPlist(sanitizeDynamicProps(obj, c.buildConfig?._refs)));
+    fsWriteFileSync(filePath, objToPlist(obj));
 };
 
 export { objToPlist, saveObjToPlistSync };

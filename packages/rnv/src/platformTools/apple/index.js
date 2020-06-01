@@ -26,7 +26,8 @@ import {
 import {
     copyFileSync,
     mkdirSync,
-    writeFileSync
+    writeFileSync,
+    fsWriteFileSync
 } from '../../systemTools/fileutils';
 import { IOS, TVOS, MACOS } from '../../constants';
 import {
@@ -77,12 +78,12 @@ const updatePodsChecksum = (c) => {
         const existingContent = fs.readFileSync(podChecksumPath).toString();
         if (existingContent !== podContentChecksum) {
             logDebug(`updatePodsChecksum:${podContentChecksum}`);
-            return fs.writeFileSync(podChecksumPath, podContentChecksum);
+            return fsWriteFileSync(podChecksumPath, podContentChecksum);
         }
         return true;
     }
     logDebug(`updatePodsChecksum:${podContentChecksum}`);
-    return fs.writeFileSync(podChecksumPath, podContentChecksum);
+    return fsWriteFileSync(podChecksumPath, podContentChecksum);
 };
 
 const runPod = async (c, platform) => {
@@ -137,7 +138,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
     const appFolder = getAppFolder(c, platform);
 
     // ASSETS
-    fs.writeFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
+    fsWriteFileSync(path.join(appFolder, 'main.jsbundle'), '{}');
     mkdirSync(path.join(appFolder, 'assets'));
     mkdirSync(path.join(appFolder, `${appFolderName}/images`));
 

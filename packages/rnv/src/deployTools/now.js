@@ -7,6 +7,7 @@ import dotenv from 'dotenv';
 import { executeAsync } from '../systemTools/exec';
 import { getAppFolder, getConfigProp } from '../common';
 import { logInfo } from '../systemTools/logger';
+import { fsWriteFileSync } from '../systemTools/fileutils';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
     dotenv.config();
@@ -62,14 +63,14 @@ const _createConfigFiles = async (
             });
             if (token) {
                 envContent += `NOW_TOKEN=${token}\n`;
-                fs.writeFileSync(envConfigPath, envContent);
+                fsWriteFileSync(envConfigPath, envContent);
             }
-            return fs.writeFileSync(
+            return fsWriteFileSync(
                 configFilePath,
                 JSON.stringify(content, null, 2)
             );
         }
-        return fs.writeFileSync(
+        return fsWriteFileSync(
             configFilePath,
             JSON.stringify(content, null, 2)
         );

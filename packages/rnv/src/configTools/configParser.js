@@ -31,7 +31,8 @@ import {
     getRealPath,
     sanitizeDynamicRefs,
     sanitizeDynamicProps,
-    mergeObjects
+    mergeObjects,
+    fsWriteFileSync
 } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
 import { doResolve } from '../resolve';
@@ -451,9 +452,9 @@ export const generateBuildConfig = (c) => {
     //     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
     //
     //     if (c.platform) {
-    //         fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
+    //         fsWriteFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
     //     } else if (!fs.existsSync(localMetroPath)) {
-    //         fs.writeFileSync(localMetroPath, 'module.exports = []');
+    //         fsWriteFileSync(localMetroPath, 'module.exports = []');
     //     }
     // }
 };
@@ -952,7 +953,7 @@ export const configureRnvGlobal = async (c) => {
                 ...c.files.workspace.config,
                 defaultTargets: defaultConfig.defaultTargets
             };
-            fs.writeFileSync(
+            fsWriteFileSync(
                 c.paths.workspace.config,
                 JSON.stringify(newConfig, null, 2)
             );

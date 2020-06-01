@@ -229,7 +229,7 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
                     `${c.runtime.appId}_${k}`
                 );
                 copyPlatformTasks.push(
-                    copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, null, getTimestampPathsConfig(c, platform))
+                    copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {}, getTimestampPathsConfig(c, platform), c)
                 );
             }
         });
@@ -243,7 +243,7 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
             `${c.runtime.appId}_${platform}`
         );
         copyPlatformTasks.push(
-            copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, null, getTimestampPathsConfig(c, platform))
+            copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {}, getTimestampPathsConfig(c, platform), c)
         );
     } else {
         logWarning(
@@ -304,7 +304,7 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
 
     copyFolderContentsRecursiveSync(ptPath, pPath, false, [
         path.join(ptPath, '_privateConfig')
-    ], false, null, getTimestampPathsConfig(c, platform));
+    ], false, {}, getTimestampPathsConfig(c, platform), c);
 
     resolve();
 });

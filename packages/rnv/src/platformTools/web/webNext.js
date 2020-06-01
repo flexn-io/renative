@@ -13,7 +13,7 @@ import {
 import { logTask, logInfo, logWarning, logDebug } from '../../systemTools/logger';
 import { NEXT_CONFIG_NAME } from '../../constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
-import { writeCleanFile } from '../../systemTools/fileutils';
+import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 
 const configureNextIfRequired = async (c) => {
     const { platformTemplatesDirs, dir } = c.paths.project;
@@ -55,7 +55,7 @@ const configureNextIfRequired = async (c) => {
               `;
             });
 
-            fs.writeFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
+            fsWriteFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
         }
     }
 

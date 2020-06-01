@@ -16,7 +16,8 @@ import {
     copyFolderContentsRecursiveSync,
     copyFileSync,
     mkdirSync,
-    writeFileSync
+    writeFileSync,
+    fsWriteFileSync
 } from '../systemTools/fileutils';
 import { isPlatformActive } from '../platformTools';
 import { npmInstall } from '../systemTools/exec';
@@ -52,7 +53,7 @@ export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
         };
         pkgJson.devDependencies[templateName] = rnvVersion;
         const pkgJsonStringClean = JSON.stringify(pkgJson, null, 2);
-        fs.writeFileSync(c.paths.project.package, pkgJsonStringClean);
+        fsWriteFileSync(c.paths.project.package, pkgJsonStringClean);
     }
 
     loadFile(c.files.project, c.paths.project, 'package');
@@ -162,11 +163,11 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
         if (existingFileContents !== fontsObj) {
             logDebug('newFontsJsFile');
-            fs.writeFileSync(fontJsPath, fontsObj);
+            fsWriteFileSync(fontJsPath, fontsObj);
         }
     } else {
         logDebug('newFontsJsFile');
-        fs.writeFileSync(fontJsPath, fontsObj);
+        fsWriteFileSync(fontJsPath, fontsObj);
     }
 
     const supportFiles = path.resolve(c.paths.rnv.dir, 'supportFiles');

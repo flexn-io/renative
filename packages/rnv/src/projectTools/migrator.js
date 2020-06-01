@@ -17,7 +17,8 @@ import {
     removeFilesSync,
     writeFileSync,
     copyFolderContentsRecursiveSync,
-    removeDirs
+    removeDirs,
+    fsWriteFileSync
 } from '../systemTools/fileutils';
 import { listAppConfigsFoldersSync } from '../configTools/configParser';
 import { rnvClean } from '../systemTools/cleaner';
@@ -132,7 +133,7 @@ const _migrateProjectSoft = async (c, paths) => {
                 `Found deprecated metro config ${paths.metroConfig} and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`
             );
             const metroConfig = fs.readFileSync(paths.metroConfig).toString();
-            fs.writeFileSync(paths.metroConfigNew, metroConfig);
+            fsWriteFileSync(paths.metroConfigNew, metroConfig);
             removeFilesSync([paths.metroConfig]);
         }
 

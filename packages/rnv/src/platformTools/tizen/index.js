@@ -70,10 +70,10 @@ export const configureTizenGlobal = c => new Promise((resolve, reject) => {
         'tizen_author.p12'
     );
     if (fs.existsSync(tizenAuthorCert)) {
-        console.log('tizen_author.p12 file exists!');
+        logDebug('tizen_author.p12 file exists!');
         resolve();
     } else {
-        console.log(
+        logWarning(
             'tizen_author.p12 file missing! Creating one for you...'
         );
         createDevelopTizenCertificate(c)

@@ -33,7 +33,7 @@ import {
     copyBuildsFolder,
     copyAssetsFolder
 } from '../../projectTools/projectParser';
-import { copyFileSync, readObjectSync, writeCleanFile } from '../../systemTools/fileutils';
+import { copyFileSync, readObjectSync, writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 import { parsePlugins } from '../../pluginTools';
 import {
     selectWebToolAndDeploy,
@@ -146,7 +146,7 @@ const _generateWebpackConfigs = (c, platform) => {
     const extendJs = `
     module.exports = ${JSON.stringify(obj, null, 2)}`;
 
-    fs.writeFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
+    fsWriteFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
 const buildWeb = (c, platform) => new Promise((resolve, reject) => {

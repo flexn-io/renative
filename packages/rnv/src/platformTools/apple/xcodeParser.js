@@ -14,7 +14,7 @@ import { IOS, TVOS } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
 import { getAppFolderName } from './index';
 import { parseProvisioningProfiles } from './provisionParser';
-import { writeFileSync } from '../../systemTools/fileutils';
+import { writeFileSync, fsWriteFileSync } from '../../systemTools/fileutils';
 
 export const parseXcodeProject = async (c, platform) => {
     logTask('parseXcodeProject');
@@ -301,7 +301,7 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             xcodeProj.addResourceFile(v, { variantGroup: false });
         });
 
-        fs.writeFileSync(projectPath, xcodeProj.writeSync());
+        fsWriteFileSync(projectPath, xcodeProj.writeSync());
         resolve();
     });
 });
