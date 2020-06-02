@@ -485,7 +485,7 @@ export const npmInstall = async (failOnError = false) => {
     let command = 'npm install';
     if (fs.existsSync(yarnLockPath)) {
         command = 'yarn';
-    } if (fs.existsSync(npmLockPath)) {
+    } else if (fs.existsSync(npmLockPath)) {
         command = 'npm install';
     } else if (isYarnInstalled) {
         const { packageManager } = await inquirerPrompt({

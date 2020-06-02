@@ -70,7 +70,7 @@ export const copyFileSync = (source, target, skipOverride, timestampPathsConfig)
     }
 };
 
-const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg'];
+const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg', '.jar', '.zip'];
 export const writeCleanFile = (source, destination, overrides, timestampPathsConfig, c) => {
     // logTask(`writeCleanFile`)
     // console.log('writeCleanFile', destination);
@@ -89,27 +89,30 @@ export const writeCleanFile = (source, destination, overrides, timestampPathsCon
         fsCopyFileSync(source, _getSanitizedPath(destination, timestampPathsConfig));
     } else {
         const pFile = fs.readFileSync(source, 'utf8');
-        let pFileClean = pFile;
-        if (overrides?.foreach) {
-            overrides.forEach((v) => {
-                const regEx = new RegExp(v.pattern, 'g');
-                pFileClean = pFileClean.replace(regEx, v.override);
-            });
-        }
-        if (c) {
-            const regEx = /{{configProps.([\s\S]*?)}}/g;
-            const occurences = pFileClean.match(regEx);
-            if (occurences) {
-                occurences.forEach((occ) => {
-                    const val = occ.replace('{{configProps.', '').replace('}}', '');
-                    const configVal = getConfigProp(c, c.platform, val, '');
-                    pFileClean = pFileClean.replace(occ, configVal);
+        if (/\ufffd/.test(pFile) === true) {
+            // Handle uncaught binary files
+            fsCopyFileSync(source, _getSanitizedPath(destination, timestampPathsConfig));
+        } else {
+            let pFileClean = pFile;
+            if (overrides?.forEach) {
+                overrides.forEach((v) => {
+                    const regEx = new RegExp(v.pattern, 'g');
+                    pFileClean = pFileClean.replace(regEx, v.override);
                 });
             }
+            if (c) {
+                const regEx = /{{configProps.([\s\S]*?)}}/g;
+                const occurences = pFileClean.match(regEx);
+                if (occurences) {
+                    occurences.forEach((occ) => {
+                        const val = occ.replace('{{configProps.', '').replace('}}', '');
+                        const configVal = getConfigProp(c, c.platform, val, '');
+                        pFileClean = pFileClean.replace(occ, configVal);
+                    });
+                }
+            }
+            fsWriteFileSync(_getSanitizedPath(destination, timestampPathsConfig), pFileClean, 'utf8');
         }
-
-
-        fsWriteFileSync(_getSanitizedPath(destination, timestampPathsConfig), pFileClean, 'utf8');
     }
 };
 
@@ -148,7 +151,7 @@ export const readCleanFile = (source, overrides) => {
 
     const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
-    if (overrides) {
+    if (overrides?.forEach) {
         overrides.forEach((v) => {
             const regEx = new RegExp(v.pattern, 'g');
             pFileClean = pFileClean.replace(regEx, v.override);
