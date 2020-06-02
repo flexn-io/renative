@@ -1,5 +1,21 @@
 # Changelog
 
+## v0.29.1-alpha.18 (2020-6-2)
+
+### Fixed
+
+- fix binary files injections
+- abstract fs API
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.16 (2020-6-2)
 
 ### Fixed
