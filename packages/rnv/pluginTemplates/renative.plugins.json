@@ -2399,7 +2399,7 @@
             }
         },
         "react-native-google-cast": {
-            "version": "github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e",
+            "version": "github:hosek/react-native-google-cast#sdk4.4.5",
             "props": {
                 "applicationID": "CC1AD845"
             },
@@ -2415,6 +2415,7 @@
                         "didFinishLaunchingWithOptions": [
                             "let criteria = GCKDiscoveryCriteria(applicationID:\"{{props.applicationID}}\")",
                             "let options = GCKCastOptions(discoveryCriteria: criteria)",
+                            "options.physicalVolumeButtonsWillControlDeviceVolume = true;",
                             "GCKCastContext.setSharedInstanceWith(options)"
                         ]
                     }
