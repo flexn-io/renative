@@ -10,7 +10,6 @@ import {
     logErrorPlatform,
     configureIfRequired,
     cleanPlatformIfRequired,
-    writeCleanFile,
     getConfigProp,
     waitForWebpack,
     confirmActiveBundler
@@ -64,7 +63,7 @@ import {
     buildAndroid,
     runAndroidLog
 } from './android';
-import { copyFolderContentsRecursiveSync } from '../systemTools/fileutils';
+import { copyFolderContentsRecursiveSync, writeCleanFile } from '../systemTools/fileutils';
 import { executeAsync } from '../systemTools/exec';
 import Config from '../config';
 import Analytics from '../systemTools/analytics';
@@ -228,7 +227,7 @@ const _configureHostedIfRequired = async (c) => {
                     pattern: '{{DEV_SERVER}}',
                     override: `http://${ip.address()}:${c.runtime.port}`
                 }
-            ]
+            ], null, c
         );
     }
 };

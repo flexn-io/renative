@@ -1,5 +1,90 @@
 # Changelog
 
+## v0.29.1-alpha.18 (2020-6-2)
+
+### Fixed
+
+- fix binary files injections
+- abstract fs API
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.29.1-alpha.16 (2020-6-2)
+
+### Fixed
+
+- dynamic props injectors
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.29.1-alpha.15 (2020-5-31)
+
+### Fixed
+
+- disable metro operations for custom engines
+- enable build tizen and webos in --hosted mode
+- run node_modules doResolve against resolve itstelf to avoid non react apps issues
+- brainfart
+- default to npm if package.lock present
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.29.1-alpha.14 (2020-5-31)
+
+### Fixed
+
+- fix renative versioning bug
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.29.1-alpha.13 (2020-5-30)
+
+### Fixed
+
+- bump up iOS targets
+- log cleanup
+- migrate writeCleanFile
+- runtime file injections
+- asset timestamp
+- fix version updater. thx @hosek
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.12 (2020-5-24)
 
 ### Fixed

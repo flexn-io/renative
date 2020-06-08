@@ -2,7 +2,6 @@ import path from 'path';
 import chalk from 'chalk';
 import {
     getEntryFile,
-    writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
     getGetJsBundleFile,
@@ -11,6 +10,7 @@ import {
 } from '../../common';
 import { logTask } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
+import { writeCleanFile } from '../../systemTools/fileutils';
 
 export const parseAppDelegate = (
     c,
@@ -195,7 +195,7 @@ export const parseAppDelegate = (
                 pattern: '{{APPDELEGATE_METHODS}}',
                 override: c.pluginConfigiOS.pluginAppDelegateMethods
             }
-        ]
+        ], null, c
     );
     resolve();
 });

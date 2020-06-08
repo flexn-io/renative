@@ -8,7 +8,8 @@ import {
     writeFileSync,
     sanitizeDynamicProps,
     readObjectSync,
-    copyFolderContentsRecursiveSync
+    copyFolderContentsRecursiveSync,
+    fsWriteFileSync
 } from '../systemTools/fileutils';
 import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
 import { versionCheck } from '../configTools/configParser';
@@ -637,7 +638,7 @@ Consider update or removal of ${chalk.white(overridePath)}`);
                             fileToFix = fileToFix.replace(regEx, override[fk]);
                         }
                     });
-                    fs.writeFileSync(ovDir, fileToFix);
+                    fsWriteFileSync(ovDir, fileToFix);
                 }
             }
         });

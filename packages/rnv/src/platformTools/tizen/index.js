@@ -16,7 +16,6 @@ import {
 import {
     getAppFolder,
     getAppVersion,
-    writeCleanFile,
     getAppTemplateFolder,
     getConfigProp,
     waitForEmulator,
@@ -40,6 +39,7 @@ import {
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';
+import { writeCleanFile } from '../../systemTools/fileutils';
 
 const xml2js = require('xml2js');
 
@@ -70,10 +70,10 @@ export const configureTizenGlobal = c => new Promise((resolve, reject) => {
         'tizen_author.p12'
     );
     if (fs.existsSync(tizenAuthorCert)) {
-        console.log('tizen_author.p12 file exists!');
+        logDebug('tizen_author.p12 file exists!');
         resolve();
     } else {
-        console.log(
+        logWarning(
             'tizen_author.p12 file missing! Creating one for you...'
         );
         createDevelopTizenCertificate(c)
@@ -284,7 +284,7 @@ export const runTizen = async (c, platform, target) => {
     const tBuild = path.join(tDir, 'build');
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
-    const gwt = `${platformConfig.appName}.wgt`;
+    const wgt = `${platformConfig.appName}.wgt`;
     const certProfile = platformConfig.certificateProfile ?? 'RNVanillaCert';
 
     let deviceID;
@@ -367,7 +367,7 @@ export const runTizen = async (c, platform, target) => {
             await execCLI(
                 c,
                 CLI_TIZEN,
-                `install -- ${tOut} -n ${gwt} -t ${deviceID}`
+                `install -- ${tOut} -n ${wgt} -t ${deviceID}`
             );
             hasDevice = true;
         } catch (err) {
@@ -462,30 +462,32 @@ export const runTizen = async (c, platform, target) => {
     }
 };
 
-export const buildTizenProject = (c, platform) => new Promise((resolve, reject) => {
+export const buildTizenProject = async (c, platform) => {
     logTask(`buildTizenProject:${platform}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);
-    const tOut = path.join(tDir, 'output');
-    const tBuild = path.join(tDir, 'build');
-    const certProfile = platformConfig.certificateProfile ?? 'RNVanillaCert';
 
-    buildWeb(c, platform)
-        .then(() => execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`))
-        .then(() => execCLI(
+    await buildWeb(c, platform);
+    if (!c.program.hosted) {
+        const tOut = path.join(tDir, 'output');
+        const tBuild = path.join(tDir, 'build');
+        const certProfile = platformConfig.certificateProfile ?? 'RNVanillaCert';
+
+        await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
+        await execCLI(
             c,
             CLI_TIZEN,
             `package -- ${tBuild} -s ${certProfile} -t wgt -o ${tOut}`
-        ))
-        .then(() => {
-            logSuccess(
-                `Your GWT package is located in ${chalk.white(tOut)} .`
-            );
-            return resolve();
-        })
-        .catch(e => reject(e));
-});
+        );
+
+        logSuccess(
+            `Your WGT package is located in ${chalk.white(tOut)} .`
+        );
+    }
+
+    return true;
+};
 
 let _isGlobalConfigured = false;
 
@@ -520,7 +522,7 @@ export const configureProject = (c, platform) => new Promise((resolve) => {
             { pattern: '{{ID}}', override: p.id },
             { pattern: '{{APP_NAME}}', override: p.appName },
             { pattern: '{{APP_VERSION}}', override: semver.coerce(getAppVersion(c, platform)) }
-        ]
+        ], null, c
     );
 
     resolve();

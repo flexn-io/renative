@@ -3,7 +3,7 @@ import fs from 'fs';
 import inquirer from 'inquirer';
 
 import { logInfo, logTask } from '../systemTools/logger';
-import { writeFileSync } from '../systemTools/fileutils';
+import { writeFileSync, fsWriteFileSync } from '../systemTools/fileutils';
 import { DEPLOY_TARGET_FTP } from './webTools';
 
 const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
@@ -126,7 +126,7 @@ const _createEnvFtpConfig = async (configFilePath, previousContent = '') => {
     envContent += `RNV_DEPLOY_WEB_FTP_PASSWORD=${password}\n`;
     envContent += `RNV_DEPLOY_WEB_FTP_PORT=${port}`;
 
-    fs.writeFileSync(configFilePath, envContent);
+    fsWriteFileSync(configFilePath, envContent);
     logInfo(`Writing .env config to ${configFilePath}`);
 };
 

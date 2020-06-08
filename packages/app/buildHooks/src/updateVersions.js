@@ -42,9 +42,7 @@ export const updateVersions = async (c) => {
         ),
         {
             pluginTemplates: {
-                renative: {
-                    version: v
-                }
+                renative: v
             }
         }
     );

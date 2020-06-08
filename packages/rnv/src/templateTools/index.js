@@ -25,7 +25,7 @@ import {
 } from '../systemTools/logger';
 import { getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
-import { getSourceExts } from '../common';
+import { getSourceExts, getConfigProp } from '../common';
 import {
     setAppConfig,
     listAppConfigsFoldersSync,
@@ -515,8 +515,12 @@ export const applyTemplate = async (c, selectedTemplate) => {
     await _configureProjectConfig(c);
     await _configureRenativeConfig(c);
     await configureEntryPoints(c);
+
     // TODO: will move this to engine
-    await _configureMetroConfigs(c);
+    const engine = getConfigProp(c, c.platform, 'engine', 'default');
+    if (engine === 'default') {
+        await _configureMetroConfigs(c);
+    }
 };
 
 export const rnvTemplateApply = async (c) => {

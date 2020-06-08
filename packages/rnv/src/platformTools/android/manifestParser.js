@@ -1,14 +1,13 @@
 import path from 'path';
 import {
     getAppFolder,
-    writeCleanFile,
     getAppId,
     getBuildFilePath,
     getConfigProp,
     getFlavouredProp
 } from '../../common';
-import { logTask, logError, logWarning } from '../../systemTools/logger';
-import { readObjectSync } from '../../systemTools/fileutils';
+import { logTask, logError, logWarning, logDebug } from '../../systemTools/logger';
+import { readObjectSync, writeCleanFile } from '../../systemTools/fileutils';
 import { getMergedPlugin, parsePlugins } from '../../pluginTools';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
@@ -110,18 +109,14 @@ const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
         if (v.tag) {
             const childNode = _findChildNode(v.tag, nameExt, node);
             if (childNode) {
-                console.log(
-                    '_mergeNodeChildren: FOUND EXISTING NODE TO MERGE',
-                    nameExt,
-                    v.tag
+                logDebug(
+                    `_mergeNodeChildren: FOUND EXISTING NODE TO MERGE ${nameExt} ${v.tag}`
                 );
                 _mergeNodeParameters(childNode, v);
                 _mergeNodeChildren(childNode, v.children);
             } else {
-                console.log(
-                    '_mergeNodeChildren: NO android:name found. adding to children',
-                    nameExt,
-                    v.tag
+                logDebug(
+                    `_mergeNodeChildren: NO android:name found. adding to children ${nameExt} ${v.tag}`
                 );
                 node.children.push(v);
             }
@@ -283,7 +278,7 @@ export const parseAndroidManifestSync = (c, platform) => {
                     pattern: '{{APPLICATION_ID}}',
                     override: baseManifestFile.package
                 }
-            ]
+            ], null, c
         );
 
         return;

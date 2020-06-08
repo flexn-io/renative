@@ -2,12 +2,11 @@ import path from 'path';
 import {
     getAppFolder,
     getAppTitle,
-    writeCleanFile,
     getBuildFilePath,
     getConfigProp,
     sanitizeColor
 } from '../../common';
-import { writeFileSync } from '../../systemTools/fileutils';
+import { writeFileSync, writeCleanFile } from '../../systemTools/fileutils';
 
 export const parseValuesStringsSync = (c) => {
     const appFolder = getAppFolder(c, c.platform);
@@ -38,7 +37,7 @@ export const parseValuesColorsSync = (c) => {
                     'backgroundColor'
                 ).hex
             }
-        ]
+        ], null, c
     );
 };
 

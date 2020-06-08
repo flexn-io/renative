@@ -5,6 +5,7 @@ import detectPort from 'detect-port';
 import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
+import lGet from 'lodash.get';
 // import resolve from 'resolve';
 import colorString from 'color-string';
 import crypto from 'crypto';
@@ -40,6 +41,7 @@ import { execCLI } from './systemTools/exec';
 import { createRnvConfig } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
+import { writeCleanFile } from './systemTools/fileutils';
 import Config from './config';
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
@@ -55,6 +57,21 @@ export const initializeBuilder = async (cmd, subCmd, process, program) => {
     logInitialize();
 
     return c;
+};
+
+export const getTimestampPathsConfig = (c, platform) => {
+    let timestampBuildFiles;
+    const pPath = path.join(
+        c.paths.project.builds.dir,
+        `${c.runtime.appId}_${platform}`
+    );
+    if (platform === 'web') {
+        timestampBuildFiles = getConfigProp(c, platform, 'timestampBuildFiles', []).map((v => path.join(pPath, v)));
+    }
+    if (timestampBuildFiles?.length) {
+        return { paths: timestampBuildFiles, timestamp: c.runtime.timestamp };
+    }
+    return null;
 };
 
 export const generateChecksum = (str, algorithm, encoding) => crypto
@@ -177,8 +194,15 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         logError('getConfigProp: c.buildConfig is undefined!');
         return null;
     }
+    if (!key || !key.split) {
+        logError('getConfigProp: invalid key!');
+        return null;
+    }
     const p = c.buildConfig.platforms[platform];
     const ps = c.runtime.scheme;
+    const keyArr = key.split('.');
+    const baseKey = keyArr.shift();
+    const subKey = keyArr.join('.');
 
     let resultPlatforms;
     let scheme;
@@ -187,14 +211,14 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         resultPlatforms = getFlavouredProp(
             c,
             c.buildConfig.platforms[platform],
-            key
+            baseKey
         );
     }
 
     scheme = scheme || {};
-    const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
-    const resultScheme = scheme[key];
-    const resultCommon = getFlavouredProp(c, c.buildConfig.common, key);
+    const resultCli = CLI_PROPS.includes(baseKey) ? c.program[baseKey] : undefined;
+    const resultScheme = scheme[baseKey];
+    const resultCommon = getFlavouredProp(c, c.buildConfig.common, baseKey);
 
     let result = Config.getValueOrMergedObject(
         resultCli,
@@ -205,6 +229,9 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
     logDebug(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+    if (typeof result === 'object' && subKey.length) {
+        return lGet(result, subKey);
+    }
     return result;
 };
 
@@ -331,32 +358,7 @@ export const getMonorepoRoot = () => {
     }
 };
 
-export const areNodeModulesInstalled = () => !!doResolve('react', false);
-
-// TODO: remove and use fileutils one
-export const writeCleanFile = (source, destination, overrides) => {
-    // logTask(`writeCleanFile`)
-    if (!fs.existsSync(source)) {
-        logError(`Cannot write file. source path doesn't exists: ${source}`);
-        return;
-    }
-    if (!fs.existsSync(destination)) {
-        logWarning(
-            `destination path doesn't exists: ${destination}. will create new one`
-        );
-        // return;
-    }
-    const pFile = fs.readFileSync(source, 'utf8');
-    let pFileClean = pFile;
-    if (overrides) {
-        overrides.forEach((v) => {
-            const regEx = new RegExp(v.pattern, 'g');
-            pFileClean = pFileClean.replace(regEx, v.override);
-        });
-    }
-
-    fs.writeFileSync(destination, pFileClean, 'utf8');
-};
+export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;

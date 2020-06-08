@@ -8,7 +8,6 @@ import {
     getAppFolder,
     getAppVersion,
     getAppTitle,
-    writeCleanFile,
     getAppId,
     getAppTemplateFolder,
     getAppDescription,
@@ -39,7 +38,8 @@ import {
     mkdirSync,
     writeFileSync,
     readObjectSync,
-    removeDirs
+    removeDirs,
+    writeCleanFile
 } from '../../systemTools/fileutils';
 
 const configureElectronProject = async (c, platform) => {
@@ -114,7 +114,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                     pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
                     override: browserWindowStr
                 }
-            ]
+            ], null, c
         );
     } else {
         writeCleanFile(
@@ -129,7 +129,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
                     pattern: '{{PLUGIN_INJECT_BROWSER_WINDOW}}',
                     override: browserWindowStr
                 }
-            ]
+            ], null, c
         );
     }
 

@@ -1,12 +1,12 @@
 import path from 'path';
 import {
     getAppFolder,
-    writeCleanFile,
     getAppTemplateFolder,
     getConfigProp
 } from '../../common';
 import { logTask } from '../../systemTools/logger';
 import { getAppFolderName } from './index';
+import { writeCleanFile } from '../../systemTools/fileutils';
 
 export const parseXcscheme = async (c, platform) => {
     logTask(`parseXcscheme:${platform}`);
@@ -44,6 +44,6 @@ export const parseXcscheme = async (c, platform) => {
         [
             { pattern: '{{PLUGIN_DEBUGGER_ID}}', override: debuggerId },
             { pattern: '{{PLUGIN_LAUNCHER_ID}}', override: launcherId }
-        ]
+        ], null, c
     );
 };

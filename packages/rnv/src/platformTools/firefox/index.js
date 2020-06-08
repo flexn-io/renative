@@ -16,7 +16,7 @@ import {
     copyAssetsFolder
 } from '../../projectTools/projectParser';
 import { KAIOS_SDK } from '../../constants';
-import { getRealPath } from '../../systemTools/fileutils';
+import { getRealPath, fsWriteFileSync } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 
 const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
@@ -81,7 +81,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
     manifestFile.description = `${getAppDescription(c, platform)}`;
     manifestFile.developer = getAppAuthor(c, platform);
 
-    fs.writeFileSync(
+    fsWriteFileSync(
         manifestFilePath2,
         JSON.stringify(manifestFile, null, 2)
     );

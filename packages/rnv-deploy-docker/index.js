@@ -8,11 +8,11 @@ class Docker {
     }
 
     async buildImage() {
-        const { writeCleanFile, getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
+        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
         const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
         const config = require(path.join(this.rnvPath, 'dist/config')).default;
         const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
-        const { copyFolderRecursiveSync, cleanFolder } = require(path.join(this.rnvPath, 'dist/systemTools/fileutils'));
+        const { copyFolderRecursiveSync, cleanFolder, writeCleanFile } = require(path.join(this.rnvPath, 'dist/systemTools/fileutils'));
 
         const { paths, runtime, platform, files, program } = config.getConfig();
         const projectBuilds = paths.project.builds.dir;

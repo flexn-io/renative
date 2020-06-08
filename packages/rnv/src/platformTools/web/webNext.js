@@ -8,12 +8,12 @@ import {
     checkPortInUse,
     getConfigProp,
     waitForWebpack,
-    writeCleanFile,
     confirmActiveBundler
 } from '../../common';
 import { logTask, logInfo, logWarning, logDebug } from '../../systemTools/logger';
 import { NEXT_CONFIG_NAME } from '../../constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
+import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 
 const configureNextIfRequired = async (c) => {
     const { platformTemplatesDirs, dir } = c.paths.project;
@@ -55,7 +55,7 @@ const configureNextIfRequired = async (c) => {
               `;
             });
 
-            fs.writeFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
+            fsWriteFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
         }
     }
 
@@ -65,12 +65,12 @@ const configureNextIfRequired = async (c) => {
         if (!fs.existsSync(pagesDir)) {
             fs.mkdirSync(pagesDir);
         }
-        writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }]);
+        writeCleanFile(path.join(platformTemplateDir, '_app.js'), _appFile, [{ pattern: '{{FONTS_CSS}}', override: path.relative(pagesDir, path.resolve('styles/fonts.css')).replace(/\\/g, '/') }], null, c);
     }
 
     // add config
     if (!fs.existsSync(configFile)) {
-        writeCleanFile(path.join(platformTemplateDir, NEXT_CONFIG_NAME), configFile);
+        writeCleanFile(path.join(platformTemplateDir, NEXT_CONFIG_NAME), configFile, null, null, c);
     }
 };
 

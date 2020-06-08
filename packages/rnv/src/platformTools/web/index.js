@@ -12,13 +12,13 @@ import {
     checkPortInUse,
     getConfigProp,
     waitForWebpack,
-    writeCleanFile,
     getBuildFilePath,
     getAppTitle,
     getSourceExts,
     sanitizeColor,
     confirmActiveBundler,
-    getAppVersion
+    getAppVersion,
+    getTimestampPathsConfig
 } from '../../common';
 import { isPlatformActive } from '..';
 import {
@@ -33,7 +33,7 @@ import {
     copyBuildsFolder,
     copyAssetsFolder
 } from '../../projectTools/projectParser';
-import { copyFileSync, readObjectSync } from '../../systemTools/fileutils';
+import { copyFileSync, readObjectSync, writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 import { parsePlugins } from '../../pluginTools';
 import {
     selectWebToolAndDeploy,
@@ -129,7 +129,7 @@ const _generateWebpackConfigs = (c, platform) => {
     }
     const timestampAssets = getConfigProp(c, platform, 'timestampAssets', false);
     if (timestampAssets) {
-        assetVersion = `-${Date.now()}`;
+        assetVersion = `-${c.runtime.timestamp}`;
     }
 
     const obj = {
@@ -146,7 +146,7 @@ const _generateWebpackConfigs = (c, platform) => {
     const extendJs = `
     module.exports = ${JSON.stringify(obj, null, 2)}`;
 
-    fs.writeFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
+    fsWriteFileSync(path.join(appFolder, 'webpack.extend.js'), extendJs);
 };
 
 const buildWeb = (c, platform) => new Promise((resolve, reject) => {
@@ -202,6 +202,8 @@ export const configureCoreWebProject = async (c, platform) => {
 const _parseCssSync = (c, platform) => {
     const appFolder = getAppFolder(c, platform);
     const stringsPath = 'public/app.css';
+    const timestampPathsConfig = getTimestampPathsConfig(c, platform);
+    const backgroundColor = getConfigProp(c, platform, 'backgroundColor');
     writeCleanFile(
         getBuildFilePath(c, platform, stringsPath),
         path.join(appFolder, stringsPath),
@@ -209,13 +211,15 @@ const _parseCssSync = (c, platform) => {
             {
                 pattern: '{{PLUGIN_COLORS_BG}}',
                 override: sanitizeColor(
-                    getConfigProp(c, platform, 'backgroundColor'),
+                    backgroundColor,
                     'backgroundColor'
                 ).hex
             }
-        ]
+        ],
+        timestampPathsConfig, c
     );
 };
+
 
 const runWeb = async (c, platform, port) => {
     logTask(`runWeb:${platform}:${port}`);
@@ -228,6 +232,16 @@ const runWeb = async (c, platform, port) => {
             extendConfig.devServerHost,
             c.runtime.localhost
         );
+
+        // if (extendConfig.customScripts) {
+        //     const timestampBuildFiles = getConfigProp(c, c.platform, 'timestampBuildFiles', []);
+        //     if (timestampBuildFiles.length) {
+        //         const sanitisedCustomScripts = [];
+        //         extendConfig.customScripts.forEach((customScript) => {
+        //             console.log('ABBAAB', customScript, timestampBuildFiles.includes(customScript));
+        //         });
+        //     }
+        // }
     }
 
     const isPortActive = await checkPortInUse(c, platform, port);

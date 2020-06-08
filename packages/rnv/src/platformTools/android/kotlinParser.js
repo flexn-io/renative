@@ -1,7 +1,6 @@
 import path from 'path';
 import {
     getAppFolder,
-    writeCleanFile,
     getAppId,
     getBuildFilePath,
     getEntryFile,
@@ -10,6 +9,7 @@ import {
     getIP
 } from '../../common';
 import { logWarning } from '../../systemTools/logger';
+import { writeCleanFile } from '../../systemTools/fileutils';
 // import { doResolve } from '../../resolve';
 
 const JS_BUNDLE_DEFAULTS = {
@@ -67,7 +67,7 @@ export const parseMainApplicationSync = (c, platform) => {
                 pattern: '{{PLUGIN_DEBUG_SERVER}}',
                 override: c.pluginConfigAndroid.pluginApplicationDebugServer
             }
-        ]
+        ], null, c
     );
 };
 
@@ -95,7 +95,7 @@ export const parseMainActivitySync = (c, platform) => {
                 pattern: '{{PLUGIN_ON_ACTIVITY_RESULT}}',
                 override: c.pluginConfigAndroid.pluginActivityResultMethods
             }
-        ]
+        ], null, c
     );
 };
 
@@ -122,7 +122,7 @@ export const parseSplashActivitySync = (c, platform) => {
                 pattern: '{{PLUGIN_SPLASH_ACTIVITY_IMPORTS}}',
                 override: c.pluginConfigAndroid.pluginSplashActivityImports
             }
-        ]
+        ], null, c
     );
 };
 

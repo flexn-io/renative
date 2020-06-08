@@ -31,7 +31,8 @@ import {
     getRealPath,
     sanitizeDynamicRefs,
     sanitizeDynamicProps,
-    mergeObjects
+    mergeObjects,
+    fsWriteFileSync
 } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
 import { doResolve } from '../resolve';
@@ -441,7 +442,7 @@ export const generateBuildConfig = (c) => {
         }`
     );
     c.buildConfig = sanitizeDynamicRefs(c, out);
-    c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs);
+    c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
 
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);
@@ -451,9 +452,9 @@ export const generateBuildConfig = (c) => {
     //     const localMetroPath = path.join(c.paths.project.dir, 'metro.config.local.js');
     //
     //     if (c.platform) {
-    //         fs.writeFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
+    //         fsWriteFileSync(localMetroPath, `module.exports = ${getSourceExtsAsString(c)}`);
     //     } else if (!fs.existsSync(localMetroPath)) {
-    //         fs.writeFileSync(localMetroPath, 'module.exports = []');
+    //         fsWriteFileSync(localMetroPath, 'module.exports = []');
     //     }
     // }
 };
@@ -538,15 +539,15 @@ export const generateLocalConfig = (c, resetAppId) => {
 };
 
 const _generatePlatformTemplatePaths = (c) => {
-    if(!c.buildConfig.paths) {
-       logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
-       c.buildConfig.paths = {};
+    if (!c.buildConfig.paths) {
+        logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
+        c.buildConfig.paths = {};
     }
-    if(c.buildConfig.platformTemplatesDirs) {
-      logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    if (c.buildConfig.platformTemplatesDirs) {
+        logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
     }
-    if(c.buildConfig.platformTemplatesDir) {
-      logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+    if (c.buildConfig.platformTemplatesDir) {
+        logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
@@ -787,7 +788,7 @@ export const updateConfig = async (c, appConfigId) => {
         const { conf } = await inquirerPrompt({
             name: 'conf',
             type: 'confirm',
-            message: `Do you want ReNative to create new sample appConfig for you?`,
+            message: 'Do you want ReNative to create new sample appConfig for you?',
             warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk.white('rnv template apply')} ?`
         });
 
@@ -952,7 +953,7 @@ export const configureRnvGlobal = async (c) => {
                 ...c.files.workspace.config,
                 defaultTargets: defaultConfig.defaultTargets
             };
-            fs.writeFileSync(
+            fsWriteFileSync(
                 c.paths.workspace.config,
                 JSON.stringify(newConfig, null, 2)
             );

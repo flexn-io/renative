@@ -336,13 +336,16 @@ export const logInitialize = () => {
 };
 
 export const logAppInfo = c => new Promise((resolve, reject) => {
-    console.log(
-        chalk.gray(
-            `\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(
-                c.buildConfig.id
-            )}\n${LINE2}`
-        )
-    );
+    // console.log(
+    //     chalk.gray(
+    //         `\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(
+    //             c.buildConfig.id
+    //         )}\n${LINE2}`
+    //     )
+    // );
+    logInfo(`Current App Config: ${chalk.bold.white(
+        c.buildConfig.id
+    )}`);
 
     resolve();
 });

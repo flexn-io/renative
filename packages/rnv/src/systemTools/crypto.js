@@ -23,7 +23,8 @@ import {
     getFileListSync,
     copyFileSync,
     mkdirSync,
-    writeFileSync
+    writeFileSync,
+    fsWriteFileSync
 } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
@@ -197,7 +198,7 @@ export const rnvCryptoEncrypt = async (c) => {
             .use('cbc')
             .encrypt(fs.readFileSync(destTemp), key);
 
-        fs.writeFileSync(dest, data);
+        fsWriteFileSync(dest, data);
 
         // await executeAsync(
         //     c,
@@ -207,8 +208,8 @@ export const rnvCryptoEncrypt = async (c) => {
         //     { privateParams: [key] }
         // );
         removeFilesSync([destTemp]);
-        fs.writeFileSync(`${dest}.timestamp`, timestamp);
-        fs.writeFileSync(`${tsWorkspacePath}`, timestamp);
+        fsWriteFileSync(`${dest}.timestamp`, timestamp);
+        fsWriteFileSync(`${tsWorkspacePath}`, timestamp);
         logSuccess(`Files succesfully encrypted into ${dest}`);
     } else {
         logWarning(
@@ -335,7 +336,7 @@ ${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
             .use('cbc')
             .decrypt(fs.readFileSync(source), key);
 
-        fs.writeFileSync(destTemp, data);
+        fsWriteFileSync(destTemp, data);
 
         //         try {
         //             await executeAsync(

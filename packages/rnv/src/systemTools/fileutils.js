@@ -9,8 +9,42 @@ import ncp from 'ncp';
 import { isSystemWin } from '../utils';
 
 import { logDebug, logError, logWarning, logInfo } from './logger';
+import { getConfigProp } from '../common';
 
-export const copyFileSync = (source, target, skipOverride) => {
+export const fsWriteFileSync = (dest, data, encoding) => {
+    // console.log('FS_WRITE', dest);
+    fs.writeFileSync(dest, data, encoding);
+};
+
+export const fsCopyFileSync = (source, dest) => {
+    // console.log('FS_COPY', source);
+    fs.copyFileSync(source, dest);
+};
+
+
+const _getSanitizedPath = (origPath, timestampPathsConfig) => {
+    if (timestampPathsConfig?.paths?.length && timestampPathsConfig?.timestamp) {
+        const pths = timestampPathsConfig.paths;
+        if (pths.includes(origPath)) {
+            const ext = path.extname(origPath);
+            const fileName = path.basename(origPath, ext);
+            const dirPath = path.dirname(origPath);
+            const newPath = path.join(dirPath, `${fileName}-${timestampPathsConfig.timestamp}${ext}`);
+            return newPath;
+        }
+    }
+    return origPath;
+};
+
+// const getValidatedPath = (c, platform, targetPath) => {
+//     const bFilesArr = getTimestampBuildFiles(c, platform);
+//     if(bFilesArr?.) {
+//       if()
+//     }
+//     return targetPath
+// }
+
+export const copyFileSync = (source, target, skipOverride, timestampPathsConfig) => {
     logDebug('copyFileSync', source);
     let targetFile = target;
     // if target is a directory a new file with the same name will be created
@@ -30,43 +64,86 @@ export const copyFileSync = (source, target, skipOverride) => {
     }
     logDebug('copyFileSync', source, targetFile, 'executed');
     try {
-        fs.copyFileSync(source, targetFile);
+        fsCopyFileSync(source, _getSanitizedPath(targetFile, timestampPathsConfig));
     } catch (e) {
         console.log('copyFileSync', e);
     }
 };
 
-const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg'];
-export const writeCleanFile = (source, destination, overrides) => {
+const SKIP_INJECT_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.svg', '.jar', '.zip'];
+export const writeCleanFile = (source, destination, overrides, timestampPathsConfig, c) => {
     // logTask(`writeCleanFile`)
+    // console.log('writeCleanFile', destination);
     if (!fs.existsSync(source)) {
         logError(`Cannot write file. source path doesn't exists: ${source}`);
         return;
     }
     if (!fs.existsSync(destination)) {
-        logWarning(
+        logDebug(
             `destination path doesn't exists: ${destination}. will create new one`
         );
         // return;
     }
     const ext = path.extname(source);
     if (SKIP_INJECT_EXTENSIONS.includes(ext)) {
-        fs.copyFileSync(source, destination);
+        fsCopyFileSync(source, _getSanitizedPath(destination, timestampPathsConfig));
     } else {
         const pFile = fs.readFileSync(source, 'utf8');
-        let pFileClean = pFile;
-        if (overrides) {
-            overrides.forEach((v) => {
-                const regEx = new RegExp(v.pattern, 'g');
-                pFileClean = pFileClean.replace(regEx, v.override);
-            });
+        if (/\ufffd/.test(pFile) === true) {
+            // Handle uncaught binary files
+            fsCopyFileSync(source, _getSanitizedPath(destination, timestampPathsConfig));
+        } else {
+            let pFileClean = pFile;
+            if (overrides?.forEach) {
+                overrides.forEach((v) => {
+                    const regEx = new RegExp(v.pattern, 'g');
+                    pFileClean = pFileClean.replace(regEx, v.override);
+                });
+            }
+            if (c) {
+                const regEx = /{{configProps.([\s\S]*?)}}/g;
+                const occurences = pFileClean.match(regEx);
+                if (occurences) {
+                    occurences.forEach((occ) => {
+                        const val = occ.replace('{{configProps.', '').replace('}}', '');
+                        const configVal = getConfigProp(c, c.platform, val, '');
+                        pFileClean = pFileClean.replace(occ, configVal);
+                    });
+                }
+            }
+            fsWriteFileSync(_getSanitizedPath(destination, timestampPathsConfig), pFileClean, 'utf8');
         }
-        fs.writeFileSync(destination, pFileClean, 'utf8');
     }
 };
 
+// TODO: remove and use fileutils one
+// export const writeCleanFile = (source, destination, overrides) => {
+//     // logTask(`writeCleanFile`)
+//     if (!fs.existsSync(source)) {
+//         logError(`Cannot write file. source path doesn't exists: ${source}`);
+//         return;
+//     }
+//     if (!fs.existsSync(destination)) {
+//         logWarning(
+//             `destination path doesn't exists: ${destination}. will create new one`
+//         );
+//         // return;
+//     }
+//     const pFile = fs.readFileSync(source, 'utf8');
+//     let pFileClean = pFile;
+//     if (overrides) {
+//         overrides.forEach((v) => {
+//             const regEx = new RegExp(v.pattern, 'g');
+//             pFileClean = pFileClean.replace(regEx, v.override);
+//         });
+//     }
+//
+//     fsWriteFileSync(destination, pFileClean, 'utf8');
+// };
+
 export const readCleanFile = (source, overrides) => {
     // logTask(`writeCleanFile`)
+    // console.log('readCleanFile', source);
     if (!fs.existsSync(source)) {
         logError(`Cannot write file. source path doesn't exists: ${source}`);
         return;
@@ -74,7 +151,7 @@ export const readCleanFile = (source, overrides) => {
 
     const pFile = fs.readFileSync(source, 'utf8');
     let pFileClean = pFile;
-    if (overrides) {
+    if (overrides?.forEach) {
         overrides.forEach((v) => {
             const regEx = new RegExp(v.pattern, 'g');
             pFileClean = pFileClean.replace(regEx, v.override);
@@ -84,7 +161,7 @@ export const readCleanFile = (source, overrides) => {
     return Buffer.from(pFileClean, 'utf8');
 };
 
-export const copyFileWithInjectSync = (source, target, skipOverride, injectObject) => {
+export const copyFileWithInjectSync = (source, target, skipOverride, injectObject, timestampPathsConfig, c) => {
     logDebug('copyFileWithInjectSync', source);
 
     let targetFile = target;
@@ -104,11 +181,14 @@ export const copyFileWithInjectSync = (source, target, skipOverride, injectObjec
         if (Buffer.compare(src, dst) === 0) return;
     }
     logDebug('copyFileSync', source, targetFile, 'executed');
+
     try {
         writeCleanFile(
             source,
             targetFile,
-            injectObject
+            injectObject,
+            timestampPathsConfig,
+            c
         );
     } catch (e) {
         console.log('copyFileSync', e);
@@ -131,7 +211,9 @@ export const copyFolderRecursiveSync = (
     target,
     convertSvg = true,
     skipOverride,
-    injectObject = null
+    injectObject = null,
+    timestampPathsConfig = null,
+    c
 ) => {
     logDebug('copyFolderRecursiveSync', source, target);
     if (!fs.existsSync(source)) return;
@@ -148,7 +230,7 @@ export const copyFolderRecursiveSync = (
         files.forEach((file) => {
             const curSource = path.join(source, file);
             if (fs.lstatSync(curSource).isDirectory()) {
-                copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject);
+                copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject, timestampPathsConfig, c);
             } else if (
                 path.extname(curSource) === '.svg'
                 && convertSvg === true
@@ -162,18 +244,27 @@ export const copyFolderRecursiveSync = (
                 );
                 saveAsJs(curSource, jsDest);
             } else if (injectObject !== null) {
-                copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject);
+                copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig, c);
             } else {
-                copyFileSync(curSource, targetFolder);
+                copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
             }
         });
     }
 };
 
-export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null) => {
+// let newPath = v;
+//
+// const fileNameArr = v.split('.');
+// if(fileNameArr.length > 1) {
+//   const noExtPath = fileNameArr
+//   newPath = fileNameArr.join('.')
+// }
+//
+// return path.join(pPath, newPath)
+// }));
+
+export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
-
-
     if (!fs.existsSync(source)) return;
     let files = [];
     const targetFolder = path.join(target);
@@ -186,9 +277,10 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
             const curSource = path.join(source, file);
             if (!skipPaths || (skipPaths && !skipPaths.includes(curSource))) {
                 if (fs.lstatSync(curSource).isDirectory()) {
-                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject);
+                    copyFolderRecursiveSync(curSource, targetFolder, convertSvg, skipOverride, injectObject, timestampPathsConfig, c);
                 } else if (injectObject !== null) {
-                    copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject);
+                    // console.log('BAAA', targetFolder);
+                    copyFileWithInjectSync(curSource, targetFolder, skipOverride, injectObject, timestampPathsConfig, c);
                 } else if (path.extname(curSource) === '.svg' && convertSvg === true) {
                     const jsDest = path.join(
                         targetFolder,
@@ -199,7 +291,7 @@ export const copyFolderContentsRecursiveSync = (source, target, convertSvg = tru
                     );
                     saveAsJs(curSource, jsDest);
                 } else {
-                    copyFileSync(curSource, targetFolder, skipOverride);
+                    copyFileSync(curSource, targetFolder, skipOverride, timestampPathsConfig);
                 }
             }
         });
@@ -347,7 +439,7 @@ export const writeFileSync = (filePath, obj, spaces, addNewLine = true) => {
         if (fs.readFileSync(filePath).toString() === output) return;
     }
     logDebug('writeFileSync', filePath, 'executed');
-    fs.writeFileSync(filePath, output);
+    fsWriteFileSync(filePath, output);
 };
 
 export const writeObjectSync = (filePath, obj, spaces, addNewLine = true) => {
@@ -481,8 +573,11 @@ export const sanitizeDynamicRefs = (c, obj) => {
     return obj;
 };
 
-export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
-    if (!obj || !props) return obj;
+export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeProps = {}) => {
+    if (!obj) {
+        return obj;
+    }
+
     if (Array.isArray(obj)) {
         obj.forEach((v, i) => {
             let val = v;
@@ -494,11 +589,15 @@ export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
                     obj[i] = val;
                 });
                 Object.keys(configProps).forEach((pk2) => {
-                    val = val.replace(`{{configProps.${pk2}}}`, props[pk2]);
+                    val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
+                    obj[i] = val;
+                });
+                Object.keys(runtimeProps).forEach((pk3) => {
+                    val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
                     obj[i] = val;
                 });
             } else {
-                sanitizeDynamicProps(v, props, configProps);
+                sanitizeDynamicProps(v, props, configProps, runtimeProps);
             }
         });
     } else if (typeof obj === 'object') {
@@ -516,8 +615,12 @@ export const sanitizeDynamicProps = (obj, props, configProps = {}) => {
                         val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
                         obj[key] = val;
                     });
+                    Object.keys(runtimeProps).forEach((pk3) => {
+                        val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
+                        obj[key] = val;
+                    });
                 } else {
-                    sanitizeDynamicProps(val, props, configProps);
+                    sanitizeDynamicProps(val, props, configProps, runtimeProps);
                 }
             }
         });
@@ -564,7 +667,7 @@ export const updateConfigFile = async (update, globalConfigPath) => {
         )}`
     );
 
-    fs.writeFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
+    fsWriteFileSync(globalConfigPath, JSON.stringify(configContents, null, 3));
 };
 
 export const replaceHomeFolder = (p) => {
