@@ -81,7 +81,7 @@
         "react-native-fingerprint-scanner": "3.0.0",
         "react-native-fs": "2.14.1",
         "react-native-gesture-handler": "1.4.1",
-        "react-native-google-cast": "github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e",
+        "react-native-google-cast": "github:hosek/react-native-google-cast#sdk4.4.5",
         "react-native-image-crop-picker": "0.25.3",
         "react-native-image-picker": "0.27.1",
         "react-native-image-resizer": "1.0.0",

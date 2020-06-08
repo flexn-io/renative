@@ -17232,9 +17232,9 @@ react-native-gesture-handler@1.4.1:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
-"react-native-google-cast@github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e":
+"react-native-google-cast@github:hosek/react-native-google-cast#sdk4.4.5":
   version "3.3.0"
-  resolved "https://codeload.github.com/hosek/react-native-google-cast/tar.gz/e8c82f766c6efc769b67692edcd1e697b9db9f6e"
+  resolved "https://codeload.github.com/hosek/react-native-google-cast/tar.gz/55bc0cc69e8c6672a72a75790d545f342aaa22c3"
   dependencies:
     prop-types "^15.6.0"
     react-native-action-button "^2.8.5"
