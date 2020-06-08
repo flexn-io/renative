@@ -463,7 +463,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
 };
 
 export const waitForWebpack = async (c, engine) => {
-    logTask(`waitForWebpack:${c.runtime.port}`);
+    logTask(`waitForWebpack|port:${c.runtime.port}|engine:${engine}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;
