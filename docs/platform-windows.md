@@ -29,15 +29,20 @@ sidebar_label: Windows
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `windows.desktop.js` | `form factor` | 1 |
-| `desktop.js` | `form factor` | 2 |
-| `windows.js` | `platform` | 3 |
-| `desktop.web.js` | `fallback` | 4 |
-| `electron.js` | `fallback` | 5 |
-| `web.js` | `fallback` | 6 |
-| `mjs` | `fallback` | 7 |
-| `js` | `fallback` | 8 |
-| `tsx` | `fallback` | 9 |
-| `ts` | `fallback` | 10 |
+| `windows.desktop.ts` | `form factor` | 2 |
+| `desktop.js` | `form factor` | 3 |
+| `desktop.ts` | `form factor` | 4 |
+| `windows.js` | `platform` | 5 |
+| `desktop.web.js` | `fallback` | 6 |
+| `desktop.web.ts` | `fallback` | 7 |
+| `electron.js` | `fallback` | 8 |
+| `electron.ts` | `fallback` | 9 |
+| `web.js` | `fallback` | 10 |
+| `web.ts` | `fallback` | 11 |
+| `mjs` | `fallback` | 12 |
+| `js` | `fallback` | 13 |
+| `tsx` | `fallback` | 14 |
+| `ts` | `fallback` | 15 |
 
 <!--EXTENSION_SUPPORT_END-->
 

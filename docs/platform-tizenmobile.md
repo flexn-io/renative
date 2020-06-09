@@ -29,14 +29,19 @@ sidebar_label: Tizen Mobile
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `tizenmobile.mobile.js` | `form factor` | 1 |
-| `mobile.js` | `form factor` | 2 |
-| `tizenmobile.js` | `platform` | 3 |
-| `mobile.web.js` | `fallback` | 4 |
-| `web.js` | `fallback` | 5 |
-| `mjs` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
+| `tizenmobile.mobile.ts` | `form factor` | 2 |
+| `mobile.js` | `form factor` | 3 |
+| `mobile.ts` | `form factor` | 4 |
+| `tizenmobile.js` | `platform` | 5 |
+| `tizenmobile.ts` | `platform` | 6 |
+| `mobile.web.js` | `fallback` | 7 |
+| `mobile.web.ts` | `fallback` | 8 |
+| `web.js` | `fallback` | 9 |
+| `web.ts` | `fallback` | 10 |
+| `mjs` | `fallback` | 11 |
+| `js` | `fallback` | 12 |
+| `tsx` | `fallback` | 13 |
+| `ts` | `fallback` | 14 |
 
 <!--EXTENSION_SUPPORT_END-->
 

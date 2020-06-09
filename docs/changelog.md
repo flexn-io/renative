@@ -1,5 +1,26 @@
 # Changelog
 
+## v0.29.1-alpha.19 (2020-6-9)
+
+### Fixed
+
+- add extensions helper constant
+- Merge pull request #515 from pavjacko/feat/cast-update
+- update g cast
+- Merge branch 'develop' into feat/cast-update
+- add support for typescript  and SSR extensions
+- Merge pull request #512 from pavjacko/feat/asset-timestamps
+- Sdk update
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.18 (2020-6-2)
 
 ### Fixed

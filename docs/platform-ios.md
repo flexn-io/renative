@@ -30,13 +30,18 @@ sidebar_label: iOS
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `ios.mobile.js` | `form factor` | 1 |
-| `mobile.js` | `form factor` | 2 |
-| `ios.js` | `platform` | 3 |
-| `mobile.native.js` | `fallback` | 4 |
-| `native.js` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
+| `ios.mobile.ts` | `form factor` | 2 |
+| `mobile.js` | `form factor` | 3 |
+| `mobile.ts` | `form factor` | 4 |
+| `ios.js` | `platform` | 5 |
+| `ios.ts` | `platform` | 6 |
+| `mobile.native.js` | `fallback` | 7 |
+| `mobile.native.ts` | `fallback` | 8 |
+| `native.js` | `fallback` | 9 |
+| `native.ts` | `fallback` | 10 |
+| `js` | `fallback` | 11 |
+| `tsx` | `fallback` | 12 |
+| `ts` | `fallback` | 13 |
 
 <!--EXTENSION_SUPPORT_END-->
 

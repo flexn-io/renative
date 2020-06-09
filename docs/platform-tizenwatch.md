@@ -29,14 +29,19 @@ sidebar_label: Tizen Watch
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `tizenwatch.watch.js` | `form factor` | 1 |
-| `watch.js` | `form factor` | 2 |
-| `tizenwatch.js` | `platform` | 3 |
-| `watch.web.js` | `fallback` | 4 |
-| `web.js` | `fallback` | 5 |
-| `mjs` | `fallback` | 6 |
-| `js` | `fallback` | 7 |
-| `tsx` | `fallback` | 8 |
-| `ts` | `fallback` | 9 |
+| `tizenwatch.watch.ts` | `form factor` | 2 |
+| `watch.js` | `form factor` | 3 |
+| `watch.ts` | `form factor` | 4 |
+| `tizenwatch.js` | `platform` | 5 |
+| `tizenwatch.ts` | `platform` | 6 |
+| `watch.web.js` | `fallback` | 7 |
+| `watch.web.ts` | `fallback` | 8 |
+| `web.js` | `fallback` | 9 |
+| `web.ts` | `fallback` | 10 |
+| `mjs` | `fallback` | 11 |
+| `js` | `fallback` | 12 |
+| `tsx` | `fallback` | 13 |
+| `ts` | `fallback` | 14 |
 
 <!--EXTENSION_SUPPORT_END-->
 

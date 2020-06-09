@@ -28,11 +28,13 @@ sidebar_label: Web
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `browser.js` | `form factor` | 1 |
-| `web.js` | `platform` | 2 |
-| `mjs` | `fallback` | 3 |
-| `js` | `fallback` | 4 |
-| `tsx` | `fallback` | 5 |
-| `ts` | `fallback` | 6 |
+| `browser.ts` | `form factor` | 2 |
+| `web.js` | `platform` | 3 |
+| `web.ts` | `platform` | 4 |
+| `mjs` | `fallback` | 5 |
+| `js` | `fallback` | 6 |
+| `tsx` | `fallback` | 7 |
+| `ts` | `fallback` | 8 |
 
 <!--EXTENSION_SUPPORT_END-->
 

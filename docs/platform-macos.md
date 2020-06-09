@@ -29,15 +29,21 @@ sidebar_label: macOS
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `macos.desktop.js` | `form factor` | 1 |
-| `desktop.js` | `form factor` | 2 |
-| `macos.js` | `platform` | 3 |
-| `desktop.web.js` | `fallback` | 4 |
-| `electron.js` | `fallback` | 5 |
-| `web.js` | `fallback` | 6 |
-| `mjs` | `fallback` | 7 |
-| `js` | `fallback` | 8 |
-| `tsx` | `fallback` | 9 |
-| `ts` | `fallback` | 10 |
+| `macos.desktop.ts` | `form factor` | 2 |
+| `desktop.js` | `form factor` | 3 |
+| `desktop.ts` | `form factor` | 4 |
+| `macos.js` | `platform` | 5 |
+| `macos.ts` | `platform` | 6 |
+| `desktop.web.js` | `fallback` | 7 |
+| `desktop.web.ts` | `fallback` | 8 |
+| `electron.js` | `fallback` | 9 |
+| `electron.ts` | `fallback` | 10 |
+| `web.js` | `fallback` | 11 |
+| `web.ts` | `fallback` | 12 |
+| `mjs` | `fallback` | 13 |
+| `js` | `fallback` | 14 |
+| `tsx` | `fallback` | 15 |
+| `ts` | `fallback` | 16 |
 
 <!--EXTENSION_SUPPORT_END-->
 

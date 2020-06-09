@@ -29,15 +29,21 @@ sidebar_label: Tizen TV
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
 | `tizen.tv.js` | `form factor` | 1 |
-| `web.tv.js` | `form factor` | 2 |
-| `tv.js` | `form factor` | 3 |
-| `tizen.js` | `platform` | 4 |
-| `tv.web.js` | `fallback` | 5 |
-| `web.js` | `fallback` | 6 |
-| `mjs` | `fallback` | 7 |
-| `js` | `fallback` | 8 |
-| `tsx` | `fallback` | 9 |
-| `ts` | `fallback` | 10 |
+| `tizen.tv.ts` | `form factor` | 2 |
+| `web.tv.js` | `form factor` | 3 |
+| `web.tv.ts` | `form factor` | 4 |
+| `tv.js` | `form factor` | 5 |
+| `tv.ts` | `form factor` | 6 |
+| `tizen.js` | `platform` | 7 |
+| `tizen.ts` | `platform` | 8 |
+| `tv.web.js` | `fallback` | 9 |
+| `tv.web.ts` | `fallback` | 10 |
+| `web.js` | `fallback` | 11 |
+| `web.ts` | `fallback` | 12 |
+| `mjs` | `fallback` | 13 |
+| `js` | `fallback` | 14 |
+| `tsx` | `fallback` | 15 |
+| `ts` | `fallback` | 16 |
 
 <!--EXTENSION_SUPPORT_END-->
 

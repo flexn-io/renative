@@ -1340,7 +1340,7 @@ rnv plugin add react-native-get-real-path
 ## react-native-google-cast
 
 
-Version: `github:hosek/react-native-google-cast#e8c82f766c6efc769b67692edcd1e697b9db9f6e`
+Version: `github:hosek/react-native-google-cast#sdk4.4.5`
 
 Platforms: `ios`,`android`
 
@@ -2564,7 +2564,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.29.1-alpha.18`
+Version: `0.29.1-alpha.19`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
