@@ -288,6 +288,18 @@ export const PLATFORMS = {
             fallbacks: ['tv.web.js', 'tv.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
         }
     },
+    chromecast: {
+        defaultPort: 8095,
+        icon: ICONS.TV,
+        supportedOS: OS.ALL,
+        isActive: true,
+        requiresSharedConfig: true,
+        sourceExts: {
+            factors: ['chromecast.tv.js', 'chromecast.tv.ts', 'web.tv.js', 'web.tv.ts', 'tv.js', 'tv.ts'],
+            platforms: ['chromecast.js', 'chromecast.ts'],
+            fallbacks: ['tv.web.js', 'tv.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+        }
+    },
     // NON ACTIVE
     watchos: {
         defaultPort: 999999,
@@ -336,18 +348,6 @@ export const PLATFORMS = {
         isActive: false,
         requiresSharedConfig: true,
         sourceExts: []
-    },
-    chromecast: {
-        defaultPort: 8095,
-        icon: ICONS.TV,
-        supportedOS: OS.ALL,
-        isActive: true,
-        requiresSharedConfig: true,
-        sourceExts: {
-            factors: ['chromecast.tv.js', 'chromecast.tv.ts', 'web.tv.js', 'web.tv.ts', 'tv.js', 'tv.ts'],
-            platforms: ['chromecast.js', 'chromecast.ts'],
-            fallbacks: ['tv.web.js', 'tv.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
-        }
     },
     chromeos: {
         defaultPort: 999999,
@@ -541,6 +541,26 @@ export const PLATFORMS = {
         requiresSharedConfig: true,
         sourceExts: []
     }
+};
+
+export const EXTENSIONS = {
+    web: [...PLATFORMS.web.sourceExts.factors, ...PLATFORMS.web.sourceExts.platforms, ...PLATFORMS.web.sourceExts.fallbacks],
+    'web-next': [...PLATFORMS['web-next'].sourceExts.factors, ...PLATFORMS['web-next'].sourceExts.platforms, ...PLATFORMS['web-next'].sourceExts.fallbacks],
+    ios: [...PLATFORMS.ios.sourceExts.factors, ...PLATFORMS.ios.sourceExts.platforms, ...PLATFORMS.ios.sourceExts.fallbacks],
+    android: [...PLATFORMS.android.sourceExts.factors, ...PLATFORMS.android.sourceExts.platforms, ...PLATFORMS.android.sourceExts.fallbacks],
+    androidtv: [...PLATFORMS.androidtv.sourceExts.factors, ...PLATFORMS.androidtv.sourceExts.platforms, ...PLATFORMS.androidtv.sourceExts.fallbacks],
+    tvos: [...PLATFORMS.tvos.sourceExts.factors, ...PLATFORMS.tvos.sourceExts.platforms, ...PLATFORMS.tvos.sourceExts.fallbacks],
+    macos: [...PLATFORMS.macos.sourceExts.factors, ...PLATFORMS.macos.sourceExts.platforms, ...PLATFORMS.macos.sourceExts.fallbacks],
+    tizen: [...PLATFORMS.tizen.sourceExts.factors, ...PLATFORMS.tizen.sourceExts.platforms, ...PLATFORMS.tizen.sourceExts.fallbacks],
+    webos: [...PLATFORMS.webos.sourceExts.factors, ...PLATFORMS.webos.sourceExts.platforms, ...PLATFORMS.webos.sourceExts.fallbacks],
+    androidwear: [...PLATFORMS.androidwear.sourceExts.factors, ...PLATFORMS.androidwear.sourceExts.platforms, ...PLATFORMS.androidwear.sourceExts.fallbacks],
+    tizenwatch: [...PLATFORMS.tizenwatch.sourceExts.factors, ...PLATFORMS.tizenwatch.sourceExts.platforms, ...PLATFORMS.tizenwatch.sourceExts.fallbacks],
+    tizenmobile: [...PLATFORMS.tizenmobile.sourceExts.factors, ...PLATFORMS.tizenmobile.sourceExts.platforms, ...PLATFORMS.tizenmobile.sourceExts.fallbacks],
+    windows: [...PLATFORMS.windows.sourceExts.factors, ...PLATFORMS.windows.sourceExts.platforms, ...PLATFORMS.windows.sourceExts.fallbacks],
+    kaios: [...PLATFORMS.kaios.sourceExts.factors, ...PLATFORMS.kaios.sourceExts.platforms, ...PLATFORMS.kaios.sourceExts.fallbacks],
+    firefoxos: [...PLATFORMS.firefoxos.sourceExts.factors, ...PLATFORMS.firefoxos.sourceExts.platforms, ...PLATFORMS.firefoxos.sourceExts.fallbacks],
+    firefoxtv: [...PLATFORMS.firefoxtv.sourceExts.factors, ...PLATFORMS.firefoxtv.sourceExts.platforms, ...PLATFORMS.firefoxtv.sourceExts.fallbacks],
+    chromecast: [...PLATFORMS.chromecast.sourceExts.factors, ...PLATFORMS.chromecast.sourceExts.platforms, ...PLATFORMS.chromecast.sourceExts.fallbacks]
 };
 
 export const WEB_HOSTED_PLATFORMS = [
