@@ -145,7 +145,8 @@
         "webpack-dev-server": "3.2.1",
         "webpack-merge": "4.1.4",
         "write-json-webpack-plugin": "1.1.0",
-        "xml2js": "0.4.23"
+        "xml2js": "0.4.23",
+        "lodash.get": "4.4.2"
     },
     "devDependencies": {
         "crypto-js": "4.0.0",
