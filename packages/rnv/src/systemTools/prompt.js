@@ -10,6 +10,7 @@ export const inquirerPrompt = async (params) => {
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
         if (Array.isArray(params.choices) && typeof params.default !== 'undefined' && params.choices.includes(params.default)) {
+            console.log(`defaulting to choice '${params.default}' for prompt '${params.name}'`)
             return Promise.resolve({ [params.name]: params.default });
         }
         return Promise.reject(`--ci option does not allow prompts. question: ${msg}.`);

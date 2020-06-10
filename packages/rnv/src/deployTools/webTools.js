@@ -10,6 +10,7 @@ import {
     configureDeploymentIfRequired,
     configureExportIfRequired
 } from './configure';
+import { inquirerPrompt } from '../systemTools/prompt';
 
 const DEPLOY_TARGET_DOCKER = 'docker';
 const DEPLOY_TARGET_AWS = 'aws';
@@ -71,7 +72,8 @@ const selectToolAndExecute = async ({
     choices,
     configFunction,
     executeFunction,
-    isDeploy = true
+    isDeploy = true,
+    defaultChoice
 }) => {
     const argv = minimist(c.process.argv.slice(2));
     const type = argv.t;
@@ -84,10 +86,11 @@ const selectToolAndExecute = async ({
         await configFunction(type || targetConfig.deploy.type);
         return executeFunction(c, platform, type || targetConfig.deploy.type);
     }
-    const { selectedTarget } = await inquirer.prompt({
+    const { selectedTarget } = await inquirerPrompt({
         name: 'selectedTarget',
         type: 'list',
         choices,
+        default: defaultChoice,
         message: `Which type of ${
             isDeploy ? 'deploy' : 'export'
         } option would you like to use for ${chalk.white(c.platform)}?`
@@ -119,7 +122,8 @@ const selectWebToolAndExport = (c, platform) => selectToolAndExecute({
     choices: [DEPLOY_TARGET_DOCKER, DEPLOY_TARGET_NONE],
     configFunction: configureExportIfRequired,
     executeFunction: _runExport,
-    isDeploy: false
+    isDeploy: false,
+    defaultChoice: DEPLOY_TARGET_NONE,
 });
 
 export {
