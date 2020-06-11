@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.29.1-alpha.20 (2020-6-11)
+
+### Fixed
+
+- Merge pull request #517 from pavjacko/feat/default-prompt-choice-export
+- adds default value for export web prompt
+- add lodash.get dependency
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.19 (2020-6-9)
 
 ### Fixed
