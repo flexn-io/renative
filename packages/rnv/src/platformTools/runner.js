@@ -39,7 +39,7 @@ import {
 import {
     runXcodeProject,
     exportXcodeProject,
-    archiveXcodeProject,
+    buildXcodeProject,
     packageBundleForXcode,
     runAppleLog
 } from './apple';
@@ -418,9 +418,9 @@ const _rnvExportWithPlatform = async (c) => {
             return exportWebNext(c);
         case IOS:
         case TVOS:
-            if (!c.program.only) {
-                await _rnvBuildWithPlatform(c, platform);
-            }
+            // if (!c.program.only) {
+            //     await _rnvBuildWithPlatform(c, platform);
+            // }
             return exportXcodeProject(c, platform);
         case ANDROID:
         case ANDROID_TV:
@@ -503,10 +503,7 @@ const _rnvBuildWithPlatform = async (c) => {
             return;
         case IOS:
         case TVOS:
-            if (!c.program.only) {
-                await _rnvPackageWithPlatform(c, platform);
-            }
-            await archiveXcodeProject(c, platform);
+            await buildXcodeProject(c, platform);
             return;
         case WEB:
         case CHROMECAST:
