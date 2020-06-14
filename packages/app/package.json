@@ -194,15 +194,15 @@
         "runner-config": "./e2e/config.json",
         "configurations": {
             "android.debug": {
-                "binaryPath": "platformBuilds/helloWorld_android/app/build/outputs/apk/debug/app-debug.apk",
-                "build": "npx rnv build -p android -c helloworld -s AndroidTest && npx rnv build -p android -c helloworld -s detox && cp platformBuilds/helloWorld_android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk platformBuilds/helloWorld_android/app/build/outputs/apk/debug/app-debug-androidTest.apk",
+                "binaryPath": "platformBuilds/helloworld_android/app/build/outputs/apk/debug/app-debug.apk",
+                "build": "npx rnv build -p android -c helloworld -s AndroidTest && npx rnv build -p android -c helloworld -s detox && cp platformBuilds/helloworld_android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk platformBuilds/helloworld_android/app/build/outputs/apk/debug/app-debug-androidTest.apk",
                 "type": "android.emulator",
                 "device": {
                     "avdName": ""
                 }
             },
             "ios.sim.debug": {
-                "binaryPath": "platformBuilds/helloWorld_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app",
+                "binaryPath": "platformBuilds/helloworld_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app",
                 "build": "npx rnv build -p ios -c helloworld -s debug",
                 "type": "ios.simulator",
                 "device": {

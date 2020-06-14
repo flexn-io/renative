@@ -279,6 +279,8 @@ const _rnvRunWithPlatform = async (c) => {
 
     await checkSdk(c);
 
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+
     switch (platform) {
         case IOS:
         case TVOS:
@@ -287,7 +289,9 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
                 await _startBundlerIfRequired(c);
                 await runXcodeProject(c);
-                logSummary('BUNDLER STARTED');
+                if (!bundleAssets) {
+                    logSummary('BUNDLER STARTED');
+                }
                 return waitForBundlerIfRequired(c);
             }
             return runXcodeProject(c);
@@ -305,7 +309,9 @@ const _rnvRunWithPlatform = async (c) => {
                     await packageAndroid(c, platform);
                 }
                 await runAndroid(c, platform, target);
-                logSummary('BUNDLER STARTED');
+                if (!bundleAssets) {
+                    logSummary('BUNDLER STARTED');
+                }
                 return waitForBundlerIfRequired(c);
             }
             return runAndroid(c, platform, target);
@@ -503,6 +509,7 @@ const _rnvBuildWithPlatform = async (c) => {
             return;
         case IOS:
         case TVOS:
+            await _rnvPackageWithPlatform(c, platform);
             await buildXcodeProject(c, platform);
             return;
         case WEB:

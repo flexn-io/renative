@@ -154,10 +154,10 @@ Override Rules for json props:
 -   `Objects` => Merged by top level (not deep merge)
 
 Example:
-https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloWorld/renative.json#L4
+https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloworld/renative.json#L4
 
 Will be overridden by:
-https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloWorld/renative.json#L59
+https://github.com/pavjacko/renative/blob/develop/packages/renative-template-hello-world/appConfigs/helloworld/renative.json#L59
 
 Output config will be decorated with few extra props to help with debugging:
 

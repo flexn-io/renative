@@ -1,6 +1,6 @@
 {
     "extend": "base",
-    "id": "helloWorld",
+    "id": "helloworld",
     "common": {
         "id": "renative.helloworld",
         "title": "ReNative",

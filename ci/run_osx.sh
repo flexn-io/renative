@@ -29,18 +29,12 @@ security default-keychain -s ios-build.keychain
 security unlock-keychain -p travis ios-build.keychain
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
-# if [ -d "../lib/node_modules/npx" ]
-# then
-#     echo "npx already installed. skipping"
-# else
-#     npm install -g npx
-# fi
-
 yarn bootstrap
 cd packages/app
 
 # RUN
 
 npx rnv template apply --template renative-template-hello-world --ci --mono
-npx rnv configure -c helloWorld -p web --ci --mono
-npx rnv build -p ios -c helloWorld -s debug --ci --mono
+# npx rnv configure -c helloworld -p web --ci --mono
+npx rnv build -p ios -c helloworld -s test --ci --mono
+yarn detox-ios

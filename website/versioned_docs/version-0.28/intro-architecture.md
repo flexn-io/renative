@@ -24,7 +24,7 @@ Folder Structure (Generated Project)
     │   ├── base                    # Shared project configuration files/assets
     │   │   ├── fonts               # Folder for all custom fonts
     │   │   └── builds              # Fonts configuration
-    │   └── helloWorld              # Example application flavour
+    │   └── helloworld              # Example application flavour
     │       ├── assets              # Platform assets injected to `./platformAssets`
     │       ├── builds              # Platform files injected to `./platformBuilds`
     │       └── renative.json       # Application flavour config

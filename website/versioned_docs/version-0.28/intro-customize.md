@@ -21,7 +21,7 @@ you can override any file via `./appConfigs/base/builds/[PLATFORM]/[FILE_PATH]`
 
 Webpack config file of your web app:
 
-`./platformBuilds/helloWorld_web/webpack.config.js`
+`./platformBuilds/helloworld_web/webpack.config.js`
 
 Will be overridden with:
 
@@ -31,7 +31,7 @@ Will be overridden with:
 
 Application delegate of your iOS app
 
-`./platformBuilds/helloWorld_ios/RNVApp/AppDelegate.swift`
+`./platformBuilds/helloworld_ios/RNVApp/AppDelegate.swift`
 
 Will be overridden with:
 

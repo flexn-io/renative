@@ -61,6 +61,11 @@
                     "bundleAssets": false,
                     "sdk": "iphonesimulator"
                 },
+                "test": {
+                    "runScheme": "Debug",
+                    "bundleAssets": true,
+                    "sdk": "iphonesimulator"
+                },
                 "release": {
                     "runScheme": "Release",
                     "bundleAssets": true,

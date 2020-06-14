@@ -164,7 +164,7 @@ export const runXcodeProject = async (c) => {
             )} in your ${chalk.white(
                 c.paths.appConfig.config
             )}! Check example config for more info:  ${chalk.grey(
-                'https://github.com/pavjacko/renative/blob/master/appConfigs/helloWorld/renative.json'
+                'https://github.com/pavjacko/renative/blob/master/appConfigs/helloworld/renative.json'
             )} `
         );
     }
@@ -486,6 +486,85 @@ const composeXcodeArgsFromCLI = (string) => {
     return unescapedValues;
 };
 
+export const buildXcodeProject = async (c, platform) => {
+    logTask(`buildXcodeProject:${platform}`);
+
+    const appFolderName = getAppFolderName(c, platform);
+    const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
+    let sdk = getConfigProp(c, platform, 'sdk');
+    if (!sdk) {
+        if (platform === IOS) sdk = 'iphoneos';
+        if (platform === TVOS) sdk = 'appletvos';
+        if (platform === MACOS) sdk = 'macosx';
+    }
+    const sdkArr = [sdk];
+
+    const scheme = getConfigProp(c, platform, 'scheme');
+    const appPath = getAppFolder(c, platform);
+    const buildPath = path.join(appPath, `build/${scheme}`);
+    const allowProvisioningUpdates = getConfigProp(
+        c,
+        platform,
+        'allowProvisioningUpdates',
+        true
+    );
+    const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
+    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
+    let ps = '';
+    if (c.program.xcodebuildArgs) {
+        ps = c.program.xcodebuildArgs;
+    }
+    const p = [];
+
+    if (!ps.includes('-workspace')) {
+        p.push('-workspace');
+        p.push(`${appPath}/${appFolderName}.xcworkspace`);
+    }
+    if (!ps.includes('-scheme')) {
+        p.push('-scheme');
+        p.push(scheme);
+    }
+    if (!ps.includes('-sdk')) {
+        p.push('-sdk');
+        p.push(...sdkArr);
+    }
+    if (!ps.includes('-configuration')) {
+        p.push('-configuration');
+        p.push(runScheme);
+    }
+    if (!ps.includes('-derivedDataPath')) {
+        p.push('-derivedDataPath');
+        p.push(buildPath);
+    }
+
+    p.push('build');
+
+    if (allowProvisioningUpdates && !ps.includes('-allowProvisioningUpdates')) { p.push('-allowProvisioningUpdates'); }
+    if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
+
+    logTask('buildXcodeProject: STARTING xcodebuild BUILD...');
+
+    // if (bundleAssets) {
+    //     await packageBundleForXcode(c, platform, bundleIsDev);
+    // }
+
+    if (c.buildConfig.platforms[platform].runScheme === 'Release') {
+        await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
+        logSuccess(
+            `Your Build is located in ${chalk.white(buildPath)} .`
+        );
+    }
+
+    const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
+
+    logDebug('xcodebuild args', args);
+
+    return executeAsync('xcodebuild', { rawCommand: { args } }).then(() => {
+        logSuccess(`Your Build is located in ${chalk.white(buildPath)} .`);
+    });
+};
+
 const archiveXcodeProject = (c, platform) => {
     logTask(`archiveXcodeProject:${platform}`);
 
@@ -565,8 +644,10 @@ const archiveXcodeProject = (c, platform) => {
     });
 };
 
-const exportXcodeProject = (c, platform) => {
+const exportXcodeProject = async (c, platform) => {
     logTask(`exportXcodeProject:${platform}`);
+
+    await archiveXcodeProject(c, platform);
 
     const appPath = getAppFolder(c, platform);
     const exportPath = path.join(appPath, 'release');
