@@ -28,7 +28,13 @@ security default-keychain -s ios-build.keychain
 security unlock-keychain -p travis ios-build.keychain
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
-npm install -g npx
+if [ -d "../lib/node_modules/npx" ]
+then
+    echo "npx already installed. skipping"
+else
+    npm install -g npx
+fi
+
 yarn bootstrap
 cd packages/app
 
