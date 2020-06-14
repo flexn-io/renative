@@ -128,7 +128,7 @@
         "react-navigation": "3.9.2",
         "react-navigation-tabs": "2.0.0-alpha.0",
         "renative": "^0.29.1-alpha.9",
-        "detox": "16.8.0",
+        "detox": "14.8.1",
         "rn-fetch-blob": "0.11.2"
     },
     "devDependencies": {
