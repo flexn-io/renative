@@ -57,9 +57,10 @@ const _execute = (c, command, opts = {}) => {
     const intervalTimer = 30000; // 30s
     let timer = intervalTimer;
     const privateMask = '*******';
-
+    const cleanRawCmd = opts.rawCommand?.args || [];
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
+    cleanCommand += cleanRawCmd.join(' ');
     let logMessage = cleanCommand;
     const { privateParams } = mergedOpts;
     if (privateParams && Array.isArray(privateParams)) {

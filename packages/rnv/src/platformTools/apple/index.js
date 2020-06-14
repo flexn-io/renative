@@ -16,6 +16,7 @@ import {
     generateChecksum,
     getFlavouredProp
 } from '../../common';
+import { doResolve } from '../../resolve';
 import { parsePlugins } from '../../pluginTools';
 import { isPlatformActive } from '..';
 import {
@@ -288,9 +289,12 @@ export const runXcodeProject = async (c) => {
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
     logTask(`_checkLockAndExec:${scheme}:${runScheme}`);
-    const cmd = `react-native run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
+    const cmd = `node ${doResolve(
+        'react-native'
+    )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     try {
-        await executeAsync(c, cmd);
+        await executeAsync(c, cmd, { stdio: 'inherit', silent: true });
+        // await executeAsync(c, cmd);
         return true;
     } catch (e) {
         if (e && e.includes) {
@@ -625,7 +629,9 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         args.push('--verbose');
     }
 
-    return executeAsync(c, `react-native ${args.join(' ')} --config=configs/metro.config.${c.platform}.js`);
+    return executeAsync(c, `node ${doResolve(
+        'react-native'
+    )}/local-cli/cli.js ${args.join(' ')} --config=configs/metro.config.${c.platform}.js`);
 };
 
 export const getAppFolderName = (c, platform) => {

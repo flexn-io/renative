@@ -58,7 +58,8 @@
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
-                    "bundleAssets": false
+                    "bundleAssets": false,
+                    "sdk": "iphonesimulator"
                 },
                 "release": {
                     "runScheme": "Release",

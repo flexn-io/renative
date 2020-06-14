@@ -2515,6 +2515,12 @@
         },
         "next": {
             "version": "9.3.1"
+        },
+        "@react-native-community/cli-platform-ios": {
+            "no-npm": true
+        },
+        "@react-native-community/cli": {
+            "no-npm": true
         }
     }
 }
