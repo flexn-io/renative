@@ -11,13 +11,13 @@ jobs:
           cache:
               directories:
                 - node_modules
-          node_js: 10.15.3
+          node_js: 13.13.0
           os: osx
           osx_image: xcode11.3
           install:
-            - nvm install v10.15.3
-            - nvm alias default v10.15.3
-            - npm install -g npx
+            # - nvm install v13.13.0
+            # - nvm alias default v13.13.0
+            # - npm install -g npx
           script: ci/run_osx.sh
         # - name: "Run integration"
         #   stage: test
