@@ -320,6 +320,11 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
 
     let hasPackageChanged = false;
 
+    if (!c.buildConfig?.plugins) {
+        resolve();
+        return;
+    }
+
     Object.keys(c.buildConfig.plugins).forEach((k) => {
         const { dependencies } = c.files.project.package;
         const { devDependencies } = c.files.project.package;

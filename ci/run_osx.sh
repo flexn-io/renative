@@ -17,7 +17,8 @@ PROJECT_PATH="/Users/travis/build/$REPO_NAME"
 GLOBAL_PATH="$GLOBAL_ROOT/$PROJECT_NAME"
 PROV_PROFILES=~/Library/MobileDevice/Provisioning\ Profiles
 
-rm -rf ./node_modules && rm -rf ./package-lock.json
+# Disable temporary to speed up the build
+# rm -rf ./node_modules && rm -rf ./package-lock.json
 mkdir -p $GLOBAL_PATH
 echo "{\"appConfigsPath\":\"$PROJECT_PATH/appConfigs\", \"defaultTargets\": {}}" > "$GLOBAL_ROOT/renative.json"
 mkdir -p "$PROV_PROFILES"
@@ -28,7 +29,6 @@ security unlock-keychain -p travis ios-build.keychain
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
 yarn bootstrap
-
 cd packages/app
 
 # RUN

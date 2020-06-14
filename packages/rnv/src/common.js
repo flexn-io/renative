@@ -198,7 +198,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         logError('getConfigProp: invalid key!');
         return null;
     }
-    const p = c.buildConfig.platforms[platform];
+    const p = c.buildConfig.platforms?.[platform];
     const ps = c.runtime.scheme;
     const keyArr = key.split('.');
     const baseKey = keyArr.shift();
