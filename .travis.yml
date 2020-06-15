@@ -1,68 +1,81 @@
 env:
-    global:
-        - NODE_OPTIONS=--max_old_space_size=8192
-        - ACCOUNT_NAME=rnv
-        - REPO_NAME=pavjacko/renative
-        - PROJECT_NAME=renative
+  global:
+    - NODE_OPTIONS=--max_old_space_size=8192
+    - ACCOUNT_NAME=rnv
+    - REPO_NAME=pavjacko/renative
+    - PROJECT_NAME=renative
 jobs:
-    include:
-        - name: "Build osx"
-          language: node_js
-          cache:
-              directories:
-                - node_modules
-          node_js: 13.13.0
-          os: osx
-          osx_image: xcode11.3
-          script: ci/run_osx.sh
-        - name: "Run integration"
-          stage: test
-          dist: trusty
-          language: node_js
-          node_js: 10.15.3
-          install:
-              - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-              - yarn bootstrap
-              - cd packages/rnv
-              - yarn build:dev
-          script: npm run test:setup
-        # - language: android
-        #   sudo: required
-        #   jdk: oraclejdk8
-        #   android:
-        #       components:
-        #           - tools
-        #           - build-tools-28.0.3
-        #           - extra-google-m2repository
-        #           - extra-android-m2repository
-        #           - platform-tools
-        #           - android-28
-        #           - sys-img-x86-android-28
-        #   before_install:
-        #       - curl -sL https://deb.nodesource.com/setup_10.x | bash -
-        #       - apt-get install -y nodejs
-        #       - npm uninstall --global yarn; rm /usr/local/bin/yarn
-        #       - npm config set prefix ~/.npm
-        #       - export PATH=$PATH:~/.npm/bin
-        #       - rm -rf ~/.yarn/bin/yarn || true && npm install --global yarn && yarn --version; which yarn
-        #       - yarn bootstrap-clean
-        #       - cd packages/rnv
-        #       - yarn build:dev
-        #       # - npm link --unsafe-perm
-        #       - mkdir /home/travis/.rnv
-        #       - echo '{"sdks":{"ANDROID_SDK":"/usr/local/android-sdk"},"defaultTargets":{"android":"Nexus_5X_API_26","androidtv":"Android_TV_720p_API_22","androidwear":"Android_Wear_Round_API_28"}}' > /home/travis/.rnv/renative.json
-        #       - echo '{"workspaces":{"rnv":{"path":"/home/travis/.rnv"}}}' > /home/travis/.rnv/renative.workspaces.json
-        #       - yes | sdkmanager "emulator"
-        #   script: yarn test:integration
-        - language: node_js
-          node_js: 10.15.3
-          os: osx
-          osx_image: xcode11.3
-          before_install:
-              - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-              - yarn bootstrap
-          install:
-              - cd packages/rnv
-              - yarn build:dev
-              # - npm link --unsafe-perm
-          script: yarn test:ios
+  include:
+    - name: "E2E iOS"
+      language: node_js
+      cache:
+        directories:
+          - node_modules
+      node_js: 13.13.0
+      os: osx
+      osx_image: xcode11.3
+      install: skip
+      script: ci/run_osx.sh
+    - name: "E2E Android"
+      language: android
+      cache:
+        directories:
+          - node_modules
+      sudo: required
+      jdk: oraclejdk8
+      before_install:
+          - nvm install 13.13.0
+          - npm install -g npx
+          - echo yes | sdkmanager "platforms;android-28"
+      android:
+        components:
+          - tools
+          - build-tools-28.0.3
+          - extra-google-m2repository
+          - extra-android-m2repository
+          - platform-tools
+          - android-28
+          - sys-img-x86-android-28
+      install: skip
+      script: ci/run_linux.sh
+    - name: "Unit Tests"
+      dist: trusty
+      language: node_js
+      node_js: 10.15.3
+      install:
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+        - yarn bootstrap
+        - cd packages/rnv
+        - yarn build:dev
+      script: npm run test:setup
+    - name: "Android Integration"
+      language: android
+      sudo: required
+      jdk: oraclejdk8
+      android:
+        components:
+          - tools
+          - build-tools-28.0.3
+          - extra-google-m2repository
+          - extra-android-m2repository
+          - platform-tools
+          - android-28
+          - sys-img-x86-android-28
+      before_install:
+        - nvm install 13.13.0
+        - npm install -g npx
+        - echo yes | sdkmanager "platforms;android-28"
+      script: yarn test:integration
+    - name: "iOS Integration"
+      language: node_js
+      node_js: 10.15.3
+      os: osx
+      osx_image: xcode11.3
+      before_install:
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+        - yarn bootstrap
+      install:
+        - cd packages/rnv
+        - yarn build:dev
+        # - npm link --unsafe-perm
+      script: yarn test:ios

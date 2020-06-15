@@ -28,7 +28,7 @@
         "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloworld --ci && yarn run:apps",
         "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
         "detox-ios": "detox test -c ios.sim.debug",
-        "detox-ios:build": "detox build -c ios.sim.debug",
+        "detox-android": "detox test -c android.sim.debug",
         "test": "jest"
     },
     "dependencies": {
@@ -80,7 +80,10 @@
         "renative-template-kitchen-sink": "^0.29.1-alpha.9",
         "jetifier": "1.6.5",
         "detox": "14.8.1",
+        "babel-jest": "24.9.0",
         "jest": "24.0.0",
+        "jest-junit": "10.0.0",
+        "jest-transform-stub": "2.0.0",
         "xcode": "2.1.0"
     },
     "optionalDependencies": {
@@ -107,17 +110,15 @@
         "test-runner": "jest",
         "runner-config": "./e2e/config.json",
         "configurations": {
-            "android.debug": {
+            "android.sim.debug": {
                 "binaryPath": "platformBuilds/helloworld_android/app/build/outputs/apk/debug/app-debug.apk",
-                "build": "npx rnv build -p android -c helloworld -s AndroidTest && npx rnv build -p android -c helloworld -s detox && cp platformBuilds/helloworld_android/app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk platformBuilds/helloworld_android/app/build/outputs/apk/debug/app-debug-androidTest.apk",
                 "type": "android.emulator",
                 "device": {
-                    "avdName": ""
+                    "avdName": "Pixel_2_API_28"
                 }
             },
             "ios.sim.debug": {
                 "binaryPath": "platformBuilds/helloworld_ios/build/RNVApp/Build/Products/Debug-iphonesimulator/RNVApp.app",
-                "build": "npx rnv build -p ios -c helloworld -s debug",
                 "type": "ios.simulator",
                 "device": {
                     "type": "iPhone 8"
