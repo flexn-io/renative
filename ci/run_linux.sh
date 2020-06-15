@@ -5,6 +5,9 @@ echo "CURRENT ENV:: TRAVIS_BRANCH: $TRAVIS_BRANCH, TRAVIS_PULL_REQUEST: $TRAVIS_
 
 # DEFINITIONS
 
+which android
+
+android create avd
 
 # SETUP
 set -e
