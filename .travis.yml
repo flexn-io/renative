@@ -25,7 +25,6 @@ jobs:
       jdk: oraclejdk8
       before_install:
           - nvm install 13.13.0
-          - npm install -g npx
           - echo yes | sdkmanager "platforms;android-28"
       android:
         components:
@@ -63,7 +62,6 @@ jobs:
           - sys-img-x86-android-28
       before_install:
         - nvm install 13.13.0
-        - npm install -g npx
         - echo yes | sdkmanager "platforms;android-28"
       script: yarn test:integration
     - name: "iOS Integration"
