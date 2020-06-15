@@ -49,7 +49,6 @@ jobs:
         - echo yes | sdkmanager "platforms;android-28"
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - yarn bootstrap
-        - cd packages/rnv
       script: ci/run_linux.sh
     - name: "Android: Integration"
       language: android

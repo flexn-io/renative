@@ -6,7 +6,7 @@ describe('It deals with Android emulators correctly', () => {
     if (DOCKER !== 'true') {
         beforeAll(async (done) => {
             await shell.exec(
-                'echo no | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"'
+                'echo no | android create avd -n android_test -k "system-images;android-28;default;x86"'
             );
             done();
         });
