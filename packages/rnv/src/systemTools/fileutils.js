@@ -10,6 +10,7 @@ import { isSystemWin } from '../utils';
 
 import { logDebug, logError, logWarning, logInfo } from './logger';
 import { getConfigProp } from '../common';
+import { doResolve, doResolvePath } from '../resolve';
 
 export const fsWriteFileSync = (dest, data, encoding) => {
     // console.log('FS_WRITE', dest);
@@ -573,6 +574,19 @@ export const sanitizeDynamicRefs = (c, obj) => {
     return obj;
 };
 
+const fixResolve = (text) => {
+    const regEx = /{{resolvePackage\(([\s\S]*?)\)}}/g;
+    const matches = text.match(regEx);
+    let newText = text;
+    if (matches?.length) {
+        matches.forEach((match) => {
+            const val = match.replace('{{resolvePackage(', '').replace(')}}', '');
+            newText = newText.replace(match, doResolve(val));
+        });
+    }
+    return newText;
+};
+
 export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeProps = {}) => {
     if (!obj) {
         return obj;
@@ -586,44 +600,51 @@ export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeP
                     val = val
                         .replace(`@${pk}@`, props[pk])
                         .replace(`{{props.${pk}}}`, props[pk]);
-                    obj[i] = val;
+                    obj[i] = fixResolve(val);
                 });
                 Object.keys(configProps).forEach((pk2) => {
                     val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
-                    obj[i] = val;
+                    obj[i] = fixResolve(val);
                 });
                 Object.keys(runtimeProps).forEach((pk3) => {
                     val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
-                    obj[i] = val;
+                    obj[i] = fixResolve(val);
                 });
             } else {
                 sanitizeDynamicProps(v, props, configProps, runtimeProps);
             }
         });
     } else if (typeof obj === 'object') {
+        // console.log('KAKAK', obj?.['build.gradle']);
         Object.keys(obj).forEach((key) => {
             let val = obj[key];
+            // Some values are passed as keys so have to validate keys as well
+            const newKey = fixResolve(key);
+            delete obj[key];
+            obj[newKey] = val;
             if (val) {
                 if (typeof val === 'string') {
                     Object.keys(props).forEach((pk) => {
                         val = val
                             .replace(`@${pk}@`, props[pk])
                             .replace(`{{props.${pk}}}`, props[pk]);
-                        obj[key] = val;
+                        obj[newKey] = fixResolve(val);
                     });
                     Object.keys(configProps).forEach((pk2) => {
                         val = val.replace(`{{configProps.${pk2}}}`, configProps[pk2]);
-                        obj[key] = val;
+                        obj[newKey] = fixResolve(val);
                     });
                     Object.keys(runtimeProps).forEach((pk3) => {
                         val = val.replace(`{{runtimeProps.${pk3}}}`, runtimeProps[pk3]);
-                        obj[key] = val;
+                        obj[newKey] = fixResolve(val);
                     });
                 } else {
                     sanitizeDynamicProps(val, props, configProps, runtimeProps);
                 }
             }
         });
+    } else if (typeof obj === 'string') {
+        return fixResolve(obj);
     }
 
     return obj;

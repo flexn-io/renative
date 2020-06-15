@@ -2392,7 +2392,7 @@
                 "BuildGradle": {
                     "allprojects": {
                         "repositories": {
-                            " maven {url \"$rootDir/../../node_modules/detox/Detox-android\"}": true
+                            " maven { url \"{{resolvePackage(detox)}}/Detox-android\" }": true
                         }
                     }
                 }
