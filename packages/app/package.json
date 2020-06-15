@@ -29,6 +29,7 @@
         "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
         "detox-ios": "detox test -c ios.sim.debug",
         "detox-android": "detox test -c android.emu.debug",
+        "detox-android:build": "detox build -c android.emu.debug",
         "test": "jest"
     },
     "dependencies": {
@@ -79,7 +80,7 @@
         "rnv": "^0.29.1-alpha.9",
         "renative-template-kitchen-sink": "^0.29.1-alpha.9",
         "jetifier": "1.6.5",
-        "detox": "14.8.1",
+        "detox": "15.1.3",
         "babel-jest": "24.9.0",
         "jest": "24.0.0",
         "jest-junit": "10.0.0",
@@ -113,6 +114,7 @@
             "android.emu.debug": {
                 "binaryPath": "platformBuilds/helloWorld_android/app/build/outputs/apk/debug/app-debug.apk",
                 "binaryPats": "platformBuilds/helloWorld_android/app/build/outputs/apk/androidTest/debug/androidTest/app-debug-androidTest-androidTest.apk",
+                "build": "cd platformBuilds/helloWorld_android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
                 "type": "android.emulator",
                 "device": {
                     "avdName": "Pixel_2_API_28"

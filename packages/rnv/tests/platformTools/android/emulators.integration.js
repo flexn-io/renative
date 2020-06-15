@@ -9,7 +9,7 @@ describe('It deals with Android emulators correctly', () => {
             //     'echo no | android create avd -n android_test -k "system-images;android-28;default;x86"'
             // );
             await shell.exec(
-                'echo no | android create avd -n android_test -t android-28 --abi armeabi-v7a'
+                'echo no | android create avd -n android_test -t android-28 --abi x86'
             );
             done();
         });

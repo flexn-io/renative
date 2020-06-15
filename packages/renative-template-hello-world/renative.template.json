@@ -36,7 +36,8 @@
         "@noriginmedia/react-spatial-navigation": "source:rnv",
         "renative": "source:rnv",
         "@react-native-community/cli-platform-ios": "source:rnv",
-        "@react-native-community/cli": "source:rnv"
+        "@react-native-community/cli": "source:rnv",
+        "detox": "source:rnv"
     },
     "platforms": {
         "android": {

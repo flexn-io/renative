@@ -10,7 +10,7 @@ WORKDIR /rnv
 RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -y nodejs
 
 # install the sdks used for the test to create the avd
-RUN sdkmanager "system-images;android-28;default;armeabi-v7a"
+RUN sdkmanager "system-images;android-28;default;x86"
 
 # copy the project
 COPY . .
@@ -23,4 +23,4 @@ RUN npm link && mkdir /root/.rnv/ && echo '{"workspaces":{"rnv":{"path":"/root/.
 
 # RUN echo "no" | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"
 # RUN echo "no" | avdmanager create avd -n android_test -k "system-images;android-28;default;armeabi-v7a"
-RUN echo "no" | android create avd -n android_test -t android-28 --abi armeabi-v7a
+RUN echo "no" | android create avd -n android_test -t android-28 --abi x86
