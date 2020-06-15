@@ -5,8 +5,11 @@ describe('It deals with Android emulators correctly', () => {
     // for some reason, adding an avd here does not work for docker
     if (DOCKER !== 'true') {
         beforeAll(async (done) => {
+            // await shell.exec(
+            //     'echo no | android create avd -n android_test -k "system-images;android-28;default;x86"'
+            // );
             await shell.exec(
-                'echo no | android create avd -n android_test -k "system-images;android-28;default;x86"'
+                'echo no | android create avd -n android_test -t android-28 --abi armeabi-v7a'
             );
             done();
         });
