@@ -105,6 +105,10 @@
                     "signingConfig": "Debug",
                     "bundleAssets": false
                 },
+                "test": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
+                },
                 "release": {
                     "signingConfig": "Release",
                     "multipleAPKs": true,

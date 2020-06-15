@@ -13,17 +13,17 @@ describe('It deals with Android emulators correctly', () => {
     }
 
     it('Should return one phone emulator', async () => {
-        const output = await shell.exec('rnv target list -p android');
+        const output = await shell.exec('rnv target list -p android --ci --mono');
         expect(output.stdout).toMatch('android_test');
     });
 
     it('Should return no TV emulator', async () => {
-        const output = await shell.exec('rnv target list -p androidtv');
+        const output = await shell.exec('rnv target list -p androidtv --ci --mono');
         expect(output.stdout).toMatch('No devices found');
     });
 
     it('Should return no Wear emulator', async () => {
-        const output = await shell.exec('rnv target list -p androidwear');
+        const output = await shell.exec('rnv target list -p androidwear --ci --mono');
         expect(output.stdout).toMatch(' No devices found');
     });
 });

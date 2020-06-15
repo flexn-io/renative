@@ -54,6 +54,9 @@ jobs:
       language: android
       sudo: required
       jdk: oraclejdk8
+      before_install:
+          - nvm install 13.13.0
+          - echo yes | sdkmanager "platforms;android-28"
       android:
         components:
           - tools
@@ -64,9 +67,6 @@ jobs:
           - android-28
           - sys-img-x86-android-28
       install:
-        - nvm install 13.13.0
-        - echo yes | sdkmanager "platforms;android-28"
-        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - yarn bootstrap
         - cd packages/rnv
       script: yarn test:integration

@@ -28,7 +28,7 @@
         "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloworld --ci && yarn run:apps",
         "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
         "detox-ios": "detox test -c ios.sim.debug",
-        "detox-android": "detox test -c android.sim.debug",
+        "detox-android": "detox test -c android.emu.debug",
         "test": "jest"
     },
     "dependencies": {
@@ -110,8 +110,9 @@
         "test-runner": "jest",
         "runner-config": "./e2e/config.json",
         "configurations": {
-            "android.sim.debug": {
-                "binaryPath": "platformBuilds/helloworld_android/app/build/outputs/apk/debug/app-debug.apk",
+            "android.emu.debug": {
+                "binaryPath": "platformBuilds/helloWorld_android/app/build/outputs/apk/debug/app-debug.apk",
+                "binaryPats": "platformBuilds/helloWorld_android/app/build/outputs/apk/androidTest/debug/androidTest/app-debug-androidTest-androidTest.apk",
                 "type": "android.emulator",
                 "device": {
                     "avdName": "Pixel_2_API_28"
