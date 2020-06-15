@@ -12,17 +12,14 @@ set -o xtrace
 set -o verbose
 set -o pipefail
 
-GLOBAL_ROOT="/Users/travis/.$ACCOUNT_NAME"
-PROJECT_PATH="/Users/travis/build/$REPO_NAME"
+GLOBAL_ROOT="/home/travis/.$ACCOUNT_NAME"
+PROJECT_PATH="/home/travis/build/$REPO_NAME"
 GLOBAL_PATH="$GLOBAL_ROOT/$PROJECT_NAME"
 
 # RESET
 # rm -rf ./node_modules
 
 mkdir -p $GLOBAL_PATH
-mkdir -p "$PROV_PROFILES"
-chmod 777 "$PROV_PROFILES"
-
 
 yarn bootstrap
 cd packages/app
