@@ -118,6 +118,7 @@ export const createDevelopTizenCertificate = c => new Promise((resolve, reject) 
         c,
         CLI_TIZEN,
         `certificate -- ${certDirPath} -a rnv -f ${certFilename} -p ${certPassword}`,
+        { privateParams: [certPassword] },
     )
         .then(() => addDevelopTizenCertificate(c, {
             profileName: DEFAULT_SECURITY_PROFILE_NAME,
@@ -139,6 +140,7 @@ export const addDevelopTizenCertificate = (c, secureProfileConfig) => new Promis
         c,
         CLI_TIZEN,
         `security-profiles add -n ${profileName} -a ${certPath} -p ${certPassword}`,
+        { privateParams: [certPassword] },
     )
         .then(() => resolve())
         .catch((e) => {
