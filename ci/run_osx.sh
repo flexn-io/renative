@@ -28,8 +28,8 @@ security default-keychain -s ios-build.keychain
 security unlock-keychain -p travis ios-build.keychain
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
 
-brew tap wix/brew
-brew install applesimutils
+brew tap wix/brew > /dev/null 2>&1
+brew install applesimutils > /dev/null 2>&1
 
 yarn bootstrap
 cd packages/app

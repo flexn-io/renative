@@ -293,9 +293,9 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
         'react-native'
     )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
     try {
-        await executeAsync(c, cmd, { stdio: 'inherit', silent: true });
-        // await executeAsync(c, cmd);
-        return true;
+        // Inherit full logs
+        // return executeAsync(c, cmd, { stdio: 'inherit', silent: true });
+        return executeAsync(c, cmd);
     } catch (e) {
         if (e && e.includes) {
             const isDeviceLocked = e.includes('ERROR:DEVICE_LOCKED');
