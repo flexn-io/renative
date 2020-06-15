@@ -6,7 +6,7 @@ env:
     - PROJECT_NAME=renative
 jobs:
   include:
-    - name: "E2E iOS"
+    - name: "iOS: E2E"
       language: node_js
       cache:
         directories:
@@ -16,7 +16,20 @@ jobs:
       osx_image: xcode11.3
       install: skip
       script: ci/run_osx.sh
-    - name: "E2E Android"
+    - name: "iOS: Integration"
+      language: node_js
+      node_js: 10.15.3
+      os: osx
+      osx_image: xcode11.3
+      before_install:
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+        - yarn bootstrap
+      install:
+        - cd packages/rnv
+        - yarn build:dev
+        # - npm link --unsafe-perm
+      script: yarn test:ios
+    - name: "Android: E2E"
       language: android
       cache:
         directories:
@@ -37,17 +50,7 @@ jobs:
           - sys-img-x86-android-28
       install: skip
       script: ci/run_linux.sh
-    - name: "Unit Tests"
-      dist: trusty
-      language: node_js
-      node_js: 10.15.3
-      install:
-        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-        - yarn bootstrap
-        - cd packages/rnv
-        - yarn build:dev
-      script: npm run test:setup
-    - name: "Android Integration"
+    - name: "Android: Integration"
       language: android
       sudo: required
       jdk: oraclejdk8
@@ -60,20 +63,19 @@ jobs:
           - platform-tools
           - android-28
           - sys-img-x86-android-28
-      before_install:
+      install:
         - nvm install 13.13.0
         - echo yes | sdkmanager "platforms;android-28"
-      script: yarn test:integration
-    - name: "iOS Integration"
-      language: node_js
-      node_js: 10.15.3
-      os: osx
-      osx_image: xcode11.3
-      before_install:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - yarn bootstrap
-      install:
         - cd packages/rnv
-        - yarn build:dev
-        # - npm link --unsafe-perm
-      script: yarn test:ios
+      script: yarn test:integration
+    - name: "Node: Unit Tests"
+      dist: trusty
+      language: node_js
+      node_js: 10.15.3
+      install:
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+        - yarn bootstrap
+        - cd packages/rnv
+      script: npm run test:setup
