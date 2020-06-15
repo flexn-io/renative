@@ -20,7 +20,6 @@ PROV_PROFILES=~/Library/MobileDevice/Provisioning\ Profiles
 # RESET
 # rm -rf ./node_modules
 
-
 mkdir -p $GLOBAL_PATH
 mkdir -p "$PROV_PROFILES"
 chmod 777 "$PROV_PROFILES"
@@ -28,6 +27,9 @@ security create-keychain -p travis ios-build.keychain
 security default-keychain -s ios-build.keychain
 security unlock-keychain -p travis ios-build.keychain
 security set-keychain-settings -t 3600 -l ~/Library/Keychains/ios-build.keychain
+
+brew tap wix/brew
+brew install applesimutils
 
 yarn bootstrap
 cd packages/app
