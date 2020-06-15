@@ -61,20 +61,21 @@ const formatXMLObject = (obj) => {
     return {};
 };
 
+const DEFAULT_SECURITY_PROFILE_NAME = 'RNVanillaCert';
+const DEFAULT_CERTIFICATE_NAME = 'tizen_author';
+const DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION = `${DEFAULT_CERTIFICATE_NAME}.p12`;
+
 export const configureTizenGlobal = c => new Promise((resolve, reject) => {
     logTask('configureTizenGlobal');
     // Check Tizen Cert
     // if (isPlatformActive(c, TIZEN) || isPlatformActive(c, TIZEN_WATCH)) {
-    const tizenAuthorCert = path.join(
-        c.paths.workspace.dir,
-        'tizen_author.p12'
-    );
+    const tizenAuthorCert = path.join(c.paths.workspace.dir, DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION);
     if (fs.existsSync(tizenAuthorCert)) {
-        logDebug('tizen_author.p12 file exists!');
+        logDebug(`${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file exists!`);
         resolve();
     } else {
         logWarning(
-            'tizen_author.p12 file missing! Creating one for you...'
+            `${DEFAULT_CERTIFICATE_NAME_WITH_EXTENSION} file missing! Creating one for you...`
         );
         createDevelopTizenCertificate(c)
             .then(() => resolve())
@@ -109,12 +110,20 @@ export const listTizenTargets = async (c, name) => {
 export const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
     logTask('createDevelopTizenCertificate');
 
+    const certDirPath = c.paths.workspace.dir;
+    const certFilename = DEFAULT_CERTIFICATE_NAME;
+    const certPassword = '1234';
+
     execCLI(
         c,
         CLI_TIZEN,
-        `certificate -- ${c.paths.workspace.dir} -a rnv -f tizen_author -p 1234`
+        `certificate -- ${certDirPath} -a rnv -f ${certFilename} -p ${certPassword}`,
     )
-        .then(() => addDevelopTizenCertificate(c))
+        .then(() => addDevelopTizenCertificate(c, {
+            profileName: DEFAULT_SECURITY_PROFILE_NAME,
+            certPath: path.join(certDirPath, `${certFilename}.p12`),
+            certPassword,
+        }))
         .then(() => resolve())
         .catch((e) => {
             logError(e);
@@ -122,16 +131,14 @@ export const createDevelopTizenCertificate = c => new Promise((resolve, reject) 
         });
 });
 
-export const addDevelopTizenCertificate = c => new Promise((resolve) => {
+export const addDevelopTizenCertificate = (c, secureProfileConfig) => new Promise((resolve) => {
     logTask('addDevelopTizenCertificate');
 
+    const { profileName, certPath, certPassword } = secureProfileConfig || {};
     execCLI(
         c,
         CLI_TIZEN,
-        `security-profiles add -n RNVanillaCert -a ${path.join(
-            c.paths.workspace.dir,
-            'tizen_author.p12'
-        )} -p 1234`
+        `security-profiles add -n ${profileName} -a ${certPath} -p ${certPassword}`,
     )
         .then(() => resolve())
         .catch((e) => {
@@ -285,7 +292,7 @@ export const runTizen = async (c, platform, target) => {
     const tOut = path.join(tDir, 'output');
     const tId = platformConfig.id;
     const wgt = `${platformConfig.appName}.wgt`;
-    const certProfile = platformConfig.certificateProfile ?? 'RNVanillaCert';
+    const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
     let deviceID;
 
@@ -472,7 +479,7 @@ export const buildTizenProject = async (c, platform) => {
     if (!c.program.hosted) {
         const tOut = path.join(tDir, 'output');
         const tBuild = path.join(tDir, 'build');
-        const certProfile = platformConfig.certificateProfile ?? 'RNVanillaCert';
+        const certProfile = platformConfig.certificateProfile ?? DEFAULT_SECURITY_PROFILE_NAME;
 
         await execCLI(c, CLI_TIZEN, `build-web -- ${tDir} -out ${tBuild}`);
         await execCLI(
