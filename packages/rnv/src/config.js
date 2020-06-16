@@ -155,8 +155,9 @@ class Config {
     }
 
     async injectPlatformDependencies(platform) {
-        const npmDeps = this.config.files?.rnv?.platformTemplates?.config
-            ?.platforms?.[platform]?.npm;
+        const selectedEngineKey = this.getConfigProp(this.config, platform, 'engine');
+        const selectedEngine = this.config.files.rnv.engines.config?.engines?.[selectedEngineKey];
+        const npmDeps = selectedEngine?.platforms[platform]?.npm;
 
         if (npmDeps) {
             const promises = Object.keys(npmDeps).reduce((acc, type) => {

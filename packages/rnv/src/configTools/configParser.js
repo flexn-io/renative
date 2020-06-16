@@ -14,6 +14,7 @@ import {
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
     RENATIVE_CONFIG_PLATFORMS_NAME,
+    RENATIVE_CONFIG_ENGINES_NAME,
     RN_CLI_CONFIG_NAME,
     SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
@@ -336,7 +337,7 @@ export const generateBuildConfig = (c) => {
     const mergeOrder = [
         c.paths.rnv.projectTemplates.config,
         c.paths.rnv.pluginTemplates.config,
-        c.files.rnv.platformTemplates.config,
+        // c.paths.rnv.platformTemplates.config,
         c.paths.workspace.config,
         c.paths.workspace.configPrivate,
         c.paths.workspace.configLocal,
@@ -377,6 +378,7 @@ export const generateBuildConfig = (c) => {
     const mergeFiles = [
         c.files.rnv.projectTemplates.config,
         ...pluginTemplates,
+        c.files.rnv.engines.config,
         c.files.workspace.config,
         c.files.workspace.configPrivate,
         c.files.workspace.configLocal,
@@ -629,9 +631,15 @@ export const loadProjectTemplates = (c) => {
     );
 };
 
-export const loadPlatformTemplates = (c) => {
-    c.files.rnv.platformTemplates.config = readObjectSync(
-        c.paths.rnv.platformTemplates.config
+// export const loadPlatformTemplates = (c) => {
+//     c.files.rnv.platformTemplates.config = readObjectSync(
+//         c.paths.rnv.platformTemplates.config
+//     );
+// };
+
+export const loadEngines = (c) => {
+    c.files.rnv.engines.config = readObjectSync(
+        c.paths.rnv.engines.config
     );
 };
 
@@ -842,7 +850,10 @@ export const parseRenativeConfigs = async (c) => {
     loadPluginTemplates(c);
 
     // LOAD PLATFORM TEMPLATES
-    loadPlatformTemplates(c);
+    // loadPlatformTemplates(c);
+
+    // LOAD ENGINES
+    loadEngines(c);
 
     if (!c.files.project.config) return;
 
@@ -978,6 +989,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                 projectTemplates: {},
                 platformTemplate: {},
                 plugins: {},
+                engines: {},
                 projectTemplate: {}
             },
             global: {},
@@ -1014,6 +1026,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                 platformTemplates: {},
                 projectTemplates: {},
                 plugins: {},
+                engines: {},
                 projectTemplate: {}
             },
             project: {
@@ -1056,13 +1069,21 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         c.paths.rnv.dir,
         'platformTemplates'
     );
+    c.paths.rnv.engines.dir = path.join(
+        c.paths.rnv.dir,
+        'engines'
+    );
     c.paths.rnv.pluginTemplates.dir = path.join(
         c.paths.rnv.dir,
         'pluginTemplates'
     );
-    c.paths.rnv.platformTemplates.config = path.join(
-        c.paths.rnv.platformTemplates.dir,
-        RENATIVE_CONFIG_PLATFORMS_NAME
+    // c.paths.rnv.platformTemplates.config = path.join(
+    //     c.paths.rnv.platformTemplates.dir,
+    //     RENATIVE_CONFIG_PLATFORMS_NAME
+    // );
+    c.paths.rnv.engines.config = path.join(
+        c.paths.rnv.engines.dir,
+        RENATIVE_CONFIG_ENGINES_NAME
     );
     c.paths.rnv.pluginTemplates.config = path.join(
         c.paths.rnv.pluginTemplates.dir,

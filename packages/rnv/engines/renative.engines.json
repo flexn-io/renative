@@ -116,8 +116,15 @@
                 }
             }
         },
+        "engine-next": {
+        },
         "engine-rn-next": {
             "plugins": {
+                "react": "source:rnv",
+                "react-art": "source:rnv",
+                "react-dom": "source:rnv",
+                "react-native": "source:rnv",
+                "react-native-web": "source:rnv",
                 "next": "source:rnv"
             },
             "platforms": {

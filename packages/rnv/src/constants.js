@@ -613,6 +613,7 @@ export const RENATIVE_CONFIG_WORKSPACES_NAME = 'renative.workspaces.json';
 export const RENATIVE_CONFIG_PLUGINS_NAME = 'renative.plugins.json';
 export const RENATIVE_CONFIG_TEMPLATES_NAME = 'renative.templates.json';
 export const RENATIVE_CONFIG_PLATFORMS_NAME = 'renative.platforms.json';
+export const RENATIVE_CONFIG_ENGINES_NAME = 'renative.engines.json';
 export const RN_CLI_CONFIG_NAME = 'metro.config.js';
 export const RN_BABEL_CONFIG_NAME = 'babel.config.js';
 export const NEXT_CONFIG_NAME = 'next.config.js';
