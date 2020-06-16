@@ -509,8 +509,6 @@ export const buildXcodeProject = async (c, platform) => {
         true
     );
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     let ps = '';
     if (c.program.xcodebuildArgs) {
         ps = c.program.xcodebuildArgs;
@@ -544,10 +542,6 @@ export const buildXcodeProject = async (c, platform) => {
     if (ignoreLogs && !ps.includes('-quiet')) p.push('-quiet');
 
     logTask('buildXcodeProject: STARTING xcodebuild BUILD...');
-
-    // if (bundleAssets) {
-    //     await packageBundleForXcode(c, platform, bundleIsDev);
-    // }
 
     if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
@@ -589,7 +583,6 @@ const archiveXcodeProject = (c, platform) => {
         true
     );
     const ignoreLogs = getConfigProp(c, platform, 'ignoreLogs');
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
     const exportPathArchive = `${exportPath}/${scheme}.xcarchive`;
     let ps = '';
     if (c.program.xcodebuildArchiveArgs) {
@@ -625,15 +618,6 @@ const archiveXcodeProject = (c, platform) => {
 
     logTask('archiveXcodeProject: STARTING xcodebuild ARCHIVE...');
 
-    if (c.buildConfig.platforms[platform].runScheme === 'Release') {
-        return packageBundleForXcode(c, platform, bundleIsDev)
-            .then(() => executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`))
-            .then(() => {
-                logSuccess(
-                    `Your Archive is located in ${chalk.white(exportPath)} .`
-                );
-            });
-    }
 
     const args = ps !== '' ? [...composeXcodeArgsFromCLI(ps), ...p] : p;
 

@@ -424,9 +424,9 @@ const _rnvExportWithPlatform = async (c) => {
             return exportWebNext(c);
         case IOS:
         case TVOS:
-            // if (!c.program.only) {
-            //     await _rnvBuildWithPlatform(c, platform);
-            // }
+            if (!c.program.only) {
+                await _rnvPackageWithPlatform(c, platform);
+            }
             return exportXcodeProject(c, platform);
         case ANDROID:
         case ANDROID_TV:
