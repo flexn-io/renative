@@ -68,6 +68,22 @@ jobs:
         - $ANDROID_HOME/platform-tools/adb shell settings put secure show_ime_with_hard_keyboard 0 &
         - $ANDROID_HOME/platform-tools/adb shell input keyevent 82 &
       script: ci/run_linux_android.sh
+    - name: "HelloWorld Android: E2E 2"
+      language: android
+      cache: yarn
+      jdk: oraclejdk8
+      dist: trusty
+      sudo: required
+      android:
+        components:
+          - build-tools-28.0.3
+          - android-28
+          - sys-img-x86-android-28
+      install:
+      - echo no | android create avd --force -n pixel9 -t android-28 --abi default/x86
+      - curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
+      - sudo apt-get install -y nodejs
+      script: ci/run_linux_android.sh
     - name: "HelloWorld Web: E2E"
       dist: trusty
       language: node_js

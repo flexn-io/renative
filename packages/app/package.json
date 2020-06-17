@@ -33,7 +33,7 @@
         "e2e-ios:run": "detox test -c ios.sim.debug",
         "e2e-android": "yarn e2e-android:build && yarn e2e-android:run",
         "e2e-android:build": "detox build -c android.emu.debug",
-        "e2e-android:run": "detox test -c android.emu.debug",
+        "e2e-android:run": "detox test -c android.emu.debug --headless --gpu swiftshader --cleanup",
         "e2e-web": "rnv start -p web & wait-on http://0.0.0.0:8180 && cypress run",
         "e2e-web:open": "cypress open"
     },
