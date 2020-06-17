@@ -5,9 +5,6 @@ echo "CURRENT ENV:: TRAVIS_BRANCH: $TRAVIS_BRANCH, TRAVIS_PULL_REQUEST: $TRAVIS_
 
 # DEFINITIONS
 
-which android
-
-android create avd
 
 # SETUP
 set -e
@@ -18,6 +15,8 @@ set -o pipefail
 GLOBAL_ROOT="/home/travis/.$ACCOUNT_NAME"
 PROJECT_PATH="/home/travis/build/$REPO_NAME"
 GLOBAL_PATH="$GLOBAL_ROOT/$PROJECT_NAME"
+
+echo "no" | android create avd -n android_test -t android-28 --abi x86
 
 # RESET
 # rm -rf ./node_modules
@@ -32,4 +31,5 @@ cd packages/app
 npx rnv template apply --template renative-template-hello-world --ci --mono
 # npx rnv configure -c helloworld -p web --ci --mono
 # npx rnv build -p android -c helloworld -s test --ci --mono
-# yarn detox-android
+yarn detox-android:build
+yarn detox-android

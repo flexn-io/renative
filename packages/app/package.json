@@ -113,11 +113,10 @@
         "configurations": {
             "android.emu.debug": {
                 "binaryPath": "platformBuilds/helloWorld_android/app/build/outputs/apk/debug/app-debug.apk",
-                "binaryPats": "platformBuilds/helloWorld_android/app/build/outputs/apk/androidTest/debug/androidTest/app-debug-androidTest-androidTest.apk",
-                "build": "cd platformBuilds/helloWorld_android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
+                "build": "rnv package -p android -s test -r && cd platformBuilds/helloWorld_android && ./gradlew assembleDebug assembleAndroidTest -DtestBuildType=debug && cd ..",
                 "type": "android.emulator",
                 "device": {
-                    "avdName": "Pixel_2_API_28"
+                    "avdName": "android_test"
                 }
             },
             "ios.sim.debug": {
