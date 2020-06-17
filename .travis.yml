@@ -36,8 +36,8 @@ jobs:
         - $HOME/android-sdk-dl
         - $HOME/android-sdk
       install:
-        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - nvm install 13.13.0
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - mkdir -p $HOME/android-sdk-dl
         - mkdir -p $HOME/android-sdk
         - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
