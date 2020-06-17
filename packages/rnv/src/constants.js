@@ -72,6 +72,58 @@ export const OS = {
     LINUX_ONLY: [OS_LINUX]
 };
 
+const EXT_BROWSER = ['browser.jsx', 'browser.js', 'browser.tsx', 'browser.ts'];
+const EXT_MOBILE = ['mobile.jsx', 'mobile.js', 'mobile.tsx', 'mobile.ts'];
+const EXT_MOBILE_NATIVE = ['mobile.native.jsx', 'mobile.native.js', 'mobile.native.tsx', 'mobile.native.ts'];
+const EXT_NATIVE = ['native.jsx', 'native.js', 'native.tsx', 'native.ts'];
+const EXT_TV_NATIVE = ['tv.native.jsx', 'tv.native.js', 'tv.native.tsx', 'tv.native.ts'];
+const EXT_IOS_MOBILE = ['ios.mobile.jsx', 'ios.mobile.js', 'ios.mobile.tsx', 'ios.mobile.ts'];
+const EXT_IOS = ['ios.jsx', 'ios.js', 'ios.tsx', 'ios.ts'];
+const EXT_ANDROID_MOBILE = ['android.mobile.jsx', 'android.mobile.js', 'android.mobile.tsx', 'android.mobile.ts'];
+const EXT_ANDROID = ['android.jsx', 'android.js', 'android.tsx', 'android.ts'];
+const EXT_TVOS = ['tvos.jsx', 'tvos.js', 'tvos.tsx', 'tvos.ts'];
+const EXT_TVOS_TV = ['tvos.tv.jsx', 'tvos.tv.js', 'tvos.tv.tsx', 'tvos.tv.ts'];
+const EXT_TV = ['tv.jsx', 'tv.js', 'tv.tsx', 'tv.ts'];
+const EXT_ANDROIDTV_TV = ['androidtv.tv.jsx', 'androidtv.tv.js', 'androidtv.tv.tsx', 'androidtv.tv.ts'];
+const EXT_ANDROIDTV = ['androidtv.jsx', 'androidtv.js', 'androidtv.tsx', 'androidtv.ts'];
+const EXT_SERVER_NEXT = ['server.next.jsx', 'server.next.js', 'server.next.tsx', 'server.next.ts'];
+const EXT_NEXT = ['next.jsx', 'next.js', 'next.tsx', 'next.ts'];
+const EXT_SERVER_WEB = ['server.web.jsx', 'server.web.js', 'server.web.tsx', 'server.web.ts'];
+const EXT_WEB = ['web.jsx', 'web.js', 'web.tsx', 'web.ts'];
+const EXT_FALLBACK = ['mjs', 'jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
+const EXT_MACOS_DESKTOP = ['macos.desktop.jsx', 'macos.desktop.js', 'macos.desktop.tsx', 'macos.desktop.ts'];
+const EXT_DESKTOP = ['desktop.jsx', 'desktop.js', 'desktop.tsx', 'desktop.ts'];
+const EXT_MACOS = ['macos.jsx', 'macos.js', 'macos.tsx', 'macos.ts'];
+const EXT_DESKTOP_WEB = ['desktop.web.jsx', 'desktop.web.js', 'desktop.web.tsx', 'desktop.web.ts'];
+const EXT_ELECTRON = ['electron.jsx', 'electron.js', 'electron.tsx', 'electron.ts'];
+const EXT_TIZEN_TV = ['tizen.tv.jsx', 'tizen.tv.js', 'tizen.tv.tsx', 'tizen.tv.ts'];
+const EXT_TIZEN = ['tizen.tv.jsx', 'tizen.tv.js', 'tizen.tv.tsx', 'tizen.tv.ts'];
+const EXT_WEB_TV = ['web.tv.jsx', 'web.tv.js', 'web.tv.tsx', 'web.tv.ts'];
+const EXT_TV_WEB = ['tv.web.jsx', 'tv.web.js', 'tv.web.tsx', 'tv.web.ts'];
+const EXT_WEBOS_TV = ['webos.tv.jsx', 'webos.tv.js', 'webos.tv.tsx', 'webos.tv.ts'];
+const EXT_WEBOS = ['webos.jsx', 'webos.js', 'webos.tsx', 'webos.ts'];
+const EXT_ANDROIDWEAR_WATCH = ['androidwear.watch.jsx', 'androidwear.watch.js', 'androidwear.watch.tsx', 'androidwear.watch.ts'];
+const EXT_ANDROIDWEAR = ['androidwear.jsx', 'androidwear.js', 'androidwear.tsx', 'androidwear.ts'];
+const EXT_WATCH = ['watch.jsx', 'watch.js', 'watch.tsx', 'watch.ts'];
+const EXT_WATCH_NATIVE = ['watch.native.jsx', 'watch.native.js', 'watch.native.tsx', 'watch.native.ts'];
+const EXT_TIZENWATCH_WATCH = ['tizenwatch.watch.jsx', 'tizenwatch.watch.js', 'tizenwatch.watch.tsx', 'tizenwatch.watch.ts'];
+const EXT_TIZENWATCH = ['tizenwatch.jsx', 'tizenwatch.js', 'tizenwatch.tsx', 'tizenwatch.ts'];
+const EXT_WATCH_WEB = ['watch.web.jsx', 'watch.web.js', 'watch.web.tsx', 'watch.web.ts'];
+const EXT_TIZENMOBILE_MOBILE = ['tizenmobile.mobile.jsx', 'tizenmobile.mobile.js', 'tizenmobile.mobile.tsx', 'tizenmobile.mobile.ts'];
+const EXT_TIZENMOBILE = ['tizenmobile.jsx', 'tizenmobile.js', 'tizenmobile.tsx', 'tizenmobile.ts'];
+const EXT_MOBILE_WEB = ['mobile.web.jsx', 'mobile.web.js', 'mobile.web.tsx', 'mobile.web.ts'];
+const EXT_WIN_DESKTOP = ['windows.desktop.jsx', 'windows.desktop.js', 'windows.desktop.tsx', 'windows.desktop.ts'];
+const EXT_WIN = ['windows.jsx', 'windows.js', 'windows.tsx', 'windows.ts'];
+const EXT_KAIOS_MOBILE = ['kaios.mobile.jsx', 'kaios.mobile.js', 'kaios.mobile.tsx', 'kaios.mobile.ts'];
+const EXT_KAIOS = ['kaios.jsx', 'kaios.js', 'kaios.tsx', 'kaios.ts'];
+const EXT_FFOS_MOBILE = ['firefoxos.mobile.jsx', 'firefoxos.mobile.js', 'firefoxos.mobile.tsx', 'firefoxos.mobile.ts'];
+const EXT_FFOS = ['firefoxos.jsx', 'firefoxos.js', 'firefoxos.tsx', 'firefoxos.ts'];
+const EXT_FFTV_TV = ['firefoxtv.tv.jsx', 'firefoxtv.tv.js', 'firefoxtv.tv.tsx', 'firefoxtv.tv.ts'];
+const EXT_FFTV = ['firefoxtv.jsx', 'firefoxtv.js', 'firefoxtv.tsx', 'firefoxtv.ts'];
+const EXT_CAST_TV = ['chromecast.tv.jsx', 'chromecast.tv.js', 'chromecast.tv.tsx', 'chromecast.tv.ts'];
+const EXT_CAST = ['chromecast.jsx', 'chromecast.js', 'chromecast.tsx', 'chromecast.ts'];
+
+
 export const PLATFORMS = {
     // ACTIVE
     web: {
@@ -81,9 +133,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['browser.js', 'browser.ts'],
-            platforms: ['web.js', 'web.ts'],
-            fallbacks: ['mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_BROWSER],
+            platforms: [...EXT_WEB],
+            fallbacks: [...EXT_FALLBACK]
         }
     },
     'web-next': {
@@ -93,9 +145,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['browser.js', 'browser.ts'],
-            platforms: ['server.next.js', 'server.next.ts', 'next.js', 'next.ts'],
-            fallbacks: ['server.web.js', 'server.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'jsx', 'json', 'wasm', 'tsx', 'ts']
+            factors: [...EXT_BROWSER],
+            platforms: [...EXT_SERVER_NEXT, ...EXT_NEXT],
+            fallbacks: [...EXT_SERVER_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     ios: {
@@ -105,9 +157,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: false,
         sourceExts: {
-            factors: ['ios.mobile.js', 'ios.mobile.ts', 'mobile.js', 'mobile.ts'],
-            platforms: ['ios.js', 'ios.ts'],
-            fallbacks: ['mobile.native.js', 'mobile.native.ts', 'native.js', 'native.ts', 'js', 'tsx', 'ts']
+            factors: [...EXT_IOS_MOBILE, ...EXT_MOBILE],
+            platforms: [...EXT_IOS],
+            fallbacks: [...EXT_MOBILE_NATIVE, ...EXT_NATIVE, ...EXT_FALLBACK]
         }
     },
     android: {
@@ -117,9 +169,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: false,
         sourceExts: {
-            factors: ['android.mobile.js', 'android.mobile.ts', 'mobile.js', 'mobile.ts'],
-            platforms: ['android.js', 'android.ts'],
-            fallbacks: ['mobile.native.js', 'mobile.native.ts', 'native.js', 'native.ts', 'js', 'tsx', 'ts']
+            factors: [...EXT_ANDROID_MOBILE, ...EXT_MOBILE],
+            platforms: [...EXT_ANDROID],
+            fallbacks: [...EXT_MOBILE_NATIVE, ...EXT_NATIVE, ...EXT_FALLBACK]
         }
     },
     androidtv: {
@@ -129,9 +181,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: false,
         sourceExts: {
-            factors: ['androidtv.tv.js', 'androidtv.tv.ts', 'tv.js', 'tv.ts'],
-            platforms: ['androidtv.js', 'androidtv.ts', 'android.js', 'android.ts'],
-            fallbacks: ['tv.native.js', 'tv.native.ts', 'native.js', 'native.ts', 'js', 'tsx', 'ts']
+            factors: [...EXT_ANDROIDTV_TV, ...EXT_TV],
+            platforms: [...EXT_ANDROIDTV, ...EXT_ANDROID],
+            fallbacks: [...EXT_TV_NATIVE, ...EXT_NATIVE, ...EXT_FALLBACK]
         }
     },
     tvos: {
@@ -141,9 +193,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: false,
         sourceExts: {
-            factors: ['tvos.tv.js', 'tvos.tv.ts', 'tv.js', 'tv.ts'],
-            platforms: ['tvos.js', 'tvos.ts', 'ios.js', 'ios.ts'],
-            fallbacks: ['tv.native.js', 'tv.native.ts', 'native.js', 'native.ts', 'js', 'tsx', 'ts']
+            factors: [...EXT_TVOS_TV, ...EXT_TV],
+            platforms: [...EXT_TVOS, ...EXT_IOS],
+            fallbacks: [...EXT_TV_NATIVE, ...EXT_NATIVE, ...EXT_FALLBACK]
         }
     },
     macos: {
@@ -153,20 +205,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['macos.desktop.js', 'macos.desktop.ts', 'desktop.js', 'desktop.ts'],
-            platforms: ['macos.js', 'macos.ts'],
-            fallbacks: [
-                'desktop.web.js',
-                'desktop.web.ts',
-                'electron.js',
-                'electron.ts',
-                'web.js',
-                'web.ts',
-                'mjs',
-                'js',
-                'tsx',
-                'ts'
-            ]
+            factors: [...EXT_MACOS_DESKTOP, ...EXT_DESKTOP],
+            platforms: [...EXT_MACOS],
+            fallbacks: [...EXT_DESKTOP_WEB, ...EXT_ELECTRON, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     tizen: {
@@ -176,9 +217,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['tizen.tv.js', 'tizen.tv.ts', 'web.tv.js', 'web.tv.ts', 'tv.js', 'tv.ts'],
-            platforms: ['tizen.js', 'tizen.ts'],
-            fallbacks: ['tv.web.js', 'tv.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_TIZEN_TV, ...EXT_WEB_TV, ...EXT_TV],
+            platforms: [...EXT_TIZEN],
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     webos: {
@@ -188,9 +229,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['webos.tv.js', 'webos.tv.ts', 'web.tv.js', 'web.tv.ts', 'tv.js', 'tv.ts'],
-            platforms: ['webos.js', 'webos.ts'],
-            fallbacks: ['tv.web.js', 'tv.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_WEBOS_TV, ...EXT_WEB_TV, ...EXT_TV],
+            platforms: [...EXT_WEBOS],
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     androidwear: {
@@ -200,9 +241,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: false,
         sourceExts: {
-            factors: ['androidwear.watch.js', 'androidwear.watch.ts', 'watch.js', 'watch.ts'],
-            platforms: ['androidwear.js', 'androidwear.ts', 'android.js', 'android.ts'],
-            fallbacks: ['watch.native.js', 'watch.native.ts', 'native.js', 'native.ts', 'js', 'tsx', 'ts']
+            factors: [...EXT_ANDROIDWEAR_WATCH, ...EXT_WATCH],
+            platforms: [...EXT_ANDROIDWEAR, ...EXT_ANDROID],
+            fallbacks: [...EXT_WATCH_NATIVE, ...EXT_NATIVE, ...EXT_FALLBACK]
         }
     },
     tizenwatch: {
@@ -212,9 +253,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['tizenwatch.watch.js', 'tizenwatch.watch.ts', 'watch.js', 'watch.ts'],
-            platforms: ['tizenwatch.js', 'tizenwatch.ts'],
-            fallbacks: ['watch.web.js', 'watch.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_TIZENWATCH_WATCH, ...EXT_WATCH],
+            platforms: [...EXT_TIZENWATCH],
+            fallbacks: [...EXT_WATCH_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     tizenmobile: {
@@ -224,9 +265,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['tizenmobile.mobile.js', 'tizenmobile.mobile.ts', 'mobile.js', 'mobile.ts'],
-            platforms: ['tizenmobile.js', 'tizenmobile.ts'],
-            fallbacks: ['mobile.web.js', 'mobile.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_TIZENMOBILE_MOBILE, ...EXT_MOBILE],
+            platforms: [...EXT_TIZENMOBILE],
+            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     windows: {
@@ -236,20 +277,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['windows.desktop.js', 'windows.desktop.ts', 'desktop.js', 'desktop.ts'],
-            platforms: ['windows.js'],
-            fallbacks: [
-                'desktop.web.js',
-                'desktop.web.ts',
-                'electron.js',
-                'electron.ts',
-                'web.js',
-                'web.ts',
-                'mjs',
-                'js',
-                'tsx',
-                'ts'
-            ]
+            factors: [...EXT_WIN_DESKTOP, ...EXT_DESKTOP],
+            platforms: [...EXT_WIN],
+            fallbacks: [...EXT_DESKTOP_WEB, ...EXT_ELECTRON, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     kaios: {
@@ -259,9 +289,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['kaios.mobile.js', 'kaios.mobile.ts', 'mobile.js', 'mobile.ts'],
-            platforms: ['kaios.js', 'kaios.ts'],
-            fallbacks: ['mobile.web.js', 'mobile.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_KAIOS_MOBILE, ...EXT_MOBILE],
+            platforms: [...EXT_KAIOS],
+            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     firefoxos: {
@@ -271,9 +301,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['firefoxos.mobile.js', 'firefoxos.mobile.ts', 'mobile.js', 'mobile.ts'],
-            platforms: ['firefoxos.js', 'firefoxos.ts'],
-            fallbacks: ['mobile.web.js', 'mobile.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_FFOS_MOBILE, ...EXT_MOBILE],
+            platforms: [...EXT_FFOS],
+            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     firefoxtv: {
@@ -283,9 +313,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['firefoxtv.tv.js', 'firefoxtv.tv.ts', 'web.tv.js', 'web.tv.ts', 'tv.js', 'tv.ts'],
-            platforms: ['firefoxtv.js', 'firefoxtv.ts'],
-            fallbacks: ['tv.web.js', 'tv.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_FFTV_TV, ...EXT_WEB_TV, ...EXT_TV],
+            platforms: [...EXT_FFTV],
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     chromecast: {
@@ -295,9 +325,9 @@ export const PLATFORMS = {
         isActive: true,
         requiresSharedConfig: true,
         sourceExts: {
-            factors: ['chromecast.tv.js', 'chromecast.tv.ts', 'web.tv.js', 'web.tv.ts', 'tv.js', 'tv.ts'],
-            platforms: ['chromecast.js', 'chromecast.ts'],
-            fallbacks: ['tv.web.js', 'tv.web.ts', 'web.js', 'web.ts', 'mjs', 'js', 'tsx', 'ts']
+            factors: [...EXT_CAST_TV, ...EXT_WEB_TV, ...EXT_TV],
+            platforms: [...EXT_CAST],
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
         }
     },
     // NON ACTIVE
