@@ -27,9 +27,11 @@
         "run:apps": "ttab rnv run -p web -e next --ci && ttab rnv run -p web --ci && ttab rnv run -p ios -t 'iPhone 8' --ci && ttab rnv run -p android -t Pixel_2_API_28 --ci && ttab rnv run -p androidtv -t Android_TV_1080p_API_28 --ci && ttab rnv run -p tvos --ci && ttab rnv run -p macos --ci && ttab rnv run -p tizen -t T-samsung-5.5-x86 --ci && ttab rnv run -p webos --ci && ttab rnv run -p androidwear -t Android_Wear_Round_API_28 --ci && ttab rnv run -p tizenwatch -t W-5.5-circle-x86 --ci && ttab rnv run -p tizenmobile -t M-5.5-x86 --ci",
         "sanity": "rnv template apply --template renative-template-hello-world && rnv configure -c helloworld --ci && yarn run:apps",
         "start": "concurrently \"rnv start -p ios\" \"rnv start -p android\" \"rnv start -p androidtv\" \"rnv start -p tvos\" \"rnv start -p macos\" \"rnv start -p web\" \"rnv start -p tizen\" \"rnv start -p webos\"",
-        "detox-ios": "detox test -c ios.sim.debug",
-        "detox-android": "detox test -c android.emu.debug",
-        "detox-android:build": "detox build -c android.emu.debug",
+        "e2e-ios": "detox test -c ios.sim.debug",
+        "e2e-android": "detox test -c android.emu.debug",
+        "e2e-android:build": "detox build -c android.emu.debug",
+        "e2e-web": "rnv start -p web & wait-on http://0.0.0.0:8180 && cypress run",
+        "e2e-web:open": "cypress open",
         "test": "jest"
     },
     "dependencies": {
@@ -81,10 +83,12 @@
         "renative-template-kitchen-sink": "^0.29.1-alpha.9",
         "jetifier": "1.6.5",
         "detox": "15.1.3",
+        "cypress": "4.8.0",
         "babel-jest": "24.9.0",
         "jest": "24.0.0",
         "jest-junit": "10.0.0",
         "jest-transform-stub": "2.0.0",
+        "wait-on": "5.0.1",
         "xcode": "2.1.0"
     },
     "optionalDependencies": {

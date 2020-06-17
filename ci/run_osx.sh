@@ -39,4 +39,4 @@ cd packages/app
 npx rnv template apply --template renative-template-hello-world --ci --mono
 # npx rnv configure -c helloworld -p web --ci --mono
 npx rnv build -p ios -c helloworld -s test --ci --mono
-yarn detox-ios
+yarn e2e-ios

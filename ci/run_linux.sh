@@ -31,5 +31,5 @@ cd packages/app
 npx rnv template apply --template renative-template-hello-world --ci --mono
 # npx rnv configure -c helloworld -p web --ci --mono
 # npx rnv build -p android -c helloworld -s test --ci --mono
-yarn detox-android:build
-yarn detox-android
+yarn e2e-android:build
+yarn e2e-android

@@ -79,6 +79,7 @@ v
                     }}
                     onBecameFocused={handleFocus}
                     onArrowPress={handleUp}
+                    testID="try-me-button"
                 />
                 <Button
                     style={themeStyles.button}
