@@ -49,8 +49,6 @@ jobs:
         - nvm install 13.13.0
         - echo yes | sdkmanager "platforms;android-28"
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-      before_script:
-        - emulator -avd android_test -no-audio -no-window
       script: ci/run_linux.sh
     - name: "HelloWorld Web: E2E"
       dist: trusty
