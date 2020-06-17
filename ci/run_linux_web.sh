@@ -15,8 +15,6 @@ GLOBAL_ROOT="/home/travis/.$ACCOUNT_NAME"
 PROJECT_PATH="/home/travis/build/$REPO_NAME"
 GLOBAL_PATH="$GLOBAL_ROOT/$PROJECT_NAME"
 
-echo "no" | android create avd -n android_test -t android-28 --abi x86
-
 # RESET
 # rm -rf ./node_modules
 
@@ -28,4 +26,4 @@ cd packages/app
 # RUN
 
 npx rnv template apply --template renative-template-hello-world --ci --mono
-yarn e2e-android
+yarn e2e-web

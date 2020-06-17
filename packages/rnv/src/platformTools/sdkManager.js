@@ -190,13 +190,17 @@ const _attemptAutoFix = async (c, engine) => {
                 result
             )}`
         );
-        const { confirm } = await inquirer.prompt({
-            type: 'confirm',
-            name: 'confirm',
-            message: 'Do you want to use it?'
-        });
+        let confirmSdk = true;
+        if (!c.program.ci) {
+            const { confirm } = await inquirer.prompt({
+                type: 'confirm',
+                name: 'confirm',
+                message: 'Do you want to use it?'
+            });
+            confirmSdk = confirm;
+        }
 
-        if (confirm) {
+        if (confirmSdk) {
             try {
                 c.files.workspace.config.sdks[
                     SDK_PLATFORMS[c.platform]

@@ -5,7 +5,6 @@ echo "CURRENT ENV:: TRAVIS_BRANCH: $TRAVIS_BRANCH, TRAVIS_PULL_REQUEST: $TRAVIS_
 
 # DEFINITIONS
 
-
 # SETUP
 set -e
 set -o xtrace
@@ -37,6 +36,4 @@ cd packages/app
 # RUN
 
 npx rnv template apply --template renative-template-hello-world --ci --mono
-# npx rnv configure -c helloworld -p web --ci --mono
-npx rnv build -p ios -c helloworld -s test --ci --mono
 yarn e2e-ios
