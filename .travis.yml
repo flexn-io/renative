@@ -15,7 +15,69 @@ jobs:
       os: osx
       osx_image: xcode11.3
       install: skip
-      script: ci/run_osx.sh
+      script: ci/run_osx_ios.sh
+    - name: "HelloWorld Android: E2E"
+      sudo: required
+      dist: trusty
+      language: generic
+      jdk: oraclejdk8
+      os: linux
+      before_cache:
+        - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+        - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+        - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.bin
+        - rm -f  $HOME/.gradle/caches/*/fileHashes/fileHashes.lock
+      cache:
+        directories:
+        - node_modules
+        - $HOME/.gradle/caches/
+        - $HOME/.gradle/wrapper/
+        - $HOME/.android/build-cache
+        - $HOME/android-sdk-dl
+        - $HOME/android-sdk
+      install:
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+        - nvm install 13.13.0
+        - mkdir -p $HOME/android-sdk-dl
+        - mkdir -p $HOME/android-sdk
+        - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
+        - unzip -qq -n $HOME/android-sdk-dl/sdk-tools.zip -d $HOME/android-sdk
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'tools' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platform-tools' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'build-tools;28.0.2' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platforms;android-28' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platforms;android-22' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'extras;google;google_play_services' > /dev/null
+        - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'emulator' > /dev/null
+        - yes | $HOME/android-sdk/tools/bin/sdkmanager --licenses
+      before_script:
+        - export ANDROID_HOME=$HOME/android-sdk/
+        - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${ANDROID_HOME}/platform-tools
+        - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+        - $ANDROID_HOME/tools/bin/sdkmanager "system-images;android-22;google_apis;armeabi-v7a" > /dev/null
+        - $ANDROID_HOME/tools/bin/sdkmanager --list | head -15
+        - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+        - echo no | $ANDROID_HOME/tools/bin/avdmanager create avd --force -n android_test -k "system-images;android-22;google_apis;armeabi-v7a"
+        - $ANDROID_HOME/emulator/emulator -avd android_test -no-audio -no-window &
+        - $ANDROID_HOME/platform-tools/adb wait-for-device shell 'while [[ -z $(getprop init.svc.bootanim) ]]; do sleep 1; done; input keyevent 82'
+        - $ANDROID_HOME/platform-tools/adb shell settings put global window_animation_scale 0 &
+        - $ANDROID_HOME/platform-tools/adb shell settings put global transition_animation_scale 0 &
+        - $ANDROID_HOME/platform-tools/adb shell settings put global animator_duration_scale 0 &
+        - $ANDROID_HOME/platform-tools/adb shell settings put secure show_ime_with_hard_keyboard 0 &
+        - $ANDROID_HOME/platform-tools/adb shell input keyevent 82 &
+      script: ci/run_linux_android.sh
+    - name: "HelloWorld Web: E2E"
+      dist: trusty
+      language: node_js
+      cache:
+        directories:
+          - node_modules
+      node_js: 13.13.0
+      install:
+        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+      script: ci/run_linux_web.sh
     - name: "RNV iOS: Integration"
       language: node_js
       cache:
@@ -28,38 +90,6 @@ jobs:
         - yarn bootstrap
         - cd packages/rnv
       script: yarn test:ios
-    - name: "HelloWorld Android: E2E"
-      language: android
-      cache:
-        directories:
-          - node_modules
-          - $HOME/.gradle
-      sudo: required
-      jdk: oraclejdk8
-      android:
-        components:
-          - tools
-          - build-tools-28.0.3
-          - extra-google-m2repository
-          - extra-android-m2repository
-          - platform-tools
-          - android-28
-          - sys-img-x86-android-28
-      install:
-        - nvm install 13.13.0
-        - echo yes | sdkmanager "platforms;android-28"
-        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-      script: ci/run_linux.sh
-    - name: "HelloWorld Web: E2E"
-      dist: trusty
-      language: node_js
-      cache:
-        directories:
-          - node_modules
-      node_js: 13.13.0
-      install:
-        - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
-      script: ci/run_linux_web.sh
     - name: "RNV Android: Integration"
       language: android
       dist: trusty

@@ -16,8 +16,6 @@ PROJECT_PATH="/home/travis/build/$REPO_NAME"
 GLOBAL_PATH="$GLOBAL_ROOT/$PROJECT_NAME"
 
 echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-echo "no" | android create avd -n android_test -t android-28 --abi x86
-emulator -avd android_test -no-audio -no-window
 
 # RESET
 # rm -rf ./node_modules
