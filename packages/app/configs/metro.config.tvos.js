@@ -1,5 +1,5 @@
+const { EXTENSIONS } = require('rnv/dist/constants');
 const config = require('../metro.config');
 
-const sourceExts = ['tvos.tv.js', 'tv.js', 'tvos.js', 'ios.js', 'tv.native.js', 'native.js', 'js', 'tsx', 'ts'];
-config.resolver.sourceExts = sourceExts;
+config.resolver.sourceExts = EXTENSIONS.tvos;
 module.exports = config;

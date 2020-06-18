@@ -1,5 +1,5 @@
+const { EXTENSIONS } = require('rnv/dist/constants');
 const config = require('../metro.config');
 
-const sourceExts = ['browser.js', 'web.js', 'mjs', 'js', 'tsx', 'ts'];
-config.resolver.sourceExts = sourceExts;
+config.resolver.sourceExts = EXTENSIONS.web;
 module.exports = config;

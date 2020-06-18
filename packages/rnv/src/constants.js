@@ -90,7 +90,6 @@ const EXT_SERVER_NEXT = ['server.next.jsx', 'server.next.js', 'server.next.tsx',
 const EXT_NEXT = ['next.jsx', 'next.js', 'next.tsx', 'next.ts'];
 const EXT_SERVER_WEB = ['server.web.jsx', 'server.web.js', 'server.web.tsx', 'server.web.ts'];
 const EXT_WEB = ['web.jsx', 'web.js', 'web.tsx', 'web.ts'];
-const EXT_FALLBACK = ['mjs', 'jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 const EXT_MACOS_DESKTOP = ['macos.desktop.jsx', 'macos.desktop.js', 'macos.desktop.tsx', 'macos.desktop.ts'];
 const EXT_DESKTOP = ['desktop.jsx', 'desktop.js', 'desktop.tsx', 'desktop.ts'];
 const EXT_MACOS = ['macos.jsx', 'macos.js', 'macos.tsx', 'macos.ts'];
@@ -122,6 +121,8 @@ const EXT_FFTV_TV = ['firefoxtv.tv.jsx', 'firefoxtv.tv.js', 'firefoxtv.tv.tsx', 
 const EXT_FFTV = ['firefoxtv.jsx', 'firefoxtv.js', 'firefoxtv.tsx', 'firefoxtv.ts'];
 const EXT_CAST_TV = ['chromecast.tv.jsx', 'chromecast.tv.js', 'chromecast.tv.tsx', 'chromecast.tv.ts'];
 const EXT_CAST = ['chromecast.jsx', 'chromecast.js', 'chromecast.tsx', 'chromecast.ts'];
+const EXT_FALLBACK_WEB = ['mjs', 'jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
+const EXT_FALLBACK = ['jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 
 
 export const PLATFORMS = {
@@ -135,7 +136,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_BROWSER],
             platforms: [...EXT_WEB],
-            fallbacks: [...EXT_FALLBACK]
+            fallbacks: [...EXT_FALLBACK_WEB]
         }
     },
     'web-next': {
@@ -147,7 +148,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_BROWSER],
             platforms: [...EXT_SERVER_NEXT, ...EXT_NEXT],
-            fallbacks: [...EXT_SERVER_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_SERVER_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     ios: {
@@ -207,7 +208,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_MACOS_DESKTOP, ...EXT_DESKTOP],
             platforms: [...EXT_MACOS],
-            fallbacks: [...EXT_DESKTOP_WEB, ...EXT_ELECTRON, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_DESKTOP_WEB, ...EXT_ELECTRON, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     tizen: {
@@ -219,7 +220,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_TIZEN_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_TIZEN],
-            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     webos: {
@@ -231,7 +232,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_WEBOS_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_WEBOS],
-            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     androidwear: {
@@ -255,7 +256,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_TIZENWATCH_WATCH, ...EXT_WATCH],
             platforms: [...EXT_TIZENWATCH],
-            fallbacks: [...EXT_WATCH_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_WATCH_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     tizenmobile: {
@@ -267,7 +268,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_TIZENMOBILE_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_TIZENMOBILE],
-            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     windows: {
@@ -279,7 +280,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_WIN_DESKTOP, ...EXT_DESKTOP],
             platforms: [...EXT_WIN],
-            fallbacks: [...EXT_DESKTOP_WEB, ...EXT_ELECTRON, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_DESKTOP_WEB, ...EXT_ELECTRON, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     kaios: {
@@ -291,7 +292,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_KAIOS_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_KAIOS],
-            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     firefoxos: {
@@ -303,7 +304,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_FFOS_MOBILE, ...EXT_MOBILE],
             platforms: [...EXT_FFOS],
-            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_MOBILE_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     firefoxtv: {
@@ -315,7 +316,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_FFTV_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_FFTV],
-            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     chromecast: {
@@ -327,7 +328,7 @@ export const PLATFORMS = {
         sourceExts: {
             factors: [...EXT_CAST_TV, ...EXT_WEB_TV, ...EXT_TV],
             platforms: [...EXT_CAST],
-            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK]
+            fallbacks: [...EXT_TV_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     // NON ACTIVE

@@ -1,5 +1,5 @@
+const { EXTENSIONS } = require('rnv/dist/constants');
 const config = require('../metro.config');
 
-const sourceExts = ['tizenmobile.mobile.js', 'mobile.js', 'tizenmobile.js', 'mobile.web.js', 'web.js', 'mjs', 'js', 'tsx', 'ts'];
-config.resolver.sourceExts = sourceExts;
+config.resolver.sourceExts = EXTENSIONS.tizenmobile;
 module.exports = config;
