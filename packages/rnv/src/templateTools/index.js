@@ -21,7 +21,8 @@ import {
     logError,
     logInfo,
     logWarning,
-    logTask
+    logTask,
+    logDebug
 } from '../systemTools/logger';
 import { getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
@@ -149,9 +150,8 @@ const _applyTemplate = async (c) => {
         return true;
     }
 
-    logTask(
-        `_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`,
-        chalk.grey
+    logDebug(
+        `_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`
     );
 
     c.paths.template.appConfigsDir = path.join(
@@ -178,7 +178,7 @@ const _applyTemplate = async (c) => {
 
 const _configureSrc = c => new Promise((resolve, reject) => {
     // Check src
-    logTask('configureProject:check src', chalk.grey);
+    logDebug('configureProject:check src');
     if (!fs.existsSync(c.paths.project.srcDir)) {
         logInfo(
             `Looks like your src folder ${chalk.white(
@@ -195,7 +195,7 @@ const _configureSrc = c => new Promise((resolve, reject) => {
 
 const _configureAppConfigs = async (c) => {
     // Check appConfigs
-    logTask('configureProject:check appConfigs', chalk.grey);
+    logDebug('configureProject:check appConfigs');
     //
     if (!fs.existsSync(c.paths.project.appConfigsDir)) {
         logInfo(
@@ -250,7 +250,7 @@ const _configureAppConfigs = async (c) => {
 
 const _configureProjectConfig = c => new Promise((resolve, reject) => {
     // Check projectConfigs
-    logTask('configureProject:check projectConfigs', chalk.grey);
+    logDebug('configureProject:check projectConfigs');
     if (!fs.existsSync(c.paths.project.projectConfig.dir)) {
         logInfo(
             `Looks like your projectConfig folder ${chalk.white(
@@ -268,7 +268,7 @@ const _configureProjectConfig = c => new Promise((resolve, reject) => {
 const _configureRenativeConfig = async (c) => {
     // renative.json
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
-    logTask('configureProject:check renative.json', chalk.grey);
+    logDebug('configureProject:check renative.json');
 
     const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
     if (supPlats) {
@@ -373,7 +373,7 @@ export const configureEntryPoints = async (c) => {
     logTask('configureEntryPoints');
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
-    // logTask('configureProject:check entry');
+    // logDebug('configureProject:check entry');
     // if (!fs.existsSync(c.paths.entryDir)) {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
     copyFolderContentsRecursiveSync(

@@ -205,7 +205,7 @@ export const fixRenativeConfigsSync = async (c) => {
     checkAndCreateGitignore(c);
 
     // Check rn-cli-config
-    logTask('configureProject:check rn-cli', chalk.grey);
+    logDebug('configureProject:check rn-cli');
     if (!fs.existsSync(c.paths.project.rnCliConfig)) {
         logInfo(
             `Looks like your rn-cli config file ${chalk.white(
@@ -219,7 +219,7 @@ export const fixRenativeConfigsSync = async (c) => {
     }
 
     // Check babel-config
-    logTask('configureProject:check babel config', chalk.grey);
+    logDebug('configureProject:check babel config');
     if (!fs.existsSync(c.paths.project.babelConfig)) {
         logInfo(
             `Looks like your babel config file ${chalk.white(
@@ -426,11 +426,12 @@ export const generateBuildConfig = (c) => {
     ];
     const existsFiles = mergeFiles.filter(v => v);
 
-    logTask(
-        `generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${
+    logDebug(
+        `generateBuildConfig:mergeOrder.length:${
+            mergeOrder.length
+        },cleanPaths.length:${cleanPaths.length},existsPaths.length:${
             existsPaths.length
-        }:${existsFiles.length}`,
-        chalk.grey
+        },existsFiles.length:${existsFiles.length}`
     );
 
     let out = merge.all([...meta, ...existsFiles], {
@@ -579,7 +580,7 @@ const _listAppConfigsFoldersSync = (
     configDirs,
     ignoreHiddenConfigs
 ) => {
-    logTask(`_listAppConfigsFoldersSync:${dirPath}`, chalk.grey);
+    logDebug(`_listAppConfigsFoldersSync:${dirPath}`);
     if (!fs.existsSync(dirPath)) return;
     fs.readdirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);

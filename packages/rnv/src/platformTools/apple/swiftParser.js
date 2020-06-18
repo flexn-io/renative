@@ -8,7 +8,7 @@ import {
     sanitizeColor,
     getFlavouredProp
 } from '../../common';
-import { logTask } from '../../systemTools/logger';
+import { logTask, logDebug } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
 import { writeCleanFile } from '../../systemTools/fileutils';
 
@@ -201,7 +201,7 @@ export const parseAppDelegate = (
 });
 
 export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
-    logTask(`injectPluginSwiftSync:${c.platform}:${key}`, chalk.grey);
+    logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
     const appDelegateImports = getFlavouredProp(
         c,
         plugin,

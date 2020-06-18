@@ -6,7 +6,7 @@ import semver from 'semver';
 
 import { writeFileSync } from './systemTools/fileutils';
 import { npmInstall, executeAsync } from './systemTools/exec';
-import { logWarning, logTask, logError } from './systemTools/logger';
+import { logWarning, logTask, logError, logDebug } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
 import { getEngineByPlatform } from './engineTools';
@@ -342,7 +342,7 @@ class Config {
         );
 
         if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-        logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+        logDebug(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
         return result;
     }
 
