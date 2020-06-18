@@ -36,6 +36,8 @@ import {
 } from '../configTools/configParser';
 import { isMonorepo, getMonorepoRoot } from '../common';
 import { doResolve } from '../resolve';
+import { getEngineByPlatform } from '../engineTools';
+
 
 // let templateName = c.buildConfig.currentTemplate;
 // if (!templateName) {
@@ -212,6 +214,7 @@ const _configureAppConfigs = async (c) => {
 
         // Update App Title to match package.json
         try {
+            const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
             appConfigIds.forEach((v) => {
                 const appConfigPath = path.join(
                     c.paths.project.appConfigsDir,
@@ -226,19 +229,18 @@ const _configureAppConfigs = async (c) => {
                         appConfig.common.id = c.files.project.config?.defaults?.id;
                     }
 
+                    if (supPlats) {
+                        Object.keys(appConfig.platforms).forEach((pk) => {
+                            if (!supPlats.includes(pk)) {
+                                delete appConfig.platforms[pk];
+                            }
+                        });
+                    }
+
                     _writeObjectSync(c, appConfigPath, appConfig);
                 }
             });
 
-            const supPlats = c.files.project?.defaults?.supportedPlatforms;
-
-            if (supPlats) {
-                for (const pk in appConfig.platforms) {
-                    if (!supPlats.includes(pk)) {
-                        delete appConfig.platforms[pk];
-                    }
-                }
-            }
             await updateConfig(c, true);
         } catch (e) {
             logError(e);
@@ -267,6 +269,23 @@ const _configureRenativeConfig = async (c) => {
     // renative.json
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logTask('configureProject:check renative.json', chalk.grey);
+
+    const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
+    if (supPlats) {
+        supPlats.forEach((pk) => {
+            const selectedEngine = getEngineByPlatform(c, pk);
+            if (selectedEngine?.plugins) {
+                const ePlugins = Object.keys(selectedEngine.plugins);
+                logInfo(`Adding following ${chalk.white(pk)} plugins required by ${chalk.white(selectedEngine.id)} engine: ${chalk.white(ePlugins.join(', '))}`);
+                if (ePlugins?.length) {
+                    ePlugins.forEach((pluginKey) => {
+                        templateConfig.plugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                    });
+                }
+            }
+        });
+    }
+
     if (!c.runtime.isWrapper) {
         if (
             c.runtime.selectedTemplate

@@ -9,6 +9,7 @@ import { npmInstall, executeAsync } from './systemTools/exec';
 import { logWarning, logTask, logError } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
+import { getEngineByPlatform } from './engineTools';
 
 export const CLI_PROPS = [
     'provisioningStyle',
@@ -155,8 +156,7 @@ class Config {
     }
 
     async injectPlatformDependencies(platform) {
-        const selectedEngineKey = this.getConfigProp(this.config, platform, 'engine');
-        const selectedEngine = this.config.files.rnv.engines.config?.engines?.[selectedEngineKey];
+        const selectedEngine = getEngineByPlatform(this.config, platform);
         const npmDeps = selectedEngine?.platforms[platform]?.npm;
 
         if (npmDeps) {
