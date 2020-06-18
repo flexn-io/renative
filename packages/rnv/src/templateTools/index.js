@@ -276,11 +276,17 @@ const _configureRenativeConfig = async (c) => {
             const selectedEngine = getEngineByPlatform(c, pk);
             if (selectedEngine?.plugins) {
                 const ePlugins = Object.keys(selectedEngine.plugins);
-                logInfo(`Adding following ${chalk.white(pk)} plugins required by ${chalk.white(selectedEngine.id)} engine: ${chalk.white(ePlugins.join(', '))}`);
+                const missingPlugins = [];
                 if (ePlugins?.length) {
                     ePlugins.forEach((pluginKey) => {
-                        templateConfig.plugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                        if (!c.buildConfig?.plugins?.[pluginKey]) {
+                            templateConfig.plugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                            missingPlugins.push(pluginKey);
+                        }
                     });
+                }
+                if (missingPlugins.length) {
+                    logInfo(`Adding following ${chalk.white(pk)} plugins required by ${chalk.white(selectedEngine.id)} engine: ${chalk.white(ePlugins.join(', '))}`);
                 }
             }
         });
