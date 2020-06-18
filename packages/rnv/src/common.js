@@ -228,7 +228,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     );
 
     if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-    logDebug(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+    logDebug(`getConfigProp:${platform}:${key}:${result}`);
     if (typeof result === 'object' && subKey.length) {
         return lGet(result, subKey);
     }
