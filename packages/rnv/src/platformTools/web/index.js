@@ -104,6 +104,7 @@ const _generateWebpackConfigs = (c, platform) => {
         .concat(externalModulePaths.map(v => doResolvePath(v, true, {}, c.paths.project.nodeModulesDir)))
         .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)))
         .concat(doNotResolveModulePaths)
+        .concat([c.paths.project.assets.dir])
         .filter(Boolean);
 
     const env = getConfigProp(c, platform, 'environment');
