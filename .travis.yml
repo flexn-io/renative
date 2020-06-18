@@ -83,7 +83,9 @@ jobs:
       - echo no | android create avd --force -n android_test -t android-28 --abi default/x86
       - curl -sL https://deb.nodesource.com/setup_13.x | sudo -E bash -
       - sudo apt-get install -y nodejs
-      - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
+      - curl -o- -L https://yarnpkg.com/install.sh | bash
+      - export PATH="$HOME/.yarn/bin:$PATH"
+      - yarn --version
       - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
       script:
       - yarn bootstrap
