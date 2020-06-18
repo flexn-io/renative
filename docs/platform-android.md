@@ -29,19 +29,33 @@ sidebar_label: Android
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `android.mobile.js` | `form factor` | 1 |
-| `android.mobile.ts` | `form factor` | 2 |
-| `mobile.js` | `form factor` | 3 |
-| `mobile.ts` | `form factor` | 4 |
-| `android.js` | `platform` | 5 |
-| `android.ts` | `platform` | 6 |
-| `mobile.native.js` | `fallback` | 7 |
-| `mobile.native.ts` | `fallback` | 8 |
-| `native.js` | `fallback` | 9 |
-| `native.ts` | `fallback` | 10 |
-| `js` | `fallback` | 11 |
-| `tsx` | `fallback` | 12 |
-| `ts` | `fallback` | 13 |
+| `android.mobile.jsx` | `form factor` | 1 |
+| `android.mobile.js` | `form factor` | 2 |
+| `android.mobile.tsx` | `form factor` | 3 |
+| `android.mobile.ts` | `form factor` | 4 |
+| `mobile.jsx` | `form factor` | 5 |
+| `mobile.js` | `form factor` | 6 |
+| `mobile.tsx` | `form factor` | 7 |
+| `mobile.ts` | `form factor` | 8 |
+| `android.jsx` | `platform` | 9 |
+| `android.js` | `platform` | 10 |
+| `android.tsx` | `platform` | 11 |
+| `android.ts` | `platform` | 12 |
+| `mobile.native.jsx` | `fallback` | 13 |
+| `mobile.native.js` | `fallback` | 14 |
+| `mobile.native.tsx` | `fallback` | 15 |
+| `mobile.native.ts` | `fallback` | 16 |
+| `native.jsx` | `fallback` | 17 |
+| `native.js` | `fallback` | 18 |
+| `native.tsx` | `fallback` | 19 |
+| `native.ts` | `fallback` | 20 |
+| `mjs` | `fallback` | 21 |
+| `jsx` | `fallback` | 22 |
+| `js` | `fallback` | 23 |
+| `json` | `fallback` | 24 |
+| `wasm` | `fallback` | 25 |
+| `tsx` | `fallback` | 26 |
+| `ts` | `fallback` | 27 |
 
 <!--EXTENSION_SUPPORT_END-->
 

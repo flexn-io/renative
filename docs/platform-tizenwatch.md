@@ -28,20 +28,33 @@ sidebar_label: Tizen Watch
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `tizenwatch.watch.js` | `form factor` | 1 |
-| `tizenwatch.watch.ts` | `form factor` | 2 |
-| `watch.js` | `form factor` | 3 |
-| `watch.ts` | `form factor` | 4 |
-| `tizenwatch.js` | `platform` | 5 |
-| `tizenwatch.ts` | `platform` | 6 |
-| `watch.web.js` | `fallback` | 7 |
-| `watch.web.ts` | `fallback` | 8 |
-| `web.js` | `fallback` | 9 |
-| `web.ts` | `fallback` | 10 |
-| `mjs` | `fallback` | 11 |
-| `js` | `fallback` | 12 |
-| `tsx` | `fallback` | 13 |
-| `ts` | `fallback` | 14 |
+| `tizenwatch.watch.jsx` | `form factor` | 1 |
+| `tizenwatch.watch.js` | `form factor` | 2 |
+| `tizenwatch.watch.tsx` | `form factor` | 3 |
+| `tizenwatch.watch.ts` | `form factor` | 4 |
+| `watch.jsx` | `form factor` | 5 |
+| `watch.js` | `form factor` | 6 |
+| `watch.tsx` | `form factor` | 7 |
+| `watch.ts` | `form factor` | 8 |
+| `tizenwatch.jsx` | `platform` | 9 |
+| `tizenwatch.js` | `platform` | 10 |
+| `tizenwatch.tsx` | `platform` | 11 |
+| `tizenwatch.ts` | `platform` | 12 |
+| `watch.web.jsx` | `fallback` | 13 |
+| `watch.web.js` | `fallback` | 14 |
+| `watch.web.tsx` | `fallback` | 15 |
+| `watch.web.ts` | `fallback` | 16 |
+| `web.jsx` | `fallback` | 17 |
+| `web.js` | `fallback` | 18 |
+| `web.tsx` | `fallback` | 19 |
+| `web.ts` | `fallback` | 20 |
+| `mjs` | `fallback` | 21 |
+| `jsx` | `fallback` | 22 |
+| `js` | `fallback` | 23 |
+| `json` | `fallback` | 24 |
+| `wasm` | `fallback` | 25 |
+| `tsx` | `fallback` | 26 |
+| `ts` | `fallback` | 27 |
 
 <!--EXTENSION_SUPPORT_END-->
 

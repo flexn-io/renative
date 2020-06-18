@@ -29,21 +29,37 @@ sidebar_label: tvOS
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `tvos.tv.js` | `form factor` | 1 |
-| `tvos.tv.ts` | `form factor` | 2 |
-| `tv.js` | `form factor` | 3 |
-| `tv.ts` | `form factor` | 4 |
-| `tvos.js` | `platform` | 5 |
-| `tvos.ts` | `platform` | 6 |
-| `ios.js` | `platform` | 7 |
-| `ios.ts` | `platform` | 8 |
-| `tv.native.js` | `fallback` | 9 |
-| `tv.native.ts` | `fallback` | 10 |
-| `native.js` | `fallback` | 11 |
-| `native.ts` | `fallback` | 12 |
-| `js` | `fallback` | 13 |
-| `tsx` | `fallback` | 14 |
-| `ts` | `fallback` | 15 |
+| `tvos.tv.jsx` | `form factor` | 1 |
+| `tvos.tv.js` | `form factor` | 2 |
+| `tvos.tv.tsx` | `form factor` | 3 |
+| `tvos.tv.ts` | `form factor` | 4 |
+| `tv.jsx` | `form factor` | 5 |
+| `tv.js` | `form factor` | 6 |
+| `tv.tsx` | `form factor` | 7 |
+| `tv.ts` | `form factor` | 8 |
+| `tvos.jsx` | `platform` | 9 |
+| `tvos.js` | `platform` | 10 |
+| `tvos.tsx` | `platform` | 11 |
+| `tvos.ts` | `platform` | 12 |
+| `ios.jsx` | `platform` | 13 |
+| `ios.js` | `platform` | 14 |
+| `ios.tsx` | `platform` | 15 |
+| `ios.ts` | `platform` | 16 |
+| `tv.native.jsx` | `fallback` | 17 |
+| `tv.native.js` | `fallback` | 18 |
+| `tv.native.tsx` | `fallback` | 19 |
+| `tv.native.ts` | `fallback` | 20 |
+| `native.jsx` | `fallback` | 21 |
+| `native.js` | `fallback` | 22 |
+| `native.tsx` | `fallback` | 23 |
+| `native.ts` | `fallback` | 24 |
+| `mjs` | `fallback` | 25 |
+| `jsx` | `fallback` | 26 |
+| `js` | `fallback` | 27 |
+| `json` | `fallback` | 28 |
+| `wasm` | `fallback` | 29 |
+| `tsx` | `fallback` | 30 |
+| `ts` | `fallback` | 31 |
 
 <!--EXTENSION_SUPPORT_END-->
 
