@@ -16,77 +16,78 @@ jobs:
       osx_image: xcode11.3
       install: skip
       script: ci/run_osx_ios.sh
-    - name: "HelloWorld Android: E2E"
-      sudo: true
-      language: generic
-      dist: bionic
-      addons:
-        apt:
-          packages:
-            - bridge-utils
-            - libpulse0
-            - libvirt-bin
-            - qemu-kvm
-            - virtinst
-            - ubuntu-vm-builder
-      env:
-        global:
-          - ABI=x86_64
-          - API=29
-          - ADB_INSTALL_TIMEOUT=8
-          - ANDROID_HOME=${HOME}/android-sdk
-          - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
-          - EMU_FLAVOR=default
-          - GRAVIS="https://raw.githubusercontent.com/DanySK/Gravis-CI/master/"
-          - JDK="1.8"
-          - TOOLS=${ANDROID_HOME}/tools
-          - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
-      before_install:
-        - sudo adduser $USER libvirt
-        - sudo adduser $USER kvm
-        - curl "${GRAVIS}.install-jdk-travis.sh" --output ~/.install-jdk-travis.sh
-        - export TARGET_JDK="${JDK}"
-        - JDK="1.8"
-        - source ~/.install-jdk-travis.sh
-        - wget -q "${ANDROID_TOOLS_URL}" -O android-sdk-tools.zip
-        - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
-        - rm android-sdk-tools.zip
-        - mkdir ~/.android
-        - echo 'count=0' > ~/.android/repositories.cfg
-        - yes | sdkmanager --licenses
-      install:
-        - echo y | sdkmanager "platform-tools" >/dev/null
-        - echo y | sdkmanager "tools" >/dev/null
-        - echo y | sdkmanager "build-tools;28.0.3" >/dev/null
-        - echo y | sdkmanager "platforms;android-$API" >/dev/null
-        - echo y | sdkmanager "platforms;android-28" >/dev/null
-        - echo y | sdkmanager "emulator" >/dev/null
-        - echo y | sdkmanager "extras;android;m2repository" >/dev/null
-        - echo y | sdkmanager "system-images;android-$API;$EMU_FLAVOR;$ABI" >/dev/null
-        - echo no | avdmanager create avd --force -n test -k "system-images;android-$API;$EMU_FLAVOR;$ABI" -c 10M
-        - |
-          EMU_PARAMS="-verbose -no-snapshot -no-window -camera-back none -camera-front none -selinux permissive -qemu -m 2048"
-          EMU_COMMAND="emulator"
-          if [[ $ABI =~ "x86" ]]; then
-            EMU_COMMAND="emulator-headless"
-          fi
-          sudo -E sudo -u $USER -E bash -c "${ANDROID_HOME}/emulator/${EMU_COMMAND} -avd test ${AUDIO} ${EMU_PARAMS} &"
-        - JDK="${TARGET_JDK}"
-        - source ~/.install-jdk-travis.sh
-        - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
-      script:
-        - yarn bootstrap
-        - cd packages/app
-        - rnv template apply --template renative-template-hello-world --ci --mono
-        - yarn e2e-android
-      before_cache:
-        - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
-        - curl "${GRAVIS}.clean_gradle_cache.sh" --output ~/.clean_gradle_cache.sh
-        - bash ~/.clean_gradle_cache.sh
-      cache:
-        directories:
-          - $HOME/.gradle/caches/
-          - $HOME/.gradle/wrapper/
+    # TODO: Travis sucks at android emulation. will tackle it separately
+    # - name: "HelloWorld Android: E2E"
+    #   sudo: true
+    #   language: generic
+    #   dist: bionic
+    #   addons:
+    #     apt:
+    #       packages:
+    #         - bridge-utils
+    #         - libpulse0
+    #         - libvirt-bin
+    #         - qemu-kvm
+    #         - virtinst
+    #         - ubuntu-vm-builder
+    #   env:
+    #     global:
+    #       - ABI=x86_64
+    #       - API=29
+    #       - ADB_INSTALL_TIMEOUT=8
+    #       - ANDROID_HOME=${HOME}/android-sdk
+    #       - ANDROID_TOOLS_URL="https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip"
+    #       - EMU_FLAVOR=default
+    #       - GRAVIS="https://raw.githubusercontent.com/DanySK/Gravis-CI/master/"
+    #       - JDK="1.8"
+    #       - TOOLS=${ANDROID_HOME}/tools
+    #       - PATH=${ANDROID_HOME}:${ANDROID_HOME}/emulator:${TOOLS}:${TOOLS}/bin:${ANDROID_HOME}/platform-tools:${PATH}
+    #   before_install:
+    #     - sudo adduser $USER libvirt
+    #     - sudo adduser $USER kvm
+    #     - curl "${GRAVIS}.install-jdk-travis.sh" --output ~/.install-jdk-travis.sh
+    #     - export TARGET_JDK="${JDK}"
+    #     - JDK="1.8"
+    #     - source ~/.install-jdk-travis.sh
+    #     - wget -q "${ANDROID_TOOLS_URL}" -O android-sdk-tools.zip
+    #     - unzip -q android-sdk-tools.zip -d ${ANDROID_HOME}
+    #     - rm android-sdk-tools.zip
+    #     - mkdir ~/.android
+    #     - echo 'count=0' > ~/.android/repositories.cfg
+    #     - yes | sdkmanager --licenses
+    #   install:
+    #     - echo y | sdkmanager "platform-tools" >/dev/null
+    #     - echo y | sdkmanager "tools" >/dev/null
+    #     - echo y | sdkmanager "build-tools;28.0.3" >/dev/null
+    #     - echo y | sdkmanager "platforms;android-$API" >/dev/null
+    #     - echo y | sdkmanager "platforms;android-28" >/dev/null
+    #     - echo y | sdkmanager "emulator" >/dev/null
+    #     - echo y | sdkmanager "extras;android;m2repository" >/dev/null
+    #     - echo y | sdkmanager "system-images;android-$API;$EMU_FLAVOR;$ABI" >/dev/null
+    #     - echo no | avdmanager create avd --force -n android_test -k "system-images;android-$API;$EMU_FLAVOR;$ABI" -c 10M
+    #     - |
+    #       EMU_PARAMS="-verbose -no-snapshot -no-window -camera-back none -camera-front none -selinux permissive -qemu -m 2048"
+    #       EMU_COMMAND="emulator"
+    #       if [[ $ABI =~ "x86" ]]; then
+    #         EMU_COMMAND="emulator-headless"
+    #       fi
+    #       sudo -E sudo -u $USER -E bash -c "${ANDROID_HOME}/emulator/${EMU_COMMAND} -avd android_test ${AUDIO} ${EMU_PARAMS} &"
+    #     - JDK="${TARGET_JDK}"
+    #     - source ~/.install-jdk-travis.sh
+    #     - echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+    #   script:
+    #     - yarn bootstrap
+    #     - cd packages/app
+    #     - rnv template apply --template renative-template-hello-world --ci --mono
+    #     - yarn e2e-android
+    #   before_cache:
+    #     - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+    #     - curl "${GRAVIS}.clean_gradle_cache.sh" --output ~/.clean_gradle_cache.sh
+    #     - bash ~/.clean_gradle_cache.sh
+    #   cache:
+    #     directories:
+    #       - $HOME/.gradle/caches/
+    #       - $HOME/.gradle/wrapper/
     - name: "HelloWorld Web: E2E"
       dist: trusty
       language: node_js

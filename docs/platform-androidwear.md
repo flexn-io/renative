@@ -53,13 +53,12 @@ sidebar_label: Android Wear
 | `native.js` | `fallback` | 22 |
 | `native.tsx` | `fallback` | 23 |
 | `native.ts` | `fallback` | 24 |
-| `mjs` | `fallback` | 25 |
-| `jsx` | `fallback` | 26 |
-| `js` | `fallback` | 27 |
-| `json` | `fallback` | 28 |
-| `wasm` | `fallback` | 29 |
-| `tsx` | `fallback` | 30 |
-| `ts` | `fallback` | 31 |
+| `jsx` | `fallback` | 25 |
+| `js` | `fallback` | 26 |
+| `json` | `fallback` | 27 |
+| `wasm` | `fallback` | 28 |
+| `tsx` | `fallback` | 29 |
+| `ts` | `fallback` | 30 |
 
 <!--EXTENSION_SUPPORT_END-->
 

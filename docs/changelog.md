@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.29.1-alpha.23 (2020-6-19)
+
+### Fixed
+
+- ci chores
+- update extension support
+- cleanup logging
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.22 (2020-6-18)
 
 ### Fixed

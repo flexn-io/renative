@@ -49,13 +49,12 @@ sidebar_label: Android
 | `native.js` | `fallback` | 18 |
 | `native.tsx` | `fallback` | 19 |
 | `native.ts` | `fallback` | 20 |
-| `mjs` | `fallback` | 21 |
-| `jsx` | `fallback` | 22 |
-| `js` | `fallback` | 23 |
-| `json` | `fallback` | 24 |
-| `wasm` | `fallback` | 25 |
-| `tsx` | `fallback` | 26 |
-| `ts` | `fallback` | 27 |
+| `jsx` | `fallback` | 21 |
+| `js` | `fallback` | 22 |
+| `json` | `fallback` | 23 |
+| `wasm` | `fallback` | 24 |
+| `tsx` | `fallback` | 25 |
+| `ts` | `fallback` | 26 |
 
 <!--EXTENSION_SUPPORT_END-->
 
