@@ -552,7 +552,7 @@ export const applyTemplate = async (c, selectedTemplate) => {
 
     // TODO: will move this to engine
     const engine = getEngineByPlatform(c, c.platform);
-    if (engine.requiresMetroConfig) {
+    if (engine?.requiresMetroConfig) {
         await _configureMetroConfigs(c, c.platform);
     }
 };

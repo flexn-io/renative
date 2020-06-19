@@ -1,5 +1,22 @@
 # Changelog
 
+## v0.29.1-alpha.25 (2020-6-19)
+
+### Fixed
+
+- update on demand metro config generator
+- checkSdk for exports
+- fix _attemptAutoFix
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.24 (2020-6-19)
 
 ### Fixed
