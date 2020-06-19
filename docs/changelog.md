@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.29.1-alpha.24 (2020-6-19)
+
+### Fixed
+
+- fix sdk discovery for rnv build tasks
+- remove unnecessary plugins from templates (moved to core engine definitions)
+- engine plugin overrides , improved summary logging
+- ci chores 32
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.23 (2020-6-19)
 
 ### Fixed
