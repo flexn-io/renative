@@ -454,26 +454,23 @@ const _getSourceExtsAsString = (c, p) => {
     return sourceExts.length ? `['${sourceExts.join("', '")}']` : '[]';
 };
 
-const _configureMetroConfigs = async (c) => {
+const _configureMetroConfigs = async (c, platform) => {
     const configDir = path.join(c.paths.project.dir, 'configs');
     if (!fs.existsSync(configDir)) {
         mkdirSync(configDir);
     }
-    await _parseSupportedPlatforms(c, (p) => {
-        const dest = path.join(configDir, `metro.config.${p}.js`);
-        if (!fs.existsSync(dest)) {
-            const exts = _getSourceExtsAsString(c, p);
-            writeFileSync(
-                dest,
-                `const config = require('../metro.config');
+    const dest = path.join(configDir, `metro.config.${platform}.js`);
+    if (!fs.existsSync(dest)) {
+        writeFileSync(
+            dest,
+            `const { EXTENSIONS } = require('rnv/dist/constants');
+const config = require('../metro.config');
 
-const sourceExts = ${exts};
-config.resolver.sourceExts = sourceExts;
+config.resolver.sourceExts = EXTENSIONS.${platform};
 module.exports = config;
 `
-            );
-        }
-    });
+        );
+    }
 };
 
 const _writeObjectSync = (c, p, s) => {
@@ -554,9 +551,9 @@ export const applyTemplate = async (c, selectedTemplate) => {
     await configureEntryPoints(c);
 
     // TODO: will move this to engine
-    const engine = getConfigProp(c, c.platform, 'engine', 'default');
-    if (engine === 'default') {
-        await _configureMetroConfigs(c);
+    const engine = getEngineByPlatform(c, c.platform);
+    if (engine.requiresMetroConfig) {
+        await _configureMetroConfigs(c, c.platform);
     }
 };
 

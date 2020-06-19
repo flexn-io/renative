@@ -478,6 +478,7 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
 
 const hasJetified = false;
 export const npmInstall = async (failOnError = false) => {
+    logTask('npmInstall');
     const c = Config.getConfig();
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
@@ -498,7 +499,7 @@ export const npmInstall = async (failOnError = false) => {
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
-    logTask(`package manager used: (${command})`);
+    logTask(`npmInstall: package manager used: (${command})`, chalk.grey);
 
     try {
         await executeAsync(command);

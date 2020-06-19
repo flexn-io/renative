@@ -92,7 +92,9 @@
         "renative-template-kitchen-sink": "^0.29.1-alpha.9",
         "rnv": "^0.29.1-alpha.9",
         "wait-on": "5.0.1",
-        "xcode": "2.1.0"
+        "xcode": "2.1.0",
+        "electron": "7.0.0",
+        "electron-builder": "21.1.1"
     },
     "optionalDependencies": {
         "ios-deploy": "1.10.0"

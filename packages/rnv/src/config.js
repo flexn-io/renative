@@ -181,6 +181,7 @@ class Config {
 
             if (installed.some(i => i === true)) {
                 // do npm i only if something new is added
+                logWarning(`Found extra npm depenedecies required by ${selectedEngine.id} engine. will install them now`);
                 await npmInstall();
             }
         }

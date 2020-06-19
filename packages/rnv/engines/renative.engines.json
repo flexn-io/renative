@@ -3,6 +3,7 @@
     "engines": {
         "engine-rn": {
             "id": "engine-rn",
+            "requiresMetroConfig": true,
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
