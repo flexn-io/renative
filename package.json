@@ -109,7 +109,8 @@
         "concurrently": "4.1.1",
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
-        "lerna": "3.16.4"
+        "lerna": "3.16.4",
+        "husky": "4.2.5"
     },
     "engines": {
         "cocoapods": ">=1.5.3",

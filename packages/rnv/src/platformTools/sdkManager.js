@@ -222,7 +222,7 @@ const _attemptAutoFix = async (c, sdkPlatform) => {
     }
 
     const setupInstance = PlatformSetup(c);
-    return setupInstance.askToInstallSDK(engine);
+    return setupInstance.askToInstallSDK(sdkPlatform);
 };
 
 export const checkSdk = async (c) => {
