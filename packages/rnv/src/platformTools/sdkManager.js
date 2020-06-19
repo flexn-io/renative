@@ -182,8 +182,8 @@ const _isSdkInstalled = (c) => {
     return fs.existsSync(getRealPath(c, sdkPath));
 };
 
-const _attemptAutoFix = async (c, engine) => {
-    const result = SDK_LOACTIONS[engine].find(v => fs.existsSync(v));
+const _attemptAutoFix = async (c, sdkPlatform) => {
+    const result = SDK_LOACTIONS[sdkPlatform].find(v => fs.existsSync(v));
     if (result) {
         logSuccess(
             `Found existing ${c.platform} SDK location at ${chalk.white(
@@ -205,6 +205,9 @@ const _attemptAutoFix = async (c, engine) => {
                 c.files.workspace.config.sdks[
                     SDK_PLATFORMS[c.platform]
                 ] = result;
+                if (sdkPlatform === 'android') {
+                    c.files.workspace.config.sdks.ANDROID_NDK = `${path.join(result, 'ndk-bundle')}`;
+                }
                 writeFileSync(
                     c.paths.workspace.config,
                     c.files.workspace.config

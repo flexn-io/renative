@@ -490,6 +490,8 @@ const _rnvBuildWithPlatform = async (c) => {
     logTask(`_rnvBuildWithPlatform:${c.platform}`);
     const { platform } = c;
 
+    await checkSdk(c);
+
     switch (platform) {
         case ANDROID:
         case ANDROID_TV:
