@@ -411,6 +411,9 @@ const _rnvPackageWithPlatform = async (c) => {
 const _rnvExportWithPlatform = async (c) => {
     logTask(`_rnvExportWithPlatform:${c.platform}`);
     const { platform } = c;
+
+    await checkSdk(c);
+
     switch (platform) {
         case WEB:
             if (!c.program.only) {
