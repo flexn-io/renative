@@ -4,8 +4,12 @@ import {
 
 
 export const getEngineByPlatform = (c, platform) => {
-    const selectedEngineKey = getConfigProp(c, platform, 'engine');
-    const selectedEngine = c.files.rnv.engines.config?.engines?.[selectedEngineKey];
+    let selectedEngineKey;
+    if (c.buildConfig) {
+        selectedEngineKey = getConfigProp(c, platform, 'engine');
+        const selectedEngine = c.files.rnv.engines.config?.engines?.[selectedEngineKey];
 
-    return selectedEngine;
+        return selectedEngine;
+    }
+    return null;
 };

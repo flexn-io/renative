@@ -36,6 +36,7 @@ import {
     fsWriteFileSync
 } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
+import { getEngineByPlatform } from '../engineTools';
 import { doResolve } from '../resolve';
 import { getWorkspaceDirPath } from '../projectTools/workspace';
 import {
@@ -331,8 +332,36 @@ const _findAndSwitchAppConfigDir = (c, appId) => {
 
 const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
 
+
+const getEnginesPluginDelta = (c) => {
+    logDebug('getEnginesPluginDelta');
+
+    if (!c.buildConfig) return;
+
+    const missingEnginePlugins = {};
+    const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
+    if (supPlats) {
+        supPlats.forEach((pk) => {
+            const selectedEngine = getEngineByPlatform(c, pk);
+            if (selectedEngine?.plugins) {
+                const ePlugins = Object.keys(selectedEngine.plugins);
+
+                if (ePlugins?.length) {
+                    ePlugins.forEach((pluginKey) => {
+                        if (!c.buildConfig?.plugins?.[pluginKey]) {
+                            missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                        }
+                    });
+                }
+            }
+        });
+    }
+    c.runtime.missingEnginePlugins = missingEnginePlugins;
+    return missingEnginePlugins;
+};
+
 export const generateBuildConfig = (c) => {
-    logTask('generateBuildConfig');
+    logDebug('generateBuildConfig');
 
     const mergeOrder = [
         c.paths.rnv.projectTemplates.config,
@@ -377,6 +406,7 @@ export const generateBuildConfig = (c) => {
 
     const mergeFiles = [
         c.files.rnv.projectTemplates.config,
+        { plugins: getEnginesPluginDelta(c) },
         ...pluginTemplates,
         c.files.rnv.engines.config,
         c.files.workspace.config,

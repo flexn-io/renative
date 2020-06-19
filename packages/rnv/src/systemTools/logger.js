@@ -168,29 +168,42 @@ export const logSummary = (header = 'SUMMARY') => {
         );
         if (_c.files.project.package) {
             str += printIntoBox(
-                `Project Name: ${_highlightColor(
+                `Project Name ($package.name): ${_highlightColor(
                     _c.files.project.package.name
                 )}`,
                 1
             );
             str += printIntoBox(
-                `Project Version: ${_highlightColor(
+                `Project Version ($package.version): ${_highlightColor(
                     _c.files.project.package.version
                 )}`,
                 1
             );
         }
+
+        if (_c.buildConfig?.workspaceID) {
+            str += printIntoBox(
+                `Workspace ($.workspaceID): ${_highlightColor(_c.buildConfig.workspaceID)}`,
+                1
+            );
+        }
+        if (_c?.platform) {
+            str += printIntoBox(`Platform (-p): ${_highlightColor(_c.platform)}`, 1);
+        }
+        if (_c?.runtime?.engine) {
+            str += printIntoBox(`Engine ($.platforms.${_c?.platform}.engine): ${_highlightColor(_c.runtime.engine?.id)}`, 1);
+        }
         if (_c.buildConfig?._meta?.currentAppConfigId) {
             str += printIntoBox(
-                `App Config: ${_highlightColor(
+                `App Config (-c): ${_highlightColor(
                     _c.buildConfig._meta?.currentAppConfigId
                 )}`,
                 1
             );
         }
-        if (_c.buildConfig?.workspaceID) {
+        if (_c.runtime?.scheme) {
             str += printIntoBox(
-                `Workspace: ${_highlightColor(_c.buildConfig.workspaceID)}`,
+                `Build Scheme (-s): ${_highlightColor(_c.runtime?.scheme)}`,
                 1
             );
         }
@@ -231,15 +244,6 @@ export const logSummary = (header = 'SUMMARY') => {
             str += printIntoBox(`Env Info: ${chalk.gray(envString)}`, 1);
         }
 
-        if (_c.program.scheme) {
-            str += printIntoBox(
-                `Build Scheme: ${_highlightColor(_c.program.scheme)}`,
-                1
-            );
-        }
-        if (_c.platform) {
-            str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
-        }
         if (_c.timeEnd) {
             str += printIntoBox(
                 `Executed Time: ${chalk.yellow(

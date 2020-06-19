@@ -270,27 +270,38 @@ const _configureRenativeConfig = async (c) => {
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
     logDebug('configureProject:check renative.json');
 
-    const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
-    if (supPlats) {
-        supPlats.forEach((pk) => {
-            const selectedEngine = getEngineByPlatform(c, pk);
-            if (selectedEngine?.plugins) {
-                const ePlugins = Object.keys(selectedEngine.plugins);
-                const missingPlugins = [];
-                if (ePlugins?.length) {
-                    ePlugins.forEach((pluginKey) => {
-                        if (!c.buildConfig?.plugins?.[pluginKey]) {
-                            templateConfig.plugins[pluginKey] = selectedEngine.plugins[pluginKey];
-                            missingPlugins.push(pluginKey);
-                        }
-                    });
-                }
-                if (missingPlugins.length) {
-                    logInfo(`Adding following ${chalk.white(pk)} plugins required by ${chalk.white(selectedEngine.id)} engine: ${chalk.white(ePlugins.join(', '))}`);
-                }
-            }
-        });
-    }
+    //     const missingPlugins = {};
+    //     const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
+    //     if (supPlats) {
+    //         supPlats.forEach((pk) => {
+    //             const selectedEngine = getEngineByPlatform(c, pk);
+    //             if (selectedEngine?.plugins) {
+    //                 const ePlugins = Object.keys(selectedEngine.plugins);
+    //
+    //                 if (ePlugins?.length) {
+    //                     ePlugins.forEach((pluginKey) => {
+    //                         if (!c.buildConfig?.plugins?.[pluginKey]) {
+    //                             missingPlugins[pluginKey] = { key: pluginKey, plugin: selectedEngine.plugins[pluginKey], engine: selectedEngine.id };
+    //                         }
+    //                     });
+    //                 }
+    //             }
+    //         });
+    //     }
+    //
+    //     const missingPluginsArr = Object.values(missingPlugins);
+    //     const involvedEngines = {};
+    //     if (missingPluginsArr.length) {
+    //         c.runtime.requiresForcedTemplateApply = true;
+    //
+    //         missingPluginsArr.forEach(({ key, plugin, engine }) => {
+    //             templateConfig.plugins[key] = plugin;
+    //             involvedEngines[engine] = true;
+    //         });
+    //
+    //         logInfo(`Adding following plugins required by ${chalk.white(Object.keys(involvedEngines).join(', '))} engines:
+    // ${chalk.white(missingPluginsArr.map(v => v.key).join(', '))}`);
+    //     }
 
     if (!c.runtime.isWrapper) {
         if (
@@ -314,6 +325,7 @@ const _configureRenativeConfig = async (c) => {
             mergedObj.isNew = null;
             delete mergedObj.isNew;
             c.files.project.config = mergedObj;
+            console.log('WRITEEEEEE');
             _writeObjectSync(c, c.paths.project.config, mergedObj);
         }
     } else {

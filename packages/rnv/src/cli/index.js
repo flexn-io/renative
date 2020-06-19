@@ -66,6 +66,7 @@ import {
     rnvDeploy,
     rnvStart
 } from '../platformTools/runner';
+import { getEngineByPlatform } from '../engineTools';
 import { isSystemWin } from '../utils';
 import {
     PLATFORMS,
@@ -645,6 +646,7 @@ const setDefaults = (c) => {
     c.runtime.scheme = c.program.scheme || 'debug';
     c.runtime.localhost = isSystemWin ? '127.0.0.1' : '0.0.0.0';
     c.runtime.timestamp = c.runtime.timestamp || Date.now();
+    c.runtime.engine = getEngineByPlatform(c, c.platform);
     // const { scheme } = c.program;
     // if (scheme !== true) {
     //     const isSchemePresent = !!c.buildConfig?.platforms[c.platform]?.buildSchemes[scheme || 'debug'];
