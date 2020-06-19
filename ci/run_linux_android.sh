@@ -28,4 +28,7 @@ cd packages/app
 # RUN
 
 npx rnv template apply --template renative-template-hello-world --ci --mono
-yarn e2e-android
+npx rnv build -p android -s test -r --ci --mono
+
+# TODO: Travis sucks at android emulation. will tackle it separately
+# yarn e2e-android
