@@ -3,6 +3,7 @@
     "engines": {
         "engine-rn": {
             "id": "engine-rn",
+            "overview": "Default react-native based engine. Runs standard react native apps with native support",
             "requiresMetroConfig": true,
             "plugins": {
                 "react": "source:rnv",
@@ -61,6 +62,7 @@
         },
         "engine-rn-web": {
             "id": "engine-rn-web",
+            "overview": "React native based engine with web transpiler provided by react-native-web",
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
@@ -92,6 +94,7 @@
         },
         "engine-rn-electron": {
             "id": "engine-rn-electron",
+            "overview": "React native based engine with web transpiler provided by react-native-web and native desktop wrapper provided by electron",
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
@@ -120,10 +123,9 @@
                 }
             }
         },
-        "engine-next": {
-        },
         "engine-rn-next": {
             "id": "engine-rn-next",
+            "overview": "React native based engine with web transpiler provided by react-native-web and render by nextjs",
             "plugins": {
                 "react": "source:rnv",
                 "react-art": "source:rnv",
