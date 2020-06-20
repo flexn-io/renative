@@ -6,7 +6,7 @@ import chalk from 'chalk';
 import { getAppFolder } from '../common';
 import { doResolve } from '../resolve';
 import { isPlatformActive } from '../platformTools';
-import { logTask, logWarning, logInfo } from '../systemTools/logger';
+import { logTask, logWarning } from '../systemTools/logger';
 import {
     IOS,
     ANDROID,
@@ -33,15 +33,13 @@ import { configureElectronProject } from '../platformTools/electron';
 import { configureKaiOSProject } from '../platformTools/firefox';
 import { configureWebProject } from '../platformTools/web';
 import {
-    copyFolderContentsRecursiveSync,
-    readObjectSync
+    copyFolderContentsRecursiveSync
 } from '../systemTools/fileutils';
 import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 import Config from '../config';
-import { getMergedPlugin, overrideTemplatePlugins } from '../pluginTools';
-import { commandExistsSync, executeAsync } from '../systemTools/exec';
+import { overrideTemplatePlugins } from '../pluginTools';
 import { configureChromecastProject } from '../platformTools/chromecast';
 
 export const rnvConfigure = async (c) => {
@@ -155,14 +153,13 @@ const _checkAndCreatePlatforms = async (c, platform) => {
     } else {
         const { platforms } = c.buildConfig;
         if (!platforms) {
-            reject(
+            return Promise.reject(
                 `Your ${chalk.white(
                     c.paths.appConfig.config
                 )} is missconfigured. (Maybe you have older version?). Missing ${chalk.white(
                     '{ platforms: {} }'
                 )} object at root`
             );
-            return;
         }
         const ks = Object.keys(platforms);
         for (let i = 0; i < ks.length; i++) {

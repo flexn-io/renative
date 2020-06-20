@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import _chalk from 'chalk';
 import { generateOptions } from './prompt';
 import Analytics from './analytics';
@@ -20,14 +21,8 @@ const _chalkMono = {
 
 let chalk = _chalk;
 
-const RNV_START = '🚀 ReNative';
 let RNV = 'ReNative';
-const LINE = chalk.bold.white(
-    '----------------------------------------------------------'
-);
-const LINE2 = chalk.gray(
-    '----------------------------------------------------------'
-);
+
 
 export const logWelcome = () => {
     // prettier-ignore
@@ -77,7 +72,7 @@ export const logWelcome = () => {
 };
 
 let _messages = [];
-let _currentCommand;
+// let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
 let _c;
@@ -96,8 +91,8 @@ export const configureLogger = (
     _c = c;
     _c.timeStart = new Date();
     _currentProcess = process;
-    _currentCommand = command;
-    _currentSubCommand = subCommand;
+    // _currentCommand = command;
+    // _currentSubCommand = subCommand;
     _isInfoEnabled = isInfoEnabled;
     _isMono = c.program.mono;
     if (_isMono) {
@@ -273,8 +268,8 @@ const _msToTime = (s) => {
     return `${hrs}h:${mins}m:${secs}s:${ms}ms`;
 };
 
-export const setCurrentJob = (job) => {
-    _currentCommand = job;
+export const setCurrentJob = () => {
+    // _currentCommand = job;
 };
 
 export const logTask = (task, customChalk) => {
@@ -334,19 +329,9 @@ export const logEnd = (code) => {
 
 export const logInitialize = () => {
     logWelcome();
-    // console.log(
-    //     chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentCommand} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
-    // );
 };
 
-export const logAppInfo = c => new Promise((resolve, reject) => {
-    // console.log(
-    //     chalk.gray(
-    //         `\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(
-    //             c.buildConfig.id
-    //         )}\n${LINE2}`
-    //     )
-    // );
+export const logAppInfo = c => new Promise((resolve) => {
     logInfo(`Current App Config: ${chalk.bold.white(
         c.buildConfig.id
     )}`);

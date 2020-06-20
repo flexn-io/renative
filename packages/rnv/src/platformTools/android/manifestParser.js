@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import {
     getAppFolder,
@@ -8,7 +9,7 @@ import {
 } from '../../common';
 import { logTask, logError, logWarning, logDebug } from '../../systemTools/logger';
 import { readObjectSync, writeCleanFile } from '../../systemTools/fileutils';
-import { getMergedPlugin, parsePlugins } from '../../pluginTools';
+import { parsePlugins } from '../../pluginTools';
 
 const PROHIBITED_DUPLICATE_TAGS = ['intent-filter'];
 const SYSTEM_TAGS = ['tag', 'children'];
@@ -54,13 +55,13 @@ const _parseNode = (n, level) => {
     if (n) {
         const endLine = isSingleLine ? ' ' : '\n';
         output += `${space}<${n.tag}${endLine}`;
-        for (const k in n) {
+        Object.keys(n).forEach((k) => {
             if (!SYSTEM_TAGS.includes(k)) {
                 output += `${isSingleLine ? '' : `${space}  `}${k}="${
                     n[k]
                 }"${endLine}`;
             }
-        }
+        });
     } else {
         output += `${space}<${n.tag}`;
     }
@@ -71,7 +72,7 @@ const _parseNode = (n, level) => {
             output += `${space}>\n`;
         }
 
-        const nextLevel = (level += 1);
+        const nextLevel = level + 1;
         n.children.forEach((v) => {
             output += _parseNode(v, nextLevel);
         });
@@ -92,9 +93,9 @@ const _mergeNodeParameters = (node, nodeParamsExt) => {
         return;
     }
 
-    for (const k in nodeParamsExt) {
+    Object.keys(nodeParamsExt).forEach((k) => {
         if (!SYSTEM_TAGS.includes(k)) node[k] = nodeParamsExt[k];
-    }
+    });
 };
 
 const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
@@ -126,7 +127,6 @@ const _mergeNodeChildren = (node, nodeChildrenExt = []) => {
 
 export const parseAndroidManifestSync = (c, platform) => {
     logTask(`parseAndroidManifestSync:${platform}`);
-    const pluginConfig = {};
     try {
         const baseManifestFilePath = path.join(
             c.paths.rnv.dir,
@@ -180,7 +180,7 @@ export const parseAndroidManifestSync = (c, platform) => {
         }
 
         // appConfigs/base/plugins.json PLUGIN CONFIG OVERRIDES
-        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat) => {
             const androidManifest = getFlavouredProp(
                 c,
                 pluginPlat,
@@ -212,11 +212,11 @@ export const parseAndroidManifestSync = (c, platform) => {
             const platPerm = configPermissions[platform] ? platform : 'android';
             const pc = configPermissions[platPerm];
             if (includedPermissions[0] === '*') {
-                for (const k in pc) {
+                Object.keys(pc).forEach((k) => {
                     if (
                         !(
                             excludedPermissions
-                            && excludedPermissions.includes(k)
+                          && excludedPermissions.includes(k)
                         )
                     ) {
                         prms += `\n   <uses-permission android:name="${pc[k].key}" />`;
@@ -226,12 +226,12 @@ export const parseAndroidManifestSync = (c, platform) => {
                             'android:name': key
                         });
                     }
-                }
+                });
             } else {
                 includedPermissions.forEach((v) => {
                     if (pc[v]) {
                         prms += `\n   <uses-permission android:name="${pc[v].key}" />`;
-                        const key = pc[v].key || k;
+                        const key = pc[v].key || v;
                         baseManifestFile.children.push({
                             tag: 'uses-permission',
                             'android:name': key
@@ -287,15 +287,15 @@ export const parseAndroidManifestSync = (c, platform) => {
     }
 };
 
-export const injectPluginManifestSync = (c, plugin, key, pkg) => {
-    const className = pkg ? pkg.split('.').pop() : null;
-    let packageParams = '';
-    if (plugin.packageParams) {
-        packageParams = plugin.packageParams.join(',');
-    }
-
-    const pathFixed = plugin.path
-        ? `${plugin.path}`
-        : `node_modules/${key}/android`;
-    const modulePath = `../../${pathFixed}`;
+export const injectPluginManifestSync = () => {
+    // const className = pkg ? pkg.split('.').pop() : null;
+    // let packageParams = '';
+    // if (plugin.packageParams) {
+    //     packageParams = plugin.packageParams.join(',');
+    // }
+    //
+    // const pathFixed = plugin.path
+    //     ? `${plugin.path}`
+    //     : `node_modules/${key}/android`;
+    // const modulePath = `../../${pathFixed}`;
 };

@@ -1,6 +1,6 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import minimist from 'minimist';
-import inquirer from 'inquirer';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';

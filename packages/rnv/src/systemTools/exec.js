@@ -1,4 +1,4 @@
-// /* eslint-disable import/no-cycle */
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
@@ -476,7 +476,6 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
     // ]).then(() => resolve()).catch(e => reject(e));
 });
 
-const hasJetified = false;
 export const npmInstall = async (failOnError = false) => {
     logTask('npmInstall');
     const c = Config.getConfig();

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import {
     logTask,
@@ -21,7 +22,6 @@ import {
     checkIfTemplateInstalled
 } from '../templateTools';
 import {
-    targetCreate,
     rnvTargetLaunch,
     rnvTargetList
 } from '../platformTools/target';
@@ -83,9 +83,6 @@ import {
     MACOS,
     WINDOWS,
     TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
     WEB_NEXT
 } from '../constants';
 // import { getBinaryPath } from '../common';
@@ -93,7 +90,6 @@ import Config, { rnvConfigHandler } from '../config';
 import { checkAndMigrateProject } from '../projectTools/migrator';
 import {
     parseRenativeConfigs,
-    createRnvConfig,
     updateConfig,
     fixRenativeConfigsSync,
     configureRnvGlobal,
@@ -102,16 +98,15 @@ import {
 import {
     configureNodeModules,
     checkAndCreateProjectPackage,
-    cleanPlaformAssets
 } from '../projectTools/projectParser';
 import rnvPublish from '../projectTools/publish';
 import rnvPkg from '../projectTools/package';
 
 export const rnvHelp = () => {
     let cmdsString = '';
-    for (const key in COMMANDS) {
+    Object.keys(COMMANDS).forEach((key) => {
         cmdsString += `${key}, `;
-    }
+    });
 
     logToSummary(`
 ${chalk.bold.white('COMMANDS:')}
@@ -513,7 +508,9 @@ const _handleUnknownCommand = async (c) => {
     return run(c);
 };
 
-const _arrayMergeOverride = (destinationArray, sourceArray, mergeOptions) => sourceArray;
+const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
+
+const merge = require('deepmerge');
 
 export const _spawnCommand = (c, overrideParams) => {
     const newCommand = {};
@@ -528,8 +525,6 @@ export const _spawnCommand = (c, overrideParams) => {
             newCommand[k] = c[k];
         }
     });
-
-    const merge = require('deepmerge');
 
     Object.keys(overrideParams).forEach((k) => {
         if (newCommand[k] && typeof overrideParams[k] === 'object') {
@@ -554,38 +549,39 @@ export const _spawnCommand = (c, overrideParams) => {
 const run = async (c, spawnC, skipStartBuilder) => {
     logTask('cli');
 
-    setDefaults(c);
-    if (!skipStartBuilder) await _startBuilder(c);
-    let oldC;
+    let currC = c;
+
+    setDefaults(currC);
+    if (!skipStartBuilder) await _startBuilder(currC);
+
     if (spawnC) {
-        oldC = c;
-        c = _spawnCommand(c, spawnC);
-        Config.initializeConfig(c);
+        currC = _spawnCommand(currC, spawnC);
+        Config.initializeConfig(currC);
     }
 
-    const cmd = COMMANDS[c.command];
+    const cmd = COMMANDS[currC.command];
     const cmdFn = cmd?.fn;
-    const subCmd = cmd?.subCommands?.[c.subCommand];
+    const subCmd = cmd?.subCommands?.[currC.subCommand];
     const subCmdFn = subCmd?.fn;
 
     if (cmd) {
-        if (c.subCommand === 'help') {
-            await _execCommandHep(c, cmd);
+        if (currC.subCommand === 'help') {
+            await _execCommandHep(currC, cmd);
         } else if (cmdFn) {
             if (subCmdFn) {
-                await _execute(c, subCmdFn, cmd);
+                await _execute(currC, subCmdFn, cmd);
             } else {
                 // There is no subCommand function available so reset the key not to confuse pipe hooks
-                c.subCommand = null;
-                await _execute(c, cmdFn, cmd);
+                currC.subCommand = null;
+                await _execute(currC, cmdFn, cmd);
             }
         } else if (subCmdFn) {
-            await _execute(c, subCmdFn, cmd);
+            await _execute(currC, subCmdFn, cmd);
         } else {
-            await _handleUnknownSubCommand(c);
+            await _handleUnknownSubCommand(currC);
         }
     } else {
-        await _handleUnknownCommand(c);
+        await _handleUnknownCommand(currC);
     }
     // if (spawnC) Config.initializeConfig(oldC);
 };

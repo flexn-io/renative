@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -7,7 +9,6 @@ import {
     getAppTemplateFolder,
     getAppDescription,
     getAppAuthor,
-    getConfigProp
 } from '../../common';
 import { logTask } from '../../systemTools/logger';
 import { isPlatformActive } from '..';
@@ -19,7 +20,9 @@ import { KAIOS_SDK } from '../../constants';
 import { getRealPath, fsWriteFileSync } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 
-const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
+const childProcess = require('child_process');
+
+const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
     logTask('launchKaiOSSimulator');
 
     if (!c.files.workspace.config.sdks.KAIOS_SDK) {
@@ -42,7 +45,6 @@ const launchKaiOSSimulator = (c, name) => new Promise((resolve, reject) => {
         return;
     }
 
-    const childProcess = require('child_process');
     childProcess.exec(`open ${ePath}`, (err, stdout, stderr) => {
         if (err) {
             reject(err);
@@ -63,15 +65,13 @@ const configureKaiOSProject = async (c, platform) => {
     return copyBuildsFolder(c, platform);
 };
 
-const configureProject = (c, platform) => new Promise((resolve, reject) => {
+const configureProject = (c, platform) => new Promise((resolve) => {
     logTask(`configureProject:${platform}`);
 
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const appFolder = getAppFolder(c, platform);
     const templateFolder = getAppTemplateFolder(c, platform);
-    const bundleIsDev = getConfigProp(c, platform, 'bundleIsDev') === true;
-    const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
 
     const manifestFilePath = path.join(templateFolder, 'manifest.webapp');
     const manifestFilePath2 = path.join(appFolder, 'manifest.webapp');

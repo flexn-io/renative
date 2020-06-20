@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import chalk from 'chalk';
 import { getConfigProp, getAppId } from '../../common';

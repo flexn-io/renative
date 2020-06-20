@@ -95,7 +95,7 @@ export const launchTizenSimulator = (c, name) => {
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listTizenTargets = async (c, name) => {
+export const listTizenTargets = async (c) => {
     const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
         detached: true
     });
@@ -107,7 +107,7 @@ export const listTizenTargets = async (c, name) => {
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
 
-export const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
+export const createDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('createDevelopTizenCertificate');
 
     const certDirPath = c.paths.workspace.dir;
@@ -267,7 +267,7 @@ export const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const { hosted, debug } = c.program;
+    const { hosted } = c.program;
 
     const isHosted = hosted ?? !getConfigProp(c, platform, 'bundleAssets');
     // if (debug) isHosted = false;

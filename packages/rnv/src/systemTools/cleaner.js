@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
@@ -7,9 +8,9 @@ import { removeDirs } from './fileutils';
 import { logTask, logToSummary, logDebug } from './logger';
 import { executeAsync } from './exec';
 
-const rnvClean = async (c, skipQuestion = false) => {
+const rnvClean = async (c, skipQuestionParam = false) => {
     logTask('rnvClean');
-    if (c.program.ci) skipQuestion = true;
+    const skipQuestion = c.program.ci ? true : skipQuestionParam;
     const pathsToRemove = [];
     const immediateNodeModuleDir = path.join(
         c.paths.project.dir,
@@ -115,9 +116,9 @@ const rnvClean = async (c, skipQuestion = false) => {
     }
     if (answers.cache) {
         try {
-          await executeAsync(c, 'watchman watch-del-all');
+            await executeAsync(c, 'watchman watch-del-all');
         } catch (e) {
-          logDebug(`watchman not installed. skipping`)
+            logDebug('watchman not installed. skipping');
         }
 
         await executeAsync(

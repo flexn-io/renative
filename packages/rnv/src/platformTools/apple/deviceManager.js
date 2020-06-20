@@ -1,8 +1,8 @@
+/* eslint-disable import/no-cycle */
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 import child_process from 'child_process';
-import { getAppFolder } from '../../common';
-import { logToSummary, logTask, logWarning } from '../../systemTools/logger';
+import { logToSummary, logTask, logWarning, logDebug } from '../../systemTools/logger';
 import { IOS, TVOS } from '../../constants';
 import { executeAsync } from '../../systemTools/exec';
 
@@ -26,7 +26,7 @@ export const getAppleDevices = async (
     const simctl = JSON.parse(await executeAsync('xcrun simctl list --json'));
     const availableSims = [];
     Object.keys(simctl.devices).forEach((runtime) => {
-        console.log('runtime', runtime);
+        logDebug('runtime', runtime);
         simctl.devices[runtime].forEach((device) => {
             if (device.isAvailable) {
                 availableSims.push({
@@ -108,7 +108,7 @@ const _parseIOSDevicesList = (
         rawDevices.split('\n').forEach((line) => {
             const s1 = line.match(/\[.*?\]/);
             const s2 = line.match(/\(.*?\)/g);
-            const s3 = line.substring(0, line.indexOf('(') - 1);
+            // const s3 = line.substring(0, line.indexOf('(') - 1);
             const s4 = line.substring(0, line.indexOf('[') - 1);
             let isSim = false;
             if (s2 && s1) {

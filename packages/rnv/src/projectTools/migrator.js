@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import fs from 'fs';
 import path from 'path';
 import chalk from 'chalk';
@@ -121,7 +122,7 @@ const _migrateProjectSoft = async (c, paths) => {
         }
 
         if (fs.existsSync(paths.package)) {
-            const packageString = fs.readFileSync(paths.package).toString();
+            // const packageString = fs.readFileSync(paths.package).toString();
             // No longer necessary. covered in npmInstall
             // if (!packageString.includes('jetify') && !packageString.includes('postinstall')) {
             //     logWarning(`You're missing ${chalk.white('"scripts": { "postinstall": "jetify" }')} in your package.json. Your android build might fail!`);
@@ -130,7 +131,9 @@ const _migrateProjectSoft = async (c, paths) => {
 
         if (fs.existsSync(paths.metroConfig)) {
             logWarning(
-                `Found deprecated metro config ${paths.metroConfig} and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`
+                `Found deprecated metro config ${
+                    paths.metroConfig
+                } and it needs to be migrated to ${paths.metroConfigNew}. ReNative will try to fix it for you!`
             );
             const metroConfig = fs.readFileSync(paths.metroConfig).toString();
             fsWriteFileSync(paths.metroConfigNew, metroConfig);
@@ -237,20 +240,20 @@ const _migrateProjectSoft = async (c, paths) => {
     }
 };
 
-const _migrateFile = (oldPath, newPath) => {
-    if (!fs.existsSync(newPath)) {
-        if (fs.existsSync(oldPath)) {
-            logWarning(
-                `Found old app config at ${chalk.white(
-                    oldPath
-                )}. will copy to ${chalk.white(newPath)}`
-            );
-        }
-        copyFileSync(oldPath, newPath);
-    }
-};
+// const _migrateFile = (oldPath, newPath) => {
+//     if (!fs.existsSync(newPath)) {
+//         if (fs.existsSync(oldPath)) {
+//             logWarning(
+//                 `Found old app config at ${chalk.white(
+//                     oldPath
+//                 )}. will copy to ${chalk.white(newPath)}`
+//             );
+//         }
+//         copyFileSync(oldPath, newPath);
+//     }
+// };
 
-const _migrateProject = (c, paths) => new Promise((resolve, reject) => {
+const _migrateProject = (c, paths) => new Promise((resolve) => {
     logTask('MIGRATION STARTED');
 
     if (!fs.existsSync(c.paths.workspace.config)) {

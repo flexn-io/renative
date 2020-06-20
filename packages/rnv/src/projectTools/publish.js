@@ -1,4 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require */
+/* eslint-disable import/no-cycle */
+
 import semver from 'semver';
 
 import Config from '../config';

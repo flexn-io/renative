@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -508,7 +509,7 @@ export const waitForWebpack = async (c, engine) => {
     });
 };
 export const importPackageFromProject = (name) => {
-    const c = Config.getConfig();
+    // const c = Config.getConfig();
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const pkg = require(doResolve(name));
     if (pkg.default) return pkg.default;

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import { commandExistsSync, executeAsync } from '../systemTools/exec';
 import BasePlatformSetup from './base';
 import Config from '../config';

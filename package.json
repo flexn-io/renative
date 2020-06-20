@@ -64,6 +64,7 @@
         "build:clean": "lerna run --parallel --concurrency 1 build:clean",
         "link": "cd packages/rnv && (yarn unlink || true) && yarn link",
         "postinstall": "lerna link --force-local && npx jetify",
+        "lint": "npx eslint ./packages/rnv",
         "publish": "npm run pre-publish && npm run publish:rnv && npm run publish:renative && npm run publish:hello && npm run publish:blank && npm run publish:sink",
         "pre-publish": "cd packages/app && yarn pre-publish",
         "publish:alpha": "npm run pre-publish && npm run publish:rnv:alpha && npm run publish:renative:alpha && npm run publish:hello:alpha && npm run publish:blank:alpha && npm run publish:sink:alpha",
@@ -110,6 +111,14 @@
         "electron": "7.0.0",
         "electron-builder": "21.1.1",
         "lerna": "3.16.4",
+        "eslint": "6.2.2",
+        "eslint-plugin-detox": "1.0.0",
+        "eslint-plugin-import": "2.20.1",
+        "eslint-plugin-jest": "23.8.2",
+        "eslint-plugin-jsx-a11y": "6.2.3",
+        "eslint-plugin-mocha": "6.3.0",
+        "eslint-plugin-react": "7.10.0",
+        "eslint-plugin-react-hooks": "2.5.0",
         "husky": "4.2.5"
     },
     "engines": {
@@ -125,6 +134,11 @@
         "hooks": {
             "pre-commit": "yarn test:rnv:unit"
         }
+    },
+    "lint-staged": {
+        "*.js": [
+            "eslint"
+        ]
     },
     "resolutions": {
         "@react-navigation/native": "5.0.9"

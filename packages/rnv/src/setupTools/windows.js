@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import shell from 'shelljs';
 import { getInstalledPathSync } from 'get-installed-path';
 import path from 'path';

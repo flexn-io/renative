@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -13,10 +14,8 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
-    RENATIVE_CONFIG_PLATFORMS_NAME,
     RENATIVE_CONFIG_ENGINES_NAME,
     RN_CLI_CONFIG_NAME,
-    SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
     SUPPORTED_PLATFORMS
@@ -24,7 +23,6 @@ import {
 import { rnvTemplateApply } from '../templateTools';
 
 import {
-    copyFolderContentsRecursiveSync,
     copyFileSync,
     mkdirSync,
     writeFileSync,
@@ -37,7 +35,6 @@ import {
 } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
 import { getEngineByPlatform } from '../engineTools';
-import { doResolve } from '../resolve';
 import { getWorkspaceDirPath } from '../projectTools/workspace';
 import {
     logError,
@@ -158,13 +155,18 @@ const matchAppConfigID = async (c, appConfigID) => {
                 }
                 if (ids.includes(id)) {
                     throw new Error(
-                        `AppConfig error - You have 2 duplicate app configs with ID ${id}. Keep in mind that ID is case insensitive. Please edit one of them in /appConfigs/<folder>/renative.json`
+                        `AppConfig error - You have 2 duplicate app configs with ID ${
+                            id
+                        }. Keep in mind that ID is case insensitive.
+Please edit one of them in /appConfigs/<folder>/renative.json`
                     );
                 }
                 ids.push(id);
                 if (dirs.includes(dir)) {
                     throw new Error(
-                        `AppConfig error - You have 2 duplicate app config folders named ${dir}. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
+                        `AppConfig error - You have 2 duplicate app config folders named ${
+                            dir
+                        }. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
                     );
                 }
                 dirs.push(dir);
@@ -275,7 +277,10 @@ export const versionCheck = async (c) => {
                     c.runtime.rnvVersionRunner
                 )} against project built with rnv v${chalk.red(
                     c.runtime.rnvVersionProject
-                )}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json.`
+                )}. This might result in unexpected behaviour!
+It is recommended that you run your rnv command with npx prefix: ${
+    recCmd
+} . or manually update your devDependencies.rnv version in your package.json.`
             });
 
             c.runtime.versionCheckCompleted = true;
@@ -577,10 +582,14 @@ const _generatePlatformTemplatePaths = (c) => {
         c.buildConfig.paths = {};
     }
     if (c.buildConfig.platformTemplatesDirs) {
-        logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+        logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${
+            chalk.white(c.paths.project.config)
+        }`);
     }
     if (c.buildConfig.platformTemplatesDir) {
-        logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+        logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${
+            chalk.white(c.paths.project.config)
+        }`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
@@ -976,7 +985,7 @@ export const configureRnvGlobal = async (c) => {
         // Check config sanity
         if (c.files.workspace.config.defaultTargets === undefined) {
             logWarning(
-                `Looks like you\'re missing defaultTargets in your config ${chalk.white(
+                `Looks like you're missing defaultTargets in your config ${chalk.white(
                     c.paths.workspace.config
                 )}. Let's add them!`
             );

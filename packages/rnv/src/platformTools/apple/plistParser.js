@@ -1,5 +1,5 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
-import fs from 'fs';
 import {
     isObject,
     isArray,
@@ -49,7 +49,7 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
     resolve();
 });
 
-export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, reject) => {
+export const parseEntitlementsPlist = (c, platform) => new Promise((resolve) => {
     logTask(`parseEntitlementsPlistSync:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -73,7 +73,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve, rej
     resolve();
 });
 
-export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => {
+export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
     logTask(`parseInfoPlist:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
@@ -97,17 +97,16 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
         plistObj.UIAppFonts = c.pluginConfigiOS.embeddedFonts;
     }
     // PERMISSIONS
-    const pluginPermissions = '';
     const includedPermissions = getConfigProp(c, platform, 'includedPermissions')
             || getConfigProp(c, platform, 'permissions');
     if (includedPermissions && c.buildConfig.permissions) {
-        const plat = c.buildConfig.permissions[platform] ? platform : 'ios';
-        const pc = c.buildConfig.permissions[plat];
+        const platPrem = c.buildConfig.permissions[platform] ? platform : 'ios';
+        const pc = c.buildConfig.permissions[platPrem];
         if (includedPermissions.length && includedPermissions[0] === '*') {
-            for (const v in pc) {
+            Object.keys(pc).forEach((v) => {
                 const key = pc[v].key || v;
                 plistObj[key] = pc[v].desc;
-            }
+            });
         } else {
             includedPermissions.forEach((v) => {
                 if (pc[v]) {
@@ -153,10 +152,10 @@ export const parseInfoPlist = (c, platform) => new Promise((resolve, reject) => 
     }
 
     // PLUGINS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        const plist = getFlavouredProp(c, pluginPlat, 'plist');
-        if (plist) {
-            plistObj = mergeObjects(c, plistObj, plist, true, false);
+    parsePlugins(c, platform, (plugin, pluginPlat) => {
+        const plistPlug = getFlavouredProp(c, pluginPlat, 'plist');
+        if (plistPlug) {
+            plistObj = mergeObjects(c, plistObj, plistPlug, true, false);
         }
     });
     saveObjToPlistSync(c, plistPath, plistObj);
@@ -192,10 +191,10 @@ const _parseObject = (obj, level) => {
         output += `${space}<${obj} />\n`;
     } else if (isObject(obj)) {
         output += `${space}<dict>\n`;
-        for (const key in obj) {
+        Object.keys(obj).forEach((key) => {
             output += `  ${space}<key>${key}</key>\n`;
             output += _parseObject(obj[key], level + 1);
-        }
+        });
         output += `${space}</dict>\n`;
     } else if (isString(obj)) {
         output += `${space}<string>${obj}</string>\n`;

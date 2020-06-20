@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import fs from 'fs';
@@ -21,10 +22,8 @@ import {
     logWarning,
     logError,
     logToSummary,
-    logInfo,
     logDebug
 } from '../systemTools/logger';
-import { executePipe } from '../projectTools/buildHooks';
 import { doResolve } from '../resolve';
 
 export const rnvPluginList = c => new Promise((resolve) => {

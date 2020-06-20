@@ -1,6 +1,6 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
-import { getConfig } from '../common';
 import { logToSummary, logTask } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
 import { executeAsync } from '../systemTools/exec';

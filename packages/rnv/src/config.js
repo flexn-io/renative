@@ -1,4 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
+/* eslint-disable import/no-cycle */
+
 import { printTable } from 'console-table-printer';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -6,7 +8,7 @@ import semver from 'semver';
 
 import { writeFileSync } from './systemTools/fileutils';
 import { npmInstall, executeAsync } from './systemTools/exec';
-import { logWarning, logTask, logError, logDebug } from './systemTools/logger';
+import { logWarning, logError, logDebug } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
 import { getEngineByPlatform } from './engineTools';

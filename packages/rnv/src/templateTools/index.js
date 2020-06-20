@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs, { mkdirSync } from 'fs';
 import path from 'path';
@@ -24,9 +25,8 @@ import {
     logTask,
     logDebug
 } from '../systemTools/logger';
-import { getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
-import { getSourceExts, getConfigProp } from '../common';
+import { getSourceExts } from '../common';
 import {
     setAppConfig,
     listAppConfigsFoldersSync,
@@ -35,7 +35,6 @@ import {
     updateConfig,
     parseRenativeConfigs
 } from '../configTools/configParser';
-import { isMonorepo, getMonorepoRoot } from '../common';
 import { doResolve } from '../resolve';
 import { getEngineByPlatform } from '../engineTools';
 
@@ -62,7 +61,7 @@ export const addTemplate = (c, template) => {
     _writeObjectSync(c, c.paths.project.config, c.files.project.config);
 };
 
-export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
+export const checkIfTemplateInstalled = c => new Promise((resolve) => {
     logTask('checkIfTemplateInstalled');
     if (!c.buildConfig.templates) {
         logWarning(
@@ -75,12 +74,11 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
         resolve();
         return;
     }
-
-    for (const k in c.buildConfig.templates) {
+    Object.keys(c.buildConfig.templates).forEach((k) => {
         const obj = c.buildConfig.templates[k];
         if (
             !doResolve(k.version, false, { basedir: '../' })
-                && !doResolve(k, false)
+              && !doResolve(k, false)
         ) {
             logWarning(
                 `Your ${chalk.white(
@@ -92,7 +90,8 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
         if (c.files.project.package.devDependencies) {
             c.files.project.package.devDependencies[k] = obj.version;
         }
-    }
+    });
+
     _writeObjectSync(c, c.paths.project.package, c.files.project.package);
 
     resolve();
@@ -176,7 +175,7 @@ const _applyTemplate = async (c) => {
     return true;
 };
 
-const _configureSrc = c => new Promise((resolve, reject) => {
+const _configureSrc = c => new Promise((resolve) => {
     // Check src
     logDebug('configureProject:check src');
     if (!fs.existsSync(c.paths.project.srcDir)) {
@@ -248,7 +247,7 @@ const _configureAppConfigs = async (c) => {
     }
 };
 
-const _configureProjectConfig = c => new Promise((resolve, reject) => {
+const _configureProjectConfig = c => new Promise((resolve) => {
     // Check projectConfigs
     logDebug('configureProject:check projectConfigs');
     if (!fs.existsSync(c.paths.project.projectConfig.dir)) {
@@ -449,11 +448,6 @@ export const configureEntryPoints = async (c) => {
     return true;
 };
 
-const _getSourceExtsAsString = (c, p) => {
-    const sourceExts = getSourceExts(c, p);
-    return sourceExts.length ? `['${sourceExts.join("', '")}']` : '[]';
-};
-
 const _configureMetroConfigs = async (c, platform) => {
     const configDir = path.join(c.paths.project.dir, 'configs');
     if (!fs.existsSync(configDir)) {
@@ -499,7 +493,7 @@ export const getInstalledTemplateOptions = (c) => {
     return [];
 };
 
-export const rnvTemplateList = c => new Promise((resolve, reject) => {
+export const rnvTemplateList = c => new Promise((resolve) => {
     logTask('rnvTemplateList');
     const opts = getTemplateOptions(c);
     logToSummary(`Templates:\n\n${opts.asString}`);

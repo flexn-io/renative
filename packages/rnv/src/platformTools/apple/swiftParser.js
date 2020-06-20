@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import chalk from 'chalk';
 import {
@@ -20,13 +21,12 @@ export const parseAppDelegate = (
     isBundled = false,
     ip = 'localhost',
     port
-) => new Promise((resolve, reject) => {
-    if (!port) port = c.runtime.port;
-    logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
+) => new Promise((resolve) => {
+    const newPort = port || c.runtime?.port;
+    logTask(`parseAppDelegateSync:${platform}:${ip}:${newPort}`);
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
-    const { backgroundColor } = c.buildConfig.platforms[platform];
 
     const forceBundle = getGetJsBundleFile(c, platform);
     let bundle;
@@ -35,7 +35,7 @@ export const parseAppDelegate = (
     } else if (isBundled) {
         bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
     } else {
-        bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
+        bundle = `URL(string: "http://${ip}:${newPort}/${entryFile}.bundle?platform=ios")`;
     }
 
     // PLUGINS
@@ -162,17 +162,16 @@ export const parseAppDelegate = (
         }
         return output;
     };
-
-    for (const key in methods) {
+    Object.keys(methods).forEach((key) => {
         const method = methods[key];
-        for (const key2 in method) {
+        Object.keys(method).forEach((key2) => {
             const f = method[key2];
             c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(
                 c.pluginConfigiOS.appDelegateMethods[key][key2],
                 f
             );
-        }
-    }
+        });
+    });
 
     writeCleanFile(
         path.join(
@@ -200,7 +199,7 @@ export const parseAppDelegate = (
     resolve();
 });
 
-export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
+export const injectPluginSwiftSync = (c, plugin, key) => {
     logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
     const appDelegateImports = getFlavouredProp(
         c,
@@ -231,10 +230,10 @@ export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
         'appDelegateMethods'
     );
     if (appDelegateMethods) {
-        for (const key in appDelegateMethods) {
-            for (const key2 in appDelegateMethods[key]) {
-                const plugArr = c.pluginConfigiOS.appDelegateMethods[key][key2];
-                const plugVal = appDelegateMethods[key][key2];
+        Object.keys(appDelegateMethods).forEach((delKey) => {
+            Object.keys(appDelegateMethods[delKey]).forEach((key2) => {
+                const plugArr = c.pluginConfigiOS.appDelegateMethods[delKey][key2];
+                const plugVal = appDelegateMethods[delKey][key2];
                 if (plugVal) {
                     plugVal.forEach((v) => {
                         if (!plugArr.includes(v)) {
@@ -242,7 +241,7 @@ export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
                         }
                     });
                 }
-            }
-        }
+            });
+        });
     }
 };

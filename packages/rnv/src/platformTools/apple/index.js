@@ -14,10 +14,8 @@ import {
     getConfigProp,
     getIP,
     generateChecksum,
-    getFlavouredProp
 } from '../../common';
 import { doResolve } from '../../resolve';
-import { parsePlugins } from '../../pluginTools';
 import { isPlatformActive } from '..';
 import {
     copyAssetsFolder,
@@ -170,7 +168,11 @@ export const runXcodeProject = async (c) => {
     }
 
     let devicesArr;
-    if (device === true) { devicesArr = await getAppleDevices(c, c.platform, false, true); } else if (c.runtime.target === true) { devicesArr = await getAppleDevices(c, c.platform, true, false); }
+    if (device === true) {
+        devicesArr = await getAppleDevices(c, c.platform, false, true);
+    } else if (c.runtime.target === true) {
+        devicesArr = await getAppleDevices(c, c.platform, true, false);
+    }
 
     if (device === true) {
         if (devicesArr.length === 1) {
@@ -271,16 +273,17 @@ export const runXcodeProject = async (c) => {
     }
 
     if (p) {
-        const allowProvisioningUpdates = getConfigProp(
-            c,
-            c.platform,
-            'allowProvisioningUpdates',
-            true
-        );
+        // const allowProvisioningUpdates = getConfigProp(
+        //     c,
+        //     c.platform,
+        //     'allowProvisioningUpdates',
+        //     true
+        // );
         // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
-            return packageBundleForXcode(c, c.platform, bundleIsDev).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
+            return packageBundleForXcode(c, c.platform, bundleIsDev)
+                .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
         }
         return _checkLockAndExec(c, appPath, scheme, runScheme, p);
     }
@@ -338,7 +341,9 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
                 'requires a development team. Select a development team'
             );
             if (isDevelopmentTeamMissing) {
-                const loc = `./appConfigs/${c.runtime.appId}/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
+                const loc = `./appConfigs/${
+                    c.runtime.appId
+                }/renative.json:{ "platforms": { "${c.platform}": { "teamID": "....."`;
                 logError(e);
                 logWarning(`You need specify the development team if you want to run app on ${
                     c.platform
@@ -423,7 +428,9 @@ ${chalk.white('[2]>')} Try to generate matching profiles with ${chalk.white(
 )} (you need correct priviledges in apple developer portal)
 ${chalk.white(
         '[3]>'
-    )} Open generated project in Xcode: ${workspacePath} and debug from there (Sometimes this helps for the first-time builds)
+    )} Open generated project in Xcode: ${
+    workspacePath
+} and debug from there (Sometimes this helps for the first-time builds)
 ${proAutoText}`);
     if (isProvAutomatic) return false;
     const { confirmAuto } = await inquirer.prompt({
@@ -452,7 +459,9 @@ const _setAutomaticSigning = async (c) => {
         logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
     } else {
         return Promise.reject(
-            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`
+            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${
+                c.platform
+            }": { buildSchemes: { "${c.runtime.scheme}" ... Object is null. Try update file manually`
         );
     }
 };
@@ -467,7 +476,9 @@ const _setDevelopmentTeam = async (c, teamID) => {
         logSuccess(`Succesfully updated ${c.paths.appConfig.config}`);
     } else {
         return Promise.reject(
-            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${c.platform}" ... Object is null. Try update file manually`
+            `Failed to update ${c.paths.appConfig?.config}."platforms": { "${
+                c.platform
+            }" ... Object is null. Try update file manually`
         );
     }
 };
@@ -479,7 +490,7 @@ const composeXcodeArgsFromCLI = (string) => {
     ); // replaces spaces outside quotes with &&& for easy split
     const keysAndValues = spacesReplaced.split('&&&');
     const unescapedValues = keysAndValues.map(s => s
-        .replace(/\'/g, '')
+        .replace(/'/g, '')
         .replace(/"/g, '')
         .replace(/\\/g, '')); // removes all quotes or backslashes
 
@@ -675,7 +686,7 @@ const exportXcodeProject = async (c, platform) => {
 
 const packageBundleForXcode = (c, platform, isDev = false) => {
     logTask(`packageBundleForXcode:${platform}`);
-    const { maxErrorLength } = c.program;
+    // const { maxErrorLength } = c.program;
     const args = [
         'bundle',
         '--platform',
@@ -720,7 +731,7 @@ const runAppleLog = c => new Promise(() => {
             'log',
             'stream',
             '--predicate',
-            `eventMessage contains \"${filter}\"`
+            `eventMessage contains "${filter}"`
         ],
         { stdio: 'inherit', customFds: [0, 1, 2] }
     );
@@ -775,23 +786,23 @@ const configureXcodeProject = async (c, platform, ip, port) => {
     };
 
     // FONTS
-    parsePlugins(c, platform, (plugin, pluginPlat, key) => {
-        const ignoreProjectFonts = getFlavouredProp(
-            c,
-            pluginPlat,
-            'ignoreProjectFonts'
-        );
-
-        // TODO: enable this once mmoved to modular_headers Podfile
-        // if (ignoreProjectFonts) {
-        //     ignoreProjectFonts.forEach((v) => {
-        //         if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
-        //             logDebug(`Igonoring font: ${v}`);
-        //             c.pluginConfigiOS.ignoreProjectFonts.push(v);
-        //         }
-        //     });
-        // }
-    });
+    // parsePlugins(c, platform, (plugin, pluginPlat) => {
+    //     // const ignoreProjectFonts = getFlavouredProp(
+    //     //     c,
+    //     //     pluginPlat,
+    //     //     'ignoreProjectFonts'
+    //     // );
+    //
+    //     // TODO: enable this once mmoved to modular_headers Podfile
+    //     // if (ignoreProjectFonts) {
+    //     //     ignoreProjectFonts.forEach((v) => {
+    //     //         if (!c.pluginConfigiOS.ignoreProjectFonts.includes(v)) {
+    //     //             logDebug(`Igonoring font: ${v}`);
+    //     //             c.pluginConfigiOS.ignoreProjectFonts.push(v);
+    //     //         }
+    //     //     });
+    //     // }
+    // });
     const embeddedFontSourcesCheck = [];
     parseFonts(c, (font, dir) => {
         if (font.includes('.ttf') || font.includes('.otf')) {

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import tar from 'tar';
 import chalk from 'chalk';
@@ -11,7 +12,7 @@ import {
     logSuccess,
     logInfo
 } from './logger';
-import { isSystemMac, isSystemWin } from '../utils';
+import { isSystemWin } from '../utils';
 import {
     listAppConfigsFoldersSync,
     setAppConfig
@@ -24,12 +25,12 @@ import {
     copyFileSync,
     mkdirSync,
     writeFileSync,
-    fsWriteFileSync
+    fsWriteFileSync,
+    cleanFolder
 } from './fileutils';
 import { executeAsync } from './exec';
 import { updateProfile } from '../platformTools/apple/fastlane';
 import { inquirerPrompt } from './prompt';
-import { cleanFolder } from './fileutils';
 
 const iocane = require('iocane');
 
@@ -396,7 +397,7 @@ ${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 //     return defaultOpenssl;
 // };
 
-export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
+export const rnvCryptoInstallProfiles = c => new Promise((resolve) => {
     logTask('rnvCryptoInstallProfiles');
     if (c.platform !== 'ios') {
         logError(
@@ -421,7 +422,7 @@ export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
 
     try {
         mobileprovisionArr.forEach((v) => {
-            console.log(`rnvCryptoInstallProfiles: Installing: ${v}`);
+            logDebug(`rnvCryptoInstallProfiles: Installing: ${v}`);
             copyFileSync(v, ppFolder);
         });
     } catch (e) {
@@ -431,9 +432,8 @@ export const rnvCryptoInstallProfiles = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
+export const rnvCryptoInstallCerts = c => new Promise((resolve) => {
     logTask('rnvCryptoInstallCerts');
-    const { maxErrorLength } = c.program;
 
     if (c.platform !== 'ios') {
         logError(`_installTempCerts: platform ${c.platform} not supported`);
@@ -441,13 +441,8 @@ export const rnvCryptoInstallCerts = c => new Promise((resolve, reject) => {
         return;
     }
     const kChain = c.program.keychain || 'ios-build.keychain';
-    const kChainPath = path.join(
-        c.paths.home.dir,
-        'Library/Keychains',
-        kChain
-    );
+
     const list = getFileListSync(c.paths.workspace.project.dir);
-    const cerPromises = [];
     const cerArr = list.filter(v => v.endsWith('.cer'));
 
     Promise.all(
@@ -465,9 +460,9 @@ export const rnvCryptoUpdateProfiles = async (c) => {
     switch (c.platform) {
         case IOS:
         case TVOS:
-            const { appId } = c.runtime;
             await _updateProfiles(c);
-            await setAppConfig(c, appId);
+            await setAppConfig(c, c.runtime?.appId);
+            break;
         default:
             return true;
     }
@@ -479,8 +474,6 @@ export const rnvCryptoUpdateProfiles = async (c) => {
 const _updateProfiles = (c) => {
     logTask('_updateProfiles', chalk.grey);
     const acList = listAppConfigsFoldersSync(c, true);
-    const fullList = [];
-    const currentAppId = c.runtime.appId;
 
     return acList.reduce(
         (previousPromise, v) => previousPromise.then(() => _updateProfile(c, v)),
@@ -501,7 +494,6 @@ export const checkCrypto = async (c) => {
     if (c.program.ci) return;
 
     const sourceRaw = c.files.project.config?.crypto?.decrypt?.source;
-    const source = `./${c.files.project.package.name}`;
     const destRaw = c.files.project.config?.crypto?.encrypt?.dest;
 
     if (destRaw) {
@@ -522,13 +514,15 @@ export const checkCrypto = async (c) => {
                 let tsProject = 0;
                 if (fs.existsSync(tsWorkspacePath)) {
                     tsWorkspace = parseInt(
-                        fs.readFileSync(tsWorkspacePath).toString()
+                        fs.readFileSync(tsWorkspacePath).toString(),
+                        10
                     );
                 }
 
                 if (fs.existsSync(tsProjectPath)) {
                     tsProject = parseInt(
-                        fs.readFileSync(tsProjectPath).toString()
+                        fs.readFileSync(tsProjectPath).toString(),
+                        10
                     );
                 }
 

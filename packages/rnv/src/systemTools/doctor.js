@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
@@ -12,7 +13,6 @@ const getSortedObject = (obj) => {
             if (!addedKeys[v]) {
                 newObj[v] = obj[v];
                 addedKeys[v] = true;
-            } else {
             }
         });
         return newObj;
@@ -27,7 +27,7 @@ const checkForDuplicates = (arr) => {
     const dupCheck = {};
     arr.forEach((v) => {
         if (v) {
-            for (const k in v) {
+            Object.keys(v).forEach((k) => {
                 if (dupCheck[k]) {
                     logWarning(
                         `Key ${chalk.white(
@@ -36,12 +36,12 @@ const checkForDuplicates = (arr) => {
                     );
                 }
                 dupCheck[k] = true;
-            }
+            });
         }
     });
 };
 
-const fixPackageJson = (c, pkgPath) => new Promise((resolve, reject) => {
+const fixPackageJson = (c, pkgPath) => new Promise((resolve) => {
     const pth = pkgPath || c.paths.project.package;
     const pp = readObjectSync(pth);
     const output = fixPackageObject(pp);
@@ -59,11 +59,12 @@ const fixPackageObject = (pp) => {
             usedKeys[v] = true;
         }
     });
-    for (const k in pp) {
+    Object.keys(pp).forEach((k) => {
         if (!usedKeys[k]) {
             output[k] = pp[k];
         }
-    }
+    });
+
     checkForDuplicates([pp.dependencies, pp.devDependencies]);
 
     return output;

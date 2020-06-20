@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import LinuxPlatformSetup from './linux';
 import WindowsPlatformSetup from './windows';
 import DarwinPlatformSetup from './darwin';

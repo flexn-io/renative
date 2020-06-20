@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -10,7 +11,6 @@ import {
     getConfigProp,
     getTimestampPathsConfig
 } from '../common';
-import { doResolve } from '../resolve';
 import {
     cleanFolder,
     copyFolderContentsRecursiveSync,
@@ -22,10 +22,9 @@ import {
 import { isPlatformActive } from '../platformTools';
 import { npmInstall } from '../systemTools/exec';
 import { logTask, logWarning, logDebug, logInfo } from '../systemTools/logger';
-import { getMergedPlugin, parsePlugins, copyTemplatePluginsSync } from '../pluginTools';
+import { copyTemplatePluginsSync } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 import { inquirerPrompt } from '../systemTools/prompt';
-import { isSystemWin } from '../utils';
 
 export const checkAndCreateProjectPackage = c => new Promise((resolve) => {
     logTask('checkAndCreateProjectPackage');
@@ -280,7 +279,8 @@ export const copyAssetsFolder = async (c, platform, customFn) => {
 
     // FOLDER MERGERS FROM APP CONFIG + EXTEND
     if (c.paths.appConfig.dirs) {
-        const hasAssetFolder = c.paths.appConfig.dirs.filter(v => fs.existsSync(path.join(v, `assets/${platform}`))).length;
+        const hasAssetFolder = c.paths.appConfig.dirs
+            .filter(v => fs.existsSync(path.join(v, `assets/${platform}`))).length;
         if (!hasAssetFolder) {
             await generateDefaultAssets(
                 c,
@@ -325,7 +325,7 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
     }
 };
 
-export const copyBuildsFolder = (c, platform) => new Promise((resolve, reject) => {
+export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     logTask(`copyBuildsFolder:${platform}`);
     if (!isPlatformActive(c, platform, resolve)) return;
 
