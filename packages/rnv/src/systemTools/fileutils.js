@@ -397,14 +397,14 @@ export const removeDirs = dirPaths => new Promise((resolve) => {
     if (allFolders === 0) resolve();
 });
 
-export const removeDirSync = (dir, rmSelf) => {
+export const removeDirSync = (_dir, _rmSelf) => {
+    let dir = _dir;
+    let rmSelf = _rmSelf;
     let files;
-    let newDir = dir;
-    // let newRmSelf = rmSelf;
-    // newRmSelf = newRmSelf === undefined ? true : newRmSelf;
-    newDir += '/';
+    rmSelf = rmSelf === undefined ? true : rmSelf;
+    dir += '/';
     try {
-        files = fs.readdirSync(newDir);
+        files = fs.readdirSync(dir);
     } catch (e) {
         logDebug('!Oops, directory not exist.');
         return;
@@ -412,15 +412,15 @@ export const removeDirSync = (dir, rmSelf) => {
     if (files.length > 0) {
         files.forEach((x) => {
             try {
-                if (fs.statSync(newDir + x).isDirectory()) {
-                    removeDirSync(newDir + x);
+                if (fs.statSync(dir + x).isDirectory()) {
+                    removeDirSync(dir + x);
                 } else {
-                    fs.unlinkSync(newDir + x);
+                    fs.unlinkSync(dir + x);
                 }
             } catch (e) {
                 logDebug(`removeDirSync error:${e}. will try to unlink`);
                 try {
-                    fs.unlinkSync(newDir + x);
+                    fs.unlinkSync(dir + x);
                 } catch (e2) {
                     logDebug(`removeDirSync error:${e}`);
                 }
@@ -429,7 +429,7 @@ export const removeDirSync = (dir, rmSelf) => {
     }
     if (rmSelf) {
         // check if user want to delete the directory ir just the files in this directory
-        fs.rmdirSync(newDir);
+        fs.rmdirSync(dir);
     }
 };
 
