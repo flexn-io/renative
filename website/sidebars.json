@@ -62,6 +62,14 @@
             "integration_ftp",
             "integration_now",
             "integration_testflight"
+        ],
+        "Upgrades": [
+            "upgrade-0.30",
+            "upgrade-0.29",
+            "upgrade-0.28"
+        ],
+        "Release Notes": [
+            "changelog"
         ]
     },
     "api-sidebar": {

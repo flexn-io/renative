@@ -9,6 +9,8 @@ const hooks = {
         await generatePlugins(c);
         await updateMdFilesPlatforms(c);
         await updateMdFilesEngines(c);
+        await generateChangelog(c);
+        await generateCombinedChangelog(c);
     },
     prePublish: async (c) => {
         await updateVersions(c);

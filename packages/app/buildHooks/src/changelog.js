@@ -84,7 +84,12 @@ export const generateCombinedChangelog = async (c) => {
     const chlogDirPath = path.join(c.paths.project.dir, '../../docs/changelog');
     const chlogCombinedPath = path.join(c.paths.project.dir, '../../docs/changelog.md');
 
-    let output = '# Changelog\n';
+    let output = `---
+id: changelog
+title: Changelog
+sidebar_label: Changelog
+---
+\n`;
 
     const chlogArr = fs.readdirSync(chlogDirPath);
     const chlogArrObj = chlogArr.map((v) => {
