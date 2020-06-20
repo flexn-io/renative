@@ -69,6 +69,7 @@ export const parseBuildGradleSync = (c, platform) => {
     );
 };
 
+/* eslint-disable max-len */
 export const parseAppBuildGradleSync = (c, platform) => {
     logTask('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c, platform);

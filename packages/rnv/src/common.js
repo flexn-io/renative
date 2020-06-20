@@ -181,7 +181,9 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => path.join(
+    c.paths.project.platformTemplatesDirs[platform], `${platform}`
+);
 
 export const CLI_PROPS = [
     'provisioningStyle',

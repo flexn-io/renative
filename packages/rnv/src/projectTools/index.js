@@ -126,6 +126,7 @@ const _isOK = (c, p, list) => {
     return result;
 };
 
+/* eslint-disable no-await-in-loop */
 const _checkAndCreatePlatforms = async (c, platform) => {
     logTask(`_checkAndCreatePlatforms:${platform}`);
 

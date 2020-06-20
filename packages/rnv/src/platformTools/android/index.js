@@ -22,7 +22,8 @@ import {
     logWarning,
     logDebug,
     logInfo,
-    logSuccess
+    logSuccess,
+    logRaw
 } from '../../systemTools/logger';
 import {
     copyFileSync,
@@ -300,7 +301,9 @@ const _checkSigningCerts = async (c) => {
             }
 
             if (confirmCopy) {
-                c.files.workspace.appConfig.configPrivate[c.platform] = c.files.workspace.appConfig.configPrivate[platCandidate];
+                c.files.workspace.appConfig
+                    .configPrivate[c.platform] = c.files.workspace
+                        .appConfig.configPrivate[platCandidate];
             } else {
                 let storeFile;
 
@@ -696,11 +699,11 @@ export const runAndroidLog = async (c) => {
         const d = data.toString().split('\n');
         d.forEach((v) => {
             if (v.includes(' E ') && v.includes(filter)) {
-                console.log(chalk.red(v));
+                logRaw(chalk.red(v));
             } else if (v.includes(' W ') && v.includes(filter)) {
-                console.log(chalk.yellow(v));
+                logRaw(chalk.yellow(v));
             } else if (v.includes(filter)) {
-                console.log(v);
+                logRaw(v);
             }
         });
     });

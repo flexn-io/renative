@@ -30,7 +30,9 @@ export default {
         location: replaceHomeFolder('~/Android')
     },
     tizen: {
-        sdkUrl: `http://download.tizen.org/sdk/Installer/tizen-studio_3.3/web-ide_Tizen_Studio_3.3_${tizenPlatform}-64.${tizenExtension}`,
+        sdkUrl: `http://download.tizen.org/sdk/Installer/tizen-studio_3.3/web-ide_Tizen_Studio_3.3_${
+            tizenPlatform
+        }-64.${tizenExtension}`,
         downloadLocation: replaceHomeFolder(
             `~/web-ide_Tizen_Studio_3.3_${tizenPlatform}-64.${tizenExtension}`
         )

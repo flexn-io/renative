@@ -92,8 +92,9 @@ export const parseXcodeProject = async (c, platform) => {
                 );
             }
         } else {
+            const w = 'Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for';
             logWarning(
-                `Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`
+                `${w} ${c.runtime.xcodeProj.id}`
             );
         }
     }
@@ -204,7 +205,9 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
                         '200132F21F6BF9CF00450340'
                     );
                 } else {
-                    logWarning(`You are trying to inject native file which does not exists: ${chalk.red(filePath)}. Skipping.`);
+                    logWarning(`You are trying to inject native file which does not exists: ${
+                        chalk.red(filePath)
+                    }. Skipping.`);
                 }
             });
         }

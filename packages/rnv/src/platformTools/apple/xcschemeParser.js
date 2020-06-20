@@ -3,7 +3,6 @@ import path from 'path';
 import {
     getAppFolder,
     getAppTemplateFolder,
-    getConfigProp
 } from '../../common';
 import { logTask } from '../../systemTools/logger';
 import { getAppFolderName } from './index';
@@ -12,19 +11,18 @@ import { writeCleanFile } from '../../systemTools/fileutils';
 export const parseXcscheme = async (c, platform) => {
     logTask(`parseXcscheme:${platform}`);
     // XCSCHEME
-    const allowProvisioningUpdates = getConfigProp(
-        c,
-        platform,
-        'allowProvisioningUpdates',
-        true
-    );
-    const provisioningStyle = getConfigProp(
-        c,
-        platform,
-        'provisioningStyle',
-        'Automatic'
-    );
-    const runScheme = getConfigProp(c, platform, 'runScheme');
+    // const allowProvisioningUpdates = getConfigProp(
+    //     c,
+    //     platform,
+    //     'allowProvisioningUpdates',
+    //     true
+    // );
+    // const provisioningStyle = getConfigProp(
+    //     c,
+    //     platform,
+    //     'provisioningStyle',
+    //     'Automatic'
+    // );
     // const poisxSpawn = runScheme === 'Release' && !allowProvisioningUpdates && provisioningStyle === 'Manual';
     // Since RN 61+ this must be set to true otherwise debug apps install but not launch
     const poisxSpawn = true;

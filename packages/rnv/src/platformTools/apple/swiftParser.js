@@ -33,7 +33,9 @@ export const parseAppDelegate = (
     if (forceBundle) {
         bundle = forceBundle;
     } else if (isBundled) {
-        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
+        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${
+            entryFile
+        }", fallbackResource: nil)`;
     } else {
         bundle = `URL(string: "http://${ip}:${newPort}/${entryFile}.bundle?platform=ios")`;
     }
@@ -56,7 +58,9 @@ export const parseAppDelegate = (
 
     const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor')
         .rgbDecimal;
-    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
+    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${
+        clr[0]
+    }, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
     const methods = {
         application: {
             didFinishLaunchingWithOptions: {

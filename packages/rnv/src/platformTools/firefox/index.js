@@ -45,7 +45,7 @@ const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
         return;
     }
 
-    childProcess.exec(`open ${ePath}`, (err, stdout, stderr) => {
+    childProcess.exec(`open ${ePath}`, (err) => {
         if (err) {
             reject(err);
             return;

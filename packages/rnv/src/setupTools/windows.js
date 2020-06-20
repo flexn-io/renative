@@ -148,7 +148,10 @@ class LinuxPlatformSetup extends BasePlatformSetup {
     async installWebosSdk() {
         const { downloadLink } = setupConfig.webos;
         logInfo(
-            `Opening ${downloadLink}. Please download and install the SDK then continue after it finished installing. Make sure you also install the CLI and Emulator components`
+            `Opening ${
+                downloadLink
+            }. Please download and install the SDK then continue after it finished installing.
+Make sure you also install the CLI and Emulator components`
         );
         exec(`${openCommand} ${downloadLink}`);
         const res = await inquirer.prompt({

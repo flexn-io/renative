@@ -44,7 +44,8 @@ import {
     logError,
     logWarning,
     logDebug,
-    logSuccess
+    logSuccess,
+    logRaw
 } from '../../systemTools/logger';
 
 const checkIfPodsIsRequired = async (c) => {
@@ -739,11 +740,11 @@ const runAppleLog = c => new Promise(() => {
     child.stdout.on('data', (data) => {
         const d = data.toString();
         if (d.toLowerCase().includes('error')) {
-            console.log(chalk.red(d));
+            logRaw(chalk.red(d));
         } else if (d.toLowerCase().includes('success')) {
-            console.log(chalk.green(d));
+            logRaw(chalk.green(d));
         } else {
-            console.log(d);
+            logRaw(d);
         }
     });
 });

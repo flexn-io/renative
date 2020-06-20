@@ -26,7 +26,6 @@ import {
     logDebug
 } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
-import { getSourceExts } from '../common';
 import {
     setAppConfig,
     listAppConfigsFoldersSync,
@@ -105,7 +104,9 @@ const _cleanProjectTemplateSync = (c) => {
         path.join(c.paths.project.appConfigsDir)
     ];
 
-    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map(p => path.join(c.paths.project.dir, `index.${p}.js`));
+    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map(
+        p => path.join(c.paths.project.dir, `index.${p}.js`)
+    );
 
     removeDirsSync(dirsToRemove);
     // TODO: NOT SERVED FROM TEMPLATE YET
@@ -324,7 +325,6 @@ const _configureRenativeConfig = async (c) => {
             mergedObj.isNew = null;
             delete mergedObj.isNew;
             c.files.project.config = mergedObj;
-            console.log('WRITEEEEEE');
             _writeObjectSync(c, c.paths.project.config, mergedObj);
         }
     } else {

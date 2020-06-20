@@ -190,9 +190,9 @@ export const rnvLog = async (c) => {
         case TVOS:
             await runAppleLog(c);
             return;
+        default:
+            logErrorPlatform(c, c.platform);
     }
-
-    logErrorPlatform(c, c.platform);
 };
 
 // ##########################################

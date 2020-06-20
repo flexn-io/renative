@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
 import { spawn } from 'child_process';
-import { createPlatformBuild } from '..';
+import { createPlatformBuild, isPlatformActive } from '..';
 import { executeAsync } from '../../systemTools/exec';
 import {
     getAppFolder,
@@ -25,10 +25,8 @@ import {
     logError,
     logWarning,
     logSuccess,
-    logInfo
+    logInfo,
 } from '../../systemTools/logger';
-import { isPlatformActive } from '..';
-import { isSystemWin } from '../../utils';
 import {
     copyBuildsFolder,
     copyAssetsFolder
@@ -189,12 +187,11 @@ const buildElectron = (c, platform) => {
 
 const exportElectron = async (c, platform) => {
     logTask(`exportElectron:${platform}`);
-    const { maxErrorLength } = c.program;
     const appFolder = getAppFolder(c, platform);
     const buildPath = path.join(appFolder, 'build');
 
     if (fs.existsSync(buildPath)) {
-        console.log(`removing old build ${buildPath}`);
+        logInfo(`exportElectron: removing old build ${buildPath}`);
         await removeDirs([buildPath]);
     }
 
@@ -255,7 +252,7 @@ const _runElectronSimulator = async (c) => {
         stdio: 'inherit'
     })
         .on('close', code => process.exit(code))
-        .on('error', spawnError => console.error(spawnError));
+        .on('error', spawnError => logError(spawnError));
 
     child.unref();
 };

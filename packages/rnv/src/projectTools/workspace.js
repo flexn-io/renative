@@ -9,7 +9,8 @@ import {
     logWarning,
     logDebug,
     logInfo,
-    logToSummary
+    logToSummary,
+    logRaw
 } from '../systemTools/logger';
 import { writeFileSync, mkdirSync } from '../systemTools/fileutils';
 
@@ -152,6 +153,8 @@ export const rnvWorkspaceConnect = async (c) => {
         message: 'Pick a workspace',
         choices: opts
     });
+
+    logRaw(selectedWS);
 };
 
 const _getConnectionString = (obj) => {

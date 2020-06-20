@@ -38,7 +38,8 @@ export const parseMainApplicationSync = (c, platform) => {
     if (!bundleAssets) {
         c.pluginConfigAndroid.pluginApplicationDebugServer
             += '    var mPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)\n';
-        c.pluginConfigAndroid.pluginApplicationDebugServer += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${c.runtime.port}").apply()\n`;
+        c.pluginConfigAndroid.pluginApplicationDebugServer
+        += `    mPreferences?.edit().putString("debug_http_host", "${bundlerIp}:${c.runtime.port}").apply()\n`;
     }
 
     writeCleanFile(
@@ -219,7 +220,11 @@ export const injectPluginKotlinSync = (c, plugin, key, pkg) => {
 
     if (plugin.mainApplicationMethods) {
         logWarning(
-            `Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${c.platform}": { MainApplicationMethods }. Use "${c.platform}": { "mainApplication": { "methods": []}} instead`
+            `Plugin ${key} in ${c.paths.project.config} is using DEPRECATED "${
+                c.platform
+            }": { MainApplicationMethods }. Use "${
+                c.platform
+            }": { "mainApplication": { "methods": []}} instead`
         );
         c.pluginConfigAndroid.pluginApplicationMethods += `\n${plugin.mainApplicationMethods}\n`;
     }

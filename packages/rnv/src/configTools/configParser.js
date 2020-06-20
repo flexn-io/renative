@@ -74,7 +74,9 @@ const loadAppConfigIDfromDir = (dir, appConfigsDir) => {
 
 const askUserAboutConfigs = async (c, dir, id, basePath) => {
     logWarning(
-        `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
+        `AppConfig error - It seems you have a mismatch between appConfig folder name (${
+            dir
+        }) and the id defined in renative.json (${id}). They must match.`
     );
     if (c.program.ci === true) {
         throw new Error(
@@ -119,6 +121,7 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
     }
 };
 
+/* eslint-disable no-await-in-loop */
 const matchAppConfigID = async (c, appConfigID) => {
     logTask(`matchAppConfigID:${appConfigID}`, chalk.grey);
 

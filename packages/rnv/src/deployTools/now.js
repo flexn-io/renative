@@ -28,8 +28,9 @@ const _createConfigFiles = async (
     configFilePath,
     envConfigPath,
     nowParamsExists = false,
-    envContent = ''
+    _envContent = ''
 ) => {
+    let envContent = _envContent;
     if (!fs.existsSync(configFilePath)) {
         const content = { public: true, version: 2 };
         logInfo(

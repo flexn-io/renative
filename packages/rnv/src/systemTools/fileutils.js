@@ -266,7 +266,8 @@ export const copyFolderRecursiveSync = (
 // return path.join(pPath, newPath)
 // }));
 
-export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true, skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c) => {
+export const copyFolderContentsRecursiveSync = (source, target, convertSvg = true,
+    skipPaths, skipOverride, injectObject = null, timestampPathsConfig = null, c) => {
     logDebug('copyFolderContentsRecursiveSync', source, target, skipPaths);
     if (!fs.existsSync(source)) return;
     let files = [];
@@ -379,6 +380,7 @@ export const removeDirsSync = (dirPaths) => {
     }
 };
 
+/* eslint-disable no-loop-func */
 export const removeDirs = dirPaths => new Promise((resolve) => {
     logDebug('removeDirs', dirPaths);
     const allFolders = dirPaths.length;
@@ -397,26 +399,28 @@ export const removeDirs = dirPaths => new Promise((resolve) => {
 
 export const removeDirSync = (dir, rmSelf) => {
     let files;
-    rmSelf = rmSelf === undefined ? true : rmSelf;
-    dir += '/';
+    let newDir = dir;
+    // let newRmSelf = rmSelf;
+    // newRmSelf = newRmSelf === undefined ? true : newRmSelf;
+    newDir += '/';
     try {
-        files = fs.readdirSync(dir);
+        files = fs.readdirSync(newDir);
     } catch (e) {
         logDebug('!Oops, directory not exist.');
         return;
     }
     if (files.length > 0) {
-        files.forEach((x, i) => {
+        files.forEach((x) => {
             try {
-                if (fs.statSync(dir + x).isDirectory()) {
-                    removeDirSync(dir + x);
+                if (fs.statSync(newDir + x).isDirectory()) {
+                    removeDirSync(newDir + x);
                 } else {
-                    fs.unlinkSync(dir + x);
+                    fs.unlinkSync(newDir + x);
                 }
             } catch (e) {
                 logDebug(`removeDirSync error:${e}. will try to unlink`);
                 try {
-                    fs.unlinkSync(dir + x);
+                    fs.unlinkSync(newDir + x);
                 } catch (e2) {
                     logDebug(`removeDirSync error:${e}`);
                 }
@@ -425,7 +429,7 @@ export const removeDirSync = (dir, rmSelf) => {
     }
     if (rmSelf) {
         // check if user want to delete the directory ir just the files in this directory
-        fs.rmdirSync(dir);
+        fs.rmdirSync(newDir);
     }
 };
 
@@ -601,7 +605,7 @@ export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeP
             let val = v;
             if (typeof val === 'string') {
                 Object.keys(props).forEach((pk) => {
-                    const propVal = props[pk];
+                    const propVal = props?.[pk];
                     val = val
                         .replace(`@${pk}@`, propVal)
                         .replace(`{{props.${pk}}}`, propVal);
@@ -631,8 +635,8 @@ export const sanitizeDynamicProps = (obj, props = {}, configProps = {}, runtimeP
                 if (typeof val === 'string') {
                     Object.keys(props).forEach((pk) => {
                         val = val
-                            .replace(`@${pk}@`, props[pk])
-                            .replace(`{{props.${pk}}}`, props[pk]);
+                            .replace(`@${pk}@`, props?.[pk])
+                            .replace(`{{props.${pk}}}`, props?.[pk]);
                         obj[newKey] = fixResolve(val);
                     });
                     Object.keys(configProps).forEach((pk2) => {

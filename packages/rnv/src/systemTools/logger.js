@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+/* eslint-disable no-console */
 import _chalk from 'chalk';
 import { generateOptions } from './prompt';
 import Analytics from './analytics';
@@ -140,6 +141,10 @@ export const logToSummary = (v) => {
     _messages.push(`\n${v}`);
 };
 
+export const logRaw = (...args) => {
+    console.log.apply(null, args);
+};
+
 export const logSummary = (header = 'SUMMARY') => {
     let logContent = printIntoBox('All good as 🦄 ');
     if (_messages && _messages.length) {
@@ -186,7 +191,9 @@ export const logSummary = (header = 'SUMMARY') => {
             str += printIntoBox(`Platform (-p): ${_highlightColor(_c.platform)}`, 1);
         }
         if (_c?.runtime?.engine) {
-            str += printIntoBox(`Engine ($.platforms.${_c?.platform}.engine): ${_highlightColor(_c.runtime.engine?.id)}`, 1);
+            str += printIntoBox(`Engine ($.platforms.${_c?.platform}.engine): ${
+                _highlightColor(_c.runtime.engine?.id)
+            }`, 1);
         }
         if (_c.buildConfig?._meta?.currentAppConfigId) {
             str += printIntoBox(
@@ -257,7 +264,8 @@ export const logSummary = (header = 'SUMMARY') => {
     console.log(str);
 };
 
-const _msToTime = (s) => {
+const _msToTime = (seconds) => {
+    let s = seconds;
     const ms = s % 1000;
     s = (s - ms) / 1000;
     const secs = s % 60;
@@ -339,8 +347,9 @@ export const logAppInfo = c => new Promise((resolve) => {
     resolve();
 });
 
-export const printIntoBox = (str2, chalkIntend = 0) => {
+export const printIntoBox = (str2, intent = 0) => {
     let output = _defaultColor('│  ');
+    let chalkIntend = intent;
     let endLine = '';
     let intend;
     if (_isMono) {

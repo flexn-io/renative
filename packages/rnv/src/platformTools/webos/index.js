@@ -317,7 +317,7 @@ const configureWebOSProject = async (c, platform) => {
     return copyBuildsFolder(c, platform);
 };
 
-const configureProject = (c, platform) => new Promise((resolve, reject) => {
+const configureProject = (c, platform) => new Promise((resolve) => {
     logTask(`configureProject:${platform}`);
 
     const appFolder = getAppFolder(c, platform);

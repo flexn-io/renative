@@ -97,7 +97,8 @@ const _checkAndConfigureCrypto = async (c) => {
         logInfo(
             `It seems you are running encrypt for the first time. Directory ${chalk.white(
                 sourceFolder
-            )} does not exist yet. We'll create it for you, make sure you add whatever you want encrypted in it and then run the command again`
+            )} does not exist yet.
+RNV will create it for you, make sure you add whatever you want encrypted in it and then run the command again`
         );
 
         mkdirSync(sourceFolder);

@@ -81,7 +81,8 @@ class Config {
         return this.config.files.project;
     }
 
-    async checkRequiredPackage(pkg, version = false, type, skipAsking = false, skipInstall = false, skipVersionCheck = false) {
+    async checkRequiredPackage(pkg, version = false, type, skipAsking = false,
+        skipInstall = false, skipVersionCheck = false) {
         if (!pkg) return false;
         const projectConfig = this.getProjectConfig();
 
@@ -136,7 +137,11 @@ class Config {
                     if (!confirm) {
                         const resp = await inquirerPrompt({
                             type: 'confirm',
-                            message: `Seems like ${pkg}@${currentVersion} is installed while there is a newer version, ${pkg}@${latestVersion}. Do you want to upgrade?`
+                            message: `Seems like ${pkg}@${
+                                currentVersion
+                            } is installed while there is a newer version, ${
+                                pkg
+                            }@${latestVersion}. Do you want to upgrade?`
                         });
                         // eslint-disable-next-line prefer-destructuring
                         confirm = resp.confirm;
@@ -183,7 +188,9 @@ class Config {
 
             if (installed.some(i => i === true)) {
                 // do npm i only if something new is added
-                logWarning(`Found extra npm depenedecies required by ${selectedEngine.id} engine. will install them now`);
+                logWarning(`Found extra npm depenedecies required by ${
+                    selectedEngine.id
+                } engine. will install them now`);
                 await npmInstall();
             }
         }
@@ -275,14 +282,15 @@ class Config {
         } = this.config;
 
         if (this.isConfigValueValid(key, value)) {
+            let isValid = value;
             const configPath = global
                 ? paths.GLOBAL_RNV_CONFIG
                 : paths.project.config;
             const config = require(configPath);
 
-            if (['true', 'false'].includes(value)) value = value === 'true'; // convert string to bool if it matches a bool value
+            if (['true', 'false'].includes(isValid)) isValid = isValid === 'true'; // convert string to bool if it matches a bool value
 
-            config[configSchema[key].key] = value;
+            config[configSchema[key].key] = isValid;
             writeFileSync(configPath, config);
             return true;
         }

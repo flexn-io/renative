@@ -311,7 +311,9 @@ export const runTizen = async (c, platform, target) => {
             {
                 name: 'startEmulator',
                 type: 'confirm',
-                message: `Could not find or connect to the specified target (${target}). Would you like to start an emulator?`
+                message: `Could not find or connect to the specified target (${
+                    target
+                }). Would you like to start an emulator?`
             }
         ]);
 
@@ -337,7 +339,8 @@ export const runTizen = async (c, platform, target) => {
                 } catch (err) {
                     logDebug(err);
                     logError(
-                        `Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME}`
+                        `Could not find the specified target and could not create the emulator automatically.
+Please create one and then edit the default target from ${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME}`
                     );
                 }
             }
