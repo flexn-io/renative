@@ -31,11 +31,12 @@ const Button = ({
     textStyle,
     selectedStyle,
     onPress,
+    activeOpacity,
     testID
 }) => {
     const Btn = () => (
         <TouchableOpacity
-            style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
+            style={[styles.button, style, focused ? { opacity: activeOpacity ?? 0.4 } : null]}
             onPress={onPress}
             testID={testID}
         >

@@ -27,11 +27,15 @@ const Button = ({
     style,
     textStyle,
     selectedStyle,
-    onPress
+    testID,
+    onPress,
+    activeOpacity
 }) => (
     <TouchableOpacity
-        style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
+        style={[styles.button, style]}
         onPress={onPress}
+        activeOpacity={activeOpacity ?? 0.2}
+        testID={testID}
     >
         {iconName ? (
             <Icon
@@ -49,7 +53,11 @@ const Button = ({
                 ]}
             />
         ) : null}
-        {title ? <Text style={textStyle}>{title}</Text> : null}
+        {title ? (
+            <Text style={textStyle}>
+                {title}
+            </Text>
+        ) : null}
     </TouchableOpacity>
 );
 
