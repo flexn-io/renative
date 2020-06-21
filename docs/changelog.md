@@ -751,3 +751,18 @@ rnv run -p android
 
 - none
 
+
+## v0.30.0-rc2 (2020-6-21)
+
+### Fixed
+
+- fix engine plugin injection, fix tv navigation
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
