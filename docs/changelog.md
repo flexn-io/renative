@@ -728,3 +728,26 @@ rnv run -p android
 ### Breaking Changes
 
 - none
+
+## v0.30.0-rc1 (2020-6-21)
+
+### Fixed
+
+- update docs
+- Merge branch 'fix/506' into develop
+- fix #506 touchable opacity
+- Merge pull request #525 from pavjacko/feat/e2e-ci
+- fix removeDirSync
+- lint orgy completed
+- lint orgy
+- add release notes & upgrade guides to the website
+- doc updates
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
