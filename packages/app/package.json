@@ -77,7 +77,8 @@
         "react-native-vector-icons": "6.6.0",
         "react-native-web": "0.11.7",
         "react-native-web-image-loader": "0.0.5",
-        "renative": "^0.29.1-alpha.9"
+        "renative": "^0.29.1-alpha.9",
+        "raf": "3.4.1"
     },
     "devDependencies": {
         "babel-jest": "24.9.0",

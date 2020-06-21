@@ -30,10 +30,15 @@ const Button = ({
     iconSize,
     style,
     textStyle,
-    selectedStyle
+    selectedStyle,
+    testID,
+    activeOpacity
 }) => {
     const Btn = () => (
-        <View style={[styles.button, style, focused ? { opacity: 0.4 } : null]}>
+        <View
+            style={[styles.button, style, focused ? { opacity: activeOpacity ?? 0.4 } : null]}
+            testID={testID}
+        >
             {iconName ? (
                 <Icon
                     iconFont={iconFont}
@@ -43,7 +48,11 @@ const Button = ({
                     style={styles.icon}
                 />
             ) : null}
-            {title ? <Text style={textStyle}>{title}</Text> : null}
+            {title ? (
+                <Text style={textStyle}>
+                    {title}
+                </Text>
+            ) : null}
         </View>
     );
     if (to) {
