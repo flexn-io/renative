@@ -66,10 +66,15 @@
         "Upgrades": [
             "upgrade-0.30",
             "upgrade-0.29",
-            "upgrade-0.28"
+            "upgrade-0.28",
+            "upgrade-0.27"
         ],
         "Release Notes": [
-            "changelog"
+            "changelog",
+            "release-0.30.x",
+            "release-0.29.x",
+            "release-0.28.x",
+            "release-0.27.x"
         ]
     },
     "api-sidebar": {
