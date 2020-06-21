@@ -18320,6 +18320,35 @@ remove-trailing-separator@^1.0.1:
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"
   integrity sha1-wkvOKig62tW8P1jg1IJJuSN52O8=
 
+renative-template-blank@^0.29.1-alpha.9:
+  version "0.29.1-alpha.25"
+  resolved "https://registry.yarnpkg.com/renative-template-blank/-/renative-template-blank-0.29.1-alpha.25.tgz#ed3039163c379b8edc9018a73cb4f27cf4b33e1b"
+  integrity sha512-BvApuYW3wuDk1/iORFLVBa0HSjKZhge8Ug//1bKQWRmPSMoNnU6HUo0jCq2CYupyGNrI6pltpFq+Wdw9czNFuA==
+
+renative-template-hello-world@^0.29.1-alpha.9:
+  version "0.29.1-alpha.25"
+  resolved "https://registry.yarnpkg.com/renative-template-hello-world/-/renative-template-hello-world-0.29.1-alpha.25.tgz#6630b285bcfd2964f871d59a75677747906b544d"
+  integrity sha512-+oOTKvzrjuZoS8/e+3poSP+Gw4Zs8eSb2kmnWEA8s2LC6RCyGAnkGShg5jozds1Z6ATIDYxkuQwM62BsLNIDQQ==
+  dependencies:
+    "@noriginmedia/react-spatial-navigation" "2.12.1"
+
+renative-template-kitchen-sink@^0.29.1-alpha.9:
+  version "0.29.1-alpha.25"
+  resolved "https://registry.yarnpkg.com/renative-template-kitchen-sink/-/renative-template-kitchen-sink-0.29.1-alpha.25.tgz#33e7f2a10db9ece0f2983ee057d81f56576f9448"
+  integrity sha512-t066kziS4nPmTxj/+GekvBOZ/2NiMvfLmLoFcTdJRDmwc8DTwBKAfr5bw7PIJ+AoOHzY9OJmJmJmIYKHrA/yHA==
+
+renative@^0.29.1-alpha.9:
+  version "0.29.1-alpha.25"
+  resolved "https://registry.yarnpkg.com/renative/-/renative-0.29.1-alpha.25.tgz#0c353b0cca8f0c276404bc83c577c3af371d33b1"
+  integrity sha512-xWR9K9fHCh7Hqia5ppg/P7g3ZN3QX/5t5CD3dIw5CUlzkQAEPMwxr6fGR8LlAHaboRzh3EgGcdtj40atrXqrjA==
+  dependencies:
+    "@noriginmedia/react-spatial-navigation" "2.12.1"
+    "@reach/router" "1.2.1"
+    history "^4.9.0"
+    react "16.9.0"
+    react-dom "16.9.0"
+    react-native "0.61.2"
+
 renderkid@^2.0.1:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/renderkid/-/renderkid-2.0.3.tgz#380179c2ff5ae1365c522bf2fcfcff01c5b74149"
@@ -18610,6 +18639,84 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rnv@^0.29.1-alpha.9:
+  version "0.29.1-alpha.25"
+  resolved "https://registry.yarnpkg.com/rnv/-/rnv-0.29.1-alpha.25.tgz#c91a0c2fc385cfb9a268e7616af3aa74d88d6f89"
+  integrity sha512-aRh7270f8evnN8W3i4H9lBFd/T1E0ueOUgHQwrfzNbuv0BFCjj2liZnHMn9BL5LLDgWCgq3DzXU1DW2aqJOqqg==
+  dependencies:
+    "@babel/cli" "7.8.3"
+    "@babel/core" "7.8.3"
+    "@babel/plugin-proposal-class-properties" "7.8.3"
+    "@babel/plugin-proposal-decorators" "7.8.3"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "7.8.3"
+    "@babel/plugin-proposal-optional-chaining" "7.8.3"
+    "@babel/plugin-transform-runtime" "7.8.3"
+    "@babel/preset-env" "7.8.7"
+    "@babel/runtime" "7.8.3"
+    "@sentry/integrations" "5.10.2"
+    "@sentry/node" "5.10.2"
+    axios "0.19.0"
+    babel-eslint "8.2.6"
+    babel-jest "24.9.0"
+    babel-loader "8.0.5"
+    babel-plugin-module-resolver "3.2.0"
+    babel-plugin-react-native-web "0.8.9"
+    babel-plugin-transform-decorators-legacy "1.3.4"
+    babel-plugin-transform-imports "1.4.1"
+    babel-plugin-transform-object-rest-spread "6.26.0"
+    babel-plugin-transform-runtime "6.23.0"
+    babel-polyfill "6.26.0"
+    better-opn "1.0.0"
+    color-string "1.5.3"
+    commander "^3.0.1"
+    compare-versions "3.6.0"
+    console-table-printer "1.1.10"
+    copy-webpack-plugin "4.6.0"
+    cross-env "5.2.0"
+    crypto-random-string "3.2.0"
+    css-hot-loader "1.4.2"
+    css-loader "3.2.0"
+    deepmerge "3.2.0"
+    detect-port "1.3.0"
+    dotenv "8.1.0"
+    execa "2.0.4"
+    file-loader "1.1.11"
+    ftp-deploy "2.3.3"
+    get-installed-path "4.0.8"
+    html-webpack-harddisk-plugin "0.2.0"
+    html-webpack-plugin "3.2.0"
+    icon-toolkit "0.0.9"
+    inquirer "6.3.1"
+    iocane "4.0.0"
+    ios-mobileprovision-finder "1.0.11"
+    ip "1.1.5"
+    lodash.get "4.4.2"
+    metro-react-native-babel-preset "0.51.1"
+    metro-resolver "0.48.3"
+    mini-css-extract-plugin "0.8.0"
+    minimist "1.2.5"
+    modclean "3.0.0-beta.1"
+    natives "1.1.6"
+    ncp "2.0.0"
+    netcat "1.4.0"
+    node-fetch "2.6.0"
+    node-machine-id "^1.1.12"
+    resolve "^1.0.0"
+    shelljs "0.8.2"
+    source-map-loader "0.2.4"
+    source-map-support "0.5.13"
+    style-loader "0.19.0"
+    svg2js "0.0.4-alpha1"
+    tar "4.4.10"
+    url-loader "1.1.1"
+    webpack "4.20.2"
+    webpack-bundle-analyzer "3.5.1"
+    webpack-cli "3.1.2"
+    webpack-dev-server "3.2.1"
+    webpack-merge "4.1.4"
+    write-json-webpack-plugin "1.1.0"
+    xml2js "0.4.23"
 
 roarr@^2.15.2:
   version "2.15.3"

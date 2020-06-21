@@ -346,6 +346,8 @@ const getEnginesPluginDelta = (c) => {
 
     if (!c.buildConfig) return;
 
+
+    const enginePlugins = {};
     const missingEnginePlugins = {};
     const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
     if (supPlats) {
@@ -356,16 +358,17 @@ const getEnginesPluginDelta = (c) => {
 
                 if (ePlugins?.length) {
                     ePlugins.forEach((pluginKey) => {
-                        if (!c.buildConfig?.plugins?.[pluginKey]) {
+                        if (!c.files?.project?.config?.[pluginKey]) {
                             missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
                         }
+                        enginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
                     });
                 }
             }
         });
     }
     c.runtime.missingEnginePlugins = missingEnginePlugins;
-    return missingEnginePlugins;
+    return enginePlugins;
 };
 
 export const generateBuildConfig = (c) => {
@@ -412,9 +415,11 @@ export const generateBuildConfig = (c) => {
         );
     }
 
+    const extraPlugins = getEnginesPluginDelta(c);
+
     const mergeFiles = [
         c.files.rnv.projectTemplates.config,
-        { plugins: getEnginesPluginDelta(c) },
+        { plugins: extraPlugins },
         ...pluginTemplates,
         c.files.rnv.engines.config,
         c.files.workspace.config,
@@ -476,6 +481,7 @@ export const generateBuildConfig = (c) => {
         arrayMerge: _arrayMergeOverride
     });
     out = merge({}, out);
+
 
     logDebug(
         `generateBuildConfig: will sanitize file at: ${

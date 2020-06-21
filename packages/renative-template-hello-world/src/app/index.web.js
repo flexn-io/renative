@@ -1,6 +1,6 @@
 import React from 'react';
 import { View } from 'react-native';
-import { Router } from '@reach/router';
+import { Router, navigate } from '@reach/router';
 import { Api } from 'renative';
 
 import ScreenHome from '../screenHome';
@@ -24,7 +24,7 @@ const styles = {
 
 const App = () => (
     <View style={[themeStyles.app]}>
-        <Menu focusKey="menu" />
+        <Menu focusKey="menu" navigate={navigate} />
         <View style={styles.container}>
             <Router>
                 <ScreenHome path="/" />
