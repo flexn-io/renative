@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -13,9 +14,8 @@ import {
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
     RENATIVE_CONFIG_TEMPLATES_NAME,
-    RENATIVE_CONFIG_PLATFORMS_NAME,
+    RENATIVE_CONFIG_ENGINES_NAME,
     RN_CLI_CONFIG_NAME,
-    SAMPLE_APP_ID,
     RN_BABEL_CONFIG_NAME,
     PLATFORMS,
     SUPPORTED_PLATFORMS
@@ -23,7 +23,6 @@ import {
 import { rnvTemplateApply } from '../templateTools';
 
 import {
-    copyFolderContentsRecursiveSync,
     copyFileSync,
     mkdirSync,
     writeFileSync,
@@ -35,7 +34,7 @@ import {
     fsWriteFileSync
 } from '../systemTools/fileutils';
 import { getConfigProp } from '../common';
-import { doResolve } from '../resolve';
+import { getEngineByPlatform } from '../engineTools';
 import { getWorkspaceDirPath } from '../projectTools/workspace';
 import {
     logError,
@@ -75,7 +74,9 @@ const loadAppConfigIDfromDir = (dir, appConfigsDir) => {
 
 const askUserAboutConfigs = async (c, dir, id, basePath) => {
     logWarning(
-        `AppConfig error - It seems you have a mismatch between appConfig folder name (${dir}) and the id defined in renative.json (${id}). They must match.`
+        `AppConfig error - It seems you have a mismatch between appConfig folder name (${
+            dir
+        }) and the id defined in renative.json (${id}). They must match.`
     );
     if (c.program.ci === true) {
         throw new Error(
@@ -120,6 +121,7 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
     }
 };
 
+/* eslint-disable no-await-in-loop */
 const matchAppConfigID = async (c, appConfigID) => {
     logTask(`matchAppConfigID:${appConfigID}`, chalk.grey);
 
@@ -156,13 +158,18 @@ const matchAppConfigID = async (c, appConfigID) => {
                 }
                 if (ids.includes(id)) {
                     throw new Error(
-                        `AppConfig error - You have 2 duplicate app configs with ID ${id}. Keep in mind that ID is case insensitive. Please edit one of them in /appConfigs/<folder>/renative.json`
+                        `AppConfig error - You have 2 duplicate app configs with ID ${
+                            id
+                        }. Keep in mind that ID is case insensitive.
+Please edit one of them in /appConfigs/<folder>/renative.json`
                     );
                 }
                 ids.push(id);
                 if (dirs.includes(dir)) {
                     throw new Error(
-                        `AppConfig error - You have 2 duplicate app config folders named ${dir}. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
+                        `AppConfig error - You have 2 duplicate app config folders named ${
+                            dir
+                        }. Keep in mind that folder names are case insensitive. Please rename one /appConfigs/<folder>`
                     );
                 }
                 dirs.push(dir);
@@ -204,7 +211,7 @@ export const fixRenativeConfigsSync = async (c) => {
     checkAndCreateGitignore(c);
 
     // Check rn-cli-config
-    logTask('configureProject:check rn-cli', chalk.grey);
+    logDebug('configureProject:check rn-cli');
     if (!fs.existsSync(c.paths.project.rnCliConfig)) {
         logInfo(
             `Looks like your rn-cli config file ${chalk.white(
@@ -218,7 +225,7 @@ export const fixRenativeConfigsSync = async (c) => {
     }
 
     // Check babel-config
-    logTask('configureProject:check babel config', chalk.grey);
+    logDebug('configureProject:check babel config');
     if (!fs.existsSync(c.paths.project.babelConfig)) {
         logInfo(
             `Looks like your babel config file ${chalk.white(
@@ -273,7 +280,10 @@ export const versionCheck = async (c) => {
                     c.runtime.rnvVersionRunner
                 )} against project built with rnv v${chalk.red(
                     c.runtime.rnvVersionProject
-                )}. This might result in unexpected behaviour! It is recommended that you run your rnv command with npx prefix: ${recCmd} . or manually update your devDependencies.rnv version in your package.json.`
+                )}. This might result in unexpected behaviour!
+It is recommended that you run your rnv command with npx prefix: ${
+    recCmd
+} . or manually update your devDependencies.rnv version in your package.json.`
             });
 
             c.runtime.versionCheckCompleted = true;
@@ -330,13 +340,41 @@ const _findAndSwitchAppConfigDir = (c, appId) => {
 
 const _arrayMergeOverride = (destinationArray, sourceArray) => sourceArray;
 
+
+const getEnginesPluginDelta = (c) => {
+    logDebug('getEnginesPluginDelta');
+
+    if (!c.buildConfig) return;
+
+    const missingEnginePlugins = {};
+    const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
+    if (supPlats) {
+        supPlats.forEach((pk) => {
+            const selectedEngine = getEngineByPlatform(c, pk);
+            if (selectedEngine?.plugins) {
+                const ePlugins = Object.keys(selectedEngine.plugins);
+
+                if (ePlugins?.length) {
+                    ePlugins.forEach((pluginKey) => {
+                        if (!c.buildConfig?.plugins?.[pluginKey]) {
+                            missingEnginePlugins[pluginKey] = selectedEngine.plugins[pluginKey];
+                        }
+                    });
+                }
+            }
+        });
+    }
+    c.runtime.missingEnginePlugins = missingEnginePlugins;
+    return missingEnginePlugins;
+};
+
 export const generateBuildConfig = (c) => {
-    logTask('generateBuildConfig');
+    logDebug('generateBuildConfig');
 
     const mergeOrder = [
         c.paths.rnv.projectTemplates.config,
         c.paths.rnv.pluginTemplates.config,
-        c.files.rnv.platformTemplates.config,
+        // c.paths.rnv.platformTemplates.config,
         c.paths.workspace.config,
         c.paths.workspace.configPrivate,
         c.paths.workspace.configLocal,
@@ -376,7 +414,9 @@ export const generateBuildConfig = (c) => {
 
     const mergeFiles = [
         c.files.rnv.projectTemplates.config,
+        { plugins: getEnginesPluginDelta(c) },
         ...pluginTemplates,
+        c.files.rnv.engines.config,
         c.files.workspace.config,
         c.files.workspace.configPrivate,
         c.files.workspace.configLocal,
@@ -424,11 +464,12 @@ export const generateBuildConfig = (c) => {
     ];
     const existsFiles = mergeFiles.filter(v => v);
 
-    logTask(
-        `generateBuildConfig:${mergeOrder.length}:${cleanPaths.length}:${
+    logDebug(
+        `generateBuildConfig:mergeOrder.length:${
+            mergeOrder.length
+        },cleanPaths.length:${cleanPaths.length},existsPaths.length:${
             existsPaths.length
-        }:${existsFiles.length}`,
-        chalk.grey
+        },existsFiles.length:${existsFiles.length}`
     );
 
     let out = merge.all([...meta, ...existsFiles], {
@@ -544,10 +585,14 @@ const _generatePlatformTemplatePaths = (c) => {
         c.buildConfig.paths = {};
     }
     if (c.buildConfig.platformTemplatesDirs) {
-        logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+        logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${
+            chalk.white(c.paths.project.config)
+        }`);
     }
     if (c.buildConfig.platformTemplatesDir) {
-        logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${chalk.white(c.paths.project.config)}`);
+        logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${
+            chalk.white(c.paths.project.config)
+        }`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
     const originalPath = c.buildConfig.paths.platformTemplatesDir || c.buildConfig.platformTemplatesDir || '$RNV_HOME/platformTemplates';
@@ -577,7 +622,7 @@ const _listAppConfigsFoldersSync = (
     configDirs,
     ignoreHiddenConfigs
 ) => {
-    logTask(`_listAppConfigsFoldersSync:${dirPath}`, chalk.grey);
+    logDebug(`_listAppConfigsFoldersSync:${dirPath}`);
     if (!fs.existsSync(dirPath)) return;
     fs.readdirSync(dirPath).forEach((dir) => {
         const appConfigDir = path.join(dirPath, dir);
@@ -629,9 +674,15 @@ export const loadProjectTemplates = (c) => {
     );
 };
 
-export const loadPlatformTemplates = (c) => {
-    c.files.rnv.platformTemplates.config = readObjectSync(
-        c.paths.rnv.platformTemplates.config
+// export const loadPlatformTemplates = (c) => {
+//     c.files.rnv.platformTemplates.config = readObjectSync(
+//         c.paths.rnv.platformTemplates.config
+//     );
+// };
+
+export const loadEngines = (c) => {
+    c.files.rnv.engines.config = readObjectSync(
+        c.paths.rnv.engines.config
     );
 };
 
@@ -842,7 +893,10 @@ export const parseRenativeConfigs = async (c) => {
     loadPluginTemplates(c);
 
     // LOAD PLATFORM TEMPLATES
-    loadPlatformTemplates(c);
+    // loadPlatformTemplates(c);
+
+    // LOAD ENGINES
+    loadEngines(c);
 
     if (!c.files.project.config) return;
 
@@ -934,7 +988,7 @@ export const configureRnvGlobal = async (c) => {
         // Check config sanity
         if (c.files.workspace.config.defaultTargets === undefined) {
             logWarning(
-                `Looks like you\'re missing defaultTargets in your config ${chalk.white(
+                `Looks like you're missing defaultTargets in your config ${chalk.white(
                     c.paths.workspace.config
                 )}. Let's add them!`
             );
@@ -978,6 +1032,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                 projectTemplates: {},
                 platformTemplate: {},
                 plugins: {},
+                engines: {},
                 projectTemplate: {}
             },
             global: {},
@@ -1014,6 +1069,7 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
                 platformTemplates: {},
                 projectTemplates: {},
                 plugins: {},
+                engines: {},
                 projectTemplate: {}
             },
             project: {
@@ -1056,13 +1112,21 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
         c.paths.rnv.dir,
         'platformTemplates'
     );
+    c.paths.rnv.engines.dir = path.join(
+        c.paths.rnv.dir,
+        'engines'
+    );
     c.paths.rnv.pluginTemplates.dir = path.join(
         c.paths.rnv.dir,
         'pluginTemplates'
     );
-    c.paths.rnv.platformTemplates.config = path.join(
-        c.paths.rnv.platformTemplates.dir,
-        RENATIVE_CONFIG_PLATFORMS_NAME
+    // c.paths.rnv.platformTemplates.config = path.join(
+    //     c.paths.rnv.platformTemplates.dir,
+    //     RENATIVE_CONFIG_PLATFORMS_NAME
+    // );
+    c.paths.rnv.engines.config = path.join(
+        c.paths.rnv.engines.dir,
+        RENATIVE_CONFIG_ENGINES_NAME
     );
     c.paths.rnv.pluginTemplates.config = path.join(
         c.paths.rnv.pluginTemplates.dir,

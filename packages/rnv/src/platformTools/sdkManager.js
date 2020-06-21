@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -182,25 +183,32 @@ const _isSdkInstalled = (c) => {
     return fs.existsSync(getRealPath(c, sdkPath));
 };
 
-const _attemptAutoFix = async (c, engine) => {
-    const result = SDK_LOACTIONS[engine].find(v => fs.existsSync(v));
+const _attemptAutoFix = async (c, sdkPlatform) => {
+    const result = SDK_LOACTIONS[sdkPlatform].find(v => fs.existsSync(v));
     if (result) {
         logSuccess(
             `Found existing ${c.platform} SDK location at ${chalk.white(
                 result
             )}`
         );
-        const { confirm } = await inquirer.prompt({
-            type: 'confirm',
-            name: 'confirm',
-            message: 'Do you want to use it?'
-        });
+        let confirmSdk = true;
+        if (!c.program.ci) {
+            const { confirm } = await inquirer.prompt({
+                type: 'confirm',
+                name: 'confirm',
+                message: 'Do you want to use it?'
+            });
+            confirmSdk = confirm;
+        }
 
-        if (confirm) {
+        if (confirmSdk) {
             try {
                 c.files.workspace.config.sdks[
                     SDK_PLATFORMS[c.platform]
                 ] = result;
+                if (sdkPlatform === 'android') {
+                    c.files.workspace.config.sdks.ANDROID_NDK = `${path.join(result, 'ndk-bundle')}`;
+                }
                 writeFileSync(
                     c.paths.workspace.config,
                     c.files.workspace.config
@@ -215,7 +223,7 @@ const _attemptAutoFix = async (c, engine) => {
     }
 
     const setupInstance = PlatformSetup(c);
-    return setupInstance.askToInstallSDK(engine);
+    return setupInstance.askToInstallSDK(sdkPlatform);
 };
 
 export const checkSdk = async (c) => {

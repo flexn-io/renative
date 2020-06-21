@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-console */
 import _chalk from 'chalk';
 import { generateOptions } from './prompt';
 import Analytics from './analytics';
@@ -20,14 +22,8 @@ const _chalkMono = {
 
 let chalk = _chalk;
 
-const RNV_START = '🚀 ReNative';
 let RNV = 'ReNative';
-const LINE = chalk.bold.white(
-    '----------------------------------------------------------'
-);
-const LINE2 = chalk.gray(
-    '----------------------------------------------------------'
-);
+
 
 export const logWelcome = () => {
     // prettier-ignore
@@ -77,7 +73,7 @@ export const logWelcome = () => {
 };
 
 let _messages = [];
-let _currentCommand;
+// let _currentCommand;
 let _currentProcess;
 let _isInfoEnabled = false;
 let _c;
@@ -96,8 +92,8 @@ export const configureLogger = (
     _c = c;
     _c.timeStart = new Date();
     _currentProcess = process;
-    _currentCommand = command;
-    _currentSubCommand = subCommand;
+    // _currentCommand = command;
+    // _currentSubCommand = subCommand;
     _isInfoEnabled = isInfoEnabled;
     _isMono = c.program.mono;
     if (_isMono) {
@@ -145,6 +141,10 @@ export const logToSummary = (v) => {
     _messages.push(`\n${v}`);
 };
 
+export const logRaw = (...args) => {
+    console.log.apply(null, args);
+};
+
 export const logSummary = (header = 'SUMMARY') => {
     let logContent = printIntoBox('All good as 🦄 ');
     if (_messages && _messages.length) {
@@ -168,29 +168,44 @@ export const logSummary = (header = 'SUMMARY') => {
         );
         if (_c.files.project.package) {
             str += printIntoBox(
-                `Project Name: ${_highlightColor(
+                `Project Name ($package.name): ${_highlightColor(
                     _c.files.project.package.name
                 )}`,
                 1
             );
             str += printIntoBox(
-                `Project Version: ${_highlightColor(
+                `Project Version ($package.version): ${_highlightColor(
                     _c.files.project.package.version
                 )}`,
                 1
             );
         }
+
+        if (_c.buildConfig?.workspaceID) {
+            str += printIntoBox(
+                `Workspace ($.workspaceID): ${_highlightColor(_c.buildConfig.workspaceID)}`,
+                1
+            );
+        }
+        if (_c?.platform) {
+            str += printIntoBox(`Platform (-p): ${_highlightColor(_c.platform)}`, 1);
+        }
+        if (_c?.runtime?.engine) {
+            str += printIntoBox(`Engine ($.platforms.${_c?.platform}.engine): ${
+                _highlightColor(_c.runtime.engine?.id)
+            }`, 1);
+        }
         if (_c.buildConfig?._meta?.currentAppConfigId) {
             str += printIntoBox(
-                `App Config: ${_highlightColor(
+                `App Config (-c): ${_highlightColor(
                     _c.buildConfig._meta?.currentAppConfigId
                 )}`,
                 1
             );
         }
-        if (_c.buildConfig?.workspaceID) {
+        if (_c.runtime?.scheme) {
             str += printIntoBox(
-                `Workspace: ${_highlightColor(_c.buildConfig.workspaceID)}`,
+                `Build Scheme (-s): ${_highlightColor(_c.runtime?.scheme)}`,
                 1
             );
         }
@@ -231,15 +246,6 @@ export const logSummary = (header = 'SUMMARY') => {
             str += printIntoBox(`Env Info: ${chalk.gray(envString)}`, 1);
         }
 
-        if (_c.program.scheme) {
-            str += printIntoBox(
-                `Build Scheme: ${_highlightColor(_c.program.scheme)}`,
-                1
-            );
-        }
-        if (_c.platform) {
-            str += printIntoBox(`Platform: ${_highlightColor(_c.platform)}`, 1);
-        }
         if (_c.timeEnd) {
             str += printIntoBox(
                 `Executed Time: ${chalk.yellow(
@@ -258,7 +264,8 @@ export const logSummary = (header = 'SUMMARY') => {
     console.log(str);
 };
 
-const _msToTime = (s) => {
+const _msToTime = (seconds) => {
+    let s = seconds;
     const ms = s % 1000;
     s = (s - ms) / 1000;
     const secs = s % 60;
@@ -269,8 +276,8 @@ const _msToTime = (s) => {
     return `${hrs}h:${mins}m:${secs}s:${ms}ms`;
 };
 
-export const setCurrentJob = (job) => {
-    _currentCommand = job;
+export const setCurrentJob = () => {
+    // _currentCommand = job;
 };
 
 export const logTask = (task, customChalk) => {
@@ -330,19 +337,9 @@ export const logEnd = (code) => {
 
 export const logInitialize = () => {
     logWelcome();
-    // console.log(
-    //     chalk.white(`\n${LINE}\n ${RNV_START} ${chalk.white.bold(`${_currentCommand} ${_currentSubCommand || ''}`)} is firing up! 🔥\n${LINE}\n`),
-    // );
 };
 
-export const logAppInfo = c => new Promise((resolve, reject) => {
-    // console.log(
-    //     chalk.gray(
-    //         `\n${LINE2}\nℹ️  Current App Config: ${chalk.bold.white(
-    //             c.buildConfig.id
-    //         )}\n${LINE2}`
-    //     )
-    // );
+export const logAppInfo = c => new Promise((resolve) => {
     logInfo(`Current App Config: ${chalk.bold.white(
         c.buildConfig.id
     )}`);
@@ -350,8 +347,9 @@ export const logAppInfo = c => new Promise((resolve, reject) => {
     resolve();
 });
 
-export const printIntoBox = (str2, chalkIntend = 0) => {
+export const printIntoBox = (str2, intent = 0) => {
     let output = _defaultColor('│  ');
+    let chalkIntend = intent;
     let endLine = '';
     let intend;
     if (_isMono) {

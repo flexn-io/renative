@@ -5,12 +5,6 @@
     "previous": "Previous",
     "tagline": "Build universal cross-platform apps with react native",
     "docs": {
-      "_CHANGELOG": {
-        "title": "_CHANGELOG"
-      },
-      "_DOC_SANITY": {
-        "title": "_DOC_SANITY"
-      },
       "api-cli-build": {
         "title": "rnv build",
         "sidebar_label": "build"
@@ -106,6 +100,134 @@
       "api-rnv": {
         "title": "rnv API Reference",
         "sidebar_label": "rnv"
+      },
+      "changelog": {
+        "title": "Changelog",
+        "sidebar_label": "Changelog"
+      },
+      "changelog/0.10.0": {
+        "title": "changelog/0.10.0"
+      },
+      "changelog/0.11.0": {
+        "title": "changelog/0.11.0"
+      },
+      "changelog/0.12.0": {
+        "title": "changelog/0.12.0"
+      },
+      "changelog/0.13.0": {
+        "title": "changelog/0.13.0"
+      },
+      "changelog/0.16.1": {
+        "title": "changelog/0.16.1"
+      },
+      "changelog/0.17.1": {
+        "title": "changelog/0.17.1"
+      },
+      "changelog/0.18.0": {
+        "title": "changelog/0.18.0"
+      },
+      "changelog/0.19.0": {
+        "title": "changelog/0.19.0"
+      },
+      "changelog/0.20.0": {
+        "title": "changelog/0.20.0"
+      },
+      "changelog/0.21.0": {
+        "title": "changelog/0.21.0"
+      },
+      "changelog/0.21.6": {
+        "title": "changelog/0.21.6"
+      },
+      "changelog/0.22.0": {
+        "title": "changelog/0.22.0"
+      },
+      "changelog/0.23.0": {
+        "title": "changelog/0.23.0"
+      },
+      "changelog/0.25.0": {
+        "title": "changelog/0.25.0"
+      },
+      "changelog/0.26.0": {
+        "title": "changelog/0.26.0"
+      },
+      "changelog/0.27.0": {
+        "title": "changelog/0.27.0"
+      },
+      "changelog/0.28.0": {
+        "title": "changelog/0.28.0"
+      },
+      "changelog/0.29.0": {
+        "title": "changelog/0.29.0"
+      },
+      "changelog/0.29.1-alpha.10": {
+        "title": "changelog/0.29.1-alpha.10"
+      },
+      "changelog/0.29.1-alpha.11": {
+        "title": "changelog/0.29.1-alpha.11"
+      },
+      "changelog/0.29.1-alpha.12": {
+        "title": "changelog/0.29.1-alpha.12"
+      },
+      "changelog/0.29.1-alpha.13": {
+        "title": "changelog/0.29.1-alpha.13"
+      },
+      "changelog/0.29.1-alpha.14": {
+        "title": "changelog/0.29.1-alpha.14"
+      },
+      "changelog/0.29.1-alpha.15": {
+        "title": "changelog/0.29.1-alpha.15"
+      },
+      "changelog/0.29.1-alpha.16": {
+        "title": "changelog/0.29.1-alpha.16"
+      },
+      "changelog/0.29.1-alpha.18": {
+        "title": "changelog/0.29.1-alpha.18"
+      },
+      "changelog/0.29.1-alpha.19": {
+        "title": "changelog/0.29.1-alpha.19"
+      },
+      "changelog/0.29.1-alpha.20": {
+        "title": "changelog/0.29.1-alpha.20"
+      },
+      "changelog/0.29.1-alpha.21": {
+        "title": "changelog/0.29.1-alpha.21"
+      },
+      "changelog/0.29.1-alpha.22": {
+        "title": "changelog/0.29.1-alpha.22"
+      },
+      "changelog/0.29.1-alpha.23": {
+        "title": "changelog/0.29.1-alpha.23"
+      },
+      "changelog/0.29.1-alpha.24": {
+        "title": "changelog/0.29.1-alpha.24"
+      },
+      "changelog/0.29.1-alpha.25": {
+        "title": "changelog/0.29.1-alpha.25"
+      },
+      "changelog/0.29.1-alpha.7": {
+        "title": "changelog/0.29.1-alpha.7"
+      },
+      "changelog/0.29.1-alpha.8": {
+        "title": "changelog/0.29.1-alpha.8"
+      },
+      "changelog/0.29.1-alpha.9": {
+        "title": "changelog/0.29.1-alpha.9"
+      },
+      "engine-rn-electron": {
+        "title": "React Native Electron Engine",
+        "sidebar_label": "React Native Electron"
+      },
+      "engine-rn-next": {
+        "title": "React Native Next Engine",
+        "sidebar_label": "React Native Next"
+      },
+      "engine-rn-web": {
+        "title": "React Native Web Engine",
+        "sidebar_label": "React Native Web"
+      },
+      "engine-rn": {
+        "title": "React Native Engine",
+        "sidebar_label": "React Native"
       },
       "guide-analytics": {
         "title": "Analytics",
@@ -282,6 +404,30 @@
       "plugins": {
         "title": "Plugins Overview",
         "sidebar_label": "Plugins Overview"
+      },
+      "template-blank": {
+        "title": "template-blank",
+        "sidebar_label": "template-blank"
+      },
+      "template-hello-world": {
+        "title": "template-hello-world",
+        "sidebar_label": "template-hello-world"
+      },
+      "template-kitchen-sink": {
+        "title": "template-kitchen-sink",
+        "sidebar_label": "template-kitchen-sink"
+      },
+      "upgrade-0.28": {
+        "title": "Upgrade to 0.28.x Guide",
+        "sidebar_label": "0.28.x"
+      },
+      "upgrade-0.29": {
+        "title": "Upgrade to 0.29.x Guide",
+        "sidebar_label": "0.29.x"
+      },
+      "upgrade-0.30": {
+        "title": "Upgrade to 0.30.x Guide",
+        "sidebar_label": "0.30.x"
       },
       "version-0.28/version-0.28-api-cli-build": {
         "title": "rnv build",
@@ -643,7 +789,11 @@
       "Guides": "Guides",
       "Platforms": "Platforms",
       "Plugins": "Plugins",
+      "Engines": "Engines",
+      "Templates": "Templates",
       "Integrations": "Integrations",
+      "Upgrades": "Upgrades",
+      "Release Notes": "Release Notes",
       "CLI": "CLI",
       "Config": "Config",
       "Runtime": "Runtime",

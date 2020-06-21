@@ -5,5 +5,58 @@
         "renative-template-kitchen-sink": {},
         "@reactseals/renative-template-chat": {},
         "@reactseals/renative-template-uber": {}
+    },
+    "platforms": {
+        "ios": {
+            "engine": "engine-rn"
+        },
+        "android": {
+            "engine": "engine-rn"
+        },
+        "androidwear": {
+            "engine": "engine-rn"
+        },
+        "androidtv": {
+            "engine": "engine-rn"
+        },
+        "tvos": {
+            "engine": "engine-rn"
+        },
+        "macos": {
+            "engine": "engine-rn-electron"
+        },
+        "windows": {
+            "engine": "engine-rn-electron"
+        },
+        "tizen": {
+            "engine": "engine-rn-web"
+        },
+        "tizenmobile": {
+            "engine": "engine-rn-web"
+        },
+        "tizenwatch": {
+            "engine": "engine-rn-web"
+        },
+        "webos": {
+            "engine": "engine-rn-web"
+        },
+        "chromecast": {
+            "engine": "engine-rn-web"
+        },
+        "firefoxos": {
+            "engine": "engine-rn-web"
+        },
+        "firefoxtv": {
+            "engine": "engine-rn-web"
+        },
+        "kaios": {
+            "engine": "engine-rn-web"
+        },
+        "web": {
+            "engine": "engine-rn-web"
+        },
+        "web-next": {
+            "engine": "engine-rn-next"
+        }
     }
 }

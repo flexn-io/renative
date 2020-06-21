@@ -1,10 +1,11 @@
+/* eslint-disable import/no-cycle */
 const isObject = value => value && typeof value === 'object' && value.constructor === Object;
 
 const isArray = value => value && typeof value === 'object' && value.constructor === Array;
 
 const isString = value => typeof value === 'string' || value instanceof String;
 
-const isNumber = value => typeof value === 'number' && isFinite(value);
+const isNumber = value => typeof value === 'number' && Number.isFinite(value);
 
 const isFunction = value => typeof value === 'function';
 

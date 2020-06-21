@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -91,8 +92,9 @@ export const parseXcodeProject = async (c, platform) => {
                 );
             }
         } else {
+            const w = 'Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for';
             logWarning(
-                `Your build config has provisioningStyle set to manual but no provisionProfileSpecifier configured in appConfig and no available provisioning profiles availiable for ${c.runtime.xcodeProj.id}`
+                `${w} ${c.runtime.xcodeProj.id}`
             );
         }
     }
@@ -100,7 +102,7 @@ export const parseXcodeProject = async (c, platform) => {
     await _parseXcodeProject(c, platform);
 };
 
-const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
+const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
     logTask('_parseXcodeProject');
     // eslint-disable-next-line global-require, import/no-dynamic-require
     const xcode = require(doResolve('xcode'));
@@ -119,7 +121,6 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
             provisionProfileSpecifier,
             codeSignIdentity,
             systemCapabilities,
-            runScheme,
             teamID,
             appId
         } = c.runtime.xcodeProj;
@@ -180,10 +181,10 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
 
         if (systemCapabilities) {
             const sysCapObj = {};
-            for (const sk in systemCapabilities) {
+            Object.keys(systemCapabilities).forEach((sk) => {
                 const val = systemCapabilities[sk];
                 sysCapObj[sk] = { enabled: val === true ? 1 : 0 };
-            }
+            });
             // const var1 = xcodeProj.getFirstProject().firstProject.attributes.TargetAttributes['200132EF1F6BF9CF00450340'];
             xcodeProj.addTargetAttribute('SystemCapabilities', sysCapObj);
         }
@@ -204,13 +205,15 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                         '200132F21F6BF9CF00450340'
                     );
                 } else {
-                    logWarning(`You are trying to inject native file which does not exists: ${chalk.red(filePath)}. Skipping.`);
+                    logWarning(`You are trying to inject native file which does not exists: ${
+                        chalk.red(filePath)
+                    }. Skipping.`);
                 }
             });
         }
 
         // PLUGINS
-        parsePlugins(c, platform, (plugin, pluginPlat, key) => {
+        parsePlugins(c, platform, (plugin, pluginPlat) => {
             const xcodeprojObj = getFlavouredProp(
                 c,
                 pluginPlat,
@@ -259,7 +262,7 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                     });
                 }
                 if (xcodeprojObj.frameworks) {
-                    for (const k in xcodeprojObj.frameworks) {
+                    Object.keys(xcodeprojObj.frameworks).forEach((k) => {
                         let fPath;
                         let opts;
                         if (k.startsWith('./')) {
@@ -282,15 +285,15 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve, reject) => {
                             };
                         }
                         xcodeProj.addFramework(fPath, opts);
-                    }
+                    });
                 }
                 if (xcodeprojObj.buildSettings) {
-                    for (const k in xcodeprojObj.buildSettings) {
+                    Object.keys(xcodeprojObj.buildSettings).forEach((k) => {
                         xcodeProj.addToBuildSettings(
                             k,
                             xcodeprojObj.buildSettings[k]
                         );
-                    }
+                    });
                 }
             }
         });

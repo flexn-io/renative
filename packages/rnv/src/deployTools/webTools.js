@@ -1,6 +1,6 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import minimist from 'minimist';
-import inquirer from 'inquirer';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
@@ -26,19 +26,22 @@ const _runDeployment = async (c, platform, deployType) => {
             return deployToNow(c, platform);
         case DEPLOY_TARGET_NONE:
             return Promise.resolve();
-        case DEPLOY_TARGET_DOCKER:
-            const rnvPath = process.mainModule.filename.split(
-                '/bin/index.js'
-            )[0];
+        case DEPLOY_TARGET_DOCKER: {
             const deployToDocker = importPackageFromProject(
                 '@rnv/deploy-docker'
             );
-            deployToDocker.setRNVPath(rnvPath);
+            deployToDocker.setRNVPath(
+                process.mainModule.filename.split(
+                    '/bin/index.js'
+                )[0]
+            );
             return deployToDocker.doDeploy();
-        case DEPLOY_TARGET_AWS:
+        }
+        case DEPLOY_TARGET_AWS: {
             const deployerPackage = importPackageFromProject('@rnv/deploy-aws');
             deployerPackage.setRNVPath(process.mainModule.filename.split('/bin/index.js')[0]);
             return deployerPackage.doDeploy();
+        }
         default:
             return Promise.reject(
                 new Error(`Deploy Type not supported ${deployType}`)
@@ -48,7 +51,7 @@ const _runDeployment = async (c, platform, deployType) => {
 
 const _runExport = (c, platform, exportType) => {
     switch (exportType) {
-        case DEPLOY_TARGET_DOCKER:
+        case DEPLOY_TARGET_DOCKER: {
             const rnvPath = process.mainModule.filename.split(
                 '/bin/index.js'
             )[0];
@@ -57,6 +60,7 @@ const _runExport = (c, platform, exportType) => {
             );
             deployToDocker.setRNVPath(rnvPath);
             return deployToDocker.doExport();
+        }
         case DEPLOY_TARGET_NONE:
             return Promise.resolve();
         default:

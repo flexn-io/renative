@@ -11,7 +11,6 @@ import execa from 'execa';
 import { executeAsync, execCLI } from '../../systemTools/exec';
 import {
     getAppFolder,
-    getAppTemplateFolder,
     getConfigProp,
     getAppId
 } from '../../common';
@@ -23,7 +22,8 @@ import {
     logWarning,
     logDebug,
     logInfo,
-    logSuccess
+    logSuccess,
+    logRaw
 } from '../../systemTools/logger';
 import {
     copyFileSync,
@@ -110,14 +110,20 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
         );
     }
 
-    console.log('ANDROID PACKAGE STARTING...');
-    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${appFolder}/app/src/main/res --entry-file ${c.buildConfig.platforms[c.platform]?.entryFile}.js --bundle-output ${appFolder}/app/src/main/assets/${outputFile}.bundle --config=configs/metro.config.${c.platform}.js`)
+    logInfo('ANDROID PACKAGE STARTING...');
+    executeAsync(c, `${reactNative} bundle --platform android --dev false --assets-dest ${
+        appFolder
+    }/app/src/main/res --entry-file ${
+      c.buildConfig.platforms[c.platform]?.entryFile
+    }.js --bundle-output ${appFolder}/app/src/main/assets/${
+        outputFile
+    }.bundle --config=configs/metro.config.${c.platform}.js`)
         .then(() => {
-            console.log('ANDROID PACKAGE FINISHED');
+            logInfo('ANDROID PACKAGE FINISHED');
             return resolve();
         })
         .catch((e) => {
-            console.log('ANDROID PACKAGE FAILED');
+            logInfo('ANDROID PACKAGE FAILED');
             return reject(e);
         });
 });
@@ -290,12 +296,14 @@ const _checkSigningCerts = async (c) => {
                         name: 'confirmCopy',
                         message: `Found existing keystore configuration for ${platCandidate}. do you want to reuse it?`
                     });
-                    confirmCopy = resultCopy.confirmCopy;
+                    confirmCopy = resultCopy?.confirmCopy;
                 }
             }
 
             if (confirmCopy) {
-                c.files.workspace.appConfig.configPrivate[c.platform] = c.files.workspace.appConfig.configPrivate[platCandidate];
+                c.files.workspace.appConfig
+                    .configPrivate[c.platform] = c.files.workspace
+                        .appConfig.configPrivate[platCandidate];
             } else {
                 let storeFile;
 
@@ -309,7 +317,7 @@ const _checkSigningCerts = async (c) => {
                             'release.keystore'
                         )} file`
                     });
-                    storeFile = result.storeFile;
+                    storeFile = result?.storeFile;
                 }
 
                 const {
@@ -337,7 +345,11 @@ const _checkSigningCerts = async (c) => {
                 if (confirmNewKeystore) {
                     const keystorePath = `${c.paths.workspace.appConfig.dir}/release.keystore`;
                     mkdirSync(c.paths.workspace.appConfig.dir);
-                    const keytoolCmd = `keytool -genkey -v -keystore ${keystorePath} -alias ${keyAlias} -keypass ${keyPassword} -storepass ${storePassword} -keyalg RSA -keysize 2048 -validity 10000`;
+                    const keytoolCmd = `keytool -genkey -v -keystore ${
+                        keystorePath
+                    } -alias ${keyAlias} -keypass ${keyPassword} -storepass ${
+                        storePassword
+                    } -keyalg RSA -keysize 2048 -validity 10000`;
                     await executeAsync(c, keytoolCmd, {
                         env: process.env,
                         shell: true,
@@ -540,7 +552,6 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
     logTask(`configureProject:${platform}`);
 
     const appFolder = getAppFolder(c, platform);
-    const appTemplateFolder = getAppTemplateFolder(c, platform);
 
     const gradlew = path.join(appFolder, 'gradlew');
 
@@ -688,11 +699,11 @@ export const runAndroidLog = async (c) => {
         const d = data.toString().split('\n');
         d.forEach((v) => {
             if (v.includes(' E ') && v.includes(filter)) {
-                console.log(chalk.red(v));
+                logRaw(chalk.red(v));
             } else if (v.includes(' W ') && v.includes(filter)) {
-                console.log(chalk.yellow(v));
+                logRaw(chalk.yellow(v));
             } else if (v.includes(filter)) {
-                console.log(v);
+                logRaw(v);
             }
         });
     });

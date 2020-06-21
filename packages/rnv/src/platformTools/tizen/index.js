@@ -95,7 +95,7 @@ export const launchTizenSimulator = (c, name) => {
     return Promise.reject('No simulator -t target name specified!');
 };
 
-export const listTizenTargets = async (c, name) => {
+export const listTizenTargets = async (c) => {
     const targets = await execCLI(c, CLI_TIZEN_EMULATOR, 'list-vm', {
         detached: true
     });
@@ -107,7 +107,7 @@ export const listTizenTargets = async (c, name) => {
     logToSummary(`Tizen Targets:\n${targetStr}`);
 };
 
-export const createDevelopTizenCertificate = c => new Promise((resolve, reject) => {
+export const createDevelopTizenCertificate = c => new Promise((resolve) => {
     logTask('createDevelopTizenCertificate');
 
     const certDirPath = c.paths.workspace.dir;
@@ -267,7 +267,7 @@ export const runTizen = async (c, platform, target) => {
     logTask(`runTizen:${platform}:${target}`);
 
     const platformConfig = c.buildConfig.platforms[platform];
-    const { hosted, debug } = c.program;
+    const { hosted } = c.program;
 
     const isHosted = hosted ?? !getConfigProp(c, platform, 'bundleAssets');
     // if (debug) isHosted = false;
@@ -311,7 +311,9 @@ export const runTizen = async (c, platform, target) => {
             {
                 name: 'startEmulator',
                 type: 'confirm',
-                message: `Could not find or connect to the specified target (${target}). Would you like to start an emulator?`
+                message: `Could not find or connect to the specified target (${
+                    target
+                }). Would you like to start an emulator?`
             }
         ]);
 
@@ -337,7 +339,8 @@ export const runTizen = async (c, platform, target) => {
                 } catch (err) {
                     logDebug(err);
                     logError(
-                        `Could not find the specified target and could not create the emulator automatically. Please create one and then edit the default target from ${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME}`
+                        `Could not find the specified target and could not create the emulator automatically.
+Please create one and then edit the default target from ${c.paths.workspace.dir}/${RENATIVE_CONFIG_NAME}`
                     );
                 }
             }

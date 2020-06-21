@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import {
     getAppFolder,
@@ -41,7 +42,7 @@ export const parseValuesColorsSync = (c) => {
     );
 };
 
-export const injectPluginXmlValuesSync = (c, plugin, key, pkg) => {
+export const injectPluginXmlValuesSync = (c, plugin) => {
     const rStrings = plugin.ResourceStrings?.children;
     if (rStrings) {
         rStrings.forEach((obj) => {

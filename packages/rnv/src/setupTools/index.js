@@ -1,9 +1,11 @@
+/* eslint-disable import/no-cycle */
 import LinuxPlatformSetup from './linux';
 import WindowsPlatformSetup from './windows';
 import DarwinPlatformSetup from './darwin';
 import Config from '../config';
 
-export default (c) => {
+export default (_c) => {
+    let c = _c;
     if (!c) c = Config.getConfig();
     const {
         process: { platform }

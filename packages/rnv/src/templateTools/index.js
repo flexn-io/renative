@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs, { mkdirSync } from 'fs';
 import path from 'path';
@@ -21,11 +22,10 @@ import {
     logError,
     logInfo,
     logWarning,
-    logTask
+    logTask,
+    logDebug
 } from '../systemTools/logger';
-import { getLocalRenativePlugin } from '../pluginTools';
 import { generateOptions } from '../systemTools/prompt';
-import { getSourceExts, getConfigProp } from '../common';
 import {
     setAppConfig,
     listAppConfigsFoldersSync,
@@ -34,8 +34,9 @@ import {
     updateConfig,
     parseRenativeConfigs
 } from '../configTools/configParser';
-import { isMonorepo, getMonorepoRoot } from '../common';
 import { doResolve } from '../resolve';
+import { getEngineByPlatform } from '../engineTools';
+
 
 // let templateName = c.buildConfig.currentTemplate;
 // if (!templateName) {
@@ -59,7 +60,7 @@ export const addTemplate = (c, template) => {
     _writeObjectSync(c, c.paths.project.config, c.files.project.config);
 };
 
-export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
+export const checkIfTemplateInstalled = c => new Promise((resolve) => {
     logTask('checkIfTemplateInstalled');
     if (!c.buildConfig.templates) {
         logWarning(
@@ -72,12 +73,11 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
         resolve();
         return;
     }
-
-    for (const k in c.buildConfig.templates) {
+    Object.keys(c.buildConfig.templates).forEach((k) => {
         const obj = c.buildConfig.templates[k];
         if (
             !doResolve(k.version, false, { basedir: '../' })
-                && !doResolve(k, false)
+              && !doResolve(k, false)
         ) {
             logWarning(
                 `Your ${chalk.white(
@@ -89,7 +89,8 @@ export const checkIfTemplateInstalled = c => new Promise((resolve, reject) => {
         if (c.files.project.package.devDependencies) {
             c.files.project.package.devDependencies[k] = obj.version;
         }
-    }
+    });
+
     _writeObjectSync(c, c.paths.project.package, c.files.project.package);
 
     resolve();
@@ -103,7 +104,9 @@ const _cleanProjectTemplateSync = (c) => {
         path.join(c.paths.project.appConfigsDir)
     ];
 
-    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map(p => path.join(c.paths.project.dir, `index.${p}.js`));
+    const filesToRemove = c.buildConfig.defaults.supportedPlatforms.map(
+        p => path.join(c.paths.project.dir, `index.${p}.js`)
+    );
 
     removeDirsSync(dirsToRemove);
     // TODO: NOT SERVED FROM TEMPLATE YET
@@ -147,9 +150,8 @@ const _applyTemplate = async (c) => {
         return true;
     }
 
-    logTask(
-        `_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`,
-        chalk.grey
+    logDebug(
+        `_applyTemplate:${c.runtime.selectedTemplate}:${c.paths.template.dir}`
     );
 
     c.paths.template.appConfigsDir = path.join(
@@ -174,9 +176,9 @@ const _applyTemplate = async (c) => {
     return true;
 };
 
-const _configureSrc = c => new Promise((resolve, reject) => {
+const _configureSrc = c => new Promise((resolve) => {
     // Check src
-    logTask('configureProject:check src', chalk.grey);
+    logDebug('configureProject:check src');
     if (!fs.existsSync(c.paths.project.srcDir)) {
         logInfo(
             `Looks like your src folder ${chalk.white(
@@ -193,7 +195,7 @@ const _configureSrc = c => new Promise((resolve, reject) => {
 
 const _configureAppConfigs = async (c) => {
     // Check appConfigs
-    logTask('configureProject:check appConfigs', chalk.grey);
+    logDebug('configureProject:check appConfigs');
     //
     if (!fs.existsSync(c.paths.project.appConfigsDir)) {
         logInfo(
@@ -212,6 +214,7 @@ const _configureAppConfigs = async (c) => {
 
         // Update App Title to match package.json
         try {
+            const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
             appConfigIds.forEach((v) => {
                 const appConfigPath = path.join(
                     c.paths.project.appConfigsDir,
@@ -226,19 +229,18 @@ const _configureAppConfigs = async (c) => {
                         appConfig.common.id = c.files.project.config?.defaults?.id;
                     }
 
+                    if (supPlats) {
+                        Object.keys(appConfig.platforms).forEach((pk) => {
+                            if (!supPlats.includes(pk)) {
+                                delete appConfig.platforms[pk];
+                            }
+                        });
+                    }
+
                     _writeObjectSync(c, appConfigPath, appConfig);
                 }
             });
 
-            const supPlats = c.files.project?.defaults?.supportedPlatforms;
-
-            if (supPlats) {
-                for (const pk in appConfig.platforms) {
-                    if (!supPlats.includes(pk)) {
-                        delete appConfig.platforms[pk];
-                    }
-                }
-            }
             await updateConfig(c, true);
         } catch (e) {
             logError(e);
@@ -246,9 +248,9 @@ const _configureAppConfigs = async (c) => {
     }
 };
 
-const _configureProjectConfig = c => new Promise((resolve, reject) => {
+const _configureProjectConfig = c => new Promise((resolve) => {
     // Check projectConfigs
-    logTask('configureProject:check projectConfigs', chalk.grey);
+    logDebug('configureProject:check projectConfigs');
     if (!fs.existsSync(c.paths.project.projectConfig.dir)) {
         logInfo(
             `Looks like your projectConfig folder ${chalk.white(
@@ -266,7 +268,41 @@ const _configureProjectConfig = c => new Promise((resolve, reject) => {
 const _configureRenativeConfig = async (c) => {
     // renative.json
     const templateConfig = readObjectSync(c.paths.template.configTemplate);
-    logTask('configureProject:check renative.json', chalk.grey);
+    logDebug('configureProject:check renative.json');
+
+    //     const missingPlugins = {};
+    //     const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
+    //     if (supPlats) {
+    //         supPlats.forEach((pk) => {
+    //             const selectedEngine = getEngineByPlatform(c, pk);
+    //             if (selectedEngine?.plugins) {
+    //                 const ePlugins = Object.keys(selectedEngine.plugins);
+    //
+    //                 if (ePlugins?.length) {
+    //                     ePlugins.forEach((pluginKey) => {
+    //                         if (!c.buildConfig?.plugins?.[pluginKey]) {
+    //                             missingPlugins[pluginKey] = { key: pluginKey, plugin: selectedEngine.plugins[pluginKey], engine: selectedEngine.id };
+    //                         }
+    //                     });
+    //                 }
+    //             }
+    //         });
+    //     }
+    //
+    //     const missingPluginsArr = Object.values(missingPlugins);
+    //     const involvedEngines = {};
+    //     if (missingPluginsArr.length) {
+    //         c.runtime.requiresForcedTemplateApply = true;
+    //
+    //         missingPluginsArr.forEach(({ key, plugin, engine }) => {
+    //             templateConfig.plugins[key] = plugin;
+    //             involvedEngines[engine] = true;
+    //         });
+    //
+    //         logInfo(`Adding following plugins required by ${chalk.white(Object.keys(involvedEngines).join(', '))} engines:
+    // ${chalk.white(missingPluginsArr.map(v => v.key).join(', '))}`);
+    //     }
+
     if (!c.runtime.isWrapper) {
         if (
             c.runtime.selectedTemplate
@@ -348,7 +384,7 @@ export const configureEntryPoints = async (c) => {
     logTask('configureEntryPoints');
     // Check entry
     // TODO: RN bundle command fails if entry files are not at root
-    // logTask('configureProject:check entry');
+    // logDebug('configureProject:check entry');
     // if (!fs.existsSync(c.paths.entryDir)) {
     //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
     copyFolderContentsRecursiveSync(
@@ -412,31 +448,23 @@ export const configureEntryPoints = async (c) => {
     return true;
 };
 
-const _getSourceExtsAsString = (c, p) => {
-    const sourceExts = getSourceExts(c, p);
-    return sourceExts.length ? `['${sourceExts.join("', '")}']` : '[]';
-};
-
-const _configureMetroConfigs = async (c) => {
+const _configureMetroConfigs = async (c, platform) => {
     const configDir = path.join(c.paths.project.dir, 'configs');
     if (!fs.existsSync(configDir)) {
         mkdirSync(configDir);
     }
-    await _parseSupportedPlatforms(c, (p) => {
-        const dest = path.join(configDir, `metro.config.${p}.js`);
-        if (!fs.existsSync(dest)) {
-            const exts = _getSourceExtsAsString(c, p);
-            writeFileSync(
-                dest,
-                `const config = require('../metro.config');
+    const dest = path.join(configDir, `metro.config.${platform}.js`);
+    if (!fs.existsSync(dest)) {
+        writeFileSync(
+            dest,
+            `const { EXTENSIONS } = require('rnv/dist/constants');
+const config = require('../metro.config');
 
-const sourceExts = ${exts};
-config.resolver.sourceExts = sourceExts;
+config.resolver.sourceExts = EXTENSIONS.${platform};
 module.exports = config;
 `
-            );
-        }
-    });
+        );
+    }
 };
 
 const _writeObjectSync = (c, p, s) => {
@@ -465,7 +493,7 @@ export const getInstalledTemplateOptions = (c) => {
     return [];
 };
 
-export const rnvTemplateList = c => new Promise((resolve, reject) => {
+export const rnvTemplateList = c => new Promise((resolve) => {
     logTask('rnvTemplateList');
     const opts = getTemplateOptions(c);
     logToSummary(`Templates:\n\n${opts.asString}`);
@@ -517,9 +545,9 @@ export const applyTemplate = async (c, selectedTemplate) => {
     await configureEntryPoints(c);
 
     // TODO: will move this to engine
-    const engine = getConfigProp(c, c.platform, 'engine', 'default');
-    if (engine === 'default') {
-        await _configureMetroConfigs(c);
+    const engine = getEngineByPlatform(c, c.platform);
+    if (engine?.requiresMetroConfig) {
+        await _configureMetroConfigs(c, c.platform);
     }
 };
 

@@ -75,3 +75,5 @@ metro.config.local.js
 /packages/**/dist
 /public/fonts
 /styles
+
+/cypress/videos

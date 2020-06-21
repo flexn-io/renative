@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import { isPlatformSupported } from './index';
-import { logTask, logError } from '../systemTools/logger';
+import { logTask } from '../systemTools/logger';
 import { checkSdk } from './sdkManager';
 import {
     IOS,
@@ -60,9 +60,9 @@ export const rnvTargetList = async (c) => {
 
     const { platform } = c;
 
-    const throwError = (err) => {
-        throw err;
-    };
+    // const throwError = (err) => {
+    //     throw err;
+    // };
 
     await checkSdk(c);
 

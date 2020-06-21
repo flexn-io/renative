@@ -213,7 +213,7 @@ you can achieve by creating folder with postfix `<PLATFORM>@<BUILD_SCHEME_NAME>`
 
     .
     ├── appConfigs
-        └── helloWorld
+        └── helloworld
             ├── assets
             ├── plugins
             │   └── some-plugin

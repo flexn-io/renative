@@ -104,6 +104,7 @@ const _generateWebpackConfigs = (c, platform) => {
         .concat(externalModulePaths.map(v => doResolvePath(v, true, {}, c.paths.project.nodeModulesDir)))
         .concat(localModulePaths.map(v => path.join(c.paths.project.dir, v)))
         .concat(doNotResolveModulePaths)
+        .concat([c.paths.project.assets.dir])
         .filter(Boolean);
 
     const env = getConfigProp(c, platform, 'environment');
@@ -169,7 +170,9 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 
     executeAsync(
         c,
-        `npx cross-env PLATFORM=${platform} NODE_ENV=production ${debugVariables} node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`
+        `npx cross-env PLATFORM=${platform} NODE_ENV=production ${
+            debugVariables
+        } node ${wbp} -p --config ./platformBuilds/${c.runtime.appId}_${platform}/webpack.config.js`
     )
         .then(() => {
             logSuccess(
@@ -280,7 +283,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
-const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => {
+const runWebDevServer = (c, platform, port) => new Promise((resolve) => {
     logTask(`runWebDevServer:${platform}`);
     const { debug, debugIp } = c.program;
 
@@ -298,7 +301,13 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve, reject) => 
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
 
-    const command = `npx cross-env PLATFORM=${platform} ${debugVariables} webpack-dev-server -d --devtool source-map --config ${wpConfig}  --inline --hot --colors --content-base ${wpPublic} --history-api-fallback --port ${port} --mode=development`;
+    const command = `npx cross-env PLATFORM=${platform} ${
+        debugVariables
+    } webpack-dev-server -d --devtool source-map --config ${
+        wpConfig
+    }  --inline --hot --colors --content-base ${
+        wpPublic
+    } --history-api-fallback --port ${port} --mode=development`;
     executeAsync(c, command, { stdio: 'inherit', silent: true })
         .then(() => {
             logDebug('runWebDevServer: running');

@@ -58,7 +58,13 @@
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
-                    "bundleAssets": false
+                    "bundleAssets": false,
+                    "sdk": "iphonesimulator"
+                },
+                "test": {
+                    "runScheme": "Debug",
+                    "bundleAssets": true,
+                    "sdk": "iphonesimulator"
                 },
                 "release": {
                     "runScheme": "Release",
@@ -98,6 +104,10 @@
                 "debug": {
                     "signingConfig": "Debug",
                     "bundleAssets": false
+                },
+                "test": {
+                    "signingConfig": "Debug",
+                    "bundleAssets": true
                 },
                 "release": {
                     "signingConfig": "Release",

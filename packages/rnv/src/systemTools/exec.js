@@ -1,4 +1,7 @@
-// /* eslint-disable import/no-cycle */
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-control-regex */
+/* eslint-disable no-bitwise */
+
 import path from 'path';
 import fs, { access, accessSync, constants } from 'fs';
 import chalk from 'chalk';
@@ -8,7 +11,7 @@ import NClient from 'netcat/client';
 import Config from '../config';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
-import { logDebug, logTask, logError, logWarning } from './logger';
+import { logDebug, logTask, logError, logWarning, logRaw } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
 import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
@@ -57,9 +60,10 @@ const _execute = (c, command, opts = {}) => {
     const intervalTimer = 30000; // 30s
     let timer = intervalTimer;
     const privateMask = '*******';
-
+    const cleanRawCmd = opts.rawCommand?.args || [];
     if (Array.isArray(command)) cleanCommand = command.join(' ');
 
+    cleanCommand += cleanRawCmd.join(' ');
     let logMessage = cleanCommand;
     const { privateParams } = mergedOpts;
     if (privateParams && Array.isArray(privateParams)) {
@@ -76,7 +80,7 @@ const _execute = (c, command, opts = {}) => {
 
     if (mono) {
         interval = setInterval(() => {
-            console.log(`Executing: ${logMessage} - ${timer / 1000}s`);
+            logRaw(`Executing: ${logMessage} - ${timer / 1000}s`);
             timer += intervalTimer;
         }, intervalTimer);
     }
@@ -103,15 +107,18 @@ const _execute = (c, command, opts = {}) => {
         if (lastLine.length === MAX_OUTPUT_LENGTH) spinner.text += '...\n';
     };
 
-    if (c.program?.info) {
-        child?.stdout?.pipe(process.stdout);
-    } else if (spinner) {
-        child?.stdout?.on('data', printLastLine);
+    if (c.program?.info && child?.stdout?.pipe) {
+        child.stdout.pipe(process.stdout);
+    } else if (spinner && child?.stdout?.on) {
+        child.stdout.on('data', printLastLine);
     }
 
     return child
         .then((res) => {
-            spinner && child?.stdout?.off('data', printLastLine);
+            if (child?.stdout?.off) {
+                spinner && child.stdout.off('data', printLastLine);
+            }
+
             !silent && !mono && spinner.succeed(`Executing: ${logMessage}`);
             logDebug(
                 replaceOverridesInString(res.all, privateParams, privateMask)
@@ -121,7 +128,10 @@ const _execute = (c, command, opts = {}) => {
             return res.stdout;
         })
         .catch((err) => {
-            spinner && child?.stdout?.off('data', printLastLine);
+            if (child?.stdout?.off) {
+                spinner && child.stdout.off('data', printLastLine);
+            }
+
             if (!silent && !mono && !ignoreErrors) { spinner.fail(`FAILED: ${logMessage}`); } // parseErrorMessage will return false if nothing is found, default to previous implementation
 
             logDebug(
@@ -191,8 +201,11 @@ const execCLI = (c, cli, command, opts = {}) => {
  * @returns {Promise}
  *
  */
-const executeAsync = (c, cmd, opts) => {
+const executeAsync = (_c, _cmd, _opts) => {
     // swap values if c is not specified and get it from it's rightful place, config :)
+    let c = _c;
+    let cmd = _cmd;
+    let opts = _opts;
     if (typeof c === 'string') {
         opts = cmd;
         cmd = c;
@@ -355,7 +368,7 @@ const commandExistsUnix = (commandName, cleanedCommandName, callback) => {
 };
 
 const commandExistsWindows = (commandName, cleanedCommandName, callback) => {
-    if (/[\x00-\x1f<>:"\|\?\*]/.test(commandName)) {
+    if (/[\x00-\x1f<>:"|?*]/.test(commandName)) {
         callback(null, false);
         return;
     }
@@ -384,7 +397,7 @@ const commandExistsUnixSync = (commandName, cleanedCommandName) => {
 };
 
 const commandExistsWindowsSync = (commandName, cleanedCommandName) => {
-    if (/[\x00-\x1f<>:"\|\?\*]/.test(commandName)) {
+    if (/[\x00-\x1f<>:"|?*]/.test(commandName)) {
         return false;
     }
     try {
@@ -395,8 +408,9 @@ const commandExistsWindowsSync = (commandName, cleanedCommandName) => {
     }
 };
 
-let cleanInput = (s) => {
-    if (/[^A-Za-z0-9_\/:=-]/.test(s)) {
+let cleanInput = (_s) => {
+    let s = _s;
+    if (/[^A-Za-z0-9_/:=-]/.test(s)) {
         s = `'${s.replace(/'/g, "'\\''")}'`;
         s = s
             .replace(/^(?:'')+/g, '') // unduplicate single-quote at the beginning
@@ -445,7 +459,7 @@ const commandExistsSync = (commandName) => {
     return commandExistsUnixSync(commandName, cleanedCommandName);
 };
 
-export const cleanNodeModules = c => new Promise((resolve, reject) => {
+export const cleanNodeModules = () => new Promise((resolve, reject) => {
     logTask('cleanNodeModules');
     const dirs = [
         'react-native-safe-area-view/.git',
@@ -456,6 +470,7 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
         'react-navigation/node_modules/react-native-safe-area-view/.git'
     ].reduce((acc, dir) => {
         const [_all, aPackage, aPath] = dir.match(/([^/]+)\/(.*)/);
+        logDebug(`Cleaning: ${_all}`);
         const resolved = doResolve(aPackage, false);
         if (resolved) {
             acc.push(`${resolved}/${aPath}`);
@@ -475,8 +490,8 @@ export const cleanNodeModules = c => new Promise((resolve, reject) => {
     // ]).then(() => resolve()).catch(e => reject(e));
 });
 
-const hasJetified = false;
 export const npmInstall = async (failOnError = false) => {
+    logTask('npmInstall');
     const c = Config.getConfig();
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
@@ -497,7 +512,7 @@ export const npmInstall = async (failOnError = false) => {
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
-    logTask(`package manager used: (${command})`);
+    logTask(`npmInstall: package manager used: (${command})`, chalk.grey);
 
     try {
         await executeAsync(command);

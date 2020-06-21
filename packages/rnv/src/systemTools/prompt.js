@@ -1,6 +1,7 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { logWarning, logTask } from './logger';
+import { logWarning, logTask, logDebug } from './logger';
 import Config from '../config';
 
 const highlight = chalk.grey.bold;
@@ -10,7 +11,7 @@ export const inquirerPrompt = async (params) => {
     const msg = params.logMessage || params.warningMessage || params.message;
     if (c.program.ci) {
         if (Array.isArray(params.choices) && typeof params.default !== 'undefined' && params.choices.includes(params.default)) {
-            console.log(`defaulting to choice '${params.default}' for prompt '${params.name}'`)
+            logDebug(`defaulting to choice '${params.default}' for prompt '${params.name}'`);
             return Promise.resolve({ [params.name]: params.default });
         }
         return Promise.reject(`--ci option does not allow prompts. question: ${msg}.`);
@@ -31,6 +32,7 @@ export const generateOptions = (
     mapping,
     renderMethod
 ) => {
+    logDebug('generateOptions', isMultiChoice);
     let asString = '';
     const valuesAsObject = {};
     const valuesAsArray = [];
@@ -42,7 +44,7 @@ export const generateOptions = (
     const output = {};
     const renderer = renderMethod || _generateOptionString;
     if (isArray) {
-        inputData.map((v, i) => {
+        inputData.forEach((v, i) => {
             const rn = renderer(i, v, mapping, v);
             asString += rn;
             optionsAsArray.push(rn);
@@ -52,7 +54,7 @@ export const generateOptions = (
         });
     } else {
         let i = 0;
-        for (const k in inputData) {
+        Object.keys(inputData).forEach((k) => {
             const v = inputData[k];
             const rn = renderer(i, v, mapping, k);
             asString += rn;
@@ -62,7 +64,7 @@ export const generateOptions = (
             valuesAsObject[k] = v;
             valuesAsArray.push(v);
             i++;
-        }
+        });
     }
     output.keysAsArray = keysAsArray.sort(_sort);
     output.valuesAsArray = valuesAsArray.sort(_sort);

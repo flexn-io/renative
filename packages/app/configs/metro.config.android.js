@@ -1,5 +1,5 @@
+const { EXTENSIONS } = require('rnv/dist/constants');
 const config = require('../metro.config');
 
-const sourceExts = ['android.mobile.js', 'mobile.js', 'android.js', 'mobile.native.js', 'native.js', 'js', 'tsx', 'ts'];
-config.resolver.sourceExts = sourceExts;
+config.resolver.sourceExts = EXTENSIONS.android;
 module.exports = config;

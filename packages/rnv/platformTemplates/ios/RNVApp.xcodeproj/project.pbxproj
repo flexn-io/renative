@@ -416,7 +416,7 @@
 					"-isystem",
 					"\"${PODS_ROOT}/Headers/Public\"",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = renative.helloWorld;
+				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./RNVApp/Bridge-Header.h";
@@ -447,7 +447,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = renative.helloWorld;
+				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "./RNVApp/Bridge-Header.h";

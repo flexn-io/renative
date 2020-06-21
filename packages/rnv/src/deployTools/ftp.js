@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import inquirer from 'inquirer';
@@ -5,6 +6,9 @@ import inquirer from 'inquirer';
 import { logInfo, logTask } from '../systemTools/logger';
 import { writeFileSync, fsWriteFileSync } from '../systemTools/fileutils';
 import { DEPLOY_TARGET_FTP } from './webTools';
+
+const FtpDeploy = require('ftp-deploy');
+const dotEnv = require('dotenv');
 
 const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
     logTask(`_deployToFtp:${platform}`);
@@ -14,10 +18,10 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
         logInfo('.env file does not exist. Creating one for you');
         promise = _createEnvFtpConfig(envPath);
     } else {
-        promise = new Promise((resolve, reject) => {
+        promise = new Promise((resolve2) => {
             fs.readFile(envPath, (err, data) => {
                 if (err) return reject(err);
-                resolve(data.toString());
+                resolve2(data.toString());
             });
         });
     }
@@ -28,7 +32,7 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
             envContent
                 .split('\n')
                 .map(line => line.split('='))
-                .forEach(([key, val]) => {
+                .forEach(([key]) => {
                     if (
                         [
                             'RNV_DEPLOY_WEB_FTP_SERVER',
@@ -53,7 +57,7 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
             return envPromise;
         })
         .then(() => {
-            require('dotenv').config();
+            dotEnv.config();
             const config = {
                 user: process.env.RNV_DEPLOY_WEB_FTP_USER,
                 password: process.env.RNV_DEPLOY_WEB_FTP_PASSWORD, // optional, prompted if none given
@@ -83,7 +87,6 @@ const _deployToFtp = (c, platform) => new Promise((resolve, reject) => {
             return config;
         })
         .then((config) => {
-            const FtpDeploy = require('ftp-deploy');
             const ftpDeploy = new FtpDeploy();
             return ftpDeploy.deploy(config);
         })

@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import axios from 'axios';
 import ora from 'ora';
 import { getConfigProp } from '../common';

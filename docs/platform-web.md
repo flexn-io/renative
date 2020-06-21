@@ -27,14 +27,21 @@ sidebar_label: Web
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `browser.js` | `form factor` | 1 |
-| `browser.ts` | `form factor` | 2 |
-| `web.js` | `platform` | 3 |
-| `web.ts` | `platform` | 4 |
-| `mjs` | `fallback` | 5 |
-| `js` | `fallback` | 6 |
-| `tsx` | `fallback` | 7 |
-| `ts` | `fallback` | 8 |
+| `browser.jsx` | `form factor` | 1 |
+| `browser.js` | `form factor` | 2 |
+| `browser.tsx` | `form factor` | 3 |
+| `browser.ts` | `form factor` | 4 |
+| `web.jsx` | `platform` | 5 |
+| `web.js` | `platform` | 6 |
+| `web.tsx` | `platform` | 7 |
+| `web.ts` | `platform` | 8 |
+| `mjs` | `fallback` | 9 |
+| `jsx` | `fallback` | 10 |
+| `js` | `fallback` | 11 |
+| `json` | `fallback` | 12 |
+| `wasm` | `fallback` | 13 |
+| `tsx` | `fallback` | 14 |
+| `ts` | `fallback` | 15 |
 
 <!--EXTENSION_SUPPORT_END-->
 

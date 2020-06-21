@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import fs from 'fs';
@@ -21,10 +22,8 @@ import {
     logWarning,
     logError,
     logToSummary,
-    logInfo,
     logDebug
 } from '../systemTools/logger';
-import { executePipe } from '../projectTools/buildHooks';
 import { doResolve } from '../resolve';
 
 export const rnvPluginList = c => new Promise((resolve) => {
@@ -117,6 +116,7 @@ const _getPluginList = (c, isUpdate = false) => {
     return output;
 };
 
+/* eslint-disable no-await-in-loop */
 export const rnvPluginAdd = async (c) => {
     logTask('rnvPluginAdd');
 
@@ -173,7 +173,9 @@ export const rnvPluginAdd = async (c) => {
             const { propValue } = await inquirer.prompt({
                 name: 'propValue',
                 type: 'input',
-                message: `${pluginKey}: Add value for ${pluginProps[i2]} (You can do this later in ./renative.json file)`
+                message: `${pluginKey}: Add value for ${
+                    pluginProps[i2]
+                } (You can do this later in ./renative.json file)`
             });
             finalProps[pluginProps[i2]] = propValue;
         }
@@ -229,7 +231,7 @@ export const rnvPluginUpdate = async (c) => {
     }
 };
 
-const getMergedPlugin = (c, key, plugins, noMerge = false) => {
+const getMergedPlugin = (c, key, plugins) => {
     const plugin = plugins[key];
 
     // const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
@@ -319,6 +321,11 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
     }
 
     let hasPackageChanged = false;
+
+    if (!c.buildConfig?.plugins) {
+        resolve();
+        return;
+    }
 
     Object.keys(c.buildConfig.plugins).forEach((k) => {
         const { dependencies } = c.files.project.package;

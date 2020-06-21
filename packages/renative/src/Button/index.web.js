@@ -30,12 +30,14 @@ const Button = ({
     style,
     textStyle,
     selectedStyle,
-    onPress
+    onPress,
+    testID
 }) => {
     const Btn = () => (
         <TouchableOpacity
             style={[styles.button, style, focused ? { opacity: 0.4 } : null]}
             onPress={onPress}
+            testID={testID}
         >
             {iconName ? (
                 <Icon
@@ -46,7 +48,11 @@ const Button = ({
                     style={styles.icon}
                 />
             ) : null}
-            {title ? <Text style={textStyle}>{title}</Text> : null}
+            {title ? (
+                <Text style={textStyle}>
+                    {title}
+                </Text>
+            ) : null}
         </TouchableOpacity>
     );
     if (to) {

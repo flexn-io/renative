@@ -39,7 +39,7 @@ import {
 import {
     runXcodeProject,
     exportXcodeProject,
-    archiveXcodeProject,
+    buildXcodeProject,
     packageBundleForXcode,
     runAppleLog
 } from './apple';
@@ -190,9 +190,9 @@ export const rnvLog = async (c) => {
         case TVOS:
             await runAppleLog(c);
             return;
+        default:
+            logErrorPlatform(c, c.platform);
     }
-
-    logErrorPlatform(c, c.platform);
 };
 
 // ##########################################
@@ -279,6 +279,8 @@ const _rnvRunWithPlatform = async (c) => {
 
     await checkSdk(c);
 
+    const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
+
     switch (platform) {
         case IOS:
         case TVOS:
@@ -287,7 +289,9 @@ const _rnvRunWithPlatform = async (c) => {
                 await configureIfRequired(c, platform);
                 await _startBundlerIfRequired(c);
                 await runXcodeProject(c);
-                logSummary('BUNDLER STARTED');
+                if (!bundleAssets) {
+                    logSummary('BUNDLER STARTED');
+                }
                 return waitForBundlerIfRequired(c);
             }
             return runXcodeProject(c);
@@ -305,7 +309,9 @@ const _rnvRunWithPlatform = async (c) => {
                     await packageAndroid(c, platform);
                 }
                 await runAndroid(c, platform, target);
-                logSummary('BUNDLER STARTED');
+                if (!bundleAssets) {
+                    logSummary('BUNDLER STARTED');
+                }
                 return waitForBundlerIfRequired(c);
             }
             return runAndroid(c, platform, target);
@@ -405,6 +411,9 @@ const _rnvPackageWithPlatform = async (c) => {
 const _rnvExportWithPlatform = async (c) => {
     logTask(`_rnvExportWithPlatform:${c.platform}`);
     const { platform } = c;
+
+    await checkSdk(c);
+
     switch (platform) {
         case WEB:
             if (!c.program.only) {
@@ -419,7 +428,7 @@ const _rnvExportWithPlatform = async (c) => {
         case IOS:
         case TVOS:
             if (!c.program.only) {
-                await _rnvBuildWithPlatform(c, platform);
+                await _rnvPackageWithPlatform(c, platform);
             }
             return exportXcodeProject(c, platform);
         case ANDROID:
@@ -484,6 +493,8 @@ const _rnvBuildWithPlatform = async (c) => {
     logTask(`_rnvBuildWithPlatform:${c.platform}`);
     const { platform } = c;
 
+    await checkSdk(c);
+
     switch (platform) {
         case ANDROID:
         case ANDROID_TV:
@@ -503,10 +514,8 @@ const _rnvBuildWithPlatform = async (c) => {
             return;
         case IOS:
         case TVOS:
-            if (!c.program.only) {
-                await _rnvPackageWithPlatform(c, platform);
-            }
-            await archiveXcodeProject(c, platform);
+            await _rnvPackageWithPlatform(c, platform);
+            await buildXcodeProject(c, platform);
             return;
         case WEB:
         case CHROMECAST:

@@ -16,7 +16,8 @@ import {
     logError,
     logWarning,
     logDebug,
-    logSuccess
+    logSuccess,
+    logRaw
 } from '../../systemTools/logger';
 import {
     IS_TABLET_ABOVE_INCH,
@@ -206,7 +207,7 @@ const getRunningDeviceProp = async (c, udid, prop) => {
         CLI_ANDROID_ADB,
         `-s ${udid} shell getprop`
     );
-    const reg = /\[.+\]: \[.*\n?[^\[]*\]/gm;
+    const reg = /\[.+\]: \[.*\n?[^[]*\]/gm;
     const lines = rawProps.match(reg);
 
     lines.forEach((line) => {
@@ -672,7 +673,7 @@ export const checkForActiveEmulator = (c, platform) => new Promise((resolve, rej
                         clearInterval(poll);
                         resolve(v[0]);
                     } else {
-                        console.log(
+                        logRaw(
                             `looking for active emulators: attempt ${attempts}/${maxAttempts}`
                         );
                         attempts++;

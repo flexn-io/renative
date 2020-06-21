@@ -29,21 +29,36 @@ sidebar_label: Android Wear
 
 | Extension | Type    | Priority  |
 | --------- | --------- | :-------: |
-| `androidwear.watch.js` | `form factor` | 1 |
-| `androidwear.watch.ts` | `form factor` | 2 |
-| `watch.js` | `form factor` | 3 |
-| `watch.ts` | `form factor` | 4 |
-| `androidwear.js` | `platform` | 5 |
-| `androidwear.ts` | `platform` | 6 |
-| `android.js` | `platform` | 7 |
-| `android.ts` | `platform` | 8 |
-| `watch.native.js` | `fallback` | 9 |
-| `watch.native.ts` | `fallback` | 10 |
-| `native.js` | `fallback` | 11 |
-| `native.ts` | `fallback` | 12 |
-| `js` | `fallback` | 13 |
-| `tsx` | `fallback` | 14 |
-| `ts` | `fallback` | 15 |
+| `androidwear.watch.jsx` | `form factor` | 1 |
+| `androidwear.watch.js` | `form factor` | 2 |
+| `androidwear.watch.tsx` | `form factor` | 3 |
+| `androidwear.watch.ts` | `form factor` | 4 |
+| `watch.jsx` | `form factor` | 5 |
+| `watch.js` | `form factor` | 6 |
+| `watch.tsx` | `form factor` | 7 |
+| `watch.ts` | `form factor` | 8 |
+| `androidwear.jsx` | `platform` | 9 |
+| `androidwear.js` | `platform` | 10 |
+| `androidwear.tsx` | `platform` | 11 |
+| `androidwear.ts` | `platform` | 12 |
+| `android.jsx` | `platform` | 13 |
+| `android.js` | `platform` | 14 |
+| `android.tsx` | `platform` | 15 |
+| `android.ts` | `platform` | 16 |
+| `watch.native.jsx` | `fallback` | 17 |
+| `watch.native.js` | `fallback` | 18 |
+| `watch.native.tsx` | `fallback` | 19 |
+| `watch.native.ts` | `fallback` | 20 |
+| `native.jsx` | `fallback` | 21 |
+| `native.js` | `fallback` | 22 |
+| `native.tsx` | `fallback` | 23 |
+| `native.ts` | `fallback` | 24 |
+| `jsx` | `fallback` | 25 |
+| `js` | `fallback` | 26 |
+| `json` | `fallback` | 27 |
+| `wasm` | `fallback` | 28 |
+| `tsx` | `fallback` | 29 |
+| `ts` | `fallback` | 30 |
 
 <!--EXTENSION_SUPPORT_END-->
 

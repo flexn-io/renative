@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.29.1-alpha.21",
+            "version": "0.29.1-alpha.25",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -2392,7 +2392,7 @@
                 "BuildGradle": {
                     "allprojects": {
                         "repositories": {
-                            " maven {url \"$rootDir/../../node_modules/detox/Detox-android\"}": true
+                            " maven { url \"{{resolvePackage(detox)}}/Detox-android\" }": true
                         }
                     }
                 }
@@ -2515,6 +2515,12 @@
         },
         "next": {
             "version": "9.3.1"
+        },
+        "@react-native-community/cli-platform-ios": {
+            "no-npm": true
+        },
+        "@react-native-community/cli": {
+            "no-npm": true
         }
     }
 }

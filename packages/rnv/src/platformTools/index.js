@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { logToSummary, logTask, logSuccess, logInfo, logError, logDebug } from '../systemTools/logger';
+import { logToSummary, logTask, logSuccess, logError, logDebug, logWarning } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
     cleanFolder,
@@ -18,7 +18,7 @@ import { checkAndConfigureSdks } from './sdkManager';
 import { configureEntryPoints } from '../templateTools';
 import { getTimestampPathsConfig } from '../common';
 
-export const rnvPlatformList = c => new Promise((resolve, reject) => {
+export const rnvPlatformList = c => new Promise((resolve) => {
     const opts = _genPlatOptions(c);
     logToSummary(`Platforms:\n\n${opts.asString}`);
     resolve();
@@ -112,7 +112,8 @@ export const rnvPlatformEject = async (c) => {
                 );
             }
 
-            c.files.project.config.paths.platformTemplatesDirs = c.files.project.config.paths.platformTemplatesDirs || {};
+            c.files.project.config.paths
+                .platformTemplatesDirs = c.files.project.config.paths.platformTemplatesDirs || {};
             c.files.project.config.paths.platformTemplatesDirs[
                 platform
             ] = `./${ptfn}`;
@@ -127,7 +128,8 @@ export const rnvPlatformEject = async (c) => {
             )} now. You can edit them directly!`
         );
     } else {
-        logError(`You haven't selected any platform to eject.\n TIP: You can select options with ${chalk.white('SPACE')} key before pressing ENTER!`);
+        logError(`You haven't selected any platform to eject.
+TIP: You can select options with ${chalk.white('SPACE')} key before pressing ENTER!`);
     }
 };
 
@@ -213,7 +215,7 @@ export const rnvPlatformConnect = async (c) => {
     );
 };
 
-const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
+const _runCopyPlatforms = (c, platform) => new Promise((resolve) => {
     logTask(`_runCopyPlatforms:${platform}`);
     const copyPlatformTasks = [];
 
@@ -229,7 +231,8 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
                     `${c.runtime.appId}_${k}`
                 );
                 copyPlatformTasks.push(
-                    copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {}, getTimestampPathsConfig(c, platform), c)
+                    copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {},
+                        getTimestampPathsConfig(c, platform), c)
                 );
             }
         });
@@ -243,7 +246,8 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
             `${c.runtime.appId}_${platform}`
         );
         copyPlatformTasks.push(
-            copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {}, getTimestampPathsConfig(c, platform), c)
+            copyFolderContentsRecursiveSync(ptPath, pPath, true, false, false, {},
+                getTimestampPathsConfig(c, platform), c)
         );
     } else {
         logWarning(
@@ -255,12 +259,12 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve, reject) => {
         );
     }
 
-    Promise.all(copyPlatformTasks).then((values) => {
+    Promise.all(copyPlatformTasks).then(() => {
         resolve();
     });
 });
 
-export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
+export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
     logTask(`cleanPlatformBuild:${platform}`);
 
     const cleanTasks = [];
@@ -283,7 +287,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve, reject)
         cleanTasks.push(cleanFolder(pPath));
     }
 
-    Promise.all(cleanTasks).then((values) => {
+    Promise.all(cleanTasks).then(() => {
         resolve();
     });
 });
@@ -340,7 +344,9 @@ export const isPlatformSupported = async (c) => {
     ) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
-            message: `Looks like platform ${c.platform} is not supported by your project. Would you like to enable it?`
+            message: `Looks like platform ${
+                c.platform
+            } is not supported by your project. Would you like to enable it?`
         });
 
         if (confirm) {

@@ -18,6 +18,7 @@ import {
     logTask,
     logSuccess,
     logInfo,
+    logDebug,
     logWarning
 } from '../systemTools/logger';
 import { getWorkspaceOptions } from './workspace';
@@ -191,7 +192,7 @@ export const createNewProject = async (c) => {
             message:
                 "What's your project Name? (no spaces, folder based on ID will be created in this directory)"
         });
-        inputProjectName = inputProjectNameObj.inputProjectName;
+        inputProjectName = inputProjectNameObj?.inputProjectName;
     }
 
     const {
@@ -325,7 +326,9 @@ export const createNewProject = async (c) => {
                 template: inputTemplate,
                 platforms: inputSupportedPlatforms
             });
-        } catch {}
+        } catch (e) {
+            logDebug(e);
+        }
 
         await _generateProject(c, data);
     }

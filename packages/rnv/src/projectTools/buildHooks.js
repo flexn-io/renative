@@ -1,7 +1,7 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
-import { getConfig } from '../common';
-import { logToSummary, logTask } from '../systemTools/logger';
+import { logToSummary, logTask, logRaw } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
 import { executeAsync } from '../systemTools/exec';
 
@@ -53,6 +53,7 @@ const executePipe = async (c, key) => {
     }
 };
 
+/* eslint-disable import/no-dynamic-require, global-require */
 const buildHooks = async (c) => {
     logTask('buildHooks');
 
@@ -61,10 +62,12 @@ const buildHooks = async (c) => {
             return true;
         }
 
+        const cmd = 'babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator';
+
         try {
             await executeAsync(
                 c,
-                `babel --no-babelrc --plugins @babel/plugin-proposal-optional-chaining,@babel/plugin-proposal-nullish-coalescing-operator ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`,
+                `${cmd} ${c.paths.buildHooks.dir} -d ${c.paths.buildHooks.dist.dir} --presets=@babel/env`,
                 {
                     cwd: c.paths.buildHooks.dir
                 }
@@ -113,7 +116,7 @@ const rnvHooksPipes = c => new Promise((resolve, reject) => {
     buildHooks(c)
         .then(() => {
             const pipeOpts = generateOptions(c.buildPipes);
-            console.log(`Pipes:\n${pipeOpts.asString}`);
+            logRaw(`Pipes:\n${pipeOpts.asString}`);
         })
         .catch(e => reject(e));
 });

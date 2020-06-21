@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import Config from '../config';
 import PlatformSetup from '../setupTools';
 import { commandExistsSync } from '../systemTools/exec';

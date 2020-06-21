@@ -1,5 +1,5 @@
-import { executeAsync } from '../systemTools/exec';
-import { commandExistsSync } from '../systemTools/exec';
+/* eslint-disable import/no-cycle */
+import { executeAsync, commandExistsSync } from '../systemTools/exec';
 import { getAppFolder } from '../common';
 import Config from '../config';
 import PlatformSetup from '../setupTools';

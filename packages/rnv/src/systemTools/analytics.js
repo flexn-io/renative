@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+
 import { RewriteFrames } from '@sentry/integrations';
 import { machineIdSync } from 'node-machine-id';
 import axios from 'axios';

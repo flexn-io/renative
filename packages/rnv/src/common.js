@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
@@ -180,7 +181,9 @@ export const getAppSubFolder = (c, platform) => {
     return path.join(getAppFolder(c, platform), subFolder);
 };
 
-export const getAppTemplateFolder = (c, platform) => path.join(c.paths.project.platformTemplatesDirs[platform], `${platform}`);
+export const getAppTemplateFolder = (c, platform) => path.join(
+    c.paths.project.platformTemplatesDirs[platform], `${platform}`
+);
 
 export const CLI_PROPS = [
     'provisioningStyle',
@@ -198,7 +201,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
         logError('getConfigProp: invalid key!');
         return null;
     }
-    const p = c.buildConfig.platforms[platform];
+    const p = c.buildConfig.platforms?.[platform];
     const ps = c.runtime.scheme;
     const keyArr = key.split('.');
     const baseKey = keyArr.shift();
@@ -508,7 +511,7 @@ export const waitForWebpack = async (c, engine) => {
     });
 };
 export const importPackageFromProject = (name) => {
-    const c = Config.getConfig();
+    // const c = Config.getConfig();
     // eslint-disable-next-line import/no-dynamic-require, global-require
     const pkg = require(doResolve(name));
     if (pkg.default) return pkg.default;

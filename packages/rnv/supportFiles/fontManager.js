@@ -1,4 +1,4 @@
-function registerFonts(fonts) {
+function registerFonts() {
     return {};
 }
 

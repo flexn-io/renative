@@ -9,8 +9,7 @@
         "react-native-web-image-loader": "source:rnv",
         "react-native-gesture-handler": "source:rnv",
         "react-native-reanimated": "source:rnv",
-        "react-native-vector-icons": "source:rnv",
-        "next": "source:rnv"
+        "react-native-vector-icons": "source:rnv"
     },
     "permissions": {
         "ios": {},

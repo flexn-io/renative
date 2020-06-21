@@ -21,4 +21,6 @@ RUN npm link && mkdir /root/.rnv/ && echo '{"sdks":{"ANDROID_SDK":"/opt/android-
 RUN npm link && mkdir /root/.rnv/ && echo '{"workspaces":{"rnv":{"path":"/root/.rnv"}}}' > /root/.rnv/renative.workspaces.json
 
 
-RUN echo "no" | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"
+# RUN echo "no" | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"
+# RUN echo "no" | avdmanager create avd -n android_test -k "system-images;android-28;default;armeabi-v7a"
+RUN echo "no" | android create avd -n android_test -t android-28 --abi x86

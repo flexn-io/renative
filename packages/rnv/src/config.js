@@ -1,4 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
+/* eslint-disable import/no-cycle */
+
 import { printTable } from 'console-table-printer';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -6,9 +8,10 @@ import semver from 'semver';
 
 import { writeFileSync } from './systemTools/fileutils';
 import { npmInstall, executeAsync } from './systemTools/exec';
-import { logWarning, logTask, logError } from './systemTools/logger';
+import { logWarning, logError, logDebug } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
+import { getEngineByPlatform } from './engineTools';
 
 export const CLI_PROPS = [
     'provisioningStyle',
@@ -78,7 +81,8 @@ class Config {
         return this.config.files.project;
     }
 
-    async checkRequiredPackage(pkg, version = false, type, skipAsking = false, skipInstall = false, skipVersionCheck = false) {
+    async checkRequiredPackage(pkg, version = false, type, skipAsking = false,
+        skipInstall = false, skipVersionCheck = false) {
         if (!pkg) return false;
         const projectConfig = this.getProjectConfig();
 
@@ -133,7 +137,11 @@ class Config {
                     if (!confirm) {
                         const resp = await inquirerPrompt({
                             type: 'confirm',
-                            message: `Seems like ${pkg}@${currentVersion} is installed while there is a newer version, ${pkg}@${latestVersion}. Do you want to upgrade?`
+                            message: `Seems like ${pkg}@${
+                                currentVersion
+                            } is installed while there is a newer version, ${
+                                pkg
+                            }@${latestVersion}. Do you want to upgrade?`
                         });
                         // eslint-disable-next-line prefer-destructuring
                         confirm = resp.confirm;
@@ -155,8 +163,8 @@ class Config {
     }
 
     async injectPlatformDependencies(platform) {
-        const npmDeps = this.config.files?.rnv?.platformTemplates?.config
-            ?.platforms?.[platform]?.npm;
+        const selectedEngine = getEngineByPlatform(this.config, platform);
+        const npmDeps = selectedEngine?.platforms[platform]?.npm;
 
         if (npmDeps) {
             const promises = Object.keys(npmDeps).reduce((acc, type) => {
@@ -180,6 +188,9 @@ class Config {
 
             if (installed.some(i => i === true)) {
                 // do npm i only if something new is added
+                logWarning(`Found extra npm depenedecies required by ${
+                    selectedEngine.id
+                } engine. will install them now`);
                 await npmInstall();
             }
         }
@@ -271,14 +282,15 @@ class Config {
         } = this.config;
 
         if (this.isConfigValueValid(key, value)) {
+            let isValid = value;
             const configPath = global
                 ? paths.GLOBAL_RNV_CONFIG
                 : paths.project.config;
             const config = require(configPath);
 
-            if (['true', 'false'].includes(value)) value = value === 'true'; // convert string to bool if it matches a bool value
+            if (['true', 'false'].includes(isValid)) isValid = isValid === 'true'; // convert string to bool if it matches a bool value
 
-            config[configSchema[key].key] = value;
+            config[configSchema[key].key] = isValid;
             writeFileSync(configPath, config);
             return true;
         }
@@ -341,7 +353,7 @@ class Config {
         );
 
         if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-        logTask(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+        logDebug(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
         return result;
     }
 

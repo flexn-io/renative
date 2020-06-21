@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import chalk from 'chalk';
 import {
@@ -8,7 +9,7 @@ import {
     sanitizeColor,
     getFlavouredProp
 } from '../../common';
-import { logTask } from '../../systemTools/logger';
+import { logTask, logDebug } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
 import { writeCleanFile } from '../../systemTools/fileutils';
 
@@ -20,22 +21,23 @@ export const parseAppDelegate = (
     isBundled = false,
     ip = 'localhost',
     port
-) => new Promise((resolve, reject) => {
-    if (!port) port = c.runtime.port;
-    logTask(`parseAppDelegateSync:${platform}:${ip}:${port}`);
+) => new Promise((resolve) => {
+    const newPort = port || c.runtime?.port;
+    logTask(`parseAppDelegateSync:${platform}:${ip}:${newPort}`);
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
-    const { backgroundColor } = c.buildConfig.platforms[platform];
 
     const forceBundle = getGetJsBundleFile(c, platform);
     let bundle;
     if (forceBundle) {
         bundle = forceBundle;
     } else if (isBundled) {
-        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${entryFile}", fallbackResource: nil)`;
+        bundle = `RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "${
+            entryFile
+        }", fallbackResource: nil)`;
     } else {
-        bundle = `URL(string: "http://${ip}:${port}/${entryFile}.bundle?platform=ios")`;
+        bundle = `URL(string: "http://${ip}:${newPort}/${entryFile}.bundle?platform=ios")`;
     }
 
     // PLUGINS
@@ -56,7 +58,9 @@ export const parseAppDelegate = (
 
     const clr = sanitizeColor(getConfigProp(c, platform, 'backgroundColor'), 'backgroundColor')
         .rgbDecimal;
-    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${clr[0]}, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
+    const pluginBgColor = `vc.view.backgroundColor = UIColor(red: ${
+        clr[0]
+    }, green: ${clr[1]}, blue: ${clr[2]}, alpha: ${clr[3]})`;
     const methods = {
         application: {
             didFinishLaunchingWithOptions: {
@@ -162,17 +166,16 @@ export const parseAppDelegate = (
         }
         return output;
     };
-
-    for (const key in methods) {
+    Object.keys(methods).forEach((key) => {
         const method = methods[key];
-        for (const key2 in method) {
+        Object.keys(method).forEach((key2) => {
             const f = method[key2];
             c.pluginConfigiOS.pluginAppDelegateMethods += constructMethod(
                 c.pluginConfigiOS.appDelegateMethods[key][key2],
                 f
             );
-        }
-    }
+        });
+    });
 
     writeCleanFile(
         path.join(
@@ -200,8 +203,8 @@ export const parseAppDelegate = (
     resolve();
 });
 
-export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
-    logTask(`injectPluginSwiftSync:${c.platform}:${key}`, chalk.grey);
+export const injectPluginSwiftSync = (c, plugin, key) => {
+    logDebug(`injectPluginSwiftSync:${c.platform}:${key}`);
     const appDelegateImports = getFlavouredProp(
         c,
         plugin,
@@ -231,10 +234,10 @@ export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
         'appDelegateMethods'
     );
     if (appDelegateMethods) {
-        for (const key in appDelegateMethods) {
-            for (const key2 in appDelegateMethods[key]) {
-                const plugArr = c.pluginConfigiOS.appDelegateMethods[key][key2];
-                const plugVal = appDelegateMethods[key][key2];
+        Object.keys(appDelegateMethods).forEach((delKey) => {
+            Object.keys(appDelegateMethods[delKey]).forEach((key2) => {
+                const plugArr = c.pluginConfigiOS.appDelegateMethods[delKey][key2];
+                const plugVal = appDelegateMethods[delKey][key2];
                 if (plugVal) {
                     plugVal.forEach((v) => {
                         if (!plugArr.includes(v)) {
@@ -242,7 +245,7 @@ export const injectPluginSwiftSync = (c, plugin, key, pkg) => {
                         }
                     });
                 }
-            }
-        }
+            });
+        });
     }
 };

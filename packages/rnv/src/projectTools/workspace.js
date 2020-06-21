@@ -1,3 +1,5 @@
+/* eslint-disable import/no-cycle */
+
 import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
@@ -7,7 +9,8 @@ import {
     logWarning,
     logDebug,
     logInfo,
-    logToSummary
+    logToSummary,
+    logRaw
 } from '../systemTools/logger';
 import { writeFileSync, mkdirSync } from '../systemTools/fileutils';
 
@@ -97,7 +100,8 @@ export const getWorkspaceDirPath = async (c) => {
                 };
                 writeFileSync(c.paths.rnv.configWorkspaces, wss);
                 logInfo(
-                    `Found workspace id ${ws} and compatible directory ${wsDir}. Your ${c.paths.rnv.configWorkspaces} has been updated.`
+                    `Found workspace id ${ws} and compatible directory ${wsDir}. Your ${
+                        c.paths.rnv.configWorkspaces} has been updated.`
                 );
             } else if (!c.runtime.isWSConfirmed || c.program.ci === true) {
                 let confirm = true;
@@ -123,7 +127,9 @@ export const getWorkspaceDirPath = async (c) => {
     }
     if (c.buildConfig?.paths?.globalConfigDir) {
         logWarning(
-            `paths.globalConfigDir in ${c.paths.project.config} is DEPRECATED. use workspaceID instead. more info at https://renative.org/docs/workspaces`
+            `paths.globalConfigDir in ${
+                c.paths.project.config
+            } is DEPRECATED. use workspaceID instead. more info at https://renative.org/docs/workspaces`
         );
     }
     if (!dirPath) {
@@ -147,6 +153,8 @@ export const rnvWorkspaceConnect = async (c) => {
         message: 'Pick a workspace',
         choices: opts
     });
+
+    logRaw(selectedWS);
 };
 
 const _getConnectionString = (obj) => {
@@ -157,7 +165,8 @@ const _getConnectionString = (obj) => {
     return connectMsg;
 };
 
-export const rnvWorkspaceUpdate = async (c) => {
+export const rnvWorkspaceUpdate = async () => {
+    // TODO: rnvWorkspaceUpdate
     logTask('rnvWorkspaceUpdate');
 };
 

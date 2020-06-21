@@ -113,6 +113,42 @@ rnv plugin add @react-native-community/cameraroll
 ```
 
 
+## @react-native-community/cli
+
+
+
+
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+
+
+Installation:
+
+```
+rnv plugin add @react-native-community/cli
+```
+
+
+## @react-native-community/cli-platform-ios
+
+
+
+
+Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
+
+
+
+
+
+Installation:
+
+```
+rnv plugin add @react-native-community/cli-platform-ios
+```
+
+
 ## @react-native-community/datetimepicker
 
 
@@ -2564,7 +2600,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.29.1-alpha.21`
+Version: `0.29.1-alpha.25`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

@@ -1,4 +1,6 @@
 /* eslint-disable global-require, import/no-dynamic-require */
+/* eslint-disable import/no-cycle */
+
 import fs from 'fs';
 import path from 'path';
 import semver from 'semver';

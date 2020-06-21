@@ -1,4 +1,119 @@
-# Changelog
+---
+id: changelog
+title: Changelog
+sidebar_label: Changelog
+---
+
+
+## v0.29.1-alpha.25 (2020-6-20)
+
+### Fixed
+
+- doc updates
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.29.1-alpha.24 (2020-6-19)
+
+### Fixed
+
+- fix sdk discovery for rnv build tasks
+- remove unnecessary plugins from templates (moved to core engine definitions)
+- engine plugin overrides , improved summary logging
+- ci chores 32
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.29.1-alpha.23 (2020-6-19)
+
+### Fixed
+
+- ci chores
+- update extension support
+- cleanup logging
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.29.1-alpha.22 (2020-6-18)
+
+### Fixed
+
+- add only missing plugins
+- ci chores 31
+- engine base compatibility
+- Merge branch 'develop' into feat/e2e-ci
+- fix #522
+- ci chores 30
+- ci chores 29
+- jsx, tsx compiler support
+- ci chores 28
+- ci chores 27
+- ci chores 26
+- ci chores 25
+- ci chores 24
+- ci chores 23
+- E2E web automation with cypress
+- e2e android
+- rn engines abstraction layer
+- disable favicon asset time stamping
+- fix export for ios
+- add engine configs
+- Merge branch 'develop' into feat/e2e-ci
+- ci chores 22
+- dynamic  injectors via json functions
+- ci chores 21
+- ci chores 20
+- ci chores 19
+- ci chores 18
+- ci chores 17
+- ci chores 16
+- ci chores 15
+- ci chores 14
+- ci chores 13
+- ci chores 12
+- ci chores 11
+- ci chores 10
+- ci chores 9
+- ci chores 8
+- ci chores 7
+- ci chores 6
+- ci chores 5
+- ci chores 4
+- ci chores 3
+- ci chores 2
+- ci chore 1
+- downgrade detox workaround for https://github.com/wix/detox/issues/152
+- init detox
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
 
 ## v0.29.1-alpha.21 (2020-6-17)
 
@@ -279,6 +394,332 @@ to your `./renative.json`
 ### Fixed
 
 - tbc
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.28.0 (2019-11-5)
+
+### Fixed
+
+-   Migration to React Native 0.61.2
+-   Support for Hermes Engine
+-   AndroidX Support
+
+-   Migrated 30+ plugins
+
+-   RN Camera
+-   Local Storage
+-   NetInfo
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.27.0 (2019-09-17)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.26.0 (2019-09-1)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.25.0 (2019-08-14)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.23.0 (2019-06-19)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.22.0 (2019-06-1)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.21.6 (2019-5-23)
+
+
+### Fixes
+
+- fix readme	bf2b9fd3	Pavel Jacko <beherithrone@gmail.com>	23 May 2019 at 07:41
+- webpack updates, docs	93d7b7b5	Pavel Jacko <beherithrone@gmail.com>	23 May 2019 at 07:39
+- Merge branch 'master' of github.com:pavjacko/renative	ad6a8ae0	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 19:25
+- webpack	a56ff08d	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 19:25
+- Merge pull request #59 from mihaiblaga89/eslint_plugin_add	5f46b68c	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 19:14
+- 0.21.6-alpha.1	1f832112	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 16:56
+- opt platforms	43f42a60	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 16:37
+- added eslint-plugin-detox	b11a510e	Mihai Blaga <mihaiblaga89@gmail.com>	22 May 2019 at 15:43
+- linter updates	9ec5af1a	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 15:11
+- Merge branch 'master' of github.com:pavjacko/renative	a176b84b	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 12:39
+- Merge pull request #58 from mihaiblaga89/format_everything_ftw	89519fbb	Pavel Jacko <beherithrone@gmail.com>	22 May 2019 at 12:37
+- missed a file	3a8b390d	Mihai Blaga <legolas8911@gmail.com>	21 May 2019 at 23:35
+- added husky and ran prettier on every .js	93b11655	Mihai Blaga <legolas8911@gmail.com>	21 May 2019 at 23:27
+- Merge pull request #1 from pavjacko/master	19db3fda	Mihai Blaga <legolas8911@gmail.com>	21 May 2019 at 23:25
+- Merge pull request #57 from mihaiblaga89/pods_error_handling	28840463	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 16:21
+- added function to check if Cocoapods is installed before invoking it	59463502	Mihai Blaga <mihaiblaga89@gmail.com>	21 May 2019 at 14:10
+- Merge pull request #56 from hosek/androidTV-theme	95b271b8	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 13:20
+- AndroidTV style updated to AppCompat Added support for Android phones display notches	e1c0545c	Roman Hosek <>	21 May 2019 at 12:47
+- Merge branch 'master' of github.com:pavjacko/renative	9871189e	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:27
+- Merge pull request #52 from hosek/master	3090c7eb	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:23
+- Merge pull request #50 from CHaNGeTe/fix/gradlew-windows	f15ce642	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:22
+- Merge pull request #51 from CHaNGeTe/fix/native-orientation-locker	15bfb18c	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:22
+- support for cocoapods commit	a8bab1fe	Pavel Jacko <beherithrone@gmail.com>	21 May 2019 at 10:22
+- add packages install	30921c39	Roman Hosek <>	10 May 2019 at 14:08
+- create ANdroid emulator on demand	48da08cd	Roman Hosek <>	9 May 2019 at 16:24
+
+
+### Optional Platforms Support
+
+```bash
+rnv app create
+```
+
+### support for plugin cocoapods github commit
+
+```json
+"ios-photo-editor": {
+      "no-npm": true,
+      "ios": { "podName": "iOSPhotoEditor", "git": "https://github.com/prscX/photo-editor", "commit": "fa8894c992dedb431d696eb43ac4cc4ba847b4b8" }
+    },
+```
+
+### Inject activity method via plugin configuration
+
+```json
+"android": {
+  "package": "org.wonday.orientation.OrientationPackage",
+  "activityImports": [
+    "android.content.res.Configuration"
+  ],
+  "activityMethods": [
+    "override fun onConfigurationChanged(newConfig:Configuration) {",
+    "  super.onConfigurationChanged(newConfig)",
+    "  val intent = Intent(\"onConfigurationChanged\")",
+    "  intent.putExtra(\"newConfig\", newConfig)",
+    "  this.sendBroadcast(intent)",
+    "}"
+  ]
+},
+```
+
+### Create Android Emulator on Demand
+
+```bash
+rnv run -p android
+```
+
+### Bug Fixes
+
+-   Android TV theme error
+-   Added eslint detox
+-   improved webpack config
+
+## v0.21.0 (2019-05-4)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.20.0 (2019-05-1)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.19.0 (2019-04-28)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.18.0 (2019-04-14)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.17.1 (2019-04-4)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.16.1 (2019-04-2)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.13.0 (2019-03-16)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.12.0 (2019-03-12)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.11.0 (2019-03-05)
+
+### Fixed
+
+- none
+
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.10.0 (2019-03-03)
+
+### Fixed
+
+- none
+
 
 ### Added Features
 

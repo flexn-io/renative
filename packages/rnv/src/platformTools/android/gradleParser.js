@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -10,7 +11,7 @@ import {
     getConfigProp
 } from '../../common';
 import { doResolve, doResolvePath } from '../../resolve';
-import { logTask, logWarning, logDebug, logError } from '../../systemTools/logger';
+import { logTask, logWarning, logDebug } from '../../systemTools/logger';
 import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 
 export const parseBuildGradleSync = (c, platform) => {
@@ -68,6 +69,7 @@ export const parseBuildGradleSync = (c, platform) => {
     );
 };
 
+/* eslint-disable max-len */
 export const parseAppBuildGradleSync = (c, platform) => {
     logTask('parseAppBuildGradleSync');
     const appFolder = getAppFolder(c, platform);
@@ -202,7 +204,9 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
         variant.outputs.each { output ->
           def bavc = project.ext.abiCodes.get(output.getFilter(OutputFile.ABI))
           if (bavc != null) {
-            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc)) + ${versionCodeOffset}
+            output.versionCodeOverride = Integer.parseInt(Integer.toString(variant.versionCode) + Integer.toString(bavc)) + ${
+    versionCodeOffset
+}
           }
         }
       }`;
@@ -445,11 +449,10 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
     // }
     // const modulePath = `../../${pathFixed}`;
 
-    const className = pkg ? pkg.split('.').pop() : null;
-    let packageParams = '';
-    if (plugin.packageParams) {
-        packageParams = plugin.packageParams.join(',');
-    }
+    // let packageParams = '';
+    // if (plugin.packageParams) {
+    //     packageParams = plugin.packageParams.join(',');
+    // }
     const keyFixed = key.replace(/\//g, '-').replace(/@/g, '');
     const pathFixed = plugin.path ? `${plugin.path}` : `${key}/android`;
     const skipPathResolutions = pluginRoot['no-npm'];
@@ -464,13 +467,17 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
         if (!plugin.skipLinking && !skipPathResolutions) {
             c.pluginConfigAndroid.pluginIncludes += `, ':${plugin.projectName}'`;
             // }').projectDir = new File(rootProject.projectDir, '${modulePath}')\n`;
-            c.pluginConfigAndroid.pluginPaths += `project(':${plugin.projectName}').projectDir = new File('${pathAbsolute}')\n`;
+            c.pluginConfigAndroid.pluginPaths += `project(':${
+                plugin.projectName
+            }').projectDir = new File('${pathAbsolute}')\n`;
         }
         if (!plugin.skipImplementation) {
             if (plugin.implementation) {
                 c.pluginConfigAndroid.appBuildGradleImplementations += `${plugin.implementation}\n`;
             } else {
-                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${plugin.projectName}')\n`;
+                c.pluginConfigAndroid.appBuildGradleImplementations += `    implementation project(':${
+                    plugin.projectName
+                }')\n`;
             }
         }
     } else {
@@ -521,38 +528,38 @@ export const injectPluginGradleSync = (c, plugin, key, pkg, pluginRoot) => {
     const buildGradle = plugin.BuildGradle;
     const allProjRepos = buildGradle?.allprojects?.repositories;
     if (allProjRepos) {
-        for (k in allProjRepos) {
+        Object.keys(allProjRepos).forEach((k) => {
             if (allProjRepos[k] === true) {
                 c.pluginConfigAndroid.buildGradleAllProjectsRepositories += `${k}\n`;
             }
-        }
+        });
     }
 
     const buildscriptRepos = buildGradle?.buildscript?.repositories;
     if (buildscriptRepos) {
-        for (k in buildscriptRepos) {
+        Object.keys(buildscriptRepos).forEach((k) => {
             if (buildscriptRepos[k] === true) {
                 c.pluginConfigAndroid.buildGradleBuildScriptRepositories += `${k}\n`;
             }
-        }
+        });
     }
 
     const buildscriptDeps = buildGradle?.buildscript?.dependencies;
     if (buildscriptDeps) {
-        for (k in buildscriptDeps) {
+        Object.keys(buildscriptDeps).forEach((k) => {
             if (buildscriptDeps[k] === true) {
                 c.pluginConfigAndroid.buildGradleBuildScriptDependencies += `${k}\n`;
             }
-        }
+        });
     }
 
     const buildscriptDexOptions = buildGradle?.dexOptions;
     if (buildscriptDexOptions) {
-        for (k in buildscriptDexOptions) {
+        Object.keys(buildscriptDexOptions).forEach((k) => {
             if (buildscriptDexOptions[k] === true) {
                 c.pluginConfigAndroid.buildGradleBuildScriptDexOptions += `${k}\n`;
             }
-        }
+        });
     }
 };
 
