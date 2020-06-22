@@ -25,11 +25,16 @@
         ],
         "Configs": [
             "config-overview",
+            "config-workspaces",
             "config-global",
             "config-project",
             "config-app",
+            "config-template",
+            "config-build",
+            "config-runtime",
             "config-private",
-            "config-local"
+            "config-local",
+            "config-plugin"
         ],
         "Platforms": [
             "platforms",

@@ -223,6 +223,10 @@
         "title": "App Configs",
         "sidebar_label": "App Configs"
       },
+      "config-build": {
+        "title": "Build Config",
+        "sidebar_label": "Build Config"
+      },
       "config-global": {
         "title": "Global Configs",
         "sidebar_label": "Global Configs"
@@ -235,6 +239,10 @@
         "title": "Config Overview",
         "sidebar_label": "Overview"
       },
+      "config-plugin": {
+        "title": "Plugin Configs",
+        "sidebar_label": "Plugin Configs"
+      },
       "config-private": {
         "title": "Private Configs",
         "sidebar_label": "Private Configs"
@@ -242,6 +250,18 @@
       "config-project": {
         "title": "Project Configs",
         "sidebar_label": "Project Configs"
+      },
+      "config-runtime": {
+        "title": "Runtime Config",
+        "sidebar_label": "Runtime Config"
+      },
+      "config-template": {
+        "title": "Template Configs",
+        "sidebar_label": "Template Configs"
+      },
+      "config-workspaces": {
+        "title": "Workspace Configs",
+        "sidebar_label": "Workspace Configs"
       },
       "engine-rn-electron": {
         "title": "React Native Electron Engine",
