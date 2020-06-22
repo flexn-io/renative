@@ -213,6 +213,36 @@
       "changelog/0.29.1-alpha.9": {
         "title": "changelog/0.29.1-alpha.9"
       },
+      "changelog/0.30.0-rc1": {
+        "title": "changelog/0.30.0-rc1"
+      },
+      "changelog/0.30.0-rc2": {
+        "title": "changelog/0.30.0-rc2"
+      },
+      "config-app": {
+        "title": "App Configs",
+        "sidebar_label": "App Configs"
+      },
+      "config-global": {
+        "title": "Global Configs",
+        "sidebar_label": "Global Configs"
+      },
+      "config-local": {
+        "title": "Local Configs",
+        "sidebar_label": "Local Configs"
+      },
+      "config-overview": {
+        "title": "Config Overview",
+        "sidebar_label": "Overview"
+      },
+      "config-private": {
+        "title": "Private Configs",
+        "sidebar_label": "Private Configs"
+      },
+      "config-project": {
+        "title": "Project Configs",
+        "sidebar_label": "Project Configs"
+      },
       "engine-rn-electron": {
         "title": "React Native Electron Engine",
         "sidebar_label": "React Native Electron"
@@ -807,6 +837,7 @@
     "categories": {
       "Getting Started": "Getting Started",
       "Guides": "Guides",
+      "Configs": "Configs",
       "Platforms": "Platforms",
       "Plugins": "Plugins",
       "Engines": "Engines",

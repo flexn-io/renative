@@ -23,6 +23,14 @@
             "guide-engines",
             "guide-analytics"
         ],
+        "Configs": [
+            "config-overview",
+            "config-global",
+            "config-project",
+            "config-app",
+            "config-private",
+            "config-local"
+        ],
         "Platforms": [
             "platforms",
             "platform-android",
