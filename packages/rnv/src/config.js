@@ -353,7 +353,7 @@ class Config {
         );
 
         if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-        logDebug(`getConfigProp:${platform}:${key}:${result}`, chalk.grey);
+        logDebug(`getConfigProp:${platform}:${key}:${result}`);
         return result;
     }
 
