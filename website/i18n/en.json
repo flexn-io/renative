@@ -846,6 +846,210 @@
       "version-0.29/version-0.29-plugins": {
         "title": "Plugins Overview",
         "sidebar_label": "Plugins Overview"
+      },
+      "version-0.30/version-0.30-api-config": {
+        "title": "renative.json API Reference",
+        "sidebar_label": "renative.json"
+      },
+      "version-0.30/version-0.30-changelog": {
+        "title": "Changelog",
+        "sidebar_label": "Changelog"
+      },
+      "version-0.30/version-0.30-config-app": {
+        "title": "App Configs",
+        "sidebar_label": "App Configs"
+      },
+      "version-0.30/version-0.30-config-build": {
+        "title": "Build Config",
+        "sidebar_label": "Build Config"
+      },
+      "version-0.30/version-0.30-config-global": {
+        "title": "Global Configs",
+        "sidebar_label": "Global Configs"
+      },
+      "version-0.30/version-0.30-config-local": {
+        "title": "Local Configs",
+        "sidebar_label": "Local Configs"
+      },
+      "version-0.30/version-0.30-config-overview": {
+        "title": "Config Overview",
+        "sidebar_label": "Overview"
+      },
+      "version-0.30/version-0.30-config-plugin": {
+        "title": "Plugin Configs",
+        "sidebar_label": "Plugin Configs"
+      },
+      "version-0.30/version-0.30-config-private": {
+        "title": "Private Configs",
+        "sidebar_label": "Private Configs"
+      },
+      "version-0.30/version-0.30-config-project": {
+        "title": "Project Configs",
+        "sidebar_label": "Project Configs"
+      },
+      "version-0.30/version-0.30-config-runtime": {
+        "title": "Runtime Config",
+        "sidebar_label": "Runtime Config"
+      },
+      "version-0.30/version-0.30-config-template": {
+        "title": "Template Configs",
+        "sidebar_label": "Template Configs"
+      },
+      "version-0.30/version-0.30-config-workspaces": {
+        "title": "Workspace Configs",
+        "sidebar_label": "Workspace Configs"
+      },
+      "version-0.30/version-0.30-engine-rn-electron": {
+        "title": "React Native Electron Engine",
+        "sidebar_label": "React Native Electron"
+      },
+      "version-0.30/version-0.30-engine-rn-next": {
+        "title": "React Native Next Engine",
+        "sidebar_label": "React Native Next"
+      },
+      "version-0.30/version-0.30-engine-rn-web": {
+        "title": "React Native Web Engine",
+        "sidebar_label": "React Native Web"
+      },
+      "version-0.30/version-0.30-engine-rn": {
+        "title": "React Native Engine",
+        "sidebar_label": "React Native"
+      },
+      "version-0.30/version-0.30-guide-config": {
+        "title": "Config Files",
+        "sidebar_label": "Config Files"
+      },
+      "version-0.30/version-0.30-guide-engines": {
+        "title": "Engines",
+        "sidebar_label": "Engines"
+      },
+      "version-0.30/version-0.30-integration_aws": {
+        "title": "AWS",
+        "sidebar_label": "AWS"
+      },
+      "version-0.30/version-0.30-integration_azure": {
+        "title": "Azure",
+        "sidebar_label": "Azure"
+      },
+      "version-0.30/version-0.30-integration_ftp": {
+        "title": "FTP",
+        "sidebar_label": "FTP"
+      },
+      "version-0.30/version-0.30-integration_testflight": {
+        "title": "TestFlight",
+        "sidebar_label": "TestFlight"
+      },
+      "version-0.30/version-0.30-platform-android": {
+        "title": "Android Platform",
+        "sidebar_label": "Android"
+      },
+      "version-0.30/version-0.30-platform-androidtv": {
+        "title": "Android TV Platform",
+        "sidebar_label": "Android TV"
+      },
+      "version-0.30/version-0.30-platform-androidwear": {
+        "title": "Android Wear Platform",
+        "sidebar_label": "Android Wear"
+      },
+      "version-0.30/version-0.30-platform-chromecast": {
+        "title": "Chromecast Platform",
+        "sidebar_label": "Chromecast"
+      },
+      "version-0.30/version-0.30-platform-firefoxos": {
+        "title": "Firefox OS Platform",
+        "sidebar_label": "Firefox OS"
+      },
+      "version-0.30/version-0.30-platform-firefoxtv": {
+        "title": "Firefox TV Platform",
+        "sidebar_label": "Firefox TV"
+      },
+      "version-0.30/version-0.30-platform-ios": {
+        "title": "iOS Platform",
+        "sidebar_label": "iOS"
+      },
+      "version-0.30/version-0.30-platform-kaios": {
+        "title": "KaiOS Platform",
+        "sidebar_label": "KaiOS"
+      },
+      "version-0.30/version-0.30-platform-macos": {
+        "title": "macOS Platform",
+        "sidebar_label": "macOS"
+      },
+      "version-0.30/version-0.30-platform-tizen": {
+        "title": "Tizen TV Platform",
+        "sidebar_label": "Tizen TV"
+      },
+      "version-0.30/version-0.30-platform-tizenmobile": {
+        "title": "Tizen Mobile Platform",
+        "sidebar_label": "Tizen Mobile"
+      },
+      "version-0.30/version-0.30-platform-tizenwatch": {
+        "title": "Tizen Watch Platform",
+        "sidebar_label": "Tizen Watch"
+      },
+      "version-0.30/version-0.30-platform-tvos": {
+        "title": "tvOS Platform",
+        "sidebar_label": "tvOS"
+      },
+      "version-0.30/version-0.30-platform-web": {
+        "title": "Web Platform",
+        "sidebar_label": "Web"
+      },
+      "version-0.30/version-0.30-platform-webos": {
+        "title": "LG WebOS Platform",
+        "sidebar_label": "LG WebOS"
+      },
+      "version-0.30/version-0.30-platform-windows": {
+        "title": "Windows Platform",
+        "sidebar_label": "Windows"
+      },
+      "version-0.30/version-0.30-plugins": {
+        "title": "Plugins Overview",
+        "sidebar_label": "Plugins Overview"
+      },
+      "version-0.30/version-0.30-release-0.27.x": {
+        "title": "0.27.x",
+        "sidebar_label": "0.27.x"
+      },
+      "version-0.30/version-0.30-release-0.28.x": {
+        "title": "0.28.x",
+        "sidebar_label": "0.28.x"
+      },
+      "version-0.30/version-0.30-release-0.29.x": {
+        "title": "0.29.x",
+        "sidebar_label": "0.29.x"
+      },
+      "version-0.30/version-0.30-release-0.30.x": {
+        "title": "0.30.x",
+        "sidebar_label": "0.30.x"
+      },
+      "version-0.30/version-0.30-template-blank": {
+        "title": "template-blank",
+        "sidebar_label": "template-blank"
+      },
+      "version-0.30/version-0.30-template-hello-world": {
+        "title": "template-hello-world",
+        "sidebar_label": "template-hello-world"
+      },
+      "version-0.30/version-0.30-template-kitchen-sink": {
+        "title": "template-kitchen-sink",
+        "sidebar_label": "template-kitchen-sink"
+      },
+      "version-0.30/version-0.30-upgrade-0.27": {
+        "title": "Upgrade to 0.27.x Guide",
+        "sidebar_label": "0.27.x"
+      },
+      "version-0.30/version-0.30-upgrade-0.28": {
+        "title": "Upgrade to 0.28.x Guide",
+        "sidebar_label": "0.28.x"
+      },
+      "version-0.30/version-0.30-upgrade-0.29": {
+        "title": "Upgrade to 0.29.x Guide",
+        "sidebar_label": "0.29.x"
+      },
+      "version-0.30/version-0.30-upgrade-0.30": {
+        "title": "Upgrade to 0.30.x Guide",
+        "sidebar_label": "0.30.x"
       }
     },
     "links": {
