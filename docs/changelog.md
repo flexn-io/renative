@@ -5,6 +5,27 @@ sidebar_label: Changelog
 ---
 
 
+## v0.30.0 (2020-6-23)
+
+### Fixed
+
+- 0.30 docs
+- added integrations docs
+- update logging
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- fix android WIN config path inject
+- config docs
+- config docs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.25 (2020-6-20)
 
 ### Fixed
@@ -64,15 +85,7 @@ sidebar_label: Changelog
 - engine base compatibility
 - Merge branch 'develop' into feat/e2e-ci
 - fix #522
-- ci chores 30
-- ci chores 29
 - jsx, tsx compiler support
-- ci chores 28
-- ci chores 27
-- ci chores 26
-- ci chores 25
-- ci chores 24
-- ci chores 23
 - E2E web automation with cypress
 - e2e android
 - rn engines abstraction layer
@@ -82,27 +95,6 @@ sidebar_label: Changelog
 - Merge branch 'develop' into feat/e2e-ci
 - ci chores 22
 - dynamic  injectors via json functions
-- ci chores 21
-- ci chores 20
-- ci chores 19
-- ci chores 18
-- ci chores 17
-- ci chores 16
-- ci chores 15
-- ci chores 14
-- ci chores 13
-- ci chores 12
-- ci chores 11
-- ci chores 10
-- ci chores 9
-- ci chores 8
-- ci chores 7
-- ci chores 6
-- ci chores 5
-- ci chores 4
-- ci chores 3
-- ci chores 2
-- ci chore 1
 - downgrade detox workaround for https://github.com/wix/detox/issues/152
 - init detox
 
@@ -113,7 +105,6 @@ sidebar_label: Changelog
 ### Breaking Changes
 
 - none
-
 
 ## v0.29.1-alpha.21 (2020-6-17)
 

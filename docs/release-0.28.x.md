@@ -1,7 +1,7 @@
 ---
 id: release-0.28.x
 title: 0.28.x
-sidebar_label: 0.28.x
+sidebar_label: 0.28.x (Nutmeg)
 ---
 
 <img src="https://renative.org/img/ic_notes.png" width=50 height=50 />

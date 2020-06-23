@@ -457,19 +457,19 @@
       },
       "release-0.27.x": {
         "title": "0.27.x",
-        "sidebar_label": "0.27.x"
+        "sidebar_label": "0.27.x (Space Inverter)"
       },
       "release-0.28.x": {
         "title": "0.28.x",
-        "sidebar_label": "0.28.x"
+        "sidebar_label": "0.28.x (Nutmeg)"
       },
       "release-0.29.x": {
         "title": "0.29.x",
-        "sidebar_label": "0.29.x"
+        "sidebar_label": "0.29.x (Iron Ladybird)"
       },
       "release-0.30.x": {
         "title": "0.30.x",
-        "sidebar_label": "0.30.x"
+        "sidebar_label": "0.30.x (Mandalorian)"
       },
       "template-blank": {
         "title": "template-blank",
@@ -1009,19 +1009,19 @@
       },
       "version-0.30/version-0.30-release-0.27.x": {
         "title": "0.27.x",
-        "sidebar_label": "0.27.x"
+        "sidebar_label": "0.27.x (Space Inverter)"
       },
       "version-0.30/version-0.30-release-0.28.x": {
         "title": "0.28.x",
-        "sidebar_label": "0.28.x"
+        "sidebar_label": "0.28.x (Nutmeg)"
       },
       "version-0.30/version-0.30-release-0.29.x": {
         "title": "0.29.x",
-        "sidebar_label": "0.29.x"
+        "sidebar_label": "0.29.x (Iron Ladybird)"
       },
       "version-0.30/version-0.30-release-0.30.x": {
         "title": "0.30.x",
-        "sidebar_label": "0.30.x"
+        "sidebar_label": "0.30.x (Mandalorian)"
       },
       "version-0.30/version-0.30-template-blank": {
         "title": "template-blank",

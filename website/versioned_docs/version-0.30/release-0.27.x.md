@@ -1,7 +1,7 @@
 ---
 id: version-0.30-release-0.27.x
 title: 0.27.x
-sidebar_label: 0.27.x
+sidebar_label: 0.27.x (Space Inverter)
 original_id: release-0.27.x
 ---
 

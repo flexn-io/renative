@@ -1,7 +1,7 @@
 ---
 id: release-0.29.x
 title: 0.29.x
-sidebar_label: 0.29.x
+sidebar_label: 0.29.x (Iron Ladybird)
 ---
 
 <img src="https://renative.org/img/ic_notes.png" width=50 height=50 />

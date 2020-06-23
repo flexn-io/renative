@@ -2600,7 +2600,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.30.0-rc2`
+Version: `0.30.0`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 

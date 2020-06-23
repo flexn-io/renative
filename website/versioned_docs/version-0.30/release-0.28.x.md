@@ -1,7 +1,7 @@
 ---
 id: version-0.30-release-0.28.x
 title: 0.28.x
-sidebar_label: 0.28.x
+sidebar_label: 0.28.x (Nutmeg)
 original_id: release-0.28.x
 ---
 

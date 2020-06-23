@@ -1,7 +1,7 @@
 ---
 id: release-0.27.x
 title: 0.27.x
-sidebar_label: 0.27.x
+sidebar_label: 0.27.x (Space Inverter)
 ---
 
 <img src="https://renative.org/img/ic_notes.png" width=50 height=50 />

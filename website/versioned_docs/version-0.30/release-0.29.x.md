@@ -1,7 +1,7 @@
 ---
 id: version-0.30-release-0.29.x
 title: 0.29.x
-sidebar_label: 0.29.x
+sidebar_label: 0.29.x (Iron Ladybird)
 original_id: release-0.29.x
 ---
 

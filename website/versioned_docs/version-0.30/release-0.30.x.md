@@ -1,7 +1,7 @@
 ---
 id: version-0.30-release-0.30.x
 title: 0.30.x
-sidebar_label: 0.30.x
+sidebar_label: 0.30.x (Mandalorian)
 original_id: release-0.30.x
 ---
 
