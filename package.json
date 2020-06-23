@@ -132,7 +132,7 @@
     "codename": "Mandalorian",
     "husky": {
         "hooks": {
-            "pre-commit": "yarn test:rnv:unit"
+            "pre-commit": "yarn lint && yarn test:rnv:unit"
         }
     },
     "lint-staged": {

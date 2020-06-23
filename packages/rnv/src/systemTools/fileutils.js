@@ -589,9 +589,9 @@ const fixResolve = (text) => {
     if (matches?.length) {
         matches.forEach((match) => {
             const val = match.replace('{{resolvePackage(', '').replace(')}}', '');
-            //TODO: Figure out WIN vs LINUX treatment here
+            // TODO: Figure out WIN vs LINUX treatment here
             // forceForwardPaths is required for WIN Android to work correctly
-            newText = newText.replace(match, doResolve(val, false, { forceForwardPaths: true}));
+            newText = newText.replace(match, doResolve(val, false, { forceForwardPaths: true }));
         });
     }
     return newText;
