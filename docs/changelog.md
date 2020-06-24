@@ -5,6 +5,22 @@ sidebar_label: Changelog
 ---
 
 
+## v0.30.2-alpha.2 (2020-6-24)
+
+### Fixed
+
+- further SDK merge fixes
+- fix: #524 add default workspace to merge flow
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.30.2-alpha.1 (2020-6-24)
 
 ### Fixed
