@@ -583,7 +583,7 @@
             "version": "2.3.0"
         },
         "react-native-animatable": {
-            "version": "1.2.4"
+            "version": "1.3.3"
         },
         "react-native-autocomplete-input": {
             "version": "4.1.0"
@@ -613,7 +613,7 @@
             "version": "3.5.0"
         },
         "react-native-root-toast": {
-            "version": "2.2.1"
+            "version": "3.2.0"
         },
         "react-native-viewpager": {
             "version": "0.2.13"
@@ -1500,7 +1500,7 @@
             }
         },
         "react-native-prompt-android": {
-            "version": "0.3.5",
+            "version": "1.0.0",
             "android": {
                 "package": "im.shimo.react.prompt.RNPromptPackage"
             },
@@ -2343,7 +2343,7 @@
             }
         },
         "react-native-webview": {
-            "version": "7.4.1",
+            "version": "10.2.3",
             "ios": {
                 "podName": "react-native-webview"
             },
@@ -2513,8 +2513,76 @@
                 }
             }
         },
+        "react-native-sqlite-2": {
+            "version": "3.0.1",
+            "ios": {
+                "path": "node_modules/react-native-sqlite-2",
+                "podName": "RNSqlite2"
+            }
+        },
+        "react-native-activity-view": {
+            "version": "0.2.11",
+            "ios": {
+                "podName": "react-native-activity-view"
+            },
+            "webpack": {
+                "modulePaths": true,
+                "moduleAliases": true
+            }
+        },
         "@noriginmedia/react-spatial-navigation": {
             "version": "2.12.1"
+        },
+        "react-native-view-shot": {
+            "version": "3.1.2",
+            "ios": {
+                "podName": "react-native-view-shot"
+            },
+            "android": {
+                "package": "fr.greweb.reactnativeviewshot.RNViewShotPackage"
+            }
+        },
+        "react-native-splash-screen": {
+            "version": "3.2.0",
+            "ios": {
+                "podName": "react-native-splash-screen",
+                "appDelegateImports": [
+                    "react_native_splash_screen"
+                ],
+                "appDelegateMethods": {
+                    "application": {
+                        "didFinishLaunchingWithOptions": [
+                            "RNSplashScreen.show()"
+                        ]
+                    }
+                }
+            },
+            "android": {
+                "package": "org.devio.rn.splashscreen.SplashScreenReactPackage",
+                "mainActivity": {
+                    "imports": [
+                        "org.devio.rn.splashscreen.SplashScreen"
+                    ],
+                    "createMethods": [
+                        "SplashScreen.show(this)"
+                    ]
+                }
+            }
+        },
+        "tipsi-stripe": {
+            "version": "github:tipsi/tipsi-stripe#experimental",
+            "ios": {
+                "podName": "tipsi-stripe"
+            },
+            "android": {
+                "package": "com.gettipsi.stripe.StripeReactPackage",
+                "implementations": [
+                    "'com.google.android.gms:play-services-wallet:16.0.0'"
+                ],
+                "afterEvaluate": [
+                    "com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true"
+                ]
+            }
         },
         "next": {
             "version": "9.3.1"
