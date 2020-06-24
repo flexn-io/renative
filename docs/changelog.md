@@ -5,12 +5,26 @@ sidebar_label: Changelog
 ---
 
 
+## v0.30.2-alpha.1 (2020-6-24)
+
+### Fixed
+
+- update loggigng
+- fix: correct sdk field merges
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.30.1 (2020-6-24)
 
 ### Fixed
 
-- feat: better logging + suggestions for crypto issues
-- feat: confirm folder replace during rnv new
 - update rnv plugins
 - fix: handle pugin add error in wrapper project
 - Merge pull request #526 from pavjacko/feature/react-native-localize-plugin-update
@@ -28,12 +42,19 @@ sidebar_label: Changelog
 
 ### Added Features
 
-- none
+- feat: better logging + suggestions for crypto issues
+- feat: confirm folder replace during rnv new
 
 ### Breaking Changes
 
 - none
 
+NOTE: Following plugins have been updated to newer versions:
+
+- `react-native-webview`
+- `react-native-prompt-android`
+- `react-native-root-toast`
+- `react-native-animatable`
 
 ## v0.30.0 (2020-6-23)
 
