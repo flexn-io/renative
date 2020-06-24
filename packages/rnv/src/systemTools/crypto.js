@@ -334,9 +334,61 @@ ${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
             );
         }
 
-        const data = await iocane.createSession()
-            .use('cbc')
-            .decrypt(fs.readFileSync(source), key);
+        let data;
+        try {
+            data = await iocane.createSession()
+                .use('cbc')
+                .decrypt(fs.readFileSync(source), key);
+        } catch (e) {
+            if (e?.message?.includes) {
+                if (e.message.includes('Signature mismatch')) {
+                    const err = `Looks like you're trying to decode crypto file encoded with previous version of crypto.
+this change was introduced in "rnv@0.29.0"
+
+${e}
+
+      ${chalk.green('SUGGESTION:')}
+
+      ${chalk.yellow('STEP 1:')}
+      run: ${chalk.white('rnv crypto encrypt')} locally at least once and commit the result back to your repository
+
+      ${chalk.yellow('STEP 2:')}
+      you should be able to use: ${chalk.white('rnv crypto decrypt')} properly now
+
+      ${chalk.yellow('IF ALL HOPE IS LOST:')}
+      Raise new issue and copy this SUMMARY box output at:
+      ${chalk.white('https://github.com/pavjacko/renative/issues')}
+      and we will try to help!
+
+      `;
+
+                    return Promise.reject(err);
+                } if (e.message.includes('Authentication failed')) {
+                    return Promise.reject(`It seems like you provided invalid decryption key.
+
+${e.stack}
+
+${chalk.green('SUGGESTION:')}
+
+${chalk.yellow('STEP 1:')}
+check if your ENV VAR is correct: ${_getEnvExportCmd(envVar, '***********')}
+or if someone did not encrypt ${chalk.white(source)} with a different key
+
+${chalk.yellow('STEP 2:')}
+run crypto decrypt again
+
+${chalk.yellow('IF ALL HOPE IS LOST:')}
+Raise new issue and copy this SUMMARY box output at:
+${chalk.white('https://github.com/pavjacko/renative/issues')}
+and we will try to help!
+
+`);
+                }
+            }
+
+            return Promise.reject(e);
+        }
+
 
         fsWriteFileSync(destTemp, data);
 

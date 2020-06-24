@@ -361,13 +361,13 @@ const _parseSupportedPlatforms = async (c, callback) => {
     for (let i = 0; i < pLen; i++) {
         const k = p[i];
 
-        if (
-            (supportedPlatforms && supportedPlatforms.includes(k))
-            || !supportedPlatforms
-        ) {
-            const plat = c.buildConfig.platforms[k];
+        const plat = c.buildConfig.platforms[k];
+        const platKeysNum = plat !== undefined ? Object.keys(plat).length : 0;
+
+        if ((supportedPlatforms && supportedPlatforms.includes(k)) || !supportedPlatforms) {
             callback(k, plat);
-        } else {
+        } else if (platKeysNum > 1) {
+            // Every platform comes always at least with engine prop so let's check for more
             logWarning(
                 `Extra platform ${chalk.white(
                     k
