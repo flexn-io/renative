@@ -120,6 +120,10 @@ const _getPluginList = (c, isUpdate = false) => {
 export const rnvPluginAdd = async (c) => {
     logTask('rnvPluginAdd');
 
+    if (c.runtime.isWrapper) {
+        return Promise.reject('Adding plugins in wrapper project is not supported.');
+    }
+
     const selPluginKey = c.program.rawArgs[4];
 
     const o = _getPluginList(c);
