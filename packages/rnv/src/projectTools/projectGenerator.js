@@ -8,7 +8,7 @@ import fs from 'fs';
 import { generateOptions } from '../systemTools/prompt';
 import { RENATIVE_CONFIG_NAME, SUPPORTED_PLATFORMS } from '../constants';
 import { getTemplateOptions } from '../templateTools';
-import { mkdirSync, writeFileSync } from '../systemTools/fileutils';
+import { mkdirSync, writeFileSync, cleanFolder } from '../systemTools/fileutils';
 import { executeAsync, commandExistsSync } from '../systemTools/exec';
 import {
     printIntoBox,
@@ -61,6 +61,19 @@ const _generateProject = async (c, data) => {
     );
 
     data.packageName = data.appTitle.replace(/\s+/g, '-').toLowerCase();
+
+    if (fs.existsSync(c.paths.project.dir)) {
+        const { confirm } = await inquirer.prompt({
+            type: 'confirm',
+            name: 'confirm',
+            message: `Folder ${c.paths.project.dir} already exists. RNV will override it. Continue?`
+        });
+
+        if (!confirm) {
+            return Promise.reject('Cancelled by user');
+        }
+        await cleanFolder(c.paths.project.dir);
+    }
 
     mkdirSync(c.paths.project.dir);
 
