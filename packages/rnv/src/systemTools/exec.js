@@ -184,8 +184,8 @@ const execCLI = (c, cli, command, opts = {}) => {
             `Location of your cli ${chalk.white(
                 p
             )} does not exists. check your ${chalk.white(
-                c.paths.globalConfigPath
-            )} file if your SDK path is correct`
+                c.paths.workspace.config
+            )} file if your ${chalk.white('sdks')} paths are correct`
         );
     }
 
