@@ -441,24 +441,6 @@ export const generateBuildConfig = (c) => {
         c.files.appConfig.configLocal
     ];
 
-    const mergeFolders = [
-        // platform templates
-        c.paths.rnv.platformTemplate.dir,
-        c.paths.project.projectConfig.buildsDir,
-        c.paths.workspace.project.projectConfig.buildsDir,
-        // ...c.paths.project.appConfigs.dirs,
-        c.paths.appConfig.buildsDir,
-        c.paths.workspace.appConfig.buildsDir
-        // PROJECT PLUGINS?
-        // PROJECT ASSETS?
-        // PROJECT FONTS?
-        // APP CONFIG PLUGINS?
-        // APP CONFIG ASSETS?
-        // APP CONFIG FONTS?
-    ];
-
-    logDebug('mergeFolders:', mergeFolders);
-
     const meta = [
         {
             _meta: {

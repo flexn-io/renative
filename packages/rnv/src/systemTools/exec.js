@@ -179,7 +179,7 @@ const execCLI = (c, cli, command, opts = {}) => {
     const p = c.cli[cli];
 
     if (!fs.existsSync(p)) {
-        logDebug('execCLI error', cli, command);
+        logDebug('execCLI error', cli, command, '\nCLI Config:\n', c.cli, '\nSDK Config:\n', c.buildConfig?.sdks);
         return Promise.reject(
             `Location of your cli ${chalk.white(
                 p
