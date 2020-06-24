@@ -14,3 +14,5 @@ sidebar_label: 0.30.x (Mandalorian)
 - Asset timestamps
 - Removed dependency on xml2json and heavy node-expat
 - Improved logging
+- Better crypto messages and suggestions
+- Confirm folder override with `rnv new`

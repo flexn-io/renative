@@ -222,6 +222,9 @@
       "changelog/0.30.0": {
         "title": "changelog/0.30.0"
       },
+      "changelog/0.30.1": {
+        "title": "changelog/0.30.1"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"

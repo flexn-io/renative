@@ -779,6 +779,24 @@ rnv plugin add react-native-actionsheet
 ```
 
 
+## react-native-activity-view
+
+
+Version: `0.2.11`
+
+Platforms: `ios`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-activity-view
+
+Installation:
+
+```
+rnv plugin add react-native-activity-view
+```
+
+
 ## react-native-airplay-ios
 
 
@@ -818,7 +836,7 @@ rnv plugin add react-native-android-open-settings
 ## react-native-animatable
 
 
-Version: `1.2.4`
+Version: `1.3.3`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -1592,9 +1610,9 @@ rnv plugin add react-native-local-mongodb
 ## react-native-localize
 
 
-Version: `1.3.0`
+Version: `1.4.0`
 
-Platforms: `ios`,`android`,`androidtv`
+Platforms: `ios`,`tvos`,`android`,`androidtv`
 
 
 
@@ -1916,7 +1934,7 @@ rnv plugin add react-native-progress
 ## react-native-prompt-android
 
 
-Version: `0.3.5`
+Version: `1.0.0`
 
 Platforms: `android`,`androidtv`
 
@@ -1970,7 +1988,7 @@ rnv plugin add react-native-render-html
 ## react-native-root-toast
 
 
-Version: `2.2.1`
+Version: `3.2.0`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2183,6 +2201,42 @@ rnv plugin add react-native-sound
 ```
 
 
+## react-native-splash-screen
+
+
+Version: `3.2.0`
+
+Platforms: `ios`,`android`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-splash-screen
+
+Installation:
+
+```
+rnv plugin add react-native-splash-screen
+```
+
+
+## react-native-sqlite-2
+
+
+Version: `3.0.1`
+
+Platforms: `ios`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-sqlite-2
+
+Installation:
+
+```
+rnv plugin add react-native-sqlite-2
+```
+
+
 ## react-native-sqlite-storage
 
 
@@ -2363,6 +2417,24 @@ rnv plugin add react-native-view-overflow
 ```
 
 
+## react-native-view-shot
+
+
+Version: `3.1.2`
+
+Platforms: `ios`,`android`
+
+
+
+Npm: https://www.npmjs.com/package/react-native-view-shot
+
+Installation:
+
+```
+rnv plugin add react-native-view-shot
+```
+
+
 ## react-native-viewpager
 
 
@@ -2438,7 +2510,7 @@ rnv plugin add react-native-webrtc
 ## react-native-webview
 
 
-Version: `7.4.1`
+Version: `10.2.3`
 
 Platforms: `ios`,`android`,`androidtv`
 
@@ -2600,7 +2672,7 @@ rnv plugin add react-web-vector-icons
 ## renative
 
 
-Version: `0.30.0`
+Version: `0.30.1`
 
 Platforms: `ios`,`android`,`androidtv`,`androidwear`,`web`,`web-next`,`tizen`,`tizenmobile`,`tvos`,`webos`,`macos`,`windows`,`tizenwatch`,`kaios`,`firefoxos`,`firefoxtv`,`chromecast`
 
@@ -2666,4 +2738,22 @@ Installation:
 
 ```
 rnv plugin add svgs
+```
+
+
+## tipsi-stripe
+
+
+Version: `github:tipsi/tipsi-stripe#experimental`
+
+Platforms: `ios`,`android`
+
+
+
+Npm: https://www.npmjs.com/package/tipsi-stripe
+
+Installation:
+
+```
+rnv plugin add tipsi-stripe
 ```

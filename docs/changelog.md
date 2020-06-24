@@ -5,6 +5,36 @@ sidebar_label: Changelog
 ---
 
 
+## v0.30.1 (2020-6-24)
+
+### Fixed
+
+- feat: better logging + suggestions for crypto issues
+- feat: confirm folder replace during rnv new
+- update rnv plugins
+- fix: handle pugin add error in wrapper project
+- Merge pull request #526 from pavjacko/feature/react-native-localize-plugin-update
+- move podspec to correct override folder
+- upgraded version + tvos support
+- husky lint, update docs
+- 0.30.0
+- 0.30 docs
+- added integrations docs
+- update logging
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- fix android WIN config path inject
+- config docs
+- config docs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.30.0 (2020-6-23)
 
 ### Fixed
