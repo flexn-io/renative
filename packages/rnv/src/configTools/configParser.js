@@ -375,6 +375,7 @@ export const generateBuildConfig = (c) => {
     logDebug('generateBuildConfig');
 
     const mergeOrder = [
+        c.paths.defaultWorkspace.config,
         c.paths.rnv.projectTemplates.config,
         c.paths.rnv.pluginTemplates.config,
         // c.paths.rnv.platformTemplates.config,
@@ -418,6 +419,7 @@ export const generateBuildConfig = (c) => {
     const extraPlugins = getEnginesPluginDelta(c);
 
     const mergeFiles = [
+        c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,
         { plugins: extraPlugins },
         ...pluginTemplates,
