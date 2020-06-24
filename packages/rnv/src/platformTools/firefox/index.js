@@ -25,7 +25,7 @@ const childProcess = require('child_process');
 const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
     logTask('launchKaiOSSimulator');
 
-    if (!c.files.workspace.config.sdks.KAIOS_SDK) {
+    if (!c.buildConfig?.sdks?.KAIOS_SDK) {
         reject(
             `${KAIOS_SDK} is not configured in your ${
                 c.paths.workspace.config
@@ -37,7 +37,7 @@ const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
     }
 
     const ePath = getRealPath(
-        path.join(c.files.workspace.config.sdks.KAIOS_SDK)
+        path.join(c.buildConfig?.sdks?.KAIOS_SDK)
     );
 
     if (!fs.existsSync(ePath)) {
