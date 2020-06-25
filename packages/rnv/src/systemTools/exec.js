@@ -176,10 +176,10 @@ const execCLI = (c, cli, command, opts = {}) => {
             'You need to pass c object as first parameter to execCLI()'
         );
     }
-    const p = c.cli[cli];
+    const p = c.cli[cli].x;
 
     if (!fs.existsSync(p)) {
-        logDebug('execCLI error', cli, command, '\nCLI Config:\n', c.cli, '\nSDK Config:\n', c.buildConfig?.sdks);
+        logDebug(`execCLI error: ${cli} | ${command}`, '\nCLI Config:\n', c.cli, '\nSDK Config:\n', c.buildConfig?.sdks);
         return Promise.reject(
             `Location of your cli ${chalk.white(
                 p
