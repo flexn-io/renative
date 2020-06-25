@@ -4,8 +4,13 @@ describe('It deals with Android emulators correctly', () => {
     const { DOCKER } = process.env;
     // for some reason, adding an avd here does not work for docker
     if (DOCKER !== 'true') {
+        console.log('NOT DOCKER ENV. will create avd ');
+
         beforeAll(async (done) => {
+            //RUN rnv command to trigget SDK installations
+            const output = await shell.exec('rnv target list -p android --ci --mono');
             try {
+              console.log('TRY: avdmanager create');
               await shell.exec(
                   'echo no | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"'
               );
@@ -20,7 +25,7 @@ describe('It deals with Android emulators correctly', () => {
             done();
         });
     } else {
-      console.log('NOT A DOCKER ENV. skipping create avd ');
+      console.log('DOCKER ENV. skipping create avd ');
     }
 
     it('Should return one phone emulator', async () => {
