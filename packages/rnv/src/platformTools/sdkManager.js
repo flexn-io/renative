@@ -42,7 +42,7 @@ const homedir = require('os').homedir();
 
 const SDK_LOACTIONS = {
     android: [
-        path.join('usr/local/android-sdk'),
+        path.join('/usr/local/android-sdk'),
         path.join(homedir, 'Library/Android/sdk'),
         path.join(homedir, 'AppData/Local/Android/android-sdk'),
         path.join(homedir, 'AppData/Local/Android/sdk'),
@@ -225,8 +225,12 @@ const _attemptAutoFix = async (c, sdkPlatform) => {
         }
     }
 
+    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOACTIONS[sdkPlatform].join(', ')}`);
+
     const setupInstance = PlatformSetup(c);
-    return setupInstance.askToInstallSDK(sdkPlatform);
+    await setupInstance.askToInstallSDK(sdkPlatform);
+    generateBuildConfig(c);
+    return true;
 };
 
 export const checkSdk = async (c) => {
