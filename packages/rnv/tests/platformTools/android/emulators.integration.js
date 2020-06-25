@@ -5,14 +5,22 @@ describe('It deals with Android emulators correctly', () => {
     // for some reason, adding an avd here does not work for docker
     if (DOCKER !== 'true') {
         beforeAll(async (done) => {
-            // await shell.exec(
-            //     'echo no | android create avd -n android_test -k "system-images;android-28;default;x86"'
-            // );
-            await shell.exec(
-                'echo no | android create avd -n android_test -t android-28 --abi x86'
-            );
+            try {
+              await shell.exec(
+                  'echo no | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"'
+              );
+            } catch (e) {
+              console.log('ERROR: avdmanager not supported. trying legacy android');
+              await shell.exec(
+                  'echo no | android create avd -n android_test -t android-28 --abi x86'
+              );
+            }
+
+
             done();
         });
+    } else {
+      console.log('NOT A DOCKER ENV. skipping create avd ');
     }
 
     it('Should return one phone emulator', async () => {
