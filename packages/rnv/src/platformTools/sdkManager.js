@@ -36,6 +36,7 @@ import {
     logError
 } from '../systemTools/logger';
 import PlatformSetup from '../setupTools';
+import { generateBuildConfig } from '../configTools/configParser';
 
 const homedir = require('os').homedir();
 
@@ -176,7 +177,7 @@ const _getCurrentSdkPath = c => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]]
 const _isSdkInstalled = (c) => {
     logTask(`_isSdkInstalled: ${c.platform}`);
 
-    if (!SDK_PLATFORMS[c.platform]) return false;
+    if (!SDK_PLATFORMS[c.platform]) return true;
 
     const sdkPath = _getCurrentSdkPath(c, c.platform);
 
@@ -184,6 +185,7 @@ const _isSdkInstalled = (c) => {
 };
 
 const _attemptAutoFix = async (c, sdkPlatform) => {
+    logTask('_attemptAutoFix');
     const result = SDK_LOACTIONS[sdkPlatform].find(v => fs.existsSync(v));
     if (result) {
         logSuccess(
@@ -213,6 +215,7 @@ const _attemptAutoFix = async (c, sdkPlatform) => {
                     c.paths.workspace.config,
                     c.files.workspace.config
                 );
+                generateBuildConfig(c);
                 await checkAndConfigureSdks(c);
             } catch (e) {
                 logError(e);
