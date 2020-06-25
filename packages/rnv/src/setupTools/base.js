@@ -7,7 +7,7 @@ import { configureRnvGlobal } from '../configTools/configParser';
 import { replaceHomeFolder, updateConfigFile } from '../systemTools/fileutils';
 import setupConfig from './config';
 import Config from '../config';
-import { logTask, logError, logInfo, logDebug } from '../systemTools/logger';
+import { logTask, logError, logInfo, logDebug, logSuccess } from '../systemTools/logger';
 
 class BasePlatformSetup {
     constructor(os, c) {
@@ -102,6 +102,7 @@ class BasePlatformSetup {
     }
 
     async installSdksAndEmulator() {
+        logTask('installSdksAndEmulator');
         logDebug('Accepting licenses');
         await shell.exec(
             `yes | ${setupConfig.android.location}/tools/bin/sdkmanager --licenses > /dev/null`
@@ -110,6 +111,7 @@ class BasePlatformSetup {
         await shell.exec(
             `${setupConfig.android.location}/tools/bin/sdkmanager ${this.sdksToInstall} > /dev/null`
         );
+        logSuccess(`SDK succefully installed at: ${setupConfig.android.location}`);
     }
 
     async installSdk(sdk, skipPrereq) {

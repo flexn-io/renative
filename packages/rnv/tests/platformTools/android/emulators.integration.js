@@ -12,12 +12,13 @@ describe('It deals with Android emulators correctly', () => {
             try {
               console.log('TRY: avdmanager create');
               await shell.exec(
-                  'echo no | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"'
-              );
-            } catch (e) {
-              console.log('ERROR: avdmanager not supported. trying legacy android');
-              await shell.exec(
                   'echo no | android create avd -n android_test -t android-28 --abi x86'
+              );
+
+            } catch (e) {
+              console.log('ERROR: android not supported. trying avdmanager');
+              await shell.exec(
+                  'echo no | avdmanager create avd -n android_test -k "system-images;android-28;default;x86"'
               );
             }
 
