@@ -12,7 +12,7 @@ describe('It deals with Android emulators correctly', () => {
             try {
               console.log('TRY: avdmanager create');
               await shell.exec(
-                  'echo no | /home/travis/Android/tools/bin/avdmanager create avd -n android_test -k "system-images;android-28;default;x86"'
+                  'echo no | /home/travis/Android/tools/bin/avdmanager create avd -n android_test -k "system-images;android-28;google_apis_playstore;x86"'
               );
 
             } catch (e) {
