@@ -6,6 +6,16 @@ env:
     - PROJECT_NAME=renative
 jobs:
   include:
+    - name: "HelloWorld iOS: E2E"
+      language: node_js
+      cache:
+        directories:
+          - node_modules
+      node_js: 13.13.0
+      os: osx
+      osx_image: xcode11.3
+      install: skip
+      script: ci/run_osx_ios.sh
     - name: "RNV Android: Integration"
       dist: trusty
       language: node_js
@@ -86,13 +96,3 @@ jobs:
         - rm -rf ~/.yarn/bin/yarn || true && npm uninstall --global yarn; npm install --global yarn; yarn --version
         - yarn bootstrap
       script: yarn lint
-    - name: "HelloWorld iOS: E2E"
-      language: node_js
-      cache:
-        directories:
-          - node_modules
-      node_js: 13.13.0
-      os: osx
-      osx_image: xcode11.3
-      install: skip
-      script: ci/run_osx_ios.sh

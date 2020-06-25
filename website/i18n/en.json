@@ -225,6 +225,15 @@
       "changelog/0.30.1": {
         "title": "changelog/0.30.1"
       },
+      "changelog/0.30.2-alpha.1": {
+        "title": "changelog/0.30.2-alpha.1"
+      },
+      "changelog/0.30.2-alpha.2": {
+        "title": "changelog/0.30.2-alpha.2"
+      },
+      "changelog/0.30.2": {
+        "title": "changelog/0.30.2"
+      },
       "config-app": {
         "title": "App Configs",
         "sidebar_label": "App Configs"

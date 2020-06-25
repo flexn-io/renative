@@ -37,6 +37,31 @@ sidebar_label: Changelog
 - none
 
 
+## v0.30.2 (2020-6-25)
+
+### Fixed
+
+- Merge pull request #529 from pavjacko/fix/#528-sdk-filed-merges
+- ci chores
+- ci chores
+- ci chores
+- ci chores
+- ci chores
+- revert typo
+- ci chores
+- fix: improved handling of autofixes
+- fix: prevent crash if provisioning folder does not exist
+- fix: regenerate buildConfig after sdk update fix: change default tvos config from manual to auto signing
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.30.1 (2020-6-24)
 
 ### Fixed
