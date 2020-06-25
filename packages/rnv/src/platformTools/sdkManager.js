@@ -36,12 +36,13 @@ import {
     logError
 } from '../systemTools/logger';
 import PlatformSetup from '../setupTools';
+import { generateBuildConfig } from '../configTools/configParser';
 
 const homedir = require('os').homedir();
 
 const SDK_LOACTIONS = {
     android: [
-        path.join('usr/local/android-sdk'),
+        path.join('/usr/local/android-sdk'),
         path.join(homedir, 'Library/Android/sdk'),
         path.join(homedir, 'AppData/Local/Android/android-sdk'),
         path.join(homedir, 'AppData/Local/Android/sdk'),
@@ -62,7 +63,7 @@ const _logSdkWarning = (c) => {
 
 export const checkAndConfigureAndroidSdks = async (c) => {
     logTask(`checkAndConfigureAndroidSdks:${c.platform}`);
-    const sdk = c.files.workspace.config?.sdks?.ANDROID_SDK;
+    const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
     if (sdk) {
         c.cli[CLI_ANDROID_EMULATOR] = getRealPath(
             c,
@@ -87,7 +88,7 @@ export const checkAndConfigureAndroidSdks = async (c) => {
 
 export const checkAndConfigureTizenSdks = async (c) => {
     logTask(`checkAndConfigureTizenSdks:${c.platform}`);
-    const sdk = c.files.workspace.config?.sdks?.TIZEN_SDK;
+    const sdk = c.buildConfig?.sdks?.TIZEN_SDK;
     if (sdk) {
         c.cli[CLI_TIZEN_EMULATOR] = getRealPath(
             c,
@@ -111,7 +112,7 @@ export const checkAndConfigureTizenSdks = async (c) => {
 
 export const checkAndConfigureWebosSdks = async (c) => {
     logTask(`checkAndConfigureWebosSdks:${c.platform}`);
-    const sdk = c.files.workspace.config?.sdks?.WEBOS_SDK;
+    const sdk = c.buildConfig?.sdks?.WEBOS_SDK;
     if (sdk) {
         c.cli[CLI_WEBOS_ARES] = getRealPath(
             c,
@@ -171,7 +172,7 @@ export const checkAndConfigureSdks = async (c) => {
     }
 };
 
-const _getCurrentSdkPath = c => c.files.workspace?.config?.sdks?.[SDK_PLATFORMS[c.platform]];
+const _getCurrentSdkPath = c => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
 
 const _isSdkInstalled = (c) => {
     logTask(`_isSdkInstalled: ${c.platform}`);
@@ -184,6 +185,7 @@ const _isSdkInstalled = (c) => {
 };
 
 const _attemptAutoFix = async (c, sdkPlatform) => {
+    logTask('_attemptAutoFix');
     const result = SDK_LOACTIONS[sdkPlatform].find(v => fs.existsSync(v));
     if (result) {
         logSuccess(
@@ -213,6 +215,7 @@ const _attemptAutoFix = async (c, sdkPlatform) => {
                     c.paths.workspace.config,
                     c.files.workspace.config
                 );
+                generateBuildConfig(c);
                 await checkAndConfigureSdks(c);
             } catch (e) {
                 logError(e);
@@ -222,8 +225,12 @@ const _attemptAutoFix = async (c, sdkPlatform) => {
         }
     }
 
+    logTask(`_attemptAutoFix: no sdks found. searched at: ${SDK_LOACTIONS[sdkPlatform].join(', ')}`);
+
     const setupInstance = PlatformSetup(c);
-    return setupInstance.askToInstallSDK(sdkPlatform);
+    await setupInstance.askToInstallSDK(sdkPlatform);
+    generateBuildConfig(c);
+    return true;
 };
 
 export const checkSdk = async (c) => {

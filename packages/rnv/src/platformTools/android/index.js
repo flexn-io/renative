@@ -514,13 +514,13 @@ export const configureAndroidProperties = (c, platform) => new Promise((resolve)
 
     const appFolder = getAppFolder(c, platform);
 
-    const addNDK = c.files.workspace.config.sdks.ANDROID_NDK
-            && !c.files.workspace.config.sdks.ANDROID_NDK.includes('<USER>');
+    const addNDK = c.buildConfig?.sdks?.ANDROID_NDK
+            && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
     const ndkString = `ndk.dir=${getRealPath(
         c,
-        c.files.workspace.config.sdks.ANDROID_NDK
+        c.buildConfig?.sdks?.ANDROID_NDK
     )}`;
-    let sdkDir = getRealPath(c, c.files.workspace.config.sdks.ANDROID_SDK);
+    let sdkDir = getRealPath(c, c.buildConfig?.sdks?.ANDROID_SDK);
 
     if (isSystemWin) {
         sdkDir = sdkDir.replace(/\\/g, '/');

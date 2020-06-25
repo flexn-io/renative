@@ -46,7 +46,7 @@ const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
 
     const ePath = path.join(
-        getRealPath(c, c.files.workspace.config.sdks.WEBOS_SDK),
+        getRealPath(c, c.buildConfig?.sdks?.WEBOS_SDK),
         `Emulator/v4.0.0/LG_webOS_TV_Emulator${
             isSystemWin ? '.exe' : '_RCU.app'
         }`

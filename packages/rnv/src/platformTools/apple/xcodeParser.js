@@ -62,16 +62,19 @@ export const parseXcodeProject = async (c, platform) => {
 
         let eligibleProfile;
 
-        result.eligable.forEach((v) => {
-            const bundleId = v.Entitlements['application-identifier'];
+        if (result?.eligable) {
+            result.eligable.forEach((v) => {
+                const bundleId = v.Entitlements['application-identifier'];
 
-            if (
-                bundleId
-                === `${c.runtime.xcodeProj.teamID}.${c.runtime.xcodeProj.id}`
-            ) {
-                eligibleProfile = v;
-            }
-        });
+                if (
+                    bundleId
+                  === `${c.runtime.xcodeProj.teamID}.${c.runtime.xcodeProj.id}`
+                ) {
+                    eligibleProfile = v;
+                }
+            });
+        }
+
 
         if (eligibleProfile) {
             const { autoFix } = await inquirerPrompt({

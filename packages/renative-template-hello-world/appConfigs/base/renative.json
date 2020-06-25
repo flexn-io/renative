@@ -58,8 +58,7 @@
             "buildSchemes": {
                 "debug": {
                     "runScheme": "Debug",
-                    "bundleAssets": false,
-                    "sdk": "iphonesimulator"
+                    "bundleAssets": false
                 },
                 "test": {
                     "runScheme": "Debug",
@@ -76,7 +75,7 @@
         "tvos": {
             "entryFile": "index.tvos",
             "teamID": "",
-            "provisioningStyle": "Manual",
+            "provisioningStyle": "Automatic",
             "entitlements": {},
             "permissions": ["*"],
             "scheme": "RNVAppTVOS",
@@ -84,6 +83,11 @@
                 "debug": {
                     "runScheme": "Debug",
                     "bundleAssets": false
+                },
+                "test": {
+                    "runScheme": "Debug",
+                    "bundleAssets": true,
+                    "sdk": "appletvsimulator"
                 },
                 "release": {
                     "scheme": "RNVAppTVOSRelease",

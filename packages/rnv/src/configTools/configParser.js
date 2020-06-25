@@ -375,6 +375,7 @@ export const generateBuildConfig = (c) => {
     logDebug('generateBuildConfig');
 
     const mergeOrder = [
+        c.paths.defaultWorkspace.config,
         c.paths.rnv.projectTemplates.config,
         c.paths.rnv.pluginTemplates.config,
         // c.paths.rnv.platformTemplates.config,
@@ -418,6 +419,7 @@ export const generateBuildConfig = (c) => {
     const extraPlugins = getEnginesPluginDelta(c);
 
     const mergeFiles = [
+        c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,
         { plugins: extraPlugins },
         ...pluginTemplates,
@@ -440,24 +442,6 @@ export const generateBuildConfig = (c) => {
         c.files.appConfig.configPrivate,
         c.files.appConfig.configLocal
     ];
-
-    const mergeFolders = [
-        // platform templates
-        c.paths.rnv.platformTemplate.dir,
-        c.paths.project.projectConfig.buildsDir,
-        c.paths.workspace.project.projectConfig.buildsDir,
-        // ...c.paths.project.appConfigs.dirs,
-        c.paths.appConfig.buildsDir,
-        c.paths.workspace.appConfig.buildsDir
-        // PROJECT PLUGINS?
-        // PROJECT ASSETS?
-        // PROJECT FONTS?
-        // APP CONFIG PLUGINS?
-        // APP CONFIG ASSETS?
-        // APP CONFIG FONTS?
-    ];
-
-    logDebug('mergeFolders:', mergeFolders);
 
     const meta = [
         {
