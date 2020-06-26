@@ -5,6 +5,33 @@ sidebar_label: Changelog
 ---
 
 
+## v0.30.3 (2020-6-26)
+
+### Fixed
+
+- hotfix: correct tizen extensions. thx @TheDuc
+- 0.30.2
+- Merge pull request #529 from pavjacko/fix/#528-sdk-filed-merges
+- ci chores
+- ci chores
+- ci chores
+- ci chores
+- ci chores
+- revert typo
+- ci chores
+- fix: improved handling of autofixes
+- fix: prevent crash if provisioning folder does not exist
+- fix: regenerate buildConfig after sdk update fix: change default tvos config from manual to auto signing
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.30.2-alpha.2 (2020-6-24)
 
 ### Fixed
@@ -42,13 +69,7 @@ sidebar_label: Changelog
 ### Fixed
 
 - Merge pull request #529 from pavjacko/fix/#528-sdk-filed-merges
-- ci chores
-- ci chores
-- ci chores
-- ci chores
-- ci chores
 - revert typo
-- ci chores
 - fix: improved handling of autofixes
 - fix: prevent crash if provisioning folder does not exist
 - fix: regenerate buildConfig after sdk update fix: change default tvos config from manual to auto signing
@@ -60,7 +81,6 @@ sidebar_label: Changelog
 ### Breaking Changes
 
 - none
-
 
 ## v0.30.1 (2020-6-24)
 

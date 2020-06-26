@@ -40,10 +40,10 @@ sidebar_label: Tizen TV
 | `tv.js` | `form factor` | 10 |
 | `tv.tsx` | `form factor` | 11 |
 | `tv.ts` | `form factor` | 12 |
-| `tizen.tv.jsx` | `platform` | 13 |
-| `tizen.tv.js` | `platform` | 14 |
-| `tizen.tv.tsx` | `platform` | 15 |
-| `tizen.tv.ts` | `platform` | 16 |
+| `tizen.jsx` | `platform` | 13 |
+| `tizen.js` | `platform` | 14 |
+| `tizen.tsx` | `platform` | 15 |
+| `tizen.ts` | `platform` | 16 |
 | `tv.web.jsx` | `fallback` | 17 |
 | `tv.web.js` | `fallback` | 18 |
 | `tv.web.tsx` | `fallback` | 19 |
