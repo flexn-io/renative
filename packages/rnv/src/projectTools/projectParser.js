@@ -350,12 +350,26 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     copyFolderContentsRecursiveSync(sourcePath1, destPath, true, false, false, configPropsInject, tsPathsConfig);
 
     // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
+    const sourcePath1secLegacy = getBuildsFolder(
+        c,
+        platform,
+        c.paths.workspace.project.projectConfig.dir_LEGACY
+    );
+    copyFolderContentsRecursiveSync(sourcePath1secLegacy, destPath, true,
+        false, false, configPropsInject, tsPathsConfig);
+
+    // FOLDER MERGERS PROJECT CONFIG (PRIVATE)
     const sourcePath1sec = getBuildsFolder(
         c,
         platform,
         c.paths.workspace.project.projectConfig.dir
     );
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
+
+    if (fs.existsSync(sourcePath1secLegacy)) {
+        logWarning(`Path: ${chalk.red(sourcePath1secLegacy)} is DEPRECATED.
+Move your files to: ${chalk.white(sourcePath1sec)} instead`);
+    }
 
     if (WEB_HOSTED_PLATFORMS.includes(platform)) {
         // FOLDER MERGERS _SHARED

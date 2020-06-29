@@ -899,6 +899,12 @@ export const parseRenativeConfigs = async (c) => {
 
     c.paths.workspace.project.projectConfig.dir = path.join(
         c.paths.workspace.project.dir,
+        'appConfigs',
+        'base'
+    );
+
+    c.paths.workspace.project.projectConfig.dir_LEGACY = path.join(
+        c.paths.workspace.project.dir,
         'projectConfig'
     );
 
