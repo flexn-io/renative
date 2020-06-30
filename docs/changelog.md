@@ -5,6 +5,23 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.1 (2020-6-30)
+
+### Fixed
+
+- add launch images and configs
+- feat: add ios launchscreen
+- fix: correct base folder for private configs + legacy support warning
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.30.3 (2020-6-26)
 
 ### Fixed

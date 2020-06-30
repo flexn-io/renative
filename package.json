@@ -1,6 +1,6 @@
 {
     "name": "renative-wrapper-app",
-    "version": "0.30.3",
+    "version": "0.31.0-alpha.1",
     "description": "🚀🚀🚀 Build universal cross-platform apps with React Native. Includes latest `iOS`, `tvOS`, `Android`, `Android TV`, `Android Wear`, `Web`, `Tizen TV`, `Tizen Watch`, `Tizen Mobile`, `LG webOS`, `macOS/OSX`, `Windows`, `KaiOS`, `FirefoxOS`, `Firefox TV` and `Chromecast` platforms",
     "keywords": [
         "android tv",
@@ -129,7 +129,7 @@
     },
     "private": true,
     "title": "ReNative",
-    "codename": "Mandalorian",
+    "codename": "Midnight Rambler",
     "husky": {
         "hooks": {
             "pre-commit": "yarn lint && yarn test:rnv:unit"
