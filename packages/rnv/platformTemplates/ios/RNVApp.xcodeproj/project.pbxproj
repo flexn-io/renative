@@ -11,6 +11,7 @@
 		200132F41F6BF9CF00450340 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 200132F31F6BF9CF00450340 /* AppDelegate.swift */; };
 		200132FC1F6BF9CF00450340 /* RNVApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 200132FA1F6BF9CF00450340 /* RNVApp.xcdatamodeld */; };
 		200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 200132FD1F6BF9CF00450340 /* Assets.xcassets */; };
+		207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 207BDA3F24AB543F00F32013 /* LaunchScreen.storyboard */; };
 		20A3B6EF2252512D0084A50B /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 207888241FCD3A000015651F /* assets */; };
 		20C4C37A1FE53E0A00D9721E /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C3791FE53E0A00D9721E /* GLKit.framework */; };
 		20C4C37C1FE53E1A00D9721E /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20C4C37B1FE53E1A00D9721E /* ImageIO.framework */; };
@@ -42,6 +43,7 @@
 		200133021F6BF9CF00450340 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2034B5411FB5CB98001A5872 /* RNVApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RNVApp.entitlements; sourceTree = "<group>"; };
 		207888241FCD3A000015651F /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		207BDA3F24AB543F00F32013 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		20C4C3791FE53E0A00D9721E /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
 		20C4C37B1FE53E1A00D9721E /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		20C4C37D1FE53E4A00D9721E /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -103,6 +105,7 @@
 				200133021F6BF9CF00450340 /* Info.plist */,
 				200132FA1F6BF9CF00450340 /* RNVApp.xcdatamodeld */,
 				20CEF6F71F9E47330094A59C /* Bridge-Header.h */,
+				207BDA3F24AB543F00F32013 /* LaunchScreen.storyboard */,
 			);
 			path = RNVApp;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				20A3B6EF2252512D0084A50B /* assets in Resources */,
 				200132FE1F6BF9CF00450340 /* Assets.xcassets in Resources */,
 				20DEE9D7225238DF00AA9637 /* main.jsbundle in Resources */,
+				207BDA4024AB543F00F32013 /* LaunchScreen.storyboard in Resources */,
 				20CB0E7D21C695460010854F /* images in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -401,9 +405,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RNVApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -437,9 +439,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = RNVApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
