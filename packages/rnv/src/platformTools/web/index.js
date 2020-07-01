@@ -26,7 +26,8 @@ import {
     logInfo,
     logDebug,
     logSuccess,
-    logWarning
+    logWarning,
+    logRaw
 } from '../../systemTools/logger';
 import { WEB } from '../../constants';
 import {
@@ -300,6 +301,15 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve) => {
         );
         debugVariables += `DEBUG=true DEBUG_IP=${debugIp || ip.address()}`;
     }
+
+    const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost, c.runtime.localhost);
+
+    const url = chalk.cyan(`http://${devServerHost}:${c.runtime.port}`);
+    logRaw(`
+
+Dev server running at: ${url}
+
+`);
 
     const command = `npx cross-env PLATFORM=${platform} ${
         debugVariables

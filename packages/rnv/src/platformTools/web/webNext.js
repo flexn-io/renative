@@ -10,10 +10,11 @@ import {
     waitForWebpack,
     confirmActiveBundler
 } from '../../common';
-import { logTask, logInfo, logWarning, logDebug } from '../../systemTools/logger';
+import { logTask, logInfo, logWarning, logDebug, logRaw } from '../../systemTools/logger';
 import { NEXT_CONFIG_NAME } from '../../constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
 import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
+import { getValidLocalhost } from '../../utils';
 
 const configureNextIfRequired = async (c) => {
     const { platformTemplatesDirs, dir } = c.paths.project;
@@ -78,7 +79,7 @@ export const runWebNext = async (c, platform, port) => {
     logTask(`runWebNext:${platform}:${port}`);
     await configureNextIfRequired(c);
 
-    const devServerHost = c.runtime.localhost;
+    const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
     const isPortActive = await checkPortInUse(c, platform, port);
 
@@ -136,6 +137,14 @@ export const runWebDevServer = (c, platform, port) => {
     const env = getConfigProp(c, platform, 'environment');
     const pagesDir = getConfigProp(c, platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${platform}.pagesDir config. Defaulting to 'src/app'`);
+    const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
+
+    const url = chalk.cyan(`http://${devServerHost}:${c.runtime.port}`);
+    logRaw(`
+
+Dev server running at: ${url}
+
+`);
 
     return executeAsync(c, `npx next --pagesDir ${pagesDir || 'src/app'} --port ${port}`, { env: { NODE_ENV: env || 'development' }, interactive: true });
 };
