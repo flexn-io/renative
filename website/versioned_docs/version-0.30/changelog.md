@@ -6,6 +6,171 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.1 (2020-6-30)
+
+### Fixed
+
+- add launch images and configs
+- feat: add ios launchscreen
+- fix: correct base folder for private configs + legacy support warning
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+iOS Template has been updated to follow new requirements for storyboard based launch screen. More info:  https://developer.apple.com/news/?id=01132020b
+
+new launch images should be placed to your assets configs typically:
+
+
+```
+.
+└── [appConfigs/<appConfig>/assets/ios/Assets.xcassets/launch-image.imageset]
+    ├── launch-image.png
+    ├── launch-image@2x.png
+    └── launch-image@3x.png
+
+```
+
+Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen densities
+
+![ios launch image guide](/img/launch-image-guide.png)
+
+## v0.30.3 (2020-6-26)
+
+### Fixed
+
+- hotfix: correct tizen extensions. thx @TheDuc
+- 0.30.2
+- Merge pull request #529 from pavjacko/fix/#528-sdk-filed-merges
+- ci chores
+- ci chores
+- ci chores
+- ci chores
+- ci chores
+- revert typo
+- ci chores
+- fix: improved handling of autofixes
+- fix: prevent crash if provisioning folder does not exist
+- fix: regenerate buildConfig after sdk update fix: change default tvos config from manual to auto signing
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.30.2-alpha.2 (2020-6-24)
+
+### Fixed
+
+- further SDK merge fixes
+- fix: #524 add default workspace to merge flow
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.30.2-alpha.1 (2020-6-24)
+
+### Fixed
+
+- update loggigng
+- fix: correct sdk field merges
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
+## v0.30.2 (2020-6-25)
+
+### Fixed
+
+- Merge pull request #529 from pavjacko/fix/#528-sdk-filed-merges
+- revert typo
+- fix: improved handling of autofixes
+- fix: prevent crash if provisioning folder does not exist
+- fix: regenerate buildConfig after sdk update fix: change default tvos config from manual to auto signing
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+## v0.30.1 (2020-6-24)
+
+### Fixed
+
+- update rnv plugins
+- fix: handle pugin add error in wrapper project
+- Merge pull request #526 from pavjacko/feature/react-native-localize-plugin-update
+- move podspec to correct override folder
+- upgraded version + tvos support
+- husky lint, update docs
+- 0.30.0
+- 0.30 docs
+- added integrations docs
+- update logging
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- fix android WIN config path inject
+- config docs
+- config docs
+
+### Added Features
+
+- feat: better logging + suggestions for crypto issues
+- feat: confirm folder replace during rnv new
+
+### Breaking Changes
+
+- none
+
+NOTE: Following plugins have been updated to newer versions:
+
+- `react-native-webview`
+- `react-native-prompt-android`
+- `react-native-root-toast`
+- `react-native-animatable`
+
+## v0.30.0 (2020-6-23)
+
+### Fixed
+
+- 0.30 docs
+- added integrations docs
+- update logging
+- Merge branch 'develop' of github.com:pavjacko/renative into develop
+- fix android WIN config path inject
+- config docs
+- config docs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.29.1-alpha.25 (2020-6-20)
 
 ### Fixed
@@ -65,15 +230,7 @@ original_id: changelog
 - engine base compatibility
 - Merge branch 'develop' into feat/e2e-ci
 - fix #522
-- ci chores 30
-- ci chores 29
 - jsx, tsx compiler support
-- ci chores 28
-- ci chores 27
-- ci chores 26
-- ci chores 25
-- ci chores 24
-- ci chores 23
 - E2E web automation with cypress
 - e2e android
 - rn engines abstraction layer
@@ -83,27 +240,6 @@ original_id: changelog
 - Merge branch 'develop' into feat/e2e-ci
 - ci chores 22
 - dynamic  injectors via json functions
-- ci chores 21
-- ci chores 20
-- ci chores 19
-- ci chores 18
-- ci chores 17
-- ci chores 16
-- ci chores 15
-- ci chores 14
-- ci chores 13
-- ci chores 12
-- ci chores 11
-- ci chores 10
-- ci chores 9
-- ci chores 8
-- ci chores 7
-- ci chores 6
-- ci chores 5
-- ci chores 4
-- ci chores 3
-- ci chores 2
-- ci chore 1
 - downgrade detox workaround for https://github.com/wix/detox/issues/152
 - init detox
 
@@ -114,7 +250,6 @@ original_id: changelog
 ### Breaking Changes
 
 - none
-
 
 ## v0.29.1-alpha.21 (2020-6-17)
 

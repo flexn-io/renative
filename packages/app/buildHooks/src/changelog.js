@@ -3,7 +3,7 @@ import path from 'path';
 import fs from 'fs';
 
 const git = require('simple-git')();
-const { version } = require('../../../../package.json');
+const { version, currentRelease } = require('../../../../package.json');
 
 // export const generateAllChangelogs = c => new Promise((resolve, reject) => {
 //       git.tags([], (e, s) => {
@@ -109,16 +109,39 @@ sidebar_label: Changelog
         };
     });
     chlogArrObj.sort((x, y) => y.versionNumber - x.versionNumber);
+    let chlogTotal = '';
     chlogArrObj.forEach((chlog) => {
         const chlogPath = path.join(chlogDirPath, chlog.value);
 
         const chlogVal = fs.readFileSync(chlogPath);
 
         output += `\n${chlogVal}`;
+        chlogTotal += `\n${chlogVal}`;
     });
 
     fs.writeFileSync(
         chlogCombinedPath,
+        output
+    );
+
+    updateCurrentLiveChangelog(c, chlogTotal);
+};
+
+export const updateCurrentLiveChangelog = async (c, chlogVal) => {
+    const chlogLivePath = path.join(c.paths.project.dir, `../../website/versioned_docs/version-${currentRelease}/changelog.md`);
+
+    let output = `---
+id: version-${currentRelease}-changelog
+title: Changelog
+sidebar_label: Changelog
+original_id: changelog
+---
+\n`;
+
+    output += chlogVal;
+
+    fs.writeFileSync(
+        chlogLivePath,
         output
     );
 };
