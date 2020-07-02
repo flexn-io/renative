@@ -58,10 +58,16 @@ ${logs}
 
 `;
             console.log(changelog.replace(/\*\*/g, '*'));
-            fs.writeFileSync(
-                path.join(c.paths.project.dir, '../../docs/changelog', `${version}.md`),
-                changelog
-            );
+            const changelogPath = path.join(c.paths.project.dir, '../../docs/changelog', `${version}.md`);
+            if (!fs.existsSync(changelogPath)) {
+                fs.writeFileSync(
+                    changelogPath,
+                    changelog
+                );
+            } else {
+                console.log(`Path ${changelogPath} exists. SKIPPING`);
+            }
+
             resolve();
         });
     });

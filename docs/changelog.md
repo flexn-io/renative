@@ -19,8 +19,23 @@ sidebar_label: Changelog
 
 ### Breaking Changes
 
-- none
+iOS Template has been updated to follow new requirements for storyboard based launch screen. More info:  https://developer.apple.com/news/?id=01132020b
 
+new launch images should be placed to your assets configs typically:
+
+
+```
+.
+└── [appConfigs/<appConfig>/assets/ios/Assets.xcassets/launch-image.imageset]
+    ├── launch-image.png
+    ├── launch-image@2x.png
+    └── launch-image@3x.png
+
+```
+
+Recommended size is 1000x1000, 2000x2000 and 3000x3000 to cover all iOS screen densities
+
+![ios launch image guide](/img/launch-image-guide.png)
 
 ## v0.30.3 (2020-6-26)
 
