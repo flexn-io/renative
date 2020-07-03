@@ -4,7 +4,7 @@ import minimist from 'minimist';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
-import { importPackageFromProject } from '../common';
+import { importPackageFromProject, getConfigProp } from '../common';
 import { logInfo } from '../systemTools/logger';
 import {
     configureDeploymentIfRequired,
@@ -59,7 +59,8 @@ const _runExport = (c, platform, exportType) => {
                 '@rnv/deploy-docker'
             );
             deployToDocker.setRNVPath(rnvPath);
-            return deployToDocker.doExport();
+            const method = getConfigProp(c, c.platform, 'exportOptions')?.method || 'static';
+            return deployToDocker.doExport(method);
         }
         case DEPLOY_TARGET_NONE:
             return Promise.resolve();

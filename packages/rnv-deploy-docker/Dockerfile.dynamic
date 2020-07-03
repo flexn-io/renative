@@ -1,0 +1,12 @@
+FROM node:alpine
+
+RUN mkdir -p /opt/app
+
+ENV PORT 3000
+EXPOSE 3000
+
+WORKDIR /opt/app
+
+COPY . /opt/app
+
+CMD next start

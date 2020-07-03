@@ -13,7 +13,7 @@ import {
 import { logTask, logInfo, logWarning, logDebug } from '../../systemTools/logger';
 import { NEXT_CONFIG_NAME } from '../../constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
-import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
+import { writeCleanFile, copyFileSync, copyFolderRecursiveSync, fsWriteFileSync } from '../../systemTools/fileutils';
 
 const configureNextIfRequired = async (c) => {
     const { platformTemplatesDirs, dir } = c.paths.project;
@@ -110,12 +110,47 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
     return resolve();
 });
 
+// @TODO move this to a better place?
+const exportDynamic = (c) => {
+    const { dir } = c.paths.project;
+    const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
+    // @TODO remove/clean -> mkdirp this 'dynamic' folder
+    const dest = `./platformBuilds/${c.runtime.appId}_${c.platform}/dynamic`;
+    // @TODO merge these folder/files
+    // @TODO add an exportOptions.additionalFiles config var?
+    const nextFolders = [
+        `${dir}/node_modules`,
+        `${dir}/.next`,
+        [pagesDir, `${dest}/pages`],
+    ];
+    const nextFiles = [
+        `${dir}/package.json`,
+    ];
+
+    nextFiles.forEach((file) => {
+        copyFileSync(file, dest);
+    });
+
+    nextFolders.forEach((file) => {
+        if (Array.isArray(file)) {
+            copyFolderRecursiveSync(file[0], file[1]);
+        } else {
+            copyFolderRecursiveSync(file, dest);
+        }
+    });
+};
+
 const exportNext = async (c) => {
     logTask('exportWebNext');
     await configureNextIfRequired(c);
     const env = getConfigProp(c, c.platform, 'environment');
+    const method = getConfigProp(c, c.platform, 'exportOptions')?.method || 'static';
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
+
+    if (method === 'dynamic') {
+        return exportDynamic(c); //
+    }
 
     return executeAsync(c, `npx next export ./platformBuilds/${c.runtime.appId}_${c.platform} --pagesDir ${pagesDir || 'src/app'}`, { ...process.env, env: { NODE_ENV: env || 'development' }, interactive: true });
 };

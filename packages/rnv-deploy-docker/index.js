@@ -7,6 +7,47 @@ class Docker {
         this.rnvPath = pth;
     }
 
+    async buildDynamicImage() {
+        const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
+        const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
+        const config = require(path.join(this.rnvPath, 'dist/config')).default;
+        const { executeAsync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
+        const { copyFolderRecursiveSync, copyFileSync, cleanFolder } = require(path.join(this.rnvPath, 'dist/systemTools/fileutils'));
+
+        const { paths, runtime, platform, files } = config.getConfig();
+        const projectBuilds = paths.project.builds.dir;
+        const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);
+        const dockerDestination = path.join(projectBuildWeb, 'export', 'docker');
+
+        const buildDir = 'dynamic';
+
+        const dockerFile = path.join(__dirname, '../Dockerfile.dynamic');
+
+        await cleanFolder(path.join(dockerDestination));
+        copyFolderRecursiveSync(path.join(projectBuildWeb, buildDir), dockerDestination);
+
+        const copiedDockerFile = path.join(dockerDestination, 'Dockerfile');
+
+        const imageName = runtime.appId.toLowerCase();
+        const appVersion = files.project.package.version;
+
+        // save the docker files
+        logTask('docker:Dockerfile:create');
+        const deployOptions = getConfigProp(config.getConfig(), platform, 'deploy');
+        const healthCheck = deployOptions?.docker?.healthcheckProbe;
+
+        if (healthCheck) {
+            // Add dynamic health check
+        }
+
+        copyFileSync(dockerFile, copiedDockerFile);
+
+        logTask('docker:Dockerfile:build');
+        await executeAsync(`docker build -t ${imageName}:${appVersion} ${dockerDestination}`);
+
+        logInfo(`Your Dockerfiles are located in ${dockerDestination}`);
+    }
+
     async buildImage() {
         const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
         const { logTask, logInfo } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
@@ -18,6 +59,7 @@ class Docker {
         const projectBuilds = paths.project.builds.dir;
         const projectBuildWeb = path.join(projectBuilds, `${runtime.appId}_${platform}`);
         const dockerDestination = path.join(projectBuildWeb, 'export', 'docker');
+
         const buildDir = program.engine === 'next' ? 'out' : 'public';
 
         const dockerFile = path.join(__dirname, '../Dockerfile');
@@ -61,14 +103,14 @@ class Docker {
         logTask('docker:Dockerfile:build');
         await executeAsync(`docker build -t ${imageName}:${appVersion} ${dockerDestination}`);
 
-        logInfo(`Your Dockerfile and docker-compose.yml are located in ${dockerDestination}`);
+        logInfo(`Your Dockerfiles are located in ${dockerDestination}`);
     }
 
     async saveImage() {
         const { getConfigProp } = require(path.join(this.rnvPath, 'dist/common'));
         const config = require(path.join(this.rnvPath, 'dist/config')).default;
         const { runtime, files, paths, platform, program: { scheme = 'debug' } } = config.getConfig();
-        const { logTask, logInfo, logSuccess } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
+        const { logTask, logSuccess } = require(path.join(this.rnvPath, 'dist/systemTools/logger'));
         const { executeAsync, commandExistsSync } = require(path.join(this.rnvPath, 'dist/systemTools/exec'));
         const imageName = runtime.appId.toLowerCase();
         const appVersion = files.project.package.version;
@@ -95,8 +137,14 @@ class Docker {
         }
     }
 
-    async doExport() {
-        await this.buildImage();
+    async doExport(method) {
+        if (method === 'dynamic') {
+            await this.buildDynamicImage();
+            throw new Error('BUILT');
+        } else {
+            await this.buildImage(method);
+        }
+
         return this.saveImage();
     }
 
