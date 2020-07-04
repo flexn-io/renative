@@ -598,7 +598,7 @@ const archiveXcodeProject = (c, platform) => {
     const exportPathArchive = `${exportPath}/${scheme}.xcarchive`;
     let ps = '';
     if (c.program.xcodebuildArchiveArgs) {
-        ps = `"${c.program.xcodebuildArchiveArgs.replace(/"/gi, '')}"`;
+        ps = c.program.xcodebuildArchiveArgs;
     }
     const p = [];
 
@@ -659,7 +659,7 @@ const exportXcodeProject = async (c, platform) => {
 
     let ps = '';
     if (c.program.xcodebuildExportArgs) {
-        ps = `"${c.program.xcodebuildExportArgs.replace(/"/gi, '')}"`;
+        ps = c.program.xcodebuildExportArgs;
     }
     const p = ['-exportArchive'];
 
