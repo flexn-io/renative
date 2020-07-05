@@ -179,6 +179,14 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
         )
     );
     copyFileSync(
+        path.resolve(supportFiles, 'fontManager.js'),
+        path.resolve(
+            c.paths.project.assets.dir,
+            'runtime',
+            'fontManager.server.web.js'
+        )
+    );
+    copyFileSync(
         path.resolve(supportFiles, 'fontManager.web.js'),
         path.resolve(
             c.paths.project.assets.dir,

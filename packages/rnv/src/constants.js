@@ -135,7 +135,7 @@ export const PLATFORMS = {
         requiresSharedConfig: true,
         sourceExts: {
             factors: [...EXT_BROWSER],
-            platforms: [...EXT_WEB],
+            platforms: [...EXT_SERVER_WEB, ...EXT_WEB],
             fallbacks: [...EXT_FALLBACK_WEB]
         }
     },
