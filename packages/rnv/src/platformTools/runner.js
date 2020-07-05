@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import open from 'better-opn';
 import ip from 'ip';
 import path from 'path';
-
+import { getEngineRunner } from '../engineTools';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
@@ -34,7 +34,7 @@ import {
     FIREFOX_OS,
     FIREFOX_TV,
     CHROMECAST,
-    WEB_NEXT
+    TASK_RUN, TASK_CONFIGURE, TASK_BUILD, TASK_INFO
 } from '../constants';
 import {
     runXcodeProject,
@@ -281,6 +281,8 @@ const _rnvRunWithPlatform = async (c) => {
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
+    await getEngineRunner(c).runTask(c, TASK_RUN);
+
     switch (platform) {
         case IOS:
         case TVOS:
@@ -329,6 +331,7 @@ const _rnvRunWithPlatform = async (c) => {
             }
             c.runtime.shouldOpenBrowser = true;
             return runWeb(c, platform, port, true);
+            // return runWebNext(c, platform, port, true);
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
@@ -360,13 +363,6 @@ const _rnvRunWithPlatform = async (c) => {
                 await _configureHostedIfRequired(c);
             }
             return runChromecast(c, platform, target);
-        case WEB_NEXT:
-            if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
-                await configureIfRequired(c, platform);
-            }
-            c.runtime.shouldOpenBrowser = true;
-            return runWebNext(c, platform, port, true);
         default:
             return logErrorPlatform(c, platform);
     }
@@ -420,11 +416,7 @@ const _rnvExportWithPlatform = async (c) => {
                 await rnvBuild(c);
             }
             return exportWeb(c, platform);
-        case WEB_NEXT:
-            if (!c.program.only) {
-                await rnvBuild(c);
-            }
-            return exportWebNext(c);
+            // return exportWebNext(c);
         case IOS:
         case TVOS:
             if (!c.program.only) {
@@ -457,13 +449,10 @@ const _rnvDeployWithPlatform = async (c) => {
         case WEB:
             if (!c.program.only) {
                 await rnvBuild(c);
+                // await buildWebNext(c);
             }
             return deployWeb(c, platform);
-        case WEB_NEXT:
-            if (!c.program.only) {
-                await buildWebNext(c);
-            }
-            return deployWebNext(c, platform);
+            // return deployWebNext(c, platform);
         case CHROMECAST:
             if (!c.program.only) {
                 await rnvBuild(c);
@@ -492,6 +481,8 @@ const _rnvDeployWithPlatform = async (c) => {
 const _rnvBuildWithPlatform = async (c) => {
     logTask(`_rnvBuildWithPlatform:${c.platform}`);
     const { platform } = c;
+
+    // const engi getEngineByPlatform(c, c.platform)
 
     await checkSdk(c);
 
@@ -522,11 +513,7 @@ const _rnvBuildWithPlatform = async (c) => {
             await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWeb(c, platform);
-            return;
-        case WEB_NEXT:
-            await cleanPlatformIfRequired(c, platform);
-            await configureIfRequired(c, platform);
-            await buildWebNext(c);
+            // await buildWebNext(c);
             return;
         case KAIOS:
         case FIREFOX_OS:

@@ -46,7 +46,6 @@ export const WP10 = 'wp10';
 export const WP8 = 'wp8';
 export const XBOX = 'xbox';
 export const XBOX360 = 'xbox360';
-export const WEB_NEXT = 'web-next';
 // Kodi, Boxee, HorizonTV, Mediaroom(Ericsson), YahooSmartTV, Slingbox, Hololens, Occulus, GearVR, WebVR
 
 export const ICONS = {
@@ -709,7 +708,6 @@ export const SUPPORTED_PLATFORMS = [
     ANDROID_TV,
     ANDROID_WEAR,
     WEB,
-    WEB_NEXT,
     TIZEN,
     TIZEN_MOBILE,
     TVOS,
@@ -764,6 +762,11 @@ SDK_PLATFORMS[TIZEN_WATCH] = TIZEN_SDK;
 SDK_PLATFORMS[TIZEN_MOBILE] = TIZEN_SDK;
 SDK_PLATFORMS[WEBOS] = WEBOS_SDK;
 SDK_PLATFORMS[KAIOS] = KAIOS_SDK;
+
+export const TASK_RUN = 'run';
+export const TASK_CONFIGURE = 'configure';
+export const TASK_BUILD = 'build';
+export const TASK_INFO = 'info';
 
 export const configSchema = {
     analytics: {

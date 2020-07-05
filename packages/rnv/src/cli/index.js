@@ -82,8 +82,7 @@ import {
     WEBOS,
     MACOS,
     WINDOWS,
-    TIZEN_WATCH,
-    WEB_NEXT
+    TIZEN_WATCH
 } from '../constants';
 // import { getBinaryPath } from '../common';
 import Config, { rnvConfigHandler } from '../config';
@@ -173,8 +172,7 @@ const COMMANDS = {
             WEB,
             ANDROID,
             ANDROID_TV,
-            ANDROID_WEAR,
-            WEB_NEXT
+            ANDROID_WEAR
         ],
         fn: rnvExport
     },
