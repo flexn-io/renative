@@ -19,11 +19,7 @@
         "remote-notification"
     ],
     "UIRequiresFullScreen": true,
-    "UISupportedInterfaceOrientations": [
-        "UIInterfaceOrientationPortrait"
-    ],
-    "UISupportedInterfaceOrientations~ipad": [
-        "UIInterfaceOrientationPortrait"
-    ],
-    "UIViewControllerBasedStatusBarAppearance": false
+    "UILaunchStoryboardName": "LaunchScreen",
+    "UIUserInterfaceStyle": "Automatic",
+    "UIRequiredDeviceCapabilities": ["arm64"]
 }

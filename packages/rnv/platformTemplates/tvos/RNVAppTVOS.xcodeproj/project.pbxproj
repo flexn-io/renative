@@ -10,11 +10,7 @@
 		0D368FBAFBAD896C06FE6A31 /* Pods_RNVAppTVOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39DEC93D278A25BEC6C802FC /* Pods_RNVAppTVOS.framework */; };
 		20200EBC21143502009FB5CA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20200EBB21143502009FB5CA /* AppDelegate.swift */; };
 		20200EC321143504009FB5CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20200EC221143504009FB5CA /* Assets.xcassets */; };
-		20317C68234D8E9D008AFF04 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20317C67234D8E9D008AFF04 /* AppDelegate.swift */; };
-		20317C6A234D8E9D008AFF04 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20317C69234D8E9D008AFF04 /* ViewController.swift */; };
-		20317C6D234D8E9D008AFF04 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20317C6B234D8E9D008AFF04 /* Main.storyboard */; };
-		20317C6F234D8E9D008AFF04 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 20317C6E234D8E9D008AFF04 /* Assets.xcassets */; };
-		20317C72234D8E9D008AFF04 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20317C70234D8E9D008AFF04 /* LaunchScreen.storyboard */; };
+		20477AD924B2535A006FA63A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 20477AD824B2535A006FA63A /* LaunchScreen.storyboard */; };
 		20A246F3218ACD9E00F58B90 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 20A246F2218ACD9E00F58B90 /* main.jsbundle */; };
 		20A246F5218ACDA800F58B90 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 20A246F4218ACDA800F58B90 /* assets */; };
 /* End PBXBuildFile section */
@@ -43,12 +39,7 @@
 		20200EC221143504009FB5CA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		20200EC421143504009FB5CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		20317C65234D8E9D008AFF04 /* RNVApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RNVApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		20317C67234D8E9D008AFF04 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		20317C69234D8E9D008AFF04 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		20317C6C234D8E9D008AFF04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		20317C6E234D8E9D008AFF04 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		20317C71234D8E9D008AFF04 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		20317C73234D8E9D008AFF04 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		20477AD824B2535A006FA63A /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		20A246F2218ACD9E00F58B90 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = SOURCE_ROOT; };
 		20A246F4218ACDA800F58B90 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
 		20A744D2234D929500658109 /* RNVAppTVOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RNVAppTVOS-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -104,21 +95,9 @@
 				20200EC221143504009FB5CA /* Assets.xcassets */,
 				20200EC421143504009FB5CA /* Info.plist */,
 				20A744D2234D929500658109 /* RNVAppTVOS-Bridging-Header.h */,
+				20477AD824B2535A006FA63A /* LaunchScreen.storyboard */,
 			);
 			path = RNVAppTVOS;
-			sourceTree = "<group>";
-		};
-		20317C66234D8E9D008AFF04 /* RNVApp */ = {
-			isa = PBXGroup;
-			children = (
-				20317C67234D8E9D008AFF04 /* AppDelegate.swift */,
-				20317C69234D8E9D008AFF04 /* ViewController.swift */,
-				20317C6B234D8E9D008AFF04 /* Main.storyboard */,
-				20317C6E234D8E9D008AFF04 /* Assets.xcassets */,
-				20317C70234D8E9D008AFF04 /* LaunchScreen.storyboard */,
-				20317C73234D8E9D008AFF04 /* Info.plist */,
-			);
-			path = RNVApp;
 			sourceTree = "<group>";
 		};
 		2070914921078B0D00FFF1DB = {
@@ -127,7 +106,6 @@
 				200767E3224AE59500686509 /* Resources */,
 				20A246F4218ACDA800F58B90 /* assets */,
 				20200EBA21143502009FB5CA /* RNVAppTVOS */,
-				20317C66234D8E9D008AFF04 /* RNVApp */,
 				2070915321078B0D00FFF1DB /* Products */,
 				0E3312C66CE20857488874BF /* Pods */,
 				B566E91986956011A4C625F0 /* Frameworks */,
@@ -275,6 +253,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				20A246F5218ACDA800F58B90 /* assets in Resources */,
+				20477AD924B2535A006FA63A /* LaunchScreen.storyboard in Resources */,
 				20200EC321143504009FB5CA /* Assets.xcassets in Resources */,
 				20A246F3218ACD9E00F58B90 /* main.jsbundle in Resources */,
 			);
@@ -284,9 +263,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20317C72234D8E9D008AFF04 /* LaunchScreen.storyboard in Resources */,
-				20317C6F234D8E9D008AFF04 /* Assets.xcassets in Resources */,
-				20317C6D234D8E9D008AFF04 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,31 +328,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				20317C6A234D8E9D008AFF04 /* ViewController.swift in Sources */,
-				20317C68234D8E9D008AFF04 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		20317C6B234D8E9D008AFF04 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				20317C6C234D8E9D008AFF04 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		20317C70234D8E9D008AFF04 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				20317C71234D8E9D008AFF04 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		20200EC521143504009FB5CA /* Debug */ = {
@@ -399,8 +354,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RNVAppTVOS-Bridging-Header.h";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNVAppTVOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -428,8 +383,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = renative.helloworld;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RNVAppTVOS-Bridging-Header.h";
 				SDKROOT = appletvos;
+				SWIFT_OBJC_BRIDGING_HEADER = "RNVAppTVOS-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = 3;
 				TVOS_DEPLOYMENT_TARGET = 10.0;

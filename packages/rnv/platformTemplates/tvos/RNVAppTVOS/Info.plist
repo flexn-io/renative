@@ -27,10 +27,11 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>UIAppFonts</key>
+	<array/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Automatic</string>
-	<key>UIAppFonts</key>
-	<array>
-	</array>
 </dict>
 </plist>
