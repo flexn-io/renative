@@ -1,4 +1,5 @@
 /* eslint-disable import/no-cycle */
+import { logError, logRaw } from '../systemTools/logger';
 import {
     getConfigProp
 } from '../common';
@@ -16,12 +17,15 @@ const ENGINES = {
 };
 
 
-export const getEngineByPlatform = (c, platform) => {
+export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
     if (c.buildConfig) {
         selectedEngineKey = getConfigProp(c, platform, 'engine');
         const selectedEngine = c.files.rnv.engines.config?.engines?.[selectedEngineKey];
-
+        if (!selectedEngine && !ignoreMissingError) {
+            logError(`Engine: ${selectedEngineKey} does not exists or is not registered`);
+            logRaw(new Error());
+        }
         return selectedEngine;
     }
     return null;

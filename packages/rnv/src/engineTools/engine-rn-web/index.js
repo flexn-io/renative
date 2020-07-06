@@ -280,6 +280,8 @@ export const _taskLog = async (c) => {
 TASKS[TASK_LOG] = _taskLog;
 
 const runTask = async (c, task) => {
+    logTask(`runTask:engine-rn-web:${c.platform}`);
+
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
