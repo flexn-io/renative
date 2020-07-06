@@ -85,8 +85,6 @@ const EXT_TVOS_TV = ['tvos.tv.jsx', 'tvos.tv.js', 'tvos.tv.tsx', 'tvos.tv.ts'];
 const EXT_TV = ['tv.jsx', 'tv.js', 'tv.tsx', 'tv.ts'];
 const EXT_ANDROIDTV_TV = ['androidtv.tv.jsx', 'androidtv.tv.js', 'androidtv.tv.tsx', 'androidtv.tv.ts'];
 const EXT_ANDROIDTV = ['androidtv.jsx', 'androidtv.js', 'androidtv.tsx', 'androidtv.ts'];
-const EXT_SERVER_NEXT = ['server.next.jsx', 'server.next.js', 'server.next.tsx', 'server.next.ts'];
-const EXT_NEXT = ['next.jsx', 'next.js', 'next.tsx', 'next.ts'];
 const EXT_SERVER_WEB = ['server.web.jsx', 'server.web.js', 'server.web.tsx', 'server.web.ts'];
 const EXT_WEB = ['web.jsx', 'web.js', 'web.tsx', 'web.ts'];
 const EXT_MACOS_DESKTOP = ['macos.desktop.jsx', 'macos.desktop.js', 'macos.desktop.tsx', 'macos.desktop.ts'];
@@ -136,18 +134,6 @@ export const PLATFORMS = {
             factors: [...EXT_BROWSER],
             platforms: [...EXT_SERVER_WEB, ...EXT_WEB],
             fallbacks: [...EXT_FALLBACK_WEB]
-        }
-    },
-    'web-next': {
-        defaultPort: 8100,
-        icon: ICONS.BROWSER,
-        supportedOS: OS.ALL,
-        isActive: true,
-        requiresSharedConfig: true,
-        sourceExts: {
-            factors: [...EXT_BROWSER],
-            platforms: [...EXT_SERVER_NEXT, ...EXT_NEXT],
-            fallbacks: [...EXT_SERVER_WEB, ...EXT_WEB, ...EXT_FALLBACK_WEB]
         }
     },
     ios: {
@@ -576,8 +562,6 @@ export const PLATFORMS = {
 export const EXTENSIONS = {
     web: [...PLATFORMS.web.sourceExts.factors,
         ...PLATFORMS.web.sourceExts.platforms, ...PLATFORMS.web.sourceExts.fallbacks],
-    'web-next': [...PLATFORMS['web-next'].sourceExts.factors,
-        ...PLATFORMS['web-next'].sourceExts.platforms, ...PLATFORMS['web-next'].sourceExts.fallbacks],
     ios: [...PLATFORMS.ios.sourceExts.factors,
         ...PLATFORMS.ios.sourceExts.platforms, ...PLATFORMS.ios.sourceExts.fallbacks],
     android: [...PLATFORMS.android.sourceExts.factors,

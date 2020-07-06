@@ -5,12 +5,10 @@ import {
     logErrorPlatform,
     configureIfRequired,
     cleanPlatformIfRequired,
-    getConfigProp,
     waitForWebpack,
-    confirmActiveBundler
 } from '../../common';
 import { isPlatformSupported } from '../../platformTools';
-import { logTask, logError, logDebug, logSummary } from '../../systemTools/logger';
+import { logTask, logError } from '../../systemTools/logger';
 import {
     MACOS,
     WINDOWS,
@@ -24,7 +22,6 @@ import {
     configureElectronProject,
     exportElectron
 } from '../../platformTools/electron';
-import { copyFolderContentsRecursiveSync, writeCleanFile } from '../../systemTools/fileutils';
 import Config from '../../config';
 import Analytics from '../../systemTools/analytics';
 import { checkSdk } from '../../platformTools/sdkManager';

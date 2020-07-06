@@ -5,12 +5,11 @@ import {
     configureIfRequired,
     cleanPlatformIfRequired,
     getConfigProp,
-    waitForWebpack,
     confirmActiveBundler
 } from '../../common';
 import { doResolve } from '../../resolve';
 import { isPlatformSupported } from '../../platformTools';
-import { logTask, logError, logDebug, logSummary } from '../../systemTools/logger';
+import { logTask, logError, logSummary } from '../../systemTools/logger';
 import {
     IOS,
     TVOS,

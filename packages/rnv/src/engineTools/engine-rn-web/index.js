@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import open from 'better-opn';
 import ip from 'ip';
 import path from 'path';
@@ -12,7 +11,7 @@ import {
     waitForWebpack,
 } from '../../common';
 import { isPlatformSupported } from '../../platformTools';
-import { logTask, logError, logDebug, logSummary } from '../../systemTools/logger';
+import { logTask, logError, logDebug } from '../../systemTools/logger';
 import {
     WEB,
     TIZEN,

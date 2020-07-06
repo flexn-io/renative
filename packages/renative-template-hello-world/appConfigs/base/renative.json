@@ -218,6 +218,7 @@
         },
         "web": {
             "entryFile": "index.web",
+            "pagesDir": "src/app",
             "webpackConfig": {
                 "devServerHost": "0.0.0.0",
                 "baseUrl": ""
@@ -230,18 +231,6 @@
                 "release": {
                     "bundleAssets": true,
                     "bundleIsDev": false,
-                    "environment": "production"
-                }
-            }
-        },
-        "web-next": {
-            "entryFile": "index.web",
-            "pagesDir": "src/app",
-            "buildSchemes": {
-                "debug": {
-                    "environment": "development"
-                },
-                "release": {
                     "environment": "production"
                 }
             }

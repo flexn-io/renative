@@ -54,9 +54,6 @@
         },
         "web": {
             "engine": "engine-rn-web"
-        },
-        "web-next": {
-            "engine": "engine-rn-next"
         }
     }
 }
