@@ -767,6 +767,12 @@ export const TASK_RUN = 'run';
 export const TASK_CONFIGURE = 'configure';
 export const TASK_BUILD = 'build';
 export const TASK_INFO = 'info';
+export const TASK_START = 'start';
+export const TASK_EXPORT = 'export';
+export const TASK_DEBUG = 'debug';
+export const TASK_PACKAGE = 'package';
+export const TASK_DEPLOY = 'deploy';
+export const TASK_LOG = 'log';
 
 export const configSchema = {
     analytics: {
