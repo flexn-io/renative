@@ -12,7 +12,7 @@ import EngineRnNext from './engine-rn-next';
 const ENGINES = {
     'engine-rn': EngineRn,
     'engine-rn-web': EngineRnWeb,
-    'engine-rn-electront': EngineRnElectron,
+    'engine-rn-electron': EngineRnElectron,
     'engine-rn-next': EngineRnNext
 };
 
@@ -34,5 +34,10 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
 
 export const getEngineRunner = (c) => {
     const selectedEngine = getEngineByPlatform(c, c.platform);
-    return ENGINES[selectedEngine.id];
+    const engine = ENGINES[selectedEngine?.id];
+    if (!engine) {
+        logError(`Cound not find active engine with id ${selectedEngine?.id}. Available engines:
+${Object.keys(ENGINES).join(', ')}`);
+    }
+    return engine;
 };
