@@ -17,13 +17,14 @@ import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 import { getValidLocalhost } from '../../utils';
 
 const configureNextIfRequired = async (c) => {
+    logTask('configureNextIfRequired');
     const { platformTemplatesDirs, dir } = c.paths.project;
     const publicDir = path.join(dir, 'public');
     const baseFontsDir = c.paths.appConfig.fontDirs?.[0];
     const stylesDir = path.join(dir, 'styles');
     const pagesDir = path.resolve(getConfigProp(c, c.platform, 'pagesDir') || 'src/app');
     const _appFile = path.join(pagesDir, '_app.js');
-    const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], `_${c.platform}`);
+    const platformTemplateDir = path.join(platformTemplatesDirs[c.platform], '_web-next');
     const configFile = path.join(dir, NEXT_CONFIG_NAME);
 
     // handle fonts
@@ -59,7 +60,6 @@ const configureNextIfRequired = async (c) => {
             fsWriteFileSync(path.join(stylesDir, 'fonts.css'), cssOutput);
         }
     }
-
 
     // add wrapper _app
     if (!fs.existsSync(_appFile)) {
