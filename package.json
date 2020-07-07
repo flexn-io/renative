@@ -108,7 +108,7 @@
         "babel-plugin-transform-runtime": "6.23.0",
         "babel-polyfill": "6.26.0",
         "concurrently": "4.1.1",
-        "electron": "7.0.0",
+        "electron": "7.2.4",
         "electron-builder": "21.1.1",
         "lerna": "3.16.4",
         "eslint": "6.2.2",
