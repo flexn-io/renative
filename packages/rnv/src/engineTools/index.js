@@ -21,7 +21,7 @@ const ENGINES = {
 
 export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
     let selectedEngineKey;
-    if (c.buildConfig) {
+    if (c.buildConfig && !!platform) {
         selectedEngineKey = getConfigProp(c, platform, 'engine');
         const selectedEngine = c.files.rnv.engines.config?.engines?.[selectedEngineKey];
         if (!selectedEngine && !ignoreMissingError) {

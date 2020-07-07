@@ -31,17 +31,21 @@ sidebar_label: Web
 | `browser.js` | `form factor` | 2 |
 | `browser.tsx` | `form factor` | 3 |
 | `browser.ts` | `form factor` | 4 |
-| `web.jsx` | `platform` | 5 |
-| `web.js` | `platform` | 6 |
-| `web.tsx` | `platform` | 7 |
-| `web.ts` | `platform` | 8 |
-| `mjs` | `fallback` | 9 |
-| `jsx` | `fallback` | 10 |
-| `js` | `fallback` | 11 |
-| `json` | `fallback` | 12 |
-| `wasm` | `fallback` | 13 |
-| `tsx` | `fallback` | 14 |
-| `ts` | `fallback` | 15 |
+| `server.web.jsx` | `platform` | 5 |
+| `server.web.js` | `platform` | 6 |
+| `server.web.tsx` | `platform` | 7 |
+| `server.web.ts` | `platform` | 8 |
+| `web.jsx` | `platform` | 9 |
+| `web.js` | `platform` | 10 |
+| `web.tsx` | `platform` | 11 |
+| `web.ts` | `platform` | 12 |
+| `mjs` | `fallback` | 13 |
+| `jsx` | `fallback` | 14 |
+| `js` | `fallback` | 15 |
+| `json` | `fallback` | 16 |
+| `wasm` | `fallback` | 17 |
+| `tsx` | `fallback` | 18 |
+| `ts` | `fallback` | 19 |
 
 <!--EXTENSION_SUPPORT_END-->
 
