@@ -282,16 +282,16 @@ export const setCurrentJob = () => {
 
 export const logTask = (task, customChalk) => {
     const ch = customChalk || chalk.green;
-    const postMsg = customChalk ? '' : ' - Starting!';
+    const postMsg = customChalk ? '' : '';
     console.log(ch(`[ task ] ${task}${postMsg}`));
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`⚠️  ${RNV} - WARNING: ${msg}`));
+    logAndSave(chalk.yellow(`[ warn ] ${msg}`));
 };
 
 export const logInfo = (msg) => {
-    console.log(chalk.magenta(`ℹ️  ${RNV} - NOTE: ${msg}`));
+    console.log(chalk.cyan(`[ info ] ${msg}`));
 };
 
 export const logDebug = (...args) => {
@@ -306,7 +306,7 @@ export const logComplete = (isEnd = false) => {
 };
 
 export const logSuccess = (msg) => {
-    logAndSave(`✅ ${chalk.magenta(msg)}`);
+    logAndSave(chalk.magenta(`[ success ] ${msg}`));
 };
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {

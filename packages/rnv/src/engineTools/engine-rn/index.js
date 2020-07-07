@@ -39,6 +39,7 @@ import Analytics from '../../systemTools/analytics';
 
 import { isBundlerActive, waitForBundler } from '../../platformTools/bundler';
 import { checkSdk } from '../../platformTools/sdkManager';
+import { resolvePluginDependants } from '../../pluginTools';
 
 const TASKS = {};
 
@@ -306,6 +307,7 @@ const runTask = async (c, task) => {
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
+    await resolvePluginDependants(c);
 
     Analytics.captureEvent({
         type: `${task}Project`,

@@ -25,6 +25,7 @@ import {
     logDebug
 } from '../systemTools/logger';
 import { doResolve } from '../resolve';
+import { inquirerPrompt } from '../systemTools/prompt';
 
 export const rnvPluginList = c => new Promise((resolve) => {
     logTask('_runList');
@@ -235,7 +236,7 @@ export const rnvPluginUpdate = async (c) => {
     }
 };
 
-const getMergedPlugin = (c, key, plugins) => {
+export const getMergedPlugin = (c, key, plugins) => {
     const plugin = plugins[key];
 
     // const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
@@ -450,7 +451,56 @@ package.json will be overriden`
         .catch(e => reject(e));
 });
 
-const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCheck) => {
+export const resolvePluginDependants = async (c) => {
+    logTask('resolvePluginDependants');
+    const { plugins, pluginTemplates } = c.buildConfig;
+
+    if (plugins) {
+        const pluginKeys = Object.keys(plugins);
+        for (let i = 0; i < pluginKeys.length; i++) {
+            const key = pluginKeys[i];
+            await _resolvePluginDependencies(c, key, null, plugins, pluginTemplates);
+        }
+    }
+};
+
+const _resolvePluginDependencies = async (c, key, parentKey, plugins, pluginTemplates) => {
+    const plugin = getMergedPlugin(c, key, plugins);
+    const deps = plugin?.dependsOn;
+
+    if (!plugin) {
+        const depPlugin = pluginTemplates[key];
+
+        if (depPlugin) {
+            // console.log('INSTALL PLUGIN???', key);
+            const { confirm } = await inquirerPrompt({
+                type: 'confirm',
+                message: 'Install?',
+                warningMessage: `Plugin ${chalk.white(key)} is not installed`
+            });
+            if (confirm) {
+                logSuccess(`Plugin ${key} sucessfully installed`);
+            }
+        } else {
+            logWarning(`Plugin ${chalk.white(parentKey)} requires ${
+                chalk.red(key)} which is not available in your system`);
+        }
+    } else {
+        // All good
+    }
+
+
+    if (deps) {
+        const depsKeys = Object.keys(deps);
+        for (let i = 0; i < depsKeys.length; i++) {
+            const depKey = depsKeys[i];
+            await _resolvePluginDependencies(c, depKey, key, plugins, pluginTemplates);
+        }
+    }
+    return true;
+};
+
+export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCheck) => {
     logTask(`parsePlugins:${platform}`);
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(
@@ -756,7 +806,7 @@ export const copyTemplatePluginsSync = (c, platform) => {
     });
 };
 
-const getLocalRenativePlugin = () => ({
+export const getLocalRenativePlugin = () => ({
     version: 'file:../packages/renative',
     webpack: {
         modulePaths: [],
@@ -767,7 +817,5 @@ const getLocalRenativePlugin = () => ({
         }
     }
 });
-
-export { getMergedPlugin, parsePlugins, getLocalRenativePlugin };
 
 export default { getMergedPlugin, parsePlugins, getLocalRenativePlugin };

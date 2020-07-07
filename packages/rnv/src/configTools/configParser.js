@@ -9,7 +9,6 @@ import {
     RENATIVE_CONFIG_NAME,
     RENATIVE_CONFIG_PRIVATE_NAME,
     RENATIVE_CONFIG_LOCAL_NAME,
-    RENATIVE_CONFIG_BUILD_NAME,
     RENATIVE_CONFIG_RUNTIME_NAME,
     RENATIVE_CONFIG_WORKSPACES_NAME,
     RENATIVE_CONFIG_PLUGINS_NAME,
@@ -466,6 +465,10 @@ export const generateBuildConfig = (c) => {
     });
     out = merge({}, out);
 
+    c.paths.project.builds.config = path.join(
+        c.paths.project.builds.dir,
+        `${c.runtime.appId}_${c.platform}.json`
+    );
 
     logDebug(
         `generateBuildConfig: will sanitize file at: ${
@@ -474,6 +477,7 @@ export const generateBuildConfig = (c) => {
     );
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
+
 
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);
@@ -1227,10 +1231,6 @@ export const createRnvConfig = (program, process, cmd, subCmd) => {
     c.paths.project.builds.dir = path.join(
         c.paths.project.dir,
         'platformBuilds'
-    );
-    c.paths.project.builds.config = path.join(
-        c.paths.project.builds.dir,
-        RENATIVE_CONFIG_BUILD_NAME
     );
 
     _generateConfigPaths(c.paths.workspace, c.paths.GLOBAL_RNV_DIR);
