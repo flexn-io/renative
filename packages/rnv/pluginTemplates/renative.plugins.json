@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.31.0-alpha.2",
+            "version": "0.31.0-alpha.3",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -716,7 +716,7 @@
                 }
             },
             "pluginDependencies": {
-              "svgs": "source:rnv"
+                "svgs": "source:rnv"
             }
         },
         "react-native-snap-scrollview": {
@@ -938,7 +938,7 @@
         "react-native-photo-editor": {
             "version": "1.0.5",
             "pluginDependencies": {
-              "iOSPhotoEditor": "source:rnv"
+                "iOSPhotoEditor": "source:rnv"
             },
             "ios": {
                 "podName": "RNPhotoEditor",
@@ -1568,7 +1568,7 @@
         "@react-native-firebase/analytics": {
             "version": "6.4.1",
             "pluginDependencies": {
-              "@react-native-firebase/app": "source:rnv"
+                "@react-native-firebase/app": "source:rnv"
             },
             "ios": {
                 "isStatic": true,
@@ -1601,7 +1601,7 @@
         "@react-native-firebase/crashlytics": {
             "version": "6.4.1",
             "pluginDependencies": {
-              "@react-native-firebase/analytics": "source:rnv"
+                "@react-native-firebase/analytics": "source:rnv"
             },
             "ios": {
                 "isStatic": true,
@@ -2037,7 +2037,7 @@
         "native-base": {
             "version": "2.12.1",
             "pluginDependencies": {
-              "react-native-vector-icons": "source:rnv"
+                "react-native-vector-icons": "source:rnv"
             }
         },
         "@react-native-community/async-storage": {
@@ -2063,7 +2063,7 @@
         "react-native-web": {
             "version": "0.11.7",
             "pluginDependencies": {
-              "react": "source:rnv"
+                "react": "source:rnv"
             }
         },
         "react-native-web-image-loader": {
@@ -2080,9 +2080,9 @@
                 ]
             },
             "pluginDependencies": {
-              "react-navigation-stack": "source:rnv",
-              "react-navigation-tabs": "source:rnv",
-              "react-native-reanimated": "source:rnv"
+                "react-navigation-stack": "source:rnv",
+                "react-navigation-tabs": "source:rnv",
+                "react-native-reanimated": "source:rnv"
             },
             "npm": {
                 "@react-navigation/core": "3.4.2",
@@ -2126,9 +2126,9 @@
                 "react-native-safe-area-context": "0.7.2"
             },
             "pluginDependencies": {
-              "react-native-screens": "source:rnv",
-              "react-native-safe-area-context": "source:rnv",
-              "react-native-safe-area-view": "source:rnv"
+                "react-native-screens": "source:rnv",
+                "react-native-safe-area-context": "source:rnv",
+                "react-native-safe-area-view": "source:rnv"
             }
         },
         "react-native-safe-area-context": {
@@ -2467,7 +2467,7 @@
                 "DOMAIN": ""
             },
             "pluginDependencies": {
-              "RCTLinkingIOS": "source:rnv"
+                "RCTLinkingIOS": "source:rnv"
             },
             "ios": {
                 "podName": "A0Auth0",

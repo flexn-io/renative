@@ -6,6 +6,24 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.3 (2020-7-8)
+
+### Fixed
+
+- update engine runners
+- scoped dependency resolutions plugin auto install cleaner error log
+- feat: plugin dependency resolver
+- docs update
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.2 (2020-7-7)
 
 ### Fixed
@@ -35,8 +53,21 @@ original_id: changelog
 
 ### Breaking Changes
 
-- none
+- `-p web-next`, `-e next` are no longer be available.
 
+Use:
+
+```json
+{
+    "platforms": {
+        "web": {
+            "engine": "engine-rn-next"
+        }
+    }
+}
+```
+
+instead
 
 ## v0.31.0-alpha.1 (2020-6-30)
 
