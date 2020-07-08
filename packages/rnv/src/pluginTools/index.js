@@ -13,7 +13,7 @@ import {
     fsWriteFileSync
 } from '../systemTools/fileutils';
 import { getConfigProp, getBuildsFolder, getAppFolder } from '../common';
-import { versionCheck } from '../configTools/configParser';
+import { versionCheck, writeRenativeConfigFile } from '../configTools/configParser';
 
 import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import {
@@ -165,7 +165,6 @@ export const rnvPluginAdd = async (c) => {
         c.files.project.config.plugins[key] = 'source:rnv';
 
         // c.buildConfig.plugins[key] = selectedPlugins[key];
-        _checkAndAddDependantPlugins(c, selectedPlugins[key]);
     });
 
     const pluginKeys = Object.keys(questionPlugins);
@@ -190,24 +189,12 @@ export const rnvPluginAdd = async (c) => {
 
     const spinner = ora(`Installing: ${installMessage.join(', ')}`).start();
 
-    writeFileSync(c.paths.project.config, c.files.project.config);
+    writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
+
+    await resolvePluginDependants(c);
+
     spinner.succeed('All plugins installed!');
     logSuccess('Plugins installed successfully!');
-};
-
-const _checkAndAddDependantPlugins = (c, plugin) => {
-    logTask('_checkAndAddDependantPlugins');
-    if (plugin.dependsOn) {
-        plugin.dependsOn.forEach((v) => {
-            Object.keys(c.files.rnv.pluginTemplates.configs).forEach((p) => {
-                const templatePlugins = c.files.rnv.pluginTemplates.configs[p].pluginTemplates;
-                if (templatePlugins[v]) {
-                    logDebug(`Added dependant plugin ${v}`);
-                    c.buildConfig.plugins[v] = templatePlugins[v];
-                }
-            });
-        });
-    }
 };
 
 export const rnvPluginUpdate = async (c) => {
@@ -237,6 +224,8 @@ export const rnvPluginUpdate = async (c) => {
 };
 
 export const getMergedPlugin = (c, key, plugins) => {
+    logDebug(`getMergedPlugin:${key}`);
+
     const plugin = plugins[key];
 
     // const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
@@ -248,7 +237,7 @@ export const getMergedPlugin = (c, key, plugins) => {
         if (plugin.startsWith('source:')) {
             const scope = plugin.split(':').pop();
 
-            origPlugin = c.files.rnv.pluginTemplates.configs[scope]?.pluginTemplates?.[key];
+            origPlugin = c.buildConfig.pluginTemplates?.[scope]?.[key];
 
             if (origPlugin) {
                 origPlugin.source = scope;
@@ -276,7 +265,7 @@ export const getMergedPlugin = (c, key, plugins) => {
 
     if (plugin) {
         if (plugin.source) {
-            origPlugin = c.files.rnv.pluginTemplates.configs[plugin.source]?.pluginTemplates?.[key];
+            origPlugin = c.buildConfig.pluginTemplates?.[plugin.source]?.[key];
             if (rnvPlugin && !origPlugin?.skipMerge) {
                 origPlugin = _getMergedPlugin(
                     c,
@@ -301,7 +290,6 @@ export const getMergedPlugin = (c, key, plugins) => {
         );
         return mergedPlugin;
     }
-
     return plugin;
 };
 
@@ -453,32 +441,51 @@ package.json will be overriden`
 
 export const resolvePluginDependants = async (c) => {
     logTask('resolvePluginDependants');
-    const { plugins, pluginTemplates } = c.buildConfig;
+    const { plugins } = c.buildConfig;
 
     if (plugins) {
         const pluginKeys = Object.keys(plugins);
         for (let i = 0; i < pluginKeys.length; i++) {
             const key = pluginKeys[i];
-            await _resolvePluginDependencies(c, key, null, plugins, pluginTemplates);
+            await _resolvePluginDependencies(c, key, plugins[key], null);
         }
     }
 };
 
-const _resolvePluginDependencies = async (c, key, parentKey, plugins, pluginTemplates) => {
+
+const _getPluginScope = (plugin) => {
+    if (typeof plugin === 'string' || plugin instanceof String) {
+        if (plugin.startsWith('source:')) {
+            const scope = plugin.split(':').pop();
+            return scope;
+        }
+    } else {
+        return plugin?.source;
+    }
+};
+
+const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
+    // IMPORTANT: Do not cache this valuse as they need to be refreshed every
+    // round in case new plugin has been installed and c.buildConfig generated
+    const { plugins, pluginTemplates } = c.buildConfig;
     const plugin = getMergedPlugin(c, key, plugins);
-    const deps = plugin?.dependsOn;
+
+    const pluginScope = _getPluginScope(keyScope);
 
     if (!plugin) {
-        const depPlugin = pluginTemplates[key];
+        const depPlugin = pluginTemplates[pluginScope]?.[key];
 
         if (depPlugin) {
-            // console.log('INSTALL PLUGIN???', key);
+            // console.log('INSTALL PLUGIN???', key, depPlugin.source);
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
-                message: 'Install?',
-                warningMessage: `Plugin ${chalk.white(key)} is not installed`
+                message: `Install ${key}?`,
+                warningMessage: `Plugin ${chalk.white(key)} source:${
+                    chalk.white(pluginScope)} required by ${chalk.red(parentKey)} is not installed`
             });
             if (confirm) {
+                c.files.project.config.plugins[key] = `source:${pluginScope}`;
+                writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
                 logSuccess(`Plugin ${key} sucessfully installed`);
             }
         } else {
@@ -489,12 +496,13 @@ const _resolvePluginDependencies = async (c, key, parentKey, plugins, pluginTemp
         // All good
     }
 
-
+    const deps = plugin?.pluginDependencies;
     if (deps) {
         const depsKeys = Object.keys(deps);
         for (let i = 0; i < depsKeys.length; i++) {
             const depKey = depsKeys[i];
-            await _resolvePluginDependencies(c, depKey, key, plugins, pluginTemplates);
+            const depScope = deps[depKey];
+            await _resolvePluginDependencies(c, depKey, depScope, key);
         }
     }
     return true;

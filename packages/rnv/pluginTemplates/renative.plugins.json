@@ -715,7 +715,7 @@
                     "react-native-svg": "svgs"
                 }
             },
-            "dependsOn": {
+            "pluginDependencies": {
               "svgs": "source:rnv"
             }
         },
@@ -937,7 +937,7 @@
         },
         "react-native-photo-editor": {
             "version": "1.0.5",
-            "dependsOn": {
+            "pluginDependencies": {
               "iOSPhotoEditor": "source:rnv"
             },
             "ios": {
@@ -1567,7 +1567,7 @@
         },
         "@react-native-firebase/analytics": {
             "version": "6.4.1",
-            "dependsOn": {
+            "pluginDependencies": {
               "@react-native-firebase/app": "source:rnv"
             },
             "ios": {
@@ -1600,7 +1600,7 @@
         },
         "@react-native-firebase/crashlytics": {
             "version": "6.4.1",
-            "dependsOn": {
+            "pluginDependencies": {
               "@react-native-firebase/analytics": "source:rnv"
             },
             "ios": {
@@ -2036,7 +2036,7 @@
         },
         "native-base": {
             "version": "2.12.1",
-            "dependsOn": {
+            "pluginDependencies": {
               "react-native-vector-icons": "source:rnv"
             }
         },
@@ -2062,7 +2062,7 @@
         },
         "react-native-web": {
             "version": "0.11.7",
-            "dependsOn": {
+            "pluginDependencies": {
               "react": "source:rnv"
             }
         },
@@ -2079,7 +2079,7 @@
                     "node_modules/react-navigation"
                 ]
             },
-            "dependsOn": {
+            "pluginDependencies": {
               "react-navigation-stack": "source:rnv",
               "react-navigation-tabs": "source:rnv",
               "react-native-reanimated": "source:rnv"
@@ -2125,7 +2125,7 @@
                 "@react-native-community/masked-view": "0.1.6",
                 "react-native-safe-area-context": "0.7.2"
             },
-            "dependsOn": {
+            "pluginDependencies": {
               "react-native-screens": "source:rnv",
               "react-native-safe-area-context": "source:rnv",
               "react-native-safe-area-view": "source:rnv"
@@ -2466,7 +2466,7 @@
             "props": {
                 "DOMAIN": ""
             },
-            "dependsOn": {
+            "pluginDependencies": {
               "RCTLinkingIOS": "source:rnv"
             },
             "ios": {

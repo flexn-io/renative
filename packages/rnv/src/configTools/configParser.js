@@ -370,6 +370,12 @@ const getEnginesPluginDelta = (c) => {
     return enginePlugins;
 };
 
+export const writeRenativeConfigFile = (c, configPath, configData) => {
+    logDebug(`writeRenativeConfigFile:${configPath}`);
+    writeFileSync(configPath, configData);
+    generateBuildConfig(c);
+};
+
 export const generateBuildConfig = (c) => {
     logDebug('generateBuildConfig');
 
@@ -408,11 +414,12 @@ export const generateBuildConfig = (c) => {
         return exists;
     });
 
-    let pluginTemplates = [];
+    const pluginTemplates = {};
     if (c.files.rnv.pluginTemplates.configs) {
-        pluginTemplates = Object.keys(c.files.rnv.pluginTemplates.configs).map(
-            v => c.files.rnv.pluginTemplates.configs[v]
-        );
+        Object.keys(c.files.rnv.pluginTemplates.configs).forEach((v) => {
+            const plgs = c.files.rnv.pluginTemplates.configs[v];
+            pluginTemplates[v] = plgs.pluginTemplates;
+        });
     }
 
     const extraPlugins = getEnginesPluginDelta(c);
@@ -421,7 +428,7 @@ export const generateBuildConfig = (c) => {
         c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,
         { plugins: extraPlugins },
-        ...pluginTemplates,
+        { pluginTemplates },
         c.files.rnv.engines.config,
         c.files.workspace.config,
         c.files.workspace.configPrivate,
