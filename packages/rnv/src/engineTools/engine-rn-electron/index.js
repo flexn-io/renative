@@ -180,6 +180,9 @@ export const _taskLog = async (c) => {
 };
 TASKS[TASK_LOG] = _taskLog;
 
+const applyTemplate = async () => true;
+
 export default {
-    runTask
+    runTask,
+    applyTemplate
 };

@@ -1,6 +1,6 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
-import fs, { mkdirSync } from 'fs';
+import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
 
@@ -35,8 +35,6 @@ import {
     parseRenativeConfigs
 } from '../configTools/configParser';
 import { doResolve } from '../resolve';
-import { getEngineByPlatform } from '../engineTools';
-
 
 // let templateName = c.buildConfig.currentTemplate;
 // if (!templateName) {
@@ -448,25 +446,6 @@ export const configureEntryPoints = async (c) => {
     return true;
 };
 
-const _configureMetroConfigs = async (c, platform) => {
-    const configDir = path.join(c.paths.project.dir, 'configs');
-    if (!fs.existsSync(configDir)) {
-        mkdirSync(configDir);
-    }
-    const dest = path.join(configDir, `metro.config.${platform}.js`);
-    if (!fs.existsSync(dest)) {
-        writeFileSync(
-            dest,
-            `const { EXTENSIONS } = require('rnv/dist/constants');
-const config = require('../metro.config');
-
-config.resolver.sourceExts = EXTENSIONS.${platform};
-module.exports = config;
-`
-        );
-    }
-};
-
 const _writeObjectSync = (c, p, s) => {
     writeFileSync(p, s);
     generateBuildConfig(c);
@@ -543,12 +522,6 @@ export const applyTemplate = async (c, selectedTemplate) => {
     await _configureProjectConfig(c);
     await _configureRenativeConfig(c);
     await configureEntryPoints(c);
-
-    // TODO: will move this to engine
-    const engine = getEngineByPlatform(c, c.platform);
-    if (engine?.requiresMetroConfig) {
-        await _configureMetroConfigs(c, c.platform);
-    }
 };
 
 export const rnvTemplateApply = async (c) => {

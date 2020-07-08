@@ -1,4 +1,6 @@
 /* eslint-disable import/no-cycle */
+import path from 'path';
+import fs from 'fs';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
@@ -40,6 +42,7 @@ import Analytics from '../../systemTools/analytics';
 import { isBundlerActive, waitForBundler } from '../../platformTools/bundler';
 import { checkSdk } from '../../platformTools/sdkManager';
 import { resolvePluginDependants } from '../../pluginTools';
+import { mkdirSync, writeFileSync } from '../../systemTools/fileutils';
 
 const TASKS = {};
 
@@ -302,11 +305,32 @@ export const _taskLog = async (c) => {
 TASKS[TASK_LOG] = _taskLog;
 
 
+const _configureMetroConfigs = async (c, platform) => {
+    const configDir = path.join(c.paths.project.dir, 'configs');
+    if (!fs.existsSync(configDir)) {
+        mkdirSync(configDir);
+    }
+    const dest = path.join(configDir, `metro.config.${platform}.js`);
+    if (!fs.existsSync(dest)) {
+        writeFileSync(
+            dest,
+            `const { EXTENSIONS } = require('rnv/dist/constants');
+const config = require('../metro.config');
+
+config.resolver.sourceExts = EXTENSIONS.${platform};
+module.exports = config;
+`
+        );
+    }
+};
+
+
 const runTask = async (c, task) => {
     logTask(`runTask:engine-rn:${c.platform}`);
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
+    await applyTemplate(c);
     await resolvePluginDependants(c);
 
     Analytics.captureEvent({
@@ -316,6 +340,12 @@ const runTask = async (c, task) => {
     return TASKS[task](c);
 };
 
+const applyTemplate = async (c) => {
+    await _configureMetroConfigs(c, c.platform);
+    return true;
+};
+
 export default {
-    runTask
+    runTask,
+    applyTemplate
 };

@@ -181,6 +181,9 @@ const runTask = async (c, task) => {
     return TASKS[task](c);
 };
 
+const applyTemplate = async () => true;
+
 export default {
-    runTask
+    runTask,
+    applyTemplate
 };
