@@ -490,8 +490,8 @@ export const cleanNodeModules = () => new Promise((resolve, reject) => {
     // ]).then(() => resolve()).catch(e => reject(e));
 });
 
-export const npmInstall = async (failOnError = false) => {
-    logTask('npmInstall');
+export const installPackageDependencies = async (failOnError = false) => {
+    logTask('installPackageDependencies');
     const c = Config.getConfig();
 
     const isYarnInstalled = commandExistsSync('yarn') || doResolve('yarn', false);
@@ -512,7 +512,7 @@ export const npmInstall = async (failOnError = false) => {
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
-    logTask(`npmInstall: package manager used: (${command})`, chalk.grey);
+    logTask(`installPackageDependencies: package manager used: (${command})`, chalk.grey);
 
     try {
         await executeAsync(command);
@@ -526,7 +526,7 @@ export const npmInstall = async (failOnError = false) => {
         );
         try {
             await cleanNodeModules(Config.getConfig());
-            await npmInstall(true);
+            await installPackageDependencies(true);
         } catch (npmErr) {
             return logError(npmErr);
         }

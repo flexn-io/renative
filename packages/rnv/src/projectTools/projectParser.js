@@ -20,7 +20,7 @@ import {
     fsWriteFileSync
 } from '../systemTools/fileutils';
 import { isPlatformActive } from '../platformTools';
-import { npmInstall } from '../systemTools/exec';
+import { installPackageDependencies } from '../systemTools/exec';
 import { logTask, logWarning, logDebug, logInfo } from '../systemTools/logger';
 import { copyTemplatePluginsSync } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
@@ -470,7 +470,7 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
             );
         }
         c._requiresNpmInstall = false;
-        npmInstall()
+        installPackageDependencies()
             .then(() => resolve())
             .catch(e => reject(e));
     } else {

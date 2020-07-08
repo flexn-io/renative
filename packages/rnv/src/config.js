@@ -6,7 +6,7 @@ import fs from 'fs';
 import semver from 'semver';
 
 import { writeFileSync } from './systemTools/fileutils';
-import { npmInstall, executeAsync } from './systemTools/exec';
+import { installPackageDependencies, executeAsync } from './systemTools/exec';
 import { logWarning, logError, logDebug } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
@@ -72,7 +72,7 @@ class Config {
         if (!currentPackage[type]) currentPackage[type] = {};
         currentPackage[type][dependency] = version;
         writeFileSync(existingPath, currentPackage);
-        if (!skipInstall) await npmInstall();
+        if (!skipInstall) await installPackageDependencies();
         return true;
     }
 
@@ -190,7 +190,7 @@ class Config {
                 logWarning(`Found extra npm depenedecies required by ${
                     selectedEngine.id
                 } engine. will install them now`);
-                await npmInstall();
+                await installPackageDependencies();
             }
         }
 

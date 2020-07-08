@@ -123,7 +123,7 @@ const _migrateProjectSoft = async (c, paths) => {
 
         if (fs.existsSync(paths.package)) {
             // const packageString = fs.readFileSync(paths.package).toString();
-            // No longer necessary. covered in npmInstall
+            // No longer necessary. covered in installPackageDependencies
             // if (!packageString.includes('jetify') && !packageString.includes('postinstall')) {
             //     logWarning(`You're missing ${chalk.white('"scripts": { "postinstall": "jetify" }')} in your package.json. Your android build might fail!`);
             // }
