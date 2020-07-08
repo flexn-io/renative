@@ -4,6 +4,7 @@ import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
 import ora from 'ora';
+import merge from 'deepmerge';
 import {
     mergeObjects,
     writeFileSync,
@@ -306,7 +307,7 @@ const _getMergedPlugin = (c, obj1, obj2) => {
     return plugin;
 };
 
-export const configurePlugins = c => new Promise((resolve, reject) => {
+export const configurePlugins = async (c) => {
     logTask('configurePlugins');
 
     if (!c.files.project.package.dependencies) {
@@ -316,13 +317,13 @@ export const configurePlugins = c => new Promise((resolve, reject) => {
     let hasPackageChanged = false;
 
     if (!c.buildConfig?.plugins) {
-        resolve();
         return;
     }
 
+    const newDeps = {};
+    const newDevDeps = {};
+    const { dependencies, devDependencies } = c.files.project.package;
     Object.keys(c.buildConfig.plugins).forEach((k) => {
-        const { dependencies } = c.files.project.package;
-        const { devDependencies } = c.files.project.package;
         const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
 
         if (!plugin) {
@@ -356,7 +357,7 @@ package.json will be overriden`
                     );
 
                     hasPackageChanged = true;
-                    dependencies[k] = plugin.version;
+                    newDeps[k] = plugin.version;
                 }
             }
         } else if (devDependencies && devDependencies[k]) {
@@ -375,7 +376,7 @@ package.json will be overriden`
                     )}). package.json will be overriden`
                 );
                 hasPackageChanged = true;
-                devDependencies[k] = plugin.version;
+                newDevDeps[k] = plugin.version;
             }
         } else if (
             plugin['no-active'] !== true
@@ -390,7 +391,7 @@ package.json will be overriden`
                 );
 
                 hasPackageChanged = true;
-                dependencies[k] = plugin.version;
+                newDeps[k] = plugin.version;
             }
         }
 
@@ -405,19 +406,19 @@ package.json will be overriden`
                             npmKey
                         )} .Adding missing npm dependency to you package.json`
                     );
-                    dependencies[npmKey] = npmDep;
+                    newDeps[npmKey] = npmDep;
                     hasPackageChanged = true;
                 } else if (dependencies[npmKey] !== npmDep) {
                     logWarning(
                         `Plugin ${chalk.white(
                             k
-                        )} dependency mismatch (${chalk.red(
+                        )} npm dependency ${chalk.white(npmKey)} mismatch (${chalk.red(
                             dependencies[npmKey]
                         )}) => (${chalk.green(
                             npmDep
                         )}) .updating npm dependency in your package.json`
                     );
-                    dependencies[npmKey] = npmDep;
+                    newDeps[npmKey] = npmDep;
                     hasPackageChanged = true;
                 }
             });
@@ -425,19 +426,16 @@ package.json will be overriden`
     });
 
     logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
-    versionCheck(c)
-        .then(() => {
-            if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
-                writeFileSync(
-                    c.paths.project.package,
-                    c.files.project.package
-                );
-                c._requiresNpmInstall = true;
-            }
-            resolve();
-        })
-        .catch(e => reject(e));
-});
+    await versionCheck(c);
+
+    if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
+        let newPackage = merge(c.files.project.package, { dependencies: newDeps });
+        newPackage = merge(newPackage, { devDependencies: newDevDeps });
+        writeRenativeConfigFile(c, c.paths.project.package, newPackage);
+        c._requiresNpmInstall = true;
+    }
+    return true;
+};
 
 export const resolvePluginDependants = async (c) => {
     logTask('resolvePluginDependants');

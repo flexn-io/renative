@@ -433,14 +433,14 @@ export const removeDirSync = (_dir, _rmSelf) => {
     }
 };
 
-export const writeFileSync = (filePath, obj, spaces, addNewLine = true) => {
+export const writeFileSync = (filePath, obj, spaces = 4, addNewLine = true) => {
     logDebug('writeFileSync', filePath);
     if (filePath.includes('?') || filePath.includes('undefined')) return;
     let output;
     if (typeof obj === 'string') {
         output = obj;
     } else {
-        output = `${JSON.stringify(obj, null, spaces || 4)}${
+        output = `${JSON.stringify(obj, null, spaces)}${
             addNewLine ? '\n' : ''
         }`;
     }

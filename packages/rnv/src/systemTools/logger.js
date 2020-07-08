@@ -259,6 +259,10 @@ export const logSummary = (header = 'SUMMARY') => {
     str += printIntoBox('');
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
     str += printIntoBox('');
+    if (_c?.runtime?.platformBuildsProjectPath) {
+        str += chalk.grey(`│ Project location:
+│ ${chalk.cyan(_c.runtime.platformBuildsProjectPath)}\n`);
+    }
     str += printBoxEnd();
 
     console.log(str);
