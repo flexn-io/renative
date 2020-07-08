@@ -754,6 +754,7 @@ const configureXcodeProject = async (c, platform, ip, port) => {
     const { device } = c.program;
     const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c, platform);
+    c.runtime.platformBuildsProjectPath = `${appFolder}/RNVApp.xcworkspace`;
     const appFolderName = getAppFolderName(c, platform);
     const bundleAssets = getConfigProp(c, platform, 'bundleAssets') === true;
     // INJECTORS
@@ -777,7 +778,8 @@ const configureXcodeProject = async (c, platform, ip, port) => {
                 didFailToRegisterForRemoteNotificationsWithError: [],
                 didReceive: [],
                 didRegister: [],
-                didRegisterForRemoteNotificationsWithDeviceToken: []
+                didRegisterForRemoteNotificationsWithDeviceToken: [],
+                continue: []
             },
             userNotificationCenter: {
                 willPresent: []

@@ -2286,7 +2286,7 @@
             }
         },
         "@react-native-community/masked-view": {
-            "version": "0.1.1",
+            "version": "0.1.6",
             "ios": {
                 "path": "node_modules/@react-native-community/masked-view",
                 "podName": "RNCMaskedView"

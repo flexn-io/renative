@@ -9,7 +9,7 @@ import {
     sanitizeColor,
     getFlavouredProp
 } from '../../common';
-import { logTask, logDebug } from '../../systemTools/logger';
+import { logTask, logDebug, logWarning } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
 import { writeCleanFile } from '../../systemTools/fileutils';
 
@@ -98,6 +98,13 @@ export const parseAppDelegate = (
                 begin: 'var handled = false',
                 render: v => `if(!handled) { handled = ${v} }`,
                 end: 'return handled'
+            },
+            continue: {
+                func:
+                        'func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {',
+                begin: null,
+                render: v => `return ${v}`,
+                end: null
             },
             supportedInterfaceOrientationsFor: {
                 func:
@@ -237,13 +244,17 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
         Object.keys(appDelegateMethods).forEach((delKey) => {
             Object.keys(appDelegateMethods[delKey]).forEach((key2) => {
                 const plugArr = c.pluginConfigiOS.appDelegateMethods[delKey][key2];
-                const plugVal = appDelegateMethods[delKey][key2];
-                if (plugVal) {
-                    plugVal.forEach((v) => {
-                        if (!plugArr.includes(v)) {
-                            plugArr.push(v);
-                        }
-                    });
+                if (!plugArr) {
+                    logWarning(`appDelegateMethods.${delKey}.${chalk.red(key2)} not supported. SKIPPING.`);
+                } else {
+                    const plugVal = appDelegateMethods[delKey][key2];
+                    if (plugVal) {
+                        plugVal.forEach((v) => {
+                            if (!plugArr.includes(v)) {
+                                plugArr.push(v);
+                            }
+                        });
+                    }
                 }
             });
         });
