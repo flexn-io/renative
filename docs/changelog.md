@@ -5,6 +5,24 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.4 (2020-7-8)
+
+### Fixed
+
+- feat: add project links helper
+- feat: add support for application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler
+- rename npminstall
+- npm dep invalidation fix
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.3 (2020-7-8)
 
 ### Fixed
