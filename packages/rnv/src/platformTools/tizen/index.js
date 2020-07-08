@@ -506,6 +506,8 @@ let _isGlobalConfigured = false;
 export const configureTizenProject = async (c, platform) => {
     logTask('configureTizenProject');
 
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+
     if (!isPlatformActive(c, platform)) return;
 
     if (!_isGlobalConfigured) {

@@ -309,6 +309,8 @@ const buildWebOSProject = async (c, platform) => {
 const configureWebOSProject = async (c, platform) => {
     logTask('configureWebOSProject');
 
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);

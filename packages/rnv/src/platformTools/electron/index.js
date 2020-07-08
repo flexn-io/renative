@@ -44,6 +44,8 @@ import {
 const configureElectronProject = async (c, platform) => {
     logTask(`configureElectronProject:${platform}`);
 
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+
     await copyAssetsFolder(
         c,
         platform,

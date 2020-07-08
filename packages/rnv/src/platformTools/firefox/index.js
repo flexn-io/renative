@@ -57,6 +57,8 @@ const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
 const configureKaiOSProject = async (c, platform) => {
     logTask('configureKaiOSProject');
 
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);

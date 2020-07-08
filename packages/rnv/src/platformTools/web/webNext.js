@@ -8,7 +8,8 @@ import {
     checkPortInUse,
     getConfigProp,
     waitForWebpack,
-    confirmActiveBundler
+    confirmActiveBundler,
+    getAppFolder
 } from '../../common';
 import { logTask, logInfo, logWarning, logDebug, logRaw } from '../../systemTools/logger';
 import { NEXT_CONFIG_NAME } from '../../constants';
@@ -18,6 +19,7 @@ import { getValidLocalhost } from '../../utils';
 
 const configureNextIfRequired = async (c) => {
     logTask('configureNextIfRequired');
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
     const publicDir = path.join(dir, 'public');
     const baseFontsDir = c.paths.appConfig.fontDirs?.[0];

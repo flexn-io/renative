@@ -2,9 +2,12 @@
 import { runWeb, configureCoreWebProject } from '../web';
 import { logTask } from '../../systemTools/logger';
 import { copyBuildsFolder, copyAssetsFolder } from '../../projectTools/projectParser';
+import { getAppFolder } from '../../common';
 
 export const configureChromecastProject = async (c) => {
     logTask(`configureChromecastProject:${c.platform}`);
+
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}/public`;
 
     await copyAssetsFolder(c, c.platform);
     await configureCoreWebProject(c, c.platform);

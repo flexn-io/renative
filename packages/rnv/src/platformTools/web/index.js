@@ -189,6 +189,8 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 const configureWebProject = async (c, platform) => {
     logTask(`configureWebProject:${platform}`);
 
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}/public`;
+
     if (!isPlatformActive(c, platform)) return;
 
     await copyAssetsFolder(c, platform);
