@@ -270,7 +270,7 @@ const ASSET_PATH_ALIASES = {
 };
 
 export const copyAssetsFolder = async (c, platform, customFn) => {
-    logTask(`copyAssetsFolder:${platform}`);
+    logTask('copyAssetsFolder');
 
     if (!isPlatformActive(c, platform)) return;
 
@@ -453,7 +453,7 @@ export const upgradeProjectDependencies = (c, version) => {
 };
 
 export const configureNodeModules = c => new Promise((resolve, reject) => {
-    logTask('configureNodeModules', `requiresInstall:${c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
+    logTask('configureNodeModules', `requiresInstall:${!!c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
     // Check node_modules
     if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
         if (!areNodeModulesInstalled()) {

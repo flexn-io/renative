@@ -117,7 +117,7 @@ export const sanitizeColor = (val, key) => {
 };
 
 export const isBuildSchemeSupported = async (c) => {
-    logTask(`isBuildSchemeSupported:${c.platform}`);
+    logTask('isBuildSchemeSupported');
 
     const { scheme } = c.program;
 

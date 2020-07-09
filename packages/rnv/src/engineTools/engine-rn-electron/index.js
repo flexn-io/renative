@@ -158,7 +158,7 @@ const _taskDebug = async (c) => {
 TASKS[TASK_DEBUG] = _taskDebug;
 
 const runTask = async (c, task) => {
-    logTask(`runTask:engine-rn-electron:${c.platform}`);
+    logTask('runTask:engine-rn-electron');
 
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);

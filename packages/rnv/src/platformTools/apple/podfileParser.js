@@ -14,7 +14,7 @@ import { executeAsync } from '../../systemTools/exec';
 import { writeCleanFile } from '../../systemTools/fileutils';
 
 export const parsePodFile = async (c, platform) => {
-    logTask(`parsePodFileSync:${platform}`);
+    logTask('parsePodFile');
 
     const appFolder = getAppFolder(c, platform);
     let pluginInject = '';

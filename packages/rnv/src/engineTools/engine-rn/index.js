@@ -8,11 +8,12 @@ import {
     configureIfRequired,
     cleanPlatformIfRequired,
     getConfigProp,
-    confirmActiveBundler
+    confirmActiveBundler,
+    getEntryFile
 } from '../../common';
 import { doResolve } from '../../resolve';
 import { isPlatformSupported } from '../../platformTools';
-import { logTask, logError, logSummary, logInfo } from '../../systemTools/logger';
+import { logTask, logError, logSummary, logInfo, logRaw } from '../../systemTools/logger';
 import {
     IOS,
     TVOS,
@@ -38,7 +39,6 @@ import {
     runAndroidLog
 } from '../../platformTools/android';
 import { executeAsync } from '../../systemTools/exec';
-import Config from '../../config';
 import Analytics from '../../systemTools/analytics';
 
 import { isBundlerActive, waitForBundler } from '../../platformTools/bundler';
@@ -59,7 +59,7 @@ const waitForBundlerIfRequired = async (c) => {
 };
 
 const _startBundlerIfRequired = async (c) => {
-    logTask(`_startBundlerIfRequired:${c.platform}`);
+    logTask('_startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
 
@@ -73,13 +73,21 @@ const _startBundlerIfRequired = async (c) => {
     }
 };
 
+const BUNDLER_PLATFORMS = {};
+
+BUNDLER_PLATFORMS[IOS] = IOS;
+BUNDLER_PLATFORMS[TVOS] = IOS;
+BUNDLER_PLATFORMS[ANDROID] = [ANDROID];
+BUNDLER_PLATFORMS[ANDROID_TV] = [ANDROID];
+BUNDLER_PLATFORMS[ANDROID_WEAR] = [ANDROID];
+
+
 export const _taskStart = async (c) => {
     const { platform } = c;
-    const { port } = c.runtime;
     const { hosted } = c.program;
 
     logTask(
-        `_taskStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`
+        '_taskStart', `port:${c.runtime.port} hosted:${!!hosted}`
     );
 
     if (hosted) {
@@ -107,6 +115,13 @@ export const _taskStart = async (c) => {
                 startCmd += ' --reset-cache';
             }
             // logSummary('BUNDLER STARTED');
+            const url = chalk.cyan(`http://${c.runtime.localhost}:${c.runtime.port}/${
+                getEntryFile(c, c.platform)}.bundle?platform=${BUNDLER_PLATFORMS[platform]}`);
+            logRaw(`
+
+Dev server running at: ${url}
+
+`);
             return executeAsync(c, startCmd, { stdio: 'inherit', silent: true });
         }
         default:
@@ -121,7 +136,7 @@ const _taskRun = async (c) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask(`_taskRun:${platform}:${port}:${target}:${hosted}`);
+    logTask('_taskRun', `port:${port} target:${target} hosted:${hosted}`);
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
@@ -342,7 +357,7 @@ module.exports = config;
 
 
 const runTask = async (c, task) => {
-    logTask(`runTask:engine-rn:${c.platform}`);
+    logTask('runTask', 'engine-rn');
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);

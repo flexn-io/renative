@@ -22,7 +22,7 @@ const _isBundlerRunning = async (c) => {
 };
 
 export const isBundlerActive = async (c) => {
-    logTask(`isBundlerActive:${c.platform}:http://${c.runtime.localhost}:${c.runtime.port}`);
+    logTask('isBundlerActive', `(http://${c.runtime.localhost}:${c.runtime.port})`);
     try {
         await axios.get(`http://${c.runtime.localhost}:${c.runtime.port}`);
         return true;

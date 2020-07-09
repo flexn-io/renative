@@ -554,7 +554,7 @@ export const generateRuntimeConfig = async (c) => {
 };
 
 export const generateLocalConfig = (c, resetAppId) => {
-    logTask(`generateLocalConfig:${resetAppId}:${c.paths.project.configLocal}`);
+    logTask('generateLocalConfig', `resetAppId:${!!resetAppId}`);
     const configLocal = c.files.project.configLocal || {};
     configLocal._meta = configLocal._meta || {};
     if (resetAppId) {
@@ -721,7 +721,7 @@ const _loadWorkspacesSync = (c) => {
 };
 
 export const setAppConfig = async (c, appId) => {
-    logTask(`setAppConfig:${appId}`);
+    logTask('setAppConfig', `appId:${appId}`);
 
     if (!appId || appId === true || appId === true) return;
 
@@ -775,7 +775,7 @@ export const setAppConfig = async (c, appId) => {
 };
 
 export const updateConfig = async (c, appConfigId) => {
-    logTask(`updateConfig:${appConfigId}`);
+    logTask('updateConfig', `appId:${appConfigId}`);
 
     await setAppConfig(c, appConfigId);
 

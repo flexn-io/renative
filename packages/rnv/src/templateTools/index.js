@@ -112,7 +112,7 @@ const _cleanProjectTemplateSync = (c) => {
 };
 
 const _applyTemplate = async (c) => {
-    logTask(`_applyTemplate | current:${c.buildConfig.currentTemplate} | selected:${c.runtime.selectedTemplate}`);
+    logTask('_applyTemplate', `current:${c.buildConfig.currentTemplate} selected:${c.runtime.selectedTemplate}`);
 
     if (c.runtime.selectedTemplate) {
         _cleanProjectTemplateSync(c);
@@ -496,7 +496,7 @@ export const rnvTemplateAdd = async (c) => {
 
 export const applyTemplate = async (c, selectedTemplate) => {
     logTask(
-        `applyTemplate:${c.buildConfig.currentTemplate}=>${selectedTemplate}:`
+        'applyTemplate', `${c.buildConfig.currentTemplate}=>${selectedTemplate}`
     );
     c.runtime.selectedTemplate = selectedTemplate;
 

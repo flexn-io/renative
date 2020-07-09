@@ -23,7 +23,7 @@ export const parseAppDelegate = (
     port
 ) => new Promise((resolve) => {
     const newPort = port || c.runtime?.port;
-    logTask(`parseAppDelegateSync:${platform}:${ip}:${newPort}`);
+    logTask('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
     const appDelegate = 'AppDelegate.swift';
 
     const entryFile = getEntryFile(c, platform);
@@ -220,13 +220,13 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
     if (appDelegateImports instanceof Array) {
         appDelegateImports.forEach((appDelegateImport) => {
             // Avoid duplicate imports
-            logTask('appDelegateImports add', chalk.grey);
+            logDebug('appDelegateImports add');
             if (
                 c.pluginConfigiOS.pluginAppDelegateImports.indexOf(
                     appDelegateImport
                 ) === -1
             ) {
-                logTask('appDelegateImports add ok', chalk.grey);
+                logDebug('appDelegateImports add ok');
                 c.pluginConfigiOS.pluginAppDelegateImports += `import ${appDelegateImport}\n`;
             }
         });

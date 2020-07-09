@@ -9,7 +9,7 @@ import { getAppFolderName } from './index';
 import { writeCleanFile } from '../../systemTools/fileutils';
 
 export const parseXcscheme = async (c, platform) => {
-    logTask(`parseXcscheme:${platform}`);
+    logTask('parseXcscheme');
     // XCSCHEME
     // const allowProvisioningUpdates = getConfigProp(
     //     c,

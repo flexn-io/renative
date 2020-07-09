@@ -13,37 +13,37 @@ export const rnvStart = async (c) => {
 };
 
 export const rnvDebug = async (c) => {
-    logTask(`rnvDebug:${c.platform}`);
+    logTask('rnvDebug');
 
     return getEngineRunner(c).runTask(c, TASK_DEBUG);
 };
 
 export const rnvRun = async (c) => {
-    logTask(`rnvRun:${c.platform}`);
+    logTask('rnvRun');
     return getEngineRunner(c).runTask(c, TASK_RUN);
 };
 
 export const rnvPackage = async (c) => {
-    logTask(`rnvPackage:${c.platform}`);
+    logTask('rnvPackage');
     return getEngineRunner(c).runTask(c, TASK_PACKAGE);
 };
 
 export const rnvBuild = async (c) => {
-    logTask(`rnvBuild:${c.platform}`);
+    logTask('rnvBuild');
     return getEngineRunner(c).runTask(c, TASK_BUILD);
 };
 
 export const rnvExport = async (c) => {
-    logTask(`rnvExport:${c.platform}`);
+    logTask('rnvExport');
     return getEngineRunner(c).runTask(c, TASK_EXPORT);
 };
 
 export const rnvDeploy = async (c) => {
-    logTask(`rnvDeploy:${c.platform}`);
+    logTask('rnvDeploy');
     return getEngineRunner(c).runTask(c, TASK_DEPLOY);
 };
 
 export const rnvLog = async (c) => {
-    logTask(`rnvLog:${c.platform}`);
+    logTask('rnvLog');
     return getEngineRunner(c).runTask(c, TASK_LOG);
 };

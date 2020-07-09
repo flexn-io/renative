@@ -750,9 +750,11 @@ export const overrideTemplatePlugins = async (c) => {
 };
 
 export const copyTemplatePluginsSync = (c, platform) => {
-    logTask(`copyTemplatePluginsSync:${platform}`);
-
     const destPath = path.join(getAppFolder(c, platform));
+
+    logTask('copyTemplatePluginsSync', `(${destPath})`);
+
+
     parsePlugins(c, platform, (plugin, pluginPlat, key) => {
         const objectInject = [...c.runtime.configPropsInject];
         if (plugin.props) {

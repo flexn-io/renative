@@ -154,7 +154,7 @@ export const checkAndConfigureWebosSdks = async (c) => {
 };
 
 export const checkAndConfigureSdks = async (c) => {
-    logTask(`checkAndConfigureSdks:${c.platform}`);
+    logTask('checkAndConfigureSdks');
 
     switch (c.platform) {
         case ANDROID:
@@ -175,7 +175,7 @@ export const checkAndConfigureSdks = async (c) => {
 const _getCurrentSdkPath = c => c.buildConfig?.sdks?.[SDK_PLATFORMS[c.platform]];
 
 const _isSdkInstalled = (c) => {
-    logTask(`_isSdkInstalled: ${c.platform}`);
+    logTask('_isSdkInstalled');
 
     if (!SDK_PLATFORMS[c.platform]) return true;
 

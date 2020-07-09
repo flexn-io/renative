@@ -44,7 +44,7 @@ import { configureChromecastProject } from '../platformTools/chromecast';
 
 export const rnvConfigure = async (c) => {
     const p = c.platform || 'all';
-    logTask(`rnvConfigure:${c.platform}:${p}`);
+    logTask('rnvConfigure', `platform:${p}`);
 
     // inject packages if needed
     if (p !== 'all') await injectPlatformDependencies(c, p);
@@ -128,7 +128,7 @@ const _isOK = (c, p, list) => {
 
 /* eslint-disable no-await-in-loop */
 const _checkAndCreatePlatforms = async (c, platform) => {
-    logTask(`_checkAndCreatePlatforms:${platform}`);
+    logTask('_checkAndCreatePlatforms');
 
     if (!fs.existsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');

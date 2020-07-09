@@ -293,7 +293,7 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
 });
 
 export const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
-    logTask(`createPlatformBuild:${platform}`);
+    logTask('createPlatformBuild');
 
     if (!_isPlatformSupportedSync(platform, null, reject)) return;
 
@@ -314,7 +314,7 @@ export const createPlatformBuild = (c, platform) => new Promise((resolve, reject
 });
 
 export const isPlatformSupported = async (c) => {
-    logTask(`isPlatformSupported:${c.platform}`);
+    logTask('isPlatformSupported');
     let platformsAsObj = c.buildConfig
         ? c.buildConfig.platforms
         : c.supportedPlatforms;

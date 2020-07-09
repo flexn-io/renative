@@ -617,7 +617,7 @@ const run = async (c, spawnC, skipStartBuilder) => {
 };
 
 const _execute = async (c, cmdFn, cmd) => {
-    logTask(`_execute:${c.command}:${c.subCommand}`);
+    logTask('_execute', `command:${c.command} subCommand:${c.subCommand}`);
 
     // engine handling
     if (c.program.engine === 'next') {
