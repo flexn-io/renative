@@ -514,6 +514,9 @@ export const configureAndroidProperties = (c, platform) => new Promise((resolve)
 
     const appFolder = getAppFolder(c, platform);
 
+    c.runtime.platformBuildsProjectPath = appFolder;
+
+
     const addNDK = c.buildConfig?.sdks?.ANDROID_NDK
             && !c.buildConfig.sdks.ANDROID_NDK.includes('<USER>');
     const ndkString = `ndk.dir=${getRealPath(

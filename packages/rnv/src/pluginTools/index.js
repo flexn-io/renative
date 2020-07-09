@@ -27,6 +27,9 @@ import {
 } from '../systemTools/logger';
 import { doResolve } from '../resolve';
 import { inquirerPrompt } from '../systemTools/prompt';
+import {
+    configureNodeModules,
+} from '../projectTools/projectParser';
 
 export const rnvPluginList = c => new Promise((resolve) => {
     logTask('_runList');
@@ -448,6 +451,13 @@ export const resolvePluginDependants = async (c) => {
             await _resolvePluginDependencies(c, key, plugins[key], null);
         }
     }
+
+    if (c._requiresNpmInstall) {
+        await configurePlugins(c);
+        await configureNodeModules(c);
+    }
+
+    return true;
 };
 
 
@@ -485,6 +495,7 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
                 c.files.project.config.plugins[key] = `source:${pluginScope}`;
                 writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
                 logSuccess(`Plugin ${key} sucessfully installed`);
+                c._requiresNpmInstall = true;
             }
         } else {
             logWarning(`Plugin ${chalk.white(parentKey)} requires ${
