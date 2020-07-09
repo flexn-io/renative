@@ -2063,9 +2063,7 @@
         "react-native-web": {
             "version": "0.11.7",
             "pluginDependencies": {
-                "react": "source:rnv",
-                "react-native-system-setting": "source:rnv",
-                "react-native-view-shot": "source:rnv"
+                "react": "source:rnv"
             }
         },
         "react-native-web-image-loader": {
