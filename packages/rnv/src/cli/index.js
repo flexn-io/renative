@@ -1,11 +1,13 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
+import { printTable } from 'console-table-printer';
 import {
     logTask,
     rnvStatus,
     logToSummary,
     logAppInfo,
-    logError
+    logError,
+    logWarning
 } from '../systemTools/logger';
 import {
     rnvWorkspaceList,
@@ -82,10 +84,11 @@ import {
     WEBOS,
     MACOS,
     WINDOWS,
-    TIZEN_WATCH
+    TIZEN_WATCH,
+    configSchema
 } from '../constants';
 // import { getBinaryPath } from '../common';
-import Config, { rnvConfigHandler } from '../config';
+import Config from '../config';
 import { checkAndMigrateProject } from '../projectTools/migrator';
 import {
     parseRenativeConfigs,
@@ -136,13 +139,42 @@ ${chalk.bold.white('OPTIONS:')}
 `);
 };
 
+const _rnvConfigHandler = () => {
+    const [, key, value] = Config.rnvArguments; // first arg is config so it's useless
+    if (key === 'list') {
+        const rows = [];
+        Object.keys(configSchema).forEach(k => rows.push(Config.listConfigValue(k)));
+
+        printTable([].concat(...rows));
+        return true;
+    }
+
+    // validate args
+    if (!key) {
+        // @todo add inquirer with list of options
+        logWarning('Please specify a config');
+        return true;
+    }
+    if (!configSchema[key]) {
+        logWarning(`Unknown config ${key}`);
+        return true;
+    }
+
+    if (!value) {
+        // list the value
+        printTable(Config.listConfigValue(key));
+    } else if (Config.setConfigValue(key, value)) { printTable(Config.listConfigValue(key)); }
+
+    return true;
+};
+
 const COMMANDS = {
     start: {
         fn: rnvStart,
         platforms: SUPPORTED_PLATFORMS
     },
     config: {
-        fn: rnvConfigHandler,
+        fn: _rnvConfigHandler,
         desc: 'Edit or display RNV configs'
     },
     run: {

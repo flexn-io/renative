@@ -100,7 +100,7 @@ const selectToolAndExecute = async ({
         } option would you like to use for ${chalk.white(c.platform)}?`
     });
 
-    await configFunction(selectedTarget);
+    await configFunction(c, selectedTarget);
 
     logInfo(
         `Setting your appconfig for ${chalk.white(platform)} to include ${

@@ -1,24 +1,11 @@
 /* eslint-disable global-require, import/no-dynamic-require, valid-typeof */
 /* eslint-disable import/no-cycle */
 
-import { printTable } from 'console-table-printer';
 import fs from 'fs';
-import semver from 'semver';
-
 import { writeFileSync } from './systemTools/fileutils';
-import { installPackageDependencies, executeAsync } from './systemTools/exec';
-import { logWarning, logError, logDebug } from './systemTools/logger';
-import { inquirerPrompt } from './systemTools/prompt';
+import { logWarning } from './systemTools/logger';
 import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
-import { getEngineByPlatform } from './engineTools';
-import { writeRenativeConfigFile } from './configTools/configParser';
-
-
-export const CLI_PROPS = [
-    'provisioningStyle',
-    'codeSignIdentity',
-    'provisionProfileSpecifier'
-];
+import { getConfigProp } from './common';
 
 class Config {
     constructor() {
@@ -63,141 +50,9 @@ class Config {
         return argsCopy.filter(arg => !!arg);
     }
 
-    async injectProjectDependency(
-        dependency,
-        version,
-        type,
-        skipInstall = false
-    ) {
-        const currentPackage = this.config.files.project.package;
-        const existingPath = this.config.paths.project.package;
-        if (!currentPackage[type]) currentPackage[type] = {};
-        currentPackage[type][dependency] = version;
-        // writeFileSync(existingPath, currentPackage);
-        writeRenativeConfigFile(this.config, existingPath, currentPackage);
-        if (!skipInstall) await installPackageDependencies();
-        return true;
-    }
 
     getProjectConfig() {
         return this.config.files.project;
-    }
-
-    async checkRequiredPackage(pkg, version = false, type, skipAsking = false,
-        skipInstall = false, skipVersionCheck = false) {
-        if (!pkg) return false;
-        const projectConfig = this.getProjectConfig();
-
-        if (!projectConfig.package[type]?.[pkg]) {
-            // package does not exist, adding it
-            let confirm = skipAsking;
-            if (!confirm) {
-                const resp = await inquirerPrompt({
-                    type: 'confirm',
-                    message: `You do not have ${pkg} installed. Do you want to add it now?`
-                });
-                // eslint-disable-next-line prefer-destructuring
-                confirm = resp.confirm;
-            }
-
-            if (confirm) {
-                let latestVersion = 'latest';
-                if (!version && !skipVersionCheck) {
-                    try {
-                        latestVersion = await executeAsync(
-                            `npm show ${pkg} version`
-                        );
-                        // eslint-disable-next-line no-empty
-                    } catch (e) {}
-                }
-                return this.injectProjectDependency(
-                    pkg,
-                    version || latestVersion,
-                    type,
-                    skipInstall
-                );
-            }
-        } else if (!version) {
-            // package exists, checking version only if version is not
-            const currentVersion = projectConfig.package[type][pkg];
-            let latestVersion = false;
-            try {
-                latestVersion = await executeAsync(`npm show ${pkg} version`);
-                // eslint-disable-next-line no-empty
-            } catch (e) {}
-            if (latestVersion) {
-                let updateAvailable = false;
-
-                try {
-                    // semver might fail if you have a path instead of a version (like when you are developing)
-                    updateAvailable = semver.lt(currentVersion, latestVersion);
-                    // eslint-disable-next-line no-empty
-                } catch (e) {}
-
-                if (updateAvailable) {
-                    let confirm = skipAsking;
-                    if (!confirm) {
-                        const resp = await inquirerPrompt({
-                            type: 'confirm',
-                            message: `Seems like ${pkg}@${
-                                currentVersion
-                            } is installed while there is a newer version, ${
-                                pkg
-                            }@${latestVersion}. Do you want to upgrade?`
-                        });
-                        // eslint-disable-next-line prefer-destructuring
-                        confirm = resp.confirm;
-                    }
-
-                    if (confirm) {
-                        return this.injectProjectDependency(
-                            pkg,
-                            latestVersion,
-                            type,
-                            skipInstall
-                        );
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    async injectPlatformDependencies(platform) {
-        const selectedEngine = getEngineByPlatform(this.config, platform);
-        const npmDeps = selectedEngine?.platforms[platform]?.npm;
-
-        if (npmDeps) {
-            const promises = Object.keys(npmDeps).reduce((acc, type) => {
-                // iterate over dependencies, devDepencencies or optionalDependencies
-                Object.keys(npmDeps[type]).forEach((dep) => {
-                    // iterate over deps
-                    acc.push(
-                        this.checkRequiredPackage(
-                            dep,
-                            npmDeps[type][dep],
-                            type,
-                            true,
-                            true
-                        )
-                    );
-                });
-                return acc;
-            }, []);
-
-            const installed = await Promise.all(promises);
-
-            if (installed.some(i => i === true)) {
-                // do npm i only if something new is added
-                logWarning(`Found extra npm depenedecies required by ${
-                    selectedEngine.id
-                } engine. will install them now`);
-                await installPackageDependencies();
-            }
-        }
-
-        // add other deps that are not npm
     }
 
     get platform() {
@@ -299,70 +154,10 @@ class Config {
         return false;
     }
 
-    getValueOrMergedObject(
-        resultCli,
-        resultScheme,
-        resultPlatforms,
-        resultCommon
-    ) {
-        if (resultCli !== undefined) {
-            return resultCli;
-        }
-        if (resultScheme !== undefined) {
-            if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') { return resultScheme; }
-            const val = Object.assign(
-                resultCommon || {},
-                resultPlatforms || {},
-                resultScheme
-            );
-            return val;
-        }
-        if (resultPlatforms !== undefined) {
-            if (
-                Array.isArray(resultPlatforms)
-                || typeof resultPlatforms !== 'object'
-            ) { return resultPlatforms; }
-            return Object.assign(resultCommon || {}, resultPlatforms);
-        }
-        if (resultPlatforms === null) return null;
-        return resultCommon;
-    }
-
-    getConfigProp(c, platform, key, defaultVal) {
-        if (!c.buildConfig) {
-            logError('getConfigProp: c.buildConfig is undefined!');
-            return null;
-        }
-        const p = c.buildConfig.platforms[platform];
-        const ps = c.runtime.scheme;
-        let resultPlatforms;
-        let scheme;
-        if (p) {
-            scheme = p.buildSchemes ? p.buildSchemes[ps] : undefined;
-            resultPlatforms = c.buildConfig.platforms[platform][key];
-        }
-
-        scheme = scheme || {};
-        const resultCli = CLI_PROPS.includes(key) ? c.program[key] : undefined;
-        const resultScheme = scheme[key];
-        const resultCommon = c.buildConfig.common?.[key];
-
-        let result = this.getValueOrMergedObject(
-            resultCli,
-            resultScheme,
-            resultPlatforms,
-            resultCommon
-        );
-
-        if (result === undefined) result = defaultVal; // default the value only if it's not specified in any of the files. i.e. undefined
-        logDebug(`getConfigProp:${platform}:${key}:${result}`);
-        return result;
-    }
-
     get isWebHostEnabled() {
         const { hosted } = this.config.program;
         // if (debug) return false;
-        const bundleAssets = this.getConfigProp(
+        const bundleAssets = getConfigProp(
             this.config,
             this.platform,
             'bundleAssets'
@@ -380,80 +175,8 @@ class Config {
     get projectPath() {
         return this.config.paths.project.dir;
     }
-
-    //     getBuildConfig() {
-    //         return this.config.buildConfig;
-    //     }
-
-    //     updateLocalConfig() {
-    //         writeFileSync(file, newConfig);
-    //         this.initializeConfig();
-    //     }
-
-    //     updateGlobalonfig() {
-    //         writeFileSync(file, newConfig);
-    //         this.initializeConfig();
-    //     }
-
-    //     updateCLIPath() {
-    //         writeFileSync(file, newConfig);
-    //         this.initializeConfig();
-    //     }
-
-    //     getPath(path) { // getPath(RNV_PLUGINTEMPLATES_DIR) / PROJECT_BUILDS_DIR...
-    //         return this.config.paths[path];
-    //     }
-
-    //     get getInfo() {
-    //         return this.c.program.info;
-    //     }
-
-    //     get platform() {
-    //         return this.config.program.platform;
-    //     }
-
-    //     get mono() {
-    //         return this.config.program.mono;
-    //     }
-
-    //     get target() {}
-
-    //     set target(newTarget) {
-    //         this.config.target = newTarget;
-    //         this.initializeConfig();
-    //     }
 }
 
 const Conf = new Config();
-// excluded from Config because for some reason passing this function to RNV as a handler makes it lose it's context
-const rnvConfigHandler = () => {
-    const [, key, value] = Conf.rnvArguments; // first arg is config so it's useless
-    if (key === 'list') {
-        const rows = [];
-        Object.keys(configSchema).forEach(k => rows.push(Conf.listConfigValue(k)));
-
-        printTable([].concat(...rows));
-        return true;
-    }
-
-    // validate args
-    if (!key) {
-        // @todo add inquirer with list of options
-        logWarning('Please specify a config');
-        return true;
-    }
-    if (!configSchema[key]) {
-        logWarning(`Unknown config ${key}`);
-        return true;
-    }
-
-    if (!value) {
-        // list the value
-        printTable(Conf.listConfigValue(key));
-    } else if (Conf.setConfigValue(key, value)) { printTable(Conf.listConfigValue(key)); }
-
-    return true;
-};
 
 export default Conf;
-export { rnvConfigHandler };

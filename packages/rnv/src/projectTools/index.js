@@ -38,7 +38,7 @@ import {
 import CLI from '../cli';
 import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
-import Config from '../config';
+import { injectPlatformDependencies } from '../configTools/packageParser';
 import { overrideTemplatePlugins } from '../pluginTools';
 import { configureChromecastProject } from '../platformTools/chromecast';
 
@@ -47,7 +47,7 @@ export const rnvConfigure = async (c) => {
     logTask(`rnvConfigure:${c.platform}:${p}`);
 
     // inject packages if needed
-    if (p !== 'all') await Config.injectPlatformDependencies(p);
+    if (p !== 'all') await injectPlatformDependencies(c, p);
 
     await _checkAndCreatePlatforms(c, c.platform);
     await copyRuntimeAssets(c);

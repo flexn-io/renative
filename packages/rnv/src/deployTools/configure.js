@@ -1,22 +1,21 @@
 /* eslint-disable import/no-cycle */
-import Config from '../config';
 import PlatformSetup from '../setupTools';
 import { commandExistsSync } from '../systemTools/exec';
+import { checkRequiredPackage } from '../configTools/packageParser';
 
-const configureDeploymentIfRequired = async (deploymentTarget) => {
+export const configureDeploymentIfRequired = async (c, deploymentTarget) => {
     if (deploymentTarget === 'docker') {
-        await Config.checkRequiredPackage(
+        await checkRequiredPackage(c,
             '@rnv/deploy-docker',
             false,
-            'devDependencies'
-        );
+            'devDependencies');
         if (!commandExistsSync('docker')) {
             const setupInstance = PlatformSetup();
             await setupInstance.askToInstallSDK('docker');
         }
     }
     if (deploymentTarget === 'aws') {
-        await Config.checkRequiredPackage('@rnv/deploy-aws', false, 'devDependencies');
+        await checkRequiredPackage(c, '@rnv/deploy-aws', false, 'devDependencies');
         if (!commandExistsSync('aws')) {
             const setupInstance = PlatformSetup();
             await setupInstance.askToInstallSDK('aws');
@@ -24,14 +23,11 @@ const configureDeploymentIfRequired = async (deploymentTarget) => {
     }
 };
 
-const configureExportIfRequired = async (exportTarget) => {
+export const configureExportIfRequired = async (c, exportTarget) => {
     if (exportTarget === 'docker') {
-        await Config.checkRequiredPackage(
+        await checkRequiredPackage(c,
             '@rnv/deploy-docker',
             false,
-            'devDependencies'
-        );
+            'devDependencies');
     }
 };
-
-export { configureDeploymentIfRequired, configureExportIfRequired };

@@ -43,7 +43,6 @@ import { createRnvConfig } from './configTools/configParser';
 import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { writeCleanFile } from './systemTools/fileutils';
-import Config from './config';
 
 export const initializeBuilder = async (cmd, subCmd, process, program) => {
     const c = createRnvConfig(program, process, cmd, subCmd);
@@ -191,6 +190,35 @@ export const CLI_PROPS = [
     'provisionProfileSpecifier'
 ];
 
+const _getValueOrMergedObject = (
+    resultCli,
+    resultScheme,
+    resultPlatforms,
+    resultCommon
+) => {
+    if (resultCli !== undefined) {
+        return resultCli;
+    }
+    if (resultScheme !== undefined) {
+        if (Array.isArray(resultScheme) || typeof resultScheme !== 'object') { return resultScheme; }
+        const val = Object.assign(
+            resultCommon || {},
+            resultPlatforms || {},
+            resultScheme
+        );
+        return val;
+    }
+    if (resultPlatforms !== undefined) {
+        if (
+            Array.isArray(resultPlatforms)
+            || typeof resultPlatforms !== 'object'
+        ) { return resultPlatforms; }
+        return Object.assign(resultCommon || {}, resultPlatforms);
+    }
+    if (resultPlatforms === null) return null;
+    return resultCommon;
+};
+
 // We need to slowly move this to Config and refactor everything to use it from there
 export const getConfigProp = (c, platform, key, defaultVal) => {
     if (!c.buildConfig) {
@@ -223,7 +251,7 @@ export const getConfigProp = (c, platform, key, defaultVal) => {
     const resultScheme = scheme[baseKey];
     const resultCommon = getFlavouredProp(c, c.buildConfig.common, baseKey);
 
-    let result = Config.getValueOrMergedObject(
+    let result = _getValueOrMergedObject(
         resultCli,
         resultScheme,
         resultPlatforms,

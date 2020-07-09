@@ -30,13 +30,12 @@ const includesPre = (version) => {
     return false;
 };
 
-const rnvPublish = async () => {
+const rnvPublish = async (c) => {
     // make sure release-it is installed
-    await Config.checkRequiredPackage(
+    await Config.checkRequiredPackage(c,
         'release-it',
         '12.4.3',
-        'devDependencies'
-    );
+        'devDependencies');
     // make sure required object is present in package.json
     const pkgJson = Config.getProjectConfig().package;
     const existingPath = Config.getConfig().paths.project.package;

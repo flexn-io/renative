@@ -435,6 +435,7 @@ package.json will be overriden`
         let newPackage = merge(c.files.project.package, { dependencies: newDeps });
         newPackage = merge(newPackage, { devDependencies: newDevDeps });
         writeRenativeConfigFile(c, c.paths.project.package, newPackage);
+        c.files.project.package = newPackage;
         c._requiresNpmInstall = true;
     }
     return true;
