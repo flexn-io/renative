@@ -13,6 +13,7 @@ const _chalkCols = {
     gray: v => v,
     grey: v => v,
     blue: v => v,
+    cyan: v => v,
     magenta: v => v
 };
 const _chalkMono = {
