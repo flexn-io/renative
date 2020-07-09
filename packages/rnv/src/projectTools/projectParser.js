@@ -228,7 +228,7 @@ export const parseFonts = (c, callback) => {
 };
 
 export const copySharedPlatforms = c => new Promise((resolve) => {
-    logTask(`_copySharedPlatform:${c.platform}`);
+    logTask('copySharedPlatforms');
 
     if (c.platform) {
         mkdirSync(
@@ -334,7 +334,7 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
 };
 
 export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
-    logTask(`copyBuildsFolder:${platform}`);
+    logTask('copyBuildsFolder');
     if (!isPlatformActive(c, platform, resolve)) return;
 
     const destPath = path.join(getAppFolder(c, platform));
@@ -453,7 +453,7 @@ export const upgradeProjectDependencies = (c, version) => {
 };
 
 export const configureNodeModules = c => new Promise((resolve, reject) => {
-    logTask(`configureNodeModules:${c._requiresNpmInstall}:${c.runtime.skipPackageUpdate}`);
+    logTask('configureNodeModules', `requiresInstall:${c._requiresNpmInstall}:${!c.runtime.skipPackageUpdate}`);
     // Check node_modules
     if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
         if (!areNodeModulesInstalled()) {

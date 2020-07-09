@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
+import chalk from 'chalk';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
@@ -11,7 +12,7 @@ import {
 } from '../../common';
 import { doResolve } from '../../resolve';
 import { isPlatformSupported } from '../../platformTools';
-import { logTask, logError, logSummary } from '../../systemTools/logger';
+import { logTask, logError, logSummary, logInfo } from '../../systemTools/logger';
 import {
     IOS,
     TVOS,
@@ -19,7 +20,8 @@ import {
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
-    TASK_DEPLOY, TASK_DEBUG
+    TASK_DEPLOY, TASK_DEBUG,
+    RN_CLI_CONFIG_NAME
 } from '../../constants';
 import {
     runXcodeProject,
@@ -42,7 +44,7 @@ import Analytics from '../../systemTools/analytics';
 import { isBundlerActive, waitForBundler } from '../../platformTools/bundler';
 import { checkSdk } from '../../platformTools/sdkManager';
 import { resolvePluginDependants } from '../../pluginTools';
-import { mkdirSync, writeFileSync } from '../../systemTools/fileutils';
+import { mkdirSync, writeFileSync, copyFileSync } from '../../systemTools/fileutils';
 
 const TASKS = {};
 
@@ -320,6 +322,20 @@ const config = require('../metro.config');
 config.resolver.sourceExts = EXTENSIONS.${platform};
 module.exports = config;
 `
+        );
+    }
+
+
+    // Check rn-cli-config
+    if (!fs.existsSync(c.paths.project.rnCliConfig)) {
+        logInfo(
+            `Looks like your rn-cli config file ${chalk.white(
+                c.paths.project.rnCliConfig
+            )} is missing! Let's create one for you.`
+        );
+        copyFileSync(
+            path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
+            c.paths.project.rnCliConfig
         );
     }
 };

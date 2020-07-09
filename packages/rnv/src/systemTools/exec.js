@@ -512,7 +512,7 @@ export const installPackageDependencies = async (failOnError = false) => {
         });
         if (packageManager === 'yarn') command = 'yarn';
     }
-    logTask(`installPackageDependencies: package manager used: (${command})`, chalk.grey);
+    logTask('installPackageDependencies', `packageManager:(${command})`);
 
     try {
         await executeAsync(command);

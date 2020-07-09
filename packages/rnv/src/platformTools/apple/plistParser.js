@@ -50,7 +50,7 @@ export const parseExportOptionsPlist = (c, platform) => new Promise((resolve) =>
 });
 
 export const parseEntitlementsPlist = (c, platform) => new Promise((resolve) => {
-    logTask(`parseEntitlementsPlistSync:${platform}`);
+    logTask('parseEntitlementsPlist');
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);
@@ -74,7 +74,7 @@ export const parseEntitlementsPlist = (c, platform) => new Promise((resolve) => 
 });
 
 export const parseInfoPlist = (c, platform) => new Promise((resolve) => {
-    logTask(`parseInfoPlist:${platform}`);
+    logTask('parseInfoPlist');
 
     const appFolder = getAppFolder(c, platform);
     const appFolderName = getAppFolderName(c, platform);

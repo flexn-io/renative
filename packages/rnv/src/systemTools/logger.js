@@ -286,9 +286,16 @@ export const setCurrentJob = () => {
 };
 
 export const logTask = (task, customChalk) => {
-    const ch = customChalk || chalk.green;
-    const postMsg = customChalk ? '' : '';
-    console.log(ch(`[ task ] ${task}${postMsg}`));
+    let msg = '';
+    if (typeof customChalk === 'string') {
+        msg = `${chalk.green(`[ task ] ${task}`)} ${chalk.grey(customChalk)}`;
+    } else if (customChalk) {
+        msg = customChalk(`[ task ] ${task}`);
+    } else {
+        msg = chalk.green(`[ task ] ${task}`);
+    }
+
+    console.log(msg);
 };
 
 export const logWarning = (msg) => {

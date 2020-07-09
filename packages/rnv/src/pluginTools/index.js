@@ -428,7 +428,7 @@ package.json will be overriden`
         }
     });
 
-    logTask(`configurePlugins:${hasPackageChanged}`, chalk.grey);
+    logTask('configurePlugins', `shouldUpdate:${!!hasPackageChanged}:${!c.runtime.skipPackageUpdate}`);
     await versionCheck(c);
 
     if (hasPackageChanged && !c.runtime.skipPackageUpdate) {
@@ -518,7 +518,7 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
 };
 
 export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCheck) => {
-    logTask(`parsePlugins:${platform}`);
+    logTask('parsePlugins');
     if (c.buildConfig) {
         const includedPlugins = getConfigProp(
             c,

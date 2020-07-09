@@ -396,7 +396,7 @@ const _handleUnknownPlatform = async (c, platforms) => {
 
 let _builderStarted = false;
 export const _startBuilder = async (c) => {
-    logTask(`_startBuilder:${_builderStarted}`);
+    logTask('_startBuilder', `isActive:${!!_builderStarted}`);
 
     if (_builderStarted) return;
 

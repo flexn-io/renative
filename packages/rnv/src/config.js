@@ -11,6 +11,8 @@ import { logWarning, logError, logDebug } from './systemTools/logger';
 import { inquirerPrompt } from './systemTools/prompt';
 import { configSchema, WEB_HOSTED_PLATFORMS } from './constants';
 import { getEngineByPlatform } from './engineTools';
+import { writeRenativeConfigFile } from './configTools/configParser';
+
 
 export const CLI_PROPS = [
     'provisioningStyle',
@@ -71,7 +73,8 @@ class Config {
         const existingPath = this.config.paths.project.package;
         if (!currentPackage[type]) currentPackage[type] = {};
         currentPackage[type][dependency] = version;
-        writeFileSync(existingPath, currentPackage);
+        // writeFileSync(existingPath, currentPackage);
+        writeRenativeConfigFile(this.config, existingPath, currentPackage);
         if (!skipInstall) await installPackageDependencies();
         return true;
     }

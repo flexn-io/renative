@@ -77,9 +77,9 @@ export const checkIfTemplateInstalled = c => new Promise((resolve) => {
             !doResolve(k.version, false, { basedir: '../' })
               && !doResolve(k, false)
         ) {
-            logWarning(
+            logInfo(
                 `Your ${chalk.white(
-                    k.version
+                    `${k}@${obj.version}`
                 )} template is not installed. ReNative will install it for you`
             );
             c._requiresNpmInstall = true;

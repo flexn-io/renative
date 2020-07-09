@@ -122,7 +122,7 @@ const askUserAboutConfigs = async (c, dir, id, basePath) => {
 
 /* eslint-disable no-await-in-loop */
 const matchAppConfigID = async (c, appConfigID) => {
-    logTask(`matchAppConfigID:${appConfigID}`, chalk.grey);
+    logTask('matchAppConfigID', `appId:${appConfigID}`);
 
     if (!appConfigID) return false;
 
@@ -208,20 +208,6 @@ export const fixRenativeConfigsSync = async (c) => {
 
     // Check gitignore
     checkAndCreateGitignore(c);
-
-    // Check rn-cli-config
-    logDebug('configureProject:check rn-cli');
-    if (!fs.existsSync(c.paths.project.rnCliConfig)) {
-        logInfo(
-            `Looks like your rn-cli config file ${chalk.white(
-                c.paths.project.rnCliConfig
-            )} is missing! Let's create one for you.`
-        );
-        copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
-            c.paths.project.rnCliConfig
-        );
-    }
 
     // Check babel-config
     logDebug('configureProject:check babel config');
@@ -315,7 +301,7 @@ export const loadFile = (fileObj, pathObj, key) => {
 };
 
 const _findAndSwitchAppConfigDir = (c, appId) => {
-    logTask(`_findAndSwitchAppConfigDir:${appId}`);
+    logTask('_findAndSwitchAppConfigDir', `appId:${appId}`);
 
     c.paths.project.appConfigsDir = getRealPath(
         c,
@@ -651,7 +637,7 @@ const _listAppConfigsFoldersSync = (
 };
 
 export const listAppConfigsFoldersSync = (c, ignoreHiddenConfigs) => {
-    logTask(`listAppConfigsFoldersSync:${ignoreHiddenConfigs}`);
+    logTask('listAppConfigsFoldersSync', `ignoreHiddenConfigs:${!!ignoreHiddenConfigs}`);
     const configDirs = [];
     const appConfigsDirs = c.buildConfig?.paths?.appConfigsDirs;
     if (appConfigsDirs && appConfigsDirs.forEach) {

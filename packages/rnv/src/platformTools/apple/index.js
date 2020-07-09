@@ -87,7 +87,7 @@ const updatePodsChecksum = (c) => {
 };
 
 const runPod = async (c, platform) => {
-    logTask(`runPod:${platform}`);
+    logTask('runPod', `forceUpdate:${!!c.program.updatePods}`);
 
     const appFolder = getAppFolder(c, platform);
 
@@ -750,7 +750,7 @@ const runAppleLog = c => new Promise(() => {
 });
 
 const configureXcodeProject = async (c, platform, ip, port) => {
-    logTask(`configureXcodeProject:${platform}`);
+    logTask('configureXcodeProject');
     const { device } = c.program;
     const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c, platform);
