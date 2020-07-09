@@ -80,12 +80,12 @@ export const generateChecksum = (str, algorithm, encoding) => crypto
     .update(str, 'utf8')
     .digest(encoding || 'hex');
 
-export const getSourceExts = (c, p) => {
+export const getSourceExts = (c, p, isServer, prefix = '') => {
     // IMPORTANT: do not replace "p" with c.platform as this has to
     // be injected from above to generate multiple configs
     const sExt = PLATFORMS[p]?.sourceExts;
     if (sExt) {
-        return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks];
+        return [...sExt.factors, ...sExt.platforms, ...sExt.fallbacks].map(v => `${prefix}${v}`).filter(ext => isServer || !ext.includes('server.'));
     }
     return [];
 };

@@ -352,7 +352,7 @@ const getEnginesPluginDelta = (c) => {
     const supPlats = c.files.project?.config?.defaults?.supportedPlatforms;
     if (supPlats) {
         supPlats.forEach((pk) => {
-            const selectedEngine = getEngineByPlatform(c, pk);
+            const selectedEngine = getEngineByPlatform(c, pk, true);
             if (selectedEngine?.plugins) {
                 const ePlugins = Object.keys(selectedEngine.plugins);
 

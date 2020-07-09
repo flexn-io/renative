@@ -1,0 +1,35 @@
+{
+    "name": "@rnv/engine-rn-web",
+    "version": "0.31.0-alpha.1",
+    "description": "",
+    "keywords": [
+
+    ],
+    "homepage": "https://github.com/pavjacko/renative#readme",
+    "bugs": {
+        "url": "https://github.com/pavjacko/renative/issues"
+    },
+    "license": "MIT",
+    "author": {
+        "email": "i@pavjacko.com",
+        "name": "Pavel Jacko",
+        "url": "https://github.com/pavjacko"
+    },
+    "contributors": [
+    ],
+    "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/pavjacko/renative.git"
+    },
+    "scripts": {
+
+    },
+    "dependencies": {
+
+    },
+    "devDependencies": {
+
+    },
+    "private": false
+}

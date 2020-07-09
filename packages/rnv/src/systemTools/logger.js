@@ -283,7 +283,7 @@ export const setCurrentJob = () => {
 export const logTask = (task, customChalk) => {
     const ch = customChalk || chalk.green;
     const postMsg = customChalk ? '' : ' - Starting!';
-    console.log(ch(`${RNV} - ${task}${postMsg}`));
+    console.log(ch(`[ task ] ${task}${postMsg}`));
 };
 
 export const logWarning = (msg) => {

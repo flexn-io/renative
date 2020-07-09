@@ -141,7 +141,7 @@ const _generateWebpackConfigs = (c, platform) => {
         entryFile,
         title,
         assetVersion,
-        extensions: getSourceExts(c, platform),
+        extensions: getSourceExts(c, platform, false),
         ...extendConfig
     };
 

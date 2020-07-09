@@ -47,8 +47,7 @@
             "kaios",
             "firefoxos",
             "firefoxtv",
-            "chromecast",
-            "web-next"
+            "chromecast"
         ],
         "schemes": {
             "run": "debug",

@@ -82,8 +82,7 @@ import {
     WEBOS,
     MACOS,
     WINDOWS,
-    TIZEN_WATCH,
-    WEB_NEXT
+    TIZEN_WATCH
 } from '../constants';
 // import { getBinaryPath } from '../common';
 import Config, { rnvConfigHandler } from '../config';
@@ -173,8 +172,7 @@ const COMMANDS = {
             WEB,
             ANDROID,
             ANDROID_TV,
-            ANDROID_WEAR,
-            WEB_NEXT
+            ANDROID_WEAR
         ],
         fn: rnvExport
     },
@@ -590,8 +588,8 @@ const _execute = async (c, cmdFn, cmd) => {
     logTask(`_execute:${c.command}:${c.subCommand}`);
 
     // engine handling
-    if (c.program.engine && !c.platform.includes('-')) { // avoid multiple iterations over platform (web-next-next-next...)
-        c.platform = `${c.platform}-${c.program.engine}`;
+    if (c.program.engine === 'next') {
+        logError('-e next is no longer supported. use { "web": { "engine": "engine-rn-next" } } in your renative.json instead');
     }
 
     if (cmd.platforms && !cmd.platforms.includes(c.platform)) {
