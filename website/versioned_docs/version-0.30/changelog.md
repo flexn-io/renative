@@ -6,6 +6,21 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.5 (2020-7-9)
+
+### Fixed
+
+- auto install node_modules after plugin updates
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.4 (2020-7-8)
 
 ### Fixed
