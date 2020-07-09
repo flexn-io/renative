@@ -6,6 +6,22 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.6 (2020-7-9)
+
+### Fixed
+
+- revert incorrect plugin config
+- fix chalk
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.5 (2020-7-9)
 
 ### Fixed
