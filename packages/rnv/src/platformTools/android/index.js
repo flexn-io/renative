@@ -388,7 +388,7 @@ const _checkSigningCerts = async (c) => {
 };
 
 const _runGradleApp = async (c, platform, device) => {
-    logTask(`_runGradleApp:${platform}`);
+    logTask('_runGradleApp');
 
     const signingConfig = getConfigProp(c, platform, 'signingConfig', 'Debug');
     const appFolder = getAppFolder(c, platform);
@@ -397,6 +397,8 @@ const _runGradleApp = async (c, platform, device) => {
     const outputFolder = signingConfig === 'Debug' ? 'debug' : 'release';
     const { arch, name } = device;
     const stacktrace = c.program.info ? ' --debug' : '';
+
+    console.log('DGDHJDGDJH', appFolder);
 
     shell.cd(`${appFolder}`);
 
@@ -510,7 +512,7 @@ export const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
 });
 
 export const configureAndroidProperties = (c, platform) => new Promise((resolve) => {
-    logTask(`configureAndroidProperties:${platform}`);
+    logTask('configureAndroidProperties');
 
     const appFolder = getAppFolder(c, platform);
 
@@ -541,7 +543,7 @@ sdk.dir=${sdkDir}`
 
 export const configureGradleProject = async (c) => {
     const { platform } = c;
-    logTask(`configureGradleProject:${platform}`);
+    logTask('configureGradleProject');
 
     if (!isPlatformActive(c, platform)) return;
 

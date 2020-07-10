@@ -332,9 +332,7 @@ export const configureIfRequired = async (c, platform) => {
         }
     };
 
-    if (c.program.reset) {
-        await cleanPlatformBuild(c, platform);
-    }
+    await cleanPlatformIfRequired(c, platform);
 
     if (c.program.resetHard) {
         await cleanPlaformAssets(c);

@@ -5,7 +5,6 @@ import {
     isBuildSchemeSupported,
     logErrorPlatform,
     configureIfRequired,
-    cleanPlatformIfRequired,
     waitForWebpack,
 } from '../../common';
 import { isPlatformSupported } from '../../platformTools';
@@ -62,7 +61,6 @@ const _taskRun = async (c) => {
     switch (platform) {
         case WEB:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
             c.runtime.shouldOpenBrowser = true;
@@ -114,7 +112,6 @@ const _taskBuild = async (c) => {
     switch (platform) {
         case WEB:
         case CHROMECAST:
-            await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWebNext(c);
             return;

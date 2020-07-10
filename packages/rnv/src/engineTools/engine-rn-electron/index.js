@@ -4,7 +4,6 @@ import {
     isBuildSchemeSupported,
     logErrorPlatform,
     configureIfRequired,
-    cleanPlatformIfRequired,
     waitForWebpack,
 } from '../../common';
 import { isPlatformSupported } from '../../platformTools';
@@ -65,7 +64,6 @@ const _taskRun = async (c) => {
         case MACOS:
         case WINDOWS:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
             return runElectron(c, platform, port);
@@ -99,7 +97,6 @@ const _taskExport = async (c) => {
         case MACOS:
         case WINDOWS:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await configureElectronProject(c, platform);
                 await buildElectron(c, platform);
@@ -122,7 +119,6 @@ const _taskBuild = async (c) => {
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await configureElectronProject(c, platform);
             await buildElectron(c, platform);

@@ -6,7 +6,6 @@ import {
     isBuildSchemeSupported,
     logErrorPlatform,
     configureIfRequired,
-    cleanPlatformIfRequired,
     getConfigProp,
     confirmActiveBundler,
     getEntryFile
@@ -145,7 +144,6 @@ const _taskRun = async (c) => {
         case IOS:
         case TVOS:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await _startBundlerIfRequired(c);
                 await runXcodeProject(c);
@@ -159,8 +157,8 @@ const _taskRun = async (c) => {
         case ANDROID_TV:
         case ANDROID_WEAR:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
+                await configureGradleProject(c, platform);
                 await _startBundlerIfRequired(c);
                 if (
                     getConfigProp(c, platform, 'bundleAssets') === true
@@ -192,7 +190,6 @@ const _taskPackage = async (c) => {
         case IOS:
         case TVOS:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
             return packageBundleForXcode(c, platform);
@@ -200,7 +197,6 @@ const _taskPackage = async (c) => {
         case ANDROID_TV:
         case ANDROID_WEAR:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await configureGradleProject(c, platform);
             }
@@ -249,7 +245,6 @@ const _taskBuild = async (c) => {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await configureGradleProject(c, platform);
             await packageAndroid(c, platform);

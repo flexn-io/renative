@@ -7,7 +7,6 @@ import {
     isBuildSchemeSupported,
     logErrorPlatform,
     configureIfRequired,
-    cleanPlatformIfRequired,
     waitForWebpack,
 } from '../../common';
 import { isPlatformSupported } from '../../platformTools';
@@ -120,7 +119,6 @@ const _taskRun = async (c) => {
     switch (platform) {
         case WEB:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
             c.runtime.shouldOpenBrowser = true;
@@ -130,14 +128,12 @@ const _taskRun = async (c) => {
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await _configureHostedIfRequired(c);
             }
             return runTizen(c, platform, target);
         case WEBOS:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await _configureHostedIfRequired(c);
             }
@@ -146,13 +142,11 @@ const _taskRun = async (c) => {
         case FIREFOX_OS:
         case FIREFOX_TV:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
             }
             return runFirefoxProject(c, platform);
         case CHROMECAST:
             if (!c.program.only) {
-                await cleanPlatformIfRequired(c, platform);
                 await configureIfRequired(c, platform);
                 await _configureHostedIfRequired(c);
             }
@@ -204,26 +198,22 @@ const _taskBuild = async (c) => {
     switch (platform) {
         case WEB:
         case CHROMECAST:
-            await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWeb(c, platform);
             return;
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildFirefoxProject(c, platform);
             return;
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildTizenProject(c, platform);
             return;
         case WEBOS:
-            await cleanPlatformIfRequired(c, platform);
             await configureIfRequired(c, platform);
             await buildWebOSProject(c, platform);
             return;

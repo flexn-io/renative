@@ -584,7 +584,8 @@ const run = async (c, spawnC, skipStartBuilder) => {
     const subCmdFn = subCmd?.fn;
 
 
-    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand} skipStartBuilder:${!!skipStartBuilder}`);
+    logTask('cli');
+
 
     setDefaults(currC);
     if (!skipStartBuilder) await _startBuilder(currC);
@@ -594,6 +595,7 @@ const run = async (c, spawnC, skipStartBuilder) => {
         Config.initializeConfig(currC);
     }
 
+    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand} skipStartBuilder:${!!skipStartBuilder}`);
 
     if (cmd) {
         if (currC.subCommand === 'help') {
