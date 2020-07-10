@@ -577,9 +577,14 @@ export const _spawnCommand = (c, overrideParams) => {
 // ##########################################
 
 const run = async (c, spawnC, skipStartBuilder) => {
-    logTask('cli');
-
     let currC = c;
+    const cmd = COMMANDS[currC.command];
+    const cmdFn = cmd?.fn;
+    const subCmd = cmd?.subCommands?.[currC.subCommand];
+    const subCmdFn = subCmd?.fn;
+
+
+    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand} skipStartBuilder:${!!skipStartBuilder}`);
 
     setDefaults(currC);
     if (!skipStartBuilder) await _startBuilder(currC);
@@ -589,10 +594,6 @@ const run = async (c, spawnC, skipStartBuilder) => {
         Config.initializeConfig(currC);
     }
 
-    const cmd = COMMANDS[currC.command];
-    const cmdFn = cmd?.fn;
-    const subCmd = cmd?.subCommands?.[currC.subCommand];
-    const subCmdFn = subCmd?.fn;
 
     if (cmd) {
         if (currC.subCommand === 'help') {

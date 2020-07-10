@@ -272,7 +272,7 @@ const runWeb = async (c, platform, port) => {
 
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
     logTask(
-        `_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`
+        '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
     );
     if (!c.runtime.shouldOpenBrowser) return resolve();
     const wait = waitForWebpack(c)
@@ -287,7 +287,7 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
 });
 
 const runWebDevServer = (c, platform, port) => new Promise((resolve) => {
-    logTask(`runWebDevServer:${platform}`);
+    logTask('runWebDevServer');
     const { debug, debugIp } = c.program;
 
     const appFolder = getAppFolder(c, platform);

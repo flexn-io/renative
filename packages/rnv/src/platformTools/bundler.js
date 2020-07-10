@@ -5,7 +5,7 @@ import { getConfigProp } from '../common';
 import { logTask } from '../systemTools/logger';
 
 const _isBundlerRunning = async (c) => {
-    logTask(`_isBundlerRunning:${c.platform}`);
+    logTask('_isBundlerRunning');
     try {
         const { data } = await axios.get(
             `http://${c.runtime.localhost}:${c.runtime.port}/${getConfigProp(
@@ -14,9 +14,14 @@ const _isBundlerRunning = async (c) => {
                 'entryFile'
             )}.js`
         );
-        if (data.includes('import')) return true;
+        if (data.includes('import')) {
+            logTask('_isBundlerRunning', '(YES)');
+            return true;
+        }
+        logTask('_isBundlerRunning', '(NO)');
         return false;
     } catch (e) {
+        logTask('_isBundlerRunning', '(NO)');
         return false;
     }
 };

@@ -57,8 +57,8 @@ const readdirAsync = promisify(fs.readdir);
 
 const IGNORE_FOLDERS = ['.git'];
 
-const loadAppConfigIDfromDir = (dir, appConfigsDir) => {
-    logTask(`loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk.grey);
+const _loadAppConfigIDfromDir = (dir, appConfigsDir) => {
+    logDebug(`_loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk.grey);
     const filePath = path.join(appConfigsDir, dir, 'renative.json');
     if (fs.existsSync(filePath)) {
         try {
@@ -137,7 +137,7 @@ const matchAppConfigID = async (c, appConfigID) => {
         )).filter(folder => fs.statSync(path.join(appConfigsDir, folder)).isDirectory());
 
         const appConfigs = appConfigDirContents
-            .map(dir => loadAppConfigIDfromDir(dir, appConfigsDir))
+            .map(dir => _loadAppConfigIDfromDir(dir, appConfigsDir))
             .filter(conf => conf.id !== null);
         // find duplicates
         const ids = [];

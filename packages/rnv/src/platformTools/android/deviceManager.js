@@ -35,7 +35,7 @@ const CHECK_INTEVAL = 5000;
 const currentDeviceProps = {};
 
 export const composeDevicesString = (devices, returnArray) => {
-    logTask(`composeDevicesString:${devices ? devices.length : null}`);
+    logTask('composeDevicesString', `numDevices:${devices ? devices.length : null}`);
     const devicesArray = [];
     devices.forEach((v, i) => devicesArray.push(_getDeviceString(v, !returnArray ? i : null)));
     if (returnArray) return devicesArray;
@@ -49,7 +49,7 @@ export const launchAndroidSimulator = async (
     isIndependentThread = false
 ) => {
     logTask(
-        `launchAndroidSimulator:${platform}:${target}:${isIndependentThread}`
+        'launchAndroidSimulator', `target${target} independentThread:${!!isIndependentThread}`
     );
     let newTarget = target;
     if (target === true) {
@@ -168,9 +168,8 @@ export const getAndroidTargets = async (
     deviceOnly = false
 ) => {
     logTask(
-        `getAndroidTargets:${
-            c.platform
-        }:${skipDevices}:${skipAvds}:${deviceOnly}`
+        'getAndroidTargets',
+        `skipDevices:${!!skipDevices} skipAvds:${!!skipAvds} deviceOnly:${!!deviceOnly}`
     );
 
     try {

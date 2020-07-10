@@ -112,7 +112,7 @@ const _taskRun = async (c) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask(`_taskRun:${platform}:${port}:${target}:${hosted}`);
+    logTask('_taskRun', `port:${port} target:${target} hosted:${hosted}`);
     if (Config.isWebHostEnabled && hosted) {
         c.runtime.shouldOpenBrowser = true;
         return _taskStart(c);
@@ -280,7 +280,7 @@ export const _taskLog = async (c) => {
 TASKS[TASK_LOG] = _taskLog;
 
 const runTask = async (c, task) => {
-    logTask('runTask:engine-rn-web');
+    logTask('runTask', '(engine-rn-web)');
 
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);

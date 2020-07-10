@@ -78,7 +78,7 @@ const configureNextIfRequired = async (c) => {
 };
 
 export const runWebNext = async (c, platform, port) => {
-    logTask(`runWebNext:${platform}:${port}`);
+    logTask('runWebNext', `port:${port}`);
     await configureNextIfRequired(c);
 
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
@@ -100,7 +100,9 @@ export const runWebNext = async (c, platform, port) => {
 };
 
 const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new Promise((resolve) => {
-    logTask(`_runWebBrowser:${platform}:${devServerHost}:${port}:${c.runtime.shouldOpenBrowser}`);
+    logTask(
+        '_runWebBrowser', `ip:${devServerHost} port:${port} openBrowser:${!!c.runtime.shouldOpenBrowser}`
+    );
     if (!c.runtime.shouldOpenBrowser) return resolve();
     const wait = waitForWebpack(c, 'next')
         .then(() => {
@@ -135,7 +137,7 @@ export const buildWebNext = async (c) => {
 };
 
 export const runWebDevServer = (c, platform, port) => {
-    logTask(`runWebDevServer:${platform}`);
+    logTask('runWebDevServer');
     const env = getConfigProp(c, platform, 'environment');
     const pagesDir = getConfigProp(c, platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${platform}.pagesDir config. Defaulting to 'src/app'`);

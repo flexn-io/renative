@@ -61,7 +61,7 @@ const _taskRun = async (c) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask(`_taskRun:${platform}:${port}:${target}:${hosted}`);
+    logTask('_taskRun', `port:${port} target:${target} hosted:${hosted}`);
     switch (platform) {
         case MACOS:
         case WINDOWS:
@@ -159,7 +159,7 @@ const _taskDebug = async (c) => {
 TASKS[TASK_DEBUG] = _taskDebug;
 
 const runTask = async (c, task) => {
-    logTask('runTask:engine-rn-electron');
+    logTask('runTask', '(engine-rn-electron-next)');
 
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);

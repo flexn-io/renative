@@ -62,8 +62,9 @@ const _logSdkWarning = (c) => {
 };
 
 export const checkAndConfigureAndroidSdks = async (c) => {
-    logTask(`checkAndConfigureAndroidSdks:${c.platform}`);
     const sdk = c.buildConfig?.sdks?.ANDROID_SDK;
+    logTask('checkAndConfigureAndroidSdks', `(${sdk})`);
+
     if (sdk) {
         c.cli[CLI_ANDROID_EMULATOR] = getRealPath(
             c,

@@ -315,7 +315,7 @@ export const logErrorPlatform = (c, platform) => {
 export const PLATFORM_RUNS = {};
 
 export const configureIfRequired = async (c, platform) => {
-    logTask(`configureIfRequired:${platform}`);
+    logTask('configureIfRequired');
 
     if (PLATFORM_RUNS[platform]) {
         return;
@@ -494,7 +494,7 @@ export const waitForEmulator = async (c, cli, command, callback) => {
 };
 
 export const waitForWebpack = async (c, engine) => {
-    logTask(`waitForWebpack|port:${c.runtime.port}|engine:${engine}`);
+    logTask('waitForWebpack', `port:${c.runtime.port} engine:${engine}`);
     let attempts = 0;
     const maxAttempts = 10;
     const CHECK_INTEVAL = 2000;

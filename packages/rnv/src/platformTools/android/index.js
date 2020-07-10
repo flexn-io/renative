@@ -130,7 +130,7 @@ export const packageAndroid = (c, platform) => new Promise((resolve, reject) => 
 
 export const runAndroid = async (c, platform, defaultTarget) => {
     const { target } = c.program;
-    logTask(`runAndroid:${platform}:${target}:${defaultTarget}`);
+    logTask('runAndroid', `target:${target} default:${defaultTarget}`);
 
     const outputAab = getConfigProp(c, platform, 'aab', false);
     // shortcircuit devices logic since aabs can't be installed on a device
