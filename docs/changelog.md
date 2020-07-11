@@ -5,6 +5,30 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.7 (2020-7-11)
+
+### Fixed
+
+- build hooks
+- task dependencies
+- fix configureWeb task
+- fix webos emulator detection
+- refactor engine runners
+- fix   cleanPlatformIfRequired
+- improved logs
+- update task logs
+- migrate packageParser, log updates, fix package override
+- update logTasks
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.6 (2020-7-9)
 
 ### Fixed
