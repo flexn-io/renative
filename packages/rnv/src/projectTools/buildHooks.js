@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import fs from 'fs';
-import { logToSummary, logTask, logRaw, logHook } from '../systemTools/logger';
+import { chalk, logToSummary, logTask, logRaw, logHook } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
 import { executeAsync } from '../systemTools/exec';
 
@@ -24,7 +23,7 @@ const rnvHooksRun = c => new Promise((resolve, reject) => {
                     .catch(e => reject(e));
             } else {
                 reject(
-                    `Method name ${chalk.white(
+                    `Method name ${chalk().white(
                         c.program.exeMethod
                     )} does not exists in your buildHooks!`
                 );

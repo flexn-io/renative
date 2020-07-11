@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle dep
 import path from 'path';
-import chalk from 'chalk';
 import inquirer from 'inquirer';
 import semver from 'semver';
 import fs from 'fs';
@@ -11,6 +10,7 @@ import { getTemplateOptions } from '../templateTools';
 import { mkdirSync, writeFileSync, cleanFolder } from '../systemTools/fileutils';
 import { executeAsync, commandExistsSync } from '../systemTools/exec';
 import {
+    chalk,
     printIntoBox,
     printBoxStart,
     printBoxEnd,
@@ -25,7 +25,7 @@ import { getWorkspaceOptions } from './workspace';
 import { parseRenativeConfigs } from '../configTools/configParser';
 import Analytics from '../systemTools/analytics';
 
-const highlight = chalk.green;
+const highlight = chalk().green;
 
 const configureGit = async (c) => {
     const projectPath = c.paths.project.dir;
@@ -81,7 +81,7 @@ const _generateProject = async (c, data) => {
 
     logTask(
         `_generateProject:${data.optionTemplates.selectedOption}:${data.optionTemplates.selectedVersion}`,
-        chalk.grey
+        chalk().grey
     );
 
     templates[data.optionTemplates.selectedOption] = {
@@ -117,9 +117,9 @@ const _generateProject = async (c, data) => {
     }
 
     logSuccess(
-        `Your project is ready! navigate to project ${chalk.white(
+        `Your project is ready! navigate to project ${chalk().white(
             `cd ${data.projectName}`
-        )} and run ${chalk.white(
+        )} and run ${chalk().white(
             `rnv run -p ${data.optionPlatforms.selectedOptions[0]}`
         )} to see magic happen!`
     );
@@ -157,7 +157,7 @@ const _prepareProjectOverview = (c, data) => {
     str += printIntoBox('Project Structure:');
     str += printIntoBox('');
     str += printIntoBox(data.projectName);
-    str += chalk.gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
+    str += chalk().gray(`│   ├── appConfigs            # Application flavour configuration files/assets │
 │   │   └── [APP_ID]          # Example application flavour                    │
 │   │       ├── assets        # Platform assets injected to ./platformAssets   │
 │   │       ├── builds        # Platform files injected to ./platformBuilds    │

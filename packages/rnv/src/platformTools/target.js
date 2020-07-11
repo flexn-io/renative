@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import { isPlatformSupported } from './index';
-import { logTask } from '../systemTools/logger';
+import { chalk, logTask } from '../systemTools/logger';
 import { checkSdk } from './sdkManager';
 import {
     IOS,
@@ -46,7 +45,7 @@ export const rnvTargetLaunch = async (c) => {
             return launchKaiOSSimulator(c, target);
         default:
             return Promise.reject(
-                `"target launch" command does not support ${chalk.white.bold(
+                `"target launch" command does not support ${chalk().white.bold(
                     platform
                 )} platform yet. You will have to launch the emulator manually. Working on it!`
             );
@@ -80,7 +79,7 @@ export const rnvTargetList = async (c) => {
             return listWebOSTargets(c);
         default:
             return Promise.reject(
-                `"target list" command does not support ${chalk.white.bold(
+                `"target list" command does not support ${chalk().white.bold(
                     platform
                 )} platform yet. Working on it!`
             );

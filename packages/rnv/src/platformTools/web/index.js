@@ -2,7 +2,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import open from 'better-opn';
 import ip from 'ip';
 import { executeAsync } from '../../systemTools/exec';
@@ -22,6 +21,7 @@ import {
 } from '../../common';
 import { isPlatformActive } from '..';
 import {
+    chalk,
     logTask,
     logInfo,
     logDebug,
@@ -177,7 +177,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
     )
         .then(() => {
             logSuccess(
-                `Your Build is located in ${chalk.white(
+                `Your Build is located in ${chalk().white(
                     path.join(appFolder, 'public')
                 )} .`
             );
@@ -255,11 +255,11 @@ const runWeb = async (c, platform, port) => {
 
     if (!isPortActive) {
         logInfo(
-            `Looks like your ${chalk.white(
+            `Looks like your ${chalk().white(
                 platform
-            )} devServerHost ${chalk.white(
+            )} devServerHost ${chalk().white(
                 devServerHost
-            )} at port ${chalk.white(
+            )} at port ${chalk().white(
                 port
             )} is not running. Starting it up for you...`
         );
@@ -307,7 +307,7 @@ const runWebDevServer = (c, platform, port) => new Promise((resolve) => {
 
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'webpackConfig', {}).devServerHost, c.runtime.localhost);
 
-    const url = chalk.cyan(`http://${devServerHost}:${c.runtime.port}`);
+    const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`
 
 Dev server running at: ${url}

@@ -2,7 +2,6 @@
 // @todo fix circular dep
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
@@ -39,6 +38,7 @@ import { parsePodFile } from './podfileParser';
 import { parseXcodeProject } from './xcodeParser';
 import { parseAppDelegate } from './swiftParser';
 import {
+    chalk,
     logInfo,
     logTask,
     logError,
@@ -146,7 +146,7 @@ const copyAppleAssets = (c, platform, appFolderName) => new Promise((resolve) =>
 });
 
 export const runXcodeProject = async (c) => {
-    logTask(`runXcodeProject:${c.platform}:${c.runtime.target}`);
+    logTask('runXcodeProject', `target:${c.runtime.target}`);
 
     const appPath = getAppFolder(c, c.platform);
     const { device } = c.program;
@@ -158,11 +158,11 @@ export const runXcodeProject = async (c) => {
 
     if (!scheme) {
         return Promise.reject(
-            `You missing scheme in platforms.${chalk.yellow(
+            `You missing scheme in platforms.${chalk().yellow(
                 c.platform
-            )} in your ${chalk.white(
+            )} in your ${chalk().white(
                 c.paths.appConfig.config
-            )}! Check example config for more info:  ${chalk.grey(
+            )}! Check example config for more info:  ${chalk().grey(
                 'https://github.com/pavjacko/renative/blob/master/appConfigs/helloworld/renative.json'
             )} `
         );
@@ -178,9 +178,9 @@ export const runXcodeProject = async (c) => {
     if (device === true) {
         if (devicesArr.length === 1) {
             logSuccess(
-                `Found one device connected! device name: ${chalk.white(
+                `Found one device connected! device name: ${chalk().white(
                     devicesArr[0].name
-                )} udid: ${chalk.white(devicesArr[0].udid)}`
+                )} udid: ${chalk().white(devicesArr[0].udid)}`
             );
             if (devicesArr[0].udid) {
                 p = `--device --udid ${devicesArr[0].udid}`;
@@ -227,10 +227,10 @@ export const runXcodeProject = async (c) => {
             }
 
             const devices = devicesArr.map(v => ({
-                name: `${v.name} | ${v.icon} | v: ${chalk.green(
+                name: `${v.name} | ${v.icon} | v: ${chalk().green(
                     v.version
-                )} | udid: ${chalk.grey(v.udid)}${
-                    v.isDevice ? chalk.red(' (device)') : ''
+                )} | udid: ${chalk().grey(v.udid)}${
+                    v.isDevice ? chalk().red(' (device)') : ''
                 }`,
                 value: v
             }));
@@ -252,10 +252,10 @@ export const runXcodeProject = async (c) => {
         p = `--device ${device}`;
     } else if (c.runtime.target === true) {
         const devices = devicesArr.map(v => ({
-            name: `${v.name} | ${v.icon} | v: ${chalk.green(
+            name: `${v.name} | ${v.icon} | v: ${chalk().green(
                 v.version
-            )} | udid: ${chalk.grey(v.udid)}${
-                v.isDevice ? chalk.red(' (device)') : ''
+            )} | udid: ${chalk().grey(v.udid)}${
+                v.isDevice ? chalk().red(' (device)') : ''
             }`,
             value: v
         }));
@@ -291,7 +291,7 @@ export const runXcodeProject = async (c) => {
 };
 
 const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
-    logTask(`_checkLockAndExec:${scheme}:${runScheme}`);
+    logTask('_checkLockAndExec', `scheme:${scheme} runScheme:${runScheme}`);
     const cmd = `node ${doResolve(
         'react-native'
     )}/local-cli/cli.js run-ios --project-path ${appPath} --scheme ${scheme} --configuration ${runScheme} ${p}`;
@@ -316,11 +316,11 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
             if (isDeviceNotRegistered) {
                 logError(e);
                 logWarning(
-                    `${c.platform} DEVICE: ${chalk.white(
+                    `${c.platform} DEVICE: ${chalk().white(
                         c.runtime.target
-                    )} with UDID: ${chalk.white(
+                    )} with UDID: ${chalk().white(
                         c.runtime.targetUDID
-                    )} is not included in your provisionong profile in TEAM: ${chalk.white(
+                    )} is not included in your provisionong profile in TEAM: ${chalk().white(
                         getConfigProp(c, c.platform, 'teamID')
                     )}`
                 );
@@ -347,8 +347,8 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
                 logError(e);
                 logWarning(`You need specify the development team if you want to run app on ${
                     c.platform
-                } device. this can be set manually in ${chalk.white(loc)}
-  You can find correct teamID in the URL of your apple developer account: ${chalk.white(
+                } device. this can be set manually in ${chalk().white(loc)}
+  You can find correct teamID in the URL of your apple developer account: ${chalk().white(
         'https://developer.apple.com/account/#/overview/YOUR-TEAM-ID'
     )}`);
                 const { confirm } = await inquirer.prompt({
@@ -388,17 +388,17 @@ const _checkLockAndExec = async (c, appPath, scheme, runScheme, p) => {
 
         return Promise.reject(`${e}
 
-${chalk.green('SUGGESTION:')}
+${chalk().green('SUGGESTION:')}
 
-${chalk.yellow('STEP 1:')}
-Open xcode workspace at: ${chalk.white(`${appPath}/RNVApp.xcworkspace`)}
+${chalk().yellow('STEP 1:')}
+Open xcode workspace at: ${chalk().white(`${appPath}/RNVApp.xcworkspace`)}
 
-${chalk.yellow('STEP 2:')}
-${chalk.white('Run app and observe any extra errors')}
+${chalk().yellow('STEP 2:')}
+${chalk().white('Run app and observe any extra errors')}
 
-${chalk.yellow('IF ALL HOPE IS LOST:')}
+${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk.white('https://github.com/pavjacko/renative/issues')}
+${chalk().white('https://github.com/pavjacko/renative/issues')}
 and we will try to help!
 
 `);
@@ -411,22 +411,22 @@ const _handleProvisioningIssues = async (c, e, msg) => {
     const isProvAutomatic = provisioningStyle === 'Automatic';
     const proAutoText = isProvAutomatic
         ? ''
-        : `${chalk.white('[4]>')} Switch to automatic signing for appId: ${
+        : `${chalk().white('[4]>')} Switch to automatic signing for appId: ${
             c.runtime.appId
         } , platform: ${c.platform}, scheme: ${c.runtime.scheme}`;
     const fixCommand = `rnv crypto updateProfile -p ${c.platform} -s ${c.runtime.scheme}`;
-    const workspacePath = chalk.white(
+    const workspacePath = chalk().white(
         `${getAppFolder(c, c.platform)}/RNVApp.xcworkspace`
     );
     logError(e);
     logWarning(`${msg}. To fix try:
-${chalk.white(
+${chalk().white(
         '[1]>'
     )} Configure your certificates, provisioning profiles correctly manually
-${chalk.white('[2]>')} Try to generate matching profiles with ${chalk.white(
+${chalk().white('[2]>')} Try to generate matching profiles with ${chalk().white(
     fixCommand
 )} (you need correct priviledges in apple developer portal)
-${chalk.white(
+${chalk().white(
         '[3]>'
     )} Open generated project in Xcode: ${
     workspacePath
@@ -557,7 +557,7 @@ export const buildXcodeProject = async (c, platform) => {
     if (c.buildConfig.platforms[platform].runScheme === 'Release') {
         await executeAsync(c, `xcodebuild ${ps} ${p.join(' ')}`);
         logSuccess(
-            `Your Build is located in ${chalk.white(buildPath)} .`
+            `Your Build is located in ${chalk().white(buildPath)} .`
         );
     }
 
@@ -566,7 +566,7 @@ export const buildXcodeProject = async (c, platform) => {
     logDebug('xcodebuild args', args);
 
     return executeAsync('xcodebuild', { rawCommand: { args } }).then(() => {
-        logSuccess(`Your Build is located in ${chalk.white(buildPath)} .`);
+        logSuccess(`Your Build is located in ${chalk().white(buildPath)} .`);
     });
 };
 
@@ -635,7 +635,7 @@ const archiveXcodeProject = (c, platform) => {
     logDebug('xcodebuild args', args);
 
     return executeAsync('xcodebuild', { rawCommand: { args } }).then(() => {
-        logSuccess(`Your Archive is located in ${chalk.white(exportPath)} .`);
+        logSuccess(`Your Archive is located in ${chalk().white(exportPath)} .`);
     });
 };
 
@@ -680,7 +680,7 @@ const exportXcodeProject = async (c, platform) => {
     logTask('exportXcodeProject: STARTING xcodebuild EXPORT...');
 
     return executeAsync(c, `xcodebuild ${p.join(' ')}`).then(() => {
-        logSuccess(`Your IPA is located in ${chalk.white(exportPath)} .`);
+        logSuccess(`Your IPA is located in ${chalk().white(exportPath)} .`);
     });
 };
 
@@ -739,9 +739,9 @@ const runAppleLog = c => new Promise(() => {
     child.stdout.on('data', (data) => {
         const d = data.toString();
         if (d.toLowerCase().includes('error')) {
-            logRaw(chalk.red(d));
+            logRaw(chalk().red(d));
         } else if (d.toLowerCase().includes('success')) {
-            logRaw(chalk.green(d));
+            logRaw(chalk().green(d));
         } else {
             logRaw(d);
         }
@@ -835,7 +835,7 @@ const configureXcodeProject = async (c) => {
                     }
                 } else {
                     logWarning(
-                        `Font ${chalk.white(
+                        `Font ${chalk().white(
                             fontSource
                         )} doesn't exist! Skipping.`
                     );
@@ -848,7 +848,7 @@ const configureXcodeProject = async (c) => {
     const tId = getConfigProp(c, platform, 'teamID');
     if (device && (!tId || tId === '')) {
         logError(
-            `Looks like you're missing teamID in your ${chalk.white(
+            `Looks like you're missing teamID in your ${chalk().white(
                 c.paths.appConfig.config
             )} => .platforms.${platform}.teamID . you will not be able to build ${platform} app for device!`
         );

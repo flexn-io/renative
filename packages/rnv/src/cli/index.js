@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import { printTable } from 'console-table-printer';
 import {
+    chalk,
     logTask,
     rnvStatus,
     logToSummary,
@@ -112,11 +112,11 @@ export const rnvHelp = () => {
     });
 
     logToSummary(`
-${chalk.bold.white('COMMANDS:')}
+${chalk().bold.white('COMMANDS:')}
 
 ${cmdsString}
 
-${chalk.bold.white('OPTIONS:')}
+${chalk().bold.white('OPTIONS:')}
 
 '-i, --info', 'Show full debug info'
 '-u, --update', 'Force update dependencies (iOS only)'
@@ -414,9 +414,9 @@ const _handleUnknownPlatform = async (c, platforms) => {
         name: 'platform',
         message: 'pick one of the following',
         choices: platforms,
-        logMessage: `cli: Command ${chalk.grey(
+        logMessage: `cli: Command ${chalk().grey(
             c.command
-        )} does not support platform ${chalk.grey(c.platform)}. `
+        )} does not support platform ${chalk().grey(c.platform)}. `
     });
 
     c.platform = platform;
@@ -499,7 +499,7 @@ Command: ${c.command}
 Description: ${cmd.desc}.
 ${subCommands}
 ${opts}
-More info at ${chalk.grey(`https://renative.org/docs/rnv-${c.command}`)}
+More info at ${chalk().grey(`https://renative.org/docs/rnv-${c.command}`)}
 `);
     return Promise.resolve();
 };
@@ -513,9 +513,9 @@ const _handleUnknownSubCommand = async (c) => {
         name: 'subCommand',
         message: 'Pick a subCommand',
         choices: Object.keys(cmds),
-        logMessage: `cli: Command ${chalk.bold(
+        logMessage: `cli: Command ${chalk().bold(
             c.command
-        )} does not support method ${chalk.bold(c.subCommand)}!`
+        )} does not support method ${chalk().bold(c.subCommand)}!`
     });
 
     c.subCommand = subCommand;
@@ -533,7 +533,7 @@ const _handleUnknownCommand = async (c) => {
         message: 'Pick a command',
         pageSize: 7,
         choices: Object.keys(COMMANDS).sort(),
-        logMessage: `cli: Command ${chalk.bold(c.command)} not supported!`
+        logMessage: `cli: Command ${chalk().bold(c.command)} not supported!`
     });
     c.command = command;
     return run(c);
@@ -651,7 +651,7 @@ const _execute = async (c, cmdFn, cmd) => {
 
     const { plugins } = c.buildConfig;
     if ((!plugins || (plugins && Object.keys(plugins).length < 2)) && !NO_OP_COMMANDS.includes(c.command)) {
-        logError(`No plugins were injected into your app. your app will most likely fail. did you run ${chalk.white('rnv template apply')} ?`);
+        logError(`No plugins were injected into your app. your app will most likely fail. did you run ${chalk().white('rnv template apply')} ?`);
     }
 
     const pipeEnabled = !NO_OP_COMMANDS.includes(c.command)

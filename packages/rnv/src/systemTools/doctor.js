@@ -1,8 +1,7 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import { writeFileSync, readObjectSync } from './fileutils';
 import { PACKAGE_JSON_FILEDS } from '../constants';
-import { logWarning } from './logger';
+import { chalk, logWarning } from './logger';
 
 const getSortedObject = (obj) => {
     if (obj !== null && typeof obj === 'object' && !Array.isArray(obj)) {
@@ -30,7 +29,7 @@ const checkForDuplicates = (arr) => {
             Object.keys(v).forEach((k) => {
                 if (dupCheck[k]) {
                     logWarning(
-                        `Key ${chalk.white(
+                        `Key ${chalk().white(
                             k
                         )} is duplicated in your package.json`
                     );

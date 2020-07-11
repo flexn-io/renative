@@ -1,10 +1,10 @@
 /* eslint-disable import/no-cycle */
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import {
+    chalk,
     logWarning,
     logTask,
     logDebug,
@@ -108,9 +108,9 @@ const _migrateProjectSoft = async (c, paths) => {
             PATH_PROPS.forEach((v) => {
                 if (files.configNew.paths[v.oldKey]) {
                     logWarning(
-                        `You use old key ${chalk.white(
+                        `You use old key ${chalk().white(
                             v.oldKey
-                        )} instead of new one: ${chalk.white(
+                        )} instead of new one: ${chalk().white(
                             v.newKey
                         )}. ReNative will try to fix it for you!`
                     );
@@ -125,7 +125,7 @@ const _migrateProjectSoft = async (c, paths) => {
             // const packageString = fs.readFileSync(paths.package).toString();
             // No longer necessary. covered in installPackageDependencies
             // if (!packageString.includes('jetify') && !packageString.includes('postinstall')) {
-            //     logWarning(`You're missing ${chalk.white('"scripts": { "postinstall": "jetify" }')} in your package.json. Your android build might fail!`);
+            //     logWarning(`You're missing ${chalk().white('"scripts": { "postinstall": "jetify" }')} in your package.json. Your android build might fail!`);
             // }
         }
 
@@ -192,9 +192,9 @@ const _migrateProjectSoft = async (c, paths) => {
 
         if (fs.existsSync(paths.permissions)) {
             logWarning(
-                `Found legacy object ${chalk.red(
+                `Found legacy object ${chalk().red(
                     paths.permissions
-                )}. this should be migrated to ${chalk.green(
+                )}. this should be migrated to ${chalk().green(
                     './renative.json'
                 )}`
             );
@@ -202,9 +202,9 @@ const _migrateProjectSoft = async (c, paths) => {
 
         if (fs.existsSync(paths.plugins)) {
             logWarning(
-                `Found legacy object ${chalk.red(
+                `Found legacy object ${chalk().red(
                     paths.plugins
-                )}. this should be migrated to ${chalk.green(
+                )}. this should be migrated to ${chalk().green(
                     './renative.json'
                 )}`
             );
@@ -244,9 +244,9 @@ const _migrateProjectSoft = async (c, paths) => {
 //     if (!fs.existsSync(newPath)) {
 //         if (fs.existsSync(oldPath)) {
 //             logWarning(
-//                 `Found old app config at ${chalk.white(
+//                 `Found old app config at ${chalk().white(
 //                     oldPath
-//                 )}. will copy to ${chalk.white(newPath)}`
+//                 )}. will copy to ${chalk().white(newPath)}`
 //             );
 //         }
 //         copyFileSync(oldPath, newPath);

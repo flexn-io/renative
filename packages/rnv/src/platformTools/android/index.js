@@ -3,7 +3,6 @@
 import path from 'path';
 import fs from 'fs';
 import net from 'net';
-import chalk from 'chalk';
 import shell from 'shelljs';
 import inquirer from 'inquirer';
 import execa from 'execa';
@@ -18,6 +17,7 @@ import { isPlatformActive, createPlatformBuild } from '..';
 import { isSystemWin } from '../../utils';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import {
+    chalk,
     logTask,
     logWarning,
     logDebug,
@@ -262,9 +262,9 @@ const _checkSigningCerts = async (c) => {
         logWarning(
             `You're attempting to ${
                 c.command
-            } app in release mode but you have't configured your ${chalk.white(
+            } app in release mode but you have't configured your ${chalk().white(
                 c.paths.workspace.appConfig.configPrivate
-            )} for ${chalk.white(c.platform)} platform yet.`
+            )} for ${chalk().white(c.platform)} platform yet.`
         );
 
         const { confirm } = await inquirer.prompt({
@@ -311,9 +311,9 @@ const _checkSigningCerts = async (c) => {
                     const result = await inquirerPrompt({
                         type: 'input',
                         name: 'storeFile',
-                        message: `Paste asolute or relative path to ${chalk.white(
+                        message: `Paste asolute or relative path to ${chalk().white(
                             c.paths.workspace.appConfig.dir
-                        )} of your existing ${chalk.white(
+                        )} of your existing ${chalk().white(
                             'release.keystore'
                         )} file`
                     });
@@ -376,7 +376,7 @@ const _checkSigningCerts = async (c) => {
                 c.files.workspace.appConfig.configPrivate
             );
             logSuccess(
-                `Successfully updated private config file at ${chalk.white(
+                `Successfully updated private config file at ${chalk().white(
                     c.paths.workspace.appConfig.dir
                 )}.`
             );
@@ -497,7 +497,7 @@ export const buildAndroid = (c, platform) => new Promise((resolve, reject) => {
         ))
         .then(() => {
             logSuccess(
-                `Your APK is located in ${chalk.white(
+                `Your APK is located in ${chalk().white(
                     path.join(
                         appFolder,
                         `app/build/outputs/apk/${signingConfig.toLowerCase()}`
@@ -560,7 +560,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
 
     if (!fs.existsSync(gradlew)) {
         logWarning(
-            `Looks like your ${chalk.white(
+            `Looks like your ${chalk().white(
                 platform
             )} platformBuild is misconfigured!. let's repair it.`
         );
@@ -667,7 +667,7 @@ export const configureProject = (c, platform) => new Promise((resolve, reject) =
                             copyFileSync(fontSource, fontDest);
                         } else {
                             logWarning(
-                                `Font ${chalk.white(
+                                `Font ${chalk().white(
                                     fontSource
                                 )} doesn't exist! Skipping.`
                             );
@@ -702,9 +702,9 @@ export const runAndroidLog = async (c) => {
         const d = data.toString().split('\n');
         d.forEach((v) => {
             if (v.includes(' E ') && v.includes(filter)) {
-                logRaw(chalk.red(v));
+                logRaw(chalk().red(v));
             } else if (v.includes(' W ') && v.includes(filter)) {
-                logRaw(chalk.yellow(v));
+                logRaw(chalk().yellow(v));
             } else if (v.includes(filter)) {
                 logRaw(v);
             }

@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import { spawn } from 'child_process';
 import { createPlatformBuild, isPlatformActive } from '..';
 import { executeAsync } from '../../systemTools/exec';
@@ -21,6 +20,7 @@ import {
 } from '../../common';
 import { doResolve } from '../../resolve';
 import {
+    chalk,
     logTask,
     logError,
     logWarning,
@@ -71,7 +71,7 @@ const configureProject = (c, platform) => new Promise((resolve, reject) => {
 
     if (!fs.existsSync(packagePath)) {
         logWarning(
-            `Looks like your ${chalk.white(
+            `Looks like your ${chalk().white(
                 platform
             )} platformBuild is misconfigured!. let's repair it.`
         );
@@ -206,7 +206,7 @@ const exportElectron = async (c, platform) => {
     );
 
     logSuccess(
-        `Your Exported App is located in ${chalk.white(
+        `Your Exported App is located in ${chalk().white(
             path.join(appFolder, 'build/release')
         )} .`
     );
@@ -225,9 +225,9 @@ const runElectron = async (c, platform, port) => {
         const isPortActive = await checkPortInUse(c, platform, port);
         if (!isPortActive) {
             logInfo(
-                `Looks like your ${chalk.white(
+                `Looks like your ${chalk().white(
                     platform
-                )} devServer at port ${chalk.white(
+                )} devServer at port ${chalk().white(
                     port
                 )} is not running. Starting it up for you...`
             );
@@ -291,7 +291,7 @@ const _generateICNS = (c, platform) => new Promise((resolve, reject) => {
 
     if (!fs.existsSync(source)) {
         logWarning(
-            `Your app config is missing ${chalk.white(
+            `Your app config is missing ${chalk().white(
                 source
             )}. icon.icns will not be generated!`
         );

@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import inquirer from 'inquirer';
 import fs from 'fs';
 import path from 'path';
@@ -18,6 +17,7 @@ import { versionCheck, writeRenativeConfigFile } from '../configTools/configPars
 
 import { SUPPORTED_PLATFORMS, INJECTABLE_CONFIG_PROPS, RENATIVE_CONFIG_PLUGINS_NAME } from '../constants';
 import {
+    chalk,
     logSuccess,
     logTask,
     logWarning,
@@ -68,19 +68,19 @@ const _getPluginList = (c, isUpdate = false) => {
                 && c.buildConfig.plugins
                 && c.buildConfig.plugins[k];
             const installedString = installedPlugin
-                ? chalk.yellow('installed')
-                : chalk.green('not installed');
+                ? chalk().yellow('installed')
+                : chalk().green('not installed');
             if (isUpdate && installedPlugin) {
                 output.plugins.push(k);
                 let versionString;
                 if (installedPlugin.version !== p.version) {
-                    versionString = `(${chalk.yellow(
+                    versionString = `(${chalk().yellow(
                         installedPlugin.version
-                    )}) => (${chalk.green(p.version)})`;
+                    )}) => (${chalk().green(p.version)})`;
                 } else {
-                    versionString = `(${chalk.green(installedPlugin.version)})`;
+                    versionString = `(${chalk().green(installedPlugin.version)})`;
                 }
-                output.asString += ` [${i}]> ${chalk.bold(
+                output.asString += ` [${i}]> ${chalk().bold(
                     k
                 )} ${versionString}\n`;
                 output.asArray.push({
@@ -91,11 +91,11 @@ const _getPluginList = (c, isUpdate = false) => {
                 i++;
             } else if (!isUpdate) {
                 output.plugins.push(k);
-                output.asString += ` [${i}]> ${chalk.bold(k)} (${chalk.grey(
+                output.asString += ` [${i}]> ${chalk().bold(k)} (${chalk().grey(
                     p.version
                 )}) [${platforms}] - ${installedString}\n`;
                 output.asArray.push({
-                    name: `${k} (${chalk.grey(
+                    name: `${k} (${chalk().grey(
                         p.version
                     )}) [${platforms}] - ${installedString}`,
                     value: k
@@ -148,14 +148,14 @@ export const rnvPluginAdd = async (c) => {
 
         selectedPlugins[plugin] = o.allPlugins[plugin];
         installMessage.push(
-            `${chalk.white(plugin)} v(${chalk.green(
+            `${chalk().white(plugin)} v(${chalk().green(
                 o.allPlugins[plugin].version
             )})`
         );
     } else {
         selectedPlugins[selPluginKey] = selPlugin;
         installMessage.push(
-            `${chalk.white(selPluginKey)} v(${chalk.green(selPlugin.version)})`
+            `${chalk().white(selPluginKey)} v(${chalk().green(selPlugin.version)})`
         );
     }
 
@@ -331,9 +331,9 @@ export const configurePlugins = async (c) => {
 
         if (!plugin) {
             logWarning(
-                `Plugin with name ${chalk.white(
+                `Plugin with name ${chalk().white(
                     k
-                )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk.white(
+                )} does not exists in ReNative source:rnv scope. you need to define it manually here: ${chalk().white(
                     c.paths.project.builds.config
                 )}`
             );
@@ -349,11 +349,11 @@ export const configurePlugins = async (c) => {
                     );
                 } else {
                     logWarning(
-                        `Version mismatch of dependency ${chalk.white(
+                        `Version mismatch of dependency ${chalk().white(
                             k
                         )} between:
-${chalk.white(c.paths.project.package)}: v(${chalk.red(dependencies[k])}) and
-${chalk.white(c.paths.project.builds.config)}: v(${chalk.green(
+${chalk().white(c.paths.project.package)}: v(${chalk().red(dependencies[k])}) and
+${chalk().white(c.paths.project.builds.config)}: v(${chalk().green(
     plugin.version
 )}).
 package.json will be overriden`
@@ -370,11 +370,11 @@ package.json will be overriden`
                     && devDependencies[k] !== plugin.version
             ) {
                 logWarning(
-                    `Version mismatch of devDependency ${chalk.white(
+                    `Version mismatch of devDependency ${chalk().white(
                         k
-                    )} between package.json: v(${chalk.red(
+                    )} between package.json: v(${chalk().red(
                         devDependencies[k]
-                    )}) and plugins.json: v(${chalk.red(
+                    )}) and plugins.json: v(${chalk().red(
                         plugin.version
                     )}). package.json will be overriden`
                 );
@@ -388,7 +388,7 @@ package.json will be overriden`
             // Dependency does not exists
             if (plugin.version) {
                 logWarning(
-                    `Missing dependency ${chalk.white(k)} v(${chalk.red(
+                    `Missing dependency ${chalk().white(k)} v(${chalk().red(
                         plugin.version
                     )}) in package.json. package.json will be overriden`
                 );
@@ -403,9 +403,9 @@ package.json will be overriden`
                 const npmDep = plugin.npm[npmKey];
                 if (!dependencies[npmKey]) {
                     logWarning(
-                        `Plugin ${chalk.white(
+                        `Plugin ${chalk().white(
                             k
-                        )} requires npm dependency ${chalk.white(
+                        )} requires npm dependency ${chalk().white(
                             npmKey
                         )} .Adding missing npm dependency to you package.json`
                     );
@@ -413,11 +413,11 @@ package.json will be overriden`
                     hasPackageChanged = true;
                 } else if (dependencies[npmKey] !== npmDep) {
                     logWarning(
-                        `Plugin ${chalk.white(
+                        `Plugin ${chalk().white(
                             k
-                        )} npm dependency ${chalk.white(npmKey)} mismatch (${chalk.red(
+                        )} npm dependency ${chalk().white(npmKey)} mismatch (${chalk().red(
                             dependencies[npmKey]
-                        )}) => (${chalk.green(
+                        )}) => (${chalk().green(
                             npmDep
                         )}) .updating npm dependency in your package.json`
                     );
@@ -489,8 +489,8 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
                 message: `Install ${key}?`,
-                warningMessage: `Plugin ${chalk.white(key)} source:${
-                    chalk.white(pluginScope)} required by ${chalk.red(parentKey)} is not installed`
+                warningMessage: `Plugin ${chalk().white(key)} source:${
+                    chalk().white(pluginScope)} required by ${chalk().red(parentKey)} is not installed`
             });
             if (confirm) {
                 c.files.project.config.plugins[key] = `source:${pluginScope}`;
@@ -499,8 +499,8 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
                 c._requiresNpmInstall = true;
             }
         } else {
-            logWarning(`Plugin ${chalk.white(parentKey)} requires ${
-                chalk.red(key)} which is not available in your system`);
+            logWarning(`Plugin ${chalk().white(parentKey)} requires ${
+                chalk().red(key)} which is not available in your system`);
         }
     } else {
         // All good
@@ -570,16 +570,16 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                 });
             } else {
                 logError(
-                    `You have no plugins defined in ${chalk.white(
+                    `You have no plugins defined in ${chalk().white(
                         c.paths.project.builds.config
                     )}`
                 );
             }
         } else {
             logWarning(
-                `You haven't included any ${chalk.white(
+                `You haven't included any ${chalk().white(
                     '{ common: { includedPlugins: [] }}'
-                )} in your ${chalk.white(
+                )} in your ${chalk().white(
                     c.paths.appConfig.config
                 )}. Your app might not work correctly`
             );
@@ -637,11 +637,11 @@ export const loadPluginTemplates = (c) => {
 };
 
 // const overridePlugins = async (c, pluginsPath) => {
-//     logDebug(`overridePlugins:${pluginsPath}`, chalk.grey);
+//     logDebug(`overridePlugins:${pluginsPath}`, chalk().grey);
 //
 //     if (!fs.existsSync(pluginsPath)) {
 //         logInfo(
-//             `Your project plugin folder ${chalk.white(
+//             `Your project plugin folder ${chalk().white(
 //                 pluginsPath
 //             )} does not exists. skipping plugin configuration`
 //         );
@@ -684,7 +684,7 @@ const _overridePlugin = (c, pluginsPath, dir) => {
         // });
     } else {
         logDebug(
-            `Your plugin configuration has no override path ${chalk.white(
+            `Your plugin configuration has no override path ${chalk().white(
                 source
             )}. skipping folder override action`
         );
@@ -709,10 +709,10 @@ const _overridePlugin = (c, pluginsPath, dir) => {
                         const regEx = new RegExp(fk, 'g');
                         const count = (fileToFix.match(regEx) || []).length;
                         if (!count) {
-                            logWarning(`No Match found in ${chalk.red(
+                            logWarning(`No Match found in ${chalk().red(
                                 ovDir
-                            )} for expression: ${chalk.red(fk)}.
-Consider update or removal of ${chalk.white(overridePath)}`);
+                            )} for expression: ${chalk().red(fk)}.
+Consider update or removal of ${chalk().white(overridePath)}`);
                         } else {
                             fileToFix = fileToFix.replace(regEx, override[fk]);
                         }
@@ -804,8 +804,8 @@ export const copyTemplatePluginsSync = (c, platform) => {
         copyFolderContentsRecursiveSync(sourcePath3sec, destPath, true, false, false, objectInject);
 
         if (fs.existsSync(sourcePath3secLegacy)) {
-            logWarning(`Path: ${chalk.red(sourcePath3secLegacy)} is DEPRECATED.
-    Move your files to: ${chalk.white(sourcePath3sec)} instead`);
+            logWarning(`Path: ${chalk().red(sourcePath3secLegacy)} is DEPRECATED.
+    Move your files to: ${chalk().white(sourcePath3sec)} instead`);
         }
 
         // FOLDER MERGES FROM APP CONFIG PLUGIN

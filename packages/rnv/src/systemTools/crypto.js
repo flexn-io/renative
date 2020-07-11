@@ -1,10 +1,10 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import tar from 'tar';
-import chalk from 'chalk';
 import { promisify } from 'util';
 import fs from 'fs';
 import {
+    chalk,
     logWarning,
     logError,
     logTask,
@@ -63,9 +63,9 @@ const generateRandomKey = length => Array(length)
 
 const _getEnvExportCmd = (envVar, key) => {
     if (isSystemWin) {
-        return `${chalk.white(`setx ${envVar} "${key}"`)}`;
+        return `${chalk().white(`setx ${envVar} "${key}"`)}`;
     }
-    return `${chalk.white(`export ${envVar}="${key}"`)}`;
+    return `${chalk().white(`export ${envVar}="${key}"`)}`;
 };
 
 const _checkAndConfigureCrypto = async (c) => {
@@ -95,7 +95,7 @@ const _checkAndConfigureCrypto = async (c) => {
     const sourceFolder = path.join(c.paths.workspace.dir, source);
     if (!fs.existsSync(sourceFolder)) {
         logInfo(
-            `It seems you are running encrypt for the first time. Directory ${chalk.white(
+            `It seems you are running encrypt for the first time. Directory ${chalk().white(
                 sourceFolder
             )} does not exist yet.
 RNV will create it for you, make sure you add whatever you want encrypted in it and then run the command again`
@@ -129,7 +129,7 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
     if (!key) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
-            message: `You haven't passed a key with --key or set an env variable named ${chalk.yellow(
+            message: `You haven't passed a key with --key or set an env variable named ${chalk().yellow(
                 envVar
             )} for the encryption key. Would you like to generate one?`
         });
@@ -137,7 +137,7 @@ RNV will create it for you, make sure you add whatever you want encrypted in it 
             key = generateRandomKey(20);
             keyGenerated = true;
         } else {
-            return Promise.reject(`encrypt: You must pass ${chalk.white(
+            return Promise.reject(`encrypt: You must pass ${chalk().white(
                 '--key'
             )} or have env var defined:
 
@@ -146,7 +146,7 @@ ${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
 `);
         }
         if (keyGenerated) {
-            logSuccess(`The files were encrypted with key ${chalk.red(
+            logSuccess(`The files were encrypted with key ${chalk().red(
                 key
             )}. Make sure you keep it safe! Pass it with --key on decryption or set it as following env variable:
 
@@ -215,7 +215,7 @@ export const rnvCryptoEncrypt = async (c) => {
         logSuccess(`Files succesfully encrypted into ${dest}`);
     } else {
         logWarning(
-            `You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(
+            `You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(
                 c.paths.projectConfig
             )}`
         );
@@ -287,7 +287,7 @@ export const rnvCryptoDecrypt = async (c) => {
                 name: 'option',
                 type: 'list',
                 choices: options,
-                message: `How to decrypt to ${chalk.white(destFolder)} ?`
+                message: `How to decrypt to ${chalk().white(destFolder)} ?`
             });
             if (option === options[0]) {
                 shouldCleanFolder = true;
@@ -301,7 +301,7 @@ export const rnvCryptoDecrypt = async (c) => {
         if (fs.existsSync(destTemp)) {
             const { confirm } = await inquirerPrompt({
                 type: 'confirm',
-                message: `Found existing decrypted file at ${chalk.white(
+                message: `Found existing decrypted file at ${chalk().white(
                     destTemp
                 )}. want to use it and skip decrypt ?`
             });
@@ -320,7 +320,7 @@ export const rnvCryptoDecrypt = async (c) => {
 
         const key = c.program.key || c.process.env[envVar];
         if (!key) {
-            return Promise.reject(`encrypt: You must pass ${chalk.white(
+            return Promise.reject(`encrypt: You must pass ${chalk().white(
                 '--key'
             )} or have env var defined:
 
@@ -330,7 +330,7 @@ ${_getEnvExportCmd(envVar, 'REPLACE_WITH_ENV_VARIABLE')}
         }
         if (!fs.existsSync(source)) {
             return Promise.reject(
-                `Can't decrypt. ${chalk.white(source)} is missing!`
+                `Can't decrypt. ${chalk().white(source)} is missing!`
             );
         }
 
@@ -347,17 +347,17 @@ this change was introduced in "rnv@0.29.0"
 
 ${e}
 
-      ${chalk.green('SUGGESTION:')}
+      ${chalk().green('SUGGESTION:')}
 
-      ${chalk.yellow('STEP 1:')}
-      run: ${chalk.white('rnv crypto encrypt')} locally at least once and commit the result back to your repository
+      ${chalk().yellow('STEP 1:')}
+      run: ${chalk().white('rnv crypto encrypt')} locally at least once and commit the result back to your repository
 
-      ${chalk.yellow('STEP 2:')}
-      you should be able to use: ${chalk.white('rnv crypto decrypt')} properly now
+      ${chalk().yellow('STEP 2:')}
+      you should be able to use: ${chalk().white('rnv crypto decrypt')} properly now
 
-      ${chalk.yellow('IF ALL HOPE IS LOST:')}
+      ${chalk().yellow('IF ALL HOPE IS LOST:')}
       Raise new issue and copy this SUMMARY box output at:
-      ${chalk.white('https://github.com/pavjacko/renative/issues')}
+      ${chalk().white('https://github.com/pavjacko/renative/issues')}
       and we will try to help!
 
       `;
@@ -368,18 +368,18 @@ ${e}
 
 ${e.stack}
 
-${chalk.green('SUGGESTION:')}
+${chalk().green('SUGGESTION:')}
 
-${chalk.yellow('STEP 1:')}
+${chalk().yellow('STEP 1:')}
 check if your ENV VAR is correct: ${_getEnvExportCmd(envVar, '***********')}
-or if someone did not encrypt ${chalk.white(source)} with a different key
+or if someone did not encrypt ${chalk().white(source)} with a different key
 
-${chalk.yellow('STEP 2:')}
+${chalk().yellow('STEP 2:')}
 run crypto decrypt again
 
-${chalk.yellow('IF ALL HOPE IS LOST:')}
+${chalk().yellow('IF ALL HOPE IS LOST:')}
 Raise new issue and copy this SUMMARY box output at:
-${chalk.white('https://github.com/pavjacko/renative/issues')}
+${chalk().white('https://github.com/pavjacko/renative/issues')}
 and we will try to help!
 
 `);
@@ -401,18 +401,18 @@ and we will try to help!
         //                 { privateParams: [key] }
         //             );
         //         } catch (e) {
-        //             const cmd1 = chalk.white(
+        //             const cmd1 = chalk().white(
         //                 `openssl enc -aes-256-cbc -md md5 -d -in ${source} -out ${destTemp} -k $${envVar}`
         //             );
         //             return Promise.reject(`${e}
 
-        // ${chalk.green('SUGGESTION:')}
+        // ${chalk().green('SUGGESTION:')}
 
-        // ${chalk.yellow('STEP 1:')}
+        // ${chalk().yellow('STEP 1:')}
         // ${cmd1}
 
-        // ${chalk.yellow('STEP 2:')}
-        // ${chalk.white(
+        // ${chalk().yellow('STEP 2:')}
+        // ${chalk().white(
         //         'run your previous command again and choose to skip openssl once asked'
         //     )}`);
         //         }
@@ -427,7 +427,7 @@ and we will try to help!
         );
     } else {
         logWarning(
-            `You don't have {{ crypto.encrypt.dest }} specificed in ${chalk.white(
+            `You don't have {{ crypto.encrypt.dest }} specificed in ${chalk().white(
                 c.paths.projectConfig
             )}`
         );
@@ -525,7 +525,7 @@ export const rnvCryptoUpdateProfiles = async (c) => {
 };
 
 const _updateProfiles = (c) => {
-    logTask('_updateProfiles', chalk.grey);
+    logTask('_updateProfiles', chalk().grey);
     const acList = listAppConfigsFoldersSync(c, true);
 
     return acList.reduce(
@@ -535,7 +535,7 @@ const _updateProfiles = (c) => {
 };
 
 const _updateProfile = (c, v) => new Promise((resolve, reject) => {
-    logTask(`_updateProfile:${v}`, chalk.grey);
+    logTask(`_updateProfile:${v}`, chalk().grey);
     updateProfile(c, v)
         .then(() => resolve())
         .catch(e => reject(e));
@@ -581,8 +581,8 @@ export const checkCrypto = async (c) => {
 
                 if (tsProject > tsWorkspace) {
                     logWarning(`Your ${tsWorkspacePath} is out of date.
-project timestamp: ${chalk.grey(`${tsProject} - ${new Date(tsProject)}`)}
-workspace timestamp: ${chalk.grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
+project timestamp: ${chalk().grey(`${tsProject} - ${new Date(tsProject)}`)}
+workspace timestamp: ${chalk().grey(`${tsWorkspace} - ${new Date(tsWorkspace)}`)}
 you should run decrypt`);
                     await rnvCryptoDecrypt(c);
                     return;

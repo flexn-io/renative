@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
@@ -11,7 +10,7 @@ import {
 } from '../../common';
 import { doResolve } from '../../resolve';
 import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
-import { logTask, logError, logSummary, logInfo, logRaw } from '../../systemTools/logger';
+import { chalk, logTask, logError, logSummary, logInfo, logRaw } from '../../systemTools/logger';
 import {
     IOS,
     TVOS,
@@ -136,7 +135,7 @@ export const _taskStart = async (c, parentTask) => {
                 startCmd += ' --reset-cache';
             }
             // logSummary('BUNDLER STARTED');
-            const url = chalk.cyan(`http://${c.runtime.localhost}:${c.runtime.port}/${
+            const url = chalk().cyan(`http://${c.runtime.localhost}:${c.runtime.port}/${
                 getEntryFile(c, c.platform)}.bundle?platform=${BUNDLER_PLATFORMS[platform]}`);
             logRaw(`
 
@@ -342,7 +341,7 @@ module.exports = config;
     // Check rn-cli-config
     if (!fs.existsSync(c.paths.project.rnCliConfig)) {
         logInfo(
-            `Looks like your rn-cli config file ${chalk.white(
+            `Looks like your rn-cli config file ${chalk().white(
                 c.paths.project.rnCliConfig
             )} is missing! Let's create one for you.`
         );

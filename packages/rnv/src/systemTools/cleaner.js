@@ -1,11 +1,10 @@
 /* eslint-disable import/no-cycle */
 import fs from 'fs';
 import path from 'path';
-import chalk from 'chalk';
 import inquirer from 'inquirer';
 
 import { removeDirs } from './fileutils';
-import { logTask, logToSummary, logDebug } from './logger';
+import { chalk, logTask, logToSummary, logDebug } from './logger';
 import { executeAsync } from './exec';
 
 const rnvClean = async (c, skipQuestionParam = false) => {
@@ -19,7 +18,7 @@ const rnvClean = async (c, skipQuestionParam = false) => {
     const pkgLock = path.join(c.paths.project.dir, 'package-lock.json');
     if (fs.existsSync(immediateNodeModuleDir)) { pathsToRemove.push(immediateNodeModuleDir); }
     if (fs.existsSync(pkgLock)) pathsToRemove.push(pkgLock);
-    let msg = chalk.red(`${pkgLock}\n${immediateNodeModuleDir}`);
+    let msg = chalk().red(`${pkgLock}\n${immediateNodeModuleDir}`);
     const packagesFolder = path.join(c.paths.project.dir, 'packages');
     if (fs.existsSync(packagesFolder)) {
         fs.readdirSync(packagesFolder).forEach((dir) => {
@@ -28,13 +27,13 @@ const rnvClean = async (c, skipQuestionParam = false) => {
 
                 if (fs.existsSync(pth)) {
                     pathsToRemove.push(pth);
-                    msg += chalk.red(`${pth}\n`);
+                    msg += chalk().red(`${pth}\n`);
                 }
             } else {
                 const pth2 = path.join(packagesFolder, dir, 'node_modules');
                 if (fs.existsSync(pth2)) {
                     pathsToRemove.push(pth2);
-                    msg += chalk.red(`${pth2}\n`);
+                    msg += chalk().red(`${pth2}\n`);
                 }
 
                 const pth3 = path.join(
@@ -44,7 +43,7 @@ const rnvClean = async (c, skipQuestionParam = false) => {
                 );
                 if (fs.existsSync(pth3)) {
                     pathsToRemove.push(pth3);
-                    msg += chalk.red(`${pth3}\n`);
+                    msg += chalk().red(`${pth3}\n`);
                 }
             }
         });
@@ -80,7 +79,7 @@ const rnvClean = async (c, skipQuestionParam = false) => {
             const { confirmBuilds } = await inquirer.prompt({
                 name: 'confirmBuilds',
                 type: 'confirm',
-                message: `Do you want to clean your platformBuilds and platformAssets? \n${chalk.red(
+                message: `Do you want to clean your platformBuilds and platformAssets? \n${chalk().red(
                     buildDirs.join('\n')
                 )}`
             });

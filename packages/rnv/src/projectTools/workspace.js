@@ -1,10 +1,10 @@
 /* eslint-disable import/no-cycle */
 
-import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
+    chalk,
     logTask,
     logWarning,
     logDebug,
@@ -23,7 +23,7 @@ export const rnvWorkspaceList = async (c) => {
         null,
         (i, obj, mapping, defaultVal) => {
             const isConnected = '';
-            return ` [${chalk.grey(i + 1)}]> ${chalk.bold(
+            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(
                 defaultVal
             )}${isConnected} \n`;
         }
@@ -109,11 +109,11 @@ export const getWorkspaceDirPath = async (c) => {
                     const { conf } = await inquirerPrompt({
                         name: 'conf',
                         type: 'confirm',
-                        message: `Your project belongs to workspace ${chalk.white(
+                        message: `Your project belongs to workspace ${chalk().white(
                             ws
-                        )}. do you want to add new workspace ${chalk.white(
+                        )}. do you want to add new workspace ${chalk().white(
                             ws
-                        )} to your local system at ${chalk.white(wsDir)}?`,
+                        )} to your local system at ${chalk().white(wsDir)}?`,
                         warningMessage: 'No app configs found for this project'
                     });
                     confirm = conf;
@@ -160,7 +160,7 @@ export const rnvWorkspaceConnect = async (c) => {
 const _getConnectionString = (obj) => {
     const remoteUrl = obj.remote?.url;
     const connectMsg = remoteUrl
-        ? chalk.green(`(${obj.remote.type}:${remoteUrl})`)
+        ? chalk().green(`(${obj.remote.type}:${remoteUrl})`)
         : '';
     return connectMsg;
 };
@@ -177,7 +177,7 @@ export const getWorkspaceOptions = c => generateOptions(
         (i, obj, mapping, defaultVal) => {
             logDebug('getWorkspaceOptions');
 
-            return ` [${chalk.grey(i + 1)}]> ${chalk.bold(
+            return ` [${chalk().grey(i + 1)}]> ${chalk().bold(
                 defaultVal
             )} ${_getConnectionString(obj)}\n`;
         }

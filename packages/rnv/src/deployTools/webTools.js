@@ -1,11 +1,10 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import minimist from 'minimist';
 
 import { deployToNow } from './now';
 import { deployToFtp } from './ftp';
 import { importPackageFromProject } from '../common';
-import { logInfo } from '../systemTools/logger';
+import { chalk, logInfo } from '../systemTools/logger';
 import {
     configureDeploymentIfRequired,
     configureExportIfRequired
@@ -97,15 +96,15 @@ const selectToolAndExecute = async ({
         default: defaultChoice,
         message: `Which type of ${
             isDeploy ? 'deploy' : 'export'
-        } option would you like to use for ${chalk.white(c.platform)}?`
+        } option would you like to use for ${chalk().white(c.platform)}?`
     });
 
     await configFunction(c, selectedTarget);
 
     logInfo(
-        `Setting your appconfig for ${chalk.white(platform)} to include ${
+        `Setting your appconfig for ${chalk().white(platform)} to include ${
             isDeploy ? 'deploy' : 'export'
-        } type: ${chalk.white(selectedTarget)} at ${chalk.white(
+        } type: ${chalk().white(selectedTarget)} at ${chalk().white(
             c.paths.appConfig.config
         )}`
     );

@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import path from 'path';
 import fs from 'fs';
 import inquirer from 'inquirer';
@@ -7,7 +6,7 @@ import dotenv from 'dotenv';
 
 import { executeAsync } from '../systemTools/exec';
 import { getAppFolder, getConfigProp } from '../common';
-import { logInfo } from '../systemTools/logger';
+import { chalk, logInfo } from '../systemTools/logger';
 import { fsWriteFileSync } from '../systemTools/fileutils';
 
 const _runDeploymentTask = (c, nowConfigPath) => new Promise((resolve, reject) => {
@@ -34,7 +33,7 @@ const _createConfigFiles = async (
     if (!fs.existsSync(configFilePath)) {
         const content = { public: true, version: 2 };
         logInfo(
-            `${chalk.white(
+            `${chalk().white(
                 'now.json'
             )} file does not exist. Creating one for you`
         );

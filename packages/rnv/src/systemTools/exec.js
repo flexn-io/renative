@@ -4,14 +4,13 @@
 
 import path from 'path';
 import fs, { access, accessSync, constants } from 'fs';
-import chalk from 'chalk';
 import execa from 'execa';
 import ora from 'ora';
 import NClient from 'netcat/client';
 import Config from '../config';
 import { ANDROID, ANDROID_TV, ANDROID_WEAR } from '../constants';
 
-import { logDebug, logTask, logError, logWarning, logRaw } from './logger';
+import { chalk, logDebug, logTask, logError, logWarning, logRaw } from './logger';
 import { removeDirs, invalidatePodsChecksum } from './fileutils';
 import { inquirerPrompt } from './prompt';
 import { replaceOverridesInString } from '../utils';
@@ -181,11 +180,11 @@ const execCLI = (c, cli, command, opts = {}) => {
     if (!fs.existsSync(p)) {
         logDebug(`execCLI error: ${cli} | ${command}`, '\nCLI Config:\n', c.cli, '\nSDK Config:\n', c.buildConfig?.sdks);
         return Promise.reject(
-            `Location of your cli ${chalk.white(
+            `Location of your cli ${chalk().white(
                 p
-            )} does not exists. check your ${chalk.white(
+            )} does not exists. check your ${chalk().white(
                 c.paths.workspace.config
-            )} file if your ${chalk.white('sdks')} paths are correct`
+            )} file if your ${chalk().white('sdks')} paths are correct`
         );
     }
 

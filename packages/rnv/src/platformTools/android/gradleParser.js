@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import {
     getAppFolder,
     getAppVersion,
@@ -11,7 +10,7 @@ import {
     getConfigProp
 } from '../../common';
 import { doResolve, doResolvePath } from '../../resolve';
-import { logTask, logWarning, logDebug } from '../../systemTools/logger';
+import { chalk, logTask, logWarning, logDebug } from '../../systemTools/logger';
 import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 
 export const parseBuildGradleSync = (c, platform) => {
@@ -162,7 +161,7 @@ keyPassword=${c.files.workspace.appConfig.configPrivate[platform].keyPassword}`
           keystoreProps.load(new FileInputStream(keystorePropsFile))`;
         } else {
             logWarning(
-                `Your ${chalk.white(
+                `Your ${chalk().white(
                     keystorePathFull
                 )} does not exist. You won't be able to make production releases without it!`
             );
@@ -602,7 +601,7 @@ const _fixAndroidLegacy = (c, modulePath) => {
 //             output.parentFolder = c.paths.workspace.appConfig.dir;
 //             output.path = privateConfigPath;
 //             logInfo(
-//                 `Found ${chalk.white(privateConfigPath)}. Will use it for production releases!`,
+//                 `Found ${chalk().white(privateConfigPath)}. Will use it for production releases!`,
 //             );
 //             return output;
 //         } catch (e) {
@@ -611,7 +610,7 @@ const _fixAndroidLegacy = (c, modulePath) => {
 //         }
 //     } else {
 //         logWarning(
-//             `You're missing ${chalk.white(privateConfigPath)} for this app: . You won't be able to make production releases without it!`,
+//             `You're missing ${chalk().white(privateConfigPath)} for this app: . You won't be able to make production releases without it!`,
 //         );
 //         return null;
 //     }

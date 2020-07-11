@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import merge from 'deepmerge';
 import { promisify } from 'util';
 import inquirer from 'inquirer';
@@ -36,6 +35,7 @@ import { getConfigProp } from '../common';
 import { getEngineByPlatform } from '../engineTools';
 import { getWorkspaceDirPath } from '../projectTools/workspace';
 import {
+    chalk,
     logError,
     logTask,
     logWarning,
@@ -58,7 +58,7 @@ const readdirAsync = promisify(fs.readdir);
 const IGNORE_FOLDERS = ['.git'];
 
 const _loadAppConfigIDfromDir = (dir, appConfigsDir) => {
-    logDebug(`_loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk.grey);
+    logDebug(`_loadAppConfigIDfromDir:${dir}:${appConfigsDir}`, chalk().grey);
     const filePath = path.join(appConfigsDir, dir, 'renative.json');
     if (fs.existsSync(filePath)) {
         try {
@@ -189,9 +189,9 @@ Please edit one of them in /appConfigs/<folder>/renative.json`
 export const checkIsRenativeProject = c => new Promise((resolve, reject) => {
     if (!c.paths.project.configExists) {
         return reject(
-            `Looks like this directory is not ReNative project. Project config ${chalk.white(
+            `Looks like this directory is not ReNative project. Project config ${chalk().white(
                 c.paths.project.config
-            )} is missing!. You can create new project with ${chalk.white(
+            )} is missing!. You can create new project with ${chalk().white(
                 'rnv new'
             )}`
         );
@@ -213,7 +213,7 @@ export const fixRenativeConfigsSync = async (c) => {
     logDebug('configureProject:check babel config');
     if (!fs.existsSync(c.paths.project.babelConfig)) {
         logInfo(
-            `Looks like your babel config file ${chalk.white(
+            `Looks like your babel config file ${chalk().white(
                 c.paths.project.babelConfig
             )} is missing! Let's create one for you.`
         );
@@ -245,11 +245,11 @@ export const versionCheck = async (c) => {
         `versionCheck:rnvRunner:${c.runtime.rnvVersionRunner},rnvProject:${
             c.runtime.rnvVersionProject
         }`,
-        chalk.grey
+        chalk().grey
     );
     if (c.runtime.rnvVersionRunner && c.runtime.rnvVersionProject) {
         if (c.runtime.rnvVersionRunner !== c.runtime.rnvVersionProject) {
-            const recCmd = chalk.white(`$ npx ${getCurrentCommand(true)}`);
+            const recCmd = chalk().white(`$ npx ${getCurrentCommand(true)}`);
             const actionNoUpdate = 'Continue and skip updating package.json';
             const actionWithUpdate = 'Continue and update package.json';
             const actionUpgrade = `Upgrade project to ${
@@ -261,9 +261,9 @@ export const versionCheck = async (c) => {
                 type: 'list',
                 name: 'chosenAction',
                 choices: [actionNoUpdate, actionWithUpdate, actionUpgrade],
-                warningMessage: `You are running $rnv v${chalk.red(
+                warningMessage: `You are running $rnv v${chalk().red(
                     c.runtime.rnvVersionRunner
-                )} against project built with rnv v${chalk.red(
+                )} against project built with rnv v${chalk().red(
                     c.runtime.rnvVersionProject
                 )}. This might result in unexpected behaviour!
 It is recommended that you run your rnv command with npx prefix: ${
@@ -393,9 +393,9 @@ export const generateBuildConfig = (c) => {
         const exists = fs.existsSync(v);
         if (exists) {
             logDebug(`Merged: ${v}`);
-            // console.log(chalk.green(v));
+            // console.log(chalk().green(v));
         } else {
-            // console.log(chalk.red(v));
+            // console.log(chalk().red(v));
         }
         return exists;
     });
@@ -568,17 +568,17 @@ export const generateLocalConfig = (c, resetAppId) => {
 
 const _generatePlatformTemplatePaths = (c) => {
     if (!c.buildConfig.paths) {
-        logWarning(`You're missing paths object in your ${chalk.white(c.paths.project.config)}`);
+        logWarning(`You're missing paths object in your ${chalk().white(c.paths.project.config)}`);
         c.buildConfig.paths = {};
     }
     if (c.buildConfig.platformTemplatesDirs) {
         logWarning(`platformTemplatesDirs should be placed inside "paths" object in your ${
-            chalk.white(c.paths.project.config)
+            chalk().white(c.paths.project.config)
         }`);
     }
     if (c.buildConfig.platformTemplatesDir) {
         logWarning(`platformTemplatesDir should be placed inside "paths" object in your ${
-            chalk.white(c.paths.project.config)
+            chalk().white(c.paths.project.config)
         }`);
     }
     const pt = c.buildConfig.paths.platformTemplatesDirs || c.buildConfig.platformTemplatesDirs || {};
@@ -788,9 +788,9 @@ export const updateConfig = async (c, appConfigId) => {
             logWarning("It seems you don't have any appConfig active");
         } else if (appConfigId !== true && appConfigId !== true && !isPureRnv) {
             logWarning(
-                `It seems you don't have appConfig named ${chalk.white(
+                `It seems you don't have appConfig named ${chalk().white(
                     appConfigId
-                )} present in your config folder: ${chalk.white(
+                )} present in your config folder: ${chalk().white(
                     c.paths.project.appConfigsDir
                 )} !`
             );
@@ -800,7 +800,7 @@ export const updateConfig = async (c, appConfigId) => {
             if (configDirs.length === 1) {
                 // we have only one, skip the question
                 logInfo(
-                    `Found only one app config available. Will use ${chalk.white(
+                    `Found only one app config available. Will use ${chalk().white(
                         configDirs[0]
                     )}`
                 );
@@ -827,7 +827,7 @@ export const updateConfig = async (c, appConfigId) => {
             name: 'conf',
             type: 'confirm',
             message: 'Do you want ReNative to create new sample appConfig for you?',
-            warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk.white('rnv template apply')} ?`
+            warningMessage: `No app configs found for this project \nMaybe you forgot to run ${chalk().white('rnv template apply')} ?`
         });
 
         if (conf) {
@@ -964,13 +964,13 @@ export const configureRnvGlobal = async (c) => {
         if (c.files.workspace.config?.appConfigsPath) {
             if (!fs.existsSync(c.files.workspace.config.appConfigsPath)) {
                 logWarning(
-                    `Looks like your custom global appConfig is pointing to ${chalk.white(
+                    `Looks like your custom global appConfig is pointing to ${chalk().white(
                         c.files.workspace.config.appConfigsPath
                     )} which doesn't exist! Make sure you create one in that location`
                 );
             } else {
                 logInfo(
-                    `Found custom appConfing location pointing to ${chalk.white(
+                    `Found custom appConfing location pointing to ${chalk().white(
                         c.files.workspace.config.appConfigsPath
                     )}. ReNativewill now swith to that location!`
                 );
@@ -981,7 +981,7 @@ export const configureRnvGlobal = async (c) => {
         // Check config sanity
         if (c.files.workspace.config.defaultTargets === undefined) {
             logWarning(
-                `Looks like you're missing defaultTargets in your config ${chalk.white(
+                `Looks like you're missing defaultTargets in your config ${chalk().white(
                     c.paths.workspace.config
                 )}. Let's add them!`
             );

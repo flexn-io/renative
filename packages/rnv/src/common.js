@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
@@ -12,6 +11,7 @@ import crypto from 'crypto';
 import { doResolve } from './resolve';
 import { getValidLocalhost } from './utils';
 import {
+    chalk,
     configureLogger,
     logError,
     logTask,
@@ -92,7 +92,7 @@ export const getSourceExtsAsString = (c, p) => {
 export const sanitizeColor = (val, key) => {
     if (!val) {
         logWarning(
-            `You are missing ${chalk.white(key)} in your renative config. will use default #FFFFFF instead`
+            `You are missing ${chalk().white(key)} in your renative config. will use default #FFFFFF instead`
         );
         return {
             rgb: [255, 255, 255, 1],
@@ -300,9 +300,9 @@ export const getAppVersionCode = (c, platform) => {
 
 export const logErrorPlatform = (c) => {
     logError(
-        `Platform: ${chalk.white(
+        `Platform: ${chalk().white(
             c.platform
-        )} doesn't support command: ${chalk.white(c.command)}`,
+        )} doesn't support command: ${chalk().white(c.command)}`,
         true // kill it if we're not supporting this
     );
     return false;
@@ -359,7 +359,7 @@ export const areNodeModulesInstalled = () => !!doResolve('resolve', false);
 export const getBuildsFolder = (c, platform, customPath) => {
     const pp = customPath || c.paths.appConfig.dir;
     // if (!fs.existsSync(pp)) {
-    //     logWarning(`Path ${chalk.white(pp)} does not exist! creating one for you..`);
+    //     logWarning(`Path ${chalk().white(pp)} does not exist! creating one for you..`);
     // }
     const p = path.join(pp, `builds/${platform}@${c.runtime.scheme}`);
     if (fs.existsSync(p)) return p;

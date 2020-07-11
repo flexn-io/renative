@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import inquirer from 'inquirer';
 import {
     CLI_ANDROID_EMULATOR,
@@ -30,6 +29,7 @@ import {
 import { isSystemWin } from '../utils';
 import { getRealPath, writeFileSync } from '../systemTools/fileutils';
 import {
+    chalk,
     logTask,
     logWarning,
     logSuccess,
@@ -190,7 +190,7 @@ const _attemptAutoFix = async (c, sdkPlatform) => {
     const result = SDK_LOACTIONS[sdkPlatform].find(v => fs.existsSync(v));
     if (result) {
         logSuccess(
-            `Found existing ${c.platform} SDK location at ${chalk.white(
+            `Found existing ${c.platform} SDK location at ${chalk().white(
                 result
             )}`
         );
@@ -240,9 +240,9 @@ export const checkSdk = async (c) => {
         logWarning(
             `${
                 c.platform
-            } requires SDK to be installed. Your SDK path in ${chalk.white(
+            } requires SDK to be installed. Your SDK path in ${chalk().white(
                 c.paths.workspace.config
-            )} does not exist: ${chalk.white(_getCurrentSdkPath(c))}`
+            )} does not exist: ${chalk().white(_getCurrentSdkPath(c))}`
         );
 
         switch (c.platform) {

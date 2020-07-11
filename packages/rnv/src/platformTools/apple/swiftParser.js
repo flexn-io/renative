@@ -1,6 +1,5 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import chalk from 'chalk';
 import {
     getEntryFile,
     getAppTemplateFolder,
@@ -9,7 +8,7 @@ import {
     sanitizeColor,
     getFlavouredProp
 } from '../../common';
-import { logTask, logDebug, logWarning } from '../../systemTools/logger';
+import { chalk, logTask, logDebug, logWarning } from '../../systemTools/logger';
 import { parsePlugins } from '../../pluginTools';
 import { writeCleanFile } from '../../systemTools/fileutils';
 
@@ -51,7 +50,7 @@ export const parseAppDelegate = (
     //     if (UI_COLORS.includes(backgroundColor)) {
     //         pluginBgColor = `vc.view.backgroundColor = UIColor.${backgroundColor}`;
     //     } else {
-    //         logWarning(`Your choosen color in renative.json for platform ${chalk.white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk.white(UI_COLORS.join(','))}`);
+    //         logWarning(`Your choosen color in renative.json for platform ${chalk().white(platform)} is not supported by UIColor. use one of the predefined ones: ${chalk().white(UI_COLORS.join(','))}`);
     //     }
     // }
 
@@ -244,7 +243,7 @@ export const injectPluginSwiftSync = (c, plugin, key) => {
             Object.keys(appDelegateMethods[delKey]).forEach((key2) => {
                 const plugArr = c.pluginConfigiOS.appDelegateMethods[delKey][key2];
                 if (!plugArr) {
-                    logWarning(`appDelegateMethods.${delKey}.${chalk.red(key2)} not supported. SKIPPING.`);
+                    logWarning(`appDelegateMethods.${delKey}.${chalk().red(key2)} not supported. SKIPPING.`);
                 } else {
                     const plugVal = appDelegateMethods[delKey][key2];
                     if (plugVal) {

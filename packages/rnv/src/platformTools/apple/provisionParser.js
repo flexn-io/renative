@@ -1,9 +1,8 @@
 /* eslint-disable import/no-cycle */
 import { provision, cert } from 'ios-mobileprovision-finder';
-import chalk from 'chalk';
 import path from 'path';
 import { getConfigProp } from '../../common';
-import { logWarning } from '../../systemTools/logger';
+import { chalk, logWarning } from '../../systemTools/logger';
 
 
 export const parseProvisioningProfiles = async (c) => {
@@ -20,7 +19,7 @@ export const parseProvisioningProfiles = async (c) => {
         });
         return result;
     } catch (e) {
-        logWarning(`You have no provisioning files available. Check your ${chalk.white(path.join(c.paths.home.dir, 'Library/MobileDevice/Provisioning Profiles'))} folder`);
+        logWarning(`You have no provisioning files available. Check your ${chalk().white(path.join(c.paths.home.dir, 'Library/MobileDevice/Provisioning Profiles'))} folder`);
     }
 
     return null;

@@ -3,7 +3,6 @@
 import path from 'path';
 import os from 'os';
 import fs from 'fs';
-import chalk from 'chalk';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
 
@@ -11,6 +10,7 @@ import { execCLI, executeTelnet } from '../../systemTools/exec';
 import { waitForEmulator } from '../../common';
 import { isSystemWin } from '../../utils';
 import {
+    chalk,
     logToSummary,
     logTask,
     logError,
@@ -131,11 +131,11 @@ const _getDeviceString = (device, i) => {
         deviceIcon = 'Phone 📱 ';
     }
 
-    const deviceString = `${chalk.white(
+    const deviceString = `${chalk().white(
         name
-    )} | ${deviceIcon} | arch: ${arch} | udid: ${chalk.grey(udid)}${
-        isDevice ? chalk.red(' (device)') : ''
-    } ${isActive ? chalk.magenta(' (active)') : ''}`;
+    )} | ${deviceIcon} | arch: ${arch} | udid: ${chalk().grey(udid)}${
+        isDevice ? chalk().red(' (device)') : ''
+    } ${isActive ? chalk().magenta(' (active)') : ''}`;
 
     if (i === null) {
         return { key: name, name: deviceString, value: name, icon: deviceIcon };
@@ -600,7 +600,7 @@ export const askForNewEmulator = async (c, platform) => {
     const { confirm } = await inquirer.prompt({
         name: 'confirm',
         type: 'confirm',
-        message: `Do you want ReNative to create new Emulator (${chalk.white(
+        message: `Do you want ReNative to create new Emulator (${chalk().white(
             emuName
         )}) for you?`
     });
@@ -665,7 +665,7 @@ export const checkForActiveEmulator = (c, platform) => new Promise((resolve, rej
                     logDebug('Available devices after filtering', v);
                     if (v.length > 0) {
                         logSuccess(
-                            `Found active emulator! ${chalk.white(
+                            `Found active emulator! ${chalk().white(
                                 v[0].udid
                             )}. Will use it`
                         );

@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import open from 'better-opn';
 import { executeAsync } from '../../systemTools/exec';
 import {
@@ -11,7 +10,7 @@ import {
     confirmActiveBundler,
     getAppFolder
 } from '../../common';
-import { logTask, logInfo, logWarning, logDebug, logRaw } from '../../systemTools/logger';
+import { chalk, logTask, logInfo, logWarning, logDebug, logRaw } from '../../systemTools/logger';
 import { NEXT_CONFIG_NAME } from '../../constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTools/webTools';
 import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
@@ -86,7 +85,7 @@ export const runWebNext = async (c, platform, port) => {
 
     if (!isPortActive) {
         logInfo(
-            `Looks like your ${chalk.white(platform)} devServerHost ${chalk.white(devServerHost)} at port ${chalk.white(
+            `Looks like your ${chalk().white(platform)} devServerHost ${chalk().white(devServerHost)} at port ${chalk().white(
                 port
             )} is not running. Starting it up for you...`
         );
@@ -140,7 +139,7 @@ export const runWebDevServer = (c, platform, port) => {
     if (!pagesDir) logWarning(`You're missing ${platform}.pagesDir config. Defaulting to 'src/app'`);
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
-    const url = chalk.cyan(`http://${devServerHost}:${c.runtime.port}`);
+    const url = chalk().cyan(`http://${devServerHost}:${c.runtime.port}`);
     logRaw(`
 
 Dev server running at: ${url}

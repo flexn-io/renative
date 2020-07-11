@@ -2,10 +2,9 @@
 // @todo fix cycle dep
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import { getAppFolder } from '../common';
 import { doResolve } from '../resolve';
-import { logTask, logWarning } from '../systemTools/logger';
+import { chalk, logTask, logWarning } from '../systemTools/logger';
 import {
     copyFolderContentsRecursiveSync
 } from '../systemTools/fileutils';
@@ -89,9 +88,9 @@ const _checkAndCreatePlatforms = async (c) => {
         const { platforms } = c.buildConfig;
         if (!platforms) {
             return Promise.reject(
-                `Your ${chalk.white(
+                `Your ${chalk().white(
                     c.paths.appConfig.config
-                )} is missconfigured. (Maybe you have older version?). Missing ${chalk.white(
+                )} is missconfigured. (Maybe you have older version?). Missing ${chalk().white(
                     '{ platforms: {} }'
                 )} object at root`
             );

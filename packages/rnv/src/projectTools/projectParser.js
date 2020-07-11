@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import { WEB_HOSTED_PLATFORMS, INJECTABLE_CONFIG_PROPS } from '../constants';
 import {
     getAppFolder,
@@ -21,7 +20,7 @@ import {
 } from '../systemTools/fileutils';
 import { isPlatformActive } from '../platformTools';
 import { installPackageDependencies } from '../systemTools/exec';
-import { logTask, logWarning, logDebug, logInfo } from '../systemTools/logger';
+import { chalk, logTask, logWarning, logDebug, logInfo } from '../systemTools/logger';
 import { copyTemplatePluginsSync } from '../pluginTools';
 import { loadFile } from '../configTools/configParser';
 import { inquirerPrompt } from '../systemTools/prompt';
@@ -96,9 +95,9 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
 
     if (!c.buildConfig?.common) {
         reject(
-            `Your ${chalk.white(
+            `Your ${chalk().white(
                 c.paths.appConfig.config
-            )} is missconfigured. (Maybe you have older version?). Missing ${chalk.white(
+            )} is missconfigured. (Maybe you have older version?). Missing ${chalk().white(
                 '{ common: {} }'
             )} object at root`
         );
@@ -137,7 +136,7 @@ export const copyRuntimeAssets = c => new Promise((resolve, reject) => {
                           },`;
                         } else {
                             logWarning(
-                                `Font ${chalk.white(
+                                `Font ${chalk().white(
                                     fontSource
                                 )} doesn't exist! Skipping.`
                             );
@@ -318,7 +317,7 @@ const generateDefaultAssets = async (c, platform, sourcePath) => {
     if (c.program.ci === false) {
         const { confirm } = await inquirerPrompt({
             type: 'confirm',
-            message: `It seems you don't have assets configured in ${chalk.white(
+            message: `It seems you don't have assets configured in ${chalk().white(
                 sourcePath
             )} do you want generate default ones?`
         });
@@ -375,8 +374,8 @@ export const copyBuildsFolder = (c, platform) => new Promise((resolve) => {
     copyFolderContentsRecursiveSync(sourcePath1sec, destPath, true, false, false, configPropsInject, tsPathsConfig);
 
     if (fs.existsSync(sourcePath1secLegacy)) {
-        logWarning(`Path: ${chalk.red(sourcePath1secLegacy)} is DEPRECATED.
-Move your files to: ${chalk.white(sourcePath1sec)} instead`);
+        logWarning(`Path: ${chalk().red(sourcePath1secLegacy)} is DEPRECATED.
+Move your files to: ${chalk().white(sourcePath1sec)} instead`);
     }
 
     if (WEB_HOSTED_PLATFORMS.includes(platform)) {
@@ -458,13 +457,13 @@ export const configureNodeModules = c => new Promise((resolve, reject) => {
     if (!areNodeModulesInstalled() || (c._requiresNpmInstall && !c.runtime.skipPackageUpdate)) {
         if (!areNodeModulesInstalled()) {
             logWarning(
-                `Looks like your node_modules folder is missing! Let's run ${chalk.white(
+                `Looks like your node_modules folder is missing! Let's run ${chalk().white(
                     'npm install'
                 )} first!`
             );
         } else {
             logWarning(
-                `Looks like your node_modules out of date! Let's run ${chalk.white(
+                `Looks like your node_modules out of date! Let's run ${chalk().white(
                     'npm install'
                 )} first!`
             );

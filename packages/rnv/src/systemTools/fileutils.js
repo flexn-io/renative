@@ -5,11 +5,10 @@ import rimraf from 'rimraf';
 import Svg2Js from 'svg2js';
 import shelljs from 'shelljs';
 import merge from 'deepmerge';
-import chalk from 'chalk';
 import ncp from 'ncp';
 import { isSystemWin } from '../utils';
 
-import { logDebug, logError, logWarning } from './logger';
+import { chalk, logDebug, logError, logWarning } from './logger';
 import { getConfigProp } from '../common';
 import { doResolve } from '../resolve';
 
@@ -481,7 +480,7 @@ export const readObjectSync = (filePath, sanitize = false, c) => {
         }
     } catch (e) {
         logError(
-            `readObjectSync: Parsing of ${chalk.white(
+            `readObjectSync: Parsing of ${chalk().white(
                 filePath
             )} failed with ${e}`
         );
@@ -506,9 +505,9 @@ export const getRealPath = (c, p, key = 'undefined', original) => {
     if (!p) {
         if (original) {
             logDebug(
-                `Path ${chalk.white(
+                `Path ${chalk().white(
                     key
-                )} is not defined. using default: ${chalk.white(original)}`
+                )} is not defined. using default: ${chalk().white(original)}`
             );
         }
         return original;
@@ -544,7 +543,7 @@ const _refToValue = (c, ref, key) => {
                 logWarning(`_refToValue: ${e}`);
             }
         } else {
-            logWarning(`_refToValue: ${chalk.white(realPath)} does not exist!`);
+            logWarning(`_refToValue: ${chalk().white(realPath)} does not exist!`);
         }
     }
     return ref;

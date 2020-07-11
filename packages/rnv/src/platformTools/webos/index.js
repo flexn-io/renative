@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import semver from 'semver';
 import inquirer from 'inquirer';
 import { executeAsync, execCLI, openCommand } from '../../systemTools/exec';
@@ -19,6 +18,7 @@ import {
 } from '../../common';
 import { isPlatformActive } from '..';
 import {
+    chalk,
     logToSummary,
     logTask,
     logInfo,
@@ -140,7 +140,7 @@ const listWebOSTargets = async (c) => {
     const devices = await parseDevices(c, devicesResponse);
 
     const deviceArray = devices.map(
-        (device, i) => ` [${i + 1}]> ${chalk.bold(device.name)} | ${device.device}`
+        (device, i) => ` [${i + 1}]> ${chalk().bold(device.name)} | ${device.device}`
     );
 
     logToSummary(`WebOS Targets:\n${deviceArray.join('\n')}`);
@@ -180,7 +180,7 @@ const runWebOS = async (c) => {
         'public/appinfo.json'
     );
 
-    logTask(`runWebOS:${platform}:${target}:${isHosted}`, chalk.grey);
+    logTask(`runWebOS:${platform}:${target}:${isHosted}`, chalk().grey);
 
     const cnfg = JSON.parse(fs.readFileSync(configFilePath, 'utf-8'));
     const tId = cnfg.id;
@@ -304,7 +304,7 @@ const buildWebOSProject = async (c, platform) => {
         await execCLI(c, CLI_WEBOS_ARES_PACKAGE, `-o ${tOut} ${tDir} -n`);
 
         logSuccess(
-            `Your IPK package is located in ${chalk.white(tOut)} .`
+            `Your IPK package is located in ${chalk().white(tOut)} .`
         );
     }
 };

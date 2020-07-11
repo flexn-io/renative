@@ -1,10 +1,9 @@
 /* eslint-disable import/no-cycle */
 // @todo fix cycle dep
-import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { logToSummary, logTask, logSuccess, logError, logDebug, logWarning, logInfo } from '../systemTools/logger';
+import { chalk, logToSummary, logTask, logSuccess, logError, logDebug, logWarning, logInfo } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
     cleanFolder,
@@ -67,8 +66,8 @@ const _generatePlatformChoices = c => c.buildConfig.defaults.supportedPlatforms.
     return {
         name: `${platform} - ${
             isConnected
-                ? chalk.green('(connected)')
-                : chalk.yellow('(ejected)')
+                ? chalk().green('(connected)')
+                : chalk().yellow('(ejected)')
         }`,
         value: platform,
         isConnected
@@ -121,15 +120,15 @@ export const rnvPlatformEject = async (c) => {
         });
 
         logSuccess(
-            `${chalk.white(
+            `${chalk().white(
                 ejectedPlatforms.join(',')
-            )} platform templates are located in ${chalk.white(
+            )} platform templates are located in ${chalk().white(
                 c.files.project.config.paths.platformTemplatesDirs[ejectedPlatforms[0]]
             )} now. You can edit them directly!`
         );
     } else {
         logError(`You haven't selected any platform to eject.
-TIP: You can select options with ${chalk.white('SPACE')} key before pressing ENTER!`);
+TIP: You can select options with ${chalk().white('SPACE')} key before pressing ENTER!`);
     }
 };
 
@@ -142,9 +141,9 @@ const _genPlatOptions = (c) => {
             const isEjected = c.paths.project.platformTemplatesDirs[
                 obj
             ].includes(c.paths.rnv.platformTemplates.dir)
-                ? chalk.green('(connected)')
-                : chalk.yellow('(ejected)');
-            return ` [${chalk.white(i + 1)}]> ${chalk.bold(
+                ? chalk().green('(connected)')
+                : chalk().yellow('(ejected)');
+            return ` [${chalk().white(i + 1)}]> ${chalk().bold(
                 defaultVal
             )} - ${isEjected} \n`;
         }
@@ -207,9 +206,9 @@ export const rnvPlatformConnect = async (c) => {
     }
 
     logSuccess(
-        `${chalk.white(
+        `${chalk().white(
             connectedPlatforms.join(',')
-        )} now using ReNative platformTemplates located in ${chalk.white(
+        )} now using ReNative platformTemplates located in ${chalk().white(
             c.paths.rnv.platformTemplates.dir
         )} now!`
     );
@@ -251,9 +250,9 @@ const _runCopyPlatforms = (c, platform) => new Promise((resolve) => {
         );
     } else {
         logWarning(
-            `Your platform ${chalk.white(
+            `Your platform ${chalk().white(
                 platform
-            )} config is not present. Check ${chalk.white(
+            )} config is not present. Check ${chalk().white(
                 c.paths.appConfig.config
             )}`
         );
@@ -297,7 +296,7 @@ export const configureGenericPlatform = async (c) => {
     // await configurePlatformIfRequired(c, c.platform);
     if (c.program.reset) {
         logInfo(
-            `You passed ${chalk.white('-r')} argument. paltform ${chalk.white(
+            `You passed ${chalk().white('-r')} argument. paltform ${chalk().white(
                 c.platform
             )} will be cleaned up first!`
         );
@@ -387,8 +386,8 @@ const _isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!platform) {
         if (reject) {
             reject(
-                chalk.red(
-                    `You didn't specify platform. make sure you add "${chalk.white.bold(
+                chalk().red(
+                    `You didn't specify platform. make sure you add "${chalk().white.bold(
                         '-p <PLATFORM>'
                     )}" option to your command!`
                 )
@@ -399,8 +398,8 @@ const _isPlatformSupportedSync = (platform, resolve, reject) => {
     if (!SUPPORTED_PLATFORMS.includes(platform)) {
         if (reject) {
             reject(
-                chalk.red(
-                    `Platform ${platform} is not supported. Use one of the following: ${chalk.white(
+                chalk().red(
+                    `Platform ${platform} is not supported. Use one of the following: ${chalk().white(
                         SUPPORTED_PLATFORMS.join(', ')
                     )} .`
                 )
@@ -415,7 +414,7 @@ const _isPlatformSupportedSync = (platform, resolve, reject) => {
 export const isPlatformActive = (c, platform, resolve) => {
     if (!c.buildConfig || !c.buildConfig.platforms) {
         logError(
-            `Looks like your appConfigFile is not configured properly! check ${chalk.white(
+            `Looks like your appConfigFile is not configured properly! check ${chalk().white(
                 c.paths.appConfig.config
             )} location.`
         );

@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import {
     getAppFolder,
     getAppId,
@@ -9,7 +8,7 @@ import {
     getFlavouredProp
 } from '../../common';
 import { doResolve } from '../../resolve';
-import { logTask, logWarning } from '../../systemTools/logger';
+import { chalk, logTask, logWarning } from '../../systemTools/logger';
 import { inquirerPrompt } from '../../systemTools/prompt';
 import { IOS, TVOS } from '../../constants';
 import { parsePlugins } from '../../pluginTools';
@@ -209,7 +208,7 @@ const _parseXcodeProject = (c, platform) => new Promise((resolve) => {
                     );
                 } else {
                     logWarning(`You are trying to inject native file which does not exists: ${
-                        chalk.red(filePath)
+                        chalk().red(filePath)
                     }. Skipping.`);
                 }
             });

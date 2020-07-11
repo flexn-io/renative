@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import semver from 'semver';
 import inquirer from 'inquirer';
 import net from 'net';
@@ -24,6 +23,7 @@ import {
     confirmActiveBundler
 } from '../../common';
 import {
+    chalk,
     logTask,
     logError,
     logWarning,
@@ -274,16 +274,16 @@ export const runTizen = async (c, platform, target) => {
 
     if (!platformConfig) {
         throw new Error(
-            `runTizen: ${chalk.grey(
+            `runTizen: ${chalk().grey(
                 platform
-            )} not defined in your ${chalk.white(c.paths.appConfig.config)}`
+            )} not defined in your ${chalk().white(c.paths.appConfig.config)}`
         );
     }
     if (!platformConfig.appName) {
         throw new Error(
-            `runTizen: ${chalk.grey(
+            `runTizen: ${chalk().grey(
                 platform
-            )}.appName not defined in your ${chalk.white(
+            )}.appName not defined in your ${chalk().white(
                 c.paths.appConfig.config
             )}`
         );
@@ -385,7 +385,7 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
         } catch (err) {
             logError(err);
             logWarning(
-                `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk.white.bold(
+                `Looks like there is no emulator or device connected! Let's try to launch it. "${chalk().white.bold(
                     `rnv target launch -p ${platform} -t ${target}`
                 )}"`
             );
@@ -494,7 +494,7 @@ export const buildTizenProject = async (c, platform) => {
         );
 
         logSuccess(
-            `Your WGT package is located in ${chalk.white(tOut)} .`
+            `Your WGT package is located in ${chalk().white(tOut)} .`
         );
     }
 

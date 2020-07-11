@@ -1,10 +1,7 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { logWarning, logTask, logDebug } from './logger';
+import { chalk, logWarning, logTask, logDebug } from './logger';
 import Config from '../config';
-
-const highlight = chalk.grey.bold;
 
 export const inquirerPrompt = async (params) => {
     const c = Config.getConfig();
@@ -16,7 +13,7 @@ export const inquirerPrompt = async (params) => {
         }
         return Promise.reject(`--ci option does not allow prompts. question: ${msg}.`);
     }
-    if (msg && params.logMessage) logTask(msg, chalk.grey);
+    if (msg && params.logMessage) logTask(msg, chalk().grey);
     if (msg && params.warningMessage) logWarning(msg);
 
     // allow passing in just { type: 'prompt', ... } instead of { type: 'prompt', name: 'prompt', ... }
@@ -97,4 +94,4 @@ const _sort = (a, b) => {
     return com;
 };
 
-const _generateOptionString = (i, obj, mapping, defaultVal) => ` [${highlight(i + 1)}]> ${highlight(mapping ? '' : defaultVal)} \n`;
+const _generateOptionString = (i, obj, mapping, defaultVal) => ` [${chalk().grey.bold(i + 1)}]> ${chalk().grey.bold(mapping ? '' : defaultVal)} \n`;

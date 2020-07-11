@@ -1,8 +1,7 @@
 /* eslint-disable import/no-cycle */
 import path from 'path';
-import chalk from 'chalk';
 import { getConfigProp, getAppId } from '../../common';
-import { logTask, logWarning, logSuccess } from '../../systemTools/logger';
+import { chalk, logTask, logWarning, logSuccess } from '../../systemTools/logger';
 import { executeAsync } from '../../systemTools/exec';
 import { IOS, TVOS } from '../../constants';
 import { setAppConfig } from '../../configTools/configParser';
@@ -39,7 +38,7 @@ export const registerDevice = async (c) => {
 };
 
 export const updateProfile = async (c, appConfigId) => {
-    logTask(`updateProfile:${appConfigId}`, chalk.grey);
+    logTask(`updateProfile:${appConfigId}`, chalk().grey);
 
     // TODO: run trough all schemes
     // const schemes = c.buildConfig.platforms?.[c.platform]?.buildSchemes

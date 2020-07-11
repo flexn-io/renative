@@ -1,5 +1,4 @@
 /* eslint-disable import/no-cycle */
-import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import inquirer from 'inquirer';
@@ -18,6 +17,7 @@ import {
     readObjectSync
 } from '../systemTools/fileutils';
 import {
+    chalk,
     logToSummary,
     logError,
     logInfo,
@@ -39,7 +39,7 @@ import { doResolve } from '../resolve';
 // let templateName = c.buildConfig.currentTemplate;
 // if (!templateName) {
 //     templateName = 'renative-template-hello-world';
-//     logWarning(`You're missing template name in your ${chalk.white(c.paths.project.config)}. ReNative will add default ${chalk.white(templateName)} for you`);
+//     logWarning(`You're missing template name in your ${chalk().white(c.paths.project.config)}. ReNative will add default ${chalk().white(templateName)} for you`);
 //     c.buildConfig.defaults.template = templateName;
 //     fs.writeFileSync(c.paths.project.config, JSON.stringify(c.files.project.config, null, 2));
 // }
@@ -62,9 +62,9 @@ export const checkIfTemplateInstalled = c => new Promise((resolve) => {
     logTask('checkIfTemplateInstalled');
     if (!c.buildConfig.templates) {
         logWarning(
-            `Your ${chalk.white(
+            `Your ${chalk().white(
                 c.paths.project.config
-            )} does not contain ${chalk.white(
+            )} does not contain ${chalk().white(
                 'templates'
             )} object. ReNative will skip template generation`
         );
@@ -78,7 +78,7 @@ export const checkIfTemplateInstalled = c => new Promise((resolve) => {
               && !doResolve(k, false)
         ) {
             logInfo(
-                `Your ${chalk.white(
+                `Your ${chalk().white(
                     `${k}@${obj.version}`
                 )} template is not installed. ReNative will install it for you`
             );
@@ -139,9 +139,9 @@ const _applyTemplate = async (c) => {
 
     if (!fs.existsSync(c.paths.template.configTemplate)) {
         logWarning(
-            `Template file ${chalk.white(
+            `Template file ${chalk().white(
                 c.paths.template.configTemplate
-            )} does not exist. check your ${chalk.white(
+            )} does not exist. check your ${chalk().white(
                 c.paths.template.dir
             )}. skipping`
         );
@@ -179,7 +179,7 @@ const _configureSrc = c => new Promise((resolve) => {
     logDebug('configureProject:check src');
     if (!fs.existsSync(c.paths.project.srcDir)) {
         logInfo(
-            `Looks like your src folder ${chalk.white(
+            `Looks like your src folder ${chalk().white(
                 c.paths.project.srcDir
             )} is missing! Let's create one for you.`
         );
@@ -197,7 +197,7 @@ const _configureAppConfigs = async (c) => {
     //
     if (!fs.existsSync(c.paths.project.appConfigsDir)) {
         logInfo(
-            `Looks like your appConfig folder ${chalk.white(
+            `Looks like your appConfig folder ${chalk().white(
                 c.paths.project.appConfigsDir
             )} is missing! ReNative will create one from template.`
         );
@@ -251,7 +251,7 @@ const _configureProjectConfig = c => new Promise((resolve) => {
     logDebug('configureProject:check projectConfigs');
     if (!fs.existsSync(c.paths.project.projectConfig.dir)) {
         logInfo(
-            `Looks like your projectConfig folder ${chalk.white(
+            `Looks like your projectConfig folder ${chalk().white(
                 c.paths.project.projectConfig.dir
             )} is missing! Let's create one for you.`
         );
@@ -297,8 +297,8 @@ const _configureRenativeConfig = async (c) => {
     //             involvedEngines[engine] = true;
     //         });
     //
-    //         logInfo(`Adding following plugins required by ${chalk.white(Object.keys(involvedEngines).join(', '))} engines:
-    // ${chalk.white(missingPluginsArr.map(v => v.key).join(', '))}`);
+    //         logInfo(`Adding following plugins required by ${chalk().white(Object.keys(involvedEngines).join(', '))} engines:
+    // ${chalk().white(missingPluginsArr.map(v => v.key).join(', '))}`);
     //     }
 
     if (!c.runtime.isWrapper) {
@@ -367,9 +367,9 @@ const _parseSupportedPlatforms = async (c, callback) => {
         } else if (platKeysNum > 1) {
             // Every platform comes always at least with engine prop so let's check for more
             logWarning(
-                `Extra platform ${chalk.white(
+                `Extra platform ${chalk().white(
                     k
-                )} will be ignored because it's not configured in your ${chalk.white(
+                )} will be ignored because it's not configured in your ${chalk().white(
                     './renative.json: { defaults.supportedPlatforms }'
                 )} object.`
             );
@@ -384,7 +384,7 @@ export const configureEntryPoints = async (c) => {
     // TODO: RN bundle command fails if entry files are not at root
     // logDebug('configureProject:check entry');
     // if (!fs.existsSync(c.paths.entryDir)) {
-    //     logWarning(`Looks like your entry folder ${chalk.white(c.paths.entryDir)} is missing! Let's create one for you.`);
+    //     logWarning(`Looks like your entry folder ${chalk().white(c.paths.entryDir)} is missing! Let's create one for you.`);
     copyFolderContentsRecursiveSync(
         path.join(c.paths.rnv.dir, 'entry'),
         c.paths.entryDir
@@ -414,24 +414,24 @@ export const configureEntryPoints = async (c) => {
             if (!fs.existsSync(dest)) {
                 if (!plat.entryFile) {
                     logWarning(
-                        `You missing entryFile key for ${chalk.white(
+                        `You missing entryFile key for ${chalk().white(
                             platform
-                        )} platform in your ${chalk.white(
+                        )} platform in your ${chalk().white(
                             c.paths.appConfig.config
                         )}.`
                     );
                 } else if (!fs.existsSync(source)) {
                     logInfo(
-                        `You missing entry file ${chalk.white(
+                        `You missing entry file ${chalk().white(
                             source
-                        )} in your template. ReNative Will use default backup entry from ${chalk.white(
+                        )} in your template. ReNative Will use default backup entry from ${chalk().white(
                             backupSource
                         )}!`
                     );
                     copyFileSync(backupSource, dest);
                 } else {
                     logInfo(
-                        `You missing entry file ${chalk.white(
+                        `You missing entry file ${chalk().white(
                             plat.entryFile
                         )} in your project. let's create one for you!`
                     );
@@ -457,8 +457,8 @@ export const getTemplateOptions = c => generateOptions(
     null,
     (i, obj, mapping, defaultVal) => {
         const exists = c.buildConfig.templates?.[defaultVal];
-        const installed = exists ? chalk.yellow(' (installed)') : '';
-        return ` [${chalk.grey(i + 1)}]> ${chalk.bold(
+        const installed = exists ? chalk().yellow(' (installed)') : '';
+        return ` [${chalk().grey(i + 1)}]> ${chalk().bold(
             defaultVal
         )}${installed} \n`;
     }

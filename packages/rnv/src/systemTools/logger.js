@@ -1,7 +1,6 @@
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-console */
 import _chalk from 'chalk';
-import { generateOptions } from './prompt';
 import Analytics from './analytics';
 
 const _chalkCols = {
@@ -18,48 +17,50 @@ const _chalkCols = {
 };
 const _chalkMono = {
     ..._chalkCols,
-    bold: _chalkCols
+    bold: _chalkCols,
+    rgb: () => v => v
 };
 
-let chalk = _chalk;
+let currentChalk = _chalk;
 
 let RNV = 'ReNative';
 
+export const chalk = () => currentChalk || _chalk;
 
 export const logWelcome = () => {
     // prettier-ignore
     let str = _defaultColor(`
 ┌──────────────────────────────────────────────────────────────────────────────┐
 │                                                                              │
-│        ${chalk.red('██████╗')} ███████╗${chalk.red('███╗   ██╗')} █████╗ ████████╗██╗${chalk.red('██╗   ██╗')}███████╗       │
-│        ${chalk.red('██╔══██╗')}██╔════╝${chalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${chalk.red('██║   ██║')}██╔════╝       │
-│        ${chalk.red('██████╔╝')}█████╗  ${chalk.red('██╔██╗ ██║')}███████║   ██║   ██║${chalk.red('██║   ██║')}█████╗         │
-│        ${chalk.red('██╔══██╗')}██╔══╝  ${chalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${chalk.red('╚██╗ ██╔╝')}██╔══╝         │
-│        ${chalk.red('██║  ██║')}███████╗${chalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${chalk.red(' ╚████╔╝ ')}███████╗       │
-│        ${chalk.red('╚═╝  ╚═╝')}╚══════╝${chalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${chalk.red('  ╚═══╝  ')}╚══════╝       │
+│        ${currentChalk.red('██████╗')} ███████╗${currentChalk.red('███╗   ██╗')} █████╗ ████████╗██╗${currentChalk.red('██╗   ██╗')}███████╗       │
+│        ${currentChalk.red('██╔══██╗')}██╔════╝${currentChalk.red('████╗  ██║')}██╔══██╗╚══██╔══╝██║${currentChalk.red('██║   ██║')}██╔════╝       │
+│        ${currentChalk.red('██████╔╝')}█████╗  ${currentChalk.red('██╔██╗ ██║')}███████║   ██║   ██║${currentChalk.red('██║   ██║')}█████╗         │
+│        ${currentChalk.red('██╔══██╗')}██╔══╝  ${currentChalk.red('██║╚██╗██║')}██╔══██║   ██║   ██║${currentChalk.red('╚██╗ ██╔╝')}██╔══╝         │
+│        ${currentChalk.red('██║  ██║')}███████╗${currentChalk.red('██║ ╚████║')}██║  ██║   ██║   ██║${currentChalk.red(' ╚████╔╝ ')}███████╗       │
+│        ${currentChalk.red('╚═╝  ╚═╝')}╚══════╝${currentChalk.red('╚═╝  ╚═══╝')}╚═╝  ╚═╝   ╚═╝   ╚═╝${currentChalk.red('  ╚═══╝  ')}╚══════╝       │
 │                                                                              │
 `);
 
     if (_c?.files?.rnv?.package?.version) {
         _c.rnvVersion = _c.files.rnv.package.version;
-        str += printIntoBox(`      Version: ${chalk.green(_c.rnvVersion)}`, 1);
+        str += printIntoBox(`      Version: ${currentChalk.green(_c.rnvVersion)}`, 1);
         if (_c.rnvVersion.includes('alpha')) {
             str += printIntoBox(
-                `      ${chalk.yellow(
+                `      ${currentChalk.yellow(
                     'WARNING: this is a prerelease version.'
                 )}`,
                 1
             );
             str += printIntoBox(
-                `      ${chalk.yellow(
+                `      ${currentChalk.yellow(
                     'Use "npm install rnv" for stable one.'
                 )}`,
                 1
             );
         }
     }
-    str += printIntoBox(`      ${chalk.grey('https://renative.org')}`, 1);
-    str += printIntoBox(`      🚀 ${chalk.yellow('Firing up!...')}`, 1);
+    str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`, 1);
+    str += printIntoBox(`      🚀 ${currentChalk.yellow('Firing up!...')}`, 1);
     str += printIntoBox(`      ${getCurrentCommand()}`);
     if (_c?.timeStart) {
         str += printIntoBox(
@@ -98,15 +99,15 @@ export const configureLogger = (
     _isInfoEnabled = isInfoEnabled;
     _isMono = c.program.mono;
     if (_isMono) {
-        chalk = _chalkMono;
+        currentChalk = _chalkMono;
     }
     _updateDefaultColors();
     RNV = getCurrentCommand();
 };
 
 const _updateDefaultColors = () => {
-    _defaultColor = chalk.gray;
-    _highlightColor = chalk.green;
+    _defaultColor = currentChalk.gray;
+    _highlightColor = currentChalk.green;
 };
 _updateDefaultColors();
 
@@ -214,23 +215,20 @@ export const logSummary = (header = 'SUMMARY') => {
             const defaultProjectConfigs = _c.files.project.config.defaults;
             if (defaultProjectConfigs?.supportedPlatforms) {
                 const plats = [];
-                generateOptions(
-                    _c.buildConfig?.defaults?.supportedPlatforms,
-                    true,
-                    null,
-                    (i, obj, mapping, defaultVal) => {
+                const supPlatforms = _c.buildConfig?.defaults?.supportedPlatforms;
+                if (supPlatforms) {
+                    supPlatforms.forEach((item) => {
                         let isEjected = '';
                         if (_c.paths.project.platformTemplatesDirs) {
                             isEjected = _c.paths.project.platformTemplatesDirs[
-                                obj
+                                item
                             ]?.includes(_c.paths.rnv.platformTemplates.dir)
                                 ? ''
                                 : '(ejected)';
                         }
-
-                        plats.push(`${defaultVal}${isEjected}`);
-                    }
-                );
+                        plats.push(`${item}${isEjected}`);
+                    });
+                }
                 str += printArrIntoBox(plats, 'Supported Platforms: ');
             }
             if (defaultProjectConfigs?.template) {
@@ -244,12 +242,12 @@ export const logSummary = (header = 'SUMMARY') => {
         }
         if (_c.process) {
             const envString = `${_c.process.platform} | ${_c.process.arch} | node v${_c.process.versions?.node}`;
-            str += printIntoBox(`Env Info: ${chalk.gray(envString)}`, 1);
+            str += printIntoBox(`Env Info: ${currentChalk.gray(envString)}`, 1);
         }
 
         if (_c.timeEnd) {
             str += printIntoBox(
-                `Executed Time: ${chalk.yellow(
+                `Executed Time: ${currentChalk.yellow(
                     _msToTime(_c.timeEnd - _c.timeStart)
                 )}`,
                 1
@@ -261,8 +259,8 @@ export const logSummary = (header = 'SUMMARY') => {
     str += logContent.replace(/\n\s*\n\s*\n/g, '\n\n');
     str += printIntoBox('');
     if (_c?.runtime?.platformBuildsProjectPath) {
-        str += chalk.grey(`│ Project location:
-│ ${chalk.cyan(_c.runtime.platformBuildsProjectPath)}\n`);
+        str += currentChalk.grey(`│ Project location:
+│ ${currentChalk.cyan(_c.runtime.platformBuildsProjectPath)}\n`);
     }
     str += printBoxEnd();
 
@@ -288,26 +286,26 @@ export const setCurrentJob = () => {
 export const logTask = (task, customChalk) => {
     let msg = '';
     if (typeof customChalk === 'string') {
-        msg = `${chalk.green(`[ task ] ${task}`)} ${chalk.grey(customChalk)}`;
+        msg = `${currentChalk.green(`[ task ] ${task}`)} ${currentChalk.grey(customChalk)}`;
     } else if (customChalk) {
         msg = customChalk(`[ task ] ${task}`);
     } else {
-        msg = chalk.green(`[ task ] ${task}`);
+        msg = currentChalk.green(`[ task ] ${task}`);
     }
 
     console.log(msg);
 };
 
 export const logHook = (hook = '', msg = '') => {
-    console.log(`${chalk.rgb(127, 255, 212)(`[ hook ] ${hook}`)} ${chalk.grey(msg)}`);
+    console.log(`${currentChalk.rgb(127, 255, 212)(`[ hook ] ${hook}`)} ${currentChalk.grey(msg)}`);
 };
 
 export const logWarning = (msg) => {
-    logAndSave(chalk.yellow(`[ warn ] ${msg}`));
+    logAndSave(currentChalk.yellow(`[ warn ] ${msg}`));
 };
 
 export const logInfo = (msg) => {
-    console.log(chalk.cyan(`[ info ] ${msg}`));
+    console.log(currentChalk.cyan(`[ info ] ${msg}`));
 };
 
 export const logDebug = (...args) => {
@@ -317,12 +315,12 @@ export const logDebug = (...args) => {
 export const isInfoEnabled = () => _isInfoEnabled;
 
 export const logComplete = (isEnd = false) => {
-    console.log(chalk.bold.white(`\n ${RNV} - Done! 🚀`));
+    console.log(currentChalk.bold.white(`\n ${RNV} - Done! 🚀`));
     if (isEnd) logEnd(0);
 };
 
 export const logSuccess = (msg) => {
-    logAndSave(chalk.magenta(`[ success ] ${msg}`));
+    logAndSave(currentChalk.magenta(`[ success ] ${msg}`));
 };
 
 export const logError = (e, isEnd = false, skipAnalytics = false) => {
@@ -332,11 +330,11 @@ export const logError = (e, isEnd = false, skipAnalytics = false) => {
 
     if (e && e.message) {
         logAndSave(
-            chalk.red(`[ error ] ${e.message}\n${e.stack}`),
+            currentChalk.red(`[ error ] ${e.message}\n${e.stack}`),
             isEnd
         );
     } else {
-        logAndSave(chalk.red(`[ error ] ${e}`), isEnd);
+        logAndSave(currentChalk.red(`[ error ] ${e}`), isEnd);
     }
 
     if (isEnd) logEnd(1);
@@ -356,7 +354,7 @@ export const logInitialize = () => {
 };
 
 export const logAppInfo = c => new Promise((resolve) => {
-    logInfo(`Current App Config: ${chalk.bold.white(
+    logInfo(`Current App Config: ${currentChalk.bold.white(
         c.buildConfig.id
     )}`);
 
@@ -405,7 +403,7 @@ export const printArrIntoBox = (arr, prefix = '') => {
             i++;
         }
         stringArr += `${v}, `;
-        // stringArr[i] += `${c.platformDefaults[v].icon} ${chalk.white(v)}, `;
+        // stringArr[i] += `${c.platformDefaults[v].icon} ${currentChalk.white(v)}, `;
     });
     if (i === 0 && prefix.length) {
         output += printIntoBox(

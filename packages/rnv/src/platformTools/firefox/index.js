@@ -2,7 +2,6 @@
 
 import path from 'path';
 import fs from 'fs';
-import chalk from 'chalk';
 import {
     getAppFolder,
     getAppTitle,
@@ -10,7 +9,7 @@ import {
     getAppDescription,
     getAppAuthor,
 } from '../../common';
-import { logTask } from '../../systemTools/logger';
+import { chalk, logTask } from '../../systemTools/logger';
 import { isPlatformActive } from '..';
 import {
     copyBuildsFolder,
@@ -29,7 +28,7 @@ const launchKaiOSSimulator = c => new Promise((resolve, reject) => {
         reject(
             `${KAIOS_SDK} is not configured in your ${
                 c.paths.workspace.config
-            } file. Make sure you add location to your Kaiosrt App path similar to: ${chalk.white.bold(
+            } file. Make sure you add location to your Kaiosrt App path similar to: ${chalk().white.bold(
                 '"KAIOS_SDK": "/Applications/Kaiosrt.app"'
             )}`
         );
