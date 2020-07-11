@@ -305,6 +305,7 @@ export const logErrorPlatform = (c) => {
         )} doesn't support command: ${chalk.white(c.command)}`,
         true // kill it if we're not supporting this
     );
+    return false;
 };
 
 export const getBinaryPath = (c, platform) => {

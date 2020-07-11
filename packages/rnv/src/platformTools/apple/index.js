@@ -210,7 +210,6 @@ export const runXcodeProject = async (c) => {
                     logDebug('Assets will be bundled');
                     return packageBundleForXcode(
                         c,
-                        c.platform,
                         bundleIsDev
                     ).then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
                 }
@@ -283,7 +282,7 @@ export const runXcodeProject = async (c) => {
         // if (allowProvisioningUpdates) p.push('--allowProvisioningUpdates');
 
         if (bundleAssets) {
-            return packageBundleForXcode(c, c.platform, bundleIsDev)
+            return packageBundleForXcode(c, bundleIsDev)
                 .then(() => _checkLockAndExec(c, appPath, scheme, runScheme, p));
         }
         return _checkLockAndExec(c, appPath, scheme, runScheme, p);
@@ -685,8 +684,8 @@ const exportXcodeProject = async (c, platform) => {
     });
 };
 
-const packageBundleForXcode = (c, platform, isDev = false) => {
-    logTask(`packageBundleForXcode:${platform}`);
+export const packageBundleForXcode = (c, isDev = false) => {
+    logTask('packageBundleForXcode');
     // const { maxErrorLength } = c.program;
     const args = [
         'bundle',
@@ -695,11 +694,11 @@ const packageBundleForXcode = (c, platform, isDev = false) => {
         '--dev',
         isDev,
         '--assets-dest',
-        `platformBuilds/${c.runtime.appId}_${platform}`,
+        `platformBuilds/${c.runtime.appId}_${c.platform}`,
         '--entry-file',
-        `${c.buildConfig.platforms[platform].entryFile}.js`,
+        `${c.buildConfig.platforms[c.platform].entryFile}.js`,
         '--bundle-output',
-        `${getAppFolder(c, platform)}/main.jsbundle`
+        `${getAppFolder(c, c.platform)}/main.jsbundle`
     ];
 
     if (c.program.info) {
@@ -882,6 +881,5 @@ export {
     configureXcodeProject,
     exportXcodeProject,
     archiveXcodeProject,
-    packageBundleForXcode,
     runAppleLog
 };
