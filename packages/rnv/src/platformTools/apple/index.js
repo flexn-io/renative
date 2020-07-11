@@ -749,9 +749,10 @@ const runAppleLog = c => new Promise(() => {
     });
 });
 
-const configureXcodeProject = async (c, platform, ip, port) => {
+const configureXcodeProject = async (c) => {
     logTask('configureXcodeProject');
     const { device } = c.program;
+    const { platform } = c;
     const bundlerIp = device ? getIP() : 'localhost';
     const appFolder = getAppFolder(c, platform);
     c.runtime.platformBuildsProjectPath = `${appFolder}/RNVApp.xcworkspace`;
@@ -862,8 +863,7 @@ const configureXcodeProject = async (c, platform, ip, port) => {
         appFolder,
         appFolderName,
         bundleAssets,
-        bundlerIp,
-        port
+        bundlerIp
     );
     await parseExportOptionsPlist(c, platform);
     await parseXcscheme(c, platform);

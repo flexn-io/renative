@@ -4,11 +4,17 @@ import { getEngineRunner } from '../engineTools';
 import { logTask } from '../systemTools/logger';
 import {
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT,
-    TASK_DEPLOY, TASK_START, TASK_DEBUG, TASK_LOG
+    TASK_DEPLOY, TASK_START, TASK_DEBUG, TASK_LOG, TASK_CONFIGURE
 } from '../constants';
 
+
+export const rnvConfigure = async (c) => {
+    logTask('rnvConfigure');
+    return getEngineRunner(c).runTask(c, TASK_CONFIGURE);
+};
+
 export const rnvStart = async (c) => {
-    logTask(`rnvStart:${c.platform}`);
+    logTask('rnvStart');
     return getEngineRunner(c).runTask(c, TASK_START);
 };
 

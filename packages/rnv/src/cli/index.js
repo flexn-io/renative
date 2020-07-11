@@ -46,7 +46,7 @@ import {
     rnvHooksRun,
     rnvHooksPipes
 } from '../projectTools/buildHooks';
-import { rnvConfigure, rnvSwitch, rnvLink } from '../projectTools';
+import { rnvSwitch, rnvLink } from '../projectTools';
 import {
     rnvCryptoDecrypt,
     rnvCryptoEncrypt,
@@ -66,7 +66,8 @@ import {
     rnvExport,
     rnvLog,
     rnvDeploy,
-    rnvStart
+    rnvStart,
+    rnvConfigure
 } from '../platformTools/runner';
 import { getEngineByPlatform } from '../engineTools';
 import { isSystemWin } from '../utils';
@@ -577,25 +578,21 @@ export const _spawnCommand = (c, overrideParams) => {
 // ##########################################
 
 const run = async (c, spawnC, skipStartBuilder) => {
-    let currC = c;
+    const currC = c;
     const cmd = COMMANDS[currC.command];
     const cmdFn = cmd?.fn;
     const subCmd = cmd?.subCommands?.[currC.subCommand];
     const subCmdFn = subCmd?.fn;
 
-
-    logTask('cli');
-
+    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand} skipStartBuilder:${!!skipStartBuilder}`);
 
     setDefaults(currC);
     if (!skipStartBuilder) await _startBuilder(currC);
 
-    if (spawnC) {
-        currC = _spawnCommand(currC, spawnC);
-        Config.initializeConfig(currC);
-    }
-
-    logTask('cli', `cmd:${currC.command} subCmd:${currC.subCommand} skipStartBuilder:${!!skipStartBuilder}`);
+    // if (spawnC) {
+    //     currC = _spawnCommand(currC, spawnC);
+    //     Config.initializeConfig(currC);
+    // }
 
     if (cmd) {
         if (currC.subCommand === 'help') {

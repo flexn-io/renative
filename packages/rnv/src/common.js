@@ -7,19 +7,15 @@ import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
 import lGet from 'lodash.get';
-// import resolve from 'resolve';
 import colorString from 'color-string';
 import crypto from 'crypto';
 import { doResolve } from './resolve';
 import { getValidLocalhost } from './utils';
-import { createPlatformBuild, cleanPlatformBuild } from './platformTools';
-import CLI from './cli';
 import {
     configureLogger,
     logError,
     logTask,
     logWarning,
-    logInfo,
     logInitialize,
     logDebug,
     logSuccess
@@ -40,7 +36,6 @@ import {
 } from './constants';
 import { execCLI } from './systemTools/exec';
 import { createRnvConfig } from './configTools/configParser';
-import { cleanPlaformAssets } from './projectTools/projectParser';
 import { generateOptions, inquirerPrompt } from './systemTools/prompt';
 import { writeCleanFile } from './systemTools/fileutils';
 
@@ -303,42 +298,13 @@ export const getAppVersionCode = (c, platform) => {
     return Number(vc).toString();
 };
 
-export const logErrorPlatform = (c, platform) => {
+export const logErrorPlatform = (c) => {
     logError(
         `Platform: ${chalk.white(
-            platform
+            c.platform
         )} doesn't support command: ${chalk.white(c.command)}`,
         true // kill it if we're not supporting this
     );
-};
-
-export const PLATFORM_RUNS = {};
-
-export const configureIfRequired = async (c, platform) => {
-    logTask('configureIfRequired');
-
-    if (PLATFORM_RUNS[platform]) {
-        return;
-    }
-    PLATFORM_RUNS[platform] = true;
-    const { device } = c.program;
-    const nc = {
-        command: 'configure',
-        program: {
-            appConfig: c.id,
-            update: false,
-            platform,
-            device
-        }
-    };
-
-    await cleanPlatformIfRequired(c, platform);
-
-    if (c.program.resetHard) {
-        await cleanPlaformAssets(c);
-    }
-    await createPlatformBuild(c, platform);
-    await CLI(c, nc);
 };
 
 export const getBinaryPath = (c, platform) => {
@@ -400,17 +366,6 @@ export const getBuildsFolder = (c, platform, customPath) => {
 };
 
 export const getIP = () => ip.address();
-
-export const cleanPlatformIfRequired = async (c, platform) => {
-    if (c.program.reset) {
-        logInfo(
-            `You passed ${chalk.white('-r')} argument. paltform ${chalk.white(
-                platform
-            )} will be cleaned up first!`
-        );
-        await cleanPlatformBuild(c, platform);
-    }
-};
 
 export const checkPortInUse = (c, platform, port) => new Promise((resolve, reject) => {
     detectPort(port, (err, availablePort) => {
@@ -552,7 +507,6 @@ export default {
     getAppTemplateFolder,
     initializeBuilder,
     logErrorPlatform,
-    configureIfRequired,
     getAppId,
     getAppTitle,
     getAppVersion,
@@ -565,7 +519,6 @@ export default {
     getAppLicense,
     getConfigProp,
     getIP,
-    cleanPlatformIfRequired,
     checkPortInUse,
     waitForEmulator,
     logTask: (val) => {

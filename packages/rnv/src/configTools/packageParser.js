@@ -107,8 +107,9 @@ export const checkRequiredPackage = async (c, pkg, version = false, type, skipAs
 };
 
 
-export const injectPlatformDependencies = async (c, platform) => {
+export const injectPlatformDependencies = async (c) => {
     logTask('injectPlatformDependencies');
+    const { platform } = c;
     const selectedEngine = getEngineByPlatform(c, platform);
     const npmDeps = selectedEngine?.platforms[platform]?.npm;
 

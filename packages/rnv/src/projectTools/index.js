@@ -5,33 +5,7 @@ import fs from 'fs';
 import chalk from 'chalk';
 import { getAppFolder } from '../common';
 import { doResolve } from '../resolve';
-import { isPlatformActive } from '../platformTools';
 import { logTask, logWarning } from '../systemTools/logger';
-import {
-    IOS,
-    ANDROID,
-    TVOS,
-    TIZEN,
-    WEBOS,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    MACOS,
-    WINDOWS,
-    TIZEN_MOBILE,
-    TIZEN_WATCH,
-    KAIOS,
-    FIREFOX_OS,
-    FIREFOX_TV,
-    CHROMECAST
-} from '../constants';
-import { configureXcodeProject } from '../platformTools/apple';
-import { configureGradleProject } from '../platformTools/android';
-import { configureTizenProject } from '../platformTools/tizen';
-import { configureWebOSProject } from '../platformTools/webos';
-import { configureElectronProject } from '../platformTools/electron';
-import { configureKaiOSProject } from '../platformTools/firefox';
-import { configureWebProject } from '../platformTools/web';
 import {
     copyFolderContentsRecursiveSync
 } from '../systemTools/fileutils';
@@ -40,48 +14,16 @@ import { copyRuntimeAssets, copySharedPlatforms } from './projectParser';
 import { generateRuntimeConfig } from '../configTools/configParser';
 import { injectPlatformDependencies } from '../configTools/packageParser';
 import { overrideTemplatePlugins } from '../pluginTools';
-import { configureChromecastProject } from '../platformTools/chromecast';
 
-export const rnvConfigure = async (c) => {
-    const p = c.platform || 'all';
-    logTask('rnvConfigure', `platform:${p}`);
+export const configureGenericProject = async (c) => {
+    logTask('configureGenericProject');
 
-    // inject packages if needed
-    if (p !== 'all') await injectPlatformDependencies(c, p);
-
-    await _checkAndCreatePlatforms(c, c.platform);
+    await injectPlatformDependencies(c);
+    await _checkAndCreatePlatforms(c);
     await copyRuntimeAssets(c);
     await copySharedPlatforms(c);
     await generateRuntimeConfig(c);
     await overrideTemplatePlugins(c);
-
-    const originalPlatform = c.platform;
-
-    await _configurePlatform(c, p, ANDROID, configureGradleProject);
-    await _configurePlatform(c, p, ANDROID_TV, configureGradleProject);
-    await _configurePlatform(c, p, ANDROID_WEAR, configureGradleProject);
-    await _configurePlatform(c, p, TIZEN, configureTizenProject);
-    await _configurePlatform(c, p, TIZEN_WATCH, configureTizenProject);
-    await _configurePlatform(c, p, TIZEN_MOBILE, configureTizenProject);
-    await _configurePlatform(c, p, WEBOS, configureWebOSProject);
-    await _configurePlatform(c, p, WEB, configureWebProject);
-    await _configurePlatform(c, p, MACOS, configureElectronProject);
-    await _configurePlatform(c, p, WINDOWS, configureElectronProject);
-    await _configurePlatform(c, p, KAIOS, configureKaiOSProject);
-    await _configurePlatform(c, p, FIREFOX_OS, configureKaiOSProject);
-    await _configurePlatform(c, p, FIREFOX_TV, configureKaiOSProject);
-    await _configurePlatform(c, p, IOS, configureXcodeProject);
-    await _configurePlatform(c, p, TVOS, configureXcodeProject);
-    await _configurePlatform(c, p, CHROMECAST, configureChromecastProject);
-
-    c.platform = originalPlatform;
-};
-
-const _configurePlatform = async (c, p, platform, method) => {
-    if (_isOK(c, p, [platform])) {
-        c.platform = platform;
-        await method(c, platform);
-    }
 };
 
 export const rnvSwitch = c => new Promise((resolve, reject) => {
@@ -118,18 +60,10 @@ export const rnvLink = c => new Promise((resolve) => {
     }
 });
 
-const _isOK = (c, p, list) => {
-    let result = false;
-    list.forEach((v) => {
-        if (isPlatformActive(c, v) && (p === v || p === 'all')) result = true;
-    });
-    return result;
-};
-
 /* eslint-disable no-await-in-loop */
-const _checkAndCreatePlatforms = async (c, platform) => {
+const _checkAndCreatePlatforms = async (c) => {
     logTask('_checkAndCreatePlatforms');
-
+    const { platform } = c;
     if (!fs.existsSync(c.paths.project.builds.dir)) {
         logWarning('Platforms not created yet. creating them for you...');
         await CLI(c, {

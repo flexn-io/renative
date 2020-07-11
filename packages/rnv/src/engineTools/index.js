@@ -47,8 +47,8 @@ export const getEngineByPlatform = (c, platform, ignoreMissingError) => {
 };
 
 
-export const getEngineRunner = (c) => {
-    const selectedEngine = getEngineByPlatform(c, c.platform);
+export const getEngineRunner = (c, platform) => {
+    const selectedEngine = getEngineByPlatform(c, platform || c.platform);
     if (!selectedEngine) {
         return EngineNoOp;
         // throw new Error(`Cound not find engine with ${chalk.white(c.platform)} platform support`);

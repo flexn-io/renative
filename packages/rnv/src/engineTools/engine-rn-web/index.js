@@ -6,10 +6,10 @@ import path from 'path';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
-    configureIfRequired,
     waitForWebpack,
 } from '../../common';
-import { isPlatformSupported } from '../../platformTools';
+import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
+import { configureGenericProject } from '../../projectTools';
 import { logTask, logError, logDebug } from '../../systemTools/logger';
 import {
     WEB,
@@ -22,13 +22,13 @@ import {
     FIREFOX_TV,
     CHROMECAST,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
-    TASK_DEPLOY, TASK_DEBUG
+    TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
 } from '../../constants';
-import { buildWeb, runWeb, deployWeb, exportWeb } from '../../platformTools/web';
-import { runTizen, buildTizenProject } from '../../platformTools/tizen';
-import { runWebOS, buildWebOSProject } from '../../platformTools/webos';
-import { runFirefoxProject, buildFirefoxProject } from '../../platformTools/firefox';
-import { runChromecast } from '../../platformTools/chromecast';
+import { buildWeb, runWeb, deployWeb, exportWeb, configureWebProject } from '../../platformTools/web';
+import { runTizen, buildTizenProject, configureTizenProject } from '../../platformTools/tizen';
+import { runWebOS, buildWebOSProject, configureWebOSProject } from '../../platformTools/webos';
+import { runFirefoxProject, buildFirefoxProject, configureKaiOSProject } from '../../platformTools/firefox';
+import { runChromecast, configureChromecastProject } from '../../platformTools/chromecast';
 import { copyFolderContentsRecursiveSync, writeCleanFile } from '../../systemTools/fileutils';
 import { executeAsync } from '../../systemTools/exec';
 import Config from '../../config';
@@ -37,6 +37,33 @@ import { checkSdk } from '../../platformTools/sdkManager';
 
 
 const TASKS = {};
+
+export const _taskConfigure = async (c) => {
+    logTask('_taskConfigure');
+
+    await configureGenericPlatform(c);
+    await configureGenericProject(c);
+
+    switch (c.platform) {
+        case WEB:
+            return configureWebProject(c);
+        case TIZEN:
+        case TIZEN_MOBILE:
+        case TIZEN_WATCH:
+            return configureTizenProject(c);
+        case WEBOS:
+            return configureWebOSProject(c);
+        case CHROMECAST:
+            return configureChromecastProject(c);
+        case FIREFOX_OS:
+        case FIREFOX_TV:
+        case KAIOS:
+            return configureKaiOSProject(c);
+        default:
+            return logErrorPlatform(c, c.platform);
+    }
+};
+TASKS[TASK_CONFIGURE] = _taskConfigure;
 
 const _configureHostedIfRequired = async (c) => {
     logTask(`_configureHostedIfRequired:${c.platform}`);
@@ -80,6 +107,10 @@ export const _taskStart = async (c) => {
         `rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`
     );
 
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
+
     if (Config.isWebHostEnabled && hosted) {
         waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
@@ -92,7 +123,6 @@ export const _taskStart = async (c) => {
         case WEBOS:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            await configureIfRequired(c, platform);
             return runWeb(c, platform, port);
         default:
             if (hosted) {
@@ -116,38 +146,33 @@ const _taskRun = async (c) => {
         c.runtime.shouldOpenBrowser = true;
         return _taskStart(c);
     }
+
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
+
     switch (platform) {
         case WEB:
-            if (!c.program.only) {
-                await configureIfRequired(c, platform);
-            }
             c.runtime.shouldOpenBrowser = true;
             return runWeb(c, platform, port, true);
-            // return runWebNext(c, platform, port, true);
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
             if (!c.program.only) {
-                await configureIfRequired(c, platform);
                 await _configureHostedIfRequired(c);
             }
             return runTizen(c, platform, target);
         case WEBOS:
             if (!c.program.only) {
-                await configureIfRequired(c, platform);
                 await _configureHostedIfRequired(c);
             }
             return runWebOS(c, platform, target);
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            if (!c.program.only) {
-                await configureIfRequired(c, platform);
-            }
             return runFirefoxProject(c, platform);
         case CHROMECAST:
             if (!c.program.only) {
-                await configureIfRequired(c, platform);
                 await _configureHostedIfRequired(c);
             }
             return runChromecast(c, platform, target);
@@ -161,7 +186,9 @@ const _taskPackage = async (c) => {
     logTask(`_taskPackage:${c.platform}`);
     const { platform } = c;
 
-    await checkSdk(c);
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
 
     switch (platform) {
         default:
@@ -175,13 +202,12 @@ const _taskExport = async (c) => {
     logTask(`_taskExport:${c.platform}`);
     const { platform } = c;
 
-    await checkSdk(c);
+    if (!c.program.only) {
+        await _taskBuild(c);
+    }
 
     switch (platform) {
         case WEB:
-            if (!c.program.only) {
-                await _taskBuild(c);
-            }
             return exportWeb(c, platform);
         default:
             logErrorPlatform(c, platform);
@@ -193,28 +219,26 @@ const _taskBuild = async (c) => {
     logTask(`_taskBuild:${c.platform}`);
     const { platform } = c;
 
-    await checkSdk(c);
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
 
     switch (platform) {
         case WEB:
         case CHROMECAST:
-            await configureIfRequired(c, platform);
             await buildWeb(c, platform);
             return;
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:
-            await configureIfRequired(c, platform);
             await buildFirefoxProject(c, platform);
             return;
         case TIZEN:
         case TIZEN_MOBILE:
         case TIZEN_WATCH:
-            await configureIfRequired(c, platform);
             await buildTizenProject(c, platform);
             return;
         case WEBOS:
-            await configureIfRequired(c, platform);
             await buildWebOSProject(c, platform);
             return;
         default:
@@ -227,16 +251,14 @@ const _taskDeploy = async (c) => {
     logTask(`_taskDeploy:${c.platform}`);
     const { platform } = c;
 
+    if (!c.program.only) {
+        await _taskExport(c);
+    }
+
     switch (platform) {
         case WEB:
-            if (!c.program.only) {
-                await _taskBuild(c);
-            }
             return deployWeb(c, platform);
         case CHROMECAST:
-            if (!c.program.only) {
-                await _taskBuild(c);
-            }
             return deployWeb(c, platform);
         default:
             if (!c.program.only) {

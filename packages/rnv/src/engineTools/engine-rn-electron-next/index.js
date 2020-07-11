@@ -3,17 +3,16 @@ import open from 'better-opn';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
-    configureIfRequired,
     waitForWebpack,
 } from '../../common';
-import { isPlatformSupported } from '../../platformTools';
+import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
+import { configureGenericProject } from '../../projectTools';
 import { logTask, logError } from '../../systemTools/logger';
-
 import {
     MACOS,
     WINDOWS,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
-    TASK_DEPLOY, TASK_DEBUG
+    TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
 } from '../../constants';
 import {
     runElectron,
@@ -28,6 +27,22 @@ import { checkSdk } from '../../platformTools/sdkManager';
 
 
 const TASKS = {};
+
+export const _taskConfigure = async (c) => {
+    logTask('_taskConfigure');
+
+    await configureGenericPlatform(c);
+    await configureGenericProject(c);
+
+    switch (c.platform) {
+        case MACOS:
+        case WINDOWS:
+            return configureElectronProject(c);
+        default:
+            return logErrorPlatform(c);
+    }
+};
+TASKS[TASK_CONFIGURE] = _taskConfigure;
 
 export const _taskStart = async (c) => {
     const { platform } = c;
@@ -44,10 +59,13 @@ export const _taskStart = async (c) => {
             .catch(logError);
     }
 
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
+
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            await configureIfRequired(c, platform);
             return runElectronDevServer(c, platform, port);
         default:
             return logErrorPlatform(c, platform);
@@ -60,13 +78,15 @@ const _taskRun = async (c) => {
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('_taskRun', `port:${port} target:${target} hosted:${hosted}`);
+    logTask(`_taskRun:${platform}:${port}:${target}:${hosted}`);
+
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
+
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            if (!c.program.only) {
-                await configureIfRequired(c, platform);
-            }
             return runElectron(c, platform, port);
         default:
             return logErrorPlatform(c, platform);
@@ -78,7 +98,6 @@ const _taskPackage = async (c) => {
     logTask(`_taskPackage:${c.platform}`);
     const { platform } = c;
 
-    await checkSdk(c);
 
     switch (platform) {
         default:
@@ -92,16 +111,13 @@ const _taskExport = async (c) => {
     logTask(`_taskExport:${c.platform}`);
     const { platform } = c;
 
-    await checkSdk(c);
+    if (!c.program.only) {
+        await _taskBuild(c);
+    }
 
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            if (!c.program.only) {
-                await configureIfRequired(c, platform);
-                await configureElectronProject(c, platform);
-                await buildElectron(c, platform);
-            }
             return exportElectron(c, platform);
         default:
             logErrorPlatform(c, platform);
@@ -115,13 +131,13 @@ const _taskBuild = async (c) => {
 
     // const engi getEngineByPlatform(c, c.platform)
 
-    await checkSdk(c);
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
 
     switch (platform) {
         case MACOS:
         case WINDOWS:
-            await configureIfRequired(c, platform);
-            await configureElectronProject(c, platform);
             await buildElectron(c, platform);
             return;
         default:
@@ -155,7 +171,7 @@ const _taskDebug = async (c) => {
 TASKS[TASK_DEBUG] = _taskDebug;
 
 const runTask = async (c, task) => {
-    logTask('runTask', '(engine-rn-electron-next)');
+    logTask('runTask', '(engine-rn-electron)');
 
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);

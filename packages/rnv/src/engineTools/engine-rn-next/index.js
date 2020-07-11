@@ -4,25 +4,41 @@ import open from 'better-opn';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
-    configureIfRequired,
     waitForWebpack,
 } from '../../common';
-import { isPlatformSupported } from '../../platformTools';
+import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
+import { configureGenericProject } from '../../projectTools';
 import { logTask, logError } from '../../systemTools/logger';
 import {
     WEB,
     CHROMECAST,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
-    TASK_DEPLOY, TASK_DEBUG
+    TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
 } from '../../constants';
 import { deployWeb } from '../../platformTools/web';
-import { runWebNext, buildWebNext, exportWebNext, deployWebNext } from '../../platformTools/web/webNext';
+import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIfRequired } from '../../platformTools/web/webNext';
 import Config from '../../config';
 import Analytics from '../../systemTools/analytics';
 import { checkSdk } from '../../platformTools/sdkManager';
 
 
 const TASKS = {};
+
+export const _taskConfigure = async (c) => {
+    logTask('_taskConfigure');
+
+    await configureGenericPlatform(c);
+    await configureGenericProject(c);
+
+    switch (c.platform) {
+        case WEB:
+        case CHROMECAST:
+            return configureNextIfRequired(c);
+        default:
+            return logErrorPlatform(c, c.platform);
+    }
+};
+TASKS[TASK_CONFIGURE] = _taskConfigure;
 
 export const _taskStart = async (c) => {
     const { platform } = c;
@@ -37,6 +53,10 @@ export const _taskStart = async (c) => {
         waitForWebpack(c)
             .then(() => open(`http://${c.runtime.localhost}:${port}/`))
             .catch(logError);
+    }
+
+    if (!c.program.only) {
+        await _taskConfigure(c);
     }
 
     switch (platform) {
@@ -58,11 +78,14 @@ const _taskRun = async (c) => {
     const { target } = c.runtime;
     const { hosted } = c.program;
     logTask('_taskRun', `port:${port} target:${target} hosted:${hosted}`);
+
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
+
     switch (platform) {
         case WEB:
-            if (!c.program.only) {
-                await configureIfRequired(c, platform);
-            }
+        case CHROMECAST:
             c.runtime.shouldOpenBrowser = true;
             return runWebNext(c, platform, port, true);
         default:
@@ -89,13 +112,13 @@ const _taskExport = async (c) => {
     logTask(`_taskExport:${c.platform}`);
     const { platform } = c;
 
-    await checkSdk(c);
+    if (!c.program.only) {
+        await _taskBuild(c);
+    }
 
     switch (platform) {
         case WEB:
-            if (!c.program.only) {
-                await _taskBuild(c);
-            }
+        case CHROMECAST:
             return exportWebNext(c);
         default:
             logErrorPlatform(c, platform);
@@ -107,12 +130,13 @@ const _taskBuild = async (c) => {
     logTask(`_taskBuild:${c.platform}`);
     const { platform } = c;
 
-    await checkSdk(c);
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
 
     switch (platform) {
         case WEB:
         case CHROMECAST:
-            await configureIfRequired(c, platform);
             await buildWebNext(c);
             return;
         default:
@@ -125,16 +149,14 @@ const _taskDeploy = async (c) => {
     logTask(`_taskDeploy:${c.platform}`);
     const { platform } = c;
 
+    if (!c.program.only) {
+        await _taskBuild(c);
+    }
+
     switch (platform) {
         case WEB:
-            if (!c.program.only) {
-                await buildWebNext(c);
-            }
             return deployWebNext(c, platform);
         case CHROMECAST:
-            if (!c.program.only) {
-                await _taskBuild(c);
-            }
             return deployWeb(c, platform);
         default:
             if (!c.program.only) {

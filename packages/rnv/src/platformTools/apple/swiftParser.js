@@ -20,9 +20,8 @@ export const parseAppDelegate = (
     appFolderName,
     isBundled = false,
     ip = 'localhost',
-    port
 ) => new Promise((resolve) => {
-    const newPort = port || c.runtime?.port;
+    const newPort = c.runtime?.port;
     logTask('parseAppDelegateSync', `ip:${ip} port:${newPort}`);
     const appDelegate = 'AppDelegate.swift';
 
@@ -195,7 +194,7 @@ export const parseAppDelegate = (
             { pattern: '{{BUNDLE}}', override: bundle },
             { pattern: '{{ENTRY_FILE}}', override: entryFile },
             { pattern: '{{IP}}', override: ip },
-            { pattern: '{{PORT}}', override: port },
+            { pattern: '{{PORT}}', override: newPort },
             { pattern: '{{BACKGROUND_COLOR}}', override: pluginBgColor },
             {
                 pattern: '{{APPDELEGATE_IMPORTS}}',

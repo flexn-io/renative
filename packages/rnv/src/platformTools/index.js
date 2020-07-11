@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { logToSummary, logTask, logSuccess, logError, logDebug, logWarning } from '../systemTools/logger';
+import { logToSummary, logTask, logSuccess, logError, logDebug, logWarning, logInfo } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
     cleanFolder,
@@ -291,6 +291,25 @@ export const cleanPlatformBuild = (c, platform) => new Promise((resolve) => {
         resolve();
     });
 });
+
+export const configureGenericPlatform = async (c) => {
+    logTask('configureGenericPlatform');
+    // await configurePlatformIfRequired(c, c.platform);
+    if (c.program.reset) {
+        logInfo(
+            `You passed ${chalk.white('-r')} argument. paltform ${chalk.white(
+                c.platform
+            )} will be cleaned up first!`
+        );
+        await cleanPlatformBuild(c, c.platform);
+    }
+
+    if (c.program.resetHard) {
+        await cleanPlaformAssets(c);
+    }
+    await createPlatformBuild(c, c.platform);
+    return true;
+};
 
 export const createPlatformBuild = (c, platform) => new Promise((resolve, reject) => {
     logTask('createPlatformBuild');

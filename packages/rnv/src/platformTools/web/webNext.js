@@ -17,7 +17,7 @@ import { selectWebToolAndDeploy, selectWebToolAndExport } from '../../deployTool
 import { writeCleanFile, fsWriteFileSync } from '../../systemTools/fileutils';
 import { getValidLocalhost } from '../../utils';
 
-const configureNextIfRequired = async (c) => {
+export const configureNextIfRequired = async (c) => {
     logTask('configureNextIfRequired');
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
     const { platformTemplatesDirs, dir } = c.paths.project;
@@ -79,7 +79,6 @@ const configureNextIfRequired = async (c) => {
 
 export const runWebNext = async (c, platform, port) => {
     logTask('runWebNext', `port:${port}`);
-    await configureNextIfRequired(c);
 
     const devServerHost = getValidLocalhost(getConfigProp(c, c.platform, 'devServerHost', c.runtime.localhost), c.runtime.localhost);
 
@@ -117,7 +116,6 @@ const _runWebBrowser = (c, platform, devServerHost, port, alreadyStarted) => new
 
 const exportNext = async (c) => {
     logTask('exportWebNext');
-    await configureNextIfRequired(c);
     const env = getConfigProp(c, c.platform, 'environment');
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);
@@ -127,7 +125,6 @@ const exportNext = async (c) => {
 
 export const buildWebNext = async (c) => {
     logTask('buildWebNext');
-    await configureNextIfRequired(c);
     const env = getConfigProp(c, c.platform, 'environment');
     const pagesDir = getConfigProp(c, c.platform, 'pagesDir');
     if (!pagesDir) logWarning(`You're missing ${c.platform}.pagesDir config. Defaulting to 'src/app'`);

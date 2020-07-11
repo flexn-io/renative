@@ -398,8 +398,6 @@ const _runGradleApp = async (c, platform, device) => {
     const { arch, name } = device;
     const stacktrace = c.program.info ? ' --debug' : '';
 
-    console.log('DGDHJDGDJH', appFolder);
-
     shell.cd(`${appFolder}`);
 
     await _checkSigningCerts(c);

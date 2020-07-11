@@ -5,13 +5,12 @@ import chalk from 'chalk';
 import {
     isBuildSchemeSupported,
     logErrorPlatform,
-    configureIfRequired,
     getConfigProp,
     confirmActiveBundler,
     getEntryFile
 } from '../../common';
 import { doResolve } from '../../resolve';
-import { isPlatformSupported } from '../../platformTools';
+import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
 import { logTask, logError, logSummary, logInfo, logRaw } from '../../systemTools/logger';
 import {
     IOS,
@@ -20,15 +19,17 @@ import {
     ANDROID_TV,
     ANDROID_WEAR,
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
-    TASK_DEPLOY, TASK_DEBUG,
+    TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE,
     RN_CLI_CONFIG_NAME
 } from '../../constants';
+import { configureGenericProject } from '../../projectTools';
 import {
     runXcodeProject,
     exportXcodeProject,
     buildXcodeProject,
     packageBundleForXcode,
-    runAppleLog
+    runAppleLog,
+    configureXcodeProject
 } from '../../platformTools/apple';
 import {
     packageAndroid,
@@ -64,7 +65,7 @@ const _startBundlerIfRequired = async (c) => {
 
     const isRunning = await isBundlerActive(c);
     if (!isRunning) {
-        _taskStart(c);
+        _taskStart(c, true);
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
@@ -80,20 +81,41 @@ BUNDLER_PLATFORMS[ANDROID] = [ANDROID];
 BUNDLER_PLATFORMS[ANDROID_TV] = [ANDROID];
 BUNDLER_PLATFORMS[ANDROID_WEAR] = [ANDROID];
 
+export const _taskConfigure = async (c) => {
+    logTask('_taskConfigure');
 
-export const _taskStart = async (c) => {
+    await configureGenericPlatform(c);
+    await configureGenericProject(c);
+
+    switch (c.platform) {
+        case IOS:
+        case TVOS:
+            return configureXcodeProject(c);
+        case ANDROID:
+        case ANDROID_TV:
+        case ANDROID_WEAR:
+            return configureGradleProject(c);
+        default:
+            return logErrorPlatform(c);
+    }
+};
+TASKS[TASK_CONFIGURE] = _taskConfigure;
+
+export const _taskStart = async (c, skipChain) => {
     const { platform } = c;
     const { hosted } = c.program;
 
-    logTask(
-        '_taskStart', `port:${c.runtime.port} hosted:${!!hosted}`
-    );
+    logTask('_taskStart', `port:${c.runtime.port} hosted:${!!hosted} skipChain:${!!skipChain}`);
 
     if (hosted) {
         return logError(
             'This platform does not support hosted mode',
             true
         );
+    }
+
+    if (!c.program.only && !skipChain) {
+        await _taskConfigure(c);
     }
 
     switch (platform) {
@@ -139,12 +161,14 @@ const _taskRun = async (c) => {
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
 
     switch (platform) {
         case IOS:
         case TVOS:
             if (!c.program.only) {
-                await configureIfRequired(c, platform);
                 await _startBundlerIfRequired(c);
                 await runXcodeProject(c);
                 if (!bundleAssets) {
@@ -157,8 +181,6 @@ const _taskRun = async (c) => {
         case ANDROID_TV:
         case ANDROID_WEAR:
             if (!c.program.only) {
-                await configureIfRequired(c, platform);
-                await configureGradleProject(c, platform);
                 await _startBundlerIfRequired(c);
                 if (
                     getConfigProp(c, platform, 'bundleAssets') === true
@@ -186,20 +208,17 @@ const _taskPackage = async (c) => {
 
     const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
 
+    if (!c.program.only) {
+        await _taskConfigure(c);
+    }
+
     switch (platform) {
         case IOS:
         case TVOS:
-            if (!c.program.only) {
-                await configureIfRequired(c, platform);
-            }
             return packageBundleForXcode(c, platform);
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            if (!c.program.only) {
-                await configureIfRequired(c, platform);
-                await configureGradleProject(c, platform);
-            }
             return packageAndroid(
                 c,
                 platform,
@@ -239,20 +258,18 @@ const _taskBuild = async (c) => {
     logTask(`_taskBuild:${c.platform}`);
     const { platform } = c;
 
-    // const engi getEngineByPlatform(c, c.platform)
+    if (!c.program.only) {
+        await _taskPackage(c);
+    }
 
     switch (platform) {
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            await configureIfRequired(c, platform);
-            await configureGradleProject(c, platform);
-            await packageAndroid(c, platform);
             await buildAndroid(c, platform);
             return;
         case IOS:
         case TVOS:
-            await _taskPackage(c);
             await buildXcodeProject(c, platform);
             return;
         default:
@@ -263,27 +280,13 @@ TASKS[TASK_BUILD] = _taskBuild;
 
 const _taskDeploy = async (c) => {
     logTask(`_taskDeploy:${c.platform}`);
-    const { platform } = c;
 
-    switch (platform) {
-        case TVOS:
-        case IOS:
-            if (!c.program.only) {
-                return _taskExport(c);
-            }
-            return;
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-        case ANDROID:
-            if (!c.program.only) {
-                return _taskBuild(c);
-            }
-            return;
-        default:
-            if (!c.program.only) {
-                await _taskExport(c);
-            }
+    if (!c.program.only) {
+        await _taskExport(c);
+        return true;
     }
+    // Deploy simply trggets hook
+    return true;
 };
 TASKS[TASK_DEPLOY] = _taskDeploy;
 
