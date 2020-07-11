@@ -166,7 +166,7 @@ const _taskRun = async (c) => {
             if (!c.program.only) {
                 await _configureHostedIfRequired(c);
             }
-            return runWebOS(c, platform, target);
+            return runWebOS(c);
         case KAIOS:
         case FIREFOX_OS:
         case FIREFOX_TV:

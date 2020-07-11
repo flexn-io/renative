@@ -228,7 +228,7 @@ const _parseCssSync = (c, platform) => {
 
 
 const runWeb = async (c, platform, port) => {
-    logTask(`runWeb:${platform}:${port}`);
+    logTask('runWeb', `port:${port}`);
 
     let devServerHost = c.runtime.localhost;
 

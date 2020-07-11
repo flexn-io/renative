@@ -26,3 +26,12 @@ export const getValidLocalhost = (value, localhost) => {
             return value;
     }
 };
+
+export const isUrlLocalhost = (value) => {
+    if (value?.includes) {
+        if (value.includes('localhost')) return true;
+        if (value.includes('0.0.0.0')) return true;
+        if (value.includes('127.0.0.1')) return true;
+    }
+    return false;
+};

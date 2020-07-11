@@ -9,7 +9,7 @@ import chalk from 'chalk';
 import ncp from 'ncp';
 import { isSystemWin } from '../utils';
 
-import { logDebug, logError, logWarning, logInfo } from './logger';
+import { logDebug, logError, logWarning } from './logger';
 import { getConfigProp } from '../common';
 import { doResolve } from '../resolve';
 
@@ -505,7 +505,7 @@ export const updateObjectSync = (filePath, updateObj) => {
 export const getRealPath = (c, p, key = 'undefined', original) => {
     if (!p) {
         if (original) {
-            logInfo(
+            logDebug(
                 `Path ${chalk.white(
                     key
                 )} is not defined. using default: ${chalk.white(original)}`

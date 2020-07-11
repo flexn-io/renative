@@ -40,7 +40,7 @@ import { getRealPath, writeCleanFile } from '../../systemTools/fileutils';
 import { buildWeb, configureCoreWebProject } from '../web';
 import { rnvStart } from '../runner';
 import Config from '../../config';
-import { isSystemWin } from '../../utils';
+import { isSystemWin, isUrlLocalhost } from '../../utils';
 
 const launchWebOSimulator = (c) => {
     logTask('launchWebOSimulator');
@@ -94,7 +94,7 @@ const parseDevices = (c, devicesResponse) => {
                 device,
                 connection,
                 profile,
-                isDevice: !device.includes(c.runtime.localhost),
+                isDevice: !isUrlLocalhost(device),
                 active: !deviceInfo.includes('ERR!')
             };
         })
@@ -162,12 +162,15 @@ const waitForEmulatorToBeReady = async (c) => {
     );
 };
 
-const runWebOS = async (c, platform, target) => {
-    logTask(`runWebOS:${platform}:${target}`);
-
+const runWebOS = async (c) => {
     const { device, hosted } = c.program;
+    const { target } = c.runtime;
+    const { platform } = c;
+
 
     const isHosted = hosted || !getConfigProp(c, platform, 'bundleAssets');
+
+    logTask('runWebOS', `target:${target} hosted:${!!isHosted}`);
 
     const tDir = path.join(getAppFolder(c, platform), 'public');
     const tOut = path.join(getAppFolder(c, platform), 'output');
@@ -306,10 +309,12 @@ const buildWebOSProject = async (c, platform) => {
     }
 };
 
-const configureWebOSProject = async (c, platform) => {
+const configureWebOSProject = async (c) => {
     logTask('configureWebOSProject');
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+    const { platform } = c;
+
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, platform)}`;
 
     if (!isPlatformActive(c, platform)) return;
 
