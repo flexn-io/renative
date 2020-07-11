@@ -187,7 +187,7 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
 });
 
 const configureWebProject = async (c, platform) => {
-    logTask(`configureWebProject:${platform}`);
+    logTask('configureWebProject');
 
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}/public`;
 
@@ -200,9 +200,10 @@ const configureWebProject = async (c, platform) => {
     return copyBuildsFolder(c, platform);
 };
 
-export const configureCoreWebProject = async (c, platform) => {
-    _generateWebpackConfigs(c, platform);
-    _parseCssSync(c, platform);
+export const configureCoreWebProject = async (c) => {
+    logTask('configureCoreWebProject');
+    _generateWebpackConfigs(c, c.platform);
+    _parseCssSync(c, c.platform);
 };
 
 const _parseCssSync = (c, platform) => {
