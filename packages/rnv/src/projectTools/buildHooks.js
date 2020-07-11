@@ -1,7 +1,7 @@
 /* eslint-disable import/no-cycle */
 import chalk from 'chalk';
 import fs from 'fs';
-import { logToSummary, logTask, logRaw } from '../systemTools/logger';
+import { logToSummary, logTask, logRaw, logHook } from '../systemTools/logger';
 import { generateOptions } from '../systemTools/prompt';
 import { executeAsync } from '../systemTools/exec';
 
@@ -45,10 +45,15 @@ const executePipe = async (c, key) => {
 
     if (Array.isArray(pipe)) {
         await pipe.reduce(
-            (accumulatorPromise, next) => accumulatorPromise.then(() => next(c)),
+            (accumulatorPromise, next) => {
+                // console.log('DDJHDGD', next?.name);
+                logHook(`buildHook.${next?.name}`, '(EXECUTING)');
+                return accumulatorPromise.then(() => next(c));
+            },
             Promise.resolve()
         );
     } else if (pipe) {
+        logHook(`buildHook.${pipe?.name}`, '(EXECUTING)');
         await pipe(c);
     }
 };

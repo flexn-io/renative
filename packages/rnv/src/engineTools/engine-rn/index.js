@@ -114,7 +114,7 @@ export const _taskStart = async (c, parentTask) => {
         );
     }
 
-    if (!c.program.only || !parentTask) {
+    if (!c.program.only && !parentTask) {
         await _taskConfigure(c, TASK_START);
     }
 

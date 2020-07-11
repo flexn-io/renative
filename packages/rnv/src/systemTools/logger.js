@@ -298,6 +298,10 @@ export const logTask = (task, customChalk) => {
     console.log(msg);
 };
 
+export const logHook = (hook = '', msg = '') => {
+    console.log(`${chalk.rgb(127, 255, 212)(`[ hook ] ${hook}`)} ${chalk.grey(msg)}`);
+};
+
 export const logWarning = (msg) => {
     logAndSave(chalk.yellow(`[ warn ] ${msg}`));
 };
