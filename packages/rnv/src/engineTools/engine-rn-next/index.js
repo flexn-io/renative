@@ -20,12 +20,12 @@ import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIf
 import Config from '../../config';
 import Analytics from '../../systemTools/analytics';
 import { checkSdk } from '../../platformTools/sdkManager';
-
+import { resolvePluginDependants } from '../../pluginTools';
 
 const TASKS = {};
 
-export const _taskConfigure = async (c) => {
-    logTask('_taskConfigure');
+export const _taskConfigure = async (c, parentTask) => {
+    logTask('_taskConfigure', `parent:${parentTask}`);
 
     await configureGenericPlatform(c);
     await configureGenericProject(c);
@@ -40,14 +40,12 @@ export const _taskConfigure = async (c) => {
 };
 TASKS[TASK_CONFIGURE] = _taskConfigure;
 
-export const _taskStart = async (c) => {
+export const _taskStart = async (c, parentTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { hosted } = c.program;
 
-    logTask(
-        `rnvStart:${platform}:${port}:${hosted}:${Config.isWebHostEnabled}`
-    );
+    logTask('_taskStart', `parent:${parentTask} port:${c.runtime.port} hosted:${!!hosted}`);
 
     if (Config.isWebHostEnabled && hosted) {
         waitForWebpack(c)
@@ -72,12 +70,12 @@ export const _taskStart = async (c) => {
 };
 TASKS[TASK_START] = _taskStart;
 
-const _taskRun = async (c) => {
+const _taskRun = async (c, parentTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
     const { hosted } = c.program;
-    logTask('_taskRun', `port:${port} target:${target} hosted:${hosted}`);
+    logTask('_taskRun', `parent:${parentTask} port:${port} target:${target} hosted:${hosted}`);
 
     if (!c.program.only) {
         await _taskConfigure(c);
@@ -94,8 +92,8 @@ const _taskRun = async (c) => {
 };
 TASKS[TASK_RUN] = _taskRun;
 
-const _taskPackage = async (c) => {
-    logTask(`_taskPackage:${c.platform}`);
+const _taskPackage = async (c, parentTask) => {
+    logTask('_taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
     await checkSdk(c);
@@ -108,8 +106,8 @@ const _taskPackage = async (c) => {
 };
 TASKS[TASK_PACKAGE] = _taskPackage;
 
-const _taskExport = async (c) => {
-    logTask(`_taskExport:${c.platform}`);
+const _taskExport = async (c, parentTask) => {
+    logTask('_taskExport', `parent:${parentTask}`);
     const { platform } = c;
 
     if (!c.program.only) {
@@ -126,8 +124,8 @@ const _taskExport = async (c) => {
 };
 TASKS[TASK_EXPORT] = _taskExport;
 
-const _taskBuild = async (c) => {
-    logTask(`_taskBuild:${c.platform}`);
+const _taskBuild = async (c, parentTask) => {
+    logTask('_taskBuild', `parent:${parentTask}`);
     const { platform } = c;
 
     if (!c.program.only) {
@@ -145,8 +143,8 @@ const _taskBuild = async (c) => {
 };
 TASKS[TASK_BUILD] = _taskBuild;
 
-const _taskDeploy = async (c) => {
-    logTask(`_taskDeploy:${c.platform}`);
+const _taskDeploy = async (c, parentTask) => {
+    logTask('_taskDeploy', `parent:${parentTask}`);
     const { platform } = c;
 
     if (!c.program.only) {
@@ -166,8 +164,8 @@ const _taskDeploy = async (c) => {
 };
 TASKS[TASK_DEPLOY] = _taskDeploy;
 
-const _taskDebug = async (c) => {
-    logTask(`_taskDebug:${c.platform}`);
+const _taskDebug = async (c, parentTask) => {
+    logTask('_taskDebug', `parent:${parentTask}`);
     const { platform } = c;
 
     switch (platform) {
@@ -177,8 +175,8 @@ const _taskDebug = async (c) => {
 };
 TASKS[TASK_DEBUG] = _taskDebug;
 
-export const _taskLog = async (c) => {
-    logTask(`_taskLog:${c.platform}`);
+export const _taskLog = async (c, parentTask) => {
+    logTask('_taskLog', `parent:${parentTask}`);
     switch (c.platform) {
         default:
             logErrorPlatform(c, c.platform);
@@ -192,6 +190,8 @@ const runTask = async (c, task) => {
     await isPlatformSupported(c);
     await isBuildSchemeSupported(c);
     await checkSdk(c);
+    await applyTemplate(c);
+    await resolvePluginDependants(c);
 
     Analytics.captureEvent({
         type: `${task}Project`,

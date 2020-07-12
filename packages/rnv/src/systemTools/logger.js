@@ -51,12 +51,6 @@ export const logWelcome = () => {
                 )}`,
                 1
             );
-            str += printIntoBox(
-                `      ${currentChalk.yellow(
-                    'Use "npm install rnv" for stable one.'
-                )}`,
-                1
-            );
         }
     }
     str += printIntoBox(`      ${currentChalk.grey('https://renative.org')}`, 1);
@@ -436,6 +430,8 @@ export const printBoxEnd = () => _defaultColor(
 );
 
 export default {
+    chalk,
+    logHook,
     logEnd,
     logInfo,
     logTask,

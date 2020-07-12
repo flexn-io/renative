@@ -72,6 +72,40 @@ const _startBundlerIfRequired = async (c, parentTask) => {
     }
 };
 
+const _configureMetroConfigs = async (c, platform) => {
+    const configDir = path.join(c.paths.project.dir, 'configs');
+    if (!fs.existsSync(configDir)) {
+        mkdirSync(configDir);
+    }
+    const dest = path.join(configDir, `metro.config.${platform}.js`);
+    if (!fs.existsSync(dest)) {
+        writeFileSync(
+            dest,
+            `const { EXTENSIONS } = require('rnv/dist/constants');
+const config = require('../metro.config');
+
+config.resolver.sourceExts = EXTENSIONS.${platform};
+module.exports = config;
+`
+        );
+    }
+
+
+    // Check rn-cli-config
+    if (!fs.existsSync(c.paths.project.rnCliConfig)) {
+        logInfo(
+            `Looks like your rn-cli config file ${chalk().white(
+                c.paths.project.rnCliConfig
+            )} is missing! Let's create one for you.`
+        );
+        copyFileSync(
+            path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
+            c.paths.project.rnCliConfig
+        );
+    }
+};
+
+
 const BUNDLER_PLATFORMS = {};
 
 BUNDLER_PLATFORMS[IOS] = IOS;
@@ -317,41 +351,6 @@ export const _taskLog = async (c, parentTask) => {
     }
 };
 TASKS[TASK_LOG] = _taskLog;
-
-
-const _configureMetroConfigs = async (c, platform) => {
-    const configDir = path.join(c.paths.project.dir, 'configs');
-    if (!fs.existsSync(configDir)) {
-        mkdirSync(configDir);
-    }
-    const dest = path.join(configDir, `metro.config.${platform}.js`);
-    if (!fs.existsSync(dest)) {
-        writeFileSync(
-            dest,
-            `const { EXTENSIONS } = require('rnv/dist/constants');
-const config = require('../metro.config');
-
-config.resolver.sourceExts = EXTENSIONS.${platform};
-module.exports = config;
-`
-        );
-    }
-
-
-    // Check rn-cli-config
-    if (!fs.existsSync(c.paths.project.rnCliConfig)) {
-        logInfo(
-            `Looks like your rn-cli config file ${chalk().white(
-                c.paths.project.rnCliConfig
-            )} is missing! Let's create one for you.`
-        );
-        copyFileSync(
-            path.join(c.paths.rnv.projectTemplate.dir, RN_CLI_CONFIG_NAME),
-            c.paths.project.rnCliConfig
-        );
-    }
-};
-
 
 const runTask = async (c, task) => {
     logTask('runTask', `task:${task} engine:engine-rn`);
