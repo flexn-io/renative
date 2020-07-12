@@ -6,6 +6,21 @@ original_id: changelog
 ---
 
 
+## v0.31.0-alpha.9 (2020-7-12)
+
+### Fixed
+
+- update tasks, logs
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.8 (2020-7-11)
 
 ### Fixed
