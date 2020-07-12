@@ -414,7 +414,7 @@ export const generateBuildConfig = (c) => {
         c.files.defaultWorkspace.config,
         c.files.rnv.projectTemplates.config,
         { plugins: extraPlugins },
-        { pluginTemplates },
+        // { pluginTemplates },
         c.files.rnv.engines.config,
         c.files.workspace.config,
         c.files.workspace.configPrivate,
@@ -434,6 +434,7 @@ export const generateBuildConfig = (c) => {
         c.files.appConfig.configPrivate,
         c.files.appConfig.configLocal
     ];
+
 
     const meta = [
         {
@@ -457,6 +458,7 @@ export const generateBuildConfig = (c) => {
         arrayMerge: _arrayMergeOverride
     });
     out = merge({}, out);
+    out.pluginTemplates = pluginTemplates;
 
     c.paths.project.builds.config = path.join(
         c.paths.project.builds.dir,
@@ -470,7 +472,6 @@ export const generateBuildConfig = (c) => {
     );
     c.buildConfig = sanitizeDynamicRefs(c, out);
     c.buildConfig = sanitizeDynamicProps(c.buildConfig, c.buildConfig._refs, {}, c.runtime);
-
 
     if (fs.existsSync(c.paths.project.builds.dir)) {
         writeFileSync(c.paths.project.builds.config, c.buildConfig);

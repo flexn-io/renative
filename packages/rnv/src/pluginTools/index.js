@@ -227,87 +227,61 @@ export const rnvPluginUpdate = async (c) => {
     }
 };
 
-export const getMergedPlugin = (c, key, plugins) => {
-    logDebug(`getMergedPlugin:${key}`);
-
-    const plugin = plugins[key];
-
-    // const origPlugin = c.files.rnv.pluginTemplates.config.pluginTemplates[key];
-    const rnvPlugin = c.files.rnv.pluginTemplates.configs?.rnv?.pluginTemplates?.[key];
-    if (rnvPlugin) rnvPlugin.source = 'rnv';
-
-    let origPlugin;
+const _getPluginScope = (plugin) => {
     if (typeof plugin === 'string' || plugin instanceof String) {
         if (plugin.startsWith('source:')) {
-            const scope = plugin.split(':').pop();
-
-            origPlugin = c.buildConfig.pluginTemplates?.[scope]?.[key];
-
-            if (origPlugin) {
-                origPlugin.source = scope;
-                if (rnvPlugin && !origPlugin?.skipMerge) {
-                    origPlugin = _getMergedPlugin(
-                        c,
-                        rnvPlugin,
-                        origPlugin,
-                        true,
-                        true
-                    );
-                }
-                return origPlugin;
-            }
-            logWarning(
-                `Plugin ${key} is not recognized plugin in ${plugin} scope`
-            );
-            return null;
+            return plugin.split(':').pop();
         }
-        return {
-            version: plugin,
-            source: 'rnv'
-        };
+    } else if (plugin?.source) {
+        return plugin?.source;
     }
-
-    if (plugin) {
-        if (plugin.source) {
-            origPlugin = c.buildConfig.pluginTemplates?.[plugin.source]?.[key];
-            if (rnvPlugin && !origPlugin?.skipMerge) {
-                origPlugin = _getMergedPlugin(
-                    c,
-                    rnvPlugin,
-                    origPlugin,
-                    true,
-                    true
-                );
-            }
-        } else {
-            origPlugin = rnvPlugin;
-        }
-    }
-
-    if (origPlugin) {
-        const mergedPlugin = _getMergedPlugin(
-            c,
-            origPlugin,
-            plugin,
-            true,
-            true
-        );
-        return mergedPlugin;
-    }
-    return plugin;
+    return 'rnv';
 };
 
-const _getMergedPlugin = (c, obj1, obj2) => {
+export const getMergedPlugin = (c, key) => {
+    logDebug(`getMergedPlugin:${key}`);
+
+    const plugin = c.buildConfig.plugins?.[key];
+    if (!plugin) return null;
+
+    const scopes = [];
+    const mergedPlugin = _getMergedPlugin(c, plugin, key, null, scopes);
+    scopes.reverse();
+    mergedPlugin._scopes = scopes;
+    mergedPlugin._id = key;
+    return mergedPlugin;
+};
+
+const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes) => {
+    if (!plugin) return {};
+
+    const scope = _getPluginScope(plugin);
+    if (scope === parentScope) return plugin;
+
+    if (scope !== '' && !!scope && !c.buildConfig.pluginTemplates?.[scope]) {
+        logWarning(
+            `Plugin ${pluginKey} is not recognized plugin in ${scope} scope`
+        );
+    } else if (scope) {
+        scopes.push(scope);
+    }
+
+    const parentPlugin = _getMergedPlugin(c,
+      c.buildConfig.pluginTemplates?.[scope]?.[pluginKey], pluginKey, scope, scopes);
+    let currentPlugin = plugin;
+    if (typeof plugin === 'string' || plugin instanceof String) {
+        currentPlugin = {};
+    }
     const configPropsInject = {};
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
         configPropsInject[v] = getConfigProp(c, c.platform, v);
     });
     const obj = sanitizeDynamicProps(
-        mergeObjects(c, obj1, obj2, true, true),
-        c.buildConfig?._refs
+        mergeObjects(c, parentPlugin, currentPlugin, true, true),
+            c.buildConfig?._refs
     );
-    const plugin = sanitizeDynamicProps(obj, obj.props, configPropsInject);
-    return plugin;
+    const mergedPlugin = sanitizeDynamicProps(obj, obj.props, configPropsInject);
+    return mergedPlugin;
 };
 
 export const configurePlugins = async (c) => {
@@ -327,7 +301,7 @@ export const configurePlugins = async (c) => {
     const newDevDeps = {};
     const { dependencies, devDependencies } = c.files.project.package;
     Object.keys(c.buildConfig.plugins).forEach((k) => {
-        const plugin = getMergedPlugin(c, k, c.buildConfig.plugins);
+        const plugin = getMergedPlugin(c, k);
 
         if (!plugin) {
             logWarning(
@@ -461,23 +435,11 @@ export const resolvePluginDependants = async (c) => {
     return true;
 };
 
-
-const _getPluginScope = (plugin) => {
-    if (typeof plugin === 'string' || plugin instanceof String) {
-        if (plugin.startsWith('source:')) {
-            const scope = plugin.split(':').pop();
-            return scope;
-        }
-    } else {
-        return plugin?.source;
-    }
-};
-
 const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
     // IMPORTANT: Do not cache this valuse as they need to be refreshed every
     // round in case new plugin has been installed and c.buildConfig generated
-    const { plugins, pluginTemplates } = c.buildConfig;
-    const plugin = getMergedPlugin(c, key, plugins);
+    const { pluginTemplates } = c.buildConfig;
+    const plugin = getMergedPlugin(c, key);
 
     const pluginScope = _getPluginScope(keyScope);
 
@@ -542,7 +504,7 @@ export const parsePlugins = (c, platform, pluginCallback, ignorePlatformObjectCh
                             || includedPlugins.includes(key))
                         && !excludedPlugins.includes(key)
                     ) {
-                        const plugin = getMergedPlugin(c, key, plugins);
+                        const plugin = getMergedPlugin(c, key);
                         if (plugin) {
                             const pluginPlat = plugin[platform];
                             if (ignorePlatformObjectCheck) {
@@ -600,12 +562,17 @@ export const loadPluginTemplates = (c) => {
     c.paths.rnv.pluginTemplates.dirs = { rnv: c.paths.rnv.pluginTemplates.dir };
 
     const customPluginTemplates = c.files.project.config?.paths?.pluginTemplates;
+    _parsePluginTemplateDependencies(c, customPluginTemplates);
+};
+
+const _parsePluginTemplateDependencies = (c, customPluginTemplates, scope = 'root') => {
+    logTask('_parsePluginTemplateDependencies', `scope:${scope}`);
     if (customPluginTemplates) {
         Object.keys(customPluginTemplates).forEach((k) => {
             const val = customPluginTemplates[k];
             if (val.npm) {
                 const npmDep = c.files.project.package?.dependencies[val.npm]
-                    || c.files.project.package?.devDependencies[val.npm];
+                  || c.files.project.package?.devDependencies[val.npm];
 
                 if (npmDep) {
                     let ptPath;
@@ -629,6 +596,9 @@ export const loadPluginTemplates = (c) => {
                         c.files.rnv.pluginTemplates.configs[k] = readObjectSync(
                             ptConfig
                         );
+                        _parsePluginTemplateDependencies(c,
+                            c.files.rnv.pluginTemplates.configs[k].pluginTemplateDependencies,
+                            k);
                     }
                 }
             }
@@ -665,7 +635,7 @@ const _overridePlugin = (c, pluginsPath, dir) => {
     const dest = doResolve(dir, false);
     if (!dest) return;
 
-    const plugin = getMergedPlugin(c, dir, c.buildConfig.plugins);
+    const plugin = getMergedPlugin(c, dir);
     let flavourSource;
     if (plugin) {
         flavourSource = path.resolve(
@@ -733,10 +703,15 @@ export const overrideTemplatePlugins = async (c) => {
     const appBasePluginDir = c.paths.project.projectConfig.pluginsDir;
 
     parsePlugins(c, c.platform, (plugin, pluginPlat, key) => {
-        const pluginOverridePath = rnvPluginsDirs[plugin.source];
-        if (pluginOverridePath) {
-            _overridePlugin(c, pluginOverridePath, key);
+        if (plugin?._scopes?.length) {
+            plugin._scopes.forEach((pluginScope) => {
+                const pluginOverridePath = rnvPluginsDirs[pluginScope];
+                if (pluginOverridePath) {
+                    _overridePlugin(c, pluginOverridePath, key);
+                }
+            });
         }
+
         if (appBasePluginDir) {
             _overridePlugin(c, appBasePluginDir, key);
         }
