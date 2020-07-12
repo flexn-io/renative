@@ -5,6 +5,22 @@ sidebar_label: Changelog
 ---
 
 
+## v0.31.0-alpha.10 (2020-7-12)
+
+### Fixed
+
+- add support for "source:self"
+- scoped plugin inheritance
+
+### Added Features
+
+- none
+
+### Breaking Changes
+
+- none
+
+
 ## v0.31.0-alpha.9 (2020-7-12)
 
 ### Fixed
