@@ -5,6 +5,12 @@ import {
     getConfigProp,
     isBuildSchemeSupported
 } from '../common';
+import { checkSdk } from '../platformTools/sdkManager';
+import { resolvePluginDependants } from '../pluginTools';
+import Analytics from '../systemTools/analytics';
+import {
+    executePipe
+} from '../projectTools/buildHooks';
 
 import EngineRn from './engine-rn';
 import EngineRnWeb from './engine-rn-web';
@@ -60,4 +66,38 @@ export const getEngineRunner = (c, platform) => {
         // ${Object.keys(ENGINES).join(', ')}`);
     }
     return engine;
+};
+
+export const initializeTask = async (c, task) => {
+    c.runtime.task = task;
+
+    await isPlatformSupported(c);
+    await isBuildSchemeSupported(c);
+    await checkSdk(c);
+    await getEngineRunner(c).applyTemplate(c);
+    await resolvePluginDependants(c);
+
+    Analytics.captureEvent({
+        type: `${task}Project`,
+        platform: c.platform
+    });
+
+    return executeTask(c, task);
+};
+
+const _executePipe = async (c, task, phase) => {
+    let subCmd = '';
+    if (c.subCommand) {
+        subCmd = `:${c.subCommand}`;
+    }
+    return executePipe(c, `${task}${subCmd}:${phase}`);
+};
+
+export const executeTask = async (c, task, parentTask, originTask) => {
+    if ((!c.program.only && !parentTask) || !parentTask) {
+        logTask('executeTask', `task:${task} parent:${parentTask} origin:${originTask}`);
+        await _executePipe(c, task, 'before');
+        await getEngineRunner(c).executeTask(c, task, parentTask, originTask);
+        await _executePipe(c, task, 'after');
+    }
 };

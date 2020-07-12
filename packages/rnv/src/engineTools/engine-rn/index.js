@@ -2,14 +2,13 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    isBuildSchemeSupported,
     logErrorPlatform,
     getConfigProp,
     confirmActiveBundler,
     getEntryFile
 } from '../../common';
 import { doResolve } from '../../resolve';
-import { isPlatformSupported, configureGenericPlatform } from '../../platformTools';
+import { configureGenericPlatform } from '../../platformTools';
 import { chalk, logTask, logError, logSummary, logInfo, logRaw } from '../../systemTools/logger';
 import {
     IOS,
@@ -38,12 +37,10 @@ import {
     runAndroidLog
 } from '../../platformTools/android';
 import { executeAsync } from '../../systemTools/exec';
-import Analytics from '../../systemTools/analytics';
 
 import { isBundlerActive, waitForBundler } from '../../platformTools/bundler';
-import { checkSdk } from '../../platformTools/sdkManager';
-import { resolvePluginDependants } from '../../pluginTools';
 import { mkdirSync, writeFileSync, copyFileSync } from '../../systemTools/fileutils';
+import { executeTask as _executeTask } from '..';
 
 const TASKS = {};
 
@@ -57,14 +54,14 @@ const waitForBundlerIfRequired = async (c) => {
     return true;
 };
 
-const _startBundlerIfRequired = async (c, parentTask) => {
+const _startBundlerIfRequired = async (c, parentTask, originTask) => {
     logTask('_startBundlerIfRequired');
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets');
     if (bundleAssets === true) return;
 
     const isRunning = await isBundlerActive(c);
     if (!isRunning) {
-        _taskStart(c, parentTask);
+        _taskStart(c, parentTask, originTask);
         keepRNVRunning = true;
         await waitForBundler(c);
     } else {
@@ -134,7 +131,7 @@ export const _taskConfigure = async (c, parentTask) => {
 };
 TASKS[TASK_CONFIGURE] = _taskConfigure;
 
-export const _taskStart = async (c, parentTask) => {
+export const _taskStart = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { hosted } = c.program;
 
@@ -147,9 +144,7 @@ export const _taskStart = async (c, parentTask) => {
         );
     }
 
-    if (!c.program.only && !parentTask) {
-        await _taskConfigure(c, TASK_START);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_START, originTask);
 
     switch (platform) {
         case IOS:
@@ -185,7 +180,7 @@ Dev server running at: ${url}
 };
 TASKS[TASK_START] = _taskStart;
 
-const _taskRun = async (c, parentTask) => {
+const _taskRun = async (c, parentTask, originTask) => {
     const { platform } = c;
     const { port } = c.runtime;
     const { target } = c.runtime;
@@ -194,15 +189,13 @@ const _taskRun = async (c, parentTask) => {
 
     const bundleAssets = getConfigProp(c, c.platform, 'bundleAssets', false);
 
-    if (!c.program.only) {
-        await _taskConfigure(c, TASK_RUN);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_RUN, originTask);
 
     switch (platform) {
         case IOS:
         case TVOS:
             if (!c.program.only) {
-                await _startBundlerIfRequired(c, TASK_RUN);
+                await _startBundlerIfRequired(c, TASK_RUN, originTask);
                 await runXcodeProject(c);
                 if (!bundleAssets) {
                     logSummary('BUNDLER STARTED');
@@ -214,7 +207,7 @@ const _taskRun = async (c, parentTask) => {
         case ANDROID_TV:
         case ANDROID_WEAR:
             if (!c.program.only) {
-                await _startBundlerIfRequired(c, TASK_RUN);
+                await _startBundlerIfRequired(c, TASK_RUN, originTask);
                 if (
                     getConfigProp(c, platform, 'bundleAssets') === true
                   || platform === ANDROID_WEAR
@@ -235,15 +228,13 @@ const _taskRun = async (c, parentTask) => {
 TASKS[TASK_RUN] = _taskRun;
 
 
-const _taskPackage = async (c, parentTask) => {
+const _taskPackage = async (c, parentTask, originTask) => {
     logTask('_taskPackage', `parent:${parentTask}`);
     const { platform } = c;
 
     const target = c.program.target || c.files.workspace.config.defaultTargets[platform];
 
-    if (!c.program.only) {
-        await _taskConfigure(c, TASK_PACKAGE);
-    }
+    await _executeTask(c, TASK_CONFIGURE, TASK_PACKAGE, originTask);
 
     switch (platform) {
         case IOS:
@@ -266,34 +257,32 @@ const _taskPackage = async (c, parentTask) => {
 TASKS[TASK_PACKAGE] = _taskPackage;
 
 
-const _taskExport = async (c, parentTask) => {
+const _taskExport = async (c, parentTask, originTask) => {
     logTask('_taskExport', `parent:${parentTask}`);
     const { platform } = c;
+
+    await _executeTask(c, TASK_BUILD, TASK_EXPORT, originTask);
 
     switch (platform) {
         case IOS:
         case TVOS:
-            if (!c.program.only) {
-                await _taskBuild(c, TASK_EXPORT);
-            }
             return exportXcodeProject(c, platform);
         case ANDROID:
         case ANDROID_TV:
         case ANDROID_WEAR:
-            return _taskBuild(c, TASK_EXPORT);
+            // return _taskBuild(c, TASK_EXPORT);
+            return true;
         default:
             return logErrorPlatform(c, platform);
     }
 };
 TASKS[TASK_EXPORT] = _taskExport;
 
-const _taskBuild = async (c, parentTask) => {
+const _taskBuild = async (c, parentTask, originTask) => {
     logTask('_taskBuild', `parent:${parentTask}`);
     const { platform } = c;
 
-    if (!c.program.only) {
-        await _taskPackage(c, TASK_BUILD);
-    }
+    await _executeTask(c, TASK_PACKAGE, TASK_BUILD, originTask);
 
     switch (platform) {
         case ANDROID:
@@ -313,13 +302,11 @@ const _taskBuild = async (c, parentTask) => {
 };
 TASKS[TASK_BUILD] = _taskBuild;
 
-const _taskDeploy = async (c, parentTask) => {
+const _taskDeploy = async (c, parentTask, originTask) => {
     logTask('_taskDeploy', `parent:${parentTask}`);
 
-    if (!c.program.only) {
-        await _taskExport(c, TASK_DEPLOY);
-        return true;
-    }
+    await _executeTask(c, TASK_EXPORT, TASK_DEPLOY, originTask);
+
     // Deploy simply trggets hook
     return true;
 };
@@ -352,20 +339,22 @@ export const _taskLog = async (c, parentTask) => {
 };
 TASKS[TASK_LOG] = _taskLog;
 
-const runTask = async (c, task) => {
-    logTask('runTask', `task:${task} engine:engine-rn`);
-    await isPlatformSupported(c);
-    await isBuildSchemeSupported(c);
-    await checkSdk(c);
-    await applyTemplate(c);
-    await resolvePluginDependants(c);
+// const runTask = async (c, task) => {
+//     logTask('runTask', `task:${task} engine:engine-rn`);
+//     await isPlatformSupported(c);
+//     await isBuildSchemeSupported(c);
+//     await checkSdk(c);
+//     await applyTemplate(c);
+//     await resolvePluginDependants(c);
+//
+//     Analytics.captureEvent({
+//         type: `${task}Project`,
+//         platform: c.platform
+//     });
+//     return TASKS[task](c);
+// };
 
-    Analytics.captureEvent({
-        type: `${task}Project`,
-        platform: c.platform
-    });
-    return TASKS[task](c);
-};
+const executeTask = async (c, task, parentTask, originTask) => TASKS[task](c, parentTask, originTask);
 
 const applyTemplate = async (c) => {
     await _configureMetroConfigs(c, c.platform);
@@ -373,6 +362,6 @@ const applyTemplate = async (c) => {
 };
 
 export default {
-    runTask,
+    executeTask,
     applyTemplate
 };

@@ -656,9 +656,9 @@ const _execute = async (c, cmdFn, cmd) => {
 
     const pipeEnabled = !NO_OP_COMMANDS.includes(c.command)
         && !SKIP_APP_CONFIG_CHECK.includes(c.command);
-    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:before`);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:beforeAll`);
     await cmdFn(c);
-    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:after`);
+    if (pipeEnabled) await executePipe(c, `${c.command}${subCmd}:afterAll`);
 };
 
 const setDefaults = (c) => {
