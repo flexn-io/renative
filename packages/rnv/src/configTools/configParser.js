@@ -435,6 +435,9 @@ export const generateBuildConfig = (c) => {
         c.files.appConfig.configLocal
     ];
 
+    // mergeFiles.forEach((mergeFile, i) => {
+    //     console.log(`MERGEDIAGNOSTICS ${i}`, Object.keys(mergeFile?.plugins || {}));
+    // });
 
     const meta = [
         {

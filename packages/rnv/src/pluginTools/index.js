@@ -230,12 +230,13 @@ export const rnvPluginUpdate = async (c) => {
 const _getPluginScope = (plugin) => {
     if (typeof plugin === 'string' || plugin instanceof String) {
         if (plugin.startsWith('source:')) {
-            return plugin.split(':').pop();
+            return { scope: plugin.split(':').pop() };
         }
-    } else if (plugin?.source) {
-        return plugin?.source;
+        return { npmVersion: plugin };
+    } if (plugin?.source) {
+        return { scope: plugin?.source };
     }
-    return 'rnv';
+    return { scope: 'rnv' };
 };
 
 export const getMergedPlugin = (c, key) => {
@@ -247,17 +248,28 @@ export const getMergedPlugin = (c, key) => {
     const scopes = [];
     const mergedPlugin = _getMergedPlugin(c, plugin, key, null, scopes);
     scopes.reverse();
+    // if (!mergedPlugin.version) {
+    //     logWarning(`Plugin ${key} has no version`);
+    //     // return null;
+    // }
     mergedPlugin._scopes = scopes;
     mergedPlugin._id = key;
     return mergedPlugin;
 };
 
 const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes) => {
-    if (!plugin) return {};
+    if (!plugin) {
+        return {};
+    }
 
-    const scope = _getPluginScope(plugin);
+    const { scope, npmVersion } = _getPluginScope(plugin);
     if (scope === parentScope) return plugin;
 
+    if (npmVersion) {
+        return {
+            version: npmVersion
+        };
+    }
     if (scope !== '' && !!scope && !c.buildConfig.pluginTemplates?.[scope]) {
         logWarning(
             `Plugin ${pluginKey} is not recognized plugin in ${scope} scope`
@@ -276,6 +288,13 @@ const _getMergedPlugin = (c, plugin, pluginKey, parentScope, scopes) => {
     INJECTABLE_CONFIG_PROPS.forEach((v) => {
         configPropsInject[v] = getConfigProp(c, c.platform, v);
     });
+    if (currentPlugin.pluginDependencies) {
+        Object.keys(currentPlugin.pluginDependencies).forEach((plugDepKey) => {
+            if (currentPlugin.pluginDependencies[plugDepKey] === 'source:self') {
+                currentPlugin.pluginDependencies[plugDepKey] = `source:${parentScope}`;
+            }
+        });
+    }
     const obj = sanitizeDynamicProps(
         mergeObjects(c, parentPlugin, currentPlugin, true, true),
             c.buildConfig?._refs
@@ -312,11 +331,8 @@ export const configurePlugins = async (c) => {
                 )}`
             );
         } else if (dependencies && dependencies[k]) {
-            if (
-                plugin['no-active'] !== true
-                    && plugin['no-npm'] !== true
-                    && dependencies[k] !== plugin.version
-            ) {
+            if (plugin['no-active'] !== true && plugin['no-npm'] !== true
+                    && dependencies[k] !== plugin.version) {
                 if (k === 'renative' && c.runtime.isWrapper) {
                     logWarning(
                         "You're in ReNative wrapper mode. plugin renative will stay as local dep!"
@@ -441,10 +457,10 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
     const { pluginTemplates } = c.buildConfig;
     const plugin = getMergedPlugin(c, key);
 
-    const pluginScope = _getPluginScope(keyScope);
+    const { scope } = _getPluginScope(keyScope);
 
     if (!plugin) {
-        const depPlugin = pluginTemplates[pluginScope]?.[key];
+        const depPlugin = pluginTemplates[scope]?.[key];
 
         if (depPlugin) {
             // console.log('INSTALL PLUGIN???', key, depPlugin.source);
@@ -452,10 +468,10 @@ const _resolvePluginDependencies = async (c, key, keyScope, parentKey) => {
                 type: 'confirm',
                 message: `Install ${key}?`,
                 warningMessage: `Plugin ${chalk().white(key)} source:${
-                    chalk().white(pluginScope)} required by ${chalk().red(parentKey)} is not installed`
+                    chalk().white(scope)} required by ${chalk().red(parentKey)} is not installed`
             });
             if (confirm) {
-                c.files.project.config.plugins[key] = `source:${pluginScope}`;
+                c.files.project.config.plugins[key] = `source:${scope}`;
                 writeRenativeConfigFile(c, c.paths.project.config, c.files.project.config);
                 logSuccess(`Plugin ${key} sucessfully installed`);
                 c._requiresNpmInstall = true;
