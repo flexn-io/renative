@@ -2587,6 +2587,15 @@
                 ]
             }
         },
+        "react-native-iap": {
+            "version": "4.5.0",
+            "ios": {
+                "podName": "RNIap"
+            },
+            "android": {
+              "package": "com.dooboolab.RNIap.RNIapPackage"
+            }
+        },
         "next": {
             "version": "9.3.1"
         },
