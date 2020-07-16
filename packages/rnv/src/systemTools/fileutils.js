@@ -717,7 +717,7 @@ export const getFileListSync = (dir) => {
             results = results.concat(getFileListSync(fileFixed));
         } else {
             /* Is a file */
-            results.push(file);
+            results.push(fileFixed);
         }
     });
     return results;

@@ -3959,6 +3959,15 @@
     prop-types "^15.6.2"
     recompose "^0.30.0"
 
+"@noriginmedia/react-spatial-navigation@2.12.3":
+  version "2.12.3"
+  resolved "https://registry.yarnpkg.com/@noriginmedia/react-spatial-navigation/-/react-spatial-navigation-2.12.3.tgz#3d627ae010fbebbeb03ede8c179c4bf137cb3c8e"
+  integrity sha512-kHdibxp0b1nGRSsVyc2G3WTxMRdD3FYwSW6McAvqYZRpt1uj73gpqX2ao+FudODjIpSYd2tURwK8+bPV7cYlTg==
+  dependencies:
+    lodash "^4.17.13"
+    prop-types "^15.6.2"
+    recompose "^0.30.0"
+
 "@octokit/auth-token@^2.4.0":
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/@octokit/auth-token/-/auth-token-2.4.0.tgz#b64178975218b99e4dfe948253f0673cbbb59d9f"
