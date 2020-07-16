@@ -1,18 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { Router, navigate } from '@reach/router';
-import { Api } from 'renative';
 
 import ScreenHome from '../screenHome';
 import ScreenMyPage from '../screenMyPage';
 import ScreenModal from '../screenModal';
 import Menu from '../menu';
 import { themeStyles } from '../theme';
-
-if (Api.engine !== 'next') {
-    // bootstrap fonts for web
-    require('../../platformAssets/runtime/fontManager');
-}
 
 const styles = {
     container: {
@@ -22,17 +16,24 @@ const styles = {
     }
 };
 
-const App = () => (
-    <View style={[themeStyles.app]}>
-        <Menu focusKey="menu" navigate={navigate} />
-        <View style={styles.container}>
-            <Router>
-                <ScreenHome path="/" />
-                <ScreenMyPage path="my-page" />
-                <ScreenModal path="modal" />
-            </Router>
+const App = () => {
+    useEffect(() => {
+        // Required for tizen
+        if (window.focus) window.focus();
+    }, []);
+
+    return (
+        <View style={[themeStyles.app]}>
+            <Menu focusKey="menu" navigate={navigate} />
+            <View style={styles.container}>
+                <Router>
+                    <ScreenHome path="/" />
+                    <ScreenMyPage path="my-page" />
+                    <ScreenModal path="modal" />
+                </Router>
+            </View>
         </View>
-    </View>
-);
+    );
+};
 
 export default App;
