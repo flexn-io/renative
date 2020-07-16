@@ -16,7 +16,7 @@
             }
         },
         "renative": {
-            "version": "0.31.0-alpha.10",
+            "version": "0.31.0-alpha.11",
             "webpack": {
                 "modulePaths": [
                     "node_modules/renative"
@@ -2604,7 +2604,7 @@
                 "podName": "RNIap"
             },
             "android": {
-              "package": "com.dooboolab.RNIap.RNIapPackage"
+                "package": "com.dooboolab.RNIap.RNIapPackage"
             }
         },
         "next": {
