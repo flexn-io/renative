@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@expo/next-adapter": "2.0.5",
-        "@noriginmedia/react-spatial-navigation": "2.12.1",
+        "@noriginmedia/react-spatial-navigation": "2.12.3",
         "@reach/router": "1.2.1",
         "@react-native-community/masked-view": "0.1.6",
         "@react-native-community/viewpager": "2.0.2",
