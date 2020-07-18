@@ -447,6 +447,28 @@ export const waitForEmulator = async (c, cli, command, callback) => {
     });
 };
 
+export const waitForUrl = url => new Promise((resolve, reject) => {
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    const interval = setInterval(() => {
+        axios.get(url)
+            .then(() => {
+                resolve(true);
+            })
+            .catch(() => {
+                attempts++;
+                if (attempts > maxAttempts) {
+                    clearInterval(interval);
+                    // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                    return reject(
+                        "Can't connect to webpack. Try restarting it."
+                    );
+                }
+            });
+    }, CHECK_INTEVAL);
+});
+
 export const waitForWebpack = async (c, engine) => {
     logTask('waitForWebpack', `port:${c.runtime.port} engine:${engine}`);
     let attempts = 0;
@@ -492,6 +514,7 @@ export const waitForWebpack = async (c, engine) => {
         }, CHECK_INTEVAL);
     });
 };
+
 export const importPackageFromProject = (name) => {
     // const c = Config.getConfig();
     // eslint-disable-next-line import/no-dynamic-require, global-require

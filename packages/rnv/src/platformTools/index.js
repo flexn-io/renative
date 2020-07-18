@@ -3,7 +3,7 @@
 import path from 'path';
 import inquirer from 'inquirer';
 
-import { chalk, logToSummary, logTask, logSuccess, logError, logDebug, logWarning, logInfo } from '../systemTools/logger';
+import { chalk, logToSummary, logTask, logSuccess, logError, logWarning, logInfo } from '../systemTools/logger';
 import { generateOptions, inquirerPrompt } from '../systemTools/prompt';
 import {
     cleanFolder,
@@ -422,7 +422,7 @@ export const isPlatformActive = (c, platform, resolve) => {
         return false;
     }
     if (!c.buildConfig.platforms[platform]) {
-        logDebug(
+        logWarning(
             `Platform ${platform} not configured for ${c.runtime.appId}. skipping.`
         );
         if (resolve) resolve();

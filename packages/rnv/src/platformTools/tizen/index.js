@@ -268,9 +268,12 @@ export const runTizen = async (c, platform, target) => {
 
     const platformConfig = c.buildConfig.platforms[platform];
     const { hosted } = c.program;
+    const bundleAssets = getConfigProp(c, platform, 'bundleAssets');
+    const isHosted = hosted ?? !bundleAssets;
 
-    const isHosted = hosted ?? !getConfigProp(c, platform, 'bundleAssets');
-    // if (debug) isHosted = false;
+    if (!bundleAssets && !hosted) {
+        // console.log('RUN WEINRE');
+    }
 
     if (!platformConfig) {
         throw new Error(
@@ -503,12 +506,16 @@ export const buildTizenProject = async (c, platform) => {
 
 let _isGlobalConfigured = false;
 
-export const configureTizenProject = async (c, platform) => {
+export const configureTizenProject = async (c) => {
     logTask('configureTizenProject');
 
-    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}`;
+    const { platform } = c;
 
-    if (!isPlatformActive(c, platform)) return;
+    c.runtime.platformBuildsProjectPath = `${getAppFolder(c, platform)}`;
+
+    if (!isPlatformActive(c, platform)) {
+        return;
+    }
 
     if (!_isGlobalConfigured) {
         _isGlobalConfigured = true;

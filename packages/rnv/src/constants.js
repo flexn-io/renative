@@ -122,6 +122,8 @@ const EXT_FALLBACK_WEB = ['mjs', 'jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 const EXT_FALLBACK = ['jsx', 'js', 'json', 'wasm', 'tsx', 'ts'];
 
 
+export const WEINRE_PORT = 8079;
+
 export const PLATFORMS = {
     // ACTIVE
     web: {
