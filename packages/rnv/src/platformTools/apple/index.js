@@ -497,8 +497,10 @@ const composeXcodeArgsFromCLI = (string) => {
     return unescapedValues;
 };
 
-export const buildXcodeProject = async (c, platform) => {
-    logTask(`buildXcodeProject:${platform}`);
+export const buildXcodeProject = async (c) => {
+    logTask('buildXcodeProject');
+
+    const { platform } = c;
 
     const appFolderName = getAppFolderName(c, platform);
     const runScheme = getConfigProp(c, platform, 'runScheme', 'Debug');
@@ -639,8 +641,10 @@ const archiveXcodeProject = (c, platform) => {
     });
 };
 
-const exportXcodeProject = async (c, platform) => {
-    logTask(`exportXcodeProject:${platform}`);
+const exportXcodeProject = async (c) => {
+    logTask('exportXcodeProject');
+
+    const { platform } = c;
 
     await archiveXcodeProject(c, platform);
 

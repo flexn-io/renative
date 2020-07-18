@@ -16,8 +16,9 @@ import { getAppFolderName } from './index';
 import { parseProvisioningProfiles } from './provisionParser';
 import { writeFileSync, fsWriteFileSync } from '../../systemTools/fileutils';
 
-export const parseXcodeProject = async (c, platform) => {
+export const parseXcodeProject = async (c) => {
     logTask('parseXcodeProject');
+    const { platform } = c;
     // PROJECT
     c.runtime.xcodeProj = {};
     c.runtime.xcodeProj.provisioningStyle = getConfigProp(

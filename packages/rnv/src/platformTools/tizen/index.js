@@ -477,8 +477,10 @@ Please create one and then edit the default target from ${c.paths.workspace.dir}
     }
 };
 
-export const buildTizenProject = async (c, platform) => {
-    logTask(`buildTizenProject:${platform}`);
+export const buildTizenProject = async (c) => {
+    logTask('buildTizenProject');
+
+    const { platform } = c;
 
     const platformConfig = c.buildConfig.platforms[platform];
     const tDir = getAppFolder(c, platform);

@@ -188,8 +188,10 @@ const buildWeb = (c, platform) => new Promise((resolve, reject) => {
         .catch(e => reject(e));
 });
 
-const configureWebProject = async (c, platform) => {
+const configureWebProject = async (c) => {
     logTask('configureWebProject');
+
+    const { platform } = c;
 
     c.runtime.platformBuildsProjectPath = `${getAppFolder(c, c.platform)}/public`;
 
