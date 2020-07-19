@@ -6,10 +6,11 @@ import { executeAsync } from '../core/systemManager/exec';
 import {
     checkPortInUse,
     getConfigProp,
-    waitForWebpack,
     confirmActiveBundler,
     getAppFolder
 } from '../core/common';
+import { waitForWebpack } from '.';
+
 import { chalk, logTask, logInfo, logWarning, logDebug, logRaw } from '../core/systemManager/logger';
 import { NEXT_CONFIG_NAME } from '../core/constants';
 import { selectWebToolAndDeploy, selectWebToolAndExport } from '../core/deployManager/webTools';

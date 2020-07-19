@@ -4,11 +4,9 @@ import ip from 'ip';
 import path from 'path';
 
 import {
-    logErrorPlatform,
-    waitForWebpack,
     getConfigProp
 } from '../core/common';
-import { configureGenericPlatform } from '../core/platformManager';
+import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
 import { configureGenericProject } from '../core/projectManager';
 import { logTask, logError, logDebug } from '../core/systemManager/logger';
 import {
@@ -24,7 +22,7 @@ import {
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
 } from '../core/constants';
-import { buildWeb, runWeb, deployWeb, exportWeb, configureWebProject } from '../sdk-webpack';
+import { buildWeb, runWeb, deployWeb, exportWeb, configureWebProject, waitForWebpack } from '../sdk-webpack';
 import { runTizen, buildTizenProject, configureTizenProject } from '../sdk-tizen';
 import { runWebOS, buildWebOSProject, configureWebOSProject } from '../sdk-webos';
 import { runFirefoxProject, buildFirefoxProject, configureKaiOSProject } from '../sdk-firefox';

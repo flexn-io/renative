@@ -1,11 +1,7 @@
 /* eslint-disable import/no-cycle */
 import open from 'better-opn';
 
-import {
-    logErrorPlatform,
-    waitForWebpack,
-} from '../core/common';
-import { configureGenericPlatform } from '../core/platformManager';
+import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
 import { configureGenericProject } from '../core/projectManager';
 import { logTask, logError } from '../core/systemManager/logger';
 import {
@@ -14,7 +10,7 @@ import {
     TASK_RUN, TASK_BUILD, TASK_PACKAGE, TASK_EXPORT, TASK_START, TASK_LOG,
     TASK_DEPLOY, TASK_DEBUG, TASK_CONFIGURE
 } from '../core/constants';
-import { deployWeb } from '../sdk-webpack';
+import { deployWeb, waitForWebpack } from '../sdk-webpack';
 import { runWebNext, buildWebNext, exportWebNext, deployWebNext, configureNextIfRequired } from '../sdk-webpack/webNext';
 import Config from '../core/configManager/config';
 import { executeTask as _executeTask } from '../core/engineManager';

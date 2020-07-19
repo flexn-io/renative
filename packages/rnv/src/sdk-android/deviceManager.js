@@ -7,7 +7,7 @@ import child_process from 'child_process';
 import inquirer from 'inquirer';
 
 import { execCLI, executeTelnet } from '../core/systemManager/exec';
-import { waitForEmulator } from '../core/common';
+import { waitForEmulator } from '../core/targetManager';
 import { isSystemWin } from '../core/utils';
 import {
     chalk,

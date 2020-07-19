@@ -1,5 +1,6 @@
-import Common, { initializeBuilder } from './core/common';
-import Logger, { logComplete, logError } from './core/systemManager/logger';
+import Common from './core/common';
+import Logger, { logComplete, logError, configureLogger, logInitialize } from './core/systemManager/logger';
+import { createRnvConfig } from './core/configManager/configParser';
 import CLI from './cli';
 import * as Constants from './core/constants';
 import Exec from './core/systemManager/exec';
@@ -14,6 +15,21 @@ import Analytics from './core/systemManager/analytics';
 import 'source-map-support/register';
 
 Analytics.initialize();
+
+export const initializeBuilder = async (cmd, subCmd, process, program) => {
+    const c = createRnvConfig(program, process, cmd, subCmd);
+
+    configureLogger(
+        c,
+        c.process,
+        c.command,
+        c.subCommand,
+        program.info === true
+    );
+    logInitialize();
+
+    return c;
+};
 
 const run = (cmd, subCmd, program, process) => {
     initializeBuilder(cmd, subCmd, process, program)

@@ -4,6 +4,7 @@ import path from 'path';
 import fs from 'fs';
 import child_process from 'child_process';
 import inquirer from 'inquirer';
+import crypto from 'crypto';
 
 import { executeAsync, commandExistsSync } from '../core/systemManager/exec';
 import { getAppleDevices } from './deviceManager';
@@ -12,7 +13,6 @@ import {
     getAppFolder,
     getConfigProp,
     getIP,
-    generateChecksum,
 } from '../core/common';
 import { doResolve } from '../core/resolve';
 import { isPlatformActive } from '../core/platformManager';
@@ -47,6 +47,11 @@ import {
     logSuccess,
     logRaw
 } from '../core/systemManager/logger';
+
+export const generateChecksum = (str, algorithm, encoding) => crypto
+    .createHash(algorithm || 'md5')
+    .update(str, 'utf8')
+    .digest(encoding || 'hex');
 
 const checkIfPodsIsRequired = async (c) => {
     const appFolder = getAppFolder(c, c.platform);

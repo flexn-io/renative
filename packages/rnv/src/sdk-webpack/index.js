@@ -3,6 +3,7 @@
 import path from 'path';
 import fs from 'fs';
 import open from 'better-opn';
+import axios from 'axios';
 import ip from 'ip';
 import { executeAsync } from '../core/systemManager/exec';
 import {
@@ -10,7 +11,6 @@ import {
     getAppTemplateFolder,
     checkPortInUse,
     getConfigProp,
-    waitForWebpack,
     getBuildFilePath,
     getAppTitle,
     getSourceExts,
@@ -44,6 +44,52 @@ import {
 import { getValidLocalhost } from '../core/utils';
 import { doResolvePath } from '../core/resolve';
 import { WEINRE_PORT } from '../core/constants';
+
+export const waitForWebpack = async (c, engine) => {
+    logTask('waitForWebpack', `port:${c.runtime.port} engine:${engine}`);
+    let attempts = 0;
+    const maxAttempts = 10;
+    const CHECK_INTEVAL = 2000;
+    // const spinner = ora('Waiting for webpack to finish...').start();
+
+    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
+    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
+    let url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
+
+    if (engine === 'next') url = `http://${devServerHost}:${c.runtime.port}`;
+
+    return new Promise((resolve, reject) => {
+        const interval = setInterval(() => {
+            axios
+                .get(url)
+                .then((res) => {
+                    if (res.status === 200) {
+                        clearInterval(interval);
+                        // spinner.succeed();
+                        return resolve(true);
+                    }
+                    attempts++;
+                    if (attempts === maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                })
+                .catch(() => {
+                    attempts++;
+                    if (attempts > maxAttempts) {
+                        clearInterval(interval);
+                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
+                        return reject(
+                            "Can't connect to webpack. Try restarting it."
+                        );
+                    }
+                });
+        }, CHECK_INTEVAL);
+    });
+};
 
 const _generateWebpackConfigs = (c, platform) => {
     logTask('_generateWebpackConfigs');

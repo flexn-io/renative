@@ -11,11 +11,11 @@ import {
     getAppId,
     getAppTemplateFolder,
     getConfigProp,
-    waitForEmulator,
-    waitForWebpack,
     checkPortInUse,
     confirmActiveBundler
 } from '../core/common';
+import { waitForWebpack, buildWeb, configureCoreWebProject } from '../sdk-webpack';
+import { waitForEmulator } from '../core/targetManager';
 import { isPlatformActive } from '../core/platformManager';
 import {
     chalk,
@@ -37,7 +37,7 @@ import {
     CLI_WEBOS_ARES_SETUP_DEVICE
 } from '../core/constants';
 import { getRealPath, writeCleanFile } from '../core/systemManager/fileutils';
-import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
+
 import { rnvStart } from '../core/taskManager';
 import Config from '../core/configManager/config';
 import { isSystemWin, isUrlLocalhost } from '../core/utils';

@@ -17,8 +17,6 @@ import {
     getAppVersion,
     getAppTemplateFolder,
     getConfigProp,
-    waitForEmulator,
-    waitForWebpack,
     checkPortInUse,
     confirmActiveBundler
 } from '../core/common';
@@ -31,12 +29,13 @@ import {
     logSuccess,
     logToSummary
 } from '../core/systemManager/logger';
+import { waitForEmulator } from '../core/targetManager';
 import { isPlatformActive } from '../core/platformManager';
 import {
     copyAssetsFolder,
     copyBuildsFolder
 } from '../core/projectManager/projectParser';
-import { buildWeb, configureCoreWebProject } from '../sdk-webpack';
+import { buildWeb, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
 import { rnvStart } from '../core/taskManager';
 import Config from '../core/configManager/config';
 import { writeCleanFile } from '../core/systemManager/fileutils';

@@ -2,57 +2,27 @@
 import fs from 'fs';
 import path from 'path';
 import detectPort from 'detect-port';
-import ora from 'ora';
 import ip from 'ip';
 import axios from 'axios';
 import lGet from 'lodash.get';
 import colorString from 'color-string';
-import crypto from 'crypto';
 import { doResolve } from './resolve';
-import { getValidLocalhost } from './utils';
 import {
     chalk,
-    configureLogger,
     logError,
     logTask,
     logWarning,
-    logInitialize,
     logDebug,
     logSuccess
 } from './systemManager/logger';
 import {
     IOS,
-    ANDROID,
-    ANDROID_TV,
-    ANDROID_WEAR,
-    WEB,
-    TIZEN,
-    TIZEN_MOBILE,
     TVOS,
-    WEBOS,
-    MACOS,
-    WINDOWS,
     PLATFORMS
 } from './constants';
-import { execCLI } from './systemManager/exec';
-import { createRnvConfig } from './configManager/configParser';
 import { generateOptions, inquirerPrompt } from '../cli/prompt';
 import { writeCleanFile } from './systemManager/fileutils';
 
-export const initializeBuilder = async (cmd, subCmd, process, program) => {
-    const c = createRnvConfig(program, process, cmd, subCmd);
-
-    configureLogger(
-        c,
-        c.process,
-        c.command,
-        c.subCommand,
-        program.info === true
-    );
-    logInitialize();
-
-    return c;
-};
 
 export const getTimestampPathsConfig = (c, platform) => {
     let timestampBuildFiles;
@@ -68,11 +38,6 @@ export const getTimestampPathsConfig = (c, platform) => {
     }
     return null;
 };
-
-export const generateChecksum = (str, algorithm, encoding) => crypto
-    .createHash(algorithm || 'md5')
-    .update(str, 'utf8')
-    .digest(encoding || 'hex');
 
 export const getSourceExts = (c, p, isServer, prefix = '') => {
     // IMPORTANT: do not replace "p" with c.platform as this has to
@@ -298,47 +263,6 @@ export const getAppVersionCode = (c, platform) => {
     return Number(vc).toString();
 };
 
-export const logErrorPlatform = (c) => {
-    logError(
-        `Platform: ${chalk().white(
-            c.platform
-        )} doesn't support command: ${chalk().white(c.command)}`,
-        true // kill it if we're not supporting this
-    );
-    return false;
-};
-
-export const getBinaryPath = (c, platform) => {
-    const appFolder = getAppFolder(c, platform);
-    const id = getConfigProp(c, platform, 'id');
-    const signingConfig = getConfigProp(c, platform, 'signingConfig', 'debug');
-    const version = getAppVersion(c, platform);
-    const productName = 'ReNative - macos';
-    const appName = getConfigProp(c, platform, 'appName');
-
-    switch (platform) {
-        case IOS:
-        case TVOS:
-            return `${appFolder}/release/RNVApp.ipa`;
-        case ANDROID:
-        case ANDROID_TV:
-        case ANDROID_WEAR:
-            return `${appFolder}/app/build/outputs/apk/${signingConfig}/app-${signingConfig}.apk`;
-        case WEB:
-            return `${appFolder}/public`;
-        case MACOS:
-        case WINDOWS:
-            return `${appFolder}/build/release/${productName}-${version}`;
-        case TIZEN:
-        case TIZEN_MOBILE:
-            return `${appFolder}/output/${appName}.wgt`;
-        case WEBOS:
-            return `${appFolder}/output/${id}_${version}_all.ipk`;
-        default:
-            return appFolder;
-    }
-};
-
 export const isMonorepo = () => {
     try {
         fs.existsSync(path.resolve(__dirname, '../../../../lerna.json'));
@@ -400,53 +324,6 @@ export const getBuildFilePath = (c, platform, filePath) => {
     return sp;
 };
 
-export const waitForEmulator = async (c, cli, command, callback) => {
-    let attempts = 0;
-    const maxAttempts = 30;
-    const CHECK_INTEVAL = 2000;
-    const { maxErrorLength } = c.program;
-    const spinner = ora('Waiting for emulator to boot...').start();
-
-    return new Promise((resolve, reject) => {
-        const interval = setInterval(() => {
-            execCLI(c, cli, command, {
-                silent: true,
-                timeout: 10000,
-                maxErrorLength
-            })
-                .then((resp) => {
-                    if (callback(resp)) {
-                        clearInterval(interval);
-                        spinner.succeed();
-                        return resolve(true);
-                    }
-                    attempts++;
-                    if (attempts === maxAttempts) {
-                        clearInterval(interval);
-                        spinner.fail(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
-                        return reject(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
-                    }
-                })
-                .catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        spinner.fail(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
-                        return reject(
-                            "Can't connect to the running emulator. Try restarting it."
-                        );
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
-};
-
 export const waitForUrl = url => new Promise((resolve, reject) => {
     let attempts = 0;
     const maxAttempts = 10;
@@ -469,52 +346,6 @@ export const waitForUrl = url => new Promise((resolve, reject) => {
     }, CHECK_INTEVAL);
 });
 
-export const waitForWebpack = async (c, engine) => {
-    logTask('waitForWebpack', `port:${c.runtime.port} engine:${engine}`);
-    let attempts = 0;
-    const maxAttempts = 10;
-    const CHECK_INTEVAL = 2000;
-    // const spinner = ora('Waiting for webpack to finish...').start();
-
-    const extendConfig = getConfigProp(c, c.platform, 'webpackConfig', {});
-    const devServerHost = getValidLocalhost(extendConfig.devServerHost, c.runtime.localhost);
-    let url = `http://${devServerHost}:${c.runtime.port}/assets/bundle.js`;
-
-    if (engine === 'next') url = `http://${devServerHost}:${c.runtime.port}`;
-
-    return new Promise((resolve, reject) => {
-        const interval = setInterval(() => {
-            axios
-                .get(url)
-                .then((res) => {
-                    if (res.status === 200) {
-                        clearInterval(interval);
-                        // spinner.succeed();
-                        return resolve(true);
-                    }
-                    attempts++;
-                    if (attempts === maxAttempts) {
-                        clearInterval(interval);
-                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            "Can't connect to webpack. Try restarting it."
-                        );
-                    }
-                })
-                .catch(() => {
-                    attempts++;
-                    if (attempts > maxAttempts) {
-                        clearInterval(interval);
-                        // spinner.fail('Can\'t connect to webpack. Try restarting it.');
-                        return reject(
-                            "Can't connect to webpack. Try restarting it."
-                        );
-                    }
-                });
-        }, CHECK_INTEVAL);
-    });
-};
-
 export const importPackageFromProject = (name) => {
     // const c = Config.getConfig();
     // eslint-disable-next-line import/no-dynamic-require, global-require
@@ -529,8 +360,6 @@ export default {
     isBuildSchemeSupported,
     getAppFolder,
     getAppTemplateFolder,
-    initializeBuilder,
-    logErrorPlatform,
     getAppId,
     getAppTitle,
     getAppVersion,
@@ -544,7 +373,6 @@ export default {
     getConfigProp,
     getIP,
     checkPortInUse,
-    waitForEmulator,
     logTask: (val) => {
         logError(
             'DEPRECATED: Common.logTask() has been removed. use Logger.logTask() instead'

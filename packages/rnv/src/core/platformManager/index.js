@@ -23,6 +23,16 @@ export const rnvPlatformList = c => new Promise((resolve) => {
     resolve();
 });
 
+export const logErrorPlatform = (c) => {
+    logError(
+        `Platform: ${chalk().white(
+            c.platform
+        )} doesn't support command: ${chalk().white(c.command)}`,
+        true // kill it if we're not supporting this
+    );
+    return false;
+};
+
 export const rnvPlatformConfigure = async (c) => {
     // c.platform = c.program.platform || 'all';
     logTask(`rnvPlatformConfigure:${c.platform}`);

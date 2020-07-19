@@ -88,7 +88,6 @@ import {
     TIZEN_WATCH,
     configSchema
 } from '../core/constants';
-// import { getBinaryPath } from '../core/common';
 import Config from '../core/configManager/config';
 import { checkAndMigrateProject } from '../core/projectManager/migrator';
 import {
@@ -589,11 +588,6 @@ const run = async (c, spawnC, skipStartBuilder) => {
     setDefaults(currC);
     if (!skipStartBuilder) await _startBuilder(currC);
 
-    // if (spawnC) {
-    //     currC = _spawnCommand(currC, spawnC);
-    //     Config.initializeConfig(currC);
-    // }
-
     if (cmd) {
         if (currC.subCommand === 'help') {
             await _execCommandHep(currC, cmd);
@@ -613,7 +607,6 @@ const run = async (c, spawnC, skipStartBuilder) => {
     } else {
         await _handleUnknownCommand(currC);
     }
-    // if (spawnC) Config.initializeConfig(oldC);
 };
 
 const _execute = async (c, cmdFn, cmd) => {

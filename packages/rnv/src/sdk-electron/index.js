@@ -15,7 +15,6 @@ import {
     getAppLicense,
     getConfigProp,
     checkPortInUse,
-    waitForWebpack,
     confirmActiveBundler
 } from '../core/common';
 import { doResolve } from '../core/resolve';
@@ -32,7 +31,7 @@ import {
     copyAssetsFolder
 } from '../core/projectManager/projectParser';
 import { MACOS } from '../core/constants';
-import { buildWeb, runWeb, configureCoreWebProject } from '../sdk-webpack';
+import { buildWeb, runWeb, configureCoreWebProject, waitForWebpack } from '../sdk-webpack';
 import {
     mkdirSync,
     writeFileSync,

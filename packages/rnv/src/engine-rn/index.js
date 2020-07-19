@@ -2,13 +2,12 @@
 import path from 'path';
 import fs from 'fs';
 import {
-    logErrorPlatform,
     getConfigProp,
     confirmActiveBundler,
     getEntryFile
 } from '../core/common';
 import { doResolve } from '../core/resolve';
-import { configureGenericPlatform } from '../core/platformManager';
+import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
 import { chalk, logTask, logError, logSummary, logInfo, logRaw } from '../core/systemManager/logger';
 import {
     IOS,

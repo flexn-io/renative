@@ -12,10 +12,6 @@ class Config {
         this.config = {};
     }
 
-    // async initializeConfig(cmd, subCmd, program) {
-    //     this.config = await initializeBuilder(cmd, subCmd, process, program);
-    // }
-
     initializeConfig(c) {
         this.config = c;
         return c;

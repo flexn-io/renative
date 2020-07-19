@@ -1,10 +1,6 @@
 /* eslint-disable import/no-cycle */
 import open from 'better-opn';
-import {
-    logErrorPlatform,
-    waitForWebpack,
-} from '../core/common';
-import { configureGenericPlatform } from '../core/platformManager';
+import { configureGenericPlatform, logErrorPlatform } from '../core/platformManager';
 import { configureGenericProject } from '../core/projectManager';
 import { logTask, logError } from '../core/systemManager/logger';
 import {
@@ -20,6 +16,7 @@ import {
     configureElectronProject,
     exportElectron
 } from '../sdk-electron';
+import { waitForWebpack } from '../sdk-webpack';
 import { executeTask as _executeTask } from '../core/engineManager';
 
 const TASKS = {};
